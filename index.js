@@ -2,6 +2,7 @@ const { Client, Util } = require("discord.js");
 const { TOKEN, PREFIX, GOOGLE_API_KEY } = require("./config");
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
+require("./server.js")
 
 const bot = new Client({ disableEveryone: true });
 
@@ -31,7 +32,7 @@ bot.on("message", async msg => { // eslint-disable-line
     let command = msg.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length)
 
-    if (command === "play" && command === "p") {
+    if (command === "play" || command === "p") {
         const voiceChannel = msg.member.voiceChannel;
         if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         const permissions = voiceChannel.permissionsFor(msg.client.user);
@@ -153,7 +154,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
             voiceChannel: voiceChannel,
             connection: null,
             songs: [],
-            volume: 50,
+            volume: 5,
             playing: true
         };
         queue.set(msg.guild.id, queueConstruct);
