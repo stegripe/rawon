@@ -4,7 +4,8 @@
   "description": "Example of a Music Bot project modified by Zealcord, made by DevYukine",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
   "homepage": "https://github.com/zealcordNation/music-bot-example#readme",
   "dependencies": {
     "discord.js": "^11.5.1",
-    "node-opus": "0.2.7",
+    "express": "^4.17.1",
+    "node-opus": "^0.3.2",
     "simple-youtube-api": "^5.2.1",
     "ytdl-core": "^1.0.7"
   }

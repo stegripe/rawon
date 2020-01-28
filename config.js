@@ -1,3 +1,3 @@
-exports.TOKEN = "YourBotToken"
-exports.GOOGLE_API_KEY = "AIzaSyC16eI_js--2VkxJTcoe3uhPJW4A_PlIks"
-exports.PREFIX = "!"
+exports.TOKEN = process.env.TOKEN
+exports.GOOGLE_API_KEY = process.env.YTAPI_KEY
+exports.PREFIX = process.env.PREFIX
