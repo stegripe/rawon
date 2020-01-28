@@ -1,3 +1,4 @@
+const Discord = require("discord.js");
 const { Client, Util } = require("discord.js");
 const { TOKEN, PREFIX, GOOGLE_API_KEY } = require("./config");
 const YouTube = require("simple-youtube-api");
@@ -31,6 +32,17 @@ bot.on("message", async msg => { // eslint-disable-line
 
     let command = msg.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length)
+
+    if (command === "help" || command == "cmd") {
+        const helpembed = new Discord.RichEmbed()
+            .setAuthor(bot.user.username, bot.user.displayAvatarURL)
+            .setDescription(`
+__**Commands List**__
+> \`play\` > **\`play [title]\`**
+> \`skip\`, \`stop\`,  \`pause\`, \`resume\`
+> \`nowplaying\`, \`queue\`, \`volume\``)
+            .setFooter("©️ 2020 Zealcord Development", "https://api.zealcord.xyz/assets/images/logo.png")
+    }
 
     if (command === "play" || command === "p") {
         const voiceChannel = msg.member.voiceChannel;
