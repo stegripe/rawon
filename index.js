@@ -36,10 +36,10 @@ bot.on("message", async msg => { // eslint-disable-line
     if (command === "help" || command == "cmd") {
         const helpembed = new Discord.RichEmbed()
             .setColor("#7289DA")
-            .setAuthor(bot.user.username, bot.user.displayAvatarURL)
+            .setAuthor(bot.user.tag, bot.user.displayAvatarURL)
             .setDescription(`
 __**Commands List**__
-> \`play\` > **\`play [title]\`**
+> \`play\` > **\`play [title/url]\`**
 > \`skip\`, \`stop\`,  \`pause\`, \`resume\`
 > \`nowplaying\`, \`queue\`, \`volume\``)
             .setFooter("©️ 2020 Zealcord Development", "https://api.zealcord.xyz/assets/images/logo.png")
