@@ -90,6 +90,7 @@ Please provide a value to select one of the search results ranging from 1-10.
         if (!msg.member.voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing that I could **\`skip\`** for you.");
         serverQueue.connection.dispatcher.end("Skip command has been used!");
+        msg.channel.send("⏭️  **|**  Skip command has been used!");
         return undefined;
 
     } else if (command === "stop") {
@@ -97,9 +98,10 @@ Please provide a value to select one of the search results ranging from 1-10.
         if (!serverQueue) return msg.channel.send("There is nothing playing that I could **\`stop\`** for you.");
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end("Stop command has been used!");
+        msg.channel.send("⏹️  **|**  Stop command has been used!");
         return undefined;
 
-    } else if (command === "volume") {
+    } else if (command === "volume" || command === "vol") {
         if (!msg.member.voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing.");
         if (!args[1]) return msg.channel.send(`The current volume is: **\`${serverQueue.volume}%\`**`);
@@ -107,11 +109,11 @@ Please provide a value to select one of the search results ranging from 1-10.
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
         return msg.channel.send(`I set the volume to: **\`${args[1]}%\`**`);
 
-    } else if (command === "np") {
+    } else if (command === "nowplaying" || command === "np") {
         if (!serverQueue) return msg.channel.send("There is nothing playing.");
         return msg.channel.send(`🎶  **|**  Now Playing: **\`${serverQueue.songs[0].title}\`**`);
 
-    } else if (command === "queue") {
+    } else if (command === "queue" || command === "q") {
         if (!serverQueue) return msg.channel.send("There is nothing playing.");
         return msg.channel.send(`
 __**Song Queue:**__
