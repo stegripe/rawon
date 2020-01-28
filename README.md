@@ -10,7 +10,7 @@
 4.  After creating a projects, head up to **Tools** button, then select **Git, Import, and Export** button.
 5.  Then click **Import from GitHub** button, and please input **`zealcordNation/music-bot-example`**
 6.  After importing, you must delete the existing `.env` file.
-7.  Then rename `.env_example` file to `,env`.
+7.  Then rename `.env_example` file to `.env`.
 8.  Please specify a prefix for your bot, and immediately input the token that you have obtained before.
 9.  To get the YouTube API key, please open the **[tutorial video here](https://youtu.be/3jZ5vnv-LZc?t=7)**
 10.  Change the name of the project to whatever you want, then input that new name in `PROJECT_NAME` environment.
