@@ -1,5 +1,10 @@
 # Packages
 node_modules/
+package-lock.json
+shrinkwrap.yaml
+
+# .env File should be hidden
+.env
 
 # Log files
 logs/
