@@ -202,7 +202,6 @@ function play(guild, song) {
         queue.delete(guild.id);
         return;
     }
-    console.log(serverQueue.songs);
 
     const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
         .on("end", reason => {
