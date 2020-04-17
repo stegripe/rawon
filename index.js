@@ -3,7 +3,7 @@ const { Client, Util } = require("discord.js");
 const { TOKEN, PREFIX, GOOGLE_API_KEY } = require("./config");
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
-require("./server.js")
+require("./server.js");
 
 const bot = new Client({ disableEveryone: true });
 
@@ -31,7 +31,7 @@ bot.on("message", async msg => { // eslint-disable-line
     const serverQueue = queue.get(msg.guild.id);
 
     let command = msg.content.toLowerCase().split(" ")[0];
-    command = command.slice(PREFIX.length)
+    command = command.slice(PREFIX.length);
 
     if (command === "help" || command == "cmd") {
         const helpembed = new Discord.RichEmbed()
@@ -40,13 +40,47 @@ bot.on("message", async msg => { // eslint-disable-line
             .setDescription(`
 __**Commands List**__
 > \`play\` > **\`play [title/url]\`**
+> \`search\` > **\`search [title]\`**
 > \`skip\`, \`stop\`,  \`pause\`, \`resume\`
 > \`nowplaying\`, \`queue\`, \`volume\``)
-            .setFooter("©️ 2020 Zealcord Development", "https://api.zealcord.xyz/assets/images/logo.png")
+            .setFooter("©️ 2020 Zealcord Development", "https://api.zealcord.xyz/assets/images/logo.png");
         msg.channel.send(helpembed);
     }
-
-    if (command === "play" || command === "p") {
+    if (command === "play" || command === "p"){
+      const voiceChannel = msg.member.voiceChannel;
+        if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
+        const permissions = voiceChannel.permissionsFor(msg.client.user);
+        if (!permissions.has("CONNECT")) {
+            return msg.channel.send("Sorry, but i need **`CONNECT`** permissions to proceed!");
+        }
+        if (!permissions.has("SPEAK")) {
+            return msg.channel.send("Sorry, but i need **`SPEAK`** permissions to proceed!");
+        }
+        if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+            const playlist = await youtube.getPlaylist(url);
+            const videos = await playlist.getVideos();
+            for (const video of Object.values(videos)) {
+                const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
+                await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
+            }
+            return msg.channel.send(`<:yes:591629527571234819>  **|**  Playlist: **\`${playlist.title}\`** has been added to the queue!`);
+        } else {
+            try {
+                var video = await youtube.getVideo(url);
+            } catch (error) {
+              try {
+                var videos = await youtube.searchVideos(searchString, 10);
+                var video = await youtube.getVideoByID(videos[0].id);
+                if(!video) return msg.channel.send("🆘  **|**  I could not obtain any search results.");
+              } catch (err) {
+                console.error(err);
+                return msg.channel.send("🆘  **|**  I could not obtain any search results.");
+              }
+            }
+            return handleVideo(video, msg, voiceChannel);
+        }
+    }
+    if (command === "search" || command === "sc") {
         const voiceChannel = msg.member.voiceChannel;
         if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         const permissions = voiceChannel.permissionsFor(msg.client.user);
@@ -56,7 +90,6 @@ __**Commands List**__
         if (!permissions.has("SPEAK")) {
             return msg.channel.send("Sorry, but i need **`SPEAK`** permissions to proceed!");
         }
-
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url);
             const videos = await playlist.getVideos();
@@ -214,6 +247,6 @@ function play(guild, song) {
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
     serverQueue.textChannel.send(`🎶  **|**  Start Playing: **\`${song.title}\`**`);
-};
+}
 
 bot.login(TOKEN);
