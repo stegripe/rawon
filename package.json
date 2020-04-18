@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "discord.js": "^11.5.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "opusscript": "0.0.7",
     "simple-youtube-api": "^5.2.1",
