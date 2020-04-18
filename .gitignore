@@ -4,7 +4,7 @@ package-lock.json
 shrinkwrap.yaml
 
 # .env File should be hidden
-.env
+# .env
 
 # Log files
 logs/

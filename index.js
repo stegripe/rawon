@@ -1,24 +1,25 @@
 const Discord = require("discord.js");
 const { Client, Util } = require("discord.js");
-const { TOKEN, PREFIX, GOOGLE_API_KEY } = require("./config");
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
 require("./server.js");
+const dotenv = require("dotenv").config();
 
-const bot = new Client({ disableEveryone: true });
+const TOKEN = process.env.BOT_TOKEN;
+const PREFIX = process.env.PREFIX;
+const GOOGLE_API_KEY = process.env.YTAPI_KEY;
+
+const bot = new Client({
+    disableEveryone: true
+});
 
 const youtube = new YouTube(GOOGLE_API_KEY);
-
 const queue = new Map();
 
 bot.on("warn", console.warn);
-
 bot.on("error", console.error);
-
 bot.on("ready", () => console.log(`${bot.user.tag} has been successfully turned on!`));
-
 bot.on("disconnect", () => console.log("An error occurred, trying to reconnect!"));
-
 bot.on("reconnecting", () => console.log("I am reconnecting now..."));
 
 bot.on("message", async msg => { // eslint-disable-line
@@ -43,18 +44,18 @@ __**Commands List**__
 > \`search\` > **\`search [title]\`**
 > \`skip\`, \`stop\`,  \`pause\`, \`resume\`
 > \`nowplaying\`, \`queue\`, \`volume\``)
-            .setFooter("©️ 2020 Zealcord Development", "https://api.zealcord.xyz/assets/images/logo.png");
+            .setFooter("©️ 2020 Zealcord Development", "https://app.zealcord.xyz/assets/Logo.png");
         msg.channel.send(helpembed);
     }
-    if (command === "play" || command === "p"){
-      const voiceChannel = msg.member.voiceChannel;
+    if (command === "play" || command === "p") {
+        const voiceChannel = msg.member.voiceChannel;
         if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         const permissions = voiceChannel.permissionsFor(msg.client.user);
         if (!permissions.has("CONNECT")) {
-            return msg.channel.send("Sorry, but i need **`CONNECT`** permissions to proceed!");
+            return msg.channel.send("Sorry, but I need **`CONNECT`** permissions to proceed!");
         }
         if (!permissions.has("SPEAK")) {
-            return msg.channel.send("Sorry, but i need **`SPEAK`** permissions to proceed!");
+            return msg.channel.send("Sorry, but I need **`SPEAK`** permissions to proceed!");
         }
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url);
@@ -68,14 +69,14 @@ __**Commands List**__
             try {
                 var video = await youtube.getVideo(url);
             } catch (error) {
-              try {
-                var videos = await youtube.searchVideos(searchString, 10);
-                var video = await youtube.getVideoByID(videos[0].id);
-                if(!video) return msg.channel.send("🆘  **|**  I could not obtain any search results.");
-              } catch (err) {
-                console.error(err);
-                return msg.channel.send("🆘  **|**  I could not obtain any search results.");
-              }
+                try {
+                    var videos = await youtube.searchVideos(searchString, 10);
+                    var video = await youtube.getVideoByID(videos[0].id);
+                    if (!video) return msg.channel.send("🆘  **|**  I could not obtain any search results.");
+                } catch (err) {
+                    console.error(err);
+                    return msg.channel.send("🆘  **|**  I could not obtain any search results.");
+                }
             }
             return handleVideo(video, msg, voiceChannel);
         }
@@ -85,10 +86,10 @@ __**Commands List**__
         if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         const permissions = voiceChannel.permissionsFor(msg.client.user);
         if (!permissions.has("CONNECT")) {
-            return msg.channel.send("Sorry, but i need **`CONNECT`** permissions to proceed!");
+            return msg.channel.send("Sorry, but I need **`CONNECT`** permissions to proceed!");
         }
         if (!permissions.has("SPEAK")) {
-            return msg.channel.send("Sorry, but i need **`SPEAK`** permissions to proceed!");
+            return msg.channel.send("Sorry, but I need **`SPEAK`** permissions to proceed!");
         }
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url);
@@ -106,7 +107,7 @@ __**Commands List**__
                     var videos = await youtube.searchVideos(searchString, 10);
                     let index = 0;
                     msg.channel.send(`
-__**Song selection:**__
+__**Song selection**__
 
 ${videos.map(video2 => `**\`${++index}\`  |**  ${video2.title}`).join("\n")}
 
@@ -163,7 +164,7 @@ Please provide a value to select one of the search results ranging from 1-10.
     } else if (command === "queue" || command === "q") {
         if (!serverQueue) return msg.channel.send("There is nothing playing.");
         return msg.channel.send(`
-__**Song Queue:**__
+__**Song Queue**__
 
 ${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}
 
@@ -238,7 +239,7 @@ function play(guild, song) {
 
     const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
         .on("end", reason => {
-            if (reason === "Stream is not generating quickly enough.") console.log("Song Ended.");
+            if (reason === "Stream is not generating quickly enough.") console.log("Song ended");
             else console.log(reason);
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
