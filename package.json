@@ -24,11 +24,15 @@
     "url": "https://github.com/zealcordNation/music-bot-example/issues"
   },
   "homepage": "https://github.com/zealcordNation/music-bot-example#readme",
+  "engines": {
+    "node": "12.x"
+  },
   "dependencies": {
     "discord.js": "^11.5.1",
     "express": "^4.17.1",
-    "node-opus": "^0.3.2",
+    "opusscript": "0.0.7",
     "simple-youtube-api": "^5.2.1",
-    "ytdl-core": "^1.0.7"
+    "ytdl-core": "^2.1.0",
+    "zealcord.js": "^1.1.1"
   }
 }
