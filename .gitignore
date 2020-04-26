@@ -1,9 +1,9 @@
-# Packages
+# Node Packages
 node_modules/
 package-lock.json
 shrinkwrap.yaml
 
-# .env File should be hidden
+# dotenv Environment files
 # .env
 
 # Log files

@@ -2,8 +2,8 @@ const Discord = require("discord.js");
 const { Client, Util } = require("discord.js");
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
-require("./server.js");
 const dotenv = require("dotenv").config();
+require("./server.js");
 
 const TOKEN = process.env.BOT_TOKEN;
 const PREFIX = process.env.PREFIX;
