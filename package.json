@@ -1,7 +1,7 @@
 {
   "name": "music-bot-example",
   "version": "1.0.0",
-  "description": "Example of a Music Bot project modified by Zealcord, made by DevYukine",
+  "description": "Example of a Music Bot project modified by Zealcord, made by iCrawl",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -35,5 +35,8 @@
     "simple-youtube-api": "^5.2.1",
     "ytdl-core": "^2.1.0",
     "zealcord.js": "^1.1.2"
+  },
+  "optionalDependencies": {
+    "@discordjs/uws": "^10.149.1"
   }
 }
