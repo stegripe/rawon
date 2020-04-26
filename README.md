@@ -23,7 +23,7 @@
 ```
 Zealcord simple Discord music bot projects tutorial
 ```
-This Bot dedicated for open source of our community. Written in [Discord.JS](https://discord.js.org/#/) at version [11.6.4](https://discord.js.org/#/docs/main/stable/general/welcome).
+This Bot is dedicated for open source of our community. Written in [Discord.JS](https://discord.js.org/#/) at version [11.6.4](https://discord.js.org/#/docs/main/stable/general/welcome).
 
 ### Required Module/Package
 ```
@@ -44,7 +44,7 @@ ytdl-core@2.1.0
 5.  Specify a prefix for your bot, and immediately input the token that you have obtained before, in the `.env`.
 6.  To get the YouTube API key, please open the **[tutorial video here](https://youtu.be/3jZ5vnv-LZc?t=7)**.
 7.  Change the name of the project to whatever you want (optional).
-8.  After that, go to the **Tools** > **Terminal** button, then restart your project to save the progress you have done by runing the `refresh` command.
+8.  After that, go to the **Tools** > **Terminal** button, then restart your project by running the `refresh` command.
 9.  Your bot is ready, and now we only need to make your bot online for 24 hours. Watch **[this video](https://youtu.be/-5ptk-Klfcw?t=69)** to see the tutorial!
 
 ### Contributing
