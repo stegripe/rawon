@@ -37,6 +37,6 @@
     "zealcord.js": "^1.1.2"
   },
   "optionalDependencies": {
-    "@discordjs/uws": "^10.149.1"
+    "@discordjs/uws": "^10.149.0"
   }
 }
