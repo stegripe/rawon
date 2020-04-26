@@ -1,38 +1,19 @@
-<h1 align="center">Music Bot Example</h1>
-<p align="center">
-    <a href="https://zealcord.xyz/discord/">
-        <img alt="Discord server" src="https://discordapp.com/api/guilds/332877090003091456/embed.png">
-    </a>
-    <a href="#">
-        <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/zealcordNation/music-bot-example.svg">
-    </a>
-    <a href='https://github.com/zealcordNation/music-bot-example/blob/master/LICENSE.md'>
-        <img alt="GitHub" src="https://img.shields.io/github/license/zealcordNation/music-bot-example.svg">
-    </a>
-    <a href='https://github.com/zealcordNation/music-bot-example/blob/master/package.json'>
-        <img alt="GitHub package.json version"
-            src="https://img.shields.io/github/package-json/v/zealcordNation/music-bot-example.svg">
-    </a>
-    <a href='https://github.com/zealcordNation/music-bot-example/workflows/'>
-        <img alt="Workflows" src="https://github.com/zealcordNation/music-bot-example/workflows/Node.js%20CI/badge.svg">
-    </a>
-</p>
-<p align="center"> Example of a Music Bot project modified by Zealcord, made by iCrawl</p>
+> Zealcord simple Discord music bot projects tutorial
 
 ### About
 ```
-Zealcord simple Discord music bot projects tutorial
+Example of a Music Bot project modified by Zealcord, made by iCrawl
 ```
 This Bot is dedicated for open source of our community. Written in [Discord.JS](https://discord.js.org/#/) at version [11.6.4](https://discord.js.org/#/docs/main/stable/general/welcome).
 
 ### Required Module/Package
 ```
-@discordjs/opus@0.2.1,
+@discordjs/opus@0.1.0,
 discord.js@11.6.4,
 dotenv@8.2.0,
 express@4.17.1,
 simple-youtube-api@5.2.1,
-ytdl-core@2.1.0
+ytdl-core@2.1.1
 ```
 
 ### Getting Started Using Glitch
