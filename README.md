@@ -39,6 +39,6 @@ ytdl-core@2.1.1
 ### Author
 
 **Music-Bot** © [iCrawl](https://github.com/iCrawl), Released under the [MIT](https://github.com/zealcordNation/music-bot-example/blob/master/LICENSE.md) License.<br>
-Authored and maintained by iCrawl. Pre-modified by [Zealcord](https://github.com/zealcordNation)
+Authored and maintained by iCrawl. Modified by [Zealcord](https://github.com/zealcordNation)
 
 > GitHub [@zealcordNation](https://github.com/zealcordNation)
