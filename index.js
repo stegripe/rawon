@@ -186,6 +186,12 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}
             return msg.channel.send("▶  **|**  Resumed the music for you!");
         }
         return msg.channel.send("There is nothing playing.");
+    } else if (command === "loop") {
+    	if (serverQueue) {
+            serverQueue.loop = !serverQueue.loop;
+            return msg.channel.send(`:repeat: **|** Loop ${serverQueue.loop === true ? "enabled" : "disabled"}!`);
+	};
+	return msg.channel.send("There is nothing playing.");
     }
     return undefined;
 });
@@ -204,7 +210,8 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
             connection: null,
             songs: [],
             volume: 5,
-            playing: true
+            playing: true,
+            loop: false
         };
         queue.set(msg.guild.id, queueConstruct);
 
@@ -241,7 +248,11 @@ function play(guild, song) {
         .on("end", reason => {
             if (reason === "Stream is not generating quickly enough.") console.log("Song ended");
             else console.log(reason);
-            serverQueue.songs.shift();
+
+            const shiffed = serverQueue.songs.shift();
+            if (serverQueue.loop === true) {
+	   	serverQueue.songs.push(shiffed); 
+	    };
             play(guild, serverQueue.songs[0]);
         })
         .on("error", error => console.error(error));
