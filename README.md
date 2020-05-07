@@ -6,6 +6,8 @@ Example of a Music Bot project modified by Zealcord, made by iCrawl
 ```
 This Bot is dedicated for open source of our community. Written in [Discord.JS](https://discord.js.org/#/) at version [11.6.4](https://discord.js.org/#/docs/main/stable/general/welcome).
 
+[![Run on Repl.it](https://repl.it/badge/github/zealcordNation/music-bot-example)](https://repl.it/github/zealcordNation/music-bot-example)
+
 ### Required Module/Package
 ```
 @discordjs/opus@0.1.0,
