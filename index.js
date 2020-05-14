@@ -244,8 +244,8 @@ function play(guild, song) {
         return;
     }
 
-    const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-        .on("end", reason => {
+    const dispatcher = serverQueue.connection.play(ytdl(song.url))
+        .on("finish", reason => {
             if (reason === "Stream is not generating quickly enough.") console.log("Song ended");
             else console.log(reason);
 
@@ -258,7 +258,7 @@ function play(guild, song) {
         .on("error", error => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
-    serverQueue.textChannel.send(`🎶  **|**  Start Playing: **\`${song.title}\`**`);
+    serverQueue.textChannel.send({ embed: { color: 0xcfa, description: `🎶  **|**  Start Playing: **\`${song.title}\`**` }});
 }
 
 bot.login(TOKEN);
