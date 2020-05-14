@@ -35,9 +35,9 @@ bot.on("message", async msg => { // eslint-disable-line
     command = command.slice(PREFIX.length);
 
     if (command === "help" || command == "cmd") {
-        const helpembed = new Discord.RichEmbed()
+        const helpembed = new Discord.MessageEmbed()
             .setColor("#7289DA")
-            .setAuthor(bot.user.tag, bot.user.displayAvatarURL)
+            .setAuthor(bot.user.tag, bot.user.displayAvatarURL())
             .setDescription(`
 __**Commands List**__
 > \`play\` > **\`play [title/url]\`**
@@ -48,7 +48,7 @@ __**Commands List**__
         msg.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
-        const voiceChannel = msg.member.voiceChannel;
+        const voiceChannel = msg.member.voice.channel;
         if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         const permissions = voiceChannel.permissionsFor(msg.client.user);
         if (!permissions.has("CONNECT")) {
@@ -82,7 +82,7 @@ __**Commands List**__
         }
     }
     if (command === "search" || command === "sc") {
-        const voiceChannel = msg.member.voiceChannel;
+        const voiceChannel = msg.member.voice.channel;
         if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         const permissions = voiceChannel.permissionsFor(msg.client.user);
         if (!permissions.has("CONNECT")) {
@@ -116,7 +116,7 @@ Please provide a value to select one of the search results ranging from 1-10.
                     // eslint-disable-next-line max-depth
                     try {
                         var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
-                            maxMatches: 1,
+                            max: 1,
                             time: 10000,
                             errors: ["time"]
                         });
@@ -135,14 +135,14 @@ Please provide a value to select one of the search results ranging from 1-10.
         }
 
     } else if (command === "skip") {
-        if (!msg.member.voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
+        if (!msg.member.voice.channel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing that I could **\`skip\`** for you.");
         serverQueue.connection.dispatcher.end("Skip command has been used!");
         msg.channel.send("⏭️  **|**  Skip command has been used!");
         return undefined;
 
     } else if (command === "stop") {
-        if (!msg.member.voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play music!");
+        if (!msg.member.voice.channel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing that I could **\`stop\`** for you.");
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end("Stop command has been used!");
@@ -150,7 +150,7 @@ Please provide a value to select one of the search results ranging from 1-10.
         return undefined;
 
     } else if (command === "volume" || command === "vol") {
-        if (!msg.member.voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play music!");
+        if (!msg.member.voice.channel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing.");
         if (!args[1]) return msg.channel.send(`The current volume is: **\`${serverQueue.volume}%\`**`);
         serverQueue.volume = args[1];
@@ -244,8 +244,8 @@ function play(guild, song) {
         return;
     }
 
-    const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-        .on("end", reason => {
+    const dispatcher = serverQueue.connection.play(ytdl(song.url))
+        .on("finish", reason => {
             if (reason === "Stream is not generating quickly enough.") console.log("Song ended");
             else console.log(reason);
 
@@ -258,7 +258,7 @@ function play(guild, song) {
         .on("error", error => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
-    serverQueue.textChannel.send(`🎶  **|**  Start Playing: **\`${song.title}\`**`);
+    serverQueue.textChannel.send({ embed: { color: 0xcfa, description: `🎶  **|**  Start Playing: **\`${song.title}\`**` }});
 }
 
 bot.login(TOKEN);
