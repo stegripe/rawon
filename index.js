@@ -10,7 +10,7 @@ const PREFIX = process.env.PREFIX;
 const GOOGLE_API_KEY = process.env.YTAPI_KEY;
 
 const bot = new Client({
-    disableEveryone: true
+    disableMentions: "all"
 });
 
 const youtube = new YouTube(GOOGLE_API_KEY);
@@ -19,12 +19,12 @@ const queue = new Map();
 bot.on("warn", console.warn);
 bot.on("error", console.error);
 bot.on("ready", () => console.log(`${bot.user.tag} has been successfully turned on!`));
-bot.on("disconnect", () => console.log("An error occurred, trying to reconnect!"));
-bot.on("reconnecting", () => console.log("I am reconnecting now..."));
+bot.on("shardDisconnect", (event, id) => console.log(`Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect!`));
+bot.on("shardReconnecting", (id) => console.log(`Shard ${id} reconnecting...`));
 
-bot.on("message", async msg => { // eslint-disable-line
-    if (msg.author.bot) return undefined;
-    if (!msg.content.startsWith(PREFIX)) return undefined;
+bot.on("message", async(msg) => { // eslint-disable-line
+    if (msg.author.bot) return;
+    if (!msg.content.startsWith(PREFIX)) return;
 
     const args = msg.content.split(" ");
     const searchString = args.slice(1).join(" ");
@@ -138,23 +138,22 @@ Please provide a value to select one of the search results ranging from 1-10.
         if (!msg.member.voice.channel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing that I could **\`skip\`** for you.");
         serverQueue.connection.dispatcher.end("Skip command has been used!");
-        msg.channel.send("⏭️  **|**  Skip command has been used!");
-        return undefined;
+        return msg.channel.send("⏭️  **|**  Skip command has been used!");
 
     } else if (command === "stop") {
         if (!msg.member.voice.channel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing that I could **\`stop\`** for you.");
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end("Stop command has been used!");
-        msg.channel.send("⏹️  **|**  Stop command has been used!");
-        return undefined;
+        return msg.channel.send("⏹️  **|**  Stop command has been used!");
 
     } else if (command === "volume" || command === "vol") {
         if (!msg.member.voice.channel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play music!");
         if (!serverQueue) return msg.channel.send("There is nothing playing.");
         if (!args[1]) return msg.channel.send(`The current volume is: **\`${serverQueue.volume}%\`**`);
+        if (isNaN(args[1]) || args[1] > 100) return msg.channel.send("Volume only can be set in range **1** - **100**.");
         serverQueue.volume = args[1];
-        serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
+        serverQueue.connection.dispatcher.setVolume(args[1] / 100);
         return msg.channel.send(`I set the volume to: **\`${args[1]}%\`**`);
 
     } else if (command === "nowplaying" || command === "np") {
@@ -193,7 +192,6 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}
 	};
 	return msg.channel.send("There is nothing playing.");
     }
-    return undefined;
 });
 
 async function handleVideo(video, msg, voiceChannel, playlist = false) {
@@ -209,7 +207,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
             voiceChannel: voiceChannel,
             connection: null,
             songs: [],
-            volume: 5,
+            volume: 100,
             playing: true,
             loop: false
         };
@@ -228,11 +226,10 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
         }
     } else {
         serverQueue.songs.push(song);
-        console.log(serverQueue.songs);
-        if (playlist) return undefined;
+        if (playlist) return;
         else return msg.channel.send(`<:yes:591629527571234819>  **|** **\`${song.title}\`** has been added to the queue!`);
     }
-    return undefined;
+    return;
 }
 
 function play(guild, song) {
@@ -245,10 +242,7 @@ function play(guild, song) {
     }
 
     const dispatcher = serverQueue.connection.play(ytdl(song.url))
-        .on("finish", reason => {
-            if (reason === "Stream is not generating quickly enough.") console.log("Song ended");
-            else console.log(reason);
-
+        .on("finish", () => {
             const shiffed = serverQueue.songs.shift();
             if (serverQueue.loop === true) {
 	   	serverQueue.songs.push(shiffed); 
@@ -256,7 +250,7 @@ function play(guild, song) {
             play(guild, serverQueue.songs[0]);
         })
         .on("error", error => console.error(error));
-    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    dispatcher.setVolume(serverQueue.volume / 100);
 
     serverQueue.textChannel.send({ embed: { color: 0xcfa, description: `🎶  **|**  Start Playing: **\`${song.title}\`**` }});
 }
