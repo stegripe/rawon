@@ -48,7 +48,7 @@ __**Commands List**__
         msg.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
-        const voiceChannel = msg.member.voiceChannel;
+        const voiceChannel = msg.member.voice.channel;
         if (!voiceChannel) return msg.channel.send("I'm sorry but you need to be in a voice channel to play a music!");
         const permissions = voiceChannel.permissionsFor(msg.client.user);
         if (!permissions.has("CONNECT")) {
