@@ -28,12 +28,12 @@
     "node": "12.x"
   },
   "dependencies": {
-    "@discordjs/opus": "^0.1.0",
+    "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "simple-youtube-api": "^5.2.1",
-    "ytdl-core": "^2.1.1",
+    "ytdl-core": "^2.1.2",
     "zealcord.js": "^1.1.2"
   },
   "optionalDependencies": {
