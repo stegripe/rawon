@@ -22,7 +22,7 @@ bot.on("ready", () => console.log(`${bot.user.tag} has been successfully turned 
 bot.on("shardDisconnect", (event, id) => console.log(`Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect!`));
 bot.on("shardReconnecting", (id) => console.log(`Shard ${id} reconnecting...`));
 
-bot.on("message", async(msg) => { // eslint-disable-line
+bot.on("message", async (msg) => { // eslint-disable-line
     if (msg.author.bot) return;
     if (!msg.content.startsWith(PREFIX)) return;
 
@@ -186,11 +186,11 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}
         }
         return msg.channel.send("There is nothing playing.");
     } else if (command === "loop") {
-    	if (serverQueue) {
+        if (serverQueue) {
             serverQueue.loop = !serverQueue.loop;
             return msg.channel.send(`:repeat: **|** Loop ${serverQueue.loop === true ? "enabled" : "disabled"}!`);
-	};
-	return msg.channel.send("There is nothing playing.");
+        };
+        return msg.channel.send("There is nothing playing.");
     }
 });
 
@@ -244,14 +244,19 @@ function play(guild, song) {
         .on("finish", () => {
             const shiffed = serverQueue.songs.shift();
             if (serverQueue.loop === true) {
-	   	serverQueue.songs.push(shiffed); 
-	    };
+                serverQueue.songs.push(shiffed);
+            };
             play(guild, serverQueue.songs[0]);
         })
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send({ embed: { color: 0xcfa, description: `🎶  **|**  Start Playing: **\`${song.title}\`**` }});
+    serverQueue.textChannel.send({
+        embed: {
+            color: "RANDOM",
+            description: `🎶  **|**  Start Playing: **\`${song.title}\`**`
+        }
+    });
 }
 
 bot.login(TOKEN);
