@@ -6,7 +6,7 @@ Example of a Music Bot project modified by Zealcord, made by iCrawl
 ```
 This Bot is dedicated for open source of our community. Written in [Discord.JS](https://discord.js.org/#/) at version [11.6.4](https://discord.js.org/#/docs/main/stable/general/welcome).
 
-[![Run on Repl.it](https://repl.it/badge/github/H29id/music-bot-example)](https://repl.it/github/H29id/music-bot-example)
+[![Run on Repl.it](https://repl.it/badge/github/zealcordNation/music-bot-example)](https://repl.it/github/zealcordNation/music-bot-example)
 
 ### Required Module/Package
 ```
@@ -24,7 +24,7 @@ ytdl-core@2.1.1
 2.  Go to **[Glitch](https://glitch.com)**, click **New Project** button, then choose **`Clone from Git Repo`**.
 3.  Before doing that, We recommend you to make a Glitch account first (login) to prevent lost projects.
 4.  Then, input **`https://github.com/zealcordNation/music-bot-example.git`** at the field. Click **`OK`**.
-5.  Specify a prefix for your bot, and immediately input the token that you have obtained before, in the `.env`.
+5.  Specify a prefix for your bot, and immediately input the token that you have obtained before, in the `.env_example` file, then rename them to `.env`.
 6.  To get the YouTube API key, please open the **[tutorial video here](https://youtu.be/3jZ5vnv-LZc?t=7)**.
 7.  Change the name of the project to whatever you want (optional).
 8.  After that, go to the **Tools** > **Terminal** button, then restart your project by running the `refresh` command.
