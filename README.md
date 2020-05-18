@@ -4,18 +4,18 @@
 ```
 Example of a Music Bot project modified by Zealcord, made by iCrawl
 ```
-This Bot is dedicated for open source of our community. Written in [Discord.JS](https://discord.js.org/#/) at version [11.6.4](https://discord.js.org/#/docs/main/stable/general/welcome).
+This Bot is dedicated for open source of our community. Written in [Discord.JS](https://discord.js.org/#/) at version [12.2.0](https://discord.js.org/#/docs/main/stable/general/welcome).
 
 [![Run on Repl.it](https://repl.it/badge/github/zealcordNation/music-bot-example)](https://repl.it/github/zealcordNation/music-bot-example)
 
 ### Required Module/Package
 ```
-@discordjs/opus@0.1.0,
-discord.js@11.6.4,
+@discordjs/opus@0.3.2,
+discord.js@12.2.0,
 dotenv@8.2.0,
 express@4.17.1,
 simple-youtube-api@5.2.1,
-ytdl-core@2.1.1
+ytdl-core@2.1.2"
 ```
 
 ### Getting Started Using Glitch
