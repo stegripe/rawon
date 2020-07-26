@@ -13,6 +13,17 @@ const bot = new Client({
     disableMentions: "all"
 });
 
+if(TOKEN == "") {
+	console.log("You have to put the bot's token in file named '.env'. In glitch, it's the file with key logo.")
+        return;
+}; //to prevent the bot logging in if the bot's token is null or not inside .env file
+if(PREFIX == "") {
+	console.log("We recommend you giving your bot a prefix. Doing so may prevent bot appearing when chatting. You may put it in a file named '.env'. In glitch, it's the file with the key logo.")
+}; //to remind you if your bot's prefix is not yet put in the .env file
+if(GOOGLE_API_KEY == "") {
+	console.log("You have to put a Google API Key in file named '.env`. In glitch, it's the file with key logo.")
+	return;
+}; //to prevent the bot logging in if the google api key is null or not inside .env file
 const youtube = new YouTube(GOOGLE_API_KEY);
 const queue = new Map();
 
