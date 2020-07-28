@@ -39,7 +39,9 @@ _If you have made any changes to the code, don't forget to restart the bot by ty
 ## Author
 
 **Discord.js Music Bot** © [iCrawl](https://github.com/iCrawl). 
+
 Released under the **[AGPL-3.0](https://github.com/zhycorp/music-bot-example/blob/master/LICENSE)** licenses
+
 Authored, maintained by iCrawl. And modified by Zhycorp.
 
 > GitHub [@Zhycorp](https://github.com/zhycorp)
