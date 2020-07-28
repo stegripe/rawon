@@ -35,6 +35,6 @@
     "ytdl-core": "^2.1.5"
   },
   "optionalDependencies": {
-    "@discordjs/uws": "^10.149.0"
+    "@discordjs/uws": "^11.149.1"
   }
 }
