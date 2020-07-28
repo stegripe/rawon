@@ -7,14 +7,16 @@ This open sourced project is a dedicated example tutorial for our community's co
 ## Features
 * Full playback control
 * Simple queue system
-* Dedicated with [discordjs.guide](https://discordjs.guide/) as the command handler, easy to learn and use!
+* We're here to help
 
 ## Required modules
 ```
-discord.js@12.2.0
-@discordjs/opus@0.3.2
-dotenv@8.2.0
-ytdl-core@3.0.0
+@discordjs/opus": "^0.3.2",
+"discord.js": "^12.2.0",
+"dotenv": "^8.2.0",
+"express": "^4.17.1",
+"simple-youtube-api": "^5.2.1",
+"ytdl-core": "^3.1.3"
 ```
 
 ## Getting stared with Glitch
@@ -38,7 +40,7 @@ _If you have made any changes to the code, don't forget to restart the bot by ty
 
 ## Author
 
-**Discord.js Music Bot** © [iCrawl](https://github.com/iCrawl). 
+**Discord.js Music Bot** © [iCrawl](https://github.com/iCrawl)
 
 Released under the **[AGPL-3.0](https://github.com/zhycorp/music-bot-example/blob/master/LICENSE)** licenses
 
