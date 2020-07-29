@@ -15,8 +15,10 @@ This open sourced project is a dedicated example tutorial for our community's co
 "discord.js": "^12.2.0",
 "dotenv": "^8.2.0",
 "express": "^4.17.1",
+"node-opus": "^0.3.3",
+"opusscript": "0.0.7",
 "simple-youtube-api": "^5.2.1",
-"ytdl-core": "^3.1.3"
+"ytdl-core": "^3.2.0"
 ```
 
 ## Getting stared with Glitch
