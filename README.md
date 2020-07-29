@@ -2,7 +2,7 @@
 
 > A dedicated music bot example project for Zhycorp Development made by iCrawl
 
-This open sourced project is a dedicated example tutorial for our community's content, feel free to use and modify as good as you like. Written with [discord.js](https://discord.js.org/#/) and [v12 (stable)](https://discordjs.guide/additional-info/changes-in-v12.html) as the version
+This open sourced project is a dedicated example tutorial for our community's content, feel free to use and modify as good as you like. Written with [discord.js](https://discord.js.org/#/) and [v12 (stable)](https://discordjs.guide/additional-info/changes-in-v12.html) as the version.
 
 ## Features
 * Full playback control
@@ -11,7 +11,7 @@ This open sourced project is a dedicated example tutorial for our community's co
 
 ## Required modules
 ```
-@discordjs/opus": "^0.3.2",
+"@discordjs/opus": "^0.3.2",
 "discord.js": "^12.2.0",
 "dotenv": "^8.2.0",
 "express": "^4.17.1",
@@ -40,11 +40,10 @@ _If you have made any changes to the code, don't forget to restart the bot by ty
 
 ## Author
 
-**Discord.js Music Bot** © [iCrawl](https://github.com/iCrawl)
-
-Released under the **[AGPL-3.0](https://github.com/zhycorp/music-bot-example/blob/master/LICENSE)** licenses
-
-Authored, maintained by iCrawl. And modified by Zhycorp.
+1.  **Discord.js Music Bot** © [iCrawl](https://github.com/iCrawl)
+2.  Released under the **[AGPL-3.0](https://github.com/zhycorp/music-bot-example/blob/master/LICENSE)** licenses
+3.  Authored, maintained by iCrawl. And modified by Zhycorp.
 
 > GitHub [@Zhycorp](https://github.com/zhycorp)
+> 
 > YouTube [Zhycorp](https://youtube.com/c/Zhycorp)
