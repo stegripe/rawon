@@ -30,7 +30,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
 
-    if (command === "help" || command == "cmd") {
+    if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor(bot.user.tag, bot.user.displayAvatarURL())
@@ -60,7 +60,7 @@ __**Command list**__
                 const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
                 await handleVideo(video2, message, voiceChannel, true); // eslint-disable-line no-await-in-loop
             }
-            return message.channel.send(`<:yes:591629527571234819>  **|**  Playlist: **\`${playlist.title}\`** has been added to the queue`);
+            return message.channel.send(`✅  **|**  Playlist: **\`${playlist.title}\`** has been added to the queue`);
         } else {
             try {
                 var video = await youtube.getVideo(url);
@@ -94,7 +94,7 @@ __**Command list**__
                 const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
                 await handleVideo(video2, message, voiceChannel, true); // eslint-disable-line no-await-in-loop
             }
-            return message.channel.send(`<:yes:591629527571234819>  **|**  Playlist: **\`${playlist.title}\`** has been added to the queue`);
+            return message.channel.send(`✅  **|**  Playlist: **\`${playlist.title}\`** has been added to the queue`);
         } else {
             try {
                 var video = await youtube.getVideo(url);
@@ -223,7 +223,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     } else {
         serverQueue.songs.push(song);
         if (playlist) return;
-        else return message.channel.send(`<:yes:591629527571234819>  **|**  **\`${song.title}\`** has been added to the queue`);
+        else return message.channel.send(`✅  **|**  **\`${song.title}\`** has been added to the queue`);
     }
     return;
 }
