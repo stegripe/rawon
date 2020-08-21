@@ -34,7 +34,7 @@
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
     "simple-youtube-api": "^5.2.1",
-    "ytdl-core": "^3.2.1"
+    "ytdl-core": "^3.2.2"
   },
   "optionalDependencies": {
     "@discordjs/uws": "^11.149.1"
