@@ -27,7 +27,7 @@ This open sourced project is a dedicated example tutorial for our community's co
 2.  Go to **[Glitch.com](https://glitch.com)**, click **New Project**, then choose **`Clone from Git Repo`** button (we recommend you to make a Glitch account before doing this)
 3.  Fill the pop-up column with **`https://github.com/zhycorp/music-bot-example.git`** at the field, then click **`OK`**
 4.  Change the project's name to whatever you want (optional)
-5.  Rename the **`.env_example`** to **`.env`** instead, then specify the Prefix, Bot Token, and the YouTube API v3 Key (watch [this video](https://youtu.be/-5ptk-Klfcw?t=69) for the tutorial of getting the youtube key). Don't forget with the **`PROJECT_DOMAIN`**'s value, match this value with the name of your Glitch bot project
+5.  Rename the **`.env_example`** to **`.env`** instead, then specify the Prefix, Bot Token, and the YouTube API v3 Key (watch [this video](https://youtu.be/-5ptk-Klfcw?t=69) for the tutorial of getting the youtube key).
 6.  And your Discord music bot should be ready to use!
 
 _If you have made any changes to the code, don't forget to restart the bot by typing **`refresh`** at the **`Tools > Terminal`** button._
