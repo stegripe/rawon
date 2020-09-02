@@ -53,7 +53,7 @@ __**Command list**__
         if (!permissions.has("SPEAK")) {
             return message.channel.send({embed: {color: "RED", description: "Sorry, but I need a **`SPEAK`** permission to proceed!"}});
         }
-        if (!url || !searchString) return message.channel.send("Please input link/title to play music");
+        if (!url || !searchString) return message.channel.send({embed: {color: "RED", description: "Please input link/title to play music"}});
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url);
             const videos = await playlist.getVideos();
@@ -91,7 +91,7 @@ __**Command list**__
         if (!permissions.has("SPEAK")) {
             return message.channel.send({embed: {color: "RED", description: "Sorry, but I need a **`SPEAK`** permission to proceed!"}});
         }
-        if (!url || !searchString) return message.channel.send("Please input link/title to search music");
+        if (!url || !searchString) return message.channel.send({embed: {color: "RED", description: "Please input link/title to search music"}});
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url);
             const videos = await playlist.getVideos();
