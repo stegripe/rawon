@@ -32,6 +32,8 @@ This open sourced project is a dedicated example tutorial for our community's co
 
 _If you have made any changes to the code, don't forget to restart the bot by typing **`refresh`** at the **`Tools > Terminal`** button._
 
+**[Video Tutorial](https://www.youtube.com/watch?v=6CSeovx0nvc)** (For people who usually do watching more than reading)
+
 ## Contributing
 
 1.  Fork it!
