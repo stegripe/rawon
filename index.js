@@ -170,14 +170,52 @@ __**Command list**__
         return message.channel.send({embed: {color: "BLUE", description: `🎶  **|**  Now Playing: **\`${serverQueue.songs[0].title}\`**`}});
 
     } else if (command === "queue" || command === "q") {
+        
+        let number = message.guild.musicData.queue.map(
+            (x, i) => `${i + 1} - ${x.title}\nRquested By: **${x.author.tag}**`
+        );
+        number = chunk(number, 5);
+
+        let index = 0;
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
         let embedQueue = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Song queue", message.author.displayAvatarURL())
             .setDescription(`${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}`)
             .setFooter(`• Now Playing: ${serverQueue.songs[0].title}`);
-        return message.channel.send(embedQueue);
+        const m = await message.util.send(embedQueue);
 
+        if (number.length !== 1) {
+        await m.react("⬅");
+        await m.react("🛑");
+        await m.react("➡");
+        async function awaitReaction() {
+            const filter = (rect, usr) =>
+            ["⬅", "🛑", "➡"].includes(rect.emoji.name) &&
+                  usr.id === message.author.id;
+            const response = await m.awaitReactions(filter, {
+                max: 1,
+                time: 30000
+            });
+            if (!response.size) {
+                return undefined;
+            }
+            const emoji = response.first().emoji.name;
+            if (emoji === "⬅") index--;
+            if (emoji === "🛑") m.delete();
+            if (emoji === "➡") index++;
+
+            if (emoji !== "🛑") {
+                index = ((index % number.length) + number.length) % number.length;
+                embedQueue.setDescription(number[index].join("\n"));
+                embedQueue.setFooter(`Page ${index + 1} of ${number.length}`);
+                await m.edit(embedQueue);
+                return awaitReaction();
+            }
+        }
+            return awaitReaction();
+        }
+    
     } else if (command === "pause") {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
@@ -236,6 +274,15 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         if (playlist) return;
         else return message.channel.send({embed: {color: "GREEN", description: `✅  **|**  **\`${song.title}\`** has been added to the queue`}});
     }
+    return;
+}
+
+function chunk(array, chunkSize) {
+    const temp = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        temp.push(array.slice(i, i + chunkSize));
+    }
+    return temp;
     return;
 }
 
