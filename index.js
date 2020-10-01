@@ -267,3 +267,15 @@ function play(guild, song) {
 }
 
 bot.login(process.env.BOT_TOKEN);
+
+process.on('unhandledRejection', (reason, promise) => {
+    try {
+        console.error("Unhandled Rejection at: ", promise, "reason: ", reason.stack || reason);
+    } catch {
+        console.error(reason);
+    }
+});
+
+process.on('uncaughtException', err => {
+    console.error(`Caught exception: ${err}`);
+});
