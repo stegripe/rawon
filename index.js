@@ -325,4 +325,5 @@ process.on('unhandledRejection', (reason, promise) => {
 
 process.on('uncaughtException', err => {
     console.error(`Caught exception: ${err}`);
+    process.exit(1);
 });
