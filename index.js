@@ -183,7 +183,7 @@ __**Command list**__
             .setAuthor("Song queue", message.author.displayAvatarURL())
             .setDescription(`${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}`)
             .setFooter(`• Now Playing: ${serverQueue.songs[0].title}`);
-        const m = await message.util.send(embedQueue);
+        const m = await message.channel.send(embedQueue);
 
         if (number.length !== 1) {
         await m.react("⬅");
