@@ -46,8 +46,4 @@ _If you have made any changes to the code, don't forget to restart the bot by ty
 
 1.  **Discord.js Music Bot** © [iCrawl](https://github.com/iCrawl)
 2.  Authored, maintained by iCrawl. And modified by Zhycorp
-3.  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
-
-> GitHub [@Zhycorp](https://github.com/zhycorp)
-> 
-> YouTube [Zhycorp](https://youtube.com/c/Zhycorp)
+3.  This work is licensed under a <a rel="license" href="https://github.com/zhycorp/music-bot-example/blob/master/LICENSE">GNU Affero General Public License</a>.
