@@ -297,8 +297,10 @@ __**Command list**__
 
     } else if (command === "queue" || command === "q") {
 
-        let number = message.guild.musicData.queue.map(
-            (x, i) => `${i + 1} - ${x.title}\nRquested By: **${x.author.tag}**`
+        let songsss = serverQueue.songs.slice(1)
+        
+        let number = songsss.map(
+            (x, i) => `${i + 1} - ${x.title}`
         );
         number = chunk(number, 5);
 
@@ -312,8 +314,8 @@ __**Command list**__
         let embedQueue = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Song queue", message.author.displayAvatarURL())
-            .setDescription(`${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}`)
-            .setFooter(`• Now Playing: ${serverQueue.songs[0].title}`);
+            .setDescription(number[index].join("\n"))
+            .setFooter(`• Now Playing: ${serverQueue.songs[0].title} | Page ${index + 1} of ${number.length}`);
         const m = await message.channel.send(embedQueue);
 
         if (number.length !== 1) {
