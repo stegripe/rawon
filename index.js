@@ -35,7 +35,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setColor("BLUE")
             .setAuthor(bot.user.tag, bot.user.displayAvatarURL())
             .setDescription(`
-__**Command list**__
+__**Command List**__
 > \`play\` > **\`play [title/url]\`**
 > \`search\` > **\`search [title]\`**
 > \`skip\`, \`stop\`,  \`pause\`, \`resume\`
