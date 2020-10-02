@@ -23,7 +23,7 @@ This open sourced project is a dedicated example tutorial for our community's co
 
 ## Getting started with Glitch
 
-1.  Create your bot account at **[Discord Developer Portal](https://discordapp.com/developers)**, get the token, and invite him to your server
+1.  Create your bot account at **[Discord Developer Portal](https://discord.com/developers)**, get the token, and invite him to your server
 2.  Go to **[Glitch.com](https://glitch.com)**, click **New Project**, then choose **`Clone from Git Repo`** button (we recommend you to make a Glitch account before doing this)
 3.  Fill the pop-up column with **`https://github.com/zhycorp/music-bot-example.git`** at the field, then click **`OK`**
 4.  Change the project's name to whatever you want (optional)
@@ -32,7 +32,7 @@ This open sourced project is a dedicated example tutorial for our community's co
 
 _If you have made any changes to the code, don't forget to restart the bot by typing **`refresh`** at the **`Tools > Terminal`** button._
 
-**[Video Tutorial](https://www.youtube.com/watch?v=6CSeovx0nvc)** (For people who usually do watching more than reading)
+**[Tutorial Video](https://www.youtube.com/watch?v=6CSeovx0nvc)** (For people who usually do watching more than reading)
 
 ## Contributing
 
