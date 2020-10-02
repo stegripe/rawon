@@ -21,7 +21,7 @@ This open sourced project is a dedicated example tutorial for our community's co
 "ytdl-core": "^3.2.0"
 ```
 
-## Getting stared with Glitch
+## Getting started with Glitch
 
 1.  Create your bot account at **[Discord Developer Portal](https://discordapp.com/developers)**, get the token, and invite him to your server
 2.  Go to **[Glitch.com](https://glitch.com)**, click **New Project**, then choose **`Clone from Git Repo`** button (we recommend you to make a Glitch account before doing this)
@@ -30,7 +30,9 @@ This open sourced project is a dedicated example tutorial for our community's co
 5.  Rename the **`.env_example`** to **`.env`** instead, then specify the Prefix, Bot Token, and the YouTube API v3 Key (watch [this video](https://youtu.be/-5ptk-Klfcw?t=69) for the tutorial of getting the youtube key). Don't forget with the **`PROJECT_DOMAIN`**'s value, match this value with the name of your Glitch bot project
 6.  And your Discord music bot should be ready to use!
 
-_If you have made any changes to the code, don't forget to restart the bot by typing **`refresh`** at the **`Tools > Console`** button._
+_If you have made any changes to the code, don't forget to restart the bot by typing **`refresh`** at the **`Tools > Terminal`** button._
+
+**[Video Tutorial](https://www.youtube.com/watch?v=6CSeovx0nvc)** (For people who usually do watching more than reading)
 
 ## Contributing
 
