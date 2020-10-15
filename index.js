@@ -18,6 +18,15 @@ bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
+// prevent force disconnect afected to guild queue
+client.on("voiceStateUpdate", (mold, mnew) => {
+	if( !mold.channelID) return;
+	if( !mnew.channelID && client.user.id == mold.id ) {
+		 const serverQueue = queue.get(mold.guild.id);
+		 if(serverQueue)  queue.delete(mold.guild.id);
+	} ;
+})
+
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
