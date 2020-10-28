@@ -15,6 +15,9 @@
         "CONFIG_PREFIX": {
             "description": "Prefix for your bot"
         },
+        "CONFIG_COLORS": {
+            "description": "The embed color for your bot"
+        },
         "CONFIG_OWNERS": {
             "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)"
         },
