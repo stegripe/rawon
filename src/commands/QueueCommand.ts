@@ -5,7 +5,7 @@ import type Disc_11 from "../structures/Disc_11";
 
 export default class QueueCommand extends BaseCommand {
     public constructor(public client: Disc_11, public readonly path: string) {
-        super(client, path, { 
+        super(client, path, {
             aliases: ["q"]
         }, {
             name: "queue",

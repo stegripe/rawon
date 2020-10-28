@@ -23,17 +23,14 @@ export default class PlayCommand extends BaseCommand {
         const voiceChannel = message.member?.voice.channel;
         if (!voiceChannel) return message.channel.send(new MessageEmbed().setDescription("Sorry, but you need to be in a voice channel to play a music").setColor("RED"));
         if (!voiceChannel.joinable) {
-            return message.channel.send(new MessageEmbed().setDescription("Sorry, but I can't **\`CONNECT\`** to your voice channel, make sure I have the proper permissions").setColor("RED")
-            );
+            return message.channel.send(new MessageEmbed().setDescription("Sorry, but I can't **\`CONNECT\`** to your voice channel, make sure I have the proper permissions").setColor("RED"));
         }
         if (!voiceChannel.speakable) {
             voiceChannel.leave();
-            return message.channel.send(new MessageEmbed().setDescription("Sorry, but I can't **\`SPEAK\`** on this voice channel, make sure I have the proper permissions").setColor("RED")
-            );
+            return message.channel.send(new MessageEmbed().setDescription("Sorry, but I can't **\`SPEAK\`** on this voice channel, make sure I have the proper permissions").setColor("RED"));
         }
         if (!args[0]) {
-            return message.channel.send(new MessageEmbed().setDescription(`Invalid arguments, type **\`${this.client.config.prefix}help play\`** for more info`).setColor("YELLOW")
-            );
+            return message.channel.send(new MessageEmbed().setDescription(`Invalid arguments, type **\`${this.client.config.prefix}help play\`** for more info`).setColor("YELLOW"));
         }
         const searchString = args.join(" ");
         const url = searchString.replace(/<(.+)>/g, "$1");
