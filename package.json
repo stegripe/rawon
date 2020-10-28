@@ -24,6 +24,11 @@
   },
   "eslintConfig": {
     "extends": "@hazmi35/eslint-config/typescript",
+    "rules": {
+      "camelcase": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "typescript-eslint/naming-convention": "off"
+    },
     "ignorePatterns": "dist/*"
   },
   "dependencies": {
