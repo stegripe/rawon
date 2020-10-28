@@ -8,6 +8,7 @@
         <a href="https://discord.gg/DxenCeV"><img src="https://img.shields.io/discord/332877090003091456?color=7289da&logo=discord&logoColor=white" alt="Discord server" /></a>
         <a href="https://github.com/zhycorp/music-bot-example/actions?query=workflow%3A%22Node.js+CI%22"><img src="https://github.com/zhycorp/music-bot-example/workflows/Node.js%20CI/badge.svg" alt="Node.JS CI Status" /></a>
         <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">
+        <img src ="https://badgen.net/badge/dijual/haram/red">
     </p>
 </div>
 
