@@ -1,9 +1,8 @@
 FROM node:14-alpine as build-stage
 
-LABEL name "Disc 11 (build stage)"
+LABEL name "Disc 11"
 LABEL maintainer "Zhycorp <support@zhycorp.xyz>"
 
-LABEL original-name "Jukebox (build stage)"
 LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
 
 WORKDIR /tmp/build
@@ -35,7 +34,6 @@ WORKDIR /app
 LABEL name "Disc 11 (build stage)"
 LABEL maintainer "Zhycorp <support@zhycorp.xyz>"
 
-LABEL original-name "Jukebox (build stage)"
 LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
 
 # Copy needed files
