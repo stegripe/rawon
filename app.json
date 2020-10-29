@@ -1,13 +1,13 @@
 {
-    "name": "Jukebox",
-    "description": "Just a simple Discord music bot.",
-    "logo": "https://raw.githubusercontent.com/Hazmi35/jukebox/stable/.github/images/jukebox.png",
+    "name": "Disc 11",
+    "description": "A dedicated open-source music bot for Zhycorp based on Jukebox.",
+    "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/master/.github/images/disc_11.png",
     "env": {
         "DISCORD_TOKEN": {
             "description": "Your Discord bot's token"
         },
         "YT_API_KEY": {
-            "description": "Youtube API Key for querying the Youtube API for video data."
+            "description": "YouTube API Key for querying the YouTube API for video data"
         },
         "CONFIG_NAME": {
             "description": "Your bot's name"
@@ -28,7 +28,7 @@
             "description": "Default volume for music (default: 50)"
         },
         "CONFIG_ALLOW_DUPLICATE": {
-            "description": "Whether to to all allow users to add duplicate of songs (yes or no) (default: no)"
+            "description": "Whether to allow users to add duplicate of songs (yes or no) (default: no)"
         },
         "CONFIG_DELETE_QUEUE_TIMEOUT": {
             "description": "Timeout in seconds before queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)"
@@ -43,6 +43,6 @@
             "description": "Whether to disable invite command or not (default: no)"
         }
     },
-    "repository": "https://github.com/Hazmi35/jukebox",
+    "repository": "https://github.com/zhycorp/disc-11",
     "buildpacks": [{ "url": "heroku/nodejs" }]
 }
