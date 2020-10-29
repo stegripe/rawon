@@ -2,14 +2,14 @@ import { promises as fs } from "fs";
 import { resolve } from "path";
 import type { Message, Snowflake } from "discord.js";
 import { Collection } from "discord.js";
-import type Jukebox from "../structures/Jukebox";
+import type Disc_11 from "../structures/Disc_11";
 import type { CommandComponent } from "../../typings";
 
 export default class CommandsHandler {
     public readonly commands: Collection<string, CommandComponent> = new Collection();
     public readonly aliases: Collection<string, string> = new Collection();
     public readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
-    public constructor(public client: Jukebox, public readonly path: string) {}
+    public constructor(public client: Disc_11, public readonly path: string) {}
     public load(): void {
         fs.readdir(resolve(this.path))
             .then(async files => {
@@ -45,7 +45,7 @@ export default class CommandsHandler {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send(`**${message.author.username}**, please wait **${timeLeft.toFixed(1)}** cooldown time.`).then((msg: Message) => {
+                message.channel.send(`<@${message.author.id}>, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time.`).then((msg: Message) => {
                     msg.delete({ timeout: 3500 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 return undefined;
