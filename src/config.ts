@@ -12,4 +12,4 @@ export const cacheYoutubeDownloads: boolean = process.env.CONFIG_CACHE_YOUTUBE_D
 export const cacheMaxLengthAllowed = Number(process.env.CONFIG_CACHE_MAX_LENGTH) || 5400;
 export const disableInviteCmd = process.env.CONFIG_DISABLE_INVITE_CMD === "yes" || false;
 
-export default { allowDuplicate, cacheMaxLengthAllowed, cacheYoutubeDownloads, defaultVolume, deleteQueueTimeout, disableInviteCmd, maxVolume, embedColor, name, owners, prefix, totalShards };
+export default { allowDuplicate, cacheMaxLengthAllowed, cacheYoutubeDownloads, defaultVolume, deleteQueueTimeout, disableInviteCmd, embedColor, maxVolume, name, owners, prefix, totalShards };

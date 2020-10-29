@@ -1,38 +1,38 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import type { IMessage } from "../../typings";
-import type Jukebox from "../structures/Disc_11";
+import type Disc_11 from "../structures/Disc_11";
 
 export default class RepeatCommand extends BaseCommand {
-    public constructor(public client: Jukebox, public readonly path: string) {
+    public constructor(public client: Disc_11, public readonly path: string) {
         super(client, path, {
-            aliases: ["loop", "music-loop", "music-repeat"]
+            aliases: ["loop", "music-repeat", "music-loop"]
         }, {
             name: "repeat",
-            description: "Repeat current song or queue",
+            description: "Repeat the current track or queue",
             usage: "{prefix}repeat <all | one | disable>"
         });
     }
 
     public execute(message: IMessage, args: string[]): any {
         const mode = args[0];
-        if (!message.member?.voice.channel) return message.channel.send(new MessageEmbed().setDescription("You're not in a voice channel").setColor("#FFFF00"));
-        if (!message.guild?.queue) return message.channel.send(new MessageEmbed().setDescription("There is nothing playing.").setColor("#FFFF00"));
+        if (!message.member?.voice.channel) return message.channel.send(new MessageEmbed().setDescription("You're not in a voice channel").setColor("YELLOW"));
+        if (!message.guild?.queue) return message.channel.send(new MessageEmbed().setDescription("There is nothing playing.").setColor("YELLOW"));
         if (message.member.voice.channel.id !== message.guild.queue.voiceChannel?.id) {
             return message.channel.send(
-                new MessageEmbed().setDescription("You need to be in the same voice channel as mine").setColor("#FF0000")
+                new MessageEmbed().setDescription("You need to be in the same voice channel as mine").setColor("RED")
             );
         }
         if (mode === "all" || mode === "queue" || mode === "*" || mode === "2") {
             message.guild.queue.loopMode = 2;
-            return message.channel.send(new MessageEmbed().setDescription("🔁 Repeating all music in the queue.").setColor("#00FF00"));
+            return message.channel.send(new MessageEmbed().setDescription("🔁  **|**  Repeating all music in the queue").setColor(this.client.config.embedColor));
         } else if (mode === "current" || mode === "one" || mode === "musiconly" || mode === "1") {
             message.guild.queue.loopMode = 1;
-            return message.channel.send(new MessageEmbed().setDescription("🔂 Repeating only this music.").setColor("#00FF00"));
+            return message.channel.send(new MessageEmbed().setDescription("🔂  **|**  Repeating this music only").setColor(this.client.config.embedColor));
         } else if (mode === "disable" || mode === "off" || mode === "0") {
             message.guild.queue.loopMode = 0;
-            return message.channel.send(new MessageEmbed().setDescription("▶ Repeating disabled.").setColor("#00FF00"));
+            return message.channel.send(new MessageEmbed().setDescription("▶  **|**  Repeating disabled.").setColor(this.client.config.embedColor));
         }
-        message.channel.send(`Invalid value, see \`${this.client.config.prefix}help ${this.help.name}\` for more info!`).catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
+        message.channel.send(`Invalid value, see **\`${this.client.config.prefix}help ${this.help.name}\`** for more information!`).catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
     }
 }

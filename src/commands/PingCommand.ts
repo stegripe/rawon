@@ -1,33 +1,33 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import type { IMessage } from "../../typings";
-import type Jukebox from "../structures/Disc_11";
+import type Disc_11 from "../structures/Disc_11";
 
 export default class PingCommand extends BaseCommand {
-    public constructor(client: Jukebox, public readonly path: string) {
+    public constructor(client: Disc_11, public readonly path: string) {
         super(client, path, {
-            aliases: ["pong", "peng", "pingpong"]
+            aliases: ["pingpong", "pong", "pang", "pung", "peng", "pong"]
         }, {
             name: "ping",
-            description: "Shows the current ping of the bot.",
+            description: "Shows the current ping of the bot",
             usage: "{prefix}ping"
         });
     }
 
     public execute(message: IMessage): IMessage {
         const before = Date.now();
-        message.channel.send("🏓 Pong!").then((msg: IMessage | any) => {
+        message.channel.send("*🏓 Pinging...*").then((msg: IMessage | any) => {
             const latency = Date.now() - before;
             const wsLatency = this.client.ws.ping.toFixed(0);
             const embed = new MessageEmbed()
-                .setAuthor("🏓 PONG!", message.client.user?.displayAvatarURL())
+                .setAuthor("**🏓 PONG!**", message.client.user?.displayAvatarURL())
                 .setColor(this.searchHex(wsLatency))
                 .addFields({
-                    name: "📶 API Latency",
+                    name: "API Latency",
                     value: `**\`${latency}\`** ms`,
                     inline: true
                 }, {
-                    name: "🌐 WebSocket Latency",
+                    name: "WebSocket Latency",
                     value: `**\`${wsLatency}\`** ms`,
                     inline: true
                 })
