@@ -83,12 +83,12 @@ $ docker-compose up
 ```
 
 ## Features
-- A production-ready music bot, suitable for you that dislike hassling with the code.
+- A production-ready music bot, suitable for you that don't like to hassling with the code.
 - Basic Commands (Help, Ping, Invite & Eval [for advanced bot owners])
 - Basic Music Commands (Play, Skip, Stop, Pause & Resume, Now Playing, Queue, Repeat, Volume)
 - Caching (cache youtube downloads)
-- Configurable
-- Docker-friendly
+- Configurable (easy to use)
+- Docker-friendly (if you're advanced user)
 - Lightweight (only around 150MB)
 
 Based on [discord-music-bot](https://github.com/iCrawl/discord-music-bot) and reworked from [jukebox](https://github.com/Hazmi35/jukebox)
