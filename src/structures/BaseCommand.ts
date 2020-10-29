@@ -1,11 +1,11 @@
 import { resolve } from "path";
-import type Jukebox from "./Disc_11";
+import type Disc_11 from "./Disc_11";
 import type { CommandComponent } from "../../typings";
 import type { Message } from "discord.js";
 export default class BaseCommand implements CommandComponent {
     public conf: CommandComponent["conf"];
     public help: CommandComponent["help"];
-    public constructor(public client: Jukebox, public readonly path: string, conf: CommandComponent["conf"], help: CommandComponent["help"]) {
+    public constructor(public client: Disc_11, public readonly path: string, conf: CommandComponent["conf"], help: CommandComponent["help"]) {
         this.conf = {
             aliases: [],
             cooldown: 3,

@@ -2,11 +2,11 @@ import type { Snowflake, TextChannel, Collection, GuildMember } from "discord.js
 import { MessageEmbed } from "discord.js";
 import { formatMS } from "../utils/formatMS";
 import type { ClientEventListener, IVoiceState } from "../../typings";
-import type Jukebox from "../structures/Disc_11";
+import type Disc_11 from "../structures/Disc_11";
 
 export default class VoiceStateUpdateEvent implements ClientEventListener {
     public readonly name = "voiceStateUpdate";
-    public constructor(private readonly client: Jukebox) {}
+    public constructor(private readonly client: Disc_11) {}
 
     public execute(oldState: IVoiceState, newState: IVoiceState): any {
         if (newState.guild.queue) {
@@ -17,8 +17,8 @@ export default class VoiceStateUpdateEvent implements ClientEventListener {
             // Handle when bot gets kicked from the voice channel
             if (oldState.id === this.client.user?.id && oldID === newState.guild.queue.voiceChannel?.id && newID === undefined) {
                 try {
-                    this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, queue deleted.`);
-                    newState.guild.queue.textChannel?.send(new MessageEmbed().setDescription("I'm disconnected from the voice channel, the queue will be deleted").setColor("#FFFF00"))
+                    this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from a voice channel at ${newState.guild.name}, queue deleted.`);
+                    newState.guild.queue.textChannel?.send(new MessageEmbed().setDescription("I'm just disconnected from the voice channel, the queue will be deleted.").setColor("YELLOW"))
                         .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
                     return newState.guild.queue = null;
                 } catch (e) {
@@ -53,17 +53,17 @@ export default class VoiceStateUpdateEvent implements ClientEventListener {
                 newState.guild.queue?.connection?.dispatcher.pause();
                 const timeout = this.client.config.deleteQueueTimeout;
                 const duration = formatMS(timeout);
-                newState.guild.queue?.textChannel?.send(new MessageEmbed().setTitle("⏸ Queue paused.").setColor("#FFFF00")
-                    .setDescription("Currently, no one is in my voice channel, to save resources, the queue was paused. " +
-                    `If there's no one who joins my voice channel in the next ${duration}, the queue will be deleted.`))
+                newState.guild.queue?.textChannel?.send(new MessageEmbed().setTitle("⏸ Queue paused").setColor("YELLOW")
+                    .setDescription("The voice channel is empty. To save resources, the queue was paused. " +
+                    `If there's no one who joins my voice channel in the next **\`${duration}\`**, the queue will be deleted.`))
                     .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
                 return newState.guild.queue!.timeout = setTimeout(() => {
                     newState.guild.queue?.connection?.dispatcher.once("speaking", () => {
                         newState.guild.queue?.songs.clear();
                         const textChannel = this.client.channels.resolve(newState.guild.queue?.textChannel?.id as Snowflake) as TextChannel;
                         newState.guild.queue?.connection?.dispatcher.end(() => {
-                            textChannel.send(new MessageEmbed().setTitle("⏹ Queue deleted.").setColor("#FF0000")
-                                .setDescription(`${duration} have passed and there is no one who joins my voice channel, the queue was deleted.`))
+                            textChannel.send(new MessageEmbed().setTitle("⏹ Queue deleted").setColor("RED")
+                                .setDescription(`**\`${duration}\`** have passed and there is no one who joins my voice channel, the queue was deleted.`))
                                 .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
                         });
                     });
@@ -80,8 +80,8 @@ export default class VoiceStateUpdateEvent implements ClientEventListener {
             if (!newState.guild.queue?.playing && Number(vc?.size) < 2) {
                 try {
                     const song = newState.guild.queue?.songs.first();
-                    newState.guild.queue?.textChannel?.send(new MessageEmbed().setTitle("▶ Queue resumed").setColor("#00FF00")
-                        .setDescription(`Someones joins the voice channel. Enjoy the music 🎶\nNow Playing: **[${song!.title}](${song!.url})**`))
+                    newState.guild.queue?.textChannel?.send(new MessageEmbed().setTitle("▶ Queue resumed").setColor(this.client.config.embedColor)
+                        .setDescription(`Someones joins the voice channel. Enjoy the queued music! 🎶\nNow Playing: **[${song!.title}](${song!.url})**`))
                         .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
                     newState.guild.queue!.playing = true;
                     newState.guild.queue?.connection?.dispatcher.resume();
