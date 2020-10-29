@@ -21,11 +21,11 @@ const shards = new ShardingManager(resolve(__dirname, "bot.js"), { totalShards: 
 
 shards.on("shardCreate", shard => {
     shardsSpawned++;
-    log.info(`[ShardManager] Shard #${shard.id} spawned.`);
+    log.info(`[ShardManager] Shard #${shard.id} Spawned.`);
     shard.on("disconnect", () => {
-        log.warn("SHARD_DISCONNECTED: ", { stack: `[ShardManager] Shard #${shard.id} disconnected.` });
+        log.warn("SHARD_DISCONNECTED: ", { stack: `[ShardManager] Shard #${shard.id} Disconnected` });
     }).on("reconnecting", () => {
-        log.info(`[ShardManager] Shard #${shard.id} reconnected.`);
+        log.info(`[ShardManager] Shard #${shard.id} Reconnected.`);
     });
     if (shardsSpawned === shards.totalShards) log.info("[ShardManager] All shards spawned successfully.");
 }).spawn(shardCount).catch(e => log.error("SHARD_SPAWN_ERR: ", e));

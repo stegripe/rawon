@@ -3,45 +3,45 @@ import { MessageEmbed, version } from "discord.js";
 import { uptime as osUptime } from "os";
 import path from "path";
 import { formatMS } from "../utils/formatMS";
-import type Disc_11 from "../structures/Disc_11";
+import type Jukebox from "../structures/Jukebox";
 import type { IMessage } from "../../typings";
 
 export default class AboutCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public readonly path: string) {
+    public constructor(public client: Jukebox, public readonly path: string) {
         super(client, path, { aliases: ["botinfo", "info", "stats"] }, {
             name: "about",
-            description: "Send the bot's info.",
+            description: "Send the bot's info",
             usage: "{prefix}about"
         });
     }
 
     public async execute(message: IMessage): Promise<void> {
         message.channel.send(new MessageEmbed()
-            .setAuthor(`${this.client.user!.username} - A simple Discord music bot by Zhycorp`)
+            .setAuthor(`${this.client.user?.username as string} - Just a simple Discord music bot.`)
             .setDescription(`
 \`\`\`asciidoc
 Users count         :: ${await this.client.getUsersCount()}
 Channels count      :: ${await this.client.getChannelsCount()}
-Servers count       :: ${await this.client.getGuildsCount()}
+Guilds count        :: ${await this.client.getGuildsCount()}
 Shards count        :: ${this.client.shard ? `${this.client.shard.count}` : "N/A"}
 Shard ID            :: ${this.client.shard ? `${this.client.shard.ids[0]}` : "N/A"}
-Playing music on    :: ${await this.client.getTotalPlaying()} servers
+Playing Music on    :: ${await this.client.getTotalPlaying()} guilds
 
 Platform            :: ${process.platform}
 Arch                :: ${process.arch}
+OS Uptime           :: ${formatMS(osUptime() * 1000)}
 Memory              :: ${this.bytesToSize(await this.client.getTotalMemory("rss"))}
-OS uptime           :: ${formatMS(osUptime() * 1000)}
-Process uptime      :: ${formatMS(process.uptime() * 1000)}
-Bot uptime          :: ${formatMS(this.client.uptime!)}
+Process Uptime      :: ${formatMS(process.uptime() * 1000)}
+Bot Uptime          :: ${formatMS(this.client.uptime!)}
 
-Node.JS version     :: ${process.version}
-Discord.JS version  :: v${version}
-Bot version         :: v${(await import(path.join(process.cwd(), "package.json"))).version}
+NodeJS version      :: ${process.version}
+DiscordJS version   :: v${version}
+Bot Version         :: v${(await import(path.join(process.cwd(), "package.json"))).version}
 
-Source code         :: https://github.com/zhycorp/disc-11/
+Source code         :: https://sh.hzmi.xyz/jukebox
 \`\`\`
     `)
-            .setColor(this.client.config.embedColor)
+            .setColor("#00FF00")
             .setTimestamp()).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }
 

@@ -9,7 +9,7 @@ updates:
   open-pull-requests-limit: 99
   target-branch: dev
   reviewers:
-  - mozartrafi
+  - Hazmi35
   labels:
   - dependencies
   commit-message:
@@ -24,7 +24,7 @@ updates:
   open-pull-requests-limit: 99
   target-branch: dev
   reviewers:
-  - mozartrafi
+  - Hazmi35
   labels:
   - gh-actions
   - dependencies

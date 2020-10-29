@@ -1,11 +1,11 @@
 import type { ClientEventListener } from "../../typings";
-import type Disc_11 from "../structures/Disc_11";
+import type Jukebox from "../structures/Jukebox";
 
 export default class ErrorEvent implements ClientEventListener {
     public readonly name = "error";
-    public constructor(private readonly client: Disc_11) {}
+    public constructor(private readonly client: Jukebox) {}
 
     public execute(error: string): void {
-        this.client.logger.error("CLIENT_ERROR: ", error);
+        this.client.logger.error("CLIENT_ERROR:", error);
     }
 }

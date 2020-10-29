@@ -1,12 +1,12 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import type { IMessage } from "../../typings";
-import type Disc_11 from "../structures/Disc_11";
+import type Jukebox from "../structures/Jukebox";
 
 export default class PingCommand extends BaseCommand {
-    public constructor(client: Disc_11, public readonly path: string) {
+    public constructor(client: Jukebox, public readonly path: string) {
         super(client, path, {
-            aliases: ["pong", "pang", "pung", "peng"]
+            aliases: ["pong", "peng", "pingpong"]
         }, {
             name: "ping",
             description: "Shows the current ping of the bot.",
@@ -16,7 +16,7 @@ export default class PingCommand extends BaseCommand {
 
     public execute(message: IMessage): IMessage {
         const before = Date.now();
-        message.channel.send("🏓 PONG!").then((msg: IMessage | any) => {
+        message.channel.send("🏓 Pong!").then((msg: IMessage | any) => {
             const latency = Date.now() - before;
             const wsLatency = this.client.ws.ping.toFixed(0);
             const embed = new MessageEmbed()

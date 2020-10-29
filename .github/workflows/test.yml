@@ -3,7 +3,7 @@ name: Lint code & compile test
 on:
   push:
     branches:
-      - master
+      - dev
   pull_request:
     branches:
       - "**"
@@ -22,6 +22,7 @@ jobs:
       uses: actions/setup-node@v2.1.2
       with:
         node-version: ${{ matrix.node-version }}
+        check-latest: true
         
     - name: Install dependencies
       run: yarn install --frozen-lockfile
@@ -43,6 +44,7 @@ jobs:
         uses: actions/setup-node@v2.1.2
         with:
           node-version: ${{ matrix.node-version }}
+          check-latest: true
         
       - name: Install dependencies
         run: yarn install --frozen-lockfile

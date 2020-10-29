@@ -1,24 +1,22 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import type { IMessage } from "../../typings";
-import type Disc_11 from "../structures/Disc_11";
+import type Jukebox from "../structures/Jukebox";
 
 export default class QueueCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public readonly path: string) {
-        super(client, path, {
-            aliases: ["q"]
-        }, {
+    public constructor(public client: Jukebox, public readonly path: string) {
+        super(client, path, {}, {
             name: "queue",
-            description: "Show the current track queue.",
+            description: "Show the current queue",
             usage: "{prefix}queue"
         });
     }
 
     public execute(message: IMessage): any {
-        if (!message.guild?.queue) return message.channel.send(new MessageEmbed().setDescription("There is nothing playing.").setColor("YELLOW"));
+        if (!message.guild?.queue) return message.channel.send(new MessageEmbed().setDescription("There is nothing playing.").setColor("#FFFF00"));
 
-        const embed = new MessageEmbed().setTitle("**Song Queue**").setColor(this.client.config.embedColor)
-            .setThumbnail(message.client.user!.avatarURL()!);
+        const embed = new MessageEmbed().setTitle("**Song Queue**").setColor("#00FF00")
+            .setThumbnail(message.client.user?.avatarURL() as string);
 
         let num = 1;
         const songs = message.guild.queue.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import Client from "./structures/Disc_11";
+import Client from "./structures/Jukebox";
 
 const client = new Client({
     disableMentions: "everyone",

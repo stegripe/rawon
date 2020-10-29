@@ -1,22 +1,19 @@
 {
-    "name": "Disc 11",
-    "description": "A dedicated open-source music bot for Zhycorp based on Jukebox.",
-    "logo": "https://raw.githubusercontent.com/zhycorp/jukebox/stable/.github/images/disc_11.png",
+    "name": "Jukebox",
+    "description": "Just a simple Discord music bot.",
+    "logo": "https://raw.githubusercontent.com/Hazmi35/jukebox/stable/.github/images/jukebox.png",
     "env": {
         "DISCORD_TOKEN": {
             "description": "Your Discord bot's token"
         },
         "YT_API_KEY": {
-            "description": "YouTube API Key for querying the YouTube API for video data"
+            "description": "Youtube API Key for querying the Youtube API for video data."
         },
         "CONFIG_NAME": {
             "description": "Your bot's name"
         },
         "CONFIG_PREFIX": {
             "description": "Prefix for your bot"
-        },
-        "CONFIG_COLORS": {
-            "description": "The embed color for your bot"
         },
         "CONFIG_OWNERS": {
             "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)"
@@ -46,6 +43,6 @@
             "description": "Whether to disable invite command or not (default: no)"
         }
     },
-    "repository": "https://github.com/zhycorp/disc-11",
+    "repository": "https://github.com/Hazmi35/jukebox",
     "buildpacks": [{ "url": "heroku/nodejs" }]
 }

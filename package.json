@@ -1,34 +1,29 @@
 {
-  "name": "disc-11",
-  "version": "1.0.0",
-  "description": "A dedicated open-source music bot for Zhycorp based on Jukebox.",
-  "private": false,
-  "homepage": "https://github.com/zhycorp/disc-11#readme",
+  "name": "jukebox",
+  "version": "4.2.0",
+  "private": true,
+  "description": " Just a simple Discord music bot.",
+  "homepage": "https://github.com/Hazmi35/jukebox#readme",
+  "bugs": {
+    "url": "https://github.com/Hazmi35/jukebox/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zhycorp/disc-11.git"
+    "url": "git+https://github.com/Hazmi35/jukebox.git"
   },
-  "bugs": {
-    "url": "https://github.com/zhycorp/disc-11/issues"
-  },
-  "author": "Zhycorp",
   "license": "AGPL-3.0",
-  "main": "index.js",
+  "author": "Hazmi35 (contact@hzmi.xyz) (https://github.com/Hazmi35)",
+  "main": "dist/main.js",
   "scripts": {
     "build": "npm run lint && npm run compile",
     "compile": "tsc --build tsconfig.json",
-    "lint": "eslint . --ignore-path .gitignore --ext .ts",
-    "lint:fix": "eslint . --ignore-path .gitignore --ext .ts --fix",
+    "lint": "eslint . --ignore-path .gitignore --ext .ts --cache --cache-location .cache/eslintcache",
+    "lint:fix": "eslint . --ignore-path .gitignore --ext .ts --fix --cache --cache-location .cache/eslintcache",
     "start": "node dist/main",
     "start:dev": "echo [INFO] Sharding disabled when using ts-node && ts-node src/bot"
   },
   "eslintConfig": {
     "extends": "@hazmi35/eslint-config/typescript",
-    "rules": {
-      "camelcase": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-      "typescript-eslint/naming-convention": "off"
-    },
     "ignorePatterns": "dist/*"
   },
   "dependencies": {
@@ -44,7 +39,7 @@
     "ytdl-core": "^4.0.0"
   },
   "devDependencies": {
-    "@hazmi35/eslint-config": "^2.1.0",
+    "@hazmi35/eslint-config": "^2.1.3",
     "@types/node": "^14.14.5",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
     "@typescript-eslint/parser": "^4.6.0",
