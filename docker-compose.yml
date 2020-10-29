@@ -1,0 +1,10 @@
+services: 
+  bot: 
+    build: .
+    env_file: 
+      - .env
+    restart: unless-stopped
+    volumes:
+      - "./cache:/app/cache"
+      - "./logs:/app/logs"
+version: "2.4"

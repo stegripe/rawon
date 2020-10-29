@@ -76,7 +76,6 @@ jspm_packages/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
@@ -99,5 +98,10 @@ dist
 # TernJS port file
 .tern-port
 
-# YTDL Caches
-cache/**
+# TypeScript out directory
+dist
+dist/
+
+# Git files
+.github/
+.git

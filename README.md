@@ -1,49 +1,94 @@
-## About
+# Zhycorp Music Bot
+> A dedicated open-source music bot for Zhycorp based on [Jukebox](https://github.com/Hazmi35/jukebox).
 
-> A dedicated music bot example project for Zhycorp Development made by iCrawl
+<a href="https://discord.gg/DxenCeV"><img src="https://img.shields.io/discord/332877090003091456?color=7289da&logo=discord&logoColor=white" alt="Discord server" /></a>
+<a href="https://discord.com/oauth2/authorize?client_id=690736793682968576&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Disc%2011%230606&plastic&color=7289DA&logo=discord"></a>
+<a href="https://github.com/zhycorp/music-bot-example/actions?query=workflow%3A%22Node.js+CI%22"><img src="https://github.com/zhycorp/music-bot-example/workflows/Node.js%20CI/badge.svg" alt="Node.JS CI Status" /></a>
+<img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">
+<img src="https://badgen.net/badge/jual/haram/red">
 
-This open sourced project is a dedicated example tutorial for our community's content, feel free to use and modify as good as you like. Written with [discord.js](https://discord.js.org/#/) and [v12 (stable)](https://discordjs.guide/additional-info/changes-in-v12.html) as the version.
+## Usage
+
+**Requires [Node.JS](https://nodejs.org) version v12 or above.**
+
+[Come here](https://github.com/zhycorp/disc-11#Glitch) if you want to use Glitch.com instead of localhost or [Heroku](https://heroku.com/deploy?template=https://github.com/zhycorp/disc-11/tree/master)
+
+1. Install [Node.JS](https://nodejs.org) and [Yarn (Optional)](https://yarnpkg.com)
+2. Rename `.env.schema` to `.env` and fill out the values (example on .env.example)
+3. Install dependencies as stated [here](https://github.com/zhycorp/disc-11#Installation) before you continue surfing
+4. Run `npm run build`, or `yarn run build` if you're using Yarn package manager
+5. Optional thing, prune devDependencies (this is good to save disk spaces):
+```shell script
+$ npm prune --production
+# or with yarn
+$ yarn install --production
+```
+6. Start it with `npm start` or `yarn start`, and you're done!
+
+Notes: 
+1. You only need to configure .env file when you're using the [Docker image](https://github.com/zhycorp/disc-11#Docker)
+2. If you're using "Deploy to Heroku" button, you don't need to do this.
+
+## Installation
+
+Without optional packages
+```shell script
+$ npm install --no-optional
+# or with yarn
+$ yarn install --ignore-optional
+```
+
+With optional packages (recommended)
+
+```shell script
+$ npm install
+# or with yarn
+$ yarn install
+```
+For optional packages, you need to install build tools as stated [here](https://github.com/nodejs/node-gyp#installation).
+
+## Glitch
+You can still use Glitch and keep it online in this project, no worries 😉
+
+1. Go to [glitch.com](https://glitch.com) and make an account
+2. Click **New Project**, and then **Import from GitHub**
+3. Please specify the field with `https://github.com/zhycorp/disc-11`, then wait for a while
+4. Find the file names `.env.schema` then rename it to `.env`, let's configure that
+5. Get your bot token at [Discord developer portal](https://discord.com/developers/applications) then invite it to your server, and fill the bot prefix with anything you want
+8. To get an YouTube API v3 Key, please watch [this video](https://youtu.be/6CSeovx0nvc?t=161) carefully
+9. Specify another options on that file. If you don't know how, there's `.env.example` so you can know what it should looks like
+10. After that, go to **Tools** > **Terminal** type `refresh`.
+11. Close **Terminal** tab, then open **Tools** > **Logs**, wait for a while
+13. To make it stay online, please watch [this video](https://youtu.be/6CSeovx0nvc?t=547) carefully
+
+Your bot is online, and ready to use!
+If you have any questions or need support, feel free to join our [Discord server](https://zhycorp.xyz/discord).
+
+## Docker
+Want to use Dockerized version of [this project](https://github.com/Hazmi35/jukebox)?
+Sure, we have provided them on the [Docker Hub](https://hub.docker.com/r/hazmi35/jukebox).
+
+### Volumes
+[Docker Volumes](https://docs.docker.com/storage/volumes/) are needed to store cache and logs persistently.
+
+### Example:
+```shell
+$ docker run --env-file .env --volume cache:/app/cache --volume logs:/app/logs hazmi35/jukebox
+```
+We also provide [docker-compose.yml](docker-compose.yml) if you want to go that way.
+
+### Compose Example
+```
+$ docker-compose up
+```
 
 ## Features
-* Full playback control
-* Simple queue system
-* We're here to help
+- A production-ready music bot, suitable for you that don't like to hassling with the code.
+- Basic Commands (Help, Ping, Invite & Eval [for advanced bot owners])
+- Basic Music Commands (Play, Skip, Stop, Pause & Resume, Now Playing, Queue, Repeat, Volume)
+- Caching (cache youtube downloads)
+- Configurable (easy to use)
+- Docker-friendly (if you're advanced user)
+- Lightweight (only around 150MB)
 
-## Required modules
-```
-"@discordjs/opus": "^0.3.2",
-"discord.js": "^12.2.0",
-"dotenv": "^8.2.0",
-"express": "^4.17.1",
-"node-opus": "^0.3.3",
-"opusscript": "0.0.7",
-"simple-youtube-api": "^5.2.1",
-"ytdl-core": "^3.2.0"
-```
-
-## Getting started with Glitch
-
-1.  Create your bot account at **[Discord Developer Portal](https://discord.com/developers)**, get the token, and invite him to your server
-2.  Go to **[Glitch.com](https://glitch.com)**, click **New Project**, then choose **`Clone from Git Repo`** button (we recommend you to make a Glitch account before doing this)
-3.  Fill the pop-up column with **`https://github.com/zhycorp/music-bot-example.git`** at the field, then click **`OK`**
-4.  Change the project's name to whatever you want (optional)
-5.  Rename the **`.env_example`** to **`.env`** instead, then specify the Prefix, Bot Token, and the YouTube API v3 Key (watch [this video](https://youtu.be/-5ptk-Klfcw?t=69) for the tutorial of getting the youtube key). Don't forget with the **`PROJECT_DOMAIN`**'s value, match this value with the name of your Glitch bot project
-6.  And your Discord music bot should be ready to use!
-
-_If you have made any changes to the code, don't forget to restart the bot by typing **`refresh`** at the **`Tools > Terminal`** button._
-
-**[Tutorial Video](https://www.youtube.com/watch?v=6CSeovx0nvc)** (For people who usually do watching more than reading)
-
-## Contributing
-
-1.  Fork it!
-2.  Create your feature branch: `git checkout -b my-new-feature`
-3.  Commit your changes: `git commit -am "Add some feature"`
-4.  Push to the branch: `git push origin my-new-feature`
-5.  Submit a pull request :D
-
-## Author
-
-1.  **Discord.js Music Bot** © [iCrawl](https://github.com/iCrawl)
-2.  Authored, maintained by iCrawl. And modified by Zhycorp
-3.  This work is licensed under a <a rel="license" href="https://github.com/zhycorp/music-bot-example/blob/master/LICENSE">GNU Affero General Public License</a>.
+Based on [discord-music-bot](https://github.com/iCrawl/discord-music-bot) and reworked from [jukebox](https://github.com/Hazmi35/jukebox)
