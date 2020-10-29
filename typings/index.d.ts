@@ -1,5 +1,5 @@
 import type { Message, Guild, TextChannel, VoiceChannel, DMChannel, NewsChannel, VoiceConnection, Collection, ClientEvents, VoiceState } from "discord.js";
-import type Jukebox from "../src/structures/Jukebox";
+import type Disc_11 from "../src/structures/Disc_11";
 
 export interface CommandComponent {
     conf: {
@@ -16,24 +16,24 @@ export interface CommandComponent {
     execute(message: Message, args: string[]): any;
 }
 export interface IGuild extends Guild {
-    client: Jukebox;
+    client: Disc_11;
     queue: IServerQueue | null;
 }
 export interface IMessage extends Message {
-    client: Jukebox;
+    client: Disc_11;
     guild: IGuild | null;
     channel: ITextChannel | INewsChannel | IDMChannel;
 }
 export interface ITextChannel extends TextChannel {
-    client: Jukebox;
+    client: Disc_11;
     guild: IGuild;
 }
 export interface INewsChannel extends NewsChannel {
-    client: Jukebox;
+    client: Disc_11;
     guild: IGuild;
 }
 export interface IDMChannel extends DMChannel {
-    client: Jukebox;
+    client: Disc_11;
     guild: null;
 }
 
