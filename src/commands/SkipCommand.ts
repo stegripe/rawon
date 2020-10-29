@@ -1,6 +1,6 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import type Jukebox from "../structures/Jukebox";
+import type Jukebox from "../structures/Disc_11";
 import type { IMessage } from "../../typings";
 
 export default class SkipCommand extends BaseCommand {

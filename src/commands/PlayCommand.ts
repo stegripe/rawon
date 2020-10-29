@@ -7,7 +7,7 @@ import ytdl from "../utils/YoutubeDownload";
 import { Util, MessageEmbed } from "discord.js";
 import { decodeHTML } from "entities";
 import type { VoiceChannel } from "discord.js";
-import type Jukebox from "../structures/Jukebox";
+import type Jukebox from "../structures/Disc_11";
 import type { IMessage, ISong, IGuild } from "../../typings";
 
 export default class PlayCommand extends BaseCommand {

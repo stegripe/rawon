@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import type Jukebox from "./Jukebox";
+import type Jukebox from "./Disc_11";
 import type { CommandComponent } from "../../typings";
 import type { Message } from "discord.js";
 export default class BaseCommand implements CommandComponent {

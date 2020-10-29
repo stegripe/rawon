@@ -3,7 +3,7 @@ import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import { request } from "https";
 import { inspect } from "util";
-import type Jukebox from "../structures/Jukebox";
+import type Jukebox from "../structures/Disc_11";
 import type { IMessage } from "../../typings";
 
 export default class EvalCommand extends BaseCommand {

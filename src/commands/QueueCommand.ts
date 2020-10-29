@@ -1,7 +1,7 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import type { IMessage } from "../../typings";
-import type Jukebox from "../structures/Jukebox";
+import type Jukebox from "../structures/Disc_11";
 
 export default class QueueCommand extends BaseCommand {
     public constructor(public client: Jukebox, public readonly path: string) {

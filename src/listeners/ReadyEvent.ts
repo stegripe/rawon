@@ -1,5 +1,5 @@
 import type { ClientEventListener } from "../../typings";
-import type Jukebox from "../structures/Jukebox";
+import type Jukebox from "../structures/Disc_11";
 import type { Presence } from "discord.js";
 
 export default class ReadyEvent implements ClientEventListener {

@@ -2,7 +2,7 @@ import type { Snowflake, TextChannel, Collection, GuildMember } from "discord.js
 import { MessageEmbed } from "discord.js";
 import { formatMS } from "../utils/formatMS";
 import type { ClientEventListener, IVoiceState } from "../../typings";
-import type Jukebox from "../structures/Jukebox";
+import type Jukebox from "../structures/Disc_11";
 
 export default class VoiceStateUpdateEvent implements ClientEventListener {
     public readonly name = "voiceStateUpdate";

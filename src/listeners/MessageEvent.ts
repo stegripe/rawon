@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import type { Snowflake } from "discord.js";
-import type Jukebox from "../structures/Jukebox";
+import type Jukebox from "../structures/Disc_11";
 import type { IMessage, ClientEventListener } from "../../typings";
 
 export default class MessageEvent implements ClientEventListener {
