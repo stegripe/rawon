@@ -6,20 +6,20 @@
   "homepage": "https://github.com/zhycorp/disc-11#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hazmi35/jukebox.git"
+    "url": "git+https://github.com/zhycorp/disc-11.git"
   },
   "bugs": {
     "url": "https://github.com/zhycorp/disc-11/issues"
   },
   "license": "AGPL-3.0",
   "author": "Zhycorp (support@zhycorp.xyz) (https://github.com/zhycorp)",
-  "main": "dist/main.js",
+  "main": "start.js",
   "scripts": {
     "build": "npm run lint && npm run compile",
     "compile": "tsc --build tsconfig.json",
     "lint": "eslint . --ignore-path .gitignore --ext .ts --cache --cache-location .cache/eslintcache",
     "lint:fix": "eslint . --ignore-path .gitignore --ext .ts --fix --cache --cache-location .cache/eslintcache",
-    "start": "node dist/main",
+    "start": "node start",
     "start:dev": "echo [INFO] Sharding disabled when using ts-node && ts-node src/bot"
   },
   "eslintConfig": {
