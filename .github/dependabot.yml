@@ -7,9 +7,9 @@ updates:
     time: "06:00"
     timezone: Asia/Jakarta
   open-pull-requests-limit: 99
-  target-branch: dev
+  target-branch: master
   reviewers:
-  - Hazmi35
+  - mozartrafi
   labels:
   - dependencies
   commit-message:
@@ -22,9 +22,9 @@ updates:
     time: "06:00"
     timezone: Asia/Jakarta
   open-pull-requests-limit: 99
-  target-branch: dev
+  target-branch: master
   reviewers:
-  - Hazmi35
+  - mozartrafi
   labels:
   - gh-actions
   - dependencies
