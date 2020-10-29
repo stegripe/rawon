@@ -48,7 +48,7 @@ $ yarn install
 For optional packages, you need to install build tools as stated [here](https://github.com/nodejs/node-gyp#installation).
 
 ## Glitch
-You can still use glitch.com and keep it online in this project, no worries 😉
+You can still use Glitch and keep it online in this project, no worries 😉
 
 1. Go to [glitch.com](https://glitch.com) and make an account
 2. Click **New Project**, and then **Import from GitHub**
