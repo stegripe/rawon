@@ -79,11 +79,11 @@ export default class PlayCommand extends BaseCommand {
                 if (videos.length === 0) return message.channel.send(new MessageEmbed().setDescription("I could not obtain any search results.").setColor("RED"));
                 let index = 0;
                 const msg = await message.channel.send(new MessageEmbed()
-                    .setAuthor("• Song Selection") // TODO: Find or create typings for simple-youtube-api or wait for v6 released
-                    .setDescription(`\`\`\`\n${videos.map((video: any) => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\n\`\`\`` +
+                    .setAuthor("Song Selection") // TODO: Find or create typings for simple-youtube-api or wait for v6 released
+                    .setDescription(`\`\`\`\n${videos.map((video: any) => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`\n` +
                         "Please provide a value to select one of the search results ranging from **\`1-10\`**!")
                     .setColor(this.client.config.embedColor)
-                    .setFooter("Type cancel or c to cancel the song selection"));
+                    .setFooter("• Type cancel or c to cancel the song selection"));
                 try {
                     // eslint-disable-next-line no-var
                     var response = await message.channel.awaitMessages((msg2: IMessage) => {
