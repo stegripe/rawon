@@ -1,11 +1,8 @@
-<div align="center">
-    <br />
-    <p>
-        <a href="https://zhycorp.xyz"><img src="https://api.zhycorp.xyz/assets/images/logo.png" width="124" height="124" alt="node-zhycorp" /></a>
-    </p>
-    <br />
-    
-</div>
+<br />
+<p>
+    <a href="https://zhycorp.xyz"><img src="https://api.zhycorp.xyz/assets/images/logo.png" width="124" height="124" alt="disc-11" /></a>
+</p>
+<br />
 
 # Zhycorp Music Bot
 > A dedicated music bot example project for Zhycorp Development with [a source that made by Hazmi35](https://github.com/Hazmi35/jukebox).
