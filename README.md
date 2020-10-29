@@ -11,11 +11,11 @@
 
 **Requires [Node.JS](https://nodejs.org) version v12 or above.**
 
-[Come here if you want to use Glitch.com instead of localhost or Heroku](https://github.com/zhycorp/music-bot-example#Glitch)
+[Come here](https://github.com/zhycorp/music-bot-example#Glitch) if you want to use Glitch.com instead of localhost or [Heroku](https://heroku.com/deploy?template=https://github.com/zhycorp/disc-11/tree/master)
 
 1. Install [Node.JS](https://nodejs.org) and [Yarn (Optional)](https://yarnpkg.com)
 2. Rename `.env.schema` to `.env` and fill out the values (example on .env.example)
-3. Install dependencies as stated [here](https://github.com/zhycorp/music-bot-example#Installation) before you continue surfing
+3. Install dependencies as stated [here](https://github.com/zhycorp/disc-11#Installation) before you continue surfing
 4. Run `npm run build`, or `yarn run build` if you're using Yarn package manager
 5. Optional thing, prune devDependencies (this is good to save disk spaces):
 ```shell script
@@ -23,10 +23,10 @@ $ npm prune --production
 # or with yarn
 $ yarn install --production
 ```
-6. Start it with `npm start` or `yarn start`, And you're done!
+6. Start it with `npm start` or `yarn start`, and you're done!
 
 Notes: 
-1. You only need to configure .env file when you're using the [Docker image](https://github.com/zhycorp/music-bot-example#Docker)
+1. You only need to configure .env file when you're using the [Docker image](https://github.com/zhycorp/disc-11#Docker)
 2. If you're using "Deploy to Heroku" button, you don't need to do this.
 
 ## Installation
@@ -52,11 +52,12 @@ You can still use glitch.com and keep it online in this project, no worries 😉
 
 1. Go to [glitch.com](https://glitch.com) and make an account
 2. Click **New Project**, and then **Import from GitHub**
-3. Please specify the field with `https://github.com/zhycorp/music-bot-example`
+3. Please specify the field with `https://github.com/zhycorp/disc-11`
 4. (will be worked on soon)
 
 ## Docker
-Want to use Dockerized version of [this project](https://github.com/Hazmi35/jukebox)? Sure! we provide them on the [Docker Hub](https://hub.docker.com/r/hazmi35/jukebox).
+Want to use Dockerized version of [this project](https://github.com/Hazmi35/jukebox)?
+Sure, we have provided them on the [Docker Hub](https://hub.docker.com/r/hazmi35/jukebox).
 
 ### Volumes
 [Docker Volumes](https://docs.docker.com/storage/volumes/) are needed to store cache and logs persistently.
