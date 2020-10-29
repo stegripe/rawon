@@ -20,7 +20,7 @@ export default class PingCommand extends BaseCommand {
             const latency = Date.now() - before;
             const wsLatency = this.client.ws.ping.toFixed(0);
             const embed = new MessageEmbed()
-                .setAuthor("**🏓 PONG!**", message.client.user?.displayAvatarURL())
+                .setAuthor("🏓 PONG!", message.client.user?.displayAvatarURL())
                 .setColor(this.searchHex(wsLatency))
                 .addFields({
                     name: "API Latency",
