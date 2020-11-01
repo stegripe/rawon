@@ -8,7 +8,7 @@ const client = new Client({
     messageEditHistoryMaxSize: Infinity,
     messageSweepInterval: 180,
     ws: {
-        intents: ["GUILDS", "GUILD_PRESENCES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGES"]
+        intents: ["GUILDS", "GUILD_PRESENCES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"]
     }
 });
 
