@@ -7,12 +7,12 @@ LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
 
 WORKDIR /tmp/build
 
+# Install node-gyp dependencies
+RUN apk add --no-cache build-base curl git python3
+
 # Copy package.json and yarn.lock
 COPY package.json .
 COPY yarn.lock .
-
-# Install node-gyp dependencies
-RUN apk add --no-cache --virtual .build-deps build-base curl git python3
 
 # Install dependencies
 RUN yarn install
