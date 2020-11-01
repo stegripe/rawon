@@ -61,19 +61,19 @@ export default class PlayCommand extends BaseCommand {
                         await this.handleVideo(video2, message, voiceChannel, true);
                     }
                 }
+                if (skippedVideos !== 0) {
+                    message.channel.send(
+                        new MessageEmbed()
+                            .setDescription(`${skippedVideos} ${skippedVideos >= 2 ? `videos` : `video`} are skipped because it's a private video`)
+                            .setColor("YELLOW")
+                    ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                }
+                if (skippedVideos === playlist.itemCount) return message.channel.send(new MessageEmbed().setDescription(`Failed to load **[${playlist.title}](${playlist.url})** playlist because all of the items are private videos`).setColor("RED"));
+                return message.channel.send(new MessageEmbed().setDescription(`All videos in **[${playlist.title}](${playlist.url})**, has been added to the queue!`).setColor(this.client.config.embedColor));
+            } catch (e) {
+                this.client.logger.error("YT_SEARCH_ERR:", e);
+                return message.channel.send(new MessageEmbed().setDescription(`I can't load the playlist.\nError: \`${e.message}\``).setColor("#FFFF00"));
             }
-            if (skippedVideos !== 0) {
-                message.channel.send(
-                    new MessageEmbed()
-                        .setDescription(`${skippedVideos} ${skippedVideos >= 2 ? `videos` : `video`} are skipped because it's a private video`)
-                        .setColor("#FFFF00")
-                ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-            }
-            if (skippedVideos === playlist.itemCount) return message.channel.send(new MessageEmbed().setDescription(`Failed to load playlist **[${playlist.title}](${playlist.url})**, because all of the items are private videos`).setColor("YELLOW"));
-            return message.channel.send(new MessageEmbed().setDescription(`All videos in playlist: **[${playlist.title}](${playlist.url})**, has been added to the queue!`).setColor(this.client.config.embedColor));
-        } catch (e) {
-            this.client.logger.error("YT_SEARCH_ERR:", e);
-            return message.channel.send(new MessageEmbed().setDescription(`I could not load the playlist!\nError: \`${e.message}\``).setColor("#FFFF00"));
         }
         try {
             // eslint-disable-next-line no-var, block-scoped-var
