@@ -32,8 +32,9 @@
     "dotenv": "^8.2.0",
     "entities": "^2.1.0",
     "ffmpeg-static": "^4.2.7",
+    "got": "^11.8.0",
+    "iso8601-duration": "^1.2.0",
     "opusscript": "^0.0.7",
-    "simple-youtube-api": "^5.2.1",
     "tslib": "^2.0.3",
     "winston": "^3.3.3",
     "ytdl-core": "^4.0.0"
