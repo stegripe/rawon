@@ -1,7 +1,7 @@
 import winston from "winston";
 import { format } from "date-fns";
 
-export function createLogger(serviceName: string, prod = false): winston.Logger {
+export function createLogger(serviceName: string, debug = false): winston.Logger {
     const logger = winston.createLogger({
         defaultMeta: {
             serviceName
@@ -14,7 +14,7 @@ export function createLogger(serviceName: string, prod = false): winston.Logger 
                 return `${prefix}: ${message}`;
             })
         ),
-        level: prod ? "info" : "debug",
+        level: debug ? "debug" : "info",
         levels: {
             alert: 1,
             debug: 5,
@@ -29,12 +29,12 @@ export function createLogger(serviceName: string, prod = false): winston.Logger 
         ]
     });
     logger.add(new winston.transports.Console({
-        level: "info",
+        level: debug ? "debug": "info",
         format: winston.format.combine(
             winston.format.printf(info => {
                 const { level, message, stack } = info;
                 const prefix = `[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]`;
-                if (["error", "alert"].includes(level) && !prod) return `${prefix}: ${stack}`;
+                if (["error", "alert"].includes(level)) return `${prefix}: ${stack}`;
                 return `${prefix}: ${message}`;
             }),
             winston.format.align(),
