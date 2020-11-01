@@ -23,12 +23,12 @@ export default class StopCommand extends BaseCommand {
             );
         }
 
-        message.guild.queue.playing = true;
-        message.guild.queue.connection?.dispatcher.resume();
         message.guild.queue.songs.clear();
         message.guild.queue.connection?.dispatcher.end();
+        message.guild.queue.voiceChannel.leave();
+        message.guild.queue = null;
 
-        message.channel.send(new MessageEmbed().setDescription("⏹  **|**  Stopping the queue...").setColor(this.client.config.embedColor))
+        message.channel.send(new MessageEmbed().setDescription("⏹  **|**  The queue has been stopped.").setColor(this.client.config.embedColor))
             .catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
     }
 }
