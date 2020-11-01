@@ -80,7 +80,7 @@
             "value": "music on {guildsCount} guilds"
         },
         "CONFIG_FETCH_ALL_USERS": {
-            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users) (default: no)",
+            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users) (default: no) (note: You need to enable privileged GUILD_MEMBERS Intents on the Discord's developer page)",
             "required": false,
             "value": "no"
         }
