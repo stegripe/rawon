@@ -2,7 +2,7 @@
 import type { ClientOptions } from "discord.js";
 import { Client } from "discord.js";
 import { resolve } from "path";
-import config from "../config";
+import * as config from "../config";
 import { createLogger } from "../utils/Logger";
 import CommandsHandler from "../utils/CommandsHandler";
 import ListenerLoader from "../utils/ListenerLoader";
