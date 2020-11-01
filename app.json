@@ -10,7 +10,9 @@
             "description": "YouTube API Key for querying the YouTube API for video data"
         },
         "CONFIG_NAME": {
-            "description": "Your bot's name"
+            "description": "Your bot's name",
+            "required": false,
+            "value": "Disc 11"
         },
         "CONFIG_PREFIX": {
             "description": "Your bot's prefix"
@@ -19,34 +21,68 @@
             "description": "The color for your bot's embed message"
         },
         "CONFIG_OWNERS": {
-            "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)"
+            "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
+            "required": false
         },
         "CONFIG_TOTALSHARDS": {
-            "description": "Total shards to spawn, use \"auto\" or a number (default: auto)"
+            "description": "Total shards to spawn, use \"auto\" or a number (default: auto)",
+            "required": false,
+            "value": "auto"
         },
         "CONFIG_MAX_VOLUME": {
-            "description": "Max volume allowed for music (default: 100)"
+            "description": "Max volume allowed for music (default: 100)",
+            "required": false,
+            "value": 100
         },
         "CONFIG_DEFAULT_VOLUME": {
-            "description": "Default volume for music (default: 100)"
+            "description": "Default volume for music (default: 100)",
+            "required": false,
+            "value": 100
         },
         "CONFIG_ALLOW_DUPLICATE": {
-            "description": "Whether to allow users to add duplicate of music (yes or no) (default: no)"
+            "description": "Whether to allow users to add duplicate of music (yes or no) (default: no)",
+            "required": false,
+            "value": "no"
         },
         "CONFIG_DELETE_QUEUE_TIMEOUT": {
-            "description": "Timeout in seconds before queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)"
+            "description": "Timeout in seconds before queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)",
+            "required": false,
+            "value": 180
         },
         "CONFIG_CACHE_YOUTUBE_DOWNLOADS": {
-            "description": "Whether to download and cache videos from youtube (yes or no) (default: no)"
+            "description": "Whether to download and cache videos from youtube (yes or no) (default: no)",
+            "required": false,
+            "value": "no"
         },
         "CONFIG_CACHE_MAX_LENGTH": {
-            "description": "Max music length in seconds that are allowed to cached (default: 5400 <1 hour 30 minutes>)"
+            "description": "Max music length in seconds that are allowed to cached (default: 5400 <1 hour 30 minutes>)",
+            "required": false,
+            "value": 5400
         },
         "CONFIG_DISABLE_INVITE_CMD": {
-            "description": "Whether to disable invite command or not (default: no)"
+            "description": "Whether to disable invite command or not (default: no)",
+            "required": false,
+            "value": "no"
         },
         "CONFIG_DEBUG": {
-            "description": "Should logging use debug level? Please note that this is not recommended in production (default: no)"
+            "description": "Should logging use debug level? Please note that this is not recommended in production (default: no)",
+            "required": false,
+            "value": "no"
+        },
+        "CONFIG_STATUS_TYPE": {
+            "description": "What type of status does the bot use (playing, listening, or watching) (default: listening)",
+            "required": false,
+            "value": "listening"
+        },
+        "CONFIG_STATUS_ACTIVITY": {
+            "description": "What status does the bot display (default: \"music on {guildsCount} guilds!\") (available variables: guildsCount, usersCount, playingCount, and botPrefix). NOTE ON {usersCount} VARIABLE: This only displays cached usersCount, to get full usersCount, please enable CONFIG_FETCH_ALL_USERS",
+            "required": false,
+            "value": "music on {guildsCount} guilds"
+        },
+        "CONFIG_FETCH_ALL_USERS": {
+            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users) (default: no)",
+            "required": false,
+            "value": "no"
         }
     },
     "repository": "https://github.com/zhycorp/disc-11",

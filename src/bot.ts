@@ -1,8 +1,10 @@
 import "dotenv/config";
+import { fetchAllUsers } from "./config";
 import Client from "./structures/Disc_11";
 
 const client = new Client({
     disableMentions: "everyone",
+    fetchAllMembers: fetchAllUsers,
     messageCacheLifetime: 60,
     messageCacheMaxSize: Infinity,
     messageEditHistoryMaxSize: Infinity,
