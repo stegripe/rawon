@@ -29,7 +29,7 @@ export function createLogger(serviceName: string, debug = false): winston.Logger
         ]
     });
     logger.add(new winston.transports.Console({
-        level: debug ? "debug": "info",
+        level: debug ? "debug" : "info",
         format: winston.format.combine(
             winston.format.printf(info => {
                 const { level, message, stack } = info;
