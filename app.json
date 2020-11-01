@@ -46,7 +46,7 @@
             "description": "Whether to disable invite command or not (default: no)"
         },
         "CONFIG_DEBUG": {
-            "description": "Should logging use debug level? (default: no)"
+            "description": "Should logging use debug level? Please note that this is not recommended in production (default: no)"
         }
     },
     "repository": "https://github.com/zhycorp/disc-11",
