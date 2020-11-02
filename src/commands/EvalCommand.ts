@@ -53,7 +53,7 @@ export default class EvalCommand extends BaseCommand {
             if (error.length > 1024) {
                 const hastebin = await this.hastebin(error);
                 embed.addField("**Error**", `${hastebin}.js`);
-            } else { embed.setColor("RED").addField("Error", `\`\`\`js\n${error}\`\`\``); }
+            } else { embed.setColor("RED").addField("**Error**", `\`\`\`js\n${error}\`\`\``); }
             message.channel.send(embed).catch(e => this.client.logger.error("EVAL_CMD_MSG_ERR:", e));
             this.client.logger.error("EVAL_CMD_ERR:", e);
         }
