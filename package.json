@@ -37,7 +37,7 @@
     "opusscript": "^0.0.7",
     "tslib": "^2.0.3",
     "winston": "^3.3.3",
-    "ytdl-core": "^4.0.0"
+    "ytdl-core": "^4.0.3"
   },
   "devDependencies": {
     "@hazmi35/eslint-config": "^2.1.3",
