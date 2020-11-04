@@ -15,7 +15,7 @@
             "value": "Disc 11"
         },
         "CONFIG_PREFIX": {
-            "description": "Your bot's prefix"
+            "description": "Your bot's prefix (example !play)"
         },
         "CONFIG_EMBED_COLOR": {
             "description": "The color for your bot's embed message"
@@ -29,13 +29,13 @@
             "required": false,
             "value": "auto"
         },
+        "CONFIG_DEFAULT_VOLUME": {
+            "description": "Default volume for music (default: 50)",
+            "required": false,
+            "value": 50
+        },
         "CONFIG_MAX_VOLUME": {
             "description": "Max volume allowed for music (default: 100)",
-            "required": false,
-            "value": 100
-        },
-        "CONFIG_DEFAULT_VOLUME": {
-            "description": "Default volume for music (default: 100)",
             "required": false,
             "value": 100
         },

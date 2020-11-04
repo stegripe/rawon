@@ -5,7 +5,7 @@ export const prefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!"; // Te
 export const embedColor = process.env.CONFIG_EMBED_COLOR ?? "7289DA";
 export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
 export const totalShards: string | number = process.env.CONFIG_TOTALSHARDS ?? "auto";
-export const defaultVolume = Number(process.env.CONFIG_DEFAULT_VOLUME) || 100;
+export const defaultVolume = Number(process.env.CONFIG_DEFAULT_VOLUME) || 50;
 export const maxVolume = Number(process.env.CONFIG_MAX_VOLUME) || 100;
 export const allowDuplicate: boolean = process.env.CONFIG_ALLOW_DUPLICATE === "yes";
 export const deleteQueueTimeout = Number(process.env.CONFIG_DELETE_QUEUE_TIMEOUT) * 1000 || 180 * 1000;
