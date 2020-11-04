@@ -1,12 +1,12 @@
 /* eslint-disable no-underscore-dangle, @typescript-eslint/unbound-method, @typescript-eslint/restrict-plus-operands */
-import type { ClientOptions } from "discord.js";
-import { Client } from "discord.js";
+import { Client, Collection } from "discord.js";
 import { resolve } from "path";
 import * as config from "../config";
 import { createLogger } from "../utils/Logger";
 import CommandsHandler from "../utils/CommandsHandler";
 import ListenerLoader from "../utils/ListenerLoader";
 import { YoutubeAPI } from "../utils/YoutubeAPI";
+import type { ClientOptions } from "discord.js";
 
 // Extends DiscordJS Structures
 import "./Guild";
@@ -44,14 +44,17 @@ export default class Jukebox extends Client {
     }
 
     public async getUsersCount(filter = true): Promise<number> {
+        const temp = new Collection();
         if (filter) {
             if (!this.shard) return this.users.cache.filter(u => !u.equals(this.user!)).size;
-            const size = await this.shard.broadcastEval("this.users.cache.filter(u => !u.equals(this.user)).size");
-            return size.reduce((p, v) => p + v, 0);
+            const shards = await this.shard.broadcastEval("this.users.cache.filter(u => !u.equals(this.user))");
+            for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
+            return temp.size;
         }
         if (!this.shard) return this.users.cache.size;
-        const size = await this.shard.broadcastEval("this.users.cache.size");
-        return size.reduce((p, v) => p + v, 0);
+        const shards = await this.shard.broadcastEval("this.users.cache");
+        for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
+        return temp.size;
     }
 
     public async getTotalPlaying(): Promise<number> {
