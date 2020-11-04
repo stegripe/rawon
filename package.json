@@ -40,7 +40,7 @@
     "ytdl-core": "^4.0.3"
   },
   "devDependencies": {
-    "@hazmi35/eslint-config": "^2.1.3",
+    "@hazmi35/eslint-config": "^3.0.0",
     "@types/node": "^14.14.5",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",

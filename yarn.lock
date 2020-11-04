@@ -96,10 +96,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hazmi35/eslint-config@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@hazmi35/eslint-config/-/eslint-config-2.1.3.tgz#6952e01a89ead9e5697acdb5c3d15f99cfb6bfee"
-  integrity sha512-KnDRj2sydHBEq6mAjijMELJmV4BNQABdEhcgQ4ipBrWZDoXw1LQtlwXt2Xhs+sFhcXzNtNkfRDADRStrwtqiSA==
+"@hazmi35/eslint-config@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@hazmi35/eslint-config/-/eslint-config-3.0.0.tgz#76a4d19731ab943f2a6a477fc63e6a35c1b222b0"
+  integrity sha512-AL32SoL351XfBLO1RFxbSKPyyC27sr0FHBlB9I7aLHhMAefpoft+0dJ+8Tnq79b0GOw+weMpq2aobWTWVauMWQ==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
