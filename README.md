@@ -45,7 +45,7 @@ $ npm install
 # or with yarn
 $ yarn install
 ```
-For optional packages, you need to install build tools as stated [here](https://github.com/nodejs/node-gyp#installation).
+For optional packages, you need to install build tools as stated [here](https://github.com/nodejs/node-gyp#installation) and you also need to install [Git](https://git-scm.com/).
 
 ## Glitch
 You can still use Glitch and keep it online in this project, no worries 😉
