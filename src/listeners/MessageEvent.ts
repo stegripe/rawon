@@ -1,5 +1,4 @@
 import { MessageEmbed } from "discord.js";
-import type { Snowflake } from "discord.js";
 import type Disc_11 from "../structures/Disc_11";
 import type { IMessage, ClientEventListener } from "../../typings";
 
@@ -10,7 +9,7 @@ export default class MessageEvent implements ClientEventListener {
     public execute(message: IMessage): any {
         if (message.author.bot) return message;
         if (message.channel.type === "dm") return message;
-        if (message.content === this.client.user?.id as Snowflake) {
+        if (message.content === this.client.user?.toString()) {
             return message.channel.send(
                 new MessageEmbed().setDescription(`Hi, my prefix is **\`${this.client.config.prefix}\`**`).setColor(this.client.config.embedColor)
             );
