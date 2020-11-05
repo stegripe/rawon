@@ -11,7 +11,7 @@ export default class MessageEvent implements ClientEventListener {
         if (message.channel.type === "dm") return message;
         if (message.content === this.client.user?.toString()) {
             return message.channel.send(
-                new MessageEmbed().setDescription(`Hi, my prefix is **\`${this.client.config.prefix}\`**`).setColor(this.client.config.embedColor)
+                new MessageEmbed().setDescription(`👋 Hi there, my prefix is **\`${this.client.config.prefix}\`**`).setColor(this.client.config.embedColor)
             );
         }
         if (!message.content.toLowerCase().startsWith(this.client.config.prefix)) return message;
