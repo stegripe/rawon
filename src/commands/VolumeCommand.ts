@@ -36,6 +36,6 @@ export default class VolumeCommand extends BaseCommand {
 
         message.guild.queue.volume = Number(args[0]);
         message.guild.queue.connection?.dispatcher.setVolume(Number(args[0]) / this.client.config.maxVolume);
-        message.channel.send(new MessageEmbed().setDescription(`🔊  **|**  Volume set to ${args[0]}`).setColor(this.client.config.embedColor)).catch(console.error);
+        message.channel.send(new MessageEmbed().setDescription(`🔊  **|**  Volume set to **\`${args[0]}\`**`).setColor(this.client.config.embedColor)).catch(console.error);
     }
 }
