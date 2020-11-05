@@ -20,11 +20,11 @@ export default class QueueCommand extends BaseCommand {
         const embed = new MessageEmbed().setTitle("⌛ Song Queue").setColor(this.client.config.embedColor);
 
         let num = 1;
-        const songs = message.guild.queue.songs.map(s => `\`\`\`\n${num++}. ${s.title}\`\`\``);
+        const songs = message.guild.queue.songs.map(s => `${num++} - ${s.title}`);
         if (message.guild.queue.songs.size > 10) {
             const indexes: string[] = this.chunk(songs, 10);
             let index = 0;
-            embed.setDescription(indexes[index]).setFooter(`• Page ${index + 1} of ${indexes.length}`, "https://hzmi.xyz/assets/images/390511462361202688.png");
+            embed.setDescription(`\`\`\`\n${indexes[index]}\`\`\``).setFooter(`• Page ${index + 1} of ${indexes.length}`, "https://hzmi.xyz/assets/images/390511462361202688.png");
             message.channel.send(embed).then(msg => {
                 msg.react("◀️").then(() => {
                     msg.react("▶️").catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
