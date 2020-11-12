@@ -1,0 +1,34 @@
+name: CodeQL
+
+on: 
+  push:
+    branches:
+      - stable
+  pull_request:
+    branches:
+      - stable
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  run:
+    needs: compile
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        languange: ['javascript']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild (Attempts to build any compiled languages)
+        uses: github/codeql-action/autobuild@v1
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
