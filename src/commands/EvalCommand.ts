@@ -3,7 +3,7 @@ import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import { request } from "https";
 import { inspect } from "util";
-import type Disc_11 from "../structures/Disc_11";
+import Disc_11 from "../structures/Disc_11";
 import { ICommandComponent, IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 

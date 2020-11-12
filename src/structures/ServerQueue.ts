@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, @typescript-eslint/unbound-method */
 import SongManager from "../utils/SongManager";
-import type { IServerQueue } from "../../typings";
+import { IServerQueue } from "../../typings";
 
 export default class ServerQueue implements IServerQueue {
     public connection: IServerQueue["connection"] = null;

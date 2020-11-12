@@ -1,8 +1,8 @@
-import type { Snowflake, TextChannel, Collection, GuildMember } from "discord.js";
+import { Snowflake, TextChannel, Collection, GuildMember } from "discord.js";
 import { MessageEmbed } from "discord.js";
 import { formatMS } from "../utils/formatMS";
-import type { ClientEventListener, IVoiceState } from "../../typings";
-import type Disc_11 from "../structures/Disc_11";
+import { ClientEventListener, IVoiceState } from "../../typings";
+import Disc_11 from "../structures/Disc_11";
 import { DefineListener } from "../utils/decorators/DefineListener";
 
 @DefineListener("voiceStateUpdate")

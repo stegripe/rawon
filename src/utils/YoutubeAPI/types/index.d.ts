@@ -1,4 +1,4 @@
-import type { Duration } from "iso8601-duration";
+import { Duration } from "iso8601-duration";
 
 export type privacyStatus = "public" | "private" | "unlisted";
 export type uploadStatus = "deleted" | "failed" | "processed" | "rejected" | "uploaded";

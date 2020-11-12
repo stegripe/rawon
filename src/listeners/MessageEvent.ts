@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
-import type Disc_11 from "../structures/Disc_11";
-import type { IMessage, ClientEventListener } from "../../typings";
+import Disc_11 from "../structures/Disc_11";
+import { IMessage, ClientEventListener } from "../../typings";
 import { DefineListener } from "../utils/decorators/DefineListener";
 
 @DefineListener("message")

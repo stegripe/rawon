@@ -1,4 +1,4 @@
-import type { ActivityType } from "discord.js";
+import { ActivityType } from "discord.js";
 
 export const name: string = process.env.CONFIG_NAME ?? "Disc 11";
 export const prefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!"; // Temporary workaround for https://github.com/docker/compose/issues/6951

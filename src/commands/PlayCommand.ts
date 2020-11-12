@@ -4,10 +4,10 @@ import ServerQueue from "../structures/ServerQueue";
 import ytdl from "../utils/YoutubeDownload";
 import { Util, MessageEmbed } from "discord.js";
 import { decodeHTML } from "entities";
-import type { VoiceChannel } from "discord.js";
-import type Disc_11 from "../structures/Disc_11";
-import type { IMessage, ISong, IGuild, ICommandComponent } from "../../typings";
-import type { Video } from "../utils/YoutubeAPI/structures/Video";
+import { VoiceChannel } from "discord.js";
+import Disc_11 from "../structures/Disc_11";
+import { IMessage, ISong, IGuild, ICommandComponent } from "../../typings";
+import { Video } from "../utils/YoutubeAPI/structures/Video";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isSameVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
 

@@ -3,7 +3,7 @@ import { MessageEmbed, version } from "discord.js";
 import { uptime as osUptime } from "os";
 import path from "path";
 import { formatMS } from "../utils/formatMS";
-import type Disc_11 from "../structures/Disc_11";
+import Disc_11 from "../structures/Disc_11";
 import { ICommandComponent, IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 

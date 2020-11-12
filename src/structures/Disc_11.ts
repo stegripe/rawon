@@ -6,7 +6,7 @@ import { createLogger } from "../utils/Logger";
 import CommandsHandler from "../utils/CommandsHandler";
 import ListenerLoader from "../utils/ListenerLoader";
 import { YoutubeAPI } from "../utils/YoutubeAPI";
-import type { ClientOptions } from "discord.js";
+import { ClientOptions } from "discord.js";
 
 // Extends DiscordJS Structures
 import "./Guild";

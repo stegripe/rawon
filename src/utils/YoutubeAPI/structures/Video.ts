@@ -1,6 +1,6 @@
 import duration from "iso8601-duration";
-import type { YoutubeAPI } from "..";
-import type { IVideo } from "../types";
+import { YoutubeAPI } from "..";
+import { IVideo } from "../types";
 
 export class Video implements IVideo {
     public id: IVideo["id"];

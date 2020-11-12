@@ -1,11 +1,11 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import type { ICommandComponent, IMessage } from "../../typings";
-import type Disc_11 from "../structures/Disc_11";
+import { ICommandComponent, IMessage } from "../../typings";
+import Disc_11 from "../structures/Disc_11";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 
 @DefineCommand({
-    aliases: ["pong", "pang", "pung", "peng" "pingpong"],
+    aliases: ["pong", "pang", "pung", "peng", "pingpong"],
     name: "ping",
     description: "Shows the current ping of the bot",
     usage: "{prefix}ping"
