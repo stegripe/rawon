@@ -44,6 +44,11 @@
             "required": false,
             "value": "no"
         },
+        "CONFIG_SELECT_TIMEOUT": {
+            "description": "Select song timeout when searching songs (in seconds) (default: 20 seconds)",
+            "required": false,
+            "value": 20
+        },
         "CONFIG_DELETE_QUEUE_TIMEOUT": {
             "description": "Timeout in seconds before queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)",
             "required": false,

@@ -95,7 +95,7 @@ export default class PlayCommand extends BaseCommand {
                         return Number(msg2.content) > 0 && Number(msg2.content) < 11;
                     }, {
                         max: 1,
-                        time: 20000,
+                        time: this.client.config.selectTimeout,
                         errors: ["time"]
                     });
                     msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
