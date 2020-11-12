@@ -1,5 +1,5 @@
 import { Message, Guild, TextChannel, VoiceChannel, DMChannel, NewsChannel, VoiceConnection, Collection, ClientEvents, VoiceState } from "discord.js";
-import Disc_11 from "../src/structures/Disc_11";
+import { Disc_11 } from "../src/structures/Disc_11";
 
 export interface ICommandComponent {
     meta: {

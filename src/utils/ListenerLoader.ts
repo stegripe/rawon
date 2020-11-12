@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { resolve } from "path";
-import Disc_11 from "../structures/Disc_11";
+import { Disc_11 } from "../structures/Disc_11";
 import { IListener } from "../../typings";
 
 export class ListenerLoader {
