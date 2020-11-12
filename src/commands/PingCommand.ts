@@ -1,7 +1,6 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import { ICommandComponent, IMessage } from "../../typings";
-import Disc_11 from "../structures/Disc_11";
+import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 
 @DefineCommand({
@@ -11,8 +10,6 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
     usage: "{prefix}ping"
 })
 export default class PingCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
-
     public execute(message: IMessage): IMessage {
         const before = Date.now();
         message.channel.send("*🏓 Pinging...*").then((msg: IMessage | any) => {

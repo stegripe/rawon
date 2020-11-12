@@ -3,8 +3,7 @@ import { version } from "discord.js";
 import { uptime as osUptime } from "os";
 import path from "path";
 import { formatMS } from "../utils/formatMS";
-import Disc_11 from "../structures/Disc_11";
-import { ICommandComponent, IMessage } from "../../typings";
+import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { createEmbed } from "../utils/createEmbed";
 
@@ -15,8 +14,6 @@ import { createEmbed } from "../utils/createEmbed";
     usage: "{prefix}about"
 })
 export default class AboutCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
-
     public async execute(message: IMessage): Promise<void> {
         message.channel.send(
             createEmbed("info", `

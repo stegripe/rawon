@@ -1,6 +1,5 @@
 import BaseCommand from "../structures/BaseCommand";
-import { ICommandComponent, IMessage } from "../../typings";
-import Disc_11 from "../structures/Disc_11";
+import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 import { createEmbed } from "../utils/createEmbed";
@@ -11,8 +10,6 @@ import { createEmbed } from "../utils/createEmbed";
     usage: "{prefix}pause"
 })
 export default class PauseCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
-
     @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()

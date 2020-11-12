@@ -5,8 +5,7 @@ import ytdl from "../utils/YoutubeDownload";
 import { Util, MessageEmbed } from "discord.js";
 import { decodeHTML } from "entities";
 import { VoiceChannel } from "discord.js";
-import Disc_11 from "../structures/Disc_11";
-import { IMessage, ISong, IGuild, ICommandComponent } from "../../typings";
+import { IMessage, ISong, IGuild } from "../../typings";
 import { Video } from "../utils/YoutubeAPI/structures/Video";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isSameVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
@@ -19,8 +18,6 @@ import { createEmbed } from "../utils/createEmbed";
     usage: "{prefix}play <youtube video or youtube video name or playlist link>"
 })
 export default class PlayCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
-
     @isUserInTheVoiceChannel()
     @isValidVoiceChannel()
     @isSameVoiceChannel()

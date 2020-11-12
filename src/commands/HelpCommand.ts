@@ -1,7 +1,6 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import Disc_11 from "../structures/Disc_11";
-import { ICommandComponent, IMessage } from "../../typings";
+import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { createEmbed } from "../utils/createEmbed";
 
@@ -12,8 +11,6 @@ import { createEmbed } from "../utils/createEmbed";
     usage: "{prefix}help [command]"
 })
 export default class HelpCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
-
     public execute(message: IMessage, args: string[]): void {
         const command = message.client.CommandsHandler.commands.get(args[0]) ??
             message.client.CommandsHandler.commands.get(message.client.CommandsHandler.aliases.get(args[0])!);

@@ -1,6 +1,5 @@
 import BaseCommand from "../structures/BaseCommand";
-import { ICommandComponent, IMessage } from "../../typings";
-import Disc_11 from "../structures/Disc_11";
+import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 import { createEmbed } from "../utils/createEmbed";
@@ -9,11 +8,9 @@ import { createEmbed } from "../utils/createEmbed";
     aliases: ["vol", "v"],
     name: "volume",
     description: "Show or set the track volume",
-    usage: "{prefix}volume [new volume]"
+    usage: "{prefix}volume [level]"
 })
 export default class VolumeCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
-
     @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()
@@ -26,7 +23,7 @@ export default class VolumeCommand extends BaseCommand {
         if (volume === 0) return message.channel.send(createEmbed("warn", "Please pause the music instead of setting the volume to **\`0\`**"));
         if (Number(args[0]) > this.client.config.maxVolume) {
             return message.channel.send(
-                createEmbed("warn", `I can't set the volume above **\`${this.client.config.maxVolume}\`**`)
+                createEmbed("warn", `You cannot set the volume above **\`${this.client.config.maxVolume}\`**`)
             );
         }
 
