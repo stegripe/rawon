@@ -79,37 +79,39 @@ export default class PlayCommand extends BaseCommand {
             try {
                 const videos = await this.client.youtube.searchVideos(searchString, 10);
                 if (videos.length === 0) return message.channel.send(createEmbed("error", "I could not obtain any search results."));
-                let index = 0;
-                const msg = await message.channel.send(new MessageEmbed()
-                    .setAuthor("Song Selection")
-                    .setDescription(`\`\`\`\n${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`\n` +
+                if (this.client.config.disableSongSelection) { video = await this.client.youtube.getVideo(videos[0].id); } else {
+                    let index = 0;
+                    const msg = await message.channel.send(new MessageEmbed()
+                        .setAuthor("Song Selection")
+                        .setDescription(`\`\`\`\n${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`\n` +
                         "Please provide a value to select one of the search results ranging from **\`1-10\`**!")
-                    .setColor(this.client.config.embedColor)
-                    .setFooter("• Type cancel or c to cancel the song selection"));
+                        .setThumbnail(message.client.user?.displayAvatarURL() as string)
+                        .setColor(this.client.config.embedColor)
+                        .setFooter("• Type cancel or c to cancel the song selection"));
                 try {
                     // eslint-disable-next-line no-var
                     var response = await message.channel.awaitMessages((msg2: IMessage) => {
                         if (message.author.id !== msg2.author.id) return false;
 
                         if (msg2.content === "cancel" || msg2.content === "c") return true;
-                        return Number(msg2.content) > 0 && Number(msg2.content) < 11;
-                    }, {
-                        max: 1,
-                        time: this.client.config.selectTimeout,
-                        errors: ["time"]
-                    });
-                    msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-                    response.first()?.delete({ timeout: 3000 }).catch(e => e); // do nothing
-                } catch (error) {
-                    msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-                    return message.channel.send(createEmbed("error", "No or invalid value entered, song selection has canceled."));
+                            return Number(msg2.content) > 0 && Number(msg2.content) < 13;
+                        }, {
+                            max: 1,
+                            time: this.client.config.selectTimeout,
+                            errors: ["time"]
+                        });
+                        msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                        response.first()?.delete({ timeout: 3000 }).catch(e => e); // do nothing
+                    } catch (error) {
+                        msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                        return message.channel.send(createEmbed("error", "No or invalid value entered, the song selection has been canceled."));
+                    }
+                    if (response.first()?.content === "c" || response.first()?.content === "cancel") {
+                        return message.channel.send(createEmbed("warn", "The song selection has been canceled."))
+                    }
+                    const videoIndex = parseInt(response.first()?.content as string, 10);
+                    video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
                 }
-                if (response.first()?.content === "c" || response.first()?.content === "cancel") {
-                    return message.channel.send(createEmbed("info", "The song selection has been canceled."));
-                }
-                const videoIndex = parseInt(response.first()?.content as string, 10);
-                // eslint-disable-next-line no-var
-                video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
             } catch (err) {
                 if (e.response.body.error.message === 'The request cannot be completed because you have exceeded your <a href="/youtube/v3/getting-started#quota">quota</a>.') {
                     this.client.logger.error("YT_SEARCH_ERR:", new Error("YouTube Data API v3 quota exceeded"));

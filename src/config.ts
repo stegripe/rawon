@@ -8,6 +8,7 @@ export const totalShards: string | number = process.env.CONFIG_TOTALSHARDS ?? "a
 export const defaultVolume = Number(process.env.CONFIG_DEFAULT_VOLUME) || 50;
 export const maxVolume = Number(process.env.CONFIG_MAX_VOLUME) || 100;
 export const allowDuplicate: boolean = process.env.CONFIG_ALLOW_DUPLICATE === "yes";
+export const disableSongSelection = process.env.CONFIG_DISABLE_SONG_SELECTION === "yes";
 export const selectTimeout = Number(process.env.CONFIG_SELECT_TIMEOUT) * 1000 || 20 * 1000;
 export const deleteQueueTimeout = Number(process.env.CONFIG_DELETE_QUEUE_TIMEOUT) * 1000 || 180 * 1000;
 export const cacheYoutubeDownloads: boolean = process.env.CONFIG_CACHE_YOUTUBE_DOWNLOADS === "yes";

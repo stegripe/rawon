@@ -44,6 +44,11 @@
             "required": false,
             "value": "no"
         },
+        "CONFIG_DISABLE_SONG_SELECTION": {
+            "description": "Whether to disable selecting songs on play command, this will automatically selects the first song from search results (default: no)",
+            "required": false,
+            "value": "no"
+        },
         "CONFIG_SELECT_TIMEOUT": {
             "description": "Select song timeout when searching songs (in seconds) (default: 20 seconds)",
             "required": false,
