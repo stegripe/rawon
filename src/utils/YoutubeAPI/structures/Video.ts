@@ -31,7 +31,6 @@ export class Video implements IVideo {
     }
 
     public get thumbnailURL(): string {
-        const thumbnailData = this.thumbnails.maxres ?? this.thumbnails.high ?? this.thumbnails.medium ?? this.thumbnails.standard ?? this.thumbnails.default;
-        return thumbnailData!.url;
+        return (this.thumbnails.maxres ?? this.thumbnails.high ?? this.thumbnails.medium ?? this.thumbnails.standard ?? this.thumbnails.default).url;
     }
 }
