@@ -13,7 +13,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Send the bot information",
     usage: "{prefix}about"
 })
-export default class AboutCommand extends BaseCommand {
+export class AboutCommand extends BaseCommand {
     public async execute(message: IMessage): Promise<void> {
         message.channel.send(
             createEmbed("info", `

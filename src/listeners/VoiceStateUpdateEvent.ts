@@ -6,7 +6,7 @@ import { createEmbed } from "../utils/createEmbed";
 import { BaseListener } from "../structures/BaseListener";
 
 @DefineListener("voiceStateUpdate")
-export default class VoiceStateUpdateEvent extends BaseListener {
+export class VoiceStateUpdateEvent extends BaseListener {
     public execute(oldState: IVoiceState, newState: IVoiceState): any {
         if (newState.guild.queue) {
             const oldID = oldState.channel ? oldState.channel.id : undefined;

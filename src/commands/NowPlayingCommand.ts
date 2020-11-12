@@ -10,7 +10,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Send an information about the track",
     usage: "{prefix}nowplaying"
 })
-export default class NowPlayingCommand extends BaseCommand {
+export class NowPlayingCommand extends BaseCommand {
     @isMusicPlaying()
     public execute(message: IMessage): any {
         const song = message.guild?.queue?.songs.first();

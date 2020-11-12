@@ -10,7 +10,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Stop track and deletes the queue",
     usage: "{prefix}stop"
 })
-export default class StopCommand extends BaseCommand {
+export class StopCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()

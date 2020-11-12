@@ -9,7 +9,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Skip the current track",
     usage: "{prefix}skip"
 })
-export default class SkipCommand extends BaseCommand {
+export class SkipCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()

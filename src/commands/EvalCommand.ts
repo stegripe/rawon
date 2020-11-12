@@ -14,7 +14,7 @@ import { createEmbed } from "../utils/createEmbed";
     name: "eval",
     usage: "{prefix}eval <some js code>"
 })
-export default class EvalCommand extends BaseCommand {
+export class EvalCommand extends BaseCommand {
     public async execute(message: IMessage, args: string[]): Promise<any> {
         const msg = message;
         const client = this.client;

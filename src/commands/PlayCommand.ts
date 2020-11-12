@@ -17,7 +17,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Play some music",
     usage: "{prefix}play <youtube video or youtube video name or playlist link>"
 })
-export default class PlayCommand extends BaseCommand {
+export class PlayCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isValidVoiceChannel()
     @isSameVoiceChannel()

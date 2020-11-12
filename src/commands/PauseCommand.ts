@@ -9,7 +9,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Pause the track",
     usage: "{prefix}pause"
 })
-export default class PauseCommand extends BaseCommand {
+export class PauseCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()

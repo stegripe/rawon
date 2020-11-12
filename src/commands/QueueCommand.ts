@@ -10,7 +10,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Show the current track queue",
     usage: "{prefix}queue"
 })
-export default class QueueCommand extends BaseCommand {
+export class QueueCommand extends BaseCommand {
     @isMusicPlaying()
     public execute(message: IMessage): any {
         const embed = createEmbed("info")

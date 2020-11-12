@@ -10,7 +10,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Repeat the current track or queue",
     usage: "{prefix}repeat <all | one | disable>"
 })
-export default class RepeatCommand extends BaseCommand {
+export class RepeatCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()

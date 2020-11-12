@@ -2,7 +2,7 @@ import { BaseListener } from "../structures/BaseListener";
 import { DefineListener } from "../utils/decorators/DefineListener";
 
 @DefineListener("ready")
-export default class ReadyEvent extends BaseListener {
+export class ReadyEvent extends BaseListener {
     public execute(): void {
         this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${this.client.user!.tag} is ready to serve ${this.client.guilds.cache.size} guilds!`);
         const updatePresence = async (): Promise<void> => {

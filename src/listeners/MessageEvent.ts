@@ -4,7 +4,7 @@ import { createEmbed } from "../utils/createEmbed";
 import { BaseListener } from "../structures/BaseListener";
 
 @DefineListener("message")
-export default class MessageEvent extends BaseListener {
+export class MessageEvent extends BaseListener {
     public execute(message: IMessage): any {
         if (message.author.bot) return message;
         if (message.channel.type === "dm") return message;

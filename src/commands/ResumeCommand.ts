@@ -9,7 +9,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Resume the paused track",
     usage: "{prefix}resume"
 })
-export default class ResumeCommand extends BaseCommand {
+export class ResumeCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()

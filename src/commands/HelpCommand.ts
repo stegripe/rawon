@@ -10,7 +10,7 @@ import { createEmbed } from "../utils/createEmbed";
     description: "Shows the help menu or command list",
     usage: "{prefix}help [command]"
 })
-export default class HelpCommand extends BaseCommand {
+export class HelpCommand extends BaseCommand {
     public execute(message: IMessage, args: string[]): void {
         const command = message.client.commands.get(args[0]) ??
             message.client.commands.get(message.client.commands.aliases.get(args[0])!);

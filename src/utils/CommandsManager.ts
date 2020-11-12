@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import { resolve } from "path";
+import { parse, resolve } from "path";
 import { Message, Snowflake } from "discord.js";
 import { Collection } from "discord.js";
 import { Disc_11 } from "../structures/Disc_11";
@@ -14,7 +14,8 @@ export class CommandsManager extends Collection<string, ICommandComponent> {
             .then(async files => {
                 let disabledCount = 0;
                 for (const file of files) {
-                    const command: ICommandComponent = await this.import(path, this.client, { path });
+                    const command = await this.import(path, this.client, { path });
+                    if (command === undefined) throw new Error(`File ${file} is not a valid command file`);
                     command.meta = Object.assign(command.meta, { path });
                     if (Number(command.meta.aliases?.length) > 0) {
                         command.meta.aliases?.forEach(alias => {
@@ -65,7 +66,8 @@ export class CommandsManager extends Collection<string, ICommandComponent> {
         }
     }
 
-    private async import(path: string, ...args: any[]): Promise<ICommandComponent> {
-        return new (await import(resolve(path)).then(m => m.default))(...args);
+    private async import(path: string, ...args: any[]): Promise<ICommandComponent | undefined> {
+        const file = (await import(resolve(path)).then(m => m[parse(path).name]));
+        return file ? new file(...args) : undefined;
     }
 }

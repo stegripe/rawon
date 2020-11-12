@@ -9,7 +9,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
     description: "Shows the current ping of the bot",
     usage: "{prefix}ping"
 })
-export default class PingCommand extends BaseCommand {
+export class PingCommand extends BaseCommand {
     public execute(message: IMessage): IMessage {
         const before = Date.now();
         message.channel.send("*🏓 Pinging...*").then((msg: IMessage | any) => {
