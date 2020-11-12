@@ -11,7 +11,7 @@ import { ClientOptions } from "discord.js";
 // Extends DiscordJS Structures
 import "./Guild";
 
-export default class Jukebox extends Client {
+export default class Disc_11 extends Client {
     public readonly config = config;
     public readonly logger = createLogger(config.name, config.debug);
     public readonly youtube = new YoutubeAPI(process.env.YT_API_KEY!);
@@ -19,7 +19,7 @@ export default class Jukebox extends Client {
     public readonly ListenerLoader = new ListenerLoader(this, resolve(__dirname, "..", "listeners"));
     public constructor(opt: ClientOptions) { super(opt); }
 
-    public async build(token: string): Promise<Jukebox> {
+    public async build(token: string): Promise<Disc_11> {
         this.on("ready", () => this.CommandsHandler.load());
         this.ListenerLoader.load().catch(e => this.logger.error("LISTENER_LOADER_ERR:", e));
         await this.login(token);

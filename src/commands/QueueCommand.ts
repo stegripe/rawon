@@ -1,9 +1,9 @@
 import BaseCommand from "../structures/BaseCommand";
-import { MessageEmbed } from "discord.js";
 import { ICommandComponent, IMessage } from "../../typings";
 import Disc_11 from "../structures/Disc_11";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isMusicPlaying } from "../utils/decorators/MusicHelper";
+import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
     aliases: ["q", "queue-list", "track-list"],
@@ -16,7 +16,8 @@ export default class QueueCommand extends BaseCommand {
 
     @isMusicPlaying()
     public execute(message: IMessage): any {
-        const embed = new MessageEmbed().setTitle("⌛ Song Queue").setColor(this.client.config.embedColor);
+        const embed = createEmbed("info")
+            .setTitle("**Song Queue**")
 
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);

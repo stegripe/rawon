@@ -1,9 +1,9 @@
 import BaseCommand from "../structures/BaseCommand";
-import { MessageEmbed } from "discord.js";
 import { ICommandComponent, IMessage } from "../../typings";
 import Disc_11 from "../structures/Disc_11";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
+import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
     name: "pause",
@@ -20,9 +20,9 @@ export default class PauseCommand extends BaseCommand {
         if (message.guild?.queue?.playing) {
             message.guild.queue.playing = false;
             message.guild.queue.connection?.dispatcher.pause();
-            return message.channel.send(new MessageEmbed().setDescription("⏸  **|**  Paused the music for you").setColor(this.client.config.embedColor));
+            return message.channel.send(createEmbed("info", "⏸  **|**  Paused the music for you"));
         }
-        message.channel.send(new MessageEmbed().setDescription("Music is already paused.").setColor("YELLOW"))
+        message.channel.send(createEmbed("warn", "Music is already paused."))
             .catch(e => this.client.logger.error("PAUSE_CMD_ERR:", e));
     }
 }

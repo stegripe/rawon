@@ -1,8 +1,8 @@
 import BaseCommand from "../structures/BaseCommand";
-import { MessageEmbed } from "discord.js";
 import { ICommandComponent, IMessage } from "../../typings";
 import Disc_11 from "../structures/Disc_11";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
     name: "invite",
@@ -16,8 +16,8 @@ export default class InviteCommand extends BaseCommand {
 
     public async execute(message: IMessage): Promise<void> {
         message.channel.send(
-            new MessageEmbed().addField("Discord bot invite link", `**[Click here to invite me](${await this.client.generateInvite({ permissions: 53857345 })})**`)
-                .setColor(this.client.config.embedColor)
+            ncreateEmbed("info")
+            .addField("Discord bot invite link", `[Click here](${await this.client.generateInvite({ permissions: 53857345 })})`)
         ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
     }
 }

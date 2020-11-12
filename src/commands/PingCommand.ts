@@ -30,9 +30,7 @@ export default class PingCommand extends BaseCommand {
                     value: `**\`${wsLatency}\`** ms`,
                     inline: true
                 })
-                .setFooter(`Requested by: ${message.author.tag}`, message.author.displayAvatarURL())
-                .setTimestamp();
-
+                .setFooter(`Requested by: ${message.author.tag}`, message.author.displayAvatarURL());
             msg.edit(embed);
             msg.edit("");
         }).catch(e => this.client.logger.error("PING_CMD_ERR:", e));

@@ -1,11 +1,12 @@
 import BaseCommand from "../structures/BaseCommand";
-import { MessageEmbed, version } from "discord.js";
+import { version } from "discord.js";
 import { uptime as osUptime } from "os";
 import path from "path";
 import { formatMS } from "../utils/formatMS";
 import Disc_11 from "../structures/Disc_11";
 import { ICommandComponent, IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
     aliases: ["botinfo", "info", "stats"],
@@ -17,9 +18,8 @@ export default class AboutCommand extends BaseCommand {
     public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
     public async execute(message: IMessage): Promise<void> {
-        message.channel.send(new MessageEmbed()
-            .setAuthor(`${this.client.user?.username as string} - A simple open-sourced music bot`)
-            .setDescription(`
+        message.channel.send(
+            createEmbed("info", `
 \`\`\`asciidoc
 Users count         :: ${await this.client.getUsersCount()}
 Channels count      :: ${await this.client.getChannelsCount()}
@@ -42,12 +42,12 @@ Bot version         :: v${(await import(path.join(process.cwd(), "package.json")
 Source code         :: https://github.com/zhycorp/disc-11
 Get a support       :: https://zhycorp.xyz/discord
 \`\`\`
-    `)
-            .setColor(this.client.config.embedColor)
-            .setTimestamp()).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
+        `)
+                .setAuthor(`${this.client.user?.username as string} - A simple open-sourced music bot`)
+        ).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }
 
-    private bytesToSize(bytes: number): string { // Function From Rendang's util (https://github.com/Hazmi35/rendang)
+    private bytesToSize(bytes: number): string { // Function rrom Rendang's util (https://github.com/Hazmi35/rendang)
         if (isNaN(bytes) && bytes !== 0) throw new Error(`[bytesToSize] (bytes) Error: bytes is not a Number/Integer, received: ${typeof bytes}`);
         const sizes: string[] = ["B", "KiB", "MiB", "GiB", "TiB", "PiB"];
         if (bytes < 2 && bytes > 0) return `${bytes} Byte`;
