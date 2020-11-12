@@ -77,6 +77,7 @@ export interface ISong {
     id: string;
     title: string;
     url: string;
+    thumbnail: string;
 }
 export interface ClientEventListener {
     name: keyof ClientEvents;

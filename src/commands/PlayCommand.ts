@@ -126,7 +126,8 @@ export default class PlayCommand extends BaseCommand {
         const song: ISong = {
             id: video.id,
             title: this.cleanTitle(video.title),
-            url: video.url
+            url: video.url,
+            thumbnail: video.thumbnails.maxres.url
         };
         if (message.guild?.queue) {
             if (!this.client.config.allowDuplicate && message.guild.queue.songs.find(s => s.id === song.id)) {
@@ -138,7 +139,7 @@ export default class PlayCommand extends BaseCommand {
             }
             message.guild.queue.songs.addSong(song);
             if (playlist) return;
-            message.channel.send(createEmbed("info", `✅  **|**  **[${song.title}](${song.url})** has been added to the queue!`))
+            message.channel.send(createEmbed("info", `✅  **|**  **[${song.title}](${song.url})** has been added to the queue!`).setThumbnail(song.thumbnail))
                 .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
         } else {
             message.guild!.queue = new ServerQueue(message.channel, voiceChannel);
@@ -183,14 +184,14 @@ export default class PlayCommand extends BaseCommand {
             .on("start", () => {
                 serverQueue.playing = true;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has started`);
-                serverQueue.textChannel?.send(createEmbed("info", `▶  **|**  Start playing: **[${song.title}](${song.url})**`)
+                serverQueue.textChannel?.send(createEmbed("info", `▶  **|**  Start playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
                     .catch(e => this.client.logger.error("PLAY_ERR:", e));
             })
             .on("finish", () => {
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has ended`);
                 // eslint-disable-next-line max-statements-per-line
                 if (serverQueue.loopMode === 0) { serverQueue.songs.deleteFirst(); } else if (serverQueue.loopMode === 2) { serverQueue.songs.deleteFirst(); serverQueue.songs.addSong(song); }
-                /* serverQueue.textChannel?.send(createEmbed("info", `⏹  **|**  Stop playing: **[${song.title}](${song.url})**`))
+                /* serverQueue.textChannel?.send(createEmbed("info", `⏹  **|**  Stop playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
                     .catch(e => this.client.logger.error("PLAY_ERR:", e)); */
                 this.play(guild).catch(e => {
                     serverQueue.textChannel?.send(createEmbed("error", `Error while trying to play music:\n\`${e}\``))

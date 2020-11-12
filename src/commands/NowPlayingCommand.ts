@@ -16,7 +16,11 @@ export default class NowPlayingCommand extends BaseCommand {
 
     @isMusicPlaying()
     public execute(message: IMessage): any {
-        return message.channel.send(createEmbed("info", `${message.guild?.queue?.playing ? "▶  **|**  Now playing:" : "⏸  **|**  Now playing (paused):"} ` +
-                `**[${message.guild?.queue?.songs.first()?.title as string}](${message.guild?.queue?.songs.first()?.url as string})**`));
+        const song = message.guild?.queue?.songs.first();
+        return message.channel.send(
+            createEmbed("info", `${message.guild?.queue?.playing ? "▶  **|**  Now playing:" : "⏸  **|**  Now playing (paused):"} ` +
+                `**[${song?.title as string}](${song?.url as string})**`)
+                .setThumbnail(song?.thumbnail as string)
+        );
     }
 }
