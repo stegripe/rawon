@@ -1,4 +1,4 @@
-import BaseCommand from "../structures/BaseCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isMusicPlaying } from "../utils/decorators/MusicHelper";

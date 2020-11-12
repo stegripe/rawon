@@ -1,4 +1,4 @@
-import BaseCommand from "../structures/BaseCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";

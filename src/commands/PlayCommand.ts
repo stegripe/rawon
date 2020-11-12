@@ -1,5 +1,5 @@
 /* eslint-disable block-scoped-var, @typescript-eslint/restrict-template-expressions */
-import BaseCommand from "../structures/BaseCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import ServerQueue from "../structures/ServerQueue";
 import ytdl from "../utils/YoutubeDownload";
 import { Util, MessageEmbed } from "discord.js";

@@ -1,4 +1,4 @@
-import BaseCommand from "../structures/BaseCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import { version } from "discord.js";
 import { uptime as osUptime } from "os";
 import path from "path";

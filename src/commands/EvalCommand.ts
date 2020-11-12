@@ -1,5 +1,5 @@
 /* eslint-disable no-eval */
-import BaseCommand from "../structures/BaseCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import { request } from "https";
 import { inspect } from "util";
