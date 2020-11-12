@@ -8,7 +8,7 @@ on:
     branches:
       - stable
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 6 * * 1-5' # “At 06:00 on every day-of-week from Monday through Friday.” - crontab.guru
 
 jobs:
   run:
