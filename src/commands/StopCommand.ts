@@ -3,6 +3,7 @@ import { MessageEmbed } from "discord.js";
 import type Disc_11 from "../structures/Disc_11";
 import { ICommandComponent, IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 
 @DefineCommand({
     aliases: ["leave", "disconnect", "dc"],
@@ -13,6 +14,9 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 export default class StopCommand extends BaseCommand {
     public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
+    @isUserInTheVoiceChannel()
+    @isMusicPlaying()
+    @isSameVoiceChannel()
     public execute(message: IMessage): any {
         if (!message.member?.voice.channel) return message.channel.send(new MessageEmbed().setDescription("You're not in a voice channel").setColor("YELLOW"));
         if (!message.guild?.queue) return message.channel.send(new MessageEmbed().setDescription("There is nothing playing.").setColor("YELLOW"));

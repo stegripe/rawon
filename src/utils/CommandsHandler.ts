@@ -3,7 +3,7 @@ import { resolve } from "path";
 import type { Message, Snowflake } from "discord.js";
 import { Collection } from "discord.js";
 import type Disc_11 from "../structures/Disc_11";
-import type { ICommandComponent } from "../../typings";
+import type { ICommandComponent, IMessage } from "../../typings";
 
 export default class CommandsHandler {
     public readonly commands: Collection<string, ICommandComponent> = new Collection();
@@ -32,8 +32,8 @@ export default class CommandsHandler {
         return undefined;
     }
 
-    public handle(message: Message): any {
-        const args = message.content.substring(this.client.config.prefix.length).trim().split(/ +/g);
+    public handle(message: IMessage): any {
+        const args = message.content.substring(this.client.config.prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.commands.get(cmd!) ?? this.commands.get(this.aliases.get(cmd!)!);
         if (!command || command.meta.disable) return undefined;
