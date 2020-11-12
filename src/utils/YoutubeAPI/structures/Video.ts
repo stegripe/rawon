@@ -29,4 +29,9 @@ export class Video implements IVideo {
         this.status = raw.status;
         this.publishedAt = new Date(raw.snippet.publishedAt);
     }
+
+    public get thumbnailURL(): string {
+        const thumbnailData = this.thumbnails.maxres ?? this.thumbnails.high ?? this.thumbnails.medium ?? this.thumbnails.standard ?? this.thumbnails.default;
+        return thumbnailData!.url;
+    }
 }

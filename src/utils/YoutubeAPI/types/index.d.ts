@@ -10,23 +10,23 @@ export interface IThumbnails {
         url: string;
         width: 120;
         height: 90;
-    };
-    medium: {
+    } | undefined;
+    medium?: {
         url: "https://i.ytimg.com/vi/SlPhMPnQ58k/mqdefault.jpg";
         width: 320;
         height: 180;
-    };
-    high: {
+    } | undefined;
+    high?: {
         url: "https://i.ytimg.com/vi/SlPhMPnQ58k/hqdefault.jpg";
         width: 480;
         height: 360;
-    };
-    standard: {
+    } | undefined;
+    standard?: {
         url: "https://i.ytimg.com/vi/SlPhMPnQ58k/sddefault.jpg";
         width: 640;
         height: 480;
     };
-    maxres: {
+    maxres?: {
         url: "https://i.ytimg.com/vi/SlPhMPnQ58k/maxresdefault.jpg";
         width: 1280;
         height: 720;

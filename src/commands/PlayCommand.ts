@@ -126,7 +126,7 @@ export default class PlayCommand extends BaseCommand {
             id: video.id,
             title: this.cleanTitle(video.title),
             url: video.url,
-            thumbnail: video.thumbnails.maxres.url
+            thumbnail: video.thumbnailURL
         };
         if (message.guild?.queue) {
             if (!this.client.config.allowDuplicate && message.guild.queue.songs.find(s => s.id === song.id)) {
