@@ -3,7 +3,7 @@ import { MessageEmbed } from "discord.js";
 import type { ICommandComponent, IMessage } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
-import { isMemberInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
+import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 
 @DefineCommand({
     name: "resume",
@@ -13,7 +13,7 @@ import { isMemberInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from ".
 export default class ResumeCommand extends BaseCommand {
     public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
-    @isMemberInTheVoiceChannel()
+    @isUserInTheVoiceChannel()
     @isMusicPlaying()
     @isSameVoiceChannel()
     public execute(message: IMessage): any {
