@@ -9,7 +9,7 @@ export default class ListenerLoader {
     public async load(): Promise<Disc_11> {
         const files: string[] | undefined = await fs.readdir(resolve(this.path));
         for (const file of files) {
-            const event: ClientEventListener = new this.import(resolve(this.path, file);
+            const event: ClientEventListener = await this.import(resolve(this.path, file), this.client);
             this.client.on(event.name, (...args) => event.execute(...args));
             this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Listener for event ${event.name} has been loaded!`);
         }
