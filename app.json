@@ -40,14 +40,19 @@
             "value": 100
         },
         "CONFIG_ALLOW_DUPLICATE": {
-            "description": "Whether to allow users to add duplicate of music (yes or no) (default: no)",
+            "description": "Whether to allow users to add duplicate of music (yes or no) (default: yes)",
             "required": false,
-            "value": "no"
+            "value": "yes"
         },
         "CONFIG_DISABLE_SONG_SELECTION": {
             "description": "Whether to disable selecting songs on play command, this will automatically selects the first song from search results (default: no)",
             "required": false,
             "value": "no"
+        },
+        "CONFIG_SEARCH_MAX_RESULTS": {
+            "description": "Maximum songs to list in song selection (default: 10, max: 10)",
+            "required": false,
+            "value": 10
         },
         "CONFIG_SELECT_TIMEOUT": {
             "description": "Select song timeout when searching songs (in seconds) (default: 20 seconds)",

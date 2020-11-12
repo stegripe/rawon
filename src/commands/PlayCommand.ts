@@ -77,14 +77,14 @@ export default class PlayCommand extends BaseCommand {
             var video = await this.client.youtube.getVideoByURL(url);
         } catch (e) {
             try {
-                const videos = await this.client.youtube.searchVideos(searchString, 10);
+                const videos = await this.client.youtube.searchVideos(searchString, this.client.config.searchMaxResults);
                 if (videos.length === 0) return message.channel.send(createEmbed("error", "I could not obtain any search results."));
                 if (this.client.config.disableSongSelection) { video = await this.client.youtube.getVideo(videos[0].id); } else {
                     let index = 0;
                     const msg = await message.channel.send(new MessageEmbed()
                         .setAuthor("Song Selection")
                         .setDescription(`\`\`\`\n${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`\n` +
-                        "Please provide a value to select one of the search results ranging from **\`1-10\`**!")
+                        `Please provide a value to select one of the search results ranging from **\`1-${this.client.config.searchMaxResults}\`**!`)
                         .setThumbnail(message.client.user?.displayAvatarURL() as string)
                         .setColor(this.client.config.embedColor)
                         .setFooter("• Type cancel or c to cancel the song selection"));
