@@ -29,7 +29,7 @@ export class HelpCommand extends BaseCommand {
         } else {
             message.channel.send(
                 createEmbed("info", message.client.commands.filter(cmd => !cmd.meta.disable && cmd.meta.name !== "eval").map(c => `\`${c.meta.name}\``).join(" "))
-                    .setTitle("Command list")
+                    .setTitle(`${this.client.user?.username as string}'s command list`)
                     .setColor(this.client.config.embedColor)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)
                     .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for command!`, "https://hzmi.xyz/assets/images/390511462361202688.png")
