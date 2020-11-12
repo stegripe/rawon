@@ -9,7 +9,7 @@ export default class MessageEvent implements ClientEventListener {
     public execute(message: IMessage): any {
         if (message.author.bot) return message;
         if (message.channel.type === "dm") return message;
-        if (message.content === this.client.user?.toString()) {
+        if (message.content === message.guild?.me?.toString()) {
             return message.channel.send(
                 new MessageEmbed().setDescription(`👋 Hi there, my prefix is **\`${this.client.config.prefix}\`**`).setColor(this.client.config.embedColor)
             );
