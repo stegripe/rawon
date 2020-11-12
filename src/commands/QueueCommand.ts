@@ -14,7 +14,7 @@ export class QueueCommand extends BaseCommand {
     @isMusicPlaying()
     public execute(message: IMessage): any {
         const embed = createEmbed("info")
-            .setTitle("**Song Queue**")
+            .setTitle("**Song Queue**");
 
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);

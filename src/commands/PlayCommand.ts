@@ -2,9 +2,8 @@
 import { BaseCommand } from "../structures/BaseCommand";
 import { ServerQueue } from "../structures/ServerQueue";
 import { playsong } from "../utils/YoutubeDownload";
-import { Util, MessageEmbed } from "discord.js";
+import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";
-import { VoiceChannel } from "discord.js";
 import { IMessage, ISong, IGuild } from "../../typings";
 import { Video } from "../utils/YoutubeAPI/structures/Video";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
@@ -86,12 +85,12 @@ export class PlayCommand extends BaseCommand {
                         .setColor(this.client.config.embedColor)
                         .setFooter("• Type cancel or c to cancel the song selection"));
                 try {
-                    // eslint-disable-next-line no-var
-                    var response = await message.channel.awaitMessages((msg2: IMessage) => {
-                        if (message.author.id !== msg2.author.id) return false;
+                        // eslint-disable-next-line no-var
+                        var response = await message.channel.awaitMessages((msg2: IMessage) => {
+                            if (message.author.id !== msg2.author.id) return false;
 
                         if (msg2.content === "cancel" || msg2.content === "c") return true;
-                            return Number(msg2.content) > 0 && Number(msg2.content) < 13;
+                                return Number(msg2.content) > 0 && Number(msg2.content) < 13;
                         }, {
                             max: 1,
                             time: this.client.config.selectTimeout,
@@ -105,7 +104,7 @@ export class PlayCommand extends BaseCommand {
                     }
                     if (response.first()?.content === "c" || response.first()?.content === "cancel") {
                         return message.channel.send(createEmbed("warn", "The song selection has been canceled."))
-                    }
+                    };
                     const videoIndex = parseInt(response.first()?.content as string, 10);
                     video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
                 }

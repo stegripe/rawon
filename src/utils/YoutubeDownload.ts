@@ -1,7 +1,5 @@
-import { videoInfo, downloadOptions, videoFormat } from "ytdl-core";
-import { getInfo, downloadFromInfo } from "ytdl-core";
-import { Readable } from "stream";
-import { PassThrough } from "stream";
+import { videoInfo, downloadOptions, videoFormat, getInfo, downloadFromInfo } from "ytdl-core";
+import { Readable, PassThrough } from "stream";
 import { resolve as resolvePath } from "path";
 import { createReadStream, createWriteStream, existsSync, appendFileSync } from "fs";
 

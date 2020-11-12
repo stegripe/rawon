@@ -1,7 +1,6 @@
 import { promises as fs } from "fs";
 import { parse, resolve } from "path";
-import { Message, Snowflake } from "discord.js";
-import { Collection } from "discord.js";
+import { Message, Snowflake, Collection } from "discord.js";
 import { Disc_11 } from "../structures/Disc_11";
 import { ICommandComponent, IMessage } from "../../typings";
 

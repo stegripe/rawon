@@ -1,9 +1,8 @@
-import got from "got";
+import got, { Options, Response } from "got";
 import URL from "url";
 import querystring from "querystring";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
-import { Options, Response } from "got";
 
 export class YoutubeAPI {
     public readonly request = got;
