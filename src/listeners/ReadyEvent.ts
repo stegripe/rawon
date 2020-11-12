@@ -1,11 +1,8 @@
-import { ClientEventListener } from "../../typings";
-import Disc_11 from "../structures/Disc_11";
+import { BaseListener } from "../structures/BaseListener";
 import { DefineListener } from "../utils/decorators/DefineListener";
 
 @DefineListener("ready")
-export default class ReadyEvent implements ClientEventListener {
-    public constructor(private readonly client: Disc_11, public name: ClientEventListener["name"]) {}
-
+export default class ReadyEvent extends BaseListener {
     public execute(): void {
         this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${this.client.user!.tag} is ready to serve ${this.client.guilds.cache.size} guilds!`);
         const updatePresence = async (): Promise<void> => {

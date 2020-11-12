@@ -1,11 +1,8 @@
-import { ClientEventListener } from "../../typings";
-import Disc_11 from "../structures/Disc_11";
+import { BaseListener } from "../structures/BaseListener";
 import { DefineListener } from "../utils/decorators/DefineListener";
 
 @DefineListener("debug")
-export default class DebugEvent implements ClientEventListener {
-    public constructor(private readonly client: Disc_11, public name: ClientEventListener["name"]) {}
-
+export default class DebugEvent extends BaseListener {
     public execute(message: string): void {
         this.client.logger.debug(message);
     }

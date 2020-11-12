@@ -1,14 +1,12 @@
 import { Snowflake, TextChannel, Collection, GuildMember } from "discord.js";
 import { formatMS } from "../utils/formatMS";
-import { ClientEventListener, IVoiceState } from "../../typings";
-import Disc_11 from "../structures/Disc_11";
+import { IVoiceState } from "../../typings";
 import { DefineListener } from "../utils/decorators/DefineListener";
 import { createEmbed } from "../utils/createEmbed";
+import { BaseListener } from "../structures/BaseListener";
 
 @DefineListener("voiceStateUpdate")
-export default class VoiceStateUpdateEvent implements ClientEventListener {
-    public constructor(private readonly client: Disc_11, public name: ClientEventListener["name"]) {}
-
+export default class VoiceStateUpdateEvent extends BaseListener {
     public execute(oldState: IVoiceState, newState: IVoiceState): any {
         if (newState.guild.queue) {
             const oldID = oldState.channel ? oldState.channel.id : undefined;

@@ -79,9 +79,9 @@ export interface ISong {
     url: string;
     thumbnail: string;
 }
-export interface ClientEventListener {
+export interface IListener {
     name: keyof ClientEvents;
-    execute(...args: ClientEvents[EventProp["name"]]): any;
+    execute(...args: any): any;
 }
 export interface IVoiceState extends VoiceState {
     guild: IGuild;
