@@ -4,7 +4,7 @@ import { resolve } from "path";
 import * as config from "../config";
 import { createLogger } from "../utils/Logger";
 import { CommandsManager } from "../utils/CommandsManager";
-import ListenerLoader from "../utils/ListenerLoader";
+import { ListenerLoader } from "../utils/ListenerLoader";
 import { YoutubeAPI } from "../utils/YoutubeAPI";
 import { ClientOptions } from "discord.js";
 
@@ -16,12 +16,12 @@ export class Disc_11 extends Client {
     public readonly logger = createLogger(config.name, config.debug);
     public readonly youtube = new YoutubeAPI(process.env.YT_API_KEY!);
     public readonly commands = new CommandsManager(this, resolve(__dirname, "..", "commands"));
-    public readonly ListenerLoader = new ListenerLoader(this, resolve(__dirname, "..", "listeners"));
+    public readonly listenerLoader = new ListenerLoader(this, resolve(__dirname, "..", "listeners"));
     public constructor(opt: ClientOptions) { super(opt); }
 
     public async build(token: string): Promise<Disc_11> {
         this.on("ready", () => this.commands.load());
-        this.ListenerLoader.load().catch(e => this.logger.error("LISTENER_LOADER_ERR:", e));
+        this.listenerLoader.load().catch(e => this.logger.error("LISTENER_LOADER_ERR:", e));
         await this.login(token);
         return this;
     }

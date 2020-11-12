@@ -1,9 +1,9 @@
 import { promises as fs } from "fs";
 import { resolve } from "path";
-import type Disc_11 from "../structures/Disc_11";
-import type { IListener } from "../../typings";
+import Disc_11 from "../structures/Disc_11";
+import { IListener } from "../../typings";
 
-export default class ListenerLoader {
+export class ListenerLoader {
     public constructor(public client: Disc_11, public readonly path: string) {}
 
     public async load(): Promise<Disc_11> {
