@@ -65,8 +65,12 @@ export default class PlayCommand extends BaseCommand {
                 if (skippedVideos === playlist.itemCount) return message.channel.send(new MessageEmbed().setDescription(`Failed to load **[${playlist.title}](${playlist.url})** playlist because all of the items are private videos`).setColor("RED"));
                 return message.channel.send(new MessageEmbed().setDescription(`All videos in **[${playlist.title}](${playlist.url})**, has been added to the queue!`).setColor(this.client.config.embedColor));
             } catch (e) {
-                this.client.logger.error("YT_SEARCH_ERR:", e);
-                return message.channel.send(new MessageEmbed().setDescription(`I can't load the playlist.\nError: \`${e.message}\``).setColor("#FFFF00"));
+                if (e.response.body.error.message === 'The request cannot be completed because you have exceeded your <a href="/youtube/v3/getting-started#quota">quota</a>.') {
+                    this.client.logger.error("YT_PLAYLIST_ERR:", new Error("YouTube Data API v3 quota exceeded"));
+                    return message.channel.send(new MessageEmbed().setDescription(`Error: \`YouTube Data API v3 quota exceeded\`, please contact the bot owner.`).setColor("RED"));
+                }
+                this.client.logger.error("YT_PLAYLIST_ERR:", e);
+                return message.channel.send(new MessageEmbed().setDescription(`I can't load the playlist.\nError: \`${e.message}\``).setColor("RED"));
             }
         }
         try {
@@ -108,6 +112,10 @@ export default class PlayCommand extends BaseCommand {
                 // eslint-disable-next-line no-var
                 video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
             } catch (err) {
+                if (e.response.body.error.message === 'The request cannot be completed because you have exceeded your <a href="/youtube/v3/getting-started#quota">quota</a>.') {
+                    this.client.logger.error("YT_PLAYLIST_ERR:", new Error("YouTube Data API v3 quota exceeded"));
+                    return message.channel.send(new MessageEmbed().setDescription(`Error: \`YouTube Data API v3 quota exceeded\`, please contact the bot owner.`).setColor("RED"));
+                }
                 this.client.logger.error("YT_SEARCH_ERR:", err);
                 return message.channel.send(new MessageEmbed().setDescription(`I could not obtain any search results.\nError: \`${err.message}\``).setColor("RED"));
             }

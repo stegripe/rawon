@@ -1,3 +1,4 @@
+import { Options } from "got";
 import type { YoutubeAPI, bodyAny } from "..";
 import type { IPlaylist, IVideo } from "../types";
 import { Video } from "./Video";
@@ -29,19 +30,25 @@ export class Playlist implements IPlaylist {
     }
 
     public async getVideos(): Promise<IVideo[]> {
-        const videos: IVideo[] = [];
-        let pageToken: string | null = "";
-        while (videos.length !== this.itemCount) {
-            let searchParams = { playlistId: this.id, maxResults: 50 };
-            if (pageToken !== null) searchParams = Object.assign(searchParams, { pageToken });
-            try {
-                const raw: bodyAny = await this.yt.request.get("playlistItems", { searchParams });
-                pageToken = raw.body.nextPageToken;
-                for (const item of raw.body.items) { videos.push(item); }
-            } catch (error) {
-                throw new Error(error);
+        const videos = await this.yt.request.paginate.all("playlistItems", {
+            searchParams: { maxResults: 50, playlistId: this.id },
+            pagination: {
+                paginate: (response: bodyAny, allItems): Options | false => {
+                    const { nextPageToken, prevPageToken } = response.body;
+                    if (nextPageToken === prevPageToken) return false;
+                    if (allItems.length >= this.itemCount) return false;
+
+                    return {
+                        searchParams: {
+                            ...response.request.options.searchParams,
+                            pageToken: nextPageToken
+                        }
+                    };
+                },
+                transform: (response: bodyAny) => response.body.items,
+                countLimit: this.itemCount
             }
-        }
+        });
         return videos.map((i: any) => new Video(this.yt, i, "playlistItem"));
     }
 }

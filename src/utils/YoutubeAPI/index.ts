@@ -3,7 +3,7 @@ import URL from "url";
 import querystring from "querystring";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
-import type { Response } from "got";
+import type { Options, Response } from "got";
 
 export class YoutubeAPI {
     public readonly request = got;
@@ -36,19 +36,25 @@ export class YoutubeAPI {
     }
 
     public async searchVideos(q: string, maxResults = 5): Promise<Video[]> {
-        let pageToken: string | null = "";
-        const videos = [];
-        while (videos.length !== maxResults) {
-            let searchParams = { maxResults, part: "snippet", q, safeSearch: "none", type: "video" };
-            if (pageToken !== null) searchParams = Object.assign(searchParams, { pageToken });
-            try {
-                const raw: bodyAny = await this.request.get("search", { searchParams: { maxResults, part: "snippet", q, safeSearch: "none", type: "video" } });
-                pageToken = raw.body.nextPageToken;
-                for (const item of raw.body.items) { videos.push(item); }
-            } catch (error) {
-                throw new Error(error);
+        const videos = await this.request.paginate.all("search", {
+            searchParams: { maxResults, part: "snippet", q, safeSearch: "none", type: "video" },
+            pagination: {
+                paginate: (response: bodyAny, allItems): Options | false => {
+                    const { nextPageToken, prevPageToken } = response.body;
+                    if (nextPageToken === prevPageToken) return false;
+                    if (allItems.length >= maxResults) return false;
+
+                    return {
+                        searchParams: {
+                            ...response.request.options.searchParams,
+                            pageToken: nextPageToken
+                        }
+                    };
+                },
+                transform: (response: bodyAny) => response.body.items,
+                countLimit: maxResults
             }
-        }
+        });
         return videos.map((i: any) => new Video(this, i, "searchResults"));
     }
 }
