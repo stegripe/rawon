@@ -12,8 +12,8 @@ import { createEmbed } from "../utils/createEmbed";
 })
 export default class HelpCommand extends BaseCommand {
     public execute(message: IMessage, args: string[]): void {
-        const command = message.client.CommandsHandler.commands.get(args[0]) ??
-            message.client.CommandsHandler.commands.get(message.client.CommandsHandler.aliases.get(args[0])!);
+        const command = message.client.commands.get(args[0]) ??
+            message.client.commands.get(message.client.commands.aliases.get(args[0])!);
         if (command && !command.meta.disable) {
             message.channel.send(
                 new MessageEmbed()
@@ -28,7 +28,7 @@ export default class HelpCommand extends BaseCommand {
             ).catch(e => this.client.logger.error("HELP_CMD_ERR:", e));
         } else {
             message.channel.send(
-                createEmbed("info", message.client.CommandsHandler.commands.filter(cmd => !cmd.meta.disable && cmd.meta.name !== "eval").map(c => `\`${c.meta.name}\``).join(" "))
+                createEmbed("info", message.client.commands.filter(cmd => !cmd.meta.disable && cmd.meta.name !== "eval").map(c => `\`${c.meta.name}\``).join(" "))
                     .setTitle("Command list")
                     .setColor(this.client.config.embedColor)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)

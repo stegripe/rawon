@@ -14,6 +14,6 @@ export default class MessageEvent extends BaseListener {
             );
         }
         if (!message.content.toLowerCase().startsWith(this.client.config.prefix)) return message;
-        return this.client.CommandsHandler.handle(message);
+        return this.client.commands.handle(message);
     }
 }

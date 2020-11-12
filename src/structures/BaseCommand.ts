@@ -1,4 +1,4 @@
-import Disc_11 from "./Disc_11";
+import { Disc_11 } from "./Disc_11";
 import { ICommandComponent } from "../../typings";
 import { Message } from "discord.js";
 export class BaseCommand implements ICommandComponent {

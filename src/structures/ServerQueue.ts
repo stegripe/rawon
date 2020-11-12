@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle, @typescript-eslint/unbound-method */
-import SongManager from "../utils/SongManager";
+import { SongManager } from "../utils/SongManager";
 import { IServerQueue } from "../../typings";
 
-export default class ServerQueue implements IServerQueue {
+export class ServerQueue implements IServerQueue {
     public connection: IServerQueue["connection"] = null;
     public readonly songs: IServerQueue["songs"] = new SongManager();
     public volume: IServerQueue["volume"] = 0;
