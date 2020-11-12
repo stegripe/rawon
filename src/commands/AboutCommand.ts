@@ -40,7 +40,7 @@ Source code         :: https://github.com/zhycorp/disc-11
 Get a support       :: https://zhycorp.com/discord
 \`\`\`
         `)
-                .setAuthor(`${this.client.user?.username as string} - A simple open-sourced music bot`)
+                .setAuthor(`${this.client.user?.username as string} - A simple open-sourced Discord music bot`)
         ).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }
 
