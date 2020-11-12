@@ -21,15 +21,15 @@ export class HelpCommand extends BaseCommand {
                     .setThumbnail("https://hzmi.xyz/assets/images/question_mark.png")
                     .addFields({ name: "Name", value: `\`${command.meta.name}\``, inline: true },
                         { name: "Description", value: command.meta.description, inline: true },
-                        { name: "Aliases", value: `${Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `\`${c}\``).join(", ") as string : "None."}`, inline: true },
-                        { name: "Usage", value: `\`${command.meta.usage?.replace(/{prefix}/g, message.client.config.prefix) as string}\``, inline: false })
+                        { name: "Aliases", value: `${Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `\`${c}\``).join(", ") as string : "None."}`, inline: false },
+                        { name: "Usage", value: `\`${command.meta.usage?.replace(/{prefix}/g, message.client.config.prefix) as string}\``, inline: true })
                     .setColor(this.client.config.embedColor)
                     .setTimestamp()
             ).catch(e => this.client.logger.error("HELP_CMD_ERR:", e));
         } else {
             message.channel.send(
                 createEmbed("info", message.client.commands.filter(cmd => !cmd.meta.disable && cmd.meta.name !== "eval").map(c => `\`${c.meta.name}\``).join(" "))
-                    .setTitle(`${this.client.user?.username as string}'s command list`)
+                    .setTitle(`${this.client.user?.username as string} - command list`)
                     .setColor(this.client.config.embedColor)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)
                     .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for command!`, "https://hzmi.xyz/assets/images/390511462361202688.png")
