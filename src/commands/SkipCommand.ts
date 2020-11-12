@@ -1,16 +1,16 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
 import type Disc_11 from "../structures/Disc_11";
-import type { IMessage } from "../../typings";
+import { ICommandComponent, IMessage } from "../../typings";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 
+@DefineCommand({
+    name: "skip",
+    description: "Skip the current track",
+    usage: "{prefix}skip"
+})
 export default class SkipCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public readonly path: string) {
-        super(client, path, {}, {
-            name: "skip",
-            description: "Skip the current track",
-            usage: "{prefix}skip"
-        });
-    }
+    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
     public execute(message: IMessage): any {
         if (!message.member?.voice.channel) return message.channel.send(new MessageEmbed().setDescription("You're not in a voice channel").setColor("YELLOW"));

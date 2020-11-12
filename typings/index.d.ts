@@ -1,14 +1,12 @@
 import type { Message, Guild, TextChannel, VoiceChannel, DMChannel, NewsChannel, VoiceConnection, Collection, ClientEvents, VoiceState } from "discord.js";
 import type Disc_11 from "../src/structures/Disc_11";
 
-export interface CommandComponent {
-    conf: {
+export interface ICommandComponent {
+    meta: {
         aliases?: string[];
         cooldown?: number;
         disable?: boolean;
         path?: string;
-    };
-    help: {
         name: string;
         description?: string;
         usage?: string;

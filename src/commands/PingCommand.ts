@@ -1,18 +1,17 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import type { IMessage } from "../../typings";
+import type { ICommandComponent, IMessage } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 
+@DefineCommand({
+    aliases: ["pong", "pang", "pung", "peng" "pingpong"],
+    name: "ping",
+    description: "Shows the current ping of the bot",
+    usage: "{prefix}ping"
+})
 export default class PingCommand extends BaseCommand {
-    public constructor(client: Disc_11, public readonly path: string) {
-        super(client, path, {
-            aliases: ["pingpong", "pong", "pang", "pung", "peng", "pong"]
-        }, {
-            name: "ping",
-            description: "Shows the current ping of the bot",
-            usage: "{prefix}ping"
-        });
-    }
+    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
     public execute(message: IMessage): IMessage {
         const before = Date.now();

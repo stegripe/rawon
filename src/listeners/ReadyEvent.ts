@@ -1,9 +1,10 @@
 import type { ClientEventListener } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
+import { DefineListener } from "../utils/decorators/DefineListener";
 
+@DefineListener("ready")
 export default class ReadyEvent implements ClientEventListener {
-    public readonly name = "ready";
-    public constructor(private readonly client: Disc_11) {}
+    public constructor(private readonly client: Disc_11, public name: ClientEventListener["name"]) {}
 
     public execute(): void {
         this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${this.client.user!.tag} is ready to serve ${this.client.guilds.cache.size} guilds!`);

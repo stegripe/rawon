@@ -1,18 +1,17 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import type { IMessage } from "../../typings";
+import type { ICommandComponent, IMessage } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 
+@DefineCommand({
+    aliases: ["loop", "music-repeat", "music-loop"],
+    name: "repeat",
+    description: "Repeat the current track or queue",
+    usage: "{prefix}repeat <all | one | disable>"
+})
 export default class RepeatCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public readonly path: string) {
-        super(client, path, {
-            aliases: ["loop", "music-repeat", "music-loop"]
-        }, {
-            name: "repeat",
-            description: "Repeat the current track or queue",
-            usage: "{prefix}repeat <all | one | disable>"
-        });
-    }
+    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
     public execute(message: IMessage, args: string[]): any {
         const mode = args[0];
@@ -33,6 +32,6 @@ export default class RepeatCommand extends BaseCommand {
             message.guild.queue.loopMode = 0;
             return message.channel.send(new MessageEmbed().setDescription("▶  **|**  Repeating disabled.").setColor(this.client.config.embedColor));
         }
-        message.channel.send(`Invalid value, see **\`${this.client.config.prefix}help ${this.help.name}\`** for more information!`).catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
+        message.channel.send(`Invalid value, see **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information!`).catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
     }
 }

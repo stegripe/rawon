@@ -16,4 +16,8 @@ export default class ListenerLoader {
         this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} A total of ${files.length} of listeners has been loaded!`);
         return this.client;
     }
+
+    private async import(path: string, ...args: any[]): Promise<ClientEventListener> {
+        return new (await import(resolve(path)).then(m => m.default))(...args);
+    }
 }

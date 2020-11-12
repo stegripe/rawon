@@ -1,18 +1,17 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import type { IMessage } from "../../typings";
+import type { ICommandComponent, IMessage } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 
+@DefineCommand({
+    aliases: ["vol", "v"],
+    name: "volume",
+    description: "Show or set the track volume",
+    usage: "{prefix}volume [new volume]"
+})
 export default class VolumeCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public readonly path: string) {
-        super(client, path, {
-            aliases: ["vol", "v"]
-        }, {
-            name: "volume",
-            description: "Show or change the track volume",
-            usage: "{prefix}volume [new volume]"
-        });
-    }
+    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
     public execute(message: IMessage, args: string[]): any {
         let volume = Number(args[0]);

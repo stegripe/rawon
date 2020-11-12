@@ -1,17 +1,17 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import type { IMessage } from "../../typings";
+import type { ICommandComponent, IMessage } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 
+@DefineCommand({
+    name: "invite",
+    description: "Get the bot's invite link",
+    usage: "{prefix}invite"
+})
 export default class InviteCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public readonly path: string) {
-        super(client, path, {
-            disable: client.config.disableInviteCmd
-        }, {
-            name: "invite",
-            description: "Send the bot's invite link",
-            usage: "{prefix}invite"
-        });
+    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) {
+        super(client, Object.assign(meta, { disable: client.config.disableInviteCmd }));
     }
 
     public async execute(message: IMessage): Promise<void> {

@@ -1,18 +1,17 @@
 import BaseCommand from "../structures/BaseCommand";
 import { MessageEmbed } from "discord.js";
-import type { IMessage } from "../../typings";
+import type { ICommandComponent, IMessage } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 
+@DefineCommand({
+    aliases: ["q", "queue-list", "track-list"],
+    name: "queue",
+    description: "Show the current track queue",
+    usage: "{prefix}queue"
+})
 export default class QueueCommand extends BaseCommand {
-    public constructor(public client: Disc_11, public readonly path: string) {
-        super(client, path, {
-            aliases: ["q", "queue-list", "music-list"]
-        }, {
-            name: "queue",
-            description: "Show the current track queue",
-            usage: "{prefix}queue"
-        });
-    }
+    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
     public execute(message: IMessage): any {
         if (!message.guild?.queue) return message.channel.send(new MessageEmbed().setDescription("There is nothing playing.").setColor("YELLOW"));

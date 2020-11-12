@@ -3,10 +3,11 @@ import { MessageEmbed } from "discord.js";
 import { formatMS } from "../utils/formatMS";
 import type { ClientEventListener, IVoiceState } from "../../typings";
 import type Disc_11 from "../structures/Disc_11";
+import { DefineListener } from "../utils/decorators/DefineListener";
 
+@DefineListener("voiceStateUpdate")
 export default class VoiceStateUpdateEvent implements ClientEventListener {
-    public readonly name = "voiceStateUpdate";
-    public constructor(private readonly client: Disc_11) {}
+    public constructor(private readonly client: Disc_11, public name: ClientEventListener["name"]) {}
 
     public execute(oldState: IVoiceState, newState: IVoiceState): any {
         if (newState.guild.queue) {

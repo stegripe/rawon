@@ -4,19 +4,18 @@ import { MessageEmbed } from "discord.js";
 import { request } from "https";
 import { inspect } from "util";
 import type Disc_11 from "../structures/Disc_11";
-import type { IMessage } from "../../typings";
+import { ICommandComponent, IMessage } from "../../typings";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 
+@DefineCommand({
+    aliases: ["ev", "js-exec", "e", "evaluate"],
+    cooldown: 0,
+    description: "Only the bot owner can use this command",
+    name: "eval",
+    usage: "{prefix}eval <some js code>"
+})
 export default class EvalCommand extends BaseCommand {
-    public constructor(client: Disc_11, public readonly path: string) {
-        super(client, path, {
-            aliases: ["evaluate", "ev", "e", "js-exec"],
-            cooldown: 0
-        }, {
-            name: "eval",
-            description: "Only the bot owner can use this command",
-            usage: "{prefix}eval <some js code>"
-        });
-    }
+    public constructor(public client: Disc_11, public meta: ICommandComponent["meta"]) { super(client, meta); }
 
     public async execute(message: IMessage, args: string[]): Promise<any> {
         const msg = message;
