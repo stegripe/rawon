@@ -1,7 +1,7 @@
 /* eslint-disable block-scoped-var, @typescript-eslint/restrict-template-expressions */
 import { BaseCommand } from "../structures/BaseCommand";
 import { ServerQueue } from "../structures/ServerQueue";
-import { playsong } from "../utils/YoutubeDownload";
+import { playSong } from "../utils/YoutubeDownload";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";
 import { IMessage, ISong, IGuild } from "../../typings";
@@ -84,13 +84,13 @@ export class PlayCommand extends BaseCommand {
                         .setThumbnail(message.client.user?.displayAvatarURL() as string)
                         .setColor(this.client.config.embedColor)
                         .setFooter("• Type cancel or c to cancel the song selection"));
-                try {
-                        // eslint-disable-next-line no-var
+                    try {
+                    // eslint-disable-next-line no-var
                         var response = await message.channel.awaitMessages((msg2: IMessage) => {
                             if (message.author.id !== msg2.author.id) return false;
 
-                        if (msg2.content === "cancel" || msg2.content === "c") return true;
-                                return Number(msg2.content) > 0 && Number(msg2.content) < 13;
+                            if (msg2.content === "cancel" || msg2.content === "c") return true;
+                            return Number(msg2.content) > 0 && Number(msg2.content) < 13;
                         }, {
                             max: 1,
                             time: this.client.config.selectTimeout,
@@ -103,8 +103,8 @@ export class PlayCommand extends BaseCommand {
                         return message.channel.send(createEmbed("error", "No or invalid value entered, the song selection has been canceled."));
                     }
                     if (response.first()?.content === "c" || response.first()?.content === "cancel") {
-                        return message.channel.send(createEmbed("warn", "The song selection has been canceled."))
-                    };
+                        return message.channel.send(createEmbed("warn", "The song selection has been canceled."));
+                    }
                     const videoIndex = parseInt(response.first()?.content as string, 10);
                     video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
                 }
@@ -174,7 +174,7 @@ export class PlayCommand extends BaseCommand {
         }
 
         serverQueue.connection?.voice?.setSelfDeaf(true).catch(e => this.client.logger.error("PLAY_ERR:", e));
-        const songData = await playsong(song.url, { cache: this.client.config.cacheYoutubeDownloads, cacheMaxLength: this.client.config.cacheMaxLengthAllowed });
+        const songData = await playSong(song.url, { cache: this.client.config.cacheYoutubeDownloads, cacheMaxLength: this.client.config.cacheMaxLengthAllowed });
 
         if (songData.cache) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Using cache for song "${song.title}" on ${guild.name}`);
 

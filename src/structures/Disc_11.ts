@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, @typescript-eslint/unbound-method, @typescript-eslint/restrict-plus-operands */
+/* eslint-disable no-underscore-dangle, @typescript-eslint/unbound-method, @typescript-eslint/restrict-plus-operands, @typescript-eslint/naming-convention */
 import { Client, Collection, ClientOptions } from "discord.js";
 import { resolve } from "path";
 import * as config from "../config";

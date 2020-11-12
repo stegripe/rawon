@@ -13,6 +13,7 @@ export class CommandsManager extends Collection<string, ICommandComponent> {
             .then(async files => {
                 let disabledCount = 0;
                 for (const file of files) {
+                    const path = resolve(this.path, file);
                     const command = await this.import(path, this.client, { path });
                     if (command === undefined) throw new Error(`File ${file} is not a valid command file`);
                     command.meta = Object.assign(command.meta, { path });
@@ -44,7 +45,7 @@ export class CommandsManager extends Collection<string, ICommandComponent> {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send(`<@${message.author.id}>, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time.`).then((msg: Message) => {
+                message.channel.send(`<@${message.author.id}>, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time!`).then((msg: Message) => {
                     msg.delete({ timeout: 3500 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 return undefined;

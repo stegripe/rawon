@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Options } from "got";
 import { YoutubeAPI, bodyAny } from "..";
 import { IPlaylist, IVideo } from "../types";

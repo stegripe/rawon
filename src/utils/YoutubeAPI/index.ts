@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import got, { Options, Response } from "got";
 import URL from "url";
 import querystring from "querystring";
