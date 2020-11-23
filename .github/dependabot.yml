@@ -7,7 +7,7 @@ updates:
     time: "06:00"
     timezone: Asia/Jakarta
   open-pull-requests-limit: 99
-  target-branch: master
+  target-branch: stable
   reviewers:
   - mozartrafi
   labels:
@@ -22,7 +22,7 @@ updates:
     time: "06:00"
     timezone: Asia/Jakarta
   open-pull-requests-limit: 99
-  target-branch: master
+  target-branch: stable
   reviewers:
   - mozartrafi
   labels:
@@ -30,4 +30,20 @@ updates:
   - dependencies
   commit-message:
     prefix: ci
+    include: scope
+- package-ecosystem: docker
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:00"
+    timezone: Asia/Jakarta
+  open-pull-requests-limit: 99
+  target-branch: stable
+  reviewers:
+  - mozartrafi
+  labels:
+  - docker
+  - dependencies
+  commit-message:
+    prefix: chore
     include: scope
