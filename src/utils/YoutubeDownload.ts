@@ -28,7 +28,7 @@ export function playSong(link: string, options = defaultOptions): Promise<ISongD
             if (options.cache && !info.videoDetails.isLiveContent && !(Number(info.videoDetails.lengthSeconds) >= options.cacheMaxLength!)) {
                 const cachePath = resolvePath(process.cwd(), "cache");
                 const filePath = resolvePath(cachePath, `${info.videoDetails.videoId}.webm`);
-                const finishMarkerPath = resolvePath(cachePath, `${filePath}.jukeboxCacheFinish.marker`);
+                const finishMarkerPath = resolvePath(cachePath, `${filePath}.disc11CacheFinish.marker`);
                 if (existsSync(filePath) && existsSync(finishMarkerPath)) {
                     const fileStream = createReadStream(filePath)
                         .on("error", reject);
