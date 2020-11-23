@@ -48,7 +48,7 @@ function cache(stream: ISongStream, filePath: string, finishMarkerPath: string):
             .on("pipe", () => unlinkSync(finishMarkerPath))
             .on("finish", () => appendFileSync(finishMarkerPath, ""))
             .on("error", reject);
-            stream.pipe(cacheStream);
+        stream.pipe(cacheStream);
         stream.on("error", reject);
         return resolve(Object.assign(stream, { info: stream.info }));
     });
