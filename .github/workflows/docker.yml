@@ -51,12 +51,13 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
-      - name: Update repo description
-        uses: peter-evans/dockerhub-description@v2.4.1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          repository: hazmi35/jukebox
+      # Well, turns out it doesn't support PAT yet. Please see https://github.com/peter-evans/dockerhub-description/issues/24 and https://github.com/docker/roadmap/issues/115
+      #- name: Update repo description
+      #  uses: peter-evans/dockerhub-description@v2.4.1
+      #  with:
+      #    username: ${{ secrets.DOCKER_HUB_USERNAME }}
+      #    password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      #    repository: hazmi35/jukebox
 
       - name: Show Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
