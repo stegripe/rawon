@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { parse, resolve } from "path";
-import { Message, Snowflake, Collection } from "discord.js";
+import { Snowflake, Collection } from "discord.js";
 import { Disc_11 } from "../structures/Disc_11";
 import { ICommandComponent, IMessage } from "../../typings";
 
@@ -39,13 +39,13 @@ export class CommandsManager extends Collection<string, ICommandComponent> {
         if (!command || command.meta.disable) return undefined;
         if (!this.cooldowns.has(command.meta.name)) this.cooldowns.set(command.meta.name, new Collection());
         const now = Date.now();
-        const timestamps: Collection<Snowflake, number> = this.cooldowns.get(command.meta.name)!;
+        const timestamps = this.cooldowns.get(command.meta.name)!;
         const cooldownAmount = (command.meta.cooldown ?? 3) * 1000;
-        if (timestamps.has(message.author.id)) {
+        if (timestamps?.has(message.author.id)) {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send(`<@${message.author.id}>, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time!`).then((msg: Message) => {
+                message.channel.send(`<@${message.author.id}>, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time!`).then(msg => {
                     msg.delete({ timeout: 3500 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 return undefined;
@@ -54,8 +54,8 @@ export class CommandsManager extends Collection<string, ICommandComponent> {
             timestamps.set(message.author.id, now);
             setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         } else {
-            timestamps.set(message.author.id, now);
-            if (this.client.config.owners.includes(message.author.id)) timestamps.delete(message.author.id);
+            timestamps?.set(message.author.id, now);
+            if (this.client.config.owners.includes(message.author.id)) timestamps?.delete(message.author.id);
         }
         try {
             return command.execute(message, args);
