@@ -13,6 +13,7 @@ export const searchMaxResults = Number(process.env.CONFIG_SEARCH_MAX_RESULTS) ||
 
 if (searchMaxResults < 1) throw new Error("CONFIG_SEARCH_MAX_RESULTS cannot be smaller than 1");
 if (searchMaxResults > 10) throw new Error("CONFIG_SEARCH_MAX_RESULTS cannot be higher than 10");
+if (isNaN(totalShards as unknown as number)) throw new Error("CONFIG_TOTALSHARDS must be a number");
 export const selectTimeout = Number(process.env.CONFIG_SELECT_TIMEOUT) * 1000 || 20 * 1000;
 export const deleteQueueTimeout = Number(process.env.CONFIG_DELETE_QUEUE_TIMEOUT) * 1000 || 180 * 1000;
 export const cacheYoutubeDownloads: boolean = process.env.CONFIG_CACHE_YOUTUBE_DOWNLOADS === "yes";
