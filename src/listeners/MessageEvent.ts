@@ -13,7 +13,6 @@ export class MessageEvent extends BaseListener {
                 createEmbed("info", `👋  **|**  Hi there, my prefix is **\`${this.client.config.prefix}\`**`)
             );
         }
-        if (!message.content.toLowerCase().startsWith(this.client.config.prefix)) return message;
         return this.client.commands.handle(message);
     }
 
