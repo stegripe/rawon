@@ -73,7 +73,7 @@ Sure, we have provided them on the [Docker Hub](https://hub.docker.com/r/hazmi35
 
 ### Example:
 ```shell
-$ docker run --env-file .env --volume cache:/app/cache --volume logs:/app/logs hazmi35/jukebox
+$ docker run --env-file .env --volume cache:/app/cache --volume logs:/app/logs --restart unless-stopped hazmi35/jukebox
 ```
 We also provide [docker-compose.yml](docker-compose.yml) if you want to go that way.
 
