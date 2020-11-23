@@ -60,12 +60,9 @@ export class PlayCommand extends BaseCommand {
                 if (skippedVideos === playlist.itemCount) return message.channel.send(createEmbed("error", `Failed to load **[${playlist.title}](${playlist.url})** playlist because all of items are private video.`));
                 return message.channel.send(createEmbed("info", `✅  **|**  All videos in **[${playlist.title}](${playlist.url})**, has been added to the queue!`));
             } catch (e) {
-                if (e.response.body.error.message === 'The request cannot be completed because you have exceeded your <a href="/youtube/v3/getting-started#quota">quota</a>.') {
-                    this.client.logger.error("YT_PLAYLIST_ERR:", new Error("YouTube Data API v3 quota exceeded"));
-                    return message.channel.send(createEmbed("error", `Error: \`YouTube Data API v3 quota exceeded\`, please contact the bot owner.`));
-                }
-                this.client.logger.error("YT_PLAYLIST_ERR:", e);
-                return message.channel.send(createEmbed("error", `I can't load the playlist.\nError: \`${e.message}\``));
+                const error = e.response.body.error ?? e;
+                this.client.logger.error("YT_PLAYLIST_ERR:", new Error(error.message));
+                return message.channel.send(createEmbed("error", `I can't load the playlist.\nError: \`${error.message}\``));
             }
         }
         try {
@@ -109,12 +106,9 @@ export class PlayCommand extends BaseCommand {
                     video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
                 }
             } catch (err) {
-                if (e.response.body.error.message === 'The request cannot be completed because you have exceeded your <a href="/youtube/v3/getting-started#quota">quota</a>.') {
-                    this.client.logger.error("YT_SEARCH_ERR:", new Error("YouTube Data API v3 quota exceeded"));
-                    return message.channel.send(createEmbed("error", `Error: \`YouTube Data API v3 quota exceeded\`, please contact the bot owner.`));
-                }
-                this.client.logger.error("YT_SEARCH_ERR:", err);
-                return message.channel.send(createEmbed("error", `I could not obtain any search results.\nError: \`${err.message}\``));
+                const error = e.response.body.error ?? e;
+                this.client.logger.error("YT_SEARCH_ERR:", new Error(error.message));
+                return message.channel.send(createEmbed("error", `I can't obtain any search results.\nError: \`${error.message}\``));
             }
         }
         return this.handleVideo(video, message, voiceChannel);
