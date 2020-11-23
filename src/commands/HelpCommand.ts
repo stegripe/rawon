@@ -18,7 +18,7 @@ export class HelpCommand extends BaseCommand {
             message.channel.send(
                 new MessageEmbed()
                     .setTitle(`Information for ${command.meta.name} command`)
-                    .setThumbnail("https://hzmi.xyz/assets/images/question_mark.png")
+                    .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/question_mark.png")
                     .addFields({ name: "Name", value: `\`${command.meta.name}\``, inline: true },
                         { name: "Description", value: command.meta.description, inline: true },
                         { name: "Aliases", value: `${Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `\`${c}\``).join(", ") as string : "None."}`, inline: false },
@@ -32,7 +32,7 @@ export class HelpCommand extends BaseCommand {
                     .setTitle(`${this.client.user?.username as string} - command list`)
                     .setColor(this.client.config.embedColor)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)
-                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for command!`, "https://hzmi.xyz/assets/images/390511462361202688.png")
+                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for command!`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/390511462361202688.png")
             ).catch(e => this.client.logger.error("HELP_CMD_ERR:", e));
         }
     }
