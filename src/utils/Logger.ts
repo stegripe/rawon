@@ -22,7 +22,7 @@ export function createLogger(serviceName: string, debug = false): winston.Logger
         format: winston.format.combine(
             winston.format.printf(info => {
                 const { level, message, stack } = info;
-                const prefix = `[${dateFormat(Date.now())}] [${level}]`;
+                const prefix = `[${dateFormat.format(Date.now())}] [${level}]`;
                 if (["error", "crit"].includes(level)) return `${prefix}: ${stack}`;
                 return `${prefix}: ${message}`;
             })
@@ -46,7 +46,7 @@ export function createLogger(serviceName: string, debug = false): winston.Logger
         format: winston.format.combine(
             winston.format.printf(info => {
                 const { level, message, stack } = info;
-                const prefix = `[${dateFormat(Date.now())}] [${level}]`;
+                const prefix = `[${dateFormat.format(Date.now())}] [${level}]`;
                 if (["error", "alert"].includes(level)) return `${prefix}: ${stack}`;
                 return `${prefix}: ${message}`;
             }),
