@@ -1,7 +1,7 @@
 import { videoInfo, downloadOptions, videoFormat, getInfo, downloadFromInfo } from "ytdl-core";
-import { Readable, PassThrough } from "stream";
+import { Readable } from "stream";
 import { resolve as resolvePath } from "path";
-import { createReadStream, createWriteStream, existsSync, appendFileSync } from "fs";
+import { createReadStream, createWriteStream, existsSync, appendFileSync, unlinkSync } from "fs";
 
 // 1048576 * 1 = 1MB
 const defaultOptions: IdownloadOptions = { quality: "highestaudio", highWaterMark: 1048576 * 32 };
@@ -44,15 +44,13 @@ export function playSong(link: string, options = defaultOptions): Promise<ISongD
 
 function cache(stream: ISongStream, filePath: string, finishMarkerPath: string): Promise<ISongStream> {
     return new Promise((resolve, reject) => {
-        const originalStream = new PassThrough();
-        const cacheStream = createWriteStream(filePath)
-            .on("close", () => appendFileSync(finishMarkerPath, ""))
+        const cacheStream = createWriteStream(filePath, { flags: "w" })
+            .on("pipe", () => unlinkSync(finishMarkerPath))
+            .on("finish", () => appendFileSync(finishMarkerPath, ""))
             .on("error", reject);
-        stream.on("data", chunk => { originalStream.write(chunk); cacheStream.write(chunk); });
+            stream.pipe(cacheStream);
         stream.on("error", reject);
-        stream.on("end", () => { originalStream.end(); cacheStream.end(); });
-        originalStream.on("error", reject);
-        return resolve(Object.assign(originalStream, { info: stream.info }));
+        return resolve(Object.assign(stream, { info: stream.info }));
     });
 }
 
