@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import got from "got";
-import URL from "url";
-import querystring from "querystring";
+import { parse as parseURL } from "url";
+import { parse as parseQuery } from "querystring";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
 
@@ -21,7 +21,7 @@ export class YoutubeAPI {
     }
 
     public getVideoByURL(url: string): Promise<Video> {
-        const id = querystring.parse(URL.parse(url).query!).v as string;
+        const id = parseQuery(parseURL(url).query!).v as string;
         return this.getVideo(id);
     }
 
@@ -31,7 +31,7 @@ export class YoutubeAPI {
     }
 
     public getPlaylistByURL(url: string): Promise<Playlist> {
-        const id = querystring.parse(URL.parse(url).query!).list as string;
+        const id = parseQuery(parseURL(url).query!).list as string;
         return this.getPlaylist(id);
     }
 

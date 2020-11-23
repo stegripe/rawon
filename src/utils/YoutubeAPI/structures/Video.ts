@@ -1,4 +1,4 @@
-import duration from "iso8601-duration";
+import { parse } from "iso8601-duration";
 import { YoutubeAPI } from "..";
 import { IVideo } from "../types";
 
@@ -25,7 +25,7 @@ export class Video implements IVideo {
             url: `https://www.youtube.com/channel/${raw.snippet.channelId}`
         };
         this.thumbnails = raw.snippet.thumbnails;
-        this.duration = raw.contentDetails?.duration ? duration.parse(raw.contentDetails.duration) : null;
+        this.duration = raw.contentDetails?.duration ? parse(raw.contentDetails.duration) : null;
         this.status = raw.status;
         this.publishedAt = new Date(raw.snippet.publishedAt);
     }
