@@ -42,5 +42,12 @@ jobs:
           push: true
           tags: hazmi35/jukebox:${{ steps.tags.outputs.name }}
 
-      - name: Image digest
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2.4.1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          repository: Hazmi35/jukebox
+
+      - name: Show Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
