@@ -56,7 +56,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          repository: Hazmi35/jukebox
+          repository: hazmi35/jukebox
 
       - name: Show Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
