@@ -26,7 +26,7 @@ jobs:
 
       - name: Extract tag name
         id: tags
-        run: echo ::set-output name=name::${GITHUB_REF##*/}
+        run: echo ::set-output name=name::${GITHUB_REF##*/} | sed 's/stable/latest/g'
 
       - name: Build and push
         id: docker_build
