@@ -1,5 +1,18 @@
 import winston from "winston";
-import { format } from "date-fns";
+
+// @ts-expect-error ignore
+const dateFormat = Intl.DateTimeFormat("en", { dateStyle: "short", timeStyle: "medium", hour12: false });
+
+function formatDateForLogFile(date?: number | Date): string {
+    const data = dateFormat.formatToParts(date);
+    return `<year>-<month>-<day>-<hour>-<minute>-<second>`
+        .replace(/<year>/g, data.find(({ type }) => type === "year")!.value)
+        .replace(/<month>/g, data.find(({ type }) => type === "month")!.value)
+        .replace(/<day>/g, data.find(({ type }) => type === "day")!.value)
+        .replace(/<hour>/g, data.find(({ type }) => type === "hour")!.value)
+        .replace(/<minute>/g, data.find(({ type }) => type === "minute")!.value)
+        .replace(/<second>/g, data.find(({ type }) => type === "second")!.value);
+}
 
 export function createLogger(serviceName: string, debug = false): winston.Logger {
     const logger = winston.createLogger({
@@ -9,7 +22,7 @@ export function createLogger(serviceName: string, debug = false): winston.Logger
         format: winston.format.combine(
             winston.format.printf(info => {
                 const { level, message, stack } = info;
-                const prefix = `[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]`;
+                const prefix = `[${dateFormat(Date.now())}] [${level}]`;
                 if (["error", "crit"].includes(level)) return `${prefix}: ${stack}`;
                 return `${prefix}: ${message}`;
             })
@@ -24,8 +37,8 @@ export function createLogger(serviceName: string, debug = false): winston.Logger
             warn: 2
         },
         transports: [
-            new winston.transports.File({ filename: `logs/${serviceName}/error-${format(Date.now(), "yyyy-MM-dd-HH-mm-ss")}.log`, level: "error" }),
-            new winston.transports.File({ filename: `logs/${serviceName}/logs-${format(Date.now(), "yyyy-MM-dd-HH-mm-ss")}.log` })
+            new winston.transports.File({ filename: `logs/${serviceName}/error-${formatDateForLogFile(Date.now())}.log`, level: "error" }),
+            new winston.transports.File({ filename: `logs/${serviceName}/logs-${formatDateForLogFile(Date.now())}.log` })
         ]
     });
     logger.add(new winston.transports.Console({
@@ -33,7 +46,7 @@ export function createLogger(serviceName: string, debug = false): winston.Logger
         format: winston.format.combine(
             winston.format.printf(info => {
                 const { level, message, stack } = info;
-                const prefix = `[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]`;
+                const prefix = `[${dateFormat(Date.now())}] [${level}]`;
                 if (["error", "alert"].includes(level)) return `${prefix}: ${stack}`;
                 return `${prefix}: ${message}`;
             }),
