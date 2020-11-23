@@ -9,8 +9,8 @@ import { BaseListener } from "../structures/BaseListener";
 export class VoiceStateUpdateEvent extends BaseListener {
     public execute(oldState: IVoiceState, newState: IVoiceState): any {
         if (newState.guild.queue) {
-            const oldID = oldState.channel ? oldState.channel.id : undefined;
-            const newID = newState.channel ? newState.channel.id : undefined;
+            const oldID = oldState.channel?.id;
+            const newID = newState.channel?.id;
             const musicVcID = newState.guild.queue.voiceChannel?.id;
 
             // Handle when bot gets kicked from the voice channel
