@@ -12,7 +12,7 @@ import "./Guild";
 
 export class Disc_11 extends Client {
     public readonly config = config;
-    public readonly logger = createLogger(config.name, config.debug);
+    public readonly logger = createLogger("main", config.debug);
     public readonly youtube = new YoutubeAPI(process.env.YT_API_KEY!);
     public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
     public readonly listenerLoader = new ListenerLoader(this, resolve(__dirname, "..", "listeners"));

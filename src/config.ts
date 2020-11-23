@@ -1,6 +1,5 @@
 import { ActivityType } from "discord.js";
 
-export const name: string = process.env.CONFIG_NAME ?? "Disc 11";
 export const prefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!"; // Temporary workaround for https://github.com/docker/compose/issues/6951
 export const embedColor = process.env.CONFIG_EMBED_COLOR ?? "7289DA";
 export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];

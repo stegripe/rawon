@@ -2,8 +2,8 @@ import "dotenv/config";
 import { resolve } from "path";
 import { ShardingManager } from "discord.js";
 import { createLogger } from "./utils/Logger";
-import { totalShards, name, debug } from "./config";
-const log = createLogger(`${name}-sharding`, debug);
+import { totalShards, debug } from "./config";
+const log = createLogger(`shardingmanager`, debug);
 
 const shardCount: number | "auto" = totalShards === "auto" ? totalShards : Number(totalShards);
 
