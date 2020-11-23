@@ -27,12 +27,13 @@
     "ignorePatterns": "dist/*"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.5.7",
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "entities": "^2.1.0",
     "ffmpeg-static": "^4.2.7",
-    "got": "^11.8.0",
     "iso8601-duration": "^1.2.0",
+    "node-fetch": "^2.6.1",
     "opusscript": "^0.0.7",
     "pretty-ms": "^7.0.1",
     "tslib": "^2.0.3",

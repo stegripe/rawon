@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import got from "got";
-import { parse as parseURL } from "url";
-import { parse as parseQuery } from "querystring";
+import fetch from "node-fetch";
+import { parse as parseURL, resolve as resolveURL } from "url";
+import { parse as parseQuery, stringify as stringifyQuery, ParsedUrlQueryInput } from "querystring";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
 
 export class YoutubeAPI {
-    private readonly request = got;
-    public constructor(key: string) {
-        this.request = got.extend({
-            prefixUrl: "https://www.googleapis.com/youtube/v3/",
-            searchParams: { key, part: "snippet,id,status,contentDetails" },
-            responseType: "json"
+    private readonly baseURL = "https://www.googleapis.com/youtube/v3/";
+    public constructor(private readonly key: string) {
+        Object.defineProperty(this, "key", {
+            enumerable: false,
+            writable: false
         });
     }
 
@@ -35,30 +34,26 @@ export class YoutubeAPI {
         return this.getPlaylist(id);
     }
 
-    public makeRequest(endpoint: string, searchParams: Record<string, any>): Promise<any> {
-        return this.request.get<any>(endpoint, { searchParams }).then(res => res.body).catch(e => Promise.reject(e));
+    public makeRequest(endpoint: string, searchParams: ParsedUrlQueryInput): Promise<any> {
+        const query = stringifyQuery(Object.assign({ key: this.key, part: "snippet,id,status,contentDetails" }, searchParams));
+        const URI = resolveURL(resolveURL(this.baseURL, endpoint), `?${query}`);
+        return fetch(URI)
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) return Promise.reject(res.error);
+                return res;
+            })
+            .catch(e => Promise.reject(e));
     }
 
-    public makePaginatedRequest(endpoint: string, searchParams: Record<string, any>, count: number): Promise<any> {
-        return this.request.paginate.all<any, any>(endpoint, {
-            searchParams,
-            pagination: {
-                paginate: (response, allItems) => {
-                    const { nextPageToken, prevPageToken } = response.body;
-                    if (nextPageToken === prevPageToken) return false;
-                    if (!nextPageToken) return false;
-                    if (allItems.length > count) return false;
+    public makePaginatedRequest(endpoint: string, searchParams = {}, count = Infinity, fetched = [], pageToken = null): Promise<any> {
+        if (count < 1) return Promise.reject(new Error("Cannot fetch less than 1."));
 
-                    return {
-                        searchParams: {
-                            ...response.request.options.searchParams,
-                            pageToken: nextPageToken
-                        }
-                    };
-                },
-                transform: response => response.body.items,
-                countLimit: count
-            }
+        const limit = count > 50 ? 50 : count;
+        return this.makeRequest(endpoint, Object.assign(searchParams, { pageToken, maxResults: limit })).then(result => {
+            const results = fetched.concat(result.items);
+            if (result.nextPageToken && limit !== count) return this.makePaginatedRequest(endpoint, searchParams, count - limit, results, result.nextPageToken);
+            return results;
         });
     }
 

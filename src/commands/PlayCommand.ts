@@ -60,9 +60,8 @@ export class PlayCommand extends BaseCommand {
                 if (skippedVideos === playlist.itemCount) return message.channel.send(createEmbed("error", `Failed to load **[${playlist.title}](${playlist.url})** playlist because all of items are private video.`));
                 return message.channel.send(createEmbed("info", `✅  **|**  All videos in **[${playlist.title}](${playlist.url})**, has been added to the queue!`));
             } catch (e) {
-                const error = e.response.body.error ?? e;
-                this.client.logger.error("YT_PLAYLIST_ERR:", new Error(error.message));
-                return message.channel.send(createEmbed("error", `I can't load the playlist.\nError: \`${error.message}\``));
+                this.client.logger.error("YT_PLAYLIST_ERR:", new Error(e.message));
+                return message.channel.send(createEmbed("error", `I can't load the playlist.\nError: \`${e.message}\``));
             }
         }
         try {
@@ -106,9 +105,8 @@ export class PlayCommand extends BaseCommand {
                     video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
                 }
             } catch (err) {
-                const error = e.response.body.error ?? e;
-                this.client.logger.error("YT_SEARCH_ERR:", new Error(error.message));
-                return message.channel.send(createEmbed("error", `I can't obtain any search results.\nError: \`${error.message}\``));
+                this.client.logger.error("YT_SEARCH_ERR:", new Error(err.message));
+                return message.channel.send(createEmbed("error", `I can't obtain any search results.\nError: \`${err.message}\``));
             }
         }
         return this.handleVideo(video, message, voiceChannel);
