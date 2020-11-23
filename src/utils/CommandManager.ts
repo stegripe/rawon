@@ -5,7 +5,7 @@ import { Snowflake, Collection } from "discord.js";
 import { Disc_11 } from "../structures/Disc_11";
 import { ICommandComponent, IMessage } from "../../typings";
 
-export class CommandsManager extends Collection<string, ICommandComponent> {
+export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();
     public readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
     public constructor(public client: Disc_11, public readonly path: string) { super(); }

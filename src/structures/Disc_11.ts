@@ -3,7 +3,7 @@ import { Client, Collection, ClientOptions } from "discord.js";
 import { resolve } from "path";
 import * as config from "../config";
 import { createLogger } from "../utils/Logger";
-import { CommandsManager } from "../utils/CommandsManager";
+import { CommandManager } from "../utils/CommandManager";
 import { ListenerLoader } from "../utils/ListenerLoader";
 import { YoutubeAPI } from "../utils/YoutubeAPI";
 
@@ -14,7 +14,7 @@ export class Disc_11 extends Client {
     public readonly config = config;
     public readonly logger = createLogger(config.name, config.debug);
     public readonly youtube = new YoutubeAPI(process.env.YT_API_KEY!);
-    public readonly commands = new CommandsManager(this, resolve(__dirname, "..", "commands"));
+    public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
     public readonly listenerLoader = new ListenerLoader(this, resolve(__dirname, "..", "listeners"));
     public constructor(opt: ClientOptions) { super(opt); }
 
