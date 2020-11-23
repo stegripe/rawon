@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import got, { Options, Response } from "got";
+import got from "got";
 import URL from "url";
 import querystring from "querystring";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
 
 export class YoutubeAPI {
-    public readonly request = got;
+    private readonly request = got;
     public constructor(key: string) {
         this.request = got.extend({
             prefixUrl: "https://www.googleapis.com/youtube/v3/",
@@ -16,8 +16,8 @@ export class YoutubeAPI {
     }
 
     public async getVideo(id: string): Promise<Video> {
-        const raw: bodyAny = await this.request.get("videos", { searchParams: { id, maxResults: 1 } });
-        return new Video(this, await raw.body.items[0]);
+        const raw = await this.makeRequest("videos", { id, maxResults: 1 });
+        return new Video(this, await raw.items[0]);
     }
 
     public getVideoByURL(url: string): Promise<Video> {
@@ -26,8 +26,8 @@ export class YoutubeAPI {
     }
 
     public async getPlaylist(id: string): Promise<Playlist> {
-        const raw: bodyAny = await this.request.get("playlists", { searchParams: { id, maxResults: 1 } });
-        return new Playlist(this, raw.body.items[0]);
+        const raw = await this.makeRequest("playlists", { id, maxResults: 1 });
+        return new Playlist(this, raw.items[0]);
     }
 
     public getPlaylistByURL(url: string): Promise<Playlist> {
@@ -35,14 +35,19 @@ export class YoutubeAPI {
         return this.getPlaylist(id);
     }
 
-    public async searchVideos(q: string, maxResults = 5): Promise<Video[]> {
-        const videos = await this.request.paginate.all("search", {
-            searchParams: { maxResults, part: "snippet", q, safeSearch: "none", type: "video" },
+    public makeRequest(endpoint: string, searchParams: Record<string, any>): Promise<any> {
+        return this.request.get<any>(endpoint, { searchParams }).then(res => res.body).catch(e => Promise.reject(e));
+    }
+
+    public makePaginatedRequest(endpoint: string, searchParams: Record<string, any>, count: number): Promise<any> {
+        return this.request.paginate.all<any, any>(endpoint, {
+            searchParams,
             pagination: {
-                paginate: (response: bodyAny, allItems): Options | false => {
+                paginate: (response, allItems) => {
                     const { nextPageToken, prevPageToken } = response.body;
                     if (nextPageToken === prevPageToken) return false;
-                    if (allItems.length >= maxResults) return false;
+                    if (!nextPageToken) return false;
+                    if (allItems.length > count) return false;
 
                     return {
                         searchParams: {
@@ -51,14 +56,14 @@ export class YoutubeAPI {
                         }
                     };
                 },
-                transform: (response: bodyAny) => response.body.items,
-                countLimit: maxResults
+                transform: response => response.body.items,
+                countLimit: count
             }
         });
+    }
+
+    public async searchVideos(q: string, maxResults = 5): Promise<Video[]> {
+        const videos = await this.makePaginatedRequest("search", { maxResults, part: "snippet", q, safeSearch: "none", type: "video" }, maxResults);
         return videos.map((i: any) => new Video(this, i, "searchResults"));
     }
-}
-
-export interface bodyAny extends Response<string> {
-    body: any;
 }

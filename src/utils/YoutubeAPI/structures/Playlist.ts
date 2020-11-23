@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { Options } from "got";
-import { YoutubeAPI, bodyAny } from "..";
+import { YoutubeAPI } from "..";
 import { IPlaylist, IVideo } from "../types";
 import { Video } from "./Video";
 
@@ -31,25 +29,26 @@ export class Playlist implements IPlaylist {
     }
 
     public async getVideos(): Promise<IVideo[]> {
-        const videos = await this.yt.request.paginate.all("playlistItems", {
-            searchParams: { maxResults: 50, playlistId: this.id },
-            pagination: {
-                paginate: (response: bodyAny, allItems): Options | false => {
-                    const { nextPageToken, prevPageToken } = response.body;
-                    if (nextPageToken === prevPageToken) return false;
-                    if (allItems.length >= this.itemCount) return false;
+        // const videos = await this.yt.request.paginate.all("playlistItems", {
+        //     searchParams: { maxResults: 50, playlistId: this.id },
+        //     pagination: {
+        //         paginate: (response: Response<any>, allItems): Options | false => {
+        //             const { nextPageToken, prevPageToken } = response.body;
+        //             if (nextPageToken === prevPageToken) return false;
+        //             if (allItems.length >= this.itemCount) return false;
 
-                    return {
-                        searchParams: {
-                            ...response.request.options.searchParams,
-                            pageToken: nextPageToken
-                        }
-                    };
-                },
-                transform: (response: bodyAny) => response.body.items,
-                countLimit: this.itemCount
-            }
-        });
+        //             return {
+        //                 searchParams: {
+        //                     ...response.request.options.searchParams,
+        //                     pageToken: nextPageToken
+        //                 }
+        //             };
+        //         },
+        //         transform: (response: Response<any>) => response.body.items,
+        //         countLimit: this.itemCount
+        //     }
+        // });
+        const videos = await this.yt.makePaginatedRequest("playlistItems", { maxResults: 50, playlistId: this.id }, this.itemCount);
         return videos.map((i: any) => new Video(this.yt, i, "playlistItem"));
     }
 }
