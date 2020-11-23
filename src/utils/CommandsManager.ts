@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { promises as fs } from "fs";
 import { parse, resolve } from "path";
 import { Snowflake, Collection } from "discord.js";
