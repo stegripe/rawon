@@ -601,7 +601,7 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discord.js@^12.4.1:
+discord.js@^12.5.0:
   version "12.5.0"
   resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-12.5.0.tgz#9e29075116ba0176b52c3b3eaffa932208307d9e"
   integrity sha512-MXZcnBIosHEOX26ipWEcZdUrTyfTbb4sDYYp0Go5N05PyI78LR8Ds7yAfMu0zUDmxFHYLSYX0pCdiO2pd4CP6w==
@@ -2019,7 +2019,7 @@ yn@3.1.1:
   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
 
-ytdl-core@^4.0.3:
+ytdl-core@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-4.0.6.tgz#910151c87b010917aee0882e7a26214955de138b"
   integrity sha512-QFFtwaY3D8FErr3kM71zpQlUzONabyzZrhNpO3b/Ies9Z+4hKI4zuM8AGPG5nOW0PKkyCXscKPW9K4CzPuhUkA==
