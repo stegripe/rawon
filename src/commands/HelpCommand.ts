@@ -32,7 +32,7 @@ export class HelpCommand extends BaseCommand {
                     .setTitle(`${this.client.user?.username as string} - command list`)
                     .setColor(this.client.config.embedColor)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)
-                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for command!`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/390511462361202688.png")
+                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for command!`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/info.png")
             ).catch(e => this.client.logger.error("HELP_CMD_ERR:", e));
         }
     }
