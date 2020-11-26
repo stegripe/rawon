@@ -601,10 +601,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discord.js@^12.5.0:
-  version "12.5.0"
-  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-12.5.0.tgz#9e29075116ba0176b52c3b3eaffa932208307d9e"
-  integrity sha512-MXZcnBIosHEOX26ipWEcZdUrTyfTbb4sDYYp0Go5N05PyI78LR8Ds7yAfMu0zUDmxFHYLSYX0pCdiO2pd4CP6w==
+discord.js@^12.5.1:
+  version "12.5.1"
+  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-12.5.1.tgz#992b45753e3815526a279914ccc281d3496f5990"
+  integrity sha512-VwZkVaUAIOB9mKdca0I5MefPMTQJTNg0qdgi1huF3iwsFwJ0L5s/Y69AQe+iPmjuV6j9rtKoG0Ta0n9vgEIL6w==
   dependencies:
     "@discordjs/collection" "^0.1.6"
     "@discordjs/form-data" "^3.0.1"
