@@ -95,6 +95,5 @@
             "value": "no"
         }
     },
-    "repository": "https://github.com/zhycorp/disc-11",
-    "buildpacks": [{ "url": "heroku/nodejs" }]
+    "repository": "https://github.com/zhycorp/disc-11"
 }
