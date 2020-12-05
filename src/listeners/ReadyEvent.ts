@@ -20,7 +20,7 @@ export class ReadyEvent extends BaseListener {
             }).catch(e => this.client.logger.error("CLIENT_UPDATE_PRESENCE_ERR:", e));
         };
         updatePresence()
-            .then(() => setInterval(updatePresence, 30 * 1000))
+            .then(() => setInterval(() => updatePresence(), 30 * 1000))
             .catch(e => { if (e.message !== "Shards are still being spawned.") this.client.logger.error(e); });
     }
 }
