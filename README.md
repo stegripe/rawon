@@ -17,7 +17,7 @@
 2. Rename `.env.schema` to `.env` and fill out the values (example on .env.example)
 3. Install dependencies as stated [here](https://github.com/zhycorp/disc-11#Installation) before you continue surfing
 4. Run `npm run build`, or `yarn run build` if you're using Yarn package manager
-5. Optional thing, prune devDependencies (this is good to save disk spaces):
+5. Optional thing, prune dev dependencies (this is good to save disk spaces):
 ```shell script
 $ npm prune --production
 # or with yarn
@@ -66,7 +66,7 @@ If you have any questions or need support, feel free to join our [Discord server
 
 ## Docker
 Want to use Dockerized version of [this project](https://github.com/Hazmi35/jukebox)?
-Sure, we have provided them on the [Docker Hub](https://hub.docker.com/r/hazmi35/jukebox).
+Sure, we have provided them on the [Docker Hub](https://hub.docker.com/r/hazmi35/jukebox), and also in [GitHub Container Registry](https://github.com/users/Hazmi35/packages/container/package/jukebox).
 
 ### Volumes
 [Docker Volumes](https://docs.docker.com/storage/volumes/) are needed to store cache and logs persistently.
@@ -89,6 +89,6 @@ $ docker-compose up
 - Caching (cache youtube downloads)
 - Configurable (easy to use)
 - Docker-friendly (if you're advanced user)
-- Lightweight (only around 150MB)
+- Lightweight (only around 120MB with dev dependencies pruned)
 
 Based on [discord-music-bot](https://github.com/iCrawl/discord-music-bot) and reworked from [jukebox](https://github.com/Hazmi35/jukebox)
