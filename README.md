@@ -89,6 +89,6 @@ $ docker-compose up
 - Caching (cache youtube downloads)
 - Configurable (easy to use)
 - Docker-friendly (if you're advanced user)
-- Lightweight (only around 120MB with dev dependecies pruned)
+- Lightweight (only around 120MB with dev dependencies pruned)
 
 Based on [discord-music-bot](https://github.com/iCrawl/discord-music-bot) and reworked from [jukebox](https://github.com/Hazmi35/jukebox)
