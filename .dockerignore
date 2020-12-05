@@ -105,3 +105,10 @@ dist/
 # Git files
 .github/
 .git
+.env.example
+.gitattributes
+.gitignore
+.env.schema
+
+# VSCode settings
+.vscode 
