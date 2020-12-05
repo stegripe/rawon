@@ -10,9 +10,17 @@ export class ReadyEvent extends BaseListener {
             `with ${this.client.channels.cache.filter(c => c.type === "text").size} text channels and ` +
             `${this.client.channels.cache.filter(c => c.type === "voice").size} voice channels`
         );
+        this.doPresence();
+    }
+
+    private doPresence(): void {
         this.updatePresence()
             .then(() => setInterval(() => this.updatePresence(), 30 * 1000))
-            .catch(e => { if (e.message !== "Shards are still being spawned.") this.client.logger.error(e); });
+            .catch(e => {
+                if (e.message === "Shards are still being spawned.") return this.doPresence();
+                this.client.logger.error("DO_PRESENCE_ERR:", e);
+            });
+        return undefined;
     }
 
     private async updatePresence(): Promise<Presence | undefined> {
