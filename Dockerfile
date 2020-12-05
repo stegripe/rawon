@@ -29,12 +29,15 @@ RUN yarn install --production
 # Get ready for production
 FROM node:14.15.1-alpine
 
-WORKDIR /app
-
 LABEL name "Disc 11"
 LABEL maintainer "Zhycorp <support@zhycorp.xyz>"
 
 LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
+
+WORKDIR /app
+
+# Install dependencies
+RUN apk add --no-cache tzdata
 
 # Copy needed files
 COPY --from=build-stage /tmp/build/package.json .
