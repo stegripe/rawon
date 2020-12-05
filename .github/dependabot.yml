@@ -7,7 +7,7 @@ updates:
     time: "06:00"
     timezone: Asia/Jakarta
   open-pull-requests-limit: 99
-  target-branch: stable
+  target-branch: dev
   reviewers:
   - mozartrafi
   labels:
@@ -22,7 +22,7 @@ updates:
     time: "06:00"
     timezone: Asia/Jakarta
   open-pull-requests-limit: 99
-  target-branch: stable
+  target-branch: dev
   reviewers:
   - mozartrafi
   labels:
@@ -38,7 +38,7 @@ updates:
     time: "06:00"
     timezone: Asia/Jakarta
   open-pull-requests-limit: 99
-  target-branch: stable
+  target-branch: dev
   reviewers:
   - mozartrafi
   labels:
