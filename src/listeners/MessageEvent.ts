@@ -9,7 +9,7 @@ export class MessageEvent extends BaseListener {
     public async execute(message: IMessage): Promise<any> {
         if (message.author.bot || message.channel.type !== "text") return message;
 
-        if (!message.content.toLowerCase().startsWith(this.client.config.prefix)) return this.client.commands.handle(message);
+        if (message.content.toLowerCase().startsWith(this.client.config.prefix)) return this.client.commands.handle(message);
 
         if ((await this.getUserFromMention(message.content))?.id === message.client.user?.id) {
             return message.channel.send(
