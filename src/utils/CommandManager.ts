@@ -34,7 +34,6 @@ export class CommandManager extends Collection<string, ICommandComponent> {
     }
 
     public handle(message: IMessage): any {
-        if (!message.content.toLowerCase().startsWith(this.client.config.prefix)) return undefined;
         const args = message.content.substring(this.client.config.prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);
