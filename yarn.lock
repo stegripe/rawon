@@ -2010,10 +2010,10 @@ yn@3.1.1:
   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
 
-ytdl-core@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-4.1.2.tgz#ae94258202f3aaf557ef9c542f3f5bbc6a62b972"
-  integrity sha512-eQMM6HF/Ddh2/n+6sheLyhWR4qvt3oYQyZqJ54X9vqUcIA2FzmN2YpP1ioSuJj0xrCPhk0fnXHu2EGrRvEf/Ig==
+ytdl-core@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-4.1.3.tgz#d528ccd48c2b46b557e57151906703aaf918cc7b"
+  integrity sha512-bhQ40qZX6ak0YsS6nS1wfOO7zs5+jxIG4c7aLJkw9j5mlxBQppHe1qxJuRdHFQWPKxC4K10S6kfLuqIwzp15eg==
   dependencies:
     html-entities "^1.3.1"
     m3u8stream "^0.8.3"
