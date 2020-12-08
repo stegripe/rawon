@@ -96,7 +96,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hazmi35/eslint-config@^3.3.0", "@hazmi35/eslint-config@^3.4.0":
+"@hazmi35/eslint-config@^3.4.0":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/@hazmi35/eslint-config/-/eslint-config-3.4.0.tgz#279870615a2e939f415105db6382458395e0627a"
   integrity sha512-TxyxydtJOZfEpI5TUngLun+CQTTpV3zPG9iuyEIk1gdDdV3TulXri7xD6qOU7A4FVuARkE/KLE6UyT37btbBAg==
