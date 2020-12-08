@@ -215,6 +215,13 @@
     "@typescript-eslint/types" "4.9.1"
     eslint-visitor-keys "^2.0.0"
 
+"@zhycorp/eslint-config@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@zhycorp/eslint-config/-/eslint-config-2.3.0.tgz#411b14cb762f52d8ed7cbe359dde1b19c94b6888"
+  integrity sha512-0CDUvn/nWto1oZwsvpE13/N96GfEPdfSX5lpXviuwEFWODmH7S8oBB11HA6oPW7z7zun6HIFp1KdWpEVvcxzdg==
+  dependencies:
+    "@hazmi35/eslint-config" "^3.3.0"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"

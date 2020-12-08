@@ -23,11 +23,12 @@
     "start:dev": "echo [INFO] Sharding disabled when using ts-node && ts-node src/bot"
   },
   "eslintConfig": {
-    "extends": "@hazmi35/eslint-config/typescript",
+    "extends": "@zhycorp/eslint-config/typescript",
     "ignorePatterns": "dist/*"
   },
   "dependencies": {
     "@types/node-fetch": "^2.5.7",
+    "@zhycorp/eslint-config": "^2.3.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "entities": "^2.1.0",
