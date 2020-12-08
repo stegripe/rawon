@@ -39,15 +39,15 @@
     "pretty-ms": "^7.0.1",
     "tslib": "^2.0.3",
     "winston": "^3.3.3",
-    "ytdl-core": "^4.1.2"
+    "ytdl-core": "^4.1.4"
   },
   "devDependencies": {
     "@hazmi35/eslint-config": "^3.3.0",
     "@types/node": "^14.14.10",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
     "eslint": "^7.15.0",
-    "ts-node": "^9.1.0",
+    "ts-node": "^9.1.1",
     "typescript": "^4.0.5"
   },
   "optionalDependencies": {
