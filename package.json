@@ -23,7 +23,7 @@
     "start:dev": "echo [INFO] Sharding disabled when using ts-node && ts-node src/bot"
   },
   "eslintConfig": {
-    "extends": "@hazmi35/eslint-config/typescript",
+    "extends": "@zhycorp/eslint-config/typescript",
     "ignorePatterns": "dist/*"
   },
   "dependencies": {
