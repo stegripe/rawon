@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@types/node-fetch": "^2.5.7",
+    "@zhycorp/eslint-config": "^2.3.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "entities": "^2.1.0",

@@ -96,7 +96,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hazmi35/eslint-config@^3.4.0":
+"@hazmi35/eslint-config@^3.3.0", "@hazmi35/eslint-config@^3.4.0":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/@hazmi35/eslint-config/-/eslint-config-3.4.0.tgz#279870615a2e939f415105db6382458395e0627a"
   integrity sha512-TxyxydtJOZfEpI5TUngLun+CQTTpV3zPG9iuyEIk1gdDdV3TulXri7xD6qOU7A4FVuARkE/KLE6UyT37btbBAg==
@@ -214,6 +214,13 @@
   dependencies:
     "@typescript-eslint/types" "4.9.1"
     eslint-visitor-keys "^2.0.0"
+
+"@zhycorp/eslint-config@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@zhycorp/eslint-config/-/eslint-config-2.3.0.tgz#411b14cb762f52d8ed7cbe359dde1b19c94b6888"
+  integrity sha512-0CDUvn/nWto1oZwsvpE13/N96GfEPdfSX5lpXviuwEFWODmH7S8oBB11HA6oPW7z7zun6HIFp1KdWpEVvcxzdg==
+  dependencies:
+    "@hazmi35/eslint-config" "^3.3.0"
 
 abbrev@1:
   version "1.1.1"
