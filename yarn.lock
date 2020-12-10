@@ -215,10 +215,10 @@
     "@typescript-eslint/types" "4.9.1"
     eslint-visitor-keys "^2.0.0"
 
-"@zhycorp/eslint-config@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@zhycorp/eslint-config/-/eslint-config-2.3.0.tgz#411b14cb762f52d8ed7cbe359dde1b19c94b6888"
-  integrity sha512-0CDUvn/nWto1oZwsvpE13/N96GfEPdfSX5lpXviuwEFWODmH7S8oBB11HA6oPW7z7zun6HIFp1KdWpEVvcxzdg==
+"@zhycorp/eslint-config@^2.3.0", "@zhycorp/eslint-config@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@zhycorp/eslint-config/-/eslint-config-2.4.2.tgz#e45782a6a2cbaa11c518b8df76098cf9a2bc9e25"
+  integrity sha512-qVBv6FDp18EnF89+hegIxOT5s3e3wEtYhBIyToRByhVTmBxOPnLzCFUl3Ha73L4HRhta6BXYwR/ONqpl6mpfrQ==
   dependencies:
     "@hazmi35/eslint-config" "^3.3.0"
 
