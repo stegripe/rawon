@@ -58,13 +58,13 @@ export class VoiceStateUpdateEvent extends BaseListener {
                 newState.guild.queue = null;
                 textChannel.send(
                     createEmbed("error", `**\`${duration}\`** have passed and there is no one who joins my voice channel, the queue was deleted.`)
-                    .setTitle("⏹ Queue deleted")
+                        .setTitle("⏹ Queue deleted")
                 ).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
             }, timeout);
             newState.guild.queue?.textChannel?.send(
                 createEmbed("warn", "The voice channel is empty. To save resources, the queue was paused. " +
                     `If there's no one who joins my voice channel in the next **\`${duration}\`**, the queue will be deleted.`)
-                .setTitle("⏸ Queue paused")
+                    .setTitle("⏸ Queue paused")
             ).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
         } catch (e) {
             this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e);
@@ -82,8 +82,8 @@ export class VoiceStateUpdateEvent extends BaseListener {
                     const song = newState.guild.queue?.songs.first();
                     newState.guild.queue?.textChannel?.send(
                         createEmbed("info", `Someone joins the voice channel. Enjoy the queued music!\n🎶  **|**  Now Playing: **[${song!.title}](${song!.url})**`)
-                        .setThumbnail(song!.thumbnail)
-                        .setTitle("▶ Queue resumed")
+                            .setThumbnail(song!.thumbnail)
+                            .setTitle("▶ Queue resumed")
                     ).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
                     newState.guild.queue!.playing = true;
                     newState.guild.queue?.connection?.dispatcher.resume();
