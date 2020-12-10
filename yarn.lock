@@ -96,7 +96,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hazmi35/eslint-config@^3.4.0":
+"@hazmi35/eslint-config@^3.3.0", "@hazmi35/eslint-config@^3.4.0":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/@hazmi35/eslint-config/-/eslint-config-3.4.0.tgz#279870615a2e939f415105db6382458395e0627a"
   integrity sha512-TxyxydtJOZfEpI5TUngLun+CQTTpV3zPG9iuyEIk1gdDdV3TulXri7xD6qOU7A4FVuARkE/KLE6UyT37btbBAg==
@@ -1385,11 +1385,12 @@ node-gyp-build@^4.2.0:
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.3.tgz#ce6277f853835f718829efb47db20f3e4d9c4739"
   integrity sha512-MN6ZpzmfNCRM+3t57PTJHgHyw/h4OWnZ6mR8P5j/uZtqQr46RRuDE/P+g3n0YR/AiYXeWixZZzaip77gdICfRg==
 
-node-zhycorp@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/node-zhycorp/-/node-zhycorp-1.0.5.tgz#f2246eca205cf10826c9a03f00405e1127f0e60f"
-  integrity sha512-4d9xHb6WAbY0Mq55MJ+6IqWggYuqm5pXFVzJFJ1fXUo3Nmr1gNTm4gD2EVQDVmvUFMCppKL0tw1SekKW1xpu8w==
+node-zhycorp@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/node-zhycorp/-/node-zhycorp-1.2.0.tgz#41e35b1ae0fbe24799f9148d596bd65a19655be4"
+  integrity sha512-MzmMG4xtpnjzsDFerFv1g5rx6Obo9921n8q+++H2zN3YN0UbMMbBRS8y7JOv/ar2xGjxC0uQw4vP7Kskehk1Xw==
   dependencies:
+    "@zhycorp/eslint-config" "^2.3.0"
     cheerio "^1.0.0-rc.3"
     superagent "^6.1.0"
 
