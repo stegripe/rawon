@@ -96,7 +96,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hazmi35/eslint-config@^3.4.0":
+"@hazmi35/eslint-config@^3.3.0", "@hazmi35/eslint-config@^3.4.0":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/@hazmi35/eslint-config/-/eslint-config-3.4.0.tgz#279870615a2e939f415105db6382458395e0627a"
   integrity sha512-TxyxydtJOZfEpI5TUngLun+CQTTpV3zPG9iuyEIk1gdDdV3TulXri7xD6qOU7A4FVuARkE/KLE6UyT37btbBAg==
@@ -135,10 +135,10 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^14.14.11":
-  version "14.14.11"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.11.tgz#fc25a4248a5e8d0837019b1d170146d07334abe0"
-  integrity sha512-BJ97wAUuU3NUiUCp44xzUFquQEvnk1wu7q4CMEUYKJWjdkr0YWYDsm4RFtAvxYsNjLsKcrFt6RvK8r+mnzMbEQ==
+"@types/node@*", "@types/node@^14.14.12":
+  version "14.14.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.12.tgz#0b1d86f8c40141091285dea02e4940df73bba43f"
+  integrity sha512-ASH8OPHMNlkdjrEdmoILmzFfsJICvhBsFfAum4aKZ/9U4B6M6tTmTPh+f3ttWdD74CEGV5XvXWkbyfSdXaTd7g==
 
 "@types/node@^10.0.3":
   version "10.17.48"
@@ -215,10 +215,10 @@
     "@typescript-eslint/types" "4.9.1"
     eslint-visitor-keys "^2.0.0"
 
-"@zhycorp/eslint-config@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@zhycorp/eslint-config/-/eslint-config-2.3.0.tgz#411b14cb762f52d8ed7cbe359dde1b19c94b6888"
-  integrity sha512-0CDUvn/nWto1oZwsvpE13/N96GfEPdfSX5lpXviuwEFWODmH7S8oBB11HA6oPW7z7zun6HIFp1KdWpEVvcxzdg==
+"@zhycorp/eslint-config@^2.3.0", "@zhycorp/eslint-config@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@zhycorp/eslint-config/-/eslint-config-2.4.2.tgz#e45782a6a2cbaa11c518b8df76098cf9a2bc9e25"
+  integrity sha512-qVBv6FDp18EnF89+hegIxOT5s3e3wEtYhBIyToRByhVTmBxOPnLzCFUl3Ha73L4HRhta6BXYwR/ONqpl6mpfrQ==
   dependencies:
     "@hazmi35/eslint-config" "^3.3.0"
 
@@ -1385,11 +1385,12 @@ node-gyp-build@^4.2.0:
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.3.tgz#ce6277f853835f718829efb47db20f3e4d9c4739"
   integrity sha512-MN6ZpzmfNCRM+3t57PTJHgHyw/h4OWnZ6mR8P5j/uZtqQr46RRuDE/P+g3n0YR/AiYXeWixZZzaip77gdICfRg==
 
-node-zhycorp@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/node-zhycorp/-/node-zhycorp-1.0.5.tgz#f2246eca205cf10826c9a03f00405e1127f0e60f"
-  integrity sha512-4d9xHb6WAbY0Mq55MJ+6IqWggYuqm5pXFVzJFJ1fXUo3Nmr1gNTm4gD2EVQDVmvUFMCppKL0tw1SekKW1xpu8w==
+node-zhycorp@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/node-zhycorp/-/node-zhycorp-1.2.0.tgz#41e35b1ae0fbe24799f9148d596bd65a19655be4"
+  integrity sha512-MzmMG4xtpnjzsDFerFv1g5rx6Obo9921n8q+++H2zN3YN0UbMMbBRS8y7JOv/ar2xGjxC0uQw4vP7Kskehk1Xw==
   dependencies:
+    "@zhycorp/eslint-config" "^2.3.0"
     cheerio "^1.0.0-rc.3"
     superagent "^6.1.0"
 

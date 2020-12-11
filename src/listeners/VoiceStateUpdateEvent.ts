@@ -43,42 +43,40 @@ export class VoiceStateUpdateEvent extends BaseListener {
         }
     }
 
-    private doTimeout(vc: Collection<string, GuildMember> | undefined, newState: IVoiceState): any {
+    private doTimeout(vc: Collection < string, GuildMember > | undefined, newState: IVoiceState): void {
         try {
-            if (vc?.size === 0) {
-                clearTimeout(newState.guild.queue?.timeout as NodeJS.Timeout);
-                newState.guild.queue!.timeout = null;
-                newState.guild.queue!.playing = false;
-                newState.guild.queue?.connection?.dispatcher.pause();
-                const timeout = this.client.config.deleteQueueTimeout;
-                const duration = formatMS(timeout);
-                newState.guild.queue?.textChannel?.send(
-                    createEmbed("warn", "The voice channel is empty. To save resources, the queue was paused. " +
+            if (vc?.size !== 0) return undefined;
+            clearTimeout(newState.guild.queue?.timeout as NodeJS.Timeout);
+            newState.guild.queue!.timeout = null;
+            newState.guild.queue!.playing = false;
+            newState.guild.queue?.connection?.dispatcher.pause();
+            const timeout = this.client.config.deleteQueueTimeout;
+            const duration = formatMS(timeout);
+            newState.guild.queue!.timeout = setTimeout(() => {
+                const textChannel = this.client.channels.resolve(newState.guild.queue?.textChannel?.id as Snowflake) as TextChannel;
+                newState.guild.queue?.voiceChannel?.leave();
+                newState.guild.queue = null;
+                textChannel.send(
+                    createEmbed("error", `**\`${duration}\`** have passed and there is no one who joins my voice channel, the queue was deleted.`)
+                        .setTitle("⏹ Queue deleted")
+                ).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
+            }, timeout);
+            newState.guild.queue?.textChannel?.send(
+                createEmbed("warn", "The voice channel is empty. To save resources, the queue was paused. " +
                     `If there's no one who joins my voice channel in the next **\`${duration}\`**, the queue will be deleted.`)
-                        .setTitle("⏸ Queue paused")
-                )
-                    .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
-                return newState.guild.queue!.timeout = setTimeout(() => {
-                    newState.guild.queue?.connection?.dispatcher.once("speaking", () => {
-                        newState.guild.queue?.songs.clear();
-                        const textChannel = this.client.channels.resolve(newState.guild.queue?.textChannel?.id as Snowflake) as TextChannel;
-                        newState.guild.queue?.connection?.dispatcher.end(() => {
-                            textChannel.send(
-                                createEmbed("error", `**\`${duration}\`** have passed and there is no one who joins my voice channel, the queue was deleted.`)
-                                    .setTitle("⏹ Queue deleted")
-                            ).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
-                        });
-                    });
-                    newState.guild.queue!.playing = true;
-                    newState.guild.queue?.connection?.dispatcher.resume(); // I don't know why but I think I should resume and then end the dispatcher or it won't work
-                }, timeout);
-            }
-        } catch (e) { this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e); }
+                    .setTitle("⏸ Queue paused")
+            ).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
+        } catch (e) {
+            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e);
+        }
     }
 
-    private resumeTimeout(vc: Collection<string, GuildMember> | undefined, newState: IVoiceState): void {
+    private resumeTimeout(vc: Collection < string, GuildMember > | undefined, newState: IVoiceState): void {
         if (Number(vc?.size) > 0) {
-            if (Number(vc?.size) === 1) { clearTimeout(newState.guild.queue?.timeout as NodeJS.Timeout); newState.guild.queue!.timeout = null; }
+            if (Number(vc?.size) === 1) {
+                clearTimeout(newState.guild.queue?.timeout as NodeJS.Timeout);
+                newState.guild.queue!.timeout = null;
+            }
             if (!newState.guild.queue?.playing && Number(vc?.size) < 2) {
                 try {
                     const song = newState.guild.queue?.songs.first();
