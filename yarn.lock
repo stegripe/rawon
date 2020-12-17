@@ -2027,10 +2027,10 @@ yn@3.1.1:
   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
 
-ytdl-core@^4.1.6:
-  version "4.1.6"
-  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-4.1.6.tgz#8b145a1b0c7d4c032798c2e3eec87c5fbcc1bd33"
-  integrity sha512-byQCynwQeqzn0VkzASFWs41sxnGSHgAXC4Dm6r7woK3e/WNtTr0sfOIgLkRKXaTw3ez5Pq5VhGwFQtbY6YbxRA==
+ytdl-core@^4.1.7:
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-4.1.7.tgz#25ef424331682fbe7c3f71d81bbe2989ece53104"
+  integrity sha512-y0n0yejRIHljs8xM4v5SLB1WZeEhx4ZGJMEGHJurimu0ISqP91au+kFH8w9t31dWBca6hkhhnpFcFIz2xu2g4Q==
   dependencies:
     m3u8stream "^0.8.3"
     miniget "^4.0.0"
