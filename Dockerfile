@@ -1,7 +1,7 @@
 FROM node:14.15.3-alpine as build-stage
 
 LABEL name "Disc 11 (build stage)"
-LABEL maintainer "Zhycorp <support@zhycorp.xyz>"
+LABEL maintainer "Zhycorp <support@zhycorp.com>"
 
 LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
 
@@ -30,7 +30,7 @@ RUN yarn install --production
 FROM node:14.15.3-alpine
 
 LABEL name "Disc 11"
-LABEL maintainer "Zhycorp <support@zhycorp.xyz>"
+LABEL maintainer "Zhycorp <support@zhycorp.com>"
 
 LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
 
