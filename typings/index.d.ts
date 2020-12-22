@@ -60,7 +60,7 @@ export interface IDMChannel extends DMChannel {
 }
 
 export interface IServerQueue {
-    textChannel: ITextChannel | IDMChannel | INewsChannel | null;
+    textChannel: ITextChannel | null;
     voiceChannel: VoiceChannel | null;
     connection: VoiceConnection | null;
     songs: ISongs;
