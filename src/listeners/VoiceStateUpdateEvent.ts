@@ -53,7 +53,7 @@ export class VoiceStateUpdateEvent extends BaseListener {
         if (newID === queueVC.id && !member?.user.bot) this.resumeTimeout(queueVCMembers, queue, newState);
     }
 
-    public doTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: IVoiceState): any {
+    private doTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: IVoiceState): any {
         try {
             if (vcMembers.size !== 0) return undefined;
             clearTimeout(queue.timeout!);
@@ -80,7 +80,7 @@ export class VoiceStateUpdateEvent extends BaseListener {
         }
     }
 
-    public resumeTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: IVoiceState): any {
+    private resumeTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: IVoiceState): any {
         if (vcMembers.size > 0) {
             if (queue.playing) return undefined;
             try {
