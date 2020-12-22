@@ -4,7 +4,7 @@ import { ServerQueue } from "../structures/ServerQueue";
 import { playSong } from "../utils/YoutubeDownload";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";
-import { IMessage, ISong, IGuild } from "../../typings";
+import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
 import { Video } from "../utils/YoutubeAPI/structures/Video";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isSameVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
@@ -134,7 +134,7 @@ export class PlayCommand extends BaseCommand {
             message.channel.send(createEmbed("info", `✅  **|**  **[${song.title}](${song.url})** has been added to the queue!`).setThumbnail(song.thumbnail))
                 .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
         } else {
-            message.guild!.queue = new ServerQueue(message.channel, voiceChannel);
+            message.guild!.queue = new ServerQueue(message.channel as ITextChannel, voiceChannel);
             message.guild?.queue.songs.addSong(song);
             try {
                 const connection = await message.guild?.queue.voiceChannel?.join();
