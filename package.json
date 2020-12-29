@@ -45,7 +45,7 @@
     "@hazmi35/eslint-config": "^3.4.0",
     "@types/node": "^14.14.16",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
-    "@typescript-eslint/parser": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.1",
     "@zhycorp/eslint-config": "^2.4.2",
     "eslint": "^7.16.0",
     "ts-node": "^9.1.1",
