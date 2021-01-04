@@ -53,7 +53,7 @@
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.3.3",
-    "bufferutil": "^4.0.1",
+    "bufferutil": "^4.0.3",
     "erlpack": "github:discord/erlpack",
     "libsodium-wrappers": "^0.7.8",
     "utf-8-validate": "^5.0.2",
