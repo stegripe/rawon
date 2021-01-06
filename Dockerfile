@@ -1,4 +1,4 @@
-FROM node:14.15.3-alpine as build-stage
+FROM node:14.15.4-alpine as build-stage
 
 LABEL name "Disc 11 (build stage)"
 LABEL maintainer "Zhycorp <support@zhycorp.com>"
@@ -27,7 +27,7 @@ RUN yarn run build
 RUN yarn install --production
 
 # Get ready for production
-FROM node:14.15.3-alpine
+FROM node:14.15.4-alpine
 
 LABEL name "Disc 11"
 LABEL maintainer "Zhycorp <support@zhycorp.com>"
