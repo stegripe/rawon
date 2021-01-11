@@ -44,7 +44,7 @@
   "devDependencies": {
     "@hazmi35/eslint-config": "^3.4.0",
     "@types/node": "^14.14.20",
-    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.12.0",
     "@zhycorp/eslint-config": "^2.4.2",
     "eslint": "^7.17.0",
