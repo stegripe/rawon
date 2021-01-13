@@ -9,7 +9,7 @@
 
 ## Usage
 
-**Requires [Node.JS](https://nodejs.org) version v12.9.0 or above.**
+**Requires [Node.JS](https://nodejs.org) version v14.x or above.**
 
 [Come here](https://github.com/zhycorp/disc-11#Glitch) if you want to use Glitch.com instead of localhost or [Heroku](https://heroku.com/deploy?template=https://github.com/zhycorp/disc-11/tree/master)
 
