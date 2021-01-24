@@ -12,7 +12,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 export class PingCommand extends BaseCommand {
     public execute(message: IMessage): IMessage {
         const before = Date.now();
-        message.channel.send("*🏓 Pinging...*").then((msg: IMessage | any) => {
+        message.channel.send("🏓").then((msg: IMessage | any) => {
             const latency = Date.now() - before;
             const wsLatency = this.client.ws.ping.toFixed(0);
             const embed = new MessageEmbed()
