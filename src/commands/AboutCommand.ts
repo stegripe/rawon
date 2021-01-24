@@ -33,8 +33,8 @@ OS uptime           :: ${formatMS(osUptime() * 1000)}
 Process uptime      :: ${formatMS(process.uptime() * 1000)}
 Bot uptime          :: ${formatMS(this.client.uptime!)}
 
-Node.JS version     :: ${process.version}
-Discord.JS version  :: v${version}
+Node.js version     :: ${process.version}
+Discord.js version  :: v${version}
 FFmpeg version      :: v${(await import(this.getPackageJSON("ffmpeg-static")))["ffmpeg-static"]["binary-release-name"]}
 YTDL-Core version   :: v${(await import(this.getPackageJSON("ytdl-core"))).version}
 Opus Encoder        :: ${opusEncoderName} v${(await import(this.getPackageJSON(opusEncoderName))).version}
@@ -44,7 +44,7 @@ Source code         :: https://github.com/zhycorp/disc-11
 Get a support       :: https://zhycorp.com/discord
 \`\`\`
         `)
-                .setAuthor(`${this.client.user?.username as string} - A simple open-sourced Discord music bot`)
+                .setAuthor(`${this.client.user?.username as string} - A simple open-source Discord music bot`)
         ).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }
 
