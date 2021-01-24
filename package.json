@@ -1,6 +1,6 @@
 {
   "name": "disc-11",
-  "version": "1.20.0",
+  "version": "1.25.0",
   "private": true,
   "description": "A dedicated open-source music bot for Zhycorp based on Jukebox",
   "homepage": "https://github.com/zhycorp/disc-11#readme",
@@ -27,7 +27,7 @@
     "ignorePatterns": "dist/*"
   },
   "dependencies": {
-    "@types/node-fetch": "^2.5.7",
+    "@types/node-fetch": "^2.5.8",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "entities": "^2.1.0",
@@ -39,15 +39,15 @@
     "pretty-ms": "^7.0.1",
     "tslib": "^2.1.0",
     "winston": "^3.3.3",
-    "ytdl-core": "^4.4.3"
+    "ytdl-core": "^4.4.4"
   },
   "devDependencies": {
     "@hazmi35/eslint-config": "^3.4.0",
-    "@types/node": "^14.14.20",
-    "@typescript-eslint/eslint-plugin": "^4.13.0",
-    "@typescript-eslint/parser": "^4.13.0",
+    "@types/node": "^14.14.22",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
     "@zhycorp/eslint-config": "^2.4.2",
-    "eslint": "^7.17.0",
+    "eslint": "^7.18.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   },

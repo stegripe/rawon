@@ -88,7 +88,7 @@ export class VoiceStateUpdateEvent extends BaseListener {
                 newState.guild.queue!.timeout = null;
                 const song = queue.songs.first();
                 queue.textChannel?.send(
-                    createEmbed("info", `Someone joins the voice channel. Enjoy the queued music!\n🎶  **|**  Now Playing: **[${song!.title}](${song!.url})**`)
+                    createEmbed("info", `Someone joins the voice channel, Enjoy the queued music.\n🎶  **|**  Now playing **[${song!.title}](${song!.url})**`)
                         .setThumbnail(song!.thumbnail)
                         .setTitle("▶ Queue resumed")
                 ).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));

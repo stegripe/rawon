@@ -9,7 +9,7 @@ updates:
   open-pull-requests-limit: 99
   target-branch: dev
   reviewers:
-  - mozartrafi
+  - mzrtamp
   labels:
   - dependencies
   commit-message:
@@ -24,7 +24,7 @@ updates:
   open-pull-requests-limit: 99
   target-branch: dev
   reviewers:
-  - mozartrafi
+  - mzrtamp
   labels:
   - gh-actions
   - dependencies
@@ -40,7 +40,7 @@ updates:
   open-pull-requests-limit: 99
   target-branch: dev
   reviewers:
-  - mozartrafi
+  - mzrtamp
   labels:
   - docker
   - dependencies

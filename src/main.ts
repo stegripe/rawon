@@ -21,7 +21,7 @@ const manager = new ShardingManager(resolve(__dirname, "bot.js"), { totalShards:
 manager.on("shardCreate", shard => {
     log.info(`[ShardManager] Shard #${shard.id} has spawned.`);
     shard.on("disconnect", () => {
-        log.warn("SHARD_DISCONNECTED: ", { stack: `[ShardManager] Shard #${shard.id} has disconnected` });
+        log.warn("SHARD_DISCONNECTED: ", { stack: `[ShardManager] Shard #${shard.id} has disconnected.` });
     }).on("reconnecting", () => {
         log.info(`[ShardManager] Shard #${shard.id} has reconnected.`);
     });
