@@ -6,7 +6,7 @@ import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
     name: "pause",
-    description: "Pause the track",
+    description: "Pause the music player",
     usage: "{prefix}pause"
 })
 export class PauseCommand extends BaseCommand {
@@ -17,7 +17,7 @@ export class PauseCommand extends BaseCommand {
         if (message.guild?.queue?.playing) {
             message.guild.queue.playing = false;
             message.guild.queue.connection?.dispatcher.pause();
-            return message.channel.send(createEmbed("info", "⏸  **|**  Paused the music for you"));
+            return message.channel.send(createEmbed("info", "⏸  **|**  Paused the player for you"));
         }
         message.channel.send(createEmbed("warn", "Music is already paused."))
             .catch(e => this.client.logger.error("PAUSE_CMD_ERR:", e));
