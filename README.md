@@ -1,4 +1,4 @@
-# Zhycorp Music Bot
+# Disc 11 by Zhycorp
 > A dedicated open-source music bot for Zhycorp based on [Jukebox](https://github.com/Hazmi35/jukebox)
 
 <a href="https://discord.gg/DxenCeV"><img src="https://img.shields.io/discord/332877090003091456?color=7289da&logo=discord&logoColor=white" alt="Discord server" /></a>
@@ -9,12 +9,12 @@
 
 ## Usage
 
-**Requires [Node.JS](https://nodejs.org) version v14.x or above.**
+**Requires [Node.js](https://nodejs.org) version v14.x or above.**
 
 [Come here](https://github.com/zhycorp/disc-11#Glitch) if you want to use Glitch.com instead of localhost or [Heroku](https://heroku.com/deploy?template=https://github.com/zhycorp/disc-11/tree/master)
 
-1. Install [Node.JS](https://nodejs.org) and [Yarn (Optional)](https://yarnpkg.com)
-2. Rename `.env.schema` to `.env` and fill out the values (example on .env.example)
+1. Install [Node.js](https://nodejs.org) and [Yarn (Optional)](https://yarnpkg.com)
+2. Delete old `.env`, rename `.env.schema` to `.env` and fill out the values (example on .env.example)
 3. Install dependencies as stated [here](https://github.com/zhycorp/disc-11#Installation) before you continue surfing
 4. Run `npm run build`, or `yarn run build` if you're using Yarn package manager
 5. Optional thing, prune dev dependencies (this is good to save disk spaces):
@@ -57,12 +57,12 @@ You can still use Glitch and keep it online in this project, no worries 😉
 5. Get your bot token at [Discord developer portal](https://discord.com/developers/applications) then invite it to your server, and fill the bot prefix with anything you want
 8. To get an YouTube API v3 Key, please watch [this video](https://youtu.be/6CSeovx0nvc?t=161) carefully
 9. Specify another options on that file. If you don't know how, there's `.env.example` so you can know what it should looks like
-10. After that, go to **Tools** > **Terminal** type `refresh`.
+10. After that, go to **Tools** > **Terminal** type `refresh`
 11. Close **Terminal** tab, then open **Tools** > **Logs**, wait for a while
-13. To make it stay online, please watch [this video](https://youtu.be/6CSeovx0nvc?t=547) carefully
+13. To make it stay online, please watch [this video](https://youtu.be/6CSeovx0nvc?t=547) carefully.
 
 Your bot is online, and ready to use!
-If you have any questions or need support, feel free to join our [Discord server](https://zhycorp.xyz/discord).
+If you have any questions or need support, feel free to join our [Discord server](https://zhycorp.com/discord).
 
 ## Docker
 Want to use Dockerized version of [this project](https://github.com/Hazmi35/jukebox)?
@@ -83,7 +83,7 @@ $ docker-compose up
 ```
 
 ## Features
-- A production-ready music bot, suitable for you that don't like to hassling with the code.
+- A production-ready music bot, suitable for you that don't like to hassling with the code
 - Basic Commands (Help, Ping, Invite & Eval [for advanced bot owners])
 - Basic Music Commands (Play, Skip, Stop, Pause & Resume, Now Playing, Queue, Repeat, Volume)
 - Caching (cache youtube downloads)
