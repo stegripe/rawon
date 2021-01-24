@@ -17,7 +17,7 @@ export function inhibit(func: ICommandComponent["execute"]) {
 
 export function isMusicPlaying(): any {
     return inhibit(message => {
-        if (message.guild?.queue === null) return message.channel.send(createEmbed("warn", "There is nothing playing."));
+        if (message.guild?.queue === null) return message.channel.send(createEmbed("warn", "There is nothing playing"));
     });
 }
 
@@ -48,11 +48,11 @@ export function isValidVoiceChannel(): any {
     return inhibit(message => {
         const voiceChannel = message.member?.voice.channel;
         if (!voiceChannel?.joinable) {
-            return message.channel.send(createEmbed("error", "I'm sorry, but I can't connect to your voice channel, make sure I have a proper permissions!"));
+            return message.channel.send(createEmbed("error", "I'm sorry, but I can't **\`CONNECT\`** to your voice channel, make sure I have a proper permission"));
         }
         if (!voiceChannel.speakable) {
             voiceChannel.leave();
-            return message.channel.send(createEmbed("error", "I'm sorry, but I can't speak in this voice channel, make sure I have a proper permissions!"));
+            return message.channel.send(createEmbed("error", "I'm sorry, but I can't **\`SPEAK\`** in this voice channel, make sure I have a proper permission"));
         }
     });
 }
