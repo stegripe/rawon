@@ -44,7 +44,7 @@ export class YoutubeAPI {
             .catch(e => Promise.reject(e));
     }
 
-    public makePaginatedRequest(endpoint: string, searchParams = {}, count = Infinity, fetched = [], pageToken = null): Promise<any> {
+    public makePaginatedRequest(endpoint: string, searchParams = {}, count = Infinity, fetched = [], pageToken = ""): Promise<any> {
         if (count < 1) return Promise.reject(new Error("Cannot fetch less than 1."));
 
         const limit = count > 50 ? 50 : count;
