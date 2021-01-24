@@ -107,7 +107,7 @@ export class PlayCommand extends BaseCommand {
                     video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
                 }
             } catch (err) {
-                this.client.logger.error("YT_SEARCH_ERR:", new Error(err.message));
+                this.client.logger.error("YT_SEARCH_ERR:", err);
                 return message.channel.send(createEmbed("error", `I could not obtain any search results\nError: **\`${err.message}\`**`));
             }
         }
