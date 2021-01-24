@@ -17,22 +17,22 @@ export class HelpCommand extends BaseCommand {
         if (command && !command.meta.disable) {
             message.channel.send(
                 new MessageEmbed()
+                    .setColor(this.client.config.embedColor)
                     .setTitle(`Information for ${command.meta.name} command`)
                     .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/question_mark.png")
-                    .addFields({ name: "Name", value: `\`${command.meta.name}\``, inline: true },
+                    .addFields({ name: "Name", value: `**\`${command.meta.name}\`**`, inline: true },
                         { name: "Description", value: command.meta.description, inline: true },
-                        { name: "Aliases", value: `${Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `\`${c}\``).join(", ") as string : "None."}`, inline: false },
-                        { name: "Usage", value: `\`${command.meta.usage?.replace(/{prefix}/g, message.client.config.prefix) as string}\``, inline: true })
-                    .setColor(this.client.config.embedColor)
+                        { name: "Aliases", value: `${Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") as string : "None"}`, inline: false },
+                        { name: "Usage", value: `**\`${command.meta.usage?.replace(/{prefix}/g, message.client.config.prefix) as string}\`**`, inline: true })
                     .setTimestamp()
             ).catch(e => this.client.logger.error("HELP_CMD_ERR:", e));
         } else {
             message.channel.send(
                 createEmbed("info", message.client.commands.filter(cmd => !cmd.meta.disable && cmd.meta.name !== "eval").map(c => `\`${c.meta.name}\``).join(" "))
-                    .setTitle(`${this.client.user?.username as string} - command list`)
                     .setColor(this.client.config.embedColor)
+                    .setTitle(`${this.client.user?.username as string} - command list`)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)
-                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for command!`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/info.png")
+                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for a command`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/info.png")
             ).catch(e => this.client.logger.error("HELP_CMD_ERR:", e));
         }
     }
