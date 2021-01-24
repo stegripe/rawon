@@ -14,7 +14,7 @@ import { createEmbed } from "../utils/createEmbed";
     aliases: ["p", "add", "play-music"],
     name: "play",
     description: "Play some music",
-    usage: "{prefix}play <youtube video name, youtube video link or playlist link>"
+    usage: "{prefix}play <youtube video name|video link|playlist link>"
 })
 export class PlayCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
