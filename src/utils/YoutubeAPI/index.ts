@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import fetch from "node-fetch";
-import { parse as parseURL, resolve as resolveURL } from "url";
-import { parse as parseQuery, stringify as stringifyQuery, ParsedUrlQueryInput } from "querystring";
+import { URLSearchParams, URL } from "url";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
 
@@ -20,7 +18,7 @@ export class YoutubeAPI {
     }
 
     public getVideoByURL(url: string): Promise<Video> {
-        const id = parseQuery(parseURL(url).query!).v as string;
+        const id = new URL(url).searchParams.get("v")!;
         return this.getVideo(id);
     }
 
@@ -30,13 +28,13 @@ export class YoutubeAPI {
     }
 
     public getPlaylistByURL(url: string): Promise<Playlist> {
-        const id = parseQuery(parseURL(url).query!).list as string;
+        const id = new URL(url).searchParams.get("list")!;
         return this.getPlaylist(id);
     }
 
-    public makeRequest(endpoint: string, searchParams: ParsedUrlQueryInput): Promise<any> {
-        const query = stringifyQuery(Object.assign({ key: this.key, part: "snippet,id,status,contentDetails" }, searchParams));
-        const URI = resolveURL(resolveURL(this.baseURL, endpoint), `?${query}`);
+    public makeRequest(endpoint: string, searchParams: Record<any, any>): Promise<any> {
+        const URI = new URL(endpoint, this.baseURL);
+        URI.search = new URLSearchParams(Object.assign({ key: this.key, part: "snippet,id,status,contentDetails" }, searchParams)).toString();
         return fetch(URI)
             .then(res => res.json())
             .then(res => {
