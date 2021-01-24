@@ -7,7 +7,7 @@ import { CommandManager } from "../utils/CommandManager";
 import { ListenerLoader } from "../utils/ListenerLoader";
 import { YoutubeAPI } from "../utils/YoutubeAPI";
 
-// Extends DiscordJS Structures
+// Extends Discord.js Structures
 import "./Guild";
 
 export class Disc_11 extends Client {
