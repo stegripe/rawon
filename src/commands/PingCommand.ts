@@ -16,18 +16,18 @@ export class PingCommand extends BaseCommand {
             const latency = Date.now() - before;
             const wsLatency = this.client.ws.ping.toFixed(0);
             const embed = new MessageEmbed()
-                .setAuthor("🏓 PONG!", message.client.user?.displayAvatarURL())
+                .setAuthor("🏓 PONG!")
                 .setColor(this.searchHex(wsLatency))
                 .addFields({
-                    name: "API Latency",
+                    name: "**API Latency**",
                     value: `**\`${latency}\`** ms`,
                     inline: true
                 }, {
-                    name: "WebSocket Latency",
+                    name: "**WebSocket Latency**",
                     value: `**\`${wsLatency}\`** ms`,
                     inline: true
                 })
-                .setFooter(`Requested by: ${message.author.tag}`, message.author.displayAvatarURL());
+                .setFooter(`Ping of: ${this.client.user!.username}`, this.client.user?.displayAvatarURL() as string);
             msg.edit(embed);
             msg.edit("");
         }).catch(e => this.client.logger.error("PING_CMD_ERR:", e));
