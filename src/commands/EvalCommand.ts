@@ -20,7 +20,7 @@ export class EvalCommand extends BaseCommand {
         const client = this.client;
 
         if (!client.config.owners.includes(msg.author.id)) {
-            return message.channel.send(createEmbed("error", "Only the bot owner can use this command"));
+            return message.channel.send(createEmbed("error", "Sorry, but this command is limited to bot owners only"));
         }
 
         const embed = new MessageEmbed()
