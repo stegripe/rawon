@@ -29,7 +29,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             const code = args.slice(0).join(" ");
-            if (!code) return message.channel.send("No valid argument was provided");
+            if (!code) return message.channel.send(createEmbed("error", "No valid argument was provided"));
             let evaled = await eval(code);
 
             if (typeof evaled !== "string") {
