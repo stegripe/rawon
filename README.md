@@ -11,8 +11,6 @@
 
 **Requires [Node.js](https://nodejs.org) version v14.x or above.**
 
-[Come here](https://github.com/zhycorp/disc-11#Glitch) if you want to use Glitch.com instead of localhost or [Heroku](https://heroku.com/deploy?template=https://github.com/zhycorp/disc-11/tree/master)
-
 1. Install [Node.js](https://nodejs.org) and [Yarn (Optional)](https://yarnpkg.com)
 2. Delete old `.env`, rename `.env.schema` to `.env` and fill out the values (example on .env.example)
 3. Install dependencies as stated [here](https://github.com/zhycorp/disc-11#Installation) before you continue surfing
@@ -46,6 +44,11 @@ $ npm install
 $ yarn install
 ```
 For optional packages, you need to install build tools as stated [here](https://github.com/nodejs/node-gyp#installation) and you also need to install [Git](https://git-scm.com/).
+
+## Heroku
+This clone project is still supports [Heroku](https://heroku.com) host because the [original project](https://github.com/Hazmi35/jukebox) is using this.
+
+<a href="https://heroku.com/deploy"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy"></a>
 
 ## Glitch
 You can still use Glitch and keep it online in this project, no worries 😉
