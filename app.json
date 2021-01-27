@@ -13,10 +13,10 @@
             "description": "Your bot's prefix (example !play)"
         },
         "CONFIG_EMBED_COLOR": {
-            "description": "The color for your bot's embed message"
+            "description": "The color for your bot's embed message (hex code without hashtag)"
         },
         "CONFIG_OWNERS": {
-            "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
+            "description": "A Discord ID, use comma (,) if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
             "required": false
         },
         "CONFIG_TOTALSHARDS": {
@@ -32,7 +32,7 @@
             "required": false
         },
         "CONFIG_ALLOW_DUPLICATE": {
-            "description": "Whether to allow users to add duplicate of music (yes or no) (default: yes)",
+            "description": "Whether to allow users to add duplicate of musics (default: no)",
             "required": false
         },
         "CONFIG_DISABLE_SONG_SELECTION": {
@@ -44,7 +44,7 @@
             "required": false
         },
         "CONFIG_SELECT_TIMEOUT": {
-            "description": "Select song timeout when searching songs (in seconds) (default: 20 seconds)",
+            "description": "Select song timeout when searching songs (in seconds) (default: 20 <20 seconds>)",
             "required": false
         },
         "CONFIG_DELETE_QUEUE_TIMEOUT": {
@@ -52,7 +52,7 @@
             "required": false
         },
         "CONFIG_CACHE_YOUTUBE_DOWNLOADS": {
-            "description": "Whether to download and cache videos from youtube (yes or no) (default: no)",
+            "description": "Whether to download and cache videos from youtube (default: no)",
             "required": false
         },
         "CONFIG_CACHE_MAX_LENGTH": {
@@ -72,11 +72,11 @@
             "required": false
         },
         "CONFIG_STATUS_ACTIVITY": {
-            "description": "What status does the bot display (default: \"music on {guildsCount} guilds!\") (available variables: guildsCount, usersCount, playingCount, and botPrefix). NOTE ON {usersCount} VARIABLE: This only displays cached usersCount, to get full usersCount, please enable CONFIG_FETCH_ALL_USERS",
+            "description": "What status does the bot display (default: this one) (available variables: guildsCount, usersCount, playingCount, and botPrefix). NOTE ON {usersCount} VARIABLE: This only displays cached usersCount, to get full usersCount, please enable CONFIG_FETCH_ALL_USERS",
             "required": false
         },
         "CONFIG_FETCH_ALL_USERS": {
-            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users) (default: no) (note: You need to enable privileged GUILD_MEMBERS Intents on the Discord's developer page)",
+            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users) (note: You need to enable privileged GUILD_MEMBERS Intents on the Discord's developer page) (default: no)",
             "required": false
         }
     },
