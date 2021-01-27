@@ -7,14 +7,14 @@ import { createEmbed } from "../utils/createEmbed";
 @DefineCommand({
     aliases: ["q", "queue-list", "track-list"],
     name: "queue",
-    description: "Show the current track queue",
+    description: "Show the current queue",
     usage: "{prefix}queue"
 })
 export class QueueCommand extends BaseCommand {
     @isMusicPlaying()
     public execute(message: IMessage): any {
         const embed = createEmbed("info")
-            .setTitle("Song Queue");
+            .setAuthor("Music Player Queue");
 
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}** • **[${s.title}](${s.url})**`);

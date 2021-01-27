@@ -7,7 +7,7 @@ import { createEmbed } from "../utils/createEmbed";
 @DefineCommand({
     aliases: ["loop", "music-repeat", "music-loop"],
     name: "repeat",
-    description: "Repeat the current track or queue",
+    description: "Repeat the music player in the queue",
     usage: "{prefix}repeat <all|one|disable>"
 })
 export class RepeatCommand extends BaseCommand {
@@ -26,6 +26,6 @@ export class RepeatCommand extends BaseCommand {
             message.guild!.queue!.loopMode = 0;
             return message.channel.send(createEmbed("info", "▶  **|**  Repeating disabled"));
         }
-        message.channel.send(createEmbed("warn", `Invalid usage, see **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information`)).catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
+        message.channel.send(createEmbed("error", `Invalid usage, see **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information`)).catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
     }
 }

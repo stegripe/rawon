@@ -13,10 +13,10 @@
             "description": "Your bot's prefix (example !play)"
         },
         "CONFIG_EMBED_COLOR": {
-            "description": "The color for your bot's embed message"
+            "description": "The color for your bot's embed message (hex code without hashtag)"
         },
         "CONFIG_OWNERS": {
-            "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
+            "description": "A Discord ID, use comma (,) if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
             "required": false
         },
         "CONFIG_TOTALSHARDS": {
@@ -24,39 +24,39 @@
             "required": false
         },
         "CONFIG_DEFAULT_VOLUME": {
-            "description": "Default volume for music (default: 50)",
+            "description": "Default volume for music player (default: 50)",
             "required": false
         },
         "CONFIG_MAX_VOLUME": {
-            "description": "Max volume allowed for music (default: 100)",
+            "description": "Max volume allowed for music player (default: 100)",
             "required": false
         },
         "CONFIG_ALLOW_DUPLICATE": {
-            "description": "Whether to allow users to add duplicate of music (yes or no) (default: yes)",
+            "description": "Whether to allow users to add duplicate of music (default: no)",
             "required": false
         },
         "CONFIG_DISABLE_SONG_SELECTION": {
-            "description": "Whether to disable selecting songs on play command, this will automatically selects the first song from search results (default: no)",
+            "description": "Whether to disable selecting music on play command, this will automatically selects the first order from the search results (default: no)",
             "required": false
         },
         "CONFIG_SEARCH_MAX_RESULTS": {
-            "description": "Maximum songs to list in song selection (default: 10, max: 10)",
+            "description": "Maximum music to list in the music selection (default: 10, max: 10)",
             "required": false
         },
         "CONFIG_SELECT_TIMEOUT": {
-            "description": "Select song timeout when searching songs (in seconds) (default: 20 seconds)",
+            "description": "Music selection timeout when searching a music (in seconds) (default: 20 <20 seconds>)",
             "required": false
         },
         "CONFIG_DELETE_QUEUE_TIMEOUT": {
-            "description": "Timeout in seconds before queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)",
+            "description": "Timeout in seconds before the queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)",
             "required": false
         },
         "CONFIG_CACHE_YOUTUBE_DOWNLOADS": {
-            "description": "Whether to download and cache videos from youtube (yes or no) (default: no)",
+            "description": "Whether to download and cache videos from YouTube (default: no)",
             "required": false
         },
         "CONFIG_CACHE_MAX_LENGTH": {
-            "description": "Max music length in seconds that are allowed to cached (default: 5400 <1 hour 30 minutes>)",
+            "description": "Max music length in seconds that are allowed to be cached (default: 5400 <1 hour 30 minutes>)",
             "required": false
         },
         "CONFIG_DISABLE_INVITE_CMD": {
@@ -64,7 +64,7 @@
             "required": false
         },
         "CONFIG_DEBUG": {
-            "description": "Should logging use debug level? Please note that this is not recommended in production (default: no)",
+            "description": "Should logging uses debug level? Please note that this is not recommended in production (default: no)",
             "required": false
         },
         "CONFIG_STATUS_TYPE": {
@@ -72,11 +72,11 @@
             "required": false
         },
         "CONFIG_STATUS_ACTIVITY": {
-            "description": "What status does the bot display (default: \"music on {guildsCount} guilds!\") (available variables: guildsCount, usersCount, playingCount, and botPrefix). NOTE ON {usersCount} VARIABLE: This only displays cached usersCount, to get full usersCount, please enable CONFIG_FETCH_ALL_USERS",
+            "description": "What status does the bot display (default: this one) (available variables: guildsCount, usersCount, playingCount, and botPrefix). NOTE ON {usersCount} VARIABLE: This only displays cached usersCount, to get full usersCount, please enable CONFIG_FETCH_ALL_USERS",
             "required": false
         },
         "CONFIG_FETCH_ALL_USERS": {
-            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users) (default: no) (note: You need to enable privileged GUILD_MEMBERS Intents on the Discord's developer page)",
+            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users) (note: You need to enable privileged GUILD_MEMBERS Intents on the Discord's developer page) (default: no)",
             "required": false
         }
     },

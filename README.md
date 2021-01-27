@@ -3,15 +3,13 @@
 
 <a href="https://discord.gg/DxenCeV"><img src="https://img.shields.io/discord/332877090003091456?color=7289da&logo=discord&logoColor=white" alt="Discord server" /></a>
 <a href="https://discord.com/oauth2/authorize?client_id=690736793682968576&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Disc%2011%230606&plastic&color=7289DA&logo=discord"></a>
-<a href="https://github.com/zhycorp/music-bot-example/actions?query=workflow%3A%22Node.js+CI%22"><img src="https://github.com/zhycorp/music-bot-example/workflows/Node.js%20CI/badge.svg" alt="Node.JS CI Status" /></a>
 <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">
+<a href="https://github.com/zhycorp/disc-11/actions?query=workflow%3A%22Lint+code+%26+compile+test%22"><img src="https://github.com/zhycorp/disc-11/workflows/Lint%20code%20&%20compile%20test/badge.svg" alt="CI Status" /></a>
 <img src="https://badgen.net/badge/jual/haram/red">
 
 ## Usage
 
 **Requires [Node.js](https://nodejs.org) version v14.x or above.**
-
-[Come here](https://github.com/zhycorp/disc-11#Glitch) if you want to use Glitch.com instead of localhost or [Heroku](https://heroku.com/deploy?template=https://github.com/zhycorp/disc-11/tree/master)
 
 1. Install [Node.js](https://nodejs.org) and [Yarn (Optional)](https://yarnpkg.com)
 2. Delete old `.env`, rename `.env.schema` to `.env` and fill out the values (example on .env.example)
@@ -46,6 +44,11 @@ $ npm install
 $ yarn install
 ```
 For optional packages, you need to install build tools as stated [here](https://github.com/nodejs/node-gyp#installation) and you also need to install [Git](https://git-scm.com/).
+
+## Heroku
+This clone project is still supports [Heroku](https://heroku.com) host because the [original project](https://github.com/Hazmi35/jukebox) is using this.
+
+<a href="https://heroku.com/deploy"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy"></a>
 
 ## Glitch
 You can still use Glitch and keep it online in this project, no worries 😉

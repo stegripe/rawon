@@ -20,7 +20,7 @@ export class EvalCommand extends BaseCommand {
         const client = this.client;
 
         if (!client.config.owners.includes(msg.author.id)) {
-            return message.channel.send(createEmbed("error", "Only the bot owner can use this command"));
+            return message.channel.send(createEmbed("error", "Sorry, but this command is limited to bot owners only"));
         }
 
         const embed = new MessageEmbed()
@@ -29,7 +29,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             const code = args.slice(0).join(" ");
-            if (!code) return message.channel.send("No valid argument was provided");
+            if (!code) return message.channel.send(createEmbed("error", "No valid argument was provided"));
             let evaled = await eval(code);
 
             if (typeof evaled !== "string") {
