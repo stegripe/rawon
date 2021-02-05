@@ -11,6 +11,7 @@ export class ServerQueue {
     public loopMode: 0 | 1 | 2 = 0;
     public timeout: NodeJS.Timeout | null = null;
     private _lastMusicMessageID: Snowflake | null = null;
+    private _lastvoiceStateUpdateMessageID: Snowflake | null = null;
     public constructor(public textChannel: ITextChannel | null = null, public voiceChannel: VoiceChannel | null = null) {
         this.volume = textChannel!.client.config.defaultVolume;
         Object.defineProperty(this, "_lastMusicMessageID", {
@@ -24,5 +25,13 @@ export class ServerQueue {
 
     public set lastMusicMessageID(id: Snowflake | null) {
         this._lastMusicMessageID = id;
+    }
+
+    public get lastVoiceStateUpdateMessageID(): Snowflake | null {
+        return this._lastvoiceStateUpdateMessageID;
+    }
+
+    public set lastVoiceStateUpdateMessageID(id: Snowflake | null) {
+        this._lastvoiceStateUpdateMessageID = id;
     }
 }
