@@ -6,7 +6,7 @@ import { createReadStream, createWriteStream, existsSync, appendFileSync, unlink
 // 1048576 * 1 = 1MB
 const defaultOptions: IdownloadOptions = { quality: "highestaudio", highWaterMark: 1048576 * 32 };
 
-export function getSongInfo(link: string, options = defaultOptions): Promise<ISongInfo> {
+export function getMusicInfo(link: string, options = defaultOptions): Promise<IMusicInfo> {
     return new Promise((resolve, reject) => {
         getInfo(link).then(info => {
             const canSkipFFmpeg: boolean = info.formats.find(filter) !== undefined && options.skipFFmpeg === true;
@@ -15,15 +15,15 @@ export function getSongInfo(link: string, options = defaultOptions): Promise<ISo
     });
 }
 
-export function downloadSong(info: ISongInfo, options = defaultOptions): ISongStream {
+export function downloadMusic(info: IMusicInfo, options = defaultOptions): IMusicStream {
     options = info.canSkipFFmpeg ? { ...options, filter } : { ...options };
     return Object.assign(downloadFromInfo(info, options), { info });
 }
 
-export function playSong(link: string, options = defaultOptions): Promise<ISongData> {
+export function playMusic(link: string, options = defaultOptions): Promise<IMusicData> {
     return new Promise((resolve, reject) => {
-        getSongInfo(link, options).then(info => {
-            const stream = downloadSong(info, options)
+        getMusicInfo(link, options).then(info => {
+            const stream = downloadMusic(info, options)
                 .on("error", reject);
             if (options.cache && !info.videoDetails.isLiveContent && !(Number(info.videoDetails.lengthSeconds) >= options.cacheMaxLength!)) {
                 const cachePath = resolvePath(process.cwd(), "cache");
@@ -42,7 +42,7 @@ export function playSong(link: string, options = defaultOptions): Promise<ISongD
     });
 }
 
-function cache(stream: ISongStream, filePath: string, finishMarkerPath: string): Promise<ISongStream> {
+function cache(stream: IMusicStream, filePath: string, finishMarkerPath: string): Promise<IMusicStream> {
     return new Promise((resolve, reject) => {
         const cacheStream = createWriteStream(filePath, { flags: "w" })
             .on("pipe", () => unlinkSync(finishMarkerPath))
@@ -58,15 +58,16 @@ function filter(f: videoFormat): boolean {
     return f.hasAudio && f.codecs === "opus" && f.container === "webm" && Number(f.audioSampleRate) === 48000;
 }
 
-interface ISongInfo extends videoInfo {
+interface IMusicInfo extends videoInfo {
     canSkipFFmpeg: boolean;
 }
 
-interface ISongStream extends Readable {
-    info: ISongInfo;
+interface IMusicStream extends Readable {
+    info: IMusicInfo;
 }
-interface ISongData extends ISongStream {
+
+export interface IMusicData extends IMusicStream {
     cache: boolean;
 }
 
-interface IdownloadOptions extends downloadOptions { cache?: boolean; cacheMaxLength?: number; skipFFmpeg?: boolean }
+export interface IdownloadOptions extends downloadOptions { cache?: boolean; cacheMaxLength?: number; skipFFmpeg?: boolean }

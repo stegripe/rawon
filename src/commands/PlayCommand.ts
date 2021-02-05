@@ -1,7 +1,7 @@
 /* eslint-disable block-scoped-var, @typescript-eslint/restrict-template-expressions */
 import { BaseCommand } from "../structures/BaseCommand";
 import { ServerQueue } from "../structures/ServerQueue";
-import { playSong } from "../utils/YoutubeDownload";
+import { playMusic } from "../utils/YouTubeDownload";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";
 import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
@@ -39,7 +39,8 @@ export class PlayCommand extends BaseCommand {
         const regex = /^((www|music).)?youtube.com\/playlist(.*)$/;
         if (regex.exec(url)) {
             try {
-                const playlist = await this.client.youtube.getPlaylistByURL(url);
+                const id = new URL(url).searchParams.get("list")!;
+                const playlist = await this.client.youtube.getPlaylist(id);
                 const videos = await playlist.getVideos();
                 let skippedVideos = 0;
                 message.channel.send(createEmbed("info", `Adding all video in **[${playlist.title}](${playlist.url})** playlist, hang on...`))
@@ -66,8 +67,9 @@ export class PlayCommand extends BaseCommand {
             }
         }
         try {
+            const id = new URL(url).searchParams.get("v")!;
             // eslint-disable-next-line no-var, block-scoped-var
-            var video = await this.client.youtube.getVideoByURL(url);
+            var video = await this.client.youtube.getVideo(id);
         } catch (e) {
             try {
                 const videos = await this.client.youtube.searchVideos(searchString, this.client.config.searchMaxResults);
@@ -166,7 +168,7 @@ export class PlayCommand extends BaseCommand {
         }
 
         serverQueue.connection?.voice?.setSelfDeaf(true).catch(e => this.client.logger.error("PLAY_ERR:", e));
-        const songData = await playSong(song.url, { cache: this.client.config.cacheYoutubeDownloads, cacheMaxLength: this.client.config.cacheMaxLengthAllowed, skipFFmpeg: true });
+        const songData = await playMusic(song.url, { cache: this.client.config.cacheYoutubeDownloads, cacheMaxLength: this.client.config.cacheMaxLengthAllowed, skipFFmpeg: true });
 
         if (songData.cache) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Using cache for song "${song.title}" on ${guild.name}`);
 
