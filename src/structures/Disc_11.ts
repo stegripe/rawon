@@ -5,7 +5,7 @@ import * as config from "../config";
 import { createLogger } from "../utils/Logger";
 import { CommandManager } from "../utils/CommandManager";
 import { ListenerLoader } from "../utils/ListenerLoader";
-import { YoutubeAPI } from "../utils/YoutubeAPI";
+import { YouTube } from "../utils/YouTube";
 
 // Extends Discord.js Structures
 import "./Guild";
@@ -13,7 +13,7 @@ import "./Guild";
 export class Disc_11 extends Client {
     public readonly config = config;
     public readonly logger = createLogger("main", config.debug);
-    public readonly youtube = new YoutubeAPI(process.env.YT_API_KEY!);
+    public readonly youtube = new YouTube("api", process.env.YT_API_KEY);
     public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
     public readonly listenerLoader = new ListenerLoader(this, resolve(__dirname, "..", "listeners"));
     public constructor(opt: ClientOptions) { super(opt); }

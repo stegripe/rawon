@@ -21,7 +21,7 @@ export class QueueCommand extends BaseCommand {
         if (Number(message.guild?.queue?.songs.size) > 10) {
             const indexes: string[] = this.chunk(songs!, 10);
             let index = 0;
-            embed.setDescription(`\`\`\`\n${indexes[index]}\`\`\``).setFooter(`• Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/info.png");
+            embed.setDescription(indexes[index]).setFooter(`• Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/info.png");
             message.channel.send(embed).then(msg => {
                 msg.react("◀️").then(() => {
                     msg.react("▶️").catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
