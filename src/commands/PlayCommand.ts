@@ -138,7 +138,7 @@ export class PlayCommand extends BaseCommand {
             message.guild?.queue.songs.addSong(song);
             try {
                 const connection = await message.guild?.queue.voiceChannel?.join();
-                message.guild!.queue.connection = connection!;
+                message.guild!.queue.connection = connection;
             } catch (error) {
                 message.guild?.queue.songs.clear();
                 message.guild!.queue = null;
@@ -179,6 +179,7 @@ export class PlayCommand extends BaseCommand {
             .on("start", () => {
                 serverQueue.playing = true;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has started`);
+                if (serverQueue.lastMusicMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastMusicMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
                 serverQueue.textChannel?.send(createEmbed("info", `▶  **|**  Start playing **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
                     .catch(e => this.client.logger.error("PLAY_ERR:", e));
             })
@@ -186,7 +187,9 @@ export class PlayCommand extends BaseCommand {
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has ended`);
                 // eslint-disable-next-line max-statements-per-line
                 if (serverQueue.loopMode === 0) { serverQueue.songs.deleteFirst(); } else if (serverQueue.loopMode === 2) { serverQueue.songs.deleteFirst(); serverQueue.songs.addSong(song); }
+                if (serverQueue.lastMusicMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastMusicMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
                 /* serverQueue.textChannel?.send(createEmbed("info", `⏹  **|**  Stop playing **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
+                    .then(m => serverQueue.lastMusicMessageID = m.id)
                     .catch(e => this.client.logger.error("PLAY_ERR:", e)); */
                 this.play(guild).catch(e => {
                     serverQueue.textChannel?.send(createEmbed("error", `Something bad happen while trying to play a music\nError: **\`${e}\`**`))

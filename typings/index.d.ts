@@ -1,5 +1,6 @@
-import { Message, Guild, TextChannel, VoiceChannel, DMChannel, NewsChannel, VoiceConnection, Collection, ClientEvents, VoiceState } from "discord.js";
+import { Message, Guild, TextChannel, DMChannel, NewsChannel, Collection, ClientEvents, VoiceState } from "discord.js";
 import { Disc_11 } from "../src/structures/Disc_11";
+import { ServerQueue } from "../src/structures/ServerQueue";
 
 export interface ICommandComponent {
     meta: {
@@ -15,7 +16,7 @@ export interface ICommandComponent {
 }
 export interface IGuild extends Guild {
     client: Disc_11;
-    queue: IServerQueue | null;
+    queue: ServerQueue | null;
 }
 export interface IMessage extends Message {
     client: Disc_11;
@@ -57,17 +58,6 @@ export interface IDMChannel extends DMChannel {
     send(content: StringResolvable, options: (MessageOptions & { split?: false }) | MessageAdditions): Promise<IMessage>;
     send(content: StringResolvable, options: MessageOptions & { split: true | SplitOptions }): Promise<IMessage[]>;
     send(content: StringResolvable, options: MessageOptions): Promise<IMessage | IMessage[]>;
-}
-
-export interface IServerQueue {
-    textChannel: ITextChannel | null;
-    voiceChannel: VoiceChannel | null;
-    connection: VoiceConnection | null;
-    songs: ISongs;
-    volume: number;
-    playing: boolean;
-    loopMode: 0 | 1 | 2;
-    timeout: NodeJS.Timeout | null;
 }
 export interface ISongs extends Collection<string, ISong> {
     addSong(song: ISong): this;
