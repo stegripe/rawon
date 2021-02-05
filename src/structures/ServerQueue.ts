@@ -4,7 +4,7 @@ import { ISongs, ITextChannel } from "../../typings";
 import { Snowflake, VoiceChannel, VoiceConnection } from "discord.js";
 
 export class ServerQueue {
-    public connection: VoiceConnection | undefined = undefined;
+    public connection: VoiceConnection | null = null;
     public readonly songs: ISongs = new SongManager();
     public volume = 0;
     public playing = false;

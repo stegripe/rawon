@@ -137,7 +137,7 @@ export class PlayCommand extends BaseCommand {
             message.guild!.queue = new ServerQueue(message.channel as ITextChannel, voiceChannel);
             message.guild?.queue.songs.addSong(song);
             try {
-                const connection = await message.guild?.queue.voiceChannel?.join();
+                const connection = await message.guild!.queue.voiceChannel!.join();
                 message.guild!.queue.connection = connection;
             } catch (error) {
                 message.guild?.queue.songs.clear();
