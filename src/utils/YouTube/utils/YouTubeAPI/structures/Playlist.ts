@@ -14,7 +14,7 @@ export class Playlist implements IPlaylist {
     public createdAt: IPlaylist["createdAt"];
     public constructor(public yt: YoutubeAPI, public raw: IPlaylist["raw"]) {
         this.id = raw.id;
-        this.url = `https://youtube.com/playlist?vlist=${raw.id}`;
+        this.url = `https://youtube.com/playlist?vlist=${this.id}`;
         this.title = raw.snippet.title;
         this.description = raw.snippet.description;
         this.channel = {

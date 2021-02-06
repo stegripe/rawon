@@ -17,7 +17,7 @@ export class Video implements IVideo {
         this.id = type === "video"
             ? raw.id
             : type === "playlistItem" ? (raw as any).snippet.resourceId.videoId : (raw as any).id.videoId;
-        this.url = `https://youtube.com/watch?v=${raw.id}`;
+        this.url = `https://youtube.com/watch?v=${this.id}`;
         this.title = raw.snippet.title;
         this.description = raw.snippet.description;
         this.channel = {
