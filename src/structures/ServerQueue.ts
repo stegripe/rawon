@@ -14,8 +14,13 @@ export class ServerQueue {
     private _lastvoiceStateUpdateMessageID: Snowflake | null = null;
     public constructor(public textChannel: ITextChannel | null = null, public voiceChannel: VoiceChannel | null = null) {
         this.volume = textChannel!.client.config.defaultVolume;
-        Object.defineProperty(this, "_lastMusicMessageID", {
-            enumerable: false
+        Object.defineProperties(this, {
+            _lastMusicMessageID: {
+                enumerable: false
+            },
+            _lastvoiceStateUpdateMessageID: {
+                enumerable: false
+            }
         });
     }
 
