@@ -45,7 +45,7 @@ export class YouTube {
     public async searchVideos(query: string, maxResults = 5): Promise<Video[]> {
         let data;
         if (this.mode === "api") data = await (this.engine as YoutubeAPI).searchVideos(query, maxResults);
-        if (this.mode === "scrape") data = (await YouTubeSR.search(query, { type: "video", limit: maxResults })) as VideoSR[];
+        if (this.mode === "scrape") data = (await YouTubeSR.search(query, { type: "video", limit: maxResults })) as unknown as VideoSR[];
         if (data === undefined) throw new Error("I could not get any data!");
         // @ts-expect-error IGNORE
         return data.map((i: any) => new Video(i, this.mode!));
