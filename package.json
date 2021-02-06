@@ -36,6 +36,7 @@
     "node-fetch": "^2.6.1",
     "node-zhycorp": "^1.5.0",
     "opusscript": "^0.0.7",
+    "parse-ms": "^2.1.0",
     "pretty-ms": "^7.0.1",
     "tslib": "^2.1.0",
     "winston": "^3.3.3",
