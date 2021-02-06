@@ -16,7 +16,7 @@ process.on("uncaughtException", e => {
     process.exit(1);
 });
 
-const manager = new ShardingManager(resolve(__dirname, "bot.js"), { totalShards: shardCount, mode: "process", respawn: true, token: process.env.DISCORD_TOKEN });
+const manager = new ShardingManager(resolve(__dirname, "bot.js"), { totalShards: shardCount, mode: "process", respawn: true, token: process.env.SECRET_DISCORD_TOKEN });
 
 manager.on("shardCreate", shard => {
     log.info(`[ShardManager] Shard #${shard.id} has spawned.`);

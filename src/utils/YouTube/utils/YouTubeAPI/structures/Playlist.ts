@@ -33,7 +33,8 @@ export class Playlist implements IPlaylist {
         return videos.map((i: any) => new Video(this.yt, i, "playlistItem"));
     }
 
-    public get thumbnailURL(): string {
+    public get thumbnailURL(): string | null {
+        if (Object.keys(this.thumbnails).length === 0) return null;
         return (this.thumbnails.maxres ?? this.thumbnails.high ?? this.thumbnails.medium ?? this.thumbnails.standard ?? this.thumbnails.default).url;
     }
 }

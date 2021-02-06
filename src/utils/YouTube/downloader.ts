@@ -58,7 +58,7 @@ function filter(f: videoFormat): boolean {
     return f.hasAudio && f.codecs === "opus" && f.container === "webm" && Number(f.audioSampleRate) === 48000;
 }
 
-interface IMusicInfo extends videoInfo {
+export interface IMusicInfo extends videoInfo {
     canSkipFFmpeg: boolean;
 }
 

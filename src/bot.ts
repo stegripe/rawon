@@ -27,5 +27,5 @@ process.on("uncaughtException", e => {
     process.exit(1);
 });
 
-client.build(process.env.DISCORD_TOKEN!)
+client.build(process.env.SECRET_DISCORD_TOKEN!)
     .catch(e => client.logger.error("CLIENT_BUILD_ERR: ", e));
