@@ -1,6 +1,6 @@
-import { YoutubeAPI } from "./YoutubeAPI";
-import { Playlist } from "./YoutubeAPI/structures/Playlist";
-import { Video } from "./YoutubeAPI/structures/Video";
+import { YoutubeAPI } from "./YouTubeAPI";
+import { Playlist } from "./YouTubeAPI/structures/Playlist";
+import { Video } from "./YouTubeAPI/structures/Video";
 import { IMusicData, playMusic, IdownloadOptions } from "./YouTubeDownload";
 
 export class YouTube {
