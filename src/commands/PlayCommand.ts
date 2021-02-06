@@ -186,7 +186,11 @@ export class PlayCommand extends BaseCommand {
         }
 
         serverQueue.connection?.voice?.setSelfDeaf(true).catch(e => this.client.logger.error("PLAY_ERR:", e));
-        const songData = await this.client.youtube.downloadVideo(song.url, { cache: this.client.config.cacheYoutubeDownloads, cacheMaxLength: this.client.config.cacheMaxLengthAllowed, skipFFmpeg: true });
+        const songData = await this.client.youtube.downloadVideo(song.url, {
+            cache: this.client.config.cacheYoutubeDownloads,
+            cacheMaxLength: this.client.config.cacheMaxLengthAllowed,
+            skipFFmpeg: true
+        });
 
         if (songData.cache) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Using cache for music "${song.title}" on ${guild.name}`);
 
