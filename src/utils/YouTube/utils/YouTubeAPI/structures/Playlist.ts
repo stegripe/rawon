@@ -1,5 +1,5 @@
 import { YoutubeAPI } from "..";
-import { IPlaylist, IVideo } from "../types";
+import { IPlaylist } from "../types";
 import { Video } from "./Video";
 
 export class Playlist implements IPlaylist {
@@ -28,7 +28,7 @@ export class Playlist implements IPlaylist {
         this.createdAt = new Date(raw.snippet.publishedAt);
     }
 
-    public async getVideos(): Promise<IVideo[]> {
+    public async getVideos(): Promise<Video[]> {
         const videos = await this.yt.makePaginatedRequest("playlistItems", { maxResults: 50, playlistId: this.id }, this.itemCount);
         return videos.map((i: any) => new Video(this.yt, i, "playlistItem"));
     }

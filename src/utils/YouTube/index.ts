@@ -1,7 +1,7 @@
 import { YoutubeAPI } from "./utils/YouTubeAPI";
-import { Playlist } from "./utils/YouTubeAPI/structures/Playlist";
-import { Video } from "./utils/YouTubeAPI/structures/Video";
 import { IMusicData, playMusic, IdownloadOptions } from "./downloader";
+import { Video } from "./structures/Video";
+import { Playlist } from "./structures/Playlist";
 
 export class YouTube {
     private readonly engine: YoutubeAPI | undefined;
@@ -26,15 +26,18 @@ export class YouTube {
         return playMusic(link, options);
     }
 
-    public getVideo(id: string): Promise<Video> {
-        return this.engine!.getVideo(id);
+    public async getVideo(id: string): Promise<Video> {
+        const data = await this.engine!.getVideo(id);
+        return new Video(data);
     }
 
-    public getPlaylist(id: string): Promise<Playlist> {
-        return this.engine!.getPlaylist(id);
+    public async getPlaylist(id: string): Promise<Playlist> {
+        const data = await this.engine!.getPlaylist(id);
+        return new Playlist(data);
     }
 
-    public searchVideos(query: string, maxResults = 5): Promise<Video[]> {
-        return this.engine!.searchVideos(query, maxResults);
+    public async searchVideos(query: string, maxResults = 5): Promise<Video[]> {
+        const data = await this.engine!.searchVideos(query, maxResults);
+        return data.map(i => new Video(i));
     }
 }
