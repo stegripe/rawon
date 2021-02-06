@@ -1,11 +1,10 @@
 /* eslint-disable block-scoped-var, @typescript-eslint/restrict-template-expressions */
 import { BaseCommand } from "../structures/BaseCommand";
 import { ServerQueue } from "../structures/ServerQueue";
-import { playMusic } from "../utils/YouTubeDownload";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";
 import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
-import { Video } from "../utils/YoutubeAPI/structures/Video";
+import { Video } from "../utils/YouTube/utils/YouTubeAPI/structures/Video";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isSameVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
 import { createEmbed } from "../utils/createEmbed";
@@ -187,7 +186,7 @@ export class PlayCommand extends BaseCommand {
         }
 
         serverQueue.connection?.voice?.setSelfDeaf(true).catch(e => this.client.logger.error("PLAY_ERR:", e));
-        const songData = await playMusic(song.url, { cache: this.client.config.cacheYoutubeDownloads, cacheMaxLength: this.client.config.cacheMaxLengthAllowed, skipFFmpeg: true });
+        const songData = await this.client.youtube.downloadVideo(song.url, { cache: this.client.config.cacheYoutubeDownloads, cacheMaxLength: this.client.config.cacheMaxLengthAllowed, skipFFmpeg: true });
 
         if (songData.cache) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Using cache for music "${song.title}" on ${guild.name}`);
 

@@ -1,7 +1,7 @@
-import { YoutubeAPI } from "./YoutubeAPI";
-import { Playlist } from "./YoutubeAPI/structures/Playlist";
-import { Video } from "./YoutubeAPI/structures/Video";
-import { IMusicData, playMusic, IdownloadOptions } from "./YouTubeDownload";
+import { YoutubeAPI } from "./utils/YouTubeAPI";
+import { Playlist } from "./utils/YouTubeAPI/structures/Playlist";
+import { Video } from "./utils/YouTubeAPI/structures/Video";
+import { IMusicData, playMusic, IdownloadOptions } from "./downloader";
 
 export class YouTube {
     private readonly engine: YoutubeAPI | undefined;

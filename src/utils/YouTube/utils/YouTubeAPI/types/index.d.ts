@@ -67,6 +67,7 @@ export interface IVideo {
     };
     thumbnails: IThumbnails;
     duration: Duration | null;
+    durationMS: number | null;
     status: {
         uploadStatus: uploadStatus;
         failureReason: failureReason;

@@ -1,4 +1,4 @@
-import { parse } from "iso8601-duration";
+import { parse, toSeconds } from "iso8601-duration";
 import { YoutubeAPI } from "..";
 import { IVideo } from "../types";
 
@@ -10,6 +10,7 @@ export class Video implements IVideo {
     public channel: IVideo["channel"];
     public thumbnails: IVideo["thumbnails"];
     public duration: IVideo["duration"];
+    public durationMS: IVideo["durationMS"];
     public status: IVideo["status"];
     public publishedAt: IVideo["publishedAt"];
     public constructor(public yt: YoutubeAPI, public raw: IVideo["raw"], type: "video" | "playlistItem" | "searchResults" = "video") {
@@ -26,6 +27,7 @@ export class Video implements IVideo {
         };
         this.thumbnails = raw.snippet.thumbnails;
         this.duration = raw.contentDetails?.duration ? parse(raw.contentDetails.duration) : null;
+        this.durationMS = this.duration ? toSeconds(this.duration) * 1000 : null;
         this.status = raw.status;
         this.publishedAt = new Date(raw.snippet.publishedAt);
     }
