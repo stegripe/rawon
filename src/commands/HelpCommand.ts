@@ -19,7 +19,7 @@ export class HelpCommand extends BaseCommand {
                 new MessageEmbed()
                     .setColor(this.client.config.embedColor)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)
-                    .setAuthor(`Information for ${command.meta.name} command`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/question_mark.png")
+                    .setAuthor(`Information for ${command.meta.name} command`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png")
                     .addFields({ name: "Name", value: `**\`${command.meta.name}\`**`, inline: true },
                         { name: "Description", value: command.meta.description, inline: true },
                         { name: "Aliases", value: `${Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") as string : "None"}`, inline: false },
@@ -32,7 +32,7 @@ export class HelpCommand extends BaseCommand {
                     .setColor(this.client.config.embedColor)
                     .setThumbnail(message.client.user?.displayAvatarURL() as string)
                     .setAuthor(`${this.client.user?.username as string} - command list`)
-                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for a command`, "https://raw.githubusercontent.com/zhycorp/disc-11/stable/.github/images/info.png")
+                    .setFooter(`Use ${message.client.config.prefix}help <command> to get more information for a command`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png")
             ).catch(e => this.client.logger.error("HELP_CMD_ERR:", e));
         }
     }

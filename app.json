@@ -1,7 +1,7 @@
 {
     "name": "Disc 11",
     "description": "A dedicated open-source music bot for Zhycorp based on Jukebox",
-    "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/master/.github/images/disc_11.png",
+    "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/disc_11.png",
     "env": {
         "SECRET_DISCORD_TOKEN": {
             "description": "Your Discord bot's token"
