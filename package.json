@@ -40,7 +40,7 @@
     "pretty-ms": "^7.0.1",
     "tslib": "^2.1.0",
     "winston": "^3.3.3",
-    "youtube-sr": "^3.0.4",
+    "youtube-sr": "^4.0.1",
     "ytdl-core": "^4.4.5"
   },
   "devDependencies": {
