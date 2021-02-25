@@ -1162,7 +1162,7 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-iso8601-duration@^1.3.0:
+iso8601-duration@^1.2.0, iso8601-duration@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/iso8601-duration/-/iso8601-duration-1.3.0.tgz#29d7b69e0574e4acdee50c5e5e09adab4137ba5a"
   integrity sha512-K4CiUBzo3YeWk76FuET/dQPH03WE04R94feo5TSKQCXpoXQt9E4yx2CnY737QZnSAI3PI4WlKo/zfqizGx52QQ==
@@ -1369,7 +1369,7 @@ node-addon-api@^3.1.0:
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.1.0.tgz#98b21931557466c6729e51cb77cd39c965f42239"
   integrity sha512-flmrDNB06LIl5lywUz7YlNGZH/5p0M7W28k8hzd9Lshtdh1wshD2Y+U4h9LD6KObOy1f+fEVdgprPrEymjM5uw==
 
-node-fetch@^2.6.1:
+node-fetch@^2.6.0, node-fetch@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
@@ -1669,6 +1669,14 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+simple-youtube-api@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/simple-youtube-api/-/simple-youtube-api-5.2.1.tgz#d1f6efb941ce404f50ce56e0c5e6bff249fcac6a"
+  integrity sha512-vmndP9Bkh35tifn2OwY+th2imSsfYtmDqczgdOW5yEARFzvSoR8VSQFsivJnctfV5QHQUL6VrOpNdbmDRLh9Bg==
+  dependencies:
+    iso8601-duration "^1.2.0"
+    node-fetch "^2.6.0"
 
 slash@^3.0.0:
   version "3.0.0"
@@ -1995,12 +2003,13 @@ yn@3.1.1:
   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
 
-youtube-sr@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/youtube-sr/-/youtube-sr-4.0.1.tgz#6aa20d33141e3a6c051a53d7e0c4f27ce6a9730f"
-  integrity sha512-GC/4rRDM5H7FJXeS5Zesew6jMtMCZ7NV62r9tbhislsosxtOXjJ1jrW0zRUi71AfqOKnoOzrJ3OAISbsflZ9eQ==
+youtube-sr@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/youtube-sr/-/youtube-sr-4.0.2.tgz#3ef36bbab4618cac8936d2a30b899c9382760aa7"
+  integrity sha512-y8Mryi8Xr7O+o8H8lgU6kUCKGHrqAD3m1031WOHfLCT/Q8B2bvcF5hfzXgfpGi+J1ReVQ8hg67OP1dDUY7MDgQ==
   dependencies:
     node-fetch "^2.6.1"
+    simple-youtube-api "^5.2.1"
 
 ytdl-core@^4.5.0:
   version "4.5.0"
