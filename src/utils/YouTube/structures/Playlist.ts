@@ -9,11 +9,13 @@ export class Playlist extends Item {
     public thumbnailURL: string;
     public constructor(protected readonly rawData: APIPlaylist | SRPlaylist, protected readonly type: "api" | "scrape") {
         super(rawData, type);
+
         this.channel = {
             id: type === "api" ? (rawData as APIPlaylist).channel.id : (rawData as SRPlaylist).channel!.id!,
             name: type === "api" ? (rawData as APIPlaylist).channel.name : (rawData as SRPlaylist).channel!.name!,
             url: type === "api" ? (rawData as APIPlaylist).channel.url : (rawData as SRPlaylist).channel!.url!
         };
+
         this.itemCount = type === "api" ? (rawData as APIPlaylist).itemCount : (rawData as SRPlaylist).videoCount;
 
         this.thumbnailURL = type === "api"
@@ -25,7 +27,6 @@ export class Playlist extends Item {
         let videos;
         if (this.type === "api") videos = await (this.rawData as APIPlaylist).getVideos();
         else videos = (this.rawData as SRPlaylist).videos;
-        // @ts-expect-error IGNORE
-        return videos.map(i => new Video(i, this.type));
+        return videos.map((i: any) => new Video(i, this.type));
     }
 }
