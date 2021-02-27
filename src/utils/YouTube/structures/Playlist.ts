@@ -18,9 +18,7 @@ export class Playlist extends Item {
 
         this.itemCount = type === "api" ? (rawData as APIPlaylist).itemCount : (rawData as SRPlaylist).videoCount;
 
-        this.thumbnailURL = type === "api"
-            ? (rawData as APIPlaylist).thumbnailURL!
-            : (rawData as SRPlaylist).thumbnail! as unknown as string;
+        this.thumbnailURL = type === "api" ? (rawData as APIPlaylist).thumbnailURL! : (rawData as SRPlaylist).thumbnail! as unknown as string;
     }
 
     public async getVideos(): Promise<Video[]> {
