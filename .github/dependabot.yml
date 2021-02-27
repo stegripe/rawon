@@ -45,5 +45,5 @@ updates:
   - docker
   - dependencies
   commit-message:
-    prefix: chore
+    prefix: docker
     include: scope
