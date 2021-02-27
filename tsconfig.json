@@ -11,8 +11,6 @@
 		"skipLibCheck": true,
 		"noEmitHelpers": true,
 		"importHelpers": true,
-		"incremental": true,
-		"tsBuildInfoFile": ".cache/tsbuildcache",
 		"resolveJsonModule": true,
 		"typeRoots": ["node_modules/@types", "typings/index.d.ts"]
 	},
