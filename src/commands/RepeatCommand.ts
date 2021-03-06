@@ -29,6 +29,7 @@ export class RepeatCommand extends BaseCommand {
             1: 1,
             // Disable repeat
             disable: 0,
+            none: 0,
             off: 0,
             0: 0
         };
