@@ -25,10 +25,10 @@ jobs:
         check-latest: true
         
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: npm ci
 
     - name: Lint code
-      run: yarn run lint
+      run: npm run lint
 
   compile:
     needs: lint
@@ -47,7 +47,7 @@ jobs:
           check-latest: true
         
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
       
       - name: Test compile
-        run: yarn run compile && rm -rf dist
+        run: npm run compile && rm -rf dist
