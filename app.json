@@ -11,6 +11,9 @@
             "description": "Your bot prefix",
             "required": true
         },
+        "CONFIG_EMBED_COLOR": {
+            "description": "The color for your bot's embed message (hex code without hashtag)"
+        },
         "CONFIG_OWNERS": {
             "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
             "required": false

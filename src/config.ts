@@ -6,6 +6,7 @@ if (!process.env.SECRET_YT_API_KEY) process.env.SECRET_YT_API_KEY = process.env.
 // //////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const prefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!"; // Temporary workaround for https://github.com/docker/compose/issues/6951
+export const embedColor = process.env.CONFIG_EMBED_COLOR?.toUpperCase() ?? "7289DA";
 export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
 export const YouTubeDataRetrievingStrategy = process.env.CONFIG_YOUTUBE_DATA_STRATEGY?.toLowerCase() as ("scrape" | "api" | undefined) ?? "scrape";
 export const totalShards: string | number = process.env.CONFIG_TOTALSHARDS?.toLowerCase() ?? "auto";
