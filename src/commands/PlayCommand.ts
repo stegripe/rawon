@@ -89,8 +89,8 @@ export class PlayCommand extends BaseCommand {
                     const msg = await message.channel.send(new MessageEmbed()
                         .setColor(this.client.config.embedColor)
                         .setAuthor("Music Selection", message.client.user?.displayAvatarURL() as string)
-                        .setDescription(`\`\`\`${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n\n")}\n\`\`\`` +
-                        "Please select one of the results ranging from **\`1-10\`**")
+                        .setDescription(`\`\`\`${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`` +
+                        "\nPlease select one of the results ranging from **\`1-10\`**")
                         .setFooter("• Type cancel or c to cancel the music selection"));
                     try {
                     // eslint-disable-next-line no-var
