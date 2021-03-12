@@ -67,7 +67,7 @@ export class PlayCommand extends BaseCommand {
                     );
                 }
                 return message.channel.send(
-                    createEmbed("info", `All videos in **[${playlist.title}](${playlist.url})** playlist, has been added to the queue`)
+                    createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist, has been added to the queue`)
                         .setThumbnail(playlist.thumbnailURL)
 
                 );
@@ -201,7 +201,7 @@ export class PlayCommand extends BaseCommand {
                 serverQueue.playing = true;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Music: "${song.title}" on ${guild.name} has started`);
                 if (serverQueue.lastMusicMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastMusicMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
-                serverQueue.textChannel?.send(createEmbed("info", `▶ Start playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
+                serverQueue.textChannel?.send(createEmbed("info", `▶ **|** Start playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
                     .then(m => serverQueue.lastMusicMessageID = m.id)
                     .catch(e => this.client.logger.error("PLAY_ERR:", e));
             })
