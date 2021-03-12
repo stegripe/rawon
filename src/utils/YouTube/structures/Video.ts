@@ -1,4 +1,3 @@
-/* eslint-disable radix */
 import { itemType } from "..";
 import { Video as APIVideo } from "../utils/YouTubeAPI/structures/Video";
 import { Video as SRVideo } from "ytsr";

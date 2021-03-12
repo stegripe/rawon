@@ -53,7 +53,7 @@ Get a support       :: https://zhycorp.com/discord
         if (isNaN(bytes) && bytes !== 0) throw new Error(`[bytesToSize] (bytes) Error: bytes is not a Number/Integer, received: ${typeof bytes}`);
         const sizes: string[] = ["B", "KiB", "MiB", "GiB", "TiB", "PiB"];
         if (bytes < 2 && bytes > 0) return `${bytes} Byte`;
-        const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString(), 10);
+        const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString());
         if (i === 0) return `${bytes} ${sizes[i]}`;
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (sizes[i] === undefined) return `${bytes} ${sizes[sizes.length - 1]}`;
