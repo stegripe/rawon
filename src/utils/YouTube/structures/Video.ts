@@ -1,4 +1,3 @@
-/* eslint-disable radix */
 import { itemType } from "..";
 import { Video as APIVideo } from "../utils/YouTubeAPI/structures/Video";
 import { Video as SRVideo } from "ytsr";
@@ -32,7 +31,7 @@ export class Video extends Item {
                     : (rawData as IMusicInfo).videoDetails.author.name
         };
 
-        // TODO: API should always fetch videos.
+        // TODO: API Should always fetch Videos
         this.duration = type === "api"
             ? (rawData as APIVideo).durationMS
                 ? parse((rawData as APIVideo).durationMS!)

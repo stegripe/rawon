@@ -6,10 +6,10 @@ import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../
 import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
-    aliases: ["loop", "music-repeat", "music-loop"],
+    aliases: ["loop", "music-loop", "music-repeat"],
     name: "repeat",
-    description: "Repeat the music player in the queue",
-    usage: "{prefix}repeat [all|one|disable]"
+    description: "Repeat current music or the queue",
+    usage: "{prefix}repeat [all | one | disable]"
 })
 export class RepeatCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
@@ -24,8 +24,9 @@ export class RepeatCommand extends BaseCommand {
             2: 2,
             // Repeat current music
             current: 1,
+            this: 1,
             one: 1,
-            musiconly: 1,
+            music: 1,
             1: 1,
             // Disable repeat
             disable: 0,
@@ -33,15 +34,15 @@ export class RepeatCommand extends BaseCommand {
             off: 0,
             0: 0
         };
-        const modeTypes = ["disabled", "only this music", "all items in the queue"];
-        const modeEmoji = ["▶  **|** ", "🔂  **|** ", "🔁  **|** "];
+        const modeTypes = ["OFF", "ONE", "ALL"];
+        const modeEmoji = ["▶", "🔂", "🔁"];
         const mode = args[0] as string | undefined;
         if (mode === undefined) {
-            message.channel.send(createEmbed("info", `${modeEmoji[message.guild!.queue!.loopMode]} Current repeat mode: **\`${modeTypes[message.guild!.queue!.loopMode]}\`**`))
+            message.channel.send(createEmbed("info", `${modeEmoji[message.guild!.queue!.loopMode]} **|** Current repeat mode is set to **\`${modeTypes[message.guild!.queue!.loopMode]}\`**`))
                 .catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
         } else if (Object.keys(modes).includes(mode)) {
             message.guild!.queue!.loopMode = modes[mode];
-            message.channel.send(createEmbed("info", `${modeEmoji[message.guild!.queue!.loopMode]} I set the repeat mode to: **\`${modeTypes[message.guild!.queue!.loopMode]}\`**`))
+            message.channel.send(createEmbed("info", `${modeEmoji[message.guild!.queue!.loopMode]} **|** The repeat mode has set to **\`${modeTypes[message.guild!.queue!.loopMode]}\`**`))
                 .catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
         } else {
             message.channel.send(createEmbed("error", `Invalid usage, see **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information`))

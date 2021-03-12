@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { promises as fs } from "fs";
 import { parse, resolve } from "path";
 import { Snowflake, Collection } from "discord.js";
-import { Disc_11 } from "../structures/Disc_11";
+import { Disc } from "../structures/Disc";
 import { ICommandComponent, IMessage } from "../../typings";
+import { createEmbed } from "./createEmbed";
 
 export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();
     public readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
-    public constructor(public client: Disc_11, public readonly path: string) { super(); }
+    public constructor(public client: Disc, public readonly path: string) { super(); }
     public load(): void {
         fs.readdir(resolve(this.path))
             .then(async files => {
@@ -26,8 +26,8 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                     this.set(command.meta.name, command);
                     if (command.meta.disable === true) disabledCount++;
                 }
-                this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} A total of ${files.length} commands has been loaded.`);
-                if (disabledCount !== 0) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${disabledCount} out of ${files.length} commands is disabled.`);
+                this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} A total of ${files.length} commands has been loaded`);
+                if (disabledCount !== 0) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${disabledCount} out of ${files.length} commands is disabled`);
             })
             .catch(err => this.client.logger.error("CMD_LOADER_ERR:", err));
         return undefined;
@@ -40,13 +40,13 @@ export class CommandManager extends Collection<string, ICommandComponent> {
         if (!command || command.meta.disable) return undefined;
         if (!this.cooldowns.has(command.meta.name)) this.cooldowns.set(command.meta.name, new Collection());
         const now = Date.now();
-        const timestamps = this.cooldowns.get(command.meta.name)!;
+        const timestamps = this.cooldowns.get(command.meta.name);
         const cooldownAmount = (command.meta.cooldown ?? 3) * 1000;
         if (timestamps?.has(message.author.id)) {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.reply(`please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time`).then(msg => {
+                message.channel.send(createEmbed("warn", `<@${message.author.id}>, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time`)).then(msg => {
                     msg.delete({ timeout: 3500 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 return undefined;

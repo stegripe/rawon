@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { itemType } from "..";
 import { Video as APIVideo } from "../utils/YouTubeAPI/structures/Video";
 import { Video as SRVideo } from "ytsr";

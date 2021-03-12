@@ -27,7 +27,7 @@ export class YouTube {
                 getVideo: getMusicInfo
             };
         } else {
-            throw new Error("Unknown mode! Available modes are 'api' and 'scrape'.");
+            throw new Error("Unknown mode, available modes are 'api' and 'scrape'");
         }
     }
 
@@ -39,7 +39,7 @@ export class YouTube {
         let data;
         if (this.mode === "api") data = await (this.engine as YoutubeAPI).getVideo(id);
         if (this.mode === "scrape") data = (await (this.engine as scrape).getVideo(`https://youtube.com/watch?v=${id}`));
-        if (data === undefined) throw new Error("I could not get any data!");
+        if (data === undefined) throw new Error("I could not get any data");
         return new Video(data, this.mode === "scrape" ? "ytdl-core" : "api");
     }
 
@@ -47,7 +47,7 @@ export class YouTube {
         let data;
         if (this.mode === "api") data = await (this.engine as YoutubeAPI).getPlaylist(id);
         if (this.mode === "scrape") data = (await (this.engine as scrape).playlist(id, { limit: Infinity }));
-        if (data === undefined) throw new Error("I could not get any data!");
+        if (data === undefined) throw new Error("I could not get any data");
         return new Playlist(data, this.mode!);
     }
 
@@ -55,8 +55,8 @@ export class YouTube {
         let data;
         if (this.mode === "api") data = await (this.engine as YoutubeAPI).searchVideos(query, maxResults);
         if (this.mode === "scrape") data = (await (this.engine as scrape).search(query, { limit: maxResults, safeSearch: false })).items;
-        if (data === undefined) throw new Error("I could not get any data!");
-        // @ts-expect-error Error is expected.
+        if (data === undefined) throw new Error("I could not get any data");
+        // @ts-expect-error Error is expected
         return data.filter((x: any) => {
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (this.mode === "scrape") return x.type === "video";

@@ -8,11 +8,11 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
-    aliases: ["ev", "e", "evaluate", "js-exec"],
+    aliases: ["ev", "evaluate", "js-exec"],
     cooldown: 0,
-    description: "Only the bot owner can use this command",
+    description: "Private command, only the bot owners can use this",
     name: "eval",
-    usage: "{prefix}eval <some js code>"
+    usage: "{prefix}eval <some code>"
 })
 export class EvalCommand extends BaseCommand {
     public async execute(message: IMessage, args: string[]): Promise<any> {
@@ -20,7 +20,7 @@ export class EvalCommand extends BaseCommand {
         const client = this.client;
 
         if (!client.config.owners.includes(msg.author.id)) {
-            return message.channel.send(createEmbed("error", "Sorry, but this command is limited to bot owners only"));
+            return message.channel.send(createEmbed("error", "This command is limited to the bot owner only"));
         }
 
         const embed = new MessageEmbed()
@@ -29,7 +29,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             const code = args.slice(0).join(" ");
-            if (!code) return message.channel.send(createEmbed("error", "No valid argument was provided"));
+            if (!code) return message.channel.send(createEmbed("error", "No code was provided"));
             let evaled = await eval(code);
 
             if (typeof evaled !== "string") {

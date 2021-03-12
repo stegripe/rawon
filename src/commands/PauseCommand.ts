@@ -17,7 +17,7 @@ export class PauseCommand extends BaseCommand {
         if (message.guild?.queue?.playing) {
             message.guild.queue.playing = false;
             message.guild.queue.connection?.dispatcher.pause();
-            return message.channel.send(createEmbed("info", "⏸  **|** Paused the music player"));
+            return message.channel.send(createEmbed("info", "⏸ **|** The music player has paused"));
         }
         message.channel.send(createEmbed("error", "The music player is already paused"))
             .catch(e => this.client.logger.error("PAUSE_CMD_ERR:", e));

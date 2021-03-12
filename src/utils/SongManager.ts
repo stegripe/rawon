@@ -1,4 +1,4 @@
-import { Snowflake, Collection, SnowflakeUtil } from "discord.js";
+import { Snowflake, SnowflakeUtil, Collection } from "discord.js";
 import { ISongs as ISongManager, ISong } from "../../typings";
 
 export class SongManager extends Collection<Snowflake, ISong> implements ISongManager {

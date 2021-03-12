@@ -109,4 +109,4 @@ dist/
 .env.schema
 
 # VSCode settings
-.vscode 
+.vscode
