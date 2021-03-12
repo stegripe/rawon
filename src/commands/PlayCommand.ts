@@ -134,7 +134,7 @@ export class PlayCommand extends BaseCommand {
         if (message.guild?.queue) {
             if (!this.client.config.allowDuplicate && message.guild.queue.songs.find(s => s.id === song.id)) {
                 return message.channel.send(
-                    createEmbed("warn", `🎶 **|** **[${song.title}](${song.id})** is already queued, ` +
+                    createEmbed("warn", `🎶 **|** **[${song.title}](${song.url})** is already queued, ` +
                 `please use **\`${this.client.config.prefix}repeat\`** command instead`)
                         .setTitle("Already Queued")
                 );
