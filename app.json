@@ -30,7 +30,7 @@
             "required": false
         },
         "CONFIG_DEFAULT_VOLUME": {
-            "description": "Default volume for music (default: 100)",
+            "description": "Default volume for music (default: 50)",
             "required": false
         },
         "CONFIG_MAX_VOLUME": {
@@ -42,7 +42,7 @@
             "required": false
         },
         "CONFIG_SEARCH_MAX_RESULTS": {
-            "description": "Maximum music to list in song selection (default: 12, max: 12)",
+            "description": "Maximum music to list in song selection (default: 10, max: 10)",
             "required": false
         },
         "CONFIG_SELECT_TIMEOUT": {
