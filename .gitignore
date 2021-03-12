@@ -100,4 +100,4 @@ dist
 .tern-port
 
 # YTDL Caches
-# cache/**
+cache/**
