@@ -33,7 +33,6 @@ $ npm install --no-optional
 ```
 
 With optional packages (recommended)
-
 ```sh
 $ npm install
 ```
