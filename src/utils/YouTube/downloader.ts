@@ -28,7 +28,7 @@ export function playMusic(link: string, options = defaultOptions): Promise<IMusi
             if (options.cache && !info.videoDetails.isLiveContent && !(Number(info.videoDetails.lengthSeconds) >= options.cacheMaxLength!)) {
                 const cachePath = resolvePath(process.cwd(), "cache");
                 const filePath = resolvePath(cachePath, `${info.videoDetails.videoId}.webm`);
-                const finishMarkerPath = resolvePath(cachePath, `${filePath}.disc11CacheFinish.marker`);
+                const finishMarkerPath = resolvePath(cachePath, `${filePath}.jukeboxCacheFinish.marker`);
                 if (existsSync(filePath) && existsSync(finishMarkerPath)) {
                     const fileStream = createReadStream(filePath)
                         .on("error", reject);
@@ -65,7 +65,6 @@ export interface IMusicInfo extends videoInfo {
 interface IMusicStream extends Readable {
     info: IMusicInfo;
 }
-
 export interface IMusicData extends IMusicStream {
     cache: boolean;
 }

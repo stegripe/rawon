@@ -1,9 +1,8 @@
 import { MessageEmbed } from "discord.js";
-import { embedColor } from "../config";
 
 type hexColorsType = "info" | "warn" | "error";
 const hexColors: Record<hexColorsType, string> = {
-    info: embedColor,
+    info: "#00FF00",
     warn: "#FFFF00",
     error: "#FF0000"
 };

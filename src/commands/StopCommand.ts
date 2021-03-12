@@ -5,9 +5,9 @@ import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../
 import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
-    aliases: ["leave", "disconnect", "dc"],
+    aliases: ["st"],
     name: "stop",
-    description: "Stop music player and delete the queue",
+    description: "Stop the music player",
     usage: "{prefix}stop"
 })
 export class StopCommand extends BaseCommand {
@@ -20,7 +20,7 @@ export class StopCommand extends BaseCommand {
         message.guild?.queue?.voiceChannel?.leave();
         message.guild!.queue = null;
 
-        message.channel.send(createEmbed("info", "⏹  **|**  Stopped the music player and deleted the queue"))
+        message.channel.send(createEmbed("info", "⏹ **|** The music player has stopped"))
             .catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
     }
 }

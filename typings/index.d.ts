@@ -1,5 +1,5 @@
 import { Message, Guild, TextChannel, DMChannel, NewsChannel, Collection, ClientEvents, VoiceState } from "discord.js";
-import { Disc_11 } from "../src/structures/Disc_11";
+import { Disc } from "../src/structures/Disc";
 import { ServerQueue } from "../src/structures/ServerQueue";
 
 export interface ICommandComponent {
@@ -15,16 +15,16 @@ export interface ICommandComponent {
     execute(message: IMessage, args: string[]): any;
 }
 export interface IGuild extends Guild {
-    client: Disc_11;
+    client: Disc;
     queue: ServerQueue | null;
 }
 export interface IMessage extends Message {
-    client: Disc_11;
+    client: Disc;
     guild: IGuild | null;
     channel: ITextChannel | INewsChannel | IDMChannel;
 }
 export interface ITextChannel extends TextChannel {
-    client: Disc_11;
+    client: Disc;
     guild: IGuild;
     send(
         content: APIMessageContentResolvable | (MessageOptions & { split?: false }) | MessageAdditions,
@@ -36,7 +36,7 @@ export interface ITextChannel extends TextChannel {
     send(content: StringResolvable, options: MessageOptions): Promise<IMessage | IMessage[]>;
 }
 export interface INewsChannel extends NewsChannel {
-    client: Disc_11;
+    client: Disc;
     guild: IGuild;
     send(
         content: APIMessageContentResolvable | (MessageOptions & { split?: false }) | MessageAdditions,
@@ -48,7 +48,7 @@ export interface INewsChannel extends NewsChannel {
     send(content: StringResolvable, options: MessageOptions): Promise<IMessage | IMessage[]>;
 }
 export interface IDMChannel extends DMChannel {
-    client: Disc_11;
+    client: Disc;
     guild: null;
     send(
         content: APIMessageContentResolvable | (MessageOptions & { split?: false }) | MessageAdditions,
