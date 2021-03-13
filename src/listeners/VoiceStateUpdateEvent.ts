@@ -92,7 +92,7 @@ export class VoiceStateUpdateEvent extends BaseListener {
                 const song = queue.songs.first();
                 if (queue.lastVoiceStateUpdateMessageID !== null) queue.textChannel?.messages.fetch(queue.lastVoiceStateUpdateMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
                 queue.textChannel?.send(
-                    createEmbed("info", `▶ **|** Someone has joined the voice channel, enjoy the queued music.\n**|** Now Playing: **[${song!.title}](${song!.url})**`)
+                    createEmbed("info", `▶ **|** Someone has joined the voice channel.\nNow Playing: **[${song!.title}](${song!.url})**`)
                         .setThumbnail(song!.thumbnail)
                         .setTitle("Music Player Resumed")
                 ).then(m => queue.lastVoiceStateUpdateMessageID = m.id).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
