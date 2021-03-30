@@ -13,6 +13,9 @@ RUN apk add --no-cache build-base git python3
 COPY package.json .
 COPY package-lock.json .
 
+# Set jobs to max in npm config
+RUN npm config set jobs max --global
+
 # Install dependencies
 RUN npm install
 
