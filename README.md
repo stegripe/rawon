@@ -67,7 +67,7 @@ Sure, we have provided them on the [Docker Hub](https://hub.docker.com/r/hazmi35
 ### Volumes
 [Docker Volumes](https://docs.docker.com/storage/volumes/) are needed to store cache and logs persistently.
 
-### Example:
+### Example
 ```sh
 $ docker run --env-file .env --volume cache:/app/cache --volume logs:/app/logs --restart unless-stopped hazmi35/jukebox
 ```
@@ -87,4 +87,4 @@ $ docker-compose up
 - Docker-friendly (if you're advanced user)
 - Lightweight (only around 120MB with dev dependencies pruned)
 
-Based on [discord-music-bot](https://github.com/iCrawl/discord-music-bot) and reworked from [jukebox](https://github.com/Hazmi35/jukebox)
+Based on [jukebox](https://github.com/Hazmi35/jukebox)
