@@ -5,7 +5,7 @@ import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../
 import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
-    aliases: ["st"],
+    aliases: ["st", "disconnect", "dc"],
     name: "stop",
     description: "Stop the music player",
     usage: "{prefix}stop"
