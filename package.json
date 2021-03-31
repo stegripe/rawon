@@ -40,7 +40,7 @@
         "tslib": "^2.1.0",
         "winston": "^3.3.3",
         "ytdl-core": "^4.5.0",
-        "ytpl": "^2.0.5",
+        "ytpl": "^2.1.0",
         "ytsr": "^3.3.1"
     },
     "devDependencies": {
