@@ -31,7 +31,7 @@
         "discord.js": "^12.5.2",
         "dotenv": "^8.2.0",
         "entities": "^2.2.0",
-        "ffmpeg-static": "^4.2.8",
+        "ffmpeg-static": "^4.3.0",
         "iso8601-duration": "^1.3.0",
         "node-fetch": "^2.6.1",
         "opusscript": "^0.0.8",
