@@ -2,6 +2,8 @@
 import { BaseCommand } from "../structures/BaseCommand";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
+// @ts-expect-error-next-line
+import { getTracks } from "spotify-url-info";
 import { decodeHTML } from "entities";
 import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
@@ -76,6 +78,21 @@ export class PlayCommand extends BaseCommand {
                 return message.channel.send(createEmbed("error", `I could not load the playlist\nError: **\`${e.message}\`**`));
             }
         }
+
+        if (/^https?:\/\/(open\.spotify\.com)\/playlist(.*)$/g.exec(url)) {
+            try {
+                const tracks = await getTracks(url);
+                const playlistTitles: string[] = tracks.map((track: { artists: { name: string }[]; name: string }): string => `${track.artists[0].name} - ${track.name}`);
+                playlistTitles.map(async title => {
+                    const videoResults = await this.client.youtube.searchVideos(title, this.client.config.searchMaxResults);
+                    const queuedVideo = await this.client.youtube.getVideo(videoResults[0].id);
+                });
+            } catch (e) {
+                this.client.logger.error("SP_PLAYLIST_ERR:", new Error(e.stack));
+                return message.channel.send(createEmbed("error", `I could not load the playlist\nError: **\`${e.message}\`**`));
+            }
+        }
+
         try {
             const id = new URL(url).searchParams.get("v")!;
             // eslint-disable-next-line no-var, block-scoped-var
