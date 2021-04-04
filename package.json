@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@zhycorp/eslint-config": "^2.5.0",
-        "discord.js": "^12.5.2",
+        "discord.js": "^12.5.3",
         "dotenv": "^8.2.0",
         "entities": "^2.2.0",
         "ffmpeg-static": "^4.3.0",
@@ -45,7 +45,7 @@
     },
     "devDependencies": {
         "@types/node": "^14.14.37",
-        "@types/node-fetch": "^2.5.8",
+        "@types/node-fetch": "^2.5.9",
         "@typescript-eslint/eslint-plugin": "^4.20.0",
         "@typescript-eslint/parser": "^4.20.0",
         "eslint": "^7.23.0",
