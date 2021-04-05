@@ -86,5 +86,6 @@ $ docker-compose up
 - Configurable (easy to use)
 - Docker-friendly (if you're advanced user)
 - Lightweight (only around 120MB with dev dependencies pruned)
+- Spotify playlist support (will be converted as youtube video)
 
 Based on [jukebox](https://github.com/Hazmi35/jukebox)
