@@ -3,7 +3,7 @@ import { BaseCommand } from "../structures/BaseCommand";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 // @ts-expect-error-next-line
-import { getTracks } from "spotify-url-info";
+import { getData } from "spotify-url-info";
 import { decodeHTML } from "entities";
 import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
@@ -77,68 +77,84 @@ export class PlayCommand extends BaseCommand {
                 this.client.logger.error("YT_PLAYLIST_ERR:", new Error(e.stack));
                 return message.channel.send(createEmbed("error", `I could not load the playlist\nError: **\`${e.message}\`**`));
             }
-        }
-
-        if (/^https?:\/\/(open\.spotify\.com)\/playlist(.*)$/g.exec(url)) {
-            try {
-                const tracks = await getTracks(url);
-                const playlistTitles: string[] = tracks.map((track: { artists: { name: string }[]; name: string }): string => `${track.artists[0].name} - ${track.name}`);
-                playlistTitles.map(async title => {
-                    const videoResults = await this.client.youtube.searchVideos(title, this.client.config.searchMaxResults);
-                    const queuedVideo = await this.client.youtube.getVideo(videoResults[0].id);
-                });
-            } catch (e) {
-                this.client.logger.error("SP_PLAYLIST_ERR:", new Error(e.stack));
-                return message.channel.send(createEmbed("error", `I could not load the playlist\nError: **\`${e.message}\`**`));
-            }
-        }
-
-        try {
-            const id = new URL(url).searchParams.get("v")!;
-            // eslint-disable-next-line no-var, block-scoped-var
-            var video = await this.client.youtube.getVideo(id);
-        } catch (e) {
-            try {
-                const videos = await this.client.youtube.searchVideos(searchString, this.client.config.searchMaxResults);
-                if (videos.length === 0) return message.channel.send(createEmbed("error", "I could not obtain any search results, please try again"));
-                if (this.client.config.disableSongSelection) { video = await this.client.youtube.getVideo(videos[0].id); } else {
-                    let index = 0;
-                    const msg = await message.channel.send(new MessageEmbed()
-                        .setColor(this.client.config.embedColor)
-                        .setAuthor("Music Selection", message.client.user?.displayAvatarURL() as string)
-                        .setDescription(`\`\`\`${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`` +
-                        "\nPlease select one of the results ranging from **\`1-10\`**")
-                        .setFooter("• Type cancel or c to cancel the music selection"));
-                    try {
-                    // eslint-disable-next-line no-var
-                        var response = await message.channel.awaitMessages((msg2: IMessage) => {
-                            if (message.author.id !== msg2.author.id) return false;
-
-                            if (msg2.content === "cancel" || msg2.content === "c") return true;
-                            return Number(msg2.content) > 0 && Number(msg2.content) < 13;
-                        }, {
-                            max: 1,
-                            time: this.client.config.selectTimeout,
-                            errors: ["time"]
-                        });
-                        msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-                        response.first()?.delete({ timeout: 3000 }).catch(e => e);
-                    } catch (error) {
-                        msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-                        return message.channel.send(createEmbed("error", "No or invalid value entered, the music selection has canceled"));
+        } else if (/^https?:\/\/(open\.spotify\.com)\/?(.*)$/g.exec(url)) {
+            if (/^https?:\/\/(open\.spotify\.com)\/playlist(.*)$/g.exec(url)) {
+                try {
+                    const playlistData = await getData(url);
+                    const playlistSearchStrings: string[] = await playlistData.tracks.items.map((item: any): string => `${item.track.artists[0].name} - ${item.track.name}`);
+                    this.client.logger.debug(playlistSearchStrings.join("\n"));
+                    const addingPlaylistVideoMessage = await message.channel.send(
+                        createEmbed("info", `Adding all tracks in **[${playlistData.name}](${playlistData.external_urls.spotify})** playlist, please wait...`)
+                            .setThumbnail(playlistData.images[0].url)
+                    );
+                    for (const title of playlistSearchStrings) {
+                        const videoResults = await this.client.youtube.searchVideos(title, 1);
+                        const queuedVideo = await this.client.youtube.getVideo(videoResults[0].id);
+                        await this.handleVideo(queuedVideo, message, voiceChannel, true);
                     }
-                    if (response.first()?.content === "c" || response.first()?.content === "cancel") {
-                        return message.channel.send(createEmbed("warn", "The music selection has canceled"));
-                    }
-                    const videoIndex = parseInt(response.first()?.content as string);
-                    video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
+                    message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
+                    return message.channel.send(
+                        createEmbed("info", `✅ **|** All tracks in **[${playlistData.title}](${playlistData.url})** playlist, has been added to the queue`)
+                            .setThumbnail(playlistData.thumbnailURL)
+                    );
+                } catch (e) {
+                    this.client.logger.error("SP_PLAYLIST_ERR:", new Error(e.stack));
+                    return message.channel.send(createEmbed("error", `I could not load the playlist\nError: **\`${e.message}\`**`));
                 }
-            } catch (err) {
-                this.client.logger.error("YT_SEARCH_ERR:", err);
-                return message.channel.send(createEmbed("error", `I could not obtain any search results\nError: **\`${err.message}\`**`));
+            } else if (/^https?:\/\/(open\.spotify\.com)\/track(.*)$/g.exec(url)) {
+                const trackData = await getData(url);
+                const trackSearchString = `${trackData.artists[0].name} - ${trackData.name}`;
+                const videoResult = await this.client.youtube.searchVideos(trackSearchString, 1);
+                const queuedVideo = await this.client.youtube.getVideo(videoResult[0].id);
+                return this.handleVideo(queuedVideo, message, voiceChannel);
             }
+        } else {
+            try {
+                const id = new URL(url).searchParams.get("v")!;
+                // eslint-disable-next-line no-var, block-scoped-var
+                var video = await this.client.youtube.getVideo(id);
+            } catch (e) {
+                try {
+                    const videos = await this.client.youtube.searchVideos(searchString, this.client.config.searchMaxResults);
+                    if (videos.length === 0) return message.channel.send(createEmbed("error", "I could not obtain any search results, please try again"));
+                    if (this.client.config.disableSongSelection) { video = await this.client.youtube.getVideo(videos[0].id); } else {
+                        let index = 0;
+                        const msg = await message.channel.send(new MessageEmbed()
+                            .setColor(this.client.config.embedColor)
+                            .setAuthor("Music Selection", message.client.user?.displayAvatarURL() as string)
+                            .setDescription(`\`\`\`${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`` +
+                            "\nPlease select one of the results ranging from **\`1-10\`**")
+                            .setFooter("• Type cancel or c to cancel the music selection"));
+                        try {
+                        // eslint-disable-next-line no-var
+                            var response = await message.channel.awaitMessages((msg2: IMessage) => {
+                                if (message.author.id !== msg2.author.id) return false;
+                                if (msg2.content === "cancel" || msg2.content === "c") return true;
+                                return Number(msg2.content) > 0 && Number(msg2.content) < 13;
+                            }, {
+                                max: 1,
+                                time: this.client.config.selectTimeout,
+                                errors: ["time"]
+                            });
+                            msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                            response.first()?.delete({ timeout: 3000 }).catch(e => e);
+                        } catch (error) {
+                            msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                            return message.channel.send(createEmbed("error", "No or invalid value entered, the music selection has canceled"));
+                        }
+                        if (response.first()?.content === "c" || response.first()?.content === "cancel") {
+                            return message.channel.send(createEmbed("warn", "The music selection has canceled"));
+                        }
+                        const videoIndex = parseInt(response.first()?.content as string);
+                        video = await this.client.youtube.getVideo(videos[videoIndex - 1].id);
+                    }
+                } catch (err) {
+                    this.client.logger.error("YT_SEARCH_ERR:", err);
+                    return message.channel.send(createEmbed("error", `I could not obtain any search results\nError: **\`${err.message}\`**`));
+                }
+            }
+            return this.handleVideo(video, message, voiceChannel);
         }
-        return this.handleVideo(video, message, voiceChannel);
     }
 
     private async handleVideo(video: Video, message: IMessage, voiceChannel: VoiceChannel, playlist = false): Promise<any> {
