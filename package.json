@@ -1,6 +1,6 @@
 {
     "name": "disc-11",
-    "version": "1.50.5",
+    "version": "1.55.0",
     "private": true,
     "description": "A dedicated open-source music bot for Zhycorp based on Jukebox",
     "homepage": "https://github.com/zhycorp/disc-11#readme",
@@ -37,6 +37,7 @@
         "opusscript": "^0.0.8",
         "parse-ms": "^2.1.0",
         "pretty-ms": "^7.0.1",
+        "spotify-url-info": "^2.2.0",
         "tslib": "^2.1.0",
         "winston": "^3.3.3",
         "ytdl-core": "^4.5.0",
