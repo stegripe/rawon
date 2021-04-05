@@ -91,7 +91,7 @@ export class PlayCommand extends BaseCommand {
                     const playlistSearchStrings: string[] = await playlistData.tracks.items.map((item: any): string => `${item.track.artists[0].name} - ${item.track.name}`);
                     this.client.logger.debug(playlistSearchStrings.join("\n"));
                     const addingPlaylistVideoMessage = await message.channel.send(
-                        createEmbed("info", `Adding all tracks in **[${playlistData.name}](${playlistData.external_urls.spotify})** playlist, please wait...`)
+                        createEmbed("info", `Adding all music in **[${playlistData.name}](${playlistData.external_urls.spotify})** playlist, please wait...`)
                             .setThumbnail(playlistData.images[0].url)
                     );
                     for (const title of playlistSearchStrings) {
@@ -101,7 +101,7 @@ export class PlayCommand extends BaseCommand {
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All tracks in **[${playlistData.title}](${playlistData.url})** playlist, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All music in **[${playlistData.title}](${playlistData.url})** playlist has been added to the queue`)
                             .setThumbnail(playlistData.thumbnailURL)
                     );
                 } catch (e) {
@@ -114,7 +114,7 @@ export class PlayCommand extends BaseCommand {
                     const playlistSearchStrings: string[] = await albumData.tracks.items.map((item: any): string => `${item.artists[0].name} - ${item.name}`);
                     this.client.logger.debug(playlistSearchStrings.join("\n"));
                     const addingPlaylistVideoMessage = await message.channel.send(
-                        createEmbed("info", `Adding all tracks in **[${albumData.name}](${albumData.external_urls.spotify})** playlist, please wait...`)
+                        createEmbed("info", `Adding all music in **[${albumData.name}](${albumData.external_urls.spotify})** playlist, please wait...`)
                             .setThumbnail(albumData.images[0].url)
                     );
                     for (const title of playlistSearchStrings) {
@@ -124,7 +124,7 @@ export class PlayCommand extends BaseCommand {
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All tracks in **[${albumData.name}](${albumData.external_urls.spotify})** playlist, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All music in **[${albumData.name}](${albumData.external_urls.spotify})** playlist has been added to the queue`)
                             .setThumbnail(albumData.images[0].url)
                     );
                 } catch (e) {
