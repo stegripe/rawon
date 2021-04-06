@@ -70,7 +70,7 @@ export class PlayCommand extends BaseCommand {
                     );
                 }
                 return message.channel.send(
-                    createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist, has been added to the queue`)
+                    createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist has been added to the queue`)
                         .setThumbnail(playlist.thumbnailURL)
 
                 );
@@ -102,7 +102,7 @@ export class PlayCommand extends BaseCommand {
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All music in **[${playlistData.name}](${playlistData.external_urls.spotify})** playlist, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All music in **[${playlistData.name}](${playlistData.external_urls.spotify})** playlist has been added to the queue`)
                             .setThumbnail(playlistData.images[0].url)
                     );
                 } catch (e) {
@@ -125,7 +125,7 @@ export class PlayCommand extends BaseCommand {
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All music in **[${albumData.name}](${albumData.external_urls.spotify})** playlist, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All music in **[${albumData.name}](${albumData.external_urls.spotify})** playlist has been added to the queue`)
                             .setThumbnail(albumData.images[0].url)
                     );
                 } catch (e) {
