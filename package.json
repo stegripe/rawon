@@ -38,7 +38,7 @@
         "parse-ms": "^2.1.0",
         "pretty-ms": "^7.0.1",
         "spotify-url-info": "^2.2.0",
-        "tslib": "^2.1.0",
+        "tslib": "^2.2.0",
         "winston": "^3.3.3",
         "ytdl-core": "^4.5.0",
         "ytpl": "^2.1.0",
