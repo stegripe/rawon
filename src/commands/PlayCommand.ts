@@ -206,6 +206,10 @@ export class PlayCommand extends BaseCommand {
         } else {
             message.guild!.queue = new ServerQueue(message.channel as ITextChannel, voiceChannel);
             message.guild?.queue.songs.addSong(song);
+            if (!playlist) {
+                message.channel.send(createEmbed("info", `✅ **|** **[${song.title}](${song.url})** has been added to the queue`).setThumbnail(song.thumbnail))
+                    .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+            }
             try {
                 const connection = await message.guild!.queue.voiceChannel!.join();
                 message.guild!.queue.connection = connection;
