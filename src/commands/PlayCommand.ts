@@ -317,7 +317,7 @@ export class PlayCommand extends BaseCommand {
                     return { source: "soundcloud", type: "playlist" };
                 }
                 return { source: "soundcloud", type: "track" };
-            } 
+            }
             return { source: "youtube", type: "query" };
         } catch (_) {
             return { source: "youtube", type: "query" };
