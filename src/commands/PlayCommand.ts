@@ -4,6 +4,7 @@ import { ServerQueue } from "../structures/ServerQueue";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 // @ts-expect-error-next-line
 import { getData } from "spotify-url-info";
+import ytsr, { Video as SRVideo } from "ytsr";
 import { decodeHTML } from "entities";
 import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
@@ -69,7 +70,7 @@ export class PlayCommand extends BaseCommand {
                     );
                 }
                 return message.channel.send(
-                    createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist, has been added to the queue`)
+                    createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist has been added to the queue`)
                         .setThumbnail(playlist.thumbnailURL)
 
                 );
@@ -82,8 +83,8 @@ export class PlayCommand extends BaseCommand {
             if (input[1] === "track") {
                 const trackData = await getData(url);
                 const trackSearchString = `${trackData.artists[0].name} - ${trackData.name}`;
-                const videoResult = await this.client.youtube.searchVideos(trackSearchString, 1);
-                const queuedVideo = await this.client.youtube.getVideo(videoResult[0].id);
+                const videoResult = await ytsr(trackSearchString, { limit: 1, safeSearch: false });
+                const queuedVideo = await this.client.youtube.getVideo((videoResult.items[0] as SRVideo).id);
                 return this.handleVideo(queuedVideo, message, voiceChannel);
             } else if (input[1] === "playlist") {
                 try {
@@ -95,13 +96,13 @@ export class PlayCommand extends BaseCommand {
                             .setThumbnail(playlistData.images[0].url)
                     );
                     for (const title of playlistSearchStrings) {
-                        const videoResults = await this.client.youtube.searchVideos(title, 1);
-                        const queuedVideo = await this.client.youtube.getVideo(videoResults[0].id);
+                        const videoResults = await ytsr(title, { limit: 1, safeSearch: false });
+                        const queuedVideo = await this.client.youtube.getVideo((videoResults.items[0] as SRVideo).id);
                         await this.handleVideo(queuedVideo, message, voiceChannel, true);
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All music in **[${playlistData.name}](${playlistData.external_urls.spotify})** playlist, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All music in **[${playlistData.name}](${playlistData.external_urls.spotify})** playlist has been added to the queue`)
                             .setThumbnail(playlistData.images[0].url)
                     );
                 } catch (e) {
@@ -124,7 +125,7 @@ export class PlayCommand extends BaseCommand {
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All music in **[${albumData.name}](${albumData.external_urls.spotify})** playlist, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All music in **[${albumData.name}](${albumData.external_urls.spotify})** playlist has been added to the queue`)
                             .setThumbnail(albumData.images[0].url)
                     );
                 } catch (e) {
@@ -205,6 +206,10 @@ export class PlayCommand extends BaseCommand {
         } else {
             message.guild!.queue = new ServerQueue(message.channel as ITextChannel, voiceChannel);
             message.guild?.queue.songs.addSong(song);
+            if (!playlist) {
+                message.channel.send(createEmbed("info", `✅ **|** **[${song.title}](${song.url})** has been added to the queue`).setThumbnail(song.thumbnail))
+                    .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+            }
             try {
                 const connection = await message.guild!.queue.voiceChannel!.join();
                 message.guild!.queue.connection = connection;

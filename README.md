@@ -21,17 +21,17 @@ $ npm prune --production
 6. Start it with `npm start`, and you're done!
 
 Notes: 
-1. You only need to configure .env file when you're using the [Docker image](https://github.com/zhycorp/disc-11#Docker)
-2. If you're using "Deploy to Heroku" button, you don't need to do this.
+1. You only need to configure `.env` file when you're using the [Docker image](https://github.com/zhycorp/disc-11#Docker)
+2. If you're using **Deploy to Heroku** button, you don't need to do this.
 
 ## Installation
 
-Without optional packages
+Without optional packages:
 ```sh
 $ npm install --no-optional
 ```
 
-With optional packages (recommended)
+With optional packages (recommended):
 ```sh
 $ npm install
 ```
@@ -82,7 +82,7 @@ $ docker-compose up
 - Basic Music Commands (Play, Skip, Stop, Pause & Resume, Now Playing, Queue, Repeat, Volume)
 - A production-ready music bot, suitable for you that don't like to hassling with the code
 - Lightweight (only around 120MB with dev dependencies pruned)
-- Spotify playlist support (will be converted as youtube video)
+- Spotify player support (will be converted as youtube video)
 - Docker-friendly (if you're advanced user)
 - Caching (cache youtube downloads)
 - Configurable (easy to use)
