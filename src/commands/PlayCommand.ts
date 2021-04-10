@@ -175,7 +175,7 @@ export class PlayCommand extends BaseCommand {
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All music in **[${albumData.name}](${albumData.external_urls.spotify})** album, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All music in **[${albumData.name}](${albumData.external_urls.spotify})** album has been added to the queue`)
                             .setThumbnail(albumData.images[0].url)
                     );
                 } catch (e) {
