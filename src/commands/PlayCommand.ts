@@ -48,7 +48,7 @@ export class PlayCommand extends BaseCommand {
                     const videos = await playlist.getVideos();
                     let skippedVideos = 0;
                     const addingPlaylistVideoMessage = await message.channel.send(
-                        createEmbed("info", `Adding all videos in **[${playlist.title}](${playlist.url})** playlist please wait...`)
+                        createEmbed("info", `Adding all videos in **[${playlist.title}](${playlist.url})** playlist, please wait...`)
                             .setThumbnail(playlist.thumbnailURL)
                     );
                     for (const video of Object.values(videos)) {
