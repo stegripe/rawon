@@ -128,6 +128,7 @@ export class PlayCommand extends BaseCommand {
                 }
                 return this.handleVideo(video, message, voiceChannel);
             }
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         } else if (urlData.source === "spotify") {
             if (urlData.type === "track") {
                 const trackData = await getData(url);
@@ -296,7 +297,7 @@ export class PlayCommand extends BaseCommand {
         return Util.escapeMarkdown(decodeHTML(title));
     }
 
-    private checkUrlData(url: string): { source: "youtube"|"spotify"|"soundcloud"; type: "track"|"playlist"|"video"|"album"|"query" } {
+    private checkUrlData(url: string): { source: "youtube"|"spotify"; type: "track"|"playlist"|"video"|"album"|"query" } {
         try {
             const urlPathArray = new URL(url).pathname.split("/");
             if (/^https?:\/\/(www\.youtube\.com|youtube.com)\/(.*)$/.exec(url)) {
@@ -313,11 +314,6 @@ export class PlayCommand extends BaseCommand {
                 } else if (urlPathArray.includes("track")) {
                     return { source: "spotify", type: "track" };
                 }
-            } else if (/^https?:\/\/(www\.soundcloud\.com|soundcloud.com)\/(.*)$/g.exec(url)) {
-                if (urlPathArray.includes("sets")) {
-                    return { source: "soundcloud", type: "playlist" };
-                }
-                return { source: "soundcloud", type: "track" };
             }
             return { source: "youtube", type: "query" };
         } catch (_) {
