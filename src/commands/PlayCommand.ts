@@ -210,16 +210,18 @@ export class PlayCommand extends BaseCommand {
         } else {
             message.guild!.queue = new ServerQueue(message.channel as ITextChannel, voiceChannel);
             message.guild?.queue.songs.addSong(song);
-            try {
-                const connection = await message.guild!.queue.voiceChannel!.join();
-                message.guild!.queue.connection = connection;
-            } catch (error) {
-                message.guild?.queue.songs.clear();
-                message.guild!.queue = null;
-                this.client.logger.error("PLAY_CMD_ERR:", error);
-                message.channel.send(createEmbed("error", `An error occured while joining the voice channel, reason: **\`${error.message}\`**`))
-                    .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-                return undefined;
+            if (!playlist) {
+                try {
+                    const connection = await message.guild!.queue.voiceChannel!.join();
+                    message.guild!.queue.connection = connection;
+                } catch (error) {
+                    message.guild?.queue.songs.clear();
+                    message.guild!.queue = null;
+                    this.client.logger.error("PLAY_CMD_ERR:", error);
+                    message.channel.send(createEmbed("error", `An error occured while joining the voice channel, reason: **\`${error.message}\`**`))
+                        .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                    return undefined;
+                }
             }
             this.play(message.guild!).catch(err => {
                 message.channel.send(createEmbed("error", `An error occurred while trying to play music, reason: **\`${err.message}\`**`))
