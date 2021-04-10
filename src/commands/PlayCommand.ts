@@ -73,7 +73,7 @@ export class PlayCommand extends BaseCommand {
                         );
                     }
                     return message.channel.send(
-                        createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist, has been added to the queue`)
+                        createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist has been added to the queue`)
                             .setThumbnail(playlist.thumbnailURL)
 
                     );
