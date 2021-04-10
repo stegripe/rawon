@@ -164,7 +164,7 @@ export class PlayCommand extends BaseCommand {
                     const playlistSearchStrings: string[] = await albumData.tracks.items.map((item: any): string => `${item.artists[0].name} - ${item.name} Audio`);
                     this.client.logger.debug(playlistSearchStrings.join("\n"));
                     const addingPlaylistVideoMessage = await message.channel.send(
-                        createEmbed("info", `Adding all music in **[${albumData.name}](${albumData.external_urls.spotify})** album please wait...`)
+                        createEmbed("info", `Adding all music in **[${albumData.name}](${albumData.external_urls.spotify})** album, please wait...`)
                             .setThumbnail(albumData.images[0].url)
                     );
                     for (const title of playlistSearchStrings) {
