@@ -45,7 +45,7 @@
         "ytsr": "^3.4.1"
     },
     "devDependencies": {
-        "@types/node": "^14.14.37",
+        "@types/node": "^14.14.39",
         "@types/node-fetch": "^2.5.10",
         "@typescript-eslint/eslint-plugin": "^4.21.0",
         "@typescript-eslint/parser": "^4.21.0",
