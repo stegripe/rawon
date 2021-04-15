@@ -20,7 +20,7 @@ export class StopCommand extends BaseCommand {
         message.guild?.queue?.voiceChannel?.leave();
         message.guild!.queue = null;
 
-        message.channel.send(createEmbed("info", "⏹ **|** The music player has stopped"))
+        message.channel.send(createEmbed("info", "⏹ **|** The music player has been stopped"))
             .catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
     }
 }
