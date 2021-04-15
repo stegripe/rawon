@@ -23,7 +23,8 @@ export class RemoveCommand extends BaseCommand {
             message.guild!.queue!.playing = true;
             message.guild!.queue?.connection?.dispatcher.resume();
             message.guild!.queue?.connection?.dispatcher.end();
-            return undefined;
+        } else {
+            message.guild?.queue?.songs.delete(message.guild.queue.songs.findKey(x => x.id === song.id)!);
         }
 
         message.guild?.queue?.songs.delete(message.guild.queue.songs.findKey(x => x.id === song.id)!);
