@@ -2,7 +2,7 @@ import { IMessage } from "../../typings";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
-import { isMusicPlaying } from "../utils/decorators/MusicHelper";
+import { isMusicPlaying, isSameVoiceChannel, isUserInTheVoiceChannel } from "../utils/decorators/MusicHelper";
 
 @DefineCommand({
     aliases: ["rm", "delete"],
@@ -12,6 +12,8 @@ import { isMusicPlaying } from "../utils/decorators/MusicHelper";
 })
 export class RemoveCommand extends BaseCommand {
     @isMusicPlaying()
+    @isUserInTheVoiceChannel()
+    @isSameVoiceChannel()
     public execute(message: IMessage, args: string[]): any {
         if (isNaN(Number(args[0]))) return message.channel.send(createEmbed("error", `Invalid usage, use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information`));
 
