@@ -39,6 +39,7 @@ export class PlayCommand extends BaseCommand {
             );
         }
 
+        console.log(urlData);
 
         if (urlData.source === "youtube") {
             if (urlData.type === "playlist") {
@@ -302,7 +303,7 @@ export class PlayCommand extends BaseCommand {
             const urlPathArray = new URL(url).pathname.split("/");
             if (/^https?:\/\/(www\.youtube\.com|youtube.com)\/(.*)$/.exec(url)) {
                 if (urlPathArray.includes("watch")) {
-                    return { source: "youtube", type: "track" };
+                    return { source: "youtube", type: "video" };
                 } else if (urlPathArray.includes("playlist")) {
                     return { source: "youtube", type: "playlist" };
                 }
