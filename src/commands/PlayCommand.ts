@@ -39,6 +39,7 @@ export class PlayCommand extends BaseCommand {
             );
         }
 
+        console.log(urlData);
 
         if (urlData.source === "youtube") {
             if (urlData.type === "playlist") {
@@ -146,8 +147,8 @@ export class PlayCommand extends BaseCommand {
                             .setThumbnail(playlistData.images[0].url)
                     );
                     for (const title of playlistSearchStrings) {
-                        const videoResult = await ytsr(title, { limit: 1, safeSearch: false });
-                        const queuedVideo = await this.client.youtube.getVideo((videoResult.items[0] as SRVideo).id);
+                        const videoResults = await ytsr(title, { limit: 1, safeSearch: false });
+                        const queuedVideo = await this.client.youtube.getVideo((videoResults.items[0] as SRVideo).id);
                         await this.handleVideo(queuedVideo, message, voiceChannel, true);
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
@@ -302,7 +303,7 @@ export class PlayCommand extends BaseCommand {
             const urlPathArray = new URL(url).pathname.split("/");
             if (/^https?:\/\/(www\.youtube\.com|youtube.com)\/(.*)$/.exec(url)) {
                 if (urlPathArray.includes("watch")) {
-                    return { source: "youtube", type: "track" };
+                    return { source: "youtube", type: "video" };
                 } else if (urlPathArray.includes("playlist")) {
                     return { source: "youtube", type: "playlist" };
                 }
