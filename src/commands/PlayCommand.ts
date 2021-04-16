@@ -133,11 +133,7 @@ export class PlayCommand extends BaseCommand {
         } else if (urlData.source === "spotify") {
             if (urlData.type === "track") {
                 const trackData = await getData(url);
-<<<<<<< HEAD
                 const trackSearchString = `${trackData.artists[0].name} - ${trackData.name} Audio`;
-=======
-                const trackSearchString = `${trackData.artists[0].name} - ${trackData.name}`;
->>>>>>> 2bca96753e3a69c7a3d5e13875dac9036b135dd5
                 const videoResult = await ytsr(trackSearchString, { limit: 1, safeSearch: false });
                 const queuedVideo = await this.client.youtube.getVideo((videoResult.items[0] as SRVideo).id);
                 return this.handleVideo(queuedVideo, message, voiceChannel);
@@ -151,13 +147,8 @@ export class PlayCommand extends BaseCommand {
                             .setThumbnail(playlistData.images[0].url)
                     );
                     for (const title of playlistSearchStrings) {
-<<<<<<< HEAD
-                        const videoResult = await ytsr(title, { limit: 1, safeSearch: false });
-                        const queuedVideo = await this.client.youtube.getVideo((videoResult.items[0] as SRVideo).id);
-=======
                         const videoResults = await ytsr(title, { limit: 1, safeSearch: false });
                         const queuedVideo = await this.client.youtube.getVideo((videoResults.items[0] as SRVideo).id);
->>>>>>> 2bca96753e3a69c7a3d5e13875dac9036b135dd5
                         await this.handleVideo(queuedVideo, message, voiceChannel, true);
                     }
                     message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("SP_PLAYLIST_ERR:", e));
