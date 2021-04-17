@@ -23,7 +23,7 @@ export class PlayCommand extends BaseCommand {
         const voiceChannel = message.member!.voice.channel!;
         if (!args[0]) {
             return message.channel.send(
-                createEmbed("error", `Invalid usage, see **\`${this.client.config.prefix}help play\`** for more information`)
+                createEmbed("error", `Invalid usage, use **\`${this.client.config.prefix}help play\`** for more information`)
             );
         }
         const searchString = args.join(" ");
@@ -108,7 +108,7 @@ export class PlayCommand extends BaseCommand {
                         response.first()?.delete({ timeout: 3000 }).catch(e => e);
                     } catch (error) {
                         msg.delete().catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-                        return message.channel.send(createEmbed("error", "No or invalid value entered, the music selection has canceled"));
+                        return message.channel.send(createEmbed("error", "None or invalid value entered, the music selection has canceled"));
                     }
                     if (response.first()?.content === "c" || response.first()?.content === "cancel") {
                         return message.channel.send(createEmbed("warn", "The music selection has canceled"));
