@@ -82,7 +82,6 @@ $ docker-compose up
 - Basic Music Commands (Play, Skip, Stop, Pause & Resume, Now Playing, Queue, Repeat, Volume)
 - A production-ready music bot, suitable for you that don't like to hassling with the code
 - Lightweight (only around 120MB with dev dependencies pruned)
-- Spotify player support (will be converted as youtube video)
 - Docker-friendly (if you're advanced user)
 - Caching (cache youtube downloads)
 - Configurable (easy to use)
