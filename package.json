@@ -27,7 +27,6 @@
         "ignorePatterns": "dist/*"
     },
     "dependencies": {
-        "@zhycorp/eslint-config": "^2.5.0",
         "discord.js": "^12.5.3",
         "dotenv": "^8.2.0",
         "entities": "^2.2.0",
@@ -37,7 +36,6 @@
         "opusscript": "^0.0.8",
         "parse-ms": "^2.1.0",
         "pretty-ms": "^7.0.1",
-        "spotify-url-info": "^2.2.0",
         "tslib": "^2.2.0",
         "winston": "^3.3.3",
         "ytdl-core": "^4.5.0",
@@ -45,6 +43,7 @@
         "ytsr": "^3.4.1"
     },
     "devDependencies": {
+        "@zhycorp/eslint-config": "^2.5.0",
         "@types/node": "^14.14.41",
         "@types/node-fetch": "^2.5.10",
         "@typescript-eslint/eslint-plugin": "^4.22.0",
