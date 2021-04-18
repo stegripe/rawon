@@ -23,8 +23,8 @@ export class RemoveCommand extends BaseCommand {
 
         if (currentSong.id === song.id) {
             message.guild!.queue!.playing = true;
+            message.guild?.queue?.connection?.dispatcher.once("speaking", () => message.guild?.queue?.connection?.dispatcher.end());
             message.guild!.queue?.connection?.dispatcher.resume();
-            message.guild!.queue?.connection?.dispatcher.end();
         } else {
             message.guild?.queue?.songs.delete(message.guild.queue.songs.findKey(x => x.id === song.id)!);
         }

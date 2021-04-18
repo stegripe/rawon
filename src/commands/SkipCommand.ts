@@ -16,8 +16,8 @@ export class SkipCommand extends BaseCommand {
     @isSameVoiceChannel()
     public execute(message: IMessage): any {
         message.guild!.queue!.playing = true;
+        message.guild?.queue?.connection?.dispatcher.once("speaking", () => message.guild?.queue?.connection?.dispatcher.end());
         message.guild!.queue?.connection?.dispatcher.resume();
-        message.guild!.queue?.connection?.dispatcher.end();
 
         const song = message.guild?.queue?.songs.first();
 
