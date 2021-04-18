@@ -24,7 +24,6 @@ export function isMusicPlaying(): any {
 export function isSameVoiceChannel(): any {
     return inhibit(message => {
         if (!message.guild?.me?.voice.channel) return undefined;
-        if (message.guild.me.voice.channel.members.filter(m => !m.user.bot).size === 0) return undefined;
         const botVoiceChannel = message.guild.queue?.voiceChannel?.id ?? message.guild.me.voice.channel.id;
         if (message.member?.voice.channel?.id !== botVoiceChannel) {
             return message.channel.send(
