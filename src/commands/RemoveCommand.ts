@@ -29,9 +29,9 @@ export class RemoveCommand extends BaseCommand {
             message.guild?.queue?.songs.delete(message.guild.queue.songs.findKey(x => x.id === song.id)!);
         }
 
-        message.guild?.queue?.songs.delete(message.guild.queue.songs.findKey(x => x.id === song.id)!);
-
-        message.channel.send(createEmbed("info", `✅ **|** Removed **[${song.title}](${song.url}})**`))
-            .catch(e => this.client.logger.error("REMOVE_COMMAND_ERR:", e));
+        message.channel.send(
+            createEmbed("info", `✅ Removed **[${song.title}](${song.url}})**`)
+                .setThumbnail(song.thumbnail)
+        ).catch(e => this.client.logger.error("REMOVE_COMMAND_ERR:", e));
     }
 }
