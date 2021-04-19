@@ -21,11 +21,11 @@ export class LyricsCommand extends BaseCommand {
             message.channel.send(createEmbed("error", "There is nothing playing")).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
         } else if (song) {
             const url = `https://api.lxndr.dev/lyrics?song=${encodeURI(song)}`;
-            fetch(url)
+            void fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     let lyrics = data.lyrics;
-                    let album_art = data.album_art;
+                    let albumArt = data.album_art;
                     const charLength = lyrics.length;
                     let cantEmbeds = 0;
 
@@ -39,11 +39,11 @@ export class LyricsCommand extends BaseCommand {
                             }
                         }
                     }
-                    if (!album_art) album_art = "https://api.zhycorp.com/assets/images/logo.png";
+                    if (!albumArt) albumArt = "https://api.zhycorp.com/assets/images/logo.png";
                     message.channel.send(
                         createEmbed("info", lyrics.substring(0, 2047))
                             .setAuthor(song)
-                            .setThumbnail(album_art)
+                            .setThumbnail(albumArt)
                     ).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
                     lyrics = lyrics.replace(lyrics.substring(0, 2047), "");
                     for (let i = 2; i <= cantEmbeds; i++) {
