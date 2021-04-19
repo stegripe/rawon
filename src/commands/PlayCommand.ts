@@ -174,16 +174,21 @@ export class PlayCommand extends BaseCommand {
     private async play(guild: IGuild): Promise<any> {
         const serverQueue = guild.queue!;
         const song = serverQueue.songs.first();
+        const timeout = this.client.config.deleteQueueTimeout;
         if (!song) {
             if (serverQueue.lastMusicMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastMusicMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
             if (serverQueue.lastVoiceStateUpdateMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastVoiceStateUpdateMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
             serverQueue.textChannel?.send(
                 createEmbed("info", `⏹ **|** The music has ended, use **\`${guild.client.config.prefix}play\`** to play some music`)
             ).catch(e => this.client.logger.error("PLAY_ERR:", e));
-            serverQueue.connection?.disconnect();
+            setTimeout(() => {
+                serverQueue.connection?.disconnect();
+                serverQueue.textChannel?.send(
+                    createEmbed("info", `👋 **|** I have left the channel because I was inactive for too long. See you again.`)
+                ).catch(e => e);
+            }, timeout);
             return guild.queue = null;
         }
-
         serverQueue.connection?.voice?.setSelfDeaf(true).catch(e => this.client.logger.error("PLAY_ERR:", e));
         const songData = await this.client.youtube.downloadVideo(song.url, {
             cache: this.client.config.cacheYoutubeDownloads,
