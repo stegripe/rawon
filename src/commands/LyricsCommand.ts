@@ -39,7 +39,7 @@ export class LyricsCommand extends BaseCommand {
                             }
                         }
                     }
-                    if (!album_art) album_art = "https://kknd26.ru/images/no_photo.png";
+                    if (!album_art) album_art = "https://api.zhycorp.com/assets/images/logo.png";
                     message.channel.send(
                         createEmbed("info", lyrics.substring(0, 2047))
                             .setAuthor(song)
