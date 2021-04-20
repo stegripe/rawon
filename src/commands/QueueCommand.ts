@@ -18,15 +18,15 @@ export class QueueCommand extends BaseCommand {
 
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
-        if (Number(message.guild?.queue?.songs.size) > 12) {
-            const indexes: string[] = this.chunk(songs!, 12);
+        if (Number(message.guild?.queue?.songs.size) > 1) {
+            const indexes: string[] = this.chunk(songs!, 1);
             let index = 0;
             const duration = message.guild?.queue?.songs.first()?.duration ?? 0;
             embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
             message.channel.send(embed).then(msg => {
                 void msg.react("◀️");
                 void msg.react("▶️");
-                const filter = (reaction: any, user: any) => user.id !== msg.client.user?.id;
+                const filter = (reaction: any, user: any) => (reaction.emoji.name === "◀️" || reaction.emoji.name === "▶️") && user.id !== msg.client.user?.id;
                 const collector = msg.createReactionCollector(filter, {
                     time: duration > 0 ? duration : 300000
                 });
