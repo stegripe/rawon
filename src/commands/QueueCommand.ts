@@ -28,7 +28,7 @@ export class QueueCommand extends BaseCommand {
                 void msg.react("▶️");
                 const filter = (reaction: any, user: any) => user.id !== msg.client.user?.id;
                 const collector = msg.createReactionCollector(filter, {
-                    time: duration > 0 ? duration * 1000 : 600000
+                    time: duration > 0 ? duration : 300000
                 });
                 collector.on("collect", (reaction, user) => {
                     if (!message.guild?.queue?.songs) return;
@@ -57,7 +57,7 @@ export class QueueCommand extends BaseCommand {
                 collector.on("end", () => {
                     msg.reactions.removeAll().catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
                     if (!msg.deleted) {
-                        msg.delete({ timeout: 3000 }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
+                        msg.delete({ timeout: 1000 }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
                     }
                 });
             }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
