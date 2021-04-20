@@ -189,6 +189,7 @@ export class PlayCommand extends BaseCommand {
             }, timeout);
             return guild.queue = null;
         }
+
         serverQueue.connection?.voice?.setSelfDeaf(true).catch(e => this.client.logger.error("PLAY_ERR:", e));
         const songData = await this.client.youtube.downloadVideo(song.url, {
             cache: this.client.config.cacheYoutubeDownloads,
