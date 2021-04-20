@@ -184,7 +184,7 @@ export class PlayCommand extends BaseCommand {
             setTimeout(() => {
                 serverQueue.connection?.disconnect();
                 serverQueue.textChannel?.send(
-                    createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long (empty queue)`)
+                    createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long.`)
                 ).then(m => m.delete({ timeout: 5000 })).catch(e => e);
             }, timeout);
             return guild.queue = null;
