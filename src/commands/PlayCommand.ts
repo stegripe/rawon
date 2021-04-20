@@ -174,13 +174,19 @@ export class PlayCommand extends BaseCommand {
     private async play(guild: IGuild): Promise<any> {
         const serverQueue = guild.queue!;
         const song = serverQueue.songs.first();
+        const timeout = this.client.config.deleteQueueTimeout;
         if (!song) {
             if (serverQueue.lastMusicMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastMusicMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
             if (serverQueue.lastVoiceStateUpdateMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastVoiceStateUpdateMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
             serverQueue.textChannel?.send(
                 createEmbed("info", `⏹ **|** The music has ended, use **\`${guild.client.config.prefix}play\`** to play some music`)
             ).catch(e => this.client.logger.error("PLAY_ERR:", e));
-            serverQueue.connection?.disconnect();
+            setTimeout(() => {
+                serverQueue.connection?.disconnect();
+                serverQueue.textChannel?.send(
+                    createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long.`)
+                ).then(m => m.delete({ timeout: 5000 })).catch(e => e);
+            }, timeout);
             return guild.queue = null;
         }
 
