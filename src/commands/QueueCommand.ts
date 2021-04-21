@@ -26,7 +26,7 @@ export class QueueCommand extends BaseCommand {
             message.channel.send(embed).then(msg => {
                 void msg.react("◀️");
                 void msg.react("▶️");
-                const filter = (reaction: any, user: any) => (reaction.emoji.name === "◀️" || reaction.emoji.name === "▶️") && user.id !== msg.client.user?.id;
+                const filter = (reaction: any, user: any): boolean => (reaction.emoji.name === "◀️" || reaction.emoji.name === "▶️") && user.id !== msg.client.user?.id;
                 const collector = msg.createReactionCollector(filter, {
                     time: duration > 0 ? duration : 300000
                 });
