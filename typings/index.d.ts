@@ -68,6 +68,7 @@ export interface ISong {
     title: string;
     url: string;
     thumbnail: string;
+    duration: number;
 }
 export interface IListener {
     name: keyof ClientEvents;
