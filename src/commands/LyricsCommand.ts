@@ -18,7 +18,7 @@ export class LyricsCommand extends BaseCommand {
         } else if (song) {
             this.sendLyrics(message, song);
         } else {
-            message.channel.send(createEmbed("error", "There is nothing playing or none query introduced")).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
+            message.channel.send(createEmbed("error", "There is nothing playing or no query was provided")).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
         }
     }
 
