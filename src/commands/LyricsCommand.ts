@@ -67,7 +67,7 @@ export class LyricsCommand extends BaseCommand {
                         void msg.react("▶️");
                         const filter = (reaction: any, user: any): boolean => (reaction.emoji.name === "◀️" || reaction.emoji.name === "▶️") && user.id !== msg.client.user?.id;
                         const collector = msg.createReactionCollector(filter, {
-                            time: (duration > 0) && (duration !== undefined) ? duration : 10000
+                            time: (duration > 0) && (duration !== undefined) ? duration : 60000
                         });
                         collector.on("collect", (reaction, user) => {
                             switch (reaction.emoji.name) {
