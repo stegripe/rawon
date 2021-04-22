@@ -1,7 +1,7 @@
 import { BaseCommand } from "../structures/BaseCommand";
 import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
-import { isMusicPlaying } from "../utils/decorators/MusicHelper";
+import { isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 import { createEmbed } from "../utils/createEmbed";
 
 @DefineCommand({
@@ -12,23 +12,24 @@ import { createEmbed } from "../utils/createEmbed";
 })
 export class QueueCommand extends BaseCommand {
     @isMusicPlaying()
+    @isSameVoiceChannel()
     public execute(message: IMessage): any {
         const embed = createEmbed("info")
             .setAuthor("Music Queue", message.client.user?.displayAvatarURL() as string);
 
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
-        if (Number(message.guild?.queue?.songs.size) > 12) {
-            const indexes: string[] = this.chunk(songs!, 12);
+        if (Number(message.guild?.queue?.songs.size) > 1) {
+            const indexes: string[] = this.chunk(songs!, 1);
             let index = 0;
-            const duration = message.guild?.queue?.songs.first()?.duration ?? 0;
+            const duration: any = message.guild?.queue?.songs.first()?.duration;
             embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
             message.channel.send(embed).then(msg => {
                 void msg.react("◀️");
                 void msg.react("▶️");
                 const filter = (reaction: any, user: any): boolean => (reaction.emoji.name === "◀️" || reaction.emoji.name === "▶️") && user.id !== msg.client.user?.id;
                 const collector = msg.createReactionCollector(filter, {
-                    time: duration > 0 ? duration : 300000
+                    time: (duration > 0) && (duration !== undefined) ? duration : 30000
                 });
                 collector.on("collect", (reaction, user) => {
                     if (!message.guild?.queue?.songs) return;
