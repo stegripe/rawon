@@ -128,9 +128,9 @@ export class PlayCommand extends BaseCommand {
         const song: ISong = {
             duration: this.milDuration(video.duration),
             id: video.id,
+            thumbnail: video.thumbnailURL,
             title: this.cleanTitle(video.title),
-            url: video.url,
-            thumbnail: video.thumbnailURL
+            url: video.url
         };
         if (message.guild?.queue) {
             if (!this.client.config.allowDuplicate && message.guild.queue.songs.find(s => s.id === song.id)) {
