@@ -8,6 +8,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isSameVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
 import { createEmbed } from "../utils/createEmbed";
 import { Video } from "../utils/YouTube/structures/Video";
+let disconnectTimer: any;
 
 @DefineCommand({
     aliases: ["p", "add", "play-music"],
@@ -176,13 +177,14 @@ export class PlayCommand extends BaseCommand {
         const serverQueue = guild.queue!;
         const song = serverQueue.songs.first();
         const timeout = this.client.config.deleteQueueTimeout;
+        clearTimeout(disconnectTimer);
         if (!song) {
             if (serverQueue.lastMusicMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastMusicMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
             if (serverQueue.lastVoiceStateUpdateMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastVoiceStateUpdateMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
             serverQueue.textChannel?.send(
                 createEmbed("info", `⏹ **|** The music has ended, use **\`${guild.client.config.prefix}play\`** to play some music`)
             ).catch(e => this.client.logger.error("PLAY_ERR:", e));
-            setTimeout(() => {
+            disconnectTimer = setTimeout(() => {
                 serverQueue.connection?.disconnect();
                 serverQueue.textChannel?.send(
                     createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long.`)
