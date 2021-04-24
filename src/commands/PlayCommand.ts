@@ -27,7 +27,6 @@ export class PlayCommand extends BaseCommand {
                 createEmbed("error", `Invalid usage, use **\`${this.client.config.prefix}help play\`** for more information`)
             );
         }
-
         const searchString = args.join(" ");
         const url = searchString.replace(/<(.+)>/g, "$1");
 
