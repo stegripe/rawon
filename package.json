@@ -57,7 +57,7 @@
         "bufferutil": "^4.0.3",
         "erlpack": "github:discord/erlpack",
         "libsodium-wrappers": "^0.7.9",
-        "utf-8-validate": "^5.0.4",
+        "utf-8-validate": "^5.0.5",
         "zlib-sync": "^0.1.7"
     },
     "engines": {
