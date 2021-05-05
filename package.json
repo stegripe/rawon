@@ -47,7 +47,7 @@
         "@types/node": "^15.0.1",
         "@types/node-fetch": "^2.5.10",
         "@typescript-eslint/eslint-plugin": "^4.22.0",
-        "@typescript-eslint/parser": "^4.22.0",
+        "@typescript-eslint/parser": "^4.22.1",
         "eslint": "^7.25.0",
         "ts-node": "^9.1.1",
         "typescript": "^4.2.4"
