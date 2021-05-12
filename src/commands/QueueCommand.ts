@@ -20,7 +20,7 @@ export class QueueCommand extends BaseCommand {
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
         if (Number(message.guild?.queue?.songs.size) > 1) {
-            const indexes: string[] = this.chunk(songs!, 1);
+            const indexes: string[] = this.chunk(songs!, 10);
             let index = 0;
             const duration: any = message.guild?.queue?.songs.first()?.duration;
             embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
