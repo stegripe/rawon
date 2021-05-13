@@ -17,6 +17,8 @@ let disconnectTimer: any;
     usage: "{prefix}play <youtube video or playlist link | youtube video name>"
 })
 export class PlayCommand extends BaseCommand {
+    private readonly _playlistAlreadyQueued: ISong[] = [];
+
     @isUserInTheVoiceChannel()
     @isValidVoiceChannel()
     @isSameVoiceChannel()
@@ -57,8 +59,26 @@ export class PlayCommand extends BaseCommand {
                 }
                 if (skippedVideos !== 0) {
                     message.channel.send(
-                        createEmbed("warn", `${skippedVideos} ${skippedVideos >= 2 ? `videos` : `video`} are skipped because it's a private video`)
+                        createEmbed("warn", `${skippedVideos} ${skippedVideos >= 2 ? "videos" : "video"} are skipped because it's a private video`)
                     ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                }
+                if (this._playlistAlreadyQueued.length !== 0) {
+                    let num = 1;
+                    const songs = this._playlistAlreadyQueued.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
+                    message.channel.send(
+                        createEmbed("warn", `Over ${this._playlistAlreadyQueued.length} ${this._playlistAlreadyQueued.length >= 2 ? "videos" : "video"} are skipped because it was a duplicate` +
+                        ` and this bot configuration disallow duplicated music in queue, please use \`${this.client.config.prefix}repeat\` instead`)
+                            .setTitle("Already queued / duplicate")
+                    ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                    const pages = this.paginate(songs.join("\n"));
+                    let howManyMessage = 0;
+                    for (const page of pages) {
+                        howManyMessage++;
+                        const embed = createEmbed(`warn`, page);
+                        if (howManyMessage === 1) embed.setTitle("Duplicated music");
+                        await message.channel.send(embed);
+                    }
+                    this._playlistAlreadyQueued.splice(0, this._playlistAlreadyQueued.length);
                 }
                 message.channel.messages.fetch(addingPlaylistVideoMessage.id, false).then(m => m.delete()).catch(e => this.client.logger.error("YT_PLAYLIST_ERR:", e));
                 if (skippedVideos === playlist.itemCount) {
@@ -70,7 +90,6 @@ export class PlayCommand extends BaseCommand {
                 return message.channel.send(
                     createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist has been added to the queue`)
                         .setThumbnail(playlist.thumbnailURL)
-
                 );
             } catch (e) {
                 this.client.logger.error("YT_PLAYLIST_ERR:", new Error(e.stack));
@@ -135,10 +154,12 @@ export class PlayCommand extends BaseCommand {
         };
         if (message.guild?.queue) {
             if (!this.client.config.allowDuplicate && message.guild.queue.songs.find(s => s.id === song.id)) {
+                if (playlist) return this._playlistAlreadyQueued.push(song);
                 return message.channel.send(
                     createEmbed("warn", `🎶 **|** **[${song.title}](${song.url})** is already queued, ` +
                 `please use **\`${this.client.config.prefix}repeat\`** command instead`)
                         .setTitle("Already Queued")
+                        .setThumbnail(song.thumbnail)
                 );
             }
             message.guild.queue.songs.addSong(song);
@@ -241,6 +262,41 @@ export class PlayCommand extends BaseCommand {
             .setVolume(serverQueue.volume / guild.client.config.maxVolume);
     }
 
+    private paginate(text: string, limit = 2000): any[] {
+        const lines = text.trim().split("\n");
+        const pages = [];
+        let chunk = "";
+
+        for (const line of lines) {
+            if (chunk.length + line.length > limit && chunk.length > 0) {
+                pages.push(chunk);
+                chunk = "";
+            }
+
+            if (line.length > limit) {
+                const lineChunks = line.length / limit;
+
+                for (let i = 0; i < lineChunks; i++) {
+                    const start = i * limit;
+                    const end = start + limit;
+                    pages.push(line.slice(start, end));
+                }
+            } else {
+                chunk += `${line}\n`;
+            }
+        }
+
+        if (chunk.length > 0) {
+            pages.push(chunk);
+        }
+
+        return pages;
+    }
+
+    private cleanTitle(title: string): string {
+        return Util.escapeMarkdown(decodeHTML(title));
+    }
+
     private milDuration(duration: any): number {
         const days = duration.days * 86400000;
         const hours = duration.hours * 3600000;
@@ -248,9 +304,5 @@ export class PlayCommand extends BaseCommand {
         const seconds = duration.seconds * 1000;
 
         return days + hours + minutes + seconds;
-    }
-
-    private cleanTitle(title: string): string {
-        return Util.escapeMarkdown(decodeHTML(title));
     }
 }

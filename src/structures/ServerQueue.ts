@@ -14,16 +14,16 @@ export class ServerQueue {
     public constructor(public textChannel: ITextChannel | null = null, public voiceChannel: VoiceChannel | null = null) {
         this.volume = textChannel!.client.config.defaultVolume;
         Object.defineProperties(this, {
-            timeout: {
+            _lastMusicMessageID: {
+                enumerable: false
+            },
+            _lastvoiceStateUpdateMessageID: {
                 enumerable: false
             },
             _playing: {
                 enumerable: false
             },
-            _lastMusicMessageID: {
-                enumerable: false
-            },
-            _lastvoiceStateUpdateMessageID: {
+            timeout: {
                 enumerable: false
             }
         });
