@@ -14,17 +14,17 @@ export class LyricsCommand extends BaseCommand {
     public async execute(message: IMessage, args: string[]): Promise<void> {
         const song = message.guild?.queue?.songs.first()?.title;
         if (args[0]) {
-            this.sendLyrics(message, args.join(" "));
+            await this.sendLyrics(message, args.join(" "));
         } else if (song) {
-            this.sendLyrics(message, song);
+            await this.sendLyrics(message, song);
         } else {
             message.channel.send(createEmbed("error", "There is nothing playing or no query was provided")).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
         }
     }
 
-    private sendLyrics(message: IMessage, song: string): any {
+    private async sendLyrics(message: IMessage, song: string): Promise<any> {
         const url = `https://api.lxndr.dev/lyrics?song=${encodeURI(song)}&from=disc-11`;
-        void fetch(url)
+        await fetch(url)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
@@ -62,9 +62,9 @@ export class LyricsCommand extends BaseCommand {
                     lyrics = lyrics.replace(lyrics.substring(0, 2048), "");
                 }
                 if (cantEmbeds > 1) {
-                    message.channel.send(embed).then(msg => {
-                        void msg.react("◀️");
-                        void msg.react("▶️");
+                    message.channel.send(embed).then(async msg => {
+                        await msg.react("◀️");
+                        await msg.react("▶️");
                         const filter = (reaction: any, user: any): boolean => (reaction.emoji.name === "◀️" || reaction.emoji.name === "▶️") && user.id !== msg.client.user?.id;
                         const collector = msg.createReactionCollector(filter, {
                             time: (duration > 0) && (duration !== undefined) ? duration : 60000
