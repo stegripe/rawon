@@ -36,7 +36,7 @@ export class PlayCommand extends BaseCommand {
             );
         }
 
-        if (/^https?:\/\/(www\.youtube\.com|youtube.com)\/playlist(.*)$/.exec(url)) {
+        if (/^https?:\/\/((www|music)\.youtube\.com|youtube.com)\/playlist(.*)$/.exec(url)) {
             try {
                 const id = new URL(url).searchParams.get("list")!;
                 const playlist = await this.client.youtube.getPlaylist(id);
