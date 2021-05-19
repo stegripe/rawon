@@ -44,7 +44,7 @@
     },
     "devDependencies": {
         "@zhycorp/eslint-config": "^2.5.0",
-        "@types/node": "^15.3.0",
+        "@types/node": "^15.3.1",
         "@types/node-fetch": "^2.5.10",
         "@typescript-eslint/eslint-plugin": "^4.24.0",
         "@typescript-eslint/parser": "^4.24.0",
