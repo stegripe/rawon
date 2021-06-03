@@ -2,7 +2,6 @@ FROM node:16.2.0-alpine as build-stage
 
 LABEL name "Disc 11 (build stage)"
 LABEL maintainer "Zhycorp <support@zhycorp.com>"
-LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
 
 WORKDIR /tmp/build
 
@@ -33,7 +32,6 @@ FROM node:16.2.0-alpine
 
 LABEL name "Disc 11"
 LABEL maintainer "Zhycorp <support@zhycorp.com>"
-LABEL original-maintainer "Hazmi35 <contact@hzmi.xyz>"
 
 WORKDIR /app
 
