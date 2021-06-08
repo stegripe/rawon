@@ -57,7 +57,7 @@ You can still use Glitch and keep it online in this project, no worries 😉
 13. To make it stay online, please watch [this video](https://youtu.be/K2nqthN1xKQ?t=551) carefully.
 
 Your bot is online, and ready to use!
-If you have any questions or need support, feel free to join our [Discord server](https://zhycorp.com/discord).
+If you have any questions or need support, feel free to join our [Discord server](https://zhycorp.net/discord).
 
 ## Docker
 Want to use Dockerized version of [this project](https://github.com/Hazmi35/jukebox)?

@@ -1,7 +1,7 @@
 FROM node:16.3.0-alpine as build-stage
 
 LABEL name "Disc 11 (build stage)"
-LABEL maintainer "Zhycorp <support@zhycorp.com>"
+LABEL maintainer "Zhycorp <support@zhycorp.net>"
 
 WORKDIR /tmp/build
 
@@ -31,7 +31,7 @@ RUN npm prune --production
 FROM node:16.3.0-alpine
 
 LABEL name "Disc 11"
-LABEL maintainer "Zhycorp <support@zhycorp.com>"
+LABEL maintainer "Zhycorp <support@zhycorp.net>"
 
 WORKDIR /app
 

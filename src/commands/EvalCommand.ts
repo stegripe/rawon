@@ -69,12 +69,12 @@ export class EvalCommand extends BaseCommand {
 
     private hastebin(text: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            const req = request({ hostname: "bin.zhycorp.com", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
+            const req = request({ hostname: "bin.zhycorp.net", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
                 let raw = "";
                 res.on("data", chunk => raw += chunk);
                 res.on("end", () => {
-                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.zhycorp.com/${JSON.parse(raw).key as string}`);
-                    return reject(new Error(`[hastebin] Error while trying to send data to https://bin.zhycorp.com/documents, ${res.statusCode as number} ${res.statusMessage as string}`));
+                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.zhycorp.net/${JSON.parse(raw).key as string}`);
+                    return reject(new Error(`[hastebin] Error while trying to send data to https://bin.zhycorp.net/documents, ${res.statusCode as number} ${res.statusMessage as string}`));
                 });
             }).on("error", reject);
             req.write(typeof text === "object" ? JSON.stringify(text, null, 2) : text);

@@ -50,7 +50,7 @@ export class LyricsCommand extends BaseCommand {
                 let index = 0;
                 const lyricsArr: any = [];
                 const duration: any = message.guild?.queue?.songs.first()?.duration;
-                if (!albumArt) albumArt = "https://api.zhycorp.com/assets/images/logo.png";
+                if (!albumArt) albumArt = "https://api.zhycorp.net/assets/images/logo.png";
                 lyricsArr.push([lyrics.substring(0, 2047)]);
                 const embed = createEmbed("info")
                     .setAuthor(song.toUpperCase()).setThumbnail(albumArt)
