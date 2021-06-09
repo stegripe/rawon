@@ -1,5 +1,5 @@
-const http = require("http");
 const { execSync } = require("child_process");
+const http = require("http");
 
 const isThisGlitch = (
     process.env.PROJECT_DOMAIN !== undefined &&

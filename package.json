@@ -2,14 +2,14 @@
     "name": "disc-11",
     "version": "1.60.5",
     "private": true,
-    "description": "A dedicated open-source music bot for Zhycorp based on Jukebox",
+    "description": "A dedicated open-source Discord music bot for Zhycorp based on Jukebox, easy to use, and with no coding required.",
     "homepage": "https://github.com/zhycorp/disc-11#readme",
+    "bugs": {
+        "url": "https://github.com/zhycorp/disc-11/issues"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/zhycorp/disc-11.git"
-    },
-    "bugs": {
-        "url": "https://github.com/zhycorp/disc-11/issues"
     },
     "license": "BSD-3-Clause",
     "author": "Zhycorp <support@zhycorp.net> (https://github.com/zhycorp)",
@@ -27,7 +27,6 @@
         "ignorePatterns": "dist/*"
     },
     "dependencies": {
-        "@types/semver": "^7.3.6",
         "discord.js": "^12.5.3",
         "dotenv": "^10.0.0",
         "entities": "^2.2.0",
@@ -47,6 +46,7 @@
     "devDependencies": {
         "@types/node": "^15.12.2",
         "@types/node-fetch": "^2.5.10",
+        "@types/semver": "^7.3.6",
         "@typescript-eslint/eslint-plugin": "^4.26.1",
         "@typescript-eslint/parser": "^4.26.1",
         "@zhycorp/eslint-config": "^3.0.0",
@@ -63,6 +63,6 @@
         "zlib-sync": "^0.1.7"
     },
     "engines": {
-        "node": "14.x"
+        "node": ">=14.x"
     }
 }
