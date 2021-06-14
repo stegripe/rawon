@@ -1,9 +1,9 @@
 /* eslint-disable sort-keys */
-import { BaseCommand } from "../structures/BaseCommand";
-import { IMessage } from "../../typings";
-import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
+import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["loop", "music-repeat", "music-loop"],

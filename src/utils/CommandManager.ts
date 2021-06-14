@@ -1,9 +1,9 @@
-import { promises as fs } from "fs";
-import { parse, resolve } from "path";
-import { Snowflake, Collection } from "discord.js";
-import { Disc } from "../structures/Disc";
 import { ICommandComponent, IMessage } from "../../typings";
 import { createEmbed } from "./createEmbed";
+import { Disc } from "../structures/Disc";
+import { Snowflake, Collection } from "discord.js";
+import { parse, resolve } from "path";
+import { promises as fs } from "fs";
 
 export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();

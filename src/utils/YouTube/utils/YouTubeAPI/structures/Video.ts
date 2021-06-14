@@ -1,6 +1,6 @@
-import { parse, toSeconds } from "iso8601-duration";
-import { YoutubeAPI } from "..";
 import { IVideo } from "../types";
+import { YoutubeAPI } from "..";
+import { parse, toSeconds } from "iso8601-duration";
 
 export class Video implements IVideo {
     public id: IVideo["id"];

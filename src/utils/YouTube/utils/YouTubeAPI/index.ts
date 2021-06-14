@@ -1,7 +1,7 @@
-import fetch from "node-fetch";
-import { URLSearchParams, URL } from "url";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
+import { URLSearchParams, URL } from "url";
+import fetch from "node-fetch";
 
 export class YoutubeAPI {
     private readonly baseURL = "https://www.googleapis.com/youtube/v3/";

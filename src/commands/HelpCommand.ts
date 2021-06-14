@@ -1,8 +1,8 @@
-import { BaseCommand } from "../structures/BaseCommand";
-import { MessageEmbed } from "discord.js";
-import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
+import { IMessage } from "../../typings";
+import { MessageEmbed } from "discord.js";
 
 @DefineCommand({
     aliases: ["h", "command", "commands", "cmd", "cmds"],

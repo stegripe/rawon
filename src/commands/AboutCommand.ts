@@ -1,11 +1,11 @@
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
-import { version } from "discord.js";
-import { uptime as osUptime } from "os";
-import path from "path";
+import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
 import { IMessage } from "../../typings";
-import { DefineCommand } from "../utils/decorators/DefineCommand";
-import { createEmbed } from "../utils/createEmbed";
+import { uptime as osUptime } from "os";
+import { version } from "discord.js";
+import path from "path";
 
 @DefineCommand({
     aliases: ["botinfo", "info", "stats"],

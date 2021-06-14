@@ -1,8 +1,8 @@
-import { itemType } from "..";
 import { Playlist as APIPlaylist } from "../utils/YouTubeAPI/structures/Playlist";
-import { Result as SRPlaylist } from "ytpl";
-import { Item } from "./Item";
 import { Video } from "./Video";
+import { Item } from "./Item";
+import { itemType } from "..";
+import { Result as SRPlaylist } from "ytpl";
 
 export class Playlist extends Item {
     public channel: APIPlaylist["channel"];

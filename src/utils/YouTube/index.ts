@@ -1,9 +1,9 @@
+import { IMusicData, playMusic, IdownloadOptions, getMusicInfo } from "./downloader";
+import { Playlist } from "./structures/Playlist";
 import { YoutubeAPI } from "./utils/YouTubeAPI";
+import { Video } from "./structures/Video";
 import ytsr from "ytsr";
 import ytpl from "ytpl";
-import { IMusicData, playMusic, IdownloadOptions, getMusicInfo } from "./downloader";
-import { Video } from "./structures/Video";
-import { Playlist } from "./structures/Playlist";
 
 interface scrape { search: typeof ytsr; playlist: typeof ytpl; getVideo: typeof getMusicInfo }
 

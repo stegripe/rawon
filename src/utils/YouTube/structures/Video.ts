@@ -1,9 +1,9 @@
-import { itemType } from "..";
 import { Video as APIVideo } from "../utils/YouTubeAPI/structures/Video";
-import { Video as SRVideo } from "ytsr";
-import { Item } from "./Item";
-import parse from "parse-ms";
 import { IMusicInfo } from "../downloader";
+import { itemType } from "..";
+import { Item } from "./Item";
+import { Video as SRVideo } from "ytsr";
+import parse from "parse-ms";
 
 export class Video extends Item {
     public channel: { id: string; name: string; url: string };

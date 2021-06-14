@@ -1,7 +1,7 @@
-import { BaseCommand } from "../structures/BaseCommand";
-import { MessageEmbed } from "discord.js";
-import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { BaseCommand } from "../structures/BaseCommand";
+import { IMessage } from "../../typings";
+import { MessageEmbed } from "discord.js";
 
 @DefineCommand({
     aliases: ["pong", "pang", "pung", "peng", "pingpong"],

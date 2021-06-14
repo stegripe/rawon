@@ -1,8 +1,8 @@
-import { IMessage } from "../../typings";
+import { isMusicPlaying, isSameVoiceChannel, isUserInTheVoiceChannel } from "../utils/decorators/MusicHelper";
+import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { DefineCommand } from "../utils/decorators/DefineCommand";
-import { isMusicPlaying, isSameVoiceChannel, isUserInTheVoiceChannel } from "../utils/decorators/MusicHelper";
+import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["rm", "delete"],
