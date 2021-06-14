@@ -1,5 +1,5 @@
-import { YoutubeAPI } from "..";
 import { IPlaylist } from "../types";
+import { YoutubeAPI } from "..";
 import { Video } from "./Video";
 
 export class Playlist implements IPlaylist {

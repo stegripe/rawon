@@ -1,11 +1,11 @@
-import { Collection, GuildMember, Snowflake } from "discord.js";
-import { satisfies } from "semver";
-import { IVoiceState } from "../../typings";
+import { DefineListener } from "../utils/decorators/DefineListener";
 import { BaseListener } from "../structures/BaseListener";
 import { ServerQueue } from "../structures/ServerQueue";
 import { createEmbed } from "../utils/createEmbed";
-import { DefineListener } from "../utils/decorators/DefineListener";
 import { formatMS } from "../utils/formatMS";
+import { IVoiceState } from "../../typings";
+import { Collection, GuildMember, Snowflake } from "discord.js";
+import { satisfies } from "semver";
 
 @DefineListener("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseListener {

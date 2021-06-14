@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-import { itemType } from "..";
-import { Video as APIVideo } from "../utils/YouTubeAPI/structures/Video";
-import { Video as SRVideo } from "ytsr";
 import { Playlist as APIPlaylist } from "../utils/YouTubeAPI/structures/Playlist";
-import { Result as SRPlaylist } from "ytpl";
+import { Video as APIVideo } from "../utils/YouTubeAPI/structures/Video";
 import { IMusicInfo } from "../downloader";
+import { itemType } from "..";
+import { Result as SRPlaylist } from "ytpl";
+import { Video as SRVideo } from "ytsr";
 
 export class Item {
     public id: string;

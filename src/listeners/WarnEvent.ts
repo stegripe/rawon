@@ -1,5 +1,5 @@
-import { BaseListener } from "../structures/BaseListener";
 import { DefineListener } from "../utils/decorators/DefineListener";
+import { BaseListener } from "../structures/BaseListener";
 
 @DefineListener("warn")
 export class WarnEvent extends BaseListener {

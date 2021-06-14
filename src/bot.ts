@@ -1,7 +1,7 @@
-import "dotenv/config";
-import { fetchAllUsers } from "./config";
-import { Disc } from "./structures/Disc";
 import { BitFieldResolvable, IntentsString } from "discord.js";
+import { Disc } from "./structures/Disc";
+import { fetchAllUsers } from "./config";
+import "dotenv/config";
 
 const intents: BitFieldResolvable<IntentsString> = ["GUILDS", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"];
 

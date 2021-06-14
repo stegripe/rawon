@@ -1,6 +1,6 @@
-import { Presence } from "discord.js";
-import { BaseListener } from "../structures/BaseListener";
 import { DefineListener } from "../utils/decorators/DefineListener";
+import { BaseListener } from "../structures/BaseListener";
+import { Presence } from "discord.js";
 
 @DefineListener("ready")
 export class ReadyEvent extends BaseListener {

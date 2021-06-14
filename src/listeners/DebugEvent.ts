@@ -1,5 +1,5 @@
-import { BaseListener } from "../structures/BaseListener";
 import { DefineListener } from "../utils/decorators/DefineListener";
+import { BaseListener } from "../structures/BaseListener";
 
 @DefineListener("debug")
 export class DebugEvent extends BaseListener {

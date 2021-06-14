@@ -1,8 +1,8 @@
-import { BaseCommand } from "../structures/BaseCommand";
-import { IMessage } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { disableInviteCmd } from "../config";
+import { IMessage } from "../../typings";
 
 @DefineCommand({
     name: "invite",

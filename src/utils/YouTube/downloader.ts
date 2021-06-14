@@ -1,7 +1,7 @@
-import { videoInfo, downloadOptions, videoFormat, getInfo, downloadFromInfo } from "ytdl-core";
-import { Readable } from "stream";
-import { resolve as resolvePath } from "path";
 import { createReadStream, createWriteStream, existsSync, appendFileSync, unlinkSync } from "fs";
+import { videoInfo, downloadOptions, videoFormat, getInfo, downloadFromInfo } from "ytdl-core";
+import { resolve as resolvePath } from "path";
+import { Readable } from "stream";
 
 // 1048576 * 1 = 1MB
 const defaultOptions: IdownloadOptions = { quality: "highestaudio", highWaterMark: 1048576 * 32 };

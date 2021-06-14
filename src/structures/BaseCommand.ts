@@ -1,5 +1,5 @@
-import { Disc } from "./Disc";
 import { ICommandComponent } from "../../typings";
+import { Disc } from "./Disc";
 import { Message } from "discord.js";
 export class BaseCommand implements ICommandComponent {
     public constructor(public client: Disc, public meta: ICommandComponent["meta"]) {}
