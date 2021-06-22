@@ -5,10 +5,10 @@ import { disableInviteCmd } from "../config";
 import { IMessage } from "../../typings";
 
 @DefineCommand({
-    name: "invite",
     description: "Send the bot's invite link",
-    usage: "{prefix}invite",
-    disable: disableInviteCmd
+    disable: disableInviteCmd,
+    name: "invite",
+    usage: "{prefix}invite"
 })
 export class InviteCommand extends BaseCommand {
     public async execute(message: IMessage): Promise<void> {

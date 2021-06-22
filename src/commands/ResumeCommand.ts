@@ -6,8 +6,8 @@ import { IMessage } from "../../typings";
 import { satisfies } from "semver";
 
 @DefineCommand({
-    name: "resume",
     description: "Resume the music player",
+    name: "resume",
     usage: "{prefix}resume"
 })
 export class ResumeCommand extends BaseCommand {

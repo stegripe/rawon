@@ -6,8 +6,8 @@ import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["rm", "delete"],
-    name: "remove",
     description: "Remove a song from the current queue",
+    name: "remove",
     usage: "{prefix}remove <Song number>"
 })
 export class RemoveCommand extends BaseCommand {

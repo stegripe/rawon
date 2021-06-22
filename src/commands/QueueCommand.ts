@@ -7,8 +7,8 @@ import { TextChannel } from "discord.js";
 
 @DefineCommand({
     aliases: ["q"],
-    name: "queue",
     description: "Show the current queue",
+    name: "queue",
     usage: "{prefix}queue"
 })
 export class QueueCommand extends BaseCommand {

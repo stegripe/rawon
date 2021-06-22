@@ -5,8 +5,8 @@ import { createEmbed } from "../utils/createEmbed";
 import { IMessage } from "../../typings";
 
 @DefineCommand({
-    name: "pause",
     description: "Pause the music player",
+    name: "pause",
     usage: "{prefix}pause"
 })
 export class PauseCommand extends BaseCommand {

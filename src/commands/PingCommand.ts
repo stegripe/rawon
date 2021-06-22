@@ -5,8 +5,8 @@ import { MessageEmbed } from "discord.js";
 
 @DefineCommand({
     aliases: ["pong", "pang", "pung", "peng", "pingpong"],
-    name: "ping",
     description: "Show the current ping of the bot",
+    name: "ping",
     usage: "{prefix}ping"
 })
 export class PingCommand extends BaseCommand {

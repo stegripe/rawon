@@ -6,8 +6,8 @@ import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["st", "disconnect", "dc"],
-    name: "stop",
     description: "Stop the music player",
+    name: "stop",
     usage: "{prefix}stop"
 })
 export class StopCommand extends BaseCommand {

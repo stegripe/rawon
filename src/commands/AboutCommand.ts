@@ -9,8 +9,8 @@ import path from "path";
 
 @DefineCommand({
     aliases: ["botinfo", "info", "stats"],
-    name: "about",
     description: "Send the information about the bot",
+    name: "about",
     usage: "{prefix}about"
 })
 export class AboutCommand extends BaseCommand {

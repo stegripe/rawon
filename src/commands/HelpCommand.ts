@@ -6,8 +6,8 @@ import { MessageEmbed } from "discord.js";
 
 @DefineCommand({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
-    name: "help",
     description: "Show the command list",
+    name: "help",
     usage: "{prefix}help [command]"
 })
 export class HelpCommand extends BaseCommand {

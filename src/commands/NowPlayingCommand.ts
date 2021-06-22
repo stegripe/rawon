@@ -6,8 +6,8 @@ import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["np", "now-playing"],
-    name: "nowplaying",
     description: "Send information about current music player",
+    name: "nowplaying",
     usage: "{prefix}nowplaying"
 })
 export class NowPlayingCommand extends BaseCommand {

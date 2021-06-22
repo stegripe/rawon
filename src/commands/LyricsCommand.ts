@@ -6,8 +6,8 @@ import fetch from "node-fetch";
 
 @DefineCommand({
     aliases: ["ly"],
-    name: "lyrics",
     description: "Get lyrics from the current music",
+    name: "lyrics",
     usage: "{prefix}lyrics"
 })
 export class LyricsCommand extends BaseCommand {

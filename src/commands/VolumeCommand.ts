@@ -6,8 +6,8 @@ import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["vol"],
-    name: "volume",
     description: "Show or change the music player's volume",
+    name: "volume",
     usage: "{prefix}volume [new volume]"
 })
 export class VolumeCommand extends BaseCommand {

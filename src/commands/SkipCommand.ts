@@ -6,8 +6,8 @@ import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["s"],
-    name: "skip",
     description: "Skip the current music",
+    name: "skip",
     usage: "{prefix}skip"
 })
 export class SkipCommand extends BaseCommand {
