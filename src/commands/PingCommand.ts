@@ -19,11 +19,11 @@ export class PingCommand extends BaseCommand {
                 .setAuthor("🏓 PONG", message.client.user?.displayAvatarURL())
                 .setColor(this.searchHex(wsLatency))
                 .addFields({
-                    name: "📶 | API",
+                    name: "📶 **|** API",
                     value: `**\`${latency}\`** ms`,
                     inline: true
                 }, {
-                    name: "🌐 | WebSocket",
+                    name: "🌐 **|** WebSocket",
                     value: `**\`${wsLatency}\`** ms`,
                     inline: true
                 })
