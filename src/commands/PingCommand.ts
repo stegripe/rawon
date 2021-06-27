@@ -11,9 +11,8 @@ import { MessageEmbed } from "discord.js";
 })
 export class PingCommand extends BaseCommand {
     public execute(message: IMessage): IMessage {
-        const before = Date.now();
-        message.channel.send("🏓").then((msg: IMessage | any) => {
-            const latency = Date.now() - before;
+        message.channel.send("🏓").then((msg: IMessage) => {
+            const latency = msg.createdTimestamp - message.createdTimestamp;
             const wsLatency = this.client.ws.ping.toFixed(0);
             const embed = new MessageEmbed()
                 .setAuthor("🏓 PONG", message.client.user?.displayAvatarURL())
@@ -27,10 +26,11 @@ export class PingCommand extends BaseCommand {
                     value: `**\`${wsLatency}\`** ms`,
                     inline: true
                 })
-                .setFooter(`Requested by: ${message.author.tag}`, message.author.displayAvatarURL());
-            msg.edit("");
-            msg.edit(embed);
-        }).catch(e => this.client.logger.error("PING_CMD_ERR:", e));
+                .setFooter(`Requested by: ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
+                .setTimestamp();
+
+            msg.edit("", { embed }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+        }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         return message;
     }
 
