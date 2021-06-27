@@ -28,8 +28,7 @@ export class PingCommand extends BaseCommand {
                     inline: true
                 })
                 .setFooter(`Requested by: ${message.author.tag}`, message.author.displayAvatarURL());
-            msg.edit("");
-            msg.edit(embed);
+            msg.edit("", { embed });
         }).catch(e => this.client.logger.error("PING_CMD_ERR:", e));
         return message;
     }
