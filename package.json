@@ -52,7 +52,7 @@
         "@zhycorp/eslint-config": "^3.0.0",
         "eslint": "^7.29.0",
         "ts-node": "^10.0.0",
-        "typescript": "^4.3.4"
+        "typescript": "^4.3.5"
     },
     "optionalDependencies": {
         "@discordjs/opus": "^0.5.3",
