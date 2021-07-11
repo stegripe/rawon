@@ -51,7 +51,7 @@
         "@typescript-eslint/parser": "^4.28.2",
         "@zhycorp/eslint-config": "^3.0.0",
         "eslint": "^7.30.0",
-        "ts-node": "^10.0.0",
+        "ts-node": "^10.1.0",
         "typescript": "^4.3.5"
     },
     "optionalDependencies": {
