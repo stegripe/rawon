@@ -97,7 +97,8 @@ export class PlayCommand extends BaseCommand {
             }
         }
         try {
-            const id = new URL(url).searchParams.get("v")!;
+            const fetchUrl = new URL(url);
+            const id = fetchUrl.hostname === "youtu.be" ? fetchUrl.pathname.replace(/\//g, "") : fetchUrl.searchParams.get("v")!;
             // eslint-disable-next-line no-var, block-scoped-var
             var video = await this.client.youtube.getVideo(id);
         } catch (e) {
