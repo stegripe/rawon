@@ -24,7 +24,7 @@ export const debug = process.env.CONFIG_DEBUG?.toLowerCase() === "yes";
 export const fetchAllUsers = process.env.CONFIG_FETCH_ALL_USERS?.toLowerCase() === "yes";
 export const status = {
     type: process.env.STATUS_TYPE?.toUpperCase() as ActivityType | null ?? "LISTENING",
-    activity: process.env.CONFIG_STATUS_ACTIVITY ?? "music on {guildsCount}"
+    activity: process.env.CONFIG_STATUS_ACTIVITY ?? "music on {guildsCount} servers"
 };
 
 if (searchMaxResults < 1) throw new Error("CONFIG_SEARCH_MAX_RESULTS cannot be smaller than 1");
