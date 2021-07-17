@@ -14,9 +14,9 @@ export function resolveYTVideoID(url: string): string | null {
 export function resolveYTPlaylistID(url: string): string | null {
     const videoURL = new URL(url);
 
-    if (youtubeHostnames.includes(videoURL.hostname) && videoURL.hostname !== "youtu.be") {
-        if (videoURL.pathname === "/playlist") return videoURL.searchParams.get("list");
-    }
+    if (youtubeHostnames.includes(videoURL.hostname) &&
+        videoURL.hostname !== "youtu.be" &&
+        videoURL.pathname === "/playlist") return videoURL.searchParams.get("list");
 
     return null;
 }
