@@ -7,6 +7,7 @@ import { Readable } from "stream";
 const defaultOptions: IdownloadOptions = { quality: "highestaudio", highWaterMark: 1048576 * 32 };
 
 export function getMusicInfo(link: string, options = defaultOptions): Promise<IMusicInfo> {
+    options = Object.assign(options, defaultOptions);
     return new Promise((resolve, reject) => {
         getInfo(link).then(info => {
             const canSkipFFmpeg: boolean = info.formats.find(filter) !== undefined && options.skipFFmpeg === true;
@@ -16,11 +17,13 @@ export function getMusicInfo(link: string, options = defaultOptions): Promise<IM
 }
 
 export function downloadMusic(info: IMusicInfo, options = defaultOptions): IMusicStream {
+    options = Object.assign(options, defaultOptions);
     options = info.canSkipFFmpeg ? { ...options, filter } : { ...options };
     return Object.assign(downloadFromInfo(info, options), { info });
 }
 
 export function playMusic(link: string, options = defaultOptions): Promise<IMusicData> {
+    options = Object.assign(options, defaultOptions);
     return new Promise((resolve, reject) => {
         getMusicInfo(link, options).then(info => {
             const stream = downloadMusic(info, options)
