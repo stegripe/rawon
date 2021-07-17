@@ -1,3 +1,4 @@
+import { resolveYTPlaylistID, resolveYTVideoID } from "./resolveYTURL";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
 import { URLSearchParams, URL } from "url";
@@ -18,7 +19,8 @@ export class YoutubeAPI {
     }
 
     public getVideoByURL(url: string): Promise<Video> {
-        const id = new URL(url).searchParams.get("v")!;
+        const id = resolveYTVideoID(url);
+        if (!id) throw new Error("Invalid YouTube Video URL");
         return this.getVideo(id);
     }
 
@@ -28,7 +30,8 @@ export class YoutubeAPI {
     }
 
     public getPlaylistByURL(url: string): Promise<Playlist> {
-        const id = new URL(url).searchParams.get("list")!;
+        const id = resolveYTPlaylistID(url);
+        if (!id) throw new Error("Invalid YouTube Playlist URL");
         return this.getPlaylist(id);
     }
 
