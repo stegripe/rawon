@@ -87,5 +87,12 @@
             "required": false
         }
     },
-    "repository": "https://github.com/zhycorp/disc-11"
+    "repository": "https://github.com/zhycorp/disc-11",
+    "stack": "container",
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
 }
