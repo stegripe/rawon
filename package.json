@@ -45,7 +45,7 @@
     },
     "devDependencies": {
         "@types/node": "^16.4.1",
-        "@types/node-fetch": "^2.5.11",
+        "@types/node-fetch": "^2.5.12",
         "@types/semver": "^7.3.7",
         "@typescript-eslint/eslint-plugin": "^4.28.4",
         "@typescript-eslint/parser": "^4.28.4",
