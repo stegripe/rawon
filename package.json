@@ -41,7 +41,7 @@
         "winston": "^3.3.3",
         "ytdl-core": "^4.9.0",
         "ytpl": "^2.2.1",
-        "ytsr": "^3.5.0"
+        "ytsr": "^3.5.2"
     },
     "devDependencies": {
         "@types/node": "^16.4.10",
