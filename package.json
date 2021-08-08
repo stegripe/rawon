@@ -27,7 +27,7 @@
         "ignorePatterns": "dist/*"
     },
     "dependencies": {
-        "discord.js": "^12.5.3",
+        "discord.js": "^13.0.1",
         "dotenv": "^10.0.0",
         "entities": "^2.2.0",
         "ffmpeg-static": "^4.4.0",
