@@ -1,5 +1,5 @@
 import { DefineCommand } from "../utils/decorators/DefineCommand";
-import { isMusicPlaying } from "../utils/decorators/MusicHelper";
+import { isMusicQueueExists } from "../utils/decorators/MusicHelper";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { IMessage } from "../../typings";
@@ -11,7 +11,7 @@ import { IMessage } from "../../typings";
     usage: "{prefix}nowplaying"
 })
 export class NowPlayingCommand extends BaseCommand {
-    @isMusicPlaying()
+    @isMusicQueueExists()
     public execute(message: IMessage): any {
         const song = message.guild?.queue?.songs.first();
         return message.channel.send(

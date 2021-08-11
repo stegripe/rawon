@@ -1,4 +1,4 @@
-import { isMusicPlaying, isSameVoiceChannel, isUserInTheVoiceChannel } from "../utils/decorators/MusicHelper";
+import { isMusicQueueExists, isSameVoiceChannel, isUserInTheVoiceChannel } from "../utils/decorators/MusicHelper";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
@@ -11,7 +11,7 @@ import { IMessage } from "../../typings";
     usage: "{prefix}remove <Song number>"
 })
 export class RemoveCommand extends BaseCommand {
-    @isMusicPlaying()
+    @isMusicQueueExists()
     @isUserInTheVoiceChannel()
     @isSameVoiceChannel()
     public execute(message: IMessage, args: string[]): any {

@@ -1,4 +1,4 @@
-import { isUserInTheVoiceChannel, isMusicPlaying, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
+import { isUserInTheVoiceChannel, isMusicQueueExists, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
@@ -11,7 +11,7 @@ import { IMessage } from "../../typings";
 })
 export class PauseCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
-    @isMusicPlaying()
+    @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: IMessage): any {
         if (message.guild?.queue?.playing) {
