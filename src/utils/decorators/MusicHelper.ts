@@ -1,5 +1,5 @@
-import { Inhibit } from "./Inhibit";
 import { createEmbed } from "../createEmbed";
+import { Inhibit } from "./Inhibit";
 
 export function isMusicQueueExists(): any {
     return Inhibit(message => {
