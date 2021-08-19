@@ -72,7 +72,7 @@ export class PlayCommand extends BaseCommand {
                         ` and this bot configuration disallow duplicated tracks in queue, please use \`${this.client.config.prefix}repeat\` instead`)
                             .setTitle("Already queued / duplicate")
                     ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-                    const pages = this.paginate(songs.join("\n"));
+                    const pages = this.client.util.paginate(songs.join("\n"));
                     let howManyMessage = 0;
                     for (const page of pages) {
                         howManyMessage++;
@@ -261,37 +261,6 @@ export class PlayCommand extends BaseCommand {
                 this.client.logger.error("PLAY_ERR:", err);
             })
             .setVolume(serverQueue.volume / guild.client.config.maxVolume);
-    }
-
-    private paginate(text: string, limit = 2000): any[] {
-        const lines = text.trim().split("\n");
-        const pages = [];
-        let chunk = "";
-
-        for (const line of lines) {
-            if (chunk.length + line.length > limit && chunk.length > 0) {
-                pages.push(chunk);
-                chunk = "";
-            }
-
-            if (line.length > limit) {
-                const lineChunks = line.length / limit;
-
-                for (let i = 0; i < lineChunks; i++) {
-                    const start = i * limit;
-                    const end = start + limit;
-                    pages.push(line.slice(start, end));
-                }
-            } else {
-                chunk += `${line}\n`;
-            }
-        }
-
-        if (chunk.length > 0) {
-            pages.push(chunk);
-        }
-
-        return pages;
     }
 
     private cleanTitle(title: string): string {

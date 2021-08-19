@@ -23,15 +23,11 @@ declare module "discord.js" {
         public readonly config: Disc["config"];
         public readonly logger: Disc["logger"];
         public readonly commands: Disc["commands"];
-        public readonly events: Jukebox["events"];
+        public readonly events: Disc["events"];
         public readonly youtube: Disc["youtube"];
+        public readonly util: Disc["util"];
 
         public async build(token: string): Promise<this>;
-        public async getGuildsCount(): Promise<number>;
-        public async getChannelsCount(filter = true): Promise<number>;
-        public async getUsersCount(filter = true): Promise<number>;
-        public async getTotalPlaying(): Promise<number>;
-        public async getTotalMemory(type: keyof NodeJS.MemoryUsage): Promise<number>;
     }
     export interface Guild extends OGuild {
         queue: ServerQueue | null;

@@ -3,7 +3,6 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { Message, MessageEmbed } from "discord.js";
-import { request } from "https";
 import { inspect } from "util";
 
 @DefineCommand({
@@ -39,14 +38,14 @@ export class EvalCommand extends BaseCommand {
 
             const output = this.clean(evaled);
             if (output.length > 1024) {
-                const hastebin = await this.hastebin(output);
+                const hastebin = await client.util.hastebin(output);
                 embed.addField("**Output**", `${hastebin}.js`);
             } else { embed.addField("**Output**", `\`\`\`js\n${output}\`\`\``); }
             await message.channel.send(embed);
         } catch (e) {
             const error = this.clean(e);
             if (error.length > 1024) {
-                const hastebin = await this.hastebin(error);
+                const hastebin = await client.util.hastebin(error);
                 embed.addField("**Error**", `${hastebin}.js`);
             } else { embed.setColor("RED").addField("**Error**", `\`\`\`js\n${error}\`\`\``); }
             message.channel.send(embed).catch(e => this.client.logger.error("EVAL_CMD_MSG_ERR:", e));
@@ -64,20 +63,5 @@ export class EvalCommand extends BaseCommand {
                 .replace(/`/g, `\`${String.fromCharCode(8203)}`)
                 .replace(/@/g, `@${String.fromCharCode(8203)}`);
         } return text;
-    }
-
-    private hastebin(text: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const req = request({ hostname: "bin.zhycorp.net", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
-                let raw = "";
-                res.on("data", chunk => raw += chunk);
-                res.on("end", () => {
-                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.zhycorp.net/${JSON.parse(raw).key as string}`);
-                    return reject(new Error(`[hastebin] Error while trying to send data to https://bin.zhycorp.net/documents, ${res.statusCode as number} ${res.statusMessage as string}`));
-                });
-            }).on("error", reject);
-            req.write(typeof text === "object" ? JSON.stringify(text, null, 2) : text);
-            req.end();
-        });
     }
 }

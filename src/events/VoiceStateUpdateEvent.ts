@@ -2,7 +2,6 @@ import { DefineListener } from "../utils/decorators/DefineListener";
 import { BaseListener } from "../structures/BaseListener";
 import { ServerQueue } from "../structures/ServerQueue";
 import { createEmbed } from "../utils/createEmbed";
-import { formatMS } from "../utils/formatMS";
 import { Collection, GuildMember, Snowflake, VoiceState } from "discord.js";
 import { satisfies } from "semver";
 
@@ -62,7 +61,7 @@ export class VoiceStateUpdateEvent extends BaseListener {
             newState.guild.queue!.playing = false;
             queue.connection?.dispatcher.pause();
             const timeout = this.client.config.deleteQueueTimeout;
-            const duration = formatMS(timeout);
+            const duration = this.client.util.formatMS(timeout);
             queue.oldVoiceStateUpdateMessage = null;
             newState.guild.queue!.timeout = setTimeout(() => {
                 queue.voiceChannel?.leave();

@@ -20,7 +20,7 @@ export class QueueCommand extends BaseCommand {
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
         if (Number(message.guild?.queue?.songs.size) > 12) {
-            const indexes: string[] = this.chunk(songs!, 12);
+            const indexes: string[] = this.client.util.chunk(songs!, 12);
             let index = 0;
             embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
             const reactions = ["◀️", "▶️"];
@@ -53,13 +53,5 @@ export class QueueCommand extends BaseCommand {
         } else {
             message.channel.send(embed.setDescription(songs!.join("\n"))).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
         }
-    }
-
-    private chunk(array: Array<any> | string, chunkSize: number): Array<any> {
-        const temp = [];
-        for (let i = 0; i < array.length; i += chunkSize) {
-            temp.push(array.slice(i, i + chunkSize));
-        }
-        return temp;
     }
 }
