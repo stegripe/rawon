@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { CommandManager } from "../utils/CommandManager";
-import { ListenerLoader } from "../utils/ListenerLoader";
+import { EventsLoader } from "../utils/EventsLoader";
 import { createLogger } from "../utils/Logger";
 import { YouTube } from "../utils/YouTube";
 import * as config from "../config";
@@ -15,12 +15,12 @@ export class Disc extends BotClient {
     public readonly logger = createLogger("main", config.debug);
     public readonly youtube = new YouTube(config.YouTubeDataRetrievingStrategy, process.env.SECRET_YT_API_KEY);
     public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
-    public readonly listeners = new ListenerLoader(this, resolve(__dirname, "..", "listeners"));
+    public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
     public constructor(opt: ClientOptions) { super(opt); }
 
     public async build(token: string): Promise<this> {
         this.on("ready", () => this.commands.load());
-        this.listeners.load().catch(e => this.logger.error("LISTENER_LOADER_ERR:", e));
+        this.events.load().catch(e => this.logger.error("LISTENER_LOADER_ERR:", e));
         await this.login(token);
         return this;
     }
