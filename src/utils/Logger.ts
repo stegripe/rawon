@@ -1,6 +1,5 @@
 import winston from "winston";
 
-// @ts-expect-error ignore
 const dateFormat = Intl.DateTimeFormat("en", { dateStyle: "short", timeStyle: "medium", hour12: false });
 
 function formatDateForLogFile(date?: number | Date): string {
