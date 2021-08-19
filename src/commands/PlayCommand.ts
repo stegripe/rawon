@@ -47,7 +47,7 @@ export class PlayCommand extends BaseCommand {
                 const videos = await playlist.getVideos();
                 let skippedVideos = 0;
                 const addingPlaylistVideoMessage = await message.channel.send(
-                    createEmbed("info", `Adding all videos in **[${playlist.title}](${playlist.url})** playlist, please wait...`)
+                    createEmbed("info", `Adding all tracks in **[${playlist.title}](${playlist.url})** playlist, please wait...`)
                         .setThumbnail(playlist.thumbnailURL)
                 );
                 for (const video of Object.values(videos)) {
@@ -61,15 +61,15 @@ export class PlayCommand extends BaseCommand {
                 }
                 if (skippedVideos !== 0) {
                     message.channel.send(
-                        createEmbed("warn", `${skippedVideos} ${skippedVideos >= 2 ? "videos" : "video"} are skipped because it's a private video`)
+                        createEmbed("warn", `${skippedVideos} track${skippedVideos >= 2 ? "s" : ""} are skipped because it's a private video`)
                     ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
                 }
                 if (this._playlistAlreadyQueued.length !== 0) {
                     let num = 1;
                     const songs = this._playlistAlreadyQueued.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
                     message.channel.send(
-                        createEmbed("warn", `Over ${this._playlistAlreadyQueued.length} ${this._playlistAlreadyQueued.length >= 2 ? "videos" : "video"} are skipped because it was a duplicate` +
-                        ` and this bot configuration disallow duplicated music in queue, please use \`${this.client.config.prefix}repeat\` instead`)
+                        createEmbed("warn", `Over ${this._playlistAlreadyQueued.length} track${this._playlistAlreadyQueued.length >= 2 ? "s" : ""} are skipped because it was a duplicate` +
+                        ` and this bot configuration disallow duplicated tracks in queue, please use \`${this.client.config.prefix}repeat\` instead`)
                             .setTitle("Already queued / duplicate")
                     ).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
                     const pages = this.paginate(songs.join("\n"));
@@ -77,7 +77,7 @@ export class PlayCommand extends BaseCommand {
                     for (const page of pages) {
                         howManyMessage++;
                         const embed = createEmbed(`warn`, page);
-                        if (howManyMessage === 1) embed.setTitle("Duplicated music");
+                        if (howManyMessage === 1) embed.setTitle("Duplicated tracks");
                         await message.channel.send(embed);
                     }
                     this._playlistAlreadyQueued.splice(0, this._playlistAlreadyQueued.length);
@@ -90,7 +90,7 @@ export class PlayCommand extends BaseCommand {
                     );
                 }
                 return message.channel.send(
-                    createEmbed("info", `✅ **|** All videos in **[${playlist.title}](${playlist.url})** playlist has been added to the queue`)
+                    createEmbed("info", `✅ **|** All tracks in **[${playlist.title}](${playlist.url})** playlist has been added to the queue`)
                         .setThumbnail(playlist.thumbnailURL)
                 );
             } catch (e) {
@@ -189,7 +189,7 @@ export class PlayCommand extends BaseCommand {
                 return undefined;
             }
             this.play(message.guild!).catch(err => {
-                message.channel.send(createEmbed("error", `An error occurred while trying to play music, reason: **\`${err.message}\`**`))
+                message.channel.send(createEmbed("error", `An error occurred while trying to play track, reason: **\`${err.message}\`**`))
                     .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
                 return this.client.logger.error("PLAY_CMD_ERR:", err);
             });
@@ -248,7 +248,7 @@ export class PlayCommand extends BaseCommand {
                     .catch(e => this.client.logger.error("PLAY_ERR:", e))
                     .finally(() => {
                         this.play(guild).catch(e => {
-                            serverQueue.textChannel?.send(createEmbed("error", `An error occurred while trying to play music, reason: **\`${e}\`**`))
+                            serverQueue.textChannel?.send(createEmbed("error", `An error occurred while trying to play track, reason: **\`${e}\`**`))
                                 .catch(e => this.client.logger.error("PLAY_ERR:", e));
                             serverQueue.connection?.dispatcher.end();
                             return this.client.logger.error("PLAY_ERR:", e);
@@ -256,7 +256,7 @@ export class PlayCommand extends BaseCommand {
                     });
             })
             .on("error", (err: Error) => {
-                serverQueue.textChannel?.send(createEmbed("error", `An error occurred while playing music, reason: **\`${err.message}\`**`))
+                serverQueue.textChannel?.send(createEmbed("error", `An error occurred while playing track, reason: **\`${err.message}\`**`))
                     .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
                 guild.queue?.voiceChannel?.leave();
                 guild.queue = null;

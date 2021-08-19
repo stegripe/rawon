@@ -17,12 +17,12 @@ export class RepeatCommand extends BaseCommand {
     @isSameVoiceChannel()
     public execute(message: IMessage, args: string[]): any {
         const modes: Record<any, 0 | 1 | 2> = {
-            // Repeat All Music in Queue
+            // Repeat All tracks in Queue
             all: 2,
             queue: 2,
             "*": 2,
             2: 2,
-            // Repeat current music
+            // Repeat current track
             current: 1,
             this: 1,
             one: 1,

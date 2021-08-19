@@ -19,7 +19,7 @@
             "required": false
         },
         "CONFIG_YOUTUBE_DATA_STRATEGY": {
-            "description": "Strategy for getting video info from youtube (scrape or api, default: scrape)",
+            "description": "Strategy for getting video info from YouTube (scrape or api, default: scrape)",
             "required": false
         },
         "SECRET_YT_API_KEY": {
@@ -31,27 +31,27 @@
             "required": false
         },
         "CONFIG_DEFAULT_VOLUME": {
-            "description": "Default volume for music (default: 50)",
+            "description": "Default volume for the player (default: 50)",
             "required": false
         },
         "CONFIG_MAX_VOLUME": {
-            "description": "Max volume allowed for music (default: 100)",
+            "description": "Max volume allowed for the player (default: 100)",
             "required": false
         },
         "CONFIG_DISABLE_SONG_SELECTION": {
-            "description": "Whether to disable selecting music on play command, this will automatically selects the first order from search results (default: no)",
+            "description": "Whether to disable selecting tracks on play command, this will automatically selects the first order from search results (default: no)",
             "required": false
         },
         "CONFIG_SEARCH_MAX_RESULTS": {
-            "description": "Maximum music to list in song selection (default: 10, max: 10)",
+            "description": "Maximum tracks to list in track selection (default: 10, max: 10)",
             "required": false
         },
         "CONFIG_SELECT_TIMEOUT": {
-            "description": "Music selection timeout when searching (default: 20 <20 seconds>)",
+            "description": "Track selection timeout when searching (default: 20 <20 seconds>)",
             "required": false
         },
         "CONFIG_ALLOW_DUPLICATE": {
-            "description": "Whether to allow users to add duplicate of music (yes or no, default: no)",
+            "description": "Whether to allow users to add duplicate of tracks (yes or no, default: no)",
             "required": false
         },
         "CONFIG_DELETE_QUEUE_TIMEOUT": {
@@ -59,11 +59,11 @@
             "required": false
         },
         "CONFIG_CACHE_YOUTUBE_DOWNLOADS": {
-            "description": "Whether to download and cache music from YouTube (yes or no, default: no)",
+            "description": "Whether to download and cache track from YouTube (yes or no, default: no)",
             "required": false
         },
         "CONFIG_CACHE_MAX_LENGTH": {
-            "description": "Max music length in seconds that are allowed to be cached (default: 5400 <1 hour 30 minutes>)",
+            "description": "Max track length in seconds that are allowed to be cached (default: 5400 <1 hour 30 minutes>)",
             "required": false
         },
         "CONFIG_DISABLE_INVITE_CMD": {

@@ -6,9 +6,9 @@ import { IMessage } from "../../typings";
 
 @DefineCommand({
     aliases: ["rm", "delete"],
-    description: "Remove a song from the current queue",
+    description: "Remove a track from the current queue",
     name: "remove",
-    usage: "{prefix}remove <Song number>"
+    usage: "{prefix}remove <track number>"
 })
 export class RemoveCommand extends BaseCommand {
     @isMusicQueueExists()
