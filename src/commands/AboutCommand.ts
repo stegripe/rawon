@@ -26,9 +26,9 @@ Playing Music on   :: ${await this.client.util.getTotalPlaying()} guilds
 Platform           :: ${process.platform}
 Arch               :: ${process.arch}
 OS Uptime          :: ${this.client.util.formatMS(osUptime() * 1000)}
-Memory (RSS)       :: ${this.client.util.bytesToSize(await this.client.util.getTotalMemory("rss"))} 
-Memory (Total)     :: ${this.client.util.bytesToSize(await this.client.util.getTotalMemory("heapTotal"))}
-Memory (Used)      :: ${this.client.util.bytesToSize(await this.client.util.getTotalMemory("heapUsed"))}
+Memory (RSS)       :: ${this.client.util.bytesToSize(process.memoryUsage().rss)} 
+Memory (Total)     :: ${this.client.util.bytesToSize(process.memoryUsage().heapTotal)}
+Memory (Used)      :: ${this.client.util.bytesToSize(process.memoryUsage().heapUsed)}
 Process Uptime     :: ${this.client.util.formatMS(process.uptime() * 1000)}
 Bot Uptime         :: ${this.client.util.formatMS(this.client.uptime!)}
 

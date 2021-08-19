@@ -84,11 +84,6 @@ export class Util {
             .then(data => data.reduce((a, b) => a + b));
     }
 
-    public async getTotalMemory(type: keyof NodeJS.MemoryUsage): Promise<number> {
-        if (!this.client.shard) return process.memoryUsage()[type];
-        return this.client.shard.broadcastEval(`process.memoryUsage()["${type}"]`).then(data => data.reduce((a, b) => a + b));
-    }
-
     public hastebin(text: string): Promise<string> {
         return new Promise((resolve, reject) => {
             const req = request({ hostname: "bin.zhycorp.net", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
