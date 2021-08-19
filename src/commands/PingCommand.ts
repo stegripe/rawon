@@ -1,6 +1,6 @@
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
-import { IMessage } from "../../typings";
+import { IMessage } from "../typings";
 import { MessageEmbed } from "discord.js";
 
 @DefineCommand({

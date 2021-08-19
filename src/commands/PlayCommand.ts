@@ -1,11 +1,11 @@
 /* eslint-disable block-scoped-var, @typescript-eslint/restrict-template-expressions */
 import { isUserInTheVoiceChannel, isSameVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
 import { resolveYTPlaylistID, resolveYTVideoID } from "../utils/YouTube/utils/YouTubeAPI/resolveYTURL";
-import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
+import { IMessage, ISong, IGuild, ITextChannel } from "../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
+import { loopMode, ServerQueue } from "../structures/ServerQueue";
 import { Video } from "../utils/YouTube/structures/Video";
 import { BaseCommand } from "../structures/BaseCommand";
-import { loopMode, ServerQueue } from "../structures/ServerQueue";
 import { createEmbed } from "../utils/createEmbed";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";

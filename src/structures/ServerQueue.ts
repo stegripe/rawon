@@ -1,5 +1,5 @@
 import { SongManager } from "../utils/SongManager";
-import { ISongs, ITextChannel } from "../../typings";
+import { ISongs, ITextChannel } from "../typings";
 import { Snowflake, VoiceChannel, VoiceConnection } from "discord.js";
 
 export enum loopMode {

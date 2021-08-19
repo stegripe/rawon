@@ -1,4 +1,4 @@
-import { ICommandComponent, IMessage } from "../../../typings";
+import { ICommandComponent, IMessage } from "../../typings";
 
 export function Inhibit(func: ICommandComponent["execute"]) {
     return function decorate(target: unknown, key: string | symbol, descriptor: PropertyDescriptor): any {

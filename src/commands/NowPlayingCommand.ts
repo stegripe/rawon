@@ -2,7 +2,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isMusicQueueExists } from "../utils/decorators/MusicHelper";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../../typings";
+import { IMessage } from "../typings";
 
 @DefineCommand({
     aliases: ["np", "now-playing"],

@@ -1,4 +1,4 @@
-import { ICommandComponent } from "../../../typings";
+import { ICommandComponent } from "../../typings";
 import { Disc } from "../../structures/Disc";
 
 export function DefineCommand(meta: ICommandComponent["meta"]): any {

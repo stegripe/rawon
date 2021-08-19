@@ -1,4 +1,4 @@
-import { ICommandComponent, IMessage } from "../../typings";
+import { ICommandComponent, IMessage } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
 import { Snowflake, Collection } from "discord.js";

@@ -1,7 +1,7 @@
 import { DefineListener } from "../utils/decorators/DefineListener";
 import { BaseListener } from "../structures/BaseListener";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../../typings";
+import { IMessage } from "../typings";
 import { User } from "discord.js";
 
 @DefineListener("message")

@@ -1,5 +1,5 @@
 import { ServerQueue } from "./ServerQueue";
-import { IGuild } from "../../typings";
+import { IGuild } from "../typings";
 import { Disc } from "./Disc";
 import { Structures } from "discord.js";
 

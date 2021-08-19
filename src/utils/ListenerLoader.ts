@@ -1,5 +1,5 @@
 import { Disc } from "../structures/Disc";
-import { IListener } from "../../typings";
+import { IListener } from "../typings";
 import { parse, resolve } from "path";
 import { promises as fs } from "fs";
 

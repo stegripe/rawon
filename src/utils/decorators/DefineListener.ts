@@ -1,4 +1,4 @@
-import { IListener } from "../../../typings";
+import { IListener } from "../../typings";
 import { Disc } from "../../structures/Disc";
 
 export function DefineListener(name: IListener["name"]): any {

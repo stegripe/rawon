@@ -2,7 +2,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { disableInviteCmd } from "../config";
-import { IMessage } from "../../typings";
+import { IMessage } from "../typings";
 
 @DefineCommand({
     description: "Send the bot's invite link",

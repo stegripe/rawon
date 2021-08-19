@@ -2,7 +2,7 @@
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../../typings";
+import { IMessage } from "../typings";
 import { MessageEmbed } from "discord.js";
 import { request } from "https";
 import { inspect } from "util";

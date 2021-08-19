@@ -2,7 +2,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
-import { IMessage } from "../../typings";
+import { IMessage } from "../typings";
 import { uptime as osUptime } from "os";
 import { version } from "discord.js";
 import path from "path";

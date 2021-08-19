@@ -1,4 +1,4 @@
-import { IListener } from "../../typings";
+import { IListener } from "../typings";
 import { Disc } from "./Disc";
 
 export class BaseListener implements IListener {
