@@ -110,7 +110,6 @@ export class PlayCommand extends BaseCommand {
                     let index = 0;
                     const msg = await message.channel.send(
                         createEmbed("info")
-                            .setColor(this.client.config.embedColor)
                             .setAuthor("Music Selection", message.client.user?.displayAvatarURL() as string)
                             .setDescription(`\`\`\`${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\`` +
                             "\nPlease select one of the results ranging from **\`1-10\`**")
