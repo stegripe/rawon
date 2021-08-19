@@ -1,3 +1,5 @@
+import { URL } from "url";
+
 export const youtubeHostnames = ["youtu.be", "youtube.com", "www.youtube.com", "music.youtube.com"];
 
 export function resolveYTVideoID(url: string): string | null {
