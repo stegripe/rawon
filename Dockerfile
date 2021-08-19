@@ -42,10 +42,10 @@ RUN apk add --no-cache tzdata
 COPY --from=build-stage /tmp/build/package.json .
 COPY --from=build-stage /tmp/build/package-lock.json .
 COPY --from=build-stage /tmp/build/node_modules ./node_modules
-COPY --from=build-stage /tmp/build/dist .
+COPY --from=build-stage /tmp/build/dist ./dist
 
 # Mark cache folder as docker volume
 VOLUME ["/app/cache", "/app/logs"]
 
 # Start the app with node
-CMD ["node", "main.js"]
+CMD ["node", "dist/main.js"]
