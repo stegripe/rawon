@@ -1,7 +1,7 @@
 import { ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
-import { Snowflake, Collection, Message } from "discord.js";
+import { Snowflake, Collection, Message, TextChannel } from "discord.js";
 import { promises as fs } from "fs";
 import { parse, resolve } from "path";
 
@@ -63,7 +63,8 @@ export class CommandManager extends Collection<string, ICommandComponent> {
         } catch (e) {
             this.client.logger.error("CMD_HANDLER_ERR:", e);
         } finally {
-            this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${message.author.tag} is using ${command.meta.name} command on ${message.guild ? message.guild.name : "DM Channel"}`);
+            this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${message.author.tag} is using ` +
+            `${command.meta.name} command on ${message.guild ? `${message.guild.name} in #${(message.channel as TextChannel).name} channel` : "DM Channel"}`);
         }
     }
 
