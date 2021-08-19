@@ -2,7 +2,7 @@
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { Message, MessageEmbed } from "discord.js";
+import { Message } from "discord.js";
 import { inspect } from "util";
 
 @DefineCommand({
@@ -21,8 +21,7 @@ export class EvalCommand extends BaseCommand {
             return message.channel.send(createEmbed("error", "This command is limited to the bot owner only"));
         }
 
-        const embed = new MessageEmbed()
-            .setColor(this.client.config.embedColor)
+        const embed = createEmbed("info")
             .addField("**Input**", `\`\`\`js\n${args.join(" ")}\`\`\``);
 
         try {
