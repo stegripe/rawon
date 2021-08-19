@@ -5,7 +5,7 @@ import { IMessage, ISong, IGuild, ITextChannel } from "../../typings";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { Video } from "../utils/YouTube/structures/Video";
 import { BaseCommand } from "../structures/BaseCommand";
-import { ServerQueue } from "../structures/ServerQueue";
+import { loopMode, ServerQueue } from "../structures/ServerQueue";
 import { createEmbed } from "../utils/createEmbed";
 import { Util, MessageEmbed, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";
@@ -241,7 +241,7 @@ export class PlayCommand extends BaseCommand {
             .on("finish", () => {
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Music: "${song.title}" on ${guild.name} has ended`);
                 // eslint-disable-next-line max-statements-per-line
-                if (serverQueue.loopMode === 0) { serverQueue.songs.deleteFirst(); } else if (serverQueue.loopMode === 2) { serverQueue.songs.deleteFirst(); serverQueue.songs.addSong(song); }
+                if (serverQueue.loopMode === loopMode.off) { serverQueue.songs.deleteFirst(); } else if (serverQueue.loopMode === 2) { serverQueue.songs.deleteFirst(); serverQueue.songs.addSong(song); }
                 if (serverQueue.lastMusicMessageID !== null) serverQueue.textChannel?.messages.fetch(serverQueue.lastMusicMessageID, false).then(m => m.delete()).catch(e => this.client.logger.error("PLAY_ERR:", e));
                 serverQueue.textChannel?.send(createEmbed("info", `⏹ **|** Stopped playing **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
                     .then(m => serverQueue.lastMusicMessageID = m.id)
