@@ -7,7 +7,7 @@ import * as config from "../config";
 import { Client as BotClient, Collection, ClientOptions } from "discord.js";
 import { resolve } from "path";
 
-// Extends DiscordJS Structures
+// Extends Discord.JS Structures
 import "./Guild";
 
 export class Disc extends BotClient {

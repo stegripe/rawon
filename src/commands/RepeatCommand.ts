@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys */
 import { isUserInTheVoiceChannel, isMusicQueueExists, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";

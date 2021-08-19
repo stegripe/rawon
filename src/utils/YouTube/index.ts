@@ -19,7 +19,6 @@ export class YouTube {
         if (mode === "api") {
             if (!apiKey) throw new Error("Missing API Key for mode: api");
             this.engine = new YoutubeAPI(apiKey);
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         } else if (mode === "scrape") {
             this.engine = {
                 search: ytsr,
@@ -58,7 +57,6 @@ export class YouTube {
         if (data === undefined) throw new Error("I could not get any data");
         // @ts-expect-error Error is expected
         return data.filter((x: any) => {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (this.mode === "scrape") return x.type === "video";
             return true;
         }).map((i: any) => new Video(i, this.mode!));
