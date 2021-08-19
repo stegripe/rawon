@@ -1,12 +1,12 @@
 import "dotenv/config";
-import { totalShards, debug } from "./config";
 import { createLogger } from "./utils/Logger";
+import { totalShards as configTotalShards, debug } from "./config";
 import { ShardingManager } from "discord.js";
 import { resolve } from "path";
 
 const log = createLogger("shardingmanager", debug);
 
-const shardCount: number | "auto" = totalShards === "auto" ? totalShards : Number(totalShards);
+const totalShards: number | "auto" = configTotalShards === "auto" ? configTotalShards : Number(configTotalShards);
 
 process.on("unhandledRejection", e => {
     log.error("UNHANDLED_REJECTION: ", e);
@@ -17,7 +17,12 @@ process.on("uncaughtException", e => {
     process.exit(1);
 });
 
-const manager = new ShardingManager(resolve(__dirname, "bot.js"), { totalShards: shardCount, mode: "process", respawn: true, token: process.env.SECRET_DISCORD_TOKEN });
+const manager = new ShardingManager(resolve(__dirname, "bot.js"), {
+    totalShards,
+    mode: "worker",
+    respawn: true,
+    token: process.env.SECRET_DISCORD_TOKEN
+});
 
 manager.on("shardCreate", shard => {
     log.info(`[ShardManager] Shard #${shard.id} has spawned`);
@@ -27,4 +32,4 @@ manager.on("shardCreate", shard => {
         log.info(`[ShardManager] Shard #${shard.id} has reconnected`);
     });
     if (manager.shards.size === manager.totalShards) log.info("[ShardManager] All shards has spawned successfully.");
-}).spawn(shardCount).catch(e => log.error("SHARD_SPAWN_ERR: ", e));
+}).spawn(totalShards).catch(e => log.error("SHARD_SPAWN_ERR: ", e));
