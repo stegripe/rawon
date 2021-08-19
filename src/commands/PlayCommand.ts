@@ -58,8 +58,7 @@ export class PlayCommand extends BaseCommand {
                         skippedVideos++;
                         continue;
                     } else {
-                        const video2 = await this.client.youtube.getVideo(video.id);
-                        await this.handleVideo(video2, message, voiceChannel, true);
+                        await this.handleVideo(video, message, voiceChannel, true);
                     }
                 }
                 if (skippedVideos !== 0) {
