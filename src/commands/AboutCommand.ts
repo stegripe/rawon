@@ -28,7 +28,9 @@ Playing Music on   :: ${await this.client.getTotalPlaying()} guilds
 Platform           :: ${process.platform}
 Arch               :: ${process.arch}
 OS Uptime          :: ${formatMS(osUptime() * 1000)}
-Memory             :: ${this.bytesToSize(await this.client.getTotalMemory("rss"))}
+Memory (RSS)       :: ${this.bytesToSize(await this.client.getTotalMemory("rss"))} 
+Memory (Total)     :: ${this.bytesToSize(await this.client.getTotalMemory("heapTotal"))}
+Memory (Used)      :: ${this.bytesToSize(await this.client.getTotalMemory("heapUsed"))}
 Process Uptime     :: ${formatMS(process.uptime() * 1000)}
 Bot Uptime         :: ${formatMS(this.client.uptime!)}
 
@@ -41,8 +43,7 @@ Bot Version        :: v${(await import(path.resolve(process.cwd(), "package.json
 Data Strategy      :: ${await this.client.config.YouTubeDataRetrievingStrategy === "api" ? "REST API" : "HTML SCRAPING"}
 Source code        :: https://github.com/zhycorp/disc-11
 \`\`\`
-        `)
-                .setAuthor(`${this.client.user?.username as string} - A simple Discord music bot`)
+        `).setAuthor(`${this.client.user?.username as string} - A simple Discord music bot`)
         ).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }
 
