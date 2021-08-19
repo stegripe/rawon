@@ -2,7 +2,7 @@ import { isMusicQueueExists, isSameVoiceChannel, isUserInTheVoiceChannel } from 
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../typings";
+import { Message } from "discord.js";
 
 @DefineCommand({
     aliases: ["rm", "delete"],
@@ -14,7 +14,7 @@ export class RemoveCommand extends BaseCommand {
     @isMusicQueueExists()
     @isUserInTheVoiceChannel()
     @isSameVoiceChannel()
-    public execute(message: IMessage, args: string[]): any {
+    public execute(message: Message, args: string[]): any {
         if (isNaN(Number(args[0]))) return message.channel.send(createEmbed("error", `Invalid usage, use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information`));
 
         const songs = message.guild!.queue!.songs.map(s => s);

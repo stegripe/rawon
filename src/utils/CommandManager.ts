@@ -1,9 +1,9 @@
-import { ICommandComponent, IMessage } from "../typings";
+import { ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
-import { Snowflake, Collection } from "discord.js";
-import { parse, resolve } from "path";
+import { Snowflake, Collection, Message } from "discord.js";
 import { promises as fs } from "fs";
+import { parse, resolve } from "path";
 
 export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();
@@ -33,7 +33,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
         return undefined;
     }
 
-    public handle(message: IMessage): any {
+    public handle(message: Message): any {
         const args = message.content.substring(this.client.config.prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);

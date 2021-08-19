@@ -2,7 +2,7 @@ import { isUserInTheVoiceChannel, isMusicQueueExists, isSameVoiceChannel } from 
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../typings";
+import { Message } from "discord.js";
 
 @DefineCommand({
     description: "Pause the music player",
@@ -13,7 +13,7 @@ export class PauseCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
-    public execute(message: IMessage): any {
+    public execute(message: Message): any {
         if (message.guild?.queue?.playing) {
             message.guild.queue.playing = false;
             message.guild.queue.connection?.dispatcher.pause();

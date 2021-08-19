@@ -2,7 +2,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { disableInviteCmd } from "../config";
-import { IMessage } from "../typings";
+import { Message } from "discord.js";
 
 @DefineCommand({
     description: "Send the bot's invite link",
@@ -11,7 +11,7 @@ import { IMessage } from "../typings";
     usage: "{prefix}invite"
 })
 export class InviteCommand extends BaseCommand {
-    public async execute(message: IMessage): Promise<void> {
+    public async execute(message: Message): Promise<void> {
         message.channel.send(
             createEmbed("info")
                 .addField(`${this.client.user!.tag} - Invite Link`, `**[Click here to invite this bot](${await this.client.generateInvite({ permissions: 53857345 })})**`)

@@ -1,7 +1,7 @@
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../typings";
+import { Message } from "discord.js";
 import fetch from "node-fetch";
 
 @DefineCommand({
@@ -11,7 +11,7 @@ import fetch from "node-fetch";
     usage: "{prefix}lyrics"
 })
 export class LyricsCommand extends BaseCommand {
-    public async execute(message: IMessage, args: string[]): Promise<void> {
+    public async execute(message: Message, args: string[]): Promise<void> {
         const song = message.guild?.queue?.songs.first()?.title;
         if (args[0]) {
             await this.sendLyrics(message, args.join(" "));
@@ -22,7 +22,7 @@ export class LyricsCommand extends BaseCommand {
         }
     }
 
-    private async sendLyrics(message: IMessage, song: string): Promise<any> {
+    private async sendLyrics(message: Message, song: string): Promise<any> {
         const url = `https://api.lxndr.dev/lyrics?song=${encodeURI(song)}&from=disc-11`;
         await fetch(url)
             .then(response => response.json())

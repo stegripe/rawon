@@ -2,8 +2,7 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { isMusicQueueExists } from "../utils/decorators/MusicHelper";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../typings";
-import { TextChannel } from "discord.js";
+import { Message, TextChannel } from "discord.js";
 
 @DefineCommand({
     aliases: ["q"],
@@ -13,7 +12,7 @@ import { TextChannel } from "discord.js";
 })
 export class QueueCommand extends BaseCommand {
     @isMusicQueueExists()
-    public execute(message: IMessage): any {
+    public execute(message: Message): any {
         const embed = createEmbed("info")
             .setTitle("Music Queue")
             .setThumbnail(message.client.user?.avatarURL() as string);

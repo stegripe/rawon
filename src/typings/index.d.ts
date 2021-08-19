@@ -1,6 +1,6 @@
 import { ServerQueue } from "../structures/ServerQueue";
 import { Disc } from "../structures/Disc";
-import { Message, Guild, TextChannel, DMChannel, NewsChannel, Collection, ClientEvents, VoiceState } from "discord.js";
+import { Client as OClient, ClientEvents, Guild as OGuild } from "discord.js";
 
 export interface ICommandComponent {
     meta: {
@@ -14,66 +14,32 @@ export interface ICommandComponent {
     };
     execute(message: IMessage, args: string[]): any;
 }
-export interface IGuild extends Guild {
-    client: Disc;
-    queue: ServerQueue | null;
+export interface IListener {
+    name: keyof ClientEvents;
+    execute(...args: any): any;
 }
-export interface IMessage extends Message {
-    client: Disc;
-    guild: IGuild | null;
-    channel: ITextChannel | INewsChannel | IDMChannel;
-}
-export interface ITextChannel extends TextChannel {
-    client: Disc;
-    guild: IGuild;
-    send(
-        content: APIMessageContentResolvable | (MessageOptions & { split?: false }) | MessageAdditions,
-    ): Promise<IMessage>;
-    send(options: MessageOptions & { split: true | SplitOptions }): Promise<IMessage[]>;
-    send(options: MessageOptions | APIMessage): Promise<IMessage | IMessage[]>;
-    send(content: StringResolvable, options: (MessageOptions & { split?: false }) | MessageAdditions): Promise<IMessage>;
-    send(content: StringResolvable, options: MessageOptions & { split: true | SplitOptions }): Promise<IMessage[]>;
-    send(content: StringResolvable, options: MessageOptions): Promise<IMessage | IMessage[]>;
-}
-export interface INewsChannel extends NewsChannel {
-    client: Disc;
-    guild: IGuild;
-    send(
-        content: APIMessageContentResolvable | (MessageOptions & { split?: false }) | MessageAdditions,
-    ): Promise<IMessage>;
-    send(options: MessageOptions & { split: true | SplitOptions }): Promise<IMessage[]>;
-    send(options: MessageOptions | APIMessage): Promise<IMessage | IMessage[]>;
-    send(content: StringResolvable, options: (MessageOptions & { split?: false }) | MessageAdditions): Promise<IMessage>;
-    send(content: StringResolvable, options: MessageOptions & { split: true | SplitOptions }): Promise<IMessage[]>;
-    send(content: StringResolvable, options: MessageOptions): Promise<IMessage | IMessage[]>;
-}
-export interface IDMChannel extends DMChannel {
-    client: Disc;
-    guild: null;
-    send(
-        content: APIMessageContentResolvable | (MessageOptions & { split?: false }) | MessageAdditions,
-    ): Promise<IMessage>;
-    send(options: MessageOptions & { split: true | SplitOptions }): Promise<IMessage[]>;
-    send(options: MessageOptions | APIMessage): Promise<IMessage | IMessage[]>;
-    send(content: StringResolvable, options: (MessageOptions & { split?: false }) | MessageAdditions): Promise<IMessage>;
-    send(content: StringResolvable, options: MessageOptions & { split: true | SplitOptions }): Promise<IMessage[]>;
-    send(content: StringResolvable, options: MessageOptions): Promise<IMessage | IMessage[]>;
-}
-export interface ISongs extends Collection<string, ISong> {
-    addSong(song: ISong): this;
-    deleteFirst(): boolean;
+declare module "discord.js" {
+    export interface Client extends OClient {
+        public readonly config: Disc["config"];
+        public readonly logger: Disc["logger"];
+        public readonly commands: Disc["commands"];
+        public readonly listeners: Disc["listeners"];
+        public readonly youtube: Disc["youtube"];
+
+        public async build(token: string): Promise<this>;
+        public async getGuildsCount(): Promise<number>;
+        public async getChannelsCount(filter = true): Promise<number>;
+        public async getUsersCount(filter = true): Promise<number>;
+        public async getTotalPlaying(): Promise<number>;
+        public async getTotalMemory(type: keyof NodeJS.MemoryUsage): Promise<number>;
+    }
+    export interface Guild extends OGuild {
+        queue: ServerQueue | null;
+    }
 }
 export interface ISong {
     id: string;
     title: string;
     url: string;
     thumbnail: string;
-    duration: number;
-}
-export interface IListener {
-    name: keyof ClientEvents;
-    execute(...args: any): any;
-}
-export interface IVoiceState extends VoiceState {
-    guild: IGuild;
 }

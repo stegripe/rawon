@@ -2,7 +2,7 @@ import { isUserInTheVoiceChannel, isMusicQueueExists, isSameVoiceChannel } from 
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
-import { IMessage } from "../typings";
+import { Message } from "discord.js";
 
 @DefineCommand({
     aliases: ["vol"],
@@ -14,7 +14,7 @@ export class VolumeCommand extends BaseCommand {
     @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
-    public execute(message: IMessage, args: string[]): any {
+    public execute(message: Message, args: string[]): any {
         let volume = Number(args[0]);
 
         if (isNaN(volume)) return message.channel.send(createEmbed("info", `🔊 **|** The current volume is **\`${message.guild!.queue!.volume.toString()}\`**`));

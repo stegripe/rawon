@@ -3,13 +3,12 @@ import { BaseListener } from "../structures/BaseListener";
 import { ServerQueue } from "../structures/ServerQueue";
 import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
-import { IVoiceState } from "../typings";
-import { Collection, GuildMember, Snowflake } from "discord.js";
+import { Collection, GuildMember, Snowflake, VoiceState } from "discord.js";
 import { satisfies } from "semver";
 
 @DefineListener("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseListener {
-    public execute(oldState: IVoiceState, newState: IVoiceState): any {
+    public execute(oldState: VoiceState, newState: VoiceState): any {
         const queue = newState.guild.queue;
 
         if (!queue) return undefined;
@@ -55,7 +54,7 @@ export class VoiceStateUpdateEvent extends BaseListener {
         if (newID === queueVC.id && !member?.user.bot) this.resumeTimeout(queueVCMembers, queue, newState);
     }
 
-    private doTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: IVoiceState): any {
+    private doTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: VoiceState): any {
         try {
             if (vcMembers.size !== 0) return undefined;
             clearTimeout(queue.timeout!);
@@ -82,7 +81,7 @@ export class VoiceStateUpdateEvent extends BaseListener {
         } catch (e) { this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e); }
     }
 
-    private resumeTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: IVoiceState): any {
+    private resumeTimeout(vcMembers: Collection<Snowflake, GuildMember>, queue: ServerQueue, newState: VoiceState): any {
         if (vcMembers.size > 0) {
             if (queue.playing) return undefined;
             try {

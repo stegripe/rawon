@@ -2,9 +2,8 @@ import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
-import { IMessage } from "../typings";
 import { uptime as osUptime } from "os";
-import { version } from "discord.js";
+import { Message, version } from "discord.js";
 import path from "path";
 
 @DefineCommand({
@@ -14,7 +13,7 @@ import path from "path";
     usage: "{prefix}about"
 })
 export class AboutCommand extends BaseCommand {
-    public async execute(message: IMessage): Promise<void> {
+    public async execute(message: Message): Promise<void> {
         const opusEncoderName = this.getOpusEncoder().name;
         message.channel.send(
             createEmbed("info", `
