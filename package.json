@@ -37,25 +37,25 @@
         "parse-ms": "^2.1.0",
         "pretty-ms": "^7.0.1",
         "semver": "^7.3.5",
-        "tslib": "^2.3.0",
+        "tslib": "^2.3.1",
         "winston": "^3.3.3",
         "ytdl-core": "^4.9.1",
         "ytpl": "^2.2.3",
-        "ytsr": "^3.5.2"
+        "ytsr": "^3.5.3"
     },
     "devDependencies": {
-        "@types/node": "^16.4.13",
+        "@types/node": "^16.6.2",
         "@types/node-fetch": "^2.5.12",
         "@types/semver": "^7.3.8",
-        "@typescript-eslint/eslint-plugin": "^4.29.0",
-        "@typescript-eslint/parser": "^4.29.0",
+        "@typescript-eslint/eslint-plugin": "^4.29.2",
+        "@typescript-eslint/parser": "^4.29.2",
         "@zhycorp/eslint-config": "^3.0.0",
         "eslint": "^7.32.0",
-        "ts-node": "^10.2.0",
+        "ts-node": "^10.2.1",
         "typescript": "^4.3.5"
     },
     "optionalDependencies": {
-        "@discordjs/opus": "^0.5.3",
+        "@discordjs/opus": "^0.6.0",
         "bufferutil": "^4.0.3",
         "erlpack": "github:discord/erlpack",
         "libsodium-wrappers": "^0.7.9",
