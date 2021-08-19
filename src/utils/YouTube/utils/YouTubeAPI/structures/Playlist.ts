@@ -29,8 +29,10 @@ export class Playlist implements IPlaylist {
     }
 
     public async getVideos(): Promise<Video[]> {
-        const videos = await this.yt.makePaginatedRequest("playlistItems", { maxResults: 50, playlistId: this.id }, this.itemCount);
-        return videos.map((i: any) => new Video(this.yt, i, "playlistItem"));
+        const videos: any[] = await this.yt.makePaginatedRequest("playlistItems", { maxResults: 50, playlistId: this.id }, this.itemCount);
+        return videos
+            .filter((i: any) => i.status.privacyStatus !== "privacyStatusUnspecified")
+            .map((i: any) => new Video(this.yt, i, "playlistItem"));
     }
 
     public get thumbnailURL(): string | null {
