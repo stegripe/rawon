@@ -18,7 +18,7 @@ export class LyricsCommand extends BaseCommand {
         } else if (song) {
             await this.sendLyrics(message, song);
         } else {
-            message.channel.send(createEmbed("error", "There is nothing playing or no query was provided")).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
+            message.channel.send(createEmbed("error", "There is nothing playing or no query were provided")).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
         }
     }
 
@@ -49,7 +49,7 @@ export class LyricsCommand extends BaseCommand {
                 }
                 let index = 0;
                 const lyricsArr: any = [];
-                const duration: any = message.guild?.queue?.songs.first()?.duration;
+                const duration: any = message.guild?.queue?.songs.first();
                 if (!albumArt) albumArt = "https://api.zhycorp.net/assets/images/logo.png";
                 lyricsArr.push([lyrics.substring(0, 2047)]);
                 const embed = createEmbed("info")

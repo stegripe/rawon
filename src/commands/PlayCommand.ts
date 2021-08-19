@@ -148,7 +148,6 @@ export class PlayCommand extends BaseCommand {
 
     private async handleVideo(video: Video, message: Message, voiceChannel: VoiceChannel, playlist = false): Promise<any> {
         const song: ISong = {
-            duration: this.milDuration(video.duration),
             id: video.id,
             thumbnail: video.thumbnailURL,
             title: this.cleanTitle(video.title),
@@ -297,14 +296,5 @@ export class PlayCommand extends BaseCommand {
 
     private cleanTitle(title: string): string {
         return Util.escapeMarkdown(decodeHTML(title));
-    }
-
-    private milDuration(duration: any): number {
-        const days = duration.days * 86400000;
-        const hours = duration.hours * 3600000;
-        const minutes = duration.minutes * 60000;
-        const seconds = duration.seconds * 1000;
-
-        return days + hours + minutes + seconds;
     }
 }
