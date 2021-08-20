@@ -7,7 +7,7 @@ import { Video } from "../utils/YouTube/structures/Video";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { ISong } from "../typings";
-import { AudioPlayerError, AudioPlayerStatus, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
+import { AudioPlayerError, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
 import { Util, VoiceChannel, Message, TextChannel, Guild, Collection, Snowflake, StageChannel } from "discord.js";
 import { decodeHTML } from "entities";
 let disconnectTimer: any;
@@ -207,6 +207,13 @@ export class PlayCommand extends BaseCommand {
                     adapterCreator: message.guild!.voiceAdapterCreator,
                     selfDeaf: true
                 });
+                connection.on("stateChange", (_, newState) => {
+                    if (newState.status === VoiceConnectionStatus.Disconnected || newState.status === VoiceConnectionStatus.Destroyed) {
+                        message.guild!.queue!.currentPlayer!.stop();
+                        message.guild!.queue = null;
+                        return undefined;
+                    }
+                });
                 message.guild!.queue.connection = connection;
             } catch (error) {
                 message.guild?.queue.songs.clear();
@@ -228,6 +235,7 @@ export class PlayCommand extends BaseCommand {
     private async play(guild: Guild): Promise<any> {
         const serverQueue = guild.queue;
         if (!serverQueue) return undefined;
+        if (serverQueue.currentPlayer === null) serverQueue.currentPlayer = createAudioPlayer(); // TODO: Consider reusing AudioPlayer in the refactored Queue System
         const song = serverQueue.songs.first();
         const timeout = this.client.config.deleteQueueTimeout;
         clearTimeout(disconnectTimer);
@@ -246,32 +254,24 @@ export class PlayCommand extends BaseCommand {
         }
 
         const songData = await this.client.youtube.downloadVideo(song.url, {
-            cache: this.client.config.cacheYoutubeDownloads,
+            cache: false, // TODO: Recreate YTDL Caching (currently throws YTDLError: Premature close)
             cacheMaxLength: this.client.config.cacheMaxLengthAllowed,
-            skipFFmpeg: true
+            skipFFmpeg: false // TODO: Recreate this functionality
         });
 
         const playerResource = createAudioResource(songData, { inlineVolume: false }); // TODO: Add config for this.
 
-        songData.on("error", err => { err.message = `YTDLError: ${err.message}`; serverQueue.player.emit("error", new AudioPlayerError(err, playerResource)); });
+        songData.on("error", err => { err.message = `YTDLError: ${err.message}`; serverQueue.currentPlayer!.emit("error", new AudioPlayerError(err, playerResource)); });
 
-        serverQueue.connection?.subscribe(serverQueue.player);
+        serverQueue.connection?.subscribe(serverQueue.currentPlayer);
 
         entersState(serverQueue.connection!, VoiceConnectionStatus.Ready, 15 * 1000)
-            .then(() => serverQueue.player.play(playerResource))
-            .catch(e => serverQueue.player.emit("error", new AudioPlayerError(e, playerResource)));
+            .then(() => serverQueue.currentPlayer!.play(playerResource))
+            .catch(e => serverQueue.currentPlayer!.emit("error", new AudioPlayerError(e, playerResource)));
 
         if (songData.cache) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Using cache for music "${song.title}" on ${guild.name}`);
 
-        serverQueue.connection?.on("stateChange", (_, newState) => {
-            if (newState.status === VoiceConnectionStatus.Disconnected || newState.status === VoiceConnectionStatus.Destroyed) {
-                guild.queue = null;
-                serverQueue.player.stop();
-                return undefined;
-            }
-        });
-
-        serverQueue.player.on("stateChange", (_, newState) => {
+        serverQueue.currentPlayer.on("stateChange", (_, newState) => {
             if (newState.status === AudioPlayerStatus.Playing) {
                 serverQueue.playing = true;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${song.title}" on ${guild.name} started`);
@@ -292,6 +292,7 @@ export class PlayCommand extends BaseCommand {
                     .then(m => serverQueue.oldMusicMessage = m.id)
                     .catch(e => this.client.logger.error("PLAY_ERR:", e))
                     .finally(() => {
+                        serverQueue.currentPlayer = null;
                         this.play(guild).catch(e => {
                             serverQueue.textChannel?.send({ embeds: [createEmbed("error", `An error occurred while trying to play track, reason: **\`${e}\`**`)] })
                                 .catch(e => this.client.logger.error("PLAY_ERR:", e));
@@ -303,7 +304,7 @@ export class PlayCommand extends BaseCommand {
             }
         });
 
-        serverQueue.player.on("error", err => {
+        serverQueue.currentPlayer.on("error", err => {
             serverQueue.textChannel?.send({ embeds: [createEmbed("error", `Error while playing music\nReason: \`${err.message}\``)] })
                 .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
             serverQueue.connection?.disconnect();

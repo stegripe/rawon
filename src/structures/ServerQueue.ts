@@ -1,6 +1,6 @@
 import { SongManager } from "../utils/SongManager";
 import { Snowflake, StageChannel, TextChannel, VoiceChannel } from "discord.js";
-import { AudioPlayer, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
+import { AudioPlayer, VoiceConnection } from "@discordjs/voice";
 
 export enum loopMode {
     off = 0,
@@ -20,7 +20,7 @@ export enum loopMode {
 
 export class ServerQueue {
     public connection: VoiceConnection | null = null;
-    public player: AudioPlayer = createAudioPlayer();
+    public currentPlayer: AudioPlayer | null = null;
     public readonly songs = new SongManager();
     public volume = 0;
     public loopMode = loopMode.disable;

@@ -27,7 +27,7 @@ export class RemoveCommand extends BaseCommand {
 
         if (currentSong.id === song.id) {
             message.guild!.queue!.playing = true;
-            message.guild!.queue?.player.stop();
+            message.guild!.queue?.currentPlayer!.stop();
         } else {
             message.guild?.queue?.songs.delete(message.guild.queue.songs.findKey(x => x.id === song.id)!);
         }
