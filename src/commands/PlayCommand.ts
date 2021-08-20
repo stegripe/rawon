@@ -251,7 +251,7 @@ export class PlayCommand extends BaseCommand {
         });
 
         const player = createAudioPlayer();
-        const playerResource = createAudioResource(songData);
+        const playerResource = createAudioResource(songData, { inlineVolume: false }); // TODO: Add config for this.
 
         songData.on("error", err => { err.message = `YTDLError: ${err.message}`; player.emit("error", new AudioPlayerError(err, playerResource)); });
 
