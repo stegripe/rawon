@@ -20,9 +20,11 @@ export class QueueCommand extends BaseCommand {
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
         if (Number(message.guild?.queue?.songs.size) > 12) {
-            const indexes: string[] = this.client.util.chunk(songs!, 12);
+            const indexes: string[][] = this.client.util.chunk(songs!, 12);
             let index = 0;
-            embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+            embed
+                .setDescription(indexes[index].join("\n"))
+                .setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
             const reactions = ["◀️", "▶️"];
             message.channel.send({ embeds: [embed] }).then(msg => {
                 msg.react("◀️").then(() => {
@@ -45,7 +47,9 @@ export class QueueCommand extends BaseCommand {
                                 index++;
                                 break;
                         }
-                        embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+                        embed
+                            .setDescription(indexes[index].join("\n"))
+                            .setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
                         msg.edit({ embeds: [embed] }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
                     })
                         .on("end", () => {
