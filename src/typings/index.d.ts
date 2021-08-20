@@ -1,6 +1,6 @@
 import { ServerQueue } from "../structures/ServerQueue";
 import { Disc } from "../structures/Disc";
-import { Client as OClient, ClientEvents, Guild as OGuild } from "discord.js";
+import { Client as OClient, ClientEvents, Guild as OGuild, Message } from "discord.js";
 
 export interface ICommandComponent {
     meta: {
@@ -12,23 +12,25 @@ export interface ICommandComponent {
         description?: string;
         usage?: string;
     };
-    execute(message: IMessage, args: string[]): any;
+    execute(message: Message, args: string[]): any;
 }
 export interface IEvent {
     name: keyof ClientEvents;
     execute(...args: any): any;
 }
 declare module "discord.js" {
+    // @ts-expect-error Override
     export interface Client extends OClient {
-        public readonly config: Disc["config"];
-        public readonly logger: Disc["logger"];
-        public readonly commands: Disc["commands"];
-        public readonly events: Disc["events"];
-        public readonly youtube: Disc["youtube"];
-        public readonly util: Disc["util"];
+        readonly config: Disc["config"];
+        readonly logger: Disc["logger"];
+        readonly commands: Disc["commands"];
+        readonly events: Disc["events"];
+        readonly youtube: Disc["youtube"];
+        readonly util: Disc["util"];
 
-        public async build(token: string): Promise<this>;
+        build(token: string): Promise<this>;
     }
+    // @ts-expect-error Override
     export interface Guild extends OGuild {
         queue: ServerQueue | null;
     }
