@@ -7,7 +7,7 @@ import { Video } from "../utils/YouTube/structures/Video";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
 import { ISong } from "../typings";
-import { AudioPlayerError, AudioPlayerStatus, createAudioResource, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
+import { AudioPlayerError, AudioPlayerStatus, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
 import { Util, VoiceChannel, Message, TextChannel, Guild, Collection, Snowflake, StageChannel } from "discord.js";
 import { decodeHTML } from "entities";
 let disconnectTimer: any;
@@ -255,8 +255,11 @@ export class PlayCommand extends BaseCommand {
 
         songData.on("error", err => { err.message = `YTDLError: ${err.message}`; serverQueue.player.emit("error", new AudioPlayerError(err, playerResource)); });
 
-        serverQueue.player.play(playerResource);
         serverQueue.connection?.subscribe(serverQueue.player);
+
+        entersState(serverQueue.connection!, VoiceConnectionStatus.Ready, 15 * 1000)
+            .then(() => serverQueue.player.play(playerResource))
+            .catch(e => serverQueue.player.emit("error", new AudioPlayerError(e, playerResource)));
 
         if (songData.cache) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Using cache for music "${song.title}" on ${guild.name}`);
 
