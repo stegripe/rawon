@@ -26,8 +26,8 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                     this.set(command.meta.name, command);
                     if (command.meta.disable === true) disabledCount++;
                 }
-                this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} A total of ${files.length} commands has been loaded`);
-                if (disabledCount !== 0) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${disabledCount} out of ${files.length} commands is disabled`);
+                this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} A total of ${files.length} commands has been loaded.`);
+                if (disabledCount !== 0) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} ${disabledCount} out of ${files.length} commands is disabled.`);
             })
             .catch(err => this.client.logger.error("CMD_LOADER_ERR:", err));
         return undefined;
@@ -46,9 +46,10 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send(createEmbed("warn", `<@${message.author.id}>, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time`)).then(msg => {
-                    msg.delete({ timeout: 3500 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
-                }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
+                message.channel.send({ embeds: [createEmbed("warn", `${message.author.toString()}, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time`)] })
+                    .then(msg => {
+                        setTimeout(() => msg.delete().catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e)), 3500);
+                    }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 return undefined;
             }
 
