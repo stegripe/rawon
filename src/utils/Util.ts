@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
-import { Channel, Client, Collection, Guild, Presence, User } from "discord.js";
+import { Channel, Client, Collection, Guild, Presence, Snowflake, User } from "discord.js";
 import { request } from "https";
 import prettyMilliseconds from "pretty-ms";
 import path from "path";
@@ -47,44 +47,34 @@ export class Util {
         throw new Error(errorLog.join("\n"));
     }
 
+    public async getResource(type: "guilds" | "channels" | "users"): Promise<_getResourceReturnType> {
+        const evalResult = await this.client.shard?.broadcastEval((client, ctx) => client[ctx.type].cache, { context: { type } }) ?? this.client[type].cache;
+        let result: _getResourceReturnType;
+        if (this.client.shard) result = new Collection(await this._getMergedBroadcastEval<_getResourceResourceType>(evalResult as _getResourceResourceType[][]));
+        else result = evalResult as _getResourceReturnType;
+        return result;
+    }
+
     public async getGuildsCount(): Promise<number> {
-        if (!this.client.shard) return this.client.guilds.cache.size;
-        const size = await this.client.shard.broadcastEval(client => client.guilds.cache.size);
-        return size.reduce((p, v) => p + v, 0);
+        return (await this.getResource("guilds")).size;
     }
 
     public async getChannelsCount(filter = true): Promise<number> {
-        const filterFn = (c: Channel): boolean => c.type !== "GUILD_CATEGORY" && c.type !== "DM";
-        if (filter) {
-            if (!this.client.shard) return this.client.channels.cache.filter(filterFn).size;
-            const size = await this.client.shard.broadcastEval(client => client.channels.cache.filter(filterFn).size);
-            return size.reduce((p, v) => p + v, 0);
-        }
-        if (!this.client.shard) return this.client.channels.cache.size;
-        const size = await this.client.shard.broadcastEval(client => client.channels.cache.size);
-        return size.reduce((p, v) => p + v, 0);
+        const channels = await this.getResource("channels") as Collection<Snowflake, Channel>;
+
+        if (filter) return channels.filter(c => c.type !== "GUILD_CATEGORY" && c.type !== "DM").size;
+        return channels.size;
     }
 
     public async getUsersCount(filter = true): Promise<number> {
-        const filterFn = (u: User): boolean => u.id === this.client.user!.id;
-        const temp = new Collection();
-        if (filter) {
-            if (!this.client.shard) return this.client.users.cache.filter(filterFn).size;
-            const shards = await this.client.shard.broadcastEval(client => client.users.cache.filter(filterFn));
-            for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
-            return temp.size;
-        }
-        if (!this.client.shard) return this.client.users.cache.size;
-        const shards = await this.client.shard.broadcastEval(client => client.users.cache);
-        for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
-        return temp.size;
+        const users = await this.getResource("users") as Collection<Snowflake, User>;
+
+        if (filter) return users.filter(u => u.id === this.client.user!.id).size;
+        return users.size;
     }
 
     public async getTotalPlaying(): Promise<number> {
-        const filterFn = (g: Guild): boolean => g.queue?.playing === true;
-        if (!this.client.shard) return this.client.guilds.cache.filter(filterFn).size;
-        return this.client.shard.broadcastEval(client => client.guilds.cache.filter(filterFn).size)
-            .then(data => data.reduce((a, b) => a + b));
+        return (await this.getResource("users") as Collection<Snowflake, Guild>).filter(g => g.queue?.playing === true).size;
     }
 
     public hastebin(text: string): Promise<string> {
@@ -159,4 +149,11 @@ export class Util {
             activities: [{ name: activityName, type: this.client.config.status.type }]
         });
     }
+
+    private _getMergedBroadcastEval<T>(broadcastEval: T[][]): Iterable<[Snowflake, any]> {
+        return broadcastEval.reduce((p, c) => [...p, ...c]) as any;
+    }
 }
+
+type _getResourceResourceType = Channel | Snowflake | User;
+type _getResourceReturnType = Collection<Snowflake, Channel> | Collection<Snowflake, User> | Collection<Snowflake, Guild>;
