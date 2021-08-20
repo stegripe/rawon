@@ -11,11 +11,15 @@ import { Message } from "discord.js";
     usage: "{prefix}remove <track number>"
 })
 export class RemoveCommand extends BaseCommand {
-/*    @isMusicQueueExists()
+    @isMusicQueueExists()
     @isUserInTheVoiceChannel()
     @isSameVoiceChannel()
     public execute(message: Message, args: string[]): any {
-        if (isNaN(Number(args[0]))) return message.channel.send(createEmbed("error", `Invalid usage, use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information`));
+        if (isNaN(Number(args[0]))) {
+            return message.channel.send({
+                embeds: [createEmbed("error", `Invalid usage, use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information`)]
+            });
+        }
 
         const songs = message.guild!.queue!.songs.map(s => s);
         const currentSong = message.guild!.queue!.songs.first()!;
@@ -23,15 +27,16 @@ export class RemoveCommand extends BaseCommand {
 
         if (currentSong.id === song.id) {
             message.guild!.queue!.playing = true;
-            message.guild?.queue?.connection?.dispatcher.once("speaking", () => message.guild?.queue?.connection?.dispatcher.end());
-            message.guild!.queue?.connection?.dispatcher.resume();
+            message.guild!.queue?.player.stop();
         } else {
             message.guild?.queue?.songs.delete(message.guild.queue.songs.findKey(x => x.id === song.id)!);
         }
 
-        message.channel.send(
-            createEmbed("info", `✅ Removed **[${song.title}](${song.url}})**`)
-                .setThumbnail(song.thumbnail)
-        ).catch(e => this.client.logger.error("REMOVE_COMMAND_ERR:", e));
-    } */
+        message.channel.send({
+            embeds: [
+                createEmbed("info", `✅ **|** Removed **[${song.title}](${song.url}})** from the queue`)
+                    .setThumbnail(song.thumbnail)
+            ]
+        }).catch(e => this.client.logger.error("REMOVE_COMMAND_ERR:", e));
+    }
 }

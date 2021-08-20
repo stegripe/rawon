@@ -11,15 +11,14 @@ import { Message } from "discord.js";
     usage: "{prefix}stop"
 })
 export class StopCommand extends BaseCommand {
-/*    @isUserInTheVoiceChannel()
+    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
-        message.guild!.queue!.oldMusicMessage = null; message.guild!.queue!.oldVoiceStateUpdateMessage = null;
-        message.guild?.queue?.voiceChannel?.leave();
+        message.guild?.queue?.connection?.disconnect();
         message.guild!.queue = null;
 
-        message.channel.send(createEmbed("info", "⏹ **|** The music player has been stopped"))
+        message.channel.send({ embeds: [createEmbed("info", "⏹ **|** The music player has been stopped")] })
             .catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
-    } */
+    }
 }

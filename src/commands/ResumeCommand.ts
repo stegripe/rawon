@@ -7,19 +7,20 @@ import { Message } from "discord.js";
 @DefineCommand({
     description: "Resume the music player",
     name: "resume",
-    usage: "{prefix}resume"
+    usage: "{prefix}resume",
+    aliases: ["unpause"]
 })
 export class ResumeCommand extends BaseCommand {
-/*    @isUserInTheVoiceChannel()
+    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
         if (message.guild?.queue?.playing) {
-            message.channel.send(createEmbed("error", "The music player is not paused")).catch(e => this.client.logger.error("RESUME_CMD_ERR:", e));
+            message.channel.send({ embeds: [createEmbed("error", "The music player is not paused")] }).catch(e => this.client.logger.error("RESUME_CMD_ERR:", e));
         } else {
             message.guild!.queue!.playing = true;
-            message.guild?.queue?.connection?.dispatcher.resume();
-            message.channel.send(createEmbed("info", "▶ **|** The music player has been resumed")).catch(e => this.client.logger.error("RESUME_CMD_ERR:", e));
+            message.guild?.queue?.player.unpause();
+            message.channel.send({ embeds: [createEmbed("info", "▶ **|** The music player has been resumed")] }).catch(e => this.client.logger.error("RESUME_CMD_ERR:", e));
         }
-    } */
+    }
 }

@@ -11,19 +11,20 @@ import { Message } from "discord.js";
     usage: "{prefix}skip"
 })
 export class SkipCommand extends BaseCommand {
-/*    @isUserInTheVoiceChannel()
+    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
         message.guild!.queue!.playing = true;
-        message.guild?.queue?.connection?.dispatcher.once("speaking", () => message.guild?.queue?.connection?.dispatcher.end());
-        message.guild!.queue?.connection?.dispatcher.resume();
+        message.guild!.queue?.player.stop();
 
         const song = message.guild?.queue?.songs.first();
 
-        message.channel.send(
-            createEmbed("info", `⏭ **|** Skipped **[${song!.title}](${song!.url}})**`)
-                .setThumbnail(song?.thumbnail as string)
-        ).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
-    } */
+        message.channel.send({
+            embeds: [
+                createEmbed("info", `⏭ **|** Skipped **[${song!.title}](${song!.url}})**`)
+                    .setThumbnail(song?.thumbnail as string)
+            ]
+        }).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
+    }
 }
