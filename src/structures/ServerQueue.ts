@@ -1,5 +1,5 @@
 import { SongManager } from "../utils/SongManager";
-import { Snowflake, StageChannel, TextChannel, VoiceChannel } from "discord.js";
+import { Snowflake, StageChannel, TextChannel, Util, VoiceChannel } from "discord.js";
 import { AudioPlayer, VoiceConnection } from "@discordjs/voice";
 
 export enum loopMode {
@@ -41,6 +41,10 @@ export class ServerQueue {
                 enumerable: false
             }
         });
+    }
+
+    public toJSON(): any {
+        return Util.flatten(this);
     }
 
     public get oldMusicMessage(): Snowflake | null {

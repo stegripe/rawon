@@ -18,11 +18,8 @@ export class Disc extends BotClient {
     public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
     public readonly util: Util = new Util(this);
-    private readonly _queue: Collection<Snowflake, ServerQueue> = new Collection();
-    public constructor(opt: ClientOptions) {
-        super(opt);
-        Object.defineProperty(this, "_queue", { enumerable: false });
-    }
+    public readonly queue: Collection<Snowflake, ServerQueue> = new Collection();
+    public constructor(opt: ClientOptions) { super(opt); }
 
     public async build(token: string): Promise<this> {
         this.on("ready", () => this.commands.load());

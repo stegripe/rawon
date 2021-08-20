@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
+import { ServerQueue } from "../structures/ServerQueue";
 import { Channel, Client, Collection, Guild, Presence, Snowflake, User } from "discord.js";
 import prettyMilliseconds from "pretty-ms";
 import { promises as fs } from "fs";
@@ -50,11 +51,33 @@ export class Util {
         throw new Error(errorLog.join("\n"));
     }
 
-    public async getResource(type: "guilds" | "channels" | "users"): Promise<getResourceReturnType> {
-        const evalResult = await this.client.shard?.broadcastEval((client, ctx) => client[ctx.type].cache, { context: { type } }) ?? this.client[type].cache;
-        let result: getResourceReturnType;
-        if (this.client.shard) result = new Collection(await this._getMergedBroadcastEval<getResourceResourceType>(evalResult as getResourceResourceType[][]));
-        else result = evalResult as getResourceReturnType;
+    public async getResource<T extends keyof getResourceResourceType>(type: T | keyof getResourceResourceType): Promise<getResourceReturnType<T>> {
+        // Functions how to get the resources
+        const resourcesFunctions: Record<keyof getResourceResourceType, (client: Client) => Collection<any, any>> = {
+            users: (client: Client) => client.users.cache,
+            channels: (client: Client) => client.channels.cache,
+            guilds: (client: Client) => client.guilds.cache,
+            queues: (client: Client) => client.queue.mapValues(v => v.toJSON())
+        };
+
+        /*
+            Why do we convert these functions to string? because we can't pass a function to a broadcastEval context, so we convert them to string.
+            Then in the broadcastEval context, we convert them again to function using eval, then execute that function
+        */
+        const doBroadcastEval = (): any => this.client.shard?.broadcastEval(
+            // eslint-disable-next-line no-eval
+            (client, ctx) => eval(ctx.resourcesFunctions[ctx.type])(client),
+            { context: { type, resourcesFunctions: Object.fromEntries(Object.entries(resourcesFunctions).map(o => [o[0], o[1].toString()])) } }
+        );
+
+        const evalResult = await doBroadcastEval() ?? resourcesFunctions[type](this.client);
+
+        let result: getResourceReturnType<T>;
+        if (this.client.shard) {
+            result = new Collection<Snowflake, getResourceResourceType[T]>(
+                await this._getMergedBroadcastEval<getResourceResourceType[T]>(evalResult as (getResourceResourceType[T])[][])
+            );
+        } else { result = evalResult as getResourceReturnType<T>; }
         return result;
     }
 
@@ -63,21 +86,21 @@ export class Util {
     }
 
     public async getChannelsCount(filter = true): Promise<number> {
-        const channels = await this.getResource("channels") as Collection<Snowflake, Channel>;
+        const channels = await this.getResource("channels");
 
         if (filter) return channels.filter(c => c.type !== "GUILD_CATEGORY" && c.type !== "DM").size;
         return channels.size;
     }
 
     public async getUsersCount(filter = true): Promise<number> {
-        const users = await this.getResource("users") as Collection<Snowflake, User>;
+        const users = await this.getResource("users");
 
         if (filter) return users.filter(u => u.id === this.client.user!.id).size;
         return users.size;
     }
 
     public async getTotalPlaying(): Promise<number> {
-        return (await this.getResource("users") as Collection<Snowflake, Guild>).filter(g => g.queue?.playing === true).size;
+        return (await this.getResource("queues")).filter(q => q.playing).size;
     }
 
     public hastebin(text: string): Promise<string> {
@@ -153,10 +176,15 @@ export class Util {
         });
     }
 
-    private _getMergedBroadcastEval<T>(broadcastEval: T[][]): Iterable<[Snowflake, any]> {
-        return broadcastEval.reduce((p, c) => [...p, ...c]) as any;
+    private _getMergedBroadcastEval<T>(broadcastEval: T[][]): Iterable<[Snowflake, T]> {
+        return broadcastEval.reduce((p, c) => [...p, ...c]) as Iterable<[Snowflake, T]>;
     }
 }
 
-type getResourceResourceType = Channel | Guild | User;
-type getResourceReturnType = Collection<Snowflake, getResourceResourceType>;
+interface getResourceResourceType {
+    users: User;
+    channels: Channel;
+    guilds: Guild;
+    queues: ServerQueue;
+}
+type getResourceReturnType<T extends keyof getResourceResourceType> = Collection<Snowflake, getResourceResourceType[T]>;

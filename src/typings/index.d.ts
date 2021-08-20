@@ -27,6 +27,7 @@ declare module "discord.js" {
         readonly events: Disc["events"];
         readonly youtube: Disc["youtube"];
         readonly util: Disc["util"];
+        readonly queue: Disc["queue"];
 
         build(token: string): Promise<this>;
     }
