@@ -1,6 +1,6 @@
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
-import { Message, MessageEmbed } from "discord.js";
+import { ColorResolvable, Message, MessageEmbed } from "discord.js";
 
 @DefineCommand({
     aliases: ["pong", "pang", "pung", "peng", "pingpong"],
@@ -28,12 +28,12 @@ export class PingCommand extends BaseCommand {
                 .setFooter(`Requested by: ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
                 .setTimestamp();
 
-            msg.edit("", { embed }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+            msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         return message;
     }
 
-    private searchHex(ms: string | number): string | number {
+    private searchHex(ms: string | number): ColorResolvable {
         const listColorHex = [
             [0, 20, "GREEN"],
             [21, 50, "GREEN"],
@@ -57,6 +57,6 @@ export class PingCommand extends BaseCommand {
                 ret = defaultColor;
             }
         }
-        return ret;
+        return ret as ColorResolvable;
     }
 }
