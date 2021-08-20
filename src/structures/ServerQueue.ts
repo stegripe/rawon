@@ -1,5 +1,5 @@
 import { SongManager } from "../utils/SongManager";
-import { Snowflake, TextChannel, VoiceChannel } from "discord.js";
+import { Snowflake, StageChannel, TextChannel, VoiceChannel } from "discord.js";
 import { VoiceConnection } from "@discordjs/voice";
 
 export enum loopMode {
@@ -27,7 +27,7 @@ export class ServerQueue {
     public playing = false;
     private _lastMusicMessageID: Snowflake | null = null;
     private _lastVoiceStateUpdateMessageID: Snowflake | null = null;
-    public constructor(public textChannel: TextChannel | null = null, public voiceChannel: VoiceChannel | null = null) {
+    public constructor(public textChannel: TextChannel | null = null, public voiceChannel: VoiceChannel | StageChannel | null = null) {
         this.volume = textChannel!.client.config.defaultVolume;
         Object.defineProperties(this, {
             timeout: {
