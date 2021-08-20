@@ -47,11 +47,11 @@ export class Util {
         throw new Error(errorLog.join("\n"));
     }
 
-    public async getResource(type: "guilds" | "channels" | "users"): Promise<_getResourceReturnType> {
+    public async getResource(type: "guilds" | "channels" | "users"): Promise<getResourceReturnType> {
         const evalResult = await this.client.shard?.broadcastEval((client, ctx) => client[ctx.type].cache, { context: { type } }) ?? this.client[type].cache;
-        let result: _getResourceReturnType;
-        if (this.client.shard) result = new Collection(await this._getMergedBroadcastEval<_getResourceResourceType>(evalResult as _getResourceResourceType[][]));
-        else result = evalResult as _getResourceReturnType;
+        let result: getResourceReturnType;
+        if (this.client.shard) result = new Collection(await this._getMergedBroadcastEval<getResourceResourceType>(evalResult as getResourceResourceType[][]));
+        else result = evalResult as getResourceReturnType;
         return result;
     }
 
@@ -155,5 +155,5 @@ export class Util {
     }
 }
 
-type _getResourceResourceType = Channel | Snowflake | User;
-type _getResourceReturnType = Collection<Snowflake, Channel> | Collection<Snowflake, User> | Collection<Snowflake, Guild>;
+type getResourceResourceType = Channel | Guild | User;
+type getResourceReturnType = Collection<Snowflake, getResourceResourceType>;
