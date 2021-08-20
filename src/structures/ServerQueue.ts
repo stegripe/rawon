@@ -1,5 +1,6 @@
 import { SongManager } from "../utils/SongManager";
-import { Snowflake, TextChannel, VoiceChannel, VoiceConnection } from "discord.js";
+import { Snowflake, TextChannel, VoiceChannel } from "discord.js";
+import { VoiceConnection } from "@discordjs/voice";
 
 export enum loopMode {
     off = 0,
@@ -47,7 +48,7 @@ export class ServerQueue {
 
     public set oldMusicMessage(id: Snowflake | null) {
         if (this._lastMusicMessageID !== null) {
-            this.textChannel?.messages.fetch(this._lastMusicMessageID, false)
+            this.textChannel?.messages.fetch(this._lastMusicMessageID, { cache: false })
                 .then(m => m.delete())
                 .catch(e => this.textChannel?.client.logger.error("DELETE_OLD_MUSIC_MESSAGE_ERR:", e));
         }
@@ -61,7 +62,7 @@ export class ServerQueue {
 
     public set oldVoiceStateUpdateMessage(id: Snowflake | null) {
         if (this._lastVoiceStateUpdateMessageID !== null) {
-            this.textChannel?.messages.fetch(this._lastVoiceStateUpdateMessageID, false)
+            this.textChannel?.messages.fetch(this._lastVoiceStateUpdateMessageID, { cache: false })
                 .then(m => m.delete())
                 .catch(e => this.textChannel?.client.logger.error("DELETE_OLD_VOICE_STATE_UPDATE_MESSAGE_ERR:", e));
         }
