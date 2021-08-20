@@ -228,7 +228,7 @@ export class PlayCommand extends BaseCommand {
     private async play(guild: Guild): Promise<any> {
         const serverQueue = guild.queue;
         if (!serverQueue) return undefined;
-        if (serverQueue.currentPlayer === null) serverQueue.currentPlayer = createAudioPlayer(); // TODO: Consider reusing AudioPlayer in the refactored Queue System
+        if (serverQueue.currentPlayer === null) serverQueue.currentPlayer = createAudioPlayer();
         const song = serverQueue.songs.first();
         const timeout = this.client.config.deleteQueueTimeout;
         clearTimeout(disconnectTimer);
@@ -247,12 +247,12 @@ export class PlayCommand extends BaseCommand {
         }
 
         const songData = await this.client.youtube.downloadVideo(song.url, {
-            cache: false, // TODO: Recreate YTDL Caching (currently throws YTDLError: Premature close)
+            cache: false,
             cacheMaxLength: this.client.config.cacheMaxLengthAllowed,
-            skipFFmpeg: false // TODO: Recreate this functionality
+            skipFFmpeg: false
         });
 
-        const playerResource = createAudioResource(songData, { inlineVolume: false }); // TODO: Add config for this.
+        const playerResource = createAudioResource(songData, { inlineVolume: false });
 
         songData.on("error", err => { err.message = `YTDLError: ${err.message}`; serverQueue.currentPlayer!.emit("error", new AudioPlayerError(err, playerResource)); });
 
@@ -266,7 +266,7 @@ export class PlayCommand extends BaseCommand {
 
         serverQueue.currentPlayer.on("stateChange", (oldState, newState) => {
             if (newState.status === AudioPlayerStatus.Playing) {
-                if (oldState.status === AudioPlayerStatus.Paused) return undefined; // TODO: We should handle the pause unpause directly from currentPlayer
+                if (oldState.status === AudioPlayerStatus.Paused) return undefined;
                 serverQueue.playing = true;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${song.title}" on ${guild.name} started`);
                 serverQueue.textChannel?.send({ embeds: [createEmbed("info", `▶ **|** Started playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail)] })

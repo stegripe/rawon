@@ -11,10 +11,9 @@ import { Message } from "discord.js";
     usage: "{prefix}volume [new volume]"
 })
 export class VolumeCommand extends BaseCommand {
-    @isUserInTheVoiceChannel() // TODO: VolumeCommand is disabled for now.
+    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
-    // TODO: Remove this if it's reeenabled.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public execute(message: Message, args: string[]): any {
         message.channel.send({ embeds: [createEmbed("warn", "⚠ **|** Volume command is disabled, please use the volume functionality in Discord client directly.")] })
@@ -34,6 +33,6 @@ export class VolumeCommand extends BaseCommand {
 
         // message.guild!.queue!.volume = Number(args[0]);
         // message.guild!.queue!.player.setVolume(Number(args[0]) / this.client.config.maxVolume);
-        // message.channel.send({ embeds: [createEmbed("info", `🔊 **|** Volume set to **\`${args[0]}\`**`)] }).catch(console.error).catch(console.error); // FIXME: why is there console here?
+        // message.channel.send({ embeds: [createEmbed("info", `🔊 **|** Volume set to **\`${args[0]}\`**`)] }).catch(console.error).catch(console.error);
     }
 }
