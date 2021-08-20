@@ -11,7 +11,7 @@ import { Message } from "discord.js";
     usage: "{prefix}volume [new volume]"
 })
 export class VolumeCommand extends BaseCommand {
-    @isUserInTheVoiceChannel()
+/*    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message, args: string[]): any {
@@ -30,5 +30,5 @@ export class VolumeCommand extends BaseCommand {
         message.guild!.queue!.volume = Number(args[0]);
         message.guild!.queue!.connection?.dispatcher.setVolume(Number(args[0]) / this.client.config.maxVolume);
         message.channel.send(createEmbed("info", `🔊 **|** Volume set to **\`${args[0]}\`**`)).catch(console.error);
-    }
+    } */
 }

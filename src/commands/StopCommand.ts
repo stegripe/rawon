@@ -11,7 +11,7 @@ import { Message } from "discord.js";
     usage: "{prefix}stop"
 })
 export class StopCommand extends BaseCommand {
-    @isUserInTheVoiceChannel()
+/*    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
@@ -21,5 +21,5 @@ export class StopCommand extends BaseCommand {
 
         message.channel.send(createEmbed("info", "⏹ **|** The music player has been stopped"))
             .catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
-    }
+    } */
 }

@@ -10,7 +10,7 @@ import { Message } from "discord.js";
     usage: "{prefix}pause"
 })
 export class PauseCommand extends BaseCommand {
-    @isUserInTheVoiceChannel()
+/*    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
@@ -21,5 +21,5 @@ export class PauseCommand extends BaseCommand {
         }
         message.channel.send(createEmbed("error", "The music player is already paused"))
             .catch(e => this.client.logger.error("PAUSE_CMD_ERR:", e));
-    }
+    } */
 }

@@ -11,7 +11,7 @@ import { Message } from "discord.js";
     usage: "{prefix}nowplaying"
 })
 export class NowPlayingCommand extends BaseCommand {
-    @isMusicQueueExists()
+/*    @isMusicQueueExists()
     public execute(message: Message): any {
         const song = message.guild?.queue?.songs.first();
         return message.channel.send(
@@ -19,5 +19,5 @@ export class NowPlayingCommand extends BaseCommand {
                 `**[${song?.title as string}](${song?.url as string})**`)
                 .setThumbnail(song?.thumbnail as string)
         );
-    }
+    } */
 }

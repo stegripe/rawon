@@ -10,7 +10,7 @@ import { Message } from "discord.js";
     usage: "{prefix}resume"
 })
 export class ResumeCommand extends BaseCommand {
-    @isUserInTheVoiceChannel()
+/*    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
@@ -21,5 +21,5 @@ export class ResumeCommand extends BaseCommand {
             message.guild?.queue?.connection?.dispatcher.resume();
             message.channel.send(createEmbed("info", "▶ **|** The music player has been resumed")).catch(e => this.client.logger.error("RESUME_CMD_ERR:", e));
         }
-    }
+    } */
 }

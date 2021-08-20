@@ -11,7 +11,7 @@ import { Message, TextChannel } from "discord.js";
     usage: "{prefix}queue"
 })
 export class QueueCommand extends BaseCommand {
-    @isMusicQueueExists()
+/*    @isMusicQueueExists()
     public execute(message: Message): any {
         const embed = createEmbed("info")
             .setTitle("Music Queue")
@@ -53,5 +53,5 @@ export class QueueCommand extends BaseCommand {
         } else {
             message.channel.send(embed.setDescription(songs!.join("\n"))).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
         }
-    }
+    } */
 }

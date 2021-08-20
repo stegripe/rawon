@@ -11,7 +11,7 @@ import { Message } from "discord.js";
     usage: "{prefix}skip"
 })
 export class SkipCommand extends BaseCommand {
-    @isUserInTheVoiceChannel()
+/*    @isUserInTheVoiceChannel()
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
@@ -25,5 +25,5 @@ export class SkipCommand extends BaseCommand {
             createEmbed("info", `⏭ **|** Skipped **[${song!.title}](${song!.url}})**`)
                 .setThumbnail(song?.thumbnail as string)
         ).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
-    }
+    } */
 }
