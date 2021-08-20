@@ -8,7 +8,7 @@
 
 ## Usage
 
-**Requires [Node.js](https://nodejs.org) version v14.x or above.**
+**Requires [Node.js](https://nodejs.org) version v16.6.0 or above.**
 
 1. Install [Node.js](https://nodejs.org)
 2. Delete old `.env`, rename `.env.schema` to `.env` and fill out the values (example on .env.example)
