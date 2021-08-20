@@ -264,8 +264,9 @@ export class PlayCommand extends BaseCommand {
 
         if (songData.cache) this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Using cache for music "${song.title}" on ${guild.name}`);
 
-        serverQueue.currentPlayer.on("stateChange", (_, newState) => {
+        serverQueue.currentPlayer.on("stateChange", (oldState, newState) => {
             if (newState.status === AudioPlayerStatus.Playing) {
+                if (oldState.status === AudioPlayerStatus.Paused) return undefined; // TODO: We should handle the pause unpause directly from currentPlayer
                 serverQueue.playing = true;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${song.title}" on ${guild.name} started`);
                 serverQueue.textChannel?.send({ embeds: [createEmbed("info", `▶ **|** Started playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail)] })
