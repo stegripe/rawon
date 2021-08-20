@@ -27,10 +27,12 @@ export class Util {
         });
     }
 
-    public async getPackageJSON(pkgName = process.cwd()): Promise<any> {
-        if (process.platform === "win32") pkgName = pkgName.replace("/", "\\");
-        const resolvedPath = path.resolve(require.resolve(pkgName));
-        return JSON.parse((await fs.readFile(path.resolve(resolvedPath.split(pkgName)[0], pkgName, "package.json"))).toString());
+    public async getPackageJSON(pkgName?: string): Promise<any> {
+        if (process.platform === "win32") pkgName = pkgName?.replace("/", "\\");
+        const resolvedPath = path.resolve(pkgName ? require.resolve(pkgName) : process.cwd());
+        const resolvedPkgName = pkgName ?? path.parse(process.cwd()).name;
+        const resolvedPackageJSONPath = path.resolve(resolvedPath.split(resolvedPkgName)[0], resolvedPkgName, "package.json");
+        return JSON.parse((await fs.readFile(resolvedPackageJSONPath)).toString());
     }
 
     public async getOpusEncoder(): Promise<any> {
