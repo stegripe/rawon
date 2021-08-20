@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { Channel, Client, Collection, Guild, Presence, Snowflake, User } from "discord.js";
-import { request } from "https";
 import prettyMilliseconds from "pretty-ms";
+import { promises as fs } from "fs";
+import { request } from "https";
 import path from "path";
 
 export class Util {
@@ -26,10 +27,10 @@ export class Util {
         });
     }
 
-    public getPackageJSON(pkgName = process.cwd()): Promise<any> {
+    public async getPackageJSON(pkgName = process.cwd()): Promise<any> {
         if (process.platform === "win32") pkgName = pkgName.replace("/", "\\");
         const resolvedPath = path.resolve(require.resolve(pkgName));
-        return import(path.resolve(resolvedPath.split(pkgName)[0], pkgName, "package.json"));
+        return JSON.parse((await fs.readFile(path.resolve(resolvedPath.split(pkgName)[0], pkgName, "package.json"))).toString());
     }
 
     public async getOpusEncoder(): Promise<any> {
