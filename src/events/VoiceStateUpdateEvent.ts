@@ -25,12 +25,12 @@ export class VoiceStateUpdateEvent extends BaseListener {
         // Handle when bot gets kicked from the voice channel
         if (oldMember?.id === botID && oldID === queueVC.id && newID === undefined) {
             try {
-                queue.oldMusicMessage = null; queue.oldVoiceStateUpdateMessage = null;
+                newState.guild.queue?.currentPlayer?.stop(true);
+                newState.guild.queue = null;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`);
                 queue.textChannel?.send({ embeds: [createEmbed("error", "I was disconnected from the voice channel, the queue has been deleted.")] })
+                    .then(() => { queue.oldMusicMessage = null; queue.oldVoiceStateUpdateMessage = null; })
                     .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
-                newState.guild.queue?.currentPlayer?.stop();
-                return newState.guild.queue = null;
             } catch (e) {
                 this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e);
             }
