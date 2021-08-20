@@ -3,7 +3,6 @@ import { BaseListener } from "../structures/BaseListener";
 import { ServerQueue } from "../structures/ServerQueue";
 import { createEmbed } from "../utils/createEmbed";
 import { Collection, GuildMember, Snowflake, VoiceState } from "discord.js";
-import { satisfies } from "semver";
 
 @DefineListener("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseListener {
@@ -94,11 +93,6 @@ export class VoiceStateUpdateEvent extends BaseListener {
                 ).then(m => queue.oldVoiceStateUpdateMessage = m.id).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
                 newState.guild.queue!.playing = true;
                 newState.guild.queue?.connection?.dispatcher.resume();
-                // This will be reverted
-                if (satisfies(process.version, ">=14.17.0")) {
-                    newState.guild.queue?.connection?.dispatcher.pause();
-                    newState.guild.queue?.connection?.dispatcher.resume();
-                }
             } catch (e) { this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e); }
         }
     }

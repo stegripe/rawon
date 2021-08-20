@@ -37,7 +37,6 @@
         "opusscript": "^0.0.8",
         "parse-ms": "^2.1.0",
         "pretty-ms": "^7.0.1",
-        "semver": "^7.3.5",
         "tslib": "^2.3.1",
         "winston": "^3.3.3",
         "ytdl-core": "^4.9.1",
@@ -64,6 +63,6 @@
         "zlib-sync": "^0.1.7"
     },
     "engines": {
-        "node": ">=14.x"
+        "node": ">=16.6.0"
     }
 }
