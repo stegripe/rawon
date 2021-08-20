@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
-import { Client, Collection, Presence, User } from "discord.js";
+import { Channel, Client, Collection, Guild, Presence, User } from "discord.js";
 import { request } from "https";
 import prettyMilliseconds from "pretty-ms";
 import path from "path";
@@ -49,49 +49,52 @@ export class Util {
 
     public async getGuildsCount(): Promise<number> {
         if (!this.client.shard) return this.client.guilds.cache.size;
-        const size = await this.client.shard.broadcastEval("this.guilds.cache.size");
+        const size = await this.client.shard.broadcastEval(client => client.guilds.cache.size);
         return size.reduce((p, v) => p + v, 0);
     }
 
     public async getChannelsCount(filter = true): Promise<number> {
+        const filterFn = (c: Channel): boolean => c.type !== "GUILD_CATEGORY" && c.type !== "DM";
         if (filter) {
-            if (!this.client.shard) return this.client.channels.cache.filter(c => c.type !== "category" && c.type !== "dm").size;
-            const size = await this.client.shard.broadcastEval("this.channels.cache.filter(c => c.type !== 'category' && c.type !== 'dm').size");
+            if (!this.client.shard) return this.client.channels.cache.filter(filterFn).size;
+            const size = await this.client.shard.broadcastEval(client => client.channels.cache.filter(filterFn).size);
             return size.reduce((p, v) => p + v, 0);
         }
         if (!this.client.shard) return this.client.channels.cache.size;
-        const size = await this.client.shard.broadcastEval("this.channels.cache.size");
+        const size = await this.client.shard.broadcastEval(client => client.channels.cache.size);
         return size.reduce((p, v) => p + v, 0);
     }
 
     public async getUsersCount(filter = true): Promise<number> {
+        const filterFn = (u: User): boolean => u.id === this.client.user!.id;
         const temp = new Collection();
         if (filter) {
-            if (!this.client.shard) return this.client.users.cache.filter(u => !u.equals(this.client.user!)).size;
-            const shards = await this.client.shard.broadcastEval("this.users.cache.filter(u => !u.equals(this.user))");
+            if (!this.client.shard) return this.client.users.cache.filter(filterFn).size;
+            const shards = await this.client.shard.broadcastEval(client => client.users.cache.filter(filterFn));
             for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
             return temp.size;
         }
         if (!this.client.shard) return this.client.users.cache.size;
-        const shards = await this.client.shard.broadcastEval("this.users.cache");
+        const shards = await this.client.shard.broadcastEval(client => client.users.cache);
         for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
         return temp.size;
     }
 
     public async getTotalPlaying(): Promise<number> {
-        if (!this.client.shard) return this.client.guilds.cache.filter((g: any) => g.queue !== null && g.queue.playing === true).size;
-        return this.client.shard.broadcastEval("this.guilds.cache.filter(g => g.queue !== null && g.queue.playing === true).size")
+        const filterFn = (g: Guild): boolean => g.queue?.playing === true;
+        if (!this.client.shard) return this.client.guilds.cache.filter(filterFn).size;
+        return this.client.shard.broadcastEval(client => client.guilds.cache.filter(filterFn).size)
             .then(data => data.reduce((a, b) => a + b));
     }
 
     public hastebin(text: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            const req = request({ hostname: "bin.zhycorp.net", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
+            const req = request({ hostname: "bin.hzmi.xyz", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
                 let raw = "";
                 res.on("data", chunk => raw += chunk);
                 res.on("end", () => {
-                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.zhycorp.net/${JSON.parse(raw).key as string}`);
-                    return reject(new Error(`[hastebin] Error while trying to send data to https://bin.zhycorp.net/documents, ${res.statusCode as number} ${res.statusMessage as string}`));
+                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.hzmi.xyz/${JSON.parse(raw).key as string}`);
+                    return reject(new Error(`[hastebin] Error while trying to send data to https://bin.hzmi.xyz/documents, ${res.statusCode as number} ${res.statusMessage as string}`));
                 });
             }).on("error", reject);
             req.write(typeof text === "object" ? JSON.stringify(text, null, 2) : text);
@@ -152,8 +155,8 @@ export class Util {
             .replace(/{playingCount}/g, (await this.getTotalPlaying()).toString())
             .replace(/{usersCount}/g, (await this.getUsersCount()).toString())
             .replace(/{botPrefix}/g, this.client.config.prefix);
-        return this.client.user?.setPresence({
-            activity: { name: activityName, type: this.client.config.status.type }
-        }).catch(e => { this.client.logger.error("CLIENT_UPDATE_PRESENCE_ERR:", e); return undefined; });
+        return this.client.user!.setPresence({
+            activities: [{ name: activityName, type: this.client.config.status.type }]
+        });
     }
 }
