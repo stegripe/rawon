@@ -3,8 +3,8 @@ import { BaseListener } from "../structures/BaseListener";
 import { createEmbed } from "../utils/createEmbed";
 import { Message } from "discord.js";
 
-@DefineListener("message")
-export class MessageEvent extends BaseListener {
+@DefineListener("messageCreate")
+export class MessageCreateEvent extends BaseListener {
     public async execute(message: Message): Promise<any> {
         if (message.author.bot || message.channel.type !== "GUILD_TEXT") return message;
 
