@@ -1,6 +1,6 @@
 {
     "name": "disc-11",
-    "version": "1.60.5",
+    "version": "2.0.0-dev",
     "private": true,
     "description": "A dedicated open-source Discord music bot for Zhycorp based on Jukebox, easy to use, and with no coding required.",
     "homepage": "https://github.com/zhycorp/disc-11#readme",
