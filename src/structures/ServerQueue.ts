@@ -1,5 +1,6 @@
 import { SongManager } from "../utils/SongManager";
-import { Snowflake, TextChannel, VoiceChannel, VoiceConnection } from "discord.js";
+import { Snowflake, StageChannel, TextChannel, VoiceChannel } from "discord.js";
+import { AudioPlayer, VoiceConnection } from "@discordjs/voice";
 
 export enum loopMode {
     off = 0,
@@ -19,6 +20,7 @@ export enum loopMode {
 
 export class ServerQueue {
     public connection: VoiceConnection | null = null;
+    public currentPlayer: AudioPlayer | null = null;
     public readonly songs = new SongManager();
     public volume = 0;
     public loopMode = loopMode.disable;
@@ -26,7 +28,7 @@ export class ServerQueue {
     public playing = false;
     private _lastMusicMessageID: Snowflake | null = null;
     private _lastVoiceStateUpdateMessageID: Snowflake | null = null;
-    public constructor(public textChannel: TextChannel | null = null, public voiceChannel: VoiceChannel | null = null) {
+    public constructor(public textChannel: TextChannel | null = null, public voiceChannel: VoiceChannel | StageChannel | null = null) {
         this.volume = textChannel!.client.config.defaultVolume;
         Object.defineProperties(this, {
             timeout: {
@@ -47,7 +49,7 @@ export class ServerQueue {
 
     public set oldMusicMessage(id: Snowflake | null) {
         if (this._lastMusicMessageID !== null) {
-            this.textChannel?.messages.fetch(this._lastMusicMessageID, false)
+            this.textChannel?.messages.fetch(this._lastMusicMessageID, { cache: false })
                 .then(m => m.delete())
                 .catch(e => this.textChannel?.client.logger.error("DELETE_OLD_MUSIC_MESSAGE_ERR:", e));
         }
@@ -61,7 +63,7 @@ export class ServerQueue {
 
     public set oldVoiceStateUpdateMessage(id: Snowflake | null) {
         if (this._lastVoiceStateUpdateMessageID !== null) {
-            this.textChannel?.messages.fetch(this._lastVoiceStateUpdateMessageID, false)
+            this.textChannel?.messages.fetch(this._lastVoiceStateUpdateMessageID, { cache: false })
                 .then(m => m.delete())
                 .catch(e => this.textChannel?.client.logger.error("DELETE_OLD_VOICE_STATE_UPDATE_MESSAGE_ERR:", e));
         }

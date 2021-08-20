@@ -14,10 +14,12 @@ export class NowPlayingCommand extends BaseCommand {
     @isMusicQueueExists()
     public execute(message: Message): any {
         const song = message.guild?.queue?.songs.first();
-        return message.channel.send(
-            createEmbed("info", `${message.guild?.queue?.playing ? "▶ **|** Now Playing:" : "⏸ **|** Now Playing:"} ` +
-                `**[${song?.title as string}](${song?.url as string})**`)
-                .setThumbnail(song?.thumbnail as string)
-        );
+        return message.channel.send({
+            embeds: [
+                createEmbed("info", `${message.guild?.queue?.playing ? "▶ **|** Now Playing:" : "⏸ **|** Now Playing:"} ` +
+                    `**[${song?.title as string}](${song?.url as string})**`)
+                    .setThumbnail(song?.thumbnail as string)
+            ]
+        });
     }
 }

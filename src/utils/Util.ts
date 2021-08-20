@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
-import { Client, Collection, Presence, User } from "discord.js";
-import { request } from "https";
+import { Channel, Client, Collection, Guild, Presence, Snowflake, User } from "discord.js";
 import prettyMilliseconds from "pretty-ms";
+import { promises as fs } from "fs";
+import { request } from "https";
 import path from "path";
 
 export class Util {
@@ -26,10 +27,12 @@ export class Util {
         });
     }
 
-    public getPackageJSON(pkgName = process.cwd()): Promise<any> {
-        if (process.platform === "win32") pkgName = pkgName.replace("/", "\\");
-        const resolvedPath = path.resolve(require.resolve(pkgName));
-        return import(path.resolve(resolvedPath.split(pkgName)[0], pkgName, "package.json"));
+    public async getPackageJSON(pkgName?: string): Promise<any> {
+        if (process.platform === "win32") pkgName = pkgName?.replace("/", "\\");
+        const resolvedPath = path.resolve(pkgName ? require.resolve(pkgName) : process.cwd());
+        const resolvedPkgName = pkgName ?? path.parse(process.cwd()).name;
+        const resolvedPackageJSONPath = path.resolve(resolvedPath.split(resolvedPkgName)[0], resolvedPkgName, "package.json");
+        return JSON.parse((await fs.readFile(resolvedPackageJSONPath)).toString());
     }
 
     public async getOpusEncoder(): Promise<any> {
@@ -47,51 +50,44 @@ export class Util {
         throw new Error(errorLog.join("\n"));
     }
 
+    public async getResource(type: "guilds" | "channels" | "users"): Promise<getResourceReturnType> {
+        const evalResult = await this.client.shard?.broadcastEval((client, ctx) => client[ctx.type].cache, { context: { type } }) ?? this.client[type].cache;
+        let result: getResourceReturnType;
+        if (this.client.shard) result = new Collection(await this._getMergedBroadcastEval<getResourceResourceType>(evalResult as getResourceResourceType[][]));
+        else result = evalResult as getResourceReturnType;
+        return result;
+    }
+
     public async getGuildsCount(): Promise<number> {
-        if (!this.client.shard) return this.client.guilds.cache.size;
-        const size = await this.client.shard.broadcastEval("this.guilds.cache.size");
-        return size.reduce((p, v) => p + v, 0);
+        return (await this.getResource("guilds")).size;
     }
 
     public async getChannelsCount(filter = true): Promise<number> {
-        if (filter) {
-            if (!this.client.shard) return this.client.channels.cache.filter(c => c.type !== "category" && c.type !== "dm").size;
-            const size = await this.client.shard.broadcastEval("this.channels.cache.filter(c => c.type !== 'category' && c.type !== 'dm').size");
-            return size.reduce((p, v) => p + v, 0);
-        }
-        if (!this.client.shard) return this.client.channels.cache.size;
-        const size = await this.client.shard.broadcastEval("this.channels.cache.size");
-        return size.reduce((p, v) => p + v, 0);
+        const channels = await this.getResource("channels") as Collection<Snowflake, Channel>;
+
+        if (filter) return channels.filter(c => c.type !== "GUILD_CATEGORY" && c.type !== "DM").size;
+        return channels.size;
     }
 
     public async getUsersCount(filter = true): Promise<number> {
-        const temp = new Collection();
-        if (filter) {
-            if (!this.client.shard) return this.client.users.cache.filter(u => !u.equals(this.client.user!)).size;
-            const shards = await this.client.shard.broadcastEval("this.users.cache.filter(u => !u.equals(this.user))");
-            for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
-            return temp.size;
-        }
-        if (!this.client.shard) return this.client.users.cache.size;
-        const shards = await this.client.shard.broadcastEval("this.users.cache");
-        for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
-        return temp.size;
+        const users = await this.getResource("users") as Collection<Snowflake, User>;
+
+        if (filter) return users.filter(u => u.id === this.client.user!.id).size;
+        return users.size;
     }
 
     public async getTotalPlaying(): Promise<number> {
-        if (!this.client.shard) return this.client.guilds.cache.filter((g: any) => g.queue !== null && g.queue.playing === true).size;
-        return this.client.shard.broadcastEval("this.guilds.cache.filter(g => g.queue !== null && g.queue.playing === true).size")
-            .then(data => data.reduce((a, b) => a + b));
+        return (await this.getResource("users") as Collection<Snowflake, Guild>).filter(g => g.queue?.playing === true).size;
     }
 
     public hastebin(text: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            const req = request({ hostname: "bin.zhycorp.net", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
+            const req = request({ hostname: "bin.hzmi.xyz", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
                 let raw = "";
                 res.on("data", chunk => raw += chunk);
                 res.on("end", () => {
-                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.zhycorp.net/${JSON.parse(raw).key as string}`);
-                    return reject(new Error(`[hastebin] Error while trying to send data to https://bin.zhycorp.net/documents, ${res.statusCode as number} ${res.statusMessage as string}`));
+                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.hzmi.xyz/${JSON.parse(raw).key as string}`);
+                    return reject(new Error(`[hastebin] Error while trying to send data to https://bin.hzmi.xyz/documents, ${res.statusCode as number} ${res.statusMessage as string}`));
                 });
             }).on("error", reject);
             req.write(typeof text === "object" ? JSON.stringify(text, null, 2) : text);
@@ -152,8 +148,15 @@ export class Util {
             .replace(/{playingCount}/g, (await this.getTotalPlaying()).toString())
             .replace(/{usersCount}/g, (await this.getUsersCount()).toString())
             .replace(/{botPrefix}/g, this.client.config.prefix);
-        return this.client.user?.setPresence({
-            activity: { name: activityName, type: this.client.config.status.type }
-        }).catch(e => { this.client.logger.error("CLIENT_UPDATE_PRESENCE_ERR:", e); return undefined; });
+        return this.client.user!.setPresence({
+            activities: [{ name: activityName, type: this.client.config.status.type }]
+        });
+    }
+
+    private _getMergedBroadcastEval<T>(broadcastEval: T[][]): Iterable<[Snowflake, any]> {
+        return broadcastEval.reduce((p, c) => [...p, ...c]) as any;
     }
 }
+
+type getResourceResourceType = Channel | Guild | User;
+type getResourceReturnType = Collection<Snowflake, getResourceResourceType>;

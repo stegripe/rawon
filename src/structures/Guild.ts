@@ -1,7 +1,16 @@
-import { ServerQueue } from "./ServerQueue";
-import { Client, Structures } from "discord.js";
+import { Guild } from "discord.js";
 
-Structures.extend("Guild", dJSGuild => class Guild extends dJSGuild {
-    public queue: ServerQueue | null = null;
-    public constructor(client: Client, data: Guild) { super(client, data); }
+Reflect.defineProperty(Guild.prototype, "queue", {
+    get() {
+        // @ts-expect-error-next-line
+        return (this as Guild).client._queue.get(this.id) ?? null;
+    },
+
+    set(v: any) {
+        // @ts-expect-error-next-line
+        if (v === null || v === undefined) return this.client._queue.delete(this.id);
+
+        // @ts-expect-error-next-line
+        return this.client._queue.set(this.id, v);
+    }
 });

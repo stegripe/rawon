@@ -1,10 +1,5 @@
 import { ActivityType } from "discord.js";
 
-// NOTE: Remove this when V5 is released. ///////////////////////////////////////////////////////////
-if (!process.env.SECRET_DISCORD_TOKEN) process.env.SECRET_DISCORD_TOKEN = process.env.DISCORD_TOKEN;
-if (!process.env.SECRET_YT_API_KEY) process.env.SECRET_YT_API_KEY = process.env.YT_API_KEY;
-// //////////////////////////////////////////////////////////////////////////////////////////////////
-
 export const prefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!"; // Temporary workaround for https://github.com/docker/compose/issues/6951
 export const embedColor = process.env.CONFIG_EMBED_COLOR?.toUpperCase() ?? "7289DA";
 export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];

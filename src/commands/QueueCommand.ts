@@ -24,34 +24,37 @@ export class QueueCommand extends BaseCommand {
             let index = 0;
             embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
             const reactions = ["◀️", "▶️"];
-            message.channel.send(embed).then(msg => {
+            message.channel.send({ embeds: [embed] }).then(msg => {
                 msg.react("◀️").then(() => {
                     msg.react("▶️").catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
                     const isMessageManageable = (msg.channel as TextChannel).permissionsFor(msg.client.user!)?.has("MANAGE_MESSAGES");
-                    msg.createReactionCollector((reaction, user) => reactions.includes(reaction.emoji.name) && user.id === message.author.id, { time: 80 * 1000 })
-                        .on("collect", (reaction, user) => {
-                            if (isMessageManageable) reaction.users.remove(user).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
-                            switch (reaction.emoji.name) {
-                                case "◀️":
-                                    if (index === 0) return undefined;
-                                    index--;
-                                    break;
+                    const collector = msg.createReactionCollector({
+                        filter: (reaction, user) => reactions.includes(reaction.emoji.name!) && user.id === message.author.id,
+                        time: 80 * 1000
+                    });
+                    collector.on("collect", (reaction, user) => {
+                        if (isMessageManageable) reaction.users.remove(user).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
+                        switch (reaction.emoji.name!) {
+                            case "◀️":
+                                if (index === 0) return undefined;
+                                index--;
+                                break;
 
-                                case "▶️":
-                                    if (index + 1 === indexes.length) return undefined;
-                                    index++;
-                                    break;
-                            }
-                            embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
-                            msg.edit(embed).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
-                        })
+                            case "▶️":
+                                if (index + 1 === indexes.length) return undefined;
+                                index++;
+                                break;
+                        }
+                        embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+                        msg.edit({ embeds: [embed] }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
+                    })
                         .on("end", () => {
                             if (isMessageManageable) msg.reactions.removeAll().catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
                         });
                 }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
             }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
         } else {
-            message.channel.send(embed.setDescription(songs!.join("\n"))).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
+            message.channel.send({ embeds: [embed.setDescription(songs!.join("\n"))] }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
         }
     }
 }

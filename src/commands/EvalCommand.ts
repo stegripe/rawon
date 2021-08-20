@@ -18,7 +18,7 @@ export class EvalCommand extends BaseCommand {
         const client = this.client;
 
         if (!client.config.owners.includes(msg.author.id)) {
-            return message.channel.send(createEmbed("error", "This command is limited to the bot owner only"));
+            return message.channel.send({ embeds: [createEmbed("error", "This command is limited to the bot owner only")] });
         }
 
         const embed = createEmbed("info")
@@ -26,7 +26,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             const code = args.slice(0).join(" ");
-            if (!code) return message.channel.send(createEmbed("error", "No code was provided"));
+            if (!code) return message.channel.send({ embeds: [createEmbed("error", "No code was provided")] });
             let evaled = await eval(code);
 
             if (typeof evaled !== "string") {
@@ -40,14 +40,14 @@ export class EvalCommand extends BaseCommand {
                 const hastebin = await client.util.hastebin(output);
                 embed.addField("**Output**", `${hastebin}.js`);
             } else { embed.addField("**Output**", `\`\`\`js\n${output}\`\`\``); }
-            await message.channel.send(embed);
+            await message.channel.send({ embeds: [embed] });
         } catch (e) {
             const error = this.clean(e);
             if (error.length > 1024) {
                 const hastebin = await client.util.hastebin(error);
                 embed.addField("**Error**", `${hastebin}.js`);
             } else { embed.setColor("RED").addField("**Error**", `\`\`\`js\n${error}\`\`\``); }
-            message.channel.send(embed).catch(e => this.client.logger.error("EVAL_CMD_MSG_ERR:", e));
+            message.channel.send({ embeds: [embed] }).catch(e => this.client.logger.error("EVAL_CMD_MSG_ERR:", e));
             this.client.logger.error("EVAL_CMD_ERR:", e);
         }
 

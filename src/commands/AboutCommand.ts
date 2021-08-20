@@ -13,8 +13,9 @@ import { uptime as osUptime } from "os";
 export class AboutCommand extends BaseCommand {
     public async execute(message: Message): Promise<void> {
         const opusEncoder = await this.client.util.getOpusEncoder();
-        message.channel.send(
-            createEmbed("info", `
+        message.channel.send({
+            embeds: [
+                createEmbed("info", `
 \`\`\`asciidoc
 Users count        :: ${await this.client.util.getUsersCount()}
 Channels count     :: ${await this.client.util.getChannelsCount()}
@@ -42,6 +43,7 @@ Data Strategy      :: ${await this.client.config.YouTubeDataRetrievingStrategy =
 Source code        :: https://github.com/zhycorp/disc-11
 \`\`\`
         `).setAuthor(`${this.client.user?.username as string} - A simple Discord music bot`)
-        ).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
+            ]
+        }).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }
 }

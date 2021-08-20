@@ -3,8 +3,7 @@ import { videoInfo, downloadOptions, videoFormat, getInfo, downloadFromInfo } fr
 import { resolve as resolvePath } from "path";
 import { Readable } from "stream";
 
-// 1048576 * 1 = 1MB
-const defaultOptions: IdownloadOptions = { quality: "highestaudio", highWaterMark: 1048576 * 32 };
+const defaultOptions: IdownloadOptions = { quality: "highestaudio" };
 
 export function getMusicInfo(link: string, options = defaultOptions): Promise<IMusicInfo> {
     options = Object.assign(options, defaultOptions);
