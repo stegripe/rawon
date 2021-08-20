@@ -58,7 +58,6 @@ export class EvalCommand extends BaseCommand {
         if (typeof text === "string") {
             return text
                 .replace(new RegExp(process.env.SECRET_DISCORD_TOKEN!, "g"), "[REDACTED]")
-                .replace(new RegExp(process.env.SECRET_YT_API_KEY!, "g"), "[REDACTED]")
                 .replace(/`/g, `\`${String.fromCharCode(8203)}`)
                 .replace(/@/g, `@${String.fromCharCode(8203)}`);
         } return text;

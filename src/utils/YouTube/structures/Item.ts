@@ -1,19 +1,32 @@
-import { Playlist as APIPlaylist } from "../utils/YouTubeAPI/structures/Playlist";
-import { Video as APIVideo } from "../utils/YouTubeAPI/structures/Video";
-import { IMusicInfo } from "../downloader";
-import { itemType } from "..";
-import { Result as SRPlaylist } from "ytpl";
-import { Video as SRVideo } from "ytsr";
+import { videoInfo } from "ytdl-core";
+import { Result as Playlist } from "ytpl";
+import { Video } from "ytsr";
+
+export type normalType = (Video | Playlist);
+export type raw = normalType | videoInfo;
+export type itemType = "normal" | "ytdl";
 
 export class Item {
     public id: string;
     public title: string;
     public url: string;
-    public constructor(protected readonly rawData: APIVideo | SRVideo | APIPlaylist | SRPlaylist | IMusicInfo, protected readonly type: itemType) {
-        this.id = type === "ytdl-core" ? (rawData as IMusicInfo).videoDetails.videoId : (rawData as APIVideo | SRVideo).id;
+    public author: { id: string | undefined; name: string | undefined; url: string | undefined };
+    public bestThumbnailURL: string | undefined;
+    public constructor(public raw: raw, protected readonly _type: itemType) {
+        Object.defineProperty(this, "_type", { enumerable: false });
 
-        this.title = type === "ytdl-core" ? (rawData as IMusicInfo).videoDetails.title : (rawData as APIVideo | SRVideo).title;
+        this.id = _type === "normal" ? (raw as normalType).id : (raw as videoInfo).videoDetails.videoId;
 
-        this.url = type === "ytdl-core" ? (rawData as IMusicInfo).videoDetails.video_url : (rawData as APIVideo | SRVideo).url;
+        this.title = _type === "normal" ? (raw as normalType).title : (raw as videoInfo).videoDetails.title;
+
+        this.url = _type === "normal" ? (raw as normalType).url : (raw as videoInfo).videoDetails.video_url;
+
+        this.author = {
+            id: _type === "normal" ? (raw as normalType).author?.channelID : (raw as videoInfo).videoDetails.author.id,
+            url: _type === "normal" ? (raw as normalType).author?.url : (raw as videoInfo).videoDetails.author.channel_url,
+            name: _type === "normal" ? (raw as normalType).author?.name : (raw as videoInfo).videoDetails.author.name
+        };
+
+        this.bestThumbnailURL = _type === "normal" ? (raw as normalType).bestThumbnail.url ?? undefined : (raw as videoInfo).videoDetails.thumbnails.at(-1)!.url;
     }
 }

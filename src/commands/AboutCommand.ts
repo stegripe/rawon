@@ -39,7 +39,6 @@ FFmpeg version     :: v${(await this.client.util.getPackageJSON("ffmpeg-static")
 YTDL-Core version  :: v${(await this.client.util.getPackageJSON("ytdl-core")).version}
 Opus Encoder       :: ${opusEncoder.pkgMetadata.name} v${opusEncoder.pkgMetadata.version}
 Bot Version        :: v${(await this.client.util.getPackageJSON()).version}
-Data Strategy      :: ${await this.client.config.YouTubeDataRetrievingStrategy === "api" ? "REST API" : "HTML SCRAPING"}
 Source code        :: https://github.com/zhycorp/disc-11
 \`\`\`
         `).setAuthor(`${this.client.user?.username as string} - A simple Discord music bot`)

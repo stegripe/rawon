@@ -1,64 +1,38 @@
-import { IMusicData, playMusic, IdownloadOptions, getMusicInfo } from "./downloader";
-import { Playlist } from "./structures/Playlist";
-import { YoutubeAPI } from "./utils/YouTubeAPI";
-import { Video } from "./structures/Video";
-import ytsr from "ytsr";
+import { getInfo } from "ytdl-core";
 import ytpl from "ytpl";
+import ytsr, { Video as IVideo } from "ytsr";
+import { Playlist } from "./structures/Playlist";
+import { Video } from "./structures/Video";
+import { resolveYTPlaylistID } from "./utils/resolveYTURL";
 
-interface scrape { search: typeof ytsr; playlist: typeof ytpl; getVideo: typeof getMusicInfo }
-
-export type itemType = "api" | "scrape" | "ytdl-core";
-
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class YouTube {
-    private readonly engine: YoutubeAPI | scrape | undefined;
-    public constructor(private readonly mode?: itemType, private readonly apiKey?: string) {
-        Object.defineProperty(this, "apiKey", {
-            enumerable: false,
-            writable: false
-        });
-        if (mode === "api") {
-            if (!apiKey) throw new Error("Missing API Key for mode: api");
-            this.engine = new YoutubeAPI(apiKey);
-        } else if (mode === "scrape") {
-            this.engine = {
-                search: ytsr,
-                playlist: ytpl,
-                getVideo: getMusicInfo
-            };
-        } else {
-            throw new Error("Unknown mode, available modes are 'api' and 'scrape'");
+    public static async getVideo(url: string): Promise<Video> {
+        try {
+            const data = await getInfo(url);
+            return new Video(data, "ytdl");
+        } catch (error) {
+            throw new Error(`Could not get video data, err: ${error.stack}`);
         }
     }
 
-    public downloadVideo(link: string, options?: IdownloadOptions): Promise<IMusicData> {
-        return playMusic(link, options);
+    public static async getPlaylist(url: string): Promise<Playlist> {
+        try {
+            const id = resolveYTPlaylistID(url);
+            if (!id) throw new Error(`Could not extract Playlist ID from url, URL is: ${url}`);
+            const data = await ytpl(id);
+            return new Playlist(data, "normal");
+        } catch (error) {
+            throw new Error(`Could not get playlist data, err: ${error.stack}`);
+        }
     }
 
-    public async getVideo(id: string): Promise<Video> {
-        let data;
-        if (this.mode === "api") data = await (this.engine as YoutubeAPI).getVideo(id);
-        if (this.mode === "scrape") data = (await (this.engine as scrape).getVideo(`https://youtube.com/watch?v=${id}`));
-        if (data === undefined) throw new Error("I could not get any data");
-        return new Video(data, this.mode === "scrape" ? "ytdl-core" : "api");
-    }
-
-    public async getPlaylist(id: string): Promise<Playlist> {
-        let data;
-        if (this.mode === "api") data = await (this.engine as YoutubeAPI).getPlaylist(id);
-        if (this.mode === "scrape") data = (await (this.engine as scrape).playlist(id, { limit: Infinity }));
-        if (data === undefined) throw new Error("I could not get any data");
-        return new Playlist(data, this.mode!);
-    }
-
-    public async searchVideos(query: string, maxResults = 5): Promise<Video[]> {
-        let data;
-        if (this.mode === "api") data = await (this.engine as YoutubeAPI).searchVideos(query, maxResults);
-        if (this.mode === "scrape") data = (await (this.engine as scrape).search(query, { limit: maxResults, safeSearch: false })).items;
-        if (data === undefined) throw new Error("I could not get any data");
-        // @ts-expect-error Error is expected
-        return data.filter((x: any) => {
-            if (this.mode === "scrape") return x.type === "video";
-            return true;
-        }).map((i: any) => new Video(i, this.mode!));
+    public static async searchVideos(query: string, maxResults = 10): Promise<Video[]> {
+        try {
+            const data = await ytsr(query, { limit: maxResults, safeSearch: false });
+            return data.items.filter(x => x.type === "video").map(i => new Video(i as IVideo, "normal"));
+        } catch (error) {
+            throw new Error(`Could not get search data, err: ${error.stack}`);
+        }
     }
 }

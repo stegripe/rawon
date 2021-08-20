@@ -22,10 +22,6 @@
             "description": "Strategy for getting video info from YouTube (scrape or api, default: scrape)",
             "required": false
         },
-        "SECRET_YT_API_KEY": {
-            "description": "Your YouTube API v3 key for retrieving video infotmation from YouTube if CONFIG_YOUTUBE_DATA_STRATEGY is set to api",
-            "required": false
-        },
         "CONFIG_TOTALSHARDS": {
             "description": "Total shards to spawn, use \"auto\" or a number (default: auto)",
             "required": false

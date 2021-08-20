@@ -3,7 +3,6 @@ import { ActivityType } from "discord.js";
 export const prefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!"; // Temporary workaround for https://github.com/docker/compose/issues/6951
 export const embedColor = process.env.CONFIG_EMBED_COLOR?.toUpperCase() ?? "7289DA";
 export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
-export const YouTubeDataRetrievingStrategy = process.env.CONFIG_YOUTUBE_DATA_STRATEGY?.toLowerCase() as ("scrape" | "api" | undefined) ?? "scrape";
 export const totalShards: string | number = process.env.CONFIG_TOTALSHARDS?.toLowerCase() ?? "auto";
 export const defaultVolume = Number(process.env.CONFIG_DEFAULT_VOLUME) || 50;
 export const maxVolume = Number(process.env.CONFIG_MAX_VOLUME) || 100;
@@ -25,4 +24,3 @@ export const status = {
 if (searchMaxResults < 1) throw new Error("CONFIG_SEARCH_MAX_RESULTS cannot be smaller than 1");
 if (searchMaxResults > 12) throw new Error("CONFIG_SEARCH_MAX_RESULTS cannot be higher than 12");
 if (totalShards !== "auto" && isNaN(totalShards as unknown as number)) throw new Error("CONFIG_TOTALSHARDS must be a number or \"auto\"");
-if (!["scrape", "api"].includes(YouTubeDataRetrievingStrategy)) throw new Error("CONFIG_YOUTUBE_DATA_STRATEGY must be scrape or api");

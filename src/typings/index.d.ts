@@ -1,6 +1,7 @@
 import { ServerQueue } from "../structures/ServerQueue";
 import { Disc } from "../structures/Disc";
 import { Client as OClient, ClientEvents, Guild as OGuild, Message } from "discord.js";
+import { Readable } from "stream";
 
 export interface ICommandComponent {
     meta: {
@@ -25,7 +26,6 @@ declare module "discord.js" {
         readonly logger: Disc["logger"];
         readonly commands: Disc["commands"];
         readonly events: Disc["events"];
-        readonly youtube: Disc["youtube"];
         readonly util: Disc["util"];
         readonly queue: Disc["queue"];
 
@@ -41,4 +41,5 @@ export interface ISong {
     title: string;
     url: string;
     thumbnail: string;
+    download(): Readable;
 }
