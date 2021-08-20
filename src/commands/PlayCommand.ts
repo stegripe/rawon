@@ -207,13 +207,6 @@ export class PlayCommand extends BaseCommand {
                     adapterCreator: message.guild!.voiceAdapterCreator,
                     selfDeaf: true
                 });
-                connection.on("stateChange", (_, newState) => {
-                    if (newState.status === VoiceConnectionStatus.Disconnected || newState.status === VoiceConnectionStatus.Destroyed) {
-                        message.guild!.queue!.currentPlayer!.stop();
-                        message.guild!.queue = null;
-                        return undefined;
-                    }
-                });
                 message.guild!.queue.connection = connection;
             } catch (error) {
                 message.guild?.queue.songs.clear();
