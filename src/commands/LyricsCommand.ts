@@ -82,7 +82,7 @@ export class LyricsCommand extends BaseCommand {
                                     reaction.users.remove(user).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
                                     if (index + 1 === lyricsArr.length) return undefined;
                                     index++;
-                                    embed.setDescription(lyricsArr[index]).setFooter(`Lyrics page ${index + 1} of ${lyricsArr.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+                                    embed.setDescription(lyricsArr[index].toString()).setFooter(`Lyrics page ${index + 1} of ${lyricsArr.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
                                     msg.edit({ embeds: [embed] }).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
                                     break;
                                 default:
