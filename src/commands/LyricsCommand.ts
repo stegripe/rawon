@@ -96,7 +96,7 @@ export class LyricsCommand extends BaseCommand {
                         });
                     }).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
                 } else {
-                    message.channel.send({ embeds: [embed.setDescription(lyricsArr[index])] }).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
+                    message.channel.send({ embeds: [embed.setDescription(lyricsArr[index].toString())] }).catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
                 }
             })
             .catch(e => this.client.logger.error("LYRICS_CMD_ERR:", e));
