@@ -1,7 +1,6 @@
 import { Disc } from "./structures/Disc";
 import { fetchAllUsers } from "./config";
 import { Intents, LimitedCollection, Options } from "discord.js";
-import "dotenv/config";
 
 const intents = [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS];
 
