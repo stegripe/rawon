@@ -1,5 +1,5 @@
-import { videoInfo } from "ytdl-core";
 import { Result as Playlist } from "ytpl";
+import { videoInfo } from "ytdl-core";
 import { Video } from "ytsr";
 
 export type normalType = (Video | Playlist);

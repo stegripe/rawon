@@ -1,6 +1,6 @@
-import { Result as IPlaylist } from "ytpl";
 import { Item, itemType } from "./Item";
 import { Video } from "./Video";
+import { Result as IPlaylist } from "ytpl";
 
 export class Playlist extends Item {
     public itemCount: number;

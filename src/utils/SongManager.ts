@@ -1,5 +1,5 @@
 import { ISong } from "../typings";
-import { Snowflake, SnowflakeUtil, Collection } from "discord.js";
+import { Collection, Snowflake, SnowflakeUtil } from "discord.js";
 
 export class SongManager extends Collection<Snowflake, ISong> {
     public constructor(data?: ReadonlyArray<readonly [Snowflake, ISong]> | null) {

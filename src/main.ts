@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { createLogger } from "./utils/Logger";
-import { totalShards as configTotalShards, debug } from "./config";
+import { debug, totalShards as configTotalShards } from "./config";
 import { ShardingManager } from "discord.js";
 import { resolve } from "path";
 

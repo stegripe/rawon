@@ -1,7 +1,7 @@
-import { Readable } from "stream";
+import { Item, itemType } from "./Item";
 import ytdl, { chooseFormatOptions, videoInfo } from "ytdl-core";
 import { Video as IVideo } from "ytsr";
-import { Item, itemType } from "./Item";
+import { Readable } from "stream";
 
 type downloadType = "both" | "video" | "audio";
 

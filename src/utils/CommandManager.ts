@@ -1,7 +1,7 @@
 import { ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
-import { Snowflake, Collection, Message, TextChannel } from "discord.js";
+import { Collection, Message, Snowflake, TextChannel } from "discord.js";
 import { promises as fs } from "fs";
 import { parse, resolve } from "path";
 

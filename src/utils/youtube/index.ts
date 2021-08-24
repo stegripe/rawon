@@ -1,9 +1,9 @@
-import { getInfo } from "ytdl-core";
-import ytpl from "ytpl";
-import ytsr, { Video as IVideo } from "ytsr";
+import { resolveYTPlaylistID } from "./utils/resolveYTURL";
 import { Playlist } from "./structures/Playlist";
 import { Video } from "./structures/Video";
-import { resolveYTPlaylistID } from "./utils/resolveYTURL";
+import { getInfo } from "ytdl-core";
+import ytsr, { Video as IVideo } from "ytsr";
+import ytpl from "ytpl";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class YouTube {

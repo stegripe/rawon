@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { ServerQueue } from "../structures/ServerQueue";
 import { Channel, Client, Collection, Guild, Presence, Snowflake, User } from "discord.js";
-import prettyMilliseconds from "pretty-ms";
 import { promises as fs } from "fs";
 import { request } from "https";
+import prettyMilliseconds from "pretty-ms";
 import path from "path";
 
 export class Util {

@@ -1,5 +1,5 @@
 /* eslint-disable no-var, block-scoped-var, @typescript-eslint/restrict-template-expressions */
-import { isUserInTheVoiceChannel, isSameVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
+import { isSameVoiceChannel, isUserInTheVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
 import { resolveYTPlaylistID, resolveYTVideoID } from "../utils/youtube/utils/resolveYTURL";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { loopMode, ServerQueue } from "../structures/ServerQueue";
@@ -9,7 +9,7 @@ import { createEmbed } from "../utils/createEmbed";
 import { YouTube } from "../utils/youtube";
 import { ISong } from "../typings";
 import { AudioPlayerError, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
-import { Util, VoiceChannel, Message, TextChannel, Guild, Collection, Snowflake, StageChannel } from "discord.js";
+import { Collection, Guild, Message, TextChannel, Snowflake, StageChannel, Util, VoiceChannel } from "discord.js";
 import { decodeHTML } from "entities";
 let disconnectTimer: any;
 
