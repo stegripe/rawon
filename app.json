@@ -18,10 +18,6 @@
             "description": "A Discord ID, use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE'S ID THAT YOU DON'T TRUST)",
             "required": false
         },
-        "CONFIG_YOUTUBE_DATA_STRATEGY": {
-            "description": "Strategy for getting video info from YouTube (scrape or api, default: scrape)",
-            "required": false
-        },
         "CONFIG_TOTALSHARDS": {
             "description": "Total shards to spawn, use \"auto\" or a number (default: auto)",
             "required": false
