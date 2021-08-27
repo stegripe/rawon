@@ -35,7 +35,7 @@ OS Uptime          :: ${this.client.util.formatMS(osUptime() * 1000)}
 
 Node.js version    :: ${process.version}
 Discord.js version :: v${version}
-FFmpeg version     :: v${(await this.client.util.getPackageJSON("ffmpeg-static"))["ffmpeg-static"]["binary-release-name"]}
+FFmpeg version     :: v${this.client.util.getFFmpegVersion()}
 YTDL-Core version  :: v${(await this.client.util.getPackageJSON("ytdl-core")).version}
 Opus Encoder       :: ${opusEncoder.pkgMetadata.name} v${opusEncoder.pkgMetadata.version}
 Bot Version        :: v${(await this.client.util.getPackageJSON()).version}

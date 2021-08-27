@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { ServerQueue } from "../structures/ServerQueue";
 import { Channel, Client, Collection, Guild, Presence, Snowflake, User } from "discord.js";
+import { FFmpeg, FFmpegInfo } from "prism-media";
 import { promises as fs } from "fs";
 import { request } from "https";
 import prettyMilliseconds from "pretty-ms";
@@ -37,6 +38,16 @@ export class Util {
     }
 
     public async getOpusEncoder(): Promise<any> {
+        if (this.doesFFmpegHasLibOpus()) {
+            return {
+                encoder: "ffmpeg",
+                pkgMetadata: {
+                    name: "ffmpeg libopus",
+                    version: this.getFFmpegVersion()
+                }
+            };
+        }
+
         const list = ["@discordjs/opus", "opusscript"];
         const errorLog = [];
         for (const name of list) {
@@ -49,6 +60,23 @@ export class Util {
             }
         }
         throw new Error(errorLog.join("\n"));
+    }
+
+    public getFFmpegInfo(): FFmpegInfo {
+        return FFmpeg.getInfo();
+    }
+
+    public getFFmpegVersion(): string {
+        const info = this.getFFmpegInfo();
+
+        // if the ffmpeg-static is used
+        if (info.command.includes("ffmpeg-static")) return info.version.replace("https://johnvansickle.com/ffmpeg/", "");
+
+        return info.version.startsWith("n") ? info.version.slice(1) : info.version;
+    }
+
+    public doesFFmpegHasLibOpus(): boolean {
+        return this.getFFmpegInfo().output.includes("--enable-libopus");
     }
 
     public async getResource<T extends keyof getResourceResourceType>(type: T | keyof getResourceResourceType): Promise<getResourceReturnType<T>> {
