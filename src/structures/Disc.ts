@@ -21,7 +21,7 @@ export class Disc extends BotClient {
 
     public async build(token: string): Promise<this> {
         this.on("ready", () => this.commands.load());
-        this.events.load().catch(e => this.logger.error("LISTENER_LOADER_ERR:", e));
+        this.events.load().catch(e => this.logger.error("EVENTS_LOADER_ERR:", e));
         await this.login(token);
         return this;
     }

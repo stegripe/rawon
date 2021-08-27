@@ -1,8 +1,8 @@
-import { DefineListener } from "../utils/decorators/DefineListener";
-import { BaseListener } from "../structures/BaseListener";
+import { DefineEvent } from "../utils/decorators/DefineEvent";
+import { BaseEvent } from "../structures/BaseEvent";
 
-@DefineListener("debug")
-export class DebugEvent extends BaseListener {
+@DefineEvent("debug")
+export class DebugEvent extends BaseEvent {
     public execute(message: string): void {
         this.client.logger.debug(message);
     }

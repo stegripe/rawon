@@ -1,8 +1,8 @@
-import { DefineListener } from "../utils/decorators/DefineListener";
-import { BaseListener } from "../structures/BaseListener";
+import { DefineEvent } from "../utils/decorators/DefineEvent";
+import { BaseEvent } from "../structures/BaseEvent";
 
-@DefineListener("ready")
-export class ReadyEvent extends BaseListener {
+@DefineEvent("ready")
+export class ReadyEvent extends BaseEvent {
     public execute(): void {
         this.client.logger.info(
             `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} I'm ready to serve ${this.client.guilds.cache.size} guilds ` +

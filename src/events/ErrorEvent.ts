@@ -1,8 +1,8 @@
-import { DefineListener } from "../utils/decorators/DefineListener";
-import { BaseListener } from "../structures/BaseListener";
+import { DefineEvent } from "../utils/decorators/DefineEvent";
+import { BaseEvent } from "../structures/BaseEvent";
 
-@DefineListener("error")
-export class ErrorEvent extends BaseListener {
+@DefineEvent("error")
+export class ErrorEvent extends BaseEvent {
     public execute(error: string): void {
         this.client.logger.error("CLIENT_ERROR:", error);
     }
