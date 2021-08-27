@@ -233,7 +233,7 @@ export class PlayCommand extends BaseCommand {
 
         const playerResource = createAudioResource<any>(songData, { inlineVolume: false });
 
-        songData.on("error", err => { err.message = `YTDLError: ${err.message}`; serverQueue.currentPlayer!.emit("error", new AudioPlayerError(err, playerResource)); });
+        songData.on("error", err => { err.message = `YTDLError: ${err.message}`; });
 
         serverQueue.connection?.subscribe(serverQueue.currentPlayer);
 
