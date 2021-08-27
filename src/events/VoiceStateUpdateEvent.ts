@@ -58,7 +58,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             if (vcMembers.size !== 0) return undefined;
             clearTimeout(queue.timeout!);
             newState.guild.queue!.timeout = null;
-            newState.guild.queue!.playing = false;
             queue.currentPlayer?.pause();
             const timeout = this.client.config.deleteQueueTimeout;
             const duration = this.client.util.formatMS(timeout);
@@ -98,7 +97,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             .setAuthor("Queue Resumed")
                     ]
                 }).then(m => queue.oldVoiceStateUpdateMessage = m.id).catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
-                newState.guild.queue!.playing = true;
                 newState.guild.queue?.currentPlayer?.unpause();
             } catch (e) { this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e); }
         }

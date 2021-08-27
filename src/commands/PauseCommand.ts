@@ -15,7 +15,6 @@ export class PauseCommand extends BaseCommand {
     @isSameVoiceChannel()
     public execute(message: Message): any {
         if (message.guild?.queue?.playing) {
-            message.guild.queue.playing = false;
             message.guild.queue.currentPlayer!.pause();
             return message.channel.send({ embeds: [createEmbed("info", "⏸ **|** The music player has been paused")] });
         }

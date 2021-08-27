@@ -1,6 +1,6 @@
 import { SongManager } from "../utils/SongManager";
 import { Snowflake, StageChannel, TextChannel, Util, VoiceChannel } from "discord.js";
-import { AudioPlayer, VoiceConnection } from "@discordjs/voice";
+import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voice";
 
 export enum loopMode {
     off = 0,
@@ -25,7 +25,6 @@ export class ServerQueue {
     public volume = 0;
     public loopMode = loopMode.disable;
     public timeout: NodeJS.Timeout | null = null;
-    public playing = false;
     private _lastMusicMessageID: Snowflake | null = null;
     private _lastVoiceStateUpdateMessageID: Snowflake | null = null;
     public constructor(public textChannel: TextChannel | null = null, public voiceChannel: VoiceChannel | StageChannel | null = null) {
@@ -47,6 +46,10 @@ export class ServerQueue {
         return Util.flatten(this);
     }
 
+    public get playing(): boolean {
+        return this.currentPlayer!.state.status === AudioPlayerStatus.Playing;
+    }
+
     public get oldMusicMessage(): Snowflake | null {
         return this._lastMusicMessageID;
     }
@@ -59,7 +62,6 @@ export class ServerQueue {
         }
         this._lastMusicMessageID = id;
     }
-
 
     public get oldVoiceStateUpdateMessage(): Snowflake | null {
         return this._lastVoiceStateUpdateMessageID;
