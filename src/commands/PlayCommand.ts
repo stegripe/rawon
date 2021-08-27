@@ -239,7 +239,10 @@ export class PlayCommand extends BaseCommand {
 
         entersState(serverQueue.connection!, VoiceConnectionStatus.Ready, 15 * 1000)
             .then(() => serverQueue.currentPlayer!.play(playerResource))
-            .catch(e => serverQueue.currentPlayer!.emit("error", new AudioPlayerError(e, playerResource)));
+            .catch(e => {
+                if (e.message === "The operation was aborted") e.message = "Could not establish a voice connection within 15 seconds.";
+                serverQueue.currentPlayer!.emit("error", new AudioPlayerError(e, playerResource));
+            });
 
         serverQueue.currentPlayer.on("stateChange", (oldState, newState) => {
             if (newState.status === AudioPlayerStatus.Playing) {
