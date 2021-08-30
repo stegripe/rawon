@@ -1,6 +1,5 @@
 /* eslint-disable no-var, block-scoped-var, @typescript-eslint/restrict-template-expressions */
 import { isSameVoiceChannel, isUserInTheVoiceChannel, isValidVoiceChannel } from "../utils/decorators/MusicHelper";
-import { resolveYTPlaylistID, resolveYTVideoID } from "../utils/youtube/utils/resolveYTURL";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { loopMode, ServerQueue } from "../structures/ServerQueue";
 import { Video } from "../utils/youtube/structures/Video";
@@ -46,9 +45,7 @@ export class PlayCommand extends BaseCommand {
 
         if (/^https?:\/\/((www|music)\.youtube\.com|youtube.com)\/playlist(.*)$/.exec(url)) {
             try {
-                const id = resolveYTPlaylistID(url);
-                if (!id) return message.channel.send({ embeds: [createEmbed("error", "Invalid YouTube Playlist URL")] });
-                const playlist = await YouTube.getPlaylist(id);
+                const playlist = await YouTube.getPlaylist(url);
                 const videos = await playlist.getVideos();
                 const addingPlaylistVideoMessage = await message.channel.send({
                     embeds: [
@@ -92,9 +89,7 @@ export class PlayCommand extends BaseCommand {
             }
         }
         try {
-            const id = resolveYTVideoID(url);
-            if (!id) return message.channel.send({ embeds: [createEmbed("error", "Invalid YouTube Video URL")] });
-            video = await YouTube.getVideo(id);
+            video = await YouTube.getVideo(url);
         } catch (e) {
             try {
                 const videos = await YouTube.searchVideos(searchString, this.client.config.searchMaxResults);
