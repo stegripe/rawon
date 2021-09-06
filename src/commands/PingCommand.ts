@@ -14,8 +14,8 @@ export class PingCommand extends BaseCommand {
             const latency = msg.createdTimestamp - message.createdTimestamp;
             const wsLatency = this.client.ws.ping.toFixed(0);
             const embed = new MessageEmbed()
-                .setAuthor("🏓 PONG", message.client.user?.displayAvatarURL())
                 .setColor(this.searchHex(wsLatency))
+                .setAuthor("🏓 PONG")
                 .addFields({
                     name: "📶 API",
                     value: `**\`${latency}\`** ms`,
