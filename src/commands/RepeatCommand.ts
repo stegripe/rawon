@@ -20,7 +20,7 @@ export class RepeatCommand extends BaseCommand {
         const modeEmoji = ["▶", "🔂", "🔁"];
         if (!args[0]) {
             return message.channel.send(
-                createEmbed("info", `Current mode: "${modeEmoji[message.guild!.queue!.loopMode]} **|** Repeating **\`${modeTypes[message.guild!.queue!.loopMode]}\`**"`)
+                createEmbed("info", `${modeEmoji[message.guild!.queue!.loopMode]} **|** Repeating mode **\`${modeTypes[message.guild!.queue!.loopMode]}\`**`)
             );
         }
 
@@ -31,7 +31,7 @@ export class RepeatCommand extends BaseCommand {
                 .catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
         } else {
             message.guild!.queue!.loopMode = loopMode[mode];
-            message.channel.send(createEmbed("info", `${modeEmoji[message.guild!.queue!.loopMode]} **|** Repeating **\`${modeTypes[message.guild!.queue!.loopMode]}\`**`))
+            message.channel.send(createEmbed("info", `${modeEmoji[message.guild!.queue!.loopMode]} **|** Set repeat mode to **\`${modeTypes[message.guild!.queue!.loopMode]}\`**`))
                 .catch(e => this.client.logger.error("REPEAT_CMD_ERR:", e));
         }
     }
