@@ -2,8 +2,8 @@ import { ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
 import { Collection, Message, Snowflake, TextChannel } from "discord.js";
-import { promises as fs } from "fs";
 import { parse, resolve } from "path";
+import { promises as fs } from "fs";
 
 export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();
@@ -16,7 +16,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                 for (const file of files) {
                     const path = resolve(this.path, file);
                     const command = await this.import(path, this.client, { path });
-                    if (command === undefined) throw new Error(`File ${file} is not a valid command file`);
+                    if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
                     command.meta = Object.assign(command.meta, { path });
                     if (Number(command.meta.aliases?.length) > 0) {
                         command.meta.aliases?.forEach(alias => {
@@ -46,15 +46,14 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send({ embeds: [createEmbed("warn", `${message.author.toString()}, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time`)] })
-                    .then(msg => {
-                        setTimeout(() => msg.delete().catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e)), 3500);
-                    }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
+                message.channel.send(createEmbed("warn", `${message.author.toString()}, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time.`)).then(msg => {
+                    msg.delete({ timeout: 3500 }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
+                }).catch(e => this.client.logger.error("CMD_HANDLER_ERR:", e));
                 return undefined;
             }
 
             timestamps.set(message.author.id, now);
-            setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+            this.client.setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         } else {
             timestamps?.set(message.author.id, now);
             if (this.client.config.owners.includes(message.author.id)) timestamps?.delete(message.author.id);

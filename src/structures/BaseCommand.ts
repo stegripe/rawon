@@ -1,5 +1,6 @@
 import { ICommandComponent } from "../typings";
 import { Client, Message } from "discord.js";
+
 export class BaseCommand implements ICommandComponent {
     public constructor(public client: Client, public meta: ICommandComponent["meta"]) {}
 

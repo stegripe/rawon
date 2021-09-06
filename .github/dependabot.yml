@@ -47,7 +47,3 @@ updates:
   commit-message:
     prefix: docker
     include: scope
-  ignore:
-    - dependency-name: "node"
-      versions: ["<16.x", ">16.x"]
-

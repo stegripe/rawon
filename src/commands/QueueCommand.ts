@@ -14,51 +14,44 @@ export class QueueCommand extends BaseCommand {
     @isMusicQueueExists()
     public execute(message: Message): any {
         const embed = createEmbed("info")
-            .setTitle("Music Queue")
-            .setThumbnail(message.client.user?.avatarURL() as string);
+            .setThumbnail(message.client.user?.avatarURL() as string)
+            .setTitle("Queue List");
 
         let num = 1;
         const songs = message.guild?.queue?.songs.map(s => `**${num++}.** **[${s.title}](${s.url})**`);
         if (Number(message.guild?.queue?.songs.size) > 12) {
-            const indexes: string[][] = this.client.util.chunk(songs!, 12);
+            const indexes: string[] = this.client.util.chunk(songs!, 12);
             let index = 0;
-            embed
-                .setDescription(indexes[index].join("\n"))
-                .setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+            embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
             const reactions = ["◀️", "▶️"];
-            message.channel.send({ embeds: [embed] }).then(msg => {
+            message.channel.send(embed).then(msg => {
                 msg.react("◀️").then(() => {
                     msg.react("▶️").catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
                     const isMessageManageable = (msg.channel as TextChannel).permissionsFor(msg.client.user!)?.has("MANAGE_MESSAGES");
-                    const collector = msg.createReactionCollector({
-                        filter: (reaction, user) => reactions.includes(reaction.emoji.name!) && user.id === message.author.id,
-                        time: 80 * 1000
-                    });
-                    collector.on("collect", (reaction, user) => {
-                        if (isMessageManageable) reaction.users.remove(user).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
-                        switch (reaction.emoji.name!) {
-                            case "◀️":
-                                if (index === 0) return undefined;
-                                index--;
-                                break;
+                    msg.createReactionCollector((reaction, user) => reactions.includes(reaction.emoji.name) && user.id === message.author.id, { time: 80 * 1000 })
+                        .on("collect", (reaction, user) => {
+                            if (isMessageManageable) reaction.users.remove(user).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
+                            switch (reaction.emoji.name) {
+                                case "◀️":
+                                    if (index === 0) return undefined;
+                                    index--;
+                                    break;
 
-                            case "▶️":
-                                if (index + 1 === indexes.length) return undefined;
-                                index++;
-                                break;
-                        }
-                        embed
-                            .setDescription(indexes[index].join("\n"))
-                            .setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
-                        msg.edit({ embeds: [embed] }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
-                    })
+                                case "▶️":
+                                    if (index + 1 === indexes.length) return undefined;
+                                    index++;
+                                    break;
+                            }
+                            embed.setDescription(indexes[index]).setFooter(`Page ${index + 1} of ${indexes.length}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+                            msg.edit(embed).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
+                        })
                         .on("end", () => {
                             if (isMessageManageable) msg.reactions.removeAll().catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
                         });
                 }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
             }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
         } else {
-            message.channel.send({ embeds: [embed.setDescription(songs!.join("\n"))] }).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
+            message.channel.send(embed.setDescription(songs!.join("\n"))).catch(e => this.client.logger.error("QUEUE_CMD_ERR:", e));
         }
     }
 }

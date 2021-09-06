@@ -1,6 +1,6 @@
 import "dotenv/config";
+import { totalShards as configTotalShards, debug } from "./config";
 import { createLogger } from "./utils/Logger";
-import { debug, totalShards as configTotalShards } from "./config";
 import { ShardingManager } from "discord.js";
 import { resolve } from "path";
 
@@ -13,7 +13,7 @@ process.on("unhandledRejection", e => {
 });
 process.on("uncaughtException", e => {
     log.error("UNCAUGHT_EXCEPTION: ", e);
-    log.warn("Uncaught Exception detected, restarting...");
+    log.warn("Uncaught Exception detected. Restarting...");
     process.exit(1);
 });
 
@@ -25,11 +25,11 @@ const manager = new ShardingManager(resolve(__dirname, "bot.js"), {
 });
 
 manager.on("shardCreate", shard => {
-    log.info(`[ShardManager] Shard #${shard.id} has spawned`);
+    log.info(`[ShardManager] Shard #${shard.id} Spawned.`);
     shard.on("disconnect", () => {
-        log.warn("SHARD_DISCONNECTED: ", { stack: `[ShardManager] Shard #${shard.id} has disconnected` });
+        log.warn("SHARD_DISCONNECTED: ", { stack: `[ShardManager] Shard #${shard.id} Disconnected` });
     }).on("reconnecting", () => {
-        log.info(`[ShardManager] Shard #${shard.id} has reconnected`);
+        log.info(`[ShardManager] Shard #${shard.id} Reconnected.`);
     });
-    if (manager.shards.size === manager.totalShards) log.info("[ShardManager] All shards has spawned successfully.");
-}).spawn().catch(e => log.error("SHARD_SPAWN_ERR: ", e));
+    if (manager.shards.size === manager.totalShards) log.info("[ShardManager] All shards spawned successfully.");
+}).spawn(totalShards).catch(e => log.error("SHARD_SPAWN_ERR: ", e));

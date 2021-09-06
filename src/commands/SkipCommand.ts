@@ -1,4 +1,4 @@
-import { isMusicQueueExists, isSameVoiceChannel, isUserInTheVoiceChannel } from "../utils/decorators/MusicHelper";
+import { isUserInTheVoiceChannel, isMusicQueueExists, isSameVoiceChannel } from "../utils/decorators/MusicHelper";
 import { DefineCommand } from "../utils/decorators/DefineCommand";
 import { BaseCommand } from "../structures/BaseCommand";
 import { createEmbed } from "../utils/createEmbed";
@@ -15,16 +15,15 @@ export class SkipCommand extends BaseCommand {
     @isMusicQueueExists()
     @isSameVoiceChannel()
     public execute(message: Message): any {
-        if (message.guild?.queue?.playing === false) message.guild.queue.currentPlayer?.unpause();
-        message.guild!.queue?.currentPlayer!.stop();
+        message.guild!.queue!.playing = true;
+        message.guild?.queue?.connection?.dispatcher.once("speaking", () => message.guild?.queue?.connection?.dispatcher.end());
+        message.guild!.queue?.connection?.dispatcher.resume();
 
         const song = message.guild?.queue?.songs.first();
 
-        message.channel.send({
-            embeds: [
-                createEmbed("info", `⏭ **|** Skipped **[${song!.title}](${song!.url}})**`)
-                    .setThumbnail(song?.thumbnail as string)
-            ]
-        }).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
+        message.channel.send(
+            createEmbed("info", `⏭ **|** Skipped **[${song!.title}](${song!.url}})**`)
+                .setThumbnail(song?.thumbnail as string)
+        ).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
     }
 }
