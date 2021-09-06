@@ -116,7 +116,7 @@ export class PlayCommand extends BaseCommand {
                         createEmbed("info")
                             .setAuthor("Tracks Selection", message.client.user?.displayAvatarURL() as string)
                             .setDescription(
-                                `${videos.map(video => `\`\`\`\n${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\` ` +
+                                `\`\`\`\n${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\` ` +
                                 `Please select one of the results ranging from 1-${this.client.config.searchMaxResults}`
                             )
                             .setFooter("Type cancel or c to cancel tracks selection.")
