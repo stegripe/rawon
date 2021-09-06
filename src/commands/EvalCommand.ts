@@ -42,7 +42,7 @@ export class EvalCommand extends BaseCommand {
             } else { embed.addField("Output", `\`\`\`js\n${output}\`\`\``); }
             void message.channel.send(embed);
         } catch (e) {
-            const error = this.clean(e);
+            const error = this.clean(String(e));
             if (error.length > 1024) {
                 const hastebin = await client.util.hastebin(error);
                 embed.addField("Error", `${hastebin}.js`);
