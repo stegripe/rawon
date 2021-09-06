@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"target": "ES2019",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"lib": ["ES2020"],
+		"strict": true,
+		"outDir": "dist",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"skipLibCheck": true,
+		"noEmitHelpers": true,
+		"importHelpers": true,
+		"resolveJsonModule": true,
+		"typeRoots": ["node_modules/@types", "src/typings"]
+	},
+	"exclude": [],
+	"include": ["src/**/*"]
+}
