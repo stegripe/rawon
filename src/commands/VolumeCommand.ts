@@ -29,6 +29,6 @@ export class VolumeCommand extends BaseCommand {
 
         message.guild!.queue!.volume = Number(args[0]);
         message.guild!.queue!.connection?.dispatcher.setVolume(Number(args[0]) / this.client.config.maxVolume);
-        message.channel.send(createEmbed("info", `🔊 **|** Volume set to ${args[0]}`)).catch(console.error);
+        message.channel.send(createEmbed("info", `🔊 **|** Volume set to **\`${args[0]}\`**`)).catch(console.error);
     }
 }
