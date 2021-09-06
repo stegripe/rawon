@@ -47,7 +47,7 @@
     "@types/node": "^16.7.10",
     "@types/node-fetch": "^2.5.12",
     "@types/semver": "^7.3.8",
-    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.30.0",
     "@zhycorp/eslint-config": "^4.0.0",
     "eslint": "^7.32.0",
