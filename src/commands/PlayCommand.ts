@@ -116,8 +116,8 @@ export class PlayCommand extends BaseCommand {
                         createEmbed("info")
                             .setAuthor("Tracks Selection", message.client.user?.displayAvatarURL() as string)
                             .setDescription(
-                                `\`\`\`\n${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\` ` +
-                                `Please select one of the results ranging from 1-${this.client.config.searchMaxResults}`
+                                `Please select one of the results ranging from 1-${this.client.config.searchMaxResults}\n` +
+                                `\`\`\`\n${videos.map(video => `${++index} - ${this.cleanTitle(video.title)}`).join("\n")}\`\`\``
                             )
                             .setFooter("Type cancel or c to cancel tracks selection.")
                     );
@@ -212,7 +212,7 @@ export class PlayCommand extends BaseCommand {
         if (!song) {
             serverQueue.oldMusicMessage = null; serverQueue.oldVoiceStateUpdateMessage = null;
             serverQueue.textChannel?.send(
-                createEmbed("info", `⏹ **|** Queue is empty. Please use **\`${guild.client.config.prefix}play**\` again to play more music.`)
+                createEmbed("info", `⏹ **|** Queue is empty. Please use **\`${guild.client.config.prefix}play\`** again to play more music.`)
             ).catch(e => this.client.logger.error("PLAY_ERR:", e));
             serverQueue.connection?.disconnect();
             return guild.queue = null;
@@ -232,7 +232,7 @@ export class PlayCommand extends BaseCommand {
             .on("start", () => {
                 serverQueue.playing = true;
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${song.title}" on ${guild.name} started`);
-                serverQueue.textChannel?.send(createEmbed("info", `▶ Start playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
+                serverQueue.textChannel?.send(createEmbed("info", `▶ **|** Start playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail))
                     .then(m => serverQueue.oldMusicMessage = m.id)
                     .catch(e => this.client.logger.error("PLAY_ERR:", e));
             })
