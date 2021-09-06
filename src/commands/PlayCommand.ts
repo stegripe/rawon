@@ -212,7 +212,7 @@ export class PlayCommand extends BaseCommand {
         if (!song) {
             serverQueue.oldMusicMessage = null; serverQueue.oldVoiceStateUpdateMessage = null;
             serverQueue.textChannel?.send(
-                createEmbed("info", `⏹ **|** Queue is empty. Please use **\`${guild.client.config.prefix}play\`** again to play more music.`)
+                createEmbed("info", `⏹ **|** Queue is empty, please use **\`${guild.client.config.prefix}play\`** again to play more music.`)
             ).catch(e => this.client.logger.error("PLAY_ERR:", e));
             serverQueue.connection?.disconnect();
             return guild.queue = null;
