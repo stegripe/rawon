@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/zhycorp/disc-11.git"
   },
-  "license": "BSD-3-Clause",
+  "license": "AGPL-3.0",
   "author": "Zhycorp <support@zhycorp.net> (https://github.com/zhycorp)",
   "main": "dist/main.js",
   "scripts": {
