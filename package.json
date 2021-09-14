@@ -1,9 +1,9 @@
 {
-  "name": "discord-bot-template",
-  "version": "1.0.0",
+  "name": "disc-11",
+  "version": "2.0.0",
   "private": true,
-  "description": "A simple Discord bot template, featured with an awesome new thing on Discord.",
-  "repository": "https://github.com/zhycorp/discord-bot-template",
+  "description": "A dedicated open-source Discord music bot for Zhycorp based from our Discord bot template with more features. Easy to use, and with no coding required.",
+  "repository": "https://github.com/zhycorp/disc-11",
   "license": "BSD-3-Clause",
   "author": "Zhycorp <support@zhycorp.net>",
   "main": "dist/index.js",
