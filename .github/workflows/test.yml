@@ -1,0 +1,53 @@
+name: Lint code & compile test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [">=14.x"]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2.3.4
+  
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2.4.0
+      with:
+        node-version: ${{ matrix.node-version }}
+        check-latest: true
+        
+    - name: Install dependencies
+      run: npm i
+
+    - name: Lint code
+      run: npm run lint
+
+  compile:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [">=14.x"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          check-latest: true
+        
+      - name: Install dependencies
+        run: npm i
+      
+      - name: Test compile
+        run: npm run compile && rm -rf dist
