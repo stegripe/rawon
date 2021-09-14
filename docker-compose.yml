@@ -1,0 +1,19 @@
+networks:
+  external:
+    external: false
+  internal:
+    internal: true
+services:
+  bot:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - .prod.env
+    networks:
+      - internal
+      - external
+    restart: unless-stopped
+    volumes:
+      - "./logs:/app/logs"
+version: "3"
