@@ -1,8 +1,9 @@
 # Disc 11 by Zhycorp
+
 > A dedicated open-source Discord music bot for Zhycorp based from [our Discord bot template](https://github.com/zhycorp/discord-bot-template) with more features. Easy to use, and with no coding required.
 
-<a href="https://zhycorp.net/discord"><img src="https://img.shields.io/discord/332877090003091456?color=7289DA&logo=discord&logoColor=white" alt="Discord Server" /></a>
-<a href="https://discord.com/oauth2/authorize?client_id=690736793682968576&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Disc%2011%230606&plastic&color=7289DA&logo=discord"></a>
+<a href="https://zhycorp.net/discord"><img src="https://img.shields.io/discord/332877090003091456?color=5865F2&logo=discord&logoColor=white" alt="Discord Server" /></a>
+<a href="https://discord.com/oauth2/authorize?client_id=690736793682968576&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Disc%2011%230606&plastic&color=5865F2&logo=discord"></a>
 <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">
 <a href="https://github.com/zhycorp/disc-11/actions?query=workflow%3A%22Lint+code+%26+compile+test%22"><img src="https://github.com/zhycorp/disc-11/workflows/Lint%20code%20&%20compile%20test/badge.svg" alt="CI Status" /></a>
 
@@ -13,7 +14,7 @@
 - A production-ready project, setup the bot without coding.
 
 ## General Setup
-1. Download and install [Node.js](https://nodejs.org) version `16.9.1` or above
+1. Download and install [Node.js](https://nodejs.org) version `16.6.0` or above
 2. Open `.env_example` file and rename it to `.env`
 3. Install required and optional dependencies
 ```sh
