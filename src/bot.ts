@@ -1,8 +1,8 @@
 import { NoStackError } from "./utils/NoStackError";
-import { BotClient } from "./structures/BotClient";
+import { Disc } from "./structures/Disc";
 import { clientOptions } from "./config";
 
-const client = new BotClient(clientOptions);
+const client = new Disc(clientOptions);
 
 process.on("exit", code => {
     client.logger.info(`NodeJS process exited with code ${code}`);

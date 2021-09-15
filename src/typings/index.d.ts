@@ -1,5 +1,6 @@
 import { CommandContext } from "../structures/CommandContext";
-import { BotClient } from "../structures/BotClient";
+import { Disc } from "./structures/Disc";
+
 import { ApplicationCommandData, ApplicationCommandOptionData, ClientEvents, Client as OClient, Collection, Guild as EGuild, MessageEmbed } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "reply" | "followUp";
@@ -49,16 +50,16 @@ export interface ICategoryMeta {
 declare module "discord.js" {
     // @ts-expect-error Override typings
     export interface Client extends OClient {
-        config: BotClient["config"];
-        logger: BotClient["logger"];
-        request: BotClient["request"];
-        commands: BotClient["commands"];
-        events: BotClient["events"];
+        config: Disc["config"];
+        logger: Disc["logger"];
+        request: Disc["request"];
+        commands: Disc["commands"];
+        events: Disc["events"];
 
         build(token: string): Promise<this>;
     }
 
     export interface Guild extends EGuild {
-        client: BotClient;
+        client: Disc;
     }
 }

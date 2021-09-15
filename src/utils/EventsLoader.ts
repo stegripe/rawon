@@ -1,10 +1,10 @@
-import { BotClient } from "../structures/BotClient";
+import { Disc } from "../structures/Disc";
 import { IEvent } from "../typings";
 import { parse, resolve } from "path";
 import { promises as fs } from "fs";
 
 export class EventsLoader {
-    public constructor(public client: BotClient, public path: string) {}
+    public constructor(public client: Disc, public path: string) {}
     public load(): void {
         fs.readdir(resolve(this.path))
             .then(async events => {

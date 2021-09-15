@@ -1,7 +1,7 @@
 import { CommandContext } from "../structures/CommandContext";
 import { ICommandComponent, ICategoryMeta } from "../typings";
-import { BotClient } from "../structures/BotClient";
 import { createEmbed } from "./createEmbed";
+import { Disc } from "../structures/Disc";
 import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
 import { resolve, parse } from "path";
 import { promises as fs } from "fs";
@@ -10,7 +10,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly categories: Collection<string, ICategoryMeta> = new Collection();
     public readonly aliases: Collection<string, string> = new Collection();
     private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
-    public constructor(public client: BotClient, private readonly path: string) { super(); }
+    public constructor(public client: Disc, private readonly path: string) { super(); }
 
     public load(): void {
         fs.readdir(resolve(this.path))
@@ -29,7 +29,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                             for (const file of files) {
                                 const path = resolve(this.path, category, file);
                                 const command = await this.import(path, this.client, { category, path });
-                                if (command === undefined) throw new Error(`File ${file} is not a valid command file`);
+                                if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
                                 command.meta = Object.assign(command.meta, { path, category });
                                 if (Number(command.meta.aliases?.length) > 0) command.meta.aliases?.forEach(alias => this.aliases.set(alias, command.meta.name));
                                 this.set(command.meta.name, command);

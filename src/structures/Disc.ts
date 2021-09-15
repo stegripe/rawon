@@ -7,7 +7,7 @@ import { Client, ClientOptions } from "discord.js";
 import { resolve } from "path";
 import got from "got";
 
-export class BotClient extends Client {
+export class Disc extends Client {
     public readonly config = config;
     public readonly logger = createLogger("bot", this.config.isProd);
     public readonly request = got;
