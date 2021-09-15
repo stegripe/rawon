@@ -1,8 +1,8 @@
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { ColorResolvable } from "discord.js";
 import { createEmbed } from "../../utils/createEmbed";
+import { ColorResolvable } from "discord.js";
 
 @DefineCommand({
     aliases: ["pong", "peng", "pung"],
