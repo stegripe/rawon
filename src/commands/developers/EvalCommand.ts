@@ -24,7 +24,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             let code = ctx.args.slice(0).join(" ");
-            if (!code) return ctx.send({ embeds: [createEmbed("error", "No code were provided", true)] });
+            if (!code) return ctx.send({ embeds: [createEmbed("error", "No code were provided.", true)] });
             let evaled;
             if (code.includes("--silent") && code.includes("--async")) {
                 code = code.replace("--async", "").replace("--silent", "");
@@ -79,7 +79,7 @@ export class EvalCommand extends BaseCommand {
     private clean(text: string): string {
         if (typeof text === "string") {
             return text
-                .replace(new RegExp(process.env.DISCORD_TOKEN!, "g"), "[REDACTED]")
+                .replace(new RegExp(process.env.CONFIG_DISCORD_TOKEN!, "g"), "[REDACTED]")
                 .replace(/`/g, `\`${String.fromCharCode(8203)}`)
                 .replace(/@/g, `@${String.fromCharCode(8203)}`);
         }
