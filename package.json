@@ -26,10 +26,12 @@
     "date-fns": "^2.23.0",
     "discord.js": "^13.1.0",
     "got": "^11.8.2",
+    "node-fetch": "^3.0.0",
     "soundcloud.ts": "^0.4.1",
     "tslib": "^2.3.1",
     "winston": "^3.3.3",
-    "youtube-dl-exec": "^1.2.6"
+    "youtube-dl-exec": "^1.2.6",
+    "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
     "@types/node": "^16.9.1",
