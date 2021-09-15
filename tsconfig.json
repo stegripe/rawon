@@ -10,7 +10,7 @@
 		"allowSyntheticDefaultImports": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"skipLibCheck": true,
+		"skipLibCheck": false,
 		"noEmitHelpers": true,
 		"importHelpers": true,
 		"resolveJsonModule": true,
