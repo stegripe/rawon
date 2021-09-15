@@ -5,6 +5,11 @@ import { ApplicationCommandData, ApplicationCommandOptionData, ClientEvents, Cli
 
 export type MessageInteractionAction = "editReply" | "reply" | "followUp";
 
+export interface QueryData {
+    isURL: boolean;
+    sourceType?: "youtube" | "spotify" | "soundcloud" | "query";
+}
+
 export interface PaginationPayload {
     content?: string;
     pages: string[];
@@ -62,4 +67,11 @@ declare module "discord.js" {
     export interface Guild extends EGuild {
         client: Disc;
     }
+}
+
+export interface ISong {
+    id: string;
+    title: string;
+    url: string;
+    duration: number;
 }
