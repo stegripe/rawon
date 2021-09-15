@@ -1,5 +1,6 @@
 import { CommandContext } from "../structures/CommandContext";
-import { Disc } from "./structures/Disc";
+import { ServerQueue } from "../structures/ServerQueue";
+import { Disc } from "../structures/Disc";
 
 import { ApplicationCommandData, ApplicationCommandOptionData, ClientEvents, Client as OClient, Collection, Guild as EGuild, MessageEmbed } from "discord.js";
 
@@ -66,6 +67,7 @@ declare module "discord.js" {
 
     export interface Guild extends EGuild {
         client: Disc;
+        queue?: ServerQueue;
     }
 }
 
