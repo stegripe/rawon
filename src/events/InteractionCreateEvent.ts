@@ -7,7 +7,7 @@ import { Interaction, Permissions } from "discord.js";
 @DefineEvent("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
     public async execute(interaction: Interaction): Promise<any> {
-        if (!interaction.inGuild()) return;
+        if (!interaction.inGuild() || !this.client.commands.isReady) return;
         if (interaction.isButton()) {
             const val = this.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";

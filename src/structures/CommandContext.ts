@@ -16,6 +16,18 @@ export class CommandContext {
         return Promise.resolve(undefined);
     }
 
+    public async reply(options: string|MessagePayload|MessageOptions): Promise<Message> {
+        if (this.isInteraction()) {
+            if (!(this.context as Interaction).isCommand()) throw new Error("Cannot reply a non-command interaction");
+            if ((this.context as CommandInteraction).replied) throw new Error("Interaction already replied");
+        }
+
+        const rep = await (this.context as Message|CommandInteraction).reply(options).catch(e => ({ error: e }));
+        if (!rep || "error" in rep) throw new Error(`Unable to reply context. Reason: ${rep ? (rep.error as Error).message : "Unknown"}`);
+
+        return rep;
+    }
+
     public async send(options: { askDeletion?: { reference: string } }|string|MessagePayload|MessageOptions|InteractionReplyOptions, type: MessageInteractionAction = "editReply"): Promise<Message> {
         const deletionBtn = new MessageActionRow()
             .addComponents(

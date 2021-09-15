@@ -6,7 +6,7 @@ import { Message, User } from "discord.js";
 @DefineEvent("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
     public async execute(message: Message): Promise<any> {
-        if (message.author.bot || message.channel.type === "DM") return message;
+        if (message.author.bot || message.channel.type === "DM" || !this.client.commands.isReady) return message;
 
         if (message.content.startsWith(this.client.config.prefix)) return this.client.commands.handle(message);
 

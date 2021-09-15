@@ -1,4 +1,4 @@
-import { soundcloud } from "./SoundCloudUtils";
+import { soundcloud } from "./SoundCloudUtil";
 import { QueryData } from "../../typings";
 import { URL } from "url";
 

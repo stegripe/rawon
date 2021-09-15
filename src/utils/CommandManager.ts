@@ -7,6 +7,7 @@ import { resolve, parse } from "path";
 import { promises as fs } from "fs";
 
 export class CommandManager extends Collection<string, ICommandComponent> {
+    public isReady = false;
     public readonly categories: Collection<string, ICategoryMeta> = new Collection();
     public readonly aliases: Collection<string, string> = new Collection();
     private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
@@ -101,7 +102,10 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                 }
             })
             .catch(err => this.client.logger.error("CMD_LOADER_ERR:", err))
-            .finally(() => this.client.logger.info("All categories has been registered."));
+            .finally(() => {
+                this.client.logger.info("All categories has been registered.");
+                this.isReady = true;
+            });
     }
 
     public async handle(message: Message): Promise<any> {
