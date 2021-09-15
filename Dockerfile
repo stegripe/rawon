@@ -1,7 +1,7 @@
 FROM node:16.9.1-alpine as build-stage
 
 # NOTE: Change these as you want
-LABEL name "discord-bot-template (build-stage)"
+LABEL name "disc-11 (build-stage)"
 LABEL maintainer "Zhycorp <support@zhycorp.net>"
 
 WORKDIR /tmp/build
@@ -29,7 +29,7 @@ RUN npm prune --production
 FROM node:16.9.1-alpine
 
 # NOTE: Change these as you want
-LABEL name "discord-bot-template"
+LABEL name "disc-11"
 LABEL maintainer "Zhycorp <support@zhycorp.net>"
 
 WORKDIR /app
