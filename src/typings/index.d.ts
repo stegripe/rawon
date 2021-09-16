@@ -8,7 +8,8 @@ export type MessageInteractionAction = "editReply" | "reply" | "followUp";
 
 export interface QueryData {
     isURL: boolean;
-    sourceType?: "youtube" | "spotify" | "soundcloud" | "query";
+    sourceType?: "youtube" | "spotify" | "soundcloud" | "query" | "unknown";
+    type?: "track" | "playlist" | "unknown";
 }
 
 export interface PaginationPayload {
