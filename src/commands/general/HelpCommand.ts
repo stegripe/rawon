@@ -10,6 +10,7 @@ import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMen
     description: "Shows the command list or information for a specific command",
     name: "help",
     slash: {
+        name: "help",
         options: [
             {
                 type: "STRING",

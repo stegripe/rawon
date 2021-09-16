@@ -9,6 +9,7 @@ import { ColorResolvable } from "discord.js";
     description: "Shows the current ping of the bot",
     name: "ping",
     slash: {
+        name: "ping",
         options: []
     },
     usage: "{prefix}ping"
