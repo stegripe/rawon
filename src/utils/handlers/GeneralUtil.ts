@@ -1,16 +1,161 @@
 import { soundcloud } from "./SoundCloudUtil";
-import { QueryData } from "../../typings";
+import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
+import { youtube } from "./YouTubeUtil";
+import { getInfo } from "./YTDLUtils";
+import { QueryData, ISong, SearchTrackResult } from "../../typings";
 import { URL } from "url";
+import { Video, SearchResult } from "youtubei";
 
-export async function searchTrack(query: string): Promise<any> {
-    const url = new URL(query);
+export async function searchTrack(query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
+    const result: SearchTrackResult = {
+        items: []
+    };
+
     const queryData = checkQuery(query);
     if (queryData.isURL) {
+        const url = new URL(query);
+
         if (queryData.sourceType === "soundcloud") {
-            const tracks = soundcloud.tracks.getV2(url.pathname.substring(1));
-            console.log(tracks);
+            if (queryData.type === "track") {
+                const track = await soundcloud.tracks.getV2(url.toString());
+
+                result.items = [{
+                    duration: track.full_duration,
+                    id: track.id.toString(),
+                    title: track.title,
+                    url: track.permalink_url
+                }];
+            } else if (queryData.type === "playlist") {
+                const playlist = await soundcloud.playlists.getV2(url.toString());
+                const tracks = await Promise.all(playlist.tracks.map((track): ISong => ({
+                    duration: track.full_duration,
+                    id: track.id.toString(),
+                    title: track.title,
+                    url: track.permalink_url
+                })));
+
+                result.items = tracks;
+            }
+
+            result.type = "results";
+        } else if (queryData.sourceType === "youtube") {
+            if (queryData.type === "track") {
+                const track = await youtube.getVideo(url.toString());
+
+                if (track) {
+                    result.items = [{
+                        duration: track.isLiveContent ? 0 : (track as Video).duration,
+                        id: track.id,
+                        title: track.title,
+                        url: `https://youtube.com/watch?v=${track.id}`
+                    }];
+                }
+            } else if (queryData.type === "playlist") {
+                const playlist = await youtube.getPlaylist(url.toString());
+
+                if (playlist) {
+                    const tracks = await Promise.all(playlist.videos.map((track): ISong => ({
+                        duration: track.duration === null ? 0 : track.duration,
+                        id: track.id,
+                        title: track.title,
+                        url: `https://youtube.com/watch?v=${track.id}`
+                    })));
+
+                    result.items = tracks;
+                }
+            }
+
+            result.type = "results";
+        } else if (queryData.sourceType === "spotify") {
+            function sortVideos(preview: Preview|Tracks, videos: SearchResult<"video">): SearchResult<"video"> {
+                return videos.sort((a, b) => {
+                    const isTrack = ("artists" in preview);
+
+                    if ([a.title.toLowerCase(), b.title.toLowerCase()].includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) {
+                        if (isTrack) {
+                            if (preview.artists?.some(x => a.channel?.name.toLowerCase().includes(x.name))) {
+                                return -1;
+                            } else if (preview.artists?.some(x => b.channel?.name.toLowerCase().includes(x.name))) {
+                                return 1;
+                            }
+                        } else if (a.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) {
+                            return -1;
+                        } else if (b.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) {
+                            return 1;
+                        }
+                    }
+
+                    return 0;
+                });
+            }
+
+            if (queryData.type === "track") {
+                const songData = await getPreview(url.toString());
+                const track = sortVideos(songData, await youtube.search(`${songData.artist} - ${songData.title}`, { type: "video" }))[0];
+
+                result.items = [{
+                    duration: track.duration === null ? 0 : track.duration,
+                    id: track.id,
+                    title: track.title,
+                    url: songData.link
+                }];
+            } else if (queryData.type === "playlist") {
+                const songs = await getTracks(url.toString());
+                const tracks = await Promise.all(songs.map(async (x): Promise<ISong> => {
+                    const track = sortVideos(x, await youtube.search(`${x.artists ? `${x.artists.map(y => y.name).join(", ")} - ` : ""}${x.name}`))[0];
+
+                    return {
+                        duration: track.duration === null ? 0 : track.duration,
+                        id: track.id,
+                        title: track.title,
+                        url: x.external_urls.spotify
+                    };
+                }));
+
+                result.items = tracks;
+            }
+
+            result.type = "results";
+        } else {
+            const info = await getInfo(url.toString()).catch(() => undefined);
+
+            result.type = "results";
+            result.items = [{
+                duration: info?.duration ?? 0,
+                id: info?.id ?? "",
+                title: info?.title ?? "Unknown Song",
+                url: info?.url ?? url.toString()
+            }];
+        }
+    } else {
+        result.type = "selection";
+
+        if (source === "soundcloud") {
+            const searchRes = await soundcloud.tracks.searchV2({
+                q: query
+            });
+            const tracks = await Promise.all(searchRes.collection.map((track): ISong => ({
+                duration: track.full_duration,
+                id: track.id.toString(),
+                title: track.title,
+                url: track.permalink_url
+            })));
+
+            result.items = tracks;
+        } else {
+            const searchRes = await youtube.search(query, { type: "video" });
+            const tracks = await Promise.all(searchRes.map((track): ISong => ({
+                duration: track.duration === null ? 0 : track.duration,
+                id: track.id,
+                title: track.title,
+                url: `https://youtube.com/watch?v=${track.id}`
+            })));
+
+            result.items = tracks;
         }
     }
+
+    return result;
 }
 
 export function checkQuery(string: string): QueryData {
