@@ -1,11 +1,14 @@
 import { SongManager } from "../utils/SongManager";
 import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voice";
+import { TextChannel } from "discord.js";
 
 export class ServerQueue {
     public loopMode: 0 | 1 | 2 = 0;
     public connection: VoiceConnection|null = null;
     public player: AudioPlayer|null = null;
     public readonly songs = new SongManager();
+
+    public constructor(public readonly textChannel: TextChannel) {}
 
     public set playing(value: boolean) {
         if (value) {
