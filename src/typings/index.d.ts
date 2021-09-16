@@ -89,4 +89,5 @@ export interface ISong {
 export interface IQueueSong {
     song: ISong;
     index: number;
+    key: string;
 }
