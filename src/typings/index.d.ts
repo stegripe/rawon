@@ -82,4 +82,5 @@ export interface ISong {
     title: string;
     url: string;
     duration: number;
+    thumbnail: string;
 }
