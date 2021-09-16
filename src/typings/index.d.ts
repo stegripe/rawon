@@ -12,6 +12,11 @@ export interface QueryData {
     type?: "track" | "playlist" | "unknown";
 }
 
+export interface SearchTrackResult {
+    type?: "selection"|"results";
+    items: ISong[];
+}
+
 export interface PaginationPayload {
     content?: string;
     pages: string[];
