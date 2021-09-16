@@ -18,6 +18,7 @@ export interface SearchTrackResult {
 }
 
 export interface PaginationPayload {
+    author: string;
     content?: string;
     pages: string[];
     embed: MessageEmbed;
