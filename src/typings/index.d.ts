@@ -2,7 +2,7 @@ import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Disc } from "../structures/Disc";
 
-import { ApplicationCommandData, ApplicationCommandOptionData, ClientEvents, Client as OClient, Collection, Guild as EGuild, MessageEmbed } from "discord.js";
+import { BaseApplicationCommandData, ApplicationCommandOptionData, ClientEvents, Client as OClient, Collection, MessageEmbed } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "reply" | "followUp";
 
@@ -24,8 +24,8 @@ export interface PaginationPayload {
     edit(index: number, embed: MessageEmbed, page: string): unknown;
 }
 
-export interface SlashOption extends ApplicationCommandData {
-    name?: string;
+export interface SlashOption extends BaseApplicationCommandData {
+    name: string;
     description?: string;
     options?: ApplicationCommandOptionData[];
 }
@@ -71,7 +71,7 @@ declare module "discord.js" {
         build(token: string): Promise<this>;
     }
 
-    export interface Guild extends EGuild {
+    export interface Guild {
         client: Disc;
         queue?: ServerQueue;
     }
