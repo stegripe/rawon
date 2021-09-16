@@ -39,7 +39,7 @@ export class HelpCommand extends BaseCommand {
                 .setThumbnail(ctx.guild!.iconURL({ dynamic: true, format: "png", size: 2048 })!);
             this.listEmbed.fields = [];
             for (const category of [...this.client.commands.categories.values()]) {
-                const isDev = this.client.config.devs.includes(ctx.author.id);
+                const isDev = this.client.config.owners.includes(ctx.author.id);
                 const cmds = category.cmds.filter(c => isDev ? true : !c.meta.devOnly).map(c => `\`${c.meta.name}\``);
                 if (cmds.length === 0) continue;
                 if (category.hide && !isDev) continue;
@@ -98,7 +98,7 @@ export class HelpCommand extends BaseCommand {
     private generateSelectMenu(cmd: string, author: string): MessageSelectOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
         const matching = [...this.client.commands.values()].filter(x => {
-            const isDev = this.client.config.devs.includes(author);
+            const isDev = this.client.config.owners.includes(author);
             if (isDev) return x.meta.name.includes(cmd);
             return x.meta.name.includes(cmd) && !x.meta.devOnly;
         }).slice(0, 10).map((x, i) => (
