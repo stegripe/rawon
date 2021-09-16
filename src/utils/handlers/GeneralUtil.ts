@@ -22,6 +22,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
                 result.items = [{
                     duration: track.full_duration,
                     id: track.id.toString(),
+                    thumbnail: track.artwork_url,
                     title: track.title,
                     url: track.permalink_url
                 }];
@@ -30,6 +31,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
                 const tracks = await Promise.all(playlist.tracks.map((track): ISong => ({
                     duration: track.full_duration,
                     id: track.id.toString(),
+                    thumbnail: track.artwork_url,
                     title: track.title,
                     url: track.permalink_url
                 })));
@@ -46,6 +48,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
                     result.items = [{
                         duration: track.isLiveContent ? 0 : (track as Video).duration,
                         id: track.id,
+                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     }];
@@ -57,6 +60,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
                     const tracks = await Promise.all(playlist.videos.map((track): ISong => ({
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
+                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     })));
@@ -96,6 +100,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
                 result.items = [{
                     duration: track.duration === null ? 0 : track.duration,
                     id: track.id,
+                    thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                     title: track.title,
                     url: songData.link
                 }];
@@ -107,6 +112,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
                     return {
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
+                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: x.external_urls.spotify
                     };
@@ -123,6 +129,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
             result.items = [{
                 duration: info?.duration ?? 0,
                 id: info?.id ?? "",
+                thumbnail: info?.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url ?? "",
                 title: info?.title ?? "Unknown Song",
                 url: info?.url ?? url.toString()
             }];
@@ -137,6 +144,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
             const tracks = await Promise.all(searchRes.collection.map((track): ISong => ({
                 duration: track.full_duration,
                 id: track.id.toString(),
+                thumbnail: track.artwork_url,
                 title: track.title,
                 url: track.permalink_url
             })));
@@ -147,6 +155,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
             const tracks = await Promise.all(searchRes.map((track): ISong => ({
                 duration: track.duration === null ? 0 : track.duration,
                 id: track.id,
+                thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                 title: track.title,
                 url: `https://youtube.com/watch?v=${track.id}`
             })));
