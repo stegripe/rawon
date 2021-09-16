@@ -84,3 +84,8 @@ export interface ISong {
     duration: number;
     thumbnail: string;
 }
+
+export interface IQueueSong {
+    song: ISong;
+    index: number;
+}
