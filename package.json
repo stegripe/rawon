@@ -25,6 +25,7 @@
     "@discordjs/voice": "^0.6.0",
     "date-fns": "^2.23.0",
     "discord.js": "^13.1.0",
+    "entities": "^3.0.1",
     "got": "^11.8.2",
     "node-fetch": "^3.0.0",
     "soundcloud.ts": "^0.4.1",
