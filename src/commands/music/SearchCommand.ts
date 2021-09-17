@@ -6,7 +6,7 @@ import { createEmbed } from "../../utils/createEmbed";
 import { SelectMenuInteraction, MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
 
 @DefineCommand({
-    aliases: ["lookup", "sr"],
+    aliases: [],
     contextChat: "Add to queue",
     description: "Play some track using provided query",
     name: "search",
@@ -34,7 +34,7 @@ import { SelectMenuInteraction, MessageActionRow, MessageSelectOptionData, Messa
                         value: "spotify"
                     }
                 ],
-                description: "Where the track should be taken",
+                description: "Where the track should be taken?",
                 name: "source",
                 required: false,
                 type: "STRING"
@@ -68,7 +68,7 @@ export class SearchCommand extends BaseCommand {
         if (!query) {
             return ctx.send({
                 embeds: [
-                    createEmbed("warn", "Please provide some query to search")
+                    createEmbed("warn", "Please provide some query to search.")
                 ]
             });
         }
