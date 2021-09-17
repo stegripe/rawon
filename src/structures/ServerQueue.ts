@@ -1,5 +1,5 @@
-import { LoopMode } from "../typings";
 import { SongManager } from "../utils/SongManager";
+import { LoopMode } from "../typings";
 import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voice";
 import { TextBasedChannels, Snowflake } from "discord.js";
 
