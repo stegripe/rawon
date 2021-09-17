@@ -1,4 +1,4 @@
-import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtils";
+import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";

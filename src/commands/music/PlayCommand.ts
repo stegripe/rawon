@@ -1,5 +1,5 @@
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil";
-import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtils";
+import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { ButtonPagination } from "../../utils/ButtonPagination";
