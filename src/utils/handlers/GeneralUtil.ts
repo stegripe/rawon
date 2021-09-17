@@ -1,10 +1,10 @@
-import { soundcloud } from "./SoundCloudUtil";
 import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
+import { QueryData, ISong, SearchTrackResult } from "../../typings";
+import { soundcloud } from "./SoundCloudUtil";
 import { youtube } from "./YouTubeUtil";
 import { getInfo } from "./YTDLUtils";
-import { QueryData, ISong, SearchTrackResult } from "../../typings";
-import { URL } from "url";
 import { Video, SearchResult } from "youtubei";
+import { URL } from "url";
 
 export async function searchTrack(query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
