@@ -4,6 +4,7 @@ import { TextBasedChannels, Snowflake } from "discord.js";
 
 export class ServerQueue {
     public loopMode: 0 | 1 | 2 = 0;
+    public shuffle = false;
     public lastMusicMsg: Snowflake|null = null;
     public connection: VoiceConnection|null = null;
     public player: AudioPlayer|null = null;
