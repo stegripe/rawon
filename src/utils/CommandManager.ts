@@ -131,16 +131,16 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         } else {
             timestamps?.set(message.author.id, now);
-            if (this.client.config.devs.includes(message.author.id)) timestamps?.delete(message.author.id);
+            if (this.client.config.owners.includes(message.author.id)) timestamps?.delete(message.author.id);
         }
         try {
-            if (command.meta.devOnly && !this.client.config.devs.includes(message.author.id)) return undefined;
+            if (command.meta.devOnly && !this.client.config.owners.includes(message.author.id)) return undefined;
             return command.execute(new CommandContext(message, args));
         } catch (e) {
             this.client.logger.error("COMMAND_HANDLER_ERR:", e);
         } finally {
             // eslint-disable-next-line no-unsafe-finally
-            if (command.meta.devOnly && !this.client.config.devs.includes(message.author.id)) return undefined;
+            if (command.meta.devOnly && !this.client.config.owners.includes(message.author.id)) return undefined;
             this.client.logger.info(
                 `${message.author.tag} [${message.author.id}] is using ${command.meta.name} command from ${command.meta.category!} category ` +
                 `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${message.guild!.name} [${message.guild!.id}]`
