@@ -91,3 +91,5 @@ export interface IQueueSong {
     index: number;
     key: string;
 }
+
+export type LoopMode = "OFF"|"SONG"|"QUEUE";
