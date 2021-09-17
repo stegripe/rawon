@@ -1,6 +1,6 @@
 import { NoStackError } from "./utils/NoStackError";
-import { Disc } from "./structures/Disc";
 import { clientOptions } from "./config";
+import { Disc } from "./structures/Disc";
 
 const client = new Disc(clientOptions);
 
