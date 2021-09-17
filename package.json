@@ -1,0 +1,68 @@
+{
+  "name": "disc-11",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A dedicated open-source Discord music bot for Zhycorp based on Jukebox, easy to use, and with no coding required.",
+  "homepage": "https://github.com/zhycorp/disc-11#readme",
+  "bugs": {
+    "url": "https://github.com/zhycorp/disc-11/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhycorp/disc-11.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Zhycorp <support@zhycorp.net> (https://github.com/zhycorp)",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "npm run lint && npm run compile",
+    "compile": "tsc --build tsconfig.json",
+    "lint": "eslint . --ignore-path .gitignore --ext .ts",
+    "lint:fix": "eslint . --ignore-path .gitignore --ext .ts --fix",
+    "start": "node start.js",
+    "start:dev": "echo [INFO] Sharding disabled when using ts-node && ts-node src/bot"
+  },
+  "eslintConfig": {
+    "extends": "@zhycorp/eslint-config/typescript",
+    "ignorePatterns": "dist/*"
+  },
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "entities": "^3.0.1",
+    "ffmpeg-static": "^4.4.0",
+    "iso8601-duration": "^1.3.0",
+    "node-fetch": "^2.6.1",
+    "opusscript": "^0.0.8",
+    "parse-ms": "^2.1.0",
+    "pretty-ms": "^7.0.1",
+    "semver": "^7.3.5",
+    "tslib": "^2.3.1",
+    "winston": "^3.3.3",
+    "ytdl-core": "^4.9.1",
+    "ytpl": "^2.2.3",
+    "ytsr": "^3.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^16.9.2",
+    "@types/node-fetch": "^2.5.12",
+    "@types/semver": "^7.3.8",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "@zhycorp/eslint-config": "^4.0.0",
+    "eslint": "^7.32.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
+  "optionalDependencies": {
+    "@discordjs/opus": "^0.6.0",
+    "bufferutil": "^4.0.3",
+    "erlpack": "github:hzmifork/erlpack",
+    "libsodium-wrappers": "^0.7.9",
+    "utf-8-validate": "^5.0.5",
+    "zlib-sync": "^0.1.7"
+  },
+  "engines": {
+    "node": ">=14.x"
+  }
+}
