@@ -1,0 +1,49 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:00"
+    timezone: Asia/Jakarta
+  open-pull-requests-limit: 99
+  target-branch: main
+  reviewers:
+  - mzrtamp
+  labels:
+  - dependencies
+  commit-message:
+    prefix: chore
+    include: scope
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:00"
+    timezone: Asia/Jakarta
+  open-pull-requests-limit: 99
+  target-branch: main
+  reviewers:
+  - mzrtamp
+  labels:
+  - gh-actions
+  - dependencies
+  commit-message:
+    prefix: ci
+    include: scope
+- package-ecosystem: docker
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:00"
+    timezone: Asia/Jakarta
+  open-pull-requests-limit: 99
+  target-branch: main
+  reviewers:
+  - mzrtamp
+  labels:
+  - docker
+  - dependencies
+  commit-message:
+    prefix: docker
+    include: scope
