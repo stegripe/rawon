@@ -1,0 +1,11 @@
+services: 
+  bot: 
+    build: "."
+    env_file: 
+      - .env
+    image: "hazmi35/jukebox:latest"
+    restart: unless-stopped
+    volumes: 
+      - "./cache:/app/cache"
+      - "./logs:/app/logs"
+version: "2.4"

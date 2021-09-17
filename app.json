@@ -1,0 +1,98 @@
+{
+    "name": "Disc 11",
+    "description": "A dedicated open-source Discord music bot for Zhycorp based on Jukebox, easy to use, and with no coding required.",
+    "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/disc-11.png",
+    "env": {
+        "SECRET_DISCORD_TOKEN": {
+            "description": "Your Discord bot's token",
+            "required": true
+        },
+        "SECRET_YT_API_KEY": {
+            "description": "Your Youtube API key for retrieving video info from YouTube if CONFIG_YOUTUBE_DATA_STRATEGY is set to api",
+            "required": false
+        },
+        "CONFIG_PREFIX": {
+            "description": "Your bot's prefix",
+            "required": true
+        },
+        "CONFIG_EMBED_COLOR": {
+            "description": "The color for your bot's embed message (hex code without hashtag)"
+        },
+        "CONFIG_STATUS_TYPE": {
+            "description": "What type of status does the bot use (playing, listening, or watching, default: listening)",
+            "required": false
+        },
+        "CONFIG_STATUS_ACTIVITY": {
+            "description": "What status does the bot display (default: \"music on {guildsCount} guilds\", available variables: guildsCount, usersCount, playingCount, and botPrefix). NOTE ON {usersCount} VARIABLE: This only displays cached usersCount, to get full usersCount, please enable CONFIG_FETCH_ALL_USERS",
+            "required": false
+        },
+        "CONFIG_OWNERS": {
+            "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
+            "required": false
+        },
+        "CONFIG_YOUTUBE_DATA_STRATEGY": {
+            "description": "Strategy for getting video info from youtube (scrape, or api, default: scrape)",
+            "required": false
+        },
+        "CONFIG_DISABLE_INVITE_CMD": {
+            "description": "Whether to disable the invite command or not (default: no)",
+            "required": false
+        },
+        "CONFIG_DEFAULT_VOLUME": {
+            "description": "Default volume for music (default: 50)",
+            "required": false
+        },
+        "CONFIG_MAX_VOLUME": {
+            "description": "Max volume allowed for track (default: 100)",
+            "required": false
+        },
+        "CONFIG_DISABLE_SONG_SELECTION": {
+            "description": "Whether to disable selecting tracks on play command, this will automatically selects the first track from search results (default: no)",
+            "required": false
+        },
+        "CONFIG_SEARCH_MAX_RESULTS": {
+            "description": "Maximum tracks to list in tracks selection (default: 10, max: 10)",
+            "required": false
+        },
+        "CONFIG_SELECT_TIMEOUT": {
+            "description": "Select track timeout when searching tracks (in seconds, default: 20 seconds)",
+            "required": false
+        },
+        "CONFIG_ALLOW_DUPLICATE": {
+            "description": "Whether to allow users to add duplicate of tracks (yes or no, default: yes)",
+            "required": false
+        },
+        "CONFIG_CACHE_YOUTUBE_DOWNLOADS": {
+            "description": "Whether to download and cache tracks from youtube (yes or no, default: no)",
+            "required": false
+        },
+        "CONFIG_CACHE_MAX_LENGTH": {
+            "description": "Max track length in seconds that are allowed to be cached (default: 5400 <1 hour 30 minutes>)",
+            "required": false
+        },
+        "CONFIG_DELETE_QUEUE_TIMEOUT": {
+            "description": "Timeout in seconds before queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)",
+            "required": false
+        },
+        "CONFIG_TOTALSHARDS": {
+            "description": "Total shards to spawn, use \"auto\" or a number (default: auto)",
+            "required": false
+        },
+        "CONFIG_FETCH_ALL_USERS": {
+            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users, default: no) (note: You need to enable privileged GUILD_MEMBERS Intents on the developer page)",
+            "required": false
+        },
+        "CONFIG_DEBUG": {
+            "description": "Should logging use debug level? Please note that this is not recommended in production (default: no)",
+            "required": false
+        }
+    },
+    "repository": "https://github.com/zhycorp/disc-11",
+    "stack": "container",
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
+}
