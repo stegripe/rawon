@@ -12,8 +12,8 @@ export function validVC(): any {
         const voiceChannel = ctx.member?.voice.channel;
 
         if (voiceChannel?.id === ctx.guild?.me?.voice.channel?.id) return undefined;
-        if (!voiceChannel?.joinable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.")] });
-        if (!voiceChannel.permissionsFor(ctx.guild!.me!.id)?.has("SPEAK")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **`SPEAK`** in this voice channel, make sure I have the proper permissions.")] });
+        if (!voiceChannel?.joinable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I cannot **`CONNECT`** to your voice channel, make sure I have the proper permissions.")] });
+        if (!voiceChannel.permissionsFor(ctx.guild!.me!.id)?.has("SPEAK")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I cannot **`SPEAK`** in this voice channel, make sure I have the proper permissions.")] });
     });
 }
 
