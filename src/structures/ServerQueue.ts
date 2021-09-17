@@ -1,9 +1,10 @@
 import { SongManager } from "../utils/SongManager";
 import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voice";
-import { TextBasedChannels } from "discord.js";
+import { TextBasedChannels, Snowflake } from "discord.js";
 
 export class ServerQueue {
     public loopMode: 0 | 1 | 2 = 0;
+    public lastMusicMsg: Snowflake|null = null;
     public connection: VoiceConnection|null = null;
     public player: AudioPlayer|null = null;
     public readonly songs = new SongManager();
