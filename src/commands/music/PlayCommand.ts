@@ -5,7 +5,7 @@ import { CommandContext } from "../../structures/CommandContext";
 import { ButtonPagination } from "../../utils/ButtonPagination";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { ServerQueue } from "../../structures/ServerQueue";
-import { getStream } from "../../utils/handlers/YTDLUtils";
+import { getStream } from "../../utils/handlers/YTDLUtil";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong, ISong } from "../../typings";
 import { chunk } from "../../utils/chunk";

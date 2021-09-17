@@ -2,7 +2,7 @@ import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
 import { QueryData, ISong, SearchTrackResult } from "../../typings";
 import { soundcloud } from "./SoundCloudUtil";
 import { youtube } from "./YouTubeUtil";
-import { getInfo } from "./YTDLUtils";
+import { getInfo } from "./YTDLUtil";
 import { Video, SearchResult } from "youtubei";
 import { URL } from "url";
 
