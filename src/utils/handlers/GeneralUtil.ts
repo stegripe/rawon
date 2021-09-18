@@ -1,8 +1,12 @@
-import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
-import { QueryData, ISong, SearchTrackResult } from "../../typings";
+import { Disc } from "../../structures/Disc";
+import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
+import { createEmbed } from "../createEmbed";
 import { soundcloud } from "./SoundCloudUtil";
+import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
 import { youtube } from "./YouTubeUtil";
-import { getInfo } from "./YTDLUtil";
+import { getInfo, getStream } from "./YTDLUtil";
+import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, demuxProbe, entersState, VoiceConnectionStatus } from "@discordjs/voice";
+import { Guild } from "discord.js";
 import { Video, SearchResult } from "youtubei";
 import { URL } from "url";
 
@@ -216,4 +220,70 @@ export function checkQuery(string: string): QueryData {
     }
 
     return result;
+}
+
+export async function play(client: Disc, guild: Guild, nextSong?: string): Promise<void> {
+    const queue = guild.queue;
+    if (!queue) return;
+
+    const wasNull = queue.player === null;
+    if (queue.player === null) queue.player = createAudioPlayer();
+
+    const song = nextSong ? queue.songs.get(nextSong)! : queue.songs.first()!;
+    const probe = await demuxProbe(await getStream(song.song.url));
+    const resource = createAudioResource(probe.stream, { inlineVolume: true, inputType: probe.type, metadata: song });
+
+    queue.connection?.subscribe(queue.player);
+
+    entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
+        .then(() => queue.player?.play(resource))
+        .catch((err: Error) => {
+            if (err.message === "The operation was aborted") err.message = "I couldn't establish a voice connection within 15 seconds.";
+            queue.player?.emit("error", new AudioPlayerError(err, resource));
+        });
+
+    const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
+        client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
+        queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** Started playing **[${newSong.title}](${newSong.url})**`).setThumbnail(newSong.thumbnail)] })
+            .then(m => queue.lastMusicMsg = m.id)
+            .catch(e => client.logger.error("PLAY_ERR:", e));
+    };
+
+    if (!wasNull) {
+        sendStartPlayingMsg(song.song);
+        return;
+    }
+
+    queue.player.on("stateChange", (oldState, newState) => {
+        if ((newState.status === AudioPlayerStatus.Playing) && (oldState.status !== AudioPlayerStatus.Paused)) {
+            const newSong = ((queue.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song;
+            sendStartPlayingMsg(newSong);
+        } else if (newState.status === AudioPlayerStatus.Idle) {
+            client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${song.song.title}" on ${guild.name} has ended`);
+            if (queue.loopMode === "OFF") {
+                queue.songs.delete(song.key);
+            }
+
+            const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random() : (queue.loopMode === "SONG" ? queue.songs.get(song.key) : queue.songs.sortByIndex().filter(x => x.index > song.index).first() ?? queue.songs.sortByIndex().first());
+
+            queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** Stopped playing **[${song.song.title}](${song.song.url})**`).setThumbnail(song.song.thumbnail)] })
+                .then(m => queue.lastMusicMsg = m.id)
+                .catch(e => client.logger.error("PLAY_ERR:", e))
+                .finally(() => {
+                    queue.player = null;
+                    play(client, guild, nextSong?.key).catch(e => {
+                        queue.textChannel.send({ embeds: [createEmbed("error", `An error occurred while trying to play music, because: \`${e}\``, true)] })
+                            .catch(e => client.logger.error("PLAY_ERR:", e));
+                        queue.connection?.disconnect();
+                        return client.logger.error("PLAY_ERR:", e);
+                    });
+                });
+        }
+    })
+        .on("error", err => {
+            queue.textChannel.send({ embeds: [createEmbed("error", `An error occurred while trying to play music, because: \`${err.message}\``)] }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
+            queue.connection?.disconnect();
+            delete guild.queue;
+            client.logger.error("PLAY_ERR:", err);
+        });
 }
