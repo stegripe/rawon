@@ -1,3 +1,5 @@
+![Splash](https://repository-images.githubusercontent.com/236645319/1da444e8-04ad-48a7-aee2-325cb3c7f6a7)
+
 # Disc 11 by Zhycorp
 
 > A dedicated open-source Discord bot for Zhycorp based from [our Discord bot template](https://github.com/zhycorp/discord-bot-template) with more features. Easy to use, and with no coding required.
