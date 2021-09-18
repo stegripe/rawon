@@ -53,9 +53,9 @@ export class PlayCommand extends BaseCommand {
 
         const songs = await searchTrack(url).catch(() => undefined);
         if (!songs || (songs.items.length <= 0)) {
-            if (checkRes.isURL) return ctx.reply({ embeds: [createEmbed("warn", "That URL doesn't have a song data.")] });
+            if (checkRes.isURL) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have a song data.", true)] });
 
-            return ctx.reply({ embeds: [createEmbed("warn", "I couldn't obtain any search results.")] });
+            return ctx.reply({ embeds: [createEmbed("error", "I couldn't obtain any search results.", true)] });
         }
 
         let toQueue = songs.items;
@@ -92,7 +92,7 @@ export class PlayCommand extends BaseCommand {
                 ctx.guild?.queue?.songs.addSong(song);
             }
 
-            const opening = `**Added ${toQueue.length} songs to the queue**\n\n`;
+            const opening = `**Added \`${toQueue.length}\` songs to the queue**\n\n`;
             const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
                 const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)} - [${Util.escapeMarkdown(decodeHTML(song.title))}](${song.url})`));
 
@@ -178,7 +178,7 @@ export class PlayCommand extends BaseCommand {
                     .finally(() => {
                         queue.player = null;
                         this.play(guild, nextSong?.key).catch(e => {
-                            queue.textChannel.send({ embeds: [createEmbed("error", `An error occurred while trying to play music, because: \`${e}\``)] })
+                            queue.textChannel.send({ embeds: [createEmbed("error", `An error occurred while trying to play music, because: \`${e}\``, true)] })
                                 .catch(e => this.client.logger.error("PLAY_ERR:", e));
                             queue.connection?.disconnect();
                             return this.client.logger.error("PLAY_ERR:", e);
