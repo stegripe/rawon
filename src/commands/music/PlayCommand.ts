@@ -170,7 +170,7 @@ export class PlayCommand extends BaseCommand {
                     queue.songs.delete(song.key);
                 }
 
-                const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random() : (queue.loopMode === "SONG" ? queue.songs.get(song.key) : queue.songs.sort((a, b) => a.index - b.index).filter(x => x.index > song.index).first() ?? queue.songs.sort((a, b) => a.index - b.index).first());
+                const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random() : (queue.loopMode === "SONG" ? queue.songs.get(song.key) : queue.songs.sortByIndex().filter(x => x.index > song.index).first() ?? queue.songs.sortByIndex().first());
 
                 queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** Stopped playing **[${song.song.title}](${song.song.url})**`).setThumbnail(song.song.thumbnail)] })
                     .then(m => queue.lastMusicMsg = m.id)
