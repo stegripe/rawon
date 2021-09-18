@@ -16,14 +16,14 @@ export class CommandContext {
         return Promise.resolve(undefined);
     }
 
-    public async reply(options: string|MessagePayload|MessageOptions, autoedit?: boolean): Promise<Message> {
+    public async reply(options: { askDeletion?: { reference: string } }|string|MessagePayload|MessageOptions|InteractionReplyOptions, autoedit?: boolean): Promise<Message> {
         if (this.isInteraction()) {
             if (!(this.context as Interaction).isCommand()) throw new Error("Cannot reply a non-command interaction");
             if ((this.context as CommandInteraction).replied && !autoedit) throw new Error("Interaction already replied");
         }
 
         const context = this.context as Message|CommandInteraction;
-        const rep = await (this.isInteraction() ? ((context as CommandInteraction).replied ? (context as CommandInteraction).editReply : context.reply) : context.reply)(options).catch(e => ({ error: e }));
+        const rep = await this.send(options, this.isInteraction() ? ((context as CommandInteraction).replied ? "editReply" : "reply") : "reply").catch(e => ({ error: e }));
         if (!rep || "error" in rep) throw new Error(`Unable to reply context. Reason: ${rep ? (rep.error as Error).message : "Unknown"}`);
 
         return (rep instanceof Message ? rep : new Message(this.context.client, rep));
