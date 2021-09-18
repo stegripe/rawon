@@ -31,8 +31,8 @@ export class VolumeCommand extends BaseCommand {
 
         if (isNaN(volume)) return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** The current volume is **\`${resVolume.volume}\`**`)] });
 
-        if (volume <= 0) return ctx.reply({ embeds: [createEmbed("error", `Please pause the music instead of setting the volume to **\`${volume}\`**`)] });
-        if (volume > 100) return ctx.reply({ embeds: [createEmbed("error", "I can't set the volume above **\`100\`**")] });
+        if (volume <= 0) return ctx.reply({ embeds: [createEmbed("warn", `Please pause the music instead of setting the volume to **\`${volume}\`**`)] });
+        if (volume > 100) return ctx.reply({ embeds: [createEmbed("error", "I can't set the volume above **\`100\`**", true)] });
 
         resVolume.setVolume(volume / 100);
         return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** Volume set to **\`${volume}\`**`)] });
