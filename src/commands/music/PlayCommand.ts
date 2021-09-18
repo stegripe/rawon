@@ -142,6 +142,8 @@ export class PlayCommand extends BaseCommand {
     private async play(guild: Guild, nextSong?: string): Promise<void> {
         const queue = guild.queue;
         if (!queue) return;
+
+        const wasNull = queue.player === null;
         if (queue.player === null) queue.player = createAudioPlayer();
 
         const song = nextSong ? queue.songs.get(nextSong)! : queue.songs.first()!;
@@ -157,13 +159,22 @@ export class PlayCommand extends BaseCommand {
                 queue.player?.emit("error", new AudioPlayerError(err, resource));
             });
 
+        const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
+            this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
+            queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** Started playing **[${newSong.title}](${newSong.url})**`).setThumbnail(newSong.thumbnail)] })
+                .then(m => queue.lastMusicMsg = m.id)
+                .catch(e => this.client.logger.error("PLAY_ERR:", e));
+        };
+
+        if (!wasNull) {
+            sendStartPlayingMsg(song.song);
+            return;
+        }
+
         queue.player.on("stateChange", (oldState, newState) => {
             if ((newState.status === AudioPlayerStatus.Playing) && (oldState.status !== AudioPlayerStatus.Paused)) {
                 const newSong = ((queue.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song;
-                this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
-                queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** Started playing **[${newSong.title}](${newSong.url})**`).setThumbnail(newSong.thumbnail)] })
-                    .then(m => queue.lastMusicMsg = m.id)
-                    .catch(e => this.client.logger.error("PLAY_ERR:", e));
+                sendStartPlayingMsg(newSong);
             } else if (newState.status === AudioPlayerStatus.Idle) {
                 this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${song.song.title}" on ${guild.name} has ended`);
                 if (queue.loopMode === "OFF") {
