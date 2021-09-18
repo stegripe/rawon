@@ -2,7 +2,7 @@ import { ActivityType, ClientOptions, ClientPresenceStatus, ColorResolvable, Int
 
 export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
-    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS],
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_VOICE_STATES],
     makeCache: Options.cacheWithLimits({
         MessageManager: {
             maxSize: Infinity,
