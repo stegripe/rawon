@@ -6,13 +6,13 @@
   "repository": "https://github.com/zhycorp/disc-11",
   "license": "BSD-3-Clause",
   "author": "Zhycorp <support@zhycorp.net>",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "npm run lint && npm run compile",
     "compile": "tsc --build tsconfig.json",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "start": "node -r dotenv/config dist/index.js",
+    "start": "node .",
     "start:dev": "ts-node -r dotenv/config src/bot.ts"
   },
   "eslintConfig": {
