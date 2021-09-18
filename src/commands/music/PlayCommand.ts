@@ -61,7 +61,7 @@ export class PlayCommand extends BaseCommand {
         let toQueue = songs.items;
         if (songs.type === "selection") {
             const selectMenu = new MessageSelectMenu()
-                .setCustomId("MUSIC_SELECTION")
+                .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
                 .addOptions(toQueue.map((v, i) => ({
                     label: (v.title.length > 100) ? `${v.title.slice(0, 100)}...` : v.title,
                     value: `MUSIC-${i}`
