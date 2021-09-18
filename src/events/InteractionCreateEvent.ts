@@ -47,6 +47,7 @@ export class InteractionCreateEvent extends BaseEvent {
             const val = this.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
+            const exec = (val.split("_")[2] ?? "yes") === "yes";
             if (interaction.user.id !== user) {
                 void interaction.reply({
                     ephemeral: true,
@@ -55,7 +56,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     ]
                 });
             }
-            if (cmd && user === interaction.user.id) {
+            if (cmd && user === interaction.user.id && exec) {
                 const command = this.client.commands.filter(x => x.meta.slash !== undefined).find(x => x.meta.name === cmd);
                 if (command) {
                     context.additionalArgs.set("values", interaction.values);
