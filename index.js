@@ -16,6 +16,8 @@ if (isGlitch) {
     }).listen(process.env.PORT);
 }
 
+start();
+
 function start() {
     if (isGlitch) {
         console.info("[INFO] Glitch environment detected, trying to compile...");
