@@ -6,7 +6,7 @@
   "repository": "https://github.com/zhycorp/disc-11",
   "license": "BSD-3-Clause",
   "author": "Zhycorp <support@zhycorp.net>",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "npm run lint && npm run compile",
     "compile": "tsc --build tsconfig.json",
