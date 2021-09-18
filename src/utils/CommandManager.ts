@@ -121,7 +121,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send({ embeds: [createEmbed("error", `${message.author.toString()}, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time.`, true)] }).then(msg => {
+                message.channel.send({ embeds: [createEmbed("warn", `⚠️ **|** ${message.author.toString()}, please wait **\`${timeLeft.toFixed(1)}\`** of cooldown time.`, true)] }).then(msg => {
                     void msg.delete().then(m => setTimeout(() => m.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)), 3500));
                 }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
                 return undefined;
