@@ -12,7 +12,7 @@
     "compile": "tsc --build tsconfig.json",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "start": "node -r dotenv/config dist/index.js",
+    "start": "node .",
     "start:dev": "ts-node -r dotenv/config src/bot.ts"
   },
   "eslintConfig": {
