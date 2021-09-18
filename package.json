@@ -2,7 +2,7 @@
   "name": "disc-11",
   "version": "2.0.0-dev",
   "private": true,
-  "description": "A dedicated open-source Discord music bot for Zhycorp based from our Discord bot template with more features. Easy to use, and with no coding required.",
+  "description": "A dedicated open-source Discord bot for Zhycorp based from our Discord bot template with more features. Easy to use, and with no coding required.",
   "repository": "https://github.com/zhycorp/disc-11",
   "license": "BSD-3-Clause",
   "author": "Zhycorp <support@zhycorp.net>",
