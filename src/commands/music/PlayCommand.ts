@@ -103,7 +103,7 @@ export class PlayCommand extends BaseCommand {
             return new ButtonPagination(msg, {
                 author: ctx.author.id,
                 edit: (i, e, p) => {
-                    embed.setDescription(`${opening}${p}`);
+                    e.setDescription(`${opening}${p}`);
                 },
                 embed,
                 pages
