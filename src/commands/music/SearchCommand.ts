@@ -80,7 +80,7 @@ export class SearchCommand extends BaseCommand {
         // const tracks = ...
         // if (!tracks.length) { ... }
         await ctx.send({
-            content: `Please select some tracks`,
+            content: "Please select some tracks",
             components: [
                 new MessageActionRow()
                     .addComponents(
