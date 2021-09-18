@@ -61,7 +61,7 @@ export class PlayCommand extends BaseCommand {
         let toQueue = songs.items;
         if (songs.type === "selection") {
             const selectMenu = new MessageSelectMenu()
-                .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
+                .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
                 .addOptions(toQueue.map((v, i) => ({
                     label: (v.title.length > 100) ? `${v.title.slice(0, 100)}...` : v.title,
                     value: `MUSIC-${i}`
@@ -99,8 +99,9 @@ export class PlayCommand extends BaseCommand {
                 return texts.join("\n");
             }));
             const embed = createEmbed("info", opening);
+            const msg = await ctx.reply({ embeds: [embed] }, true);
 
-            return new ButtonPagination(ctx.context, {
+            return new ButtonPagination(msg, {
                 author: ctx.author.id,
                 edit: (i, e, p) => {
                     embed.setDescription(`${opening}${p}`);
@@ -134,6 +135,8 @@ export class PlayCommand extends BaseCommand {
                 embeds: [createEmbed("error", `I couldn't join the voice channel, because: \`${(error as Error).message}\``)]
             }).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
         }
+
+        void this.play(ctx.guild!);
     }
 
     private async play(guild: Guild, nextSong?: string): Promise<void> {
