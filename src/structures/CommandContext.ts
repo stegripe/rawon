@@ -18,7 +18,7 @@ export class CommandContext {
 
     public async reply(options: { askDeletion?: { reference: string } }|string|MessagePayload|MessageOptions|InteractionReplyOptions, autoedit?: boolean): Promise<Message> {
         if (this.isInteraction()) {
-            if ((this.context as CommandInteraction).replied && !autoedit) throw new Error("Interaction already replied");
+            if ((this.context as Interaction).isCommand() && (this.context as CommandInteraction).replied && !autoedit) throw new Error("Interaction already replied");
         }
 
         const context = this.context as Message|CommandInteraction;
