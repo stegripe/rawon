@@ -24,7 +24,7 @@ import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMen
 export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")
         .setAuthor(`${this.client.user!.username} - Command List`, this.client.user?.displayAvatarURL() as string)
-        .setFooter(`${this.client.config.prefix}help <command> to get more information on a specific command`, "https://raw.githubusercontent.com/Hazmi35/jukebox/main/.github/images/info.png");
+        .setFooter(`${this.client.config.prefix}help <command> to get more information on a specific command`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
 
     private readonly infoEmbed = createEmbed("info")
         .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
@@ -90,7 +90,7 @@ export class HelpCommand extends BaseCommand {
                     .addField("Description", `${command.meta.description!}`, true)
                     .addField("Aliases", Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") as string : "None.", false)
                     .addField("Usage", `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.prefix)}\`**`, true)
-                    .setFooter(`<> = required | [] = optional ${command.meta.devOnly ? "(developer-only command)" : ""}`, "https://raw.githubusercontent.com/Hazmi35/jukebox/main/.github/images/info.png")
+                    .setFooter(`<> = required | [] = optional ${command.meta.devOnly ? "(developer-only command)" : ""}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png")
             ]
         }, "editReply");
     }
