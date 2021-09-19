@@ -1,7 +1,6 @@
 import { Disc } from "../../structures/Disc";
 import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
 import { createEmbed } from "../createEmbed";
-import { soundcloud } from "./SoundCloudUtil";
 import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
 import { youtube } from "./YouTubeUtil";
 import { getInfo, getStream } from "./YTDLUtil";
@@ -10,7 +9,7 @@ import { Guild } from "discord.js";
 import { Video, SearchResult } from "youtubei";
 import { URL } from "url";
 
-export async function searchTrack(query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
+export async function searchTrack(client: Disc, query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
         items: []
     };
@@ -21,7 +20,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
 
         if (queryData.sourceType === "soundcloud") {
             if (queryData.type === "track") {
-                const track = await soundcloud.tracks.getV2(url.toString());
+                const track = await client.soundcloud.tracks.getV2(url.toString());
 
                 result.items = [{
                     duration: track.full_duration,
@@ -31,7 +30,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
                     url: track.permalink_url
                 }];
             } else if (queryData.type === "playlist") {
-                const playlist = await soundcloud.playlists.getV2(url.toString());
+                const playlist = await client.soundcloud.playlists.getV2(url.toString());
                 const tracks = await Promise.all(playlist.tracks.map((track): ISong => ({
                     duration: track.full_duration,
                     id: track.id.toString(),
@@ -142,7 +141,7 @@ export async function searchTrack(query: string, source: "soundcloud"|"youtube"|
         result.type = "selection";
 
         if (source === "soundcloud") {
-            const searchRes = await soundcloud.tracks.searchV2({
+            const searchRes = await client.soundcloud.tracks.searchV2({
                 q: query
             });
             const tracks = await Promise.all(searchRes.collection.map((track): ISong => ({
