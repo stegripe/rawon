@@ -1,4 +1,5 @@
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
+import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { ButtonPagination } from "../../utils/ButtonPagination";
@@ -15,10 +16,9 @@ import { createEmbed } from "../../utils/createEmbed";
     usage: "{prefix}queue"
 })
 export class QueueCommand extends BaseCommand {
+    @haveQueue()
     public async execute(ctx: CommandContext): Promise<any> {
-        if (!ctx.guild?.queue) return ctx.reply({ embeds: [createEmbed("warn", "There is nothing playing.")] });
-
-        const songs = ctx.guild.queue.songs.sortByIndex();
+        const songs = ctx.guild!.queue!.songs.sortByIndex();
         const pages = await Promise.all(chunk([...songs.values()], 10).map(async (s, n) => {
             const names = await Promise.all(s.map((song, i) => `${(n * 10) + (i + 1)} - [${song.song.title}](${song.song.url})`));
 
