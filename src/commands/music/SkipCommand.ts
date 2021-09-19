@@ -1,5 +1,5 @@
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
-import { haveQueue } from "../../utils/decorators/MusicUtil";
+import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
@@ -14,7 +14,9 @@ import { createEmbed } from "../../utils/createEmbed";
     usage: "{prefix}skip"
 })
 export class SkipCommand extends BaseCommand {
+    @inVC()
     @haveQueue()
+    @sameVC()
     public execute(ctx: CommandContext): any {
         const song = ctx.guild!.queue!.songs.first()!;
 
