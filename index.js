@@ -9,11 +9,25 @@ const isGlitch = (
     process.env.API_SERVER_EXTERNAL !== undefined &&
     process.env.PROJECT_REMIX_CHAIN !== undefined);
 
+const isReplit = (
+    process.env.REPLIT_DB_URL !== undefined &&
+    process.env.REPL_ID !== undefined &&
+    process.env.REPL_IMAGE !== undefined &&
+    process.env.REPL_LANGUAGE !== undefined &&
+    process.env.REPL_OWNER !== undefined &&
+    process.env.REPL_PUBKEYS !== undefined &&
+    process.env.REPL_SLUG !== undefined)
+
 if (isGlitch) {
     new Server((req, res) => {
         const now = new Date().toLocaleString("en-US");
         res.end(`OK (200) - ${now}`);
     }).listen(process.env.PORT);
+} else if (isReplit && (Number(process.version.split(".")[0]) < 16)) {
+    console.info("[INFO] Repl doesn't use NodeJS v16 or newer. Installing NodeJS v16...");
+    execSync(`npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
+    console.info("[INFO] NodeJS v16 installed. Please, re-run the bot.");
+    process.exit(1);
 }
 
 start();
