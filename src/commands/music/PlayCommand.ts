@@ -50,7 +50,7 @@ export class PlayCommand extends BaseCommand {
             return ctx.reply({ embeds: [createEmbed("warn", `The music player is already playing to **${ctx.guild.channels.cache.get(ctx.guild.queue.connection?.joinConfig.channelId as string)?.name ?? "#unknown-channel"}** voice channel.`)] });
         }
 
-        const songs = await searchTrack(url).catch(() => undefined);
+        const songs = await searchTrack(this.client, url).catch(() => undefined);
         if (!songs || (songs.items.length <= 0)) {
             if (checkRes.isURL) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have a song data.", true)] });
 
