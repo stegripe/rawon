@@ -1,6 +1,12 @@
 import { createEmbed } from "../createEmbed";
 import { Inhibit } from "./Inhibit";
 
+export function haveQueue(): any {
+    return Inhibit(ctx => {
+        if (!ctx.guild?.queue) return ctx.reply({ embeds: [createEmbed("warn", "There is nothing playing.")] });
+    });
+}
+
 export function inVC(): any {
     return Inhibit(ctx => {
         if (!ctx.member?.voice.channel) return ctx.reply({ embeds: [createEmbed("warn", "Sorry, but you need to be in a voice channel to do that.")] });
