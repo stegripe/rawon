@@ -1,13 +1,18 @@
+import { ButtonPagination } from "../ButtonPagination";
+import { createEmbed } from "../createEmbed";
+import { chunk } from "../chunk";
+import { CommandContext } from "../../structures/CommandContext";
+import { Disc } from "../../structures/Disc";
+import { ServerQueue } from "../../structures/ServerQueue";
 import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
 import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
-import { getInfo, getStream } from "./YTDLUtil";
-import { createEmbed } from "../createEmbed";
-import { Disc } from "../../structures/Disc";
 import { youtube } from "./YouTubeUtil";
-import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, demuxProbe, entersState, VoiceConnectionStatus } from "@discordjs/voice";
-import { Video, SearchResult } from "youtubei";
-import { Guild } from "discord.js";
+import { getInfo, getStream } from "./YTDLUtil";
+import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, demuxProbe, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
+import { decodeHTML } from "entities";
+import { Guild, Util, VoiceChannel, StageChannel } from "discord.js";
 import { URL } from "url";
+import { Video, SearchResult } from "youtubei";
 
 export async function searchTrack(client: Disc, query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
@@ -219,6 +224,59 @@ export function checkQuery(string: string): QueryData {
     }
 
     return result;
+}
+
+export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel|StageChannel): Promise<any> {
+    async function sendPagination(): Promise<any> {
+        for (const song of toQueue) {
+            ctx.guild?.queue?.songs.addSong(song);
+        }
+
+        const opening = `**Added \`${toQueue.length}\` songs to the queue**\n\n`;
+        const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
+            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)} - [${Util.escapeMarkdown(decodeHTML(song.title))}](${song.url})`));
+
+            return texts.join("\n");
+        }));
+        const embed = createEmbed("info", opening);
+        const msg = await ctx.reply({ embeds: [embed] }, true);
+
+        return new ButtonPagination(msg, {
+            author: ctx.author.id,
+            edit: (i, e, p) => {
+                e.setDescription(`${opening}${p}`).setFooter(`Page ${i + 1} of ${pages.length}`);
+            },
+            embed,
+            pages
+        }).start();
+    }
+
+    if (ctx.guild?.queue) {
+        return sendPagination();
+    }
+
+    ctx.guild!.queue = new ServerQueue(ctx.channel!);
+    await sendPagination();
+
+    try {
+        const connection = joinVoiceChannel({
+            adapterCreator: ctx.guild!.voiceAdapterCreator,
+            channelId: voiceChannel.id,
+            guildId: ctx.guild!.id,
+            selfDeaf: true
+        });
+        ctx.guild!.queue.connection = connection;
+    } catch (error) {
+        ctx.guild?.queue.songs.clear();
+        delete ctx.guild!.queue;
+
+        client.logger.error("PLAY_CMD_ERR:", error);
+        return ctx.channel!.send({
+            embeds: [createEmbed("error", `I can't join to the voice channel, because: \`${(error as Error).message}\``)]
+        }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
+    }
+
+    void play(client, ctx.guild!);
 }
 
 export async function play(client: Disc, guild: Guild, nextSong?: string): Promise<void> {
