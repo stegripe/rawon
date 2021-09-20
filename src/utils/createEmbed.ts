@@ -4,7 +4,7 @@ import { ColorResolvable, MessageEmbed } from "discord.js";
 type hexColorsType = "info" | "warn" | "error" | "success";
 const hexColors: Record<hexColorsType, string> = {
     error: "RED",
-    info: embedColor as string,
+    info: embedColor,
     success: "GREEN",
     warn: "YELLOW"
 };
