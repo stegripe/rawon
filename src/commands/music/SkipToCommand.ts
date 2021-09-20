@@ -1,14 +1,14 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
+import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { IQueueSong } from "../../typings";
-import { createEmbed } from "../../utils/createEmbed";
 import { play } from "../../utils/handlers/GeneralUtil";
+import { createEmbed } from "../../utils/createEmbed";
+import { IQueueSong } from "../../typings";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 
 @DefineCommand({
-    aliases: ["st"],
+    aliases: [],
     description: "Skip to specific position in the queue",
     name: "skipto",
     slash: {
@@ -42,7 +42,7 @@ export class SkipToCommand extends BaseCommand {
 
         const songs = [...ctx.guild!.queue!.songs.sortByIndex().values()];
         const targetType = ctx.isInteraction() ? (ctx.options?.getSubcommand() ?? ctx.options?.getNumber("Position")) : ctx.args[0];
-        if (!["first", "last"].includes(String(targetType).toLowerCase()) && (!isNaN(Number(targetType)) && !songs[Number(targetType) - 1])) return ctx.reply({ embeds: [createEmbed("error", "Unable to find song in that position.")] });
+        if (!["first", "last"].includes(String(targetType).toLowerCase()) && (!isNaN(Number(targetType)) && !songs[Number(targetType) - 1])) return ctx.reply({ embeds: [createEmbed("error", "Unable to find song in that position.", true)] });
 
         let song: IQueueSong;
         if (String(targetType).toLowerCase() === "first") {
@@ -53,7 +53,7 @@ export class SkipToCommand extends BaseCommand {
             song = songs[Number(targetType) - 1];
         }
 
-        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) return ctx.reply({ embeds: [createEmbed("error", "You can't skip to currently playing music.")] });
+        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) return ctx.reply({ embeds: [createEmbed("error", "You can't skip to current playing music.", true)] });
 
         void play(this.client, ctx.guild!, song.key);
 

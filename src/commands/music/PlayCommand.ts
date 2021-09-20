@@ -54,7 +54,7 @@ export class PlayCommand extends BaseCommand {
         if (!songs || (songs.items.length <= 0)) {
             if (checkRes.isURL) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have a song data.", true)] });
 
-            return ctx.reply({ embeds: [createEmbed("error", "I couldn't obtain any search results.", true)] });
+            return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
         }
 
         let toQueue = songs.items;
@@ -131,7 +131,7 @@ export class PlayCommand extends BaseCommand {
 
             this.client.logger.error("PLAY_CMD_ERR:", error);
             return ctx.channel!.send({
-                embeds: [createEmbed("error", `I couldn't join the voice channel, because: \`${(error as Error).message}\``)]
+                embeds: [createEmbed("error", `I can't join the voice channel, because: \`${(error as Error).message}\``)]
             }).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
         }
 
