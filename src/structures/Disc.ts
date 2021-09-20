@@ -1,8 +1,8 @@
+import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import { CommandManager } from "../utils/CommandManager";
 import { EventsLoader } from "../utils/EventsLoader";
 import { createLogger } from "../utils/Logger";
 import { formatMS } from "../utils/formatMS";
-import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
 import { resolve } from "path";
