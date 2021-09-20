@@ -1,16 +1,11 @@
-import { checkQuery, play, searchTrack } from "../../utils/handlers/GeneralUtil";
+import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
-import { ButtonPagination } from "../../utils/ButtonPagination";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { ServerQueue } from "../../structures/ServerQueue";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
-import { chunk } from "../../utils/chunk";
-import { joinVoiceChannel } from "@discordjs/voice";
-import { MessageSelectMenu, MessageActionRow, Util } from "discord.js";
-import { decodeHTML } from "entities";
+import { MessageSelectMenu, MessageActionRow } from "discord.js";
 
 @DefineCommand({
     description: "Play some music",
@@ -86,55 +81,6 @@ export class PlayCommand extends BaseCommand {
             }));
         }
 
-        async function sendPagination(): Promise<any> {
-            for (const song of toQueue) {
-                ctx.guild?.queue?.songs.addSong(song);
-            }
-
-            const opening = `**Added \`${toQueue.length}\` songs to the queue**\n\n`;
-            const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
-                const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)} - [${Util.escapeMarkdown(decodeHTML(song.title))}](${song.url})`));
-
-                return texts.join("\n");
-            }));
-            const embed = createEmbed("info", opening);
-            const msg = await ctx.reply({ embeds: [embed] }, true);
-
-            return new ButtonPagination(msg, {
-                author: ctx.author.id,
-                edit: (i, e, p) => {
-                    e.setDescription(`${opening}${p}`).setFooter(`Page ${i + 1} of ${pages.length}`);
-                },
-                embed,
-                pages
-            }).start();
-        }
-
-        if (ctx.guild?.queue) {
-            return sendPagination();
-        }
-
-        ctx.guild!.queue = new ServerQueue(ctx.channel!);
-        await sendPagination();
-
-        try {
-            const connection = joinVoiceChannel({
-                adapterCreator: ctx.guild!.voiceAdapterCreator,
-                channelId: voiceChannel.id,
-                guildId: ctx.guild!.id,
-                selfDeaf: true
-            });
-            ctx.guild!.queue.connection = connection;
-        } catch (error) {
-            ctx.guild?.queue.songs.clear();
-            delete ctx.guild!.queue;
-
-            this.client.logger.error("PLAY_CMD_ERR:", error);
-            return ctx.channel!.send({
-                embeds: [createEmbed("error", `I can't join to the voice channel, because: \`${(error as Error).message}\``)]
-            }).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
-        }
-
-        void play(this.client, ctx.guild!);
+        return handleVideos(this.client, ctx, toQueue, voiceChannel);
     }
 }
