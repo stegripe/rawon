@@ -11,14 +11,14 @@ import { User } from "discord.js";
         name: "unban",
         options: [
             {
-                description: "Member ID to be unbanned",
+                description: "Who do you like to unban?",
                 name: "MemberID",
                 required: true,
                 type: "STRING"
             }
         ]
     },
-    usage: "{prefix}unban <user|user-id>"
+    usage: "{prefix}unban <id>"
 })
 export class UnBanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {
@@ -30,7 +30,7 @@ export class UnBanCommand extends BaseCommand {
         const resolved = ctx.guild.bans.resolve(user?.id as string);
 
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
-        if (!resolved) return ctx.reply({ embeds: [createEmbed("error", "That user is not banned.")] });
+        if (!resolved) return ctx.reply({ embeds: [createEmbed("error", "That user is not banned.", true)] });
 
         await ctx.guild.bans.remove(user.id);
         return ctx.reply({ embeds: [createEmbed("success", `**${user.tag}** has been **\`UNBANNED\`** from the server.`, true)] });
