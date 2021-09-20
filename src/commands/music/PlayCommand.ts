@@ -52,7 +52,7 @@ export class PlayCommand extends BaseCommand {
 
         const songs = await searchTrack(this.client, url).catch(() => undefined);
         if (!songs || (songs.items.length <= 0)) {
-            if (checkRes.isURL) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have a song data.", true)] });
+            if (checkRes.isURL) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have any song data.", true)] });
 
             return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
         }
@@ -103,7 +103,7 @@ export class PlayCommand extends BaseCommand {
             return new ButtonPagination(msg, {
                 author: ctx.author.id,
                 edit: (i, e, p) => {
-                    e.setDescription(`${opening}${p}`).setFooter(`Page ${i + 1}/${pages.length}`);
+                    e.setDescription(`${opening}${p}`).setFooter(`Page ${i + 1} of ${pages.length}`);
                 },
                 embed,
                 pages
@@ -131,7 +131,7 @@ export class PlayCommand extends BaseCommand {
 
             this.client.logger.error("PLAY_CMD_ERR:", error);
             return ctx.channel!.send({
-                embeds: [createEmbed("error", `I can't join the voice channel, because: \`${(error as Error).message}\``)]
+                embeds: [createEmbed("error", `I can't join to the voice channel, because: \`${(error as Error).message}\``)]
             }).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
         }
 
