@@ -1,4 +1,4 @@
-import { ActivityType, ClientOptions, ClientPresenceStatus, ColorResolvable, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
+import { ActivityType, ClientOptions, ClientPresenceStatus, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
 
 export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
@@ -25,8 +25,8 @@ export const clientOptions: ClientOptions = {
 };
 export const defaultPrefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!";
 export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
-export const embedColor = process.env.CONFIG_EMBED_COLOR?.toUpperCase() ?? "3CAAFF" as ColorResolvable;
-export const devGuild = JSON.parse(process.env.CONFIG_DEV_GUILD!);
+export const embedColor = process.env.CONFIG_EMBED_COLOR?.toUpperCase() ?? "3CAAFF";
+export const devGuild = JSON.parse(process.env.CONFIG_DEV_GUILD!) ?? [];
 export const isProd = process.env.CONFIG_NODE_ENV === "production";
 export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
