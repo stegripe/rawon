@@ -54,4 +54,7 @@ You can use Glitch too for this project, featured with its own code editor.
 7. Type `refresh`, and track the process from **Logs**
 8. To make the bot stay online, please watch [this video](https://youtu.be/K2nqthN1xKQ?t=551) carefully.
 
+### Replit
+Soon.
+
 > © 2021 Zhycorp Development
