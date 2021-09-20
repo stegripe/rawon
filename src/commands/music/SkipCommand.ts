@@ -1,12 +1,12 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
+import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 
 @DefineCommand({
     aliases: ["s"],
-    description: "Skip currently playing music",
+    description: "Skip the track",
     name: "skip",
     slash: {
         name: "skip"
