@@ -1,16 +1,16 @@
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
-import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { IQueueSong } from "../../typings";
 import { ButtonPagination } from "../../utils/ButtonPagination";
-import { chunk } from "../../utils/chunk";
+import { haveQueue } from "../../utils/decorators/MusicUtil";
+import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import { IQueueSong } from "../../typings";
+import { chunk } from "../../utils/chunk";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 
 @DefineCommand({
     aliases: ["q"],
-    description: "Show the current queue",
+    description: "Show the queue list",
     name: "queue",
     slash: {
         name: "queue"
@@ -36,7 +36,7 @@ export class QueueCommand extends BaseCommand {
 
         return (new ButtonPagination(msg, {
             author: ctx.author.id,
-            edit: (i, e, p) => e.setDescription(p).setFooter(`Page ${i + 1}/${pages.length}`),
+            edit: (i, e, p) => e.setDescription(p).setFooter(`Page ${i + 1} of ${pages.length}`),
             embed,
             pages
         })).start();
