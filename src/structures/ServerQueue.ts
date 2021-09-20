@@ -29,9 +29,9 @@ export class ServerQueue {
 
     public set playing(value: boolean) {
         if (value) {
-            this.player?.pause();
-        } else {
             this.player?.unpause();
+        } else {
+            this.player?.pause();
         }
     }
 
