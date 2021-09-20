@@ -1,12 +1,12 @@
-import { Disc } from "../../structures/Disc";
 import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
-import { createEmbed } from "../createEmbed";
 import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
-import { youtube } from "./YouTubeUtil";
 import { getInfo, getStream } from "./YTDLUtil";
+import { createEmbed } from "../createEmbed";
+import { Disc } from "../../structures/Disc";
+import { youtube } from "./YouTubeUtil";
 import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, demuxProbe, entersState, VoiceConnectionStatus } from "@discordjs/voice";
-import { Guild } from "discord.js";
 import { Video, SearchResult } from "youtubei";
+import { Guild } from "discord.js";
 import { URL } from "url";
 
 export async function searchTrack(client: Disc, query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
@@ -237,7 +237,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
     entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
         .then(() => queue.player?.play(resource))
         .catch((err: Error) => {
-            if (err.message === "The operation was aborted") err.message = "I couldn't establish a voice connection within 15 seconds.";
+            if (err.message === "The operation was aborted") err.message = "I can't establish a voice connection within 15 seconds.";
             queue.player?.emit("error", new AudioPlayerError(err, resource));
         });
 
