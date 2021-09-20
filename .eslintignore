@@ -1,0 +1,5 @@
+# TypeScript build output
+dist/
+
+# Main Glitch file
+index.js

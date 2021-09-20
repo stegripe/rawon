@@ -1,0 +1,25 @@
+import { DefineCommand } from "../../utils/decorators/DefineCommand";
+import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
+import { CommandContext } from "../../structures/CommandContext";
+import { BaseCommand } from "../../structures/BaseCommand";
+import { createEmbed } from "../../utils/createEmbed";
+
+@DefineCommand({
+    description: "Shuffle the queue",
+    name: "shuffle",
+    slash: {
+        name: "shuffle"
+    },
+    usage: "{prefix}shuffle"
+})
+export class ShuffleCommand extends BaseCommand {
+    @inVC()
+    @haveQueue()
+    @sameVC()
+    public execute(ctx: CommandContext): any {
+        ctx.guild!.queue!.shuffle = !ctx.guild!.queue!.shuffle;
+
+        const isShuffle = ctx.guild!.queue!.shuffle;
+        return ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** Shuffle mode is now ${isShuffle ? "enabled" : "disabled"}.`)] });
+    }
+}

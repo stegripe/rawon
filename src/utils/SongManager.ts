@@ -1,23 +1,21 @@
+import { ISong, IQueueSong } from "../typings";
 import { Collection, Snowflake, SnowflakeUtil } from "discord.js";
-import { ISong } from "../typings";
 
-export class SongManager extends Collection<Snowflake, ISong> {
-    public constructor(data?: ReadonlyArray<readonly [Snowflake, ISong]> | null) {
-        super(data);
+export class SongManager extends Collection<Snowflake, IQueueSong> {
+    public addSong(song: ISong): Snowflake {
+        const firstIndex = this.sortByIndex().first()?.index;
+        const key = SnowflakeUtil.generate();
+        const data: IQueueSong = {
+            index: firstIndex ? firstIndex + 1 : 0,
+            key,
+            song
+        };
+
+        this.set(key, data);
+        return key;
     }
 
-    public addSong(song: ISong): this {
-        return this.set(SnowflakeUtil.generate(), song);
-    }
-
-    public deleteFirst(): boolean {
-        return this.delete(this.firstKey()!);
-    }
-
-    public clear(): this {
-        this.forEach((v: ISong, k: Snowflake) => {
-            this.delete(k);
-        });
-        return this;
+    public sortByIndex(): SongManager {
+        return this.sort((a, b) => b.index - a.index);
     }
 }

@@ -43,6 +43,9 @@ jspm_packages/
 # TypeScript cache
 *.tsbuildinfo
 
+# TypeScript build output
+dist/
+
 # Optional npm cache directory
 .npm
 
@@ -66,7 +69,8 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
-.env.test
+.env
+.prod.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -76,6 +80,7 @@ jspm_packages/
 
 # Nuxt.js build / generate output
 .nuxt
+dist
 
 # Gatsby files
 .cache/
@@ -98,15 +103,10 @@ jspm_packages/
 # TernJS port file
 .tern-port
 
-# TypeScript out directory
-dist
-dist/
-
-# Git files
-.github/
-.git
-.env.example
-.env.schema
-
-# VSCode settings
+# VSCode Settings
 .vscode
+
+# Git-related files
+.github
+.git
+.env_example
