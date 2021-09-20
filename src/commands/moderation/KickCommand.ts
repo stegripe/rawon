@@ -12,14 +12,14 @@ import { User } from "discord.js";
         name: "kick",
         options: [
             {
-                description: "Member to kick",
+                description: "Who do you like to kick?",
                 name: "Member",
-                type: "USER",
-                required: true
+                required: true,
+                type: "USER"
             }
         ]
     },
-    usage: "{prefix}kick <member>"
+    usage: "{prefix}kick <@mention | id>"
 })
 export class KickCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {
@@ -30,7 +30,7 @@ export class KickCommand extends BaseCommand {
         const member = ctx.guild.members.resolve(memberId!);
 
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
-        if (!member.kickable) return ctx.reply({ embeds: [createEmbed("error", "I can't **\`KICK\`** that member.", true)] });
+        if (!member.kickable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`KICK\`** that member.", true)] });
 
         await member.kick();
         return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`KICKED\`** from the server.`, true)] });
