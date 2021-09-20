@@ -12,14 +12,14 @@ import { User } from "discord.js";
         name: "ban",
         options: [
             {
-                description: "Member ID to be banned",
+                description: "Who do you like to ban?",
                 name: "MemberID",
                 required: true,
                 type: "STRING"
             }
         ]
     },
-    usage: "{prefix}ban <member|member-id>"
+    usage: "{prefix}ban <@mention | id>"
 })
 export class BanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {
@@ -31,7 +31,7 @@ export class BanCommand extends BaseCommand {
         const resolved = ctx.guild.members.resolve(user!);
 
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
-        if (resolved ? !resolved.bannable : false) return ctx.reply({ embeds: [createEmbed("error", "I can't **\`BAN\`** that member.", true)] });
+        if (resolved ? !resolved.bannable : false) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`BAN\`** that member.", true)] });
 
         await ctx.guild.members.ban(user);
         return ctx.reply({ embeds: [createEmbed("success", `**${user.tag}** has been **\`BANNED\`** from the server.`, true)] });
