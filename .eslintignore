@@ -1,5 +1,5 @@
 # TypeScript build output
 dist/
 
-# Main Glitch file
+# Start file
 index.js
