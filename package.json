@@ -38,8 +38,8 @@
   },
   "devDependencies": {
     "@types/node": "^16.9.4",
-    "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
     "@zhycorp/eslint-config": "^4.0.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
