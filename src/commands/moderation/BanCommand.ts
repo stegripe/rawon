@@ -13,7 +13,7 @@ import { User } from "discord.js";
         options: [
             {
                 description: "Who do you like to ban?",
-                name: "MemberID",
+                name: "memberid",
                 required: true,
                 type: "STRING"
             }
@@ -26,7 +26,7 @@ export class BanCommand extends BaseCommand {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but you don't have **`BAN MEMBERS`** permission to use this command.", true)] });
         if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I don't have **`BAN MEMBERS`** permission.", true)] });
 
-        const memberId = ctx.isContextMenu() ? (ctx.additionalArgs.get("options") as User).id : (ctx.isInteraction() ? ctx.options?.getUser("MemberID", true).id : ctx.args[0]?.replace(/[^0-9]/g, ""));
+        const memberId = ctx.isContextMenu() ? (ctx.additionalArgs.get("options") as User).id : (ctx.isInteraction() ? ctx.options?.getUser("memberid", true).id : ctx.args[0]?.replace(/[^0-9]/g, ""));
         const user = await this.client.users.fetch(memberId!, { force: false }).catch(() => undefined);
         const resolved = ctx.guild.members.resolve(user!);
 
