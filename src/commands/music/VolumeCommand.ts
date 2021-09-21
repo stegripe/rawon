@@ -19,7 +19,8 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
                 required: false
             }
         ]
-    }
+    },
+    usage: "{prefix}volume [new volume]"
 })
 export class VolumeCommand extends BaseCommand {
     @inVC()

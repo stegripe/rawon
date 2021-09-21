@@ -41,7 +41,8 @@ import { MessageActionRow, MessageButton, MessageSelectOptionData, MessageSelect
                 type: "STRING"
             }
         ]
-    }
+    },
+    usage: "{prefix}search <query>"
 })
 export class SearchCommand extends BaseCommand {
     @inVC()

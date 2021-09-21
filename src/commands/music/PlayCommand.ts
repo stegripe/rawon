@@ -18,7 +18,8 @@ import { createEmbed } from "../../utils/createEmbed";
                 type: "STRING"
             }
         ]
-    }
+    },
+    usage: "{prefix}play <query/url>"
 })
 export class PlayCommand extends BaseCommand {
     @inVC()
