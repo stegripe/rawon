@@ -8,6 +8,8 @@ export class ServerQueue {
     public shuffle = false;
     public connection: VoiceConnection|null = null;
     public player: AudioPlayer|null = null;
+    public dcTimeout: NodeJS.Timeout|null = null;
+    public timeout: NodeJS.Timeout|null = null;
     public readonly songs = new SongManager();
     private _lastMusicMsg: Snowflake|null = null;
     private _lastVSUpdateMsg: Snowflake|null = null;
