@@ -16,17 +16,17 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
         options: [
             {
                 description: "Rewind to the first song in the queue",
-                name: "First",
+                name: "first",
                 type: "SUB_COMMAND"
             },
             {
                 description: "Skip to the last song in the queue",
-                name: "Last",
+                name: "last",
                 type: "SUB_COMMAND"
             },
             {
                 description: "Position to skip to",
-                name: "Position",
+                name: "position",
                 type: "NUMBER"
             }
         ]
