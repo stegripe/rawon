@@ -17,10 +17,10 @@ export class PauseCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        if (!ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", "The music player is already paused")] });
+        if (!ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", "The music player is already paused.", true)] });
 
         ctx.guild.queue.playing = false;
 
-        return ctx.reply({ embeds: [createEmbed("info", "⏸ **|** The music player has been paused")] });
+        return ctx.reply({ embeds: [createEmbed("info", "⏸ **|** The music player has been paused.")] });
     }
 }

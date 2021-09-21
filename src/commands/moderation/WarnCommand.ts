@@ -33,7 +33,7 @@ export class WarnCommand extends BaseCommand {
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
 
         const dm = await ctx.member.user.createDM().catch(() => undefined);
-        if (!dm) await ctx.reply({ embeds: [createEmbed("error", "Unable to create a DM with that user, but I'll keep warn 'em.")] });
+        if (!dm) await ctx.reply({ embeds: [createEmbed("warn", "Unable to create a DM with that user, but I'll keep warn 'em.")] });
 
         const reason = (ctx.isInteraction() ? ctx.options?.getString("Reason") : (ctx.args.length >= 2 ? ctx.args.slice(1, ctx.args.length).join(" ") : undefined)) ?? "[Not Specified]";
         const embed = createEmbed("warn")

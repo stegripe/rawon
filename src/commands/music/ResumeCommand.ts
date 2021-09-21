@@ -17,10 +17,10 @@ export class ResumeCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        if (ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", "The music player is not paused")] });
+        if (ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", "The music player is not paused.", true)] });
 
         ctx.guild!.queue!.playing = true;
 
-        return ctx.reply({ embeds: [createEmbed("info", "▶ **|** The music player has been resumed")] });
+        return ctx.reply({ embeds: [createEmbed("info", "▶ **|** The music player has been resumed.")] });
     }
 }
