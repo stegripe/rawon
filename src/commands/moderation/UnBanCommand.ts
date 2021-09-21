@@ -12,7 +12,7 @@ import { User } from "discord.js";
         options: [
             {
                 description: "Who do you like to unban?",
-                name: "MemberID",
+                name: "memberid",
                 required: true,
                 type: "STRING"
             }

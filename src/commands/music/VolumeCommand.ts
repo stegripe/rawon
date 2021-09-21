@@ -14,7 +14,7 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
         options: [
             {
                 description: "New volume",
-                name: "Volume",
+                name: "volume",
                 type: "NUMBER",
                 required: false
             }
