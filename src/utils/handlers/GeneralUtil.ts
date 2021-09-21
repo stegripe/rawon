@@ -266,6 +266,8 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
             selfDeaf: true
         });
         ctx.guild!.queue.connection = connection;
+
+        if (voiceChannel instanceof StageChannel) ctx.guild?.me?.voice.setSuppressed(false);
     } catch (error) {
         ctx.guild?.queue.songs.clear();
         delete ctx.guild!.queue;
