@@ -1,12 +1,13 @@
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
+import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
-import { checkQuery } from "../../utils/handlers/GeneralUtil";
+import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { ISong } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
-import { SelectMenuInteraction, MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
+import { MessageActionRow, MessageButton, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
 
 @DefineCommand({
-    aliases: [],
     contextChat: "Add to queue",
     description: "Play some track using provided query",
     name: "search",
@@ -43,28 +44,15 @@ import { SelectMenuInteraction, MessageActionRow, MessageSelectOptionData, Messa
     }
 })
 export class SearchCommand extends BaseCommand {
+    @inVC()
+    @validVC()
+    @sameVC()
     public async execute(ctx: CommandContext): Promise<any> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
-        const tracks = ctx.additionalArgs.get("values");
-        if (tracks && ctx.isSelectMenu()) {
-            for (const track of tracks) {
-                const newCtx = new CommandContext(ctx.context, []);
-                newCtx.additionalArgs.set("values", [track]);
-                this.client.commands.get("play")!.execute(newCtx);
-            }
-            const msg = await ctx.channel!.messages.fetch((ctx.context as SelectMenuInteraction).message.id).catch(() => undefined);
-            if (msg !== undefined) {
-                const selection = msg.components[0].components.find(x => x.type === "SELECT_MENU");
-                selection!.setDisabled(true);
-                await msg.edit({ components: [new MessageActionRow().addComponents(selection!)] });
-            }
-            // return ctx.send({
-            //     embeds: [
-            //         createEmbed("success", `Added \`${tracks.length}\` tracks to queue`, true)
-            //     ]
-            // });
-        }
+
+        const voiceChannel = ctx.member!.voice.channel!;
         const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? ctx.options?.getMessage("message")?.content;
+
         if (!query) {
             return ctx.send({
                 embeds: [
@@ -76,35 +64,67 @@ export class SearchCommand extends BaseCommand {
             const newCtx = new CommandContext(ctx.context, [String(query)]);
             return this.client.commands.get("play")!.execute(newCtx);
         }
-        // Perform search
-        // const tracks = ...
-        // if (!tracks.length) { ... }
-        await ctx.send({
-            content: "Please select some tracks",
+
+        const tracks = await searchTrack(this.client, query, (ctx.options?.getString("source") as "youtube"|"soundcloud"|undefined) ?? "soundcloud").catch(() => undefined);
+        if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
+
+        const msg = await ctx.send({
+            content: "Please select some tracks and then press `Done` to continue",
             components: [
                 new MessageActionRow()
                     .addComponents(
                         new MessageSelectMenu()
                             .setMinValues(1)
                             .setMaxValues(10)
-                            .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
-                            .addOptions(this.generateSelectMenu([]))
+                            .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
+                            .addOptions(this.generateSelectMenu(tracks.items))
                             .setPlaceholder("Select some tracks")
+                    ),
+                new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setCustomId("DONE_BTN")
+                            .setLabel("Done")
+                            .setEmoji("✅")
+                            .setStyle("PRIMARY")
                     )
             ]
         });
-        return ctx.send(query);
+        const toQueue: ISong[] = await (new Promise(resolve => {
+            let arr: ISong[] = [];
+
+            const collector = msg.createMessageComponentCollector({
+                filter: i => (i.isSelectMenu() || i.isButton()) && (i.user.id === ctx.author.id)
+            });
+
+            collector.on("collect", i => {
+                if (i.isSelectMenu()) {
+                    arr = i.values.map(val => {
+                        const num = Number(val.slice(-1));
+
+                        return tracks.items[num];
+                    });
+                } else if (i.isButton() && (i.customId === "DONE_BTN")) {
+                    if (!arr.length) {
+                        return;
+                    }
+
+                    return collector.stop();
+                }
+            }).on("end", () => resolve(arr));
+        }));
+
+        return handleVideos(this.client, ctx, toQueue, voiceChannel);
     }
 
-    private generateSelectMenu(tracks: any): MessageSelectOptionData[] {
+    private generateSelectMenu(tracks: ISong[]): MessageSelectOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
-        // Replace this with new object (track typingss)
-        return tracks.slice(0, 10).map((x: any, i: number) => (
+
+        return tracks.slice(0, 10).map((x, i) => (
             {
                 label: x.title.length > 98 ? `${x.title.substr(0, 97)}...` : x.title,
                 emoji: emojis[i],
-                description: `${x.author}`,
-                value: x.uri
+                value: `MUSIC-${i}`
             }
         ));
     }
