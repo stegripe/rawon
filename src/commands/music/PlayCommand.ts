@@ -4,8 +4,6 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
-import { ISong } from "../../typings";
-import { MessageSelectMenu, MessageActionRow } from "discord.js";
 
 @DefineCommand({
     description: "Play some music",
@@ -44,43 +42,14 @@ export class PlayCommand extends BaseCommand {
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
             return ctx.reply({ embeds: [createEmbed("warn", `The music player is already playing to **${ctx.guild.channels.cache.get(ctx.guild.queue.connection?.joinConfig.channelId as string)?.name ?? "#unknown-channel"}** voice channel.`)] });
         }
+        if (!checkRes.isURL) {
+            const newCtx = new CommandContext(ctx.context, [query]);
+            return this.client.commands.get("search")!.execute(newCtx);
+        }
 
         const songs = await searchTrack(this.client, url).catch(() => undefined);
-        if (!songs || (songs.items.length <= 0)) {
-            if (checkRes.isURL) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have any song data.", true)] });
+        if (!songs || (songs.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have any song data.", true)] });
 
-            return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
-        }
-
-        let toQueue = songs.items;
-        if (songs.type === "selection") {
-            const selectMenu = new MessageSelectMenu()
-                .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
-                .addOptions(toQueue.map((v, i) => ({
-                    label: (v.title.length > 100) ? `${v.title.slice(0, 100)}...` : v.title,
-                    value: `MUSIC-${i}`
-                })));
-            const row = new MessageActionRow().addComponents(selectMenu);
-            const msg = await ctx.reply({ content: "Please select one of the results", components: [row] });
-
-            toQueue = await (new Promise(resolve => {
-                msg.createMessageComponentCollector({
-                    filter: i => i.isSelectMenu(),
-                    max: 1
-                }).on("collect", i => {
-                    if (!i.isSelectMenu()) return;
-
-                    const tracks = i.values.map((x): ISong => {
-                        const index = x.slice(-1);
-
-                        return toQueue[Number(index)];
-                    });
-
-                    resolve(tracks);
-                });
-            }));
-        }
-
-        return handleVideos(this.client, ctx, toQueue, voiceChannel);
+        return handleVideos(this.client, ctx, songs.items, voiceChannel);
     }
 }
