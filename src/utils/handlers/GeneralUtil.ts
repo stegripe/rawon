@@ -313,7 +313,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
     entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
         .then(async () => {
-            if (guild.channels.cache.get(queue.connection!.joinConfig.channelId!)! instanceof StageChannel) await guild.me?.voice.setSuppressed(false);
+            if (guild.channels.cache.get(queue.connection!.joinConfig.channelId!)?.type === "GUILD_STAGE_VOICE") await guild.me?.voice.setSuppressed(false);
 
             queue.player?.play(resource);
         })
