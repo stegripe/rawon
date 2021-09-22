@@ -266,8 +266,6 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
             selfDeaf: true
         });
         ctx.guild!.queue.connection = connection;
-
-        if (voiceChannel instanceof StageChannel) ctx.guild?.me?.voice.setSuppressed(false);
     } catch (error) {
         ctx.guild?.queue.songs.clear();
         delete ctx.guild!.queue;
@@ -314,7 +312,11 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
     queue.connection?.subscribe(queue.player);
 
     entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
-        .then(() => queue.player?.play(resource))
+        .then(async () => {
+            if (guild.channels.cache.get(queue.connection!.joinConfig.channelId!)! instanceof StageChannel) await guild.me?.voice.setSuppressed(false);
+
+            queue.player?.play(resource);
+        })
         .catch((err: Error) => {
             if (err.message === "The operation was aborted") err.message = "I can't establish a voice connection within 15 seconds.";
             queue.player?.emit("error", new AudioPlayerError(err, resource));
