@@ -8,7 +8,7 @@ import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
 import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
 import { youtube } from "./YouTubeUtil";
 import { getInfo, getStream } from "./YTDLUtil";
-import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, demuxProbe, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
+import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
 import { decodeHTML } from "entities";
 import { Guild, Util, VoiceChannel, StageChannel } from "discord.js";
 import { URL } from "url";
@@ -306,8 +306,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
         return;
     }
 
-    const probe = await demuxProbe(await getStream(song.song.url));
-    const resource = createAudioResource(probe.stream, { inlineVolume: true, inputType: probe.type, metadata: song });
+    const resource = createAudioResource(await getStream(song.song.url), { inlineVolume: true, metadata: song });
 
     queue.connection?.subscribe(queue.player);
 
