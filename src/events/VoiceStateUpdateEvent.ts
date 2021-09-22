@@ -9,7 +9,7 @@ import { VoiceState, VoiceChannel, StageChannel } from "discord.js";
 
 @DefineEvent("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
-    public execute(oldState: VoiceState, newState: VoiceState): any {
+    public async execute(oldState: VoiceState, newState: VoiceState): Promise<void> {
         const queue = newState.guild.queue;
         if (!queue) return;
 
@@ -36,6 +36,23 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         if (member?.id === botID && oldID === queueVC.id && newID !== queueVC.id && newID !== undefined) {
             if (!newVCMembers) return;
+            if (newVC?.type === "GUILD_STAGE_VOICE" && newState.suppress) {
+                const msg = await queue.textChannel.send({ embeds: [createEmbed("info", "I have been moved to a stage channel. Joining as a speaker...")] });
+                const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
+
+                if (suppress && ("error" in suppress)) {
+                    queue.player?.stop(true);
+                    queue.connection?.disconnect();
+                    delete newState.guild.queue;
+                    this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
+                    queue.textChannel.send({ embeds: [createEmbed("error", "I was unable to join as a speaker, the queue has been deleted.")] })
+                        .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
+
+                    return;
+                }
+
+                await msg.edit({ embeds: [createEmbed("success", "Successfully joined the stage channel as a speaker.")] });
+            }
             if (newVCMembers.size === 0 && queue.timeout === null) {
                 this.timeout(newVCMembers, queue, newState);
             } else if (newVCMembers.size !== 0 && queue.timeout !== null) {
