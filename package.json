@@ -28,7 +28,6 @@
     "entities": "^3.0.1",
     "ffmpeg-static": "^4.4.0",
     "got": "^11.8.2",
-    "node-fetch": "https://github.com/lxndr-rl/node-fetch",
     "soundcloud.ts": "^0.4.1",
     "spotify-url-info": "^2.2.3",
     "tslib": "^2.3.1",
