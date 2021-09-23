@@ -1,4 +1,4 @@
-FROM node:16.9.1-alpine as build-stage
+FROM node:16.10.0-alpine as build-stage
 
 LABEL name "Disc 11 (build stage)"
 LABEL maintainer "Zhycorp <support@zhycorp.net>"
@@ -28,7 +28,7 @@ RUN npm run build
 RUN npm prune --production
 
 # Get ready for production
-FROM node:16.9.1-alpine
+FROM node:16.10.0-alpine
 
 LABEL name "Disc 11"
 LABEL maintainer "Zhycorp <support@zhycorp.net>"
