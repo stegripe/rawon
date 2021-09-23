@@ -22,7 +22,7 @@ if (isGlitch || isReplit) {
     new Server((req, res) => {
         const now = new Date().toLocaleString("en-US");
         res.end(`OK (200) - ${now}`);
-    }).listen(process.env.PORT);
+    }).listen(process.env.PORT ?? 3000);
 }
 if (isReplit && (Number(process.version.split(".")[0]) < 16)) {
     console.info("[INFO] Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
