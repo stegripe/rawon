@@ -1,9 +1,9 @@
 import { IEvent } from "../typings";
-import { Client } from "discord.js";
+import { Disc } from "./Disc";
 
 export class BaseEvent implements IEvent {
-    public constructor(public readonly client: Client, public name: IEvent["name"]) {}
+    public constructor(public client: Disc, public readonly name: IEvent["name"]) {}
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-    public execute(...args: any): void {}
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+    public execute(...args: any): any {}
 }
