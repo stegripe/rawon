@@ -19,6 +19,6 @@ export class NowPlayingCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
         const song = ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song;
 
-        return ctx.reply({ embeds: [createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** **[${song.title}](${song.url})**`)] });
+        return ctx.reply({ embeds: [createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail)] });
     }
 }
