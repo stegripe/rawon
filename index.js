@@ -18,12 +18,13 @@ const isReplit = (
     process.env.REPL_PUBKEYS !== undefined &&
     process.env.REPL_SLUG !== undefined)
 
-if (isGlitch) {
+if (isGlitch || isReplit) {
     new Server((req, res) => {
         const now = new Date().toLocaleString("en-US");
         res.end(`OK (200) - ${now}`);
     }).listen(process.env.PORT);
-} else if (isReplit && (Number(process.version.split(".")[0]) < 16)) {
+}
+if (isReplit && (Number(process.version.split(".")[0]) < 16)) {
     console.info("[INFO] Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
     execSync(`npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
     console.info("[INFO] Node.js v16 has installed, please re-run the bot.");
@@ -33,8 +34,8 @@ if (isGlitch) {
 start();
 
 function start() {
-    if (isGlitch) {
-        console.info("[INFO] Glitch environment detected, trying to compile...");
+    if (isGlitch || isReplit) {
+        console.info("[INFO] Glitch/Repl environment detected, trying to compile...");
         execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
         console.info("[INFO] Compiled, starting the bot...");
     }
