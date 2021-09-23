@@ -29,10 +29,6 @@ import { MessageActionRow, MessageButton, MessageSelectOptionData, MessageSelect
                     {
                         name: "SoundCloud",
                         value: "soundcloud"
-                    },
-                    {
-                        name: "Spotify",
-                        value: "spotify"
                     }
                 ],
                 description: "Where the track should be taken?",
