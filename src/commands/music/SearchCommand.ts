@@ -5,7 +5,7 @@ import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/Gene
 import { BaseCommand } from "../../structures/BaseCommand";
 import { ISong } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
-import { MessageActionRow, MessageButton, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
+import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
 
 @DefineCommand({
     contextChat: "Add to queue",
@@ -76,39 +76,24 @@ export class SearchCommand extends BaseCommand {
                             .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
                             .addOptions(this.generateSelectMenu(tracks.items))
                             .setPlaceholder("Select some tracks")
-                    ),
-                new MessageActionRow()
-                    .addComponents(
-                        new MessageButton()
-                            .setCustomId("DONE_BTN")
-                            .setLabel("Done")
-                            .setEmoji("✅")
-                            .setStyle("PRIMARY")
                     )
             ]
         });
         const toQueue: ISong[] = await (new Promise(resolve => {
-            let arr: ISong[] = [];
-
             const collector = msg.createMessageComponentCollector({
-                filter: i => (i.isSelectMenu() || i.isButton()) && (i.user.id === ctx.author.id)
+                filter: i => i.isSelectMenu() && (i.user.id === ctx.author.id),
+                max: 1
             });
 
             collector.on("collect", i => {
-                if (i.isSelectMenu()) {
-                    arr = i.values.map(val => {
-                        const num = Number(val.slice(-1));
+                if (!i.isSelectMenu()) return;
 
-                        return tracks.items[num];
-                    });
-                } else if (i.isButton() && (i.customId === "DONE_BTN")) {
-                    if (!arr.length) {
-                        return;
-                    }
+                resolve(i.values.map(val => {
+                    const num = Number(val.slice(-1));
 
-                    return collector.stop();
-                }
-            }).on("end", () => resolve(arr));
+                    return tracks.items[num];
+                }));
+            });
         }));
 
         return handleVideos(this.client, ctx, toQueue, voiceChannel);
