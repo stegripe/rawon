@@ -2,7 +2,6 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
-import { User } from "discord.js";
 
 @DefineCommand({
     description: "Unban someone from the server",
@@ -24,7 +23,7 @@ export class UnBanCommand extends BaseCommand {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but you don't have **`BAN MEMBERS`** permission to use this command.", true)] });
         if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I don't have **`BAN MEMBERS`** permission.", true)] });
 
-        const memberId = ctx.isContextMenu() ? (ctx.additionalArgs.get("options") as User).id : (ctx.isInteraction() ? ctx.options?.getUser("MemberID", true).id : ctx.args[0]?.replace(/[^0-9]/g, ""));
+        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ?? ctx.options?.getUser("user")?.id ?? ctx.options?.getString("memberid");
         const user = await this.client.users.fetch(memberId!, { force: false }).catch(() => undefined);
         const resolved = ctx.guild.bans.resolve(user?.id as string);
 
