@@ -4,7 +4,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { IQueueSong } from "../../typings";
 import { ButtonPagination } from "../../utils/ButtonPagination";
 import { createEmbed } from "../../utils/createEmbed";
-import { AudioPlayerPlayingState } from "@discordjs/voice";
+import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 
 @DefineCommand({
     aliases: ["ly"],
@@ -26,17 +26,10 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
 })
 export class LyricsCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
-        if (ctx.args.length >= 1) {
-            void this.getLyrics(ctx, ctx.args.join(" "));
-        } else {
-            let song;
-            try {
-                song = ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song.title;
-            } catch {
-                return ctx.reply({ embeds: [createEmbed("error", "There is nothing playing or no args inserted")] });
-            }
-            void this.getLyrics(ctx, song);
-        }
+        const query = ctx.args.length ? ctx.args.join(" ") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song.title ?? undefined);
+        if (!query) return ctx.reply({ embeds: [createEmbed("error", "There is nothing playing or no args inserted")] });
+
+        return this.getLyrics(ctx, query);
     }
 
     private async getLyrics(ctx: CommandContext, song: string): Promise<any> {
