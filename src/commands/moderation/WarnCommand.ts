@@ -28,13 +28,13 @@ export class WarnCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {
         if (!ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but you don't have **`MANAGE SERVER`** permission to use this command.", true)] });
 
-        const member = ctx.isInteraction() ? ctx.options?.getUser("member", true) : ctx.guild?.members.resolve(ctx.args[0]?.replace(/[^0-9]/g, ""))?.user;
+        const member = ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") as string)?.user ?? ctx.options?.getUser("member", true);
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
 
         const dm = await ctx.member.user.createDM().catch(() => undefined);
         if (!dm) await ctx.reply({ embeds: [createEmbed("warn", "Unable to create a DM with that user, but I'll keep warn 'em.")] });
 
-        const reason = (ctx.isInteraction() ? ctx.options?.getString("reason") : (ctx.args.length >= 2 ? ctx.args.slice(1, ctx.args.length).join(" ") : undefined)) ?? "[Not Specified]";
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
         const embed = createEmbed("warn")
             .setAuthor(`Moderator: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
             .setDescription(`You have been warned on ${ctx.guild!.name}`)
