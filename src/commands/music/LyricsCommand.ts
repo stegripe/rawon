@@ -47,7 +47,7 @@ export class LyricsCommand extends BaseCommand {
                     return ctx.reply({ embeds: [createEmbed("error", `The API could not find the song ${song}\n${data.message}`)] });
                 }
                 let lyrics: string = data.lyrics;
-                let albumArt: string = data.album_art;
+                const albumArt = data.album_art ?? "https://api.zhycorp.com/assets/images/logo.png";
                 const charLength: number = lyrics.length;
                 let cantEmbeds = 0;
 
@@ -62,7 +62,6 @@ export class LyricsCommand extends BaseCommand {
                     }
                 }
                 const lyricsArr: any = [];
-                if (!albumArt) albumArt = "https://api.zhycorp.com/assets/images/logo.png";
                 lyricsArr.push([lyrics.substring(0, 2047)]);
                 lyrics = lyrics.replace(lyrics.substring(0, 2047), "");
                 for (let i = 2; i <= cantEmbeds; i++) {
