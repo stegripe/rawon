@@ -3,7 +3,7 @@ import { BaseEvent } from "../structures/BaseEvent";
 
 @DefineEvent("debug")
 export class DebugEvent extends BaseEvent {
-    public async execute(message: string): Promise<void> {
+    public execute(message: string): void {
         this.client.logger.debug(message);
     }
 }
