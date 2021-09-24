@@ -57,14 +57,26 @@ export class NowPlayingCommand extends BaseCommand {
             const newCtx = new CommandContext(i);
             let cmdName = "";
 
-            if (i.customId === "TOGGLE_STATE_BUTTON") {
-                cmdName = ctx.guild?.queue?.playing ? "pause" : "resume";
-            } else if (i.customId === "SKIP_BUTTON") {
-                cmdName = "skip";
-            } else if (i.customId === "SHOW_QUEUE_BUTTON") {
-                cmdName = "queue";
-            } else if (i.customId === "STOP_BUTTON") {
-                cmdName = "stop";
+            switch (i.customId) {
+                case "TOGGLE_STATE_BUTTON": {
+                    cmdName = ctx.guild?.queue?.playing ? "pause" : "resume";
+                    break;
+                }
+
+                case "SKIP_BUTTON": {
+                    cmdName = "skip";
+                    break;
+                }
+
+                case "SHOW_QUEUE_BUTTON": {
+                    cmdName = "queue";
+                    break;
+                }
+
+                case "STOP_BUTTON": {
+                    cmdName = "stop";
+                    break;
+                }
             }
             await this.client.commands.get(cmdName)?.execute(newCtx);
 
