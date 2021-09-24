@@ -9,7 +9,7 @@ export class InteractionCreateEvent extends BaseEvent {
     public async execute(interaction: Interaction): Promise<any> {
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
         if (interaction.isButton()) {
-            const val = this.decode(interaction.customId);
+            const val = this.client.utils.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
             if (cmd === "delete-msg") {
@@ -44,7 +44,7 @@ export class InteractionCreateEvent extends BaseEvent {
             }
         }
         if (interaction.isSelectMenu()) {
-            const val = this.decode(interaction.customId);
+            const val = this.client.utils.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
             const exec = (val.split("_")[2] ?? "yes") === "yes";
@@ -64,9 +64,5 @@ export class InteractionCreateEvent extends BaseEvent {
                 }
             }
         }
-    }
-
-    private decode(string: string): string {
-        return Buffer.from(string, "base64").toString("ascii");
     }
 }
