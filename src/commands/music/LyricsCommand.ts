@@ -11,8 +11,6 @@ import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
     description: "Show the lyrics from current/requested song",
     name: "lyrics",
     slash: {
-        description: "Show the lyrics from current/requested song",
-        name: "lyrics",
         options: [
             {
                 description: "Song to search",
