@@ -30,7 +30,7 @@ export class BanCommand extends BaseCommand {
         const resolved = ctx.guild.members.resolve(user!);
 
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
-        if (resolved ? !resolved.bannable : false) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`BAN\`** that member.", true)] });
+        if (!resolved?.bannable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`BAN\`** that member.", true)] });
 
         await ctx.guild.members.ban(user);
         return ctx.reply({ embeds: [createEmbed("success", `**${user.tag}** has been **\`BANNED\`** from the server.`, true)] });
