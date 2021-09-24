@@ -8,7 +8,6 @@ import { User } from "discord.js";
     description: "Unban someone from the server",
     name: "unban",
     slash: {
-        name: "unban",
         options: [
             {
                 description: "Who do you like to unban?",
