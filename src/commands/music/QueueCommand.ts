@@ -13,7 +13,7 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
     description: "Show the queue list",
     name: "queue",
     slash: {
-        name: "queue"
+        options: []
     },
     usage: "{prefix}queue"
 })
