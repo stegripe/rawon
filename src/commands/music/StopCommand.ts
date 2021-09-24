@@ -9,7 +9,7 @@ import { createEmbed } from "../../utils/createEmbed";
     description: "Stop the music player",
     name: "stop",
     slash: {
-        name: "stop"
+        options: []
     },
     usage: "{prefix}stop"
 })
