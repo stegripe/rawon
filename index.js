@@ -18,27 +18,19 @@ const isReplit = (
     process.env.REPL_PUBKEYS !== undefined &&
     process.env.REPL_SLUG !== undefined)
 
-if (isGlitch || isReplit) {
-    new Server((req, res) => {
-        const now = new Date().toLocaleString("en-US");
-        res.end(`OK (200) - ${now}`);
-    }).listen(process.env.PORT ?? 3000);
-}
 if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
     console.info("[INFO] This repl doesn't use Node.js v16 or newer, trying to install Node.js v16...");
     execSync(`npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
     console.info("[INFO] Node.js v16 has installed, please re-run the bot.");
     process.exit(1);
 }
-
-start();
-
-function start() {
-    if (isGlitch || isReplit) {
-        console.info(`[INFO] ${isGlitch ? "Glitch" : "Repl"} environment detected, trying to compile...`);
-        execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
-        console.info("[INFO] Compiled, starting the bot...");
-    }
-    require("./dist/index.js");
+if (isGlitch || isReplit) {
+    new Server((req, res) => {
+        const now = new Date().toLocaleString("en-US");
+        res.end(`OK (200) - ${now}`);
+    }).listen(process.env.PORT ?? 3000);
+    console.info(`[INFO] ${isGlitch ? "Glitch" : "Repl"} environment detected, trying to compile...`);
+    execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
+    console.info("[INFO] Compiled, starting the bot...");
 }
-
+require("./dist/index.js");
