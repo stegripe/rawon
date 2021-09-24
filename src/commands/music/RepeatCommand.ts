@@ -56,7 +56,6 @@ export class RepeatCommand extends BaseCommand {
         const selection = Object.keys(mode).find(key => mode[key as LoopMode].aliases.includes(ctx.isInteraction() ? ctx.options!.getSubcommand() : ctx.args[0]));
 
         if (!selection) return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** Current repeat mode is **\`${ctx.guild!.queue!.loopMode}\`**`)] });
-
         ctx.guild!.queue!.loopMode = selection as LoopMode;
 
         return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** The repeat mode has been set to **\`${ctx.guild!.queue!.loopMode}\`**`)] });
