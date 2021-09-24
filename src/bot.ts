@@ -17,5 +17,5 @@ process.on("unhandledRejection", reason => {
 });
 process.on("warning", client.logger.warn);
 
-client.build(process.env.CONFIG_DISCORD_TOKEN!)
+client.build()
     .catch(e => client.logger.error("PROMISE_ERR:", e));
