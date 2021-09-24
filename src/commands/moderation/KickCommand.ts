@@ -23,7 +23,7 @@ import { createEmbed } from "../../utils/createEmbed";
             }
         ]
     },
-    usage: "{prefix}kick <@mention | id>"
+    usage: "{prefix}kick <@mention | id> [reason]"
 })
 export class KickCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {

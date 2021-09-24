@@ -22,7 +22,7 @@ import { createEmbed } from "../../utils/createEmbed";
             }
         ]
     },
-    usage: "{prefix}unban <id>"
+    usage: "{prefix}unban <id> [reason]"
 })
 export class UnBanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {

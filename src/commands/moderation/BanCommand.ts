@@ -23,7 +23,7 @@ import { createEmbed } from "../../utils/createEmbed";
             }
         ]
     },
-    usage: "{prefix}ban <@mention | id>"
+    usage: "{prefix}ban <@mention | id> [reason]"
 })
 export class BanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {
