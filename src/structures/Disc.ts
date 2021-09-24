@@ -18,7 +18,7 @@ export class Disc extends Client {
 
     public constructor(opt: ClientOptions) { super(opt); }
 
-    public async build(token: string): Promise<this> {
+    public async build(): Promise<this> {
         const start = Date.now();
         this.events.load();
         this.on("ready", async () => {
