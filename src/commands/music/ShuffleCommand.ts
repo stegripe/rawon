@@ -8,7 +8,7 @@ import { createEmbed } from "../../utils/createEmbed";
     description: "Shuffle the queue",
     name: "shuffle",
     slash: {
-        name: "shuffle"
+        options: []
     },
     usage: "{prefix}shuffle"
 })
