@@ -9,7 +9,6 @@ import { createEmbed } from "../../utils/createEmbed";
     description: "Skip the track",
     name: "skip",
     slash: {
-        name: "skip"
     },
     usage: "{prefix}skip"
 })
