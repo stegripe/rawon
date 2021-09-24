@@ -35,7 +35,7 @@ start();
 
 function start() {
     if (isGlitch || isReplit) {
-        console.info("[INFO] Glitch/Repl environment detected, trying to compile...");
+        console.info(`[INFO] ${isGlitch ? "Glitch" : "Repl"} environment detected, trying to compile...`);
         execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
         console.info("[INFO] Compiled, starting the bot...");
     }
