@@ -7,7 +7,6 @@ import { createEmbed } from "../../utils/createEmbed";
     description: "Warn member on the server",
     name: "warn",
     slash: {
-        name: "warn",
         options: [
             {
                 description: "Who do you like to warn?",
