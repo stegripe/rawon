@@ -10,7 +10,6 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
     description: "Change the media player volume",
     name: "volume",
     slash: {
-        name: "volume",
         options: [
             {
                 description: "New volume",
