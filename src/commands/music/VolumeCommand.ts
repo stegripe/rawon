@@ -26,7 +26,7 @@ export class VolumeCommand extends BaseCommand {
     @validVC()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        const volume = Number(ctx.isInteraction() ? ctx.options?.getNumber("Volume", false) : ctx.args[0]);
+        const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("Volume", false));
         const resVolume = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.volume!;
 
         if (isNaN(volume)) return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** The current volume is **\`${resVolume.volume}\`**`).setFooter(`To change the volume, provide volume number when using this command.`)] });
