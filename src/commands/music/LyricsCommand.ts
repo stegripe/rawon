@@ -61,11 +61,10 @@ export class LyricsCommand extends BaseCommand {
                         }
                     }
                 }
-                const lyricsArr: any = [];
-                lyricsArr.push([lyrics.substring(0, 2047)]);
+                const lyricsArr: string[] = [lyrics.substring(0, 2047)];
                 lyrics = lyrics.replace(lyrics.substring(0, 2047), "");
                 for (let i = 2; i <= cantEmbeds; i++) {
-                    lyricsArr.push([lyrics.substring(0, 2047)]);
+                    lyricsArr.push(lyrics.substring(0, 2047));
                     lyrics = lyrics.replace(lyrics.substring(0, 2048), "");
                 }
                 const pages: any = await Promise.all(lyricsArr.map(async (s: any) => s.join("\n")));
