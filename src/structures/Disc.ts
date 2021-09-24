@@ -1,4 +1,5 @@
 import { soundcloud } from "../utils/handlers/SoundCloudUtil";
+import { ClientUtils } from "../utils/ClientUtils";
 import { CommandManager } from "../utils/CommandManager";
 import { EventsLoader } from "../utils/EventsLoader";
 import { createLogger } from "../utils/Logger";
@@ -15,6 +16,7 @@ export class Disc extends Client {
     public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
     public readonly soundcloud = soundcloud;
+    public readonly utils = new ClientUtils(this);
 
     public constructor(opt: ClientOptions) { super(opt); }
 
