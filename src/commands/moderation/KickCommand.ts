@@ -9,7 +9,6 @@ import { User } from "discord.js";
     description: "Kick someone from the server",
     name: "kick",
     slash: {
-        name: "kick",
         options: [
             {
                 description: "Who do you like to kick?",
