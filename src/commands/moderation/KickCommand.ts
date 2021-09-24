@@ -14,6 +14,12 @@ import { createEmbed } from "../../utils/createEmbed";
                 name: "member",
                 required: true,
                 type: "USER"
+            },
+            {
+                description: "Kick reason",
+                name: "reason",
+                required: false,
+                type: "STRING"
             }
         ]
     },
@@ -30,7 +36,7 @@ export class KickCommand extends BaseCommand {
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
         if (!member.kickable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`KICK\`** that member.", true)] });
 
-        await member.kick();
+        await member.kick(ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]"));
         return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`KICKED\`** from the server.`, true)] });
     }
 }
