@@ -13,6 +13,12 @@ import { createEmbed } from "../../utils/createEmbed";
                 name: "memberid",
                 required: true,
                 type: "STRING"
+            },
+            {
+                description: "Unban reason",
+                name: "reason",
+                required: false,
+                type: "STRING"
             }
         ]
     },
@@ -30,7 +36,7 @@ export class UnBanCommand extends BaseCommand {
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
         if (!resolved) return ctx.reply({ embeds: [createEmbed("error", "That user is not banned.", true)] });
 
-        await ctx.guild.bans.remove(user.id);
+        await ctx.guild.bans.remove(user.id, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]"));
         return ctx.reply({ embeds: [createEmbed("success", `**${user.tag}** has been **\`UNBANNED\`** from the server.`, true)] });
     }
 }
