@@ -6,7 +6,7 @@ import { TextBasedChannels, Snowflake } from "discord.js";
 export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
-    public stayInVC = false;
+    public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
     public connection: VoiceConnection|null = null;
     public player: AudioPlayer|null = null;
     public dcTimeout: NodeJS.Timeout|null = null;
