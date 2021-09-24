@@ -25,9 +25,17 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
                 type: "SUB_COMMAND"
             },
             {
-                description: "Position to skip to",
-                name: "position",
-                type: "NUMBER"
+                description: "Skip to a specific position in the queue",
+                name: "specific",
+                options: [
+                    {
+                        description: "Song position in the queue",
+                        name: "position",
+                        required: true,
+                        type: "NUMBER"
+                    }
+                ],
+                type: "SUB_COMMAND"
             }
         ]
     },
