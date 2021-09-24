@@ -293,15 +293,17 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
         void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** The music has ended, use **\`${guild.client.config.prefix}play\`** to play some music`)] });
-        queue.dcTimeout = setTimeout(() => {
-            queue.connection?.disconnect();
-            void queue.textChannel.send({ embeds: [createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long.`)] })
-                .then(msg => {
-                    setTimeout(() => {
-                        void msg.delete();
-                    }, 3500);
-                });
-        }, 60000);
+        queue.dcTimeout = queue.stayInVC
+            ? null
+            : setTimeout(() => {
+                queue.connection?.disconnect();
+                void queue.textChannel.send({ embeds: [createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long.`)] })
+                    .then(msg => {
+                        setTimeout(() => {
+                            void msg.delete();
+                        }, 3500);
+                    });
+            }, 60000);
         delete guild.queue;
         return;
     }
