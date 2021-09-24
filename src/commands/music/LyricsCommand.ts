@@ -52,7 +52,7 @@ export class LyricsCommand extends BaseCommand {
                         }
                     }
                 }
-                const lyricsArr: string[] = [lyrics.substring(0, 2047)];
+                const lyricsArr = [lyrics.substring(0, 2047)];
                 lyrics = lyrics.replace(lyrics.substring(0, 2047), "");
                 for (let i = 2; i <= cantEmbeds; i++) {
                     lyricsArr.push(lyrics.substring(0, 2047));
