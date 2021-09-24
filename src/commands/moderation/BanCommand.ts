@@ -9,7 +9,6 @@ import { User } from "discord.js";
     description: "Ban someone from the server",
     name: "ban",
     slash: {
-        name: "ban",
         options: [
             {
                 description: "Who do you like to ban?",
