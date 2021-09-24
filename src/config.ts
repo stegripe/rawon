@@ -1,4 +1,5 @@
-import { ActivityType, ClientOptions, ClientPresenceStatus, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
+import { IpresenceData } from "./typings";
+import { ClientOptions, ClientPresenceStatus, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
 
 export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
@@ -32,11 +33,6 @@ export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
 export const is247Allowed = process.env.CONFIG_ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
 export const stayInVCAfterFinished = process.env.CONFIG_STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
-interface IpresenceData {
-    activities: { name: string; type: ActivityType }[];
-    status: ClientPresenceStatus[];
-    interval: number;
-}
 export const presenceData: IpresenceData = {
     activities: [
         { name: `My default prefix is ${prefix}`, type: "PLAYING" },

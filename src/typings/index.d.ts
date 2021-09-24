@@ -2,7 +2,7 @@ import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Disc } from "../structures/Disc";
 
-import { ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, Client as OClient, Collection, MessageEmbed } from "discord.js";
+import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, MessageEmbed } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "reply" | "followUp";
 
@@ -31,6 +31,12 @@ export interface SlashOption {
     type?: ApplicationCommandType;
     options?: ApplicationCommandOptionData[];
     defaultPermission?: boolean;
+}
+
+export interface IpresenceData {
+    activities: { name: string; type: ActivityType }[];
+    status: ClientPresenceStatus[];
+    interval: number;
 }
 
 export interface IEvent {
