@@ -29,7 +29,7 @@ export class VolumeCommand extends BaseCommand {
         const volume = Number(ctx.isInteraction() ? ctx.options?.getNumber("Volume", false) : ctx.args[0]);
         const resVolume = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.volume!;
 
-        if (isNaN(volume)) return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** The current volume is **\`${resVolume.volume}\`**`)] });
+        if (isNaN(volume)) return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** The current volume is **\`${resVolume.volume}\`**`).setFooter(`To change the volume, provide volume number when using this command.`)] });
 
         if (volume <= 0) return ctx.reply({ embeds: [createEmbed("warn", `Please pause the music instead of setting the volume to **\`${volume}\`**`)] });
         if (volume > 100) return ctx.reply({ embeds: [createEmbed("error", "I can't set the volume above **\`100\`**", true)] });
