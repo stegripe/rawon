@@ -45,10 +45,10 @@ export class SkipToCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        if (!ctx.isInteraction() && !ctx.args[0]) return ctx.reply({ embeds: [createEmbed("warn", `Invalid usage, please use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information.`)] });
+        const targetType = (ctx.args[0] as string|undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position");
+        if (!targetType) return ctx.reply({ embeds: [createEmbed("warn", `Invalid usage, please use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information.`)] });
 
         const songs = [...ctx.guild!.queue!.songs.sortByIndex().values()];
-        const targetType = ctx.isInteraction() ? (ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position")) : ctx.args[0];
         if (!["first", "last"].includes(String(targetType).toLowerCase()) && (!isNaN(Number(targetType)) && !songs[Number(targetType) - 1])) return ctx.reply({ embeds: [createEmbed("error", "Unable to find song in that position.", true)] });
 
         let song: IQueueSong;
