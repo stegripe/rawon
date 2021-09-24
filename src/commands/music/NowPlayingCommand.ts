@@ -11,7 +11,7 @@ import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
     description: "Show the media player status",
     name: "nowplaying",
     slash: {
-        name: "nowplaying"
+        options: []
     },
     usage: "{prefix}nowplaying"
 })
