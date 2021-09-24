@@ -8,7 +8,7 @@ import { createEmbed } from "../../utils/createEmbed";
     description: "Resume the music player",
     name: "resume",
     slash: {
-        name: "resume"
+        options: []
     },
     usage: "{prefix}resume"
 })
