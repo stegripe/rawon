@@ -12,7 +12,6 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
     description: "Skip to specific position in the queue",
     name: "skipto",
     slash: {
-        name: "skipto",
         options: [
             {
                 description: "Rewind to the first song in the queue",
