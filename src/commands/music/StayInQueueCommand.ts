@@ -35,6 +35,8 @@ export class StayInQueueCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public execute(ctx: CommandContext): any {
+        if (!this.client.config.is247Allowed) return ctx.reply({ embeds: [createEmbed("warn", "Stay-in-VC feature is disabled")] });
+
         const newState = ctx.options?.getString("state") ?? ctx.args[0] as string|undefined;
 
         if (!newState) return ctx.reply({ embeds: [createEmbed("info", `Stay-in-VC is ${ctx.guild?.queue?.stayInVC ? "enabled" : "disabled"}.`)] });
