@@ -50,7 +50,8 @@ export class NowPlayingCommand extends BaseCommand {
         const msg = await ctx.reply({ embeds: [getEmbed()], components: [buttons] });
 
         const collector = msg.createMessageComponentCollector({
-            filter: i => i.isButton() && (i.user.id === ctx.author.id)
+            filter: i => i.isButton() && (i.user.id === ctx.author.id),
+            idle: 30000
         });
 
         collector.on("collect", async i => {
@@ -83,6 +84,14 @@ export class NowPlayingCommand extends BaseCommand {
             const embed = getEmbed();
 
             await msg.edit({ embeds: [embed] });
+        }).on("end", () => {
+            const embed = getEmbed()
+                .setFooter("No more respond received in 30 seconds, buttons removed");
+
+            void msg.edit({
+                embeds: [embed],
+                components: []
+            });
         });
     }
 }
