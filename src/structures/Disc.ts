@@ -25,7 +25,7 @@ export class Disc extends Client {
             await this.commands.load();
             this.logger.info(`Ready took ${formatMS(Date.now() - start)}`);
         });
-        await this.login(token);
+        await this.login();
         return this;
     }
 }
