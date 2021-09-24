@@ -41,7 +41,7 @@ export class LyricsCommand extends BaseCommand {
 
     private async getLyrics(ctx: CommandContext, song: string): Promise<any> {
         const url = `https://api.lxndr.dev/lyrics/?song=${encodeURI(song)}&from=${encodeURI(this.client.user!.id)}`;
-        void await this.client.request.get(url).json()
+        this.client.request.get(url).json()
             .then(async (data: any) => {
                 if (data.error) {
                     return ctx.reply({ embeds: [createEmbed("error", `The API could not find the song ${song}\n${data.message}`)] });
