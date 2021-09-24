@@ -30,6 +30,7 @@ export const devGuild = JSON.parse(process.env.CONFIG_DEV_GUILD!) ?? [];
 export const isProd = process.env.CONFIG_NODE_ENV === "production";
 export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
+export const is247Allowed = (process.env.CONFIG_ENABLE_24_7 ?? "no") === "yes";
 interface IpresenceData {
     activities: { name: string; type: ActivityType }[];
     status: ClientPresenceStatus[];
