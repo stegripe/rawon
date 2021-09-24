@@ -31,6 +31,7 @@ export const isProd = process.env.CONFIG_NODE_ENV === "production";
 export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
 export const is247Allowed = (process.env.CONFIG_ENABLE_24_7_COMMAND ?? "no") === "yes";
+export const stayInVCAfterFinished = (process.env.CONFIG_STAY_IN_VC_AFTER_FINISHED ?? "no") === "yes";
 interface IpresenceData {
     activities: { name: string; type: ActivityType }[];
     status: ClientPresenceStatus[];
