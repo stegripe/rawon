@@ -13,7 +13,6 @@ import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "di
     name: "search",
     slash: {
         description: "Search the specified track",
-        name: "search",
         options: [
             {
                 description: "Query to search",
