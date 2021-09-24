@@ -14,6 +14,12 @@ import { createEmbed } from "../../utils/createEmbed";
                 name: "memberid",
                 required: true,
                 type: "STRING"
+            },
+            {
+                description: "Ban reason",
+                name: "reason",
+                required: false,
+                type: "STRING"
             }
         ]
     },
@@ -24,14 +30,18 @@ export class BanCommand extends BaseCommand {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but you don't have **`BAN MEMBERS`** permission to use this command.", true)] });
         if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I don't have **`BAN MEMBERS`** permission.", true)] });
 
-        const memberId = (ctx.args[0] as string|undefined)?.replace(/[^0-9]/g, "") ?? ctx.options?.getUser("user")?.id ?? ctx.options?.getString("memberid");
+        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ?? ctx.options?.getUser("user")?.id ?? ctx.options?.getString("memberid");
         const user = await this.client.users.fetch(memberId!, { force: false }).catch(() => undefined);
         const resolved = ctx.guild.members.resolve(user!);
 
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
         if (!resolved?.bannable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`BAN\`** that member.", true)] });
 
-        await ctx.guild.members.ban(user);
+        const ban = await ctx.guild.members.ban(user, {
+            reason: ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]")
+        }).catch(err => new Error(err));
+        if (ban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to ban member. Reason:\n\`\`\`${ban.message}\`\`\``)] });
+
         return ctx.reply({ embeds: [createEmbed("success", `**${user.tag}** has been **\`BANNED\`** from the server.`, true)] });
     }
 }
