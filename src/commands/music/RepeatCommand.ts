@@ -10,7 +10,6 @@ import { createEmbed } from "../../utils/createEmbed";
     description: "Repeat current music or the queue",
     name: "repeat",
     slash: {
-        name: "repeat",
         options: [
             {
                 description: "Set repeat mode to Queue",
