@@ -13,7 +13,7 @@ import { uptime } from "os";
     description: "Show the bot's information",
     name: "about",
     slash: {
-        name: "about"
+        options: []
     },
     usage: "{prefix}about"
 })
