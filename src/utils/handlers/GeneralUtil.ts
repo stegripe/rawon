@@ -234,7 +234,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         const opening = `**Added \`${toQueue.length}\` songs to the queue**\n\n`;
         const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
-            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)} - [${Util.escapeMarkdown(decodeHTML(song.title))}](${song.url})`));
+            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(decodeHTML(song.title))}`));
 
             return texts.join("\n");
         }));
@@ -244,7 +244,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
         return new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(`${opening}${p}`).setFooter(`Page ${i + 1} of ${pages.length}`);
+                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter(`• Page ${i + 1} of ${pages.length}`);
             },
             embed,
             pages
