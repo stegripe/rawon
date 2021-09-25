@@ -9,7 +9,7 @@ const log = createLogger("shardingmanager", isProd);
 const manager = new ShardingManager(resolve(__dirname, "bot.js"), {
     totalShards: shardsCount,
     respawn: true,
-    token: process.env.CONFIG_DISCORD_TOKEN,
+    token: process.env.DISCORD_TOKEN,
     mode: shardingMode
 });
 
