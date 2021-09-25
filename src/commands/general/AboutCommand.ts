@@ -3,9 +3,9 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { formatMS } from "../../utils/formatMS";
+import { version as FFmpegVersion } from "ffmpeg-static/package.json";
 import { version as BotVersion } from "../../../package.json";
 import { version as DJSVersion } from "discord.js";
-import { version as FFmpegVersion } from "ffmpeg-static/package.json";
 import { uptime } from "os";
 
 @DefineCommand({
