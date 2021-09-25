@@ -28,7 +28,6 @@ export function getStream(url: string): Promise<Readable> {
 
 export async function getInfo(url: string): Promise<YtResponse> {
     return ytdl(url, {
-        o: "-",
-        q: ""
+        j: true
     });
 }
