@@ -35,7 +35,8 @@ export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "
 export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
 export const yesEmoji = process.env.YES_EMOJI ?? "✅";
 export const noEmoji = process.env.NO_EMOJI ?? "❎";
-export const muteRoleName = process.env.MUTE_ROLE_NAME ?? "Muted";
+export const muteRoleName = (!process.env.MUTE_ROLE_NAME || (process.env.MUTE_ROLE_NAME === "")) ? "Muted" : process.env.MUTE_ROLE_NAME;
+export const djRoleName = (!process.env.DJ_ROLE_NAME || (process.env.DJ_ROLE_NAME === "")) ? "DJ" : process.env.DJ_ROLE_NAME;
 export const presenceData: IpresenceData = {
     activities: [
         { name: `My default prefix is ${prefix}`, type: "PLAYING" },
