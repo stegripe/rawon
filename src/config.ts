@@ -35,6 +35,7 @@ export const is247Allowed = process.env.CONFIG_ENABLE_24_7_COMMAND?.toLowerCase(
 export const stayInVCAfterFinished = process.env.CONFIG_STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
 export const yesEmoji = process.env.CONFIG_YES_EMOJI ?? "✅";
 export const noEmoji = process.env.CONFIG_NO_EMOJI ?? "❎";
+export const muteRoleName = process.env.CONFIG_MUTE_ROLE_NAME ?? "Muted";
 export const presenceData: IpresenceData = {
     activities: [
         { name: `My default prefix is ${prefix}`, type: "PLAYING" },
