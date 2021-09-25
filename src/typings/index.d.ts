@@ -2,7 +2,7 @@ import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Disc } from "../structures/Disc";
 
-import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, MessageEmbed } from "discord.js";
+import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "reply" | "followUp";
 
@@ -96,6 +96,7 @@ export interface ISong {
 
 export interface IQueueSong {
     song: ISong;
+    requester: GuildMember;
     index: number;
     key: string;
 }
