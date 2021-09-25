@@ -35,6 +35,7 @@ export class MuteCommand extends BaseCommand {
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
 
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
+        if (member.roles.cache.has(muteRole.id)) return ctx.reply({ embeds: [createEmbed("warn", "That member is laready muted")] });
 
         const mute = await member.roles.add(muteRole, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]"))
             .catch(err => new Error(err));
