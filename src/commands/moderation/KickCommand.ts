@@ -36,7 +36,7 @@ export class KickCommand extends BaseCommand {
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
         if (!member.kickable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`KICK\`** that member.", true)] });
 
-        const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || "[Not Specified]");
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
