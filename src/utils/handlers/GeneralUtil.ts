@@ -110,7 +110,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     id: track.id,
                     thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                     title: track.title,
-                    url: songData.link
+                    url: `https://youtube.com/watch?v=${track.id}`
                 }];
             } else if (queryData.type === "playlist") {
                 const songs = await getTracks(url.toString());
@@ -122,7 +122,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                         id: track.id,
                         thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
-                        url: x.external_urls.spotify
+                        url: `https://youtube.com/watch?v=${track.id}`
                     };
                 }));
 
