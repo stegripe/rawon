@@ -53,7 +53,7 @@ export class BanCommand extends BaseCommand {
         }
 
         const ban = await ctx.guild.members.ban(user, {
-            reason: ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]")
+            reason
         }).catch(err => new Error(err));
         if (ban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to ban member. Reason:\n\`\`\`${ban.message}\`\`\``)] });
 
