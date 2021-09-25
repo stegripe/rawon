@@ -24,6 +24,8 @@ export const clientOptions: ClientOptions = {
     }),
     retryLimit: 3
 };
+export const shardsCount: number | "auto" = "auto";
+export const shardingMode: ShardingManagerMode = "worker";
 export const defaultPrefix = process.env.PREFIX?.replace(/"/g, "") ?? "!";
 export const owners: string[] = process.env.OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
 export const embedColor = process.env.EMBED_COLOR?.toUpperCase() ?? "3CAAFF";
@@ -33,9 +35,10 @@ export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
 export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
 export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
-export const yesEmoji = process.env.YES_EMOJI ?? "✅";
-export const noEmoji = process.env.NO_EMOJI ?? "❎";
+export const djRoleName = process.env.MUTE_ROLE_NAME ?? "DJ";
 export const muteRoleName = process.env.MUTE_ROLE_NAME ?? "Muted";
+export const yesEmoji = process.env.YES_EMOJI ?? "✅";
+export const noEmoji = process.env.NO_EMOJI ?? "❌";
 export const presenceData: IpresenceData = {
     activities: [
         { name: `My default prefix is ${prefix}`, type: "PLAYING" },
@@ -47,5 +50,3 @@ export const presenceData: IpresenceData = {
     status: ["online"] as ClientPresenceStatus[],
     interval: 60000
 };
-export const shardsCount: number | "auto" = "auto";
-export const shardingMode: ShardingManagerMode = "worker";
