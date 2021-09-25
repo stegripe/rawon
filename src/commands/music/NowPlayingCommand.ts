@@ -1,11 +1,11 @@
-import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
+import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { IQueueSong } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
-import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import { IQueueSong } from "../../typings";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 
 @DefineCommand({
     description: "Show the media player status",
