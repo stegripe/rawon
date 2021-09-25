@@ -1,18 +1,18 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
-import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
-import { CommandContext } from "../../structures/CommandContext";
 import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
+import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
+import { DefineCommand } from "../../utils/decorators/DefineCommand";
+import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { ISong } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
+import { ISong } from "../../typings";
 import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
 
 @DefineCommand({
     contextChat: "Add to queue",
-    description: "Play some track using provided query",
+    description: "Play some music using provided query",
     name: "search",
     slash: {
-        description: "Search the specified track",
+        description: "Search the specified music",
         options: [
             {
                 description: "Query to search",
@@ -65,7 +65,7 @@ export class SearchCommand extends BaseCommand {
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
 
         const msg = await ctx.send({
-            content: "Please select some tracks and then press `Done` to continue",
+            content: "Please select some music, and then press **`Done`** to continue",
             components: [
                 new MessageActionRow()
                     .addComponents(

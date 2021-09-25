@@ -5,9 +5,9 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 
 @DefineCommand({
-    aliases: ["24/7"],
-    description: "Makes the bot stay in VC when queue ended",
-    name: "stayinvc",
+    aliases: ["stayinvc", "stay", "24/7"],
+    description: "Makes the bot stay in the voice channel when queue was ended",
+    name: "stayinvoice",
     slash: {
         options: [
             {
@@ -21,7 +21,7 @@ import { createEmbed } from "../../utils/createEmbed";
                         value: "disable"
                     }
                 ],
-                description: "Enable/disable stay-in-VC feature",
+                description: "Turns mode for stay-in-voice feature",
                 name: "state",
                 required: false,
                 type: "STRING"
@@ -35,13 +35,14 @@ export class StayInQueueCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        if (!this.client.config.is247Allowed) return ctx.reply({ embeds: [createEmbed("warn", "Stay-in-VC feature is disabled")] });
+        if (!this.client.config.is247Allowed) return ctx.reply({ embeds: [createEmbed("warn", "Stay-in-voice feature is disabled.")] });
 
         const newState = ctx.options?.getString("state") ?? ctx.args[0] as string|undefined;
 
-        if (!newState) return ctx.reply({ embeds: [createEmbed("info", `Stay-in-VC is ${ctx.guild?.queue?.stayInVC ? "enabled" : "disabled"}.`)] });
+        if (!newState) return ctx.reply({ embeds: [createEmbed("info", `Stay-in-voice is **\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\`**`)] });
+
         ctx.guild!.queue!.stayInVC = (newState === "enable");
 
-        return ctx.reply({ embeds: [createEmbed("info", `Stay-in-VC is now ${ctx.guild?.queue?.stayInVC ? "enabled" : "disabled"}.`)] });
+        return ctx.reply({ embeds: [createEmbed("info", `Stay-in-voice is now set to **\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\`**`)] });
     }
 }

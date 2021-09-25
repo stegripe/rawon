@@ -1,11 +1,11 @@
-import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
+import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { IQueueSong } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
-import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import { IQueueSong } from "../../typings";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 
 @DefineCommand({
     description: "Show the media player status",
@@ -21,7 +21,7 @@ export class NowPlayingCommand extends BaseCommand {
         function getEmbed(): MessageEmbed {
             const song = (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song;
 
-            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : "Not playing any song"}`).setThumbnail(song?.thumbnail ?? "");
+            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : "Queue is empty"}`).setThumbnail(song?.thumbnail ?? "https://api.zhycorp.net/assets/images/icon.png");
         }
 
         const buttons = new MessageActionRow()
@@ -37,15 +37,15 @@ export class NowPlayingCommand extends BaseCommand {
                     .setStyle("SECONDARY")
                     .setEmoji("⏭"),
                 new MessageButton()
-                    .setCustomId("SHOW_QUEUE_BUTTON")
-                    .setLabel("Show Queue")
-                    .setStyle("SECONDARY")
-                    .setEmoji("#️⃣"),
-                new MessageButton()
                     .setCustomId("STOP_BUTTON")
                     .setLabel("Stop Player")
                     .setStyle("DANGER")
-                    .setEmoji("⏹")
+                    .setEmoji("⏹"),
+                new MessageButton()
+                    .setCustomId("SHOW_QUEUE_BUTTON")
+                    .setLabel("Show Queue")
+                    .setStyle("SECONDARY")
+                    .setEmoji("#️⃣")
             );
         const msg = await ctx.reply({ embeds: [getEmbed()], components: [buttons] });
 
@@ -86,7 +86,7 @@ export class NowPlayingCommand extends BaseCommand {
             await msg.edit({ embeds: [embed] });
         }).on("end", () => {
             const embed = getEmbed()
-                .setFooter("No more respond received in 30 seconds, buttons removed");
+                .setFooter("After 30 seconds, the buttons will no longer active.");
 
             void msg.edit({
                 embeds: [embed],

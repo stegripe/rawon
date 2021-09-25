@@ -1,14 +1,14 @@
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { IQueueSong } from "../../typings";
 import { ButtonPagination } from "../../utils/ButtonPagination";
+import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import { IQueueSong } from "../../typings";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 
 @DefineCommand({
     aliases: ["ly"],
-    description: "Show the lyrics from current/requested song",
+    description: "Show the lyrics from the song",
     name: "lyrics",
     slash: {
         options: [
@@ -25,7 +25,7 @@ import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 export class LyricsCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
         const query = ctx.args.length ? ctx.args.join(" ") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song.title ?? undefined);
-        if (!query) return ctx.reply({ embeds: [createEmbed("error", "There is nothing playing or no args inserted")] });
+        if (!query) return ctx.reply({ embeds: [createEmbed("error", "There is nothing playing or no arguments provided.", true)] });
 
         return this.getLyrics(ctx, query);
     }
@@ -35,10 +35,10 @@ export class LyricsCommand extends BaseCommand {
         this.client.request.get(url).json()
             .then(async (data: any) => {
                 if (data.error) {
-                    return ctx.reply({ embeds: [createEmbed("error", `The API could not find the song ${song}\n${data.message}`)] });
+                    return ctx.reply({ embeds: [createEmbed("error", `The API could not find the song **\`${song}\`**, because: \`${data.message}\``, true)] });
                 }
                 let lyrics: string = data.lyrics;
-                const albumArt = data.album_art ?? "https://api.zhycorp.com/assets/images/logo.png";
+                const albumArt = data.album_art ?? "https://api.zhycorp.net/assets/images/icon.png";
                 const charLength: number = lyrics.length;
                 let cantEmbeds = 0;
 

@@ -42,10 +42,10 @@ export class MuteCommand extends BaseCommand {
         if (dm) {
             await dm.send({
                 embeds: [
-                    createEmbed("error", `You have been **\`MUTED\`** on ${ctx.guild.name}`)
+                    createEmbed("error", `You have been **\`MUTED\`** on **${ctx.guild.name}**`)
                         .setColor("LIGHT_GREY")
                         .addField("**Reason**", reason)
-                        .setAuthor(`Muted by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+                        .setFooter(`Muted by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
                         .setTimestamp(Date.now())
                 ]
             });

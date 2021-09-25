@@ -42,9 +42,9 @@ export class UnMuteCommand extends BaseCommand {
         if (dm) {
             await dm.send({
                 embeds: [
-                    createEmbed("info", `You have been **\`UN-MUTED\`** on ${ctx.guild.name}`)
+                    createEmbed("info", `You have been **\`UN-MUTED\`** on **${ctx.guild.name}**`)
                         .addField("**Reason**", reason)
-                        .setAuthor(`Un-muted by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+                        .setFooter(`Un-muted by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
                         .setTimestamp(Date.now())
                 ]
             });

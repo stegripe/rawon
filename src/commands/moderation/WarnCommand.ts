@@ -35,12 +35,12 @@ export class WarnCommand extends BaseCommand {
         if (!dm) await ctx.reply({ embeds: [createEmbed("warn", "Unable to create a DM with that user, but I'll keep warn 'em.")] });
 
         const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
-        const embed = createEmbed("warn", `You have been **\`WARNED\`** on ${ctx.guild!.name}`)
+        const embed = createEmbed("warn", `You have been **\`WARNED\`** on **${ctx.guild!.name}**`)
             .addField("**Reason**", reason)
-            .setAuthor(`Warned by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+            .setFooter(`Warned by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp(Date.now());
 
         await dm?.send({ embeds: [embed] });
-        return ctx.reply({ embeds: [createEmbed("success", `**${member.tag}** has been **\`WARNED\`** on the server.`)] });
+        return ctx.reply({ embeds: [createEmbed("success", `**${member.tag}** has been **\`WARNED\`** on the server.`, true)] });
     }
 }

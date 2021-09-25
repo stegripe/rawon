@@ -43,9 +43,9 @@ export class BanCommand extends BaseCommand {
             if (dm) {
                 await dm.send({
                     embeds: [
-                        createEmbed("error", `You have been **\`BANNED\`** from ${ctx.guild.name}`)
+                        createEmbed("error", `You have been **\`BANNED\`** from **${ctx.guild.name}**`)
                             .addField("**Reason**", reason)
-                            .setAuthor(`Banned by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+                            .setFooter(`Banned by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
                             .setTimestamp(Date.now())
                     ]
                 });
