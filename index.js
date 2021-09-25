@@ -33,4 +33,4 @@ if (isGlitch || isReplit) {
     execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
     console.info("[INFO] Compiled, starting the bot...");
 }
-require("./dist/index.js");
+require("./dist/src/index.js");
