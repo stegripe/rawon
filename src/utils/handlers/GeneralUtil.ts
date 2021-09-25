@@ -229,7 +229,7 @@ export function checkQuery(string: string): QueryData {
 export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel|StageChannel): Promise<any> {
     async function sendPagination(): Promise<any> {
         for (const song of toQueue) {
-            ctx.guild?.queue?.songs.addSong(song);
+            ctx.guild?.queue?.songs.addSong(song, ctx.member!);
         }
 
         const opening = `**Added \`${toQueue.length}\` songs to the queue**\n\n`;
