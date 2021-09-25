@@ -41,9 +41,9 @@ export class KickCommand extends BaseCommand {
         if (dm) {
             await dm.send({
                 embeds: [
-                    createEmbed("error", `You have been **\`KICKED\`** from ${ctx.guild.name}`)
+                    createEmbed("error", `You have been **\`KICKED\`** from **${ctx.guild.name}**`)
                         .addField("**Reason**", reason)
-                        .setAuthor(`Kicked by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+                        .setFooter(`Kicked by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
                         .setTimestamp(Date.now())
                 ]
             });
