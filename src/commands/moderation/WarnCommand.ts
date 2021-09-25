@@ -41,6 +41,6 @@ export class WarnCommand extends BaseCommand {
             .setTimestamp(Date.now());
 
         await dm?.send({ embeds: [embed] });
-        return ctx.reply({ embeds: [createEmbed("success", `**${member.tag}** has been **\`WARNED\`** on the server.`)] });
+        return ctx.reply({ embeds: [createEmbed("success", `**${member.tag}** has been **\`WARNED\`** on the server.`, true)] });
     }
 }
