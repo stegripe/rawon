@@ -32,7 +32,7 @@ Discord.js version  ::  ${DJSVersion}
 FFmpeg version      ::  ${FFmpegVersion}
 Bot version         ::  ${BotVersion}
 
-Source code         ::  https://github.com/zhycorp/disc-11/tree/feat/rewrite
+Source code         ::  https://github.com/zhycorp/disc-11
 \`\`\`
                 `)
                     .setAuthor(`${this.client.user?.username as string} - Bot Information`)
