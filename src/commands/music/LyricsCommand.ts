@@ -24,7 +24,7 @@ import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 })
 export class LyricsCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
-        const query = ctx.args.length ? ctx.args.join(" ") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song.title ?? undefined);
+        const query = ctx.args.join(" ") || ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song.title ?? undefined);
         if (!query) return ctx.reply({ embeds: [createEmbed("error", "There is nothing playing or no arguments provided.", true)] });
 
         return this.getLyrics(ctx, query);
