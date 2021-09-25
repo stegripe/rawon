@@ -18,8 +18,7 @@ export class StopCommand extends BaseCommand {
     @validVC()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        ctx.guild?.queue?.songs.clear();
-        ctx.guild?.queue?.player?.stop(true);
+        ctx.guild?.queue?.stop();
         ctx.guild!.queue!.lastMusicMsg = null;
 
         ctx.reply({ embeds: [createEmbed("info", "⏹ **|** The music player has been stopped.")] }).catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
