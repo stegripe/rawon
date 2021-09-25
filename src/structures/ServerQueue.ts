@@ -7,17 +7,20 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
-    public skipVoters: Snowflake[] = [];
     public connection: VoiceConnection|null = null;
     public player: AudioPlayer|null = null;
     public dcTimeout: NodeJS.Timeout|null = null;
     public timeout: NodeJS.Timeout|null = null;
     public readonly songs = new SongManager();
+    private _skipVoters: Snowflake[] = [];
     private _lastMusicMsg: Snowflake|null = null;
     private _lastVSUpdateMsg: Snowflake|null = null;
 
     public constructor(public readonly textChannel: TextBasedChannels) {
         Object.defineProperties(this, {
+            _skipVoters: {
+                enumerable: false
+            },
             _lastMusicMsg: {
                 enumerable: false
             },
@@ -25,6 +28,14 @@ export class ServerQueue {
                 enumerable: false
             }
         });
+    }
+
+    public set skipVoters(value: Snowflake[]) {
+        this._skipVoters = value;
+    }
+
+    public get skipVoters(): Snowflake[] {
+        return this._skipVoters;
     }
 
     public set lastMusicMsg(value: Snowflake|null) {
