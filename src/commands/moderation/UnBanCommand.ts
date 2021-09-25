@@ -38,7 +38,7 @@ export class UnBanCommand extends BaseCommand {
 
         const unban = await ctx.guild.bans.remove(user.id, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]"))
             .catch(err => new Error(err));
-        if (unban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to ban member. Reason:\n\`\`\`${unban.message}\`\`\``)] });
+        if (unban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to unban member. Reason:\n\`\`\`${unban.message}\`\`\``)] });
 
         return ctx.reply({ embeds: [createEmbed("success", `**${user.tag}** has been **\`UNBANNED\`** from the server.`, true)] });
     }
