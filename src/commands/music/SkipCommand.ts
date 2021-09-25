@@ -3,6 +3,8 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import { IQueueSong } from "../../typings";
+import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
 
 @DefineCommand({
@@ -19,7 +21,7 @@ export class SkipCommand extends BaseCommand {
     @sameVC()
     public async execute(ctx: CommandContext): Promise<void> {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
-        const song = ctx.guild!.queue!.songs.first()!;
+        const song = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
 
         function ableToSkip(member: GuildMember): boolean {
             return member.roles.cache.has(djRole.id) || member.permissions.has("MANAGE_GUILD") || (song.requester.id === member.id);
