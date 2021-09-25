@@ -24,18 +24,18 @@ export const clientOptions: ClientOptions = {
     }),
     retryLimit: 3
 };
-export const defaultPrefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!";
-export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
-export const embedColor = process.env.CONFIG_EMBED_COLOR?.toUpperCase() ?? "3CAAFF";
-export const devGuild = JSON.parse(process.env.CONFIG_DEV_GUILD ?? "[]");
-export const isProd = process.env.CONFIG_NODE_ENV === "production";
+export const defaultPrefix = process.env.PREFIX?.replace(/"/g, "") ?? "!";
+export const owners: string[] = process.env.OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
+export const embedColor = process.env.EMBED_COLOR?.toUpperCase() ?? "3CAAFF";
+export const devGuild = JSON.parse(process.env.DEV_GUILD ?? "[]");
+export const isProd = process.env.NODE_ENV === "production";
 export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
-export const is247Allowed = process.env.CONFIG_ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
-export const stayInVCAfterFinished = process.env.CONFIG_STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
-export const yesEmoji = process.env.CONFIG_YES_EMOJI ?? "✅";
-export const noEmoji = process.env.CONFIG_NO_EMOJI ?? "❎";
-export const muteRoleName = process.env.CONFIG_MUTE_ROLE_NAME ?? "Muted";
+export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
+export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
+export const yesEmoji = process.env.YES_EMOJI ?? "✅";
+export const noEmoji = process.env.NO_EMOJI ?? "❎";
+export const muteRoleName = process.env.MUTE_ROLE_NAME ?? "Muted";
 export const presenceData: IpresenceData = {
     activities: [
         { name: `My default prefix is ${prefix}`, type: "PLAYING" },
