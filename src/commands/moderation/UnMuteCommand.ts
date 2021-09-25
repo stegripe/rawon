@@ -37,8 +37,20 @@ export class UnMuteCommand extends BaseCommand {
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
         if (!member.roles.cache.has(muteRole.id)) return ctx.reply({ embeds: [createEmbed("warn", "That member is not muted")] });
 
-        const unmute = await member.roles.remove(muteRole, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]"))
-            .catch(err => new Error(err));
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
+        const dm = await member.user.createDM().catch(() => undefined);
+        if (dm) {
+            await dm.send({
+                embeds: [
+                    createEmbed("info", `You have been unmuted on ${ctx.guild.name}`)
+                        .setAuthor(`Moderator: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+                        .addField("Reason", `\`\`\`\n${reason}\`\`\``)
+                        .setTimestamp(Date.now())
+                ]
+            });
+        }
+
+        const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err));
         if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to unmute member. Reason:\n\`\`\`${unmute.message}\`\`\``)] });
 
         return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`UNMUTED\`**.`, true)] });
