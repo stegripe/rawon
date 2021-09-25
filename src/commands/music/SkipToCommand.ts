@@ -60,7 +60,7 @@ export class SkipToCommand extends BaseCommand {
             song = songs[Number(targetType) - 1];
         }
 
-        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) return ctx.reply({ embeds: [createEmbed("error", "You can't skip to current playing music.", true)] });
+        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) return ctx.reply({ embeds: [createEmbed("error", "You can't skip to current music.", true)] });
 
         void play(this.client, ctx.guild!, song.key);
 
