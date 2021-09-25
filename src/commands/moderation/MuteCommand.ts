@@ -37,8 +37,21 @@ export class MuteCommand extends BaseCommand {
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
         if (member.roles.cache.has(muteRole.id)) return ctx.reply({ embeds: [createEmbed("warn", "That member is already muted")] });
 
-        const mute = await member.roles.add(muteRole, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]"))
-            .catch(err => new Error(err));
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
+        const dm = await member.user.createDM().catch(() => undefined);
+        if (dm) {
+            await dm.send({
+                embeds: [
+                    createEmbed("error", `You have been muted on ${ctx.guild.name}`)
+                        .setColor("LIGHT_GREY")
+                        .setAuthor(`Moderator: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+                        .addField("Reason", `\`\`\`\n${reason}\`\`\``)
+                        .setTimestamp(Date.now())
+                ]
+            });
+        }
+
+        const mute = await member.roles.add(muteRole, reason).catch(err => new Error(err));
         if (mute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to mute member. Reason:\n\`\`\`${mute.message}\`\`\``)] });
 
         return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`MUTED\`**.`, true)] });
