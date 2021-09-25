@@ -13,6 +13,15 @@ export class ClientUtils {
         });
     }
 
+    public async fetchDJRole(guild: Guild): Promise<Role> {
+        return guild.roles.cache.find(x => x.name === this.client.config.djRoleName) ?? guild.roles.create({
+            mentionable: false,
+            name: this.client.config.djRoleName,
+            permissions: ["SEND_MESSAGES", "CONNECT"],
+            reason: "Create DJ role"
+        });
+    }
+
     public decode(string: string): string {
         return Buffer.from(string, "base64").toString("ascii");
     }
