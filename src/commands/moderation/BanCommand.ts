@@ -37,7 +37,7 @@ export class BanCommand extends BaseCommand {
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
         if (!resolved?.bannable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`BAN\`** that member.", true)] });
 
-        const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || "[Not Specified]");
         if (ctx.guild.members.cache.has(user.id)) {
             const dm = await user.createDM().catch(() => undefined);
             if (dm) {
