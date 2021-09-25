@@ -7,6 +7,7 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
+    public skipVoters: Snowflake[] = [];
     public connection: VoiceConnection|null = null;
     public player: AudioPlayer|null = null;
     public dcTimeout: NodeJS.Timeout|null = null;
