@@ -28,6 +28,7 @@ export function getStream(url: string): Promise<Readable> {
 
 export async function getInfo(url: string): Promise<YtResponse> {
     return ytdl(url, {
-        "cache-dir": false
+        o: "-",
+        q: ""
     });
 }
