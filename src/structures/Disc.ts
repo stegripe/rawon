@@ -1,7 +1,7 @@
 import { soundcloud } from "../utils/handlers/SoundCloudUtil";
-import { ClientUtils } from "../utils/ClientUtils";
 import { CommandManager } from "../utils/CommandManager";
 import { EventsLoader } from "../utils/EventsLoader";
+import { ClientUtils } from "../utils/ClientUtils";
 import { createLogger } from "../utils/Logger";
 import { formatMS } from "../utils/formatMS";
 import * as config from "../config";

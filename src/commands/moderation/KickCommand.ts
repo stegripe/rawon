@@ -41,16 +41,16 @@ export class KickCommand extends BaseCommand {
         if (dm) {
             await dm.send({
                 embeds: [
-                    createEmbed("error", `You have been kicked from ${ctx.guild.name}`)
-                        .setAuthor(`Moderator: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
-                        .addField("Reason", `\`\`\`\n${reason}\`\`\``)
+                    createEmbed("error", `You have been **\`KICKED\`** from ${ctx.guild.name}`)
+                        .addField("**Reason**", reason)
+                        .setAuthor(`Kicked by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
                         .setTimestamp(Date.now())
                 ]
             });
         }
 
         const kick = await member.kick(reason).catch(err => new Error(err));
-        if (kick instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to kick member. Reason:\n\`\`\`${kick.message}\`\`\``)] });
+        if (kick instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to **\`KICK**\` member, because: \`${kick.message}\``)] });
 
         return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`KICKED\`** from the server.`, true)] });
     }

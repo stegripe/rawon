@@ -43,9 +43,9 @@ export class BanCommand extends BaseCommand {
             if (dm) {
                 await dm.send({
                     embeds: [
-                        createEmbed("error", `You have been banned from ${ctx.guild.name}`)
-                            .setAuthor(`Moderator: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
-                            .addField("Reason", `\`\`\`\n${reason}\`\`\``)
+                        createEmbed("error", `You have been **\`BANNED\`** from ${ctx.guild.name}`)
+                            .addField("**Reason**", reason)
+                            .setAuthor(`Banned by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
                             .setTimestamp(Date.now())
                     ]
                 });
@@ -55,7 +55,7 @@ export class BanCommand extends BaseCommand {
         const ban = await ctx.guild.members.ban(user, {
             reason
         }).catch(err => new Error(err));
-        if (ban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to ban member. Reason:\n\`\`\`${ban.message}\`\`\``)] });
+        if (ban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to **\`BAN\`** member, because: \`${ban.message}\``, true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", `**${user.tag}** has been **\`BANNED\`** from the server.`, true)] });
     }

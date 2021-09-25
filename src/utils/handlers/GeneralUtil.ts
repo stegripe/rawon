@@ -1,18 +1,18 @@
-import { ButtonPagination } from "../ButtonPagination";
-import { createEmbed } from "../createEmbed";
-import { chunk } from "../chunk";
-import { CommandContext } from "../../structures/CommandContext";
-import { Disc } from "../../structures/Disc";
-import { ServerQueue } from "../../structures/ServerQueue";
 import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
 import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
-import { youtube } from "./YouTubeUtil";
+import { CommandContext } from "../../structures/CommandContext";
+import { ServerQueue } from "../../structures/ServerQueue";
+import { ButtonPagination } from "../ButtonPagination";
 import { getInfo, getStream } from "./YTDLUtil";
+import { createEmbed } from "../createEmbed";
+import { Disc } from "../../structures/Disc";
+import { youtube } from "./YouTubeUtil";
+import { chunk } from "../chunk";
 import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
-import { decodeHTML } from "entities";
 import { Guild, Util, VoiceChannel, StageChannel } from "discord.js";
-import { URL } from "url";
 import { Video, SearchResult } from "youtubei";
+import { decodeHTML } from "entities";
+import { URL } from "url";
 
 export async function searchTrack(client: Disc, query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
@@ -272,7 +272,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         client.logger.error("PLAY_CMD_ERR:", error);
         return ctx.channel!.send({
-            embeds: [createEmbed("error", `I can't join to the voice channel, because: \`${(error as Error).message}\``)]
+            embeds: [createEmbed("error", `Error while joining the voice channel, because: \`${(error as Error).message}\``)]
         }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
     }
 
@@ -292,7 +292,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
-        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** The music has ended, use **\`${guild.client.config.prefix}play\`** to play some music`)] });
+        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** Queue has ended, use **\`${guild.client.config.prefix}play\`** to play more music.`)] });
         queue.dcTimeout = queue.stayInVC
             ? null
             : setTimeout(() => {
@@ -325,7 +325,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
             queue.player?.play(resource);
         })
         .catch((err: Error) => {
-            if (err.message === "The operation was aborted") err.message = "I can't establish a voice connection within 15 seconds.";
+            if (err.message === "The operation was aborted") err.message = "Cannot establish a voice connection within 15 seconds.";
             queue.player?.emit("error", new AudioPlayerError(err, resource));
         });
 

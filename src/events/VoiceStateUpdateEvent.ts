@@ -1,11 +1,11 @@
-import { BaseEvent } from "../structures/BaseEvent";
-import { ServerQueue } from "../structures/ServerQueue";
-import { IQueueSong } from "../typings";
-import { createEmbed } from "../utils/createEmbed";
 import { DefineEvent } from "../utils/decorators/DefineEvent";
+import { ServerQueue } from "../structures/ServerQueue";
+import { BaseEvent } from "../structures/BaseEvent";
+import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
-import { AudioPlayerPausedState } from "@discordjs/voice";
+import { IQueueSong } from "../typings";
 import { VoiceState, VoiceChannel, StageChannel } from "discord.js";
+import { AudioPlayerPausedState } from "@discordjs/voice";
 
 @DefineEvent("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
@@ -28,7 +28,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             queue.player?.stop(true);
             delete newState.guild.queue;
             this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`);
-            queue.textChannel.send({ embeds: [createEmbed("error", "I was disconnected from the voice channel, the queue has been deleted.")] })
+            queue.textChannel.send({ embeds: [createEmbed("error", "⏹️ **|** Disconnected from the voice channel, the queue has been deleted.")] })
                 .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
         }
 
@@ -37,21 +37,21 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         if (member?.id === botID && oldID === queueVC.id && newID !== queueVC.id && newID !== undefined) {
             if (!newVCMembers) return;
             if (newVC?.type === "GUILD_STAGE_VOICE" && newState.suppress) {
-                const msg = await queue.textChannel.send({ embeds: [createEmbed("info", "I have been moved to a stage channel. Joining as a speaker...")] });
+                const msg = await queue.textChannel.send({ embeds: [createEmbed("info", "Moved to the stage channel, trying to join as Speaker...")] });
                 const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
 
                 if (suppress && ("error" in suppress)) {
                     queue.player?.stop(true);
                     queue.connection?.disconnect();
                     delete newState.guild.queue;
-                    this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
-                    queue.textChannel.send({ embeds: [createEmbed("error", "I was unable to join as a speaker, the queue has been deleted.")] })
+                    this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
+                    queue.textChannel.send({ embeds: [createEmbed("error", "Unable to join as Speaker, the queue has been deleted.", true)] })
                         .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
 
                     return;
                 }
 
-                await msg.edit({ embeds: [createEmbed("success", "Successfully joined the stage channel as a speaker.")] });
+                await msg.edit({ embeds: [createEmbed("success", "Successfully joined the stage channel as speaker.", true)] });
             }
             if (newVCMembers.size === 0 && queue.timeout === null) {
                 this.timeout(newVCMembers, queue, newState);
@@ -79,7 +79,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         state.guild.queue!.timeout = setTimeout(() => {
             queue.connection?.disconnect();
             delete state.guild.queue;
-            void queue.textChannel.send({ embeds: [createEmbed("error", `⏹ **|** **${duration}** have passed and there's no one who joined the voice channel, the queue has deleted.`).setAuthor("Queue Deleted")] });
+            void queue.textChannel.send({ embeds: [createEmbed("error", `⏹ **|** **\`${duration}\`** has passed and there's no one who joined the voice channel, the queue has deleted.`).setAuthor("Queue Deleted")] });
         }, timeout);
         void queue.textChannel.send({ embeds: [createEmbed("warn", `⏸ **|** Everyone has left from the voice channel. To save resources, the queue has paused. If there's no one who joins the voice channel in the next **\`${duration}\`**, the queue will be deleted.`).setAuthor("Queue Paused")] })
             .then(msg => queue.lastVSUpdateMsg = msg.id);
@@ -93,7 +93,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const song = ((queue.player!.state as AudioPlayerPausedState).resource.metadata as IQueueSong).song;
 
-        void queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** Someone has joined the voice channel.\nNow Playing: **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail).setAuthor("Queue Resumed")] }).then(msg => queue.lastVSUpdateMsg = msg.id);
+        void queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** Someone has joined the voice channel.\nResuming **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail).setAuthor("Queue Resumed")] }).then(msg => queue.lastVSUpdateMsg = msg.id);
         state.guild.queue?.player?.unpause();
     }
 }

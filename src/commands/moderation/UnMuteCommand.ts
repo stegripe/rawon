@@ -35,24 +35,24 @@ export class UnMuteCommand extends BaseCommand {
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
 
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
-        if (!member.roles.cache.has(muteRole.id)) return ctx.reply({ embeds: [createEmbed("warn", "That member is not muted")] });
+        if (!member.roles.cache.has(muteRole.id)) return ctx.reply({ embeds: [createEmbed("warn", "That member is not **\`MUTED\`**")] });
 
         const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
                 embeds: [
-                    createEmbed("info", `You have been unmuted on ${ctx.guild.name}`)
-                        .setAuthor(`Moderator: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
-                        .addField("Reason", `\`\`\`\n${reason}\`\`\``)
+                    createEmbed("info", `You have been **\`UN-MUTED\`** on ${ctx.guild.name}`)
+                        .addField("**Reason**", reason)
+                        .setAuthor(`Un-muted by: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
                         .setTimestamp(Date.now())
                 ]
             });
         }
 
         const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err));
-        if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to unmute member. Reason:\n\`\`\`${unmute.message}\`\`\``)] });
+        if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to **\`UN-MUTE\`** member, because: \`${unmute.message}\``)] });
 
-        return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`UNMUTED\`**.`, true)] });
+        return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`UN-MUTED\`** on the server.`, true)] });
     }
 }
