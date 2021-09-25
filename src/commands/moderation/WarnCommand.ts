@@ -31,7 +31,7 @@ export class WarnCommand extends BaseCommand {
         const member = ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") as string)?.user ?? ctx.options?.getUser("member", true);
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
 
-        const dm = await ctx.member.user.createDM().catch(() => undefined);
+        const dm = await member.createDM().catch(() => undefined);
         if (!dm) await ctx.reply({ embeds: [createEmbed("warn", "Unable to create a DM with that user, but I'll keep warn 'em.")] });
 
         const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
