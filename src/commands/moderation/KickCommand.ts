@@ -36,8 +36,20 @@ export class KickCommand extends BaseCommand {
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", "Please specify someone.")] });
         if (!member.kickable) return ctx.reply({ embeds: [createEmbed("error", "Sorry, but I can't **\`KICK\`** that member.", true)] });
 
-        const kick = await member.kick(ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]"))
-            .catch(err => new Error(err));
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
+        const dm = await member.user.createDM().catch(() => undefined);
+        if (dm) {
+            await dm.send({
+                embeds: [
+                    createEmbed("error", `You have been kicked from ${ctx.guild.name}`)
+                        .setAuthor(`Moderator: ${ctx.author.tag}`, ctx.author.displayAvatarURL({ dynamic: true }))
+                        .addField("Reason", `\`\`\`\n${reason}\`\`\``)
+                        .setTimestamp(Date.now())
+                ]
+            });
+        }
+
+        const kick = await member.kick(reason).catch(err => new Error(err));
         if (kick instanceof Error) return ctx.reply({ embeds: [createEmbed("error", `Unable to kick member. Reason:\n\`\`\`${kick.message}\`\`\``)] });
 
         return ctx.reply({ embeds: [createEmbed("success", `**${member.user.tag}** has been **\`KICKED\`** from the server.`, true)] });
