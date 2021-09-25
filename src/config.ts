@@ -33,6 +33,8 @@ export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
 export const is247Allowed = process.env.CONFIG_ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
 export const stayInVCAfterFinished = process.env.CONFIG_STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
+export const yesEmoji = process.env.CONFIG_YES_EMOJI ?? "✅";
+export const noEmoji = process.env.CONFIG_NO_EMOJI ?? "❎";
 export const presenceData: IpresenceData = {
     activities: [
         { name: `My default prefix is ${prefix}`, type: "PLAYING" },
