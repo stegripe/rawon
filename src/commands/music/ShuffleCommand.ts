@@ -19,6 +19,6 @@ export class ShuffleCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
         ctx.guild!.queue!.shuffle = !ctx.guild!.queue!.shuffle;
         const isShuffle = ctx.guild!.queue!.shuffle;
-        return ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** Shuffle is **\`${isShuffle ? "ON" : "OFF"}\`**`)] });
+        return ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** Shuffle mode is **\`${isShuffle ? "ON" : "OFF"}\`**`)] });
     }
 }
