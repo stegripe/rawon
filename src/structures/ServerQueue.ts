@@ -53,4 +53,9 @@ export class ServerQueue {
     public get playing(): boolean {
         return this.player?.state.status === AudioPlayerStatus.Playing;
     }
+
+    public stop(): void {
+        this.songs.clear();
+        this.player?.stop(true);
+    }
 }
