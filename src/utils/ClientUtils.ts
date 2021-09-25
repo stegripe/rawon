@@ -22,6 +22,10 @@ export class ClientUtils {
         });
     }
 
+    public requiredVoters(memberAmount: number): number {
+        return Math.round(memberAmount / 2);
+    }
+
     public decode(string: string): string {
         return Buffer.from(string, "base64").toString("ascii");
     }
