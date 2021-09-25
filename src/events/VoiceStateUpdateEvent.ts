@@ -1,11 +1,11 @@
-import { BaseEvent } from "../structures/BaseEvent";
-import { ServerQueue } from "../structures/ServerQueue";
-import { IQueueSong } from "../typings";
-import { createEmbed } from "../utils/createEmbed";
 import { DefineEvent } from "../utils/decorators/DefineEvent";
+import { ServerQueue } from "../structures/ServerQueue";
+import { BaseEvent } from "../structures/BaseEvent";
+import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
-import { AudioPlayerPausedState } from "@discordjs/voice";
+import { IQueueSong } from "../typings";
 import { VoiceState, VoiceChannel, StageChannel } from "discord.js";
+import { AudioPlayerPausedState } from "@discordjs/voice";
 
 @DefineEvent("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
