@@ -37,7 +37,7 @@ export class UnMuteCommand extends BaseCommand {
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
         if (!member.roles.cache.has(muteRole.id)) return ctx.reply({ embeds: [createEmbed("warn", "That member is not **\`MUTED\`**")] });
 
-        const reason = ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : "[Not Specified]");
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || "[Not Specified]");
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
