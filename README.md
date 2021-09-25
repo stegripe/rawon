@@ -10,6 +10,7 @@
 <a href="https://github.com/zhycorp/disc-11/actions?query=workflow%3A%22Lint+code+%26+compile+test%22"><img src="https://github.com/zhycorp/disc-11/workflows/Lint%20code%20&%20compile%20test/badge.svg" alt="CI Status" /></a>
 
 ## Features
+- Interaction support.
 - Basic music commands.
 - Basic moderation commands.
 - Configurable, and easy to use.
