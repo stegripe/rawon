@@ -9,10 +9,10 @@ import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "di
 
 @DefineCommand({
     contextChat: "Add to queue",
-    description: "Play some track using provided query",
+    description: "Play some music using provided query",
     name: "search",
     slash: {
-        description: "Search the specified track",
+        description: "Search the specified music",
         options: [
             {
                 description: "Query to search",
@@ -65,7 +65,7 @@ export class SearchCommand extends BaseCommand {
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
 
         const msg = await ctx.send({
-            content: "Please select some tracks and then press `Done` to continue",
+            content: "Please select some music, and then press **`Done`** to continue",
             components: [
                 new MessageActionRow()
                     .addComponents(
