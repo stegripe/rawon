@@ -1,10 +1,10 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
-import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
-import { CommandContext } from "../../structures/CommandContext";
 import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
+import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
+import { DefineCommand } from "../../utils/decorators/DefineCommand";
+import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { ISong } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
+import { ISong } from "../../typings";
 import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
 
 @DefineCommand({
