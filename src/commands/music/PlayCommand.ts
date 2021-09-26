@@ -15,7 +15,8 @@ import { createEmbed } from "../../utils/createEmbed";
             {
                 description: "Query to search",
                 name: "query",
-                type: "STRING"
+                type: "STRING",
+                required: true
             }
         ]
     },
@@ -29,7 +30,7 @@ export class PlayCommand extends BaseCommand {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const voiceChannel = ctx.member!.voice.channel!;
-        const query = ((ctx.args.length ? ctx.args.join(" ") : undefined) ?? ctx.options?.getString("query")) ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : undefined) as string|undefined;
+        const query = ((ctx.args.length ? ctx.args.join(" ") : undefined) ?? ctx.options?.getString("query")) ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : undefined) as string | undefined;
 
         if (!query) {
             return ctx.reply({
