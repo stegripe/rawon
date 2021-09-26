@@ -66,7 +66,7 @@ export class SearchCommand extends BaseCommand {
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
 
         const msg = await ctx.send({
-            content: "Please select some music, and then press **`Done`** to continue",
+            content: "Please select some music",
             components: [
                 new MessageActionRow()
                     .addComponents(
