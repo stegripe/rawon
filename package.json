@@ -56,7 +56,7 @@
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.6.0",
-    "bufferutil": "^4.0.3",
+    "bufferutil": "^4.0.4",
     "erlpack": "github:hzmifork/erlpack",
     "libsodium-wrappers": "^0.7.9",
     "utf-8-validate": "^5.0.5",
