@@ -5,7 +5,8 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
-import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
+import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util } from "discord.js";
+import { decodeHTML } from "entities";
 
 @DefineCommand({
     contextChat: "Add to queue",
@@ -65,36 +66,64 @@ export class SearchCommand extends BaseCommand {
         const tracks = await searchTrack(this.client, query, source as "youtube"|"soundcloud").catch(() => undefined);
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
 
-        const msg = await ctx.send({
-            content: "Please select some music",
-            components: [
-                new MessageActionRow()
-                    .addComponents(
-                        new MessageSelectMenu()
-                            .setMinValues(1)
-                            .setMaxValues(10)
-                            .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
-                            .addOptions(this.generateSelectMenu(tracks.items))
-                            .setPlaceholder("Select some tracks")
-                    )
-            ]
-        });
-        const toQueue: ISong[] = await (new Promise(resolve => {
-            const collector = msg.createMessageComponentCollector({
-                filter: i => i.isSelectMenu() && (i.user.id === ctx.author.id),
+        let toQueue: ISong[];
+        if (this.client.config.musicSelectionType === "message") {
+            const msg = await ctx.send({
+                embeds: [
+                    createEmbed("info", `Please select some music.\nYou can choose more than one using blank space or \`,\`. For example: \`1,2, 3\`\n\`\`\`\n${tracks.items.map((x, i) => `${i + i} - ${Util.escapeMarkdown(decodeHTML(x.title))}`).join("\n")}\`\`\``)
+                        .setAuthor("Tracks Selection", this.client.user?.displayAvatarURL())
+                        .setFooter("Type cancel or c to cancel tracks selection.")
+                ]
+            });
+            const respond = await msg.channel.awaitMessages({
+                errors: ["time"],
+                filter: m => {
+                    const nums = m.content.split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length);
+
+                    return (m.author.id === ctx.author.id) && (["c", "cancel"].includes(m.content.toLowerCase()) || (nums.length >= 1));
+                },
                 max: 1
+            }).catch(() => undefined);
+            if (!respond) return ctx.reply({ embeds: [createEmbed("error", "No or invalid value entered, tracks selection canceled.")] });
+            if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", "Tracks selection canceled.")] });
+
+            const songs = respond.first()!.content
+                .split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
+                .sort((a, b) => Number(a) - Number(b));
+
+            toQueue = await Promise.all(songs.map(x => tracks.items[Number(x) - 1]));
+        } else {
+            const msg = await ctx.send({
+                content: "Please select some music",
+                components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageSelectMenu()
+                                .setMinValues(1)
+                                .setMaxValues(10)
+                                .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
+                                .addOptions(this.generateSelectMenu(tracks.items))
+                                .setPlaceholder("Select some tracks")
+                        )
+                ]
             });
+            toQueue = await (new Promise(resolve => {
+                const collector = msg.createMessageComponentCollector({
+                    filter: i => i.isSelectMenu() && (i.user.id === ctx.author.id),
+                    max: 1
+                });
 
-            collector.on("collect", i => {
-                if (!i.isSelectMenu()) return;
+                collector.on("collect", i => {
+                    if (!i.isSelectMenu()) return;
 
-                resolve(i.values.map(val => {
-                    const num = Number(val.slice(-1));
+                    resolve(i.values.map(val => {
+                        const num = Number(val.slice(-1));
 
-                    return tracks.items[num];
-                }));
-            });
-        }));
+                        return tracks.items[num];
+                    }));
+                });
+            }));
+        }
 
         return handleVideos(this.client, ctx, toQueue, voiceChannel);
     }
