@@ -37,7 +37,7 @@ import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "di
             }
         ]
     },
-    usage: "{prefix}search <query>"
+    usage: "{prefix}search <query> [source]"
 })
 export class SearchCommand extends BaseCommand {
     @inVC()
@@ -47,6 +47,7 @@ export class SearchCommand extends BaseCommand {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const voiceChannel = ctx.member!.voice.channel!;
+        const source = ctx.options?.getString("source") ?? (["youtube", "soundcloud"].includes(ctx.args.slice(-1)[0]?.toLowerCase()) ? ctx.args.pop()! : "soundcloud");
         const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? ctx.options?.getMessage("message")?.content;
 
         if (!query) {
@@ -61,7 +62,7 @@ export class SearchCommand extends BaseCommand {
             return this.client.commands.get("play")!.execute(newCtx);
         }
 
-        const tracks = await searchTrack(this.client, query, (ctx.options?.getString("source") as "youtube"|"soundcloud"|undefined) ?? "soundcloud").catch(() => undefined);
+        const tracks = await searchTrack(this.client, query, source as "youtube"|"soundcloud").catch(() => undefined);
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
 
         const msg = await ctx.send({
