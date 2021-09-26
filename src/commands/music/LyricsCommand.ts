@@ -24,7 +24,7 @@ import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 })
 export class LyricsCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
-        const query = ctx.args.join(" ") || ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song.title ?? undefined);
+        const query = ctx.args.length >= 1 ? ctx.args.join(" ") : ctx.options?.getString("query") ? ctx.options.getString("query") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title);
         if (!query) return ctx.reply({ embeds: [createEmbed("error", "There is nothing playing or no arguments provided.", true)] });
 
         return this.getLyrics(ctx, query);
@@ -58,9 +58,8 @@ export class LyricsCommand extends BaseCommand {
                     lyricsArr.push(lyrics.substring(0, 2047));
                     lyrics = lyrics.replace(lyrics.substring(0, 2048), "");
                 }
-                const pages: any = await Promise.all(lyricsArr.map(async (s: any) => s.join("\n")));
-
-                const embed = createEmbed("info", pages[0]).setAuthor(`${data.song} - ${data.artist}`).setThumbnail(albumArt);
+                const pages: string[] = await Promise.all(lyricsArr);
+                const embed = createEmbed("info", pages[0]).setAuthor(data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase()).setThumbnail(albumArt);
                 const msg = await ctx.reply({ embeds: [embed] });
                 return (new ButtonPagination(msg, {
                     author: ctx.author.id,
