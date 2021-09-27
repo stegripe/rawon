@@ -33,7 +33,7 @@ export const devGuild = JSON.parse(process.env.DEV_GUILD ?? "[]");
 export const isProd = process.env.NODE_ENV === "production";
 export const isDev = !isProd;
 export const prefix = isDev ? "d!" : defaultPrefix;
-export const musicSelectionType = process.env.MUSIC_SELECTION_TYPE! || "message";
+export const musicSelectionType = process.env.MUSIC_SELECTION_TYPE?.toLowerCase() as string || "message";
 export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
 export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
 export const yesEmoji = process.env.YES_EMOJI ?? "✅";
