@@ -20,7 +20,7 @@ const isReplit = (
 
 if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
     console.info("[INFO] This repl doesn't use Node.js v16 or newer, trying to install Node.js v16...");
-    execSync(`npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
+    execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
     console.info("[INFO] Node.js v16 has installed, please re-run the bot.");
     process.exit(0);
 }
