@@ -36,7 +36,7 @@
     "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
-    "@types/node": "^16.9.6",
+    "@types/node": "^16.10.1",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
     "@zhycorp/eslint-config": "^4.0.0",
