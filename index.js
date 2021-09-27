@@ -28,7 +28,7 @@ if (isGlitch || isReplit) {
     new Server((req, res) => {
         const now = new Date().toLocaleString("en-US");
         res.end(`OK (200) - ${now}`);
-    }).listen(process.env.PORT ?? 3000);
+    }).listen(process.env.PORT || 3000);
     console.info(`[INFO] ${isGlitch ? "Glitch" : "Repl"} environment detected, trying to compile...`);
     execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
     console.info("[INFO] Compiled, starting the bot...");
