@@ -252,7 +252,13 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
     }
 
     if (ctx.guild?.queue) {
-        return sendPagination();
+        await sendPagination();
+
+        if (ctx.guild.queue.player?.state.status === AudioPlayerStatus.Idle) {
+            void play(client, ctx.guild);
+        }
+
+        return;
     }
 
     ctx.guild!.queue = new ServerQueue(ctx.channel!);
