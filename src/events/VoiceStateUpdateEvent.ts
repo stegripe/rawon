@@ -60,7 +60,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             }
         }
 
-        if (oldID === queueVC.id && newID !== queueVC.id && !member?.user.bot && queue.timeout === null) this.timeout(queueVCMembers, queue, newState);
+        if (oldID === queueVC.id && newID !== queueVC.id && !member?.user.bot && queue.timeout === null) {
+            queue.skipVoters = queue.skipVoters.filter(x => x !== member?.id);
+            this.timeout(queueVCMembers, queue, newState);
+        }
 
         if (newID === queueVC.id && !member?.user.bot) this.resume(queueVCMembers, queue, newState);
     }
