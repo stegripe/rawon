@@ -1,4 +1,5 @@
 const { execSync } = require("child_process");
+const { existsSync } = require("fs");
 const { resolve } = require("path");
 const { Server } = require("https");
 require("dotenv/config");
@@ -24,6 +25,7 @@ if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
     console.info("[INFO] Node.js v16 has installed, please re-run the bot.");
     process.exit(0);
 }
+
 if (isGlitch || isReplit) {
     new Server((req, res) => {
         const now = new Date().toLocaleString("en-US");
@@ -33,4 +35,17 @@ if (isGlitch || isReplit) {
     execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
     console.info("[INFO] Compiled, starting the bot...");
 }
-require("./dist/src/index.js");
+
+(async () => {
+    const isUnix = ['aix', 'android', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos'].includes(process.platform.toLowerCase());
+    process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
+    process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
+
+    if (!existsSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
+        console.info("[INFO] Yt-dlp couldn't be found. Downloading...");
+        await require("youtube-dl-exec/scripts/postinstall");
+        console.info("[INFO] Yt-dlp downloaded");
+    }
+
+    require("./dist/src/index.js");
+})();
