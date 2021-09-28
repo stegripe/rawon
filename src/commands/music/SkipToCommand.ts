@@ -44,7 +44,10 @@ export class SkipToCommand extends BaseCommand {
     @inVC()
     @haveQueue()
     @sameVC()
-    public execute(ctx: CommandContext): any {
+    public async execute(ctx: CommandContext): Promise<any> {
+        const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
+        if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", "You don't have permission to use this comamnd.")] });
+
         const targetType = (ctx.args[0] as string|undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position");
         if (!targetType) return ctx.reply({ embeds: [createEmbed("warn", `Invalid usage, please use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information.`)] });
 
