@@ -353,6 +353,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
             sendStartPlayingMsg(newSong);
         } else if (newState.status === AudioPlayerStatus.Idle) {
             client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${song.song.title}" on ${guild.name} has ended`);
+            queue.skipVoters = [];
             if (queue.loopMode === "OFF") {
                 queue.songs.delete(song.key);
             }
