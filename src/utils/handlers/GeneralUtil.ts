@@ -303,6 +303,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
             ? null
             : setTimeout(() => {
                 queue.connection?.disconnect();
+                delete guild.queue;
                 void queue.textChannel.send({ embeds: [createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long.`)] })
                     .then(msg => {
                         setTimeout(() => {
@@ -310,7 +311,6 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
                         }, 3500);
                     });
             }, 60000);
-        delete guild.queue;
         return;
     }
 
