@@ -29,7 +29,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             queue.player?.stop(true);
             delete newState.guild.queue;
             this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`);
-            queue.textChannel.send({ embeds: [createEmbed("error", "⏹️ **|** Disconnected from the voice channel, the queue has been deleted.")] })
+            queue.textChannel.send({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.disconnectFromVCMessage"))] })
                 .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
         }
 
