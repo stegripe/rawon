@@ -257,6 +257,7 @@
 		},
 		"createMessage": "Hi {author}, my prefix is **{prefix}**",
 		"voiceStateUpdate": {
+			"unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
 			"joinStageMessage": "Successfully joined the stage channel as speaker.",
 			"deleteQueue": "**{duration}** has passed and there's no one who joined the voice channel, the queue has deleted.",
 			"deleteQueueFooter": "Queue Deleted",
