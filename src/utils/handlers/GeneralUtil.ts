@@ -361,7 +361,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
             const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random() : (queue.loopMode === "SONG" ? queue.songs.get(song.key) : queue.songs.sortByIndex().filter(x => x.index > song.index).first() ?? queue.songs.sortByIndex().first());
 
-            queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__("utils.generalHandler.stopPlaying")}`).setThumbnail(song.song.thumbnail)] })
+            queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__("utils.generalHandler.stopPlaying", { song: song.song.title })}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)
                 .catch(e => client.logger.error("PLAY_ERR:", e))
                 .finally(() => {

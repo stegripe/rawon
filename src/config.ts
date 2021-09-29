@@ -48,8 +48,7 @@ i18n.configure({
     defaultLocale: "en",
     directory: join(__dirname, "..", "..", "lang"),
     locales: [
-        "en",
-        "es"
+        "en"
     ],
     objectNotation: true
 });
