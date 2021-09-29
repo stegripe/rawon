@@ -141,7 +141,7 @@
 			"play": {
 				"description": "Play some music",
 				"slashQueryDescription": "Query to search",
-				"usage": "{prefix}play <consulta/url>",
+				"usage": "{prefix}play <query/url>",
 				"alreadyPlaying": "The music player is already playing to **{voiceChannel}** voice channel.",
 				"noSongData": "That URL doesn't have any song data."
 			},
