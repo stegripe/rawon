@@ -1,5 +1,5 @@
 import { IpresenceData } from "./typings";
-import { ClientOptions, ClientPresenceStatus, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
+import { ActivityType, ClientOptions, ClientPresenceStatus, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
 import { join } from "path";
 import i18n from "i18n";
 
@@ -56,13 +56,10 @@ i18n.configure({
 i18n.setLocale(lang);
 
 export const presenceData: IpresenceData = {
-    activities: [
-        { name: i18n.__mf("activities.message1", { prefix }), type: "PLAYING" },
-        { name: i18n.__("activities.message2"), type: "LISTENING" },
-        { name: i18n.__("activities.message3"), type: "WATCHING" },
-        { name: i18n.__("activities.message4"), type: "PLAYING" },
-        { name: i18n.__("activities.message5"), type: "COMPETING" }
-    ],
+    activities: (JSON.parse(process.env.ACTIVITIES! || "[]") as string[]).map((x, i) => ({
+        name: x,
+        type: ((JSON.parse(process.env.ACTIVITY_TYPES! || "[]") as string[])[i]?.toUpperCase() || "PLAYING") as ActivityType
+    })),
     status: ["online"] as ClientPresenceStatus[],
     interval: 60000
 };
