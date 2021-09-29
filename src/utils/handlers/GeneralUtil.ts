@@ -338,7 +338,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
     const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
         client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
-        queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__("utils.generalHandler.startPlaying")}`).setThumbnail(newSong.thumbnail)] })
+        queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__("utils.generalHandler.startPlaying", { song: newSong.title })}`).setThumbnail(newSong.thumbnail)] })
             .then(m => queue.lastMusicMsg = m.id)
             .catch(e => client.logger.error("PLAY_ERR:", e));
     };
