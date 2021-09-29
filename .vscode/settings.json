@@ -1,4 +1,7 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
-    "files.eol": "\n"
+    "eslint.packageManager": "npm",
+    "npm.packageManager": "npm",
+    "files.eol": "\n",
+    "liveshare.languages.allowGuestCommandControl": true
 }
