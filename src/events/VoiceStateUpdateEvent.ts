@@ -46,7 +46,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     queue.connection?.disconnect();
                     delete newState.guild.queue;
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
-                    queue.textChannel.send({ embeds: [createEmbed("error", "Unable to join as Speaker, the queue has been deleted.", true)] })
+                    queue.textChannel.send({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)] })
                         .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
 
                     return;
