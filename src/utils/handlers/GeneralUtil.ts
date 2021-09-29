@@ -338,7 +338,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
     const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
         client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
-        queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__("utils.generalHandler.startPlaying")}`).setThumbnail(newSong.thumbnail)] })
+        queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__("utils.generalHandler.startPlaying", { song: newSong.title })}`).setThumbnail(newSong.thumbnail)] })
             .then(m => queue.lastMusicMsg = m.id)
             .catch(e => client.logger.error("PLAY_ERR:", e));
     };
@@ -361,7 +361,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
             const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random() : (queue.loopMode === "SONG" ? queue.songs.get(song.key) : queue.songs.sortByIndex().filter(x => x.index > song.index).first() ?? queue.songs.sortByIndex().first());
 
-            queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__("utils.generalHandler.stopPlaying")}`).setThumbnail(song.song.thumbnail)] })
+            queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__("utils.generalHandler.stopPlaying", { song: song.song.title })}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)
                 .catch(e => client.logger.error("PLAY_ERR:", e))
                 .finally(() => {
