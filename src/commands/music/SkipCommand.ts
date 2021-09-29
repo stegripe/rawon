@@ -13,6 +13,7 @@ import i18n from "../../config";
     description: i18n.__("commands.music.skip.description"),
     name: "skip",
     slash: {
+        options: []
     },
     usage: "{prefix}skip"
 })

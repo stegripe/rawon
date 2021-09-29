@@ -9,7 +9,7 @@ import i18n from "../../config";
     description: i18n.__("commands.music.pause.description"),
     name: "pause",
     slash: {
-        name: "pause"
+        options: []
     },
     usage: "{prefix}pause"
 })

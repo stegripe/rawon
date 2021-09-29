@@ -11,7 +11,6 @@ import i18n from "../../config";
     name: "play",
     slash: {
         description: i18n.__("commands.music.play.description"),
-        name: "play",
         options: [
             {
                 description: i18n.__("commands.music.play.slashQueryDescription"),

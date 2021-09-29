@@ -29,7 +29,7 @@ import i18n from "../../config";
             }
         ]
     },
-    usage: i18n.__("commands.music.stayInQueue.usage")
+    usage: "{prefix}stayinvc [enable | disable]"
 })
 export class StayInQueueCommand extends BaseCommand {
     @inVC()

@@ -31,8 +31,7 @@ import i18n from "../../config";
                 type: "SUB_COMMAND"
             }
         ]
-    },
-    usage: i18n.__("commands.music.repeat.usage")
+    }
 })
 export class RepeatCommand extends BaseCommand {
     @inVC()
