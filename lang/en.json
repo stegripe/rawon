@@ -244,6 +244,11 @@
 		"cooldownMessage": "{author}, please wait **{timeleft}** of cooldown time."
 	},
 	"events": {
+		"channelUpdate": {
+			"reconfigureConnection": "Voice channel region changed. Re-configuring connection...",
+			"connectionReconfigured": "Connection successfully re-configured.",
+			"unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
+		},
 		"createInteraction": {
 			"message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
 			"message2": "Sorry, but that interaction is only for <@{user}>"
