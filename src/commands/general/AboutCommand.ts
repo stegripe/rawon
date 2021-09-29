@@ -34,8 +34,6 @@ table.push(
     [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/zhycorp/disc-11"]
 );
 
-console.log(table.toString());
-
 @DefineCommand({
     aliases: ["botinfo", "info", "information", "stats"],
     description: i18n.__("commands.general.about.description"),
