@@ -38,7 +38,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         if (member?.id === botID && oldID === queueVC.id && newID !== queueVC.id && newID !== undefined) {
             if (!newVCMembers) return;
             if (newVC?.type === "GUILD_STAGE_VOICE" && newState.suppress) {
-                const msg = await queue.textChannel.send({ embeds: [createEmbed("info", "Moved to the stage channel, trying to join as Speaker...")] });
+                const msg = await queue.textChannel.send({ embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpealer"))] });
                 const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
 
                 if (suppress && ("error" in suppress)) {
