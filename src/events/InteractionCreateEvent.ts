@@ -3,6 +3,7 @@ import { CommandContext } from "../structures/CommandContext";
 import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
 import { Interaction, Permissions } from "discord.js";
+import i18n from "../config";
 
 @DefineEvent("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
@@ -17,7 +18,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     void interaction.reply({
                         ephemeral: true,
                         embeds: [
-                            createEmbed("error", `Sorry, but that interaction is only for <@${user.toString()}> and the server staff.`, true)
+                            createEmbed("error", i18n.__mf("events.createInteraction.message1", { user: user.toString() }), true)
                         ]
                     });
                 } else {
@@ -52,7 +53,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 void interaction.reply({
                     ephemeral: true,
                     embeds: [
-                        createEmbed("error", `Sorry, but that interaction is only for <@${user.toString()}>`, true)
+                        createEmbed("error", i18n.__mf("events.createInteraction.message1", { user: user.toString() }), true)
                     ]
                 });
             }

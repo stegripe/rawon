@@ -7,16 +7,17 @@ import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
 import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util } from "discord.js";
 import { decodeHTML } from "entities";
+import i18n from "../../config";
 
 @DefineCommand({
     contextChat: "Add to queue",
-    description: "Play some music using provided query",
+    description: i18n.__("commands.music.search.description"),
     name: "search",
     slash: {
-        description: "Search the specified music",
+        description: i18n.__("commands.music.search.slashDescription"),
         options: [
             {
-                description: "Query to search",
+                description: i18n.__("commands.music.search.slashQueryDescription"),
                 name: "query",
                 type: "STRING"
             },
@@ -31,14 +32,14 @@ import { decodeHTML } from "entities";
                         value: "soundcloud"
                     }
                 ],
-                description: "Where the track should be taken?",
+                description: i18n.__("commands.music.search.slashSourceDescription"),
                 name: "source",
                 required: false,
                 type: "STRING"
             }
         ]
     },
-    usage: "{prefix}search <query> [source]"
+    usage: i18n.__("commands.music.search.usage")
 })
 export class SearchCommand extends BaseCommand {
     @inVC()
@@ -54,7 +55,7 @@ export class SearchCommand extends BaseCommand {
         if (!query) {
             return ctx.send({
                 embeds: [
-                    createEmbed("warn", "Please provide some query to search.")
+                    createEmbed("warn", i18n.__("commands.music.search.noQuery"))
                 ]
             });
         }
@@ -63,16 +64,16 @@ export class SearchCommand extends BaseCommand {
             return this.client.commands.get("play")!.execute(newCtx);
         }
 
-        const tracks = await searchTrack(this.client, query, source as "youtube"|"soundcloud").catch(() => undefined);
-        if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "I can't obtain any search results.", true)] });
+        const tracks = await searchTrack(this.client, query, source as "youtube" | "soundcloud").catch(() => undefined);
+        if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noTracks"), true)] });
 
         let toQueue: ISong[];
         if (this.client.config.musicSelectionType === "message") {
             const msg = await ctx.send({
                 embeds: [
-                    createEmbed("info", `Please select some music.\nYou can choose more than one using blank space or \`,\`. For example: \`1,2, 3\`\n\`\`\`\n${tracks.items.map((x, i) => `${i + i} - ${Util.escapeMarkdown(decodeHTML(x.title))}`).join("\n")}\`\`\``)
-                        .setAuthor("Tracks Selection", this.client.user?.displayAvatarURL())
-                        .setFooter("Type cancel or c to cancel tracks selection.")
+                    createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(decodeHTML(x.title))}`).join("\n")}\`\`\``)
+                        .setAuthor(i18n.__("commands.music.search.trackSelectionMessage"), this.client.user?.displayAvatarURL())
+                        .setFooter(i18n.__("commands.music.search.cancelMessage"))
                 ]
             });
             const respond = await msg.channel.awaitMessages({
@@ -84,8 +85,8 @@ export class SearchCommand extends BaseCommand {
                 },
                 max: 1
             }).catch(() => undefined);
-            if (!respond) return ctx.reply({ embeds: [createEmbed("error", "No or invalid value entered, tracks selection canceled.")] });
-            if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", "Tracks selection canceled.")] });
+            if (!respond) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"))] });
+            if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))] });
 
             const songs = respond.first()!.content
                 .split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
@@ -94,7 +95,7 @@ export class SearchCommand extends BaseCommand {
             toQueue = await Promise.all(songs.map(x => tracks.items[Number(x) - 1]));
         } else {
             const msg = await ctx.send({
-                content: "Please select some music",
+                content: i18n.__("commands.music.search.interactionContent"),
                 components: [
                     new MessageActionRow()
                         .addComponents(
@@ -103,7 +104,7 @@ export class SearchCommand extends BaseCommand {
                                 .setMaxValues(10)
                                 .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
                                 .addOptions(this.generateSelectMenu(tracks.items))
-                                .setPlaceholder("Select some tracks")
+                                .setPlaceholder(i18n.__("commands.music.search.interactionPlaceholder"))
                         )
                 ]
             });

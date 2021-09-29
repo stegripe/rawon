@@ -6,29 +6,30 @@ import { play } from "../../utils/handlers/GeneralUtil";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: [],
-    description: "Skip to specific position in the queue",
+    description: i18n.__("commands.music.skipTo.description"),
     name: "skipto",
     slash: {
         options: [
             {
-                description: "Rewind to the first song in the queue",
+                description: i18n.__("commands.music.skipTo.slashFirstDescription"),
                 name: "first",
                 type: "SUB_COMMAND"
             },
             {
-                description: "Skip to the last song in the queue",
+                description: i18n.__("commands.music.skipTo.slashLastDescription"),
                 name: "last",
                 type: "SUB_COMMAND"
             },
             {
-                description: "Skip to a specific position in the queue",
+                description: i18n.__("commands.music.skipTo.slashSpecificDescription"),
                 name: "specific",
                 options: [
                     {
-                        description: "Song position in the queue",
+                        description: i18n.__("commands.music.skipTo.slashPositionDescription"),
                         name: "position",
                         required: true,
                         type: "NUMBER"
@@ -38,7 +39,7 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
             }
         ]
     },
-    usage: "{prefix}skipto <\"first\"|\"last\"|number>"
+    usage: i18n.__("commands.music.skipTo.usage")
 })
 export class SkipToCommand extends BaseCommand {
     @inVC()
@@ -46,13 +47,13 @@ export class SkipToCommand extends BaseCommand {
     @sameVC()
     public async execute(ctx: CommandContext): Promise<any> {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
-        if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", "You don't have permission to use this comamnd.")] });
+        if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"))] });
 
-        const targetType = (ctx.args[0] as string|undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position");
-        if (!targetType) return ctx.reply({ embeds: [createEmbed("warn", `Invalid usage, please use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information.`)] });
+        const targetType = (ctx.args[0] as string | undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position");
+        if (!targetType) return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", { prefix: `\`${this.client.config.prefix}help\``, name: `\`${this.meta.name}\`` }))] });
 
         const songs = [...ctx.guild!.queue!.songs.sortByIndex().values()];
-        if (!["first", "last"].includes(String(targetType).toLowerCase()) && (!isNaN(Number(targetType)) && !songs[Number(targetType) - 1])) return ctx.reply({ embeds: [createEmbed("error", "Unable to find song in that position.", true)] });
+        if (!["first", "last"].includes(String(targetType).toLowerCase()) && (!isNaN(Number(targetType)) && !songs[Number(targetType) - 1])) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true)] });
 
         let song: IQueueSong;
         if (String(targetType).toLowerCase() === "first") {
@@ -63,10 +64,10 @@ export class SkipToCommand extends BaseCommand {
             song = songs[Number(targetType) - 1];
         }
 
-        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) return ctx.reply({ embeds: [createEmbed("error", "You can't skip to current music.", true)] });
+        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)] });
 
         void play(this.client, ctx.guild!, song.key);
 
-        return ctx.reply({ embeds: [createEmbed("info", `⏭ **|** Skipped to **[${song.song.title}](${song.song.url})**`).setThumbnail(song.song.thumbnail)] });
+        return ctx.reply({ embeds: [createEmbed("info", `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] });
     }
 }

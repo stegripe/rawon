@@ -3,10 +3,11 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["disconnect", "dc"],
-    description: "Stop the music player",
+    description: i18n.__("commands.music.stop.description"),
     name: "stop",
     slash: {
         options: []
@@ -21,6 +22,6 @@ export class StopCommand extends BaseCommand {
         ctx.guild?.queue?.stop();
         ctx.guild!.queue!.lastMusicMsg = null;
 
-        ctx.reply({ embeds: [createEmbed("info", "⏹ **|** The music player has been stopped.")] }).catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
+        ctx.reply({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__("commands.music.stop.stoppedMessage")}`)] }).catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
     }
 }

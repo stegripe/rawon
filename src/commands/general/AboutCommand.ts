@@ -7,10 +7,38 @@ import { version as FFmpegVersion } from "ffmpeg-static/package.json";
 import { version as BotVersion } from "../../../package.json";
 import { version as DJSVersion } from "discord.js";
 import { uptime } from "os";
+import Table from "cli-table";
+import i18n from "../../config";
+
+const table = new Table({
+    chars: {
+        bottom: "", "bottom-left": "", "bottom-mid": "", "bottom-right": "",
+        left: "", "left-mid": "",
+        mid: "", "mid-mid": "", middle: "   ::   ",
+        right: "", "right-mid": "",
+        top: "", "top-left": "", "top-mid": "", "top-right": ""
+    },
+    style: { "padding-left": 0, "padding-right": 0 }
+});
+
+table.push(
+    [i18n.__("commands.general.about.osUptimeString"), formatMS(uptime() * 1000)],
+    [i18n.__("commands.general.about.processUptimeString"), formatMS(process.uptime() * 1000)],
+    [i18n.__("commands.general.about.botUptimeString"), formatMS(process.uptime() * 1000)],
+    [""],
+    [i18n.__("commands.general.about.nodeVersionString"), process.version],
+    [i18n.__("commands.general.about.discordJSVersionString"), DJSVersion],
+    [i18n.__("commands.general.about.ffmpegVersionString"), FFmpegVersion],
+    [i18n.__("commands.general.about.botVersionString"), BotVersion],
+    [""],
+    [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/zhycorp/disc-11"]
+);
+
+console.log(table.toString());
 
 @DefineCommand({
     aliases: ["botinfo", "info", "information", "stats"],
-    description: "Show the bot's information",
+    description: i18n.__("commands.general.about.description"),
     name: "about",
     slash: {
         options: []
@@ -23,19 +51,10 @@ export class AboutCommand extends BaseCommand {
             embeds: [
                 createEmbed("info", `
 \`\`\`asciidoc
-OS Uptime           ::  ${formatMS(uptime() * 1000)}
-Process Uptime      ::  ${formatMS(process.uptime() * 1000)}
-Bot Uptime          ::  ${formatMS(this.client.uptime!)}
-
-Node.js version     ::  ${process.version}
-Discord.js version  ::  ${DJSVersion}
-FFmpeg version      ::  ${FFmpegVersion}
-Bot version         ::  ${BotVersion}
-
-Source code         ::  https://github.com/zhycorp/disc-11
+${table.toString()}
 \`\`\`
                 `)
-                    .setAuthor(`${this.client.user?.username as string} - Bot Information`)
+                    .setAuthor(i18n.__mf("commands.general.about.aboutFooter", { botname: this.client.user?.username as string }))
             ]
         }).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }

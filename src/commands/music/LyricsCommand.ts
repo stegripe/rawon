@@ -5,27 +5,28 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["ly"],
-    description: "Show the lyrics from the song",
+    description: i18n.__("commands.music.lyrics.description"),
     name: "lyrics",
     slash: {
         options: [
             {
-                description: "Song to search",
+                description: i18n.__("commands.music.lyrics.slashDescription"),
                 name: "query",
                 type: "STRING",
                 required: false
             }
         ]
     },
-    usage: "{prefix}lyrics [song]"
+    usage: i18n.__("commands.music.lyrics.usage")
 })
 export class LyricsCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
         const query = ctx.args.length >= 1 ? ctx.args.join(" ") : ctx.options?.getString("query") ? ctx.options.getString("query") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title);
-        if (!query) return ctx.reply({ embeds: [createEmbed("error", "There is nothing playing or no arguments provided.", true)] });
+        if (!query) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)] });
 
         return this.getLyrics(ctx, query);
     }
@@ -35,7 +36,7 @@ export class LyricsCommand extends BaseCommand {
         this.client.request.get(url).json()
             .then(async (data: any) => {
                 if (data.error) {
-                    return ctx.reply({ embeds: [createEmbed("error", `The API could not find the song **\`${song}\`**, because: \`${data.message}\``, true)] });
+                    return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.music.lyrics.apiError", { song: `\`${song}\``, message: `\`${data.message}\`` }), true)] });
                 }
                 let lyrics: string = data.lyrics;
                 const albumArt = data.album_art ?? "https://api.zhycorp.net/assets/images/icon.png";
@@ -63,7 +64,7 @@ export class LyricsCommand extends BaseCommand {
                 const msg = await ctx.reply({ embeds: [embed] });
                 return (new ButtonPagination(msg, {
                     author: ctx.author.id,
-                    edit: (i, e, p) => e.setDescription(p).setFooter(`Page ${i + 1} of ${pages.length}`),
+                    edit: (i, e, p) => e.setDescription(p).setFooter(i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })),
                     embed,
                     pages
                 })).start();

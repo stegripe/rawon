@@ -6,9 +6,10 @@ import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import i18n from "../../config";
 
 @DefineCommand({
-    description: "Show the media player status",
+    description: i18n.__("commands.music.nowplaying.description"),
     name: "nowplaying",
     slash: {
         options: []
@@ -21,7 +22,7 @@ export class NowPlayingCommand extends BaseCommand {
         function getEmbed(): MessageEmbed {
             const song = (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song;
 
-            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : "Queue is empty"}`).setThumbnail(song?.thumbnail ?? "https://api.zhycorp.net/assets/images/icon.png");
+            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")}`).setThumbnail(song?.thumbnail ?? "https://api.zhycorp.net/assets/images/icon.png");
         }
 
         const buttons = new MessageActionRow()
@@ -86,7 +87,7 @@ export class NowPlayingCommand extends BaseCommand {
             await msg.edit({ embeds: [embed] });
         }).on("end", () => {
             const embed = getEmbed()
-                .setFooter("After 30 seconds, the buttons will no longer active.");
+                .setFooter(i18n.__("commands.music.nowplaying.disableButton"));
 
             void msg.edit({
                 embeds: [embed],

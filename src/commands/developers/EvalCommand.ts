@@ -5,14 +5,15 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { request } from "https";
 import { inspect } from "util";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["evaluate", "ev", "js-exec"],
     cooldown: 0,
-    description: "Evaluate to the bot",
+    description: i18n.__("commands.developers.eval.description"),
     devOnly: true,
     name: "eval",
-    usage: "{prefix}eval <some code>"
+    usage: i18n.__("commands.developers.eval.usage")
 })
 export class EvalCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {
@@ -24,7 +25,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             let code = ctx.args.slice(0).join(" ");
-            if (!code) return ctx.send({ embeds: [createEmbed("error", "No code were provided.", true)] });
+            if (!code) return ctx.send({ embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)] });
             let evaled;
             if (code.includes("--silent") && code.includes("--async")) {
                 code = code.replace("--async", "").replace("--silent", "");
@@ -53,8 +54,8 @@ export class EvalCommand extends BaseCommand {
             const output = this.clean(evaled);
             if (output.length > 1024) {
                 const hastebin = await this.hastebin(output);
-                embed.addField("Output", `${hastebin}.js`);
-            } else { embed.addField("Output", `\`\`\`js\n${output}\`\`\``); }
+                embed.addField(i18n.__("commands.developers.eval.outputString"), `${hastebin}.js`);
+            } else { embed.addField(i18n.__("commands.developers.eval.outputString"), `\`\`\`js\n${output}\`\`\``); }
             ctx.send({
                 askDeletion: {
                     reference: ctx.author.id
@@ -65,7 +66,7 @@ export class EvalCommand extends BaseCommand {
             const error = this.clean(String(e));
             if (error.length > 1024) {
                 const hastebin = await this.hastebin(error);
-                embed.addField("Error", `${hastebin}.js`);
+                embed.addField(i18n.__("commands.developers.eval.errorString"), `${hastebin}.js`);
             } else { embed.setColor("RED").addField("Error", `\`\`\`js\n${error}\`\`\``); }
             ctx.send({
                 askDeletion: {
@@ -95,7 +96,7 @@ export class EvalCommand extends BaseCommand {
                     if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.zhycorp.net/${JSON.parse(raw).key}`);
                     return reject(
                         new Error(`[hastebin] Error while trying to send data to https://bin.zhycorp.net/documents,` +
-                        `${res.statusCode?.toString() as string} ${res.statusMessage?.toString() as string}`)
+                            `${res.statusCode?.toString() as string} ${res.statusMessage?.toString() as string}`)
                     );
                 });
             }).on("error", reject);

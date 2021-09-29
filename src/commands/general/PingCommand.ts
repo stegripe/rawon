@@ -3,10 +3,11 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ColorResolvable } from "discord.js";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["pong", "peng", "pung"],
-    description: "Shows the current ping of the bot",
+    description: i18n.__("commands.general.ping.description"),
     name: "ping",
     slash: {
         options: []
@@ -37,7 +38,7 @@ export class PingCommand extends BaseCommand {
                 value: `**\`${vcLatency}\`** ms`,
                 inline: true
             })
-            .setFooter(`Latency of: ${this.client.user!.tag}`, this.client.user!.displayAvatarURL())
+            .setFooter(i18n.__mf("commands.general.ping.footerString", { user: this.client.user!.tag }), this.client.user!.displayAvatarURL())
             .setTimestamp();
         msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
     }

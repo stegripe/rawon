@@ -4,34 +4,35 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { LoopMode } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["loop", "music-repeat", "music-loop"],
-    description: "Repeat current music or the queue",
+    description: i18n.__("commands.music.repeat.description"),
     name: "repeat",
     slash: {
         options: [
             {
-                description: "Set repeat mode to Queue",
+                description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "queue",
                 required: false,
                 type: "SUB_COMMAND"
             },
             {
-                description: "Set repeat mode to Song",
+                description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "song",
                 required: false,
                 type: "SUB_COMMAND"
             },
             {
-                description: "Disable repeat mode",
+                description: i18n.__("commands.music.repeat.slashDisable"),
                 name: "disable",
                 required: false,
                 type: "SUB_COMMAND"
             }
         ]
     },
-    usage: "{prefix}repeat [queue/all | song/one | disable/off]"
+    usage: i18n.__("commands.music.repeat.usage")
 })
 export class RepeatCommand extends BaseCommand {
     @inVC()
@@ -52,11 +53,11 @@ export class RepeatCommand extends BaseCommand {
                 emoji: "🔂"
             }
         };
-        const selection = Object.keys(mode).find(key => mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand()));
+        const selection = ctx.options?.getSubcommand() || ctx.args[0] ? Object.keys(mode).find(key => mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand())) : undefined;
 
-        if (!selection) return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** Current repeat mode is **\`${ctx.guild!.queue!.loopMode}\`**`)] });
+        if (!selection) return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
         ctx.guild!.queue!.loopMode = selection as LoopMode;
 
-        return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** The repeat mode has been set to **\`${ctx.guild!.queue!.loopMode}\`**`)] });
+        return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
     }
 }

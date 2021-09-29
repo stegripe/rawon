@@ -7,10 +7,11 @@ import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import { chunk } from "../../utils/chunk";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["q"],
-    description: "Show the queue list",
+    description: i18n.__("commands.music.queue.description"),
     name: "queue",
     slash: {
         options: []
@@ -36,7 +37,7 @@ export class QueueCommand extends BaseCommand {
 
         return (new ButtonPagination(msg, {
             author: ctx.author.id,
-            edit: (i, e, p) => e.setDescription(p).setFooter(`Page ${i + 1} of ${pages.length}`),
+            edit: (i, e, p) => e.setDescription(p).setFooter(i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })),
             embed,
             pages
         })).start();

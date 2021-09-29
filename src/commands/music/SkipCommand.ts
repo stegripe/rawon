@@ -6,10 +6,11 @@ import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["s"],
-    description: "Skip the track",
+    description: i18n.__("commands.music.skip.description"),
     name: "skip",
     slash: {
     },
@@ -32,7 +33,7 @@ export class SkipCommand extends BaseCommand {
 
             if (ctx.guild?.queue?.skipVoters.includes(ctx.author.id)) {
                 ctx.guild.queue.skipVoters = ctx.guild.queue.skipVoters.filter(x => x !== ctx.author.id);
-                await ctx.reply(`${ctx.guild.queue.skipVoters.length}/${required} voted to skip the current song`);
+                await ctx.reply(i18n.__mf("commands.music.skip.voteMessage", { actual: ctx.guild.queue.skipVoters.length, required }));
 
                 return;
             }
@@ -40,13 +41,13 @@ export class SkipCommand extends BaseCommand {
             ctx.guild?.queue?.skipVoters.push(ctx.author.id);
 
             const length = ctx.guild!.queue!.skipVoters.length;
-            await ctx.reply(`${length}/${required} voted to skip the current song`);
+            await ctx.reply(i18n.__mf("commands.music.skip.voteResultMessage", { length, required }));
 
             if (length < required) return;
         }
 
         if (!ctx.guild?.queue?.playing) ctx.guild!.queue!.playing = true;
         ctx.guild?.queue?.player?.stop(true);
-        void ctx.reply({ embeds: [createEmbed("info", `⏭ **|** Skipped **[${song.song.title}](${song.song.url}})**`).setThumbnail(song.song.thumbnail)] }).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
+        void ctx.reply({ embeds: [createEmbed("info", `⏭ **|** ${i18n.__mf("commands.music.skip.skipMessage", { song: `[${song.song.title}](${song.song.url}})` })}`).setThumbnail(song.song.thumbnail)] }).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
     }
 }

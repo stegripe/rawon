@@ -4,22 +4,23 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["vol"],
-    description: "Change the media player volume",
+    description: i18n.__("commands.music.volume.description"),
     name: "volume",
     slash: {
         options: [
             {
-                description: "New volume",
+                description: i18n.__("commands.music.volume.slashDescription"),
                 name: "volume",
                 type: "NUMBER",
                 required: false
             }
         ]
     },
-    usage: "{prefix}volume [new volume]"
+    usage: i18n.__("commands.music.volume.usage")
 })
 export class VolumeCommand extends BaseCommand {
     @inVC()
@@ -29,12 +30,12 @@ export class VolumeCommand extends BaseCommand {
         const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("volume", false));
         const resVolume = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.volume!;
 
-        if (isNaN(volume)) return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** The current volume is **\`${resVolume.volume}\`**`).setFooter(`To change the volume, provide volume number when using this command.`)] });
+        if (isNaN(volume)) return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", { volume: `\`${resVolume.volume}\`` })}`).setFooter(i18n.__("commands.music.volume.changeVolume"))] });
 
-        if (volume <= 0) return ctx.reply({ embeds: [createEmbed("warn", `Please pause the music instead of setting the volume to **\`${volume}\`**`)] });
-        if (volume > 100) return ctx.reply({ embeds: [createEmbed("error", "I can't set the volume above **\`100\`**", true)] });
+        if (volume <= 0) return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.music.volume.plsPause", { volume: `\`${volume}\`` }))] });
+        if (volume > 100) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.music.volume.volumeLimit", { maxVol: `\`100\`` }), true)] });
 
         resVolume.setVolume(volume / 100);
-        return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** Volume set to **\`${volume}\`**`)] });
+        return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** ${i18n.__mf("commands.music.volume.newVolume", { volume })}`)] });
     }
 }

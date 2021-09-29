@@ -2,6 +2,7 @@ import { DefineEvent } from "../utils/decorators/DefineEvent";
 import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
 import { Message, User } from "discord.js";
+import i18n from "../config";
 
 @DefineEvent("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
@@ -11,7 +12,7 @@ export class MessageCreateEvent extends BaseEvent {
         if (message.content.startsWith(this.client.config.prefix)) return this.client.commands.handle(message);
 
         if ((await this.getUserFromMention(message.content))?.id === this.client.user?.id) {
-            message.reply({ embeds: [createEmbed("info", `👋 **|** Hi ${message.author.toString()}, my prefix is **\`${this.client.config.prefix}\`**`)] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+            message.reply({ embeds: [createEmbed("info", `👋 **|** ${i18n.__mf("events.createMessage", { author: message.author.toString(), prefix: `\`${this.client.config.prefix}\`` })}`)] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         }
     }
 

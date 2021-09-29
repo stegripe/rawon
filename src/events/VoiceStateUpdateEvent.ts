@@ -6,6 +6,7 @@ import { formatMS } from "../utils/formatMS";
 import { IQueueSong } from "../typings";
 import { VoiceState, VoiceChannel, StageChannel } from "discord.js";
 import { AudioPlayerPausedState } from "@discordjs/voice";
+import i18n from "../config";
 
 @DefineEvent("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
@@ -17,7 +18,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const oldVC = oldState.channel;
         const oldID = oldVC?.id;
         const newID = newVC?.id;
-        const queueVC = newState.guild.channels.cache.get(queue.connection!.joinConfig.channelId!)! as VoiceChannel|StageChannel;
+        const queueVC = newState.guild.channels.cache.get(queue.connection!.joinConfig.channelId!)! as VoiceChannel | StageChannel;
         const oldMember = oldState.member;
         const member = newState.member;
         const queueVCMembers = queueVC.members.filter(m => !m.user.bot);
@@ -51,7 +52,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     return;
                 }
 
-                await msg.edit({ embeds: [createEmbed("success", "Successfully joined the stage channel as speaker.", true)] });
+                await msg.edit({ embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.joinStageMessage"), true)] });
             }
             if (newVCMembers.size === 0 && queue.timeout === null) {
                 this.timeout(newVCMembers, queue, newState);
@@ -82,9 +83,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         state.guild.queue!.timeout = setTimeout(() => {
             queue.connection?.disconnect();
             delete state.guild.queue;
-            void queue.textChannel.send({ embeds: [createEmbed("error", `⏹ **|** **\`${duration}\`** has passed and there's no one who joined the voice channel, the queue has deleted.`).setAuthor("Queue Deleted")] });
+            void queue.textChannel.send({ embeds: [createEmbed("error", `⏹ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", { duration: `\`${duration}\`` })}`).setAuthor(i18n.__("events.voiceStateUpdate.deleteQueueFooter"))] });
         }, timeout);
-        void queue.textChannel.send({ embeds: [createEmbed("warn", `⏸ **|** Everyone has left from the voice channel. To save resources, the queue has paused. If there's no one who joins the voice channel in the next **\`${duration}\`**, the queue will be deleted.`).setAuthor("Queue Paused")] })
+        void queue.textChannel.send({ embeds: [createEmbed("warn", `⏸ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", { duration: `\`${duration}\`` })}`).setAuthor(i18n.__("events.voiceStateUpdate.pauseQueueFooter"))] })
             .then(msg => queue.lastVSUpdateMsg = msg.id);
     }
 
@@ -96,7 +97,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const song = ((queue.player!.state as AudioPlayerPausedState).resource.metadata as IQueueSong).song;
 
-        void queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** Someone has joined the voice channel.\nResuming **[${song.title}](${song.url})**`).setThumbnail(song.thumbnail).setAuthor("Queue Resumed")] }).then(msg => queue.lastVSUpdateMsg = msg.id);
+        void queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", { song: `[${song.title}](${song.url})` })}`).setThumbnail(song.thumbnail).setAuthor(i18n.__("events.voiceStateUpdate.resumeQueueFooter"))] }).then(msg => queue.lastVSUpdateMsg = msg.id);
         state.guild.queue?.player?.unpause();
     }
 }

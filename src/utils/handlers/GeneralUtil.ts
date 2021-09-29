@@ -13,8 +13,9 @@ import { Guild, Util, VoiceChannel, StageChannel } from "discord.js";
 import { Video, SearchResult } from "youtubei";
 import { decodeHTML } from "entities";
 import { URL } from "url";
+import i18n from "../../config";
 
-export async function searchTrack(client: Disc, query: string, source: "soundcloud"|"youtube"|undefined = "soundcloud"): Promise<SearchTrackResult> {
+export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "soundcloud"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
         items: []
     };
@@ -79,7 +80,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
 
             result.type = "results";
         } else if (queryData.sourceType === "spotify") {
-            function sortVideos(preview: Preview|Tracks, videos: SearchResult<"video">): SearchResult<"video"> {
+            function sortVideos(preview: Preview | Tracks, videos: SearchResult<"video">): SearchResult<"video"> {
                 return videos.sort((a, b) => {
                     const isTrack = ("artists" in preview);
 
@@ -226,13 +227,13 @@ export function checkQuery(string: string): QueryData {
     return result;
 }
 
-export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel|StageChannel): Promise<any> {
+export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel | StageChannel): Promise<any> {
     async function sendPagination(): Promise<any> {
         for (const song of toQueue) {
             ctx.guild?.queue?.songs.addSong(song, ctx.member!);
         }
 
-        const opening = `Added ${toQueue.length} songs to the queue\n\n`;
+        const opening = i18n.__("utils.generalHandler.handleVideoInitial");
         const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
             const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(decodeHTML(song.title))}`));
 
@@ -244,7 +245,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
         return new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter(`• Page ${i + 1} of ${pages.length}`);
+                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter(`• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`);
             },
             embed,
             pages
@@ -278,7 +279,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         client.logger.error("PLAY_CMD_ERR:", error);
         return ctx.channel!.send({
-            embeds: [createEmbed("error", `Error while joining the voice channel, because: \`${(error as Error).message}\``)]
+            embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }))]
         }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
     }
 
@@ -298,13 +299,13 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
-        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** Queue has ended, use **\`${guild.client.config.prefix}play\`** to play more music.`)] });
+        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", { usage: `\`${guild.client.config.prefix}play\`` })}`)] });
         queue.dcTimeout = queue.stayInVC
             ? null
             : setTimeout(() => {
                 queue.connection?.disconnect();
                 delete guild.queue;
-                void queue.textChannel.send({ embeds: [createEmbed("info", `👋 **|** Left from the voice channel because I've been inactive for too long.`)] })
+                void queue.textChannel.send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
                     .then(msg => {
                         setTimeout(() => {
                             void msg.delete();
@@ -337,7 +338,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
     const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
         client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
-        queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** Started playing **[${newSong.title}](${newSong.url})**`).setThumbnail(newSong.thumbnail)] })
+        queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__("utils.generalHandler.startPlaying")}`).setThumbnail(newSong.thumbnail)] })
             .then(m => queue.lastMusicMsg = m.id)
             .catch(e => client.logger.error("PLAY_ERR:", e));
     };
@@ -360,13 +361,13 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
             const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random() : (queue.loopMode === "SONG" ? queue.songs.get(song.key) : queue.songs.sortByIndex().filter(x => x.index > song.index).first() ?? queue.songs.sortByIndex().first());
 
-            queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** Stopped playing **[${song.song.title}](${song.song.url})**`).setThumbnail(song.song.thumbnail)] })
+            queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__("utils.generalHandler.stopPlaying")}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)
                 .catch(e => client.logger.error("PLAY_ERR:", e))
                 .finally(() => {
                     queue.player = null;
                     play(client, guild, nextSong?.key).catch(e => {
-                        queue.textChannel.send({ embeds: [createEmbed("error", `An error occurred while trying to play music, because: \`${e}\``, true)] })
+                        queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${e}\`` }), true)] })
                             .catch(e => client.logger.error("PLAY_ERR:", e));
                         queue.connection?.disconnect();
                         return client.logger.error("PLAY_ERR:", e);
@@ -375,7 +376,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
         }
     })
         .on("error", err => {
-            queue.textChannel.send({ embeds: [createEmbed("error", `An error occurred while trying to play music, because: \`${err.message}\``)] }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
+            queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }))] }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
             queue.connection?.disconnect();
             delete guild.queue;
             client.logger.error("PLAY_ERR:", err);

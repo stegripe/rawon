@@ -4,26 +4,27 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
+import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
-    description: "Shows the command list or information for a specific command",
+    description: i18n.__("commands.general.help.description"),
     name: "help",
     slash: {
         options: [
             {
                 type: "STRING",
                 name: "command",
-                description: "Command name to view a specific information about command"
+                description: i18n.__("commands.general.help.slashDescription")
             }
         ]
     },
-    usage: "{prefix}help [command]"
+    usage: i18n.__("commands.general.help.usage")
 })
 export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")
-        .setAuthor(`${this.client.user!.username} - Command List`, this.client.user?.displayAvatarURL() as string)
-        .setFooter(`${this.client.config.prefix}help <command> to get more information on a specific command`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+        .setAuthor(i18n.__mf("commands.general.help.authorString", { username: this.client.user!.username }), this.client.user?.displayAvatarURL() as string)
+        .setFooter(i18n.__mf("commands.general.help.footerString", { prefix: this.client.config.prefix }), "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
 
     private readonly infoEmbed = createEmbed("info")
         .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
@@ -51,7 +52,7 @@ export class HelpCommand extends BaseCommand {
             if (!matching.length) {
                 return ctx.send({
                     embeds: [
-                        createEmbed("error", "Couldn't find any matching command name", true)
+                        createEmbed("error", i18n.__("commands.general.help.noCommand"), true)
                     ]
                 }, "editReply");
             }
@@ -64,10 +65,10 @@ export class HelpCommand extends BaseCommand {
                                 .setMaxValues(1)
                                 .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
                                 .addOptions(matching)
-                                .setPlaceholder("Please select the command")
+                                .setPlaceholder(i18n.__("commands.general.help.commandSelectionString"))
                         )
                 ],
-                embeds: [createEmbed("error", "Couldn't find matching command name. Did you mean this?", true)]
+                embeds: [createEmbed("error", i18n.__("commands.general.help.noCommanSuggest"), true)]
             }, "editReply");
         }
         // Disable selection menu
@@ -84,12 +85,12 @@ export class HelpCommand extends BaseCommand {
         return ctx.send({
             embeds: [
                 this.infoEmbed
-                    .setAuthor(`${this.client.user!.username} - Information about ${command.meta.name} command`, this.client.user?.displayAvatarURL() as string)
-                    .addField("Name", `**\`${command.meta.name}\`**`, false)
-                    .addField("Description", `${command.meta.description!}`, true)
-                    .addField("Aliases", Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") as string : "None.", false)
-                    .addField("Usage", `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.prefix)}\`**`, true)
-                    .setFooter(`<> = required | [] = optional ${command.meta.devOnly ? "(developer-only command)" : ""}`, "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png")
+                    .setAuthor(i18n.__mf("commands.general.help.commandDetailTitle", { username: this.client.user!.username, command: command.meta.name }), this.client.user?.displayAvatarURL() as string)
+                    .addField(i18n.__("commands.general.help.nameString"), `**\`${command.meta.name}\`**`, false)
+                    .addField(i18n.__("commands.general.help.descriptionString"), `${command.meta.description!}`, true)
+                    .addField(i18n.__("commands.general.help.aliasesString"), Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") as string : "None.", false)
+                    .addField(i18n.__("commands.general.help.usageString"), `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.prefix)}\`**`, true)
+                    .setFooter(i18n.__mf("commands.general.help.commandUsageFooter", { devOnly: command.meta.devOnly ? "(developer-only command)" : "" }), "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png")
             ]
         }, "editReply");
     }

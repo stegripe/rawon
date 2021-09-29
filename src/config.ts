@@ -1,5 +1,7 @@
 import { IpresenceData } from "./typings";
 import { ClientOptions, ClientPresenceStatus, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
+import { join } from "path";
+import i18n from "i18n";
 
 export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
@@ -39,15 +41,31 @@ export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLo
 export const yesEmoji = process.env.YES_EMOJI ?? "✅";
 export const noEmoji = process.env.NO_EMOJI ?? "❌";
 export const djRoleName = process.env.DJ_ROLE_NAME! || "DJ";
+export const lang = process.env.LOCALE?.toLowerCase() ?? "en";
 export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
+
+i18n.configure({
+    defaultLocale: "en",
+    directory: join(__dirname, "..", "..", "lang"),
+    locales: [
+        "en",
+        "es"
+    ],
+    objectNotation: true
+});
+
+i18n.setLocale(lang);
+
 export const presenceData: IpresenceData = {
     activities: [
-        { name: `My default prefix is ${prefix}`, type: "PLAYING" },
-        { name: "music with {users.size} users", type: "LISTENING" },
-        { name: "{textChannels.size} of text channels in {guilds.size} guilds", type: "WATCHING" },
-        { name: "Hello there, my name is {username}", type: "PLAYING" },
-        { name: "Hello world", type: "COMPETING" }
+        { name: i18n.__mf("activities.message1", { prefix }), type: "PLAYING" },
+        { name: i18n.__("activities.message2"), type: "LISTENING" },
+        { name: i18n.__("activities.message3"), type: "WATCHING" },
+        { name: i18n.__("activities.message4"), type: "PLAYING" },
+        { name: i18n.__("activities.message5"), type: "COMPETING" }
     ],
     status: ["online"] as ClientPresenceStatus[],
     interval: 60000
 };
+
+export default i18n;

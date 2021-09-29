@@ -3,9 +3,10 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import i18n from "../../config";
 
 @DefineCommand({
-    description: "Pause the music player",
+    description: i18n.__("commands.music.pause.description"),
     name: "pause",
     slash: {
         name: "pause"
@@ -17,10 +18,10 @@ export class PauseCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        if (!ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", "The music player is already paused.", true)] });
+        if (!ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.pause.alreadyPause"), true)] });
 
         ctx.guild.queue.playing = false;
 
-        return ctx.reply({ embeds: [createEmbed("info", "⏸ **|** The music player has been paused.")] });
+        return ctx.reply({ embeds: [createEmbed("info", `⏸ **|** ${i18n.__("commands.music.pause.pauseMessage")}`)] });
     }
 }

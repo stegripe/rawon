@@ -3,9 +3,10 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import i18n from "../../config";
 
 @DefineCommand({
-    description: "Resume the music player",
+    description: i18n.__("commands.music.resume.description"),
     name: "resume",
     slash: {
         options: []
@@ -17,9 +18,9 @@ export class ResumeCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public execute(ctx: CommandContext): any {
-        if (ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", "The music player is not paused.", true)] });
+        if (ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.resume.alreadyResume"), true)] });
         ctx.guild!.queue!.playing = true;
 
-        return ctx.reply({ embeds: [createEmbed("info", "▶ **|** The music player has been resumed.")] });
+        return ctx.reply({ embeds: [createEmbed("info", `▶ **|** ${i18n.__("commands.music.resume.resumeMessage")}`)] });
     }
 }

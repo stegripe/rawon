@@ -3,9 +3,10 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import i18n from "../../config";
 
 @DefineCommand({
-    description: "Shuffle the queue",
+    description: i18n.__("commands.music.shuffle.description"),
     name: "shuffle",
     slash: {
         options: []
@@ -19,6 +20,6 @@ export class ShuffleCommand extends BaseCommand {
     public execute(ctx: CommandContext): any {
         ctx.guild!.queue!.shuffle = !ctx.guild!.queue!.shuffle;
         const isShuffle = ctx.guild!.queue!.shuffle;
-        return ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** Shuffle mode is **\`${isShuffle ? "ON" : "OFF"}\`**`)] });
+        return ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.shuffleMessage", { isShuffle: `\`${isShuffle ? "ON" : "OFF"}\`` })}`)] });
     }
 }

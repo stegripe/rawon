@@ -4,23 +4,24 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import i18n from "../../config";
 
 @DefineCommand({
-    description: "Play some music",
+    description: i18n.__("commands.music.play.description"),
     name: "play",
     slash: {
-        description: "Play some music",
+        description: i18n.__("commands.music.play.description"),
         name: "play",
         options: [
             {
-                description: "Query to search",
+                description: i18n.__("commands.music.play.slashQueryDescription"),
                 name: "query",
                 type: "STRING",
                 required: true
             }
         ]
     },
-    usage: "{prefix}play <query/url>"
+    usage: i18n.__("commands.music.play.usage")
 })
 export class PlayCommand extends BaseCommand {
     @inVC()
@@ -34,7 +35,7 @@ export class PlayCommand extends BaseCommand {
 
         if (!query) {
             return ctx.reply({
-                embeds: [createEmbed("warn", `Invalid usage, please use **\`${this.client.config.prefix}help ${this.meta.name}\`** for more information.`)]
+                embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", { prefix: `\`${this.client.config.prefix}help\``, name: `\`${this.meta.name}\`` }))]
             });
         }
 
@@ -42,7 +43,7 @@ export class PlayCommand extends BaseCommand {
         const checkRes = checkQuery(url);
 
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
-            return ctx.reply({ embeds: [createEmbed("warn", `The music player is already playing to **${ctx.guild.channels.cache.get(ctx.guild.queue.connection?.joinConfig.channelId as string)?.name ?? "#unknown-channel"}** voice channel.`)] });
+            return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.music.play.alreadyPlaying", { voiceChannel: ctx.guild.channels.cache.get(ctx.guild.queue.connection?.joinConfig.channelId as string)?.name ?? "#unknown-channel" }))] });
         }
         if (!checkRes.isURL) {
             const newCtx = new CommandContext(ctx.context, [query]);
@@ -50,7 +51,7 @@ export class PlayCommand extends BaseCommand {
         }
 
         const songs = await searchTrack(this.client, url).catch(() => undefined);
-        if (!songs || (songs.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", "That URL doesn't have any song data.", true)] });
+        if (!songs || (songs.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)] });
 
         return handleVideos(this.client, ctx, songs.items, voiceChannel);
     }
