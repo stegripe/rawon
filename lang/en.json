@@ -243,13 +243,6 @@
 		},
 		"cooldownMessage": "{author}, please wait **{timeleft}** of cooldown time."
 	},
-	"activities": {
-		"message1": "My default prefix is {prefix}",
-		"message2": "music with {users.size} users",
-		"message3": "{textChannels.size} of text channels in {guilds.size} guilds",
-		"message4": "Hello there, my name is {username}",
-		"message5": "Hello world"
-	},
 	"events": {
 		"createInteraction": {
 			"message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
