@@ -29,8 +29,8 @@ export const clientOptions: ClientOptions = {
 export const shardsCount: number | "auto" = "auto";
 export const shardingMode: ShardingManagerMode = "worker";
 export const defaultPrefix = process.env.PREFIX?.replace(/"/g, "") ?? "!";
-export const owners: string[] = JSON.parse(process.env.OWNERS ?? "[]");
 export const embedColor = process.env.EMBED_COLOR?.toUpperCase() ?? "3CAAFF";
+export const owners: string[] = JSON.parse(process.env.OWNERS ?? "[]");
 export const devGuild = JSON.parse(process.env.DEV_GUILD ?? "[]");
 export const isProd = process.env.NODE_ENV === "production";
 export const isDev = !isProd;
@@ -41,8 +41,8 @@ export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLo
 export const yesEmoji = process.env.YES_EMOJI ?? "✅";
 export const noEmoji = process.env.NO_EMOJI ?? "❌";
 export const djRoleName = process.env.DJ_ROLE_NAME! || "DJ";
-export const lang = process.env.LOCALE?.toLowerCase() ?? "en";
 export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
+export const lang = process.env.LOCALE?.toLowerCase() ?? "en";
 
 i18n.configure({
     defaultLocale: "en",
