@@ -8,12 +8,12 @@ import { createEmbed } from "../createEmbed";
 import { Disc } from "../../structures/Disc";
 import { youtube } from "./YouTubeUtil";
 import { chunk } from "../chunk";
+import i18n from "../../config";
 import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
 import { Guild, Util, VoiceChannel, StageChannel } from "discord.js";
 import { Video, SearchResult } from "youtubei";
 import { decodeHTML } from "entities";
 import { URL } from "url";
-import i18n from "../../config";
 
 export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "soundcloud"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
