@@ -25,7 +25,7 @@ export class ChannelUpdateEvent extends BaseEvent {
                     queue.connection?.disconnect();
                     delete newChannel.guild.queue;
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to re-configure networking on ${newChannel.guild.name} voice channel, the queue was deleted.`);
-                    void msg.edit({ embeds: [createEmbed("error", i18n.__("events.channelUpdate.unableReconfigureNetworking"))] });
+                    void msg.edit({ embeds: [createEmbed("error", i18n.__("events.channelUpdate.unableReconfigureConnection"))] });
                 });
         }
     }
