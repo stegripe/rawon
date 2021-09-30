@@ -21,10 +21,12 @@ import i18n from "../../config";
 export class QueueCommand extends BaseCommand {
     @haveQueue()
     public async execute(ctx: CommandContext): Promise<any> {
-        const songs = ctx.guild!.queue!.songs.sortByIndex();
+        const np = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
+        const full = ctx.guild!.queue!.songs.sortByIndex();
+        const songs = ctx.guild?.queue?.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);
         const pages = await Promise.all(chunk([...songs.values()], 10).map(async (s, n) => {
             const names = await Promise.all(s.map((song, i) => {
-                const npKey = ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key;
+                const npKey = np.key;
                 const addition = song.key === npKey ? "**" : "";
 
                 return `${addition}${(n * 10) + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
