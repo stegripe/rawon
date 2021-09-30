@@ -359,14 +359,14 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
                 queue.songs.delete(song.key);
             }
 
-            const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random() : (queue.loopMode === "SONG" ? queue.songs.get(song.key) : queue.songs.sortByIndex().filter(x => x.index > song.index).first() ?? queue.songs.sortByIndex().first());
+            const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random().key : (queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? (queue.songs.sortByIndex().first()?.key ?? "") : ""));
 
             queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)
                 .catch(e => client.logger.error("PLAY_ERR:", e))
                 .finally(() => {
                     queue.player = null;
-                    play(client, guild, nextSong?.key).catch(e => {
+                    play(client, guild, nextSong).catch(e => {
                         queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${e}\`` }), true)] })
                             .catch(e => client.logger.error("PLAY_ERR:", e));
                         queue.connection?.disconnect();
