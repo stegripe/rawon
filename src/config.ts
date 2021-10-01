@@ -46,7 +46,7 @@ export const lang = process.env.LOCALE?.toLowerCase() ?? "en-US";
 
 i18n.configure({
     defaultLocale: "en-US",
-    directory: join(__dirname, "..", "..", "lang"),
+    directory: join(process.cwd(), "lang"),
     locales: [
         "en-US",
         "es",
