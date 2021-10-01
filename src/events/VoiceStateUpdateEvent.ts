@@ -66,7 +66,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             this.timeout(queueVCMembers, queue, newState);
         }
 
-        if (newID === queueVC.id && !member?.user.bot) this.resume(queueVCMembers, queue, newState);
+        if (newID === queueVC.id && !member?.user.bot && queue.timeout) this.resume(queueVCMembers, queue, newState);
     }
 
     private timeout(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
