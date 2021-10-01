@@ -2,9 +2,9 @@
 	"commands": {
 		"developers": {
 			"eval": {
-				"description": "Evaluasi code",
-				"usage": "{prefix}eval <code>",
-				"noCode": "Tidak ada code yang diberikan.",
+				"description": "Evaluasi kode",
+				"usage": "{prefix}eval <kode>",
+				"noCode": "Tidak ada kode yang diberikan.",
 				"outputString": "Output",
 				"errorString": "Error"
 			}
@@ -23,29 +23,29 @@
 				"aboutFooter": "{botname} - Informasi Bot"
 			},
 			"help": {
-				"description": "Menunjukkan daftar command atau informasi tentang command tertentu",
-				"slashDescription": "Nama command untuk melihat informasi tentang command tertentu",
-				"usage": "{prefix}help [command]",
-				"authorString": "{username} - Daftar Command",
-				"footerString": "{prefix}help <command> untuk mendapatkan informasi tentang command tertentu",
-				"noCommand": "Tidak dapat menemukan command dengan nama tersebut",
-				"commandSelectionString": "Silahkan pilih command",
-				"noCommanSuggest": "Tidak dapat menemukan command dengan nama tersebut. Apakah ini yang kamu maksud?",
-				"commandDetailTitle": "{username} - Informasi tentang command {command}",
+				"description": "Menunjukkan daftar perintah atau informasi tentang perintah tertentu",
+				"slashDescription": "Nama commanperintahd untuk melihat informasi tentang perintah tertentu",
+				"usage": "{prefix}help [nama perintah]",
+				"authorString": "{username} - Daftar Perintah",
+				"footerString": "{prefix}help <perintah> untuk mendapatkan informasi tentang perintah tertentu",
+				"noCommand": "Tidak dapat menemukan perintah dengan nama tersebut",
+				"commandSelectionString": "Silahkan pilih perintah",
+				"noCommanSuggest": "Tidak dapat menemukan perintah dengan nama tersebut. Apakah ini yang kamu maksud?",
+				"commandDetailTitle": "{username} - Informasi tentang perintah {command}",
 				"nameString": "Nama",
 				"descriptionString": "Deskripsi",
 				"aliasesString": "Alias",
 				"usageString": "Penggunaan",
-				"commandUsageFooter": "<> = dibutuhkan | [] = optional {devOnly}"
+				"commandUsageFooter": "<> = dibutuhkan | [] = opsional {devOnly}"
 			},
 			"ping": {
 				"description": "Menunjukkan ping bot",
-				"footerString": "Latensinya: {user}"
+				"footerString": "Latensi Milik: {user}"
 			}
 		},
 		"moderation": {
 			"common": {
-				"noUserSpecified": "Mohon sebutkan seseorang.",
+				"noUserSpecified": "Mohon mention seseorang.",
 				"noReasonString": "[Tidak disebutkan]",
 				"reasonString": "**Alasan**"
 			},
@@ -54,7 +54,7 @@
 				"slashMemberIDDescription": "Siapa yang ingin anda ban?",
 				"slashReasonDescription": "Alasan ban",
 				"usage": "{prefix}ban <@mention | id> [alasan]",
-				"userNoPermission": "Mohon maaf, anda tidak punya permission **`BAN MEMBERS`** untuk menggunakan command ini.",
+				"userNoPermission": "Mohon maaf, anda tidak punya permission **`BAN MEMBERS`** untuk menggunakan perintah ini.",
 				"botNoPermission": "Mohon maaf, saya tidak punya permission **`BAN MEMBERS`**.",
 				"userNoBannable": "Mohon maaf, saya tidak bisa **`BAN`** member tersebut.",
 				"userBanned": "Anda telah di **`BAN`** dari **{guildName}**",
@@ -67,7 +67,7 @@
 				"slashMemberDescription": "Siapa yang ingin anda kick?",
 				"slashReasonDescription": "Alasan kick",
 				"usage": "{prefix}kick <@mention | id> [alasan]",
-				"userNoPermission": "Mohon maaf, anda tidak punya permission **`KICK MEMBERS`** untuk menggunakan command ini.",
+				"userNoPermission": "Mohon maaf, anda tidak punya permission **`KICK MEMBERS`** untuk menggunakan perintah ini.",
 				"botNoPermission": "Mohon maaf, saya tidak punya permission **`KICK MEMBERS`**.",
 				"userNoKickable": "Mohon maaf, saya tidak bisa **`KICK`** member tersebut.",
 				"userKicked": "Anda telah di **`KICK`** dari **{guildName}**",
@@ -80,7 +80,7 @@
 				"slashMemberDescription": "Siapa yang ingin anda mute?",
 				"slashReasonDescription": "Alasan mute",
 				"usage": "{prefix}mute <@mention | id> [alasan]",
-				"userNoPermission": "Mohon maaf, anda tidak punya permission **`MANAGE ROLES`** untuk menggunakan command ini.",
+				"userNoPermission": "Mohon maaf, anda tidak punya permission **`MANAGE ROLES`** untuk menggunakan perintah ini.",
 				"botNoPermission": "Mohon maaf, saya tidak punya permission **`MANAGE ROLES`**.",
 				"alreadyMuted": "Member tersebut sudah di **`MUTE`**",
 				"userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
@@ -99,7 +99,7 @@
 			},
 			"unmute": {
 				"description": "Unmute seseorang yang ada di server",
-				"slashMemberDescription": "Siapa yang ingin anda mute?",
+				"slashMemberDescription": "Siapa yang ingin anda unmute?",
 				"slashReasonDescription": "Alasan unmute",
 				"usage": "{prefix}unmute <@mention | id> [alasan]",
 				"noMuted": "Member tersebut tidak di **`MUTE`**",
@@ -113,7 +113,7 @@
 				"slashMemberDescription": "Siapa yang ingin anda warn?",
 				"slashReasonDescription": "Alasan warn",
 				"usage": "{prefix}warn <@mention | id> [alasan]",
-				"userNoPermission": "Mohon maaf, anda tidak punya permission **`MANAGE SERVER`** untuk menggunakan command ini.",
+				"userNoPermission": "Mohon maaf, anda tidak punya permission **`MANAGE SERVER`** untuk menggunakan perintah ini.",
 				"noDM": "Tidak dapat membuka DM dengan orang tersebut, tapi akan tetap saya warn.",
 				"userWarned": "Kamu telah di **`WARN`** di **{guildName}**",
 				"warnedByString": "Diwarn oleh: {author}",
@@ -126,7 +126,7 @@
 				"slashDescription": "Lagu untuk dicari",
 				"usage": "{prefix}ly [song]",
 				"noQuery": "Tidak ada yang sedang dimainkan atau tidak ada argumen yang diberikan.",
-				"apiError": "API nya tidak dapat menemukan lagu **{song}**, dikarenakan: {message}"
+				"apiError": "Tidak dapat menemukan lagu **{song}**, dikarenakan: {message}"
 			},
 			"nowplaying": {
 				"description": "Menunjukkan status media player",
@@ -239,7 +239,7 @@
 			"stopPlaying": "Selesai memainkan **{song}**",
 			"errorPlaying": "Sebuah error terjadi saat mencoba memainkan musik, dikarenakan: {message}"
 		},
-		"cooldownMessage": "{author}, mohon tungu **{timeleft}** detik cooldown."
+		"cooldownMessage": "{author}, mohon tunggu **{timeleft}** detik."
 	},
 	"events": {
 		"channelUpdate": {
