@@ -5,6 +5,7 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
+import { ISong } from "../../typings";
 
 @DefineCommand({
     description: i18n.__("commands.music.play.description"),
@@ -30,7 +31,17 @@ export class PlayCommand extends BaseCommand {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const voiceChannel = ctx.member!.voice.channel!;
-        const query = ((ctx.args.length ? ctx.args.join(" ") : undefined) ?? ctx.options?.getString("query")) ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : undefined) as string | undefined;
+        if (ctx.additionalArgs.get("fromSearch")) {
+            const tracks = ctx.additionalArgs.get("values");
+            const toQueue: ISong[] = [];
+            for (const track of tracks) {
+                const song = await searchTrack(this.client, track).catch(() => null);
+                if (!song) continue;
+                toQueue.push(song.items[0]);
+            }
+            return handleVideos(this.client, ctx, toQueue, voiceChannel);
+        }
+        const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : undefined) as string | undefined;
 
         if (!query) {
             return ctx.reply({
