@@ -1752,6 +1752,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/codemirror@^5.60.3":
+  "integrity" "sha512-dVX8Vsio70u4la9LGi1jjmaqtcdMMZUYalO5QY5EWy4XKrNjewNm9cy2K5XvP+puzLzum417gmJ9w7F6bVR1XA=="
+  "resolved" "https://registry.npmjs.org/@types/codemirror/-/codemirror-5.60.3.tgz"
+  "version" "5.60.3"
+  dependencies:
+    "@types/tern" "*"
+
 "@types/eslint@^7.2.6":
   "integrity" "sha512-I+1sYH+NPQ3/tVqCeUSBwTE/0heyvtXqpIopUUArlBm0Kpocb8FbMa3AZ/ASKIFpN3rnEx932TTXDbt9OXsNDw=="
   "resolved" "https://registry.npmjs.org/@types/eslint/-/eslint-7.2.6.tgz"
@@ -1917,6 +1924,13 @@
   "integrity" "sha512-W+bw9ds02rAQaMvaLYxAbJ6cvguW/iJXNT6lTssS1ps6QdrMKttqEAMEG/b5CR8TZl3/L7/lH0ZV5nNR1LXikA=="
   "resolved" "https://registry.npmjs.org/@types/tapable/-/tapable-1.0.6.tgz"
   "version" "1.0.6"
+
+"@types/tern@*":
+  "integrity" "sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg=="
+  "resolved" "https://registry.npmjs.org/@types/tern/-/tern-0.23.4.tgz"
+  "version" "0.23.4"
+  dependencies:
+    "@types/estree" "*"
 
 "@types/testing-library__jest-dom@^5.9.1":
   "integrity" "sha512-Gk9vaXfbzc5zCXI9eYE9BI5BNHEp4D3FWjgqBE/ePGYElLAP+KvxBcsdkwfIVvezs605oiyd/VrpiHe3Oeg+Aw=="
@@ -3494,6 +3508,11 @@
     "@types/q" "^1.5.1"
     "chalk" "^2.4.1"
     "q" "^1.1.2"
+
+"codemirror@^5.63.1":
+  "integrity" "sha512-baivaNZreZOGh1/tYyTvCupC9NeWk7qlZeGUDi4nFKj/J0JU8FYKZND4QqLw70P7HOttlCt4JJAOj9GoIhHEkA=="
+  "resolved" "https://registry.npmjs.org/codemirror/-/codemirror-5.63.1.tgz"
+  "version" "5.63.1"
 
 "collect-v8-coverage@^1.0.0":
   "integrity" "sha512-iBPtljfCNcTKNAto0KEtDfZ3qzjJvqE3aTGZsbhjSBlorqpXJlaWWtPO35D+ZImoC3KWejX64o+yPGxhWSTzfg=="
