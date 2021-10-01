@@ -1,11 +1,11 @@
-import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
+import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil";
 import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
-import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util } from "discord.js";
+import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction } from "discord.js";
 import { decodeHTML } from "entities";
 import i18n from "../../config";
 
@@ -48,7 +48,21 @@ export class SearchCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<any> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
-        const voiceChannel = ctx.member!.voice.channel!;
+        const values = ctx.additionalArgs.get("values");
+        if (values && ctx.isSelectMenu()) {
+            if (!ctx.deferred) await ctx.deferReply();
+            const newCtx = new CommandContext(ctx.context, []);
+            newCtx.additionalArgs.set("values", values);
+            newCtx.additionalArgs.set("fromSearch", true);
+            this.client.commands.get("play")!.execute(newCtx);
+            const msg = await ctx.channel!.messages.fetch((ctx.context as SelectMenuInteraction).message.id).catch(() => undefined);
+            if (msg !== undefined) {
+                const selection = msg.components[0].components.find(x => x.type === "SELECT_MENU");
+                selection!.setDisabled(true);
+                await msg.edit({ components: [new MessageActionRow().addComponents(selection!)] });
+            }
+            return undefined;
+        }
         const source = ctx.options?.getString("source") ?? (["youtube", "soundcloud"].includes(ctx.args.slice(-1)[0]?.toLowerCase()) ? ctx.args.pop()! : "youtube");
         const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? ctx.options?.getMessage("message")?.content;
 
@@ -66,8 +80,6 @@ export class SearchCommand extends BaseCommand {
 
         const tracks = await searchTrack(this.client, query, source as "youtube" | "soundcloud").catch(() => undefined);
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noTracks"), true)] });
-
-        let toQueue: ISong[];
         if (this.client.config.musicSelectionType === "message") {
             const msg = await ctx.send({
                 embeds: [
@@ -91,42 +103,24 @@ export class SearchCommand extends BaseCommand {
             const songs = respond.first()!.content
                 .split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
                 .sort((a, b) => Number(a) - Number(b));
-
-            toQueue = await Promise.all(songs.map(x => tracks.items[Number(x) - 1]));
-        } else {
-            const msg = await ctx.send({
-                content: i18n.__("commands.music.search.interactionContent"),
-                components: [
-                    new MessageActionRow()
-                        .addComponents(
-                            new MessageSelectMenu()
-                                .setMinValues(1)
-                                .setMaxValues(10)
-                                .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}_no`).toString("base64"))
-                                .addOptions(this.generateSelectMenu(tracks.items))
-                                .setPlaceholder(i18n.__("commands.music.search.interactionPlaceholder"))
-                        )
-                ]
-            });
-            toQueue = await (new Promise(resolve => {
-                const collector = msg.createMessageComponentCollector({
-                    filter: i => i.isSelectMenu() && (i.user.id === ctx.author.id),
-                    max: 1
-                });
-
-                collector.on("collect", i => {
-                    if (!i.isSelectMenu()) return;
-
-                    resolve(i.values.map(val => {
-                        const num = Number(val.slice(-1));
-
-                        return tracks.items[num];
-                    }));
-                });
-            }));
+            const newCtx = new CommandContext(ctx.context, []);
+            newCtx.additionalArgs.set("values", [await Promise.all(songs.map(x => tracks.items[Number(x) - 1]))]);
+            this.client.commands.get("play")!.execute(newCtx);
         }
-
-        return handleVideos(this.client, ctx, toQueue, voiceChannel);
+        return ctx.send({
+            content: i18n.__("commands.music.search.interactionContent"),
+            components: [
+                new MessageActionRow()
+                    .addComponents(
+                        new MessageSelectMenu()
+                            .setMinValues(1)
+                            .setMaxValues(10)
+                            .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
+                            .addOptions(this.generateSelectMenu(tracks.items))
+                            .setPlaceholder(i18n.__("commands.music.search.interactionPlaceholder"))
+                    )
+            ]
+        });
     }
 
     private generateSelectMenu(tracks: ISong[]): MessageSelectOptionData[] {
@@ -136,7 +130,7 @@ export class SearchCommand extends BaseCommand {
             {
                 label: x.title.length > 98 ? `${x.title.substr(0, 97)}...` : x.title,
                 emoji: emojis[i],
-                value: `MUSIC-${i}`
+                value: x.url
             }
         ));
     }
