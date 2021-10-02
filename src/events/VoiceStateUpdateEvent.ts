@@ -5,7 +5,7 @@ import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
 import { IQueueSong } from "../typings";
 import { VoiceState, VoiceChannel, StageChannel } from "discord.js";
-import { AudioPlayerPausedState } from "@discordjs/voice";
+import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import i18n from "../config";
 
 @DefineEvent("voiceStateUpdate")
@@ -37,6 +37,22 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         if (member?.id === botID && oldID === queueVC.id && newID !== queueVC.id && newID !== undefined) {
             if (!newVCMembers) return;
+            if (oldVC?.rtcRegion !== newVC?.rtcRegion) {
+                const msg = await queue.textChannel.send({ embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.reconfigureConnection"))] });
+                queue.connection?.configureNetworking();
+
+                try {
+                    await entersState(queue.connection!, VoiceConnectionStatus.Ready, 20000);
+                    void msg.edit({ embeds: [createEmbed("info", i18n.__("events.channelUpdate.connectionReconfigured"))] });
+                } catch (err) {
+                    queue.player?.stop(true);
+                    queue.connection?.disconnect();
+                    delete newState.guild.queue;
+                    this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to re-configure networking on ${newState.guild.name} voice channel, the queue was deleted.`);
+                    void msg.edit({ embeds: [createEmbed("error", i18n.__("events.channelUpdate.unableReconfigureConnection"))] });
+                    return;
+                }
+            }
             if (newVC?.type === "GUILD_STAGE_VOICE" && newState.suppress) {
                 const msg = await queue.textChannel.send({ embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpeaker"))] });
                 const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
