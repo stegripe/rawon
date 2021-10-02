@@ -126,7 +126,7 @@
 				"slashDescription": "Song to search",
 				"usage": "{prefix}ly [song]",
 				"noQuery": "There is nothing playing or no arguments provided.",
-				"apiError": "The API could not find the song **{song}**, because: {message}"
+				"apiError": "The API could not find the song **{song}**, because: `{message}`"
 			},
 			"nowplaying": {
 				"description": "Show the media player status",
@@ -142,7 +142,7 @@
 				"description": "Play some music",
 				"slashQueryDescription": "Query to search",
 				"usage": "{prefix}play <query/url>",
-				"alreadyPlaying": "The music player is already playing to **{voiceChannel}** voice channel.",
+				"alreadyPlaying": "The music player is already playing to **`{voiceChannel}`** voice channel.",
 				"noSongData": "That URL doesn't have any song data."
 			},
 			"queue": {
@@ -153,8 +153,8 @@
 				"slashQueue": "Set repeat mode to Queue",
 				"slashSong": "Set repeat mode to Song",
 				"slashDisable": "Disable repeat mode",
-				"actualMode": "Current repeat mode is **{mode}**",
-				"newMode": "The repeat mode has been set to **{mode}**"
+				"actualMode": "Current repeat mode is **`{mode}`**",
+				"newMode": "The repeat mode has been set to **`{mode}`**"
 			},
 			"resume": {
 				"description": "Resume the music player",
@@ -165,24 +165,24 @@
 				"description": "Play some music using provided query",
 				"slashDescription": "Search the specified music",
 				"slashQueryDescription": "Query to search",
-				"slashSourceDescription": "Where the track should be taken?",
+				"slashSourceDescription": "Where the music should be taken?",
 				"usage": "{prefix}search <query> [source]",
 				"noQuery": "Please provide some query to search.",
 				"noTracks": "I can't obtain any search results.",
-				"queueEmbed": "Please select some music.\nYou can choose more than one using blank space or {separator}. For example: {example}\n",
-				"trackSelectionMessage": "Tracks Selection",
-				"cancelMessage": "Type `{cancel}` or `c` to cancel tracks selection.",
-				"noSelection": "No or invalid value entered, tracks selection canceled.",
-				"canceledMessage": "Tracks selection canceled.",
+				"queueEmbed": "Please select some music, you can choose more than one using blank space or {separator}.",
+				"trackSelectionMessage": "Music Selection",
+				"cancelMessage": "Type `{cancel}` or `c` to cancel music selection.",
+				"noSelection": "No or invalid value entered, music selection canceled.",
+				"canceledMessage": "Music selection canceled.",
 				"interactionContent": "Please select some music",
-				"interactionPlaceholder": "Select some tracks"
+				"interactionPlaceholder": "Select some music"
 			},
 			"shuffle": {
 				"description": "Shuffle the queue",
-				"shuffleMessage": "Shuffle mode is **{isShuffle}**"
+				"shuffleMessage": "Shuffle mode is **`{isShuffle}`**"
 			},
 			"skip": {
-				"description": "Skip the track",
+				"description": "Skip the music",
 				"voteMessage": "{actual}/{required} voted to skip the current song",
 				"voteResultMessage": "{length}/{required} voted to skip the current song",
 				"skipMessage": "Skipped **{song}**"
@@ -193,7 +193,7 @@
 				"slashLastDescription": "Skip to the last song in the queue",
 				"slashSpecificDescription": "Skip to a specific position in the queue",
 				"slashPositionDescription": "Song position in the queue",
-				"usage": "{prefix}skipto <{options}|number>",
+				"usage": "{prefix}skipto <{options} | number>",
 				"noPermission": "You don't have permission to use this comamnd.",
 				"noSongPosition": "Unable to find song in that position.",
 				"cantPlay": "You can't skip to current music.",
@@ -203,8 +203,8 @@
 				"description": "Makes the bot stay in the voice channel when queue was ended",
 				"slashDescription": "Turns mode for stay-in-voice feature",
 				"247Disabled": "Stay-in-voice feature is disabled.",
-				"actualState": "Stay-in-voice is **{state}**",
-				"newState": "Stay-in-voice is now set to **{state}**"
+				"actualState": "Stay-in-voice is **`{state}`**",
+				"newState": "Stay-in-voice is now set to **`{state}`**"
 			},
 			"stop": {
 				"description": "Stop the music player",
@@ -214,10 +214,10 @@
 				"description": "Change the media player volume",
 				"slashDescription": "New volume",
 				"usage": "{prefix}volume [new volume]",
-				"currentVolume": "The current volume is **{volume}**",
+				"currentVolume": "The current volume is **`{volume}`**",
 				"changeVolume": "To change the volume, provide volume number when using this command.",
-				"plsPause": "Please pause the music instead of setting the volume to **{volume}**",
-				"volumeLimit": "I can't set the volume above **{maxVol}**",
+				"plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
+				"volumeLimit": "I can't set the volume above **`{maxVol}`**",
 				"newVolume": "Volume set to **{volume}**"
 			}
 		}
@@ -232,14 +232,14 @@
 		},
 		"generalHandler": {
 			"handleVideoInitial": "Added {length} songs to the queue\n\n",
-			"errorJoining": "Error while joining the voice channel, because: {message}",
-			"queueEnded": "Queue has ended, use **{usage}** to play more music.",
+			"errorJoining": "Error while joining the voice channel, because: `{message}`",
+			"queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
 			"leftVC": "Left from the voice channel because I've been inactive for too long.",
 			"startPlaying": "Started playing **{song}**",
 			"stopPlaying": "Stopped playing **{song}**",
-			"errorPlaying": "An error occurred while trying to play music, because: {message}"
+			"errorPlaying": "An error occurred while trying to play music, because: `{message}`"
 		},
-		"cooldownMessage": "{author}, please wait **{timeleft}** of cooldown time."
+		"cooldownMessage": "{author}, please wait **`{timeleft}`** of cooldown time."
 	},
 	"events": {
 		"channelUpdate": {
@@ -251,15 +251,15 @@
 			"message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
 			"message2": "Sorry, but that interaction is only for <@{user}>"
 		},
-		"createMessage": "Hi {author}, my prefix is **{prefix}**",
+		"createMessage": "Hi {author}, my prefix is **`{prefix}`**",
 		"voiceStateUpdate": {
 			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
 			"joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
 			"unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
-			"joinStageMessage": "Successfully joined the stage channel as speaker.",
-			"deleteQueue": "**{duration}** has passed and there's no one who joined the voice channel, the queue has deleted.",
+			"joinStageMessage": "Successfully joined the stage channel as Speaker.",
+			"deleteQueue": "**`{duration}`** has passed and there's no one who joined the voice channel, the queue has deleted.",
 			"deleteQueueFooter": "Queue Deleted",
-			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has paused. If there's no one who joins the voice channel in the next **{duration}**, the queue will be deleted.",
+			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has paused. If there's no one who joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
 			"pauseQueueFooter": "Queue Paused",
 			"resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
 			"resumeQueueFooter": "Queue Resumed"
@@ -267,6 +267,6 @@
 	},
 	"reusable": {
 		"pageFooter": "Page {actual} of {total}",
-		"invalidUsage": "Invalid usage, please use **{prefix} {name}** for more information."
+		"invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information."
 	}
 }
