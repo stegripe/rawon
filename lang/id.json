@@ -150,8 +150,8 @@
 			},
 			"repeat": {
 				"description": "Mengulang lagu yang sedang dimainkan atau setelahnya",
-				"slashQueue": "Menyetel mode pengulangan ke `Queue/Antrian`",
-				"slashSong": "Menyetel mode pengulangan ke `Song/Lagu`",
+				"slashQueue": "Mengatur mode pengulangan ke `Queue/Antrian`",
+				"slashSong": "Mengatur mode pengulangan ke `Song/Lagu`",
 				"slashDisable": "Mematikan mode pengulangan",
 				"actualMode": "Mode pengulangan: **`{mode}`**",
 				"newMode": "Mode pengulangan telah diatur ke **`{mode}`**"
@@ -237,7 +237,7 @@
 			"leftVC": "Keluar dari voice channel karena tidak ada lagi aktivitas.",
 			"startPlaying": "Mulai memainkan **{song}**",
 			"stopPlaying": "Selesai memainkan **{song}**",
-			"errorPlaying": "Sebuah error terjadi saat mencoba memainkan musik, dikarenakan: `{message}`"
+			"errorPlaying": "Sebuah error terjadi saat mencoba memainkan lagu, dikarenakan: `{message}`"
 		},
 		"cooldownMessage": "{author}, mohon tunggu selama **`{timeleft}`** detik."
 	},
