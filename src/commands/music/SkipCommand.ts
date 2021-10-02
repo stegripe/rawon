@@ -22,11 +22,11 @@ export class SkipCommand extends BaseCommand {
     @haveQueue()
     @sameVC()
     public async execute(ctx: CommandContext): Promise<void> {
-        const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
+        const djRole = await this.client.utils.fetchDJRole(ctx.guild!).catch(() => null);
         const song = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
 
         function ableToSkip(member: GuildMember): boolean {
-            return member.roles.cache.has(djRole.id) || member.permissions.has("MANAGE_GUILD") || (song.requester.id === member.id);
+            return member.roles.cache.has(djRole?.id as string) || member.permissions.has("MANAGE_GUILD") || (song.requester.id === member.id);
         }
 
         if (!ableToSkip(ctx.member!)) {
