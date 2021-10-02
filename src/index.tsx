@@ -14,7 +14,7 @@ function Index() {
 const routes = (
     <BrowserRouter>
         <Route exact path="/" component={Index}/>
-        <Route path="/" component={Script}/>
+        <Route path="/script" component={Script}/>
     </BrowserRouter>
 )
 
