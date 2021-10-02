@@ -104,23 +104,25 @@ export class SearchCommand extends BaseCommand {
                 .split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
                 .sort((a, b) => Number(a) - Number(b));
             const newCtx = new CommandContext(ctx.context, []);
-            newCtx.additionalArgs.set("values", [await Promise.all(songs.map(x => tracks.items[Number(x) - 1]))]);
+            newCtx.additionalArgs.set("values", [await Promise.all(songs.map(x => tracks.items[Number(x) - 1].url))]);
+            newCtx.additionalArgs.set("fromSearch", true);
             this.client.commands.get("play")!.execute(newCtx);
+        } else {
+            return ctx.send({
+                content: i18n.__("commands.music.search.interactionContent"),
+                components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageSelectMenu()
+                                .setMinValues(1)
+                                .setMaxValues(10)
+                                .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
+                                .addOptions(this.generateSelectMenu(tracks.items))
+                                .setPlaceholder(i18n.__("commands.music.search.interactionPlaceholder"))
+                        )
+                ]
+            });
         }
-        return ctx.send({
-            content: i18n.__("commands.music.search.interactionContent"),
-            components: [
-                new MessageActionRow()
-                    .addComponents(
-                        new MessageSelectMenu()
-                            .setMinValues(1)
-                            .setMaxValues(10)
-                            .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
-                            .addOptions(this.generateSelectMenu(tracks.items))
-                            .setPlaceholder(i18n.__("commands.music.search.interactionPlaceholder"))
-                    )
-            ]
-        });
     }
 
     private generateSelectMenu(tracks: ISong[]): MessageSelectOptionData[] {
