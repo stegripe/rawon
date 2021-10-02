@@ -52,7 +52,7 @@
 			"ban": {
 				"description": "Banea a alguien en el servidor",
 				"slashMemberIDDescription": "A quién quisieras banear?",
-				"slashReasonDescription": "Razón del Ban",
+				"slashReasonDescription": "Razón del ban",
 				"usage": "{prefix}ban <@mención | id> [razón]",
 				"userNoPermission": "Lo siento, pero no tienes el permiso **`BAN MEMBERS`** para usar este comando.",
 				"botNoPermission": "Lo siento, pero no tengo el permiso **`BAN MEMBERS`**.",
@@ -65,11 +65,11 @@
 			"kick": {
 				"description": "Expulsa a alguien del servidor",
 				"slashMemberDescription": "A quién te quisieras expulsar?",
-				"slashReasonDescription": "Razón de Expulsión",
+				"slashReasonDescription": "Razón de expulsión",
 				"usage": "{prefix}kick <@mención | id> [razón]",
 				"userNoPermission": "Lo siento, pero no tienes el permiso **`KICK MEMBERS`** para usar este comando.",
 				"botNoPermission": "Lo siento, pero no tengo el permiso **`KICK MEMBERS`**.",
-				"userNoKickable": "Lo siento, no puedo **`KICK`** a ese miembro.",
+				"userNoKickable": "Lo siento, no puedo **`EXPULSAR`** a ese miembro.",
 				"userKicked": "Haz sido **`EXPULSADO`** de **{guildName}**",
 				"kickedByString": "Expulsado por: {author}",
 				"kickFail": "No se pudo **`EXPULSAR`** al miembro, porque: `{message}`",
@@ -78,7 +78,7 @@
 			"mute": {
 				"description": "Silencia a alguien en el servidor",
 				"slashMemberDescription": "A quién quisieras silenciar?",
-				"slashReasonDescription": "Razón de Silencio",
+				"slashReasonDescription": "Razón de silencio",
 				"usage": "{prefix}mute <@mención | id> [razón]",
 				"userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE ROLES`** para usar este comando.",
 				"botNoPermission": "Lo siento, pero no tengo el permiso **`MANAGE ROLES`**",
@@ -91,7 +91,7 @@
 			"unban": {
 				"description": "Desbanea a alguien del servidor",
 				"slashMemberDescription": "A quién quisieras desbanear?",
-				"slashReasonDescription": "Razón de Desbaneo",
+				"slashReasonDescription": "Razón de desbaneo",
 				"usage": "{prefix}unban <id> [razón]",
 				"alreadyUnban": "Este usuario no está **`BANEADO`**",
 				"unbanFail": "No se pudo **`DESBANEAR`** al miembro, porque: `{message}`",
@@ -100,7 +100,7 @@
 			"unmute": {
 				"description": "Desilenciar a alguien del servidor",
 				"slashMemberDescription": "A quién quisieras desilenciar?",
-				"slashReasonDescription": "Razón del Desilencio",
+				"slashReasonDescription": "Razón del desilencio",
 				"usage": "{prefix}unmute <@mención | id> [razón]",
 				"noMuted": "Ese miembro no ha sido **`SILENCIADO`**",
 				"userUnmuted": "Haz sido **`DESILENCIADO`** en **{guildName}**",
@@ -111,7 +111,7 @@
 			"warn": {
 				"description": "Advierte a un miembro en el servidor",
 				"slashMemberDescription": "A quién quisieras advertir?",
-				"slashReasonDescription": "Razón de Advertencia",
+				"slashReasonDescription": "Razón de advertencia",
 				"usage": "{prefix}warn <@mención | id> [razón]",
 				"userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE SERVER`** para usar este comando.",
 				"noDM": "No se pudo enviar advertencia al DM del usuario, pero igual ha sido advertido.",
@@ -142,7 +142,7 @@
 				"description": "Reproduce algo de música",
 				"slashQueryDescription": "Canción a reproducir",
 				"usage": "{prefix}play <consulta/url>",
-				"alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz **{voiceChannel}**.",
+				"alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz **`{voiceChannel}`**.",
 				"noSongData": "Este URL no tiene datos de canciones."
 			},
 			"queue": {
@@ -153,8 +153,8 @@
 				"slashQueue": "Establece el mode repetición a Cola",
 				"slashSong": "Establece el mode repetición a Canción",
 				"slashDisable": "Desactiva el modo repetición",
-				"actualMode": "El modo de repetición actual es **{mode}**",
-				"newMode": "El modo de reproducción ha sido establecido a **{mode}**"
+				"actualMode": "El modo de repetición actual es **`{mode}`**",
+				"newMode": "El modo de reproducción ha sido establecido a **`{mode}`**"
 			},
 			"resume": {
 				"description": "Reanuda el reproductor de música",
@@ -169,7 +169,7 @@
 				"usage": "{prefix}search <canción> [fuente]",
 				"noQuery": "Por favor ingresa alguna canción para buscar.",
 				"noTracks": "No pude obtener resultados.",
-				"queueEmbed": "Por favor selecciona la canción.\nPuedes seleccionar más de una usando un espacio en blanco o {separator}. Por ejemplo: {example}\n",
+				"queueEmbed": "Por favor selecciona la canción, puedes seleccionar más de una usando un espacio en blanco o {separator}.\n",
 				"trackSelectionMessage": "Selección de canciones",
 				"cancelMessage": "Escribe `{cancel}` o `{c}` para cancelar la selección de música.",
 				"noSelection": "No se ingresó un valor o este fue inválido, búsqueda de canciones cancelada.",
@@ -179,7 +179,7 @@
 			},
 			"shuffle": {
 				"description": "Aleatoriza la cola",
-				"shuffleMessage": "El modo aleatorio está **{isShuffle}**"
+				"shuffleMessage": "El modo aleatorio está **`{isShuffle}`**"
 			},
 			"skip": {
 				"description": "Salta la canción actual",
@@ -193,7 +193,7 @@
 				"slashLastDescription": "Salta a la última canción de la cola",
 				"slashSpecificDescription": "Salta a una posición específica en la cola",
 				"slashPositionDescription": "Posición de la canción en la cola",
-				"usage": "{prefix}skipto <{options}|número>",
+				"usage": "{prefix}skipto <{options} | número>",
 				"noPermission": "No tienes permiso para usar este comando.",
 				"noSongPosition": "No se pudo encontrar la canción en esta posición.",
 				"cantPlay": "No puedes saltar la canción actual.",
@@ -203,8 +203,8 @@
 				"description": "Haz que el bot permanezca en el canal de voz cuando la cola termine",
 				"slashDescription": "Alterna el modo de la característica stay-in-voice",
 				"247Disabled": "La característica Stay-in-voice está desactivada.",
-				"actualState": "Stay-in-voice está **{state}**",
-				"newState": "Stay-in-voice se estableció a **{state}**"
+				"actualState": "Stay-in-voice está **`{state}`**",
+				"newState": "Stay-in-voice se estableció a **`{state}`**"
 			},
 			"stop": {
 				"description": "Para el reproductor de música",
@@ -214,11 +214,11 @@
 				"description": "Cambia el volúmen del reproductor de música",
 				"slashDescription": "Nuevo volúmen",
 				"usage": "{prefix}volume [volumen]",
-				"currentVolume": "El volúmen actual es **{volume}**",
+				"currentVolume": "El volúmen actual es **`{volume}`**",
 				"changeVolume": "Para cambiar el volúmen, ingresa un número usando este comando.",
-				"plsPause": "Por favor pausa la música en lugar de establecer el volúmen en **{volume}**",
-				"volumeLimit": "No puedo establecer el volúmen por encima de **{maxVol}**",
-				"newVolume": "Volúmen establecido en **{volume}**"
+				"plsPause": "Por favor pausa la música en lugar de establecer el volúmen en **`{volume}`**",
+				"volumeLimit": "No puedo establecer el volúmen por encima de **`{maxVol}`**",
+				"newVolume": "Volúmen establecido en **`{volume}`**"
 			}
 		}
 	},
@@ -233,13 +233,13 @@
 		"generalHandler": {
 			"handleVideoInitial": "Se han añadido {length} canciones a la cola\n\n",
 			"errorJoining": "Error while joining the voice channel, because: {message}",
-			"queueEnded": "La cola ha terminado, usa **{usage}** para reproducir más música.",
+			"queueEnded": "La cola ha terminado, usa **`{usage}`** para reproducir más música.",
 			"leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
 			"startPlaying": "Se empezó a reproducir **{song}**",
 			"stopPlaying": "Se detuvo la reproducción **{song}**",
 			"errorPlaying": "Ocurrió un error cuando traté de reproducir música, porque: ${message}"
 		},
-		"cooldownMessage": "{author}, por favor espera **{timeleft}** para poder hacer eso."
+		"cooldownMessage": "{author}, por favor espera **`{timeleft}`** para poder hacer eso."
 	},
 	"events": {
 		"channelUpdate": {
@@ -251,15 +251,15 @@
 			"message1": "Lo siento, pero esta interacción es solo para <@{user}> y el staff del servidor.",
 			"message2": "Lo siento, pero esta interacción es solo para <@{user}>"
 		},
-		"createMessage": "Hola {author}, mi prefix es **{prefix}**",
+		"createMessage": "Hola {author}, mi prefix es **`{prefix}`**",
 		"voiceStateUpdate": {
 			"disconnectFromVCMessage": "Desconectado del canal de voz, la cola ha sido eliminada.",
 			"joiningAsSpeaker": "Movido a un canal de escenario, intentando unirse como Orador...",
 			"unableJoinStageMessage": "No se pudo unir como orador, la cola ha sido eliminada.",
 			"joinStageMessage": "Me uní al canal escenario con éxito como orador.",
-			"deleteQueue": "Ha pasado **{duration}** y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
+			"deleteQueue": "Ha pasado **`{duration}`** y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
 			"deleteQueueFooter": "Cola eliminada",
-			"pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola. Si nadie se une al canal de voz en **{duration}**, la cola se eliminará.",
+			"pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola. Si nadie se une al canal de voz en **`{duration}`**, la cola se eliminará.",
 			"pauseQueueFooter": "Cola pausada",
 			"resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando **{song}**",
 			"resumeQueueFooter": "Cola reanudada"
@@ -267,6 +267,6 @@
 	},
 	"reusable": {
 		"pageFooter": "Página {actual} de {total}",
-		"invalidUsage": "Uso inválido, por favor usa **{prefix} {name}** para más información."
+		"invalidUsage": "Uso inválido, por favor usa **`{prefix} {name}`** para más información."
 	}
 }
