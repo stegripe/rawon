@@ -1,4 +1,6 @@
+import Script from "./script";
 import './index.css';
+import { BrowserRouter, Route } from "react-router-dom";
 import ReactDOM from 'react-dom';
 
 function Index() {
@@ -9,4 +11,11 @@ function Index() {
     );
 }
 
-ReactDOM.render(<Index />, document.getElementById('root'));
+const routes = (
+    <BrowserRouter>
+        <Route exact path="/" component={Index}/>
+        <Route path="/" component={Script}/>
+    </BrowserRouter>
+)
+
+ReactDOM.render(routes, document.getElementById('root'));
