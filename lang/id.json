@@ -169,7 +169,7 @@
 				"usage": "{prefix}search <kata pencarian> [sumber]",
 				"noQuery": "Mohon berikan kata pencarian untuk dicari.",
 				"noTracks": "Saya tidak dapat menemukan hasil pencarian.",
-				"queueEmbed": "Silahkan pilih beberapa lagu, kamu bisa memilih lebih dari satu menggunakan spasi atau {separator}.\n",
+				"queueEmbed": "Silahkan pilih beberapa lagu, kamu bisa memilih lebih dari satu menggunakan spasi atau {separator}.",
 				"trackSelectionMessage": "Pemilihan lagu",
 				"cancelMessage": "Ketik `{cancel}` atau `c` untuk membatalkan pemilihan lagu.",
 				"noSelection": "Angka yang diberikan tidak valid, pemilihan lagu dibatalkan.",
