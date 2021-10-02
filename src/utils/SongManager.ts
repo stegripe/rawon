@@ -3,7 +3,7 @@ import { Collection, GuildMember, Snowflake, SnowflakeUtil } from "discord.js";
 
 export class SongManager extends Collection<Snowflake, IQueueSong> {
     public addSong(song: ISong, requester: GuildMember): Snowflake {
-        const firstIndex = this.sortByIndex().first()?.index;
+        const firstIndex = [...this.sortByIndex().values()].reverse()[0]?.index;
         const key = SnowflakeUtil.generate();
         const data: IQueueSong = {
             index: firstIndex ? firstIndex + 1 : 0,
