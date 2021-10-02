@@ -169,7 +169,7 @@
 				"usage": "{prefix}search <kata pencarian> [sumber]",
 				"noQuery": "Mohon berikan kata pencarian untuk dicari.",
 				"noTracks": "Saya tidak dapat menemukan hasil pencarian.",
-				"queueEmbed": "Silahkan pilih beberapa lagu.\nAnda bisa memilih lebih dari satu menggunakan spasi atau {separator}. Contoh: {example}\n",
+				"queueEmbed": "Silahkan pilih beberapa lagu, kamu bisa memilih lebih dari satu menggunakan spasi atau {separator}.",
 				"trackSelectionMessage": "Pemilihan lagu",
 				"cancelMessage": "Ketik `{cancel}` atau `c` untuk membatalkan pemilihan lagu.",
 				"noSelection": "Angka yang diberikan tidak valid, pemilihan lagu dibatalkan.",
@@ -214,7 +214,7 @@
 				"description": "Mengganti volume media player",
 				"slashDescription": "Volume baru",
 				"usage": "{prefix}volume [volume baru]",
-				"currentVolume": "Volume: **`{volume}`**",
+				"currentVolume": "Volume saat ini adalah **`{volume}`**",
 				"changeVolume": "Untuk mengganti volume, berikan angka volume baru saat menggunakan perintah ini.",
 				"plsPause": "Mohon menjeda media player nya saja daripada mengatur volume ke **`{volume}`**",
 				"volumeLimit": "Saya tidak dapat mengatur volume di atas **`{maxVol}`**",
@@ -251,7 +251,7 @@
 			"message1": "Mohon maaf, tetapi interaction tersebut hanya untuk <@{user}> dan staff server.",
 			"message2": "Mohon maaf, tetapi interaction tersebut hanya untuk <@{user}>"
 		},
-		"createMessage": "Hai {author}, prefix-ku adalah **{prefix}**",
+		"createMessage": "Hai {author}, prefix-ku adalah **`{prefix}`**",
 		"voiceStateUpdate": {
 			"disconnectFromVCMessage": "Terputus dari voice channel, antrian telah dihapus.",
 			"joiningAsSpeaker": "Dipindahkan ke stage channel, mencoba bergabung sebagai Speaker...",
@@ -259,7 +259,7 @@
 			"joinStageMessage": "Berhasil bergabung ke stage channel sebagai Speaker.",
 			"deleteQueue": "**`{duration}`** telah berlalu dan belum ada yang memasuki voice channel, antrian telah dihapus.",
 			"deleteQueueFooter": "Antrian dihapus",
-			"pauseQueue": "Semua orang telah keluar dari voice channel. Untuk menyimpan penggunaan, antrian telah dijeda. Jika masih tidak ada yang memasuki voice channel dalam **{duration}**, antrian akan dihapus.",
+			"pauseQueue": "Semua orang telah keluar dari voice channel. Untuk menyimpan penggunaan, antrian telah dijeda. Jika masih tidak ada yang memasuki voice channel dalam **`{duration}`**, antrian akan dihapus.",
 			"pauseQueueFooter": "Antrian dijeda",
 			"resumeQueue": "Seseorang telah memasuki voice channel.\nMelanjutkan **{song}**",
 			"resumeQueueFooter": "Antrian dilanjutkan"
