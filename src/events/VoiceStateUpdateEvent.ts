@@ -26,8 +26,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const botID = this.client.user?.id;
 
         if (oldMember?.id === botID && oldID === queueVC.id && newID === undefined) {
-            queue.player?.stop(true);
-            delete newState.guild.queue;
+            queue.destroy();
             this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`);
             queue.textChannel.send({ embeds: [createEmbed("error", `⏹️ **|** ${i18n.__("events.voiceStateUpdate.disconnectFromVCMessage")}`)] })
                 .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
@@ -45,9 +44,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     await entersState(queue.connection!, VoiceConnectionStatus.Ready, 20000);
                     void msg.edit({ embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.connectionReconfigured"))] });
                 } catch (err) {
-                    queue.player?.stop(true);
-                    queue.connection?.disconnect();
-                    delete newState.guild.queue;
+                    queue.destroy();
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to re-configure networking on ${newState.guild.name} voice channel, the queue was deleted.`);
                     void msg.edit({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableReconfigureConnection"))] });
                     return;
@@ -58,9 +55,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
 
                 if (suppress && ("error" in suppress)) {
-                    queue.player?.stop(true);
-                    queue.connection?.disconnect();
-                    delete newState.guild.queue;
+                    queue.destroy();
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
                     queue.textChannel.send({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)] })
                         .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
@@ -97,8 +92,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         queue.lastVSUpdateMsg = null;
         state.guild.queue!.timeout = setTimeout(() => {
-            queue.connection?.disconnect();
-            delete state.guild.queue;
+            queue.destroy();
             void queue.textChannel.send({ embeds: [createEmbed("error", `⏹ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", { duration: `\`${duration}\`` })}`).setAuthor(i18n.__("events.voiceStateUpdate.deleteQueueFooter"))] });
         }, timeout);
         void queue.textChannel.send({ embeds: [createEmbed("warn", `⏸ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", { duration: `\`${duration}\`` })}`).setAuthor(i18n.__("events.voiceStateUpdate.pauseQueueFooter"))] })
