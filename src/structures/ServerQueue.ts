@@ -54,6 +54,13 @@ export class ServerQueue {
     }
 
     public set lastVSUpdateMsg(value: Snowflake|null) {
+        if (this._lastVSUpdateMsg !== null) {
+            this.textChannel.messages.fetch(this._lastVSUpdateMsg, { cache: false })
+                .then(msg => {
+                    void msg.delete();
+                })
+                .catch(err => this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", err));
+        }
         this._lastVSUpdateMsg = value;
     }
 
