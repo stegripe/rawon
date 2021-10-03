@@ -25,7 +25,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const newVCMembers = newVC?.members.filter(m => !m.user.bot);
         const botID = this.client.user?.id;
 
-        if (oldMember?.id === botID && oldID === queueVC.id && newID === undefined) {
+        if (oldMember?.id === botID && oldID === queueVC.id && newID === undefined && !queue.idle) {
             queue.destroy();
             this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`);
             queue.textChannel.send({ embeds: [createEmbed("error", `⏹️ **|** ${i18n.__("events.voiceStateUpdate.disconnectFromVCMessage")}`)] })
