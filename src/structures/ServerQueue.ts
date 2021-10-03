@@ -72,6 +72,7 @@ export class ServerQueue {
     }
 
     public destroy(): void {
+        this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout!);
         clearTimeout(this.dcTimeout!);
