@@ -303,8 +303,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
         queue.dcTimeout = queue.stayInVC
             ? null
             : setTimeout(() => {
-                queue.connection?.disconnect();
-                delete guild.queue;
+                queue.destroy();
                 void queue.textChannel.send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
                     .then(msg => {
                         setTimeout(() => {
@@ -377,8 +376,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
     })
         .on("error", err => {
             queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }))] }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
-            queue.connection?.disconnect();
-            delete guild.queue;
+            queue.destroy();
             client.logger.error("PLAY_ERR:", err);
         });
 }
