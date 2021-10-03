@@ -4,6 +4,7 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
+import { Message } from "discord.js";
 
 @DefineCommand({
     aliases: ["stayinvc", "stay", "24/7"],
@@ -35,7 +36,7 @@ export class StayInQueueCommand extends BaseCommand {
     @inVC()
     @haveQueue()
     @sameVC()
-    public execute(ctx: CommandContext): any {
+    public execute(ctx: CommandContext): Promise<Message> {
         if (!this.client.config.is247Allowed) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.music.stayInQueue.247Disabled"))] });
 
         const newState = ctx.options?.getString("state") ?? ctx.args[0] as string | undefined;

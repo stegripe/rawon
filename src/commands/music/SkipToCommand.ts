@@ -5,8 +5,9 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { play } from "../../utils/handlers/GeneralUtil";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
-import { AudioPlayerPlayingState } from "@discordjs/voice";
 import i18n from "../../config";
+import { AudioPlayerPlayingState } from "@discordjs/voice";
+import { Message } from "discord.js";
 
 @DefineCommand({
     aliases: [],
@@ -45,7 +46,7 @@ export class SkipToCommand extends BaseCommand {
     @inVC()
     @haveQueue()
     @sameVC()
-    public async execute(ctx: CommandContext): Promise<any> {
+    public async execute(ctx: CommandContext): Promise<Message> {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"))] });
 

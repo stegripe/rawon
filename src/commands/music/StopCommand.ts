@@ -18,7 +18,7 @@ export class StopCommand extends BaseCommand {
     @inVC()
     @validVC()
     @sameVC()
-    public execute(ctx: CommandContext): any {
+    public execute(ctx: CommandContext): void {
         ctx.guild?.queue?.stop();
         ctx.guild!.queue!.lastMusicMsg = null;
 

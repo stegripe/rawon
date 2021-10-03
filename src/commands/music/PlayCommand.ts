@@ -4,8 +4,9 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
-import i18n from "../../config";
 import { ISong } from "../../typings";
+import i18n from "../../config";
+import { Message } from "discord.js";
 
 @DefineCommand({
     description: i18n.__("commands.music.play.description"),
@@ -27,7 +28,7 @@ export class PlayCommand extends BaseCommand {
     @inVC()
     @validVC()
     @sameVC()
-    public async execute(ctx: CommandContext): Promise<any> {
+    public async execute(ctx: CommandContext): Promise<Message|void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const voiceChannel = ctx.member!.voice.channel!;

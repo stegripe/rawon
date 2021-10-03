@@ -2,8 +2,9 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
-import i18n
-    from "../../config";
+import i18n from "../../config";
+import { Message } from "discord.js";
+
 @DefineCommand({
     description: i18n.__("commands.moderation.unban.description"),
     name: "unban",
@@ -26,7 +27,7 @@ import i18n
     usage: i18n.__("commands.moderation.unban.usage")
 })
 export class UnBanCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<any> {
+    public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.ban.userNoPermission"), true)] });
         if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.ban.botNoPermission"), true)] });
 

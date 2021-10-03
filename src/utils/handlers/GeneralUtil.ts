@@ -10,7 +10,7 @@ import { youtube } from "./YouTubeUtil";
 import { chunk } from "../chunk";
 import i18n from "../../config";
 import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
-import { Guild, Util, VoiceChannel, StageChannel } from "discord.js";
+import { Guild, Message, Util, VoiceChannel, StageChannel } from "discord.js";
 import { Video, SearchResult } from "youtubei";
 import { decodeHTML } from "entities";
 import { URL } from "url";
@@ -227,10 +227,10 @@ export function checkQuery(string: string): QueryData {
     return result;
 }
 
-export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel | StageChannel): Promise<any> {
+export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel | StageChannel): Promise<Message|void> {
     const wasIdle = ctx.guild?.queue?.idle;
 
-    async function sendPagination(): Promise<any> {
+    async function sendPagination(): Promise<void> {
         for (const song of toQueue) {
             ctx.guild?.queue?.songs.addSong(song, ctx.member!);
         }
@@ -282,7 +282,9 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
         client.logger.error("PLAY_CMD_ERR:", error);
         return ctx.channel!.send({
             embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }))]
-        }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
+        }).catch(e => {
+            client.logger.error("PLAY_CMD_ERR:", e);
+        });
     }
 
     void play(client, ctx.guild!);

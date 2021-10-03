@@ -17,9 +17,9 @@ export class ShuffleCommand extends BaseCommand {
     @inVC()
     @haveQueue()
     @sameVC()
-    public execute(ctx: CommandContext): any {
+    public execute(ctx: CommandContext): void {
         ctx.guild!.queue!.shuffle = !ctx.guild!.queue!.shuffle;
         const isShuffle = ctx.guild!.queue!.shuffle;
-        return ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.shuffleMessage", { isShuffle: `\`${isShuffle ? "ON" : "OFF"}\`` })}`)] });
+        void ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.shuffleMessage", { isShuffle: `\`${isShuffle ? "ON" : "OFF"}\`` })}`)] });
     }
 }

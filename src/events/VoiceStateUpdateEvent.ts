@@ -103,7 +103,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             .then(msg => queue.lastVSUpdateMsg = msg.id);
     }
 
-    private resume(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): any {
+    private resume(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
         if (vcMembers.size <= 0) return;
 
         clearTimeout(queue.timeout!);

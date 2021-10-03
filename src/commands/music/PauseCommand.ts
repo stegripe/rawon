@@ -4,6 +4,7 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
+import { Message } from "discord.js";
 
 @DefineCommand({
     description: i18n.__("commands.music.pause.description"),
@@ -17,7 +18,7 @@ export class PauseCommand extends BaseCommand {
     @inVC()
     @haveQueue()
     @sameVC()
-    public execute(ctx: CommandContext): any {
+    public execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.pause.alreadyPause"), true)] });
 
         ctx.guild.queue.playing = false;
