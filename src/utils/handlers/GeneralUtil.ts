@@ -291,8 +291,6 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
     if (!queue) return;
-
-    const wasNull = queue.player === null;
     if (queue.player === null) queue.player = createAudioPlayer();
 
     const song = nextSong ? queue.songs.get(nextSong) : queue.songs.first();
@@ -350,11 +348,6 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
                 if (err.message === "The operation was aborted") err.message = "Cannot establish a voice connection within 15 seconds.";
                 queue.player?.emit("error", new AudioPlayerError(err, resource));
             });
-    }
-
-    if (!wasNull) {
-        sendStartPlayingMsg(song.song);
-        return;
     }
 
     queue.player.on("stateChange", (oldState, newState) => {
