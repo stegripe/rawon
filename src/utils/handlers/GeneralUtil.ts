@@ -228,6 +228,8 @@ export function checkQuery(string: string): QueryData {
 }
 
 export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel | StageChannel): Promise<any> {
+    const wasIdle = ctx.guild?.queue?.idle;
+
     async function sendPagination(): Promise<any> {
         for (const song of toQueue) {
             ctx.guild?.queue?.songs.addSong(song, ctx.member!);
@@ -255,8 +257,8 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
     if (ctx.guild?.queue) {
         await sendPagination();
 
-        if (ctx.guild.queue.player?.state.status === AudioPlayerStatus.Idle) {
-            void play(client, ctx.guild);
+        if (wasIdle) {
+            void play(client, ctx.guild, undefined, wasIdle);
         }
 
         return;
@@ -286,7 +288,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
     void play(client, ctx.guild!);
 }
 
-export async function play(client: Disc, guild: Guild, nextSong?: string): Promise<void> {
+export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
     if (!queue) return;
 
@@ -318,22 +320,17 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
 
     queue.connection?.subscribe(queue.player);
 
-    entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
-        .then(async () => {
-            if (guild.channels.cache.get(queue.connection!.joinConfig.channelId!)?.type === "GUILD_STAGE_VOICE") {
-                const suppressed = await guild.me?.voice.setSuppressed(false).catch(err => ({ error: err }));
-                if (suppressed && ("error" in suppressed)) {
-                    queue.player?.emit("error", new AudioPlayerError(suppressed.error, resource));
-                    return;
-                }
+    async function playResource(): Promise<void> {
+        if (guild.channels.cache.get(queue!.connection!.joinConfig.channelId!)?.type === "GUILD_STAGE_VOICE") {
+            const suppressed = await guild.me?.voice.setSuppressed(false).catch(err => ({ error: err }));
+            if (suppressed && ("error" in suppressed)) {
+                queue?.player?.emit("error", new AudioPlayerError(suppressed.error, resource));
+                return;
             }
+        }
 
-            queue.player?.play(resource);
-        })
-        .catch((err: Error) => {
-            if (err.message === "The operation was aborted") err.message = "Cannot establish a voice connection within 15 seconds.";
-            queue.player?.emit("error", new AudioPlayerError(err, resource));
-        });
+        queue?.player?.play(resource);
+    }
 
     const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
         client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
@@ -341,6 +338,19 @@ export async function play(client: Disc, guild: Guild, nextSong?: string): Promi
             .then(m => queue.lastMusicMsg = m.id)
             .catch(e => client.logger.error("PLAY_ERR:", e));
     };
+
+    if (wasIdle) {
+        void playResource();
+    } else {
+        entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
+            .then(async () => {
+                await playResource();
+            })
+            .catch((err: Error) => {
+                if (err.message === "The operation was aborted") err.message = "Cannot establish a voice connection within 15 seconds.";
+                queue.player?.emit("error", new AudioPlayerError(err, resource));
+            });
+    }
 
     if (!wasNull) {
         sendStartPlayingMsg(song.song);
