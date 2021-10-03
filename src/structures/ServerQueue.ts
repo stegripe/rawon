@@ -80,6 +80,10 @@ export class ServerQueue {
         return this.player?.state.status === AudioPlayerStatus.Playing;
     }
 
+    public get idle(): boolean {
+        return (this.player?.state.status === AudioPlayerStatus.Idle) && (this.songs.size === 0);
+    }
+
     public stop(): void {
         this.songs.clear();
         this.player?.stop(true);
