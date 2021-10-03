@@ -69,14 +69,14 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
                 await msg.edit({ embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.joinStageMessage"), true)] });
             }
-            if (newVCMembers.size === 0 && queue.timeout === null) {
+            if (newVCMembers.size === 0 && queue.timeout === null && !queue.idle) {
                 this.timeout(newVCMembers, queue, newState);
             } else if (newVCMembers.size !== 0 && queue.timeout !== null) {
                 this.resume(newVCMembers, queue, newState);
             }
         }
 
-        if (oldID === queueVC.id && newID !== queueVC.id && !member?.user.bot && queue.timeout === null) {
+        if (oldID === queueVC.id && newID !== queueVC.id && !member?.user.bot && queue.timeout === null && !queue.idle) {
             queue.skipVoters = queue.skipVoters.filter(x => x !== member?.id);
             this.timeout(queueVCMembers, queue, newState);
         }
