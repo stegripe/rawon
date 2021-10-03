@@ -5,9 +5,9 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
-import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction } from "discord.js";
-import { decodeHTML } from "entities";
 import i18n from "../../config";
+import { Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction } from "discord.js";
+import { decodeHTML } from "entities";
 
 @DefineCommand({
     contextChat: "Add to queue",
@@ -45,7 +45,7 @@ export class SearchCommand extends BaseCommand {
     @inVC()
     @validVC()
     @sameVC()
-    public async execute(ctx: CommandContext): Promise<any> {
+    public async execute(ctx: CommandContext): Promise<Message|void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const values = ctx.additionalArgs.get("values");
@@ -61,7 +61,7 @@ export class SearchCommand extends BaseCommand {
                 selection!.setDisabled(true);
                 await msg.edit({ components: [new MessageActionRow().addComponents(selection!)] });
             }
-            return undefined;
+            return;
         }
         const source = ctx.options?.getString("source") ?? (["youtube", "soundcloud"].includes(ctx.args.slice(-1)[0]?.toLowerCase()) ? ctx.args.pop()! : "youtube");
         const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? ctx.options?.getMessage("message")?.content;

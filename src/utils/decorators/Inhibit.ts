@@ -2,7 +2,7 @@ import { CommandContext } from "../../structures/CommandContext";
 import { ICommandComponent } from "../../typings";
 
 export function Inhibit(func: ICommandComponent["execute"]) {
-    return function decorate(target: unknown, key: string | symbol, descriptor: PropertyDescriptor): any {
+    return function decorate(target: unknown, key: string | symbol, descriptor: PropertyDescriptor): PropertyDescriptor {
         const original = descriptor.value;
         // eslint-disable-next-line func-names
         descriptor.value = async function (ctx: CommandContext): Promise<any> {

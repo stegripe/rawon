@@ -3,9 +3,10 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
+import i18n from "../../config";
+import { Message } from "discord.js";
 import { request } from "https";
 import { inspect } from "util";
-import i18n from "../../config";
 
 @DefineCommand({
     aliases: ["evaluate", "ev", "js-exec"],
@@ -16,7 +17,7 @@ import i18n from "../../config";
     usage: i18n.__("commands.developers.eval.usage")
 })
 export class EvalCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<any> {
+    public async execute(ctx: CommandContext): Promise<Message|void> {
         const msg = ctx;
         const client = this.client;
 
@@ -87,7 +88,7 @@ export class EvalCommand extends BaseCommand {
         return text;
     }
 
-    private hastebin(text: any): Promise<string> {
+    private hastebin(text: string): Promise<string> {
         return new Promise((resolve, reject) => {
             const req = request({ hostname: "bin.zhycorp.net", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
                 let raw = "";

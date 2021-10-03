@@ -59,7 +59,7 @@ export interface ICommandComponent {
         contextChat?: string;
         contextUser?: string;
     };
-    execute(context: CommandContext, ...args: any): any;
+    execute(context: CommandContext): any;
 }
 
 export interface ICategoryMeta {

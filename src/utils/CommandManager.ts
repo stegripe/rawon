@@ -109,11 +109,11 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             });
     }
 
-    public async handle(message: Message): Promise<any> {
+    public async handle(message: Message): Promise<void> {
         const args = message.content.substring(this.client.config.prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);
-        if (!command || command.meta.disable) return undefined;
+        if (!command || command.meta.disable) return;
         if (!this.cooldowns.has(command.meta.name)) this.cooldowns.set(command.meta.name, new Collection());
         const now = Date.now();
         const timestamps = this.cooldowns.get(command.meta.name);
@@ -125,7 +125,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                 message.channel.send({ embeds: [createEmbed("warn", `⚠️ **|** ${i18n.__mf("utils.cooldownMessage", { author: message.author.toString(), timeleft: timeLeft.toFixed(1) })}`, true)] }).then(msg => {
                     void msg.delete().then(m => setTimeout(() => m.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)), 3500));
                 }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
-                return undefined;
+                return;
             }
 
             timestamps.set(message.author.id, now);
@@ -136,7 +136,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
         }
         try {
             if (command.meta.devOnly && !this.client.config.owners.includes(message.author.id)) return undefined;
-            return command.execute(new CommandContext(message, args));
+            command.execute(new CommandContext(message, args));
         } catch (e) {
             this.client.logger.error("COMMAND_HANDLER_ERR:", e);
         } finally {

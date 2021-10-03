@@ -2,12 +2,12 @@ import { DefineEvent } from "../utils/decorators/DefineEvent";
 import { CommandContext } from "../structures/CommandContext";
 import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
-import { Interaction, Permissions } from "discord.js";
 import i18n from "../config";
+import { Interaction, Permissions } from "discord.js";
 
 @DefineEvent("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
-    public async execute(interaction: Interaction): Promise<any> {
+    public async execute(interaction: Interaction): Promise<void> {
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
         if (interaction.isButton()) {
             const val = this.client.utils.decode(interaction.customId);

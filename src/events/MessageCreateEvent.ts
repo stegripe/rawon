@@ -6,7 +6,7 @@ import i18n from "../config";
 
 @DefineEvent("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
-    public async execute(message: Message): Promise<any> {
+    public async execute(message: Message): Promise<Message|void> {
         if (message.author.bot || message.channel.type === "DM" || !this.client.commands.isReady) return message;
 
         if (message.content.startsWith(this.client.config.prefix)) return this.client.commands.handle(message);

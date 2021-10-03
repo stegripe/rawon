@@ -8,5 +8,5 @@ export class BaseCommand implements ICommandComponent {
     public constructor(public client: Disc, public meta: ICommandComponent["meta"]) {}
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    public execute(message: CommandContext, ...any: any): any {}
+    public execute(ctx: CommandContext): any {}
 }

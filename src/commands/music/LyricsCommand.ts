@@ -4,8 +4,9 @@ import { ButtonPagination } from "../../utils/ButtonPagination";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
-import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 import i18n from "../../config";
+import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import { Message } from "discord.js";
 
 @DefineCommand({
     aliases: ["ly"],
@@ -24,14 +25,14 @@ import i18n from "../../config";
     usage: i18n.__("commands.music.lyrics.usage")
 })
 export class LyricsCommand extends BaseCommand {
-    public execute(ctx: CommandContext): any {
+    public execute(ctx: CommandContext): Promise<Message|void> {
         const query = ctx.args.length >= 1 ? ctx.args.join(" ") : ctx.options?.getString("query") ? ctx.options.getString("query") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title);
         if (!query) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)] });
 
         return this.getLyrics(ctx, query);
     }
 
-    private async getLyrics(ctx: CommandContext, song: string): Promise<any> {
+    private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
         const url = `https://api.lxndr.dev/lyrics/?song=${encodeURI(song)}&from=${encodeURI(this.client.user!.id)}`;
         this.client.request.get(url).json()
             .then(async (data: any) => {

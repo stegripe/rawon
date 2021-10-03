@@ -2,9 +2,10 @@ import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { LoopMode } from "../../typings";
 import { createEmbed } from "../../utils/createEmbed";
+import { LoopMode } from "../../typings";
 import i18n from "../../config";
+import { Message } from "discord.js";
 
 @DefineCommand({
     aliases: ["loop", "music-repeat", "music-loop"],
@@ -37,7 +38,7 @@ export class RepeatCommand extends BaseCommand {
     @inVC()
     @haveQueue()
     @sameVC()
-    public execute(ctx: CommandContext): any {
+    public execute(ctx: CommandContext): Promise<Message> {
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {
             OFF: {
                 aliases: ["disable", "off"],

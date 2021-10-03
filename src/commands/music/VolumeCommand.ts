@@ -3,8 +3,9 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
-import { AudioPlayerPlayingState } from "@discordjs/voice";
 import i18n from "../../config";
+import { AudioPlayerPlayingState } from "@discordjs/voice";
+import { Message } from "discord.js";
 
 @DefineCommand({
     aliases: ["vol"],
@@ -26,7 +27,7 @@ export class VolumeCommand extends BaseCommand {
     @inVC()
     @validVC()
     @sameVC()
-    public execute(ctx: CommandContext): any {
+    public execute(ctx: CommandContext): Promise<Message> {
         const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("volume", false));
         const resVolume = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.volume!;
 

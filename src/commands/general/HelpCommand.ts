@@ -3,8 +3,8 @@ import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
-import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
 import i18n from "../../config";
+import { Message, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
 
 @DefineCommand({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
@@ -29,7 +29,7 @@ export class HelpCommand extends BaseCommand {
     private readonly infoEmbed = createEmbed("info")
         .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
 
-    public async execute(ctx: CommandContext): Promise<any> {
+    public async execute(ctx: CommandContext): Promise<Message|void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         this.infoEmbed.fields = [];
         const val = ctx.args[0] ?? ctx.options?.getString("command") ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : null);
@@ -45,7 +45,9 @@ export class HelpCommand extends BaseCommand {
                 if (category.hide && !isDev) continue;
                 embed.addField(`**${category.name}**`, cmds.join(", "));
             }
-            return ctx.send({ embeds: [embed] }, "editReply").catch(e => this.client.logger.error("PROMISE_ERR:", e));
+            return ctx.send({ embeds: [embed] }, "editReply").catch(e => {
+                this.client.logger.error("PROMISE_ERR:", e);
+            });
         }
         if (!command) {
             const matching = this.generateSelectMenu(val, ctx.author.id);

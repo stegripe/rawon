@@ -78,11 +78,11 @@ export class CommandContext {
     }
 
     public isCommand(): boolean {
-        return InteractionTypes[(this.context as Interaction).type] === InteractionTypes.APPLICATION_COMMAND && typeof (this.context as any).targetId === "undefined";
+        return InteractionTypes[(this.context as Interaction).type] === InteractionTypes.APPLICATION_COMMAND && "targetId" in this.context;
     }
 
     public isContextMenu(): boolean {
-        return InteractionTypes[(this.context as Interaction).type] === InteractionTypes.APPLICATION_COMMAND && typeof (this.context as any).targetId !== "undefined";
+        return InteractionTypes[(this.context as Interaction).type] === InteractionTypes.APPLICATION_COMMAND && "targetId" in this.context;
     }
 
     public isMessageComponent(): boolean {

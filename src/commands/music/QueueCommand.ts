@@ -20,7 +20,7 @@ import i18n from "../../config";
 })
 export class QueueCommand extends BaseCommand {
     @haveQueue()
-    public async execute(ctx: CommandContext): Promise<any> {
+    public async execute(ctx: CommandContext): Promise<void> {
         const np = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
         const full = ctx.guild!.queue!.songs.sortByIndex();
         const songs = ctx.guild?.queue?.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);

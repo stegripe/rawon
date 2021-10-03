@@ -32,7 +32,7 @@ const DATAS: InteractionButtonOptions[] = [
 export class ButtonPagination {
     public constructor(public readonly msg: Interaction|CommandInteraction|SelectMenuInteraction|ContextMenuInteraction|Message, public readonly payload: PaginationPayload) {}
 
-    public async start(): Promise<any> {
+    public async start(): Promise<void> {
         const embed = this.payload.embed;
         const pages = this.payload.pages;
         let index = 0;

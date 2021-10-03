@@ -2,19 +2,21 @@ import { createEmbed } from "../createEmbed";
 import { Inhibit } from "./Inhibit";
 import i18n from "../../config";
 
-export function haveQueue(): any {
+type ResType = (target: unknown, key: string|symbol, descriptor: PropertyDescriptor) => PropertyDescriptor;
+
+export function haveQueue(): ResType {
     return Inhibit(ctx => {
         if (!ctx.guild?.queue) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noQueue"))] });
     });
 }
 
-export function inVC(): any {
+export function inVC(): ResType {
     return Inhibit(ctx => {
         if (!ctx.member?.voice.channel) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noInVC"))] });
     });
 }
 
-export function validVC(): any {
+export function validVC(): ResType {
     return Inhibit(ctx => {
         const voiceChannel = ctx.member?.voice.channel;
 
@@ -24,7 +26,7 @@ export function validVC(): any {
     });
 }
 
-export function sameVC(): any {
+export function sameVC(): ResType {
     return Inhibit(ctx => {
         if (!ctx.guild?.me?.voice.channel) return;
 
