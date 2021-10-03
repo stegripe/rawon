@@ -39,6 +39,13 @@ export class ServerQueue {
     }
 
     public set lastMusicMsg(value: Snowflake|null) {
+        if (this._lastMusicMsg !== null) {
+            this.textChannel.messages.fetch(this._lastMusicMsg, { cache: false })
+                .then(msg => {
+                    void msg.delete();
+                })
+                .catch(err => this.textChannel.client.logger.error("DELETE_LAST_MUSIC_MESSAGE_ERR:", err));
+        }
         this._lastMusicMsg = value;
     }
 
@@ -47,6 +54,13 @@ export class ServerQueue {
     }
 
     public set lastVSUpdateMsg(value: Snowflake|null) {
+        if (this._lastVSUpdateMsg !== null) {
+            this.textChannel.messages.fetch(this._lastVSUpdateMsg, { cache: false })
+                .then(msg => {
+                    void msg.delete();
+                })
+                .catch(err => this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", err));
+        }
         this._lastVSUpdateMsg = value;
     }
 
@@ -69,5 +83,15 @@ export class ServerQueue {
     public stop(): void {
         this.songs.clear();
         this.player?.stop(true);
+    }
+
+    public destroy(): void {
+        this.stop();
+        this.connection?.disconnect();
+        clearTimeout(this.timeout!);
+        clearTimeout(this.dcTimeout!);
+        if (this.textChannel.type !== "DM") {
+            delete this.textChannel.guild.queue;
+        }
     }
 }
