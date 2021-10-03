@@ -25,11 +25,15 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const newVCMembers = newVC?.members.filter(m => !m.user.bot);
         const botID = this.client.user?.id;
 
-        if (oldMember?.id === botID && oldID === queueVC.id && newID === undefined && !queue.idle) {
+        if (oldMember?.id === botID && oldID === queueVC.id && newID === undefined) {
+            const isIdle = queue.idle;
+
             queue.destroy();
-            this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`);
-            queue.textChannel.send({ embeds: [createEmbed("error", `⏹️ **|** ${i18n.__("events.voiceStateUpdate.disconnectFromVCMessage")}`)] })
-                .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
+            if (!isIdle) {
+                this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`);
+                queue.textChannel.send({ embeds: [createEmbed("error", `⏹️ **|** ${i18n.__("events.voiceStateUpdate.disconnectFromVCMessage")}`)] })
+                    .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
+            }
         }
 
         if (newState.mute !== oldState.mute || newState.deaf !== oldState.deaf) return;
