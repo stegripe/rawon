@@ -100,6 +100,9 @@ export class SearchCommand extends BaseCommand {
             if (!respond) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"))] });
             if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))] });
 
+            msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
+            respond.first()?.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_NUM_DELETE_MSG_ERR:", err));
+
             const songs = respond.first()!.content
                 .split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
                 .sort((a, b) => Number(a) - Number(b));
