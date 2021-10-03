@@ -36,7 +36,8 @@ export class UnMuteCommand extends BaseCommand {
 
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
 
-        const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
+        const muteRole = await this.client.utils.fetchMuteRole(ctx.guild).catch(() => null);
+        if (!muteRole) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.unmute.unableToCreateMuteRole"))] });
         if (!member.roles.cache.has(muteRole.id)) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.unmute.noMuted"))] });
 
         const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
