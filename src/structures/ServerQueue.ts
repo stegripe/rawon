@@ -70,4 +70,13 @@ export class ServerQueue {
         this.songs.clear();
         this.player?.stop(true);
     }
+
+    public destroy(): void {
+        this.connection?.disconnect();
+        clearTimeout(this.timeout!);
+        clearTimeout(this.dcTimeout!);
+        if (this.textChannel.type !== "DM") {
+            delete this.textChannel.guild.queue;
+        }
+    }
 }
