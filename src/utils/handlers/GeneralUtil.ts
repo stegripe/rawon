@@ -273,6 +273,8 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
             channelId: voiceChannel.id,
             guildId: ctx.guild!.id,
             selfDeaf: true
+        }).on("debug", message => {
+            client.logger.debug(message);
         });
         ctx.guild!.queue.connection = connection;
     } catch (error) {
