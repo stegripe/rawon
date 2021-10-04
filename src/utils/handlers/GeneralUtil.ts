@@ -383,5 +383,8 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
             queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }))] }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
             queue.destroy();
             client.logger.error("PLAY_ERR:", err);
+        })
+        .on("debug", message => {
+            client.logger.debug(message);
         });
 }
