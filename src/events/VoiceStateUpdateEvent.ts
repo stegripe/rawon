@@ -4,13 +4,13 @@ import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
 import { formatMS } from "../utils/formatMS";
 import { IQueueSong } from "../typings";
-import { VoiceState, VoiceChannel, StageChannel } from "discord.js";
-import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import i18n from "../config";
+import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
+import { Message, VoiceState, VoiceChannel, StageChannel } from "discord.js";
 
 @DefineEvent("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
-    public async execute(oldState: VoiceState, newState: VoiceState): Promise<any> {
+    public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message|void> {
         const queue = newState.guild.queue;
         if (!queue) return;
 
@@ -62,7 +62,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     queue.destroy();
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
                     return queue.textChannel.send({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)] })
-                        .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
+                        .catch(e => {
+                            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e);
+                        });
                 }
 
                 await msg.edit({ embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.joinStageMessage"), true)] });
