@@ -21,7 +21,7 @@ export function validVC(): ResType {
         const voiceChannel = ctx.member?.voice.channel;
 
         if (voiceChannel?.id === ctx.guild?.me?.voice.channel?.id) return undefined;
-        if (!voiceChannel?.joinable) return ctx.reply({ embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCJoinable"), true)] });
+        if (!voiceChannel?.permissionsFor(ctx.guild!.me!.id)?.has("CONNECT")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCJoinable"), true)] });
         if (!voiceChannel.permissionsFor(ctx.guild!.me!.id)?.has("SPEAK")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCPermission"), true)] });
     });
 }
