@@ -32,73 +32,77 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                             const allCmd = await this.client.application!.commands.fetch();
 
                             for (const file of files) {
-                                const path = resolve(this.path, category, file);
+                                try {
+                                    const path = resolve(this.path, category, file);
 
-                                const command = await this.import(path, this.client, { category, path });
-                                if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
+                                    const command = await this.import(path, this.client, { category, path });
+                                    if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
 
-                                command.meta = Object.assign(command.meta, { path, category });
-                                if (Number(command.meta.aliases?.length) > 0) command.meta.aliases?.forEach(alias => this.aliases.set(alias, command.meta.name));
-                                this.set(command.meta.name, command);
+                                    command.meta = Object.assign(command.meta, { path, category });
+                                    if (Number(command.meta.aliases?.length) > 0) command.meta.aliases?.forEach(alias => this.aliases.set(alias, command.meta.name));
+                                    this.set(command.meta.name, command);
 
-                                if (command.meta.contextChat) {
-                                    if (this.client.config.isDev) {
-                                        for (const guild of this.client.config.devGuild) {
-                                            const g = await this.client.guilds.fetch({ guild });
+                                    if (command.meta.contextChat) {
+                                        if (this.client.config.isDev) {
+                                            for (const guild of this.client.config.devGuild) {
+                                                const g = await this.client.guilds.fetch({ guild });
 
-                                            await g.commands.create({
+                                                await g.commands.create({
+                                                    name: command.meta.contextChat,
+                                                    type: "MESSAGE"
+                                                })
+                                                    .catch(() => this.client.logger.info(`Missing access on ${guild} [MESSAGE_CTX]`));
+                                                this.client.logger.info(`Registered ${command.meta.name} to message context for ${guild}`);
+                                            }
+                                        } else {
+                                            await this.client.application!.commands.create({
                                                 name: command.meta.contextChat,
                                                 type: "MESSAGE"
-                                            })
-                                                .catch(() => this.client.logger.info(`Missing access on ${guild} [MESSAGE_CTX]`));
-                                            this.client.logger.info(`Registered ${command.meta.name} to message context for ${guild}`);
+                                            });
+                                            this.client.logger.info(`Registered ${command.meta.name} to message context for global.`);
                                         }
-                                    } else {
-                                        await this.client.application!.commands.create({
-                                            name: command.meta.contextChat,
-                                            type: "MESSAGE"
-                                        });
-                                        this.client.logger.info(`Registered ${command.meta.name} to message context for global.`);
                                     }
-                                }
-                                if (command.meta.contextUser) {
-                                    if (this.client.config.isDev) {
-                                        for (const guild of this.client.config.devGuild) {
-                                            const g = await this.client.guilds.fetch({ guild });
+                                    if (command.meta.contextUser) {
+                                        if (this.client.config.isDev) {
+                                            for (const guild of this.client.config.devGuild) {
+                                                const g = await this.client.guilds.fetch({ guild });
 
-                                            await g.commands.create({
+                                                await g.commands.create({
+                                                    name: command.meta.contextUser,
+                                                    type: "USER"
+                                                })
+                                                    .catch(() => this.client.logger.info(`Missing access on ${guild} [USER_CTX]`));
+                                                this.client.logger.info(`Registered ${command.meta.name} to user context for ${guild}`);
+                                            }
+                                        } else {
+                                            await this.client.application!.commands.create({
                                                 name: command.meta.contextUser,
                                                 type: "USER"
-                                            })
-                                                .catch(() => this.client.logger.info(`Missing access on ${guild} [USER_CTX]`));
-                                            this.client.logger.info(`Registered ${command.meta.name} to user context for ${guild}`);
+                                            });
+                                            this.client.logger.info(`Registered ${command.meta.name} to user context for global.`);
                                         }
-                                    } else {
-                                        await this.client.application!.commands.create({
-                                            name: command.meta.contextUser,
-                                            type: "USER"
-                                        });
-                                        this.client.logger.info(`Registered ${command.meta.name} to user context for global.`);
                                     }
-                                }
-                                if (!allCmd.has(command.meta.name) && command.meta.slash) {
-                                    if (!command.meta.slash.name) Object.assign(command.meta.slash, { name: command.meta.name });
-                                    if (!command.meta.slash.description) Object.assign(command.meta.slash, { description: command.meta.description });
+                                    if (!allCmd.has(command.meta.name) && command.meta.slash) {
+                                        if (!command.meta.slash.name) Object.assign(command.meta.slash, { name: command.meta.name });
+                                        if (!command.meta.slash.description) Object.assign(command.meta.slash, { description: command.meta.description });
 
-                                    if (this.client.config.isDev) {
-                                        for (const guild of this.client.config.devGuild) {
-                                            const g = await this.client.guilds.fetch({ guild });
-                                            await g.commands.create(command.meta.slash as ApplicationCommandData)
-                                                .catch(() => this.client.logger.info(`Missing access on ${guild} [SLASH_COMMAND]`));
-                                            this.client.logger.info(`Registered ${command.meta.name} to slash command for ${guild}`);
+                                        if (this.client.config.isDev) {
+                                            for (const guild of this.client.config.devGuild) {
+                                                const g = await this.client.guilds.fetch({ guild });
+                                                await g.commands.create(command.meta.slash as ApplicationCommandData)
+                                                    .catch(() => this.client.logger.info(`Missing access on ${guild} [SLASH_COMMAND]`));
+                                                this.client.logger.info(`Registered ${command.meta.name} to slash command for ${guild}`);
+                                            }
+                                        } else {
+                                            await this.client.application!.commands.create(command.meta.slash as ApplicationCommandData);
+                                            this.client.logger.info(`Registered ${command.meta.name} to slash command for global.`);
                                         }
-                                    } else {
-                                        await this.client.application!.commands.create(command.meta.slash as ApplicationCommandData);
-                                        this.client.logger.info(`Registered ${command.meta.name} to slash command for global.`);
                                     }
+                                    this.client.logger.info(`Command ${command.meta.name} from ${category} category is now loaded.`);
+                                    if (command.meta.disable) disabledCount++;
+                                } catch (err) {
+                                    this.client.logger.error(`Error occured while loading ${file}: ${(err as Error).message}`);
                                 }
-                                this.client.logger.info(`Command ${command.meta.name} from ${category} category is now loaded.`);
-                                if (command.meta.disable) disabledCount++;
                             }
                             return { disabledCount, files };
                         })
