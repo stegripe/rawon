@@ -42,13 +42,13 @@ export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
 export const djRoleName = process.env.DJ_ROLE_NAME! || "DJ";
 export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
-export const lang = process.env.LOCALE! || "enUS";
+export const lang = process.env.LOCALE?.toLowerCase() as string || "en";
 
 i18n.configure({
-    defaultLocale: "enUS",
+    defaultLocale: "en",
     directory: join(process.cwd(), "lang"),
     locales: [
-        "enUS",
+        "en",
         "es",
         "id"
     ],
