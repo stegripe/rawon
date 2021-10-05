@@ -1,28 +1,33 @@
+import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import { CommandManager } from "../utils/CommandManager";
 import { EventsLoader } from "../utils/EventsLoader";
+import { ClientUtils } from "../utils/ClientUtils";
 import { createLogger } from "../utils/Logger";
-import { YouTube } from "../utils/YouTube";
-import { Util } from "../utils/Util";
+import { formatMS } from "../utils/formatMS";
 import * as config from "../config";
-import { Client as BotClient, ClientOptions } from "discord.js";
+import { Client, ClientOptions } from "discord.js";
 import { resolve } from "path";
+import got from "got";
 
-// Extends DiscordJS Structures
-import "./Guild";
-
-export class Disc extends BotClient {
+export class Disc extends Client {
     public readonly config = config;
-    public readonly logger = createLogger("main", config.debug);
-    public readonly youtube = new YouTube(config.YouTubeDataRetrievingStrategy, process.env.SECRET_YT_API_KEY);
+    public readonly logger = createLogger("bot", this.config.isProd);
+    public readonly request = got;
     public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
-    public readonly util: Util = new Util(this);
+    public readonly soundcloud = soundcloud;
+    public readonly utils = new ClientUtils(this);
+
     public constructor(opt: ClientOptions) { super(opt); }
 
-    public async build(token: string): Promise<this> {
-        this.on("ready", () => this.commands.load());
-        this.events.load().catch(e => this.logger.error("EVENTS_LOADER_ERR:", e));
-        await this.login(token);
+    public async build(): Promise<this> {
+        const start = Date.now();
+        this.events.load();
+        this.on("ready", async () => {
+            await this.commands.load();
+            this.logger.info(`Ready took ${formatMS(Date.now() - start)}`);
+        });
+        await this.login();
         return this;
     }
 }
