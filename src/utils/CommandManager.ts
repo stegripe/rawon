@@ -19,25 +19,33 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                 this.client.logger.info(`Found ${categories.length} categories, registering...`);
                 for (const category of categories) {
                     const meta = await import(resolve(this.path, category, "category.meta.json"));
+
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);
+
                     await fs.readdir(resolve(this.path, category))
                         .then(files => files.filter(f => f !== "category.meta.json"))
                         .then(async files => {
                             let disabledCount = 0;
+
                             this.client.logger.info(`Found ${files.length} of commands in ${category}, loading...`);
                             const allCmd = await this.client.application!.commands.fetch();
+
                             for (const file of files) {
                                 const path = resolve(this.path, category, file);
+
                                 const command = await this.import(path, this.client, { category, path });
                                 if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
+
                                 command.meta = Object.assign(command.meta, { path, category });
                                 if (Number(command.meta.aliases?.length) > 0) command.meta.aliases?.forEach(alias => this.aliases.set(alias, command.meta.name));
                                 this.set(command.meta.name, command);
+
                                 if (command.meta.contextChat) {
                                     if (this.client.config.isDev) {
                                         for (const guild of this.client.config.devGuild) {
                                             const g = await this.client.guilds.fetch({ guild });
+
                                             await g.commands.create({
                                                 name: command.meta.contextChat,
                                                 type: "MESSAGE"
@@ -57,6 +65,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                     if (this.client.config.isDev) {
                                         for (const guild of this.client.config.devGuild) {
                                             const g = await this.client.guilds.fetch({ guild });
+
                                             await g.commands.create({
                                                 name: command.meta.contextUser,
                                                 type: "USER"
@@ -75,6 +84,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                 if (!allCmd.has(command.meta.name) && command.meta.slash) {
                                     if (!command.meta.slash.name) Object.assign(command.meta.slash, { name: command.meta.name });
                                     if (!command.meta.slash.description) Object.assign(command.meta.slash, { description: command.meta.description });
+
                                     if (this.client.config.isDev) {
                                         for (const guild of this.client.config.devGuild) {
                                             const g = await this.client.guilds.fetch({ guild });
