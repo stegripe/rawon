@@ -27,7 +27,7 @@ export class ReadyEvent extends BaseEvent {
         const activity = this.client.config.presenceData.activities.map(a => Object.assign(a, { name: this.formatString(a.name) }))[activityNumber];
 
         return this.client.user!.setPresence({
-            activities: [activity],
+            activities: (activity as { name: string }|undefined) ? [activity] : [],
             status: this.client.config.presenceData.status[statusNumber]
         });
     }
