@@ -34,7 +34,7 @@ export class ClientUtils {
         let arr: string[] = [];
 
         if (this.client.shard) {
-            const shardUsers = await this.client.shard.broadcastEval(c => [...c.users.cache.values()].map(x => x.id));
+            const shardUsers = await this.client.shard.broadcastEval(c => c.users.cache.map(x => x.id));
 
             for (const users of shardUsers) {
                 arr = arr.concat(users);
