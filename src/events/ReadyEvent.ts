@@ -40,10 +40,10 @@ export class ReadyEvent extends BaseEvent {
             .replace(/{username}/g, this.client.user?.username as string);
     }
 
-    private setPresence(random: boolean): Presence {
+    private async setPresence(random: boolean): Promise<Presence> {
         const activityNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.activities.length) : 0;
         const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
-        const activity = this.client.config.presenceData.activities.map(a => Object.assign(a, { name: this.formatString(a.name) }))[activityNumber];
+        const activity = (await Promise.all(this.client.config.presenceData.activities.map(async a => Object.assign(a, { name: await this.formatString(a.name) }))))[activityNumber];
 
         return this.client.user!.setPresence({
             activities: (activity as { name: string }|undefined) ? [activity] : [],
