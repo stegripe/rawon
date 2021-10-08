@@ -12,13 +12,32 @@ export class ReadyEvent extends BaseEvent {
         "{textChannels.size} text channels and {voiceChannels.size} voice channels!"));
     }
 
-    private formatString(text: string): string {
-        return text
-            .replace(/{users.size}/g, (this.client.users.cache.size - 1).toString())
-            .replace(/{textChannels.size}/g, this.client.channels.cache.filter(ch => ch.type === "GUILD_TEXT").size.toString())
-            .replace(/{guilds.size}/g, this.client.guilds.cache.size.toString())
-            .replace(/{username}/g, this.client.user?.username as string)
-            .replace(/{voiceChannels.size}/g, this.client.channels.cache.filter(ch => ch.type === "GUILD_VOICE").size.toString());
+    private async formatString(text: string): Promise<string> {
+        let newText = text;
+
+        if (text.includes("{users.size}")) {
+            const users = await this.client.utils.getUserCount();
+
+            newText = newText.replace(/{users.size}/g, users.toString());
+        }
+        if (text.includes("{textChannels.size}")) {
+            const textChannels = await this.client.utils.getChannelCount(true);
+
+            newText = newText.replace(/{textChannels.size}/g, textChannels.toString());
+        }
+        if (text.includes("{guilds.size}")) {
+            const guilds = await this.client.utils.getGuildCount();
+
+            newText = newText.replace(/{guilds.size}/g, guilds.toString());
+        }
+        if (text.includes("{playingCount}")) {
+            const playings = await this.client.utils.getPlayingCount();
+
+            newText = newText.replace(/{playingCount}/g, playings.toString());
+        }
+
+        return newText
+            .replace(/{username}/g, this.client.user?.username as string);
     }
 
     private setPresence(random: boolean): Presence {
