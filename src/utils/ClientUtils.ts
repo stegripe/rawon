@@ -87,4 +87,14 @@ export class ClientUtils {
 
         return arr.filter((x, i) => arr.indexOf(x) === i).length;
     }
+
+    public async getPlayingCount(): Promise<number> {
+        if (this.client.shard) {
+            const playings = await this.client.shard.broadcastEval(c => c.guilds.cache.filter(x => x.queue?.playing === true).size);
+
+            return playings.reduce((prev, curr) => prev + curr);
+        }
+
+        return this.client.guilds.cache.filter(x => x.queue?.playing === true).size;
+    }
 }
