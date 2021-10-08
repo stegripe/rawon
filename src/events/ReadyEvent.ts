@@ -15,20 +15,20 @@ export class ReadyEvent extends BaseEvent {
     private async formatString(text: string): Promise<string> {
         let newText = text;
 
-        if (text.includes("{users.size}")) {
+        if (text.includes("{userCount}")) {
             const users = await this.client.utils.getUserCount();
 
-            newText = newText.replace(/{users.size}/g, users.toString());
+            newText = newText.replace(/{userCount}/g, users.toString());
         }
-        if (text.includes("{textChannels.size}")) {
+        if (text.includes("{textChannelsCount}")) {
             const textChannels = await this.client.utils.getChannelCount(true);
 
-            newText = newText.replace(/{textChannels.size}/g, textChannels.toString());
+            newText = newText.replace(/{textChannelsCount}/g, textChannels.toString());
         }
-        if (text.includes("{guilds.size}")) {
+        if (text.includes("{serverCount}")) {
             const guilds = await this.client.utils.getGuildCount();
 
-            newText = newText.replace(/{guilds.size}/g, guilds.toString());
+            newText = newText.replace(/{serverCount}/g, guilds.toString());
         }
         if (text.includes("{playingCount}")) {
             const playings = await this.client.utils.getPlayingCount();
