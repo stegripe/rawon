@@ -40,6 +40,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         if (member?.id === botID && oldID === queueVC.id && newID !== queueVC.id && newID !== undefined) {
             if (!newVCMembers) return;
+            queue.skipVoters = [];
             if (oldVC?.rtcRegion !== newVC?.rtcRegion) {
                 const msg = await queue.textChannel.send({ embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.reconfigureConnection"))] });
                 queue.connection?.configureNetworking();
