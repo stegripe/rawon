@@ -12,19 +12,38 @@ export class ReadyEvent extends BaseEvent {
         "{textChannels.size} text channels and {voiceChannels.size} voice channels!"));
     }
 
-    private formatString(text: string): string {
-        return text
-            .replace(/{users.size}/g, (this.client.users.cache.size - 1).toString())
-            .replace(/{textChannels.size}/g, this.client.channels.cache.filter(ch => ch.type === "GUILD_TEXT").size.toString())
-            .replace(/{guilds.size}/g, this.client.guilds.cache.size.toString())
-            .replace(/{username}/g, this.client.user?.username as string)
-            .replace(/{voiceChannels.size}/g, this.client.channels.cache.filter(ch => ch.type === "GUILD_VOICE").size.toString());
+    private async formatString(text: string): Promise<string> {
+        let newText = text;
+
+        if (text.includes("{userCount}")) {
+            const users = await this.client.utils.getUserCount();
+
+            newText = newText.replace(/{userCount}/g, users.toString());
+        }
+        if (text.includes("{textChannelsCount}")) {
+            const textChannels = await this.client.utils.getChannelCount(true);
+
+            newText = newText.replace(/{textChannelsCount}/g, textChannels.toString());
+        }
+        if (text.includes("{serverCount}")) {
+            const guilds = await this.client.utils.getGuildCount();
+
+            newText = newText.replace(/{serverCount}/g, guilds.toString());
+        }
+        if (text.includes("{playingCount}")) {
+            const playings = await this.client.utils.getPlayingCount();
+
+            newText = newText.replace(/{playingCount}/g, playings.toString());
+        }
+
+        return newText
+            .replace(/{username}/g, this.client.user?.username as string);
     }
 
-    private setPresence(random: boolean): Presence {
+    private async setPresence(random: boolean): Promise<Presence> {
         const activityNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.activities.length) : 0;
         const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
-        const activity = this.client.config.presenceData.activities.map(a => Object.assign(a, { name: this.formatString(a.name) }))[activityNumber];
+        const activity = (await Promise.all(this.client.config.presenceData.activities.map(async a => Object.assign(a, { name: await this.formatString(a.name) }))))[activityNumber];
 
         return this.client.user!.setPresence({
             activities: (activity as { name: string }|undefined) ? [activity] : [],
