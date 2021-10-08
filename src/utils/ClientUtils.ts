@@ -29,4 +29,20 @@ export class ClientUtils {
     public decode(string: string): string {
         return Buffer.from(string, "base64").toString("ascii");
     }
+
+    public async getUserCount(): Promise<number> {
+        let arr: string[] = [];
+
+        if (this.client.shard) {
+            const shardUsers = await this.client.shard.broadcastEval(c => [...c.users.cache.values()].map(x => x.id));
+
+            for (const users of shardUsers) {
+                arr = arr.concat(users);
+            }
+        } else {
+            arr = this.client.users.cache.map(x => x.id);
+        }
+
+        return arr.filter((x, i) => arr.indexOf(x) === i).length;
+    }
 }
