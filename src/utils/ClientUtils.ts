@@ -71,4 +71,20 @@ export class ClientUtils {
 
         return arr.filter((x, i) => arr.indexOf(x) === i).length;
     }
+
+    public async getGuildCount(): Promise<number> {
+        let arr: string[] = [];
+
+        if (this.client.shard) {
+            const shardGuilds = await this.client.shard.broadcastEval(c => c.guilds.cache.map(x => x.id));
+
+            for (const guilds of shardGuilds) {
+                arr = arr.concat(guilds);
+            }
+        } else {
+            arr = this.client.guilds.cache.map(x => x.id);
+        }
+
+        return arr.filter((x, i) => arr.indexOf(x) === i).length;
+    }
 }
