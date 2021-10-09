@@ -39,7 +39,7 @@
     "youtube-dl-exec": "^1.2.6",
     "youtubei": "^0.0.1-rc.23"
   },
-  "devDependencies": 
+  "devDependencies": {
     "@types/cli-table": "^0.3.0",
     "@types/i18n": "^0.13.1",
     "@types/node": "^16.10.3",
