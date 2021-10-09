@@ -37,6 +37,7 @@ export class ReadyEvent extends BaseEvent {
         }
 
         return newText
+            .replace(/{prefix}/g, this.client.config.prefix)
             .replace(/{username}/g, this.client.user?.username as string);
     }
 
