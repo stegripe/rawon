@@ -1,4 +1,4 @@
-import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
+import { handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
@@ -51,19 +51,14 @@ export class PlayCommand extends BaseCommand {
         }
 
         const url = query.replace(/<(.+)>/g, "$1");
-        const checkRes = checkQuery(url);
 
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
             return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.music.play.alreadyPlaying", { voiceChannel: ctx.guild.channels.cache.get(ctx.guild.queue.connection?.joinConfig.channelId as string)?.name ?? "#unknown-channel" }))] });
-        }
-        if (!checkRes.isURL) {
-            const newCtx = new CommandContext(ctx.context, [query]);
-            return this.client.commands.get("search")!.execute(newCtx);
         }
 
         const songs = await searchTrack(this.client, url).catch(() => undefined);
         if (!songs || (songs.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)] });
 
-        return handleVideos(this.client, ctx, songs.items, voiceChannel);
+        return handleVideos(this.client, ctx, [songs.items[0]], voiceChannel);
     }
 }
