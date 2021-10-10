@@ -25,6 +25,7 @@ export class CommandContext {
         const rep = await this.send(options, this.isInteraction() ? ((context as Interaction).isCommand() ? ((context as CommandInteraction).replied ? "editReply" : "reply") : "reply") : "reply").catch(e => ({ error: e }));
         if (!rep || "error" in rep) throw new Error(`Unable to reply context, because: ${rep ? (rep.error as Error).message : "Unknown"}`);
 
+        // @ts-expect-error-next-line
         return (rep instanceof Message ? rep : new Message(this.context.client, rep));
     }
 

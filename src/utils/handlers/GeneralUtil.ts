@@ -9,7 +9,7 @@ import { Disc } from "../../structures/Disc";
 import { youtube } from "./YouTubeUtil";
 import { chunk } from "../chunk";
 import i18n from "../../config";
-import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
+import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, DiscordGatewayAdapterCreator, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
 import { Guild, Message, Util, VoiceChannel, StageChannel } from "discord.js";
 import { Video, SearchResult } from "youtubei";
 import { decodeHTML } from "entities";
@@ -269,7 +269,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
     try {
         const connection = joinVoiceChannel({
-            adapterCreator: ctx.guild!.voiceAdapterCreator,
+            adapterCreator: ctx.guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,
             channelId: voiceChannel.id,
             guildId: ctx.guild!.id,
             selfDeaf: true

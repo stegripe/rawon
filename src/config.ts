@@ -60,7 +60,7 @@ i18n.setLocale(lang);
 export const presenceData: IpresenceData = {
     activities: (JSON.parse(process.env.ACTIVITIES! || "[]") as string[]).map((x, i) => ({
         name: x,
-        type: ((JSON.parse(process.env.ACTIVITY_TYPES! || "[]") as string[])[i]?.toUpperCase() || "PLAYING") as ActivityType
+        type: ((JSON.parse(process.env.ACTIVITY_TYPES! || "[]") as string[])[i]?.toUpperCase() || "PLAYING") as Exclude<ActivityType, "CUSTOM">
     })),
     status: ["online"] as ClientPresenceStatus[],
     interval: 60000

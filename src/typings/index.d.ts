@@ -34,7 +34,7 @@ export interface SlashOption {
 }
 
 export interface IpresenceData {
-    activities: { name: string; type: ActivityType }[];
+    activities: { name: string; type: Exclude<ActivityType, "CUSTOM"> }[];
     status: ClientPresenceStatus[];
     interval: number;
 }
