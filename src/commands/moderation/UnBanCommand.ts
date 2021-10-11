@@ -40,8 +40,8 @@ export class UnBanCommand extends BaseCommand {
 
         const unban = await ctx.guild.bans.remove(user.id, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : i18n.__("commands.moderation.common.noReasonString")))
             .catch(err => new Error(err));
-        if (unban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.ban.unbanFail", { message: unban.message }))] });
+        if (unban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.unban.unbanFail", { message: unban.message }))] });
 
-        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.ban.ubanSuccess", { user: user.tag }), true)] });
+        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.unban.ubanSuccess", { user: user.tag }), true)] });
     }
 }
