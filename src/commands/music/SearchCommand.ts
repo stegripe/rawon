@@ -80,37 +80,7 @@ export class SearchCommand extends BaseCommand {
 
         const tracks = await searchTrack(this.client, query, source as "youtube" | "soundcloud").catch(() => undefined);
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noTracks"), true)] });
-        if (this.client.config.musicSelectionType === "message") {
-            const msg = await ctx.send({
-                embeds: [
-                    createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(decodeHTML(x.title))}`).join("\n")}\`\`\``)
-                        .setAuthor(i18n.__("commands.music.search.trackSelectionMessage"), this.client.user?.displayAvatarURL())
-                        .setFooter(i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }))
-                ]
-            });
-            const respond = await msg.channel.awaitMessages({
-                errors: ["time"],
-                filter: m => {
-                    const nums = m.content.split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length);
-
-                    return (m.author.id === ctx.author.id) && (["c", "cancel"].includes(m.content.toLowerCase()) || (nums.length >= 1));
-                },
-                max: 1
-            }).catch(() => undefined);
-            if (!respond) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"))] });
-            if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))] });
-
-            msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
-            respond.first()?.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_NUM_DELETE_MSG_ERR:", err));
-
-            const songs = respond.first()!.content
-                .split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
-                .sort((a, b) => Number(a) - Number(b));
-            const newCtx = new CommandContext(ctx.context, []);
-            newCtx.additionalArgs.set("values", [await Promise.all(songs.map(x => tracks.items[Number(x) - 1].url))]);
-            newCtx.additionalArgs.set("fromSearch", true);
-            this.client.commands.get("play")!.execute(newCtx);
-        } else {
+        if (this.client.config.musicSelectionType === "selectmenu") {
             return ctx.send({
                 content: i18n.__("commands.music.search.interactionContent"),
                 components: [
@@ -126,6 +96,36 @@ export class SearchCommand extends BaseCommand {
                 ]
             });
         }
+
+        const msg = await ctx.send({
+            embeds: [
+                createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(decodeHTML(x.title))}`).join("\n")}\`\`\``)
+                    .setAuthor(i18n.__("commands.music.search.trackSelectionMessage"), this.client.user?.displayAvatarURL())
+                    .setFooter(i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }))
+            ]
+        });
+        const respond = await msg.channel.awaitMessages({
+            errors: ["time"],
+            filter: m => {
+                const nums = m.content.split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length);
+
+                return (m.author.id === ctx.author.id) && (["c", "cancel"].includes(m.content.toLowerCase()) || (nums.length >= 1));
+            },
+            max: 1
+        }).catch(() => undefined);
+        if (!respond) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"))] });
+        if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))] });
+
+        msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
+        respond.first()?.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_NUM_DELETE_MSG_ERR:", err));
+
+        const songs = respond.first()!.content
+            .split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
+            .sort((a, b) => Number(a) - Number(b));
+        const newCtx = new CommandContext(ctx.context, []);
+        newCtx.additionalArgs.set("values", [await Promise.all(songs.map(x => tracks.items[Number(x) - 1].url))]);
+        newCtx.additionalArgs.set("fromSearch", true);
+        this.client.commands.get("play")!.execute(newCtx);
     }
 
     private generateSelectMenu(tracks: ISong[]): MessageSelectOptionData[] {
