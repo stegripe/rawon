@@ -19,6 +19,42 @@ const isReplit = (
     process.env.REPL_PUBKEYS !== undefined &&
     process.env.REPL_SLUG !== undefined)
 
+const isGitHub = (
+    process.env.GITHUB_ENV !== undefined &&
+    process.env.GITHUB_EVENT_PATH !== undefined &&
+    process.env.GITHUB_REPOSITORY_OWNER !== undefined &&
+    process.env.GITHUB_RETENTION_DAYS !== undefined &&
+    process.env.GITHUB_HEAD_REF !== undefined &&
+    process.env.GITHUB_GRAPHQL_URL !== undefined &&
+    process.env.GITHUB_API_URL !== undefined &&
+    process.env.GITHUB_WORKFLOW !== undefined &&
+    process.env.GITHUB_RUN_ID !== undefined &&
+    process.env.GITHUB_BASE_REF !== undefined &&
+    process.env.GITHUB_ACTION_REPOSITORY !== undefined &&
+    process.env.GITHUB_ACTION !== undefined &&
+    process.env.GITHUB_RUN_NUMBER !== undefined &&
+    process.env.GITHUB_REPOSITORY !== undefined &&
+    process.env.GITHUB_ACTION_REF !== undefined &&
+    process.env.GITHUB_ACTIONS !== undefined &&
+    process.env.GITHUB_WORKSPACE !== undefined &&
+    process.env.GITHUB_JOB !== undefined &&
+    process.env.GITHUB_SHA !== undefined &&
+    process.env.GITHUB_RUN_ATTEMPT !== undefined &&
+    process.env.GITHUB_REF !== undefined &&
+    process.env.GITHUB_ACTOR !== undefined &&
+    process.env.GITHUB_PATH !== undefined &&
+    process.env.GITHUB_EVENT_NAME !== undefined &&
+    process.env.GITHUB_SERVER_URL !== undefined
+)
+
+if (isReplit) {
+    console.warn("[WARN] We haven't added stable support for running this bot using Repl. Bugs and errors may come up");
+}
+
+if (isGitHub) {
+    console.warn("[WARN] Running this bot using GitHub is not recommended.");
+}
+
 if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
     console.info("[INFO] This repl doesn't use Node.js v16 or newer, trying to install Node.js v16...");
     execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
