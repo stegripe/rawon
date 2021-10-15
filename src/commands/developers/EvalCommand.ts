@@ -25,7 +25,7 @@ export class EvalCommand extends BaseCommand {
             .addField("Input", `\`\`\`js\n${ctx.args.join(" ")}\`\`\``);
 
         try {
-            let code = ctx.args.slice(0).join(" ");
+            let code = ctx.args.join(" ");
             if (!code) return ctx.send({ embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)] });
             let evaled;
             if (code.includes("--silent") && code.includes("--async")) {
