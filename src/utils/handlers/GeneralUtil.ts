@@ -164,7 +164,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             const tracks = await Promise.all(searchRes.map((track): ISong => ({
                 duration: track.duration === null ? 0 : track.duration,
                 id: track.id,
-                thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
+                thumbnail: track.thumbnails!.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                 title: track.title,
                 url: `https://youtube.com/watch?v=${track.id}`
             })));
