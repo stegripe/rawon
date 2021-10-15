@@ -13,19 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [">=14.x"]
+        node-version: [">=16.6.0 <17.x"]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2.3.4
   
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.4.0
+      uses: actions/setup-node@v2.4.1
       with:
         node-version: ${{ matrix.node-version }}
         check-latest: true
         
     - name: Install dependencies
-      run: npm i
+      run: npm ci
 
     - name: Lint code
       run: npm run lint
@@ -35,19 +35,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [">=14.x"]
+        node-version: [">=16.6.0 <17.x"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2.3.4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.4.0
+        uses: actions/setup-node@v2.4.1
         with:
           node-version: ${{ matrix.node-version }}
           check-latest: true
         
       - name: Install dependencies
-        run: npm i
+        run: npm ci
       
       - name: Test compile
         run: npm run compile && rm -rf dist
