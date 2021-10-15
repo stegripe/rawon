@@ -51,7 +51,7 @@
     "typescript": "^4.4.4"
   },
   "optionalDependencies": {
-    "bufferutil": "^4.0.3",
+    "bufferutil": "^4.0.5",
     "libsodium-wrappers": "^0.7.9",
     "utf-8-validate": "^5.0.6",
     "zlib-sync": "^0.1.7"
