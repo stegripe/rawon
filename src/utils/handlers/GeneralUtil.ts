@@ -326,7 +326,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
         if (guild.channels.cache.get(queue!.connection!.joinConfig.channelId!)?.type === "GUILD_STAGE_VOICE") {
             const suppressed = await guild.me?.voice.setSuppressed(false).catch(err => ({ error: err }));
             if (suppressed && ("error" in suppressed)) {
-                queue?.player?.emit("error", new AudioPlayerError(suppressed.error, resource));
+                queue?.player?.emit("error", new AudioPlayerError(suppressed.error as Error, resource));
                 return;
             }
         }

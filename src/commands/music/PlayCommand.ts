@@ -36,7 +36,7 @@ export class PlayCommand extends BaseCommand {
             const tracks = ctx.additionalArgs.get("values");
             const toQueue: ISong[] = [];
             for (const track of tracks) {
-                const song = await searchTrack(this.client, track).catch(() => null);
+                const song = await searchTrack(this.client, track as string).catch(() => null);
                 if (!song) continue;
                 toQueue.push(song.items[0]);
             }

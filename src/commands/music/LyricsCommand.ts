@@ -61,7 +61,7 @@ export class LyricsCommand extends BaseCommand {
                     lyrics = lyrics.replace(lyrics.substring(0, 2048), "");
                 }
                 const pages: string[] = await Promise.all(lyricsArr);
-                const embed = createEmbed("info", pages[0]).setAuthor(data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase()).setThumbnail(albumArt);
+                const embed = createEmbed("info", pages[0]).setAuthor(data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase()).setThumbnail(albumArt as string);
                 const msg = await ctx.reply({ embeds: [embed] });
                 return (new ButtonPagination(msg, {
                     author: ctx.author.id,

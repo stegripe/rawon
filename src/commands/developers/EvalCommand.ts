@@ -64,7 +64,7 @@ export class EvalCommand extends BaseCommand {
                 embeds: [embed]
             }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         } catch (e) {
-            const error = this.clean(String(e));
+            const error = this.clean(e as string);
             if (error.length > 1024) {
                 const hastebin = await this.hastebin(error);
                 embed.addField(i18n.__("commands.developers.eval.errorString"), `${hastebin}.js`);

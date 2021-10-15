@@ -42,7 +42,7 @@ export class CommandContext {
         }
         if (this.isInteraction() && (this.context as Interaction).isCommand()) {
             (options as InteractionReplyOptions).fetchReply = true;
-            const msg = await (this.context as CommandInteraction)[type](options as any) as Message;
+            const msg = await (this.context as CommandInteraction)[type](options as string|MessagePayload|InteractionReplyOptions) as Message;
             const channel = this.context.channel;
             const res = await channel!.messages.fetch(msg.id).catch(() => null);
             return res ?? msg;
@@ -50,7 +50,7 @@ export class CommandContext {
         if ((options as InteractionReplyOptions).ephemeral) {
             throw new Error("Cannot send ephemeral message in a non-interaction context");
         }
-        return this.context.channel!.send(options as any);
+        return this.context.channel!.send(options as string|MessagePayload|MessageOptions);
     }
 
 
