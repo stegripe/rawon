@@ -1,18 +1,20 @@
-import { embedColor } from "../config";
-import { MessageEmbed } from "discord.js";
+import { embedColor, yesEmoji, noEmoji } from "../config";
+import { ColorResolvable, MessageEmbed } from "discord.js";
 
-type hexColorsType = "info" | "warn" | "error";
+type hexColorsType = "info" | "warn" | "error" | "success";
 const hexColors: Record<hexColorsType, string> = {
+    error: "RED",
     info: embedColor,
-    warn: "#FFFF00",
-    error: "#FF0000"
+    success: "GREEN",
+    warn: "YELLOW"
 };
 
-export function createEmbed(type: hexColorsType, message?: string): MessageEmbed {
+export function createEmbed(type: hexColorsType, message?: string, emoji = false): MessageEmbed {
     const embed = new MessageEmbed()
-        .setColor(hexColors[type]);
+        .setColor(hexColors[type] as ColorResolvable);
 
     if (message) embed.setDescription(message);
-
+    if (type === "error" && emoji) embed.setDescription(`${noEmoji} **|** ${message!}`);
+    if (type === "success" && emoji) embed.setDescription(`${yesEmoji} **|** ${message!}`);
     return embed;
 }

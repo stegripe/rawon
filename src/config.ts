@@ -1,33 +1,69 @@
-import { ActivityType } from "discord.js";
+import { IpresenceData } from "./typings";
+import { ActivityType, ClientOptions, ClientPresenceStatus, Intents, LimitedCollection, Options, ShardingManagerMode } from "discord.js";
+import { join } from "path";
+import i18n from "i18n";
 
-// NOTE: Remove this when V5 is released. ///////////////////////////////////////////////////////////
-if (!process.env.SECRET_DISCORD_TOKEN) process.env.SECRET_DISCORD_TOKEN = process.env.DISCORD_TOKEN;
-if (!process.env.SECRET_YT_API_KEY) process.env.SECRET_YT_API_KEY = process.env.YT_API_KEY;
-// //////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const prefix = process.env.CONFIG_PREFIX?.replace(/"/g, "") ?? "!"; // Temporary workaround for https://github.com/docker/compose/issues/6951
-export const embedColor = process.env.CONFIG_EMBED_COLOR?.toUpperCase() ?? "7289DA";
-export const status = {
-    type: process.env.CONFIG_STATUS_TYPE?.toUpperCase() as ActivityType | null ?? "LISTENING",
-    activity: process.env.CONFIG_STATUS_ACTIVITY ?? "music on {guildsCount} guilds"
+export const clientOptions: ClientOptions = {
+    allowedMentions: { parse: ["users"], repliedUser: true },
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_BANS],
+    makeCache: Options.cacheWithLimits({
+        MessageManager: {
+            maxSize: Infinity,
+            sweepInterval: 300,
+            sweepFilter: LimitedCollection.filterByLifetime({
+                lifetime: 10800
+            })
+        },
+        ThreadManager: {
+            maxSize: Infinity,
+            sweepInterval: 300,
+            sweepFilter: LimitedCollection.filterByLifetime({
+                lifetime: 10800,
+                getComparisonTimestamp: e => e.archiveTimestamp!,
+                excludeFromSweep: e => !e.archived
+            })
+        }
+    }),
+    retryLimit: 3
 };
-export const owners: string[] = process.env.CONFIG_OWNERS?.replace(/  +/g, " ").split(/,[ ]?/) ?? [];
-export const YouTubeDataRetrievingStrategy = process.env.CONFIG_YOUTUBE_DATA_STRATEGY?.toLowerCase() as ("scrape" | "api" | undefined) ?? "scrape";
-export const disableInviteCmd = process.env.CONFIG_DISABLE_INVITE_CMD?.toLowerCase() === "yes";
-export const defaultVolume = Number(process.env.CONFIG_DEFAULT_VOLUME) || 50;
-export const maxVolume = Number(process.env.CONFIG_MAX_VOLUME) || 100;
-export const disableSongSelection = process.env.CONFIG_DISABLE_SONG_SELECTION?.toLowerCase() === "yes";
-export const searchMaxResults = Number(process.env.CONFIG_SEARCH_MAX_RESULTS) || 10;
-export const selectTimeout = Number(process.env.CONFIG_SELECT_TIMEOUT) * 1000 || 20 * 1000;
-export const allowDuplicate: boolean = process.env.CONFIG_ALLOW_DUPLICATE?.toLowerCase() === "yes";
-export const cacheYoutubeDownloads: boolean = process.env.CONFIG_CACHE_YOUTUBE_DOWNLOADS?.toLowerCase() === "yes";
-export const cacheMaxLengthAllowed = Number(process.env.CONFIG_CACHE_MAX_LENGTH) || 5400;
-export const deleteQueueTimeout = Number(process.env.CONFIG_DELETE_QUEUE_TIMEOUT) * 1000 || 180 * 1000;
-export const totalShards: string | number = process.env.CONFIG_TOTALSHARDS?.toLowerCase() ?? "auto";
-export const fetchAllUsers = process.env.CONFIG_FETCH_ALL_USERS?.toLowerCase() === "yes";
-export const debug = process.env.CONFIG_DEBUG?.toLowerCase() === "yes";
+export const shardsCount: number | "auto" = "auto";
+export const shardingMode: ShardingManagerMode = "worker";
+export const defaultPrefix = process.env.PREFIX?.replace(/"/g, "") ?? "!";
+export const embedColor = process.env.EMBED_COLOR?.toUpperCase() as string || "3CAAFF";
+export const owners: string[] = JSON.parse(process.env.OWNERS ?? "[]");
+export const devGuild = JSON.parse(process.env.DEV_GUILD ?? "[]");
+export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
+export const isProd = !isDev;
+export const prefix = isDev ? "d!" : defaultPrefix;
+export const musicSelectionType = process.env.MUSIC_SELECTION_TYPE?.toLowerCase() as string || "message";
+export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
+export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
+export const yesEmoji = process.env.YES_EMOJI! || "✅";
+export const noEmoji = process.env.NO_EMOJI! || "❌";
+export const djRoleName = process.env.DJ_ROLE_NAME! || "DJ";
+export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
+export const lang = process.env.LOCALE?.toLowerCase() as string || "en";
 
-if (searchMaxResults < 1) throw new Error("CONFIG_SEARCH_MAX_RESULTS cannot be smaller than 1");
-if (searchMaxResults > 10) throw new Error("CONFIG_SEARCH_MAX_RESULTS cannot be higher than 10");
-if (totalShards !== "auto" && isNaN(totalShards as unknown as number)) throw new Error("CONFIG_TOTALSHARDS must be a number or \"auto\"");
-if (!["scrape", "api"].includes(YouTubeDataRetrievingStrategy)) throw new Error("CONFIG_YOUTUBE_DATA_STRATEGY must be scrape or api");
+i18n.configure({
+    defaultLocale: "en",
+    directory: join(process.cwd(), "lang"),
+    locales: [
+        "en",
+        "es",
+        "id"
+    ],
+    objectNotation: true
+});
+
+i18n.setLocale(lang);
+
+export const presenceData: IpresenceData = {
+    activities: (JSON.parse(process.env.ACTIVITIES! || "[]") as string[]).map((x, i) => ({
+        name: x,
+        type: ((JSON.parse(process.env.ACTIVITY_TYPES! || "[]") as string[])[i]?.toUpperCase() || "PLAYING") as Exclude<ActivityType, "CUSTOM">
+    })),
+    status: ["online"] as ClientPresenceStatus[],
+    interval: 60000
+};
+
+export default i18n;
