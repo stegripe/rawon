@@ -43,6 +43,9 @@ jspm_packages/
 # TypeScript cache
 *.tsbuildinfo
 
+# TypeScript build output
+dist/
+
 # Optional npm cache directory
 .npm
 
@@ -66,7 +69,8 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
-.env.test
+.env
+.prod.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -98,6 +102,3 @@ dist
 
 # TernJS port file
 .tern-port
-
-# YTDL Caches
-cache/**
