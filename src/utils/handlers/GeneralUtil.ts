@@ -89,15 +89,14 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     const bDurationDiff = isTrack ? (b.duration ? b.duration - preview.duration_ms : null) : null;
 
                     // 'a' variable check
-                    if (a.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) aValue -= 1;
-                    if (isTrack ? preview.artists?.some(x => a.channel?.name.toLowerCase().includes(x.name)) : a.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) aValue -= 1;
-                    if (isTrack && (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false)) aValue -= 1;
+                    if (a.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) aValue--;
+                    if (isTrack ? preview.artists?.some(x => a.channel?.name.toLowerCase().includes(x.name)) : a.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) aValue--;
+                    if (isTrack && (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false)) aValue--;
 
                     // 'b' variable check
-                    if (b.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) bValue += 1;
-                    if (isTrack ? preview.artists?.some(x => b.channel?.name.toLowerCase().includes(x.name)) : b.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) bValue += 1;
-                    if (isTrack && (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false)) bValue += 1;
-
+                    if (b.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) bValue++;
+                    if (isTrack ? preview.artists?.some(x => b.channel?.name.toLowerCase().includes(x.name)) : b.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) bValue++;
+                    if (isTrack && (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false)) bValue++;
 
                     return aValue + bValue;
                 });
