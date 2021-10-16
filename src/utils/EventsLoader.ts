@@ -1,6 +1,6 @@
 import { Disc } from "../structures/Disc";
 import { IEvent } from "../typings";
-import { parse, resolve } from "path";
+import { resolve } from "path";
 import { promises as fs } from "fs";
 
 export class EventsLoader {
