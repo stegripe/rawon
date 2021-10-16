@@ -1,6 +1,6 @@
 import { lang } from "../config";
 import { formatDuration, intervalToDuration } from "date-fns";
-import locales from "date-fns/locale";
+import * as locales from "date-fns/locale";
 
 export function formatMS(ms: number): string {
     if (isNaN(ms)) throw new Error("value is not a number.");
