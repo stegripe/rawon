@@ -3,7 +3,7 @@ import { ICommandComponent, ICategoryMeta } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
 import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
-import { resolve, parse } from "path";
+import { resolve } from "path";
 import { promises as fs } from "fs";
 
 export class CommandManager extends Collection<string, ICommandComponent> {
