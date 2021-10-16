@@ -83,22 +83,23 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             function sortVideos(preview: Preview | Tracks, videos: SearchResult<"video">): SearchResult<"video"> {
                 return videos.sort((a, b) => {
                     const isTrack = ("artists" in preview);
+                    let aValue = 0;
+                    let bValue = 0;
+                    const aDurationDiff = isTrack ? (a.duration ? a.duration - preview.duration_ms : null) : null;
+                    const bDurationDiff = isTrack ? (b.duration ? b.duration - preview.duration_ms : null) : null;
 
-                    if ([a.title.toLowerCase(), b.title.toLowerCase()].includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) {
-                        if (isTrack) {
-                            if (preview.artists?.some(x => a.channel?.name.toLowerCase().includes(x.name))) {
-                                return -1;
-                            } else if (preview.artists?.some(x => b.channel?.name.toLowerCase().includes(x.name))) {
-                                return 1;
-                            }
-                        } else if (a.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) {
-                            return -1;
-                        } else if (b.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) {
-                            return 1;
-                        }
-                    }
+                    // 'a' variable check
+                    if (a.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) aValue -= 1;
+                    if (isTrack ? preview.artists?.some(x => a.channel?.name.toLowerCase().includes(x.name)) : a.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) aValue -= 1;
+                    if (isTrack && (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false)) aValue -= 1;
 
-                    return 0;
+                    // 'b' variable check
+                    if (b.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) bValue += 1;
+                    if (isTrack ? preview.artists?.some(x => b.channel?.name.toLowerCase().includes(x.name)) : b.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) bValue += 1;
+                    if (isTrack && (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false)) bValue += 1;
+
+
+                    return aValue + bValue;
                 });
             }
 
