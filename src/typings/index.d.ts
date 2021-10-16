@@ -110,5 +110,6 @@ export interface ILyricsAPIResult<E extends boolean> {
     album_art?: E extends true ? null : string;
     lyrics?: E extends true ? null : string;
     url?: E extends true ? null : string;
+    message?: E extends true ? string : never;
     synced: E extends true ? never : boolean|string;
 }
