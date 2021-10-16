@@ -35,7 +35,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                 try {
                                     const path = resolve(this.path, category, file);
 
-                                    const command = await this.import(path, this.client, { category, path });
+                                    const command = await this.client.utils.import<ICommandComponent>(path, this.client, { category, path });
                                     if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
 
                                     command.meta = Object.assign(command.meta, { path, category });
@@ -161,10 +161,5 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                 `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${message.guild!.name} [${message.guild!.id}]`
             );
         }
-    }
-
-    private async import(path: string, ...args: any[]): Promise<ICommandComponent | undefined> {
-        const file = (await import(resolve(path)).then(m => m[parse(path).name]));
-        return file ? new file(...args) : undefined;
     }
 }

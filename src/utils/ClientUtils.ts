@@ -1,5 +1,6 @@
 import { Disc } from "../structures/Disc";
 import { Guild, Role } from "discord.js";
+import { resolve, parse } from "path";
 
 export class ClientUtils {
     public constructor(public readonly client: Disc) {}
@@ -90,5 +91,10 @@ export class ClientUtils {
         }
 
         return this.client.guilds.cache.filter(x => x.queue?.playing === true).size;
+    }
+
+    public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
+        const file = (await import(resolve(path)).then(m => m[parse(path).name]));
+        return file ? new file(...args) : undefined;
     }
 }
