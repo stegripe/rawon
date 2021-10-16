@@ -102,3 +102,13 @@ export interface IQueueSong {
 }
 
 export type LoopMode = "OFF"|"SONG"|"QUEUE";
+
+export interface ILyricsAPIResult<E extends boolean> {
+    error: E;
+    artist?: E extends true ? null : string;
+    song?: E extends true ? null : string;
+    album_art?: E extends true ? null : string;
+    lyrics?: E extends true ? null : string;
+    url?: E extends true ? null : string;
+    synced?: E extends true ? never : boolean|string;
+}
