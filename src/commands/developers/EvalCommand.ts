@@ -5,7 +5,6 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 import { Message } from "discord.js";
-import { request } from "https";
 import { inspect } from "util";
 
 @DefineCommand({
@@ -88,21 +87,11 @@ export class EvalCommand extends BaseCommand {
         return text;
     }
 
-    private hastebin(text: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const req = request({ hostname: "bin.zhycorp.net", path: "/documents", method: "POST", minVersion: "TLSv1.3" }, res => {
-                let raw = "";
-                res.on("data", chunk => raw += chunk);
-                res.on("end", () => {
-                    if (res.statusCode! >= 200 && res.statusCode! < 300) return resolve(`https://bin.zhycorp.net/${JSON.parse(raw).key}`);
-                    return reject(
-                        new Error(`[hastebin] Error while trying to send data to https://bin.zhycorp.net/documents,` +
-                            `${res.statusCode?.toString() as string} ${res.statusMessage?.toString() as string}`)
-                    );
-                });
-            }).on("error", reject);
-            req.write(typeof text === "object" ? JSON.stringify(text, null, 2) : text);
-            req.end();
-        });
+    private async hastebin(text: string): Promise<string> {
+        const result = await this.client.request.post("https://bin.zhycorp.net/documents", {
+            body: text
+        }).json<{ key: string }>();
+
+        return `https://bin.zhycorp.net/${result.key}`;
     }
 }
