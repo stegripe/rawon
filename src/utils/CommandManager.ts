@@ -18,7 +18,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             .then(async categories => {
                 this.client.logger.info(`Found ${categories.length} categories, registering...`);
                 for (const category of categories) {
-                    const meta = await import(resolve(this.path, category, "category.meta.json"));
+                    const meta = await import(resolve(this.path, category, "category.meta.json")) as ICategoryMeta;
 
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);

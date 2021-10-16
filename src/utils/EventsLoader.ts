@@ -13,7 +13,7 @@ export class EventsLoader {
                     const event = await this.import(resolve(this.path, file), this.client);
                     if (event === undefined) throw new Error(`File ${file} is not a valid event file.`);
                     this.client.logger.info(`Events on listener ${event.name.toString()} has been added.`);
-                    this.client.addListener(event.name, (...args) => event.execute(...args));
+                    this.client.on(event.name, (...args) => event.execute(...args));
                 }
             })
             .catch(err => this.client.logger.error("EVENTS_LOADER_ERR:", err))
