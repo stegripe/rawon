@@ -180,8 +180,9 @@
 				"interactionPlaceholder": "Select some music"
 			},
 			"shuffle": {
-				"description": "Shuffle the queue",
-				"shuffleMessage": "Shuffle mode is **`{isShuffle}`**"
+				"description": "Turns mode for shuffle feature",
+				"actualState": "Shuffle mode is **`{state}`**",
+				"newState": "Shuffle mode is now set to **`{state}`**"
 			},
 			"skip": {
 				"description": "Skip the music",
