@@ -15,7 +15,7 @@ import { Video, SearchResult } from "youtubei";
 import { decodeHTML } from "entities";
 import { URL } from "url";
 
-export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "soundcloud"): Promise<SearchTrackResult> {
+export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
         items: []
     };
