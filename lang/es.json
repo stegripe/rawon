@@ -79,6 +79,7 @@
 				"description": "Silencia a alguien en el servidor",
 				"slashMemberDescription": "A quién quisieras silenciar?",
 				"slashReasonDescription": "Razón de silencio",
+				"unableToCreateMuteRole": "No se pudo crear el rol de Silenciado",
 				"usage": "{prefix}mute <@mención | id> [razón]",
 				"userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE ROLES`** para usar este comando.",
 				"botNoPermission": "Lo siento, pero no tengo el permiso **`MANAGE ROLES`**",
@@ -101,6 +102,7 @@
 				"description": "Desilenciar a alguien del servidor",
 				"slashMemberDescription": "A quién quisieras desilenciar?",
 				"slashReasonDescription": "Razón del desilencio",
+				"unableToCreateMuteRole": "No se pudo crear el rol de Silenciado",
 				"usage": "{prefix}unmute <@mención | id> [razón]",
 				"noMuted": "Ese miembro no ha sido **`SILENCIADO`**",
 				"userUnmuted": "Haz sido **`DESILENCIADO`** en **{guildName}**",
@@ -179,7 +181,8 @@
 			},
 			"shuffle": {
 				"description": "Aleatoriza la cola",
-				"shuffleMessage": "El modo aleatorio está **`{isShuffle}`**"
+				"actualState": "El modo aleatorio está **`{state}`**",
+				"newState": "El modo aleatorio se estableció ahora a **`{state}`**"
 			},
 			"skip": {
 				"description": "Salta la canción actual",
@@ -253,6 +256,7 @@
 		},
 		"createMessage": "Hola {author}, mi prefix es **`{prefix}`**",
 		"voiceStateUpdate": {
+			"connectionReconfigured": "La conexión se ha reconfigurado con éxito.",
 			"disconnectFromVCMessage": "Desconectado del canal de voz, la cola ha sido eliminada.",
 			"joiningAsSpeaker": "Movido a un canal de escenario, intentando unirse como Orador...",
 			"unableJoinStageMessage": "No se pudo unir como orador, la cola ha sido eliminada.",
@@ -261,8 +265,10 @@
 			"deleteQueueFooter": "Cola eliminada",
 			"pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola. Si nadie se une al canal de voz en **`{duration}`**, la cola se eliminará.",
 			"pauseQueueFooter": "Cola pausada",
+			"reconfigureConnection": "He sido movido a un canal de voz en una región diferente. Reconfigurando conexión...",
 			"resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando **{song}**",
-			"resumeQueueFooter": "Cola reanudada"
+			"resumeQueueFooter": "Cola reanudada",
+			"unableReconfigureConnection": "No se pudo reconfigurar la conexión, la cola ha sido eliminada."
 		}
 	},
 	"reusable": {
