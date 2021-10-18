@@ -1,24 +1,65 @@
 import { DefineEvent } from "../utils/decorators/DefineEvent";
 import { BaseEvent } from "../structures/BaseEvent";
+import { Presence } from "discord.js";
 
 @DefineEvent("ready")
 export class ReadyEvent extends BaseEvent {
-    public execute(): void {
-        this.client.logger.info(
-            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} I'm ready to serve ${this.client.guilds.cache.size} guilds ` +
-            `with ${this.client.channels.cache.filter(c => c.type === "text").size} text channels and ` +
-            `${this.client.channels.cache.filter(c => c.type === "voice").size} voice channels.`
-        );
-        this.doPresence();
+    public async execute(): Promise<void> {
+        if (this.client.application?.owner) this.client.config.owners.push(this.client.application.owner.id);
+
+        await this.doPresence();
+        this.client.logger.info(this.formatString("{username} is ready to serve {users.size} users on {guilds.size} guilds in " +
+        "{textChannels.size} text channels and {voiceChannels.size} voice channels!"));
     }
 
-    private doPresence(): void {
-        this.client.util.updatePresence()
-            .then(() => this.client.setInterval(() => this.client.util.updatePresence(), 30 * 1000))
-            .catch(e => {
-                if (e.message === "Shards are still being spawned.") return this.doPresence();
-                this.client.logger.error("DO_PRESENCE_ERR:", e);
-            });
-        return undefined;
+    private async formatString(text: string): Promise<string> {
+        let newText = text;
+
+        if (text.includes("{userCount}")) {
+            const users = await this.client.utils.getUserCount();
+
+            newText = newText.replace(/{userCount}/g, users.toString());
+        }
+        if (text.includes("{textChannelsCount}")) {
+            const textChannels = await this.client.utils.getChannelCount(true);
+
+            newText = newText.replace(/{textChannelsCount}/g, textChannels.toString());
+        }
+        if (text.includes("{serverCount}")) {
+            const guilds = await this.client.utils.getGuildCount();
+
+            newText = newText.replace(/{serverCount}/g, guilds.toString());
+        }
+        if (text.includes("{playingCount}")) {
+            const playings = await this.client.utils.getPlayingCount();
+
+            newText = newText.replace(/{playingCount}/g, playings.toString());
+        }
+
+        return newText
+            .replace(/{prefix}/g, this.client.config.prefix)
+            .replace(/{username}/g, this.client.user?.username as string);
+    }
+
+    private async setPresence(random: boolean): Promise<Presence> {
+        const activityNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.activities.length) : 0;
+        const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
+        const activity = (await Promise.all(this.client.config.presenceData.activities.map(async a => Object.assign(a, { name: await this.formatString(a.name) }))))[activityNumber];
+
+        return this.client.user!.setPresence({
+            activities: (activity as { name: string }|undefined) ? [activity] : [],
+            status: this.client.config.presenceData.status[statusNumber]
+        });
+    }
+
+    private async doPresence(): Promise<Presence | undefined> {
+        try {
+            return this.setPresence(false);
+        } catch (e) {
+            if ((e as Error).message !== "Shards are still being spawned.") this.client.logger.error(String(e));
+            return undefined;
+        } finally {
+            setInterval(() => this.setPresence(true), this.client.config.presenceData.interval);
+        }
     }
 }
