@@ -8,7 +8,8 @@ export function getStream(url: string): Promise<Readable> {
             {
                 o: "-",
                 q: "",
-                f: "bestaudio[acodec=opus]/bestaudio"
+                f: "bestaudio[acodec=opus]/bestaudio",
+                r: "100K"
             },
             {
                 stdio: ["ignore", "pipe", "ignore"]
