@@ -67,9 +67,15 @@ if (isGlitch || isReplit) {
         const now = new Date().toLocaleString("en-US");
         res.end(`OK (200) - ${now}`);
     }).listen(Number(process.env.PORT) || 3000);
+
     console.info(`[INFO] ${isGlitch ? "Glitch" : "Repl"} environment detected, trying to compile...`);
+    if (!existsSync(resolve(__dirname, "node_modules", "typescript", "bin", "tsc"))) {
+        console.info("[INFO] It seems TypeScript hasn't been installed. Installing...");
+        execSync("npm i --save-dev typescript");
+        console.info("[INFO] TypeScript installed. Compiling...");
+    }
     execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
-    console.info("[INFO] Compiled, starting the bot...");
+    console.info("[INFO] Compiled.");
 }
 
 (async () => {
@@ -83,5 +89,6 @@ if (isGlitch || isReplit) {
         console.info("[INFO] Yt-dlp downloaded");
     }
 
+    console.info("[INFO] Starting the bot...");
     require("./dist/src/index.js");
 })();
