@@ -10,14 +10,6 @@ import { resolve } from "path";
 import got from "got";
 
 export class Disc extends Client {
-    public readonly config = config;
-    public readonly logger = createLogger("bot", this.config.isProd);
-    public readonly request = got;
-    public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
-    public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
-    public readonly soundcloud = soundcloud;
-    public readonly utils = new ClientUtils(this);
-
     public constructor(opt: ClientOptions) { super(opt); }
 
     public async build(): Promise<this> {
@@ -30,4 +22,12 @@ export class Disc extends Client {
         await this.login();
         return this;
     }
+
+    public readonly config = config;
+    public readonly logger = createLogger("bot", this.config.isProd);
+    public readonly request = got;
+    public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
+    public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
+    public readonly soundcloud = soundcloud;
+    public readonly utils = new ClientUtils(this);
 }
