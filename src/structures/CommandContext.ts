@@ -4,9 +4,6 @@ import { MessageInteractionAction } from "../typings";
 import { ButtonInteraction, Collection, CommandInteraction, CommandInteractionOptionResolver, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannels, User } from "discord.js";
 
 export class CommandContext {
-    public additionalArgs: Collection<string, any> = new Collection();
-    public channel: TextBasedChannels|null = this.context.channel;
-    public guild = this.context.guild;
     public constructor(public readonly context: Interaction|CommandInteraction|SelectMenuInteraction|ContextMenuInteraction|Message, public args: string[] = []) {}
 
     public async deferReply(): Promise<void> {
@@ -53,27 +50,6 @@ export class CommandContext {
         return this.context.channel!.send(options as string|MessagePayload|MessageOptions);
     }
 
-
-    public get mentions(): MessageMentions|null {
-        return this.context instanceof Message ? this.context.mentions : null;
-    }
-
-    public get deferred(): boolean {
-        return this.context instanceof Interaction ? (this.context as CommandInteraction).deferred : false;
-    }
-
-    public get options(): CommandInteractionOptionResolver|null {
-        return this.context instanceof Interaction ? (this.context as CommandInteraction).options : null;
-    }
-
-    public get author(): User {
-        return this.context instanceof Interaction ? this.context.user : this.context.author;
-    }
-
-    public get member(): GuildMember|null {
-        return this.guild!.members.resolve(this.author.id);
-    }
-
     public isInteraction(): boolean {
         return this.isCommand() || this.isContextMenu() || this.isMessageComponent() || this.isButton() || this.isSelectMenu();
     }
@@ -102,5 +78,29 @@ export class CommandContext {
             InteractionTypes[(this.context as Interaction).type] === InteractionTypes.MESSAGE_COMPONENT &&
             MessageComponentTypes[(this.context as SelectMenuInteraction).componentType] === MessageComponentTypes.SELECT_MENU
         );
+    }
+
+    public additionalArgs: Collection<string, any> = new Collection();
+    public channel: TextBasedChannels|null = this.context.channel;
+    public guild = this.context.guild;
+
+    public get mentions(): MessageMentions|null {
+        return this.context instanceof Message ? this.context.mentions : null;
+    }
+
+    public get deferred(): boolean {
+        return this.context instanceof Interaction ? (this.context as CommandInteraction).deferred : false;
+    }
+
+    public get options(): CommandInteractionOptionResolver|null {
+        return this.context instanceof Interaction ? (this.context as CommandInteraction).options : null;
+    }
+
+    public get author(): User {
+        return this.context instanceof Interaction ? this.context.user : this.context.author;
+    }
+
+    public get member(): GuildMember|null {
+        return this.guild!.members.resolve(this.author.id);
     }
 }
