@@ -4,18 +4,6 @@ import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voic
 import { TextBasedChannels, Snowflake } from "discord.js";
 
 export class ServerQueue {
-    public loopMode: LoopMode = "OFF";
-    public shuffle = false;
-    public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
-    public connection: VoiceConnection|null = null;
-    public player: AudioPlayer|null = null;
-    public dcTimeout: NodeJS.Timeout|null = null;
-    public timeout: NodeJS.Timeout|null = null;
-    public readonly songs = new SongManager();
-    private _skipVoters: Snowflake[] = [];
-    private _lastMusicMsg: Snowflake|null = null;
-    private _lastVSUpdateMsg: Snowflake|null = null;
-
     public constructor(public readonly textChannel: TextBasedChannels) {
         Object.defineProperties(this, {
             _skipVoters: {
@@ -29,6 +17,33 @@ export class ServerQueue {
             }
         });
     }
+
+    public stop(): void {
+        this.songs.clear();
+        this.player?.stop(true);
+    }
+
+    public destroy(): void {
+        this.stop();
+        this.connection?.disconnect();
+        clearTimeout(this.timeout!);
+        clearTimeout(this.dcTimeout!);
+        if (this.textChannel.type !== "DM") {
+            delete this.textChannel.guild.queue;
+        }
+    }
+
+    public loopMode: LoopMode = "OFF";
+    public shuffle = false;
+    public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
+    public connection: VoiceConnection|null = null;
+    public player: AudioPlayer|null = null;
+    public dcTimeout: NodeJS.Timeout|null = null;
+    public timeout: NodeJS.Timeout|null = null;
+    public readonly songs = new SongManager();
+    private _skipVoters: Snowflake[] = [];
+    private _lastMusicMsg: Snowflake|null = null;
+    private _lastVSUpdateMsg: Snowflake|null = null;
 
     public set skipVoters(value: Snowflake[]) {
         this._skipVoters = value;
@@ -82,20 +97,5 @@ export class ServerQueue {
 
     public get idle(): boolean {
         return (this.player?.state.status === AudioPlayerStatus.Idle) && (this.songs.size === 0);
-    }
-
-    public stop(): void {
-        this.songs.clear();
-        this.player?.stop(true);
-    }
-
-    public destroy(): void {
-        this.stop();
-        this.connection?.disconnect();
-        clearTimeout(this.timeout!);
-        clearTimeout(this.dcTimeout!);
-        if (this.textChannel.type !== "DM") {
-            delete this.textChannel.guild.queue;
-        }
     }
 }
