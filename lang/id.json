@@ -179,7 +179,8 @@
 			},
 			"shuffle": {
 				"description": "Acak antrian",
-				"shuffleMessage": "Mode acak: **{isShuffle}**"
+				"actualState": "Mode acak: **`{state}`**",
+				"newState": "Mode acak telah diatur ke **`{state}`**"
 			},
 			"skip": {
 				"description": "Lewatkan lagu",
