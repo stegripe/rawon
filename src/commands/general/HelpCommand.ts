@@ -22,13 +22,6 @@ import { Message, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, 
     usage: i18n.__("commands.general.help.usage")
 })
 export class HelpCommand extends BaseCommand {
-    private readonly listEmbed = createEmbed("info")
-        .setAuthor(i18n.__mf("commands.general.help.authorString", { username: this.client.user!.username }), this.client.user?.displayAvatarURL() as string)
-        .setFooter(i18n.__mf("commands.general.help.footerString", { prefix: this.client.config.prefix }), "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
-
-    private readonly infoEmbed = createEmbed("info")
-        .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
-
     public async execute(ctx: CommandContext): Promise<Message|void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         this.infoEmbed.fields = [];
@@ -113,4 +106,11 @@ export class HelpCommand extends BaseCommand {
         ));
         return matching;
     }
+
+    private readonly listEmbed = createEmbed("info")
+        .setAuthor(i18n.__mf("commands.general.help.authorString", { username: this.client.user!.username }), this.client.user?.displayAvatarURL() as string)
+        .setFooter(i18n.__mf("commands.general.help.footerString", { prefix: this.client.config.prefix }), "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+
+    private readonly infoEmbed = createEmbed("info")
+        .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
 }
