@@ -1,6 +1,6 @@
 import Script from "./script";
 import './index.css';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import ReactDOM from 'react-dom';
 
 function Index() {
@@ -12,12 +12,12 @@ function Index() {
 }
 
 const routes = (
-    <BrowserRouter>
+    <HashRouter>
         <Switch>
             <Route exact path="/" component={Index}/>
             <Route path="/script" component={Script}/>
         </Switch>
-    </BrowserRouter>
+    </HashRouter>
 )
 
 ReactDOM.render(routes, document.getElementById('root'));
