@@ -1,0 +1,94 @@
+{
+    "name": "Disc 11",
+    "description": "A dedicated open-source Discord bot for Zhycorp based on our Discord bot template with more features. Easy to use, and with no coding required.",
+    "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/disc-11.png",
+    "env": {
+        "DISCORD_TOKEN": {
+            "description": "What is your Discord bot's token?\nExample: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
+            "required": true
+        },
+        "PREFIX": {
+            "description": "What is the prefix of your bot?\nExample: !",
+            "required": false,
+            "value": "!"
+        },
+        "EMBED_COLOR": {
+            "description": "What is your bot's embed color code? (hex)\nExample: 3CAAFF",
+            "required": false,
+            "value": "3CAAFF"
+        },
+        "LOCALE": {
+            "description": "What is the language of your bot?\nExample: en\nAvailable: en, es, id",
+            "required": false,
+            "value": "en"
+        },
+        "ACTIVITIES": {
+            "description": "Activity list\nExample: [\"Hello!\"]",
+            "required": false,
+            "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} of text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
+        },
+        "ACTIVITY_TYPES": {
+            "description": "Activity type list.\nThe order of this value is the same order as ACTIVITIES.\nFor example, first value of ACTIVITIES will use first value of this\nExample: [\"PLAYING\", \"COMPETING\"]",
+            "required": false,
+            "value": "[\"PLAYING\", \"LISTENING\", \"WATCHING\", \"PLAYING\", \"COMPETING\"]"
+        },
+        "OWNERS": {
+            "description": "What is the owner's ID of the bot?\nExample: [\"319872685897416725\", \"390045370240991234\"]",
+            "required": false,
+            "value": "[\"\"]"
+        },
+        "DEV_GUILD": {
+            "description": "What is your server's ID?\nExample: [\"332877090003091456\"]",
+            "required": false,
+            "value": "[\"\"]"
+        },
+        "NODE_ENV": {
+            "description": "In which mode do you want to activate your bot?\nExample: production\nAvailable: production, development",
+            "required": false,
+            "value": "production"
+        },
+        "MUSIC_SELECTION_TYPE": {
+            "description": "Which music selection type do you want to use?\nExample: selectmenu\nAvailable: message (just like in previous version) or selectmenu (uses discord selection menu)",
+            "required": false,
+            "value": "message"
+        },
+        "ENABLE_24_7_COMMAND": {
+            "description": "Do you want to enable the 24/7 command?\nExample: no",
+            "required": false,
+            "value": "no"
+        },
+        "STAY_IN_VC_AFTER_FINISHED": {
+            "description": "Do you want to make your bot not to leave the voice channel after playing a song?\nExample: no",
+            "required": false,
+            "value": "no"
+        },
+        "DJ_ROLE_NAME": {
+            "description": "What is your server's DJ role name?\nExample: DJ",
+            "required": false,
+            "value": "DJ"
+        },
+        "MUTE_ROLE_NAME": {
+            "description": "What is your server's Muted role name?\nExample: Muted",
+            "required": false,
+            "value": "Muted"
+        },
+        "YES_EMOJI": {
+            "description": "What is your bot's emoji for every success sentences?\nExample: ✅",
+            "required": false,
+            "value": "✅"
+        },
+        "NO_EMOJI": {
+            "description": "What is your bot's emoji for every failed sentences?\nExample: ❌",
+            "required": false,
+            "value": "❌"
+        }
+    },
+    "repository": "https://github.com/zhycorp/disc-11",
+    "website": "https://disc-11.zhycorp.net",
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
+}
