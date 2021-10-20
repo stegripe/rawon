@@ -14,7 +14,22 @@ function Script() {
             lineNumbers: true,
             mode,
             readOnly: true,
-            value: "const a = {};"
+            value: `function trigger() {
+    var url = [
+        "Project link",
+        "Project link",
+        "Project link"
+    ];
+    for (var x = 0; x < url.length; x++) {
+        var uri = url[x];
+            try {
+                UrlFetchApp.fetch(uri);
+            } catch (err) {
+                Logger.log(err.message)
+            }
+            
+    }
+}`
         })
     })
 
