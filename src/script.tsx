@@ -23,6 +23,7 @@ function Script() {
 }`
         const mode = getMode({
             lineNumbers: true,
+            mode: "javascript",
             readOnly: true,
             value
         }, "javascript") as ModeSpec<ModeSpecOptions>;
