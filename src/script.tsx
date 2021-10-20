@@ -1,14 +1,20 @@
 import './index.css';
-import CodeMirror from "codemirror";
+import "codemirror/lib/codemirror.css";
+import CodeMirror, { getMode, ModeSpec, ModeSpecOptions } from "codemirror";
 import { useEffect } from "react";
 
 function Script() {
     useEffect(() => {
+        const mode = getMode({
+            lineNumbers: true,
+            readOnly: true
+        }, "javascript") as ModeSpec<ModeSpecOptions>;
+
         CodeMirror(document.getElementById("code")!, {
             lineNumbers: true,
-            mode: "javascript",
+            mode,
             readOnly: true,
-            theme: "midnight"
+            value: "const a = {};"
         })
     })
 
