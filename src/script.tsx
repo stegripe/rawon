@@ -1,7 +1,8 @@
 import './index.css';
 import "codemirror/lib/codemirror.css";
-import CodeMirror, { getMode, ModeSpec, ModeSpecOptions } from "codemirror";
+import CodeMirror from "codemirror";
 import { useEffect } from "react";
+require("codemirror/mode/javascript/javascript");
 
 function Script() {
     useEffect(() => {
@@ -21,16 +22,10 @@ function Script() {
                     
     }
 }`
-        const mode = getMode({
-            lineNumbers: true,
-            mode: "javascript",
-            readOnly: true,
-            value
-        }, "javascript") as ModeSpec<ModeSpecOptions>;
 
         CodeMirror(document.getElementById("code")!, {
             lineNumbers: true,
-            mode,
+            mode: "javascript",
             readOnly: true,
             value
         })
