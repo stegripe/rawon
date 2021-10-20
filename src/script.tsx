@@ -5,16 +5,7 @@ import { useEffect } from "react";
 
 function Script() {
     useEffect(() => {
-        const mode = getMode({
-            lineNumbers: true,
-            readOnly: true
-        }, "javascript") as ModeSpec<ModeSpecOptions>;
-
-        CodeMirror(document.getElementById("code")!, {
-            lineNumbers: true,
-            mode,
-            readOnly: true,
-            value: `function trigger() {
+        const value = `function trigger() {
     var url = [
         "Project link",
         "Project link",
@@ -27,9 +18,20 @@ function Script() {
             } catch (err) {
                 Logger.log(err.message)
             }
-            
+                    
     }
 }`
+        const mode = getMode({
+            lineNumbers: true,
+            readOnly: true,
+            value
+        }, "javascript") as ModeSpec<ModeSpecOptions>;
+
+        CodeMirror(document.getElementById("code")!, {
+            lineNumbers: true,
+            mode,
+            readOnly: true,
+            value
         })
     })
 
