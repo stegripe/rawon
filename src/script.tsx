@@ -1,7 +1,7 @@
 import './index.css';
 import "codemirror/lib/codemirror.css";
 import CodeMirror from "codemirror";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 require("codemirror/mode/javascript/javascript");
 
 function Script() {
@@ -37,12 +37,18 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
         change({ items: state.items.concat([state.text]), text: "" });
     }
 
+    function onKeyDown(data: KeyboardEvent<HTMLInputElement>) {
+        if (data.code === "Enter") {
+            onSubmit();
+        }
+    }
+
     return (
         <div className="flex items-center justify-center min-w-full h-screen dark:bg-gray-900">
             <div className="m-20">
                 <p className="text-xl font-bold dark:text-white">Script Generator</p>
                 <br />
-                <input id="url-textbox" onChange={onChange} value={state.text} placeholder="Put URL here"/>
+                <input id="url-textbox" onKeyDown={onKeyDown} onChange={onChange} value={state.text} placeholder="Put URL here"/>
                 <br />
                 <button className="p-2 mt-2 transition-colors border rounded border-black hover:bg-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black" onClick={onSubmit}>
                     Add URL
