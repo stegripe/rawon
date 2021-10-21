@@ -34,6 +34,8 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
     }
 
     function onSubmit() {
+        if (state.text === "") return;
+
         change({ items: state.items.concat([state.text]), text: "" });
     }
 
