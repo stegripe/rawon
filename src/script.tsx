@@ -47,17 +47,18 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
 
     return (
         <div className="flex items-center justify-center min-w-full h-screen dark:bg-gray-900">
-            <div className="m-20">
-                <p className="text-xl font-bold dark:text-white">Script Generator</p>
-                <br />
-                <input id="url-textbox" onKeyDown={onKeyDown} onChange={onChange} value={state.text} placeholder="Put URL here"/>
-                <br />
-                <button className="p-2 mt-2 transition-colors border rounded border-black hover:bg-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black" onClick={onSubmit}>
-                    Add URL
-                </button>
+            <div className="grid grid-cols-1 grid-rows-2">
+                <div className="m-20">
+                    <p className="text-xl font-bold dark:text-white">Script Generator</p>
+                    <br />
+                    <input id="url-textbox" onKeyDown={onKeyDown} onChange={onChange} value={state.text} placeholder="Put URL here"/>
+                    <br />
+                    <button className="p-2 mt-2 transition-colors border rounded border-black hover:bg-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black" onClick={onSubmit}>
+                        Add URL
+                    </button>
+                </div>
+                <div id="code"></div>
             </div>
-            <br />
-            <div id="code"></div>
         </div>
     )
 }
