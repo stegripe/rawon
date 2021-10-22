@@ -46,7 +46,7 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
     }
 
     return (
-        <div className="flex items-center justify-center min-w-full h-screen dark:bg-gray-900">
+        <div className="flex items-center justify-center min-w-full h-full dark:bg-gray-900">
             <div className="grid grid-cols-1 grid-rows-2">
                 <div className="m-20">
                     <p className="text-xl font-bold dark:text-white">Script Generator</p>
