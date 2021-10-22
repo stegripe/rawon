@@ -46,10 +46,10 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
     }
 
     return (
-        <div className="flex items-center justify-center min-w-full h-full dark:bg-gray-900">
+        <div className="flex items-center justify-center min-w-screen h-screen dark:bg-gray-900">
             <div className="grid grid-cols-1 grid-rows-2">
                 <div className="m-20">
-                    <p className="text-xl font-bold dark:text-white">Script Generator</p>
+                    <p className="text-xl sm:text-base font-bold dark:text-white">Script Generator</p>
                     <br />
                     <input id="url-textbox" onKeyDown={onKeyDown} onChange={onChange} value={state.text} placeholder="Put URL here"/>
                     <br />
@@ -57,7 +57,7 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
                         Add URL
                     </button>
                 </div>
-                <div id="code"></div>
+                <div id="code" className="sm:text-sm"></div>
             </div>
         </div>
     )
