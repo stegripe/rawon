@@ -1,3 +1,4 @@
+import Navbar from "./components/Navbar";
 import Script from "./script";
 import './index.css';
 import { HashRouter, Route, Switch } from "react-router-dom";
@@ -13,6 +14,7 @@ function Index() {
 
 const routes = (
     <HashRouter>
+        <Navbar/>
         <Switch>
             <Route exact path="/" component={Index}/>
             <Route path="/script" component={Script}/>
