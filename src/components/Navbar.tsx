@@ -33,7 +33,7 @@ export default function Navbar() {
                         <Popover.Button
                           className={classNames(
                             open ? 'text-gray-900' : 'text-gray-500',
-                            'group bg-white dark:bg-black rounded-md inline-flex items-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                            'group bg-white dark:bg-black rounded-md inline-flex items-center text-sm font-medium focus:outline-none'
                           )}
                         >
                           <span className="dark:text-white hover:text-gray-900 dark:hover:text-gray-400">Tools</span>
