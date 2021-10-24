@@ -1,3 +1,4 @@
+import { ReactComponent as DiscSVG } from "./disc-11.svg";
 import Navbar from "./components/Navbar";
 import Script from "./script";
 import './index.css';
@@ -8,7 +9,7 @@ function Index() {
     return (
         <div className="flex items-center justify-center min-w-full h-screen dark:bg-gray-900">
             <div className="grid grid-cols-1 grid-rows-2 gap-3">
-                <img src="/logo512.png" alt="" className="flex justify-self-center h-32 md:h-48 w-auto rounded-full"/>
+                <DiscSVG className="flex justify-self-center h-32 md:h-48 w-auto rounded-full"/>
                 <p className="text-2xl md:text-6xl font-bold dark:text-white">Coming soon!</p>
             </div>
         </div>
