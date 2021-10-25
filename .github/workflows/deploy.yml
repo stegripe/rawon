@@ -4,7 +4,7 @@ on:
     branches: [pages]
 jobs:
   pages:
-    name: Pages
+    name: Pages Deployment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
