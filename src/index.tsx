@@ -1,4 +1,5 @@
 import { ReactComponent as DiscSVG } from "./disc-11.svg";
+import PermsCalculator from "./permscalculator";
 import Navbar from "./components/Navbar";
 import Script from "./script";
 import './index.css';
@@ -22,6 +23,7 @@ const routes = (
         <Switch>
             <Route exact path="/" component={Index}/>
             <Route path="/script" component={Script}/>
+            <Route path="/permscalculator" component={PermsCalculator}/>
         </Switch>
     </HashRouter>
 )
