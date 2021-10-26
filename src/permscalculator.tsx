@@ -4,159 +4,159 @@ import { ChangeEvent, useState } from "react";
 const perms: IPerm[] = [
     {
         name: "CREATE_INSTANT_INVITE",
-        num: 0
+        value: 0x1
     },
     {
         name: "KICK_MEMBERS",
-        num: 1
+        value: 0x2
     },
     {
         name: "BAN_MEMBERS",
-        num: 2
+        value: 0x4
     },
     {
         name: "ADMINISTRATOR",
-        num: 3
+        value: 0x8
     },
     {
         name: "MANAGE_CHANNELS",
-        num: 4
+        value: 0x10
     },
     {
         name: "MANAGE_GUILD",
-        num: 5
+        value: 0x20
     },
     {
         name: "ADD_REACTIONS",
-        num: 6
+        value: 0x40
     },
     {
         name: "VIEW_AUDIT_LOG",
-        num: 7
+        value: 0x80
     },
     {
         name: "PRIORITY_SPEAKER",
-        num: 8
+        value: 0x100
     },
     {
         name: "STREAM",
-        num: 9
+        value: 0x200
     },
     {
         name: "VIEW_CHANNEL",
-        num: 10
+        value: 0x400
     },
     {
         name: "SEND_MESSAGES",
-        num: 11
+        value: 0x800
     },
     {
         name: "SEND_TTS_MESSAGES",
-        num: 12
+        value: 0x1000
     },
     {
         name: "MANAGE_MESSAGES",
-        num: 13
+        value: 0x2000
     },
     {
         name: "EMBED_LINKS",
-        num: 14
+        value: 0x4000
     },
     {
         name: "ATTACH_FILES",
-        num: 15
+        value: 0x8000
     },
     {
         name: "READ_MESSAGE_HISTORY",
-        num: 16
+        value: 0x10000
     },
     {
         name: "MENTION_EVERYONE",
-        num: 17
+        value: 0x20000
     },
     {
         name: "USE_EXTERNAL_EMOJIS",
-        num: 18
+        value: 0x40000
     },
     {
         name: "VIEW_GUILD_INSIGHTS",
-        num: 19
+        value: 0x80000
     },
     {
         name: "CONNECT",
-        num: 20
+        value: 0x100000
     },
     {
         name: "SPEAK",
-        num: 21
+        value: 0x200000
     },
     {
         name: "MUTE_MEMBERS",
-        num: 22
+        value: 0x400000
     },
     {
         name: "DEAFEN_MEMBERS",
-        num: 23
+        value: 0x800000
     },
     {
         name: "MOVE_MEMBERS",
-        num: 24
+        value: 0x1000000
     },
     {
         name: "USE_VAD",
-        num: 25
+        value: 0x2000000
     },
     {
         name: "CHANGE_NICKNAME",
-        num: 26
+        value: 0x4000000
     },
     {
         name: "MANAGE_NICKNAMES",
-        num: 27
+        value: 0x8000000
     },
     {
         name: "MANAGE_ROLES",
-        num: 28
+        value: 0x10000000
     },
     {
         name: "MANAGE_WEBHOOKS",
-        num: 29
+        value: 0x20000000
     },
     {
         name: "MANAGE_EMOJIS_AND_STICKERS",
-        num: 30
+        value: 0x40000000
     },
     {
         name: "USE_APPLICATION_COMMANDS",
-        num: 31
+        value: 0x80000000
     },
     {
         name: "REQUEST_TO_SPEAK",
-        num: 32
+        value: 0x100000000
     },
     {
         name: "MANAGE_THREADS",
-        num: 34
+        value: 0x400000000
     },
     {
         name: "CREATE_PUBLIC_THREADS",
-        num: 35
+        value: 0x800000000
     },
     {
         name: "CREATE_PRIVATE_THREADS",
-        num: 36
+        value: 0x1000000000
     },
     {
         name: "USE_EXTERNAL_STICKERS",
-        num: 37
+        value: 0x2000000000
     },
     {
         name: "SEND_MESSAGES_IN_THREADS",
-        num: 38
+        value: 0x4000000000
     },
     {
         name: "START_EMBEDDED_ACTIVITIES",
-        num: 39
+        value: 0x8000000000
     }
 ]
 
@@ -192,7 +192,7 @@ function PermsCalculator() {
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">URL</p>
-                    <input className="w-full" disabled value={`https://discord.com/oauth2/authorize?client_id=${state.clientId || "<CLIENT_ID_HERE>"}&scope=bot&permissions=${state.perms.length ? state.perms.map(x => 1 << (perms.find(y => y.name === x)!.num)).reduce((p, c) => p + c) : 0}`}/>
+                    <input className="w-full" disabled value={`https://discord.com/oauth2/authorize?client_id=${state.clientId || "<CLIENT_ID_HERE>"}&scope=bot&permissions=${state.perms.length ? state.perms.map(x => perms.find(y => y.name === x)!.value).reduce((p, c) => p + c) : 0}`}/>
                 </div>
             </div>
         </div>
