@@ -181,7 +181,7 @@ function PermsCalculator() {
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">Permissions</p>
-                    <div className="bg-black bg-opacity-25 w-full grid grid-cols-3">
+                    <div className="bg-black bg-opacity-25 w-full grid grid-cols-1 md:grid-cols-3 break-words">
                         {perms.map(x => (
                             <div key={x.name} className="m-1">
                                 <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange}/>
