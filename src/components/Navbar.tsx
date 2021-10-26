@@ -7,6 +7,11 @@ const tools = [
     name: 'Script Generator',
     description: 'Generate a script for uptiming projects using google script.',
     href: '/#/script'
+  },
+  {
+    name: 'Perms Calculator',
+    description: 'Generate an invite link for your bot using specific permission',
+    href: '/#/permscalculator'
   }
 ]
 
