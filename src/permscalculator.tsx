@@ -182,15 +182,15 @@ function PermsCalculator() {
             <div className="m-10 w-full">
                 <p className="text-base md:text-xl font-bold dark:text-white">Perms Calculator</p>
                 <div className="my-4 grid grid-cols-1 md:grid-cols-3">
-                    <div>
+                    <div className="my-2 md:my-0">
                         <p className="dark:text-white">Client ID</p>
                         <input className="focus:outline-none" id="client-id" onChange={onChange} value={state.clientId}/>
                     </div>
-                    <div>
+                    <div className="my-2 md:my-0">
                         <p className="dark:text-white">Scope</p>
                         <input className="focus:outline-none" id="scope" onChange={onChange} value={state.scope}/>
                     </div>
-                    <div>
+                    <div className="my-2 md:my-0">
                         <p className="dark:text-white">Redirect URI</p>
                         <input className="focus:outline-none" id="redirect-uri" onChange={onChange} value={state.redirectUri}/>
                     </div>
