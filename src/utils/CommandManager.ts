@@ -7,6 +7,11 @@ import { resolve } from "path";
 import { promises as fs } from "fs";
 
 export class CommandManager extends Collection<string, ICommandComponent> {
+    public isReady = false;
+    public readonly categories: Collection<string, ICategoryMeta> = new Collection();
+    public readonly aliases: Collection<string, string> = new Collection();
+    private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
+
     public constructor(public client: Disc, private readonly path: string) { super(); }
 
     public load(): void {
@@ -158,9 +163,4 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             );
         }
     }
-
-    public isReady = false;
-    public readonly categories: Collection<string, ICategoryMeta> = new Collection();
-    public readonly aliases: Collection<string, string> = new Collection();
-    private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
 }
