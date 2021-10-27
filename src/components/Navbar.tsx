@@ -1,4 +1,3 @@
-import { ReactComponent as DiscSVG } from "../disc-11.svg";
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 
@@ -26,7 +25,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16">
             <div className=" flex items-center">
               <a className="flex-shrink-0" href="/#/">
-                <DiscSVG className="h-8 w-8"/>
+                <img src="https://api.zhycorp.net/assets/images/logo.png" alt="" className="h-8 w-8"/>
               </a>
               <Popover.Group as="div" className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
