@@ -17,7 +17,7 @@ export function getStream(url: string): Promise<Readable> {
         );
 
         if (!stream.stdout) {
-            reject(Error("Unable to retrieve audio data from the URL"));
+            reject(Error("Unable to retrieve audio data from the URL."));
         }
 
         void stream.on("spawn", () => {
