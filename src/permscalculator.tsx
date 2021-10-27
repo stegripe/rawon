@@ -1,8 +1,7 @@
 import { IPerm } from "../typings";
 import { ChangeEvent, useState } from "react";
 
-const perms: IPerm[] = [
-    {
+const perms: IPerm[] = [{
         name: "CREATE_INSTANT_INVITE",
         value: 0x1
     },
@@ -161,42 +160,71 @@ const perms: IPerm[] = [
 ]
 
 function PermsCalculator() {
-    const [state, update] = useState<{clientId: string; perms: string[]; scope: string; redirectUri: string}>({clientId: "", perms: [], scope: "bot", redirectUri: ""});
+    const [state, update] = useState<{
+        clientId: string;perms: string[];scope: string;redirectUri: string
+    }>({
+        clientId: "",
+        perms: [],
+        scope: "bot",
+        redirectUri: ""
+    });
 
     function onCheckboxChange(data: ChangeEvent<HTMLInputElement>) {
-        update({ clientId: state.clientId, scope: state.scope, redirectUri: state.redirectUri, perms: data.target.checked ? state.perms.concat([data.target.name]).filter((x, i, a) => a.indexOf(x) === i) : state.perms.filter(x => x !== data.target.name) });
+        update({
+            clientId: state.clientId,
+            scope: state.scope,
+            redirectUri: state.redirectUri,
+            perms: data.target.checked ? state.perms.concat([data.target.name]).filter((x, i, a) => a.indexOf(x) === i) : state.perms.filter(x => x !== data.target.name)
+        });
     }
 
     function onChange(data: ChangeEvent<HTMLInputElement>) {
         if (data.target.id === "client-id") {
-            update({ clientId: data.target.value, perms: state.perms, scope: state.scope, redirectUri: state.redirectUri });
+            update({
+                clientId: data.target.value,
+                perms: state.perms,
+                scope: state.scope,
+                redirectUri: state.redirectUri
+            });
         } else if (data.target.id === "scope") {
-            update({ clientId: state.clientId, perms: state.perms, scope: data.target.value, redirectUri: state.redirectUri });
+            update({
+                clientId: state.clientId,
+                perms: state.perms,
+                scope: data.target.value,
+                redirectUri: state.redirectUri
+            });
         } else if (data.target.id === "redirect-uri") {
-            update({ clientId: state.clientId, perms: state.perms, scope: state.scope, redirectUri: data.target.value });
+            update({
+                clientId: state.clientId,
+                perms: state.perms,
+                scope: state.scope,
+                redirectUri: data.target.value
+            });
         }
     }
 
     function getEquation() {
-        return state.perms.length ? state.perms.map(x => perms.find(y => y.name === x)!.value).reduce((p, c) => p + c) : 0;
+        return state.perms.length ? state.perms.map(x => perms.find(y => y.name === x) !.value).reduce((p, c) => p + c) : 0;
     }
 
     return (
         <div className="flex min-w-full h-full dark:bg-gray-900">
             <div className="m-10 w-full">
-                <p className="text-base md:text-xl font-bold dark:text-white">Perms Calculator</p>
+                <p className="text-base md:text-xl font-bold dark:text-white">Permissions Calculator</p>
                 <div className="my-4 grid grid-cols-1 md:grid-cols-3">
                     <div className="my-2 md:my-0">
                         <p className="dark:text-white">Client ID</p>
-                        <input className="focus:outline-none" id="client-id" onChange={onChange} value={state.clientId}/>
+                        <input className="focus:outline-none" id="client-id" onChange={onChange}
+                            value={state.clientId} />
                     </div>
                     <div className="my-2 md:my-0">
                         <p className="dark:text-white">Scope</p>
-                        <input className="focus:outline-none" id="scope" onChange={onChange} value={state.scope}/>
+                        <input className="focus:outline-none" id="scope" onChange={onChange} value={state.scope} />
                     </div>
                     <div className="my-2 md:my-0">
                         <p className="dark:text-white">Redirect URI</p>
-                        <input className="focus:outline-none" id="redirect-uri" onChange={onChange} value={state.redirectUri}/>
+                        <input className="focus:outline-none" id="redirect-uri" onChange={onChange}
+                            value={state.redirectUri} />
                     </div>
                 </div>
                 <div className="my-4 w-full">
@@ -204,18 +232,22 @@ function PermsCalculator() {
                     <div className="bg-black bg-opacity-25 w-full break-words">
                         <div className="grid grid-cols-1 md:grid-cols-3 w-full">
                             {perms.map(x => (
-                                <div key={x.name} className="m-1">
-                                    <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange}/>
-                                    <label htmlFor={x.name} className="dark:text-white ml-2">{x.name}</label>
-                                </div>
+                            <div key={x.name} className="m-1">
+                                <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange} />
+                                <label htmlFor={x.name} className="dark:text-white ml-2">{x.name}</label>
+                            </div>
                             ))}
                         </div>
-                        <p className="dark:text-white m-3 text-sm">{getEquation()} = {state.perms.map(x => `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
+                        <p className="dark:text-white m-3 text-sm">{getEquation()} = {state.perms.map(x =>
+                            `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
                     </div>
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">URL</p>
-                    <input className="w-full" disabled value={`https://discord.com/oauth2/authorize?client_id=${state.clientId || "<CLIENT_ID_HERE>"}&scope=${state.scope}&permissions=${getEquation()}${state.redirectUri.length ? `&redirect_uri=${state.redirectUri}`: ""}`}/>
+                    <input className="w-full" disabled
+                        value={`https://discord.com/oauth2/authorize?client_id=${state.clientId || "<CLIENT_ID_HERE>"
+                        }&scope=${state.scope}&permissions=${getEquation()}${state.redirectUri.length ?
+                        `&redirect_uri=${state.redirectUri}`: "" }`} />
                 </div>
             </div>
         </div>
