@@ -1,14 +1,14 @@
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
+import { version as BotVersion } from "../../../package.json";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { formatMS } from "../../utils/formatMS";
+import i18n from "../../config";
 import { version as FFmpegVersion } from "ffmpeg-static/package.json";
-import { version as BotVersion } from "../../../package.json";
 import { version as DJSVersion } from "discord.js";
 import { uptime } from "os";
 import Table from "cli-table";
-import i18n from "../../config";
 
 const table = new Table({
     chars: {
