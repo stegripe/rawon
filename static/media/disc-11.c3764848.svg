@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg width="512.0px" height="512.0px" viewBox="0 0 225 150" version="1.1" id="SVGRoot"
+   xmlns="http://www.w3.org/2000/svg" xmlnsSvg="http://www.w3.org/2000/svg">
+   <defs id="defs843" />
+   <g id="layer3" style="display:inline">
+      <path id="rect1326-5-4-5" style="fill:#3d3d3d;fill-opacity:1"
+         d="M 75,0 V 15 H 60 45 30 V 30 H 15 V 45 H 0 v 15 15 15 15 h 15 v 15 h 15 v 15 h 15 15 15 v 15 h 15 15 15 15 15 v -15 h 15 15 15 v -15 h 15 v -10 -5 h 15 V 90 75 60 45 H 210 V 35 30 H 195 V 15 H 180 165 150 V 0 H 135 120 105 90 Z" />
+   </g>
+   <g id="layer5">
+      <path id="rect3258-0" style="fill:#000000;fill-opacity:1"
+         d="M 90,45 V 60 H 75 v 15 h 15 v 15 h 15 15 15 V 75 h 15 V 60 H 135 V 45 h -15 -15 z m 15,15 h 15 v 15 h -15 z" />
+      <rect style="fill:#212121;fill-opacity:1" id="rect3258-0-7" width="15" height="15" x="105" y="60" />
+   </g>
+   <g id="layer4" style="display:inline">
+      <path id="rect3258" style="fill:#4f4f4f;fill-opacity:1"
+         d="m 90,30 v 15 h 15 V 30 Z m 30,0 v 15 h 15 15 V 30 H 135 Z M 45,45 V 60 H 60 75 V 45 H 60 Z m 0,15 H 30 v 15 h 15 z m 0,15 V 90 H 60 V 75 Z M 165,45 v 15 h 15 V 45 Z m 15,15 v 15 h 15 V 60 Z m 0,15 h -15 -15 v 15 h 15 15 z M 75,90 v 15 h 15 15 V 90 H 90 Z m 45,0 v 15 h 15 V 90 Z" />
+   </g>
+   <g id="layer2" style="display:inline">
+      <path id="rect1326-5-4" style="fill:#212121;fill-opacity:1"
+         d="m 15,90 v 15 H 30 V 90 Z m 15,15 v 15 H 45 60 75 V 105 H 60 45 Z m 45,15 v 15 h 15 15 15 15 15 V 120 H 135 120 105 90 Z m 75,0 h 15 15 15 v -15 h -15 -15 -15 z m 45,-15 h 15 V 90 h -15 z" />
+   </g>
+   <g id="layer1" style="display:inline">
+      <path id="rect1326" style="fill:#1c1c1c;fill-opacity:1"
+         d="m 75,0 v 15 h 15 15 15 15 15 V 0 H 135 120 105 90 Z m 75,15 v 15 h 15 15 15 V 15 h -15 -15 z m 45,15 v 15 h 15 V 30 Z m 15,15 v 15 15 15 15 h 15 V 90 75 60 45 Z M 75,15 H 60 45 30 V 30 H 45 60 75 Z M 30,30 H 15 V 45 H 30 Z M 15,45 H 0 v 15 15 15 15 H 15 V 90 75 60 Z" />
+      <path id="rect1326-5" style="fill:#080808;fill-opacity:1"
+         d="m 15,105 v 15 h 15 v -15 z m 15,15 v 15 H 45 60 75 V 120 H 60 45 Z m 45,15 v 15 h 15 15 15 15 15 V 135 H 135 120 105 90 Z m 75,0 h 15 15 15 v -15 h -15 -15 -15 z m 45,-15 h 15 v -15 h -15 z" />
+   </g>
+</svg>
