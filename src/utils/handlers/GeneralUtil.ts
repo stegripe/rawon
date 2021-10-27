@@ -88,12 +88,12 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     const aDurationDiff = isTrack ? (a.duration ? a.duration - preview.duration_ms : null) : null;
                     const bDurationDiff = isTrack ? (b.duration ? b.duration - preview.duration_ms : null) : null;
 
-                    // 'a' variable check
+                    // "a" variable check
                     if (a.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) aValue--;
                     if (isTrack ? preview.artists?.some(x => a.channel?.name.toLowerCase().includes(x.name)) : a.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) aValue--;
                     if (isTrack && (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false)) aValue--;
 
-                    // 'b' variable check
+                    // "b" variable check
                     if (b.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) bValue++;
                     if (isTrack ? preview.artists?.some(x => b.channel?.name.toLowerCase().includes(x.name)) : b.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) bValue++;
                     if (isTrack && (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false)) bValue++;
@@ -335,7 +335,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     }
 
     const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
-        client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started`);
+        client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started.`);
         queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("utils.generalHandler.startPlaying", { song: `[${newSong.title}](${newSong.url})` })}`).setThumbnail(newSong.thumbnail)] })
             .then(m => queue.lastMusicMsg = m.id)
             .catch(e => client.logger.error("PLAY_ERR:", e));
@@ -359,7 +359,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
             const newSong = ((queue.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song;
             sendStartPlayingMsg(newSong);
         } else if (newState.status === AudioPlayerStatus.Idle) {
-            client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${song.song.title}" on ${guild.name} has ended`);
+            client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${song.song.title}" on ${guild.name} has ended.`);
             queue.skipVoters = [];
             if (queue.loopMode === "OFF") {
                 queue.songs.delete(song.key);
