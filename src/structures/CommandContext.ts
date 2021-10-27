@@ -4,6 +4,10 @@ import { MessageInteractionAction } from "../typings";
 import { ButtonInteraction, Collection, CommandInteraction, CommandInteractionOptionResolver, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannels, User } from "discord.js";
 
 export class CommandContext {
+    public additionalArgs: Collection<string, any> = new Collection();
+    public channel: TextBasedChannels|null = this.context.channel;
+    public guild = this.context.guild;
+
     public constructor(public readonly context: Interaction|CommandInteraction|SelectMenuInteraction|ContextMenuInteraction|Message, public args: string[] = []) {}
 
     public async deferReply(): Promise<void> {
@@ -79,10 +83,6 @@ export class CommandContext {
             MessageComponentTypes[(this.context as SelectMenuInteraction).componentType] === MessageComponentTypes.SELECT_MENU
         );
     }
-
-    public additionalArgs: Collection<string, any> = new Collection();
-    public channel: TextBasedChannels|null = this.context.channel;
-    public guild = this.context.guild;
 
     public get mentions(): MessageMentions|null {
         return this.context instanceof Message ? this.context.mentions : null;
