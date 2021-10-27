@@ -6,8 +6,8 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import { chunk } from "../../utils/chunk";
-import { AudioPlayerPlayingState } from "@discordjs/voice";
 import i18n from "../../config";
+import { AudioPlayerPlayingState } from "@discordjs/voice";
 
 @DefineCommand({
     aliases: ["q"],
