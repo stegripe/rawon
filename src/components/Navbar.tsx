@@ -63,6 +63,9 @@ export default function Navbar() {
                                 <p className="text-base font-medium text-gray-900 dark:text-white">{item.name}</p>
                                 <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                               </div>
+                            </a>
+                            ))}
+                          </div>
                           </div>
                       </Popover.Panel>
                     </Transition>
@@ -74,11 +77,6 @@ export default function Navbar() {
                   GitHub
                 </a>
               </div>
-            </Popover.Group>
-          </div>
-          <div className="block">
-            <div className="ml-4 flex items-center md:ml-6">
-            </div>
             </Popover.Group>
           </div>
           <div className="block">
@@ -121,29 +119,33 @@ export default function Navbar() {
                   </Popover.Button>
                 </div>
               </div>
-              <div className="py-6 px-5 space-y-6">
-                <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                  <a href="/#/"
-                    className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
-                    Home
-                  </a>
-                  <a href="https://github.com/zhycorp/disc-11"
-                    className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
-                    GitHub
-                  </a>
+              <div className="mt-6">
+                <nav className="grid gap-y-8">
+                  {tools.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-900"
+                    >
+                      <span className="ml-3 text-base font-medium text-gray-900 dark:text-gray-50">{item.name}</span>
+                    </a>
                   ))}
-                  </nav>
-                </div>
-              </div>
-              <div className="py-6 px-5 space-y-6">
-                <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                  <a href="https://github.com/zhycorp/disc-11"
-                    className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
-                    GitHub
-                  </a>
-                </div>
+                </nav>
               </div>
             </div>
+            <div className="py-6 px-5 space-y-6">
+              <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+                <a href="/#/"
+                    className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
+                    Home
+                </a>
+                <a href="https://github.com/zhycorp/disc-11"
+                    className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
+                    GitHub
+                </a>
+              </div>
+            </div>
+          </div>
         </Popover.Panel>
       </Transition>
     </Popover>
