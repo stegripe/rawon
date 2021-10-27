@@ -1,11 +1,16 @@
-import './index.css';
 import "codemirror/lib/codemirror.css";
-import CodeMirror from "codemirror";
+import './index.css';
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import CodeMirror from "codemirror";
 require("codemirror/mode/javascript/javascript");
 
 function Script() {
-    const [state, change] = useState<{ text: string; items: string[] }>({ text: "", items: [] });
+    const [state, change] = useState<{
+        text: string;items: string[]
+    }>({
+        text: "",
+        items: []
+    });
 
     useEffect(() => {
         document.getElementById("code")!.innerHTML = "";
@@ -30,13 +35,19 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
     });
 
     function onChange(data: ChangeEvent<HTMLInputElement>) {
-        change({ items: state.items, text: data.target.value });
+        change({
+            items: state.items,
+            text: data.target.value
+        });
     }
 
     function onSubmit() {
         if (state.text === "") return;
 
-        change({ items: state.items.concat([state.text]), text: "" });
+        change({
+            items: state.items.concat([state.text]),
+            text: ""
+        });
     }
 
     function onKeyDown(data: KeyboardEvent<HTMLInputElement>) {
@@ -51,9 +62,12 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
                 <div className="m-20">
                     <p className="text-base md:text-xl font-bold dark:text-white">Script Generator</p>
                     <br />
-                    <input id="url-textbox" onKeyDown={onKeyDown} onChange={onChange} value={state.text} placeholder="Put URL here" className="focus:outline-none"/>
+                    <input id="url-textbox" onKeyDown={onKeyDown} onChange={onChange} value={state.text}
+                        placeholder="Put the URL here" className="focus:outline-none" />
                     <br />
-                    <button className="p-2 mt-2 transition-colors border rounded border-black hover:bg-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black" onClick={onSubmit}>
+                    <button
+                        className="p-2 mt-2 transition-colors border rounded border-black hover:bg-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
+                        onClick={onSubmit}>
                         Add URL
                     </button>
                 </div>
