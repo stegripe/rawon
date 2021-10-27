@@ -83,7 +83,7 @@ export default function Navbar() {
                     )}
                   </Popover>
                   <a href="https://github.com/zhycorp/disc-11" className="text-gray-500 dark:text-white dark:hover:text-gray-400 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                    Github
+                    GitHub
                   </a>
                 </div>
               </Popover.Group>
@@ -151,7 +151,7 @@ export default function Navbar() {
               <div className="py-6 px-5 space-y-6">
                 <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                   <a href="https://github.com/zhycorp/disc-11" className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
-                    Github
+                    GitHub
                   </a>
                 </div>
               </div>
