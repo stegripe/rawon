@@ -150,6 +150,9 @@ export default function Navbar() {
               </div>
               <div className="py-6 px-5 space-y-6">
                 <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+                  <a href="/#/" className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
+                    Home
+                  </a>
                   <a href="https://github.com/zhycorp/disc-11" className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
                     GitHub
                   </a>
