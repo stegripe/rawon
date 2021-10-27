@@ -10,7 +10,7 @@ export class ClientUtils {
             mentionable: false,
             name: this.client.config.muteRoleName,
             permissions: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-            reason: "Create mute role"
+            reason: "Create Muted role"
         });
     }
 
