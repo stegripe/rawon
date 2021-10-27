@@ -48,7 +48,7 @@ const isGitHub = (
 )
 
 if (isReplit) {
-    console.warn("[WARN] We haven't added stable support for running this bot using Repl. Bugs and errors may come up");
+    console.warn("[WARN] We haven't added stable support for running this bot using Replit, bugs and errors may come up.");
 }
 
 if (isGitHub) {
@@ -56,7 +56,7 @@ if (isGitHub) {
 }
 
 if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
-    console.info("[INFO] This repl doesn't use Node.js v16 or newer, trying to install Node.js v16...");
+    console.info("[INFO] This Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
     execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
     console.info("[INFO] Node.js v16 has installed, please re-run the bot.");
     process.exit(0);
@@ -68,25 +68,25 @@ if (isGlitch || isReplit) {
         res.end(`OK (200) - ${now}`);
     }).listen(Number(process.env.PORT) || 3000);
 
-    console.info(`[INFO] ${isGlitch ? "Glitch" : "Repl"} environment detected, trying to compile...`);
+    console.info(`[INFO] ${isGlitch ? "Glitch" : "Replit"} environment detected, trying to compile...`);
     if (!existsSync(resolve(__dirname, "node_modules", "typescript", "bin", "tsc"))) {
-        console.info("[INFO] It seems TypeScript hasn't been installed. Installing...");
+        console.info("[INFO] It seems TypeScript hasn't been installed, trying to install...");
         execSync("npm i --save-dev typescript");
-        console.info("[INFO] TypeScript installed. Compiling...");
+        console.info("[INFO] TypeScript installed, compiling...");
     }
     execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
     console.info("[INFO] Compiled.");
 }
 
 (async () => {
-    const isUnix = ['aix', 'android', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos'].includes(process.platform.toLowerCase());
+    const isUnix = ["aix", "android", "darwin", "freebsd", "linux", "openbsd", "sunos"].includes(process.platform.toLowerCase());
     process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
     process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
 
     if (!existsSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
-        console.info("[INFO] Yt-dlp couldn't be found. Downloading...");
+        console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
         await require("youtube-dl-exec/scripts/postinstall");
-        console.info("[INFO] Yt-dlp downloaded");
+        console.info("[INFO] Yt-dlp has downloaded.");
     }
 
     console.info("[INFO] Starting the bot...");
