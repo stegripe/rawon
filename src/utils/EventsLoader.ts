@@ -1,7 +1,7 @@
 import { Disc } from "../structures/Disc";
 import { IEvent } from "../typings";
-import { resolve } from "path";
 import { promises as fs } from "fs";
+import { resolve } from "path";
 
 export class EventsLoader {
     public constructor(public client: Disc, public path: string) {}
