@@ -177,6 +177,10 @@ function PermsCalculator() {
         }
     }
 
+    function getEquation() {
+        return state.perms.length ? state.perms.map(x => perms.find(y => y.name === x)!.value).reduce((p, c) => p + c) : 0;
+    }
+
     return (
         <div className="flex min-w-full h-full dark:bg-gray-900">
             <div className="m-10 w-full">
@@ -197,18 +201,21 @@ function PermsCalculator() {
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">Permissions</p>
-                    <div className="bg-black bg-opacity-25 w-full grid grid-cols-1 md:grid-cols-3 break-words">
-                        {perms.map(x => (
-                            <div key={x.name} className="m-1">
-                                <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange}/>
-                                <label htmlFor={x.name} className="dark:text-white ml-2">{x.name}</label>
-                            </div>
-                        ))}
+                    <div className="bg-black bg-opacity-25 w-full break-words">
+                        <div className="grid grid-cols-1 md:grid-cols-3 w-full">
+                            {perms.map(x => (
+                                <div key={x.name} className="m-1">
+                                    <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange}/>
+                                    <label htmlFor={x.name} className="dark:text-white ml-2">{x.name}</label>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="dark:text-white m-3 text-sm">{getEquation()} = {state.perms.map(x => `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
                     </div>
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">URL</p>
-                    <input className="w-full" disabled value={`https://discord.com/oauth2/authorize?client_id=${state.clientId || "<CLIENT_ID_HERE>"}&scope=${state.scope}&permissions=${state.perms.length ? state.perms.map(x => perms.find(y => y.name === x)!.value).reduce((p, c) => p + c) : 0}${state.redirectUri.length ? `&redirect_uri=${state.redirectUri}`: ""}`}/>
+                    <input className="w-full" disabled value={`https://discord.com/oauth2/authorize?client_id=${state.clientId || "<CLIENT_ID_HERE>"}&scope=${state.scope}&permissions=${getEquation()}${state.redirectUri.length ? `&redirect_uri=${state.redirectUri}`: ""}`}/>
                 </div>
             </div>
         </div>
