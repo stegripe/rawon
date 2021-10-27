@@ -19,7 +19,7 @@ export class CommandContext {
 
     public async reply(options: { askDeletion?: { reference: string } }|string|MessagePayload|MessageOptions|InteractionReplyOptions, autoedit?: boolean): Promise<Message> {
         if (this.isInteraction()) {
-            if ((this.context as Interaction).isCommand() && (this.context as CommandInteraction).replied && !autoedit) throw new Error("Interaction is already replied");
+            if ((this.context as Interaction).isCommand() && (this.context as CommandInteraction).replied && !autoedit) throw new Error("Interaction is already replied.");
         }
 
         const context = this.context as Message|CommandInteraction;
@@ -49,7 +49,7 @@ export class CommandContext {
             return res ?? msg;
         }
         if ((options as InteractionReplyOptions).ephemeral) {
-            throw new Error("Cannot send ephemeral message in a non-interaction context");
+            throw new Error("Cannot send ephemeral message in a non-interaction context.");
         }
         return this.context.channel!.send(options as string|MessagePayload|MessageOptions);
     }
