@@ -208,7 +208,7 @@ function PermsCalculator() {
     }
 
     return (
-        <div className="flex min-w-full h-full dark:bg-gray-900">
+        <div className="flex min-w-full h-full dark:bg-gray-900 text-sm">
             <div className="m-10 w-full">
                 <p className="text-base md:text-xl font-bold dark:text-white">Permissions Calculator</p>
                 <div className="my-4 grid grid-cols-1 md:grid-cols-3">
@@ -229,7 +229,7 @@ function PermsCalculator() {
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">Permissions</p>
-                    <div className="bg-black bg-opacity-25 w-full break-words text-sm">
+                    <div className="bg-black bg-opacity-25 w-full break-words">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full">
                             {perms.map(x => (
                             <div key={x.name} className="m-1">
