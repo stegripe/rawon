@@ -229,7 +229,7 @@ function PermsCalculator() {
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">Permissions</p>
-                    <div className="bg-black bg-opacity-25 w-full break-words">
+                    <div className="bg-black bg-opacity-25 w-full break-words text-sm">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full">
                             {perms.map(x => (
                             <div key={x.name} className="m-1">
@@ -238,7 +238,7 @@ function PermsCalculator() {
                             </div>
                             ))}
                         </div>
-                        <p className="dark:text-white m-3 text-sm">{getEquation()} = {state.perms.map(x =>
+                        <p className="dark:text-white m-3">{getEquation()} = {state.perms.map(x =>
                             `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
                     </div>
                 </div>
