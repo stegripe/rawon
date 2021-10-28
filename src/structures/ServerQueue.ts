@@ -1,70 +1,101 @@
 import { SongManager } from "../utils/SongManager";
-import { Snowflake, TextChannel, VoiceChannel, VoiceConnection } from "discord.js";
-
-export enum loopMode {
-    off = 0,
-    one = 1,
-    all = 2,
-
-    // ALIASES
-    queue = all,
-    "*" = all,
-
-    current = one,
-    trackonly = one,
-
-    none = off,
-    disable = off
-}
+import { LoopMode } from "../typings";
+import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voice";
+import { TextBasedChannels, Snowflake } from "discord.js";
 
 export class ServerQueue {
-    public connection: VoiceConnection | null = null;
+    public loopMode: LoopMode = "OFF";
+    public shuffle = false;
+    public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
+    public connection: VoiceConnection|null = null;
+    public player: AudioPlayer|null = null;
+    public dcTimeout: NodeJS.Timeout|null = null;
+    public timeout: NodeJS.Timeout|null = null;
     public readonly songs = new SongManager();
-    public volume = 0;
-    public loopMode = loopMode.disable;
-    public timeout: NodeJS.Timeout | null = null;
-    public playing = false;
-    private _lastMusicMessageID: Snowflake | null = null;
-    private _lastVoiceStateUpdateMessageID: Snowflake | null = null;
-    public constructor(public textChannel: TextChannel | null = null, public voiceChannel: VoiceChannel | null = null) {
-        this.volume = textChannel!.client.config.defaultVolume;
+    private _skipVoters: Snowflake[] = [];
+    private _lastMusicMsg: Snowflake|null = null;
+    private _lastVSUpdateMsg: Snowflake|null = null;
+
+    public constructor(public readonly textChannel: TextBasedChannels) {
         Object.defineProperties(this, {
-            timeout: {
+            _skipVoters: {
                 enumerable: false
             },
-            _lastMusicMessageID: {
+            _lastMusicMsg: {
                 enumerable: false
             },
-            _lastVoiceStateUpdateMessageID: {
+            _lastVSUpdateMsg: {
                 enumerable: false
             }
         });
     }
 
-    public get oldMusicMessage(): Snowflake | null {
-        return this._lastMusicMessageID;
+    public stop(): void {
+        this.songs.clear();
+        this.player?.stop(true);
     }
 
-    public set oldMusicMessage(id: Snowflake | null) {
-        if (this._lastMusicMessageID !== null) {
-            this.textChannel?.messages.fetch(this._lastMusicMessageID, false)
-                .then(m => m.delete())
-                .catch(e => this.textChannel?.client.logger.error("DELETE_OLD_MUSIC_MESSAGE_ERR:", e));
+    public destroy(): void {
+        this.stop();
+        this.connection?.disconnect();
+        clearTimeout(this.timeout!);
+        clearTimeout(this.dcTimeout!);
+        if (this.textChannel.type !== "DM") {
+            delete this.textChannel.guild.queue;
         }
-        this._lastMusicMessageID = id;
     }
 
-
-    public get oldVoiceStateUpdateMessage(): Snowflake | null {
-        return this._lastVoiceStateUpdateMessageID;
+    public set skipVoters(value: Snowflake[]) {
+        this._skipVoters = value;
     }
 
-    public set oldVoiceStateUpdateMessage(id: Snowflake | null) {
-        if (this._lastVoiceStateUpdateMessageID !== null) {
-            this.textChannel?.messages.fetch(this._lastVoiceStateUpdateMessageID, false)
-                .then(m => m.delete())
-                .catch(e => this.textChannel?.client.logger.error("DELETE_OLD_VOICE_STATE_UPDATE_MESSAGE_ERR:", e));
+    public get skipVoters(): Snowflake[] {
+        return this._skipVoters;
+    }
+
+    public set lastMusicMsg(value: Snowflake|null) {
+        if (this._lastMusicMsg !== null) {
+            this.textChannel.messages.fetch(this._lastMusicMsg, { cache: false })
+                .then(msg => {
+                    void msg.delete();
+                })
+                .catch(err => this.textChannel.client.logger.error("DELETE_LAST_MUSIC_MESSAGE_ERR:", err));
         }
-        this._lastVoiceStateUpdateMessageID = id;
+        this._lastMusicMsg = value;
+    }
+
+    public get lastMusicMsg(): Snowflake|null {
+        return this._lastMusicMsg;
+    }
+
+    public set lastVSUpdateMsg(value: Snowflake|null) {
+        if (this._lastVSUpdateMsg !== null) {
+            this.textChannel.messages.fetch(this._lastVSUpdateMsg, { cache: false })
+                .then(msg => {
+                    void msg.delete();
+                })
+                .catch(err => this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", err));
+        }
+        this._lastVSUpdateMsg = value;
+    }
+
+    public get lastVSUpdateMsg(): Snowflake|null {
+        return this._lastVSUpdateMsg;
+    }
+
+    public set playing(value: boolean) {
+        if (value) {
+            this.player?.unpause();
+        } else {
+            this.player?.pause();
+        }
+    }
+
+    public get playing(): boolean {
+        return this.player?.state.status === AudioPlayerStatus.Playing;
+    }
+
+    public get idle(): boolean {
+        return (this.player?.state.status === AudioPlayerStatus.Idle) && (this.songs.size === 0);
     }
 }
