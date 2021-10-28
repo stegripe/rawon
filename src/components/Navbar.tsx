@@ -106,7 +106,7 @@ export default function Navbar() {
             <div className="pt-5 pb-6 px-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <img className="h-8 w-auto" src="/logo512.png" alt="Logo" />
+                <img src="https://api.zhycorp.net/assets/images/logo.png" alt="Logo" className="h-8 w-auto" />
                 </div>
                 <div className="-mr-2">
                   <Popover.Button
