@@ -1,8 +1,8 @@
 export default function Footer() {
     return (
-        <div className="dark:bg-black dark:text-white flex flex-col md:flex-row justify-between break-words py-3 px-5">
+        <div className="dark:bg-black dark:text-white flex flex-col sm:flex-row justify-between break-words py-3 px-5">
             <p className="text-sm">© Copyright 2021 Zhycorp Development. All rights reserved.</p>
-            <div className="flex items-center mt-4 space-x-4 md:mt-0">
+            <div className="flex items-center mt-4 space-x-4 sm:mt-0">
                 <a href="https://zhycorp.net/twitter"
                     className="transition-colors duration-300 text-deep-purple-100 hover:text-teal-accent-400">
                     <svg viewBox="0 0 24 24" fill="currentColor" className="h-5">
