@@ -17,22 +17,21 @@
 - A production-ready project, setup the bot without coding.
 
 ## General Setup
-1. Download and install [Node.js](https://nodejs.org) version `16.6.0` or above
-2. Download and install [Python](https://python.org) version `3.6.0` or above
-3. Open `.env_example` file and rename it to `.env`
-4. Install required and optional dependencies
+1. Download and install [Node.js](https://nodejs.org) version `16.6.0` and [Python](https://python.org) version `3.6.0` or above
+2. Open `.env_example` file and rename it to `.env`
+3. Install required and optional dependencies
 ```sh
 $ npm install
 ```
-5. Compile the file
+4. Compile the file
 ```sh
 $ npm run build
 ```
-6. If you want to save your disk spaces, let's prune the save dev dependencies
+5. If you want to save your disk spaces, let's prune the save dev dependencies
 ```sh
 $ npm prune --production
 ```
-7. Finally, you can start the bot
+6. Finally, you can start the bot
 ```sh
 $ npm start
 ```
