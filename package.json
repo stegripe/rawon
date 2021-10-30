@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.6.0",
-    "@discordjs/voice": "^0.6.0",
+    "@discordjs/voice": "^0.7.0",
     "cli-table": "^0.3.6",
     "date-fns": "^2.23.0",
     "discord.js": "^13.1.0",
