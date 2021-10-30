@@ -1,94 +1,90 @@
 {
     "name": "Disc 11",
-    "description": "A dedicated open-source Discord music bot for Zhycorp based on Jukebox, easy to use, and with no coding required.",
+    "description": "A dedicated open-source Discord bot for Zhycorp based on our Discord bot template with more features. Easy to use, and with no coding required.",
     "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/disc-11.png",
     "env": {
-        "SECRET_DISCORD_TOKEN": {
-            "description": "Your Discord bot's token",
+        "DISCORD_TOKEN": {
+            "description": "What is your Discord bot's token? Example: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
             "required": true
         },
-        "SECRET_YT_API_KEY": {
-            "description": "Your Youtube API key for retrieving video info from YouTube if CONFIG_YOUTUBE_DATA_STRATEGY is set to api",
-            "required": false
+        "PREFIX": {
+            "description": "What is the prefix of your bot? Example: !",
+            "required": true,
+            "value": "!"
         },
-        "CONFIG_PREFIX": {
-            "description": "Your bot's prefix",
-            "required": true
+        "EMBED_COLOR": {
+            "description": "What is your bot's embed color code? (hex) | Example: 3CAAFF",
+            "required": false,
+            "value": "3CAAFF"
         },
-        "CONFIG_EMBED_COLOR": {
-            "description": "The color for your bot's embed message (hex code without hashtag)"
+        "LOCALE": {
+            "description": "What is the language of your bot? Example: en | Available: en, es, id",
+            "required": false,
+            "value": "en"
         },
-        "CONFIG_STATUS_TYPE": {
-            "description": "What type of status does the bot use (playing, listening, or watching, default: listening)",
-            "required": false
+        "ACTIVITIES": {
+            "description": "Activity list | Example: [\"Hello!\"]",
+            "required": false,
+            "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} of text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
         },
-        "CONFIG_STATUS_ACTIVITY": {
-            "description": "What status does the bot display (default: \"music on {guildsCount} guilds\", available variables: guildsCount, usersCount, playingCount, and botPrefix). NOTE ON {usersCount} VARIABLE: This only displays cached usersCount, to get full usersCount, please enable CONFIG_FETCH_ALL_USERS",
-            "required": false
+        "ACTIVITY_TYPES": {
+            "description": "Activity type list. The order of this value is the same order as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this | Example: [\"PLAYING\", \"COMPETING\"]",
+            "required": false,
+            "value": "[\"PLAYING\", \"LISTENING\", \"WATCHING\", \"PLAYING\", \"COMPETING\"]"
         },
-        "CONFIG_OWNERS": {
-            "description": "A Discord ID(s), use comma if you want to add more than 1 owner (DO NOT ADD SOMEONE ELSE ID THAT YOU DON'T TRUST)",
-            "required": false
+        "OWNERS": {
+            "description": "What is the owner's ID of the bot? Example: [\"319872685897416725\", \"390045370240991234\"]",
+            "required": false,
+            "value": "[\"\"]"
         },
-        "CONFIG_YOUTUBE_DATA_STRATEGY": {
-            "description": "Strategy for getting video info from youtube (scrape, or api, default: scrape)",
-            "required": false
+        "DEV_GUILD": {
+            "description": "What is your server's ID? Example: [\"332877090003091456\"]",
+            "required": false,
+            "value": "[\"\"]"
         },
-        "CONFIG_DISABLE_INVITE_CMD": {
-            "description": "Whether to disable the invite command or not (default: no)",
-            "required": false
+        "NODE_ENV": {
+            "description": "In which mode do you want to activate your bot? Example: production | Available: production, development",
+            "required": false,
+            "value": "production"
         },
-        "CONFIG_DEFAULT_VOLUME": {
-            "description": "Default volume for music (default: 50)",
-            "required": false
+        "MUSIC_SELECTION_TYPE": {
+            "description": "Which music selection type do you want to use? Example: selectmenu | Available: message (just like in previous version) or selectmenu (uses discord selection menu)",
+            "required": false,
+            "value": "message"
         },
-        "CONFIG_MAX_VOLUME": {
-            "description": "Max volume allowed for track (default: 100)",
-            "required": false
+        "ENABLE_24_7_COMMAND": {
+            "description": "Do you want to enable the 24/7 command? Example: no",
+            "required": false,
+            "value": "no"
         },
-        "CONFIG_DISABLE_SONG_SELECTION": {
-            "description": "Whether to disable selecting tracks on play command, this will automatically selects the first track from search results (default: no)",
-            "required": false
+        "STAY_IN_VC_AFTER_FINISHED": {
+            "description": "Do you want to make your bot not to leave the voice channel after playing a song? Example: no",
+            "required": false,
+            "value": "no"
         },
-        "CONFIG_SEARCH_MAX_RESULTS": {
-            "description": "Maximum tracks to list in tracks selection (default: 10, max: 10)",
-            "required": false
+        "DJ_ROLE_NAME": {
+            "description": "What is your server's DJ role name? Example: DJ",
+            "required": false,
+            "value": "DJ"
         },
-        "CONFIG_SELECT_TIMEOUT": {
-            "description": "Select track timeout when searching tracks (in seconds, default: 20 seconds)",
-            "required": false
+        "MUTE_ROLE_NAME": {
+            "description": "What is your server's Muted role name? Example: Muted",
+            "required": false,
+            "value": "Muted"
         },
-        "CONFIG_ALLOW_DUPLICATE": {
-            "description": "Whether to allow users to add duplicate of tracks (yes or no, default: yes)",
-            "required": false
+        "YES_EMOJI": {
+            "description": "What is your bot's emoji for every success sentences? Example: ✅",
+            "required": false,
+            "value": "✅"
         },
-        "CONFIG_CACHE_YOUTUBE_DOWNLOADS": {
-            "description": "Whether to download and cache tracks from youtube (yes or no, default: no)",
-            "required": false
-        },
-        "CONFIG_CACHE_MAX_LENGTH": {
-            "description": "Max track length in seconds that are allowed to be cached (default: 5400 <1 hour 30 minutes>)",
-            "required": false
-        },
-        "CONFIG_DELETE_QUEUE_TIMEOUT": {
-            "description": "Timeout in seconds before queue is deleted when no one is in the voice channel (default: 180 <3 minutes>)",
-            "required": false
-        },
-        "CONFIG_TOTALSHARDS": {
-            "description": "Total shards to spawn, use \"auto\" or a number (default: auto)",
-            "required": false
-        },
-        "CONFIG_FETCH_ALL_USERS": {
-            "description": "Whether to fetch all users on startup (warning: increased memory usage especially for bots with large users, default: no) (note: You need to enable privileged GUILD_MEMBERS Intents on the developer page)",
-            "required": false
-        },
-        "CONFIG_DEBUG": {
-            "description": "Should logging use debug level? Please note that this is not recommended in production (default: no)",
-            "required": false
+        "NO_EMOJI": {
+            "description": "What is your bot's emoji for every failed sentences? Example: ❌",
+            "required": false,
+            "value": "❌"
         }
     },
     "repository": "https://github.com/zhycorp/disc-11",
-    "stack": "container",
+    "website": "https://disc-11.zhycorp.net",
     "formation": {
         "worker": {
             "quantity": 1,
