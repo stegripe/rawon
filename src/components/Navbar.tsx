@@ -76,6 +76,10 @@ export default function Navbar() {
                   className="text-gray-500 dark:text-white dark:hover:text-gray-400 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                   GitHub
                 </a>
+                <a href="https://zhycorp.net/discord"
+                  className="text-gray-500 dark:text-white dark:hover:text-gray-400 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                  Support
+                </a>
               </div>
             </Popover.Group>
           </div>
@@ -142,6 +146,10 @@ export default function Navbar() {
                 <a href="https://github.com/zhycorp/disc-11"
                     className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
                     GitHub
+                </a>
+                <a href="https://zhycorp.net/discord"
+                    className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
+                    Support
                 </a>
               </div>
             </div>
