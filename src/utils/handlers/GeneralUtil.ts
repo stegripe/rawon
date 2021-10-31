@@ -365,7 +365,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
                 queue.songs.delete(song.key);
             }
 
-            const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random().key : (queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? (queue.songs.sortByIndex().first()?.key ?? "") : ""));
+            const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random()?.key : (queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? (queue.songs.sortByIndex().first()?.key ?? "") : ""));
 
             queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)

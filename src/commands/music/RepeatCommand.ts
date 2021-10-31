@@ -16,19 +16,16 @@ import { Message } from "discord.js";
             {
                 description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "queue",
-                required: false,
                 type: "SUB_COMMAND"
             },
             {
                 description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "song",
-                required: false,
                 type: "SUB_COMMAND"
             },
             {
                 description: i18n.__("commands.music.repeat.slashDisable"),
                 name: "disable",
-                required: false,
                 type: "SUB_COMMAND"
             }
         ]
