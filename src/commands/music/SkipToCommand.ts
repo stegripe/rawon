@@ -10,7 +10,7 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { Message } from "discord.js";
 
 @DefineCommand({
-    aliases: [],
+    aliases: ["st"],
     description: i18n.__("commands.music.skipTo.description"),
     name: "skipto",
     slash: {

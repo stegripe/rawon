@@ -9,6 +9,7 @@ import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 
 @DefineCommand({
+    aliases: ["np"],
     description: i18n.__("commands.music.nowplaying.description"),
     name: "nowplaying",
     slash: {

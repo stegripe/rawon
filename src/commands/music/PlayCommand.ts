@@ -9,6 +9,7 @@ import i18n from "../../config";
 import { Message } from "discord.js";
 
 @DefineCommand({
+    aliases: ["p", "add"],
     description: i18n.__("commands.music.play.description"),
     name: "play",
     slash: {
