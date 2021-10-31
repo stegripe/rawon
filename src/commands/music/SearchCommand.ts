@@ -78,7 +78,7 @@ export class SearchCommand extends BaseCommand {
             return this.client.commands.get("play")!.execute(newCtx);
         }
 
-        const tracks = await searchTrack(this.client, query, source as "youtube" | "soundcloud").catch(() => undefined);
+        const tracks = await searchTrack(this.client, query, source as "youtube" | "soundcloud").then(x => ({ items: x.items.slice(0, 10), type: x.type })).catch(() => undefined);
         if (!tracks || (tracks.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noTracks"), true)] });
         if (this.client.config.musicSelectionType === "selectmenu") {
             return ctx.send({
