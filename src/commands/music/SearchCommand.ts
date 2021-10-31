@@ -6,7 +6,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
 import i18n from "../../config";
-import { Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction } from "discord.js";
+import { Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction, CommandInteractionOptionResolver } from "discord.js";
 import { decodeHTML } from "entities";
 
 @DefineCommand({
@@ -64,7 +64,7 @@ export class SearchCommand extends BaseCommand {
             return;
         }
         const source = ctx.options?.getString("source") ?? (["youtube", "soundcloud"].includes(ctx.args.slice(-1)[0]?.toLowerCase()) ? ctx.args.pop()! : "youtube");
-        const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? ctx.options?.getMessage("message")?.content;
+        const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? (ctx.options as CommandInteractionOptionResolver<"present">|null)?.getMessage("message")?.content;
 
         if (!query) {
             return ctx.send({
