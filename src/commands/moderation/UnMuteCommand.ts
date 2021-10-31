@@ -48,15 +48,15 @@ export class UnMuteCommand extends BaseCommand {
                 embeds: [
                     createEmbed("info", i18n.__mf("commands.moderation.unmute.userUnmuted", { guildName: ctx.guild.name }))
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter(i18n.__mf("commands.moderation.common.unmutedByString", { author: ctx.author.tag }), ctx.author.displayAvatarURL({ dynamic: true }))
+                        .setFooter(i18n.__mf("commands.moderation.unmute.unmutedByString", { author: ctx.author.tag }), ctx.author.displayAvatarURL({ dynamic: true }))
                         .setTimestamp(Date.now())
                 ]
             });
         }
 
         const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err as string|undefined));
-        if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.common.unmuteFail", { message: unmute.message }))] });
+        if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.unmute.unmuteFail", { message: unmute.message }))] });
 
-        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.common.unmuteSuccess", { user: member.user.tag }), true)] });
+        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.unmute.unmuteSuccess", { user: member.user.tag }), true)] });
     }
 }

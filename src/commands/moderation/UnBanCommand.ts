@@ -36,7 +36,7 @@ export class UnBanCommand extends BaseCommand {
         const resolved = ctx.guild.bans.resolve(user?.id as string);
 
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
-        if (!resolved) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.common.alreadyUnban"), true)] });
+        if (!resolved) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.unban.alreadyUnban"), true)] });
 
         const unban = await ctx.guild.bans.remove(user.id, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : i18n.__("commands.moderation.common.noReasonString")))
             .catch(err => new Error(err as string|undefined));
