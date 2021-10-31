@@ -6,7 +6,7 @@ import i18n from "../../config";
 import { ColorResolvable } from "discord.js";
 
 @DefineCommand({
-    aliases: [],
+    aliases: ["pang", "pung", "peng", "pong"],
     description: i18n.__("commands.general.ping.description"),
     name: "ping",
     slash: {
