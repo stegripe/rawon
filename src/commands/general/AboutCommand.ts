@@ -35,7 +35,7 @@ table.push(
 );
 
 @DefineCommand({
-    aliases: ["botinfo", "info", "information", "stats"],
+    aliases: ["information", "info", "botinfo", "stats"],
     description: i18n.__("commands.general.about.description"),
     name: "about",
     slash: {

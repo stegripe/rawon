@@ -10,7 +10,7 @@ import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 import { Message } from "discord.js";
 
 @DefineCommand({
-    aliases: ["ly"],
+    aliases: ["ly", "lyric"],
     description: i18n.__("commands.music.lyrics.description"),
     name: "lyrics",
     slash: {
