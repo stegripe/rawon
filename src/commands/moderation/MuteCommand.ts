@@ -49,15 +49,15 @@ export class MuteCommand extends BaseCommand {
                     createEmbed("error", i18n.__("commands.moderation.mute.userMuted"))
                         .setColor("LIGHT_GREY")
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter(i18n.__mf("commands.moderation.common.mutedByString", { author: ctx.author.tag }), ctx.author.displayAvatarURL({ dynamic: true }))
+                        .setFooter(i18n.__mf("commands.moderation.mute.mutedByString", { author: ctx.author.tag }), ctx.author.displayAvatarURL({ dynamic: true }))
                         .setTimestamp(Date.now())
                 ]
             });
         }
 
         const mute = await member.roles.add(muteRole, reason).catch(err => new Error(err as string|undefined));
-        if (mute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.common.muteFail", { message: mute.message }))] });
+        if (mute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.mute.muteFail", { message: mute.message }))] });
 
-        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.common.muteSuccess", { user: member.user.tag }), true)] });
+        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.mute.muteSuccess", { user: member.user.tag }), true)] });
     }
 }
