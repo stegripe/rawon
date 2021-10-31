@@ -83,7 +83,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                             this.client.logger.info(`Registered ${command.meta.name} to user context for global.`);
                                         }
                                     }
-                                    if (!allCmd.has(command.meta.name) && command.meta.slash) {
+                                    if (!allCmd.has(command.meta.name) && command.meta.slash && this.client.config.enableSlashCommand) {
                                         if (!command.meta.slash.name) Object.assign(command.meta.slash, { name: command.meta.name });
                                         if (!command.meta.slash.description) Object.assign(command.meta.slash, { description: command.meta.description });
 
