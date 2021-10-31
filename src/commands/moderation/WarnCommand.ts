@@ -34,15 +34,15 @@ export class WarnCommand extends BaseCommand {
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
 
         const dm = await member.createDM().catch(() => undefined);
-        if (!dm) await ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noDM"))] });
+        if (!dm) await ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.warn.noDM"))] });
 
         const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
-        const embed = createEmbed("warn", i18n.__mf("commands.moderation.common.userWarned", { guildName: ctx.guild!.name }))
+        const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.userWarned", { guildName: ctx.guild!.name }))
             .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-            .setFooter(i18n.__("commands.moderation.common.warnedByString"), ctx.author.displayAvatarURL({ dynamic: true }))
+            .setFooter(i18n.__("commands.moderation.warn.warnedByString"), ctx.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp(Date.now());
 
         await dm?.send({ embeds: [embed] });
-        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.common.warnSuccess", { user: member.tag }), true)] });
+        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.warn.warnSuccess", { user: member.tag }), true)] });
     }
 }
