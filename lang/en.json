@@ -126,7 +126,7 @@
 			"lyrics": {
 				"description": "Show the lyrics from the song",
 				"slashDescription": "Song to search",
-				"usage": "{prefix}ly [song]",
+				"usage": "{prefix}lyrics [song]",
 				"noQuery": "There is nothing playing or no arguments provided.",
 				"apiError": "The API could not find the song **{song}**, because: `{message}`"
 			},

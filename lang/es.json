@@ -126,7 +126,7 @@
 			"lyrics": {
 				"description": "Muestra la letra de una canción",
 				"slashDescription": "Canción a buscar",
-				"usage": "{prefix}ly [canción]",
+				"usage": "{prefix}lyrics [canción]",
 				"noQuery": "No se está reproduciendo nada o no se ingresaron argumentos.",
 				"apiError": "El API no pudo encontrar la canción **{song}**, porque: {message}"
 			},
