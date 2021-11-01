@@ -46,7 +46,7 @@
 		"moderation": {
 			"common": {
 				"noUserSpecified": "Please specify someone.",
-				"noReasonString": "[Not Specified]",
+				"noReasonString": "[Not specified]",
 				"reasonString": "**Reason**"
 			},
 			"ban": {
@@ -143,7 +143,7 @@
 			"play": {
 				"description": "Play some music",
 				"slashQueryDescription": "Query to search",
-				"usage": "{prefix}play <query/url>",
+				"usage": "{prefix}play <query | url>",
 				"alreadyPlaying": "The music player is already playing to **`{voiceChannel}`** voice channel.",
 				"noSongData": "That URL doesn't have any song data."
 			},
@@ -152,8 +152,8 @@
 			},
 			"repeat": {
 				"description": "Repeat current music or the queue",
-				"slashQueue": "Set repeat mode to Queue",
-				"slashSong": "Set repeat mode to Song",
+				"slashQueue": "Set repeat mode to **`QUEUE`**",
+				"slashSong": "Set repeat mode to **`SONG`**",
 				"slashDisable": "Disable repeat mode",
 				"usage": "{prefix}repeat <{options}>",
 				"actualMode": "Current repeat mode is **`{mode}`**",
@@ -174,14 +174,14 @@
 				"noTracks": "I can't obtain any search results.",
 				"queueEmbed": "Please select some music, you can choose more than one using blank space or {separator}.\n",
 				"trackSelectionMessage": "Music Selection",
-				"cancelMessage": "Type `{cancel}` or `c` to cancel music selection.",
+				"cancelMessage": "Type {cancel} or c to cancel music selection.",
 				"noSelection": "No or invalid value entered, music selection canceled.",
 				"canceledMessage": "Music selection canceled.",
 				"interactionContent": "Please select some music",
 				"interactionPlaceholder": "Select some music"
 			},
 			"shuffle": {
-				"description": "Turns mode for shuffle feature",
+				"description": "Set mode for shuffle feature",
 				"actualState": "Shuffle mode is **`{state}`**",
 				"newState": "Shuffle mode is now set to **`{state}`**"
 			},
@@ -222,7 +222,7 @@
 				"changeVolume": "To change the volume, provide volume number when using this command.",
 				"plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
 				"volumeLimit": "I can't set the volume above **`{maxVol}`**",
-				"newVolume": "Volume set to **{volume}**"
+				"newVolume": "Volume has set to **`{volume}`**"
 			}
 		}
 	},
@@ -257,16 +257,16 @@
 		},
 		"createMessage": "Hi {author}, my prefix is **`{prefix}`**",
 		"voiceStateUpdate": {
-			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
+			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has deleted.",
 			"reconfigureConnection": "Moved to a voice channel with different region. Re-configuring connection...",
 			"connectionReconfigured": "Connection successfully re-configured.",
 			"unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted.",
 			"joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
 			"unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
-			"joinStageMessage": "Successfully joined the stage channel as Speaker.",
+			"joinStageMessage": "Successfully joined to the stage channel as Speaker.",
 			"deleteQueue": "**`{duration}`** has passed and there's no one who joined the voice channel, the queue has deleted.",
 			"deleteQueueFooter": "Queue Deleted",
-			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has paused. If there's no one who joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
+			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has paused.\nIf there's no one who joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
 			"pauseQueueFooter": "Queue Paused",
 			"resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
 			"resumeQueueFooter": "Queue Resumed"
@@ -274,6 +274,6 @@
 	},
 	"reusable": {
 		"pageFooter": "Page {actual} of {total}",
-		"invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information."
+		"invalidUsage": "Invalid usage, please use **`{prefix}{name}`** for more information."
 	}
 }
