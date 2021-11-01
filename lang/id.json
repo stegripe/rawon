@@ -124,7 +124,7 @@
 			"lyrics": {
 				"description": "Menampilkan lirik lagu",
 				"slashDescription": "Judul lagu untuk dicari",
-				"usage": "{prefix}ly [song]",
+				"usage": "{prefix}lyrics [song]",
 				"noQuery": "Tidak ada yang sedang dimainkan atau tidak ada argumen yang diberikan.",
 				"apiError": "Tidak dapat menemukan lagu **{song}**, dikarenakan: `{message}`"
 			},
