@@ -141,7 +141,7 @@
 			"play": {
 				"description": "Memainkan beberapa lagu",
 				"slashQueryDescription": "Kata pencarian",
-				"usage": "{prefix}play <kata pencarian/link>",
+				"usage": "{prefix}play <kata pencarian / link>",
 				"alreadyPlaying": "Media player sedang memainkan lagu di channel **`{voiceChannel}`**.",
 				"noSongData": "Link tersebut tidak memiliki data lagu."
 			},
@@ -150,8 +150,8 @@
 			},
 			"repeat": {
 				"description": "Mengulang lagu yang sedang dimainkan atau setelahnya",
-				"slashQueue": "Mengatur mode pengulangan ke `Queue/Antrian`",
-				"slashSong": "Mengatur mode pengulangan ke `Song/Lagu`",
+				"slashQueue": "Mengatur mode pengulangan ke **`QUEUE`**",
+				"slashSong": "Mengatur mode pengulangan ke **`SONG`**",
 				"slashDisable": "Mematikan mode pengulangan",
 				"actualMode": "Mode pengulangan: **`{mode}`**",
 				"newMode": "Mode pengulangan telah diatur ke **`{mode}`**"
@@ -171,11 +171,11 @@
 				"noTracks": "Saya tidak dapat menemukan hasil pencarian.",
 				"queueEmbed": "Silahkan pilih beberapa lagu, kamu bisa memilih lebih dari satu menggunakan spasi atau {separator}.\n",
 				"trackSelectionMessage": "Pemilihan lagu",
-				"cancelMessage": "Ketik `{cancel}` atau `c` untuk membatalkan pemilihan lagu.",
+				"cancelMessage": "Ketik {cancel} atau c untuk membatalkan pemilihan lagu.",
 				"noSelection": "Angka yang diberikan tidak valid, pemilihan lagu dibatalkan.",
 				"canceledMessage": "Pemilihan lagu dibatalkan.",
 				"interactionContent": "Silahkan pilih beberapa lagu",
-				"interactionPlaceholder": "Silahkan Pilih beberapa lagu"
+				"interactionPlaceholder": "Silahkan pilih beberapa lagu"
 			},
 			"shuffle": {
 				"description": "Acak antrian",
@@ -260,7 +260,7 @@
 			"joinStageMessage": "Berhasil bergabung ke stage channel sebagai Speaker.",
 			"deleteQueue": "**`{duration}`** telah berlalu dan belum ada yang memasuki voice channel, antrian telah dihapus.",
 			"deleteQueueFooter": "Antrian dihapus",
-			"pauseQueue": "Semua orang telah keluar dari voice channel. Untuk menyimpan penggunaan, antrian telah dijeda. Jika masih tidak ada yang memasuki voice channel dalam **`{duration}`**, antrian akan dihapus.",
+			"pauseQueue": "Semua orang telah keluar dari voice channel. Untuk menyimpan penggunaan, antrian telah dijeda.\nJika masih tidak ada yang memasuki voice channel dalam **`{duration}`**, antrian akan dihapus.",
 			"pauseQueueFooter": "Antrian dijeda",
 			"resumeQueue": "Seseorang telah memasuki voice channel.\nMelanjutkan **{song}**",
 			"resumeQueueFooter": "Antrian dilanjutkan"
@@ -268,6 +268,6 @@
 	},
 	"reusable": {
 		"pageFooter": "Halaman {actual} dari {total}",
-		"invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix} {name}`** untuk informasi lebih lanjut."
+		"invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix}{name}`** untuk informasi lebih lanjut."
 	}
 }
