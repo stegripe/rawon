@@ -40,7 +40,7 @@ import { Message } from "discord.js";
             }
         ]
     },
-    usage: i18n.__mf("commands.music.skipTo.usage", { options: "\"first\"|\"last\"" })
+    usage: i18n.__("commands.music.skipTo.usage", { options: "first | last" })
 })
 export class SkipToCommand extends BaseCommand {
     @inVC()
