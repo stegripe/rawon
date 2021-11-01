@@ -47,7 +47,7 @@ export class PlayCommand extends BaseCommand {
 
         if (!query) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", { prefix: `\`${this.client.config.prefix}help\``, name: `\`${this.meta.name}\`` }))]
+                embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", { prefix: `${this.client.config.prefix}help`, name: `${this.meta.name}` }))]
             });
         }
 

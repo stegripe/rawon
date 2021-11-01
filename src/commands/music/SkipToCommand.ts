@@ -51,7 +51,7 @@ export class SkipToCommand extends BaseCommand {
         if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"))] });
 
         const targetType = (ctx.args[0] as string | undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position");
-        if (!targetType) return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", { prefix: `\`${this.client.config.prefix}help\``, name: `\`${this.meta.name}\`` }))] });
+        if (!targetType) return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", { prefix: `${this.client.config.prefix}help`, name: `${this.meta.name}` }))] });
 
         const songs = [...ctx.guild!.queue!.songs.sortByIndex().values()];
         if (!["first", "last"].includes(String(targetType).toLowerCase()) && (!isNaN(Number(targetType)) && !songs[Number(targetType) - 1])) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true)] });
