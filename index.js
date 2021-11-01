@@ -71,6 +71,12 @@ if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
     process.exit(0);
 }
 
+if (!isGlitch) {
+    console.info("[INFO] This bot is not running on Glitch. Installing ffmpeg-static...");
+    execSync("npm i ffmpeg-static");
+    console.info("[INFO] ffmpeg-static installed");
+}
+
 if (isGlitch || isReplit) {
     new Server((req, res) => {
         const now = new Date().toLocaleString("en-US");
