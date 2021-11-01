@@ -274,6 +274,6 @@
 	},
 	"reusable": {
 		"pageFooter": "Page {actual} of {total}",
-		"invalidUsage": "Invalid usage, please use **`{prefix}{name}`** for more information."
+		"invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information."
 	}
 }

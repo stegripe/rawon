@@ -268,6 +268,6 @@
 	},
 	"reusable": {
 		"pageFooter": "Halaman {actual} dari {total}",
-		"invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix}{name}`** untuk informasi lebih lanjut."
+		"invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix} {name}`** untuk informasi lebih lanjut."
 	}
 }
