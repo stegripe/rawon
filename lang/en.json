@@ -155,6 +155,7 @@
 				"slashQueue": "Set repeat mode to Queue",
 				"slashSong": "Set repeat mode to Song",
 				"slashDisable": "Disable repeat mode",
+				"usage": "{prefix}repeat <{options}>",
 				"actualMode": "Current repeat mode is **`{mode}`**",
 				"newMode": "The repeat mode has been set to **`{mode}`**"
 			},
