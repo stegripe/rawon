@@ -178,7 +178,7 @@
 				"noSelection": "No or invalid value entered, music selection canceled.",
 				"canceledMessage": "Music selection canceled.",
 				"interactionContent": "Please select some music",
-				"interactionPlaceholder": "Select some music"
+				"interactionPlaceholder": "Please select some music"
 			},
 			"shuffle": {
 				"description": "Set mode for shuffle feature",
