@@ -2,7 +2,16 @@ const { execSync } = require("child_process");
 const { existsSync } = require("fs");
 const { resolve } = require("path");
 const { Server } = require("https");
-require("dotenv/config");
+
+try {
+    require("dotenv/config");
+} catch (err) {
+    console.info("[INFO] It seems dotenv hasn't been installed. Installing...");
+    execSync("npm i dotenv");
+    console.info("[INFO] dotenv installed. Retrieving env data...");
+    require("dotenv/config");
+    console.info("[INFO] Env data retrieved");
+}
 
 const isGlitch = (
     process.env.PROJECT_DOMAIN !== undefined &&
