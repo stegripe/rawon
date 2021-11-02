@@ -24,7 +24,7 @@
 			},
 			"help": {
 				"description": "Shows the command list or information for a specific command",
-				"slashDescription": "Command name to view a specific information about command",
+				"slashDescription": "Command name to view a specific information about the command",
 				"usage": "{prefix}help [command]",
 				"authorString": "{username} - Command List",
 				"footerString": "{prefix}help <command> to get more information on a specific command",
@@ -204,7 +204,7 @@
 				"skipMessage": "Skipped to **{song}**"
 			},
 			"stayInQueue": {
-				"description": "Makes the bot stay in the voice channel when queue was ended",
+				"description": "Makes the bot stay in the voice channel when the queue has ended",
 				"slashDescription": "Turns mode for stay-in-voice feature",
 				"247Disabled": "Stay-in-voice feature is disabled.",
 				"actualState": "Stay-in-voice is **`{state}`**",
@@ -222,7 +222,7 @@
 				"changeVolume": "To change the volume, provide volume number when using this command.",
 				"plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
 				"volumeLimit": "I can't set the volume above **`{maxVol}`**",
-				"newVolume": "Volume has set to **`{volume}`**"
+				"newVolume": "Volume has been set to **`{volume}`**"
 			}
 		}
 	},
@@ -257,16 +257,16 @@
 		},
 		"createMessage": "Hi {author}, my prefix is **`{prefix}`**",
 		"voiceStateUpdate": {
-			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has deleted.",
-			"reconfigureConnection": "Moved to a voice channel with different region. Re-configuring connection...",
+			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
+			"reconfigureConnection": "Moved to a voice channel with a different region. Re-configuring connection...",
 			"connectionReconfigured": "Connection successfully re-configured.",
 			"unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted.",
 			"joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
 			"unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
 			"joinStageMessage": "Successfully joined to the stage channel as Speaker.",
-			"deleteQueue": "**`{duration}`** has passed and there's no one who joined the voice channel, the queue has deleted.",
+			"deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
 			"deleteQueueFooter": "Queue Deleted",
-			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has paused.\nIf there's no one who joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
+			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
 			"pauseQueueFooter": "Queue Paused",
 			"resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
 			"resumeQueueFooter": "Queue Resumed"
