@@ -264,7 +264,7 @@
 			"joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
 			"unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
 			"joinStageMessage": "Successfully joined to the stage channel as Speaker.",
-			"deleteQueue": "**`{duration}`** has passed and there's no one who joined the voice channel, the queue has deleted.",
+			"deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
 			"deleteQueueFooter": "Queue Deleted",
 			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
 			"pauseQueueFooter": "Queue Paused",
