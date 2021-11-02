@@ -14,7 +14,7 @@
 - Basic music commands.
 - Basic moderation commands.
 - Configurable, and easy to use.
-- A production-ready project, setup the bot without coding.
+- A production-ready project, set up the bot without coding.
 
 ## General Setup
 1. Download and install [Node.js](https://nodejs.org) version `16.6.0` and [Python](https://python.org) version `3.6.0` or above
@@ -27,7 +27,7 @@ $ npm install
 ```sh
 $ npm run build
 ```
-5. If you want to save your disk spaces, let's prune the save dev dependencies
+5. If you want to save your disk spaces, let's prune the dev dependencies
 ```sh
 $ npm prune --production
 ```
@@ -44,7 +44,7 @@ You can host this bot to make it stay online on Heroku.
 <a href="https://heroku.com/deploy?template=https://github.com/zhycorp/disc-11"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
 
 ### Glitch
-You can use Glitch too for this project, featured with its own code editor.
+You can use Glitch too for this project, featured with its code editor.
 
 1. Star and fork this project
 2. Go to [glitch.com](https://glitch.com) and make an account
