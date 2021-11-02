@@ -222,7 +222,7 @@
 				"changeVolume": "To change the volume, provide volume number when using this command.",
 				"plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
 				"volumeLimit": "I can't set the volume above **`{maxVol}`**",
-				"newVolume": "Volume has set to **`{volume}`**"
+				"newVolume": "Volume has been set to **`{volume}`**"
 			}
 		}
 	},
@@ -257,7 +257,7 @@
 		},
 		"createMessage": "Hi {author}, my prefix is **`{prefix}`**",
 		"voiceStateUpdate": {
-			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has deleted.",
+			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
 			"reconfigureConnection": "Moved to a voice channel with a different region. Re-configuring connection...",
 			"connectionReconfigured": "Connection successfully re-configured.",
 			"unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted.",
