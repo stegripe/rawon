@@ -2,7 +2,7 @@
 	"commands": {
 		"developers": {
 			"eval": {
-				"description": "Ejecutar código javascript",
+				"description": "Evaluar al bot",
 				"usage": "{prefix}eval <código>",
 				"noCode": "No se ingresó código.",
 				"outputString": "Salida",
@@ -20,7 +20,7 @@
 				"ffmpegVersionString": "Versión de FFmpeg",
 				"botVersionString": "Versión del bot",
 				"sourceCodeString": "Código Fuente",
-				"aboutFooter": "Información de {botname}"
+				"aboutFooter": "Información del bot {botname}"
 			},
 			"help": {
 				"description": "Muestra la lista de comandos o la información de un comando específico",
@@ -126,7 +126,7 @@
 			"lyrics": {
 				"description": "Muestra la letra de una canción",
 				"slashDescription": "Canción a buscar",
-				"usage": "{prefix}ly [canción]",
+				"usage": "{prefix}lyrics [canción]",
 				"noQuery": "No se está reproduciendo nada o no se ingresaron argumentos.",
 				"apiError": "El API no pudo encontrar la canción **{song}**, porque: {message}"
 			},
@@ -143,7 +143,7 @@
 			"play": {
 				"description": "Reproduce algo de música",
 				"slashQueryDescription": "Canción a reproducir",
-				"usage": "{prefix}play <consulta/url>",
+				"usage": "{prefix}play <consulta / url>",
 				"alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz **`{voiceChannel}`**.",
 				"noSongData": "Este URL no tiene datos de canciones."
 			},
@@ -152,9 +152,10 @@
 			},
 			"repeat": {
 				"description": "Repite la canción actual o la cola completa",
-				"slashQueue": "Establece el mode repetición a Cola",
-				"slashSong": "Establece el mode repetición a Canción",
+				"slashQueue": "Establece el mode repetición a **`QUEUE`**",
+				"slashSong": "Establece el mode repetición a **`ONE`**",
 				"slashDisable": "Desactiva el modo repetición",
+				"usage": "{prefix}repeat <{options}>",
 				"actualMode": "El modo de repetición actual es **`{mode}`**",
 				"newMode": "El modo de reproducción ha sido establecido a **`{mode}`**"
 			},
@@ -173,11 +174,11 @@
 				"noTracks": "No pude obtener resultados.",
 				"queueEmbed": "Por favor selecciona la canción, puedes seleccionar más de una usando un espacio en blanco o {separator}.\n",
 				"trackSelectionMessage": "Selección de canciones",
-				"cancelMessage": "Escribe `{cancel}` o `{c}` para cancelar la selección de música.",
+				"cancelMessage": "Escribe {cancel} o c para cancelar la selección de música.",
 				"noSelection": "No se ingresó un valor o este fue inválido, búsqueda de canciones cancelada.",
 				"canceledMessage": "Selección de canciones cancelada.",
 				"interactionContent": "Por favor selecciona una canción",
-				"interactionPlaceholder": "Selecciona algunas canciones"
+				"interactionPlaceholder": "Por favor selecciona una canción"
 			},
 			"shuffle": {
 				"description": "Aleatoriza la cola",
@@ -235,7 +236,7 @@
 		},
 		"generalHandler": {
 			"handleVideoInitial": "Se han añadido {length} canciones a la cola\n\n",
-			"errorJoining": "Error while joining the voice channel, because: {message}",
+			"errorJoining": "Error al unirse al canal de voz, porque: {message}",
 			"queueEnded": "La cola ha terminado, usa **`{usage}`** para reproducir más música.",
 			"leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
 			"startPlaying": "Se empezó a reproducir **{song}**",
@@ -263,7 +264,7 @@
 			"joinStageMessage": "Me uní al canal escenario con éxito como orador.",
 			"deleteQueue": "Ha pasado **`{duration}`** y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
 			"deleteQueueFooter": "Cola eliminada",
-			"pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola. Si nadie se une al canal de voz en **`{duration}`**, la cola se eliminará.",
+			"pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en **`{duration}`**, la cola se eliminará.",
 			"pauseQueueFooter": "Cola pausada",
 			"reconfigureConnection": "He sido movido a un canal de voz en una región diferente. Reconfigurando conexión...",
 			"resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando **{song}**",

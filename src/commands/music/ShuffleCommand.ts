@@ -37,13 +37,13 @@ export class ShuffleCommand extends BaseCommand {
     public execute(ctx: CommandContext): void {
         const newState = ctx.options?.getString("state") ?? ctx.args[0] as string | undefined;
         if (!newState) {
-            void ctx.reply({ embeds: [createEmbed("info", i18n.__mf("commands.music.shuffle.actualState", { state: `\`${ctx.guild?.queue?.shuffle ? "ENABLED" : "DISABLED"}\`` }))] });
+            void ctx.reply({ embeds: [createEmbed("info", `🔀 **|** ${i18n.__mf("commands.music.shuffle.actualState", { state: `\`${ctx.guild?.queue?.shuffle ? "ENABLED" : "DISABLED"}\`` })}`)] });
             return;
         }
 
         ctx.guild!.queue!.shuffle = (newState === "enable");
         const isShuffle = ctx.guild?.queue?.shuffle;
 
-        void ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", { isShuffle: `\`${isShuffle ? "ON" : "OFF"}\`` })}`)] });
+        void ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", { state: `\`${isShuffle ? "ENABLED" : "DISABLED"}\`` })}`)] });
     }
 }
