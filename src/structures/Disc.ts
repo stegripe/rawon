@@ -2,7 +2,7 @@ import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import { CommandManager } from "../utils/CommandManager";
 import { EventsLoader } from "../utils/EventsLoader";
 import { ClientUtils } from "../utils/ClientUtils";
-import { createLogger } from "../utils/Logger";
+import { DiscLogger } from "../utils/DiscLogger";
 import { formatMS } from "../utils/formatMS";
 import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
@@ -11,7 +11,7 @@ import got from "got";
 
 export class Disc extends Client {
     public readonly config = config;
-    public readonly logger = createLogger("bot", this.config.isProd);
+    public readonly logger = new DiscLogger({ prod: this.config.isProd });
     public readonly request = got;
     public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
