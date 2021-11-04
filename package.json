@@ -24,7 +24,6 @@
   "dependencies": {
     "@discordjs/opus": "^0.6.0",
     "@discordjs/voice": "^0.7.2",
-    "cli-table": "^0.3.6",
     "date-fns": "^2.23.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
@@ -40,7 +39,6 @@
     "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
-    "@types/cli-table": "^0.3.0",
     "@types/i18n": "^0.13.1",
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
