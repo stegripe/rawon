@@ -28,7 +28,7 @@
             "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} of text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
         },
         "ACTIVITY_TYPES": {
-            "description": "Activity type list. The order of this value is the same order as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this | Example: [\"PLAYING\", \"COMPETING\"]",
+            "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this | Example: [\"PLAYING\", \"COMPETING\"]",
             "required": false,
             "value": "[\"PLAYING\", \"LISTENING\", \"WATCHING\", \"PLAYING\", \"COMPETING\"]"
         },
@@ -48,7 +48,7 @@
             "value": "production"
         },
         "MUSIC_SELECTION_TYPE": {
-            "description": "Which music selection type do you want to use? Example: selectmenu | Available: message (just like in previous version) or selectmenu (uses discord selection menu)",
+            "description": "Which music selection type do you want to use? Example: selectmenu | Available: message (just like in the previous version) or selectmenu (uses discord selection menu)",
             "required": false,
             "value": "message"
         },
@@ -58,7 +58,7 @@
             "value": "no"
         },
         "STAY_IN_VC_AFTER_FINISHED": {
-            "description": "Do you want to make your bot not to leave the voice channel after playing a song? Example: no",
+            "description": "Do you want to make your bot not leave the voice channel after playing a song? Example: no",
             "required": false,
             "value": "no"
         },
@@ -73,12 +73,12 @@
             "value": "Muted"
         },
         "YES_EMOJI": {
-            "description": "What is your bot's emoji for every success sentences? Example: ✅",
+            "description": "What is your bot's emoji for every success sentence? Example: ✅",
             "required": false,
             "value": "✅"
         },
         "NO_EMOJI": {
-            "description": "What is your bot's emoji for every failed sentences? Example: ❌",
+            "description": "What is your bot's emoji for every failed sentence? Example: ❌",
             "required": false,
             "value": "❌"
         }
