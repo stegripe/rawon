@@ -29,7 +29,9 @@ import { Message } from "discord.js";
                 type: "SUB_COMMAND"
             }
         ]
-    }
+    },
+    usage: i18n.__("commands.music.repeat.usage", { options: "queue | one | disable" })
+
 })
 export class RepeatCommand extends BaseCommand {
     @inVC()
