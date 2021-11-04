@@ -26,7 +26,6 @@ export interface PaginationPayload {
 }
 
 export interface IDiscLoggerOptions {
-    serviceName: string;
     prod: boolean;
 }
 
