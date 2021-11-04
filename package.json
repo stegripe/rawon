@@ -36,7 +36,6 @@
     "soundcloud.ts": "^0.4.1",
     "spotify-url-info": "^2.2.3",
     "tslib": "^2.3.1",
-    "winston": "^3.3.3",
     "youtube-dl-exec": "^1.2.6",
     "youtubei": "^0.0.1-rc.23"
   },
