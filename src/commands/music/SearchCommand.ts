@@ -1,13 +1,13 @@
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil";
 import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { DefineCommand } from "../../utils/decorators/DefineCommand";
+import { parseHTMLElements } from "../../utils/parseHTMLElements";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
 import i18n from "../../config";
 import { Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction, CommandInteractionOptionResolver } from "discord.js";
-import { decodeHTML } from "entities";
 
 @DefineCommand({
     contextChat: "Add to queue",
@@ -99,7 +99,7 @@ export class SearchCommand extends BaseCommand {
 
         const msg = await ctx.send({
             embeds: [
-                createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(decodeHTML(x.title))}`).join("\n")}\`\`\``)
+                createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`).join("\n")}\`\`\``)
                     .setAuthor(i18n.__("commands.music.search.trackSelectionMessage"), this.client.user?.displayAvatarURL())
                     .setFooter(i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }))
             ]
