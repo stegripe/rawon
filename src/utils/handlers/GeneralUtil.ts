@@ -2,6 +2,7 @@ import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
 import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { ServerQueue } from "../../structures/ServerQueue";
+import { parseHTMLElements } from "../parseHTMLElements";
 import { ButtonPagination } from "../ButtonPagination";
 import { getInfo, getStream } from "./YTDLUtil";
 import { createEmbed } from "../createEmbed";
@@ -12,7 +13,6 @@ import i18n from "../../config";
 import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, DiscordGatewayAdapterCreator, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
 import { Guild, Message, Util, VoiceChannel, StageChannel } from "discord.js";
 import { Video, SearchResult } from "youtubei";
-import { decodeHTML } from "entities";
 import { URL } from "url";
 
 export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
@@ -237,7 +237,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", { length: toQueue.length });
         const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
-            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(decodeHTML(song.title))}`));
+            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`));
 
             return texts.join("\n");
         }));
