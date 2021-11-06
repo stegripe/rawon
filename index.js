@@ -56,6 +56,10 @@ const isGitHub = (
     process.env.GITHUB_SERVER_URL !== undefined
 )
 
+if (isGlitch) {
+    execSync("npm i --only=prod");
+}
+
 if (isReplit) {
     console.warn("[WARN] We haven't added stable support for running this bot using Replit, bugs and errors may come up.");
 }
@@ -84,11 +88,6 @@ if (isGlitch || isReplit) {
     }).listen(Number(process.env.PORT) || 3000);
 
     console.info(`[INFO] ${isGlitch ? "Glitch" : "Replit"} environment detected, trying to compile...`);
-    if (!existsSync(resolve(__dirname, "node_modules", "typescript", "bin", "tsc"))) {
-        console.info("[INFO] It seems TypeScript hasn't been installed, trying to install...");
-        execSync("npm i --save-dev typescript");
-        console.info("[INFO] TypeScript installed, compiling...");
-    }
     execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
     console.info("[INFO] Compiled.");
 }
