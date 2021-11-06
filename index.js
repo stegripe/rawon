@@ -1,5 +1,5 @@
 const { execSync } = require("child_process");
-const { existsSync } = require("fs");
+const { existsSync, rmSync } = require("fs");
 const { resolve } = require("path");
 const { Server } = require("https");
 
@@ -99,6 +99,7 @@ if (isGlitch || isReplit) {
 
     if (!existsSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
         console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
+        rmSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "youtube-dl" : "youtube-dl.exe"));
         await require("youtube-dl-exec/scripts/postinstall");
         console.info("[INFO] Yt-dlp has downloaded.");
     }
