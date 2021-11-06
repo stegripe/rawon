@@ -7,7 +7,7 @@ try {
     require("dotenv/config");
 } catch (err) {
     console.info("[INFO] It seems dotenv hasn't been installed. Installing...");
-    execSync("npm i dotenv");
+    execSync("npm i --only=prod dotenv");
     console.info("[INFO] dotenv installed. Retrieving env data...");
     require("dotenv/config");
     console.info("[INFO] Env data retrieved");
