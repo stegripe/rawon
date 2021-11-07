@@ -1,33 +1,35 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-@DefineCommand({
-    contextUser: "Kick Member",
-    description: i18n.__("commands.moderation.kick.description"),
-    name: "kick",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.moderation.kick.slashMemberDescription"),
-                name: "member",
-                required: true,
-                type: "USER"
-            },
-            {
-                description: i18n.__("commands.moderation.kick.slashReasonDescription"),
-                name: "reason",
-                required: false,
-                type: "STRING"
-            }
-        ]
-    },
-    usage: i18n.__("commands.moderation.kick.usage")
-})
 export class KickCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            contextUser: "Kick Member",
+            description: i18n.__("commands.moderation.kick.description"),
+            name: "kick",
+            slash: {
+                options: [
+                    {
+                        description: i18n.__("commands.moderation.kick.slashMemberDescription"),
+                        name: "member",
+                        required: true,
+                        type: "USER"
+                    },
+                    {
+                        description: i18n.__("commands.moderation.kick.slashReasonDescription"),
+                        name: "reason",
+                        required: false,
+                        type: "STRING"
+                    }
+                ]
+            },
+            usage: i18n.__("commands.moderation.kick.usage")
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("KICK_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.kick.userNoPermission"), true)] });
         if (!ctx.guild?.me?.permissions.has("KICK_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.kick.botNoPermission"), true)] });

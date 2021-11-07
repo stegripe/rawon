@@ -1,26 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 import { Message, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
 
-@DefineCommand({
-    aliases: ["h", "command", "commands", "cmd", "cmds"],
-    description: i18n.__("commands.general.help.description"),
-    name: "help",
-    slash: {
-        options: [
-            {
-                type: "STRING",
-                name: "command",
-                description: i18n.__("commands.general.help.slashDescription")
-            }
-        ]
-    },
-    usage: i18n.__("commands.general.help.usage")
-})
 export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")
         .setAuthor(i18n.__mf("commands.general.help.authorString", { username: this.client.user!.username }), this.client.user?.displayAvatarURL() as string)
@@ -28,6 +12,24 @@ export class HelpCommand extends BaseCommand {
 
     private readonly infoEmbed = createEmbed("info")
         .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
+
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["h", "command", "commands", "cmd", "cmds"],
+            description: i18n.__("commands.general.help.description"),
+            name: "help",
+            slash: {
+                options: [
+                    {
+                        type: "STRING",
+                        name: "command",
+                        description: i18n.__("commands.general.help.slashDescription")
+                    }
+                ]
+            },
+            usage: i18n.__("commands.general.help.usage")
+        });
+    }
 
     public async execute(ctx: CommandContext): Promise<Message|void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();

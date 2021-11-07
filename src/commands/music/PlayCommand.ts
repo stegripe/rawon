@@ -1,6 +1,5 @@
 import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
@@ -8,28 +7,31 @@ import { ISong } from "../../typings";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-@DefineCommand({
-    aliases: ["p", "add"],
-    description: i18n.__("commands.music.play.description"),
-    name: "play",
-    slash: {
-        description: i18n.__("commands.music.play.description"),
-        options: [
-            {
-                description: i18n.__("commands.music.play.slashQueryDescription"),
-                name: "query",
-                type: "STRING",
-                required: true
-            }
-        ]
-    },
-    usage: i18n.__("commands.music.play.usage")
-})
 export class PlayCommand extends BaseCommand {
-    @inVC()
-    @validVC()
-    @sameVC()
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["p", "add"],
+            description: i18n.__("commands.music.play.description"),
+            name: "play",
+            slash: {
+                description: i18n.__("commands.music.play.description"),
+                options: [
+                    {
+                        description: i18n.__("commands.music.play.slashQueryDescription"),
+                        name: "query",
+                        type: "STRING",
+                        required: true
+                    }
+                ]
+            },
+            usage: i18n.__("commands.music.play.usage")
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<Message|void> {
+        if (!inVC(ctx)) return;
+        if (!validVC(ctx)) return;
+        if (!sameVC(ctx)) return;
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const voiceChannel = ctx.member!.voice.channel!;

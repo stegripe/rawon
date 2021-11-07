@@ -1,4 +1,3 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { ButtonPagination } from "../../utils/ButtonPagination";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
@@ -9,18 +8,22 @@ import { chunk } from "../../utils/chunk";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 
-@DefineCommand({
-    aliases: ["q"],
-    description: i18n.__("commands.music.queue.description"),
-    name: "queue",
-    slash: {
-        options: []
-    },
-    usage: "{prefix}queue"
-})
 export class QueueCommand extends BaseCommand {
-    @haveQueue()
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["q"],
+            description: i18n.__("commands.music.queue.description"),
+            name: "queue",
+            slash: {
+                options: []
+            },
+            usage: "{prefix}queue"
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<void> {
+        if (!haveQueue(ctx)) return;
+
         const np = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
         const full = ctx.guild!.queue!.songs.sortByIndex();
         const songs = ctx.guild?.queue?.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);

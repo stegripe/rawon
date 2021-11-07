@@ -17,7 +17,8 @@
 		"typeRoots": [
 			"node_modules/@types",
 			"src/typings"
-		]
+		],
+		"isolatedModules": true
 	},
 	"exclude": [],
 	"include": ["src/**/*.ts", "src/**/*.json"]

@@ -1,4 +1,3 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { version as BotVersion } from "../../../package.json";
 import { BaseCommand } from "../../structures/BaseCommand";
@@ -27,16 +26,19 @@ const value = values.map(x => `${x.map((y, i) => {
     return `${y}${" ".repeat(sortingArr.sort((a, b) => (b[i] ?? "").length - (a[i] ?? "").length)[0][i].length - y.length)}`;
 }).join("   ::   ")}`).join("\n");
 
-@DefineCommand({
-    aliases: ["information", "info", "botinfo", "stats"],
-    description: i18n.__("commands.general.about.description"),
-    name: "about",
-    slash: {
-        options: []
-    },
-    usage: "{prefix}about"
-})
 export class AboutCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["information", "info", "botinfo", "stats"],
+            description: i18n.__("commands.general.about.description"),
+            name: "about",
+            slash: {
+                options: []
+            },
+            usage: "{prefix}about"
+        });
+    }
+
     public execute(ctx: CommandContext): void {
         void ctx.reply({
             embeds: [
