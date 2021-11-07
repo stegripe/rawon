@@ -1,33 +1,35 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-@DefineCommand({
-    contextUser: "Unmute Member",
-    description: i18n.__("commands.moderation.unmute.description"),
-    name: "unmute",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.moderation.unmute.slashMemberDescription"),
-                name: "member",
-                required: true,
-                type: "USER"
-            },
-            {
-                description: i18n.__("commands.moderation.unmute.slashReasonDescription"),
-                name: "reason",
-                required: false,
-                type: "STRING"
-            }
-        ]
-    },
-    usage: i18n.__("commands.moderation.unmute.usage")
-})
 export class UnMuteCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            contextUser: "Unmute Member",
+            description: i18n.__("commands.moderation.unmute.description"),
+            name: "unmute",
+            slash: {
+                options: [
+                    {
+                        description: i18n.__("commands.moderation.unmute.slashMemberDescription"),
+                        name: "member",
+                        required: true,
+                        type: "USER"
+                    },
+                    {
+                        description: i18n.__("commands.moderation.unmute.slashReasonDescription"),
+                        name: "reason",
+                        required: false,
+                        type: "STRING"
+                    }
+                ]
+            },
+            usage: i18n.__("commands.moderation.unmute.usage")
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("MANAGE_ROLES")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.mute.userNoPermission"), true)] });
         if (!ctx.guild?.me?.permissions.has("MANAGE_ROLES")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.mute.botNoPermission"), true)] });

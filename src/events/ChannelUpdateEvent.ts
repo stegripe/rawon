@@ -1,12 +1,14 @@
-import { DefineEvent } from "../utils/decorators/DefineEvent";
 import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { GuildChannel, VoiceChannel } from "discord.js";
 import i18n from "i18n";
 
-@DefineEvent("channelUpdate")
 export class ChannelUpdateEvent extends BaseEvent {
+    public constructor(client: BaseEvent["client"]) {
+        super(client, "channelUpdate");
+    }
+
     public async execute(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
         if (!newChannel.guild.queue || (newChannel.id !== newChannel.guild.queue.connection?.joinConfig.channelId) || (oldChannel.type !== "GUILD_VOICE" && oldChannel.type !== "GUILD_STAGE_VOICE") || (newChannel.type !== "GUILD_VOICE" && newChannel.type !== "GUILD_STAGE_VOICE")) return;
 

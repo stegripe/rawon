@@ -1,4 +1,3 @@
-import { DefineEvent } from "../utils/decorators/DefineEvent";
 import { ServerQueue } from "../structures/ServerQueue";
 import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
@@ -8,8 +7,11 @@ import i18n from "../config";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { Message, VoiceState, VoiceChannel, StageChannel } from "discord.js";
 
-@DefineEvent("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
+    public constructor(client: BaseEvent["client"]) {
+        super(client, "voiceStateUpdate");
+    }
+
     public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message|void> {
         const queue = newState.guild.queue;
         if (!queue) return;

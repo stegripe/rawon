@@ -1,5 +1,4 @@
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
@@ -8,20 +7,24 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
 import i18n from "../../config";
 
-@DefineCommand({
-    aliases: ["s"],
-    description: i18n.__("commands.music.skip.description"),
-    name: "skip",
-    slash: {
-        options: []
-    },
-    usage: "{prefix}skip"
-})
 export class SkipCommand extends BaseCommand {
-    @inVC()
-    @haveQueue()
-    @sameVC()
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["s"],
+            description: i18n.__("commands.music.skip.description"),
+            name: "skip",
+            slash: {
+                options: []
+            },
+            usage: "{prefix}skip"
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<void> {
+        if (!inVC(ctx)) return;
+        if (!haveQueue(ctx)) return;
+        if (!sameVC(ctx)) return;
+
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!).catch(() => null);
         const song = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
 
