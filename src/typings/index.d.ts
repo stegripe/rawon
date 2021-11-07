@@ -25,6 +25,10 @@ export interface PaginationPayload {
     edit(index: number, embed: MessageEmbed, page: string): unknown;
 }
 
+export interface IDiscLoggerOptions {
+    prod: boolean;
+}
+
 export interface SlashOption {
     name?: string;
     description?: string;

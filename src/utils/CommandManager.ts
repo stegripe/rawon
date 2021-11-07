@@ -19,13 +19,13 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             .then(async categories => {
                 this.client.logger.info(`Found ${categories.length} categories, registering...`);
                 for (const category of categories) {
-                    const meta = await import(resolve(this.path, category, "category.meta.json")) as ICategoryMeta;
+                    const meta = await import(resolve(this.path, category, "category.meta.js")) as ICategoryMeta;
 
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);
 
                     await fs.readdir(resolve(this.path, category))
-                        .then(files => files.filter(f => f !== "category.meta.json"))
+                        .then(files => files.filter(f => f !== "category.meta.js"))
                         .then(async files => {
                             let disabledCount = 0;
 

@@ -1,9 +1,11 @@
-import { DefineEvent } from "../utils/decorators/DefineEvent";
 import { BaseEvent } from "../structures/BaseEvent";
 import { Presence } from "discord.js";
 
-@DefineEvent("ready")
 export class ReadyEvent extends BaseEvent {
+    public constructor(client: BaseEvent["client"]) {
+        super(client, "ready");
+    }
+
     public async execute(): Promise<void> {
         if (this.client.application?.owner) this.client.config.owners.push(this.client.application.owner.id);
 

@@ -1,13 +1,14 @@
 const { execSync } = require("child_process");
-const { existsSync } = require("fs");
+const { existsSync, rmSync } = require("fs");
 const { resolve } = require("path");
 const { Server } = require("https");
 
 try {
     require("dotenv/config");
 } catch (err) {
-    console.info("[INFO] It seems dotenv hasn't been installed. Installing...");
-    execSync("npm i dotenv");
+    console.info("[INFO] It seems dotenv hasn't been installed. Trying to re-install all modules...");
+    if (existsSync(resolve(process.cwd(), "node_modules"))) rmSync(resolve(process.cwd(), "node_modules"), { recursive: true });
+    execSync("npm i --only=prod dotenv");
     console.info("[INFO] dotenv installed. Retrieving env data...");
     require("dotenv/config");
     console.info("[INFO] Env data retrieved");
@@ -56,6 +57,10 @@ const isGitHub = (
     process.env.GITHUB_SERVER_URL !== undefined
 )
 
+if (isGlitch) {
+    execSync("npm i --only=prod");
+}
+
 if (isReplit) {
     console.warn("[WARN] We haven't added stable support for running this bot using Replit, bugs and errors may come up.");
 }
@@ -73,7 +78,7 @@ if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
 
 if (!isGlitch) {
     console.info("[INFO] This bot is not running on Glitch. Installing ffmpeg-static...");
-    execSync("npm i ffmpeg-static");
+    execSync("npm i --only=prod ffmpeg-static");
     console.info("[INFO] ffmpeg-static installed");
 }
 
@@ -84,12 +89,7 @@ if (isGlitch || isReplit) {
     }).listen(Number(process.env.PORT) || 3000);
 
     console.info(`[INFO] ${isGlitch ? "Glitch" : "Replit"} environment detected, trying to compile...`);
-    if (!existsSync(resolve(__dirname, "node_modules", "typescript", "bin", "tsc"))) {
-        console.info("[INFO] It seems TypeScript hasn't been installed, trying to install...");
-        execSync("npm i --save-dev typescript");
-        console.info("[INFO] TypeScript installed, compiling...");
-    }
-    execSync(`${resolve(process.cwd(), "node_modules", "typescript", "bin", "tsc")} --build tsconfig.json`);
+    execSync(`npm run compile`);
     console.info("[INFO] Compiled.");
 }
 
@@ -100,10 +100,11 @@ if (isGlitch || isReplit) {
 
     if (!existsSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
         console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
+        rmSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "youtube-dl" : "youtube-dl.exe"));
         await require("youtube-dl-exec/scripts/postinstall");
         console.info("[INFO] Yt-dlp has downloaded.");
     }
 
     console.info("[INFO] Starting the bot...");
-    require("./dist/src/index.js");
+    require("./dist/index.js");
 })();

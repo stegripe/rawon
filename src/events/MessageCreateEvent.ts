@@ -1,11 +1,13 @@
-import { DefineEvent } from "../utils/decorators/DefineEvent";
 import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
 import { Message, User } from "discord.js";
 import i18n from "../config";
 
-@DefineEvent("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
+    public constructor(client: BaseEvent["client"]) {
+        super(client, "messageCreate");
+    }
+
     public async execute(message: Message): Promise<Message|void> {
         if (message.author.bot || message.channel.type === "DM" || !this.client.commands.isReady) return message;
 

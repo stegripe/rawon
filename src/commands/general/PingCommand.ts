@@ -1,20 +1,22 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 import { ColorResolvable } from "discord.js";
 
-@DefineCommand({
-    aliases: ["pang", "pung", "peng", "pong"],
-    description: i18n.__("commands.general.ping.description"),
-    name: "ping",
-    slash: {
-        options: []
-    },
-    usage: "{prefix}ping"
-})
 export class PingCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["pang", "pung", "peng", "pong"],
+            description: i18n.__("commands.general.ping.description"),
+            name: "ping",
+            slash: {
+                options: []
+            },
+            usage: "{prefix}ping"
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         const before = Date.now();

@@ -1,33 +1,35 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-@DefineCommand({
-    contextUser: "Ban Member",
-    description: i18n.__("commands.moderation.ban.description"),
-    name: "ban",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.moderation.ban.slashMemberIDDescription"),
-                name: "memberid",
-                required: true,
-                type: "STRING"
-            },
-            {
-                description: i18n.__("commands.moderation.ban.slashReasonDescription"),
-                name: "reason",
-                required: false,
-                type: "STRING"
-            }
-        ]
-    },
-    usage: i18n.__("commands.moderation.ban.usage")
-})
 export class BanCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            contextUser: "Ban Member",
+            description: i18n.__("commands.moderation.ban.description"),
+            name: "ban",
+            slash: {
+                options: [
+                    {
+                        description: i18n.__("commands.moderation.ban.slashMemberIDDescription"),
+                        name: "memberid",
+                        required: true,
+                        type: "STRING"
+                    },
+                    {
+                        description: i18n.__("commands.moderation.ban.slashReasonDescription"),
+                        name: "reason",
+                        required: false,
+                        type: "STRING"
+                    }
+                ]
+            },
+            usage: i18n.__("commands.moderation.ban.usage")
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.ban.userNoPermission"), true)] });
         if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.ban.botNoPermission"), true)] });

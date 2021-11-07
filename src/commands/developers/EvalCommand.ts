@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, no-eval */
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
@@ -7,15 +6,18 @@ import i18n from "../../config";
 import { Message } from "discord.js";
 import { inspect } from "util";
 
-@DefineCommand({
-    aliases: ["evaluate", "ev", "js-exec"],
-    cooldown: 0,
-    description: i18n.__("commands.developers.eval.description"),
-    devOnly: true,
-    name: "eval",
-    usage: i18n.__("commands.developers.eval.usage")
-})
 export class EvalCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["evaluate", "ev", "js-exec"],
+            cooldown: 0,
+            description: i18n.__("commands.developers.eval.description"),
+            devOnly: true,
+            name: "eval",
+            usage: i18n.__("commands.developers.eval.usage")
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<Message|void> {
         const msg = ctx;
         const client = this.client;

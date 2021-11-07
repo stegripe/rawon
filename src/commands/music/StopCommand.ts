@@ -1,24 +1,27 @@
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 
-@DefineCommand({
-    aliases: ["disconnect", "dc"],
-    description: i18n.__("commands.music.stop.description"),
-    name: "stop",
-    slash: {
-        options: []
-    },
-    usage: "{prefix}stop"
-})
 export class StopCommand extends BaseCommand {
-    @inVC()
-    @validVC()
-    @sameVC()
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["disconnect", "dc"],
+            description: i18n.__("commands.music.stop.description"),
+            name: "stop",
+            slash: {
+                options: []
+            },
+            usage: "{prefix}stop"
+        });
+    }
+
     public execute(ctx: CommandContext): void {
+        if (!inVC(ctx)) return;
+        if (!validVC(ctx)) return;
+        if (!sameVC(ctx)) return;
+
         ctx.guild?.queue?.stop();
         ctx.guild!.queue!.lastMusicMsg = null;
 
