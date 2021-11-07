@@ -1,51 +1,53 @@
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil";
 import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
+import { parseHTMLElements } from "../../utils/parseHTMLElements";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
 import i18n from "../../config";
 import { Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction, CommandInteractionOptionResolver } from "discord.js";
-import { decodeHTML } from "entities";
 
-@DefineCommand({
-    contextChat: "Add to queue",
-    description: i18n.__("commands.music.search.description"),
-    name: "search",
-    slash: {
-        description: i18n.__("commands.music.search.slashDescription"),
-        options: [
-            {
-                description: i18n.__("commands.music.search.slashQueryDescription"),
-                name: "query",
-                type: "STRING"
-            },
-            {
-                choices: [
+export class SearchCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            contextChat: "Add to queue",
+            description: i18n.__("commands.music.search.description"),
+            name: "search",
+            slash: {
+                description: i18n.__("commands.music.search.slashDescription"),
+                options: [
                     {
-                        name: "YouTube",
-                        value: "youtube"
+                        description: i18n.__("commands.music.search.slashQueryDescription"),
+                        name: "query",
+                        type: "STRING"
                     },
                     {
-                        name: "SoundCloud",
-                        value: "soundcloud"
+                        choices: [
+                            {
+                                name: "YouTube",
+                                value: "youtube"
+                            },
+                            {
+                                name: "SoundCloud",
+                                value: "soundcloud"
+                            }
+                        ],
+                        description: i18n.__("commands.music.search.slashSourceDescription"),
+                        name: "source",
+                        required: false,
+                        type: "STRING"
                     }
-                ],
-                description: i18n.__("commands.music.search.slashSourceDescription"),
-                name: "source",
-                required: false,
-                type: "STRING"
-            }
-        ]
-    },
-    usage: i18n.__("commands.music.search.usage")
-})
-export class SearchCommand extends BaseCommand {
-    @inVC()
-    @validVC()
-    @sameVC()
+                ]
+            },
+            usage: i18n.__("commands.music.search.usage")
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<Message|void> {
+        if (!inVC(ctx)) return;
+        if (!validVC(ctx)) return;
+        if (!sameVC(ctx)) return;
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const values = ctx.additionalArgs.get("values");
@@ -99,7 +101,7 @@ export class SearchCommand extends BaseCommand {
 
         const msg = await ctx.send({
             embeds: [
-                createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(decodeHTML(x.title))}`).join("\n")}\`\`\``)
+                createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`).join("\n")}\`\`\``)
                     .setAuthor(i18n.__("commands.music.search.trackSelectionMessage"), this.client.user?.displayAvatarURL())
                     .setFooter(i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }))
             ]

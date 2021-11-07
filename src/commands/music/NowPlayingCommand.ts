@@ -1,4 +1,3 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
@@ -8,18 +7,22 @@ import i18n from "../../config";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 
-@DefineCommand({
-    aliases: ["np"],
-    description: i18n.__("commands.music.nowplaying.description"),
-    name: "nowplaying",
-    slash: {
-        options: []
-    },
-    usage: "{prefix}nowplaying"
-})
 export class NowPlayingCommand extends BaseCommand {
-    @haveQueue()
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["np"],
+            description: i18n.__("commands.music.nowplaying.description"),
+            name: "nowplaying",
+            slash: {
+                options: []
+            },
+            usage: "{prefix}nowplaying"
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<void> {
+        if (!haveQueue(ctx)) return;
+
         function getEmbed(): MessageEmbed {
             const song = (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song;
 

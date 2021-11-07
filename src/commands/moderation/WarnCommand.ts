@@ -1,32 +1,34 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-@DefineCommand({
-    description: i18n.__("commands.moderation.warn.description"),
-    name: "warn",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.moderation.warn.slashMemberDescription"),
-                name: "member",
-                required: true,
-                type: "USER"
-            },
-            {
-                description: i18n.__("commands.moderation.warn.slashReasonDescription"),
-                name: "reason",
-                required: false,
-                type: "STRING"
-            }
-        ]
-    },
-    usage: i18n.__("commands.moderation.warn.usage")
-})
 export class WarnCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            description: i18n.__("commands.moderation.warn.description"),
+            name: "warn",
+            slash: {
+                options: [
+                    {
+                        description: i18n.__("commands.moderation.warn.slashMemberDescription"),
+                        name: "member",
+                        required: true,
+                        type: "USER"
+                    },
+                    {
+                        description: i18n.__("commands.moderation.warn.slashReasonDescription"),
+                        name: "reason",
+                        required: false,
+                        type: "STRING"
+                    }
+                ]
+            },
+            usage: i18n.__("commands.moderation.warn.usage")
+        });
+    }
+
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.warn.userNoPermission"), true)] });
 

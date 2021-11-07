@@ -1,4 +1,3 @@
-import { DefineCommand } from "../../utils/decorators/DefineCommand";
 import { CommandContext } from "../../structures/CommandContext";
 import { ButtonPagination } from "../../utils/ButtonPagination";
 import { IQueueSong, ILyricsAPIResult } from "../../typings";
@@ -9,23 +8,26 @@ import i18n from "../../config";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 import { Message } from "discord.js";
 
-@DefineCommand({
-    aliases: ["ly", "lyric"],
-    description: i18n.__("commands.music.lyrics.description"),
-    name: "lyrics",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.lyrics.slashDescription"),
-                name: "query",
-                type: "STRING",
-                required: false
-            }
-        ]
-    },
-    usage: i18n.__("commands.music.lyrics.usage")
-})
 export class LyricsCommand extends BaseCommand {
+    public constructor(client: BaseCommand["client"]) {
+        super(client, {
+            aliases: ["ly", "lyric"],
+            description: i18n.__("commands.music.lyrics.description"),
+            name: "lyrics",
+            slash: {
+                options: [
+                    {
+                        description: i18n.__("commands.music.lyrics.slashDescription"),
+                        name: "query",
+                        type: "STRING",
+                        required: false
+                    }
+                ]
+            },
+            usage: i18n.__("commands.music.lyrics.usage")
+        });
+    }
+
     public execute(ctx: CommandContext): Promise<Message|void> {
         const query = ctx.args.length >= 1 ? ctx.args.join(" ") : ctx.options?.getString("query") ? ctx.options.getString("query") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title);
         if (!query) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)] });

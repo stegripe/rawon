@@ -1,36 +1,49 @@
+import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../createEmbed";
-import { Inhibit } from "./Inhibit";
 import i18n from "../../config";
 
-type ResType = (target: unknown, key: string|symbol, descriptor: PropertyDescriptor) => PropertyDescriptor;
+export function haveQueue(ctx: CommandContext): boolean {
+    if (!ctx.guild?.queue) {
+        void ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noQueue"))] });
+        return false;
+    }
 
-export function haveQueue(): ResType {
-    return Inhibit(ctx => {
-        if (!ctx.guild?.queue) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noQueue"))] });
-    });
+    return true;
 }
 
-export function inVC(): ResType {
-    return Inhibit(ctx => {
-        if (!ctx.member?.voice.channel) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noInVC"))] });
-    });
+export function inVC(ctx: CommandContext): boolean {
+    if (!ctx.member?.voice.channel) {
+        void ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noInVC"))] });
+        return false;
+    }
+
+    return true;
 }
 
-export function validVC(): ResType {
-    return Inhibit(ctx => {
-        const voiceChannel = ctx.member?.voice.channel;
+export function validVC(ctx: CommandContext): boolean {
+    const voiceChannel = ctx.member?.voice.channel;
 
-        if (voiceChannel?.id === ctx.guild?.me?.voice.channel?.id) return undefined;
-        if (!voiceChannel?.joinable) return ctx.reply({ embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCJoinable"), true)] });
-        if (!voiceChannel.permissionsFor(ctx.guild!.me!.id)?.has("SPEAK")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCPermission"), true)] });
-    });
+    if (voiceChannel?.id === ctx.guild?.me?.voice.channel?.id) return true;
+    if (!voiceChannel?.joinable) {
+        void ctx.reply({ embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCJoinable"), true)] });
+        return false;
+    }
+    if (!voiceChannel.permissionsFor(ctx.guild!.me!.id)?.has("SPEAK")) {
+        void ctx.reply({ embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCPermission"), true)] });
+        return false;
+    }
+
+    return true;
 }
 
-export function sameVC(): ResType {
-    return Inhibit(ctx => {
-        if (!ctx.guild?.me?.voice.channel) return;
+export function sameVC(ctx: CommandContext): boolean {
+    if (!ctx.guild?.me?.voice.channel) return true;
 
-        const botVC = ctx.guild.queue?.connection?.joinConfig.channelId ?? ctx.guild.me.voice.channel.id;
-        if (ctx.member?.voice.channel?.id !== botVC) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.sameVC"))] });
-    });
+    const botVC = ctx.guild.queue?.connection?.joinConfig.channelId ?? ctx.guild.me.voice.channel.id;
+    if (ctx.member?.voice.channel?.id !== botVC) {
+        void ctx.reply({ embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.sameVC"))] });
+        return false;
+    }
+
+    return true;
 }
