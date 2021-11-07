@@ -3,10 +3,10 @@ import { format } from "date-fns";
 
 enum Colors {
     Reset = "\x1b[0m",
-    Green = "\x1b[32m",
-    Blue = "\x1b[34m",
     Red = "\x1b[31m",
     Yellow = "\x1b[33m",
+    Green = "\x1b[32m",
+    Blue = "\x1b[34m"
 }
 
 export class DiscLogger {
