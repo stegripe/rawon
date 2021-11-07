@@ -1,6 +1,6 @@
+import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../createEmbed";
 import i18n from "../../config";
-import { CommandContext } from "../../structures/CommandContext";
 
 export function haveQueue(ctx: CommandContext): boolean {
     if (!ctx.guild?.queue) {
