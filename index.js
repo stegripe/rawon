@@ -98,9 +98,10 @@ if (isGlitch || isReplit) {
     process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
     process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
 
-    if (!existsSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
+    const ytdlBinaryDir = resolve(__dirname, "node_modules", "youtube-dl-exec", "bin")
+    if (!existsSync(resolve(ytdlBinaryDir, isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
         console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
-        rmSync(resolve(__dirname, "node_modules", "youtube-dl-exec", "bin", isUnix ? "youtube-dl" : "youtube-dl.exe"));
+        if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
         await require("youtube-dl-exec/scripts/postinstall");
         console.info("[INFO] Yt-dlp has downloaded.");
     }
