@@ -28,7 +28,6 @@
     "date-fns": "^2.23.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
-    "ffmpeg-static": "^4.4.0",
     "got": "^11.8.2",
     "i18n": "0.13.3",
     "opusscript": "^0.0.8",
