@@ -47,6 +47,11 @@
             "required": false,
             "value": "production"
         },
+        "ENABLE_SLASH_COMMAND": {
+            "description": "Do you want to enable slash command support? Example: yes",
+            "required": false,
+            "value": "yes"
+        },
         "MUSIC_SELECTION_TYPE": {
             "description": "Which music selection type do you want to use? Example: selectmenu | Available: message (just like in the previous version) or selectmenu (uses discord selection menu)",
             "required": false,
