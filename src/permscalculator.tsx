@@ -165,7 +165,7 @@ function PermsCalculator() {
     }>({
         clientId: "",
         perms: [],
-        scope: "bot",
+        scope: "",
         redirectUri: ""
     });
 
@@ -245,9 +245,9 @@ function PermsCalculator() {
                 <div className="my-4 w-full">
                     <p className="dark:text-white">URL</p>
                     <input className="w-full" disabled
-                        value={`https://discord.com/oauth2/authorize?client_id=${state.clientId || "<CLIENT_ID_HERE>"
-                        }&scope=${state.scope}&permissions=${getEquation()}${state.redirectUri.length ?
-                        `&redirect_uri=${state.redirectUri}`: "" }`} />
+                        value={`https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(state.clientId) || "<CLIENT_ID_HERE>"
+                        }&scope=${encodeURIComponent(state.scope) || "bot"}&permissions=${getEquation()}${state.redirectUri.length ?
+                        `&redirect_uri=${encodeURIComponent(state.redirectUri)}`: "" }`} />
                 </div>
             </div>
         </div>
