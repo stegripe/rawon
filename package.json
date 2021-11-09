@@ -40,7 +40,7 @@
     "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.0.0",
     "@zhycorp/eslint-config": "^6.0.2",
     "eslint": "^8.2.0"
