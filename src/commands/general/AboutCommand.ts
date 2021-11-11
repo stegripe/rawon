@@ -27,7 +27,7 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.processUptimeString"), formatMS(process.uptime() * 1000)],
             [i18n.__("commands.general.about.botUptimeString"), formatMS(process.uptime() * 1000)],
             [""],
-            [i18n.__("commands.general.about.nodeVersionString"), process.version],
+            [i18n.__("commands.general.about.nodeVersionString"), process.versions.node],
             [i18n.__("commands.general.about.discordJSVersionString"), DJSVersion],
             [i18n.__("commands.general.about.ffmpegVersionString"), FFmpegVersion],
             [i18n.__("commands.general.about.botVersionString"), BotVersion],
