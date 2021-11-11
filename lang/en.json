@@ -82,6 +82,7 @@
 				"usage": "{prefix}mute <@mention | id> [reason]",
 				"userNoPermission": "Sorry, but you don't have **`MANAGE ROLES`** permission to use this command.",
 				"botNoPermission": "Sorry, but I don't have **`MANAGE ROLES`** permission.",
+				"cantMuteOwner": "You can't mute the server owner!",
 				"unableToCreateMuteRole": "Unable to create mute role",
 				"alreadyMuted": "That member is already **`MUTED`**",
 				"userMuted": "You have been **`MUTED`** on **{guildName}**",
