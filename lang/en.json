@@ -89,6 +89,16 @@
 				"muteFail": "Unable to **`MUTE`** member, because: `{message}`",
 				"muteSuccess": "**{user}** has been **`MUTED`** on the server."
 			},
+			"purge": {
+				"description": "Delete messages",
+				"slashAmountDescription": "Amount of messages to delete",
+				"usage": "{prefix}purge <amount>",
+				"userNoPermission": "Sorry, but you don't have **`MANAGE MESSAGES`** permission to use this command.",
+				"botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
+				"invalidAmount": "Please specify a valid number of messages to delete.",
+				"purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
+				"purgeSuccess": "**{amount}** messages have been **`PURGED`**"
+			},
 			"unban": {
 				"description": "Unban someone from the server",
 				"slashMemberDescription": "Who do you like to unban?",
