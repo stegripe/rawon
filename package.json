@@ -22,7 +22,7 @@
     "extends": "@zhycorp/eslint-config/typescript"
   },
   "dependencies": {
-    "@discordjs/voice": "^0.7.2",
+    "@discordjs/voice": "^0.7.3",
     "@types/i18n": "^0.13.1",
     "@types/node": "^16.11.7",
     "date-fns": "^2.23.0",
