@@ -78,12 +78,12 @@
             "value": "Muted"
         },
         "YES_EMOJI": {
-            "description": "What is your bot's emoji for every success sentence? Example: ✅",
+            "description": "What should be your bot's emoji for every success sentence? Example: ✅",
             "required": false,
             "value": "✅"
         },
         "NO_EMOJI": {
-            "description": "What is your bot's emoji for every failed sentence? Example: ❌",
+            "description": "What should be your bot's emoji for every failed sentence? Example: ❌",
             "required": false,
             "value": "❌"
         }
