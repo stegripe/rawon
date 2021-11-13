@@ -25,7 +25,7 @@
         "ACTIVITIES": {
             "description": "Activity list | Example: [\"Hello!\"]",
             "required": false,
-            "value": "[\"My default prefix is {prefix}\", \"Music with {userCount} users\", \"{textChannelsCount} text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
+            "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
         },
         "ACTIVITY_TYPES": {
             "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this | Example: [\"PLAYING\", \"COMPETING\"]",
