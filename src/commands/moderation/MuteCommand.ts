@@ -38,6 +38,7 @@ export class MuteCommand extends BaseCommand {
         const member = ctx.guild.members.resolve(memberId!);
 
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
+        if (ctx.guild.ownerId === member.id) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.mute.cantMuteOwner"))] });
 
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild).catch(() => null);
         if (!muteRole) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.mute.unableToCreateMuteRole"))] });
