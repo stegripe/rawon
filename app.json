@@ -8,24 +8,24 @@
             "required": true
         },
         "PREFIX": {
-            "description": "What is the prefix of your bot? Example: !",
+            "description": "What should be the prefix of your bot? Example: !",
             "required": true,
             "value": "!"
         },
         "EMBED_COLOR": {
-            "description": "What is your bot's embed color code? (hex) | Example: 3CAAFF",
+            "description": "What should be your bot's embed color code? (hex) | Example: 3CAAFF",
             "required": false,
             "value": "3CAAFF"
         },
         "LOCALE": {
-            "description": "What is the language of your bot? Example: en | Available: en, es, id",
+            "description": "What should be the language of your bot? Example: en | Available: en, es, id",
             "required": false,
             "value": "en"
         },
         "ACTIVITIES": {
             "description": "Activity list | Example: [\"Hello!\"]",
             "required": false,
-            "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} of text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
+            "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
         },
         "ACTIVITY_TYPES": {
             "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this | Example: [\"PLAYING\", \"COMPETING\"]",
@@ -78,12 +78,12 @@
             "value": "Muted"
         },
         "YES_EMOJI": {
-            "description": "What is your bot's emoji for every success sentence? Example: ✅",
+            "description": "What should be your bot's emoji for every success sentence? Example: ✅",
             "required": false,
             "value": "✅"
         },
         "NO_EMOJI": {
-            "description": "What is your bot's emoji for every failed sentence? Example: ❌",
+            "description": "What should be your bot's emoji for every failed sentence? Example: ❌",
             "required": false,
             "value": "❌"
         }
