@@ -115,8 +115,14 @@ export class SearchCommand extends BaseCommand {
             },
             max: 1
         }).catch(() => undefined);
-        if (!respond) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"))] });
-        if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))] });
+        if (!respond) {
+            msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
+            return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"))] });
+        }
+        if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) {
+            msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
+            return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))] });
+        }
 
         msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
         respond.first()?.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_NUM_DELETE_MSG_ERR:", err));
