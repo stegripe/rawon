@@ -82,11 +82,23 @@
 				"usage": "{prefix}mute <@mention | id> [alasan]",
 				"userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini.",
 				"botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE ROLES`**.",
+				"cantMuteOwner": "Anda tidak bisa mute owner server!",
+				"unableToCreateMuteRole": "Tidak dapat membuat mute role",
 				"alreadyMuted": "Member tersebut sedang di **`MUTE`**",
 				"userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
 				"mutedByString": "Di mute oleh: {author}",
 				"muteFail": "Tidak dapat **`MUTE`** member, dikarenakan: `{message}`",
 				"muteSuccess": "**{user}** telah di **`MUTE`** di server ini."
+			},
+			"purge": {
+				"description": "Hapus pesan",
+				"slashAmountDescription": "Jumlah pesan yang ingin dihapus",
+				"usage": "{prefix}purge <jumlah>",
+				"userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE MESSAGES`** untuk menggunakan perintah ini.",
+				"botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE MESSAGES`**.",
+				"invalidAmount": "Mohon berikan jumlah yang valid.",
+				"purgeFail": "Tidak dapat **`PURGE`** pesan, dikarenakan: `{message}`",
+				"purgeSuccess": "**{amount}** pesan telah di **`PURGED`**"
 			},
 			"unban": {
 				"description": "Unban seseorang dari server",
@@ -203,7 +215,7 @@
 			"stayInQueue": {
 				"description": "Membuat bot menetap di voice channel saat antrian lagu sudah berakhir",
 				"slashDescription": "Mengganti mode fitur Stay-in-voice",
-				"247Disabled": "Fitur Stay-in-voice dimatikan.",
+				"247Disabled": "Perintah Stay-in-voice dimatikan.",
 				"actualState": "Stay-in-voice: **{state}**",
 				"newState": "Stay-in-voice telah diatur ke **{state}**"
 			},
