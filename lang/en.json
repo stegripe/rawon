@@ -217,7 +217,7 @@
 			"stayInQueue": {
 				"description": "Makes the bot stay in the voice channel when the queue has ended",
 				"slashDescription": "Turns mode for stay-in-voice feature",
-				"247Disabled": "Stay-in-voice feature is disabled.",
+				"247Disabled": "Stay-in-voice command is disabled.",
 				"actualState": "Stay-in-voice is **`{state}`**",
 				"newState": "Stay-in-voice is now set to **`{state}`**"
 			},
