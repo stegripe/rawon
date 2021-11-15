@@ -38,6 +38,11 @@
 				"usageString": "Usage",
 				"commandUsageFooter": "<> = required | [] = optional {devOnly}"
 			},
+			"invite": {
+				"description": "Get the invite link for the bot",
+				"inviteTitle": "{bot} - Invite Link",
+				"clickURL": "**[Click here]({url})** to invite this bot to your server."
+			},
 			"ping": {
 				"description": "Shows the current ping of the bot",
 				"footerString": "Latency of: {user}"
