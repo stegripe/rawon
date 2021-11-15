@@ -1,7 +1,7 @@
 import { BaseEvent } from "../structures/BaseEvent";
 import { createEmbed } from "../utils/createEmbed";
-import { Message, User } from "discord.js";
 import i18n from "../config";
+import { Message, User } from "discord.js";
 
 export class MessageCreateEvent extends BaseEvent {
     public constructor(client: BaseEvent["client"]) {

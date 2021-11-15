@@ -38,6 +38,11 @@
 				"usageString": "Penggunaan",
 				"commandUsageFooter": "<> = dibutuhkan | [] = opsional {devOnly}"
 			},
+			"invite": {
+				"description": "Dapatkan link invite untuk bot",
+				"inviteTitle": "{bot} - Link invite",
+				"clickURL": "**[Klik disini]({url})** untung meng-invite bot ini ke server anda."
+			},
 			"ping": {
 				"description": "Menunjukkan ping bot",
 				"footerString": "Latensi dari: {user}"
@@ -82,16 +87,28 @@
 				"usage": "{prefix}mute <@mention | id> [alasan]",
 				"userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini.",
 				"botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE ROLES`**.",
+				"cantMuteOwner": "Anda tidak bisa mute owner server!",
+				"unableToCreateMuteRole": "Tidak dapat membuat mute role",
 				"alreadyMuted": "Member tersebut sedang di **`MUTE`**",
 				"userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
 				"mutedByString": "Di mute oleh: {author}",
 				"muteFail": "Tidak dapat **`MUTE`** member, dikarenakan: `{message}`",
 				"muteSuccess": "**{user}** telah di **`MUTE`** di server ini."
 			},
+			"purge": {
+				"description": "Hapus pesan",
+				"slashAmountDescription": "Jumlah pesan yang ingin dihapus",
+				"usage": "{prefix}purge <jumlah>",
+				"userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE MESSAGES`** untuk menggunakan perintah ini.",
+				"botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE MESSAGES`**.",
+				"invalidAmount": "Mohon berikan jumlah yang benar.",
+				"purgeFail": "Tidak dapat **`PURGE`** pesan, dikarenakan: `{message}`",
+				"purgeSuccess": "**{amount}** pesan telah di **`PURGED`**"
+			},
 			"unban": {
 				"description": "Unban seseorang dari server",
-				"slashMemberDescription": "Siapa yang ingin anda unban?",
-				"slashReasonDescription": "Alasan unban",
+				"slashMemberDescription": "Siapa yang ingin anda un-ban?",
+				"slashReasonDescription": "Alasan un-ban",
 				"usage": "{prefix}unban <id> [alasan]",
 				"alreadyUnban": "Orang itu sedang tidak di **`BAN`**",
 				"unbanFail": "Tidak dapat **`UN-BAN`** member, dikarenakan: `{message}`",
@@ -99,8 +116,8 @@
 			},
 			"unmute": {
 				"description": "Unmute seseorang di server",
-				"slashMemberDescription": "Siapa yang ingin anda unmute?",
-				"slashReasonDescription": "Alasan unmute",
+				"slashMemberDescription": "Siapa yang ingin anda un-mute?",
+				"slashReasonDescription": "Alasan un-mute",
 				"usage": "{prefix}unmute <@mention | id> [alasan]",
 				"noMuted": "Member tersebut sedang tidak di **`MUTE`**",
 				"userUnmuted": "Anda telah di **`UN-MUTE`** di **{guildName}**",
@@ -203,7 +220,7 @@
 			"stayInQueue": {
 				"description": "Membuat bot menetap di voice channel saat antrian lagu sudah berakhir",
 				"slashDescription": "Mengganti mode fitur Stay-in-voice",
-				"247Disabled": "Fitur Stay-in-voice dimatikan.",
+				"247Disabled": "Perintah Stay-in-voice dimatikan.",
 				"actualState": "Stay-in-voice: **{state}**",
 				"newState": "Stay-in-voice telah diatur ke **{state}**"
 			},

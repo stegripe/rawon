@@ -38,6 +38,11 @@
 				"usageString": "Usage",
 				"commandUsageFooter": "<> = required | [] = optional {devOnly}"
 			},
+			"invite": {
+				"description": "Get the invite link for the bot",
+				"inviteTitle": "{bot} - Invite Link",
+				"clickURL": "**[Click here]({url})** to invite this bot to your server."
+			},
 			"ping": {
 				"description": "Shows the current ping of the bot",
 				"footerString": "Latency of: {user}"
@@ -82,6 +87,7 @@
 				"usage": "{prefix}mute <@mention | id> [reason]",
 				"userNoPermission": "Sorry, but you don't have **`MANAGE ROLES`** permission to use this command.",
 				"botNoPermission": "Sorry, but I don't have **`MANAGE ROLES`** permission.",
+				"cantMuteOwner": "You can't mute the server owner!",
 				"unableToCreateMuteRole": "Unable to create mute role",
 				"alreadyMuted": "That member is already **`MUTED`**",
 				"userMuted": "You have been **`MUTED`** on **{guildName}**",
@@ -89,10 +95,20 @@
 				"muteFail": "Unable to **`MUTE`** member, because: `{message}`",
 				"muteSuccess": "**{user}** has been **`MUTED`** on the server."
 			},
+			"purge": {
+				"description": "Delete messages",
+				"slashAmountDescription": "Amount of messages to delete",
+				"usage": "{prefix}purge <amount>",
+				"userNoPermission": "Sorry, but you don't have **`MANAGE MESSAGES`** permission to use this command.",
+				"botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
+				"invalidAmount": "Please specify a valid number of messages to delete.",
+				"purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
+				"purgeSuccess": "**{amount}** messages have been **`PURGED`**"
+			},
 			"unban": {
-				"description": "Unban someone from the server",
-				"slashMemberDescription": "Who do you like to unban?",
-				"slashReasonDescription": "Unban reason",
+				"description": "Un-ban someone from the server",
+				"slashMemberDescription": "Who do you like to un-ban?",
+				"slashReasonDescription": "Un-ban reason",
 				"usage": "{prefix}unban <id> [reason]",
 				"alreadyUnban": "That user is not **`BANNED`**",
 				"unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
@@ -206,7 +222,7 @@
 			"stayInQueue": {
 				"description": "Makes the bot stay in the voice channel when the queue has ended",
 				"slashDescription": "Turns mode for stay-in-voice feature",
-				"247Disabled": "Stay-in-voice feature is disabled.",
+				"247Disabled": "Stay-in-voice command is disabled.",
 				"actualState": "Stay-in-voice is **`{state}`**",
 				"newState": "Stay-in-voice is now set to **`{state}`**"
 			},

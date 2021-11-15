@@ -30,6 +30,7 @@ export const shardsCount: number | "auto" = "auto";
 export const shardingMode: ShardingManagerMode = "worker";
 export const defaultPrefix = process.env.PREFIX?.replace(/"/g, "") ?? "!";
 export const embedColor = process.env.EMBED_COLOR?.toUpperCase() as string || "3CAAFF";
+export const lang = process.env.LOCALE?.toLowerCase() as string || "en";
 export const owners: string[] = JSON.parse(process.env.OWNERS ?? "[]");
 export const devGuild = JSON.parse(process.env.DEV_GUILD ?? "[]");
 export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
@@ -39,11 +40,19 @@ export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase(
 export const musicSelectionType = process.env.MUSIC_SELECTION_TYPE?.toLowerCase() as string || "message";
 export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
 export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
-export const yesEmoji = process.env.YES_EMOJI! || "✅";
-export const noEmoji = process.env.NO_EMOJI! || "❌";
 export const djRoleName = process.env.DJ_ROLE_NAME! || "DJ";
 export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
-export const lang = process.env.LOCALE?.toLowerCase() as string || "en";
+export const yesEmoji = process.env.YES_EMOJI! || "✅";
+export const noEmoji = process.env.NO_EMOJI! || "❌";
+
+export const presenceData: IpresenceData = {
+    activities: (JSON.parse(process.env.ACTIVITIES! || "[]") as string[]).map((x, i) => ({
+        name: x,
+        type: ((JSON.parse(process.env.ACTIVITY_TYPES! || "[]") as string[])[i]?.toUpperCase() || "PLAYING") as Exclude<ActivityType, "CUSTOM">
+    })),
+    status: ["online"] as ClientPresenceStatus[],
+    interval: 60000
+};
 
 i18n.configure({
     defaultLocale: "en",
@@ -57,14 +66,5 @@ i18n.configure({
 });
 
 i18n.setLocale(lang);
-
-export const presenceData: IpresenceData = {
-    activities: (JSON.parse(process.env.ACTIVITIES! || "[]") as string[]).map((x, i) => ({
-        name: x,
-        type: ((JSON.parse(process.env.ACTIVITY_TYPES! || "[]") as string[])[i]?.toUpperCase() || "PLAYING") as Exclude<ActivityType, "CUSTOM">
-    })),
-    status: ["online"] as ClientPresenceStatus[],
-    interval: 60000
-};
 
 export default i18n;

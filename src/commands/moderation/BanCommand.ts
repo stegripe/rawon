@@ -39,7 +39,7 @@ export class BanCommand extends BaseCommand {
         const resolved = ctx.guild.members.resolve(user!);
 
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
-        if (!resolved?.bannable) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.ban.userNoBannable"), true)] });
+        if (!resolved?.bannable) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.ban.userNoBannable"), true)] });
 
         const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
         if (ctx.guild.members.cache.has(user.id)) {

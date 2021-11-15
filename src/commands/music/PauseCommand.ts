@@ -22,10 +22,10 @@ export class PauseCommand extends BaseCommand {
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;
 
-        if (!ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.pause.alreadyPause"), true)] });
+        if (!ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.music.pause.alreadyPause"))] });
 
         ctx.guild.queue.playing = false;
 
-        return ctx.reply({ embeds: [createEmbed("info", `⏸ **|** ${i18n.__("commands.music.pause.pauseMessage")}`)] });
+        return ctx.reply({ embeds: [createEmbed("success", `⏸ **|** ${i18n.__("commands.music.pause.pauseMessage")}`)] });
     }
 }

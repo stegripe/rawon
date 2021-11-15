@@ -38,7 +38,7 @@ export class KickCommand extends BaseCommand {
         const member = ctx.guild.members.resolve(memberId!);
 
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
-        if (!member.kickable) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.kick.userNoKickable"), true)] });
+        if (!member.kickable) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.kick.userNoKickable"), true)] });
 
         const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
         const dm = await member.user.createDM().catch(() => undefined);
@@ -54,7 +54,7 @@ export class KickCommand extends BaseCommand {
         }
 
         const kick = await member.kick(reason).catch(err => new Error(err as string|undefined));
-        if (kick instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.kick.kickFail", { message: kick.message }))] });
+        if (kick instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.kick.kickFail", { message: kick.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.kick.kickSuccess", { user: member.user.tag }), true)] });
     }
