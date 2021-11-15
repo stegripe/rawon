@@ -1,6 +1,7 @@
 import { Disc } from "../structures/Disc";
 import { Guild, Role } from "discord.js";
-import { resolve, parse } from "path";
+import { parse, resolve } from "path";
+import { FFmpeg } from "prism-media";
 
 export class ClientUtils {
     public constructor(public readonly client: Disc) {}
@@ -96,5 +97,14 @@ export class ClientUtils {
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
         const file = (await import(resolve(path)).then(m => m[parse(path).name]));
         return file ? new file(...args) : undefined;
+    }
+
+    public getFFmpegVersion(): string {
+        try {
+            const ffmpeg = FFmpeg.getInfo();
+            return ffmpeg.version;
+        } catch (e) {
+            return "Unknown";
+        }
     }
 }

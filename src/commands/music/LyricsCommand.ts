@@ -1,6 +1,6 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { ButtonPagination } from "../../utils/ButtonPagination";
-import { IQueueSong, ILyricsAPIResult } from "../../typings";
+import { ILyricsAPIResult, IQueueSong } from "../../typings";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { chunk } from "../../utils/chunk";

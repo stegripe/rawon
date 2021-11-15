@@ -38,6 +38,11 @@
 				"usageString": "Uso",
 				"commandUsageFooter": "<> = requerido | [] = opcional {devOnly}"
 			},
+			"invite": {
+				"description": "Obtén el enlace de invitación para el bot",
+				"inviteTitle": "{bot} - Enlace De Invitación",
+				"clickURL": "**[Haga clic]({url})** aquí para invitar a este bot a su servidor."
+			},
 			"ping": {
 				"description": "Muestra el ping actual del bot",
 				"footerString": "Latencia de: {user}"
@@ -88,6 +93,16 @@
 				"mutedByString": "Silenciado por: {author}",
 				"muteFail": "No se pudo **`SILENCIAR`** al miembro, porque: `{message}`",
 				"muteSuccess": "**{user}** ha sido **`SILENCIADO`** en el servidor."
+			},
+			"purge": {
+				"description": "Eliminar mensajes",
+				"slashAmountDescription": "Cantidad de mensajes para eliminar",
+				"usage": "{prefix}purge <monto>",
+				"userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE SERVER`** para usar este comando.",
+				"botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
+				"invalidAmount": "Please specify a valid number of messages to delete.",
+				"purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
+				"purgeSuccess": "**{amount}** messages have been **`PURGED`**"
 			},
 			"unban": {
 				"description": "Desbanea a alguien del servidor",

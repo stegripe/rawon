@@ -5,7 +5,7 @@ import { formatMS } from "../utils/formatMS";
 import { IQueueSong } from "../typings";
 import i18n from "../config";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
-import { Message, VoiceState, VoiceChannel, StageChannel } from "discord.js";
+import { Message, StageChannel, VoiceState, VoiceChannel } from "discord.js";
 
 export class VoiceStateUpdateEvent extends BaseEvent {
     public constructor(client: BaseEvent["client"]) {
@@ -18,13 +18,13 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const newVC = newState.channel;
         const oldVC = oldState.channel;
-        const oldID = oldVC?.id;
         const newID = newVC?.id;
+        const oldID = oldVC?.id;
         const queueVC = newState.guild.channels.cache.get(queue.connection!.joinConfig.channelId!)! as VoiceChannel | StageChannel;
-        const oldMember = oldState.member;
         const member = newState.member;
-        const queueVCMembers = queueVC.members.filter(m => !m.user.bot);
+        const oldMember = oldState.member;
         const newVCMembers = newVC?.members.filter(m => !m.user.bot);
+        const queueVCMembers = queueVC.members.filter(m => !m.user.bot);
         const botID = this.client.user?.id;
 
         if (oldMember?.id === botID && oldID === queueVC.id && newID === undefined) {
@@ -49,11 +49,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
                 try {
                     await entersState(queue.connection!, VoiceConnectionStatus.Ready, 20000);
-                    void msg.edit({ embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.connectionReconfigured"))] });
+                    void msg.edit({ embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.connectionReconfigured"), true)] });
                 } catch (err) {
                     queue.destroy();
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to re-configure networking on ${newState.guild.name} voice channel, the queue was deleted.`);
-                    void msg.edit({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableReconfigureConnection"))] });
+                    void msg.edit({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableReconfigureConnection"), true)] });
                     return;
                 }
             }

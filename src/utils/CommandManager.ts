@@ -1,5 +1,5 @@
 import { CommandContext } from "../structures/CommandContext";
-import { ICommandComponent, ICategoryMeta } from "../typings";
+import { ICategoryMeta, ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
 import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
