@@ -106,9 +106,9 @@
 				"purgeSuccess": "**{amount}** messages have been **`PURGED`**"
 			},
 			"unban": {
-				"description": "Unban someone from the server",
-				"slashMemberDescription": "Who do you like to unban?",
-				"slashReasonDescription": "Unban reason",
+				"description": "Un-ban someone from the server",
+				"slashMemberDescription": "Who do you like to un-ban?",
+				"slashReasonDescription": "Un-ban reason",
 				"usage": "{prefix}unban <id> [reason]",
 				"alreadyUnban": "That user is not **`BANNED`**",
 				"unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
