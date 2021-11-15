@@ -38,6 +38,11 @@
 				"usageString": "Penggunaan",
 				"commandUsageFooter": "<> = dibutuhkan | [] = opsional {devOnly}"
 			},
+			"invite": {
+				"description": "Dapatkan link invite untuk bot",
+				"inviteTitle": "{bot} - Link invite",
+				"clickURL": "**[Klik disini]({url})** untung meng-invite bot ini ke server anda."
+			},
 			"ping": {
 				"description": "Menunjukkan ping bot",
 				"footerString": "Latensi dari: {user}"
@@ -96,14 +101,14 @@
 				"usage": "{prefix}purge <jumlah>",
 				"userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE MESSAGES`** untuk menggunakan perintah ini.",
 				"botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE MESSAGES`**.",
-				"invalidAmount": "Mohon berikan jumlah yang valid.",
+				"invalidAmount": "Mohon berikan jumlah yang benar.",
 				"purgeFail": "Tidak dapat **`PURGE`** pesan, dikarenakan: `{message}`",
 				"purgeSuccess": "**{amount}** pesan telah di **`PURGED`**"
 			},
 			"unban": {
 				"description": "Unban seseorang dari server",
-				"slashMemberDescription": "Siapa yang ingin anda unban?",
-				"slashReasonDescription": "Alasan unban",
+				"slashMemberDescription": "Siapa yang ingin anda un-ban?",
+				"slashReasonDescription": "Alasan un-ban",
 				"usage": "{prefix}unban <id> [alasan]",
 				"alreadyUnban": "Orang itu sedang tidak di **`BAN`**",
 				"unbanFail": "Tidak dapat **`UN-BAN`** member, dikarenakan: `{message}`",
@@ -111,8 +116,8 @@
 			},
 			"unmute": {
 				"description": "Unmute seseorang di server",
-				"slashMemberDescription": "Siapa yang ingin anda unmute?",
-				"slashReasonDescription": "Alasan unmute",
+				"slashMemberDescription": "Siapa yang ingin anda un-mute?",
+				"slashReasonDescription": "Alasan un-mute",
 				"usage": "{prefix}unmute <@mention | id> [alasan]",
 				"noMuted": "Member tersebut sedang tidak di **`MUTE`**",
 				"userUnmuted": "Anda telah di **`UN-MUTE`** di **{guildName}**",
