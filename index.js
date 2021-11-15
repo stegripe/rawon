@@ -78,7 +78,7 @@ if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
 
 if (!isGlitch) {
     console.info("[INFO] This bot is not running on Glitch, trying to install ffmpeg-static...");
-    execSync("npm i --only=prod --no-save ffmpeg-static");
+    execSync("npm i --no-save ffmpeg-static");
     console.info("[INFO] ffmpeg-static has been installed.");
 }
 
