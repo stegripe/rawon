@@ -6,7 +6,7 @@ const { Server } = require("https");
 try {
     require("dotenv/config");
 } catch (err) {
-    console.info("[INFO] It seems dotenv hasn't installed, trying to re-install all modules...");
+    console.info("[INFO] It seems dotenv hasn't been installed, trying to re-install all modules...");
     if (existsSync(resolve(process.cwd(), "node_modules"))) rmSync(resolve(process.cwd(), "node_modules"), { recursive: true });
     execSync("npm i --only=prod dotenv");
     console.info("[INFO] dotenv has been installed, trying to retrieve environment data...");
