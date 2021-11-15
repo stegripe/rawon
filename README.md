@@ -46,6 +46,10 @@ You can host this bot to make it stay online on Heroku.
 ### Glitch
 You can use Glitch too for this project, featured with its code editor.
 
+> Watch the tutorial video on YouTube!
+> 
+> ▶️ **https://youtu.be/ILutlBl_Xyk**
+
 1. Star and fork this project
 2. Go to [glitch.com](https://glitch.com) and make an account
 3. Click **New Project** then **Import from GitHub**, specify the pop-up field with `https://github.com/<your-name>/disc-11` (without `<>`)

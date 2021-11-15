@@ -14,11 +14,11 @@ export class ShuffleCommand extends BaseCommand {
                     {
                         choices: [
                             {
-                                name: "Enable",
+                                name: "ENABLE",
                                 value: "enable"
                             },
                             {
-                                name: "Disable",
+                                name: "DISABLE",
                                 value: "disable"
                             }
                         ],
@@ -46,6 +46,6 @@ export class ShuffleCommand extends BaseCommand {
         ctx.guild!.queue!.shuffle = (newState === "enable");
         const isShuffle = ctx.guild?.queue?.shuffle;
 
-        void ctx.reply({ embeds: [createEmbed("info", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", { state: `\`${isShuffle ? "ENABLED" : "DISABLED"}\`` })}`)] });
+        void ctx.reply({ embeds: [createEmbed("success", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", { state: `\`${isShuffle ? "ENABLED" : "DISABLED"}\`` })}`)] });
     }
 }

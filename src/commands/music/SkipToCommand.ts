@@ -51,7 +51,7 @@ export class SkipToCommand extends BaseCommand {
         if (!sameVC(ctx)) return;
 
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
-        if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"))] });
+        if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"), true)] });
 
         const targetType = (ctx.args[0] as string | undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position");
         if (!targetType) return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", { prefix: `${this.client.config.prefix}help`, name: `${this.meta.name}` }))] });
@@ -72,6 +72,6 @@ export class SkipToCommand extends BaseCommand {
 
         void play(this.client, ctx.guild!, song.key);
 
-        return ctx.reply({ embeds: [createEmbed("info", `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] });
+        return ctx.reply({ embeds: [createEmbed("success", `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] });
     }
 }

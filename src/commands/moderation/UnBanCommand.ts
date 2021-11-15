@@ -38,11 +38,11 @@ export class UnBanCommand extends BaseCommand {
         const resolved = ctx.guild.bans.resolve(user?.id as string);
 
         if (!user) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
-        if (!resolved) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.unban.alreadyUnban"), true)] });
+        if (!resolved) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.unban.alreadyUnban"))] });
 
         const unban = await ctx.guild.bans.remove(user.id, ctx.options?.getString("reason") ?? (ctx.args.length ? ctx.args.join(" ") : i18n.__("commands.moderation.common.noReasonString")))
             .catch(err => new Error(err as string|undefined));
-        if (unban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.unban.unbanFail", { message: unban.message }))] });
+        if (unban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.unban.unbanFail", { message: unban.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.unban.ubanSuccess", { user: user.tag }), true)] });
     }

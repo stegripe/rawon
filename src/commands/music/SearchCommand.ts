@@ -6,11 +6,12 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { ISong } from "../../typings";
 import i18n from "../../config";
-import { Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, Util, SelectMenuInteraction, CommandInteractionOptionResolver } from "discord.js";
+import { CommandInteractionOptionResolver, Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, SelectMenuInteraction, Util } from "discord.js";
 
 export class SearchCommand extends BaseCommand {
     public constructor(client: BaseCommand["client"]) {
         super(client, {
+            aliases: ["sc"],
             contextChat: "Add to queue",
             description: i18n.__("commands.music.search.description"),
             name: "search",
@@ -101,7 +102,7 @@ export class SearchCommand extends BaseCommand {
 
         const msg = await ctx.send({
             embeds: [
-                createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1,2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`).join("\n")}\`\`\``)
+                createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1, 2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`).join("\n")}\`\`\``)
                     .setAuthor(i18n.__("commands.music.search.trackSelectionMessage"), this.client.user?.displayAvatarURL())
                     .setFooter(i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }))
             ]
@@ -115,8 +116,14 @@ export class SearchCommand extends BaseCommand {
             },
             max: 1
         }).catch(() => undefined);
-        if (!respond) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"))] });
-        if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))] });
+        if (!respond) {
+            msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
+            return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"), true)] });
+        }
+        if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() as string)) {
+            msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
+            return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"), true)] });
+        }
 
         msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
         respond.first()?.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_NUM_DELETE_MSG_ERR:", err));

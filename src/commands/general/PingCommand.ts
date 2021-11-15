@@ -23,7 +23,7 @@ export class PingCommand extends BaseCommand {
         const msg = await ctx.send({ content: "🏓" });
         const latency = Date.now() - before;
         const wsLatency = this.client.ws.ping.toFixed(0);
-        const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "Disconnected";
+        const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "N/A";
         const embed = createEmbed("info")
             .setColor(this.searchHex(wsLatency))
             .setAuthor("🏓 PONG", this.client.user!.displayAvatarURL())

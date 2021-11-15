@@ -6,12 +6,12 @@ const { Server } = require("https");
 try {
     require("dotenv/config");
 } catch (err) {
-    console.info("[INFO] It seems dotenv hasn't been installed. Trying to re-install all modules...");
+    console.info("[INFO] It seems dotenv hasn't installed, trying to re-install all modules...");
     if (existsSync(resolve(process.cwd(), "node_modules"))) rmSync(resolve(process.cwd(), "node_modules"), { recursive: true });
     execSync("npm i --only=prod dotenv");
-    console.info("[INFO] dotenv installed. Retrieving env data...");
+    console.info("[INFO] dotenv has been installed, trying to retrieve environment data...");
     require("dotenv/config");
-    console.info("[INFO] Env data retrieved");
+    console.info("[INFO] Environment data has been retrieved.");
 }
 
 const isGlitch = (
@@ -72,14 +72,14 @@ if (isGitHub) {
 if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
     console.info("[INFO] This Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
     execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
-    console.info("[INFO] Node.js v16 has installed, please re-run the bot.");
+    console.info("[INFO] Node.js v16 has been installed, please restart the bot.");
     process.exit(0);
 }
 
 if (!isGlitch) {
-    console.info("[INFO] This bot is not running on Glitch. Installing ffmpeg-static...");
-    execSync("npm i --only=prod --no-save ffmpeg-static");
-    console.info("[INFO] ffmpeg-static installed");
+    console.info("[INFO] This bot is not running on Glitch, trying to install ffmpeg-static...");
+    execSync("npm i --no-save ffmpeg-static");
+    console.info("[INFO] ffmpeg-static has been installed.");
 }
 
 if (isGlitch || isReplit) {
@@ -103,7 +103,7 @@ if (isGlitch || isReplit) {
         console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
         if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
         await require("youtube-dl-exec/scripts/postinstall");
-        console.info("[INFO] Yt-dlp has downloaded.");
+        console.info("[INFO] Yt-dlp has been downloaded.");
     }
 
     console.info("[INFO] Starting the bot...");
