@@ -1,4 +1,4 @@
-import { Message, MessageButton, MessageActionRow, InteractionButtonOptions, CommandInteraction, TextChannel, SelectMenuInteraction, ContextMenuInteraction, Interaction } from "discord.js";
+import { CommandInteraction, ContextMenuInteraction, Interaction, InteractionButtonOptions, Message, MessageActionRow, MessageButton, SelectMenuInteraction, TextChannel } from "discord.js";
 import { PaginationPayload } from "../typings";
 
 const DATAS: InteractionButtonOptions[] = [

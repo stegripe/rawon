@@ -42,7 +42,7 @@ export class RepeatCommand extends BaseCommand {
 
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {
             OFF: {
-                aliases: ["disable", "off"],
+                aliases: ["disable", "off", "0"],
                 emoji: "▶"
             },
             QUEUE: {
@@ -50,7 +50,7 @@ export class RepeatCommand extends BaseCommand {
                 emoji: "🔁"
             },
             SONG: {
-                aliases: ["one", "song"],
+                aliases: ["one", "song", "this", "1"],
                 emoji: "🔂"
             }
         };
@@ -59,6 +59,6 @@ export class RepeatCommand extends BaseCommand {
         if (!selection) return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
         ctx.guild!.queue!.loopMode = selection as LoopMode;
 
-        return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
+        return ctx.reply({ embeds: [createEmbed("success", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
     }
 }

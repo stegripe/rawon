@@ -3,9 +3,9 @@ import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
+import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
-import i18n from "../../config";
 
 export class SkipCommand extends BaseCommand {
     public constructor(client: BaseCommand["client"]) {
@@ -52,6 +52,6 @@ export class SkipCommand extends BaseCommand {
 
         if (!ctx.guild?.queue?.playing) ctx.guild!.queue!.playing = true;
         ctx.guild?.queue?.player?.stop(true);
-        void ctx.reply({ embeds: [createEmbed("info", `⏭ **|** ${i18n.__mf("commands.music.skip.skipMessage", { song: `[${song.song.title}](${song.song.url}})` })}`).setThumbnail(song.song.thumbnail)] }).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
+        void ctx.reply({ embeds: [createEmbed("success", `⏭ **|** ${i18n.__mf("commands.music.skip.skipMessage", { song: `[${song.song.title}](${song.song.url}})` })}`).setThumbnail(song.song.thumbnail)] }).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
     }
 }

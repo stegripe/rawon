@@ -7,7 +7,7 @@ import { Message } from "discord.js";
 export class UnMuteCommand extends BaseCommand {
     public constructor(client: BaseCommand["client"]) {
         super(client, {
-            contextUser: "Unmute Member",
+            contextUser: "Un-mute Member",
             description: i18n.__("commands.moderation.unmute.description"),
             name: "unmute",
             slash: {
@@ -57,7 +57,7 @@ export class UnMuteCommand extends BaseCommand {
         }
 
         const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err as string|undefined));
-        if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.unmute.unmuteFail", { message: unmute.message }))] });
+        if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.unmute.unmuteFail", { message: unmute.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.unmute.unmuteSuccess", { user: member.user.tag }), true)] });
     }

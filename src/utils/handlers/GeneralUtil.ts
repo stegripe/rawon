@@ -1,5 +1,5 @@
-import { QueryData, ISong, SearchTrackResult, IQueueSong } from "../../typings";
-import { getTracks, getPreview, Preview, Tracks } from "./SpotifyUtil";
+import { IQueueSong, ISong, QueryData, SearchTrackResult } from "../../typings";
+import { getPreview, getTracks, Preview, Tracks } from "./SpotifyUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { ServerQueue } from "../../structures/ServerQueue";
 import { parseHTMLElements } from "../parseHTMLElements";
@@ -11,8 +11,8 @@ import { youtube } from "./YouTubeUtil";
 import { chunk } from "../chunk";
 import i18n from "../../config";
 import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, DiscordGatewayAdapterCreator, entersState, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice";
-import { Guild, Message, Util, VoiceChannel, StageChannel } from "discord.js";
-import { Video, SearchResult } from "youtubei";
+import { Guild, Message, StageChannel, Util, VoiceChannel } from "discord.js";
+import { SearchResult, Video } from "youtubei";
 import { URL } from "url";
 
 export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
@@ -283,7 +283,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         client.logger.error("PLAY_CMD_ERR:", error);
         return ctx.channel!.send({
-            embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }))]
+            embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }), true)]
         }).catch(e => {
             client.logger.error("PLAY_CMD_ERR:", e);
         });
@@ -382,7 +382,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
         }
     })
         .on("error", err => {
-            queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }))] }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
+            queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }), true)] }).catch(e => client.logger.error("PLAY_CMD_ERR:", e));
             queue.destroy();
             client.logger.error("PLAY_ERR:", err);
         })

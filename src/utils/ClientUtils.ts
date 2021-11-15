@@ -1,6 +1,6 @@
 import { Disc } from "../structures/Disc";
 import { Guild, Role } from "discord.js";
-import { resolve, parse } from "path";
+import { parse, resolve } from "path";
 import { FFmpeg } from "prism-media";
 
 export class ClientUtils {

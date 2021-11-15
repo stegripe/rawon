@@ -39,6 +39,6 @@ export class VolumeCommand extends BaseCommand {
         if (volume > 100) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.music.volume.volumeLimit", { maxVol: `\`100\`` }), true)] });
 
         resVolume.setVolume(volume / 100);
-        return ctx.reply({ embeds: [createEmbed("info", `🔊 **|** ${i18n.__mf("commands.music.volume.newVolume", { volume })}`)] });
+        return ctx.reply({ embeds: [createEmbed("success", `🔊 **|** ${i18n.__mf("commands.music.volume.newVolume", { volume })}`)] });
     }
 }
