@@ -125,7 +125,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
     }
 
     public async handle(message: Message, pref: string): Promise<void> {
-        const prefix = pref === "mention" ? /<@(!)?\d*?>/.exec(message.content)![0] : pref;
+        const prefix = pref === "{mention}" ? /<@(!)?\d*?>/.exec(message.content)![0] : pref;
         const args = message.content.substring(prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);
