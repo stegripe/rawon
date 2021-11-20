@@ -34,7 +34,7 @@ export const owners: string[] = JSON.parse(process.env.OWNERS ?? "[]");
 export const devGuild = JSON.parse(process.env.DEV_GUILD ?? "[]");
 export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
 export const isProd = !isDev;
-export const prefixes: string[] = isDev ? ["d!"] : JSON.parse(process.env.PREFIX as string || "[\"!\"]");
+export const prefixes: string[] = (isDev ? ["d!"] : JSON.parse(process.env.PREFIX as string || "[\"!\"]") as string[]).filter((x, i, a) => a.indexOf(x) === i);
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const musicSelectionType = process.env.MUSIC_SELECTION_TYPE?.toLowerCase() as string || "message";
 export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
