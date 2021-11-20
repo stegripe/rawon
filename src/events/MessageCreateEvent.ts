@@ -17,7 +17,7 @@ export class MessageCreateEvent extends BaseEvent {
 
         const pref = this.client.config.altPrefixes.concat(this.client.config.mainPrefix).find(p => {
             if (p === "{mention}") {
-                const userMention = /<@\d*?>/.exec(message.content);
+                const userMention = /<@(!)?\d*?>/.exec(message.content);
                 if (userMention?.index !== 0) return false;
 
                 const user = this.getUserFromMention(userMention[0]);
