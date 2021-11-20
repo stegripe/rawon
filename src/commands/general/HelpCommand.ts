@@ -8,7 +8,7 @@ import { Message, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, 
 export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")
         .setAuthor(i18n.__mf("commands.general.help.authorString", { username: this.client.user!.username }), this.client.user?.displayAvatarURL() as string)
-        .setFooter(i18n.__mf("commands.general.help.footerString", { prefix: this.client.config.prefix }), "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
+        .setFooter(i18n.__mf("commands.general.help.footerString", { prefix: this.client.config.mainPrefix }), "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png");
 
     private readonly infoEmbed = createEmbed("info")
         .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
@@ -93,7 +93,7 @@ export class HelpCommand extends BaseCommand {
                     .addField(i18n.__("commands.general.help.nameString"), `**\`${command.meta.name}\`**`, false)
                     .addField(i18n.__("commands.general.help.descriptionString"), `${command.meta.description!}`, true)
                     .addField(i18n.__("commands.general.help.aliasesString"), Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") as string : "None.", false)
-                    .addField(i18n.__("commands.general.help.usageString"), `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.prefix)}\`**`, true)
+                    .addField(i18n.__("commands.general.help.usageString"), `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.mainPrefix)}\`**`, true)
                     .setFooter(i18n.__mf("commands.general.help.commandUsageFooter", { devOnly: command.meta.devOnly ? "(developer-only command)" : "" }), "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png")
             ]
         }, "editReply");
