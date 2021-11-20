@@ -303,7 +303,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
-        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", { usage: `\`${guild.client.config.prefix}play\`` })}`)] });
+        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", { usage: `\`${guild.client.config.mainPrefix}play\`` })}`)] });
         queue.dcTimeout = queue.stayInVC
             ? null
             : setTimeout(() => {
