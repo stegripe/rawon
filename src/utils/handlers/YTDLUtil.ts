@@ -21,7 +21,7 @@ export function getStream(url: string): Promise<Readable> {
         }
 
         void stream.on("spawn", () => {
-            resolve(stream.stdout! as Readable);
+            resolve(stream.stdout as Readable);
         });
     });
 }
