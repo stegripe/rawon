@@ -28,14 +28,14 @@ export const clientOptions: ClientOptions = {
 };
 export const shardsCount: number | "auto" = "auto";
 export const shardingMode: ShardingManagerMode = "worker";
-export const defaultPrefix = process.env.PREFIX?.replace(/"/g, "") ?? "!";
 export const embedColor = process.env.EMBED_COLOR?.toUpperCase() as string || "3CAAFF";
 export const lang = process.env.LOCALE?.toLowerCase() as string || "en";
 export const owners: string[] = JSON.parse(process.env.OWNERS ?? "[]");
 export const devGuild = JSON.parse(process.env.DEV_GUILD ?? "[]");
 export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
 export const isProd = !isDev;
-export const prefix = isDev ? "d!" : defaultPrefix;
+export const mainPrefix = isDev ? "d!" : (process.env.MAIN_PREFIX as string || "!");
+export const altPrefixes: string[] = (JSON.parse(process.env.ALT_PREFIX as string || "[\"{mention}\"]") as string[]).filter((x, i, a) => (a.indexOf(x) === i) && x !== mainPrefix);
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const musicSelectionType = process.env.MUSIC_SELECTION_TYPE?.toLowerCase() as string || "message";
 export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";

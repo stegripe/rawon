@@ -1,15 +1,15 @@
-import ytdl, { raw, YtResponse } from "youtube-dl-exec";
+import ytdl, { exec, YtResponse } from "youtube-dl-exec";
 import { Readable } from "stream";
 
 export function getStream(url: string): Promise<Readable> {
     return new Promise((resolve, reject) => {
-        const stream = raw(
+        const stream = exec(
             url,
             {
-                o: "-",
-                q: "",
-                f: "bestaudio[acodec=opus]/bestaudio",
-                r: "100K"
+                output: "-",
+                quiet: true,
+                format: "bestaudio[acodec=opus]/bestaudio",
+                limitRate: "100K"
             },
             {
                 stdio: ["ignore", "pipe", "ignore"]
@@ -21,13 +21,13 @@ export function getStream(url: string): Promise<Readable> {
         }
 
         void stream.on("spawn", () => {
-            resolve(stream.stdout!);
+            resolve(stream.stdout as Readable);
         });
     });
 }
 
 export async function getInfo(url: string): Promise<YtResponse> {
     return ytdl(url, {
-        j: true
+        dumpJson: true
     });
 }
