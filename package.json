@@ -1,6 +1,6 @@
 {
   "name": "disc-11",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": true,
   "description": "A dedicated open-source Discord bot for Zhycorp based from our Discord bot template with more features. Easy to use, and with no coding required.",
   "repository": "https://github.com/zhycorp/disc-11",
@@ -23,10 +23,10 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.7.5",
-    "date-fns": "^2.23.0",
+    "date-fns": "^2.26.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
-    "got": "^11.8.2",
+    "got": "^11.8.3",
     "i18n": "0.13.3",
     "opusscript": "^0.0.8",
     "prism-media": "^1.3.2",
@@ -35,16 +35,16 @@
     "sucrase": "^3.20.3",
     "tslib": "^2.3.1",
     "tweetnacl": "^1.0.3",
-    "youtube-dl-exec": "^1.2.6",
+    "youtube-dl-exec": "^2.0.0",
     "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
     "@types/i18n": "^0.13.1",
-    "@types/node": "^16.11.7",
+    "@types/node": "^16.11.9",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@zhycorp/eslint-config": "^6.0.2",
-    "eslint": "^8.2.0"
+    "eslint": "^8.3.0"
   },
   "engines": {
     "node": ">=16.6.0"

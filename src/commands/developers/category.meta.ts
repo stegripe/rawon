@@ -1,5 +1,7 @@
+import i18n from "../../config";
+
 const category = {
-    name: "DEVELOPER",
+    name: i18n.__("commands.developers.categoryName"),
     hide: false
 };
 

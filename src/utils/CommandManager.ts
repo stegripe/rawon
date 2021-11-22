@@ -124,8 +124,9 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             });
     }
 
-    public async handle(message: Message): Promise<void> {
-        const args = message.content.substring(this.client.config.prefix.length).trim().split(/ +/);
+    public async handle(message: Message, pref: string): Promise<void> {
+        const prefix = pref === "{mention}" ? /<@(!)?\d*?>/.exec(message.content)![0] : pref;
+        const args = message.content.substring(prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);
         if (!command || command.meta.disable) return;
