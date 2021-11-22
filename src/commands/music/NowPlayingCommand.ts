@@ -5,7 +5,7 @@ import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import i18n from "../../config";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
 export class NowPlayingCommand extends BaseCommand {
     public constructor(client: BaseCommand["client"]) {
@@ -24,7 +24,7 @@ export class NowPlayingCommand extends BaseCommand {
         if (!haveQueue(ctx)) return;
 
         function getEmbed(): MessageEmbed {
-            const song = (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource|undefined)?.metadata as IQueueSong|undefined)?.song;
+            const song = ((ctx.guild?.queue?.player?.state as (AudioPlayerState & { resource: AudioResource|undefined })|undefined)?.resource?.metadata as IQueueSong|undefined)?.song;
 
             return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")}`).setThumbnail(song?.thumbnail ?? "https://api.zhycorp.net/assets/images/icon.png");
         }

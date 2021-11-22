@@ -4,13 +4,18 @@
     "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/disc-11.png",
     "env": {
         "DISCORD_TOKEN": {
-            "description": "What is your Discord bot's token? Example: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
+            "description": "What is your Discord bot's token? | Example: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
             "required": true
         },
-        "PREFIX": {
-            "description": "What should be the prefix of your bot? Example: !",
+        "MAIN_PREFIX": {
+            "description": "What should be the main prefix of your bot? | Example: !",
             "required": true,
             "value": "!"
+        },
+        "ALT_PREFIX": {
+            "description": "What should be the alternative prefixes of your bot? | Example: [\"?\", \"{mention}\"] | Formats: {mention} = bot mention",
+            "required": false,
+            "value": "[\"{mention}\"]"
         },
         "EMBED_COLOR": {
             "description": "What should be your bot's embed color code? (hex) | Example: 3CAAFF",
@@ -33,57 +38,57 @@
             "value": "[\"PLAYING\", \"LISTENING\", \"WATCHING\", \"PLAYING\", \"COMPETING\"]"
         },
         "OWNERS": {
-            "description": "What is the owner's ID of the bot? Example: [\"319872685897416725\", \"390045370240991234\"]",
+            "description": "What is the owner's ID of the bot? | Example: [\"319872685897416725\", \"390045370240991234\"]",
             "required": false,
             "value": "[\"\"]"
         },
         "DEV_GUILD": {
-            "description": "What is your server's ID? Example: [\"332877090003091456\"]",
+            "description": "What is your server's ID? | Example: [\"332877090003091456\"]",
             "required": false,
             "value": "[\"\"]"
         },
         "NODE_ENV": {
-            "description": "In which mode do you want to activate your bot? Example: production | Available: production, development",
+            "description": "In which mode do you want to activate your bot? | Example: production | Available: production, development",
             "required": false,
             "value": "production"
         },
         "ENABLE_SLASH_COMMAND": {
-            "description": "Do you want to enable slash command support? Example: yes",
+            "description": "Do you want to enable slash command support? | Example: yes",
             "required": false,
             "value": "yes"
         },
         "MUSIC_SELECTION_TYPE": {
-            "description": "Which music selection type do you want to use? Example: selectmenu | Available: message (just like in the previous version) or selectmenu (uses discord selection menu)",
+            "description": "Which music selection type do you want to use? | Example: selectmenu | Available: message (just like in the previous version) or selectmenu (uses discord selection menu)",
             "required": false,
             "value": "message"
         },
         "ENABLE_24_7_COMMAND": {
-            "description": "Do you want to enable the 24/7 command? Example: no",
+            "description": "Do you want to enable the 24/7 command? | Example: no",
             "required": false,
             "value": "no"
         },
         "STAY_IN_VC_AFTER_FINISHED": {
-            "description": "Do you want to make your bot not leave the voice channel after playing a song? Example: no",
+            "description": "Do you want to make your bot not leave the voice channel after playing a song? | Example: no",
             "required": false,
             "value": "no"
         },
         "DJ_ROLE_NAME": {
-            "description": "What is your server's DJ role name? Example: DJ",
+            "description": "What is your server's DJ role name? | Example: DJ",
             "required": false,
             "value": "DJ"
         },
         "MUTE_ROLE_NAME": {
-            "description": "What is your server's Muted role name? Example: Muted",
+            "description": "What is your server's Muted role name? | Example: Muted",
             "required": false,
             "value": "Muted"
         },
         "YES_EMOJI": {
-            "description": "What should be your bot's emoji for every success sentence? Example: ✅",
+            "description": "What should be your bot's emoji for every success sentence? | Example: ✅",
             "required": false,
             "value": "✅"
         },
         "NO_EMOJI": {
-            "description": "What should be your bot's emoji for every failed sentence? Example: ❌",
+            "description": "What should be your bot's emoji for every failed sentence? | Example: ❌",
             "required": false,
             "value": "❌"
         }
