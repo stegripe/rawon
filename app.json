@@ -12,6 +12,11 @@
             "required": true,
             "value": "!"
         },
+        "ALT_PREFIX": {
+            "description": "What should be the alternative prefixes of your bot? | Example: [\"?\", \"{mention}\"] | Formats: {mention} = bot mention",
+            "required": false,
+            "value": "[\"{mention}\"]"
+        },
         "EMBED_COLOR": {
             "description": "What should be your bot's embed color code? (hex) | Example: 3CAAFF",
             "required": false,
@@ -43,7 +48,7 @@
             "value": "[\"\"]"
         },
         "NODE_ENV": {
-            "description": "In which mode do you want to activate your bot? Example: production | Available: production, development",
+            "description": "In which mode do you want to activate your bot? | Example: production | Available: production, development",
             "required": false,
             "value": "production"
         },
