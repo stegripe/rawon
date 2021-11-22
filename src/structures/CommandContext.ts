@@ -41,7 +41,7 @@ export class CommandContext {
             deletionBtn.components[0].setCustomId(Buffer.from(`${(options as any).askDeletion.reference}_delete-msg`).toString("base64"));
             (options as InteractionReplyOptions).components ? (options as InteractionReplyOptions).components!.push(deletionBtn) : (options as InteractionReplyOptions).components = [deletionBtn];
         }
-        if (this.isInteraction() && (this.context as Interaction).isCommand()) {
+        if (this.isInteraction()) {
             (options as InteractionReplyOptions).fetchReply = true;
             const msg = await (this.context as CommandInteraction)[type](options as string|MessagePayload|InteractionReplyOptions) as Message;
             const channel = this.context.channel;

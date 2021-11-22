@@ -1,6 +1,7 @@
 {
 	"commands": {
 		"developers": {
+			"categoryName": "PENGEMBANG",
 			"eval": {
 				"description": "Evaluasi kode",
 				"usage": "{prefix}eval <kode>",
@@ -10,6 +11,7 @@
 			}
 		},
 		"general": {
+			"categoryName": "UMUM",
 			"about": {
 				"description": "Menampilkan informasi bot",
 				"osUptimeString": "Uptime OS",
@@ -49,6 +51,7 @@
 			}
 		},
 		"moderation": {
+			"categoryName": "MODERASI",
 			"common": {
 				"noUserSpecified": "Mohon mention seseorang.",
 				"noReasonString": "[Tidak disebutkan]",
@@ -138,6 +141,7 @@
 			}
 		},
 		"music": {
+			"categoryName": "MUSIK",
 			"lyrics": {
 				"description": "Menampilkan lirik lagu",
 				"slashDescription": "Judul lagu untuk dicari",

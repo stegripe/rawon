@@ -25,8 +25,20 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
         const url = new URL(query);
 
         if (queryData.sourceType === "soundcloud") {
-            if (queryData.type === "track") {
-                const track = await client.soundcloud.tracks.getV2(url.toString());
+            let scUrl = url;
+            if (["www.soundcloud.app.goo.gl", "soundcloud.app.goo.gl"].includes(url.hostname)) {
+                const req = await client.request.get(url.toString());
+                scUrl = new URL(req.url);
+
+                for (const key of scUrl.searchParams.keys()) {
+                    scUrl.searchParams.delete(key);
+                }
+            }
+
+            const newQueryData = checkQuery(scUrl.toString());
+
+            if (newQueryData.type === "track") {
+                const track = await client.soundcloud.tracks.getV2(scUrl.toString());
 
                 result.items = [{
                     duration: track.full_duration,
@@ -35,8 +47,8 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     title: track.title,
                     url: track.permalink_url
                 }];
-            } else if (queryData.type === "playlist") {
-                const playlist = await client.soundcloud.playlists.getV2(url.toString());
+            } else if (newQueryData.type === "playlist") {
+                const playlist = await client.soundcloud.playlists.getV2(scUrl.toString());
                 const tracks = await Promise.all(playlist.tracks.map((track): ISong => ({
                     duration: track.full_duration,
                     id: track.id.toString(),
@@ -303,7 +315,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
-        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", { usage: `\`${guild.client.config.prefix}play\`` })}`)] });
+        void queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", { usage: `\`${guild.client.config.mainPrefix}play\`` })}`)] });
         queue.dcTimeout = queue.stayInVC
             ? null
             : setTimeout(() => {
