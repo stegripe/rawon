@@ -36,6 +36,9 @@ module.exports = {
           "accent-400": "#651fff",
           "accent-700": "#6200ea",
         }
+      },
+      transitionDelay: {
+        "5000": "5000ms"
       }
     },
   },
