@@ -5,7 +5,7 @@
 			"eval": {
 				"description": "Evaluate to the bot",
 				"usage": "{prefix}eval <some code>",
-				"noCode": "No code were provided.",
+				"noCode": "No code was provided.",
 				"outputString": "Output",
 				"errorString": "Error"
 			}
