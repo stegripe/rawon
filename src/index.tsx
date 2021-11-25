@@ -1,31 +1,31 @@
-import { ReactComponent as DiscSVG } from "./disc-11.svg";
-import PermsCalculator from "./permscalculator";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import Script from "./script";
 import "./index.css";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { ReactComponent as Spinner } from "./spinner.svg";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import { Suspense, lazy, ComponentProps } from "react";
 import ReactDOM from "react-dom";
 
-function Index() {
+const Index = lazy(() => import("./mainpage"));
+const Script = lazy(() => import("./script"));
+const PermsCalculator = lazy(() => import("./permscalculator"));
+
+function SUS_PENSE(props: ComponentProps<"div">) {
     return (
-        <div className="flex items-center justify-center min-w-full h-screen dark:bg-gray-900">
-            <div className="grid grid-cols-1 grid-rows-2 gap-3 text-center">
-                <DiscSVG className="flex justify-self-center h-32 md:h-48 w-auto" />
-                <p className="text-sm font-bold dark:text-white m-5">Welcome to Disc 11 website. We haven't added anything for this page. For now, you can use the tools made by us to help you develop your own Disc 11 Discord bot.</p>
-            </div>
-        </div>
-    );
+        <Suspense fallback={<div className="flex justify-center items-center min-w-full h-screen text-base md:text-xl font-bold dark:bg-gray-900 dark:text-white"><div className="m-2"><Spinner /></div><p>Loading...</p></div>}>
+            {props.children}
+        </Suspense>
+    )
 }
 
 const routes = (
     <HashRouter>
         <Navbar/>
-        <Switch>
-            <Route exact path="/" component={Index}/>
-            <Route path="/script" component={Script}/>
-            <Route path="/permscalculator" component={PermsCalculator}/>
-        </Switch>
+        <Routes>
+            <Route path="/" element={<SUS_PENSE><Index /></SUS_PENSE>}/>
+            <Route path="/script" element={<SUS_PENSE><Script /></SUS_PENSE>}/>
+            <Route path="/permscalculator" element={<SUS_PENSE><PermsCalculator /></SUS_PENSE>}/>
+        </Routes>
         <Footer/>
     </HashRouter>
 )
