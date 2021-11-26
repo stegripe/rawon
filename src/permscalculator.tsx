@@ -233,7 +233,7 @@ function PermsCalculator() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full">
                             {perms.map(x => (
                             <div key={x.name} className="m-1">
-                                <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange} />
+                                <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange} className="form-checkbox rounded hover:bg-indigo-400 hover:text-indigo-400 focus:text-indigo-800 text-black checked:bg-indigo-800 focus:ring-transparent focus:outline-none"/>
                                 <label htmlFor={x.name} className="dark:text-white ml-2">{x.name}</label>
                             </div>
                             ))}
