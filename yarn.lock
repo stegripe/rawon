@@ -1670,6 +1670,13 @@
     "@svgr/plugin-svgo" "^5.5.0"
     "loader-utils" "^2.0.0"
 
+"@tailwindcss/forms@^0.3.4":
+  "integrity" "sha512-vlAoBifNJUkagB+PAdW4aHMe4pKmSLroH398UPgIogBFc91D2VlHUxe4pjxQhiJl0Nfw53sHSJSQBSTQBZP3vA=="
+  "resolved" "https://registry.npmjs.org/@tailwindcss/forms/-/forms-0.3.4.tgz"
+  "version" "0.3.4"
+  dependencies:
+    "mini-svg-data-uri" "^1.2.3"
+
 "@testing-library/dom@^7.28.1", "@testing-library/dom@>=7.21.4":
   "integrity" "sha512-3UqjCpey6HiTZT92vODYLPxTBWlM8ZOOjr3LX5F37/VRipW2M1kX6I/Cm4VXzteZqfGfagg8yXywpcOgQBlNsQ=="
   "resolved" "https://registry.npmjs.org/@testing-library/dom/-/dom-7.31.2.tgz"
@@ -7653,6 +7660,11 @@
     "schema-utils" "^1.0.0"
     "webpack-sources" "^1.1.0"
 
+"mini-svg-data-uri@^1.2.3":
+  "integrity" "sha512-gSfqpMRC8IxghvMcxzzmMnWpXAChSA+vy4cia33RgerMS8Fex95akUyQZPbxJJmeBGiGmK7n/1OpUX8ksRjIdA=="
+  "resolved" "https://registry.npmjs.org/mini-svg-data-uri/-/mini-svg-data-uri-1.4.3.tgz"
+  "version" "1.4.3"
+
 "minimalistic-assert@^1.0.0", "minimalistic-assert@^1.0.1":
   "integrity" "sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A=="
   "resolved" "https://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz"
@@ -11085,7 +11097,7 @@
     "slice-ansi" "^4.0.0"
     "string-width" "^4.2.0"
 
-"tailwindcss@npm:@tailwindcss/postcss7-compat@^2.2.16":
+"tailwindcss@>=2.0.0", "tailwindcss@npm:@tailwindcss/postcss7-compat@^2.2.16":
   "integrity" "sha512-k+f6DL1KxG0d2dEUILxytWpHRBPMagQ8wUdH5bJUzbmv7TPd3yriR+nSOXy2Hcvt79cP3Lgc5J6oPjO4PNyRLg=="
   "resolved" "https://registry.npmjs.org/@tailwindcss/postcss7-compat/-/postcss7-compat-2.2.16.tgz"
   "version" "2.2.16"
