@@ -1,4 +1,5 @@
 import { ReactComponent as ZhycorpLogo } from "../zhycorp.svg"
+import { useTheme } from "../hooks/useTheme";
 import { Popover, Transition } from "@headlessui/react"
 import { Fragment } from "react"
 
@@ -19,11 +20,13 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+  const [theme, setTheme] = useTheme();
+
   return (
-    <Popover className="bg-white dark:bg-black">
+    <Popover className="bg-white border-b border-gray-400 dark:border-transparent dark:bg-black">
       <div className="max-w-7xl mx-auto px-8">
         <div className="flex items-center justify-between h-16">
-          <div className=" flex items-center">
+          <div className="flex items-center">
             <a className="flex-shrink-0" href="/#/">
               <ZhycorpLogo className="w-8 h-8" />
             </a>
@@ -85,7 +88,17 @@ export default function Navbar() {
             </Popover.Group>
           </div>
           <div className="block">
-            <div className="ml-4 flex items-center md:ml-6">
+            <div className="flex items-center justify-center md:ml-6">
+              <div className="grid grid-cols-1 grid-rows-2 place-items-center text-center md:flex md:space-x-2">
+                <input type="checkbox" checked={theme === "dark"} onChange={ev => {
+                  if (ev.target.checked) {
+                    setTheme("dark")
+                  } else {
+                    setTheme("light")
+                  }
+                }} className="form-checkbox border-transparent bg-sun checked:bg-moon rounded-full text-black hover:bg-white hover:text-black checked:bg-white focus:bg-white focus:text-black focus:ring-transparent focus:outline-none"/>
+                <p className="text-sm dark:text-white">Theme</p>
+              </div>
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
