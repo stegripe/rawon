@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <div className="dark:bg-black dark:text-white flex flex-col sm:flex-row justify-between break-words py-3 px-5">
+        <div className="border-t border-gray-400 dark:border-transparent dark:bg-black dark:text-white flex flex-col sm:flex-row justify-between break-words py-3 px-5">
             <p className="text-sm">© Copyright 2021 Zhycorp Development. All rights reserved.</p>
             <div className="flex items-center mt-4 space-x-4 sm:mt-0">
                 <a href="https://zhycorp.net/twitter"

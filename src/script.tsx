@@ -131,7 +131,7 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
                         <p className="text-base md:text-xl font-bold dark:text-white">Script Generator</p>
                         <br />
                         <input id="url-textbox" onKeyDown={onKeyDown} onChange={onChange} value={state.text}
-                            placeholder="Put the URL here" className="focus:outline-none" />
+                            placeholder="Put the URL here" className="focus:outline-none border border-black rounded-md dark:border-transparent" />
                         <br />
                         <button
                             className="p-2 mt-2 transition-colors border rounded border-black hover:bg-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"

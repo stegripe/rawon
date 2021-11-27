@@ -214,16 +214,16 @@ function PermsCalculator() {
                 <div className="my-4 grid grid-cols-1 md:grid-cols-3">
                     <div className="my-2 md:my-0">
                         <p className="dark:text-white">Client ID</p>
-                        <input className="focus:outline-none" id="client-id" onChange={onChange}
+                        <input className="focus:outline-none border border-black rounded-md dark:border-transparent" id="client-id" onChange={onChange}
                             value={state.clientId} />
                     </div>
                     <div className="my-2 md:my-0">
                         <p className="dark:text-white">Scope</p>
-                        <input className="focus:outline-none" id="scope" onChange={onChange} value={state.scope} />
+                        <input className="focus:outline-none border border-black rounded-md dark:border-transparent" id="scope" onChange={onChange} value={state.scope} />
                     </div>
                     <div className="my-2 md:my-0">
                         <p className="dark:text-white">Redirect URI</p>
-                        <input className="focus:outline-none" id="redirect-uri" onChange={onChange}
+                        <input className="focus:outline-none border border-black rounded-md dark:border-transparent" id="redirect-uri" onChange={onChange}
                             value={state.redirectUri} />
                     </div>
                 </div>
@@ -244,8 +244,7 @@ function PermsCalculator() {
                 </div>
                 <div className="my-4 w-full">
                     <p className="dark:text-white">URL</p>
-                    <input className="w-full" disabled
-                        value={`https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(state.clientId) || "<CLIENT_ID_HERE>"
+                    <p className="w-full bg-gray-500 rounded-md p-2" children={`https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(state.clientId) || "<CLIENT_ID_HERE>"
                         }&scope=${encodeURIComponent(state.scope) || "bot"}&permissions=${getEquation()}${state.redirectUri.length ?
                         `&redirect_uri=${encodeURIComponent(state.redirectUri)}`: "" }`} />
                 </div>
