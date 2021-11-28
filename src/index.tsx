@@ -1,3 +1,4 @@
+import { useTheme } from "./hooks/useTheme";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import "./index.css";
@@ -18,18 +19,10 @@ function SUS_PENSE(props: ComponentProps<"div">) {
 }
 
 function DiscRoutes() {
-    window.onstorage = ev => {
-        if (ev.key === "disc11Theme" && (ev.newValue !== ev.oldValue)) {
-            if ((ev.oldValue ?? "light") === "light") {
-                document.getElementById("themediv")?.classList.add("dark");
-            } else {
-                document.getElementById("themediv")?.classList.remove("dark");
-            }
-        }
-    };
+    const [theme] = useTheme();
 
     return (
-        <div id="themediv" className={(window.localStorage.getItem("disc11Theme") ?? "light") === "light" ? "" : "dark"}>
+        <div id="themediv" className={theme === "light" ? "" : "dark"}>
             <HashRouter>
                 <Navbar/>
                 <Routes>
