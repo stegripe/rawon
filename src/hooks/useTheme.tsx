@@ -1,16 +1,25 @@
 import { useState } from "react";
 
-type ThemeName = "dark" | "light";
+type ThemeName = "dark" | "light" | "system";
+
+function getStorageTheme(): ThemeName {
+    return window.localStorage.getItem("disc11Theme") as ThemeName|null ?? "system";
+}
+
+export function isSystemThemePreferenceDark(): boolean {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+}
 
 export function useTheme(): [ThemeName, (theme: ThemeName) => void] {
-    const [theme, setTheme] = useState<ThemeName>(window.localStorage.getItem("disc11Theme") as ThemeName|null ?? "light");
+    const [theme, setTheme] = useState<ThemeName>(getStorageTheme());
 
     window.addEventListener("storage", ev => {
         if (ev.key === "disc11Theme" && (ev.oldValue !== ev.newValue)) {
-            if ((ev.oldValue ?? "light") === "light") {
-                setTheme("dark");
-            } else {
-                setTheme("light")
+            switch ((ev.newValue ?? "system") as ThemeName) {
+                case "dark": setTheme("dark"); break;
+                case "light": setTheme("light"); break;
+                case "system": setTheme("system"); break;
+                default: setTheme("system"); break;
             }
         }
     });
