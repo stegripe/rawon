@@ -1278,6 +1278,11 @@
   "resolved" "https://registry.npmjs.org/@headlessui/react/-/react-1.4.1.tgz"
   "version" "1.4.1"
 
+"@heroicons/react@^1.0.5":
+  "integrity" "sha512-UDMyLM2KavIu2vlWfMspapw9yii7aoLwzI2Hudx4fyoPwfKfxU8r3cL8dEBXOjcLG0/oOONZzbT14M1HoNtEcg=="
+  "resolved" "https://registry.npmjs.org/@heroicons/react/-/react-1.0.5.tgz"
+  "version" "1.0.5"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   "integrity" "sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ=="
   "resolved" "https://registry.npmjs.org/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz"
