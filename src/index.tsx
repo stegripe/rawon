@@ -1,4 +1,4 @@
-import { useTheme } from "./hooks/useTheme";
+import { isSystemThemePreferenceDark, useTheme } from "./hooks/useTheme";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import "./index.css";
@@ -22,7 +22,7 @@ function DiscRoutes() {
     const [theme] = useTheme();
 
     return (
-        <div id="themediv" className={theme === "light" ? "" : "dark"}>
+        <div id="themediv" className={theme === "system" ? (isSystemThemePreferenceDark() ? "dark" : "") : (theme === "dark" ? "dark" : "")}>
             <HashRouter>
                 <Navbar/>
                 <Routes>
