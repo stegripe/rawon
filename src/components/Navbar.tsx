@@ -1,7 +1,8 @@
-import { ReactComponent as ZhycorpLogo } from "../zhycorp.svg"
+import { ReactComponent as ZhycorpLogo } from "../zhycorp.svg";
 import { useTheme } from "../hooks/useTheme";
-import { Popover, Transition } from "@headlessui/react"
-import { Fragment } from "react"
+import { Listbox, Popover, Transition } from "@headlessui/react";
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { Fragment } from "react";
 
 const tools = [{
     name: "Script Generator",
@@ -12,6 +13,21 @@ const tools = [{
     name: "Permissions Calculator",
     description: "Generate an invite link for your bot using specific permissions",
     href: "/#/permscalculator"
+  }
+]
+
+const themes = [
+  {
+    name: "Light",
+    value: "light"
+  },
+  {
+    name: "Dark",
+    value: "dark"
+  },
+  {
+    name: "System",
+    value: "system"
   }
 ]
 
@@ -88,17 +104,40 @@ export default function Navbar() {
             </Popover.Group>
           </div>
           <div className="block">
-            <div className="flex items-center justify-center md:ml-6">
-              <div className="grid grid-cols-1 grid-rows-2 place-items-center text-center md:flex md:space-x-2">
-                <input type="checkbox" checked={theme === "dark"} onChange={ev => {
-                  if (ev.target.checked) {
-                    setTheme("dark")
-                  } else {
-                    setTheme("light")
-                  }
-                }} className="form-checkbox border-transparent bg-sun checked:bg-moon rounded-full text-black hover:bg-white hover:text-black checked:bg-white focus:bg-white focus:text-black focus:ring-transparent focus:outline-none"/>
-                <p className="text-sm dark:text-white">Theme</p>
-              </div>
+            <div className="ml-4 flex items-center md:ml-6">
+              <Listbox value={theme} onChange={val => {
+                setTheme(val as "system");
+              }}>
+                <Listbox.Button className="flex items-center rounded bg-transparent py-2 px-3 text-sm duration-150 hover:bg-gray-300">
+                  <p className="dark:text-white">Theme</p>
+                  <ChevronDownIcon className="text-gray-500 w-5 h-auto ml-2"/>
+                </Listbox.Button>
+                <Transition
+                  as={Fragment}
+                  leave="transition ease-in duration-100"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0">
+                    <Listbox.Options className="absolute z-10 mt-10 transform translate-y-1/2 px-0 border border-gray-100 dark:border-gray-500 max-w-md sm:px-0 lg:ml-0 bg-white dark:bg-black focus:outline-none">
+                      {themes.map(them => (
+                        <Listbox.Option className={({ active }) => `${active ? "bg-black text-white dark:bg-white dark:text-black" : "text-black dark:text-white"} cursor-default select-none relative py-2`} value={them.value}>
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`${selected ? 'font-medium' : 'font-normal'} text-sm md:text-base block truncate ml-2 mr-9`}>
+                                {them.name}
+                              </span>
+                              {selected ? (
+                                <span className={`absolute inset-y-0 right-0 flex items-center ml-3 mr-1`}>
+                                  <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+              </Listbox>
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
