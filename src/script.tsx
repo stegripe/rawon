@@ -1,13 +1,13 @@
 import "codemirror/lib/codemirror.css";
-import './index.css';
+import "./index.css";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import CodeMirror from "codemirror";
 require("codemirror/mode/javascript/javascript");
 
-function Script() {
+function Script(): JSX.Element {
     const [state, change] = useState<{
-        text: string;items: string[]; notices: { text: string; id: string; show: boolean; }[];
+        text: string;items: string[]; notices: { text: string; id: string; show: boolean }[];
     }>({
         text: "",
         items: [],
@@ -34,10 +34,10 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
         }
     }
 }`
-        })
+        });
     });
 
-    function onChange(data: ChangeEvent<HTMLInputElement>) {
+    function onChange(data: ChangeEvent<HTMLInputElement>): void {
         change({
             items: state.items,
             text: data.target.value,
@@ -45,7 +45,7 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
         });
     }
 
-    function onSubmit() {
+    function onSubmit(): void {
         if (state.text === "") return;
 
         try {
@@ -73,7 +73,7 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
         });
     }
 
-    function onKeyDown(data: KeyboardEvent<HTMLInputElement>) {
+    function onKeyDown(data: KeyboardEvent<HTMLInputElement>): void {
         if (data.code === "Enter") {
             onSubmit();
         }
@@ -83,46 +83,44 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
         <>
             <div className="absolute flex w-full">
                 <div className="block w-full m-3 max-w-xs">
-                    {state.notices.slice(0, 2).map(x => {
-                        return (
-                            <Transition
-                                key={x.id}
-                                appear={true}
-                                show={x.show}
-                                enter="transition duration-200"
-                                enterFrom="opacity-0"
-                                enterTo="opacity-100"
-                                leave="delay-5000 duration-200 ease-in-out"
-                                leaveFrom="opacity-100"
-                                leaveTo="opacity-0"
-                                afterEnter={() => {
-                                    change({
-                                        items: state.items,
-                                        text: state.text,
-                                        notices: [...state.notices.map(y => {
-                                            if (y.id !== x.id) return y;
+                    {state.notices.slice(0, 2).map(x => (
+                        <Transition
+                            key={x.id}
+                            appear={true}
+                            show={x.show}
+                            enter="transition duration-200"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="delay-5000 duration-200 ease-in-out"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                            afterEnter={() => {
+                                change({
+                                    items: state.items,
+                                    text: state.text,
+                                    notices: [...state.notices.map(y => {
+                                        if (y.id !== x.id) return y;
 
-                                            return {
-                                                text: y.text,
-                                                id: y.id,
-                                                show: false
-                                            }
-                                        })]
-                                    })
-                                }}
-                                afterLeave={() => {
-                                    change({
-                                        items: state.items,
-                                        text: state.text,
-                                        notices: state.notices.filter(y => y.id !== x.id)
-                                    })
-                                }}>
-                                    <div className="w-full m-3 bg-red-300 border border-red-400 rounded-lg">
-                                        <p className="m-2">{x.text}</p>
-                                    </div>
-                            </Transition>
-                        )
-                    })}
+                                        return {
+                                            text: y.text,
+                                            id: y.id,
+                                            show: false
+                                        };
+                                    })]
+                                });
+                            }}
+                            afterLeave={() => {
+                                change({
+                                    items: state.items,
+                                    text: state.text,
+                                    notices: state.notices.filter(y => y.id !== x.id)
+                                });
+                            }}>
+                            <div className="w-full m-3 bg-red-300 border border-red-400 rounded-lg">
+                                <p className="m-2">{x.text}</p>
+                            </div>
+                        </Transition>
+                    ))}
                 </div>
             </div>
             <div className="flex items-center justify-center h-screen dark:bg-gray-900">
@@ -143,7 +141,7 @@ ${state.items.map(x => `        "${x}"`).join(",\n")}
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default Script;

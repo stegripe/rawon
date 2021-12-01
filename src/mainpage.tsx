@@ -1,6 +1,6 @@
 import { ReactComponent as DiscSVG } from "./disc-11.svg";
 
-export default function Index() {
+export default function Index(): JSX.Element {
     return (
         <div className="flex items-center justify-center min-w-full h-screen dark:bg-gray-900">
             <div className="grid grid-cols-1 grid-rows-2 gap-3 text-center">

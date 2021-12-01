@@ -7,7 +7,7 @@ function getStorageTheme(): ThemeName {
 }
 
 export function isSystemThemePreferenceDark(): boolean {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
 export function useTheme(): [ThemeName, (theme: ThemeName) => void] {
@@ -32,5 +32,5 @@ export function useTheme(): [ThemeName, (theme: ThemeName) => void] {
             oldValue: theme,
             storageArea: window.localStorage
         }));
-    }]
+    }];
 }
