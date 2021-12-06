@@ -145,7 +145,7 @@ export interface SpotifyArtist {
 export interface SpotifyPlaylist {
     name: string;
     tracks: {
-        items: Array<{ track: SpotifyTrack }>;
+        items: { track: SpotifyTrack }[];
         next: string | null;
         previous: string | null;
     };
