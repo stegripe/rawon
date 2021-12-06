@@ -118,6 +118,13 @@ export interface ILyricsAPIResult<E extends boolean> {
     synced: E extends true ? never : boolean|string;
 }
 
+export interface ISpotifyAccessTokenAPIResult {
+    clientId: string;
+    accessToken: string;
+    accessTokenExpirationTimestampMs: number;
+    isAnonymous: boolean;
+}
+
 export interface ExternalUrls {
     spotify: string;
 }
