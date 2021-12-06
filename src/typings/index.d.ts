@@ -120,7 +120,7 @@ export interface ILyricsAPIResult<E extends boolean> {
 
 export interface ISpotifyAccessTokenAPIResult {
     clientId: string;
-    accessToken: string;
+    accessToken?: string;
     accessTokenExpirationTimestampMs: number;
     isAnonymous: boolean;
 }
