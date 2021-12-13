@@ -35,7 +35,7 @@
     "sucrase": "^3.20.3",
     "tslib": "^2.3.1",
     "tweetnacl": "^1.0.3",
-    "youtube-dl-exec": "^2.0.0",
+    "youtube-dl-exec": "^2.0.2",
     "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
