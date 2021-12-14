@@ -52,17 +52,18 @@ export class RemoveCommand extends BaseCommand {
         }
 
         const np = (ctx.guild?.queue?.player?.state as (AudioPlayerState & { resource: AudioResource|undefined })|undefined)?.resource?.metadata as IQueueSong|undefined;
-        if (songs.map(x => x.key).includes(np?.key as string)) {
+        const isSkip = songs.map(x => x.key).includes(np?.key as string);
+        if (isSkip) {
             this.client.commands.get("skip")?.execute(ctx);
         }
 
-        const opening = i18n.__mf("commands.music.remove.songsRemoved", { removed: songs.length, additional: i18n.__("commands.music.remove.songSkip") });
+        const opening = `${i18n.__mf("commands.music.remove.songsRemoved", { removed: songs.length })}${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}`;
         const pages = await Promise.all(chunk(songs, 10).map(async (v, i) => {
             const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.song.title))}`));
 
             return texts.join("\n");
         }));
-        const getText = (page: string): string => `\`\`\`\n${opening}${page}\`\`\``;
+        const getText = (page: string): string => `\`\`\`\n${opening}\n\n${page}\`\`\``;
         const embed = createEmbed("info", getText(pages[0])).setFooter(`• ${i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length })}`);
         const msg = await ctx.reply({ embeds: [embed] }).catch(() => undefined);
 
