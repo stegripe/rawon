@@ -39,7 +39,7 @@
     "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
-    "@types/i18n": "^0.13.1",
+    "@types/i18n": "^0.13.2",
     "@types/node": "^16.11.12",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
