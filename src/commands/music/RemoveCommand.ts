@@ -6,6 +6,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import { chunk } from "../../utils/chunk";
+import i18n from "../../config";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 import { Util } from "discord.js";
 
