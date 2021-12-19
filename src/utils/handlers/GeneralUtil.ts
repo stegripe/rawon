@@ -249,7 +249,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
             return texts.join("\n");
         }));
         const embed = createEmbed("info", opening);
-        const msg = await ctx.reply({ embeds: [embed] }, true);
+        const msg = await ctx.send({ embeds: [embed] });
 
         return new ButtonPagination(msg, {
             author: ctx.author.id,
