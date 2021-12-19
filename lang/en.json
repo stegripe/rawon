@@ -172,7 +172,7 @@
 			},
 			"remove": {
 				"description": "Remove song(s) from the queue",
-				"slashPositionDescription": "Position of the songs to remove separated by comma or space",
+				"slashPositionsDescription": "Position of the songs to remove separated by comma or space",
 				"usage": "{prefix}remove <positions>",
 				"noPermission": "You don't have permission to use this command",
 				"noPositions": "Please, specify the song positions to remove.",
