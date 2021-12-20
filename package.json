@@ -44,7 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "@zhycorp/eslint-config": "^6.0.2",
-    "eslint": "^8.4.1"
+    "eslint": "^8.5.0"
   },
   "engines": {
     "node": ">=16.6.0"
