@@ -100,12 +100,14 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     // "a" variable check
                     if (a.title.toLowerCase().includes(track.name.toLowerCase())) aValue--;
                     if (track.artists.some(x => a.channel?.name.toLowerCase().includes(x.name))) aValue--;
-                    if (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false) aValue--;
+                    if (a.channel?.name.endsWith("- Topic")) aValue -= 2;
+                    if (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false) aValue -= 2;
 
                     // "b" variable check
                     if (b.title.toLowerCase().includes(track.name.toLowerCase())) bValue++;
                     if (track.artists.some(x => b.channel?.name.toLowerCase().includes(x.name))) bValue++;
-                    if (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false) bValue++;
+                    if (b.channel?.name.endsWith(" - Topic")) bValue += 2;
+                    if (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false) bValue += 2;
 
                     return aValue + bValue;
                 });
