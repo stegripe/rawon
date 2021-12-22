@@ -22,6 +22,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
     const queryData = checkQuery(query);
     if (queryData.isURL) {
         const url = new URL(query);
+        result.type = "results";
 
         if (queryData.sourceType === "soundcloud") {
             let scUrl = url;
@@ -58,8 +59,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
 
                 result.items = tracks;
             }
-
-            result.type = "results";
         } else if (queryData.sourceType === "youtube") {
             if (queryData.type === "track") {
                 const track = await youtube.getVideo(url.toString());
@@ -88,8 +87,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     result.items = tracks;
                 }
             }
-
-            result.type = "results";
         } else if (queryData.sourceType === "spotify") {
             function sortVideos(track: SpotifyTrack, videos: SearchResult<"video">): SearchResult<"video"> {
                 return videos.sort((a, b) => {
@@ -139,11 +136,9 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
 
                 result.items = tracks;
             }
-            result.type = "results";
         } else {
             const info = await getInfo(url.toString()).catch(() => undefined);
 
-            result.type = "results";
             result.items = [{
                 duration: info?.duration ?? 0,
                 id: info?.id ?? "",
