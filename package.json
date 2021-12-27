@@ -41,7 +41,7 @@
   "devDependencies": {
     "@types/i18n": "^0.13.1",
     "@types/node": "^16.11.12",
-    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.6.0",
     "@zhycorp/eslint-config": "^6.0.2",
     "eslint": "^8.4.1"
