@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.7.5",
-    "date-fns": "^2.27.0",
+    "date-fns": "^2.28.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "got": "^11.8.3",
