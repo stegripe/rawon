@@ -216,7 +216,6 @@
 			},
 			"skip": {
 				"description": "Skip the music",
-				"voteMessage": "{actual}/{required} voted to skip the current song",
 				"voteResultMessage": "{length}/{required} voted to skip the current song",
 				"skipMessage": "Skipped **{song}**"
 			},
