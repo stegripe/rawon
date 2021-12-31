@@ -3,6 +3,7 @@ import { ICategoryMeta, ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
 import { Disc } from "../structures/Disc";
 import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
+import i18n from "../config";
 import { promises as fs } from "fs";
 import { resolve } from "path";
 
