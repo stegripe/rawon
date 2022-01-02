@@ -20,7 +20,7 @@ export class PingCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         const before = Date.now();
-        const msg = await ctx.send({ content: "🏓" });
+        const msg = await ctx.reply({ content: "🏓" });
         const latency = Date.now() - before;
         const wsLatency = this.client.ws.ping.toFixed(0);
         const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "N/A";
