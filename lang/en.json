@@ -175,7 +175,7 @@
 				"slashPositionsDescription": "Position of the songs to remove separated by comma or space",
 				"usage": "{prefix}remove <positions>",
 				"noPermission": "You don't have permission to use this command",
-				"noPositions": "Please, specify the song positions to remove.",
+				"noPositions": "Please specify the song positions to remove.",
 				"songsRemoved": "Removed {removed} songs from the queue.",
 				"songSkip": "One of the removed song is the now-playing song. Song skipped."
 			},
