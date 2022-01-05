@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { InteractionTypes, MessageComponentTypes } from "../typings/enum";
 import { MessageInteractionAction } from "../typings";
-import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannels, User } from "discord.js";
+import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
     public additionalArgs: Collection<string, any> = new Collection();
-    public channel: TextBasedChannels|null = this.context.channel;
+    public channel: TextBasedChannel|null = this.context.channel;
     public guild = this.context.guild;
 
     public constructor(public readonly context: Interaction|CommandInteraction|SelectMenuInteraction|ContextMenuInteraction|Message, public args: string[] = []) {}
@@ -23,7 +23,7 @@ export class CommandContext {
         }
 
         const context = this.context as Message|CommandInteraction;
-        const rep = await this.send(options, this.isInteraction() ? ((context as Interaction).isCommand() ? ((context as CommandInteraction).replied ? "editReply" : "reply") : "reply") : "reply").catch(e => ({ error: e }));
+        const rep = await this.send(options, this.isInteraction() ? ((context as Interaction).isCommand() ? (((context as CommandInteraction).replied || (context as CommandInteraction).deferred) ? "editReply" : "reply") : "reply") : "reply").catch(e => ({ error: e }));
         if (!rep || "error" in rep) throw new Error(`Unable to reply context, because: ${rep ? (rep.error as Error).message : "Unknown"}`);
 
         // @ts-expect-error-next-line

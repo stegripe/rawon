@@ -103,8 +103,8 @@ export class SearchCommand extends BaseCommand {
         const msg = await ctx.send({
             embeds: [
                 createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", { separator: `\`,\``, example: `\`1, 2, 3\`` })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`).join("\n")}\`\`\``)
-                    .setAuthor(i18n.__("commands.music.search.trackSelectionMessage"), this.client.user?.displayAvatarURL())
-                    .setFooter(i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }))
+                    .setAuthor({ name: i18n.__("commands.music.search.trackSelectionMessage"), iconURL: this.client.user?.displayAvatarURL() })
+                    .setFooter({ text: i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }) })
             ]
         });
         const respond = await msg.channel.awaitMessages({

@@ -8,7 +8,7 @@ export function getStream(url: string): Promise<Readable> {
             {
                 output: "-",
                 quiet: true,
-                format: "bestaudio[acodec=opus]/bestaudio",
+                format: "bestaudio",
                 limitRate: "100K"
             },
             {

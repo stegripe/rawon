@@ -42,7 +42,7 @@ export class QueueCommand extends BaseCommand {
 
         return (new ButtonPagination(msg, {
             author: ctx.author.id,
-            edit: (i, e, p) => e.setDescription(p).setFooter(i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })),
+            edit: (i, e, p) => e.setDescription(p).setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length }) }),
             embed,
             pages
         })).start();
