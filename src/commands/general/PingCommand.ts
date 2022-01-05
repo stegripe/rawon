@@ -26,7 +26,10 @@ export class PingCommand extends BaseCommand {
         const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "N/A";
         const embed = createEmbed("info")
             .setColor(this.searchHex(wsLatency))
-            .setAuthor("🏓 PONG", this.client.user!.displayAvatarURL())
+            .setAuthor({
+                name: "🏓 PONG",
+                iconURL: this.client.user!.displayAvatarURL()
+            })
             .addFields({
                 name: "📶 **|** API",
                 value: `**\`${latency}\`** ms`,
@@ -40,7 +43,10 @@ export class PingCommand extends BaseCommand {
                 value: `**\`${vcLatency}\`** ms`,
                 inline: true
             })
-            .setFooter(i18n.__mf("commands.general.ping.footerString", { user: this.client.user!.tag }), this.client.user!.displayAvatarURL())
+            .setFooter({
+                text: i18n.__mf("commands.general.ping.footerString", { user: this.client.user!.tag }),
+                iconURL: this.client.user!.displayAvatarURL()
+            })
             .setTimestamp();
         msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
     }

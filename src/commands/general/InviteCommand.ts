@@ -38,7 +38,10 @@ export class InviteCommand extends BaseCommand {
             scopes: ["bot", "applications.commands"]
         });
         await ctx.send({
-            embeds: [createEmbed("info", i18n.__mf("commands.general.invite.clickURL", { url: invite })).setAuthor(i18n.__mf("commands.general.invite.inviteTitle", { bot: this.client.user?.username }), this.client.user!.displayAvatarURL())]
+            embeds: [createEmbed("info", i18n.__mf("commands.general.invite.clickURL", { url: invite })).setAuthor({
+                name: i18n.__mf("commands.general.invite.inviteTitle", { bot: this.client.user?.username }),
+                iconURL: this.client.user!.displayAvatarURL()
+            })]
         }).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
     }
 }

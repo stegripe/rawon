@@ -65,14 +65,14 @@ export class RemoveCommand extends BaseCommand {
             return texts.join("\n");
         }));
         const getText = (page: string): string => `\`\`\`\n${opening}\n\n${page}\`\`\``;
-        const embed = createEmbed("info", getText(pages[0])).setFooter(`• ${i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length })}`);
+        const embed = createEmbed("info", getText(pages[0])).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length })}` });
         const msg = await ctx.reply({ embeds: [embed] }).catch(() => undefined);
 
         if (!msg) return;
         void new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(getText(p)).setFooter(`• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`);
+                e.setDescription(getText(p)).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}` });
             },
             embed,
             pages

@@ -251,7 +251,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
         return new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter(`• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`);
+                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}` });
             },
             embed,
             pages

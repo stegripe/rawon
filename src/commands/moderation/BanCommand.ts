@@ -49,7 +49,10 @@ export class BanCommand extends BaseCommand {
                     embeds: [
                         createEmbed("error", i18n.__mf("commands.moderation.ban.userBanned", { guildName: ctx.guild.name }))
                             .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                            .setFooter(i18n.__mf("commands.moderation.ban.bannedByString", { guildName: ctx.author.tag }), ctx.author.displayAvatarURL({ dynamic: true }))
+                            .setFooter({
+                                text: i18n.__mf("commands.moderation.ban.bannedByString", { guildName: ctx.author.tag }),
+                                iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                            })
                             .setTimestamp(Date.now())
                     ]
                 });

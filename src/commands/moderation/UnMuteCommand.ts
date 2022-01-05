@@ -50,7 +50,10 @@ export class UnMuteCommand extends BaseCommand {
                 embeds: [
                     createEmbed("info", i18n.__mf("commands.moderation.unmute.userUnmuted", { guildName: ctx.guild.name }))
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter(i18n.__mf("commands.moderation.unmute.unmutedByString", { author: ctx.author.tag }), ctx.author.displayAvatarURL({ dynamic: true }))
+                        .setFooter({
+                            text: i18n.__mf("commands.moderation.unmute.unmutedByString", { author: ctx.author.tag }),
+                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                        })
                         .setTimestamp(Date.now())
                 ]
             });
