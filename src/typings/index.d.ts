@@ -117,3 +117,50 @@ export interface ILyricsAPIResult<E extends boolean> {
     message?: E extends true ? string : never;
     synced: E extends true ? never : boolean|string;
 }
+
+export interface ISpotifyAccessTokenAPIResult {
+    clientId: string;
+    accessToken?: string;
+    accessTokenExpirationTimestampMs: number;
+    isAnonymous: boolean;
+}
+
+export interface ExternalUrls {
+    spotify: string;
+}
+
+export interface ArtistsEntity {
+    external_urls: ExternalUrls;
+    href: string;
+    id: string;
+    name: string;
+    type: string;
+    uri: string;
+}
+
+export interface SpotifyArtist {
+    name: string;
+}
+
+export interface SpotifyPlaylist {
+    name: string;
+    tracks: {
+        items: { track: SpotifyTrack }[];
+        next: string | null;
+        previous: string | null;
+    };
+}
+
+export interface SpotifyTrack {
+    artists: ArtistsEntity[];
+    duration_ms: number;
+    external_urls: {
+        spotify: string;
+    };
+    id: string;
+    name: string;
+}
+
+export interface SpotifyArtist {
+    tracks: SpotifyTrack[];
+}

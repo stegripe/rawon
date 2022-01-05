@@ -100,9 +100,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         queue.lastVSUpdateMsg = null;
         state.guild.queue!.timeout = setTimeout(() => {
             queue.destroy();
-            void queue.textChannel.send({ embeds: [createEmbed("error", `⏹ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", { duration: `\`${duration}\`` })}`).setAuthor(i18n.__("events.voiceStateUpdate.deleteQueueFooter"))] });
+            void queue.textChannel.send({ embeds: [createEmbed("error", `⏹ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", { duration: `\`${duration}\`` })}`).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") })] });
         }, timeout);
-        void queue.textChannel.send({ embeds: [createEmbed("warn", `⏸ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", { duration: `\`${duration}\`` })}`).setAuthor(i18n.__("events.voiceStateUpdate.pauseQueueFooter"))] })
+        void queue.textChannel.send({ embeds: [createEmbed("warn", `⏸ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", { duration: `\`${duration}\`` })}`).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") })] })
             .then(msg => queue.lastVSUpdateMsg = msg.id);
     }
 
@@ -114,7 +114,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const song = ((queue.player!.state as AudioPlayerPausedState).resource.metadata as IQueueSong).song;
 
-        void queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", { song: `[${song.title}](${song.url})` })}`).setThumbnail(song.thumbnail).setAuthor(i18n.__("events.voiceStateUpdate.resumeQueueFooter"))] }).then(msg => queue.lastVSUpdateMsg = msg.id);
+        void queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", { song: `[${song.title}](${song.url})` })}`).setThumbnail(song.thumbnail).setAuthor({ name: i18n.__("events.voiceStateUpdate.resumeQueueFooter") })] }).then(msg => queue.lastVSUpdateMsg = msg.id);
         state.guild.queue?.player?.unpause();
     }
 }

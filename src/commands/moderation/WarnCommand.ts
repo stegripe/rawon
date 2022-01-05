@@ -41,7 +41,10 @@ export class WarnCommand extends BaseCommand {
         const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
         const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.userWarned", { guildName: ctx.guild!.name }))
             .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-            .setFooter(i18n.__("commands.moderation.warn.warnedByString"), ctx.author.displayAvatarURL({ dynamic: true }))
+            .setFooter({
+                text: i18n.__("commands.moderation.warn.warnedByString"),
+                iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+            })
             .setTimestamp(Date.now());
 
         await dm?.send({ embeds: [embed] });

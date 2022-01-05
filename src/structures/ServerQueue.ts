@@ -1,7 +1,7 @@
 import { SongManager } from "../utils/SongManager";
 import { LoopMode } from "../typings";
 import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voice";
-import { TextBasedChannels, Snowflake } from "discord.js";
+import { TextBasedChannel, Snowflake } from "discord.js";
 
 export class ServerQueue {
     public loopMode: LoopMode = "OFF";
@@ -16,7 +16,7 @@ export class ServerQueue {
     private _lastMusicMsg: Snowflake|null = null;
     private _lastVSUpdateMsg: Snowflake|null = null;
 
-    public constructor(public readonly textChannel: TextBasedChannels) {
+    public constructor(public readonly textChannel: TextBasedChannel) {
         Object.defineProperties(this, {
             _skipVoters: {
                 enumerable: false

@@ -52,7 +52,10 @@ export class MuteCommand extends BaseCommand {
                     createEmbed("error", i18n.__("commands.moderation.mute.userMuted"))
                         .setColor("LIGHT_GREY")
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter(i18n.__mf("commands.moderation.mute.mutedByString", { author: ctx.author.tag }), ctx.author.displayAvatarURL({ dynamic: true }))
+                        .setFooter({
+                            text: i18n.__mf("commands.moderation.mute.mutedByString", { author: ctx.author.tag }),
+                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                        })
                         .setTimestamp(Date.now())
                 ]
             });

@@ -45,12 +45,12 @@ export class LyricsCommand extends BaseCommand {
 
                 const albumArt = data.album_art ?? "https://api.zhycorp.net/assets/images/icon.png";
                 const pages: string[] = chunk(data.lyrics as string, 2048);
-                const embed = createEmbed("info", pages[0]).setAuthor(data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase()).setThumbnail(albumArt);
+                const embed = createEmbed("info", pages[0]).setAuthor({ name: data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase() }).setThumbnail(albumArt);
                 const msg = await ctx.reply({ embeds: [embed] });
 
                 return (new ButtonPagination(msg, {
                     author: ctx.author.id,
-                    edit: (i, e, p) => e.setDescription(p).setFooter(i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })),
+                    edit: (i, e, p) => e.setDescription(p).setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length }) }),
                     embed,
                     pages
                 })).start();

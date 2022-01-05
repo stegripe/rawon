@@ -1,5 +1,6 @@
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
+import { OperationManager } from "../../utils/OperationManager";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
@@ -8,6 +9,8 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
 
 export class SkipCommand extends BaseCommand {
+    private readonly manager = new OperationManager();
+
     public constructor(client: BaseCommand["client"]) {
         super(client, {
             aliases: ["s"],
@@ -36,13 +39,13 @@ export class SkipCommand extends BaseCommand {
             const required = this.client.utils.requiredVoters(ctx.guild!.me!.voice.channel!.members.size);
 
             if (ctx.guild?.queue?.skipVoters.includes(ctx.author.id)) {
-                ctx.guild.queue.skipVoters = ctx.guild.queue.skipVoters.filter(x => x !== ctx.author.id);
-                await ctx.reply(i18n.__mf("commands.music.skip.voteMessage", { actual: ctx.guild.queue.skipVoters.length, required }));
+                this.manager.add(() => ctx.guild!.queue!.skipVoters = ctx.guild!.queue!.skipVoters.filter(x => x !== ctx.author.id));
+                await ctx.reply(i18n.__mf("commands.music.skip.voteResultMessage", { length: ctx.guild.queue.skipVoters.length, required }));
 
                 return;
             }
 
-            ctx.guild?.queue?.skipVoters.push(ctx.author.id);
+            this.manager.add(() => ctx.guild?.queue?.skipVoters.push(ctx.author.id));
 
             const length = ctx.guild!.queue!.skipVoters.length;
             await ctx.reply(i18n.__mf("commands.music.skip.voteResultMessage", { length, required }));

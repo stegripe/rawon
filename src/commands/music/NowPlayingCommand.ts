@@ -91,7 +91,7 @@ export class NowPlayingCommand extends BaseCommand {
             await msg.edit({ embeds: [embed] });
         }).on("end", () => {
             const embed = getEmbed()
-                .setFooter(i18n.__("commands.music.nowplaying.disableButton"));
+                .setFooter({ text: i18n.__("commands.music.nowplaying.disableButton") });
 
             void msg.edit({
                 embeds: [embed],

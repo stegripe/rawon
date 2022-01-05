@@ -102,7 +102,7 @@ export class ClientUtils {
     public getFFmpegVersion(): string {
         try {
             const ffmpeg = FFmpeg.getInfo();
-            return ffmpeg.version;
+            return ffmpeg.version.split(/_|-| /).find(x => /[0-9.]/.test(x))?.replace(/[^0-9.]/g, "") ?? "Unknown";
         } catch (e) {
             return "Unknown";
         }
