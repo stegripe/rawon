@@ -170,6 +170,15 @@
 			"queue": {
 				"description": "Show the queue list"
 			},
+			"remove": {
+				"description": "Remove song(s) from the queue",
+				"slashPositionsDescription": "Position of the songs to remove separated by comma or space",
+				"usage": "{prefix}remove <positions>",
+				"noPermission": "You don't have permission to use this command.",
+				"noPositions": "Please specify the song positions to remove.",
+				"songsRemoved": "Removed {removed} songs from the queue.",
+				"songSkip": "One of the removed song is the now-playing song, song skipped."
+			},
 			"repeat": {
 				"description": "Repeat current music or the queue",
 				"slashQueue": "Set repeat mode to **`QUEUE`**",
@@ -207,7 +216,6 @@
 			},
 			"skip": {
 				"description": "Skip the music",
-				"voteMessage": "{actual}/{required} voted to skip the current song",
 				"voteResultMessage": "{length}/{required} voted to skip the current song",
 				"skipMessage": "Skipped **{song}**"
 			},

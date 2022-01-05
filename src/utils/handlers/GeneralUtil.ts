@@ -1,5 +1,4 @@
-import { IQueueSong, ISong, QueryData, SearchTrackResult } from "../../typings";
-import { getPreview, getTracks, Preview, Tracks } from "./SpotifyUtil";
+import { IQueueSong, ISong, QueryData, SearchTrackResult, SpotifyTrack } from "../../typings";
 import { CommandContext } from "../../structures/CommandContext";
 import { ServerQueue } from "../../structures/ServerQueue";
 import { parseHTMLElements } from "../parseHTMLElements";
@@ -23,6 +22,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
     const queryData = checkQuery(query);
     if (queryData.isURL) {
         const url = new URL(query);
+        result.type = "results";
 
         if (queryData.sourceType === "soundcloud") {
             let scUrl = url;
@@ -59,8 +59,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
 
                 result.items = tracks;
             }
-
-            result.type = "results";
         } else if (queryData.sourceType === "youtube") {
             if (queryData.type === "track") {
                 const track = await youtube.getVideo(url.toString());
@@ -89,34 +87,32 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     result.items = tracks;
                 }
             }
-
-            result.type = "results";
         } else if (queryData.sourceType === "spotify") {
-            function sortVideos(preview: Preview | Tracks, videos: SearchResult<"video">): SearchResult<"video"> {
+            function sortVideos(track: SpotifyTrack, videos: SearchResult<"video">): SearchResult<"video"> {
                 return videos.sort((a, b) => {
-                    const isTrack = ("artists" in preview);
                     let aValue = 0;
                     let bValue = 0;
-                    const aDurationDiff = isTrack ? (a.duration ? a.duration - preview.duration_ms : null) : null;
-                    const bDurationDiff = isTrack ? (b.duration ? b.duration - preview.duration_ms : null) : null;
-
+                    const aDurationDiff = a.duration ? a.duration - track.duration_ms : null;
+                    const bDurationDiff = b.duration ? b.duration - track.duration_ms : null;
                     // "a" variable check
-                    if (a.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) aValue--;
-                    if (isTrack ? preview.artists?.some(x => a.channel?.name.toLowerCase().includes(x.name)) : a.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) aValue--;
-                    if (isTrack && (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false)) aValue--;
+                    if (a.title.toLowerCase().includes(track.name.toLowerCase())) aValue--;
+                    if (track.artists.some(x => a.channel?.name.toLowerCase().includes(x.name))) aValue--;
+                    if (a.channel?.name.endsWith("- Topic")) aValue -= 2;
+                    if (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false) aValue -= 2;
 
                     // "b" variable check
-                    if (b.title.toLowerCase().includes((isTrack ? preview.name : (preview as Preview).title).toLowerCase())) bValue++;
-                    if (isTrack ? preview.artists?.some(x => b.channel?.name.toLowerCase().includes(x.name)) : b.channel?.name.toLowerCase().includes((preview as Preview).artist.toLowerCase())) bValue++;
-                    if (isTrack && (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false)) bValue++;
+                    if (b.title.toLowerCase().includes(track.name.toLowerCase())) bValue++;
+                    if (track.artists.some(x => b.channel?.name.toLowerCase().includes(x.name))) bValue++;
+                    if (b.channel?.name.endsWith(" - Topic")) bValue += 2;
+                    if (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false) bValue += 2;
 
                     return aValue + bValue;
                 });
             }
 
             if (queryData.type === "track") {
-                const songData = await getPreview(url.toString());
-                const track = sortVideos(songData, await youtube.search(`${songData.artist} - ${songData.title}`, { type: "video" }))[0];
+                const songData = await client.spotify.resolveTracks(url.toString()) as unknown as SpotifyTrack;
+                const track = sortVideos(songData, await youtube.search(`${songData.artists[0].name} - ${songData.name}`, { type: "video" }))[0];
 
                 result.items = [{
                     duration: track.duration === null ? 0 : track.duration,
@@ -126,10 +122,9 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     url: `https://youtube.com/watch?v=${track.id}`
                 }];
             } else if (queryData.type === "playlist") {
-                const songs = await getTracks(url.toString());
+                const songs = await client.spotify.resolveTracks(url.toString()) as unknown as { track: SpotifyTrack }[];
                 const tracks = await Promise.all(songs.map(async (x): Promise<ISong> => {
-                    const track = sortVideos(x, await youtube.search(`${x.artists ? `${x.artists.map(y => y.name).join(", ")} - ` : ""}${x.name}`))[0];
-
+                    const track = sortVideos(x.track, await youtube.search(`${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`, { type: "video" }))[0];
                     return {
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
@@ -141,12 +136,9 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
 
                 result.items = tracks;
             }
-
-            result.type = "results";
         } else {
             const info = await getInfo(url.toString()).catch(() => undefined);
 
-            result.type = "results";
             result.items = [{
                 duration: info?.duration ?? 0,
                 id: info?.id ?? "",
@@ -259,7 +251,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
         return new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter(`• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`);
+                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}` });
             },
             embed,
             pages
