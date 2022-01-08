@@ -1,7 +1,7 @@
+import "./index.css";
 import { isSystemThemePreferenceDark, useTheme } from "./hooks/useTheme";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import "./index.css";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { Suspense, lazy, ComponentProps } from "react";
 import ReactDOM from "react-dom";

@@ -1,7 +1,7 @@
 import { ReactComponent as ZhycorpLogo } from "../zhycorp.svg";
 import { useTheme } from "../hooks/useTheme";
-import { Listbox, Popover, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { Listbox, Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
 const tools = [
