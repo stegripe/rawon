@@ -6,7 +6,7 @@ import { EditorState } from "@codemirror/state";
 import { Transition } from "@headlessui/react";
 import { EditorView } from "@codemirror/view";
 
-class ScriptComp extends Component<Record<string, never>, { text: string; incremental: number; items: string[]; notices: { text: string; id: string; show: boolean }[] }> {
+class Script extends Component<Record<string, never>, { text: string; incremental: number; items: string[]; notices: { text: string; id: string; show: boolean }[] }> {
     private view?: EditorView;
 
     public constructor() {
@@ -177,4 +177,4 @@ ${items.map(x => `        "${x}"`).join(",\n")}
     }
 }
 
-export default ScriptComp;
+export default Script;
