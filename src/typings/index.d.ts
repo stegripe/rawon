@@ -16,7 +16,7 @@ export interface basicYoutubeVideoInfo {
     id: string;
     url: string;
     title: string;
-    thumbnails: Array<{ url: string; width: number; height: number; }>;
+    thumbnails: Array<{ url: string; width: number; height: number }>;
     duration: number;
 }
 

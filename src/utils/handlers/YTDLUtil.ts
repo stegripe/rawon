@@ -14,7 +14,7 @@ export async function getStream(url: string): Promise<Readable> {
         }
         const rawPlayDlStream = await stream(url);
         return rawPlayDlStream.stream;
-    } else return new Promise((resolve, reject) => {
+    } return new Promise((resolve, reject) => {
         const stream = exec(
             url,
             {
@@ -42,13 +42,13 @@ export async function getInfo(url: string): Promise<basicYoutubeVideoInfo> {
     if (streamStrategy === "play-dl") {
         const rawPlayDlVideoInfo = await video_basic_info(url);
         return {
-            thumbnails: rawPlayDlVideoInfo.video_details.thumbnails,
-            id: rawPlayDlVideoInfo.video_details.id!,
-            title: rawPlayDlVideoInfo.video_details.title!,
-            url: rawPlayDlVideoInfo.video_details.url,
             duration: rawPlayDlVideoInfo.video_details.durationInSec * 1000,
+            id: rawPlayDlVideoInfo.video_details.id!,
+            thumbnails: rawPlayDlVideoInfo.video_details.thumbnails,
+            title: rawPlayDlVideoInfo.video_details.title!,
+            url: rawPlayDlVideoInfo.video_details.url
         };
-    } else return ytdl(url, {
+    } return ytdl(url, {
         dumpJson: true
     });
 }
