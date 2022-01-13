@@ -1,8 +1,20 @@
-import ytdl, { exec, YtResponse } from "youtube-dl-exec";
+import ytdl, { exec } from "youtube-dl-exec";
 import { Readable } from "stream";
+import { streamStrategy } from "../../config";
+import { stream, video_basic_info } from "play-dl";
+import { basicYoutubeVideoInfo } from "../../typings";
+import { checkQuery } from "./GeneralUtil";
+import { soundcloud } from "./SoundCloudUtil";
 
-export function getStream(url: string): Promise<Readable> {
-    return new Promise((resolve, reject) => {
+export async function getStream(url: string): Promise<Readable> {
+    if (streamStrategy === "play-dl") {
+        const isSoundcloudUrl = checkQuery(url);
+        if (isSoundcloudUrl.sourceType === "soundcloud") {
+            return soundcloud.util.streamTrack(url) as unknown as Readable;
+        }
+        const rawPlayDlStream = await stream(url);
+        return rawPlayDlStream.stream;
+    } return new Promise((resolve, reject) => {
         const stream = exec(
             url,
             {
@@ -21,13 +33,22 @@ export function getStream(url: string): Promise<Readable> {
         }
 
         void stream.on("spawn", () => {
-            resolve(stream.stdout as Readable);
+            resolve(stream.stdout!);
         });
     });
 }
 
-export async function getInfo(url: string): Promise<YtResponse> {
-    return ytdl(url, {
+export async function getInfo(url: string): Promise<basicYoutubeVideoInfo> {
+    if (streamStrategy === "play-dl") {
+        const rawPlayDlVideoInfo = await video_basic_info(url);
+        return {
+            duration: rawPlayDlVideoInfo.video_details.durationInSec * 1000,
+            id: rawPlayDlVideoInfo.video_details.id!,
+            thumbnails: rawPlayDlVideoInfo.video_details.thumbnails,
+            title: rawPlayDlVideoInfo.video_details.title!,
+            url: rawPlayDlVideoInfo.video_details.url
+        };
+    } return ytdl(url, {
         dumpJson: true
     });
 }
