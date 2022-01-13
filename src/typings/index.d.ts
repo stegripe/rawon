@@ -12,6 +12,14 @@ export interface QueryData {
     type?: "track" | "playlist" | "unknown";
 }
 
+export interface basicYoutubeVideoInfo {
+    id: string;
+    url: string;
+    title: string;
+    thumbnails: Array<{ url: string; width: number; height: number; }>;
+    duration: number;
+}
+
 export interface SearchTrackResult {
     type?: "selection"|"results";
     items: ISong[];
