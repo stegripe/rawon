@@ -44,6 +44,7 @@ export const djRoleName = process.env.DJ_ROLE_NAME! || "DJ";
 export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
 export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
+export const streamStrategy = process.env.STREAM_STRATEGY! || "youtube-dl";
 
 export const presenceData: IpresenceData = {
     activities: (JSON.parse(process.env.ACTIVITIES! || "[]") as string[]).map((x, i) => ({
