@@ -16,7 +16,7 @@ export class InteractionCreateEvent extends BaseEvent {
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
             if (cmd === "delete-msg") {
-                if (interaction.user.id !== user && !new Permissions(interaction.member.permissions as BitFieldResolvable<PermissionString, bigint>|undefined).has("MANAGE_MESSAGES")) {
+                if (interaction.user.id !== user && !new Permissions(interaction.member.permissions as BitFieldResolvable<PermissionString, bigint> | undefined).has("MANAGE_MESSAGES")) {
                     void interaction.reply({
                         ephemeral: true,
                         embeds: [

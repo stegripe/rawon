@@ -40,7 +40,7 @@ export class ReadyEvent extends BaseEvent {
 
         return newText
             .replace(/{prefix}/g, this.client.config.mainPrefix)
-            .replace(/{username}/g, this.client.user?.username as string);
+            .replace(/{username}/g, this.client.user?.username!);
     }
 
     private async setPresence(random: boolean): Promise<Presence> {
@@ -49,14 +49,14 @@ export class ReadyEvent extends BaseEvent {
         const activity = (await Promise.all(this.client.config.presenceData.activities.map(async a => Object.assign(a, { name: await this.formatString(a.name) }))))[activityNumber];
 
         return this.client.user!.setPresence({
-            activities: (activity as { name: string }|undefined) ? [activity] : [],
+            activities: (activity as { name: string } | undefined) ? [activity] : [],
             status: this.client.config.presenceData.status[statusNumber]
         });
     }
 
     private async doPresence(): Promise<Presence | undefined> {
         try {
-            return this.setPresence(false);
+            return await this.setPresence(false);
         } catch (e) {
             if ((e as Error).message !== "Shards are still being spawned.") this.client.logger.error(String(e));
             return undefined;

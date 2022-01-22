@@ -47,7 +47,7 @@ ${value}
 \`\`\`
                 `)
                     .setAuthor({
-                        name: i18n.__mf("commands.general.about.aboutFooter", { botname: this.client.user?.username as string })
+                        name: i18n.__mf("commands.general.about.aboutFooter", { botname: this.client.user?.username! })
                     })
             ]
         }).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));

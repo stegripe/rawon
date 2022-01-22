@@ -9,7 +9,7 @@ export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")
         .setAuthor({
             name: i18n.__mf("commands.general.help.authorString", { username: this.client.user!.username }),
-            iconURL: this.client.user?.displayAvatarURL() as string
+            iconURL: this.client.user?.displayAvatarURL()!
         })
         .setFooter({
             text: i18n.__mf("commands.general.help.footerString", { prefix: this.client.config.mainPrefix }),
@@ -37,7 +37,7 @@ export class HelpCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message|void> {
+    public async execute(ctx: CommandContext): Promise<Message | void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         this.infoEmbed.fields = [];
         const val = ctx.args[0] ?? ctx.options?.getString("command") ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : null);
@@ -97,11 +97,11 @@ export class HelpCommand extends BaseCommand {
                 this.infoEmbed
                     .setAuthor({
                         name: i18n.__mf("commands.general.help.commandDetailTitle", { username: this.client.user!.username, command: command.meta.name }),
-                        iconURL: this.client.user?.displayAvatarURL() as string
+                        iconURL: this.client.user?.displayAvatarURL()!
                     })
                     .addField(i18n.__("commands.general.help.nameString"), `**\`${command.meta.name}\`**`, false)
                     .addField(i18n.__("commands.general.help.descriptionString"), `${command.meta.description!}`, true)
-                    .addField(i18n.__("commands.general.help.aliasesString"), Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") as string : "None.", false)
+                    .addField(i18n.__("commands.general.help.aliasesString"), Number(command.meta.aliases?.length) > 0 ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")! : "None.", false)
                     .addField(i18n.__("commands.general.help.usageString"), `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.mainPrefix)}\`**`, true)
                     .setFooter({
                         text: i18n.__mf("commands.general.help.commandUsageFooter", { devOnly: command.meta.devOnly ? "(developer-only command)" : "" }),

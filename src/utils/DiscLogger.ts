@@ -28,9 +28,9 @@ export class DiscLogger {
         this.log(messages, "warn");
     }
 
-    private log(messages: any[], level: "info"|"debug"|"error"|"warn" = "info"): void {
+    private log(messages: any[], level: "debug" | "error" | "info" | "warn" = "info"): void {
         if (this.options.prod && level === "debug") return;
 
-        console[level](`${this.options.prod ? "" : (level === "debug" ? Colors.Blue : (level === "error" ? Colors.Red : (level === "warn" ? Colors.Yellow : Colors.Green)))}[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]: ${messages.map(x => String(x)).join(" ")} ${Colors.Reset}`);
+        console[level](`${this.options.prod ? "" : level === "debug" ? Colors.Blue : level === "error" ? Colors.Red : level === "warn" ? Colors.Yellow : Colors.Green}[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]: ${messages.map(x => String(x)).join(" ")} ${Colors.Reset}`);
     }
 }

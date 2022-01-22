@@ -18,7 +18,7 @@ export class EvalCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message|void> {
+    public async execute(ctx: CommandContext): Promise<Message | void> {
         const msg = ctx;
         const client = this.client;
 
@@ -27,7 +27,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             let code = ctx.args.join(" ");
-            if (!code) return ctx.send({ embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)] });
+            if (!code) return await ctx.send({ embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)] });
             let evaled;
             if (code.includes("--silent") && code.includes("--async")) {
                 code = code.replace("--async", "").replace("--silent", "");

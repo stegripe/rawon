@@ -30,7 +30,7 @@ const DATAS: InteractionButtonOptions[] = [
 ];
 
 export class ButtonPagination {
-    public constructor(public readonly msg: Interaction|CommandInteraction|SelectMenuInteraction|ContextMenuInteraction|Message, public readonly payload: PaginationPayload) {}
+    public constructor(public readonly msg: CommandInteraction | ContextMenuInteraction | Interaction | Message | SelectMenuInteraction, public readonly payload: PaginationPayload) {}
 
     public async start(): Promise<void> {
         const embed = this.payload.embed;
@@ -74,7 +74,7 @@ export class ButtonPagination {
                 return;
             }
 
-            index = ((index % pages.length) + Number(pages.length)) % pages.length;
+            index = (index % pages.length + Number(pages.length)) % pages.length;
 
             this.payload.edit.call(this, index, embed, pages[index]);
             await fetchedMsg.edit({

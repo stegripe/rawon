@@ -8,7 +8,7 @@ export class MessageCreateEvent extends BaseEvent {
         super(client, "messageCreate");
     }
 
-    public async execute(message: Message): Promise<Message|void> {
+    public async execute(message: Message): Promise<Message | void> {
         if (message.author.bot || message.channel.type === "DM" || !this.client.commands.isReady) return message;
 
         if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
@@ -17,7 +17,7 @@ export class MessageCreateEvent extends BaseEvent {
 
         const pref = this.client.config.altPrefixes.concat(this.client.config.mainPrefix).find(p => {
             if (p === "{mention}") {
-                const userMention = /<@(!)?\d*?>/.exec(message.content);
+                const userMention = (/<@(!)?\d*?>/).exec(message.content);
                 if (userMention?.index !== 0) return false;
 
                 const user = this.getUserFromMention(userMention[0]);
@@ -31,7 +31,7 @@ export class MessageCreateEvent extends BaseEvent {
     }
 
     private getUserFromMention(mention: string): User | undefined {
-        const matches = /^<@!?(\d+)>$/.exec(mention);
+        const matches = (/^<@!?(\d+)>$/).exec(mention);
         if (!matches) return undefined;
 
         const id = matches[1];

@@ -95,14 +95,14 @@ export class ClientUtils {
     }
 
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
-        const file = (await import(resolve(path)).then(m => m[parse(path).name]));
+        const file = await import(resolve(path)).then(m => m[parse(path).name]);
         return file ? new file(...args) : undefined;
     }
 
     public getFFmpegVersion(): string {
         try {
             const ffmpeg = FFmpeg.getInfo();
-            return ffmpeg.version.split(/_|-| /).find(x => /[0-9.]/.test(x))?.replace(/[^0-9.]/g, "") ?? "Unknown";
+            return ffmpeg.version.split(/_|-| /).find(x => (/[0-9.]/).test(x))?.replace(/[^0-9.]/g, "") ?? "Unknown";
         } catch (e) {
             return "Unknown";
         }

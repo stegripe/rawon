@@ -20,8 +20,8 @@ export class SpotifyUtil {
         setTimeout(() => this.renew(), lastRenew);
     }
 
-    public resolveTracks(url: string): Promise<SpotifyTrack> | Promise<{ track: SpotifyTrack }[]> | void {
-        const [, type, id] = url.match(this.spotifyRegex) ?? [];
+    public resolveTracks(url: string): Promise<{ track: SpotifyTrack }[]> | Promise<SpotifyTrack> | void {
+        const [, type, id] = this.spotifyRegex.exec(url) ?? [];
         switch (type) {
             case "track": {
                 return this.getTrack(id);

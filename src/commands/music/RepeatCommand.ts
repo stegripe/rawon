@@ -35,7 +35,7 @@ export class RepeatCommand extends BaseCommand {
         });
     }
 
-    public execute(ctx: CommandContext): Promise<Message>|void {
+    public execute(ctx: CommandContext): Promise<Message> | void {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;

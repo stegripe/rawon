@@ -67,7 +67,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     result.items = [{
                         duration: track.isLiveContent ? 0 : (track as Video).duration,
                         id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
+                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     }];
@@ -79,7 +79,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     const tracks = await Promise.all(playlist.videos.map((track): ISong => ({
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
+                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     })));
@@ -98,13 +98,13 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     if (a.title.toLowerCase().includes(track.name.toLowerCase())) aValue--;
                     if (track.artists.some(x => a.channel?.name.toLowerCase().includes(x.name))) aValue--;
                     if (a.channel?.name.endsWith("- Topic")) aValue -= 2;
-                    if (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false) aValue -= 2;
+                    if (aDurationDiff ? aDurationDiff <= 5000 && aDurationDiff >= -5000 : false) aValue -= 2;
 
                     // "b" variable check
                     if (b.title.toLowerCase().includes(track.name.toLowerCase())) bValue++;
                     if (track.artists.some(x => b.channel?.name.toLowerCase().includes(x.name))) bValue++;
                     if (b.channel?.name.endsWith(" - Topic")) bValue += 2;
-                    if (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false) bValue += 2;
+                    if (bDurationDiff ? bDurationDiff <= 5000 && bDurationDiff >= -5000 : false) bValue += 2;
 
                     return aValue + bValue;
                 });
@@ -117,7 +117,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                 result.items = [{
                     duration: track.duration === null ? 0 : track.duration,
                     id: track.id,
-                    thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
+                    thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
                     title: track.title,
                     url: `https://youtube.com/watch?v=${track.id}`
                 }];
@@ -128,7 +128,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     return {
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
+                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     };
@@ -142,7 +142,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             result.items = [{
                 duration: info?.duration ?? 0,
                 id: info?.id ?? "",
-                thumbnail: info?.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url ?? "",
+                thumbnail: info?.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url ?? "",
                 title: info?.title ?? "Unknown Song",
                 url: info?.url ?? url.toString()
             }];
@@ -168,7 +168,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             const tracks = await Promise.all(searchRes.map((track): ISong => ({
                 duration: track.duration === null ? 0 : track.duration,
                 id: track.id,
-                thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
+                thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
                 title: track.title,
                 url: `https://youtube.com/watch?v=${track.id}`
             })));
@@ -195,7 +195,7 @@ export function checkQuery(string: string): QueryData {
         isURL: true
     };
 
-    if (/soundcloud|snd/g.exec(url.hostname)) {
+    if ((/soundcloud|snd/g).exec(url.hostname)) {
         result.sourceType = "soundcloud";
 
         if (url.pathname.includes("/sets/")) {
@@ -203,17 +203,17 @@ export function checkQuery(string: string): QueryData {
         } else {
             result.type = "track";
         }
-    } else if (/youtube|youtu\.be/g.exec(url.hostname)) {
+    } else if ((/youtube|youtu\.be/g).exec(url.hostname)) {
         result.sourceType = "youtube";
 
-        if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist")) {
+        if (!(/youtu\.be/g).exec(url.hostname) && url.pathname.startsWith("/playlist")) {
             result.type = "playlist";
-        } else if ((/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) || (/youtu\.be/g.exec(url.hostname) && (url.pathname !== ""))) {
+        } else if ((/youtube/g).exec(url.hostname) && url.pathname.startsWith("/watch") || (/youtu\.be/g).exec(url.hostname) && url.pathname !== "") {
             result.type = "track";
         } else {
             result.type = "unknown";
         }
-    } else if (/spotify/g.exec(url.hostname)) {
+    } else if ((/spotify/g).exec(url.hostname)) {
         result.sourceType = "spotify";
 
         if (url.pathname.startsWith("/playlist")) {
@@ -231,7 +231,7 @@ export function checkQuery(string: string): QueryData {
     return result;
 }
 
-export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel | StageChannel): Promise<Message|void> {
+export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | void> {
     const wasIdle = ctx.guild?.queue?.idle;
 
     async function sendPagination(): Promise<void> {
@@ -241,7 +241,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", { length: toQueue.length });
         const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
-            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`));
+            const texts = await Promise.all(v.map((song, index) => `${i * 10 + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`));
 
             return texts.join("\n");
         }));
@@ -329,7 +329,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     async function playResource(): Promise<void> {
         if (guild.channels.cache.get(queue!.connection!.joinConfig.channelId!)?.type === "GUILD_STAGE_VOICE") {
             const suppressed = await guild.me?.voice.setSuppressed(false).catch(err => ({ error: err }));
-            if (suppressed && ("error" in suppressed)) {
+            if (suppressed && "error" in suppressed) {
                 queue?.player?.emit("error", new AudioPlayerError(suppressed.error as Error, resource));
                 return;
             }
@@ -359,7 +359,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     }
 
     queue.player.on("stateChange", (oldState, newState) => {
-        if ((newState.status === AudioPlayerStatus.Playing) && (oldState.status !== AudioPlayerStatus.Paused)) {
+        if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
             const newSong = ((queue.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song;
             sendStartPlayingMsg(newSong);
         } else if (newState.status === AudioPlayerStatus.Idle) {
@@ -369,7 +369,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
                 queue.songs.delete(song.key);
             }
 
-            const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random()?.key : (queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? (queue.songs.sortByIndex().first()?.key ?? "") : ""));
+            const nextSong = queue.shuffle && queue.loopMode !== "SONG" ? queue.songs.random()?.key : queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? queue.songs.sortByIndex().first()?.key ?? "" : "");
 
             queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)

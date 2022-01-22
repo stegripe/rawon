@@ -12,7 +12,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         super(client, "voiceStateUpdate");
     }
 
-    public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message|void> {
+    public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message | void> {
         const queue = newState.guild.queue;
         if (!queue) return;
 
@@ -20,7 +20,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const oldVC = oldState.channel;
         const newID = newVC?.id;
         const oldID = oldVC?.id;
-        const queueVC = newState.guild.channels.cache.get(queue.connection!.joinConfig.channelId!)! as VoiceChannel | StageChannel;
+        const queueVC = newState.guild.channels.cache.get(queue.connection!.joinConfig.channelId!)! as StageChannel | VoiceChannel;
         const member = newState.member;
         const oldMember = oldState.member;
         const newVCMembers = newVC?.members.filter(m => !m.user.bot);
@@ -61,7 +61,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 const msg = await queue.textChannel.send({ embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpeaker"))] });
                 const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
 
-                if (suppress && ("error" in suppress)) {
+                if (suppress && "error" in suppress) {
                     queue.destroy();
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
                     return queue.textChannel.send({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)] })
