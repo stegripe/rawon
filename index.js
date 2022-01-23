@@ -116,14 +116,32 @@ if (isGlitch || isReplit) {
     process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
     process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
 
-    const ytdlBinaryDir = resolve(__dirname, "node_modules", "youtube-dl-exec", "bin")
-    if (streamStrategy !== "play-dl" && !existsSync(resolve(ytdlBinaryDir, isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
-        console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
-        if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
-        await require("youtube-dl-exec/scripts/postinstall");
-        console.info("[INFO] Yt-dlp has been downloaded.");
+    if (streamStrategy !== "play-dl") {
+        try {
+            require("youtube-dl-exec");
+        } catch {
+            console.info("[INFO] Installing youtube-dl-exec...");
+            npmInstall(false, false, ["youtube-dl-exec"]);
+            console.info("[INFO] Youtube-dl-exec has been installed.");
+        }
+
+        const ytdlBinaryDir = resolve(__dirname, "node_modules", "youtube-dl-exec", "bin")
+        if (!existsSync(resolve(ytdlBinaryDir, isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
+            console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
+            if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
+            await require("youtube-dl-exec/scripts/postinstall");
+            console.info("[INFO] Yt-dlp has been downloaded.");
+        }
     }
-    if (streamStrategy === "play-dl") console.info("[INFO] Skipped downloading yt-dlp because of stream strategy set to play-dl")
+    if (streamStrategy === "play-dl") {
+        try {
+            require("play-dl");
+        } catch {
+            console.info("[INFO] Installing play-dl...");
+            npmInstall(false, false, ["play-dl"]);
+            console.info("[INFO] Play-dl has been installed.");
+        }
+    }
     console.info("[INFO] Starting the bot...");
     require("./dist/index.js");
 })();
