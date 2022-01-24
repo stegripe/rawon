@@ -34,7 +34,7 @@ export class InteractionCreateEvent extends BaseEvent {
         const context = new CommandContext(interaction);
         if (interaction.isContextMenu()) {
             const data = interaction.options.getUser("user") ?? interaction.options.getMessage("message");
-            const cmd = this.client.commands.find(x => (data as any).type === "MESSAGE" ? x.meta.contextChat === interaction.commandName : x.meta.contextUser === interaction.commandName);
+            const cmd = this.client.commands.find(x => (data as { type: string }).type === "MESSAGE" ? x.meta.contextChat === interaction.commandName : x.meta.contextUser === interaction.commandName);
             if (cmd) {
                 context.additionalArgs.set("options", data);
                 void cmd.execute(context);

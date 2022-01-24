@@ -28,14 +28,15 @@ export class LyricsCommand extends BaseCommand {
         });
     }
 
-    public execute(ctx: CommandContext): Promise<Message | void> {
+    public execute(ctx: CommandContext): Promise<Message> | undefined {
+        // eslint-disable-next-line no-nested-ternary
         const query = ctx.args.length >= 1 ? ctx.args.join(" ") : ctx.options?.getString("query") ? ctx.options.getString("query") : (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title;
         if (!query) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)] });
 
-        return this.getLyrics(ctx, query);
+        this.getLyrics(ctx, query);
     }
 
-    private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
+    private getLyrics(ctx: CommandContext, song: string): void {
         const url = `https://api.lxndr.dev/lyrics/?song=${encodeURI(song)}&from=${encodeURI(this.client.user!.id)}`;
         this.client.request.get(url).json<ILyricsAPIResult<false>>()
             .then(async data => {

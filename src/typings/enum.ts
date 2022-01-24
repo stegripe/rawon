@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum MessageComponentTypes {
     ACTION_ROW = 1,
     BUTTON = 2,

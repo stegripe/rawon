@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { Disc } from "../structures/Disc";
 import { Guild, Role } from "discord.js";
 import { parse, resolve } from "path";
@@ -95,15 +96,15 @@ export class ClientUtils {
     }
 
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
-        const file = await import(resolve(path)).then(m => m[parse(path).name]);
-        return file ? new file(...args) : undefined;
+        const file = await import(resolve(path)).then(m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]);
+        return file ? new file(...(args as unknown[])) : undefined;
     }
 
     public getFFmpegVersion(): string {
         try {
             const ffmpeg = FFmpeg.getInfo();
             return ffmpeg.version.split(/_|-| /).find(x => (/[0-9.]/).test(x))?.replace(/[^0-9.]/g, "") ?? "Unknown";
-        } catch (e) {
+        } catch {
             return "Unknown";
         }
     }

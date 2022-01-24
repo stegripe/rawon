@@ -45,12 +45,16 @@ export class ServerQueue {
         }
     }
 
+    public get skipVoters(): Snowflake[] {
+        return this._skipVoters;
+    }
+
     public set skipVoters(value: Snowflake[]) {
         this._skipVoters = value;
     }
 
-    public get skipVoters(): Snowflake[] {
-        return this._skipVoters;
+    public get lastMusicMsg(): Snowflake | null {
+        return this._lastMusicMsg;
     }
 
     public set lastMusicMsg(value: Snowflake | null) {
@@ -64,8 +68,8 @@ export class ServerQueue {
         this._lastMusicMsg = value;
     }
 
-    public get lastMusicMsg(): Snowflake | null {
-        return this._lastMusicMsg;
+    public get lastVSUpdateMsg(): Snowflake | null {
+        return this._lastVSUpdateMsg;
     }
 
     public set lastVSUpdateMsg(value: Snowflake | null) {
@@ -79,8 +83,8 @@ export class ServerQueue {
         this._lastVSUpdateMsg = value;
     }
 
-    public get lastVSUpdateMsg(): Snowflake | null {
-        return this._lastVSUpdateMsg;
+    public get playing(): boolean {
+        return this.player?.state.status === AudioPlayerStatus.Playing;
     }
 
     public set playing(value: boolean) {
@@ -89,10 +93,6 @@ export class ServerQueue {
         } else {
             this.player?.pause();
         }
-    }
-
-    public get playing(): boolean {
-        return this.player?.state.status === AudioPlayerStatus.Playing;
     }
 
     public get idle(): boolean {

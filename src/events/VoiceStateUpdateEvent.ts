@@ -12,7 +12,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         super(client, "voiceStateUpdate");
     }
 
-    public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message | void> {
+    public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message | undefined> {
         const queue = newState.guild.queue;
         if (!queue) return;
 
@@ -50,7 +50,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 try {
                     await entersState(queue.connection!, VoiceConnectionStatus.Ready, 20000);
                     void msg.edit({ embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.connectionReconfigured"), true)] });
-                } catch (err) {
+                } catch {
                     queue.destroy();
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to re-configure networking on ${newState.guild.name} voice channel, the queue was deleted.`);
                     void msg.edit({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableReconfigureConnection"), true)] });
@@ -64,10 +64,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 if (suppress && "error" in suppress) {
                     queue.destroy();
                     this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`);
-                    return queue.textChannel.send({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)] })
+                    void queue.textChannel.send({ embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)] })
                         .catch(e => {
                             this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e);
                         });
+                    return;
                 }
 
                 await msg.edit({ embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.joinStageMessage"), true)] });
@@ -87,6 +88,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         if (newID === queueVC.id && !member?.user.bot && queue.timeout) this.resume(queueVCMembers, queue, newState);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private timeout(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
         if (vcMembers.size !== 0) return;
 
@@ -106,6 +108,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             .then(msg => queue.lastVSUpdateMsg = msg.id);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private resume(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
         if (vcMembers.size <= 0) return;
 

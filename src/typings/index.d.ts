@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Disc } from "../structures/Disc";
@@ -89,7 +90,7 @@ declare module "discord.js" {
         commands: Disc["commands"];
         events: Disc["events"];
 
-        build(token: string): Promise<this>;
+        build: () => Promise<this>;
     }
 
     export interface Guild {

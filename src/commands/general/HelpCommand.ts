@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
@@ -37,10 +38,10 @@ export class HelpCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message | void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         this.infoEmbed.fields = [];
-        const val = ctx.args[0] ?? ctx.options?.getString("command") ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : null);
+        const val = ctx.args[0] ?? ctx.options?.getString("command") ?? (ctx.additionalArgs.get("values") ? (ctx.additionalArgs.get("values") as string[])[0] : null);
         const command = this.client.commands.get(val) ?? this.client.commands.get(this.client.commands.aliases.get(val)!);
         if (!val) {
             const embed = this.listEmbed
@@ -53,9 +54,10 @@ export class HelpCommand extends BaseCommand {
                 if (category.hide && !isDev) continue;
                 embed.addField(`**${category.name}**`, cmds.join(", "));
             }
-            return ctx.send({ embeds: [embed] }, "editReply").catch(e => {
+            ctx.send({ embeds: [embed] }, "editReply").catch(e => {
                 this.client.logger.error("PROMISE_ERR:", e);
             });
+            return;
         }
         if (!command) {
             const matching = this.generateSelectMenu(val, ctx.author.id);
@@ -83,7 +85,7 @@ export class HelpCommand extends BaseCommand {
         }
         // Disable selection menu
         if (ctx.isSelectMenu()) {
-            const channel = await ctx.channel;
+            const channel = ctx.channel;
             const msg = await channel!.messages.fetch((ctx.context as SelectMenuInteraction).message.id).catch(() => undefined);
             if (msg !== undefined) {
                 const selection = msg.components[0].components.find(x => x.type === "SELECT_MENU");

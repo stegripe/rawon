@@ -51,6 +51,7 @@ export class PingCommand extends BaseCommand {
         msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private searchHex(ms: number | string): ColorResolvable {
         const listColorHex = [
             [0, 20, "GREEN"],

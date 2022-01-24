@@ -28,7 +28,7 @@ export class PlayCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message | void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;
         if (!sameVC(ctx)) return;
@@ -53,10 +53,11 @@ export class PlayCommand extends BaseCommand {
             });
         }
 
+        // eslint-disable-next-line prefer-named-capture-group
         const url = query.replace(/<(.+)>/g, "$1");
 
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
-            return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.music.play.alreadyPlaying", { voiceChannel: ctx.guild.channels.cache.get(ctx.guild.queue.connection?.joinConfig.channelId!)?.name ?? "#unknown-channel" }))] });
+            return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.music.play.alreadyPlaying", { voiceChannel: ctx.guild.channels.cache.get((ctx.guild.queue.connection?.joinConfig as { channelId: string }).channelId)?.name ?? "#unknown-channel" }))] });
         }
 
         const queryCheck = checkQuery(url);
