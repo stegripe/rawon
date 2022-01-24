@@ -26,7 +26,7 @@ export class VolumeCommand extends BaseCommand {
         });
     }
 
-    public execute(ctx: CommandContext): Promise<Message> | void {
+    public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;
         if (!sameVC(ctx)) return;

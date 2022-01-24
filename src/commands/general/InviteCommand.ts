@@ -18,7 +18,7 @@ export class InviteCommand extends BaseCommand {
     }
 
     public async execute(ctx: CommandContext): Promise<void> {
-        const invite = await this.client.generateInvite({
+        const invite = this.client.generateInvite({
             permissions: [
                 Permissions.FLAGS.VIEW_CHANNEL,
                 Permissions.FLAGS.SEND_MESSAGES,

@@ -29,13 +29,11 @@
     "got": "^11.8.3",
     "i18n": "0.14.0",
     "opusscript": "^0.0.8",
-    "play-dl": "^1.7.8",
     "prism-media": "^1.3.2",
     "soundcloud.ts": "^0.4.1",
     "sucrase": "^3.20.3",
     "tslib": "^2.3.1",
     "tweetnacl": "^1.0.3",
-    "youtube-dl-exec": "^2.0.2",
     "youtubei": "^0.0.1-rc.23"
   },
   "devDependencies": {
@@ -49,5 +47,9 @@
   },
   "engines": {
     "node": ">=16.6.0"
+  },
+  "optionalDependencies": {
+    "play-dl": "^1.8.1",
+    "youtube-dl-exec": "^2.0.2"
   }
 }

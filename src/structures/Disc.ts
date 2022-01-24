@@ -22,14 +22,14 @@ export class Disc extends Client {
 
     public constructor(opt: ClientOptions) { super(opt); }
 
-    public async build(): Promise<this> {
+    public build: () => Promise<this> = async () => {
         const start = Date.now();
         this.events.load();
-        this.on("ready", async () => {
-            await this.commands.load();
+        this.on("ready", () => {
+            this.commands.load();
             this.logger.info(`Ready took ${formatMS(Date.now() - start)}`);
         });
         await this.login();
         return this;
-    }
+    };
 }

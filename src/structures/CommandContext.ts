@@ -17,12 +17,17 @@ export class CommandContext {
         return Promise.resolve(undefined);
     }
 
-    public async reply(options: InteractionReplyOptions | MessageOptions | MessagePayload | string | { askDeletion?: { reference: string } }, autoedit?: boolean): Promise<Message> {
+    public async reply(options: InteractionReplyOptions
+    | MessageOptions
+    | MessagePayload
+    | string
+    | { askDeletion?: { reference: string } }, autoedit?: boolean): Promise<Message> {
         if (this.isInteraction()) {
             if ((this.context as Interaction).isCommand() && (this.context as CommandInteraction).replied && !autoedit) throw new Error("Interaction is already replied.");
         }
 
         const context = this.context as CommandInteraction | Message;
+        // eslint-disable-next-line no-nested-ternary
         const rep = await this.send(options, this.isInteraction() ? (context as Interaction).isCommand() ? (context as CommandInteraction).replied || (context as CommandInteraction).deferred ? "editReply" : "reply" : "reply" : "reply").catch(e => ({ error: e }));
         if (!rep || "error" in rep) throw new Error(`Unable to reply context, because: ${rep ? (rep.error as Error).message : "Unknown"}`);
 
@@ -37,9 +42,12 @@ export class CommandContext {
                     .setEmoji("🗑️")
                     .setStyle("DANGER")
             );
-        if ((options as any).askDeletion) {
-            deletionBtn.components[0].setCustomId(Buffer.from(`${(options as any).askDeletion.reference}_delete-msg`).toString("base64"));
-            (options as InteractionReplyOptions).components ? (options as InteractionReplyOptions).components!.push(deletionBtn) : (options as InteractionReplyOptions).components = [deletionBtn];
+        if ((options as { askDeletion?: { reference: string } }).askDeletion) {
+            deletionBtn.components[0].setCustomId(Buffer.from(`${(options as { askDeletion: { reference: string } }).askDeletion.reference}_delete-msg`).toString("base64"));
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            (options as InteractionReplyOptions).components
+                ? (options as InteractionReplyOptions).components!.push(deletionBtn)
+                : (options as InteractionReplyOptions).components = [deletionBtn];
         }
         if (this.isInteraction()) {
             (options as InteractionReplyOptions).fetchReply = true;

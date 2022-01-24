@@ -45,7 +45,7 @@ export class SearchCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message | void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;
         if (!sameVC(ctx)) return;
@@ -120,7 +120,7 @@ export class SearchCommand extends BaseCommand {
             msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
             return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"), true)] });
         }
-        if (["c", "cancel"].includes(respond.first()?.content.toLowerCase()!)) {
+        if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() ?? "")) {
             msg.delete().catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
             return ctx.reply({ embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"), true)] });
         }
@@ -137,6 +137,7 @@ export class SearchCommand extends BaseCommand {
         this.client.commands.get("play")!.execute(newCtx);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private generateSelectMenu(tracks: ISong[]): MessageSelectOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 

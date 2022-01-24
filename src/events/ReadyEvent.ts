@@ -40,13 +40,15 @@ export class ReadyEvent extends BaseEvent {
 
         return newText
             .replace(/{prefix}/g, this.client.config.mainPrefix)
-            .replace(/{username}/g, this.client.user?.username!);
+            .replace(/{username}/g, this.client.user!.username);
     }
 
     private async setPresence(random: boolean): Promise<Presence> {
         const activityNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.activities.length) : 0;
         const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
-        const activity = (await Promise.all(this.client.config.presenceData.activities.map(async a => Object.assign(a, { name: await this.formatString(a.name) }))))[activityNumber];
+        const activity = (await Promise.all(
+            this.client.config.presenceData.activities.map(async a => Object.assign(a, { name: await this.formatString(a.name) }))
+        ))[activityNumber];
 
         return this.client.user!.setPresence({
             activities: (activity as { name: string } | undefined) ? [activity] : [],

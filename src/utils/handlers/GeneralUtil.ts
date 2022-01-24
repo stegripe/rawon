@@ -67,7 +67,8 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     result.items = [{
                         duration: track.isLiveContent ? 0 : (track as Video).duration,
                         id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                        // apparently the eslint warning here is broken
+                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     }];
@@ -79,7 +80,8 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     const tracks = await Promise.all(playlist.videos.map((track): ISong => ({
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                        // apparently the eslint warning here is broken
+                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     })));
@@ -88,6 +90,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                 }
             }
         } else if (queryData.sourceType === "spotify") {
+            // eslint-disable-next-line no-inner-declarations
             function sortVideos(track: SpotifyTrack, videos: SearchResult<"video">): SearchResult<"video"> {
                 return videos.sort((a, b) => {
                     let aValue = 0;
@@ -117,7 +120,8 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                 result.items = [{
                     duration: track.duration === null ? 0 : track.duration,
                     id: track.id,
-                    thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                    // apparently the eslint warning here is broken
+                    thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                     title: track.title,
                     url: `https://youtube.com/watch?v=${track.id}`
                 }];
@@ -128,7 +132,8 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     return {
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                        // apparently the eslint warning here is broken
+                        thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
                     };
@@ -142,7 +147,8 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             result.items = [{
                 duration: info?.duration ?? 0,
                 id: info?.id ?? "",
-                thumbnail: info?.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url ?? "",
+                // apparently the eslint warning here is broken
+                thumbnail: info?.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url ?? "",
                 title: info?.title ?? "Unknown Song",
                 url: info?.url ?? url.toString()
             }];
@@ -168,7 +174,8 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             const tracks = await Promise.all(searchRes.map((track): ISong => ({
                 duration: track.duration === null ? 0 : track.duration,
                 id: track.id,
-                thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                // apparently the eslint warning here is broken
+                thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                 title: track.title,
                 url: `https://youtube.com/watch?v=${track.id}`
             })));
@@ -184,7 +191,7 @@ export function checkQuery(string: string): QueryData {
     let url: URL;
     try {
         url = new URL(string);
-    } catch (e) {
+    } catch {
         return {
             isURL: false,
             sourceType: "query"
@@ -208,7 +215,9 @@ export function checkQuery(string: string): QueryData {
 
         if (!(/youtu\.be/g).exec(url.hostname) && url.pathname.startsWith("/playlist")) {
             result.type = "playlist";
-        } else if ((/youtube/g).exec(url.hostname) && url.pathname.startsWith("/watch") || (/youtu\.be/g).exec(url.hostname) && url.pathname !== "") {
+
+            // apparently the eslint warning here is broken
+        } else if (((/youtube/g).exec(url.hostname) && url.pathname.startsWith("/watch")) || ((/youtu\.be/g).exec(url.hostname) && url.pathname !== "")) {
             result.type = "track";
         } else {
             result.type = "unknown";
@@ -231,7 +240,7 @@ export function checkQuery(string: string): QueryData {
     return result;
 }
 
-export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | void> {
+export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
 
     async function sendPagination(): Promise<void> {
@@ -241,7 +250,8 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", { length: toQueue.length });
         const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
-            const texts = await Promise.all(v.map((song, index) => `${i * 10 + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`));
+            // apparently the eslint warning here is broken
+            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`));
 
             return texts.join("\n");
         }));
@@ -286,11 +296,12 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
         delete ctx.guild!.queue;
 
         client.logger.error("PLAY_CMD_ERR:", error);
-        return ctx.channel!.send({
+        void ctx.channel!.send({
             embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }), true)]
         }).catch(e => {
             client.logger.error("PLAY_CMD_ERR:", e);
         });
+        return;
     }
 
     void play(client, ctx.guild!);
@@ -348,6 +359,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     if (wasIdle) {
         void playResource();
     } else {
+        // eslint-disable-next-line max-lines
         entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
             .then(async () => {
                 await playResource();
@@ -369,16 +381,17 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
                 queue.songs.delete(song.key);
             }
 
-            const nextSong = queue.shuffle && queue.loopMode !== "SONG" ? queue.songs.random()?.key : queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? queue.songs.sortByIndex().first()?.key ?? "" : "");
+            // eslint-disable-next-line no-nested-ternary
+            const nextS = queue.shuffle && queue.loopMode !== "SONG" ? queue.songs.random()?.key : queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? queue.songs.sortByIndex().first()?.key ?? "" : "");
 
             queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)
                 .catch(e => client.logger.error("PLAY_ERR:", e))
                 .finally(() => {
                     queue.player = null;
-                    play(client, guild, nextSong).catch(e => {
-                        queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${e}\`` }), true)] })
-                            .catch(e => client.logger.error("PLAY_ERR:", e));
+                    play(client, guild, nextS).catch(e => {
+                        queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${e as string}\`` }), true)] })
+                            .catch(er => client.logger.error("PLAY_ERR:", er));
                         queue.connection?.disconnect();
                         return client.logger.error("PLAY_ERR:", e);
                     });

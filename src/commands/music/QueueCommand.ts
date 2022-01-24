@@ -32,7 +32,8 @@ export class QueueCommand extends BaseCommand {
                 const npKey = np.key;
                 const addition = song.key === npKey ? "**" : "";
 
-                return `${addition}${n * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
+                // apparently the eslint warning here is broken
+                return `${addition}${(n * 10) + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
             }));
 
             return names.join("\n");

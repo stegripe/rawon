@@ -18,7 +18,7 @@ export class EvalCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message | void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const msg = ctx;
         const client = this.client;
 
@@ -75,10 +75,11 @@ export class EvalCommand extends BaseCommand {
                     reference: ctx.author.id
                 },
                 embeds: [embed]
-            }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+            }).catch(er => this.client.logger.error("PROMISE_ERR:", er));
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private clean(text: string): string {
         if (typeof text === "string") {
             return text
