@@ -61,4 +61,8 @@ You can use Glitch too for this project, featured with its code editor.
 
 <a href="https://glitch.com/edit/#!/import/github/zhycorp/disc-11"><img src="https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg" alt="Remix on Glitch"></a>
 
-> © 2021 Zhycorp Development
+## Project Maintainer
+- [@Mednoob](https://github.com/Mednoob)
+- [@mzrtamp](https://github.com/mzrtamp)
+
+> © 2021-2022 Zhycorp Development
