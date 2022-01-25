@@ -45,7 +45,7 @@ export class SkipToCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message|void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;
