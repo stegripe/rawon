@@ -15,7 +15,7 @@ process.on("uncaughtException", err => {
 process.on("unhandledRejection", reason => {
     client.logger.error("UNHANDLED_REJECTION:", (reason as Error).stack ? reason : new NoStackError(reason as string));
 });
-process.on("warning", client.logger.warn);
+process.on("warning", (...args) => client.logger.warn(...args));
 
 client.build()
     .catch(e => client.logger.error("PROMISE_ERR:", e));

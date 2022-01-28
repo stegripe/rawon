@@ -32,7 +32,7 @@ export class WarnCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("MANAGE_GUILD")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.warn.userNoPermission"), true)] });
 
-        const member = ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") as string)?.user ?? ctx.options?.getUser("member", true);
+        const member = ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") ?? "")?.user ?? ctx.options?.getUser("member", true);
         if (!member) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
 
         const dm = await member.createDM().catch(() => undefined);
