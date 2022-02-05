@@ -58,22 +58,24 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
     execSync(`npm install${isGlitch ? " --only=prod" : ""}${forceInstall ? " --force" : ""} ${additionalArgs.join(" ")}`);
 }
 
-try {
-    console.info("[INFO] Trying to re-install modules...");
-    npmInstall();
-    console.info("[INFO] Modules successfully re-installed.");
-} catch (err) {
-    console.info("[INFO] Failed to re-install modules. Trying to delete node_modules and re-install...");
+if (isGlitch) {
     try {
-        npmInstall(true);
+        console.info("[INFO] Trying to re-install modules...");
+        npmInstall();
         console.info("[INFO] Modules successfully re-installed.");
-    } catch {
-        console.info("[INFO] Failed to re-install modules. Trying to delete node_modules and install modules forcefully...");
+    } catch (err) {
+        console.info("[INFO] Failed to re-install modules. Trying to delete node_modules and re-install...");
         try {
-            npmInstall(true, true);
+            npmInstall(true);
             console.info("[INFO] Modules successfully re-installed.");
         } catch {
-            console.warn("[WARN] Failed to re-install modules. Please re-install manually. Report to our discord server (https://zhycorp.net/discord) if this error still persists.");
+            console.info("[INFO] Failed to re-install modules. Trying to delete node_modules and install modules forcefully...");
+            try {
+                npmInstall(true, true);
+                console.info("[INFO] Modules successfully re-installed.");
+            } catch {
+                console.warn("[WARN] Failed to re-install modules. Please re-install manually. Report to our discord server (https://zhycorp.net/discord) if this error still persists.");
+            }
         }
     }
 }
@@ -94,9 +96,13 @@ if (isGitHub) {
 }
 
 if (!isGlitch) {
-    console.info("[INFO] This bot is not running on Glitch, trying to install ffmpeg-static...");
-    npmInstall(false, false, ["--no-save", "ffmpeg-static"]);
-    console.info("[INFO] ffmpeg-static has been installed.");
+    try {
+        require("ffmpeg-static");
+    } catch {
+        console.info("[INFO] This bot is not running on Glitch, trying to install ffmpeg-static...");
+        npmInstall(false, false, ["--no-save", "ffmpeg-static"]);
+        console.info("[INFO] ffmpeg-static has been installed.");
+    }
 }
 
 if (isGlitch || isReplit) {
