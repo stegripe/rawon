@@ -16,7 +16,7 @@ export class InteractionCreateEvent extends BaseEvent {
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
             if (cmd === "delete-msg") {
-                if (interaction.user.id !== user && !new Permissions(interaction.member.permissions as BitFieldResolvable<PermissionString, bigint>|undefined).has("MANAGE_MESSAGES")) {
+                if (interaction.user.id !== user && !new Permissions(interaction.member.permissions as BitFieldResolvable<PermissionString, bigint> | undefined).has("MANAGE_MESSAGES")) {
                     void interaction.reply({
                         ephemeral: true,
                         embeds: [
@@ -34,7 +34,7 @@ export class InteractionCreateEvent extends BaseEvent {
         const context = new CommandContext(interaction);
         if (interaction.isContextMenu()) {
             const data = interaction.options.getUser("user") ?? interaction.options.getMessage("message");
-            const cmd = this.client.commands.find(x => (data as any).type === "MESSAGE" ? x.meta.contextChat === interaction.commandName : x.meta.contextUser === interaction.commandName);
+            const cmd = this.client.commands.find(x => (data as { type: string }).type === "MESSAGE" ? x.meta.contextChat === interaction.commandName : x.meta.contextUser === interaction.commandName);
             if (cmd) {
                 context.additionalArgs.set("options", data);
                 void cmd.execute(context);
