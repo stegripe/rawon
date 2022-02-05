@@ -59,7 +59,7 @@ export class UnMuteCommand extends BaseCommand {
             });
         }
 
-        const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err as string|undefined));
+        const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err as string | undefined));
         if (unmute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.unmute.unmuteFail", { message: unmute.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.unmute.unmuteSuccess", { user: member.user.tag }), true)] });
