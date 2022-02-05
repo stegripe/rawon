@@ -1,10 +1,10 @@
+import { basicYoutubeVideoInfo } from "../../typings";
+import { soundcloud } from "./SoundCloudUtil";
+import { streamStrategy } from "../../config";
+import { checkQuery } from "./GeneralUtil";
+import { stream as pldlStream, video_basic_info } from "play-dl";
 import ytdl, { exec } from "youtube-dl-exec";
 import { Readable } from "stream";
-import { streamStrategy } from "../../config";
-import { stream as pldlStream, video_basic_info } from "play-dl";
-import { basicYoutubeVideoInfo } from "../../typings";
-import { checkQuery } from "./GeneralUtil";
-import { soundcloud } from "./SoundCloudUtil";
 
 export async function getStream(url: string): Promise<Readable> {
     if (streamStrategy === "play-dl") {
@@ -12,7 +12,7 @@ export async function getStream(url: string): Promise<Readable> {
         if (isSoundcloudUrl.sourceType === "soundcloud") {
             return soundcloud.util.streamTrack(url) as unknown as Readable;
         }
-        const rawPlayDlStream = await pldlStream(url);
+        const rawPlayDlStream = await pldlStream(url, { discordPlayerCompatibility: true });
         return rawPlayDlStream.stream;
     }
 
