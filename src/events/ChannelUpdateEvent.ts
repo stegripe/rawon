@@ -10,7 +10,6 @@ export class ChannelUpdateEvent extends BaseEvent {
     }
 
     public async execute(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
-        // apparently the eslint warning here is broken
         if (!newChannel.guild.queue || newChannel.id !== newChannel.guild.queue.connection?.joinConfig.channelId || (oldChannel.type !== "GUILD_VOICE" && oldChannel.type !== "GUILD_STAGE_VOICE") || (newChannel.type !== "GUILD_VOICE" && newChannel.type !== "GUILD_STAGE_VOICE")) return;
 
         if ((oldChannel as VoiceChannel).rtcRegion !== (newChannel as VoiceChannel).rtcRegion) {

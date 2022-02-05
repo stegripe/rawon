@@ -60,7 +60,6 @@ export class RemoveCommand extends BaseCommand {
 
         const opening = `${i18n.__mf("commands.music.remove.songsRemoved", { removed: songs.length })}${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}`;
         const pages = await Promise.all(chunk(songs, 10).map(async (v, i) => {
-            // apparently the eslint warning here is broken
             const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.song.title))}`));
 
             return texts.join("\n");

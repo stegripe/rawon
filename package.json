@@ -19,7 +19,10 @@
     "parserOptions": {
       "project": "./tsconfig.json"
     },
-    "extends": "@zhycorp/eslint-config/typescript"
+    "extends": "@zhycorp/eslint-config/typescript",
+    "rules": {
+      "@typescript-eslint/no-extra-parens": "off"
+    }
   },
   "dependencies": {
     "@discordjs/voice": "^0.8.0",

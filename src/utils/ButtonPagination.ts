@@ -78,7 +78,6 @@ export class ButtonPagination {
                 return;
             }
 
-            // apparently the eslint warning here is broken
             index = ((index % pages.length) + Number(pages.length)) % pages.length;
 
             this.payload.edit.call(this, index, embed, pages[index]);
