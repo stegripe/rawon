@@ -35,7 +35,7 @@ export class StayInQueueCommand extends BaseCommand {
         });
     }
 
-    public execute(ctx: CommandContext): Promise<Message>|void {
+    public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;
@@ -45,7 +45,7 @@ export class StayInQueueCommand extends BaseCommand {
 
         if (!newState) return ctx.reply({ embeds: [createEmbed("info", i18n.__mf("commands.music.stayInQueue.actualState", { state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\`` }))] });
 
-        ctx.guild!.queue!.stayInVC = (newState === "enable");
+        ctx.guild!.queue!.stayInVC = newState === "enable";
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.music.stayInQueue.newState", { state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\`` }), true)] });
     }

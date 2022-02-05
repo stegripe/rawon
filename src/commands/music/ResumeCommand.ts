@@ -17,7 +17,7 @@ export class ResumeCommand extends BaseCommand {
         });
     }
 
-    public execute(ctx: CommandContext): Promise<Message>|void {
+    public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;

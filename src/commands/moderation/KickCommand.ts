@@ -56,7 +56,7 @@ export class KickCommand extends BaseCommand {
             });
         }
 
-        const kick = await member.kick(reason).catch(err => new Error(err as string|undefined));
+        const kick = await member.kick(reason).catch(err => new Error(err as string | undefined));
         if (kick instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.kick.kickFail", { message: kick.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.kick.kickSuccess", { user: member.user.tag }), true)] });

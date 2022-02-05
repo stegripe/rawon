@@ -61,7 +61,7 @@ export class BanCommand extends BaseCommand {
 
         const ban = await ctx.guild.members.ban(user, {
             reason
-        }).catch(err => new Error(err as string|undefined));
+        }).catch(err => new Error(err as string | undefined));
         if (ban instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.ban.banFail", { message: ban.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.ban.banSuccess", { user: user.tag }), true)] });
