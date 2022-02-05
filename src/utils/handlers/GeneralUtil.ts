@@ -61,13 +61,12 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             }
         } else if (queryData.sourceType === "youtube") {
             if (queryData.type === "track") {
-                const track = await youtube.getVideo(url.toString());
+                const track = await youtube.getVideo((/youtu\.be/g).exec(url.hostname) ? url.pathname.replace("/", "") : url.toString());
 
                 if (track) {
                     result.items = [{
                         duration: track.isLiveContent ? 0 : (track as Video).duration,
                         id: track.id,
-                        // apparently the eslint warning here is broken
                         thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
@@ -80,7 +79,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     const tracks = await Promise.all(playlist.videos.map((track): ISong => ({
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
-                        // apparently the eslint warning here is broken
                         thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
@@ -120,7 +118,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                 result.items = [{
                     duration: track.duration === null ? 0 : track.duration,
                     id: track.id,
-                    // apparently the eslint warning here is broken
                     thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                     title: track.title,
                     url: `https://youtube.com/watch?v=${track.id}`
@@ -132,7 +129,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     return {
                         duration: track.duration === null ? 0 : track.duration,
                         id: track.id,
-                        // apparently the eslint warning here is broken
                         thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                         title: track.title,
                         url: `https://youtube.com/watch?v=${track.id}`
@@ -147,7 +143,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             result.items = [{
                 duration: info?.duration ?? 0,
                 id: info?.id ?? "",
-                // apparently the eslint warning here is broken
                 thumbnail: info?.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url ?? "",
                 title: info?.title ?? "Unknown Song",
                 url: info?.url ?? url.toString()
@@ -174,7 +169,6 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             const tracks = await Promise.all(searchRes.map((track): ISong => ({
                 duration: track.duration === null ? 0 : track.duration,
                 id: track.id,
-                // apparently the eslint warning here is broken
                 thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
                 title: track.title,
                 url: `https://youtube.com/watch?v=${track.id}`
@@ -215,8 +209,6 @@ export function checkQuery(string: string): QueryData {
 
         if (!(/youtu\.be/g).exec(url.hostname) && url.pathname.startsWith("/playlist")) {
             result.type = "playlist";
-
-            // apparently the eslint warning here is broken
         } else if (((/youtube/g).exec(url.hostname) && url.pathname.startsWith("/watch")) || ((/youtu\.be/g).exec(url.hostname) && url.pathname !== "")) {
             result.type = "track";
         } else {
@@ -250,7 +242,6 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
 
         const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", { length: toQueue.length });
         const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
-            // apparently the eslint warning here is broken
             const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`));
 
             return texts.join("\n");
@@ -369,6 +360,8 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
                 queue.player?.emit("error", new AudioPlayerError(err, resource));
             });
     }
+
+    queue.player.removeAllListeners();
 
     queue.player.on("stateChange", (oldState, newState) => {
         if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
