@@ -15,7 +15,7 @@ export class SongManager extends Collection<Snowflake, IQueueSong> {
         return key;
     }
 
-    public sortByIndex(): SongManager {
+    public sortByIndex(): this {
         return this.sort((a, b) => a.index - b.index);
     }
 }

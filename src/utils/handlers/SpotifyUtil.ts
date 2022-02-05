@@ -2,7 +2,8 @@ import { Disc } from "../../structures/Disc";
 import { ISpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
 
 export class SpotifyUtil {
-    public spotifyRegex = /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(track|playlist|album)[\/:]([A-Za-z0-9]+)/;
+    // eslint-disable-next-line prefer-named-capture-group
+    public spotifyRegex = /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(track|playlist|album)[/:]([A-Za-z0-9]+)/;
     public baseURI = "https://api.spotify.com/v1";
     private token!: string;
 
@@ -20,8 +21,8 @@ export class SpotifyUtil {
         setTimeout(() => this.renew(), lastRenew);
     }
 
-    public resolveTracks(url: string): Promise<SpotifyTrack> | Promise<{ track: SpotifyTrack }[]> | void {
-        const [, type, id] = url.match(this.spotifyRegex) ?? [];
+    public resolveTracks(url: string): Promise<{ track: SpotifyTrack }[]> | Promise<SpotifyTrack> | undefined {
+        const [, type, id] = this.spotifyRegex.exec(url) ?? [];
         switch (type) {
             case "track": {
                 return this.getTrack(id);
