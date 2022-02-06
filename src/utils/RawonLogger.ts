@@ -1,4 +1,4 @@
-import { IDiscLoggerOptions } from "../typings";
+import { IRawonLoggerOptions } from "../typings";
 import { format } from "date-fns";
 
 enum Colors {
@@ -9,8 +9,8 @@ enum Colors {
     Blue = "\x1b[34m"
 }
 
-export class DiscLogger {
-    public constructor(public readonly options: IDiscLoggerOptions) {}
+export class RawonLogger {
+    public constructor(public readonly options: IRawonLoggerOptions) {}
 
     public info(...messages: any[]): void {
         this.log(messages, "info");

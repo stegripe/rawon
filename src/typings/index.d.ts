@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
-import { Disc } from "../structures/Disc";
+import { Rawon } from "../structures/Rawon";
 
 import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed } from "discord.js";
 
@@ -34,7 +34,7 @@ export interface PaginationPayload {
     edit: (index: number, embed: MessageEmbed, page: string) => unknown;
 }
 
-export interface IDiscLoggerOptions {
+export interface IRawonLoggerOptions {
     prod: boolean;
 }
 
@@ -84,17 +84,17 @@ export interface ICategoryMeta {
 declare module "discord.js" {
     // @ts-expect-error Override typings
     export interface Client extends OClient {
-        config: Disc["config"];
-        logger: Disc["logger"];
-        request: Disc["request"];
-        commands: Disc["commands"];
-        events: Disc["events"];
+        config: Rawon["config"];
+        logger: Rawon["logger"];
+        request: Rawon["request"];
+        commands: Rawon["commands"];
+        events: Rawon["events"];
 
         build: () => Promise<this>;
     }
 
     export interface Guild {
-        client: Disc;
+        client: Rawon;
         queue?: ServerQueue;
     }
 }

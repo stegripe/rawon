@@ -1,8 +1,8 @@
 import { NoStackError } from "./utils/NoStackError";
 import { clientOptions } from "./config";
-import { Disc } from "./structures/Disc";
+import { Rawon } from "./structures/Rawon";
 
-const client = new Disc(clientOptions);
+const client = new Rawon(clientOptions);
 
 process.on("exit", code => {
     client.logger.info(`NodeJS process exited with code ${code}`);
