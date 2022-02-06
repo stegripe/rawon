@@ -5,7 +5,7 @@ import { parseHTMLElements } from "../parseHTMLElements";
 import { ButtonPagination } from "../ButtonPagination";
 import { getInfo, getStream } from "./YTDLUtil";
 import { createEmbed } from "../createEmbed";
-import { Disc } from "../../structures/Disc";
+import { Rawon } from "../../structures/Rawon";
 import { youtube } from "./YouTubeUtil";
 import { chunk } from "../chunk";
 import i18n from "../../config";
@@ -14,7 +14,7 @@ import { Guild, Message, StageChannel, Util, VoiceChannel } from "discord.js";
 import { SearchResult, Video } from "youtubei";
 import { URL } from "url";
 
-export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
+export async function searchTrack(client: Rawon, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
         items: []
     };
@@ -232,7 +232,7 @@ export function checkQuery(string: string): QueryData {
     return result;
 }
 
-export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
+export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: ISong[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
 
     async function sendPagination(): Promise<void> {
@@ -298,7 +298,7 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
     void play(client, ctx.guild!);
 }
 
-export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
+export async function play(client: Rawon, guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
     if (!queue) return;
     if (queue.player === null) queue.player = createAudioPlayer();

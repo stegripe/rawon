@@ -1,11 +1,11 @@
 {
-  "name": "disc-11",
-  "version": "2.4.0",
+  "name": "rawon",
+  "version": "2.4.0-dev",
   "private": true,
-  "description": "A dedicated open-source Discord bot for Zhycorp based from our Discord bot template with more features. Easy to use, and with no coding required.",
-  "repository": "https://github.com/zhycorp/disc-11",
+  "description": "A dedicated open-sourced Discord bot with many features of utilization. Easy to use, and with no coding required.",
+  "repository": "https://github.com/mzrtamp/rawon",
   "license": "BSD-3-Clause",
-  "author": "Zhycorp <support@zhycorp.net>",
+  "author": "mzrtamp <mozartrafikt@gmail.com>",
   "main": "index.js",
   "scripts": {
     "build": "npm run lint && npm run compile",

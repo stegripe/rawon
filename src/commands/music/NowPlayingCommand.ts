@@ -28,7 +28,7 @@ export class NowPlayingCommand extends BaseCommand {
                 resource: AudioResource | undefined;
             }) | undefined)?.resource?.metadata as IQueueSong | undefined)?.song;
 
-            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")}`).setThumbnail(song?.thumbnail ?? "https://api.zhycorp.net/assets/images/icon.png");
+            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")}`).setThumbnail(song?.thumbnail ?? "https://api.tiramitzu.me/assets/images/icon.png");
         }
 
         const buttons = new MessageActionRow()
