@@ -1,4 +1,3 @@
-import { ReactComponent as ZhycorpLogo } from "../zhycorp.svg";
 import { useTheme } from "../hooks/useTheme";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { Listbox, Popover, Transition } from "@headlessui/react";
@@ -44,8 +43,8 @@ export default function Navbar(): JSX.Element {
             <div className="max-w-7xl mx-auto px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center">
-                        <a className="flex-shrink-0" href="/#/">
-                            <ZhycorpLogo className="w-8 h-8" />
+                        <a className="flex-shrink-0 dark:text-white text-lg font-bold" href="/#/">
+                            <p>RB</p>
                         </a>
                         <Popover.Group as="div" className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-4">
@@ -156,7 +155,7 @@ export default function Navbar(): JSX.Element {
                         <div className="pt-5 pb-6 px-5">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <img src="https://api.zhycorp.net/assets/images/logo.png" alt="Logo" className="h-8 w-auto" />
+                                    <p className="dark:text-white font-bold text-lg">RB</p>
                                 </div>
                                 <div className="-mr-2">
                                     <Popover.Button className="bg-white dark:bg-black rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
