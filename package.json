@@ -2,6 +2,7 @@
   "name": "disc-11",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://rawon.h29id.xyz",
   "dependencies": {
     "@codemirror/lang-javascript": "^0.19.4",
     "@codemirror/state": "^0.19.6",
