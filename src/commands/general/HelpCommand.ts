@@ -14,11 +14,11 @@ export class HelpCommand extends BaseCommand {
         })
         .setFooter({
             text: i18n.__mf("commands.general.help.footerString", { prefix: this.client.config.mainPrefix }),
-            iconURL: "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png"
+            iconURL: "https://raw.githubusercontent.com/mzrtamp/rawon/main/.github/images/info.png"
         });
 
     private readonly infoEmbed = createEmbed("info")
-        .setThumbnail("https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/question_mark.png");
+        .setThumbnail("https://raw.githubusercontent.com/mzrtamp/rawon/main/.github/images/question_mark.png");
 
     public constructor(client: BaseCommand["client"]) {
         super(client, {
@@ -107,7 +107,7 @@ export class HelpCommand extends BaseCommand {
                     .addField(i18n.__("commands.general.help.usageString"), `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.mainPrefix)}\`**`, true)
                     .setFooter({
                         text: i18n.__mf("commands.general.help.commandUsageFooter", { devOnly: command.meta.devOnly ? "(developer-only command)" : "" }),
-                        iconURL: "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/info.png"
+                        iconURL: "https://raw.githubusercontent.com/mzrtamp/rawon/.github/images/info.png"
                     })
             ]
         }, "editReply");

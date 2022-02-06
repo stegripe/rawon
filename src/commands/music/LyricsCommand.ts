@@ -44,7 +44,7 @@ export class LyricsCommand extends BaseCommand {
                     return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.music.lyrics.apiError", { song: `\`${song}\``, message: `\`${(data as { message?: string }).message!}\`` }), true)] });
                 }
 
-                const albumArt = data.album_art ?? "https://api.zhycorp.net/assets/images/icon.png";
+                const albumArt = data.album_art ?? "https://api.tiramitzu.me/assets/images/icon.png";
                 const pages: string[] = chunk(data.lyrics!, 2048);
                 const embed = createEmbed("info", pages[0]).setAuthor({ name: data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase() }).setThumbnail(albumArt);
                 const msg = await ctx.reply({ embeds: [embed] });

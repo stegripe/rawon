@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
-import { Disc } from "../structures/Disc";
+import { Rawon } from "../structures/Rawon";
 import { Guild, Role } from "discord.js";
 import { parse, resolve } from "path";
 import { FFmpeg } from "prism-media";
 
 export class ClientUtils {
-    public constructor(public readonly client: Disc) {}
+    public constructor(public readonly client: Rawon) {}
 
     public async fetchMuteRole(guild: Guild): Promise<Role> {
         return guild.roles.cache.find(x => x.name === this.client.config.muteRoleName) ?? guild.roles.create({

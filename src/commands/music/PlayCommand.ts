@@ -45,6 +45,7 @@ export class PlayCommand extends BaseCommand {
             }
             return handleVideos(this.client, ctx, toQueue, voiceChannel);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : undefined) as string | undefined;
 
         if (!query) {

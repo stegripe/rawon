@@ -1,10 +1,10 @@
 import "dotenv/config";
 import { isProd, shardingMode, shardsCount } from "./config";
-import { DiscLogger } from "./utils/DiscLogger";
+import { RawonLogger } from "./utils/RawonLogger";
 import { ShardingManager } from "discord.js";
 import { resolve } from "path";
 
-const log = new DiscLogger({ prod: isProd });
+const log = new RawonLogger({ prod: isProd });
 
 const manager = new ShardingManager(resolve(__dirname, "bot.js"), {
     totalShards: shardsCount,

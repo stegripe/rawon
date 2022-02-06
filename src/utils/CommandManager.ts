@@ -1,7 +1,7 @@
 import { CommandContext } from "../structures/CommandContext";
 import { ICategoryMeta, ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
-import { Disc } from "../structures/Disc";
+import { Rawon } from "../structures/Rawon";
 import i18n from "../config";
 import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
 import { promises as fs } from "fs";
@@ -13,7 +13,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();
     private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
 
-    public constructor(public client: Disc, private readonly path: string) { super(); }
+    public constructor(public client: Rawon, private readonly path: string) { super(); }
 
     public load(): void {
         fs.readdir(resolve(this.path))

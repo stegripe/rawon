@@ -32,7 +32,7 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.ffmpegVersionString"), this.client.utils.getFFmpegVersion()],
             [i18n.__("commands.general.about.botVersionString"), BotVersion],
             [""],
-            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/zhycorp/disc-11"]
+            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/mzrtamp/rawon"]
         ];
         const value = createTable(values);
 

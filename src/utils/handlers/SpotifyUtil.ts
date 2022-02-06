@@ -1,4 +1,4 @@
-import { Disc } from "../../structures/Disc";
+import { Rawon } from "../../structures/Rawon";
 import { ISpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
 
 export class SpotifyUtil {
@@ -7,7 +7,7 @@ export class SpotifyUtil {
     public baseURI = "https://api.spotify.com/v1";
     private token!: string;
 
-    public constructor(public client: Disc) {}
+    public constructor(public client: Rawon) {}
 
     public async fetchToken(): Promise<number> {
         const { accessToken, accessTokenExpirationTimestampMs } = await this.client.request.get("https://open.spotify.com/get_access_token?reason=transport&productType=embed", { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59" } }).json<ISpotifyAccessTokenAPIResult>();

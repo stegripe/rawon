@@ -74,7 +74,7 @@ if (isGlitch) {
                 npmInstall(true, true);
                 console.info("[INFO] Modules successfully re-installed.");
             } catch {
-                console.warn("[WARN] Failed to re-install modules. Please re-install manually. Report to our discord server (https://zhycorp.net/discord) if this error still persists.");
+                console.warn("[WARN] Failed to re-install modules. Please re-install manually.");
             }
         }
     }
