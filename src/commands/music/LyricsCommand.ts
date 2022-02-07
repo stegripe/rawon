@@ -28,32 +28,33 @@ export class LyricsCommand extends BaseCommand {
         });
     }
 
-    public execute(ctx: CommandContext): Promise<Message|void> {
-        const query = ctx.args.length >= 1 ? ctx.args.join(" ") : ctx.options?.getString("query") ? ctx.options.getString("query") : ((((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title);
+    public execute(ctx: CommandContext): Promise<Message> | undefined {
+        // eslint-disable-next-line no-nested-ternary
+        const query = ctx.args.length >= 1 ? ctx.args.join(" ") : ctx.options?.getString("query") ? ctx.options.getString("query") : (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title;
         if (!query) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)] });
 
-        return this.getLyrics(ctx, query);
+        this.getLyrics(ctx, query);
     }
 
-    private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
+    private getLyrics(ctx: CommandContext, song: string): void {
         const url = `https://api.lxndr.dev/lyrics/?song=${encodeURI(song)}&from=${encodeURI(this.client.user!.id)}`;
         this.client.request.get(url).json<ILyricsAPIResult<false>>()
             .then(async data => {
                 if ((data as { error: boolean }).error) {
-                    return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.music.lyrics.apiError", { song: `\`${song}\``, message: `\`${(data as {message?: string}).message!}\`` }), true)] });
+                    return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.music.lyrics.apiError", { song: `\`${song}\``, message: `\`${(data as { message?: string }).message!}\`` }), true)] });
                 }
 
-                const albumArt = data.album_art ?? "https://api.zhycorp.net/assets/images/icon.png";
-                const pages: string[] = chunk(data.lyrics as string, 2048);
+                const albumArt = data.album_art ?? "https://api.tiramitzu.me/assets/images/icon.png";
+                const pages: string[] = chunk(data.lyrics!, 2048);
                 const embed = createEmbed("info", pages[0]).setAuthor({ name: data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase() }).setThumbnail(albumArt);
                 const msg = await ctx.reply({ embeds: [embed] });
 
-                return (new ButtonPagination(msg, {
+                return new ButtonPagination(msg, {
                     author: ctx.author.id,
                     edit: (i, e, p) => e.setDescription(p).setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length }) }),
                     embed,
                     pages
-                })).start();
+                }).start();
             })
             .catch(error => console.error(error));
     }

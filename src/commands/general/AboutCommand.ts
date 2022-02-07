@@ -3,6 +3,7 @@ import { version as BotVersion } from "../../../package.json";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { formatMS } from "../../utils/formatMS";
+import { createTable } from "../../utils/functions/createTable";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
 import { uptime } from "os";
@@ -31,13 +32,9 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.ffmpegVersionString"), this.client.utils.getFFmpegVersion()],
             [i18n.__("commands.general.about.botVersionString"), BotVersion],
             [""],
-            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/zhycorp/disc-11"]
+            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/mzrtamp/rawon"]
         ];
-        const value = values.map(x => `${x.map((y, i) => {
-            const sortingArr = [...values];
-
-            return `${y}${" ".repeat(sortingArr.sort((a, b) => (b[i] ?? "").length - (a[i] ?? "").length)[0][i].length - y.length)}`;
-        }).join("   ::   ")}`).join("\n");
+        const value = createTable(values);
 
         void ctx.reply({
             embeds: [
@@ -47,7 +44,7 @@ ${value}
 \`\`\`
                 `)
                     .setAuthor({
-                        name: i18n.__mf("commands.general.about.aboutFooter", { botname: this.client.user?.username as string })
+                        name: i18n.__mf("commands.general.about.aboutFooter", { botname: this.client.user?.username ?? "Unknown" })
                     })
             ]
         }).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));

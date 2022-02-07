@@ -18,7 +18,7 @@ export class EvalCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message|void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const msg = ctx;
         const client = this.client;
 
@@ -27,7 +27,7 @@ export class EvalCommand extends BaseCommand {
 
         try {
             let code = ctx.args.join(" ");
-            if (!code) return ctx.send({ embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)] });
+            if (!code) return await ctx.send({ embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)] });
             let evaled;
             if (code.includes("--silent") && code.includes("--async")) {
                 code = code.replace("--async", "").replace("--silent", "");
@@ -75,10 +75,11 @@ export class EvalCommand extends BaseCommand {
                     reference: ctx.author.id
                 },
                 embeds: [embed]
-            }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+            }).catch(er => this.client.logger.error("PROMISE_ERR:", er));
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private clean(text: string): string {
         if (typeof text === "string") {
             return text
@@ -90,10 +91,10 @@ export class EvalCommand extends BaseCommand {
     }
 
     private async hastebin(text: string): Promise<string> {
-        const result = await this.client.request.post("https://bin.zhycorp.net/documents", {
+        const result = await this.client.request.post("https://bin.tiramitzu.me/documents", {
             body: text
         }).json<{ key: string }>();
 
-        return `https://bin.zhycorp.net/${result.key}`;
+        return `https://bin.tiramitzu.me/${result.key}`;
     }
 }

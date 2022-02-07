@@ -1,10 +1,11 @@
-import { Disc } from "../structures/Disc";
+/* eslint-disable class-methods-use-this */
+import { Rawon } from "../structures/Rawon";
 import { Guild, Role } from "discord.js";
 import { parse, resolve } from "path";
 import { FFmpeg } from "prism-media";
 
 export class ClientUtils {
-    public constructor(public readonly client: Disc) {}
+    public constructor(public readonly client: Rawon) {}
 
     public async fetchMuteRole(guild: Guild): Promise<Role> {
         return guild.roles.cache.find(x => x.name === this.client.config.muteRoleName) ?? guild.roles.create({
@@ -95,15 +96,15 @@ export class ClientUtils {
     }
 
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
-        const file = (await import(resolve(path)).then(m => m[parse(path).name]));
-        return file ? new file(...args) : undefined;
+        const file = await import(resolve(path)).then(m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]);
+        return file ? new file(...(args as unknown[])) : undefined;
     }
 
     public getFFmpegVersion(): string {
         try {
             const ffmpeg = FFmpeg.getInfo();
-            return ffmpeg.version.split(/_|-| /).find(x => /[0-9.]/.test(x))?.replace(/[^0-9.]/g, "") ?? "Unknown";
-        } catch (e) {
+            return ffmpeg.version.split(/_|-| /).find(x => (/[0-9.]/).test(x))?.replace(/[^0-9.]/g, "") ?? "Unknown";
+        } catch {
             return "Unknown";
         }
     }

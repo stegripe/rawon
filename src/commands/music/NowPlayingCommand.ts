@@ -24,9 +24,11 @@ export class NowPlayingCommand extends BaseCommand {
         if (!haveQueue(ctx)) return;
 
         function getEmbed(): MessageEmbed {
-            const song = ((ctx.guild?.queue?.player?.state as (AudioPlayerState & { resource: AudioResource|undefined })|undefined)?.resource?.metadata as IQueueSong|undefined)?.song;
+            const song = ((ctx.guild?.queue?.player?.state as (AudioPlayerState & {
+                resource: AudioResource | undefined;
+            }) | undefined)?.resource?.metadata as IQueueSong | undefined)?.song;
 
-            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")}`).setThumbnail(song?.thumbnail ?? "https://api.zhycorp.net/assets/images/icon.png");
+            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")}`).setThumbnail(song?.thumbnail ?? "https://api.tiramitzu.me/assets/images/icon.png");
         }
 
         const buttons = new MessageActionRow()
@@ -55,7 +57,7 @@ export class NowPlayingCommand extends BaseCommand {
         const msg = await ctx.reply({ embeds: [getEmbed()], components: [buttons] });
 
         const collector = msg.createMessageComponentCollector({
-            filter: i => i.isButton() && (i.user.id === ctx.author.id),
+            filter: i => i.isButton() && i.user.id === ctx.author.id,
             idle: 30000
         });
 

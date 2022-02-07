@@ -5,7 +5,7 @@ import { parseHTMLElements } from "../parseHTMLElements";
 import { ButtonPagination } from "../ButtonPagination";
 import { getInfo, getStream } from "./YTDLUtil";
 import { createEmbed } from "../createEmbed";
-import { Disc } from "../../structures/Disc";
+import { Rawon } from "../../structures/Rawon";
 import { youtube } from "./YouTubeUtil";
 import { chunk } from "../chunk";
 import i18n from "../../config";
@@ -14,7 +14,7 @@ import { Guild, Message, StageChannel, Util, VoiceChannel } from "discord.js";
 import { SearchResult, Video } from "youtubei";
 import { URL } from "url";
 
-export async function searchTrack(client: Disc, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
+export async function searchTrack(client: Rawon, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
         items: []
     };
@@ -61,7 +61,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
             }
         } else if (queryData.sourceType === "youtube") {
             if (queryData.type === "track") {
-                const track = await youtube.getVideo(url.toString());
+                const track = await youtube.getVideo((/youtu\.be/g).exec(url.hostname) ? url.pathname.replace("/", "") : url.toString());
 
                 if (track) {
                     result.items = [{
@@ -88,6 +88,7 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                 }
             }
         } else if (queryData.sourceType === "spotify") {
+            // eslint-disable-next-line no-inner-declarations
             function sortVideos(track: SpotifyTrack, videos: SearchResult<"video">): SearchResult<"video"> {
                 return videos.sort((a, b) => {
                     let aValue = 0;
@@ -98,13 +99,13 @@ export async function searchTrack(client: Disc, query: string, source: "soundclo
                     if (a.title.toLowerCase().includes(track.name.toLowerCase())) aValue--;
                     if (track.artists.some(x => a.channel?.name.toLowerCase().includes(x.name))) aValue--;
                     if (a.channel?.name.endsWith("- Topic")) aValue -= 2;
-                    if (aDurationDiff ? (aDurationDiff <= 5000 && aDurationDiff >= -5000) : false) aValue -= 2;
+                    if (aDurationDiff ? aDurationDiff <= 5000 && aDurationDiff >= -5000 : false) aValue -= 2;
 
                     // "b" variable check
                     if (b.title.toLowerCase().includes(track.name.toLowerCase())) bValue++;
                     if (track.artists.some(x => b.channel?.name.toLowerCase().includes(x.name))) bValue++;
                     if (b.channel?.name.endsWith(" - Topic")) bValue += 2;
-                    if (bDurationDiff ? (bDurationDiff <= 5000 && bDurationDiff >= -5000) : false) bValue += 2;
+                    if (bDurationDiff ? bDurationDiff <= 5000 && bDurationDiff >= -5000 : false) bValue += 2;
 
                     return aValue + bValue;
                 });
@@ -184,7 +185,7 @@ export function checkQuery(string: string): QueryData {
     let url: URL;
     try {
         url = new URL(string);
-    } catch (e) {
+    } catch {
         return {
             isURL: false,
             sourceType: "query"
@@ -195,7 +196,7 @@ export function checkQuery(string: string): QueryData {
         isURL: true
     };
 
-    if (/soundcloud|snd/g.exec(url.hostname)) {
+    if ((/soundcloud|snd/g).exec(url.hostname)) {
         result.sourceType = "soundcloud";
 
         if (url.pathname.includes("/sets/")) {
@@ -203,17 +204,17 @@ export function checkQuery(string: string): QueryData {
         } else {
             result.type = "track";
         }
-    } else if (/youtube|youtu\.be/g.exec(url.hostname)) {
+    } else if ((/youtube|youtu\.be/g).exec(url.hostname)) {
         result.sourceType = "youtube";
 
-        if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist")) {
+        if (!(/youtu\.be/g).exec(url.hostname) && url.pathname.startsWith("/playlist")) {
             result.type = "playlist";
-        } else if ((/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) || (/youtu\.be/g.exec(url.hostname) && (url.pathname !== ""))) {
+        } else if (((/youtube/g).exec(url.hostname) && url.pathname.startsWith("/watch")) || ((/youtu\.be/g).exec(url.hostname) && url.pathname !== "")) {
             result.type = "track";
         } else {
             result.type = "unknown";
         }
-    } else if (/spotify/g.exec(url.hostname)) {
+    } else if ((/spotify/g).exec(url.hostname)) {
         result.sourceType = "spotify";
 
         if (url.pathname.startsWith("/playlist")) {
@@ -231,7 +232,7 @@ export function checkQuery(string: string): QueryData {
     return result;
 }
 
-export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: ISong[], voiceChannel: VoiceChannel | StageChannel): Promise<Message|void> {
+export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: ISong[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
 
     async function sendPagination(): Promise<void> {
@@ -286,17 +287,18 @@ export async function handleVideos(client: Disc, ctx: CommandContext, toQueue: I
         delete ctx.guild!.queue;
 
         client.logger.error("PLAY_CMD_ERR:", error);
-        return ctx.channel!.send({
+        void ctx.channel!.send({
             embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }), true)]
         }).catch(e => {
             client.logger.error("PLAY_CMD_ERR:", e);
         });
+        return;
     }
 
     void play(client, ctx.guild!);
 }
 
-export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
+export async function play(client: Rawon, guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
     if (!queue) return;
     if (queue.player === null) queue.player = createAudioPlayer();
@@ -329,7 +331,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     async function playResource(): Promise<void> {
         if (guild.channels.cache.get(queue!.connection!.joinConfig.channelId!)?.type === "GUILD_STAGE_VOICE") {
             const suppressed = await guild.me?.voice.setSuppressed(false).catch(err => ({ error: err }));
-            if (suppressed && ("error" in suppressed)) {
+            if (suppressed && "error" in suppressed) {
                 queue?.player?.emit("error", new AudioPlayerError(suppressed.error as Error, resource));
                 return;
             }
@@ -348,6 +350,7 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
     if (wasIdle) {
         void playResource();
     } else {
+        // eslint-disable-next-line max-lines
         entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
             .then(async () => {
                 await playResource();
@@ -358,8 +361,10 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
             });
     }
 
+    queue.player.removeAllListeners();
+
     queue.player.on("stateChange", (oldState, newState) => {
-        if ((newState.status === AudioPlayerStatus.Playing) && (oldState.status !== AudioPlayerStatus.Paused)) {
+        if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
             const newSong = ((queue.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song;
             sendStartPlayingMsg(newSong);
         } else if (newState.status === AudioPlayerStatus.Idle) {
@@ -369,16 +374,17 @@ export async function play(client: Disc, guild: Guild, nextSong?: string, wasIdl
                 queue.songs.delete(song.key);
             }
 
-            const nextSong = (queue.shuffle && (queue.loopMode !== "SONG")) ? queue.songs.random()?.key : (queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? (queue.songs.sortByIndex().first()?.key ?? "") : ""));
+            // eslint-disable-next-line no-nested-ternary
+            const nextS = queue.shuffle && queue.loopMode !== "SONG" ? queue.songs.random()?.key : queue.loopMode === "SONG" ? song.key : queue.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (queue.loopMode === "QUEUE" ? queue.songs.sortByIndex().first()?.key ?? "" : "");
 
             queue.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] })
                 .then(m => queue.lastMusicMsg = m.id)
                 .catch(e => client.logger.error("PLAY_ERR:", e))
                 .finally(() => {
                     queue.player = null;
-                    play(client, guild, nextSong).catch(e => {
-                        queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${e}\`` }), true)] })
-                            .catch(e => client.logger.error("PLAY_ERR:", e));
+                    play(client, guild, nextS).catch(e => {
+                        queue.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${e as string}\`` }), true)] })
+                            .catch(er => client.logger.error("PLAY_ERR:", er));
                         queue.connection?.disconnect();
                         return client.logger.error("PLAY_ERR:", e);
                     });

@@ -43,7 +43,7 @@ export class ShuffleCommand extends BaseCommand {
             return;
         }
 
-        ctx.guild!.queue!.shuffle = (newState === "enable");
+        ctx.guild!.queue!.shuffle = newState === "enable";
         const isShuffle = ctx.guild?.queue?.shuffle;
 
         void ctx.reply({ embeds: [createEmbed("success", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", { state: `\`${isShuffle ? "ENABLED" : "DISABLED"}\`` })}`)] });
