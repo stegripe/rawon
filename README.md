@@ -1,4 +1,6 @@
-![Splash](https://repository-images.githubusercontent.com/236645319/8a781f4e-6955-499a-9e88-380c5adccfa5)
+<div align="center">
+    <img src="https://repository-images.githubusercontent.com/236645319/8a781f4e-6955-499a-9e88-380c5adccfa5" alt="Splash" />
+</div>
 
 # Rawon
 
