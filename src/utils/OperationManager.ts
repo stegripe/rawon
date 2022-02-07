@@ -1,6 +1,6 @@
 export class OperationManager {
     private _runningOperation!: boolean;
-    private readonly operations: (() => void)[] = [];
+    private readonly operations: (() => Promise<undefined> | undefined)[] = [];
 
     public constructor() {
         Object.defineProperty(this, "_runningOperation", {
@@ -15,7 +15,7 @@ export class OperationManager {
         return this._runningOperation;
     }
 
-    public add(operation: () => void): void {
+    public add(operation: () => undefined): void {
         this.operations.push(operation);
 
         if (!this.runningOperation) {

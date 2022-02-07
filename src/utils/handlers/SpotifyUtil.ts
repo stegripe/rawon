@@ -1,12 +1,13 @@
-import { Disc } from "../../structures/Disc";
+import { Rawon } from "../../structures/Rawon";
 import { ISpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
 
 export class SpotifyUtil {
-    public spotifyRegex = /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(track|playlist|album)[\/:]([A-Za-z0-9]+)/;
+    // eslint-disable-next-line prefer-named-capture-group
+    public spotifyRegex = /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(track|playlist|album)[/:]([A-Za-z0-9]+)/;
     public baseURI = "https://api.spotify.com/v1";
     private token!: string;
 
-    public constructor(public client: Disc) {}
+    public constructor(public client: Rawon) {}
 
     public async fetchToken(): Promise<number> {
         const { accessToken, accessTokenExpirationTimestampMs } = await this.client.request.get("https://open.spotify.com/get_access_token?reason=transport&productType=embed", { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59" } }).json<ISpotifyAccessTokenAPIResult>();
@@ -20,8 +21,8 @@ export class SpotifyUtil {
         setTimeout(() => this.renew(), lastRenew);
     }
 
-    public resolveTracks(url: string): Promise<SpotifyTrack> | Promise<{ track: SpotifyTrack }[]> | void {
-        const [, type, id] = url.match(this.spotifyRegex) ?? [];
+    public resolveTracks(url: string): Promise<{ track: SpotifyTrack }[]> | Promise<SpotifyTrack> | undefined {
+        const [, type, id] = this.spotifyRegex.exec(url) ?? [];
         switch (type) {
             case "track": {
                 return this.getTrack(id);

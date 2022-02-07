@@ -1,8 +1,8 @@
 import { NoStackError } from "./utils/NoStackError";
 import { clientOptions } from "./config";
-import { Disc } from "./structures/Disc";
+import { Rawon } from "./structures/Rawon";
 
-const client = new Disc(clientOptions);
+const client = new Rawon(clientOptions);
 
 process.on("exit", code => {
     client.logger.info(`NodeJS process exited with code ${code}`);
@@ -15,7 +15,7 @@ process.on("uncaughtException", err => {
 process.on("unhandledRejection", reason => {
     client.logger.error("UNHANDLED_REJECTION:", (reason as Error).stack ? reason : new NoStackError(reason as string));
 });
-process.on("warning", client.logger.warn);
+process.on("warning", (...args) => client.logger.warn(...args));
 
 client.build()
     .catch(e => client.logger.error("PROMISE_ERR:", e));

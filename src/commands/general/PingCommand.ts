@@ -51,7 +51,8 @@ export class PingCommand extends BaseCommand {
         msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
     }
 
-    private searchHex(ms: string | number): ColorResolvable {
+    // eslint-disable-next-line class-methods-use-this
+    private searchHex(ms: number | string): ColorResolvable {
         const listColorHex = [
             [0, 20, "GREEN"],
             [21, 50, "GREEN"],
@@ -65,7 +66,7 @@ export class PingCommand extends BaseCommand {
         const min = listColorHex.map(e => e[0]);
         const max = listColorHex.map(e => e[1]);
         const hex = listColorHex.map(e => e[2]);
-        let ret: string | number = "#000000";
+        let ret: number | string = "#000000";
 
         for (let i = 0; i < listColorHex.length; i++) {
             if (min[i] <= ms && ms <= max[i]) {

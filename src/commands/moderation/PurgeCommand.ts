@@ -23,7 +23,7 @@ export class PurgeCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message|void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.member?.permissions.has("MANAGE_MESSAGES")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.purge.userNoPermission"), true)] });
         if (!ctx.guild?.me?.permissions.has("MANAGE_MESSAGES")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.purge.botNoPermission"), true)] });
 
@@ -31,7 +31,7 @@ export class PurgeCommand extends BaseCommand {
         if (isNaN(amount)) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.purge.invalidAmount"))] });
 
         const purge = await (ctx.channel as TextChannel).bulkDelete(amount + 1, true)
-            .catch(err => new Error(err as string|undefined));
+            .catch(err => new Error(err as string | undefined));
         if (purge instanceof Error) return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.moderation.purge.purgeFail", { message: purge.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", `🧹 **|** ${i18n.__mf("commands.moderation.purge.purgeSuccess", { amount: purge.size })}`)] });

@@ -1,4 +1,4 @@
-import { IDiscLoggerOptions } from "../typings";
+import { IRawonLoggerOptions } from "../typings";
 import { format } from "date-fns";
 
 enum Colors {
@@ -9,8 +9,8 @@ enum Colors {
     Blue = "\x1b[34m"
 }
 
-export class DiscLogger {
-    public constructor(public readonly options: IDiscLoggerOptions) {}
+export class RawonLogger {
+    public constructor(public readonly options: IRawonLoggerOptions) {}
 
     public info(...messages: any[]): void {
         this.log(messages, "info");
@@ -28,9 +28,10 @@ export class DiscLogger {
         this.log(messages, "warn");
     }
 
-    private log(messages: any[], level: "info"|"debug"|"error"|"warn" = "info"): void {
+    private log(messages: any[], level: "debug" | "error" | "info" | "warn" = "info"): void {
         if (this.options.prod && level === "debug") return;
 
-        console[level](`${this.options.prod ? "" : (level === "debug" ? Colors.Blue : (level === "error" ? Colors.Red : (level === "warn" ? Colors.Yellow : Colors.Green)))}[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]: ${messages.map(x => String(x)).join(" ")} ${Colors.Reset}`);
+        // eslint-disable-next-line no-nested-ternary
+        console[level](`${this.options.prod ? "" : level === "debug" ? Colors.Blue : level === "error" ? Colors.Red : level === "warn" ? Colors.Yellow : Colors.Green}[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]: ${messages.map(x => String(x)).join(" ")} ${Colors.Reset}`);
     }
 }

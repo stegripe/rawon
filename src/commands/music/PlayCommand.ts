@@ -28,7 +28,7 @@ export class PlayCommand extends BaseCommand {
         });
     }
 
-    public async execute(ctx: CommandContext): Promise<Message|void> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;
         if (!sameVC(ctx)) return;
@@ -45,6 +45,7 @@ export class PlayCommand extends BaseCommand {
             }
             return handleVideos(this.client, ctx, toQueue, voiceChannel);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const query = (ctx.args.join(" ") || ctx.options?.getString("query")) ?? (ctx.additionalArgs.get("values") ? ctx.additionalArgs.get("values")[0] : undefined) as string | undefined;
 
         if (!query) {
@@ -53,15 +54,16 @@ export class PlayCommand extends BaseCommand {
             });
         }
 
+        // eslint-disable-next-line prefer-named-capture-group
         const url = query.replace(/<(.+)>/g, "$1");
 
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
-            return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.music.play.alreadyPlaying", { voiceChannel: ctx.guild.channels.cache.get(ctx.guild.queue.connection?.joinConfig.channelId as string)?.name ?? "#unknown-channel" }))] });
+            return ctx.reply({ embeds: [createEmbed("warn", i18n.__mf("commands.music.play.alreadyPlaying", { voiceChannel: ctx.guild.channels.cache.get((ctx.guild.queue.connection?.joinConfig as { channelId: string }).channelId)?.name ?? "#unknown-channel" }))] });
         }
 
         const queryCheck = checkQuery(url);
         const songs = await searchTrack(this.client, url).catch(() => undefined);
-        if (!songs || (songs.items.length <= 0)) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)] });
+        if (!songs || songs.items.length <= 0) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)] });
 
         return handleVideos(this.client, ctx, queryCheck.type === "playlist" ? songs.items : [songs.items[0]], voiceChannel);
     }

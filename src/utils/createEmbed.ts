@@ -1,7 +1,7 @@
 import { embedColor, noEmoji, yesEmoji } from "../config";
 import { ColorResolvable, MessageEmbed } from "discord.js";
 
-type hexColorsType = "info" | "warn" | "error" | "success";
+type hexColorsType = "error" | "info" | "success" | "warn";
 const hexColors: Record<hexColorsType, string> = {
     error: "RED",
     info: embedColor,

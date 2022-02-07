@@ -7,14 +7,14 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
-    public connection: VoiceConnection|null = null;
-    public player: AudioPlayer|null = null;
-    public dcTimeout: NodeJS.Timeout|null = null;
-    public timeout: NodeJS.Timeout|null = null;
+    public connection: VoiceConnection | null = null;
+    public player: AudioPlayer | null = null;
+    public dcTimeout: NodeJS.Timeout | null = null;
+    public timeout: NodeJS.Timeout | null = null;
     public readonly songs = new SongManager();
     private _skipVoters: Snowflake[] = [];
-    private _lastMusicMsg: Snowflake|null = null;
-    private _lastVSUpdateMsg: Snowflake|null = null;
+    private _lastMusicMsg: Snowflake | null = null;
+    private _lastVSUpdateMsg: Snowflake | null = null;
 
     public constructor(public readonly textChannel: TextBasedChannel) {
         Object.defineProperties(this, {
@@ -45,15 +45,19 @@ export class ServerQueue {
         }
     }
 
-    public set skipVoters(value: Snowflake[]) {
-        this._skipVoters = value;
-    }
-
     public get skipVoters(): Snowflake[] {
         return this._skipVoters;
     }
 
-    public set lastMusicMsg(value: Snowflake|null) {
+    public set skipVoters(value: Snowflake[]) {
+        this._skipVoters = value;
+    }
+
+    public get lastMusicMsg(): Snowflake | null {
+        return this._lastMusicMsg;
+    }
+
+    public set lastMusicMsg(value: Snowflake | null) {
         if (this._lastMusicMsg !== null) {
             this.textChannel.messages.fetch(this._lastMusicMsg, { cache: false })
                 .then(msg => {
@@ -64,11 +68,11 @@ export class ServerQueue {
         this._lastMusicMsg = value;
     }
 
-    public get lastMusicMsg(): Snowflake|null {
-        return this._lastMusicMsg;
+    public get lastVSUpdateMsg(): Snowflake | null {
+        return this._lastVSUpdateMsg;
     }
 
-    public set lastVSUpdateMsg(value: Snowflake|null) {
+    public set lastVSUpdateMsg(value: Snowflake | null) {
         if (this._lastVSUpdateMsg !== null) {
             this.textChannel.messages.fetch(this._lastVSUpdateMsg, { cache: false })
                 .then(msg => {
@@ -79,8 +83,8 @@ export class ServerQueue {
         this._lastVSUpdateMsg = value;
     }
 
-    public get lastVSUpdateMsg(): Snowflake|null {
-        return this._lastVSUpdateMsg;
+    public get playing(): boolean {
+        return this.player?.state.status === AudioPlayerStatus.Playing;
     }
 
     public set playing(value: boolean) {
@@ -91,11 +95,7 @@ export class ServerQueue {
         }
     }
 
-    public get playing(): boolean {
-        return this.player?.state.status === AudioPlayerStatus.Playing;
-    }
-
     public get idle(): boolean {
-        return (this.player?.state.status === AudioPlayerStatus.Idle) && (this.songs.size === 0);
+        return this.player?.state.status === AudioPlayerStatus.Idle && this.songs.size === 0;
     }
 }

@@ -40,11 +40,11 @@ export class QueueCommand extends BaseCommand {
         const embed = createEmbed("info", pages[0]);
         const msg = await ctx.reply({ embeds: [embed] });
 
-        return (new ButtonPagination(msg, {
+        return new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => e.setDescription(p).setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length }) }),
             embed,
             pages
-        })).start();
+        }).start();
     }
 }

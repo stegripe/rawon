@@ -35,7 +35,7 @@ export class RepeatCommand extends BaseCommand {
         });
     }
 
-    public execute(ctx: CommandContext): Promise<Message>|void {
+    public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;
@@ -54,7 +54,10 @@ export class RepeatCommand extends BaseCommand {
                 emoji: "🔂"
             }
         };
-        const selection = ctx.options?.getSubcommand() || ctx.args[0] ? Object.keys(mode).find(key => mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand())) : undefined;
+        const selection = ctx.options?.getSubcommand() ||
+            ctx.args[0]
+            ? Object.keys(mode).find(key => mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand()))
+            : undefined;
 
         if (!selection) return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
         ctx.guild!.queue!.loopMode = selection as LoopMode;

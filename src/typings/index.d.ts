@@ -1,19 +1,28 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
-import { Disc } from "../structures/Disc";
+import { Rawon } from "../structures/Rawon";
 
 import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed } from "discord.js";
 
-export type MessageInteractionAction = "editReply" | "reply" | "followUp";
+export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
 export interface QueryData {
     isURL: boolean;
-    sourceType?: "youtube" | "spotify" | "soundcloud" | "query" | "unknown";
-    type?: "track" | "playlist" | "unknown";
+    sourceType?: "query" | "soundcloud" | "spotify" | "unknown" | "youtube";
+    type?: "playlist" | "track" | "unknown";
+}
+
+export interface basicYoutubeVideoInfo {
+    id: string;
+    url: string;
+    title: string;
+    thumbnails: { url: string; width: number; height: number }[];
+    duration: number;
 }
 
 export interface SearchTrackResult {
-    type?: "selection"|"results";
+    type?: "results" | "selection";
     items: ISong[];
 }
 
@@ -22,10 +31,10 @@ export interface PaginationPayload {
     content?: string;
     pages: string[];
     embed: MessageEmbed;
-    edit(index: number, embed: MessageEmbed, page: string): unknown;
+    edit: (index: number, embed: MessageEmbed, page: string) => unknown;
 }
 
-export interface IDiscLoggerOptions {
+export interface IRawonLoggerOptions {
     prod: boolean;
 }
 
@@ -45,7 +54,7 @@ export interface IpresenceData {
 
 export interface IEvent {
     readonly name: keyof ClientEvents;
-    execute(...args: any): void;
+    execute: (...args: any) => void;
 }
 
 export interface ICommandComponent {
@@ -63,7 +72,7 @@ export interface ICommandComponent {
         contextChat?: string;
         contextUser?: string;
     };
-    execute(context: CommandContext): any;
+    execute: (context: CommandContext) => any;
 }
 
 export interface ICategoryMeta {
@@ -75,17 +84,17 @@ export interface ICategoryMeta {
 declare module "discord.js" {
     // @ts-expect-error Override typings
     export interface Client extends OClient {
-        config: Disc["config"];
-        logger: Disc["logger"];
-        request: Disc["request"];
-        commands: Disc["commands"];
-        events: Disc["events"];
+        config: Rawon["config"];
+        logger: Rawon["logger"];
+        request: Rawon["request"];
+        commands: Rawon["commands"];
+        events: Rawon["events"];
 
-        build(token: string): Promise<this>;
+        build: () => Promise<this>;
     }
 
     export interface Guild {
-        client: Disc;
+        client: Rawon;
         queue?: ServerQueue;
     }
 }
@@ -105,7 +114,7 @@ export interface IQueueSong {
     key: string;
 }
 
-export type LoopMode = "OFF"|"SONG"|"QUEUE";
+export type LoopMode = "OFF" | "QUEUE" | "SONG";
 
 export interface ILyricsAPIResult<E extends boolean> {
     error: E;
@@ -115,7 +124,7 @@ export interface ILyricsAPIResult<E extends boolean> {
     lyrics?: E extends true ? null : string;
     url?: E extends true ? null : string;
     message?: E extends true ? string : never;
-    synced: E extends true ? never : boolean|string;
+    synced: E extends true ? never : boolean | string;
 }
 
 export interface ISpotifyAccessTokenAPIResult {
