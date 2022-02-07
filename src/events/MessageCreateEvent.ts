@@ -9,10 +9,22 @@ export class MessageCreateEvent extends BaseEvent {
     }
 
     public execute(message: Message): Message | undefined {
-        if (message.author.bot || message.channel.type === "DM" || !this.client.commands.isReady) return message;
+        if (message.author.bot ||
+            message.channel.type === "DM" ||
+            !this.client.commands.isReady) return message;
 
         if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
-            message.reply({ embeds: [createEmbed("info", `👋 **|** ${i18n.__mf("events.createMessage", { author: message.author.toString(), prefix: `\`${this.client.config.mainPrefix}\`` })}`)] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+            message.reply({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `👋 **|** ${i18n.__mf("events.createMessage", {
+                            author: message.author.toString(),
+                            prefix: `\`${this.client.config.mainPrefix}\``
+                        })}`
+                    )
+                ]
+            }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         }
 
         const pref = this.client.config.altPrefixes.concat(this.client.config.mainPrefix).find(p => {
