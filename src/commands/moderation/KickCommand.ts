@@ -31,24 +31,57 @@ export class KickCommand extends BaseCommand {
     }
 
     public async execute(ctx: CommandContext): Promise<Message> {
-        if (!ctx.member?.permissions.has("KICK_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.kick.userNoPermission"), true)] });
-        if (!ctx.guild?.me?.permissions.has("KICK_MEMBERS")) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.moderation.kick.botNoPermission"), true)] });
+        if (!ctx.member?.permissions.has("KICK_MEMBERS")) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed("error", i18n.__("commands.moderation.kick.userNoPermission"), true)
+                ]
+            });
+        }
+        if (!ctx.guild?.me?.permissions.has("KICK_MEMBERS")) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed("error", i18n.__("commands.moderation.kick.botNoPermission"), true)
+                ]
+            });
+        }
 
-        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ?? ctx.options?.getUser("user")?.id ?? ctx.options?.getUser("member")?.id;
+        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
+            ctx.options?.getUser("user")?.id ??
+            ctx.options?.getUser("member")?.id;
         const member = ctx.guild.members.resolve(memberId!);
 
-        if (!member) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))] });
-        if (!member.kickable) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.moderation.kick.userNoKickable"), true)] });
+        if (!member) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))
+                ]
+            });
+        }
+        if (!member.kickable) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed("warn", i18n.__("commands.moderation.kick.userNoKickable"), true)
+                ]
+            });
+        }
 
-        const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
+        const reason = ctx.options?.getString("reason") ?? (
+            ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
+        );
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
                 embeds: [
-                    createEmbed("error", i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name }))
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name })
+                    )
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
                         .setFooter({
-                            text: i18n.__mf("commands.moderation.kick.kickedByString", { author: ctx.author.tag }),
+                            text: i18n.__mf("commands.moderation.kick.kickedByString", {
+                                author: ctx.author.tag
+                            }),
                             iconURL: ctx.author.displayAvatarURL({ dynamic: true })
                         })
                         .setTimestamp(Date.now())
