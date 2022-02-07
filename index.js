@@ -64,17 +64,17 @@ if (isGlitch) {
         npmInstall();
         console.info("[INFO] Modules successfully re-installed.");
     } catch (err) {
-        console.info("[INFO] Failed to re-install modules. Trying to delete node_modules and re-install...");
+        console.info("[INFO] Failed to re-install modules, trying to delete node_modules and re-install...");
         try {
             npmInstall(true);
             console.info("[INFO] Modules successfully re-installed.");
         } catch {
-            console.info("[INFO] Failed to re-install modules. Trying to delete node_modules and install modules forcefully...");
+            console.info("[INFO] Failed to re-install modules, trying to delete node_modules and install modules forcefully...");
             try {
                 npmInstall(true, true);
                 console.info("[INFO] Modules successfully re-installed.");
             } catch {
-                console.warn("[WARN] Failed to re-install modules. Please re-install manually.");
+                console.warn("[WARN] Failed to re-install modules, please re-install manually.");
             }
         }
     }
