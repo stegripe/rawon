@@ -1,7 +1,7 @@
 import { CommandContext } from "../structures/CommandContext";
 import { ICategoryMeta, ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
-import { Disc } from "../structures/Disc";
+import { Rawon } from "../structures/Rawon";
 import i18n from "../config";
 import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
 import { promises as fs } from "fs";
@@ -13,7 +13,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();
     private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
 
-    public constructor(public client: Disc, private readonly path: string) { super(); }
+    public constructor(public client: Rawon, private readonly path: string) { super(); }
 
     public load(): void {
         fs.readdir(resolve(this.path))
@@ -46,7 +46,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
 
                                     if (command.meta.contextChat) {
                                         if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild) {
+                                            for (const guild of this.client.config.devGuild as string) {
                                                 const g = await this.client.guilds.fetch({ guild });
 
                                                 await g.commands.create({
@@ -66,7 +66,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                     }
                                     if (command.meta.contextUser) {
                                         if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild) {
+                                            for (const guild of this.client.config.devGuild as string) {
                                                 const g = await this.client.guilds.fetch({ guild });
 
                                                 await g.commands.create({
@@ -89,7 +89,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                         if (!command.meta.slash.description) Object.assign(command.meta.slash, { description: command.meta.description });
 
                                         if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild) {
+                                            for (const guild of this.client.config.devGuild as string) {
                                                 const g = await this.client.guilds.fetch({ guild });
                                                 await g.commands.create(command.meta.slash as ApplicationCommandData)
                                                     .catch(() => this.client.logger.info(`Missing access on ${guild} [SLASH_COMMAND]`));
@@ -109,7 +109,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                             return { disabledCount, files };
                         })
                         .then(data => {
-                            this.categories.set(category, Object.assign(meta, { cmds: this.filter(({ meta }) => meta.category === category) }));
+                            this.categories.set(category, Object.assign(meta, { cmds: this.filter(c => c.meta.category === category) }));
                             this.client.logger.info(`Done loading ${data.files.length} commands in ${category} category.`);
                             if (data.disabledCount !== 0) this.client.logger.info(`${data.disabledCount} out of ${data.files.length} commands in ${category} category is disabled.`);
                         })
@@ -125,8 +125,9 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             });
     }
 
-    public async handle(message: Message, pref: string): Promise<void> {
-        const prefix = pref === "{mention}" ? /<@(!)?\d*?>/.exec(message.content)![0] : pref;
+    public handle(message: Message, pref: string): void {
+        // eslint-disable-next-line prefer-named-capture-group
+        const prefix = pref === "{mention}" ? (/<@(!)?\d*?>/).exec(message.content)![0] : pref;
         const args = message.content.substring(prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);

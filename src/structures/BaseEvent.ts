@@ -1,8 +1,8 @@
 import { IEvent } from "../typings";
-import { Disc } from "./Disc";
+import { Rawon } from "./Rawon";
 
 export abstract class BaseEvent implements IEvent {
-    public constructor(public client: Disc, public readonly name: IEvent["name"]) {}
+    public constructor(public client: Rawon, public readonly name: IEvent["name"]) {}
 
     public abstract execute(...args: any): any;
 }

@@ -3,17 +3,6 @@ const { existsSync, rmSync } = require("fs");
 const { resolve } = require("path");
 const { Server } = require("https");
 
-try {
-    require("dotenv/config");
-} catch (err) {
-    console.info("[INFO] It seems dotenv hasn't been installed, trying to re-install all modules...");
-    if (existsSync(resolve(process.cwd(), "node_modules"))) rmSync(resolve(process.cwd(), "node_modules"), { recursive: true });
-    execSync("npm i --only=prod dotenv");
-    console.info("[INFO] dotenv has been installed, trying to retrieve environment data...");
-    require("dotenv/config");
-    console.info("[INFO] Environment data has been retrieved.");
-}
-
 const isGlitch = (
     process.env.PROJECT_DOMAIN !== undefined &&
     process.env.PROJECT_INVITE_TOKEN !== undefined &&
@@ -57,36 +46,70 @@ const isGitHub = (
     process.env.GITHUB_SERVER_URL !== undefined
 )
 
+function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []) {
+    if (deleteDir) {
+        const modulesPath = resolve(process.cwd(), "node_modules");
+
+        if (existsSync(modulesPath)) {
+            rmSync(modulesPath, { recursive: true });
+        }
+    }
+
+    execSync(`npm install${isGlitch ? " --only=prod" : ""}${forceInstall ? " --force" : ""} ${additionalArgs.join(" ")}`);
+}
+
 if (isGlitch) {
-    execSync("npm i --only=prod");
+    try {
+        console.info("[INFO] Trying to re-install modules...");
+        npmInstall();
+        console.info("[INFO] Modules successfully re-installed.");
+    } catch (err) {
+        console.info("[INFO] Failed to re-install modules, trying to delete node_modules and re-install...");
+        try {
+            npmInstall(true);
+            console.info("[INFO] Modules successfully re-installed.");
+        } catch {
+            console.info("[INFO] Failed to re-install modules, trying to delete node_modules and install modules forcefully...");
+            try {
+                npmInstall(true, true);
+                console.info("[INFO] Modules successfully re-installed.");
+            } catch {
+                console.warn("[WARN] Failed to re-install modules, please re-install manually.");
+            }
+        }
+    }
 }
 
 if (isReplit) {
     console.warn("[WARN] We haven't added stable support for running this bot using Replit, bugs and errors may come up.");
+
+    if (Number(process.versions.node.split(".")[0]) < 16) {
+        console.info("[INFO] This Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
+        execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
+        console.info("[INFO] Node.js v16 has been installed, please restart the bot.");
+        process.exit(0);
+    }
 }
 
 if (isGitHub) {
     console.warn("[WARN] Running this bot using GitHub is not recommended.");
 }
 
-if (isReplit && (Number(process.versions.node.split(".")[0]) < 16)) {
-    console.info("[INFO] This Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
-    execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
-    console.info("[INFO] Node.js v16 has been installed, please restart the bot.");
-    process.exit(0);
-}
-
 if (!isGlitch) {
-    console.info("[INFO] This bot is not running on Glitch, trying to install ffmpeg-static...");
-    execSync("npm i --no-save ffmpeg-static");
-    console.info("[INFO] ffmpeg-static has been installed.");
+    try {
+        require("ffmpeg-static");
+    } catch {
+        console.info("[INFO] This bot is not running on Glitch, trying to install ffmpeg-static...");
+        npmInstall(false, false, ["--no-save", "ffmpeg-static"]);
+        console.info("[INFO] ffmpeg-static has been installed.");
+    }
 }
 
 if (isGlitch || isReplit) {
     new Server((req, res) => {
         const now = new Date().toLocaleString("en-US");
         res.end(`OK (200) - ${now}`);
-    }).listen(Number(process.env.PORT) || 3000);
+    }).listen(Number(process.env.PORT || 3000) || 3000);
 
     console.info(`[INFO] ${isGlitch ? "Glitch" : "Replit"} environment detected, trying to compile...`);
     execSync(`npm run compile`);
@@ -94,18 +117,37 @@ if (isGlitch || isReplit) {
 }
 
 (async () => {
+    const streamStrategy = process.env.STREAM_STRATEGY;
     const isUnix = ["aix", "android", "darwin", "freebsd", "linux", "openbsd", "sunos"].includes(process.platform.toLowerCase());
     process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
     process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
 
-    const ytdlBinaryDir = resolve(__dirname, "node_modules", "youtube-dl-exec", "bin")
-    if (!existsSync(resolve(ytdlBinaryDir, isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
-        console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
-        if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
-        await require("youtube-dl-exec/scripts/postinstall");
-        console.info("[INFO] Yt-dlp has been downloaded.");
-    }
+    if (streamStrategy !== "play-dl") {
+        try {
+            require("youtube-dl-exec");
+        } catch {
+            console.info("[INFO] Installing youtube-dl-exec...");
+            npmInstall(false, false, ["youtube-dl-exec"]);
+            console.info("[INFO] Youtube-dl-exec has been installed.");
+        }
 
+        const ytdlBinaryDir = resolve(__dirname, "node_modules", "youtube-dl-exec", "bin")
+        if (!existsSync(resolve(ytdlBinaryDir, isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
+            console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
+            if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
+            await require("youtube-dl-exec/scripts/postinstall");
+            console.info("[INFO] Yt-dlp has been downloaded.");
+        }
+    }
+    if (streamStrategy === "play-dl") {
+        try {
+            require("play-dl");
+        } catch {
+            console.info("[INFO] Installing play-dl...");
+            npmInstall(false, false, ["play-dl"]);
+            console.info("[INFO] Play-dl has been installed.");
+        }
+    }
     console.info("[INFO] Starting the bot...");
     require("./dist/index.js");
 })();

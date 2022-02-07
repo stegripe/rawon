@@ -1,10 +1,10 @@
-import { Disc } from "../structures/Disc";
+import { Rawon } from "../structures/Rawon";
 import { IEvent } from "../typings";
 import { promises as fs } from "fs";
 import { resolve } from "path";
 
 export class EventsLoader {
-    public constructor(public client: Disc, public path: string) {}
+    public constructor(public client: Rawon, public path: string) {}
     public load(): void {
         fs.readdir(resolve(this.path))
             .then(async events => {

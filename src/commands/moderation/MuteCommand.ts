@@ -61,7 +61,7 @@ export class MuteCommand extends BaseCommand {
             });
         }
 
-        const mute = await member.roles.add(muteRole, reason).catch(err => new Error(err as string|undefined));
+        const mute = await member.roles.add(muteRole, reason).catch(err => new Error(err as string | undefined));
         if (mute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.mute.muteFail", { message: mute.message }), true)] });
 
         return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.mute.muteSuccess", { user: member.user.tag }), true)] });
