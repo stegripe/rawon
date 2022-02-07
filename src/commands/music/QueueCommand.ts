@@ -26,7 +26,9 @@ export class QueueCommand extends BaseCommand {
 
         const np = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
         const full = ctx.guild!.queue!.songs.sortByIndex();
-        const songs = ctx.guild?.queue?.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);
+        const songs = ctx.guild?.queue?.loopMode === "QUEUE"
+            ? full
+            : full.filter(val => val.index >= np.index);
         const pages = await Promise.all(chunk([...songs.values()], 10).map(async (s, n) => {
             const names = await Promise.all(s.map((song, i) => {
                 const npKey = np.key;
@@ -42,7 +44,13 @@ export class QueueCommand extends BaseCommand {
 
         return new ButtonPagination(msg, {
             author: ctx.author.id,
-            edit: (i, e, p) => e.setDescription(p).setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length }) }),
+            edit: (i, e, p) => e.setDescription(p)
+                .setFooter({
+                    text: i18n.__mf("reusable.pageFooter", {
+                        actual: i + 1,
+                        total: pages.length
+                    })
+                }),
             embed,
             pages
         }).start();
