@@ -1,7 +1,7 @@
 {
-    "name": "Disc 11",
-    "description": "A dedicated open-source Discord bot for Zhycorp based on our Discord bot template with more features. Easy to use, and with no coding required.",
-    "logo": "https://raw.githubusercontent.com/zhycorp/disc-11/main/.github/images/disc-11.png",
+    "name": "Rawon",
+    "description": "A dedicated open-sourced Discord bot with many features of utilization. Easy to use, and with no coding required.",
+    "logo": "https://raw.githubusercontent.com/mzrtamp/rawon/main/.github/images/rawon.png",
     "env": {
         "DISCORD_TOKEN": {
             "description": "What is your Discord bot's token? | Example: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
@@ -52,6 +52,11 @@
             "required": false,
             "value": "production"
         },
+        "STREAM_STRATEGY": {
+            "description": "Which youtube downloader do you want to use? Note: if you use play-dl, it will support a few sites. | Example: \"play-dl\" | Available: \"play-dl\", \"youtube-dl\"",
+            "required": false,
+            "value": "youtube-dl"
+        },
         "ENABLE_SLASH_COMMAND": {
             "description": "Do you want to enable slash command support? | Example: yes",
             "required": false,
@@ -93,8 +98,8 @@
             "value": "❌"
         }
     },
-    "repository": "https://github.com/zhycorp/disc-11",
-    "website": "https://disc-11.zhycorp.net",
+    "repository": "https://github.com/mzrtamp/rawon",
+    "website": "https://rawon.tiramitzu.me",
     "formation": {
         "worker": {
             "quantity": 1,
