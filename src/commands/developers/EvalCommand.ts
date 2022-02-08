@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, no-eval */
+/* eslint-disable @typescript-eslint/no-unused-vars, no-eval, prefer-named-capture-group */
 import { CommandContext } from "../../structures/CommandContext";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
@@ -26,38 +26,36 @@ export class EvalCommand extends BaseCommand {
             .addField("Input", `\`\`\`js\n${ctx.args.join(" ")}\`\`\``);
 
         try {
-            let code = ctx.args.join(" ");
-            if (!code) return await ctx.send({ embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)] });
-            let evaled;
-            if (code.includes("--silent") && code.includes("--async")) {
-                code = code.replace("--async", "").replace("--silent", "");
-                await eval(`(async () => {
-                            ${code}
-                        })()`);
-                return;
-            } else if (code.includes("--async")) {
-                code = code.replace("--async", "");
-                evaled = await eval(`(async () => {
-                            ${code}
-                        })()`);
-            } else if (code.includes("--silent")) {
-                code = code.replace("--silent", "");
-                await eval(code);
-                return;
-            } else {
-                evaled = await eval(code);
-            }
-            if (typeof evaled !== "string") {
-                evaled = inspect(evaled, {
-                    depth: 0
+            const code = ctx.args.join(" ");
+            if (!code) {
+                return await ctx.send({
+                    embeds: [
+                        createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)
+                    ]
                 });
             }
 
-            const output = this.clean(evaled);
-            if (output.length > 1024) {
-                const hastebin = await this.hastebin(output);
-                embed.addField(i18n.__("commands.developers.eval.outputString"), `${hastebin}.js`);
-            } else { embed.addField(i18n.__("commands.developers.eval.outputString"), `\`\`\`js\n${output}\`\`\``); }
+            const isAsync = (/.* --async( +)?(--silent)?$/).test(code);
+            const isSilent = (/.* --silent( +)?(--async)?$/).test(code);
+            const toExecute = isAsync || isSilent
+                ? code.replace(/--(async|silent)( +)?(--(silent|async))?$/, "")
+                : code;
+            const evaled = inspect(
+                await eval(
+                    isAsync
+                        ? `(async () => {\n${toExecute}\n})()`
+                        : toExecute
+                ), { depth: 0 }
+            );
+
+            if (isSilent) return;
+
+            const cleaned = this.clean(evaled);
+            const output = cleaned.length > 1024
+                ? `${await this.hastebin(cleaned)}.js`
+                : `\`\`\`js\n${cleaned}\`\`\``;
+
+            embed.addField(i18n.__("commands.developers.eval.outputString"), output);
             ctx.send({
                 askDeletion: {
                     reference: ctx.author.id
@@ -65,11 +63,13 @@ export class EvalCommand extends BaseCommand {
                 embeds: [embed]
             }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         } catch (e) {
-            const error = this.clean(e as string);
-            if (error.length > 1024) {
-                const hastebin = await this.hastebin(error);
-                embed.addField(i18n.__("commands.developers.eval.errorString"), `${hastebin}.js`);
-            } else { embed.setColor("RED").addField("Error", `\`\`\`js\n${error}\`\`\``); }
+            const cleaned = this.clean(String(e));
+            const isTooLong = cleaned.length > 1024;
+            const error = isTooLong
+                ? `${await this.hastebin(cleaned)}.js`
+                : `\`\`\`js\n${cleaned}\`\`\``;
+
+            embed.setColor("RED").addField(i18n.__("commands.developers.eval.errorString"), error);
             ctx.send({
                 askDeletion: {
                     reference: ctx.author.id
@@ -81,13 +81,10 @@ export class EvalCommand extends BaseCommand {
 
     // eslint-disable-next-line class-methods-use-this
     private clean(text: string): string {
-        if (typeof text === "string") {
-            return text
-                .replace(new RegExp(process.env.DISCORD_TOKEN!, "g"), "[REDACTED]")
-                .replace(/`/g, `\`${String.fromCharCode(8203)}`)
-                .replace(/@/g, `@${String.fromCharCode(8203)}`);
-        }
-        return text;
+        return text
+            .replace(new RegExp(process.env.DISCORD_TOKEN!, "g"), "[REDACTED]")
+            .replace(/`/g, `\`${String.fromCharCode(8203)}`)
+            .replace(/@/g, `@${String.fromCharCode(8203)}`);
     }
 
     private async hastebin(text: string): Promise<string> {
