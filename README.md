@@ -1,10 +1,8 @@
-<div align="center">
-    <img src="https://repository-images.githubusercontent.com/236645319/8a781f4e-6955-499a-9e88-380c5adccfa5" alt="Splash" />
-</div>
+![Splash](https://repository-images.githubusercontent.com/236645319/8a781f4e-6955-499a-9e88-380c5adccfa5)
 
 # Rawon
 
-> A dedicated open-source music and moderation Discord bot. Easy to use, and with no coding required.
+> A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
 
 <a href="https://discord.com/oauth2/authorize?client_id=711712829031448637&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Rawon%237022&plastic&color=5865F2&logo=discord"></a>
 <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">

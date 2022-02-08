@@ -1,6 +1,6 @@
 {
     "name": "Rawon",
-    "description": "A dedicated open-sourced Discord bot with many features of utilization. Easy to use, and with no coding required.",
+    "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
     "logo": "https://raw.githubusercontent.com/Rahagia/rawon/main/.github/images/rawon.png",
     "env": {
         "DISCORD_TOKEN": {
