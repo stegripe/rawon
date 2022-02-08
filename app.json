@@ -1,7 +1,7 @@
 {
     "name": "Rawon",
     "description": "A dedicated open-sourced Discord bot with many features of utilization. Easy to use, and with no coding required.",
-    "logo": "https://raw.githubusercontent.com/mzrtamp/rawon/main/.github/images/rawon.png",
+    "logo": "https://raw.githubusercontent.com/Rahagia/rawon/main/.github/images/rawon.png",
     "env": {
         "DISCORD_TOKEN": {
             "description": "What is your Discord bot's token? | Example: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
@@ -98,7 +98,7 @@
             "value": "❌"
         }
     },
-    "repository": "https://github.com/mzrtamp/rawon",
+    "repository": "https://github.com/Rahagia/rawon",
     "website": "https://rawon.tiramitzu.me",
     "formation": {
         "worker": {

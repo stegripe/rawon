@@ -8,7 +8,7 @@
 
 <a href="https://discord.com/oauth2/authorize?client_id=711712829031448637&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Rawon%237022&plastic&color=5865F2&logo=discord"></a>
 <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">
-<a href="https://github.com/mzrtamp/rawon/actions?query=workflow%3A%22Lint+code+%26+compile+test%22"><img src="https://github.com/mzrtamp/rawon/workflows/Lint%20code%20&%20compile%20test/badge.svg" alt="CI Status" /></a>
+<a href="https://github.com/Rahagia/rawon/actions?query=workflow%3A%22Lint+code+%26+compile+test%22"><img src="https://github.com/Rahagia/rawon/workflows/Lint%20code%20&%20compile%20test/badge.svg" alt="CI Status" /></a>
 
 ## Features
 - Interaction support.
@@ -42,7 +42,7 @@ $ npm start
 ### Heroku
 You can host this bot to make it stay online on Heroku.
 
-<a href="https://heroku.com/deploy?template=https://github.com/mzrtamp/rawon"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
+<a href="https://heroku.com/deploy?template=https://github.com/Rahagia/rawon"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
 
 ### Glitch
 You can use Glitch too for this project, featured with its code editor.
@@ -55,7 +55,7 @@ You can use Glitch too for this project, featured with its code editor.
 6. After specifying `.env`, open **Tools** > **Terminal**
 7. Type `refresh`, and track the process from **Logs**
 
-<a href="https://glitch.com/edit/#!/import/github/mzrtamp/rawon"><img src="https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg" alt="Remix on Glitch"></a>
+<a href="https://glitch.com/edit/#!/import/github/Rahagia/rawon"><img src="https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg" alt="Remix on Glitch"></a>
 
 ## Project Maintainer
 - [@Mednoob](https://github.com/Mednoob)

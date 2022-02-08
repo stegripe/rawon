@@ -3,7 +3,7 @@
   "version": "3.0.0-dev",
   "private": true,
   "description": "A dedicated open-sourced Discord bot with many features of utilization. Easy to use, and with no coding required.",
-  "repository": "https://github.com/mzrtamp/rawon",
+  "repository": "https://github.com/Rahagia/rawon",
   "license": "BSD-3-Clause",
   "author": "mzrtamp <mozartrafikt@gmail.com>",
   "main": "index.js",
