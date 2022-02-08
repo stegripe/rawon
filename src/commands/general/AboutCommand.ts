@@ -1,9 +1,9 @@
 import { CommandContext } from "../../structures/CommandContext";
+import { createTable } from "../../utils/functions/createTable";
 import { version as BotVersion } from "../../../package.json";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { formatMS } from "../../utils/formatMS";
-import { createTable } from "../../utils/functions/createTable";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
 import { uptime } from "os";
@@ -38,13 +38,11 @@ export class AboutCommand extends BaseCommand {
 
         void ctx.reply({
             embeds: [
-                createEmbed("info", `
-\`\`\`asciidoc
-${value}
-\`\`\`
-                `)
+                createEmbed("info", `\`\`\`asciidoc\n${value}\n\`\`\``)
                     .setAuthor({
-                        name: i18n.__mf("commands.general.about.aboutFooter", { botname: this.client.user?.username ?? "Unknown" })
+                        name: i18n.__mf("commands.general.about.aboutFooter", {
+                            botname: this.client.user?.username ?? "Unknown"
+                        })
                     })
             ]
         }).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));

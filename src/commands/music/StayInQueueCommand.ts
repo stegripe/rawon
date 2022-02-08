@@ -39,14 +39,41 @@ export class StayInQueueCommand extends BaseCommand {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;
-        if (!this.client.config.is247Allowed) return ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.stayInQueue.247Disabled"), true)] });
+        if (!this.client.config.is247Allowed) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed("error", i18n.__("commands.music.stayInQueue.247Disabled"), true)
+                ]
+            });
+        }
 
         const newState = ctx.options?.getString("state") ?? ctx.args[0] as string | undefined;
 
-        if (!newState) return ctx.reply({ embeds: [createEmbed("info", i18n.__mf("commands.music.stayInQueue.actualState", { state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\`` }))] });
+        if (!newState) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        i18n.__mf("commands.music.stayInQueue.actualState", {
+                            state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\``
+                        })
+                    )
+                ]
+            });
+        }
 
         ctx.guild!.queue!.stayInVC = newState === "enable";
 
-        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.music.stayInQueue.newState", { state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\`` }), true)] });
+        return ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    i18n.__mf("commands.music.stayInQueue.newState", {
+                        state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\``
+                    }),
+                    true
+                )
+            ]
+        });
     }
 }

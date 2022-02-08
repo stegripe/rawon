@@ -1,4 +1,5 @@
 import { soundcloud } from "../utils/handlers/SoundCloudUtil";
+import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
 import { CommandManager } from "../utils/CommandManager";
 import { EventsLoader } from "../utils/EventsLoader";
 import { ClientUtils } from "../utils/ClientUtils";
@@ -8,7 +9,6 @@ import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
 import { resolve } from "path";
 import got from "got";
-import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
 
 export class Rawon extends Client {
     public readonly config = config;

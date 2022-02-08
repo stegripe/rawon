@@ -21,9 +21,19 @@ export class ResumeCommand extends BaseCommand {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;
         if (!sameVC(ctx)) return;
-        if (ctx.guild?.queue?.playing) return ctx.reply({ embeds: [createEmbed("warn", i18n.__("commands.music.resume.alreadyResume"))] });
+        if (ctx.guild?.queue?.playing) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed("warn", i18n.__("commands.music.resume.alreadyResume"))
+                ]
+            });
+        }
         ctx.guild!.queue!.playing = true;
 
-        return ctx.reply({ embeds: [createEmbed("success", `▶ **|** ${i18n.__("commands.music.resume.resumeMessage")}`)] });
+        return ctx.reply({
+            embeds: [
+                createEmbed("success", `▶ **|** ${i18n.__("commands.music.resume.resumeMessage")}`)
+            ]
+        });
     }
 }

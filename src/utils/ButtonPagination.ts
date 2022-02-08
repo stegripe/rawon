@@ -1,4 +1,14 @@
-import { CommandInteraction, ContextMenuInteraction, Interaction, InteractionButtonOptions, Message, MessageActionRow, MessageButton, SelectMenuInteraction, TextChannel } from "discord.js";
+import {
+    CommandInteraction,
+    ContextMenuInteraction,
+    Interaction,
+    InteractionButtonOptions,
+    Message,
+    MessageActionRow,
+    MessageButton,
+    SelectMenuInteraction,
+    TextChannel
+} from "discord.js";
 import { PaginationPayload } from "../typings";
 
 const DATAS: InteractionButtonOptions[] = [
@@ -42,6 +52,7 @@ export class ButtonPagination {
         let index = 0;
 
         this.payload.edit.call(this, index, embed, pages[index]);
+
         const isInteraction = this.msg instanceof CommandInteraction;
         const buttons = DATAS.map(d => new MessageButton(d));
         const toSend = {
@@ -54,28 +65,33 @@ export class ButtonPagination {
                         .addComponents(buttons)
                 ]
         };
-        const msg = await (isInteraction ? (this.msg as CommandInteraction).editReply(toSend) : await (this.msg as Message).edit(toSend));
-        const fetchedMsg = await (this.msg.client.channels.cache.get(this.msg.channelId!) as TextChannel).messages.fetch(msg.id);
+        const msg = await (
+            isInteraction
+                ? (this.msg as CommandInteraction).editReply(toSend)
+                : await (this.msg as Message).edit(toSend)
+        );
+        const fetchedMsg = await (
+            this.msg.client.channels.cache.get(this.msg.channelId!) as TextChannel
+        ).messages.fetch(msg.id);
+
         if (pages.length < 2) return;
+
         const collector = fetchedMsg.createMessageComponentCollector({
             filter: i => {
                 void i.deferUpdate();
-                return DATAS.map(x => x.customId.toLowerCase()).includes(i.customId.toLowerCase()) && i.user.id === this.payload.author;
+                return DATAS.map(
+                    x => x.customId.toLowerCase()
+                ).includes(i.customId.toLowerCase()) && i.user.id === this.payload.author;
             }
         });
 
         collector.on("collect", async i => {
-            if (i.customId === "PREV10") {
-                index -= 10;
-            } else if (i.customId === "PREV") {
-                index--;
-            } else if (i.customId === "NEXT") {
-                index++;
-            } else if (i.customId === "NEXT10") {
-                index += 10;
-            } else {
-                await (msg as Message).delete();
-                return;
+            switch (i.customId) {
+                case "PREV10": index -= 10; break;
+                case "PREV": index--; break;
+                case "NEXT": index++; break;
+                case "NEXT10": index += 10; break;
+                default: void (msg as Message).delete(); return;
             }
 
             index = ((index % pages.length) + Number(pages.length)) % pages.length;

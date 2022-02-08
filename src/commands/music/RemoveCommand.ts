@@ -36,13 +36,24 @@ export class RemoveCommand extends BaseCommand {
 
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) {
-            void ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.remove.noPermission"), true)] });
+            void ctx.reply({
+                embeds: [
+                    createEmbed("error", i18n.__("commands.music.remove.noPermission"), true)
+                ]
+            });
             return;
         }
 
-        const positions = (ctx.options?.getString("positions") ?? ctx.args.join(" ")).split(/[, ]/).filter(Boolean);
+        const positions = (
+            ctx.options?.getString("positions") ??
+            ctx.args.join(" ")
+        ).split(/[, ]/).filter(Boolean);
         if (!positions.length) {
-            void ctx.reply({ embeds: [createEmbed("error", i18n.__("commands.music.remove.noPositions"), true)] });
+            void ctx.reply({
+                embeds: [
+                    createEmbed("error", i18n.__("commands.music.remove.noPositions"), true)
+                ]
+            });
             return;
         }
 
@@ -58,21 +69,41 @@ export class RemoveCommand extends BaseCommand {
             this.client.commands.get("skip")?.execute(ctx);
         }
 
-        const opening = `${i18n.__mf("commands.music.remove.songsRemoved", { removed: songs.length })}${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}`;
+        const opening = `${i18n.__mf("commands.music.remove.songsRemoved", {
+            removed: songs.length
+        })}${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}`;
         const pages = await Promise.all(chunk(songs, 10).map(async (v, i) => {
-            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.song.title))}`));
+            const texts = await Promise.all(v.map(
+                (song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(
+                    parseHTMLElements(song.song.title)
+                )}`
+            ));
 
             return texts.join("\n");
         }));
         const getText = (page: string): string => `\`\`\`\n${opening}\n\n${page}\`\`\``;
-        const embed = createEmbed("info", getText(pages[0])).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length })}` });
+        const embed = createEmbed(
+            "info",
+            getText(pages[0])
+        ).setFooter({
+            text: `• ${i18n.__mf("reusable.pageFooter", {
+                actual: 1,
+                total: pages.length
+            })}`
+        });
         const msg = await ctx.reply({ embeds: [embed] }).catch(() => undefined);
 
         if (!msg) return;
         void new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(getText(p)).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}` });
+                e.setDescription(getText(p))
+                    .setFooter({
+                        text: `• ${i18n.__mf("reusable.pageFooter", {
+                            actual: i + 1,
+                            total: pages.length
+                        })}`
+                    });
             },
             embed,
             pages

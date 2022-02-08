@@ -56,12 +56,40 @@ export class RepeatCommand extends BaseCommand {
         };
         const selection = ctx.options?.getSubcommand() ||
             ctx.args[0]
-            ? Object.keys(mode).find(key => mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand()))
+            ? Object.keys(mode).find(
+                key => mode[key as LoopMode].aliases.includes(
+                    ctx.args[0] ?? ctx.options!.getSubcommand()
+                )
+            )
             : undefined;
 
-        if (!selection) return ctx.reply({ embeds: [createEmbed("info", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
+        if (!selection) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `${mode[
+                            ctx.guild!.queue!.loopMode
+                        ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
+                            mode: `\`${ctx.guild!.queue!.loopMode}\``
+                        })}`
+                    )
+                ]
+            });
+        }
         ctx.guild!.queue!.loopMode = selection as LoopMode;
 
-        return ctx.reply({ embeds: [createEmbed("success", `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", { mode: `\`${ctx.guild!.queue!.loopMode}\`` })}`)] });
+        return ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    `${mode[
+                        ctx.guild!.queue!.loopMode
+                    ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
+                        mode: `\`${ctx.guild!.queue!.loopMode}\``
+                    })}`
+                )
+            ]
+        });
     }
 }
