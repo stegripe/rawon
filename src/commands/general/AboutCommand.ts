@@ -1,12 +1,14 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createTable } from "../../utils/functions/createTable";
-import { version as BotVersion } from "../../../package.json";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { formatMS } from "../../utils/formatMS";
+import rawonData from "../../../package.json";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
 import { uptime } from "os";
+
+const { version: BotVersion } = rawonData;
 
 export class AboutCommand extends BaseCommand {
     public constructor(client: BaseCommand["client"]) {

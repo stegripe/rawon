@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { importURLToString } from "./utils/importURLToString";
 import { isProd, shardingMode, shardsCount } from "./config";
 import { RawonLogger } from "./utils/RawonLogger";
 import { ShardingManager } from "discord.js";
@@ -6,7 +7,7 @@ import { resolve } from "path";
 
 const log = new RawonLogger({ prod: isProd });
 
-const manager = new ShardingManager(resolve(__dirname, "bot.js"), {
+const manager = new ShardingManager(resolve(importURLToString(import.meta.url), "bot.js"), {
     totalShards: shardsCount,
     respawn: true,
     token: process.env.DISCORD_TOKEN,

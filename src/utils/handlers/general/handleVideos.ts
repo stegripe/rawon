@@ -6,6 +6,7 @@ import { Rawon } from "../../../structures/Rawon";
 import { createEmbed } from "../../createEmbed";
 import { ISong } from "../../../typings";
 import { chunk } from "../../chunk";
+import i18n from "../../../config";
 import { play } from "./play";
 import { Message, StageChannel, Util, VoiceChannel } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";

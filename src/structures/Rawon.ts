@@ -1,6 +1,7 @@
 import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
 import { CommandManager } from "../utils/CommandManager";
+import { importURLToString } from "../utils/importURLToString";
 import { EventsLoader } from "../utils/EventsLoader";
 import { ClientUtils } from "../utils/ClientUtils";
 import { RawonLogger } from "../utils/RawonLogger";
@@ -14,8 +15,8 @@ export class Rawon extends Client {
     public readonly config = config;
     public readonly logger = new RawonLogger({ prod: this.config.isProd });
     public readonly request = got;
-    public readonly commands = new CommandManager(this, resolve(__dirname, "..", "commands"));
-    public readonly events = new EventsLoader(this, resolve(__dirname, "..", "events"));
+    public readonly commands = new CommandManager(this, resolve(importURLToString(import.meta.url), "..", "commands"));
+    public readonly events = new EventsLoader(this, resolve(importURLToString(import.meta.url), "..", "events"));
     public readonly soundcloud = soundcloud;
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);

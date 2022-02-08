@@ -1,3 +1,4 @@
+import { pathStringToURLString } from "./pathStringToURLString";
 import { CommandContext } from "../structures/CommandContext";
 import { ICategoryMeta, ICommandComponent } from "../typings";
 import { createEmbed } from "./createEmbed";
@@ -20,7 +21,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             .then(async categories => {
                 this.client.logger.info(`Found ${categories.length} categories, registering...`);
                 for (const category of categories) {
-                    const meta = await import(resolve(this.path, category, "category.meta.js")) as ICategoryMeta;
+                    const meta = await import(pathStringToURLString(resolve(this.path, category, "category.meta.js"))) as ICategoryMeta;
 
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);
@@ -35,7 +36,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
 
                             for (const file of files) {
                                 try {
-                                    const path = resolve(this.path, category, file);
+                                    const path = pathStringToURLString(resolve(this.path, category, file));
                                     const command = await this.client.utils.import<ICommandComponent>(path, this.client, { category, path });
 
                                     if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
@@ -135,7 +136,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                         .finally(() => this.client.logger.info(`Done registering ${category} category.`));
                 }
             })
-            .catch(err => this.client.logger.error("CMD_LOADER_ERR:", err))
+            .catch((err: Error) => this.client.logger.error("CMD_LOADER_ERR:", err))
             .finally(() => {
                 this.client.logger.info("All categories has been registered.");
                 this.client.logger.info(`Current bot language is ${this.client.config.lang.toUpperCase()}`);

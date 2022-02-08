@@ -1,8 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import { Rawon } from "../structures/Rawon";
 import { Guild, Role } from "discord.js";
-import { parse, resolve } from "path";
-import { FFmpeg } from "prism-media";
+import { parse } from "path";
+import prism from "prism-media";
+
+const { FFmpeg } = prism;
 
 export class ClientUtils {
     public constructor(public readonly client: Rawon) {}
@@ -111,7 +113,7 @@ export class ClientUtils {
     }
 
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
-        const file = await import(resolve(path))
+        const file = await import(path)
             .then(
                 m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]
             );
