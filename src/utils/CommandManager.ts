@@ -123,12 +123,10 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                             return { disabledCount, files };
                         })
                         .then(data => {
-                            this.categories.set(
-                                category,
-                                Object.assign(meta, {
-                                    cmds: this.filter(c => c.meta.category === category)
-                                })
-                            );
+                            this.categories.set(category, {
+                                ...meta,
+                                cmds: this.filter(c => c.meta.category === category)
+                            });
                             this.client.logger.info(`Done loading ${data.files.length} commands in ${category} category.`);
                             if (data.disabledCount !== 0) this.client.logger.info(`${data.disabledCount} out of ${data.files.length} commands in ${category} category is disabled.`);
                         })
