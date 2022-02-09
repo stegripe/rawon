@@ -6,6 +6,7 @@
 		"lib": ["ES2021", "ESNext.Array"],
 		"strict": true,
 		"outDir": "dist",
+		"rootDir": "src",
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"experimentalDecorators": true,
