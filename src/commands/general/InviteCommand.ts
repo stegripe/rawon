@@ -1,22 +1,20 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Permissions } from "discord.js";
 
+@Command({
+    aliases: ["inv"],
+    description: i18n.__("commands.general.invite.description"),
+    name: "invite",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}invite"
+})
 export class InviteCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["inv"],
-            description: i18n.__("commands.general.invite.description"),
-            name: "invite",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}invite"
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<void> {
         const invite = this.client.generateInvite({
             permissions: [

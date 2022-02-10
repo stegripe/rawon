@@ -182,3 +182,15 @@ export interface SpotifyTrack {
 export interface SpotifyArtist {
     tracks: SpotifyTrack[];
 }
+
+export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;
+export type Constructor<Result = unknown> =
+    | NonAbstractConstructor<Result>
+    | (abstract new (...args: any[]) => Result);
+
+export type MethodDecorator<Target, Result> = (
+    target: Target,
+    propertyKey: string,
+    descriptor: PropertyDescriptor) => Result;
+export type ClassDecorator<Target extends Constructor, Result = unknown> = (target: Target) => Result;
+export type Promisable<Output> = Output | Promise<Output>;

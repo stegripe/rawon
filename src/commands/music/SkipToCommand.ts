@@ -2,49 +2,47 @@ import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { play } from "../../utils/handlers/GeneralUtil";
 import { IQueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { Message } from "discord.js";
 
-export class SkipToCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["st"],
-            description: i18n.__("commands.music.skipTo.description"),
-            name: "skipto",
-            slash: {
+@Command({
+    aliases: ["st"],
+    description: i18n.__("commands.music.skipTo.description"),
+    name: "skipto",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.music.skipTo.slashFirstDescription"),
+                name: "first",
+                type: "SUB_COMMAND"
+            },
+            {
+                description: i18n.__("commands.music.skipTo.slashLastDescription"),
+                name: "last",
+                type: "SUB_COMMAND"
+            },
+            {
+                description: i18n.__("commands.music.skipTo.slashSpecificDescription"),
+                name: "specific",
                 options: [
                     {
-                        description: i18n.__("commands.music.skipTo.slashFirstDescription"),
-                        name: "first",
-                        type: "SUB_COMMAND"
-                    },
-                    {
-                        description: i18n.__("commands.music.skipTo.slashLastDescription"),
-                        name: "last",
-                        type: "SUB_COMMAND"
-                    },
-                    {
-                        description: i18n.__("commands.music.skipTo.slashSpecificDescription"),
-                        name: "specific",
-                        options: [
-                            {
-                                description: i18n.__("commands.music.skipTo.slashPositionDescription"),
-                                name: "position",
-                                required: true,
-                                type: "NUMBER"
-                            }
-                        ],
-                        type: "SUB_COMMAND"
+                        description: i18n.__("commands.music.skipTo.slashPositionDescription"),
+                        name: "position",
+                        required: true,
+                        type: "NUMBER"
                     }
-                ]
-            },
-            usage: i18n.__("commands.music.skipTo.usage", { options: "first | last" })
-        });
-    }
-
+                ],
+                type: "SUB_COMMAND"
+            }
+        ]
+    },
+    usage: i18n.__("commands.music.skipTo.usage", { options: "first | last" })
+})
+export class SkipToCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;

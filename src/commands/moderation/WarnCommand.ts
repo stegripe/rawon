@@ -1,34 +1,32 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-export class WarnCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            description: i18n.__("commands.moderation.warn.description"),
-            name: "warn",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.moderation.warn.slashMemberDescription"),
-                        name: "member",
-                        required: true,
-                        type: "USER"
-                    },
-                    {
-                        description: i18n.__("commands.moderation.warn.slashReasonDescription"),
-                        name: "reason",
-                        required: false,
-                        type: "STRING"
-                    }
-                ]
+@Command({
+    description: i18n.__("commands.moderation.warn.description"),
+    name: "warn",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.moderation.warn.slashMemberDescription"),
+                name: "member",
+                required: true,
+                type: "USER"
             },
-            usage: i18n.__("commands.moderation.warn.usage")
-        });
-    }
-
+            {
+                description: i18n.__("commands.moderation.warn.slashReasonDescription"),
+                name: "reason",
+                required: false,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: i18n.__("commands.moderation.warn.usage")
+})
+export class WarnCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("MANAGE_GUILD")) {
             return ctx.reply({

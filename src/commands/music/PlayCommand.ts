@@ -3,31 +3,29 @@ import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { ISong } from "../../typings";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
+@Command({
+    aliases: ["p", "add"],
+    description: i18n.__("commands.music.play.description"),
+    name: "play",
+    slash: {
+        description: i18n.__("commands.music.play.description"),
+        options: [
+            {
+                description: i18n.__("commands.music.play.slashQueryDescription"),
+                name: "query",
+                type: "STRING",
+                required: true
+            }
+        ]
+    },
+    usage: i18n.__("commands.music.play.usage")
+})
 export class PlayCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["p", "add"],
-            description: i18n.__("commands.music.play.description"),
-            name: "play",
-            slash: {
-                description: i18n.__("commands.music.play.description"),
-                options: [
-                    {
-                        description: i18n.__("commands.music.play.slashQueryDescription"),
-                        name: "query",
-                        type: "STRING",
-                        required: true
-                    }
-                ]
-            },
-            usage: i18n.__("commands.music.play.usage")
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;

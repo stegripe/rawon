@@ -2,39 +2,37 @@ import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-export class StayInQueueCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["stayinvc", "stay", "24/7"],
-            description: i18n.__("commands.music.stayInQueue.description"),
-            name: "stayinvoice",
-            slash: {
-                options: [
+@Command({
+    aliases: ["stayinvc", "stay", "24/7"],
+    description: i18n.__("commands.music.stayInQueue.description"),
+    name: "stayinvoice",
+    slash: {
+        options: [
+            {
+                choices: [
                     {
-                        choices: [
-                            {
-                                name: "ENABLE",
-                                value: "enable"
-                            },
-                            {
-                                name: "DISABLE",
-                                value: "disable"
-                            }
-                        ],
-                        description: i18n.__("commands.music.stayInQueue.slashDescription"),
-                        name: "state",
-                        required: false,
-                        type: "STRING"
+                        name: "ENABLE",
+                        value: "enable"
+                    },
+                    {
+                        name: "DISABLE",
+                        value: "disable"
                     }
-                ]
-            },
-            usage: "{prefix}stayinvc [enable | disable]"
-        });
-    }
-
+                ],
+                description: i18n.__("commands.music.stayInQueue.slashDescription"),
+                name: "state",
+                required: false,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: "{prefix}stayinvc [enable | disable]"
+})
+export class StayInQueueCommand extends BaseCommand {
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;

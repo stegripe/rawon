@@ -7,3 +7,5 @@ export abstract class BaseCommand implements ICommandComponent {
 
     public abstract execute(ctx: CommandContext): any;
 }
+
+export type ExtendedCommandConstructor = new (...args: ConstructorParameters<typeof BaseCommand>) => BaseCommand;

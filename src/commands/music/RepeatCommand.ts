@@ -2,39 +2,37 @@ import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { LoopMode } from "../../typings";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-export class RepeatCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["loop", "music-repeat", "music-loop"],
-            description: i18n.__("commands.music.repeat.description"),
-            name: "repeat",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.music.repeat.slashQueue"),
-                        name: "queue",
-                        type: "SUB_COMMAND"
-                    },
-                    {
-                        description: i18n.__("commands.music.repeat.slashQueue"),
-                        name: "song",
-                        type: "SUB_COMMAND"
-                    },
-                    {
-                        description: i18n.__("commands.music.repeat.slashDisable"),
-                        name: "disable",
-                        type: "SUB_COMMAND"
-                    }
-                ]
+@Command({
+    aliases: ["loop", "music-repeat", "music-loop"],
+    description: i18n.__("commands.music.repeat.description"),
+    name: "repeat",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.music.repeat.slashQueue"),
+                name: "queue",
+                type: "SUB_COMMAND"
             },
-            usage: i18n.__("commands.music.repeat.usage", { options: "queue | one | disable" })
-        });
-    }
-
+            {
+                description: i18n.__("commands.music.repeat.slashQueue"),
+                name: "song",
+                type: "SUB_COMMAND"
+            },
+            {
+                description: i18n.__("commands.music.repeat.slashDisable"),
+                name: "disable",
+                type: "SUB_COMMAND"
+            }
+        ]
+    },
+    usage: i18n.__("commands.music.repeat.usage", { options: "queue | one | disable" })
+})
+export class RepeatCommand extends BaseCommand {
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;

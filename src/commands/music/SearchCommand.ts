@@ -4,6 +4,7 @@ import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { ISong } from "../../typings";
 import i18n from "../../config";
 import {
@@ -16,43 +17,40 @@ import {
     Util
 } from "discord.js";
 
-export class SearchCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["sc"],
-            contextChat: "Add to queue",
-            description: i18n.__("commands.music.search.description"),
-            name: "search",
-            slash: {
-                description: i18n.__("commands.music.search.slashDescription"),
-                options: [
+@Command<typeof SearchCommand>({
+    aliases: ["sc"],
+    contextChat: "Add to queue",
+    description: i18n.__("commands.music.search.description"),
+    name: "search",
+    slash: {
+        description: i18n.__("commands.music.search.slashDescription"),
+        options: [
+            {
+                description: i18n.__("commands.music.search.slashQueryDescription"),
+                name: "query",
+                type: "STRING"
+            },
+            {
+                choices: [
                     {
-                        description: i18n.__("commands.music.search.slashQueryDescription"),
-                        name: "query",
-                        type: "STRING"
+                        name: "YouTube",
+                        value: "youtube"
                     },
                     {
-                        choices: [
-                            {
-                                name: "YouTube",
-                                value: "youtube"
-                            },
-                            {
-                                name: "SoundCloud",
-                                value: "soundcloud"
-                            }
-                        ],
-                        description: i18n.__("commands.music.search.slashSourceDescription"),
-                        name: "source",
-                        required: false,
-                        type: "STRING"
+                        name: "SoundCloud",
+                        value: "soundcloud"
                     }
-                ]
-            },
-            usage: i18n.__("commands.music.search.usage")
-        });
-    }
-
+                ],
+                description: i18n.__("commands.music.search.slashSourceDescription"),
+                name: "source",
+                required: false,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: i18n.__("commands.music.search.usage")
+})
+export class SearchCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;

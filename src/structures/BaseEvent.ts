@@ -6,3 +6,5 @@ export abstract class BaseEvent implements IEvent {
 
     public abstract execute(...args: any): any;
 }
+
+export type ExtendedEventConstructor = new (...args: ConstructorParameters<typeof BaseEvent>) => BaseEvent;

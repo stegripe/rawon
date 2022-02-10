@@ -2,37 +2,35 @@ import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 
-export class ShuffleCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            description: i18n.__("commands.music.shuffle.description"),
-            name: "shuffle",
-            slash: {
-                options: [
+@Command({
+    description: i18n.__("commands.music.shuffle.description"),
+    name: "shuffle",
+    slash: {
+        options: [
+            {
+                choices: [
                     {
-                        choices: [
-                            {
-                                name: "ENABLE",
-                                value: "enable"
-                            },
-                            {
-                                name: "DISABLE",
-                                value: "disable"
-                            }
-                        ],
-                        description: i18n.__("commands.music.shuffle.description"),
-                        name: "state",
-                        required: false,
-                        type: "STRING"
+                        name: "ENABLE",
+                        value: "enable"
+                    },
+                    {
+                        name: "DISABLE",
+                        value: "disable"
                     }
-                ]
-            },
-            usage: "{prefix}shuffle [enable | disable]"
-        });
-    }
-
+                ],
+                description: i18n.__("commands.music.shuffle.description"),
+                name: "state",
+                required: false,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: "{prefix}shuffle [enable | disable]"
+})
+export class ShuffleCommand extends BaseCommand {
     public execute(ctx: CommandContext): void {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;

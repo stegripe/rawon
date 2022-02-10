@@ -1,35 +1,33 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-export class BanCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            contextUser: "Ban Member",
-            description: i18n.__("commands.moderation.ban.description"),
-            name: "ban",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.moderation.ban.slashMemberIDDescription"),
-                        name: "memberid",
-                        required: true,
-                        type: "STRING"
-                    },
-                    {
-                        description: i18n.__("commands.moderation.ban.slashReasonDescription"),
-                        name: "reason",
-                        required: false,
-                        type: "STRING"
-                    }
-                ]
+@Command({
+    contextUser: "Ban Member",
+    description: i18n.__("commands.moderation.ban.description"),
+    name: "ban",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.moderation.ban.slashMemberIDDescription"),
+                name: "memberid",
+                required: true,
+                type: "STRING"
             },
-            usage: i18n.__("commands.moderation.ban.usage")
-        });
-    }
-
+            {
+                description: i18n.__("commands.moderation.ban.slashReasonDescription"),
+                name: "reason",
+                required: false,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: i18n.__("commands.moderation.ban.usage")
+})
+export class BanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) {
             return ctx.reply({

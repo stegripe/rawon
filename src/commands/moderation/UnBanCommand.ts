@@ -1,34 +1,32 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-export class UnBanCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            description: i18n.__("commands.moderation.unban.description"),
-            name: "unban",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.moderation.unban.slashMemberDescription"),
-                        name: "memberid",
-                        required: true,
-                        type: "STRING"
-                    },
-                    {
-                        description: i18n.__("commands.moderation.unban.slashReasonDescription"),
-                        name: "reason",
-                        required: false,
-                        type: "STRING"
-                    }
-                ]
+@Command({
+    description: i18n.__("commands.moderation.unban.description"),
+    name: "unban",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.moderation.unban.slashMemberDescription"),
+                name: "memberid",
+                required: true,
+                type: "STRING"
             },
-            usage: i18n.__("commands.moderation.unban.usage")
-        });
-    }
-
+            {
+                description: i18n.__("commands.moderation.unban.slashReasonDescription"),
+                name: "reason",
+                required: false,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: i18n.__("commands.moderation.unban.usage")
+})
+export class UnBanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) {
             return ctx.reply({

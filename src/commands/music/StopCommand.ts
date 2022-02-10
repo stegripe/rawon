@@ -2,21 +2,19 @@ import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 
+@Command({
+    aliases: ["disconnect", "dc"],
+    description: i18n.__("commands.music.stop.description"),
+    name: "stop",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}stop"
+})
 export class StopCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["disconnect", "dc"],
-            description: i18n.__("commands.music.stop.description"),
-            name: "stop",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}stop"
-        });
-    }
-
     public execute(ctx: CommandContext): void {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;

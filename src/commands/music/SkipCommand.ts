@@ -3,25 +3,23 @@ import { OperationManager } from "../../utils/structures/OperationManager";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { IQueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
 
+@Command<typeof SkipCommand>({
+    aliases: ["s"],
+    description: i18n.__("commands.music.skip.description"),
+    name: "skip",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}skip"
+})
 export class SkipCommand extends BaseCommand {
     private readonly manager = new OperationManager();
-
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["s"],
-            description: i18n.__("commands.music.skip.description"),
-            name: "skip",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}skip"
-        });
-    }
 
     public async execute(ctx: CommandContext): Promise<void> {
         if (!inVC(ctx)) return;

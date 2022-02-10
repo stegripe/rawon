@@ -2,16 +2,14 @@ import { createEmbed } from "../utils/functions/createEmbed";
 import { ServerQueue } from "../structures/ServerQueue";
 import { formatMS } from "../utils/functions/formatMS";
 import { BaseEvent } from "../structures/BaseEvent";
+import { Event } from "../utils/decorators/Event";
 import { IQueueSong } from "../typings";
 import i18n from "../config";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { Message, StageChannel, VoiceState, VoiceChannel } from "discord.js";
 
+@Event<typeof VoiceStateUpdateEvent>("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
-    public constructor(client: BaseEvent["client"]) {
-        super(client, "voiceStateUpdate");
-    }
-
     public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message | undefined> {
         const queue = newState.guild.queue;
         if (!queue) return;

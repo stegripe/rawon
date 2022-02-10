@@ -2,22 +2,20 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Message } from "discord.js";
 import { inspect } from "util";
 
+@Command<typeof EvalCommand>({
+    aliases: ["evaluate", "ev", "js-exec"],
+    cooldown: 0,
+    description: i18n.__("commands.developers.eval.description"),
+    devOnly: true,
+    name: "eval",
+    usage: i18n.__("commands.developers.eval.usage")
+})
 export class EvalCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["evaluate", "ev", "js-exec"],
-            cooldown: 0,
-            description: i18n.__("commands.developers.eval.description"),
-            devOnly: true,
-            name: "eval",
-            usage: i18n.__("commands.developers.eval.usage")
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const msg = ctx;
         const client = this.client;

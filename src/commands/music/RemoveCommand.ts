@@ -4,31 +4,29 @@ import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
 import { IQueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 import { Util } from "discord.js";
 
+@Command({
+    description: i18n.__("commands.music.remove.description"),
+    name: "remove",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.music.remove.slashPositionsDescription"),
+                name: "positions",
+                required: true,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: i18n.__("commands.music.remove.usage")
+})
 export class RemoveCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            description: i18n.__("commands.music.remove.description"),
-            name: "remove",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.music.remove.slashPositionsDescription"),
-                        name: "positions",
-                        required: true,
-                        type: "STRING"
-                    }
-                ]
-            },
-            usage: i18n.__("commands.music.remove.usage")
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<void> {
         if (!inVC(ctx)) return;
         if (!haveQueue(ctx)) return;

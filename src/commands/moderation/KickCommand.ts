@@ -1,35 +1,33 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
-export class KickCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            contextUser: "Kick Member",
-            description: i18n.__("commands.moderation.kick.description"),
-            name: "kick",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.moderation.kick.slashMemberDescription"),
-                        name: "member",
-                        required: true,
-                        type: "USER"
-                    },
-                    {
-                        description: i18n.__("commands.moderation.kick.slashReasonDescription"),
-                        name: "reason",
-                        required: false,
-                        type: "STRING"
-                    }
-                ]
+@Command({
+    contextUser: "Kick Member",
+    description: i18n.__("commands.moderation.kick.description"),
+    name: "kick",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.moderation.kick.slashMemberDescription"),
+                name: "member",
+                required: true,
+                type: "USER"
             },
-            usage: i18n.__("commands.moderation.kick.usage")
-        });
-    }
-
+            {
+                description: i18n.__("commands.moderation.kick.slashReasonDescription"),
+                name: "reason",
+                required: false,
+                type: "STRING"
+            }
+        ]
+    },
+    usage: i18n.__("commands.moderation.kick.usage")
+})
+export class KickCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("KICK_MEMBERS")) {
             return ctx.reply({

@@ -1,28 +1,26 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { TextChannel, Message } from "discord.js";
 
+@Command({
+    description: i18n.__("commands.moderation.purge.description"),
+    name: "purge",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.moderation.purge.slashAmountDescription"),
+                name: "amount",
+                required: true,
+                type: "NUMBER"
+            }
+        ]
+    },
+    usage: i18n.__("commands.moderation.purge.usage")
+})
 export class PurgeCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            description: i18n.__("commands.moderation.purge.description"),
-            name: "purge",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.moderation.purge.slashAmountDescription"),
-                        name: "amount",
-                        required: true,
-                        type: "NUMBER"
-                    }
-                ]
-            },
-            usage: i18n.__("commands.moderation.purge.usage")
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.member?.permissions.has("MANAGE_MESSAGES")) {
             return ctx.reply({

@@ -2,6 +2,7 @@
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import {
     Message,
@@ -11,6 +12,21 @@ import {
     SelectMenuInteraction
 } from "discord.js";
 
+@Command<typeof HelpCommand>({
+    aliases: ["h", "command", "commands", "cmd", "cmds"],
+    description: i18n.__("commands.general.help.description"),
+    name: "help",
+    slash: {
+        options: [
+            {
+                type: "STRING",
+                name: "command",
+                description: i18n.__("commands.general.help.slashDescription")
+            }
+        ]
+    },
+    usage: i18n.__("commands.general.help.usage")
+})
 export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")
         .setAuthor({
@@ -28,24 +44,6 @@ export class HelpCommand extends BaseCommand {
 
     private readonly infoEmbed = createEmbed("info")
         .setThumbnail("https://raw.githubusercontent.com/Rahagia/rawon/main/.github/images/question_mark.png");
-
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["h", "command", "commands", "cmd", "cmds"],
-            description: i18n.__("commands.general.help.description"),
-            name: "help",
-            slash: {
-                options: [
-                    {
-                        type: "STRING",
-                        name: "command",
-                        description: i18n.__("commands.general.help.slashDescription")
-                    }
-                ]
-            },
-            usage: i18n.__("commands.general.help.usage")
-        });
-    }
 
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();

@@ -3,6 +3,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { createTable } from "../../utils/functions/createTable";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { formatMS } from "../../utils/functions/formatMS";
+import { Command } from "../../utils/decorators/Command";
 import rawonData from "../../../package.json";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
@@ -10,19 +11,16 @@ import { uptime } from "os";
 
 const { version: BotVersion } = rawonData;
 
+@Command({
+    aliases: ["information", "info", "botinfo", "stats"],
+    description: i18n.__("commands.general.about.description"),
+    name: "about",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}about"
+})
 export class AboutCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["information", "info", "botinfo", "stats"],
-            description: i18n.__("commands.general.about.description"),
-            name: "about",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}about"
-        });
-    }
-
     public execute(ctx: CommandContext): void {
         const values = [
             [i18n.__("commands.general.about.osUptimeString"), formatMS(uptime() * 1000)],

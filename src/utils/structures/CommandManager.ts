@@ -37,7 +37,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                             for (const file of files) {
                                 try {
                                     const path = pathStringToURLString(resolve(this.path, category, file));
-                                    const command = await this.client.utils.import<ICommandComponent>(path, this.client, { category, path });
+                                    const command = await this.client.utils.import<ICommandComponent>(path, this.client);
 
                                     if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
 

@@ -1,14 +1,12 @@
 import { CommandContext } from "../structures/CommandContext";
 import { createEmbed } from "../utils/functions/createEmbed";
 import { BaseEvent } from "../structures/BaseEvent";
+import { Event } from "../utils/decorators/Event";
 import i18n from "../config";
 import { BitFieldResolvable, Interaction, Permissions, PermissionString } from "discord.js";
 
+@Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
-    public constructor(client: BaseEvent["client"]) {
-        super(client, "interactionCreate");
-    }
-
     public async execute(interaction: Interaction): Promise<void> {
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
 

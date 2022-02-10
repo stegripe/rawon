@@ -3,24 +3,22 @@ import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
 import { IQueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 
+@Command({
+    aliases: ["q"],
+    description: i18n.__("commands.music.queue.description"),
+    name: "queue",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}queue"
+})
 export class QueueCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["q"],
-            description: i18n.__("commands.music.queue.description"),
-            name: "queue",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}queue"
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<void> {
         if (!haveQueue(ctx)) return;
 

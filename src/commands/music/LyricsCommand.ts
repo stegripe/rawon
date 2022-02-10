@@ -3,31 +3,29 @@ import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { ILyricsAPIResult, IQueueSong } from "../../typings";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
 import i18n from "../../config";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
 import { Message } from "discord.js";
 
+@Command<typeof LyricsCommand>({
+    aliases: ["ly", "lyric"],
+    description: i18n.__("commands.music.lyrics.description"),
+    name: "lyrics",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.music.lyrics.slashDescription"),
+                name: "query",
+                type: "STRING",
+                required: false
+            }
+        ]
+    },
+    usage: i18n.__("commands.music.lyrics.usage")
+})
 export class LyricsCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["ly", "lyric"],
-            description: i18n.__("commands.music.lyrics.description"),
-            name: "lyrics",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.music.lyrics.slashDescription"),
-                        name: "query",
-                        type: "STRING",
-                        required: false
-                    }
-                ]
-            },
-            usage: i18n.__("commands.music.lyrics.usage")
-        });
-    }
-
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         // eslint-disable-next-line no-nested-ternary
         const query = ctx.args.length >= 1

@@ -2,30 +2,28 @@ import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { Message } from "discord.js";
 
+@Command({
+    aliases: ["vol"],
+    description: i18n.__("commands.music.volume.description"),
+    name: "volume",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.music.volume.slashDescription"),
+                name: "volume",
+                type: "NUMBER",
+                required: false
+            }
+        ]
+    },
+    usage: i18n.__("commands.music.volume.usage")
+})
 export class VolumeCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["vol"],
-            description: i18n.__("commands.music.volume.description"),
-            name: "volume",
-            slash: {
-                options: [
-                    {
-                        description: i18n.__("commands.music.volume.slashDescription"),
-                        name: "volume",
-                        type: "NUMBER",
-                        required: false
-                    }
-                ]
-            },
-            usage: i18n.__("commands.music.volume.usage")
-        });
-    }
-
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (!inVC(ctx)) return;
         if (!validVC(ctx)) return;
