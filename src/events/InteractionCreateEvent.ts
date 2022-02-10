@@ -1,6 +1,6 @@
 import { CommandContext } from "../structures/CommandContext";
+import { createEmbed } from "../utils/functions/createEmbed";
 import { BaseEvent } from "../structures/BaseEvent";
-import { createEmbed } from "../utils/createEmbed";
 import i18n from "../config";
 import { BitFieldResolvable, Interaction, Permissions, PermissionString } from "discord.js";
 

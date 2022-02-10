@@ -1,9 +1,9 @@
-import { pathStringToURLString } from "./pathStringToURLString";
-import { CommandContext } from "../structures/CommandContext";
-import { ICategoryMeta, ICommandComponent } from "../typings";
-import { createEmbed } from "./createEmbed";
-import { Rawon } from "../structures/Rawon";
-import i18n from "../config";
+import { pathStringToURLString } from "../functions/pathStringToURLString";
+import { CommandContext } from "../../structures/CommandContext";
+import { ICategoryMeta, ICommandComponent } from "../../typings";
+import { createEmbed } from "../functions/createEmbed";
+import { Rawon } from "../../structures/Rawon";
+import i18n from "../../config";
 import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
 import { promises as fs } from "fs";
 import { resolve } from "path";
@@ -21,7 +21,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             .then(async categories => {
                 this.client.logger.info(`Found ${categories.length} categories, registering...`);
                 for (const category of categories) {
-                    const meta = await import(pathStringToURLString(resolve(this.path, category, "category.meta.js"))) as ICategoryMeta;
+                    const meta = (await import(pathStringToURLString(resolve(this.path, category, "category.meta.js"))) as { default: ICategoryMeta }).default;
 
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);
@@ -123,10 +123,9 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                             return { disabledCount, files };
                         })
                         .then(data => {
-                            this.categories.set(category, {
-                                ...meta,
+                            this.categories.set(category, Object.assign(meta, {
                                 cmds: this.filter(c => c.meta.category === category)
-                            });
+                            }));
                             this.client.logger.info(`Done loading ${data.files.length} commands in ${category} category.`);
                             if (data.disabledCount !== 0) this.client.logger.info(`${data.disabledCount} out of ${data.files.length} commands in ${category} category is disabled.`);
                         })

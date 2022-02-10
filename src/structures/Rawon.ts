@@ -1,11 +1,11 @@
+import { importURLToString } from "../utils/functions/importURLToString";
+import { CommandManager } from "../utils/structures/CommandManager";
+import { EventsLoader } from "../utils/structures/EventsLoader";
+import { ClientUtils } from "../utils/structures/ClientUtils";
+import { RawonLogger } from "../utils/structures/RawonLogger";
 import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
-import { CommandManager } from "../utils/CommandManager";
-import { importURLToString } from "../utils/importURLToString";
-import { EventsLoader } from "../utils/EventsLoader";
-import { ClientUtils } from "../utils/ClientUtils";
-import { RawonLogger } from "../utils/RawonLogger";
-import { formatMS } from "../utils/formatMS";
+import { formatMS } from "../utils/functions/formatMS";
 import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
 import { resolve } from "path";

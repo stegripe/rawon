@@ -1,4 +1,4 @@
-import { ISong, IQueueSong } from "../typings";
+import { ISong, IQueueSong } from "../../typings";
 import { Collection, GuildMember, Snowflake, SnowflakeUtil } from "discord.js";
 
 export class SongManager extends Collection<Snowflake, IQueueSong> {

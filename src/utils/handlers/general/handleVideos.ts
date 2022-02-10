@@ -1,11 +1,11 @@
+import { parseHTMLElements } from "../../functions/parseHTMLElements";
+import { ButtonPagination } from "../../structures/ButtonPagination";
 import { CommandContext } from "../../../structures/CommandContext";
-import { parseHTMLElements } from "../../parseHTMLElements";
-import { ButtonPagination } from "../../ButtonPagination";
 import { ServerQueue } from "../../../structures/ServerQueue";
+import { createEmbed } from "../../functions/createEmbed";
 import { Rawon } from "../../../structures/Rawon";
-import { createEmbed } from "../../createEmbed";
+import { chunk } from "../../functions/chunk";
 import { ISong } from "../../../typings";
-import { chunk } from "../../chunk";
 import i18n from "../../../config";
 import { play } from "./play";
 import { Message, StageChannel, Util, VoiceChannel } from "discord.js";

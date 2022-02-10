@@ -1,10 +1,10 @@
+import { ButtonPagination } from "../../utils/structures/ButtonPagination";
 import { CommandContext } from "../../structures/CommandContext";
-import { ButtonPagination } from "../../utils/ButtonPagination";
+import { createEmbed } from "../../utils/functions/createEmbed";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { createEmbed } from "../../utils/createEmbed";
+import { chunk } from "../../utils/functions/chunk";
 import { IQueueSong } from "../../typings";
-import { chunk } from "../../utils/chunk";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 

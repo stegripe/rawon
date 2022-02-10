@@ -1,7 +1,7 @@
+import { createEmbed } from "../../functions/createEmbed";
+import { Rawon } from "../../../structures/Rawon";
 import { IQueueSong } from "../../../typings";
 import { getStream } from "../YTDLUtil";
-import { createEmbed } from "../../createEmbed";
-import { Rawon } from "../../../structures/Rawon";
 import i18n from "../../../config";
 import {
     AudioPlayerError,

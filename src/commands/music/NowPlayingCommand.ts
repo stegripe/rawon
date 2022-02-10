@@ -1,7 +1,7 @@
 import { CommandContext } from "../../structures/CommandContext";
+import { createEmbed } from "../../utils/functions/createEmbed";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import i18n from "../../config";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";

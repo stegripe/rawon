@@ -9,7 +9,7 @@ import {
     SelectMenuInteraction,
     TextChannel
 } from "discord.js";
-import { PaginationPayload } from "../typings";
+import { PaginationPayload } from "../../typings";
 
 const DATAS: InteractionButtonOptions[] = [
     {

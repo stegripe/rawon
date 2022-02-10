@@ -1,7 +1,7 @@
+import { createEmbed } from "../utils/functions/createEmbed";
 import { ServerQueue } from "../structures/ServerQueue";
+import { formatMS } from "../utils/functions/formatMS";
 import { BaseEvent } from "../structures/BaseEvent";
-import { createEmbed } from "../utils/createEmbed";
-import { formatMS } from "../utils/formatMS";
 import { IQueueSong } from "../typings";
 import i18n from "../config";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";

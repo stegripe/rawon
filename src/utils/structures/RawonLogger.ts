@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { IRawonLoggerOptions } from "../typings";
+import { IRawonLoggerOptions } from "../../typings";
 import { format } from "date-fns";
 
 enum Colors {

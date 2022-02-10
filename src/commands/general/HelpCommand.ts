@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain, @typescript-eslint/no-unnecessary-condition */
 import { CommandContext } from "../../structures/CommandContext";
+import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { createEmbed } from "../../utils/createEmbed";
 import i18n from "../../config";
-import { Message, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
+import {
+    Message,
+    MessageActionRow,
+    MessageSelectMenu,
+    MessageSelectOptionData,
+    SelectMenuInteraction
+} from "discord.js";
 
 export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")

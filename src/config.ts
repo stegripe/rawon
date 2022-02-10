@@ -1,11 +1,25 @@
 import { IpresenceData } from "./typings";
-import { ActivityType, ClientOptions, ClientPresenceStatus, Intents, Options, ShardingManagerMode, Sweepers } from "discord.js";
+import {
+    ActivityType,
+    ClientOptions,
+    ClientPresenceStatus,
+    Intents,
+    Options,
+    ShardingManagerMode,
+    Sweepers
+} from "discord.js";
 import { join } from "path";
 import i18n from "i18n";
 
 export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
-    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_BANS],
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+        Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.GUILD_BANS
+    ],
     makeCache: Options.cacheWithLimits({
         MessageManager: {
             maxSize: Infinity,

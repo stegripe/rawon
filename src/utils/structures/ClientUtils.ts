@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { Rawon } from "../structures/Rawon";
+import { Rawon } from "../../structures/Rawon";
 import { Guild, Role } from "discord.js";
 import { parse } from "path";
 import prism from "prism-media";

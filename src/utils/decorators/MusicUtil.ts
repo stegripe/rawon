@@ -1,5 +1,5 @@
 import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../createEmbed";
+import { createEmbed } from "../functions/createEmbed";
 import i18n from "../../config";
 
 export function haveQueue(ctx: CommandContext): boolean {

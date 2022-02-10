@@ -1,5 +1,5 @@
+import { createEmbed } from "../utils/functions/createEmbed";
 import { BaseEvent } from "../structures/BaseEvent";
-import { createEmbed } from "../utils/createEmbed";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { GuildChannel, VoiceChannel } from "discord.js";
 import i18n from "i18n";

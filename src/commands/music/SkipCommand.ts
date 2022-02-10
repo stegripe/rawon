@@ -1,8 +1,8 @@
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
+import { OperationManager } from "../../utils/structures/OperationManager";
 import { CommandContext } from "../../structures/CommandContext";
-import { OperationManager } from "../../utils/OperationManager";
+import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { createEmbed } from "../../utils/createEmbed";
 import { IQueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";

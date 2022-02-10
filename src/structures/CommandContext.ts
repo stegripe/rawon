@@ -2,7 +2,24 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { InteractionTypes, MessageComponentTypes } from "../typings/enum";
 import { MessageInteractionAction } from "../typings";
-import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import {
+    ButtonInteraction,
+    Collection,
+    CommandInteraction,
+    ContextMenuInteraction,
+    GuildMember,
+    Interaction,
+    InteractionReplyOptions,
+    Message,
+    MessageActionRow,
+    MessageButton,
+    MessageMentions,
+    MessageOptions,
+    MessagePayload,
+    SelectMenuInteraction,
+    TextBasedChannel,
+    User
+} from "discord.js";
 
 export class CommandContext {
     public additionalArgs: Collection<string, any> = new Collection();

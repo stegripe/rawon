@@ -1,6 +1,6 @@
-import { pathStringToURLString } from "./pathStringToURLString";
-import { Rawon } from "../structures/Rawon";
-import { IEvent } from "../typings";
+import { pathStringToURLString } from "../functions/pathStringToURLString";
+import { Rawon } from "../../structures/Rawon";
+import { IEvent } from "../../typings";
 import { promises as fs } from "fs";
 import { resolve } from "path";
 

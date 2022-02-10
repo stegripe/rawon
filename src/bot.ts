@@ -1,4 +1,4 @@
-import { NoStackError } from "./utils/NoStackError";
+import { NoStackError } from "./utils/structures/NoStackError";
 import { clientOptions } from "./config";
 import { Rawon } from "./structures/Rawon";
 
