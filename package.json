@@ -54,7 +54,7 @@
     "node": ">=16.6.0"
   },
   "optionalDependencies": {
-    "play-dl": "^1.8.6",
+    "play-dl": "^1.8.7",
     "youtube-dl-exec": "^2.0.3"
   }
 }
