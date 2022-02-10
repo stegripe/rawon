@@ -48,7 +48,8 @@ export class PingCommand extends BaseCommand {
                 iconURL: this.client.user!.displayAvatarURL()
             })
             .setTimestamp();
-        msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+        msg.edit({ content: " ", embeds: [embed] })
+            .catch(e => this.client.logger.error("PROMISE_ERR:", e));
     }
 
     // eslint-disable-next-line class-methods-use-this

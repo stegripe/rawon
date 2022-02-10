@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { IRawonLoggerOptions } from "../typings";
 import { format } from "date-fns";
 
@@ -32,6 +33,16 @@ export class RawonLogger {
         if (this.options.prod && level === "debug") return;
 
         // eslint-disable-next-line no-nested-ternary
-        console[level](`${this.options.prod ? "" : level === "debug" ? Colors.Blue : level === "error" ? Colors.Red : level === "warn" ? Colors.Yellow : Colors.Green}[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]: ${messages.map(x => String(x)).join(" ")} ${Colors.Reset}`);
+        console[level](`${
+            this.options.prod
+                ? ""
+                : level === "debug"
+                    ? Colors.Blue
+                    : level === "error"
+                        ? Colors.Red
+                        : level === "warn"
+                            ? Colors.Yellow
+                            : Colors.Green
+        }[${format(Date.now(), "yyyy-MM-dd HH:mm:ss (x)")}] [${level}]: ${messages.map(x => String(x)).join(" ")} ${Colors.Reset}`);
     }
 }

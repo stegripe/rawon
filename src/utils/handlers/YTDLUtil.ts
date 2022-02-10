@@ -3,8 +3,10 @@ import { soundcloud } from "./SoundCloudUtil";
 import { streamStrategy } from "../../config";
 import { checkQuery } from "./GeneralUtil";
 import { stream as pldlStream, video_basic_info } from "play-dl";
-import ytdl, { exec } from "youtube-dl-exec";
+import * as YTDLExec from "youtube-dl-exec";
 import { Readable } from "stream";
+
+const { exec, default: ytdl } = YTDLExec;
 
 export async function getStream(url: string): Promise<Readable> {
     if (streamStrategy === "play-dl") {

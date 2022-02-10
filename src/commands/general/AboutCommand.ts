@@ -1,12 +1,14 @@
 import { CommandContext } from "../../structures/CommandContext";
-import { version as BotVersion } from "../../../package.json";
+import { createTable } from "../../utils/functions/createTable";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { createEmbed } from "../../utils/createEmbed";
 import { formatMS } from "../../utils/formatMS";
-import { createTable } from "../../utils/functions/createTable";
+import rawonData from "../../../package.json";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
 import { uptime } from "os";
+
+const { version: BotVersion } = rawonData;
 
 export class AboutCommand extends BaseCommand {
     public constructor(client: BaseCommand["client"]) {
@@ -32,19 +34,17 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.ffmpegVersionString"), this.client.utils.getFFmpegVersion()],
             [i18n.__("commands.general.about.botVersionString"), BotVersion],
             [""],
-            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/mzrtamp/rawon"]
+            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/Rahagia/rawon"]
         ];
         const value = createTable(values);
 
         void ctx.reply({
             embeds: [
-                createEmbed("info", `
-\`\`\`asciidoc
-${value}
-\`\`\`
-                `)
+                createEmbed("info", `\`\`\`asciidoc\n${value}\n\`\`\``)
                     .setAuthor({
-                        name: i18n.__mf("commands.general.about.aboutFooter", { botname: this.client.user?.username ?? "Unknown" })
+                        name: i18n.__mf("commands.general.about.aboutFooter", {
+                            botname: this.client.user?.username ?? "Unknown"
+                        })
                     })
             ]
         }).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));

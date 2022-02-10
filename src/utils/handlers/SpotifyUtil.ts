@@ -35,10 +35,19 @@ export class SpotifyUtil {
     }
 
     public async getPlaylist(id: string): Promise<{ track: SpotifyTrack }[]> {
-        const playlistResponse = await this.client.request.get(`${this.baseURI}/playlists/${id}`, { headers: { Authorization: this.token } }).json<SpotifyPlaylist>();
+        const playlistResponse = await this.client.request
+            .get(`${this.baseURI}/playlists/${id}`, {
+                headers: {
+                    Authorization: this.token
+                }
+            }).json<SpotifyPlaylist>();
         let next = playlistResponse.tracks.next;
         while (next) {
-            const nextPlaylistResponse = await this.client.request.get(next, { headers: { Authorization: this.token } }).json<SpotifyPlaylist>();
+            const nextPlaylistResponse = await this.client.request.get(next, {
+                headers: {
+                    Authorization: this.token
+                }
+            }).json<SpotifyPlaylist>();
             next = nextPlaylistResponse.tracks.next;
             playlistResponse.tracks.items.push(...nextPlaylistResponse.tracks.items);
         }
@@ -46,6 +55,11 @@ export class SpotifyUtil {
     }
 
     public getTrack(id: string): Promise<SpotifyTrack> {
-        return this.client.request.get(`${this.baseURI}/tracks/${id}`, { headers: { Authorization: this.token } }).json<SpotifyTrack>();
+        return this.client.request
+            .get(`${this.baseURI}/tracks/${id}`, {
+                headers: {
+                    Authorization: this.token
+                }
+            }).json<SpotifyTrack>();
     }
 }
