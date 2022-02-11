@@ -136,7 +136,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
                 switch (queryData.type) {
                     case "track": {
                         const songData = await client.spotify.resolveTracks(url.toString()) as unknown as SpotifyTrack;
-                        const track = sortVideos(songData, await youtube.search(`${songData.artists[0].name} - ${songData.name}`, { type: "video" }))[0];
+                        const track = sortVideos(songData, await youtube.search(`${songData.artists[0].name} - ${songData.name}`, { type: "video" }) as SearchResult<"video">)[0];
 
                         result.items = [{
                             duration: track.duration === null ? 0 : track.duration,
@@ -151,7 +151,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
                     case "playlist": {
                         const songs = await client.spotify.resolveTracks(url.toString()) as unknown as { track: SpotifyTrack }[];
                         const tracks = await Promise.all(songs.map(async (x): Promise<ISong> => {
-                            const track = sortVideos(x.track, await youtube.search(`${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`, { type: "video" }))[0];
+                            const track = sortVideos(x.track, await youtube.search(`${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`, { type: "video" }) as SearchResult<"video">)[0];
                             return {
                                 duration: track.duration === null ? 0 : track.duration,
                                 id: track.id,
