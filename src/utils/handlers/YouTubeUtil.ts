@@ -1,5 +1,5 @@
-import YTinfo from "youtubei";
+import YTI from "youtubei";
 
-const { Client } = YTinfo;
+const { Client } = YTI;
 
-export const youtube: YTinfo.Client = new Client();
+export const youtube = new Client();
