@@ -6,8 +6,8 @@ import { createEmbed } from "../../functions/createEmbed";
 import { Rawon } from "../../../structures/Rawon";
 import { chunk } from "../../functions/chunk";
 import { ISong } from "../../../typings";
-import i18n from "../../../config";
 import { play } from "./play";
+import i18n from "../../../config";
 import { Message, StageChannel, Util, VoiceChannel } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 

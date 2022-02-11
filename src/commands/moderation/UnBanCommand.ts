@@ -30,16 +30,12 @@ export class UnBanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.ban.userNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.ban.userNoPermission"), true)]
             });
         }
         if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.ban.botNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.ban.botNoPermission"), true)]
             });
         }
 
@@ -51,16 +47,12 @@ export class UnBanCommand extends BaseCommand {
 
         if (!user) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
         }
         if (!resolved) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.unban.alreadyUnban"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.unban.alreadyUnban"))]
             });
         }
 
@@ -75,15 +67,9 @@ export class UnBanCommand extends BaseCommand {
             .catch(err => new Error(err as string | undefined));
         if (unban instanceof Error) {
             return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__mf("commands.moderation.unban.unbanFail", {
-                            message: unban.message
-                        }),
-                        true
-                    )
-                ]
+                embeds: [createEmbed("error", i18n.__mf("commands.moderation.unban.unbanFail", {
+                    message: unban.message
+                }), true)]
             });
         }
 

@@ -36,12 +36,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         : ""} Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`
                 );
                 queue.textChannel.send({
-                    embeds: [
-                        createEmbed(
-                            "error",
-                            `⏹️ **|** ${i18n.__("events.voiceStateUpdate.disconnectFromVCMessage")}`
-                        )
-                    ]
+                    embeds: [createEmbed("error", `⏹️ **|** ${i18n.__("events.voiceStateUpdate.disconnectFromVCMessage")}`)]
                 })
                     .catch(e => this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e));
             }
@@ -54,22 +49,14 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             queue.skipVoters = [];
             if (oldVC?.rtcRegion !== newVC?.rtcRegion) {
                 const msg = await queue.textChannel.send({
-                    embeds: [
-                        createEmbed("info", i18n.__("events.voiceStateUpdate.reconfigureConnection"))
-                    ]
+                    embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.reconfigureConnection"))]
                 });
                 queue.connection?.configureNetworking();
 
                 try {
                     await entersState(queue.connection!, VoiceConnectionStatus.Ready, 20000);
                     void msg.edit({
-                        embeds: [
-                            createEmbed(
-                                "success",
-                                i18n.__("events.voiceStateUpdate.connectionReconfigured"),
-                                true
-                            )
-                        ]
+                        embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.connectionReconfigured"), true)]
                     });
                 } catch {
                     queue.destroy();
@@ -79,22 +66,14 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             : ""} Unable to re-configure networking on ${newState.guild.name} voice channel, the queue was deleted.`
                     );
                     void msg.edit({
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__("events.voiceStateUpdate.unableReconfigureConnection"),
-                                true
-                            )
-                        ]
+                        embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableReconfigureConnection"), true)]
                     });
                     return;
                 }
             }
             if (newVC?.type === "GUILD_STAGE_VOICE" && newState.suppress) {
                 const msg = await queue.textChannel.send({
-                    embeds: [
-                        createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpeaker"))
-                    ]
+                    embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpeaker"))]
                 });
                 const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
 
@@ -106,9 +85,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             : ""} Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`
                     );
                     void queue.textChannel.send({
-                        embeds: [
-                            createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)
-                        ]
+                        embeds: [createEmbed("error", i18n.__("events.voiceStateUpdate.unableJoinStageMessage"), true)]
                     })
                         .catch(e => {
                             this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", e);
@@ -117,9 +94,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 }
 
                 await msg.edit({
-                    embeds: [
-                        createEmbed("success", i18n.__("events.voiceStateUpdate.joinStageMessage"), true)
-                    ]
+                    embeds: [createEmbed("success", i18n.__("events.voiceStateUpdate.joinStageMessage"), true)]
                 });
             }
             if (newVCMembers.size === 0 && queue.timeout === null && !queue.idle) {
@@ -158,25 +133,15 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         state.guild.queue!.timeout = setTimeout(() => {
             queue.destroy();
             void queue.textChannel.send({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        `⏹ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
-                            duration: `\`${duration}\``
-                        })}`
-                    ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") })
-                ]
+                embeds: [createEmbed("error", `⏹ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
+                    duration: `\`${duration}\``
+                })}`).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") })]
             });
         }, timeout);
         void queue.textChannel.send({
-            embeds: [
-                createEmbed(
-                    "warn",
-                    `⏸ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
-                        duration: `\`${duration}\``
-                    })}`
-                ).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") })
-            ]
+            embeds: [createEmbed("warn", `⏸ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
+                duration: `\`${duration}\``
+            })}`).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") })]
         })
             .then(msg => queue.lastVSUpdateMsg = msg.id);
     }
@@ -191,17 +156,12 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const song = ((queue.player!.state as AudioPlayerPausedState).resource.metadata as IQueueSong).song;
 
         void queue.textChannel.send({
-            embeds: [
-                createEmbed(
-                    "info",
-                    `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
-                        song: `[${song.title}](${song.url})`
-                    })}`
-                ).setThumbnail(song.thumbnail)
-                    .setAuthor({
-                        name: i18n.__("events.voiceStateUpdate.resumeQueueFooter")
-                    })
-            ]
+            embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
+                song: `[${song.title}](${song.url})`
+            })}`).setThumbnail(song.thumbnail)
+                .setAuthor({
+                    name: i18n.__("events.voiceStateUpdate.resumeQueueFooter")
+                })]
         }).then(msg => queue.lastVSUpdateMsg = msg.id);
         state.guild.queue?.player?.unpause();
     }

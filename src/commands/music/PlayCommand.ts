@@ -57,15 +57,10 @@ export class PlayCommand extends BaseCommand {
 
         if (!query) {
             return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "warn",
-                        i18n.__mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
-                            name: `${this.meta.name}`
-                        })
-                    )
-                ]
+                embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", {
+                    prefix: `${this.client.config.mainPrefix}help`,
+                    name: `${this.meta.name}`
+                }))]
             });
         }
 
@@ -74,16 +69,14 @@ export class PlayCommand extends BaseCommand {
 
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
             return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "warn",
-                        i18n.__mf("commands.music.play.alreadyPlaying", {
-                            voiceChannel: ctx.guild.channels.cache
-                                .get((ctx.guild.queue.connection?.joinConfig as { channelId: string }).channelId)?.name ??
-                                "#unknown-channel"
-                        })
-                    )
-                ]
+                embeds: [createEmbed(
+                    "warn",
+                    i18n.__mf("commands.music.play.alreadyPlaying", {
+                        voiceChannel: ctx.guild.channels.cache
+                            .get((ctx.guild.queue.connection?.joinConfig as { channelId: string }).channelId)?.name ??
+                            "#unknown-channel"
+                    })
+                )]
             });
         }
 
@@ -91,9 +84,7 @@ export class PlayCommand extends BaseCommand {
         const songs = await searchTrack(this.client, url).catch(() => undefined);
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.play.noSongData"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)]
             });
         }
 

@@ -7,15 +7,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { ISong } from "../../typings";
 import i18n from "../../config";
-import {
-    CommandInteractionOptionResolver,
-    Message,
-    MessageActionRow,
-    MessageSelectOptionData,
-    MessageSelectMenu,
-    SelectMenuInteraction,
-    Util
-} from "discord.js";
+import { CommandInteractionOptionResolver, Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, SelectMenuInteraction, Util } from "discord.js";
 
 @Command<typeof SearchCommand>({
     aliases: ["sc"],
@@ -92,9 +84,7 @@ export class SearchCommand extends BaseCommand {
 
         if (!query) {
             return ctx.send({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.music.search.noQuery"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.music.search.noQuery"))]
             });
         }
         if (checkQuery(query).isURL) {
@@ -111,9 +101,7 @@ export class SearchCommand extends BaseCommand {
         ).catch(() => undefined);
         if (!tracks || tracks.items.length <= 0) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.search.noTracks"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.search.noTracks"), true)]
             });
         }
         if (this.client.config.musicSelectionType === "selectmenu") {
@@ -136,19 +124,12 @@ export class SearchCommand extends BaseCommand {
         }
 
         const msg = await ctx.send({
-            embeds: [
-                createEmbed(
-                    "info",
-                    `${i18n.__mf("commands.music.search.queueEmbed", {
-                        separator: "`,`",
-                        example: "`1, 2, 3`"
-                    })}\`\`\`\n${tracks.items.map(
-                        (x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`
-                    ).join("\n")}\`\`\``
-                )
-                    .setAuthor({ name: i18n.__("commands.music.search.trackSelectionMessage"), iconURL: this.client.user?.displayAvatarURL() })
-                    .setFooter({ text: i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }) })
-            ]
+            embeds: [createEmbed("info", `${i18n.__mf("commands.music.search.queueEmbed", {
+                separator: "`,`",
+                example: "`1, 2, 3`"
+            })}\`\`\`\n${tracks.items.map((x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`).join("\n")}\`\`\``)
+                .setAuthor({ name: i18n.__("commands.music.search.trackSelectionMessage"), iconURL: this.client.user?.displayAvatarURL() })
+                .setFooter({ text: i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }) })]
         });
         const respond = await msg.channel.awaitMessages({
             errors: ["time"],
@@ -166,18 +147,14 @@ export class SearchCommand extends BaseCommand {
             msg.delete()
                 .catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.search.noSelection"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"), true)]
             });
         }
         if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() ?? "")) {
             msg.delete()
                 .catch(err => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", err));
             return ctx.reply({
-                embeds: [
-                    createEmbed("info", i18n.__("commands.music.search.canceledMessage"), true)
-                ]
+                embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"), true)]
             });
         }
 

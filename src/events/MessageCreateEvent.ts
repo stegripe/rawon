@@ -13,15 +13,10 @@ export class MessageCreateEvent extends BaseEvent {
 
         if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
             message.reply({
-                embeds: [
-                    createEmbed(
-                        "info",
-                        `👋 **|** ${i18n.__mf("events.createMessage", {
-                            author: message.author.toString(),
-                            prefix: `\`${this.client.config.mainPrefix}\``
-                        })}`
-                    )
-                ]
+                embeds: [createEmbed("info", `👋 **|** ${i18n.__mf("events.createMessage", {
+                    author: message.author.toString(),
+                    prefix: `\`${this.client.config.mainPrefix}\``
+                })}`)]
             }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
         }
 

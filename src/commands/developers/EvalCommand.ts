@@ -27,9 +27,7 @@ export class EvalCommand extends BaseCommand {
             const code = ctx.args.join(" ");
             if (!code) {
                 return await ctx.send({
-                    embeds: [
-                        createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)
-                    ]
+                    embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)]
                 });
             }
 

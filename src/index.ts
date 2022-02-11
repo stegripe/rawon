@@ -1,9 +1,9 @@
-import "dotenv/config";
 import { importURLToString } from "./utils/functions/importURLToString";
 import { isProd, shardingMode, shardsCount } from "./config";
 import { RawonLogger } from "./utils/structures/RawonLogger";
 import { ShardingManager } from "discord.js";
 import { resolve } from "path";
+import "dotenv/config";
 
 const log = new RawonLogger({ prod: isProd });
 

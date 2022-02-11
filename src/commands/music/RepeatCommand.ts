@@ -64,14 +64,11 @@ export class RepeatCommand extends BaseCommand {
         if (!selection) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "info",
-                        `${mode[
-                            ctx.guild!.queue!.loopMode
-                        ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
-                            mode: `\`${ctx.guild!.queue!.loopMode}\``
-                        })}`
-                    )
+                    createEmbed("info", `${mode[
+                        ctx.guild!.queue!.loopMode
+                    ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
+                        mode: `\`${ctx.guild!.queue!.loopMode}\``
+                    })}`)
                 ]
             });
         }
@@ -79,14 +76,11 @@ export class RepeatCommand extends BaseCommand {
 
         return ctx.reply({
             embeds: [
-                createEmbed(
-                    "success",
-                    `${mode[
-                        ctx.guild!.queue!.loopMode
-                    ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
-                        mode: `\`${ctx.guild!.queue!.loopMode}\``
-                    })}`
-                )
+                createEmbed("success", `${mode[
+                    ctx.guild!.queue!.loopMode
+                ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
+                    mode: `\`${ctx.guild!.queue!.loopMode}\``
+                })}`)
             ]
         });
     }

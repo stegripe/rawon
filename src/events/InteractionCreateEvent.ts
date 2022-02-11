@@ -22,15 +22,9 @@ export class InteractionCreateEvent extends BaseEvent {
                     ).has("MANAGE_MESSAGES")) {
                     void interaction.reply({
                         ephemeral: true,
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__mf("events.createInteraction.message1", {
-                                    user: user.toString()
-                                }),
-                                true
-                            )
-                        ]
+                        embeds: [createEmbed("error", i18n.__mf("events.createInteraction.message1", {
+                            user: user.toString()
+                        }), true)]
                     });
                 } else {
                     const msg = await interaction.channel?.messages.fetch(interaction.message.id)
@@ -73,15 +67,9 @@ export class InteractionCreateEvent extends BaseEvent {
             if (interaction.user.id !== user) {
                 void interaction.reply({
                     ephemeral: true,
-                    embeds: [
-                        createEmbed(
-                            "error",
-                            i18n.__mf("events.createInteraction.message1", {
-                                user: user.toString()
-                            }),
-                            true
-                        )
-                    ]
+                    embeds: [createEmbed("error", i18n.__mf("events.createInteraction.message1", {
+                        user: user.toString()
+                    }), true)]
                 });
             }
             if (cmd && user === interaction.user.id && exec) {

@@ -4,13 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import {
-    Message,
-    MessageActionRow,
-    MessageSelectMenu,
-    MessageSelectOptionData,
-    SelectMenuInteraction
-} from "discord.js";
+import { Message, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
 
 @Command<typeof HelpCommand>({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
@@ -80,9 +74,7 @@ export class HelpCommand extends BaseCommand {
             const matching = this.generateSelectMenu(val, ctx.author.id);
             if (!matching.length) {
                 return ctx.send({
-                    embeds: [
-                        createEmbed("error", i18n.__("commands.general.help.noCommand"), true)
-                    ]
+                    embeds: [createEmbed("error", i18n.__("commands.general.help.noCommand"), true)]
                 }, "editReply");
             }
 
@@ -117,44 +109,42 @@ export class HelpCommand extends BaseCommand {
         }
         // Return information embed
         return ctx.send({
-            embeds: [
-                this.infoEmbed
-                    .setAuthor({
-                        name: i18n.__mf("commands.general.help.commandDetailTitle", {
-                            username: this.client.user!.username,
-                            command: command.meta.name
-                        }),
-                        iconURL: this.client.user?.displayAvatarURL()!
-                    })
-                    .addField(
-                        i18n.__("commands.general.help.nameString"),
-                        `**\`${command.meta.name}\`**`,
-                        false
-                    )
-                    .addField(
-                        i18n.__("commands.general.help.descriptionString"),
-                        `${command.meta.description!}`,
-                        true
-                    )
-                    .addField(
-                        i18n.__("commands.general.help.aliasesString"),
-                        Number(command.meta.aliases?.length) > 0
-                            ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")!
-                            : "None."
-                        , false
-                    )
-                    .addField(
-                        i18n.__("commands.general.help.usageString"),
-                        `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.mainPrefix)}\`**`,
-                        true
-                    )
-                    .setFooter({
-                        text: i18n.__mf("commands.general.help.commandUsageFooter", {
-                            devOnly: command.meta.devOnly ? "(developer-only command)" : ""
-                        }),
-                        iconURL: "https://raw.githubusercontent.com/Rahagia/rawon/.github/images/info.png"
-                    })
-            ]
+            embeds: [this.infoEmbed
+                .setAuthor({
+                    name: i18n.__mf("commands.general.help.commandDetailTitle", {
+                        username: this.client.user!.username,
+                        command: command.meta.name
+                    }),
+                    iconURL: this.client.user?.displayAvatarURL()!
+                })
+                .addField(
+                    i18n.__("commands.general.help.nameString"),
+                    `**\`${command.meta.name}\`**`,
+                    false
+                )
+                .addField(
+                    i18n.__("commands.general.help.descriptionString"),
+                    `${command.meta.description!}`,
+                    true
+                )
+                .addField(
+                    i18n.__("commands.general.help.aliasesString"),
+                    Number(command.meta.aliases?.length) > 0
+                        ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")!
+                        : "None."
+                    , false
+                )
+                .addField(
+                    i18n.__("commands.general.help.usageString"),
+                    `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.mainPrefix)}\`**`,
+                    true
+                )
+                .setFooter({
+                    text: i18n.__mf("commands.general.help.commandUsageFooter", {
+                        devOnly: command.meta.devOnly ? "(developer-only command)" : ""
+                    }),
+                    iconURL: "https://raw.githubusercontent.com/Rahagia/rawon/.github/images/info.png"
+                })]
         }, "editReply");
     }
 

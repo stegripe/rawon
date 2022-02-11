@@ -1,5 +1,5 @@
-import { Rawon } from "../../structures/Rawon";
 import { ISpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
+import { Rawon } from "../../structures/Rawon";
 
 export class SpotifyUtil {
     // eslint-disable-next-line prefer-named-capture-group

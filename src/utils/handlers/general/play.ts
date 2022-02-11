@@ -3,15 +3,7 @@ import { Rawon } from "../../../structures/Rawon";
 import { IQueueSong } from "../../../typings";
 import { getStream } from "../YTDLUtil";
 import i18n from "../../../config";
-import {
-    AudioPlayerError,
-    AudioPlayerPlayingState,
-    AudioPlayerStatus,
-    createAudioPlayer,
-    createAudioResource,
-    entersState,
-    VoiceConnectionStatus
-} from "@discordjs/voice";
+import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { Guild } from "discord.js";
 
 export async function play(client: Rawon, guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {

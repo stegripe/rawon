@@ -31,16 +31,12 @@ export class MuteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("MANAGE_ROLES")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.mute.userNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.userNoPermission"), true)]
             });
         }
         if (!ctx.guild?.me?.permissions.has("MANAGE_ROLES")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.mute.botNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.botNoPermission"), true)]
             });
         }
 
@@ -51,32 +47,24 @@ export class MuteCommand extends BaseCommand {
 
         if (!member) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
         }
         if (ctx.guild.ownerId === member.id) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.mute.cantMuteOwner"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.mute.cantMuteOwner"))]
             });
         }
 
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild).catch(() => null);
         if (!muteRole) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.mute.unableToCreateMuteRole"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.mute.unableToCreateMuteRole"))]
             });
         }
         if (member.roles.cache.has(muteRole.id)) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.mute.alreadyMuted"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.mute.alreadyMuted"))]
             });
         }
 
@@ -86,18 +74,16 @@ export class MuteCommand extends BaseCommand {
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.mute.userMuted"))
-                        .setColor("LIGHT_GREY")
-                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter({
-                            text: i18n.__mf("commands.moderation.mute.mutedByString", {
-                                author: ctx.author.tag
-                            }),
-                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                        })
-                        .setTimestamp(Date.now())
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.userMuted"))
+                    .setColor("LIGHT_GREY")
+                    .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                    .setFooter({
+                        text: i18n.__mf("commands.moderation.mute.mutedByString", {
+                            author: ctx.author.tag
+                        }),
+                        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                    })
+                    .setTimestamp(Date.now())]
             });
         }
 

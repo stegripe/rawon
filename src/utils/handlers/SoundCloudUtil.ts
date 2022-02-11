@@ -1,7 +1,7 @@
-import SC from "soundcloud.ts";
 import { createRequire } from "module";
+import SC from "soundcloud.ts";
 
-// temporary solution
+// Temporary solution
 const require = createRequire(import.meta.url);
 const Soundcloud = require("soundcloud.ts");
 

@@ -35,9 +35,7 @@ export class LyricsCommand extends BaseCommand {
                 : (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title;
         if (!query) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)]
             });
         }
 
@@ -50,16 +48,10 @@ export class LyricsCommand extends BaseCommand {
             .then(async data => {
                 if ((data as { error: boolean }).error) {
                     return ctx.reply({
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__mf("commands.music.lyrics.apiError", {
-                                    song: `\`${song}\``,
-                                    message: `\`${(data as { message?: string }).message!}\``
-                                }),
-                                true
-                            )
-                        ]
+                        embeds: [createEmbed("error", i18n.__mf("commands.music.lyrics.apiError", {
+                            song: `\`${song}\``,
+                            message: `\`${(data as { message?: string }).message!}\``
+                        }), true)]
                     });
                 }
 

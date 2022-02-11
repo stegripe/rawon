@@ -24,9 +24,7 @@ export class StopCommand extends BaseCommand {
         ctx.guild!.queue!.lastMusicMsg = null;
 
         ctx.reply({
-            embeds: [
-                createEmbed("success", `⏹ **|** ${i18n.__("commands.music.stop.stoppedMessage")}`)
-            ]
+            embeds: [createEmbed("success", `⏹ **|** ${i18n.__("commands.music.stop.stoppedMessage")}`)]
         }).catch(e => this.client.logger.error("STOP_CMD_ERR:", e));
     }
 }

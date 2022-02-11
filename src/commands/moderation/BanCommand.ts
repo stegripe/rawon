@@ -31,16 +31,12 @@ export class BanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("BAN_MEMBERS")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.ban.userNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.ban.userNoPermission"), true)]
             });
         }
         if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.ban.botNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.ban.botNoPermission"), true)]
             });
         }
 
@@ -52,16 +48,12 @@ export class BanCommand extends BaseCommand {
 
         if (!user) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
         }
         if (!resolved?.bannable) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.ban.userNoBannable"), true)
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.ban.userNoBannable"), true)]
             });
         }
 
@@ -72,24 +64,19 @@ export class BanCommand extends BaseCommand {
             const dm = await user.createDM().catch(() => undefined);
             if (dm) {
                 await dm.send({
-                    embeds: [
-                        createEmbed(
-                            "error",
-                            i18n.__mf("commands.moderation.ban.userBanned", {
-                                guildName: ctx.guild.name
-                            })
-                        )
-                            .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                            .setFooter({
-                                text: i18n.__mf(
-                                    "commands.moderation.ban.bannedByString", {
-                                        guildName: ctx.author.tag
-                                    }
-                                ),
-                                iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                            })
-                            .setTimestamp(Date.now())
-                    ]
+                    embeds: [createEmbed("error", i18n.__mf("commands.moderation.ban.userBanned", {
+                        guildName: ctx.guild.name
+                    }))
+                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                        .setFooter({
+                            text: i18n.__mf(
+                                "commands.moderation.ban.bannedByString", {
+                                    guildName: ctx.author.tag
+                                }
+                            ),
+                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                        })
+                        .setTimestamp(Date.now())]
                 });
             }
         }
@@ -100,23 +87,13 @@ export class BanCommand extends BaseCommand {
         if (ban instanceof Error) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__mf("commands.moderation.ban.banFail", { message: ban.message }),
-                        true
-                    )
+                    createEmbed("error", i18n.__mf("commands.moderation.ban.banFail", { message: ban.message }), true)
                 ]
             });
         }
 
         return ctx.reply({
-            embeds: [
-                createEmbed(
-                    "success",
-                    i18n.__mf("commands.moderation.ban.banSuccess", { user: user.tag }),
-                    true
-                )
-            ]
+            embeds: [createEmbed("success", i18n.__mf("commands.moderation.ban.banSuccess", { user: user.tag }), true)]
         });
     }
 }

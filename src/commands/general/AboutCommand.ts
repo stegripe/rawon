@@ -37,14 +37,12 @@ export class AboutCommand extends BaseCommand {
         const value = createTable(values);
 
         void ctx.reply({
-            embeds: [
-                createEmbed("info", `\`\`\`asciidoc\n${value}\n\`\`\``)
-                    .setAuthor({
-                        name: i18n.__mf("commands.general.about.aboutFooter", {
-                            botname: this.client.user?.username ?? "Unknown"
-                        })
+            embeds: [createEmbed("info", `\`\`\`asciidoc\n${value}\n\`\`\``)
+                .setAuthor({
+                    name: i18n.__mf("commands.general.about.aboutFooter", {
+                        botname: this.client.user?.username ?? "Unknown"
                     })
-            ]
+                })]
         }).catch(e => this.client.logger.error("ABOUT_CMD_ERR:", e));
     }
 }

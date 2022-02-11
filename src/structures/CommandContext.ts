@@ -1,5 +1,4 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
 import { InteractionTypes, MessageComponentTypes } from "../typings/enum";
 import { MessageInteractionAction } from "../typings";
 import {
@@ -52,7 +51,6 @@ export class CommandContext {
         }
 
         const context = this.context as CommandInteraction | Message;
-        // eslint-disable-next-line no-nested-ternary
         const rep = await this.send(
             options,
             this.isInteraction()

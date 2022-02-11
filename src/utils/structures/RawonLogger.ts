@@ -32,7 +32,6 @@ export class RawonLogger {
     private log(messages: any[], level: "debug" | "error" | "info" | "warn" = "info"): void {
         if (this.options.prod && level === "debug") return;
 
-        // eslint-disable-next-line no-nested-ternary
         console[level](`${
             this.options.prod
                 ? ""

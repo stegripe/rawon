@@ -1,5 +1,5 @@
-import { BaseCommand, ExtendedCommandConstructor } from "../../structures/BaseCommand";
 import { ClassDecorator, NonAbstractConstructor, ICommandComponent } from "../../typings";
+import { BaseCommand, ExtendedCommandConstructor } from "../../structures/BaseCommand";
 
 export function Command<T extends NonAbstractConstructor<BaseCommand> = ExtendedCommandConstructor>(
     meta: ICommandComponent["meta"]

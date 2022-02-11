@@ -17,22 +17,14 @@ export class ChannelUpdateEvent extends BaseEvent {
             const queue = newChannel.guild.queue;
 
             const msg = await queue.textChannel.send({
-                embeds: [
-                    createEmbed("info", i18n.__("events.channelUpdate.reconfigureConnection"))
-                ]
+                embeds: [createEmbed("info", i18n.__("events.channelUpdate.reconfigureConnection"))]
             });
             queue.connection?.configureNetworking();
 
             entersState(queue.connection!, VoiceConnectionStatus.Ready, 20000)
                 .then(() => {
                     void msg.edit({
-                        embeds: [
-                            createEmbed(
-                                "success",
-                                i18n.__("events.channelUpdate.connectionReconfigured"),
-                                true
-                            )
-                        ]
+                        embeds: [createEmbed("success", i18n.__("events.channelUpdate.connectionReconfigured"), true)]
                     });
                 })
                 .catch(() => {
@@ -41,9 +33,7 @@ export class ChannelUpdateEvent extends BaseEvent {
                         `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to re-configure networking on ${newChannel.guild.name} voice channel, the queue was deleted.`
                     );
                     void msg.edit({
-                        embeds: [
-                            createEmbed("error", i18n.__("events.channelUpdate.unableReconfigureConnection"), true)
-                        ]
+                        embeds: [createEmbed("error", i18n.__("events.channelUpdate.unableReconfigureConnection"), true)]
                     });
                 });
         }

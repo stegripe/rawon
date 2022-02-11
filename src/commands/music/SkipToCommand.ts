@@ -51,9 +51,7 @@ export class SkipToCommand extends BaseCommand {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.skipTo.noPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"), true)]
             });
         }
 
@@ -62,15 +60,10 @@ export class SkipToCommand extends BaseCommand {
             ctx.options?.getNumber("position");
         if (!targetType) {
             return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "warn",
-                        i18n.__mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
-                            name: `${this.meta.name}`
-                        })
-                    )
-                ]
+                embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", {
+                    prefix: `${this.client.config.mainPrefix}help`,
+                    name: `${this.meta.name}`
+                }))]
             });
         }
 
@@ -79,9 +72,7 @@ export class SkipToCommand extends BaseCommand {
             !isNaN(Number(targetType)) && !songs[Number(targetType) - 1]
         )) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true)]
             });
         }
 
@@ -96,23 +87,16 @@ export class SkipToCommand extends BaseCommand {
 
         if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)]
             });
         }
 
         void play(this.client, ctx.guild!, song.key);
 
         return ctx.reply({
-            embeds: [
-                createEmbed(
-                    "success",
-                    `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
-                        song: `[${song.song.title}](${song.song.url})`
-                    })}`
-                ).setThumbnail(song.song.thumbnail)
-            ]
+            embeds: [createEmbed("success", `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
+                song: `[${song.song.title}](${song.song.url})`
+            })}`).setThumbnail(song.song.thumbnail)]
         });
     }
 }

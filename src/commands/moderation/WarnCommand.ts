@@ -30,9 +30,7 @@ export class WarnCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("MANAGE_GUILD")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.warn.userNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.warn.userNoPermission"), true)]
             });
         }
 
@@ -41,18 +39,14 @@ export class WarnCommand extends BaseCommand {
         )?.user ?? ctx.options?.getUser("member", true);
         if (!member) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
         }
 
         const dm = await member.createDM().catch(() => undefined);
         if (!dm) {
             await ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.warn.noDM"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.warn.noDM"))]
             });
         }
 
@@ -74,13 +68,7 @@ export class WarnCommand extends BaseCommand {
 
         await dm?.send({ embeds: [embed] });
         return ctx.reply({
-            embeds: [
-                createEmbed(
-                    "success",
-                    i18n.__mf("commands.moderation.warn.warnSuccess", { user: member.tag }),
-                    true
-                )
-            ]
+            embeds: [createEmbed("success", i18n.__mf("commands.moderation.warn.warnSuccess", { user: member.tag }), true)]
         });
     }
 }

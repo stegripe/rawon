@@ -31,16 +31,12 @@ export class UnMuteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("MANAGE_ROLES")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.mute.userNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.userNoPermission"), true)]
             });
         }
         if (!ctx.guild?.me?.permissions.has("MANAGE_ROLES")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.mute.botNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.botNoPermission"), true)]
             });
         }
 
@@ -51,25 +47,19 @@ export class UnMuteCommand extends BaseCommand {
 
         if (!member) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
         }
 
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild).catch(() => null);
         if (!muteRole) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.unmute.unableToCreateMuteRole"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.unmute.unableToCreateMuteRole"))]
             });
         }
         if (!member.roles.cache.has(muteRole.id)) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.unmute.noMuted"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.unmute.noMuted"))]
             });
         }
 
@@ -79,20 +69,16 @@ export class UnMuteCommand extends BaseCommand {
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
-                embeds: [
-                    createEmbed(
-                        "info",
-                        i18n.__mf("commands.moderation.unmute.userUnmuted", {
-                            guildName: ctx.guild.name
-                        })
-                    )
-                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter({
-                            text: i18n.__mf("commands.moderation.unmute.unmutedByString", { author: ctx.author.tag }),
-                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                        })
-                        .setTimestamp(Date.now())
-                ]
+                embeds: [createEmbed("info",
+                    i18n.__mf("commands.moderation.unmute.userUnmuted", {
+                        guildName: ctx.guild.name
+                    }))
+                    .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                    .setFooter({
+                        text: i18n.__mf("commands.moderation.unmute.unmutedByString", { author: ctx.author.tag }),
+                        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                    })
+                    .setTimestamp(Date.now())]
             });
         }
 
@@ -100,28 +86,20 @@ export class UnMuteCommand extends BaseCommand {
             .catch(err => new Error(err as string | undefined));
         if (unmute instanceof Error) {
             return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__mf("commands.moderation.unmute.unmuteFail", {
-                            message: unmute.message
-                        }),
-                        true
-                    )
-                ]
+                embeds: [createEmbed(
+                    "error",
+                    i18n.__mf("commands.moderation.unmute.unmuteFail", {
+                        message: unmute.message
+                    }),
+                    true
+                )]
             });
         }
 
         return ctx.reply({
-            embeds: [
-                createEmbed(
-                    "success",
-                    i18n.__mf("commands.moderation.unmute.unmuteSuccess", {
-                        user: member.user.tag
-                    }),
-                    true
-                )
-            ]
+            embeds: [createEmbed("success", i18n.__mf("commands.moderation.unmute.unmuteSuccess", {
+                user: member.user.tag
+            }), true)]
         });
     }
 }

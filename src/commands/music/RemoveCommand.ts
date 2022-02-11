@@ -35,9 +35,7 @@ export class RemoveCommand extends BaseCommand {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) {
             void ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.remove.noPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.remove.noPermission"), true)]
             });
             return;
         }
@@ -48,9 +46,7 @@ export class RemoveCommand extends BaseCommand {
         ).split(/[, ]/).filter(Boolean);
         if (!positions.length) {
             void ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.remove.noPositions"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.music.remove.noPositions"), true)]
             });
             return;
         }
@@ -80,10 +76,7 @@ export class RemoveCommand extends BaseCommand {
             return texts.join("\n");
         }));
         const getText = (page: string): string => `\`\`\`\n${opening}\n\n${page}\`\`\``;
-        const embed = createEmbed(
-            "info",
-            getText(pages[0])
-        ).setFooter({
+        const embed = createEmbed("info", getText(pages[0])).setFooter({
             text: `• ${i18n.__mf("reusable.pageFooter", {
                 actual: 1,
                 total: pages.length

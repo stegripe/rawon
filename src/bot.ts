@@ -1,6 +1,6 @@
 import { NoStackError } from "./utils/structures/NoStackError";
-import { clientOptions } from "./config";
 import { Rawon } from "./structures/Rawon";
+import { clientOptions } from "./config";
 
 const client = new Rawon(clientOptions);
 

@@ -31,16 +31,12 @@ export class KickCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message> {
         if (!ctx.member?.permissions.has("KICK_MEMBERS")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.kick.userNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.kick.userNoPermission"), true)]
             });
         }
         if (!ctx.guild?.me?.permissions.has("KICK_MEMBERS")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.kick.botNoPermission"), true)
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.kick.botNoPermission"), true)]
             });
         }
 
@@ -51,16 +47,12 @@ export class KickCommand extends BaseCommand {
 
         if (!member) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
         }
         if (!member.kickable) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("warn", i18n.__("commands.moderation.kick.userNoKickable"), true)
-                ]
+                embeds: [createEmbed("warn", i18n.__("commands.moderation.kick.userNoKickable"), true)]
             });
         }
 
@@ -70,20 +62,15 @@ export class KickCommand extends BaseCommand {
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name })
-                    )
-                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter({
-                            text: i18n.__mf("commands.moderation.kick.kickedByString", {
-                                author: ctx.author.tag
-                            }),
-                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                        })
-                        .setTimestamp(Date.now())
-                ]
+                embeds: [createEmbed("error", i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name }))
+                    .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                    .setFooter({
+                        text: i18n.__mf("commands.moderation.kick.kickedByString", {
+                            author: ctx.author.tag
+                        }),
+                        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                    })
+                    .setTimestamp(Date.now())]
             });
         }
 

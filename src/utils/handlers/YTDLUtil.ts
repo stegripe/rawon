@@ -3,8 +3,8 @@ import { soundcloud } from "./SoundCloudUtil";
 import { streamStrategy } from "../../config";
 import { checkQuery } from "./GeneralUtil";
 import { stream as pldlStream, video_basic_info } from "play-dl";
-import * as YTDLExec from "youtube-dl-exec";
 import { Readable } from "stream";
+import * as YTDLExec from "youtube-dl-exec";
 
 const { exec, default: ytdl } = YTDLExec;
 
