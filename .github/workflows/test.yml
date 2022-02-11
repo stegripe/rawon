@@ -25,7 +25,7 @@ jobs:
         check-latest: true
         
     - name: Install dependencies
-      run: npm i
+      run: npm ci
 
     - name: Lint code
       run: npm run lint
@@ -47,7 +47,7 @@ jobs:
           check-latest: true
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Test compile
         run: npm run tscompile && rm -rf dist
