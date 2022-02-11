@@ -60,7 +60,10 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
 }
 
 function importURLToString(url) {
-    return new URL(url).pathname.split(/\/|\\/g).filter(Boolean).join("/");
+    const paths = new URL(url).pathname.split(/\/|\\/g).filter(Boolean);
+
+    paths.pop();
+    return decodeURIComponent(paths.join("/"));
 }
 
 if (isGlitch) {
