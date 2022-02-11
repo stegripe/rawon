@@ -1,3 +1,5 @@
+// eslint-disable-next-line max-len
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-template-expressions */
 import { ISong, SearchTrackResult, SpotifyTrack } from "../../../typings";
 import { Rawon } from "../../../structures/Rawon";
 import { checkQuery } from "./checkQuery";
