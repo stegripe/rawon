@@ -85,13 +85,9 @@ export default function Navbar(): JSX.Element {
                                         </>
                                     )}
                                 </Popover>
-                                <a href="https://github.com/zhycorp/disc-11"
+                                <a href="https://github.com/Rahagia/rawon"
                                     className="text-gray-500 dark:text-white dark:hover:text-gray-400 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                                     GitHub
-                                </a>
-                                <a href="https://zhycorp.net/discord"
-                                    className="text-gray-500 dark:text-white dark:hover:text-gray-400 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                                    Support
                                 </a>
                             </div>
                         </Popover.Group>
@@ -181,11 +177,8 @@ export default function Navbar(): JSX.Element {
                                 <a href="/#/" className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
                                     Home
                                 </a>
-                                <a href="https://github.com/zhycorp/disc-11" className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
+                                <a href="https://github.com/Rahagia/rawon" className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
                                     GitHub
-                                </a>
-                                <a href="https://zhycorp.net/discord" className="text-base font-medium text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-200">
-                                    Support
                                 </a>
                             </div>
                         </div>
