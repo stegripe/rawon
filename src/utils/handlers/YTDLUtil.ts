@@ -3,9 +3,12 @@ import { soundcloud } from "./SoundCloudUtil";
 import { streamStrategy } from "../../config";
 import { checkQuery } from "./GeneralUtil";
 import { stream as pldlStream, video_basic_info } from "play-dl";
+import ytDefault, { exec as ytExec } from "youtube-dl-exec";
+import { createRequire } from "module";
 import { Readable } from "stream";
-import * as YTDLExec from "youtube-dl-exec";
 
+const require = createRequire(import.meta.url);
+const YTDLExec = require("youtube-dl-exec") as { exec: typeof ytExec; default: typeof ytDefault };
 const { exec, default: ytdl } = YTDLExec;
 
 export async function getStream(url: string): Promise<Readable> {
