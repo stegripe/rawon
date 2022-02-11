@@ -26,10 +26,10 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.music.play.usage")
 })
 export class PlayCommand extends BaseCommand {
+    @inVC
+    @validVC
+    @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        if (!inVC(ctx)) return;
-        if (!validVC(ctx)) return;
-        if (!sameVC(ctx)) return;
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const voiceChannel = ctx.member!.voice.channel!;

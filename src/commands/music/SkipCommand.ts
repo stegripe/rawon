@@ -21,11 +21,10 @@ import { GuildMember } from "discord.js";
 export class SkipCommand extends BaseCommand {
     private readonly manager = new OperationManager();
 
+    @inVC
+    @haveQueue
+    @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
-        if (!inVC(ctx)) return;
-        if (!haveQueue(ctx)) return;
-        if (!sameVC(ctx)) return;
-
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!).catch(() => null);
         const song = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
 

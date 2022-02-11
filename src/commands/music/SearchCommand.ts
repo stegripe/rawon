@@ -43,10 +43,10 @@ import { CommandInteractionOptionResolver, Message, MessageActionRow, MessageSel
     usage: i18n.__("commands.music.search.usage")
 })
 export class SearchCommand extends BaseCommand {
+    @inVC
+    @validVC
+    @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        if (!inVC(ctx)) return;
-        if (!validVC(ctx)) return;
-        if (!sameVC(ctx)) return;
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const values = ctx.additionalArgs.get("values");

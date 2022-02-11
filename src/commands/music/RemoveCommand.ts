@@ -27,11 +27,10 @@ import { Util } from "discord.js";
     usage: i18n.__("commands.music.remove.usage")
 })
 export class RemoveCommand extends BaseCommand {
+    @inVC
+    @haveQueue
+    @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
-        if (!inVC(ctx)) return;
-        if (!haveQueue(ctx)) return;
-        if (!sameVC(ctx)) return;
-
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) {
             void ctx.reply({

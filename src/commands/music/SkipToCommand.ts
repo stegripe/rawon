@@ -43,11 +43,10 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.music.skipTo.usage", { options: "first | last" })
 })
 export class SkipToCommand extends BaseCommand {
+    @inVC
+    @haveQueue
+    @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        if (!inVC(ctx)) return;
-        if (!haveQueue(ctx)) return;
-        if (!sameVC(ctx)) return;
-
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) {
             return ctx.reply({

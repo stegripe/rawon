@@ -24,11 +24,10 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.music.volume.usage")
 })
 export class VolumeCommand extends BaseCommand {
+    @inVC
+    @validVC
+    @sameVC
     public execute(ctx: CommandContext): Promise<Message> | undefined {
-        if (!inVC(ctx)) return;
-        if (!validVC(ctx)) return;
-        if (!sameVC(ctx)) return;
-
         const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("volume", false));
         const resVolume = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.volume!;
 

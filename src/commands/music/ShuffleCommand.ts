@@ -31,10 +31,10 @@ import i18n from "../../config";
     usage: "{prefix}shuffle [enable | disable]"
 })
 export class ShuffleCommand extends BaseCommand {
+    @inVC
+    @haveQueue
+    @sameVC
     public execute(ctx: CommandContext): void {
-        if (!inVC(ctx)) return;
-        if (!haveQueue(ctx)) return;
-        if (!sameVC(ctx)) return;
         const newState = ctx.options?.getString("state") ?? ctx.args[0] as string | undefined;
         if (!newState) {
             void ctx.reply({

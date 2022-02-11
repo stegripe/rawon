@@ -33,10 +33,10 @@ import { Message } from "discord.js";
     usage: "{prefix}stayinvc [enable | disable]"
 })
 export class StayInQueueCommand extends BaseCommand {
+    @inVC
+    @haveQueue
+    @sameVC
     public execute(ctx: CommandContext): Promise<Message> | undefined {
-        if (!inVC(ctx)) return;
-        if (!haveQueue(ctx)) return;
-        if (!sameVC(ctx)) return;
         if (!this.client.config.is247Allowed) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.stayInQueue.247Disabled"), true)]

@@ -33,11 +33,10 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.music.repeat.usage", { options: "queue | one | disable" })
 })
 export class RepeatCommand extends BaseCommand {
+    @inVC
+    @haveQueue
+    @sameVC
     public execute(ctx: CommandContext): Promise<Message> | undefined {
-        if (!inVC(ctx)) return;
-        if (!haveQueue(ctx)) return;
-        if (!sameVC(ctx)) return;
-
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {
             OFF: {
                 aliases: ["disable", "off", "0"],

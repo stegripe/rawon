@@ -15,11 +15,10 @@ import { Message } from "discord.js";
     usage: "{prefix}pause"
 })
 export class PauseCommand extends BaseCommand {
+    @inVC
+    @haveQueue
+    @sameVC
     public execute(ctx: CommandContext): Promise<Message> | undefined {
-        if (!inVC(ctx)) return;
-        if (!haveQueue(ctx)) return;
-        if (!sameVC(ctx)) return;
-
         if (!ctx.guild?.queue?.playing) {
             return ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.music.pause.alreadyPause"))]

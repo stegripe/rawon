@@ -18,9 +18,8 @@ import { AudioPlayerState, AudioResource } from "@discordjs/voice";
     usage: "{prefix}nowplaying"
 })
 export class NowPlayingCommand extends BaseCommand {
+    @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
-        if (!haveQueue(ctx)) return;
-
         function getEmbed(): MessageEmbed {
             const song = ((ctx.guild?.queue?.player?.state as (AudioPlayerState & {
                 resource: AudioResource | undefined;

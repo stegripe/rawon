@@ -15,11 +15,10 @@ import i18n from "../../config";
     usage: "{prefix}stop"
 })
 export class StopCommand extends BaseCommand {
+    @inVC
+    @validVC
+    @sameVC
     public execute(ctx: CommandContext): void {
-        if (!inVC(ctx)) return;
-        if (!validVC(ctx)) return;
-        if (!sameVC(ctx)) return;
-
         ctx.guild?.queue?.stop();
         ctx.guild!.queue!.lastMusicMsg = null;
 
