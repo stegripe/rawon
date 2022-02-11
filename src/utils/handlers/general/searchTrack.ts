@@ -1,12 +1,10 @@
 import { ISong, SearchTrackResult, SpotifyTrack } from "../../../typings";
 import { Rawon } from "../../../structures/Rawon";
 import { checkQuery } from "./checkQuery";
-import { youtube } from "../YoutubeUtil";
+import { youtube } from "../YouTubeUtil";
 import { getInfo } from "../YTDLUtil";
-import { Client, SearchResult, Video } from "youtubei";
+import { SearchResult, Video } from "youtubei";
 import { URL } from "url";
-
-const ytClient: Client = youtube;
 
 export async function searchTrack(client: Rawon, query: string, source: "soundcloud" | "youtube" | undefined = "youtube"): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
@@ -68,7 +66,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
             case "youtube": {
                 switch (queryData.type) {
                     case "track": {
-                        const track = await ytClient.getVideo(
+                        const track = await youtube.getVideo(
                             (/youtu\.be/g).exec(url.hostname)
                                 ? url.pathname.replace("/", "")
                                 : url.toString()
@@ -87,7 +85,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
                     }
 
                     case "playlist": {
-                        const playlist = await ytClient.getPlaylist(url.toString());
+                        const playlist = await youtube.getPlaylist(url.toString());
 
                         if (playlist) {
                             const tracks = await Promise.all(playlist.videos.map((track): ISong => ({
