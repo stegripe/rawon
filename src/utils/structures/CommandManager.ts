@@ -51,7 +51,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
 
                                     if (command.meta.contextChat) {
                                         if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild as string) {
+                                            for (const guild of this.client.config.devGuild) {
                                                 const g = await this.client.guilds.fetch({ guild });
 
                                                 await g.commands.create({
@@ -71,7 +71,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                     }
                                     if (command.meta.contextUser) {
                                         if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild as string) {
+                                            for (const guild of this.client.config.devGuild) {
                                                 const g = await this.client.guilds.fetch({ guild });
 
                                                 await g.commands.create({
@@ -102,7 +102,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                                         }
 
                                         if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild as string) {
+                                            for (const guild of this.client.config.devGuild) {
                                                 const g = await this.client.guilds.fetch({ guild });
 
                                                 await g.commands.create(command.meta.slash as ApplicationCommandData)
