@@ -38,7 +38,7 @@ export class SkipCommand extends BaseCommand {
             const required = this.client.utils.requiredVoters(ctx.guild!.me!.voice.channel!.members.size);
 
             if (ctx.guild?.queue?.skipVoters.includes(ctx.author.id)) {
-                this.manager.add(() => {
+                await this.manager.add(() => {
                     ctx.guild!.queue!.skipVoters = ctx.guild!.queue!.skipVoters.filter(
                         x => x !== ctx.author.id
                     );
@@ -53,7 +53,7 @@ export class SkipCommand extends BaseCommand {
                 return;
             }
 
-            this.manager.add(() => {
+            await this.manager.add(() => {
                 ctx.guild?.queue?.skipVoters.push(ctx.author.id);
 
                 return undefined;
