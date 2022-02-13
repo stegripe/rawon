@@ -2,6 +2,7 @@ import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
+import { GuildData } from "../../typings";
 import i18n from "../../config";
 import { Message } from "discord.js";
 
@@ -50,23 +51,47 @@ export class WarnCommand extends BaseCommand {
             });
         }
 
-        const reason = ctx.options?.getString("reason") ?? (
-            ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
-        );
+        const time = Date.now();
+        const reason = ctx.options?.getString("reason") ?? (ctx.args.join(" ") || null);
+        const displayReason = reason ?? i18n.__("commands.moderation.common.noReasonString");
         const embed = createEmbed(
             "warn",
             i18n.__mf("commands.moderation.warn.userWarned", {
                 guildName: ctx.guild!.name
             })
         )
-            .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+            .addField(i18n.__("commands.moderation.common.reasonString"), displayReason)
             .setFooter({
                 text: i18n.__("commands.moderation.warn.warnedByString"),
                 iconURL: ctx.author.displayAvatarURL({ dynamic: true })
             })
-            .setTimestamp(Date.now());
+            .setTimestamp(time);
 
         await dm?.send({ embeds: [embed] });
+        await this.client.data.save(() => {
+            const prefGuildData = this.client.data.data?.[ctx.guild!.id];
+            const newData: Record<string, GuildData> = {
+                ...(this.client.data.data ?? {}),
+                [ctx.guild!.id]: {
+                    infractions: {
+                        ...(prefGuildData?.infractions ?? {}),
+                        [member.id]: [
+                            ...(prefGuildData?.infractions[member.id] ?? []),
+                            {
+                                on: time,
+                                reason
+                            }
+                        ]
+                    },
+                    modLog: prefGuildData?.modLog ?? {
+                        enable: false,
+                        channel: null
+                    }
+                }
+            };
+
+            return newData;
+        });
         return ctx.reply({
             embeds: [createEmbed("success", i18n.__mf("commands.moderation.warn.warnSuccess", { user: member.tag }), true)]
         });
