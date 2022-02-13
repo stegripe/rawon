@@ -1,11 +1,13 @@
 import { importURLToString } from "../utils/functions/importURLToString";
 import { CommandManager } from "../utils/structures/CommandManager";
+import { JSONDataManager } from "../utils/structures/JSONDataManager";
 import { EventsLoader } from "../utils/structures/EventsLoader";
 import { ClientUtils } from "../utils/structures/ClientUtils";
 import { RawonLogger } from "../utils/structures/RawonLogger";
 import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
 import { formatMS } from "../utils/functions/formatMS";
+import { GuildData } from "../typings";
 import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
 import { resolve } from "path";
@@ -17,6 +19,7 @@ export class Rawon extends Client {
     public readonly request = got;
     public readonly commands = new CommandManager(this, resolve(importURLToString(import.meta.url), "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(importURLToString(import.meta.url), "..", "events"));
+    public readonly data = new JSONDataManager<Record<string, GuildData>>(resolve(process.cwd(), "data.json"));
     public readonly soundcloud = soundcloud;
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
