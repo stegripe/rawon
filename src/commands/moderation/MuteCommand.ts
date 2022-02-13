@@ -1,3 +1,4 @@
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
@@ -28,17 +29,10 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.moderation.mute.usage")
 })
 export class MuteCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<Message> {
-        if (!ctx.member?.permissions.has("MANAGE_ROLES")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.userNoPermission"), true)]
-            });
-        }
-        if (!ctx.guild?.me?.permissions.has("MANAGE_ROLES")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.botNoPermission"), true)]
-            });
-        }
+    @memberReqPerms(["MANAGE_ROLES"], i18n.__("commands.moderation.mute.userNoPermission"))
+    @botReqPerms(["MANAGE_ROLES"], i18n.__("commands.moderation.mute.botNoPermission"))
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        if (!ctx.guild) return;
 
         const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
             ctx.options?.getUser("user")?.id ??

@@ -1,3 +1,4 @@
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
@@ -27,17 +28,10 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.moderation.unban.usage")
 })
 export class UnBanCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<Message> {
-        if (!ctx.member?.permissions.has("BAN_MEMBERS")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.ban.userNoPermission"), true)]
-            });
-        }
-        if (!ctx.guild?.me?.permissions.has("BAN_MEMBERS")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.ban.botNoPermission"), true)]
-            });
-        }
+    @memberReqPerms(["BAN_MEMBERS"], i18n.__("commands.moderation.ban.userNoPermission"))
+    @botReqPerms(["BAN_MEMBERS"], i18n.__("commands.moderation.ban.botNoPermission"))
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        if (!ctx.guild) return;
 
         const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
             ctx.options?.getUser("user")?.id ??

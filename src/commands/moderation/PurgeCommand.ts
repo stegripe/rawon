@@ -1,3 +1,4 @@
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
@@ -21,18 +22,9 @@ import { TextChannel, Message } from "discord.js";
     usage: i18n.__("commands.moderation.purge.usage")
 })
 export class PurgeCommand extends BaseCommand {
+    @memberReqPerms(["MANAGE_MESSAGES"], i18n.__("commands.moderation.purge.userNoPermission"))
+    @botReqPerms(["MANAGE_MESSAGES"], i18n.__("commands.moderation.purge.botNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        if (!ctx.member?.permissions.has("MANAGE_MESSAGES")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.purge.userNoPermission"), true)]
-            });
-        }
-        if (!ctx.guild?.me?.permissions.has("MANAGE_MESSAGES")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.purge.botNoPermission"), true)]
-            });
-        }
-
         const amount = Number(ctx.options?.getString("amount") ?? ctx.args.shift());
         if (isNaN(amount)) {
             return ctx.reply({

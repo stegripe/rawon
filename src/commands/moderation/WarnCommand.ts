@@ -1,3 +1,4 @@
+import { memberReqPerms } from "../../utils/decorators/CommonUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
@@ -28,13 +29,8 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.moderation.warn.usage")
 })
 export class WarnCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<Message> {
-        if (!ctx.member?.permissions.has("MANAGE_GUILD")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.warn.userNoPermission"), true)]
-            });
-        }
-
+    @memberReqPerms(["MANAGE_GUILD"], i18n.__("commands.moderation.warn.userNoPermission"))
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const member = ctx.guild?.members.resolve(
             ctx.args.shift()?.replace(/[^0-9]/g, "") ?? ""
         )?.user ?? ctx.options?.getUser("member", true);

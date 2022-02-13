@@ -1,3 +1,4 @@
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
@@ -28,17 +29,10 @@ import { Message } from "discord.js";
     usage: i18n.__("commands.moderation.kick.usage")
 })
 export class KickCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<Message> {
-        if (!ctx.member?.permissions.has("KICK_MEMBERS")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.kick.userNoPermission"), true)]
-            });
-        }
-        if (!ctx.guild?.me?.permissions.has("KICK_MEMBERS")) {
-            return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.kick.botNoPermission"), true)]
-            });
-        }
+    @memberReqPerms(["KICK_MEMBERS"], i18n.__("commands.moderation.kick.userNoPermission"))
+    @botReqPerms(["KICK_MEMBERS"], i18n.__("commands.moderation.kick.botNoPermission"))
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        if (!ctx.guild) return;
 
         const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
             ctx.options?.getUser("user")?.id ??
