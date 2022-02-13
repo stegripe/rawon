@@ -173,6 +173,17 @@ export interface SpotifyArtist {
     tracks: SpotifyTrack[];
 }
 
+export interface GuildData {
+    infractions: Record<string, {
+        on: number;
+        reason: string | null;
+    }[]>;
+    modLog: {
+        enable: boolean;
+        channel: string | null;
+    };
+}
+
 export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;
 export type Constructor<Result = unknown> =
     | NonAbstractConstructor<Result>
