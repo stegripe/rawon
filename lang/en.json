@@ -70,6 +70,13 @@
 				"banFail": "Unable to **`BAN`** member, because: `{message}`",
 				"banSuccess": "**{user}** has been **`BANNED`** from the server."
 			},
+			"infractions": {
+				"description": "Show the infractions of a user",
+				"slashMemberDescription": "Who do you like to see the infractions of?",
+				"usage": "{prefix}infractions [@mention | id]",
+				"embedAuthorText": "{user} - Infractions",
+				"noInfractions": "No infractions."
+			},
 			"kick": {
 				"description": "Kick someone from the server",
 				"slashMemberDescription": "Who do you like to kick?",
