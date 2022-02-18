@@ -1,5 +1,5 @@
 import { URL } from "url";
-import { resolve, isAbsolute, normalize, relative } from "path";
+import { isAbsolute } from "path";
 import { platform } from "os";
 
 export function importURLToString(url: string): string {
@@ -9,8 +9,7 @@ export function importURLToString(url: string): string {
 
     if (!isAbsolute(paths.join("/"))) {
         const hostPlatform = platform();
-        if (hostPlatform === "linux")
-            return decodeURIComponent(`/${paths.join("/")}`);
+        if (hostPlatform === "linux") return decodeURIComponent(`/${paths.join("/")}`);
     }
     return decodeURIComponent(paths.join("/"));
 }
