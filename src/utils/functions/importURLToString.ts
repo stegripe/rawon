@@ -1,15 +1,12 @@
 import { URL } from "url";
-import { isAbsolute } from "path";
 import { platform } from "os";
 
 export function importURLToString(url: string): string {
-    const paths = new URL(url).pathname.split(/\/|\\/g).filter(Boolean);
+    const pathArray = new URL(url).pathname.split(/\/|\\/g).filter(Boolean);
 
-    paths.pop();
+    pathArray.pop();
 
-    if (!isAbsolute(paths.join("/"))) {
-        const hostPlatform = platform();
-        if (hostPlatform === "linux") return decodeURIComponent(`/${paths.join("/")}`);
-    }
-    return decodeURIComponent(paths.join("/"));
+    const path = pathArray.join("/");
+
+    return decodeURIComponent(`${platform() === "win32" ? "" : "/"}${path}`);
 }
