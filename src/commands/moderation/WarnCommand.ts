@@ -58,7 +58,7 @@ export class WarnCommand extends BaseCommand {
         )
             .addField(i18n.__("commands.moderation.common.reasonString"), displayReason)
             .setFooter({
-                text: i18n.__("commands.moderation.warn.warnedByString"),
+                text: i18n.__mf("commands.moderation.warn.warnedByString", { author: ctx.author.tag }),
                 iconURL: ctx.author.displayAvatarURL({ dynamic: true })
             })
             .setTimestamp(time);
