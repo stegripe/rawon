@@ -65,7 +65,7 @@ export class BanCommand extends BaseCommand {
                         .setFooter({
                             text: i18n.__mf(
                                 "commands.moderation.ban.bannedByString", {
-                                    guildName: ctx.author.tag
+                                    author: ctx.author.tag
                                 }
                             ),
                             iconURL: ctx.author.displayAvatarURL({ dynamic: true })
