@@ -88,6 +88,14 @@ export class WarnCommand extends BaseCommand {
 
             return newData;
         });
+
+        void this.client.modlogs.handleWarn({
+            author: ctx.author,
+            guild: ctx.guild!,
+            reason,
+            user: member
+        }).catch(() => null);
+
         return ctx.reply({
             embeds: [createEmbed("success", i18n.__mf("commands.moderation.warn.warnSuccess", { user: member.tag }), true)]
         });
