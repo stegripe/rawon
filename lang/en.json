@@ -90,6 +90,24 @@
 				"kickFail": "Unable to **`KICK`** member, because: `{message}`",
 				"kickSuccess": "**{user}** has been **`KICKED`** from the server."
 			},
+			"modlogs": {
+				"description": "Change moderation logs feature settings",
+				"slashChannelDescription": "View or change the moderation logs channel",
+				"slashChannelNewChannelOption": "New channel for the moderation logs",
+				"slashEnableDescription": "Enable the moderation logs feature",
+				"slashDisableDescription": "Disable the moderation logs feature",
+				"usage": "modlogs",
+				"channel": {
+					"current": "Current moderation logs channel: <#{channel}>",
+					"noChannel": "Moderation logs channel hasn't been set",
+					"invalid": "Invalid channel. Channel must be a text channel.",
+					"success": "Moderation logs channel has been set to <#{channel}>"
+				},
+				"embedTitle": "Moderation Logs",
+				"newChannelText": "new channel",
+				"disable": "Moderation logs feature has been **`DISABLED`**",
+				"enable": "Moderation logs feature has been **`ENABLED`**"
+			},
 			"mute": {
 				"description": "Mute someone on the server",
 				"slashMemberDescription": "Who do you like to mute?",
