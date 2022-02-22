@@ -183,7 +183,7 @@
 				"usage": "{prefix}remove <positions>",
 				"noPermission": "You don't have permission to use this command.",
 				"noPositions": "Please specify the song positions to remove.",
-				"songsRemoved": "Removed {removed} songs from the queue.",
+				"songsRemoved": "Removed {removed} song(s) from the queue. ",
 				"songSkip": "The current song was removed, song skipped."
 			},
 			"repeat": {
