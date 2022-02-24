@@ -65,7 +65,11 @@ export class ModerationLogs {
         let ch: TextChannel | undefined;
 
         try {
-            const id = this.client.data.data![guild.id]!.modLog.channel;
+            // Temporary solution for mod-log checking.
+            const modlog = this.client.data.data![guild.id]!.modLog;
+            if (!modlog.enable) throw new Error();
+
+            const id = modlog.channel;
             const channel = await guild.channels.fetch(id!).catch(() => undefined);
             if (channel?.type !== "GUILD_TEXT") throw new Error();
 
