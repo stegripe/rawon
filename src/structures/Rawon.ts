@@ -1,6 +1,7 @@
 import { importURLToString } from "../utils/functions/importURLToString";
 import { CommandManager } from "../utils/structures/CommandManager";
 import { JSONDataManager } from "../utils/structures/JSONDataManager";
+import { ModerationLogs } from "../utils/structures/ModerationLogs";
 import { EventsLoader } from "../utils/structures/EventsLoader";
 import { ClientUtils } from "../utils/structures/ClientUtils";
 import { RawonLogger } from "../utils/structures/RawonLogger";
@@ -23,6 +24,7 @@ export class Rawon extends Client {
     public readonly soundcloud = soundcloud;
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
+    public readonly modlogs = new ModerationLogs(this);
 
     public constructor(opt: ClientOptions) { super(opt); }
 
