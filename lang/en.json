@@ -211,6 +211,7 @@
 				"slashDisable": "Disable repeat mode",
 				"usage": "{prefix}repeat <{options}>",
 				"actualMode": "Current repeat mode is **`{mode}`**",
+				"footer": "To change mode, see '{prefix}help repeat'",
 				"newMode": "The repeat mode has been set to **`{mode}`**"
 			},
 			"resume": {
