@@ -47,7 +47,7 @@ export class RepeatCommand extends BaseCommand {
                 emoji: "🔁"
             },
             SONG: {
-                aliases: ["one", "song", "this", "1"],
+                aliases: ["one", "song", "current", "this", "1"],
                 emoji: "🔂"
             }
         };
