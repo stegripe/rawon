@@ -195,3 +195,4 @@ export type MethodDecorator<Target, Result> = (
     descriptor: PropertyDescriptor) => Result;
 export type ClassDecorator<Target extends Constructor, Result = unknown> = (target: Target) => Result;
 export type Promisable<Output> = Output | Promise<Output>;
+export type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
