@@ -95,7 +95,7 @@ export class ModLogsCommand extends BaseCommand {
 
             return ctx.reply({
                 embeds: [
-                    createEmbed("success", i18n.__("commands.moderation.modlogs.channel.success", { channel: newCh }))
+                    createEmbed("success", i18n.__mf("commands.moderation.modlogs.channel.success", { channel: newCh }))
                 ]
             });
         },
