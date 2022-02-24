@@ -65,14 +65,12 @@ export class ModerationLogs {
         let ch: TextChannel | undefined;
 
         try {
-            console.log("Fetching channel...");
             const id = this.client.data.data![guild.id]!.modLog.channel;
             const channel = await guild.channels.fetch(id!).catch(() => undefined);
             if (channel?.type !== "GUILD_TEXT") throw new Error();
 
             ch = channel;
         } catch {
-            console.log("Invalid channel :3");
             ch = undefined;
         }
 
