@@ -30,7 +30,7 @@ import { Message } from "discord.js";
             }
         ]
     },
-    usage: i18n.__("commands.music.repeat.usage", { options: "queue | one | disable" })
+    usage: i18n.__mf("commands.music.repeat.usage", { options: "queue | one | disable" })
 })
 export class RepeatCommand extends BaseCommand {
     @inVC
