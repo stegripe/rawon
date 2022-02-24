@@ -125,7 +125,7 @@
 			},
 			"purge": {
 				"description": "Delete messages",
-				"slashAmountDescription": "Amount of messages to delete",
+				"slashAmountDescription": "Number of messages to delete",
 				"usage": "{prefix}purge <amount>",
 				"userNoPermission": "Sorry, but you don't have **`MANAGE MESSAGES`** permission to use this command.",
 				"botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
@@ -172,13 +172,13 @@
 				"description": "Show the lyrics from the song",
 				"slashDescription": "Song to search",
 				"usage": "{prefix}lyrics [song]",
-				"noQuery": "There is nothing playing or no arguments provided.",
+				"noQuery": "There is nothing playing, or no arguments are provided.",
 				"apiError": "The API could not find the song **{song}**, because: `{message}`"
 			},
 			"nowplaying": {
 				"description": "Show the media player status",
 				"emptyQueue": "Queue is empty",
-				"disableButton": "After 30 seconds, the buttons will no longer active."
+				"disableButton": "After 30 seconds, the buttons will no longer be active."
 			},
 			"pause": {
 				"description": "Pause the music player",
@@ -201,8 +201,8 @@
 				"usage": "{prefix}remove <positions>",
 				"noPermission": "You don't have permission to use this command.",
 				"noPositions": "Please specify the song positions to remove.",
-				"songsRemoved": "Removed {removed} songs from the queue.",
-				"songSkip": "One of the removed song is the now-playing song, song skipped."
+				"songsRemoved": "Removed {removed} song(s) from the queue. ",
+				"songSkip": "The current song was removed, song skipped."
 			},
 			"repeat": {
 				"description": "Repeat current music or the queue",
@@ -251,7 +251,7 @@
 				"slashSpecificDescription": "Skip to a specific position in the queue",
 				"slashPositionDescription": "Song position in the queue",
 				"usage": "{prefix}skipto <{options} | number>",
-				"noPermission": "You don't have permission to use this comamnd.",
+				"noPermission": "You don't have permission to use this command.",
 				"noSongPosition": "Unable to find song in that position.",
 				"cantPlay": "You can't skip to current music.",
 				"skipMessage": "Skipped to **{song}**"
