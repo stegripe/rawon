@@ -1,5 +1,6 @@
 import { createEmbed } from "../functions/createEmbed";
 import { Rawon } from "../../structures/Rawon";
+import i18n from "../../config";
 import { Guild, GuildBan, TextChannel, User } from "discord.js";
 
 export class ModerationLogs {
@@ -14,7 +15,7 @@ export class ModerationLogs {
         const ch = await this.getCh(options.guild);
         if (!ch) return;
 
-        const embed = createEmbed("warn", i18n.__mf("utils.modlogs.warn", { member: options.user.tag }))
+        const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.warnSuccess", { user: options.user.tag }))
             .addField(i18n.__("commands.moderation.common.reasonString"), options.reason ?? i18n.__("commands.moderation.common.noReasonString"))
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: options.author.tag }),
@@ -22,7 +23,7 @@ export class ModerationLogs {
             })
             .setThumbnail(options.user.displayAvatarURL({ dynamic: true, size: 2048 }));
 
-        await ch.send({ embeds: [embed] }).catch(() => null);
+        await ch.send({ embeds: [embed] }).catch((er: Error) => console.log(`Failed to send warn logs: ${er.message}`));
     }
 
     public async handleBanAdd(ban: GuildBan): Promise<void> {
@@ -64,12 +65,14 @@ export class ModerationLogs {
         let ch: TextChannel | undefined;
 
         try {
-            const id = this.client.data.data?.[guild.id]?.modLog.channel;
+            console.log("Fetching channel...");
+            const id = this.client.data.data![guild.id]!.modLog.channel;
             const channel = await guild.channels.fetch(id!).catch(() => undefined);
             if (channel?.type !== "GUILD_TEXT") throw new Error();
 
             ch = channel;
         } catch {
+            console.log("Invalid channel :3");
             ch = undefined;
         }
 
