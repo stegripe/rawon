@@ -1,6 +1,6 @@
 import { importURLToString } from "../utils/functions/importURLToString";
-import { CommandManager } from "../utils/structures/CommandManager";
 import { JSONDataManager } from "../utils/structures/JSONDataManager";
+import { CommandManager } from "../utils/structures/CommandManager";
 import { ModerationLogs } from "../utils/structures/ModerationLogs";
 import { EventsLoader } from "../utils/structures/EventsLoader";
 import { ClientUtils } from "../utils/structures/ClientUtils";
