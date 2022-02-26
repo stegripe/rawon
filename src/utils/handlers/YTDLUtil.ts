@@ -1,4 +1,4 @@
-import { basicYoutubeVideoInfo } from "../../typings";
+import { BasicYoutubeVideoInfo } from "../../typings";
 import { soundcloud } from "./SoundCloudUtil";
 import { streamStrategy } from "../../config";
 import { checkQuery } from "./GeneralUtil";
@@ -45,7 +45,7 @@ export async function getStream(url: string): Promise<Readable> {
     });
 }
 
-export async function getInfo(url: string): Promise<basicYoutubeVideoInfo> {
+export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
     if (streamStrategy === "play-dl") {
         const rawPlayDlVideoInfo = await video_basic_info(url);
         return {

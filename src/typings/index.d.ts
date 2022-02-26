@@ -12,7 +12,7 @@ export interface QueryData {
     isURL: boolean;
 }
 
-export interface basicYoutubeVideoInfo {
+export interface BasicYoutubeVideoInfo {
     thumbnails: { url: string; width: number; height: number }[];
     duration: number;
     title: string;
@@ -22,7 +22,7 @@ export interface basicYoutubeVideoInfo {
 
 export interface SearchTrackResult {
     type?: "results" | "selection";
-    items: ISong[];
+    items: Song[];
 }
 
 export interface PaginationPayload {
@@ -33,7 +33,7 @@ export interface PaginationPayload {
     author: string;
 }
 
-export interface IRawonLoggerOptions {
+export interface RawonLoggerOptions {
     prod: boolean;
 }
 
@@ -45,18 +45,18 @@ export interface SlashOption {
     name?: string;
 }
 
-export interface IpresenceData {
+export interface PresenceData {
     activities: { name: string; type: Exclude<ActivityType, "CUSTOM"> }[];
     status: ClientPresenceStatus[];
     interval: number;
 }
 
-export interface IEvent {
+export interface Event {
     readonly name: keyof ClientEvents;
     execute: (...args: any) => void;
 }
 
-export interface ICommandComponent {
+export interface CommandComponent {
     execute: (context: CommandContext) => any;
     meta: {
         readonly category?: string;
@@ -74,8 +74,8 @@ export interface ICommandComponent {
     };
 }
 
-export interface ICategoryMeta {
-    cmds: Collection<string, ICommandComponent>;
+export interface CategoryMeta {
+    cmds: Collection<string, CommandComponent>;
     hide: boolean;
     name: string;
 }
@@ -98,7 +98,7 @@ declare module "discord.js" {
     }
 }
 
-export interface ISong {
+export interface Song {
     thumbnail: string;
     duration: number;
     title: string;
@@ -106,16 +106,16 @@ export interface ISong {
     id: string;
 }
 
-export interface IQueueSong {
+export interface QueueSong {
     requester: GuildMember;
     index: number;
-    song: ISong;
+    song: Song;
     key: string;
 }
 
 export type LoopMode = "OFF" | "QUEUE" | "SONG";
 
-export interface ILyricsAPIResult<E extends boolean> {
+export interface LyricsAPIResult<E extends boolean> {
     synced: E extends true ? never : boolean | string;
     album_art?: E extends true ? null : string;
     message?: E extends true ? string : never;
@@ -126,7 +126,7 @@ export interface ILyricsAPIResult<E extends boolean> {
     error: E;
 }
 
-export interface ISpotifyAccessTokenAPIResult {
+export interface SpotifyAccessTokenAPIResult {
     accessTokenExpirationTimestampMs: number;
     accessToken?: string;
     isAnonymous: boolean;

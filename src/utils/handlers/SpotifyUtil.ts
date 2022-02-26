@@ -1,4 +1,4 @@
-import { ISpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
+import { SpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
 import { Rawon } from "../../structures/Rawon";
 
 export class SpotifyUtil {
@@ -15,7 +15,7 @@ export class SpotifyUtil {
                 headers: {
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59"
                 }
-            }).json<ISpotifyAccessTokenAPIResult>();
+            }).json<SpotifyAccessTokenAPIResult>();
         if (!accessToken) throw new Error("Could not fetch self spotify token.");
         this.token = `Bearer ${accessToken}`;
         return new Date(accessTokenExpirationTimestampMs).getMilliseconds() * 1000;

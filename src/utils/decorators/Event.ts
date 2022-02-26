@@ -1,8 +1,8 @@
 import { BaseEvent, ExtendedEventConstructor } from "../../structures/BaseEvent";
-import { ClassDecorator, IEvent, NonAbstractConstructor } from "../../typings";
+import { ClassDecorator, Event as EI, NonAbstractConstructor } from "../../typings";
 
 export function Event<T extends NonAbstractConstructor<BaseEvent> = ExtendedEventConstructor>(
-    event: IEvent["name"]
+    event: EI["name"]
 ): ClassDecorator<T, T> {
     return target => new Proxy(target, {
         construct: (

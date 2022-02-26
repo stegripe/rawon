@@ -1,6 +1,6 @@
 import { pathStringToURLString } from "../functions/pathStringToURLString";
 import { Rawon } from "../../structures/Rawon";
-import { IEvent } from "../../typings";
+import { Event } from "../../typings";
 import { promises as fs } from "fs";
 import { resolve } from "path";
 
@@ -11,7 +11,7 @@ export class EventsLoader {
             .then(async events => {
                 this.client.logger.info(`Loading ${events.length} events...`);
                 for (const file of events) {
-                    const event = await this.client.utils.import<IEvent>(
+                    const event = await this.client.utils.import<Event>(
                         pathStringToURLString(resolve(this.path, file)),
                         this.client
                     );

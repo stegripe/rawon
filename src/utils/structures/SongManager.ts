@@ -1,10 +1,10 @@
-import { ISong, IQueueSong } from "../../typings";
+import { Song, QueueSong } from "../../typings";
 import { Collection, GuildMember, Snowflake, SnowflakeUtil } from "discord.js";
 
-export class SongManager extends Collection<Snowflake, IQueueSong> {
-    public addSong(song: ISong, requester: GuildMember): Snowflake {
+export class SongManager extends Collection<Snowflake, QueueSong> {
+    public addSong(song: Song, requester: GuildMember): Snowflake {
         const key = SnowflakeUtil.generate();
-        const data: IQueueSong = {
+        const data: QueueSong = {
             index: Date.now(),
             key,
             requester,

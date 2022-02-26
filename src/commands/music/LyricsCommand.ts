@@ -1,7 +1,7 @@
 import { ButtonPagination } from "../../utils/structures/ButtonPagination";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
-import { ILyricsAPIResult, IQueueSong } from "../../typings";
+import { LyricsAPIResult, QueueSong } from "../../typings";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
@@ -32,7 +32,7 @@ export class LyricsCommand extends BaseCommand {
             ? ctx.args.join(" ")
             : ctx.options?.getString("query")
                 ? ctx.options.getString("query")
-                : (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as IQueueSong | undefined)?.song.title;
+                : (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as QueueSong | undefined)?.song.title;
         if (!query) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)]
@@ -44,7 +44,7 @@ export class LyricsCommand extends BaseCommand {
 
     private getLyrics(ctx: CommandContext, song: string): void {
         const url = `https://api.lxndr.dev/lyrics/?song=${encodeURI(song)}&from=${encodeURI(this.client.user!.id)}`;
-        this.client.request.get(url).json<ILyricsAPIResult<false>>()
+        this.client.request.get(url).json<LyricsAPIResult<false>>()
             .then(async data => {
                 if ((data as { error: boolean }).error) {
                     return ctx.reply({

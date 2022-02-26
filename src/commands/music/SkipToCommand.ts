@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { play } from "../../utils/handlers/GeneralUtil";
-import { IQueueSong } from "../../typings";
+import { QueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { Message } from "discord.js";
@@ -75,7 +75,7 @@ export class SkipToCommand extends BaseCommand {
             });
         }
 
-        let song: IQueueSong;
+        let song: QueueSong;
         if (String(targetType).toLowerCase() === "first") {
             song = songs[0];
         } else if (String(targetType).toLowerCase() === "last") {
@@ -84,7 +84,7 @@ export class SkipToCommand extends BaseCommand {
             song = songs[Number(targetType) - 1];
         }
 
-        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).key) {
+        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)]
             });

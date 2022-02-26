@@ -1,6 +1,6 @@
 import { createEmbed } from "../../functions/createEmbed";
 import { Rawon } from "../../../structures/Rawon";
-import { IQueueSong } from "../../../typings";
+import { QueueSong } from "../../../typings";
 import { getStream } from "../YTDLUtil";
 import i18n from "../../../config";
 import { AudioPlayerError, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, createAudioResource, entersState, VoiceConnectionStatus } from "@discordjs/voice";
@@ -48,7 +48,7 @@ export async function play(client: Rawon, guild: Guild, nextSong?: string, wasId
         queue?.player?.play(resource);
     }
 
-    const sendStartPlayingMsg = (newSong: IQueueSong["song"]): void => {
+    const sendStartPlayingMsg = (newSong: QueueSong["song"]): void => {
         client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${guild.name} has started.`);
         queue.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("utils.generalHandler.startPlaying", { song: `[${newSong.title}](${newSong.url})` })}`).setThumbnail(newSong.thumbnail)] })
             .then(m => queue.lastMusicMsg = m.id)
@@ -73,7 +73,7 @@ export async function play(client: Rawon, guild: Guild, nextSong?: string, wasId
 
     queue.player.on("stateChange", (oldState, newState) => {
         if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
-            const newSong = ((queue.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong).song;
+            const newSong = ((queue.player!.state as AudioPlayerPlayingState).resource.metadata as QueueSong).song;
             sendStartPlayingMsg(newSong);
         } else if (newState.status === AudioPlayerStatus.Idle) {
             client.logger.info(`${client.shard ? `[Shard #${client.shard.ids[0]}]` : ""} Track: "${song.song.title}" on ${guild.name} has ended.`);

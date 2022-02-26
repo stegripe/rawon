@@ -3,7 +3,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
-import { IQueueSong } from "../../typings";
+import { QueueSong } from "../../typings";
 import i18n from "../../config";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
@@ -23,7 +23,7 @@ export class NowPlayingCommand extends BaseCommand {
         function getEmbed(): MessageEmbed {
             const song = ((ctx.guild?.queue?.player?.state as (AudioPlayerState & {
                 resource: AudioResource | undefined;
-            }) | undefined)?.resource?.metadata as IQueueSong | undefined)?.song;
+            }) | undefined)?.resource?.metadata as QueueSong | undefined)?.song;
 
             return createEmbed("info", `${
                 ctx.guild?.queue?.playing

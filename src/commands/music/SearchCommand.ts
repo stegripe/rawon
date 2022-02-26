@@ -5,7 +5,7 @@ import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
-import { ISong } from "../../typings";
+import { Song } from "../../typings";
 import i18n from "../../config";
 import { CommandInteractionOptionResolver, Message, MessageActionRow, MessageSelectOptionData, MessageSelectMenu, SelectMenuInteraction, Util } from "discord.js";
 
@@ -174,7 +174,7 @@ export class SearchCommand extends BaseCommand {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    private generateSelectMenu(tracks: ISong[]): MessageSelectOptionData[] {
+    private generateSelectMenu(tracks: Song[]): MessageSelectOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
         return tracks.slice(0, 10).map((x, i) => (

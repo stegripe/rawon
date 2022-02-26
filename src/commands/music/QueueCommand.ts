@@ -5,7 +5,7 @@ import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
-import { IQueueSong } from "../../typings";
+import { QueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 
@@ -21,7 +21,7 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
 export class QueueCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
-        const np = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as IQueueSong;
+        const np = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
         const full = ctx.guild!.queue!.songs.sortByIndex();
         const songs = ctx.guild?.queue?.loopMode === "QUEUE"
             ? full

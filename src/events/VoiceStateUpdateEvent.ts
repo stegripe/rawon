@@ -3,7 +3,7 @@ import { ServerQueue } from "../structures/ServerQueue";
 import { formatMS } from "../utils/functions/formatMS";
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
-import { IQueueSong } from "../typings";
+import { QueueSong } from "../typings";
 import i18n from "../config";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { Message, StageChannel, VoiceState, VoiceChannel } from "discord.js";
@@ -153,7 +153,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         clearTimeout(queue.timeout!);
         state.guild.queue!.timeout = null;
 
-        const song = ((queue.player!.state as AudioPlayerPausedState).resource.metadata as IQueueSong).song;
+        const song = ((queue.player!.state as AudioPlayerPausedState).resource.metadata as QueueSong).song;
 
         void queue.textChannel.send({
             embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {

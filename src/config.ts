@@ -1,5 +1,5 @@
 import { parseEnvValue } from "./utils/functions/parseEnvValue";
-import { IpresenceData } from "./typings";
+import { PresenceData } from "./typings";
 import {
     ActivityType,
     ClientOptions,
@@ -61,7 +61,7 @@ export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
 export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
 
-export const presenceData: IpresenceData = {
+export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
         type: (parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]?.toUpperCase() || "PLAYING") as Exclude<ActivityType, "CUSTOM">

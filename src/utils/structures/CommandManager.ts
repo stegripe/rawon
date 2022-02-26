@@ -1,6 +1,6 @@
 import { pathStringToURLString } from "../functions/pathStringToURLString";
 import { CommandContext } from "../../structures/CommandContext";
-import { ICategoryMeta, ICommandComponent } from "../../typings";
+import { CategoryMeta, CommandComponent } from "../../typings";
 import { createEmbed } from "../functions/createEmbed";
 import { Rawon } from "../../structures/Rawon";
 import i18n from "../../config";
@@ -8,9 +8,9 @@ import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } f
 import { promises as fs } from "fs";
 import { resolve } from "path";
 
-export class CommandManager extends Collection<string, ICommandComponent> {
+export class CommandManager extends Collection<string, CommandComponent> {
     public isReady = false;
-    public readonly categories: Collection<string, ICategoryMeta> = new Collection();
+    public readonly categories: Collection<string, CategoryMeta> = new Collection();
     public readonly aliases: Collection<string, string> = new Collection();
     private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
 
@@ -21,7 +21,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
             .then(async categories => {
                 this.client.logger.info(`Found ${categories.length} categories, registering...`);
                 for (const category of categories) {
-                    const meta = (await import(pathStringToURLString(resolve(this.path, category, "category.meta.js"))) as { default: ICategoryMeta }).default;
+                    const meta = (await import(pathStringToURLString(resolve(this.path, category, "category.meta.js"))) as { default: CategoryMeta }).default;
 
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);
@@ -37,7 +37,7 @@ export class CommandManager extends Collection<string, ICommandComponent> {
                             for (const file of files) {
                                 try {
                                     const path = pathStringToURLString(resolve(this.path, category, file));
-                                    const command = await this.client.utils.import<ICommandComponent>(path, this.client);
+                                    const command = await this.client.utils.import<CommandComponent>(path, this.client);
 
                                     if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
 

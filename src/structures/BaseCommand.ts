@@ -1,9 +1,9 @@
 import { CommandContext } from "./CommandContext";
-import { ICommandComponent } from "../typings";
+import { CommandComponent } from "../typings";
 import { Rawon } from "./Rawon";
 
-export abstract class BaseCommand implements ICommandComponent {
-    public constructor(public client: Rawon, public meta: ICommandComponent["meta"]) {}
+export abstract class BaseCommand implements CommandComponent {
+    public constructor(public client: Rawon, public meta: CommandComponent["meta"]) {}
 
     public abstract execute(ctx: CommandContext): any;
 }

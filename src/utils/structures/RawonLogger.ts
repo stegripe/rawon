@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { IRawonLoggerOptions } from "../../typings";
+import { RawonLoggerOptions } from "../../typings";
 import { format } from "date-fns";
 
 enum Colors {
@@ -11,7 +11,7 @@ enum Colors {
 }
 
 export class RawonLogger {
-    public constructor(public readonly options: IRawonLoggerOptions) {}
+    public constructor(public readonly options: RawonLoggerOptions) {}
 
     public info(...messages: any[]): void {
         this.log(messages, "info");

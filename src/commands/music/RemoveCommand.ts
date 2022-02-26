@@ -6,7 +6,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
-import { IQueueSong } from "../../typings";
+import { QueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 import { Util } from "discord.js";
@@ -56,7 +56,7 @@ export class RemoveCommand extends BaseCommand {
             ctx.guild!.queue!.songs.delete(song.key);
         }
 
-        const np = (ctx.guild?.queue?.player?.state as (AudioPlayerState & { resource: AudioResource | undefined }) | undefined)?.resource?.metadata as IQueueSong | undefined;
+        const np = (ctx.guild?.queue?.player?.state as (AudioPlayerState & { resource: AudioResource | undefined }) | undefined)?.resource?.metadata as QueueSong | undefined;
         const isSkip = songs.map(x => x.key).includes(np?.key ?? "");
         if (isSkip) {
             this.client.commands.get("skip")?.execute(ctx);

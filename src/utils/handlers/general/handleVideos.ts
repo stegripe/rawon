@@ -5,13 +5,13 @@ import { ServerQueue } from "../../../structures/ServerQueue";
 import { createEmbed } from "../../functions/createEmbed";
 import { Rawon } from "../../../structures/Rawon";
 import { chunk } from "../../functions/chunk";
-import { ISong } from "../../../typings";
+import { Song } from "../../../typings";
 import { play } from "./play";
 import i18n from "../../../config";
 import { Message, StageChannel, Util, VoiceChannel } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 
-export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: ISong[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
+export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: Song[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
 
     async function sendPagination(): Promise<void> {

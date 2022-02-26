@@ -1,4 +1,4 @@
-import { ISong, SearchTrackResult, SpotifyTrack } from "../../../typings";
+import { Song, SearchTrackResult, SpotifyTrack } from "../../../typings";
 import { Rawon } from "../../../structures/Rawon";
 import { checkQuery } from "./checkQuery";
 import { youtube } from "../YouTubeUtil";
@@ -45,7 +45,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
 
                     case "playlist": {
                         const playlist = await client.soundcloud.playlists.getV2(scUrl.toString());
-                        const tracks = await Promise.all(playlist.tracks.map((track): ISong => ({
+                        const tracks = await Promise.all(playlist.tracks.map((track): Song => ({
                             duration: track.full_duration,
                             id: track.id.toString(),
                             thumbnail: track.artwork_url,
@@ -88,7 +88,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
                         const playlist = await youtube.getPlaylist(url.toString());
 
                         if (playlist) {
-                            const tracks = await Promise.all(playlist.videos.map((track): ISong => ({
+                            const tracks = await Promise.all(playlist.videos.map((track): Song => ({
                                 duration: track.duration === null ? 0 : track.duration,
                                 id: track.id,
                                 thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
@@ -148,7 +148,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
 
                     case "playlist": {
                         const songs = await client.spotify.resolveTracks(url.toString()) as unknown as { track: SpotifyTrack }[];
-                        const tracks = await Promise.all(songs.map(async (x): Promise<ISong> => {
+                        const tracks = await Promise.all(songs.map(async (x): Promise<Song> => {
                             const track = sortVideos(x.track, await youtube.search(`${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`, { type: "video" }) as SearchResult<"video">)[0];
                             return {
                                 duration: track.duration === null ? 0 : track.duration,
@@ -189,7 +189,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
             const searchRes = await client.soundcloud.tracks.searchV2({
                 q: query
             });
-            const tracks = await Promise.all(searchRes.collection.map((track): ISong => ({
+            const tracks = await Promise.all(searchRes.collection.map((track): Song => ({
                 duration: track.full_duration,
                 id: track.id.toString(),
                 thumbnail: track.artwork_url,
@@ -200,7 +200,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
             result.items = tracks;
         } else {
             const searchRes = (await youtube.search(query, { type: "video" })) as SearchResult<"video">;
-            const tracks = await Promise.all(searchRes.map((track): ISong => ({
+            const tracks = await Promise.all(searchRes.map((track): Song => ({
                 duration: track.duration === null ? 0 : track.duration,
                 id: track.id,
                 thumbnail: track.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url,
