@@ -7,6 +7,7 @@ export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLo
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
 export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
+export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";
 export const isProd = !isDev;
 
 // String values
