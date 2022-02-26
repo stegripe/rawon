@@ -7,17 +7,17 @@ import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, Cli
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
 export interface QueryData {
-    isURL: boolean;
     sourceType?: "query" | "soundcloud" | "spotify" | "unknown" | "youtube";
     type?: "playlist" | "track" | "unknown";
+    isURL: boolean;
 }
 
 export interface basicYoutubeVideoInfo {
-    id: string;
-    url: string;
-    title: string;
     thumbnails: { url: string; width: number; height: number }[];
     duration: number;
+    title: string;
+    url: string;
+    id: string;
 }
 
 export interface SearchTrackResult {
@@ -26,11 +26,11 @@ export interface SearchTrackResult {
 }
 
 export interface PaginationPayload {
-    author: string;
+    edit: (index: number, embed: MessageEmbed, page: string) => unknown;
+    embed: MessageEmbed;
     content?: string;
     pages: string[];
-    embed: MessageEmbed;
-    edit: (index: number, embed: MessageEmbed, page: string) => unknown;
+    author: string;
 }
 
 export interface IRawonLoggerOptions {
@@ -38,11 +38,11 @@ export interface IRawonLoggerOptions {
 }
 
 export interface SlashOption {
-    name?: string;
-    description?: string;
-    type?: ApplicationCommandType;
     options?: ApplicationCommandOptionData[];
+    type?: ApplicationCommandType;
     defaultPermission?: boolean;
+    description?: string;
+    name?: string;
 }
 
 export interface IpresenceData {
@@ -57,80 +57,80 @@ export interface IEvent {
 }
 
 export interface ICommandComponent {
+    execute: (context: CommandContext) => any;
     meta: {
+        readonly category?: string;
+        readonly path?: string;
+        contextChat?: string;
+        contextUser?: string;
+        description?: string;
+        slash?: SlashOption;
         aliases?: string[];
         cooldown?: number;
         disable?: boolean;
-        readonly path?: string;
         devOnly?: boolean;
-        description?: string;
-        readonly category?: string;
-        name: string;
         usage?: string;
-        slash?: SlashOption;
-        contextChat?: string;
-        contextUser?: string;
+        name: string;
     };
-    execute: (context: CommandContext) => any;
 }
 
 export interface ICategoryMeta {
-    name: string;
-    hide: boolean;
     cmds: Collection<string, ICommandComponent>;
+    hide: boolean;
+    name: string;
 }
 
 declare module "discord.js" {
     // @ts-expect-error Override typings
     export interface Client extends OClient {
+        commands: Rawon["commands"];
+        request: Rawon["request"];
         config: Rawon["config"];
         logger: Rawon["logger"];
-        request: Rawon["request"];
-        commands: Rawon["commands"];
         events: Rawon["events"];
 
         build: () => Promise<this>;
     }
 
     export interface Guild {
-        client: Rawon;
         queue?: ServerQueue;
+        client: Rawon;
     }
 }
 
 export interface ISong {
-    id: string;
+    thumbnail: string;
+    duration: number;
     title: string;
     url: string;
-    duration: number;
-    thumbnail: string;
+    id: string;
 }
 
 export interface IQueueSong {
-    song: ISong;
     requester: GuildMember;
     index: number;
+    song: ISong;
     key: string;
 }
 
 export type LoopMode = "OFF" | "QUEUE" | "SONG";
 
 export interface ILyricsAPIResult<E extends boolean> {
-    error: E;
-    artist?: E extends true ? null : string;
-    song?: E extends true ? null : string;
-    album_art?: E extends true ? null : string;
-    lyrics?: E extends true ? null : string;
-    url?: E extends true ? null : string;
-    message?: E extends true ? string : never;
     synced: E extends true ? never : boolean | string;
+    album_art?: E extends true ? null : string;
+    message?: E extends true ? string : never;
+    artist?: E extends true ? null : string;
+    lyrics?: E extends true ? null : string;
+    song?: E extends true ? null : string;
+    url?: E extends true ? null : string;
+    error: E;
 }
 
 export interface ISpotifyAccessTokenAPIResult {
-    clientId: string;
-    accessToken?: string;
     accessTokenExpirationTimestampMs: number;
+    accessToken?: string;
     isAnonymous: boolean;
+    clientId: string;
 }
 
 export interface ExternalUrls {
@@ -140,10 +140,10 @@ export interface ExternalUrls {
 export interface ArtistsEntity {
     external_urls: ExternalUrls;
     href: string;
-    id: string;
     name: string;
     type: string;
     uri: string;
+    id: string;
 }
 
 export interface SpotifyArtist {
@@ -154,8 +154,8 @@ export interface SpotifyPlaylist {
     name: string;
     tracks: {
         items: { track: SpotifyTrack }[];
-        next: string | null;
         previous: string | null;
+        next: string | null;
     };
 }
 
@@ -165,8 +165,8 @@ export interface SpotifyTrack {
     external_urls: {
         spotify: string;
     };
-    id: string;
     name: string;
+    id: string;
 }
 
 export interface SpotifyArtist {
