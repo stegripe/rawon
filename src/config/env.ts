@@ -1,48 +1,7 @@
-import { parseEnvValue } from "./utils/functions/parseEnvValue";
-import { PresenceData } from "./typings";
-import {
-    ActivityType,
-    ClientOptions,
-    ClientPresenceStatus,
-    Intents,
-    Options,
-    ShardingManagerMode,
-    Sweepers
-} from "discord.js";
-import { join } from "path";
-import i18n from "i18n";
+import { parseEnvValue } from "../utils/functions/parseEnvValue";
+import { PresenceData } from "../typings";
+import { ActivityType, ClientPresenceStatus } from "discord.js";
 
-export const clientOptions: ClientOptions = {
-    allowedMentions: { parse: ["users"], repliedUser: true },
-    intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-        Intents.FLAGS.GUILD_VOICE_STATES,
-        Intents.FLAGS.GUILD_BANS
-    ],
-    makeCache: Options.cacheWithLimits({
-        MessageManager: {
-            maxSize: Infinity,
-            sweepInterval: 300,
-            sweepFilter: Sweepers.filterByLifetime({
-                lifetime: 10800
-            })
-        },
-        ThreadManager: {
-            maxSize: Infinity,
-            sweepInterval: 300,
-            sweepFilter: Sweepers.filterByLifetime({
-                lifetime: 10800,
-                getComparisonTimestamp: e => e.archiveTimestamp!,
-                excludeFromSweep: e => !e.archived
-            })
-        }
-    }),
-    retryLimit: 3
-};
-export const shardsCount: number | "auto" = "auto";
-export const shardingMode: ShardingManagerMode = "worker";
 export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
 export const isProd = !isDev;
 export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
@@ -60,7 +19,6 @@ export const djRoleName = process.env.DJ_ROLE_NAME! || "DJ";
 export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
 export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
-
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
@@ -69,18 +27,3 @@ export const presenceData: PresenceData = {
     status: ["online"] as ClientPresenceStatus[],
     interval: 60000
 };
-
-i18n.configure({
-    defaultLocale: "en",
-    directory: join(process.cwd(), "lang"),
-    locales: [
-        "en",
-        "es",
-        "id"
-    ],
-    objectNotation: true
-});
-
-i18n.setLocale(lang);
-
-export default i18n;
