@@ -10,6 +10,8 @@ enum Colors {
     Blue = "\x1b[34m"
 }
 
+export type LogLevel = "debug" | "error" | "info" | "warn";
+
 export class RawonLogger {
     public constructor(public readonly options: RawonLoggerOptions) {}
 
@@ -29,7 +31,7 @@ export class RawonLogger {
         this.log(messages, "warn");
     }
 
-    private log(messages: any[], level: "debug" | "error" | "info" | "warn" = "info"): void {
+    private log(messages: any[], level: LogLevel = "info"): void {
         if (this.options.prod && level === "debug") return;
 
         console[level](`${
