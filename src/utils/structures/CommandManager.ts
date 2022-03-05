@@ -1,10 +1,10 @@
 import { pathStringToURLString } from "../functions/pathStringToURLString";
 import { CommandContext } from "../../structures/CommandContext";
-import { CategoryMeta, CommandComponent } from "../../typings";
+import { CategoryMeta, CommandComponent, RegisterCmdOptions } from "../../typings";
 import { createEmbed } from "../functions/createEmbed";
 import { Rawon } from "../../structures/Rawon";
 import i18n from "../../config";
-import { ApplicationCommandData, Collection, Message, Snowflake, TextChannel } from "discord.js";
+import { ApplicationCommandData, Collection, Guild, Message, Snowflake, TextChannel } from "discord.js";
 import { promises as fs } from "fs";
 import { resolve } from "path";
 
@@ -50,44 +50,24 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                     this.set(command.meta.name, command);
 
                                     if (command.meta.contextChat) {
-                                        if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild) {
-                                                const g = await this.client.guilds.fetch({ guild });
-
-                                                await g.commands.create({
-                                                    name: command.meta.contextChat,
-                                                    type: "MESSAGE"
-                                                })
-                                                    .catch(() => this.client.logger.info(`Missing access on ${guild} [MESSAGE_CTX]`));
-                                                this.client.logger.info(`Registered ${command.meta.name} to message context for ${guild}`);
-                                            }
-                                        } else {
-                                            await this.client.application!.commands.create({
-                                                name: command.meta.contextChat,
-                                                type: "MESSAGE"
-                                            });
-                                            this.client.logger.info(`Registered ${command.meta.name} to message context for global.`);
-                                        }
+                                        await this.registerCmd({
+                                            name: command.meta.contextChat,
+                                            type: "MESSAGE"
+                                        }, {
+                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to message context for ${g?.id ?? "???"}. Reason: ${err.message}`),
+                                            onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to message context for ${g.id}`)
+                                        });
+                                        if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to message context for global.`);
                                     }
                                     if (command.meta.contextUser) {
-                                        if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild) {
-                                                const g = await this.client.guilds.fetch({ guild });
-
-                                                await g.commands.create({
-                                                    name: command.meta.contextUser,
-                                                    type: "USER"
-                                                })
-                                                    .catch(() => this.client.logger.info(`Missing access on ${guild} [USER_CTX]`));
-                                                this.client.logger.info(`Registered ${command.meta.name} to user context for ${guild}`);
-                                            }
-                                        } else {
-                                            await this.client.application!.commands.create({
-                                                name: command.meta.contextUser,
-                                                type: "USER"
-                                            });
-                                            this.client.logger.info(`Registered ${command.meta.name} to user context for global.`);
-                                        }
+                                        await this.registerCmd({
+                                            name: command.meta.contextUser,
+                                            type: "USER"
+                                        }, {
+                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to user context for ${g?.id ?? "???"}. Reason: ${err.message}`),
+                                            onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to user context for ${g.id}`)
+                                        });
+                                        if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to user context for global.`);
                                     }
                                     if (!allCmd.has(command.meta.name) && command.meta.slash && this.client.config.enableSlashCommand) {
                                         if (!command.meta.slash.name) {
@@ -101,18 +81,11 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                             });
                                         }
 
-                                        if (this.client.config.isDev) {
-                                            for (const guild of this.client.config.devGuild) {
-                                                const g = await this.client.guilds.fetch({ guild });
-
-                                                await g.commands.create(command.meta.slash as ApplicationCommandData)
-                                                    .catch(() => this.client.logger.info(`Missing access on ${guild} [SLASH_COMMAND]`));
-                                                this.client.logger.info(`Registered ${command.meta.name} to slash command for ${guild}`);
-                                            }
-                                        } else {
-                                            await this.client.application!.commands.create(command.meta.slash as ApplicationCommandData);
-                                            this.client.logger.info(`Registered ${command.meta.name} to slash command for global.`);
-                                        }
+                                        await this.registerCmd(command.meta.slash as ApplicationCommandData, {
+                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to slash command for ${g?.id ?? "???"}. Reason: ${err.message}`),
+                                            onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to slash command for ${g.id}`)
+                                        });
+                                        if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to slash command for global.`);
                                     }
                                     this.client.logger.info(`Command ${command.meta.name} from ${category} category is now loaded.`);
                                     if (command.meta.disable) disabledCount++;
@@ -184,6 +157,26 @@ export class CommandManager extends Collection<string, CommandComponent> {
                 `${message.author.tag} [${message.author.id}] is using ${command.meta.name} command from ${command.meta.category!} category ` +
                 `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${message.guild!.name} [${message.guild!.id}]`
             );
+        }
+    }
+
+    private async registerCmd(data: ApplicationCommandData, options?: RegisterCmdOptions): Promise<void> {
+        if (options && this.client.config.isDev) {
+            for (const id of this.client.config.devGuild) {
+                let guild: Guild | null = null;
+
+                try {
+                    guild = await this.client.guilds.fetch(id).catch(() => null);
+                    if (!guild) throw new Error("Invalid Guild");
+
+                    await guild.commands.create(data);
+                    void options.onRegistered(guild);
+                } catch (err) {
+                    void options.onError(guild, err as Error);
+                }
+            }
+        } else {
+            await this.client.application!.commands.create(data);
         }
     }
 }

@@ -2,7 +2,7 @@
 import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Rawon } from "../structures/Rawon";
-import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed } from "discord.js";
+import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed, Guild } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
@@ -196,3 +196,8 @@ export type MethodDecorator<Target, Result> = (
 export type ClassDecorator<Target extends Constructor, Result = unknown> = (target: Target) => Result;
 export type Promisable<Output> = Output | Promise<Output>;
 export type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
+
+export interface RegisterCmdOptions {
+    onRegistered: (guild: Guild) => Promisable<any>;
+    onError: (guild: Guild | null, error: Error) => Promisable<any>;
+}
