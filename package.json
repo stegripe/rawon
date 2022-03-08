@@ -28,7 +28,7 @@
   "dependencies": {
     "@discordjs/voice": "^0.8.0",
     "@swc/cli": "^0.1.55",
-    "@swc/core": "^1.2.145",
+    "@swc/core": "^1.2.147",
     "date-fns": "^2.28.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
@@ -45,16 +45,16 @@
     "@rahagia/eslint-config": "^8.1.1",
     "@types/i18n": "^0.13.2",
     "@types/node": "^17.0.21",
-    "@typescript-eslint/eslint-plugin": "^5.12.1",
-    "@typescript-eslint/parser": "^5.12.0",
-    "eslint": "^8.9.0",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "eslint": "^8.10.0",
     "typescript": "^4.5.5"
   },
   "engines": {
     "node": ">=16.6.0"
   },
   "optionalDependencies": {
-    "play-dl": "^1.8.8",
-    "youtube-dl-exec": "^2.0.6"
+    "play-dl": "^1.8.9",
+    "youtube-dl-exec": "^2.0.7"
   }
 }
