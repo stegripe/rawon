@@ -55,6 +55,6 @@
   },
   "optionalDependencies": {
     "play-dl": "^1.9.1",
-    "youtube-dl-exec": "^2.0.7"
+    "youtube-dl-exec": "^2.0.8"
   }
 }
