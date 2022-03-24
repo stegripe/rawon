@@ -1,12 +1,8 @@
-export function chunk<T>(arr: T[], len: number): T[][];
-export function chunk(arr: string, len: number): string[];
-export function chunk(...args: any[]): any[] {
-    const [arr, len] = args as [any, number];
-    const rest: (typeof arr)[] = [];
-
-    for (let i = 0; i < (arr as string).length; i += len) {
-        rest.push((arr as string).slice(i, i + len));
+export function chunk<T extends unknown[] | string = string>(arr: T, len: number): T[] {
+    const res = [];
+    for (let i = 0; i < arr.length; i += len) {
+        res.push(arr.slice(i, i + len));
     }
 
-    return rest;
+    return res as T[];
 }
