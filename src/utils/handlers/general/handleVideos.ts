@@ -6,10 +6,10 @@ import { createEmbed } from "../../functions/createEmbed";
 import { Rawon } from "../../../structures/Rawon";
 import { chunk } from "../../functions/chunk";
 import { Song } from "../../../typings";
-import { play } from "./play";
 import i18n from "../../../config";
-import { Message, StageChannel, Util, VoiceChannel } from "discord.js";
+import { play } from "./play";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
+import { Message, StageChannel, Util, VoiceChannel } from "discord.js";
 
 export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: Song[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
