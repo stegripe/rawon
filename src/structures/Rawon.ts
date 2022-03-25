@@ -16,17 +16,17 @@ import { resolve } from "path";
 import got from "got";
 
 export class Rawon extends Client {
-    public readonly config = config;
-    public readonly logger = new RawonLogger({ prod: this.config.isProd });
-    public readonly request = got;
     public readonly commands = new CommandManager(this, resolve(importURLToString(import.meta.url), "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(importURLToString(import.meta.url), "..", "events"));
     public readonly data = new JSONDataManager<Record<string, GuildData>>(resolve(process.cwd(), "data.json"));
-    public readonly soundcloud = soundcloud;
+    public readonly logger = new RawonLogger({ prod: this.config.isProd });
+    public readonly debugLog = new DebugLogManager(this.config.isProd);
+    public readonly modlogs = new ModerationLogs(this);
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
-    public readonly modlogs = new ModerationLogs(this);
-    public readonly debugLog = new DebugLogManager(this.config.isProd);
+    public readonly soundcloud = soundcloud;
+    public readonly config = config;
+    public readonly request = got;
 
     public constructor(opt: ClientOptions) { super(opt); }
 
