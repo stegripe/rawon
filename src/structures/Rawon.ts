@@ -1,4 +1,5 @@
 import { importURLToString } from "../utils/functions/importURLToString";
+import { DebugLogManager } from "../utils/structures/DebugLogManager";
 import { JSONDataManager } from "../utils/structures/JSONDataManager";
 import { CommandManager } from "../utils/structures/CommandManager";
 import { ModerationLogs } from "../utils/structures/ModerationLogs";
@@ -25,6 +26,7 @@ export class Rawon extends Client {
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
     public readonly modlogs = new ModerationLogs(this);
+    public readonly debugLog = new DebugLogManager(this.config.isProd);
 
     public constructor(opt: ClientOptions) { super(opt); }
 
