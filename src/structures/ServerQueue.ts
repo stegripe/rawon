@@ -1,7 +1,7 @@
-import { SongManager } from "../utils/structures/SongManager";
-import { LoopMode } from "../typings";
 import { AudioPlayer, AudioPlayerStatus, VoiceConnection } from "@discordjs/voice";
+import { SongManager } from "../utils/structures/SongManager";
 import { TextBasedChannel, Snowflake } from "discord.js";
+import { LoopMode } from "../typings";
 
 export class ServerQueue {
     public loopMode: LoopMode = "OFF";
