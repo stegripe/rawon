@@ -1,4 +1,4 @@
-import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
+import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, AudioResource, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
 import { SongManager } from "../utils/structures/SongManager";
 import { createEmbed } from "../utils/functions/createEmbed";
 import { play } from "../utils/handlers/GeneralUtil";
@@ -20,6 +20,7 @@ export class ServerQueue {
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
     private _skipVoters: Snowflake[] = [];
+    private _volume = 100;
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -31,11 +32,16 @@ export class ServerQueue {
             },
             _lastVSUpdateMsg: {
                 enumerable: false
+            },
+            _volume: {
+                enumerable: false
             }
         });
 
         this.player.on("stateChange", (oldState, newState) => {
             if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
+                newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
+
                 const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).song;
                 this.sendStartPlayingMsg(newSong);
             } else if (newState.status === AudioPlayerStatus.Idle) {
@@ -83,6 +89,15 @@ export class ServerQueue {
         clearTimeout(this.timeout!);
         clearTimeout(this.dcTimeout!);
         delete this.textChannel.guild.queue;
+    }
+
+    public get volume(): number {
+        return this._volume;
+    }
+
+    public set volume(newVol: number) {
+        this._volume = newVol;
+        (this.player.state as AudioPlayerPlayingState & { resource: AudioResource | undefined }).resource.volume?.setVolumeLogarithmic(this._volume / 100);
     }
 
     public get skipVoters(): Snowflake[] {
