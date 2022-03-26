@@ -21,7 +21,7 @@ export class NowPlayingCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
         function getEmbed(): MessageEmbed {
-            const song = ((ctx.guild?.queue?.player?.state as (AudioPlayerState & {
+            const song = ((ctx.guild?.queue?.player.state as (AudioPlayerState & {
                 resource: AudioResource | undefined;
             }) | undefined)?.resource?.metadata as QueueSong | undefined)?.song;
 

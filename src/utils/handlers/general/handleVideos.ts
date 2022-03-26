@@ -8,8 +8,8 @@ import { chunk } from "../../functions/chunk";
 import { Song } from "../../../typings";
 import i18n from "../../../config";
 import { play } from "./play";
+import { Message, StageChannel, TextChannel, Util, VoiceChannel } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
-import { Message, StageChannel, Util, VoiceChannel } from "discord.js";
 
 export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: Song[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
@@ -42,13 +42,13 @@ export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: 
         await sendPagination();
 
         if (wasIdle) {
-            void play(client, ctx.guild, undefined, wasIdle);
+            void play(ctx.guild, undefined, wasIdle);
         }
 
         return;
     }
 
-    ctx.guild!.queue = new ServerQueue(ctx.channel!);
+    ctx.guild!.queue = new ServerQueue(ctx.channel as TextChannel);
     await sendPagination();
 
     try {
@@ -74,5 +74,5 @@ export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: 
         return;
     }
 
-    void play(client, ctx.guild!);
+    void play(ctx.guild!);
 }

@@ -32,7 +32,7 @@ export class LyricsCommand extends BaseCommand {
             ? ctx.args.join(" ")
             : ctx.options?.getString("query")
                 ? ctx.options.getString("query")
-                : (((ctx.guild?.queue?.player?.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as QueueSong | undefined)?.song.title;
+                : (((ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as AudioResource | undefined)?.metadata as QueueSong | undefined)?.song.title;
         if (!query) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)]

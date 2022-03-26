@@ -29,7 +29,7 @@ export class VolumeCommand extends BaseCommand {
     @sameVC
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("volume", false));
-        const resVolume = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.volume!;
+        const resVolume = (ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.volume!;
 
         if (isNaN(volume)) {
             return ctx.reply({

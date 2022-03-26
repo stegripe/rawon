@@ -84,13 +84,13 @@ export class SkipToCommand extends BaseCommand {
             song = songs[Number(targetType) - 1];
         }
 
-        if (song.key === ((ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key) {
+        if (song.key === ((ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)]
             });
         }
 
-        void play(this.client, ctx.guild!, song.key);
+        void play(ctx.guild!, song.key);
 
         return ctx.reply({
             embeds: [createEmbed("success", `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {

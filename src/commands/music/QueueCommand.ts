@@ -21,7 +21,7 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
 export class QueueCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
-        const np = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
+        const np = (ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
         const full = ctx.guild!.queue!.songs.sortByIndex();
         const songs = ctx.guild?.queue?.loopMode === "QUEUE"
             ? full

@@ -124,7 +124,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         clearTimeout(queue.timeout!);
         state.guild.queue!.timeout = null;
-        queue.player?.pause();
+        queue.player.pause();
 
         const timeout = 60000;
         const duration = formatMS(timeout);
@@ -153,7 +153,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         clearTimeout(queue.timeout!);
         state.guild.queue!.timeout = null;
 
-        const song = ((queue.player!.state as AudioPlayerPausedState).resource.metadata as QueueSong).song;
+        const song = ((queue.player.state as AudioPlayerPausedState).resource.metadata as QueueSong).song;
 
         void queue.textChannel.send({
             embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
@@ -163,6 +163,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     name: i18n.__("events.voiceStateUpdate.resumeQueueFooter")
                 })]
         }).then(msg => queue.lastVSUpdateMsg = msg.id);
-        state.guild.queue?.player?.unpause();
+        state.guild.queue?.player.unpause();
     }
 }

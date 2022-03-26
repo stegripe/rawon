@@ -26,7 +26,7 @@ export class SkipCommand extends BaseCommand {
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!).catch(() => null);
-        const song = (ctx.guild!.queue!.player!.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
+        const song = (ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
 
         function ableToSkip(member: GuildMember): boolean {
             return member.roles.cache.has(djRole?.id ?? "") ||
@@ -66,7 +66,7 @@ export class SkipCommand extends BaseCommand {
         }
 
         if (!ctx.guild?.queue?.playing) ctx.guild!.queue!.playing = true;
-        ctx.guild?.queue?.player?.stop(true);
+        ctx.guild?.queue?.player.stop(true);
         void ctx.reply({
             embeds: [createEmbed("success", `⏭ **|** ${i18n.__mf("commands.music.skip.skipMessage", {
                 song: `[${song.song.title}](${song.song.url}})`
