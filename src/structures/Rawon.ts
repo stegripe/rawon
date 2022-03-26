@@ -16,6 +16,7 @@ import { resolve } from "path";
 import got from "got";
 
 export class Rawon extends Client {
+    public readonly config = config;
     public readonly commands = new CommandManager(this, resolve(importURLToString(import.meta.url), "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(importURLToString(import.meta.url), "..", "events"));
     public readonly data = new JSONDataManager<Record<string, GuildData>>(resolve(process.cwd(), "data.json"));
@@ -25,7 +26,6 @@ export class Rawon extends Client {
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
     public readonly soundcloud = soundcloud;
-    public readonly config = config;
     public readonly request = got;
 
     public constructor(opt: ClientOptions) { super(opt); }
