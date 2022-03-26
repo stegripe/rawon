@@ -179,7 +179,7 @@ export class SearchCommand extends BaseCommand {
 
         return tracks.slice(0, 10).map((x, i) => (
             {
-                label: x.title.length > 98 ? `${x.title.substr(0, 97)}...` : x.title,
+                label: x.title.length > 98 ? `${x.title.slice(0, 97)}...` : x.title,
                 emoji: emojis[i],
                 value: x.url
             }

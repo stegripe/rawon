@@ -158,7 +158,7 @@ export class HelpCommand extends BaseCommand {
             {
                 label: x.meta.name,
                 emoji: emojis[i],
-                description: x.meta.description!.length > 47 ? `${x.meta.description!.substr(0, 47)}...` : x.meta.description!,
+                description: x.meta.description!.length > 47 ? `${x.meta.description!.slice(0, 47)}...` : x.meta.description!,
                 value: x.meta.name
             }
         ));
