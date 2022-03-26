@@ -1,28 +1,32 @@
 /* eslint-disable class-methods-use-this */
-import { Rawon } from "../structures/Rawon";
+import { Rawon } from "../../structures/Rawon";
 import { Guild, Role } from "discord.js";
-import { parse, resolve } from "path";
-import { FFmpeg } from "prism-media";
+import { parse } from "path";
+import prism from "prism-media";
+
+const { FFmpeg } = prism;
 
 export class ClientUtils {
     public constructor(public readonly client: Rawon) {}
 
     public async fetchMuteRole(guild: Guild): Promise<Role> {
-        return guild.roles.cache.find(x => x.name === this.client.config.muteRoleName) ?? guild.roles.create({
-            mentionable: false,
-            name: this.client.config.muteRoleName,
-            permissions: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-            reason: "Create Muted role"
-        });
+        return guild.roles.cache.find(x => x.name === this.client.config.muteRoleName) ??
+            guild.roles.create({
+                mentionable: false,
+                name: this.client.config.muteRoleName,
+                permissions: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
+                reason: "Create Muted role"
+            });
     }
 
     public async fetchDJRole(guild: Guild): Promise<Role> {
-        return guild.roles.cache.find(x => x.name === this.client.config.djRoleName) ?? guild.roles.create({
-            mentionable: false,
-            name: this.client.config.djRoleName,
-            permissions: ["SEND_MESSAGES", "CONNECT"],
-            reason: "Create DJ role"
-        });
+        return guild.roles.cache.find(x => x.name === this.client.config.djRoleName) ??
+            guild.roles.create({
+                mentionable: false,
+                name: this.client.config.djRoleName,
+                permissions: ["SEND_MESSAGES", "CONNECT"],
+                reason: "Create DJ role"
+            });
     }
 
     public requiredVoters(memberAmount: number): number {
@@ -53,20 +57,31 @@ export class ClientUtils {
         let arr: string[] = [];
 
         if (this.client.shard) {
-            const shardChannels = await this.client.shard.broadcastEval((c, t) => c.channels.cache.filter(ch => {
-                if (t) return ch.type === "GUILD_TEXT" || ch.type === "GUILD_PUBLIC_THREAD" || ch.type === "GUILD_PRIVATE_THREAD";
+            const shardChannels = await this.client.shard.broadcastEval(
+                (c, t) => c.channels.cache.filter(ch => {
+                    if (t) {
+                        return ch.type === "GUILD_TEXT" ||
+                        ch.type === "GUILD_PUBLIC_THREAD" ||
+                        ch.type === "GUILD_PRIVATE_THREAD";
+                    }
 
-                return true;
-            }).map(ch => ch.id), {
-                context: textOnly
-            });
+                    return true;
+                }).map(ch => ch.id),
+                {
+                    context: textOnly
+                }
+            );
 
             for (const channels of shardChannels) {
                 arr = arr.concat(channels);
             }
         } else {
             arr = this.client.channels.cache.filter(ch => {
-                if (textOnly) return ch.type === "GUILD_TEXT" || ch.type === "GUILD_PUBLIC_THREAD" || ch.type === "GUILD_PRIVATE_THREAD";
+                if (textOnly) {
+                    return ch.type === "GUILD_TEXT" ||
+                    ch.type === "GUILD_PUBLIC_THREAD" ||
+                    ch.type === "GUILD_PRIVATE_THREAD";
+                }
 
                 return true;
             }).map(ch => ch.id);
@@ -87,7 +102,9 @@ export class ClientUtils {
 
     public async getPlayingCount(): Promise<number> {
         if (this.client.shard) {
-            const playings = await this.client.shard.broadcastEval(c => c.guilds.cache.filter(x => x.queue?.playing === true).size);
+            const playings = await this.client.shard.broadcastEval(
+                c => c.guilds.cache.filter(x => x.queue?.playing === true).size
+            );
 
             return playings.reduce((prev, curr) => prev + curr);
         }
@@ -96,14 +113,18 @@ export class ClientUtils {
     }
 
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
-        const file = await import(resolve(path)).then(m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]);
+        const file = await import(path)
+            .then(
+                m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]
+            );
         return file ? new file(...(args as unknown[])) : undefined;
     }
 
     public getFFmpegVersion(): string {
         try {
             const ffmpeg = FFmpeg.getInfo();
-            return ffmpeg.version.split(/_|-| /).find(x => (/[0-9.]/).test(x))?.replace(/[^0-9.]/g, "") ?? "Unknown";
+            return ffmpeg.version.split(/_|-| /).find(x => (/[0-9.]/).test(x))?.replace(/[^0-9.]/g, "") ??
+            "Unknown";
         } catch {
             return "Unknown";
         }

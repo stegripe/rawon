@@ -1,22 +1,20 @@
 import { CommandContext } from "../../structures/CommandContext";
+import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { createEmbed } from "../../utils/createEmbed";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { ColorResolvable } from "discord.js";
 
+@Command<typeof PingCommand>({
+    aliases: ["pang", "pung", "peng", "pong"],
+    description: i18n.__("commands.general.ping.description"),
+    name: "ping",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}ping"
+})
 export class PingCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["pang", "pung", "peng", "pong"],
-            description: i18n.__("commands.general.ping.description"),
-            name: "ping",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}ping"
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         const before = Date.now();
@@ -48,7 +46,8 @@ export class PingCommand extends BaseCommand {
                 iconURL: this.client.user!.displayAvatarURL()
             })
             .setTimestamp();
-        msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+        msg.edit({ content: " ", embeds: [embed] })
+            .catch(e => this.client.logger.error("PROMISE_ERR:", e));
     }
 
     // eslint-disable-next-line class-methods-use-this

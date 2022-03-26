@@ -1,5 +1,6 @@
-import { Rawon } from "../structures/Rawon";
-import { IEvent } from "../typings";
+import { pathStringToURLString } from "../functions/pathStringToURLString";
+import { Rawon } from "../../structures/Rawon";
+import { Event } from "../../typings";
 import { promises as fs } from "fs";
 import { resolve } from "path";
 
@@ -10,7 +11,10 @@ export class EventsLoader {
             .then(async events => {
                 this.client.logger.info(`Loading ${events.length} events...`);
                 for (const file of events) {
-                    const event = await this.client.utils.import<IEvent>(resolve(this.path, file), this.client);
+                    const event = await this.client.utils.import<Event>(
+                        pathStringToURLString(resolve(this.path, file)),
+                        this.client
+                    );
                     if (event === undefined) throw new Error(`File ${file} is not a valid event file.`);
                     this.client.logger.info(`Events on listener ${event.name.toString()} has been added.`);
                     this.client.on(event.name, (...args) => event.execute(...args));

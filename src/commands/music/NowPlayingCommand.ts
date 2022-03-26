@@ -1,34 +1,39 @@
 import { CommandContext } from "../../structures/CommandContext";
+import { createEmbed } from "../../utils/functions/createEmbed";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { createEmbed } from "../../utils/createEmbed";
-import { IQueueSong } from "../../typings";
+import { Command } from "../../utils/decorators/Command";
+import { QueueSong } from "../../typings";
 import i18n from "../../config";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
+@Command({
+    aliases: ["np"],
+    description: i18n.__("commands.music.nowplaying.description"),
+    name: "nowplaying",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}nowplaying"
+})
 export class NowPlayingCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["np"],
-            description: i18n.__("commands.music.nowplaying.description"),
-            name: "nowplaying",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}nowplaying"
-        });
-    }
-
+    @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
-        if (!haveQueue(ctx)) return;
-
         function getEmbed(): MessageEmbed {
-            const song = ((ctx.guild?.queue?.player?.state as (AudioPlayerState & {
+            const song = ((ctx.guild?.queue?.player.state as (AudioPlayerState & {
                 resource: AudioResource | undefined;
-            }) | undefined)?.resource?.metadata as IQueueSong | undefined)?.song;
+            }) | undefined)?.resource?.metadata as QueueSong | undefined)?.song;
 
-            return createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")}`).setThumbnail(song?.thumbnail ?? "https://api.tiramitzu.me/assets/images/icon.png");
+            return createEmbed("info", `${
+                ctx.guild?.queue?.playing
+                    ? "▶"
+                    : "⏸"
+            } **|** ${
+                song
+                    ? `**[${song.title}](${song.url})**`
+                    : i18n.__("commands.music.nowplaying.emptyQueue")
+            }`).setThumbnail(song?.thumbnail ?? "https://api.tiramitzu.me/assets/images/icon.png");
         }
 
         const buttons = new MessageActionRow()
@@ -67,7 +72,9 @@ export class NowPlayingCommand extends BaseCommand {
 
             switch (i.customId) {
                 case "TOGGLE_STATE_BUTTON": {
-                    cmdName = ctx.guild?.queue?.playing ? "pause" : "resume";
+                    cmdName = ctx.guild?.queue?.playing
+                        ? "pause"
+                        : "resume";
                     break;
                 }
 

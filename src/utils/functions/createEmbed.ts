@@ -1,4 +1,4 @@
-import { embedColor, noEmoji, yesEmoji } from "../config";
+import { embedColor, noEmoji, yesEmoji } from "../../config";
 import { ColorResolvable, MessageEmbed } from "discord.js";
 
 type hexColorsType = "error" | "info" | "success" | "warn";
