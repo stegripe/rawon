@@ -8,17 +8,18 @@ import i18n from "../config";
 import { TextChannel, Snowflake } from "discord.js";
 
 export class ServerQueue {
-    public loopMode: LoopMode = "OFF";
-    public connection: VoiceConnection | null = null;
-    public shuffle = false;
     public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
     public readonly player: AudioPlayer = createAudioPlayer();
+    public connection: VoiceConnection | null = null;
     public dcTimeout: NodeJS.Timeout | null = null;
     public timeout: NodeJS.Timeout | null = null;
     public readonly songs = new SongManager();
-    private _skipVoters: Snowflake[] = [];
-    private _lastMusicMsg: Snowflake | null = null;
+    public loopMode: LoopMode = "OFF";
+    public shuffle = false;
+
     private _lastVSUpdateMsg: Snowflake | null = null;
+    private _lastMusicMsg: Snowflake | null = null;
+    private _skipVoters: Snowflake[] = [];
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
