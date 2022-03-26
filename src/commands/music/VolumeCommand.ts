@@ -4,7 +4,6 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { Message } from "discord.js";
 
 @Command({
@@ -29,12 +28,12 @@ export class VolumeCommand extends BaseCommand {
     @sameVC
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("volume", false));
-        const resVolume = (ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.volume!;
+        const current = ctx.guild!.queue!.volume;
 
         if (isNaN(volume)) {
             return ctx.reply({
                 embeds: [createEmbed("info", `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
-                    volume: `\`${resVolume.volume * 100}\``
+                    volume: `\`${current}\``
                 })}`).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })]
             });
         }
@@ -53,7 +52,7 @@ export class VolumeCommand extends BaseCommand {
             });
         }
 
-        resVolume.setVolume(volume / 100);
+        ctx.guild!.queue!.volume = volume;
         return ctx.reply({
             embeds: [createEmbed("success", `🔊 **|** ${i18n.__mf("commands.music.volume.newVolume", {
                 volume
