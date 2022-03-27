@@ -51,6 +51,8 @@ export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: 
     ctx.guild!.queue = new ServerQueue(ctx.channel as TextChannel);
     await sendPagination();
 
+    client.debugLog.logData("info", "HANDLE_VIDEOS", `Created a server queue for ${ctx.guild!.name}(${ctx.guild!.id})`);
+
     try {
         const connection = joinVoiceChannel({
             adapterCreator: ctx.guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,
@@ -61,9 +63,13 @@ export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: 
             client.logger.debug(message);
         });
         ctx.guild!.queue.connection = connection;
+
+        client.debugLog.logData("info", "HANDLE_VIDEOS", `Connected to ${voiceChannel.name}(${voiceChannel.id}) in guild ${ctx.guild!.name}(${ctx.guild!.id})`);
     } catch (error) {
         ctx.guild?.queue.songs.clear();
         delete ctx.guild!.queue;
+
+        client.debugLog.logData("error", "HANDLE_VIDEOS", `Error occured while connecting to ${ctx.guild!.name}(${ctx.guild!.id}). Reason: ${(error as Error).message}`);
 
         client.logger.error("PLAY_CMD_ERR:", error);
         void ctx.channel!.send({
