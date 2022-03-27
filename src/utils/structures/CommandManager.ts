@@ -1,6 +1,6 @@
+import { CategoryMeta, CommandComponent, RegisterCmdOptions } from "../../typings";
 import { pathStringToURLString } from "../functions/pathStringToURLString";
 import { CommandContext } from "../../structures/CommandContext";
-import { CategoryMeta, CommandComponent, RegisterCmdOptions } from "../../typings";
 import { createEmbed } from "../functions/createEmbed";
 import { Rawon } from "../../structures/Rawon";
 import i18n from "../../config";
@@ -54,7 +54,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                             name: command.meta.contextChat,
                                             type: "MESSAGE"
                                         }, {
-                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to message context for ${g?.id ?? "???"}. Reason: ${err.message}`),
+                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to message context for ${g?.id ?? "???"}, reason: ${err.message}`),
                                             onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to message context for ${g.id}`)
                                         });
                                         if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to message context for global.`);
@@ -64,7 +64,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                             name: command.meta.contextUser,
                                             type: "USER"
                                         }, {
-                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to user context for ${g?.id ?? "???"}. Reason: ${err.message}`),
+                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to user context for ${g?.id ?? "???"}, reason: ${err.message}`),
                                             onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to user context for ${g.id}`)
                                         });
                                         if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to user context for global.`);
@@ -82,7 +82,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                         }
 
                                         await this.registerCmd(command.meta.slash as ApplicationCommandData, {
-                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to slash command for ${g?.id ?? "???"}. Reason: ${err.message}`),
+                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to slash command for ${g?.id ?? "???"}, reason: ${err.message}`),
                                             onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to slash command for ${g.id}`)
                                         });
                                         if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to slash command for global.`);

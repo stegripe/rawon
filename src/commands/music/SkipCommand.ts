@@ -20,7 +20,6 @@ import { GuildMember } from "discord.js";
 })
 export class SkipCommand extends BaseCommand {
     private readonly manager = new OperationManager();
-
     @inVC
     @haveQueue
     @sameVC

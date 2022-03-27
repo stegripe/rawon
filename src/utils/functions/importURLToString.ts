@@ -1,5 +1,5 @@
-import { URL } from "url";
 import { platform } from "os";
+import { URL } from "url";
 
 export function importURLToString(url: string): string {
     const pathArray = new URL(url).pathname.split(/\/|\\/g).filter(Boolean);

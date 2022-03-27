@@ -1,11 +1,5 @@
 import { lang } from "./env";
-import {
-    ClientOptions,
-    Intents,
-    Options,
-    ShardingManagerMode,
-    Sweepers
-} from "discord.js";
+import { ClientOptions, Intents, Options, ShardingManagerMode, Sweepers } from "discord.js";
 import { join } from "path";
 import i18n from "i18n";
 
