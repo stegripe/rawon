@@ -13,7 +13,7 @@ export class ServerQueue {
     public connection: VoiceConnection | null = null;
     public dcTimeout: NodeJS.Timeout | null = null;
     public timeout: NodeJS.Timeout | null = null;
-    public readonly songs = new SongManager();
+    public readonly songs = new SongManager(this.client, this.textChannel.guild);
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
 
