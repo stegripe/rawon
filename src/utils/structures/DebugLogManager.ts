@@ -1,11 +1,12 @@
 import { BaseLogger, LogLevel } from "./RawonLogger";
 
 export class DebugLogManager extends BaseLogger {
-    public constructor(prod = true) {
-        super(prod);
+    public constructor(public readonly logEnabled: boolean, dev = true) {
+        super(dev);
     }
 
     public logData(level: LogLevel, contextName: string, data: string[][] | string): void {
+        if (!this.logEnabled) return;
         const messages: string[] = [`[${contextName}]`];
 
         if (Array.isArray(data)) {
