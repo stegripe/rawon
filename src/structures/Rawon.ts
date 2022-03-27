@@ -21,7 +21,7 @@ export class Rawon extends Client {
     public readonly events = new EventsLoader(this, resolve(importURLToString(import.meta.url), "..", "events"));
     public readonly data = new JSONDataManager<Record<string, GuildData>>(resolve(process.cwd(), "data.json"));
     public readonly logger = new RawonLogger({ prod: this.config.isProd });
-    public readonly debugLog = new DebugLogManager(this.config.isProd);
+    public readonly debugLog = new DebugLogManager(this.config.debugMode, this.config.isProd);
     public readonly modlogs = new ModerationLogs(this);
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
