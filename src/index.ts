@@ -1,5 +1,5 @@
-import { importURLToString } from "./utils/functions/importURLToString";
 import { enableRepl, isProd, shardingMode, shardsCount } from "./config";
+import { importURLToString } from "./utils/functions/importURLToString";
 import { RawonLogger } from "./utils/structures/RawonLogger";
 import { ShardingManager } from "discord.js";
 import { resolve } from "path";
@@ -26,7 +26,7 @@ if (enableRepl) {
 }
 
 manager.on("shardCreate", shard => {
-    log.info(`[ShardManager] Shard #${shard.id} Spawned.`);
+    log.info(`[ShardManager] Shard #${shard.id} has spawned.`);
     shard.on("disconnect", () => log.warn("SHARD_DISCONNECTED: ", { stack: `[ShardManager] Shard #${shard.id} has disconnected.` }))
         .on("reconnection", () => log.info(`[ShardManager] Shard #${shard.id} has reconnected.`));
     if (manager.shards.size === manager.totalShards) log.info("[ShardManager] All shards are spawned successfully.");

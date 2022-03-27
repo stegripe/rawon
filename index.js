@@ -52,7 +52,9 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
         const modulesPath = resolve(process.cwd(), "node_modules");
 
         if (existsSync(modulesPath)) {
-            rmSync(modulesPath, { recursive: true });
+            rmSync(modulesPath, {
+                recursive: true
+            });
         }
     }
 

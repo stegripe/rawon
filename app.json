@@ -23,27 +23,27 @@
             "value": "3CAAFF"
         },
         "LOCALE": {
-            "description": "What should be the language of your bot? Example: en | Available: en, es, id",
+            "description": "What should be the language of your bot? | Example: en | Available: en, es, id",
             "required": false,
             "value": "en"
         },
         "ACTIVITIES": {
-            "description": "Activity list | Example: [\"Hello!\"]",
+            "description": "Activity list, what text should be appear on your bot's status? | Example: [\"Hello!\"]",
             "required": false,
             "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
         },
         "ACTIVITY_TYPES": {
-            "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this | Example: [\"PLAYING\", \"COMPETING\"]",
+            "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this. | Example: [\"PLAYING\", \"COMPETING\"]",
             "required": false,
             "value": "[\"PLAYING\", \"LISTENING\", \"WATCHING\", \"PLAYING\", \"COMPETING\"]"
         },
         "OWNERS": {
-            "description": "What is the owner's ID of the bot? | Example: [\"319872685897416725\", \"390045370240991234\"]",
+            "description": "What is the owner's ID of the bot? | Example: [\"390045370240991234\", \"366169273485361153\"]",
             "required": false,
             "value": "[\"\"]"
         },
         "DEV_GUILD": {
-            "description": "What is your server's ID? | Example: [\"332877090003091456\"]",
+            "description": "What is your server's ID? | Example: [\"521178509033340968\"]",
             "required": false,
             "value": "[\"\"]"
         },
@@ -53,7 +53,7 @@
             "value": "production"
         },
         "STREAM_STRATEGY": {
-            "description": "Which youtube downloader do you want to use? Note: if you use play-dl, it will support a few sites. | Example: \"play-dl\" | Available: \"play-dl\", \"youtube-dl\"",
+            "description": "Which youtube downloader do you want to use? But if you use play-dl, it will support a few sites. | Example: \"play-dl\" | Available: \"play-dl\", \"youtube-dl\"",
             "required": false,
             "value": "youtube-dl"
         },
@@ -63,7 +63,7 @@
             "value": "yes"
         },
         "MUSIC_SELECTION_TYPE": {
-            "description": "Which music selection type do you want to use? | Example: selectmenu | Available: message (just like in the previous version) or selectmenu (uses discord selection menu)",
+            "description": "Which music selection type do you want to use? | Example: selectmenu | Available: message (just like in the previous version), selectmenu (uses discord selection menu)",
             "required": false,
             "value": "message"
         },
@@ -73,7 +73,7 @@
             "value": "no"
         },
         "STAY_IN_VC_AFTER_FINISHED": {
-            "description": "Do you want to make your bot not leave the voice channel after playing a song? | Example: no",
+            "description": "Do you want to make your bot not leaving the voice channel after playing a song? | Example: no",
             "required": false,
             "value": "no"
         },
@@ -96,10 +96,20 @@
             "description": "What should be your bot's emoji for every failed sentence? | Example: ❌",
             "required": false,
             "value": "❌"
+        },
+        "DEBUG_MODE": {
+            "description": "Do you want to enable Debug Mode? This mode will print all information (such as raw event data, queue changes, etc) on the console. | Example: no",
+            "required": false,
+            "value": "no"
+        },
+        "REPL": {
+            "description": "Do you want to enable REPL feature? You can evaluate code from the console using this feature. REPL included with \"shardManager\" variable containing the ShardManager of the bot. | Example: no",
+            "required": false,
+            "value": "no"
         }
     },
     "repository": "https://github.com/Rahagia/rawon",
-    "website": "https://rawon.tiramitzu.me",
+    "website": "https://rawon.rahagia.tech",
     "formation": {
         "worker": {
             "quantity": 1,

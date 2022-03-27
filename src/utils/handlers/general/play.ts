@@ -48,7 +48,6 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     if (wasIdle) {
         void playResource();
     } else {
-        // eslint-disable-next-line max-lines
         entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
             .then(async () => {
                 await playResource();

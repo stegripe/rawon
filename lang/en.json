@@ -178,7 +178,7 @@
 			"nowplaying": {
 				"description": "Show the media player status",
 				"emptyQueue": "Queue is empty",
-				"disableButton": "After 30 seconds, the buttons will no longer be active."
+				"disableButton": "This button is no longer active and removed."
 			},
 			"pause": {
 				"description": "Pause the music player",

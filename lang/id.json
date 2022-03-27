@@ -152,7 +152,7 @@
 			"nowplaying": {
 				"description": "Menunjukkan status media player",
 				"emptyQueue": "Antrian telah kosong",
-				"disableButton": "Setelah 30 detik, tombol-tombol tidak akan aktif kembali."
+				"disableButton": "Tombol-tombol ini sudah tidak lagi aktif dan terhapus."
 			},
 			"pause": {
 				"description": "Menjeda media player",

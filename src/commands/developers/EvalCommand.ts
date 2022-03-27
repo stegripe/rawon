@@ -84,10 +84,10 @@ export class EvalCommand extends BaseCommand {
     }
 
     private async hastebin(text: string): Promise<string> {
-        const result = await this.client.request.post("https://bin.tiramitzu.me/documents", {
+        const result = await this.client.request.post("https://bin.rahagia.tech/documents", {
             body: text
         }).json<{ key: string }>();
 
-        return `https://bin.tiramitzu.me/${result.key}`;
+        return `https://bin.rahagia.tech/${result.key}`;
     }
 }
