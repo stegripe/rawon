@@ -131,7 +131,7 @@
 				"botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
 				"invalidAmount": "Please specify a valid number of messages to delete.",
 				"purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
-				"purgeSuccess": "**{amount}** messages have been **`PURGED`**"
+				"purgeSuccess": "{amount, plural, one {**1** message} other {**#** messages}} have been **`PURGED`**"
 			},
 			"unban": {
 				"description": "Un-ban someone from the server",
@@ -201,7 +201,7 @@
 				"usage": "{prefix}remove <positions>",
 				"noPermission": "You don't have permission to use this command.",
 				"noPositions": "Please specify the song positions to remove.",
-				"songsRemoved": "Removed {removed} song(s) from the queue. ",
+				"songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue. ",
 				"songSkip": "The current song was removed, song skipped."
 			},
 			"repeat": {
