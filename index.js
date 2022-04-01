@@ -62,13 +62,6 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
     execSync(`npm install${isGlitch ? " --only=prod" : ""}${forceInstall ? " --force" : ""} ${additionalArgs.join(" ")}`);
 }
 
-function importURLToString(url) {
-    const paths = new URL(url).pathname.split(/\/|\\/g).filter(Boolean);
-
-    paths.pop();
-    return decodeURIComponent(paths.join("/"));
-}
-
 if (isGlitch) {
     try {
         console.info("[INFO] Trying to re-install modules...");
@@ -130,11 +123,6 @@ if (isGlitch || isReplit) {
 }
 
 const streamStrategy = process.env.STREAM_STRATEGY;
-const isUnix = ["aix", "android", "darwin", "freebsd", "linux", "openbsd", "sunos"].includes(process.platform.toLowerCase());
-
-process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
-process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
-
 if (streamStrategy !== "play-dl") await downloadExecutable();
 if (streamStrategy === "play-dl") {
     try {
