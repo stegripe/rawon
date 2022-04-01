@@ -3,3 +3,6 @@ dist/
 
 # Start file
 index.js
+
+# YT-DLP utils folder
+yt-dlp-utils/
