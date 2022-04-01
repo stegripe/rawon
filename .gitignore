@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Rawon cache directories and files
+data.json
+scripts/
