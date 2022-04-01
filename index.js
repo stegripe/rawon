@@ -1,3 +1,4 @@
+import { downloadExecutable } from "./yt-dlp-utils";
 import { execSync } from "child_process";
 import { existsSync, rmSync } from "fs";
 import { resolve } from "path";
@@ -134,23 +135,7 @@ const isUnix = ["aix", "android", "darwin", "freebsd", "linux", "openbsd", "suno
 process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
 process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
 
-if (streamStrategy !== "play-dl") {
-    try {
-        require("youtube-dl-exec");
-    } catch {
-        console.info("[INFO] Installing youtube-dl-exec...");
-        npmInstall(false, false, ["youtube-dl-exec"]);
-        console.info("[INFO] Youtube-dl-exec has been installed.");
-    }
-
-    const ytdlBinaryDir = resolve(importURLToString(import.meta.url), "node_modules", "youtube-dl-exec", "bin")
-    if (!existsSync(resolve(ytdlBinaryDir, isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
-        console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
-        if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
-        require("youtube-dl-exec/scripts/postinstall");
-        console.info("[INFO] Yt-dlp has been downloaded.");
-    }
-}
+if (streamStrategy !== "play-dl") await downloadExecutable();
 if (streamStrategy === "play-dl") {
     try {
         require("play-dl");
