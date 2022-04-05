@@ -19,12 +19,12 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
     }
 
     public set(key: Snowflake, data: QueueSong): this {
-        this.client.debugLog.logData("info", "SONG_MANAGER", `New value added to ${this.guild.name}(${this.guild.id}) song manager. Key: ${key}`);
+        (this.client as Rawon | undefined)?.debugLog.logData("info", "SONG_MANAGER", `New value added to ${this.guild.name}(${this.guild.id}) song manager. Key: ${key}`);
         return super.set(key, data);
     }
 
     public delete(key: Snowflake): boolean {
-        this.client.debugLog.logData("info", "SONG_MANAGER", `Value ${key} deleted from ${this.guild.name}(${this.guild.id}) song manager.`);
+        (this.client as Rawon | undefined)?.debugLog.logData("info", "SONG_MANAGER", `Value ${key} deleted from ${this.guild.name}(${this.guild.id}) song manager.`);
         return super.delete(key);
     }
 
