@@ -21,13 +21,11 @@ import { AudioPlayerPlayingState } from "@discordjs/voice";
 export class QueueCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
-        console.log("ehe");
         const np = (ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
         const full = ctx.guild!.queue!.songs.sortByIndex();
         const songs = ctx.guild?.queue?.loopMode === "QUEUE"
             ? full
             : full.filter(val => val.index >= np.index);
-        console.log("a");
         const pages = await Promise.all(chunk([...songs.values()], 10).map(async (s, n) => {
             const names = await Promise.all(s.map((song, i) => {
                 const npKey = np.key;
@@ -38,11 +36,8 @@ export class QueueCommand extends BaseCommand {
 
             return names.join("\n");
         }));
-        console.log("b");
         const embed = createEmbed("info", pages[0]);
         const msg = await ctx.reply({ embeds: [embed] });
-
-        console.log("c");
 
         return new ButtonPagination(msg, {
             author: ctx.author.id,
