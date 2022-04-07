@@ -39,7 +39,7 @@
     "soundcloud.ts": "^0.4.5",
     "tslib": "^2.3.1",
     "tweetnacl": "^1.0.3",
-    "youtubei": "^0.0.1-rc.32"
+    "youtubei": "^0.0.1-rc.34"
   },
   "devDependencies": {
     "@rahagia/eslint-config": "^8.1.1",
