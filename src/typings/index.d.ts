@@ -13,7 +13,7 @@ export interface QueryData {
 }
 
 export interface BasicYoutubeVideoInfo {
-    thumbnails: { url: string; width: number; height: number }[];
+    thumbnails?: { url: string; width: number; height: number }[];
     duration: number;
     title: string;
     url: string;
