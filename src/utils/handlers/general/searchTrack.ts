@@ -175,7 +175,7 @@ export async function searchTrack(client: Rawon, query: string, source: "soundcl
                 result.items = [{
                     duration: info?.duration ?? 0,
                     id: info?.id ?? "",
-                    thumbnail: info?.thumbnails.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url ?? "",
+                    thumbnail: info?.thumbnails?.sort((a, b) => (b.height * b.width) - (a.height * a.width))[0].url ?? "",
                     title: info?.title ?? "Unknown Song",
                     url: info?.url ?? url.toString()
                 }];
