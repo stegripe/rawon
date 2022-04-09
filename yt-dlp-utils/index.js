@@ -3,7 +3,9 @@ import { spawn } from "child_process";
 import { resolve } from "path";
 import got from "got";
 
-const suffix = process.platform === "win32" ? ".exe" : "";
+const suffix = process.platform === "win32" ? ".exe" : (
+    process.platform === "darwin" ? "_macos" : ""
+);
 const filename = `yt-dlp${suffix}`;
 const scriptsPath = resolve(process.cwd(), "scripts");
 const exePath = resolve(scriptsPath, filename);
