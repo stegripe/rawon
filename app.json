@@ -53,9 +53,9 @@
             "value": "production"
         },
         "STREAM_STRATEGY": {
-            "description": "Which youtube downloader do you want to use? But if you use play-dl, it will support a few sites. | Example: \"play-dl\" | Available: \"play-dl\", \"youtube-dl\"",
+            "description": "Which youtube downloader do you want to use? But if you use play-dl, it will support a few sites. | Example: \"play-dl\" | Available: \"play-dl\", \"yt-dlp\"",
             "required": false,
-            "value": "youtube-dl"
+            "value": "yt-dlp"
         },
         "ENABLE_SLASH_COMMAND": {
             "description": "Do you want to enable slash command support? | Example: yes",

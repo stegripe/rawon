@@ -14,7 +14,7 @@ export const isProd = !isDev;
 // String values
 export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "3CAAFF";
-export const streamStrategy = process.env.STREAM_STRATEGY! || "youtube-dl";
+export const streamStrategy = process.env.STREAM_STRATEGY! || "yt-dlp";
 export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
 export const lang = (process.env.LOCALE?.toLowerCase() ?? "") || "en";
 export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
