@@ -42,7 +42,7 @@ export async function downloadExecutable() {
     await new Promise((resolve, reject) => {
         got.get(asset.browser_download_url).buffer().then(x => {
             mkdirSync(scriptsPath, { recursive: true });
-            writeFileSync(exePath, x);
+            writeFileSync(exePath, x, { mode: 0o777 });
         }).then(resolve).catch(reject);
     });
     console.info("[INFO] Yt-dlp has been downloaded.");
