@@ -40,9 +40,9 @@ export class InteractionCreateEvent extends BaseEvent {
         if (interaction.isContextMenu()) {
             const data = interaction.options.getUser("user") ?? interaction.options.getMessage("message");
             const cmd = this.client.commands.find(
-                x => (data as { type: string }).type === "MESSAGE"
+                x => ((data as { type: string }).type === "MESSAGE"
                     ? x.meta.contextChat === interaction.commandName
-                    : x.meta.contextUser === interaction.commandName
+                    : x.meta.contextUser === interaction.commandName)
             );
             if (cmd) {
                 context.additionalArgs.set("options", data);

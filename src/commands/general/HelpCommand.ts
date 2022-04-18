@@ -59,7 +59,7 @@ export class HelpCommand extends BaseCommand {
             for (const category of this.client.commands.categories.values()) {
                 const isDev = this.client.config.owners.includes(ctx.author.id);
                 const cmds = category.cmds
-                    .filter(c => isDev ? true : !c.meta.devOnly)
+                    .filter(c => (isDev ? true : !c.meta.devOnly))
                     .map(c => `\`${c.meta.name}\``);
                 if (cmds.length === 0) continue;
                 if (category.hide && !isDev) continue;
