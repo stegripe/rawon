@@ -42,7 +42,7 @@
     "youtubei": "^0.0.1-rc.35"
   },
   "devDependencies": {
-    "@rahagia/eslint-config": "^8.1.1",
+    "@rahagia/eslint-config": "^1.0.0",
     "@types/i18n": "^0.13.2",
     "@types/node": "^17.0.24",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
