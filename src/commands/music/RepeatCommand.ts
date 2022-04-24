@@ -68,6 +68,11 @@ export class RepeatCommand extends BaseCommand {
                     ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
                         mode: `\`${ctx.guild!.queue!.loopMode}\``
                     })}`)
+                        .setFooter({
+                            text: i18n.__mf("commands.music.repeat.footer", {
+                                prefix: this.client.config.mainPrefix
+                            })
+                        })
                 ]
             });
         }
@@ -80,11 +85,6 @@ export class RepeatCommand extends BaseCommand {
                 ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
                     mode: `\`${ctx.guild!.queue!.loopMode}\``
                 })}`)
-                    .setFooter({
-                        text: i18n.__mf("commands.music.repeat.footer", {
-                            prefix: this.client.config.mainPrefix
-                        })
-                    })
             ]
         });
     }
