@@ -64,9 +64,6 @@ export class PlayCommand extends BaseCommand {
             });
         }
 
-        // eslint-disable-next-line prefer-named-capture-group
-        const url = query.replace(/<(.+)>/g, "$1");
-
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
             return ctx.reply({
                 embeds: [createEmbed(
@@ -80,8 +77,8 @@ export class PlayCommand extends BaseCommand {
             });
         }
 
-        const queryCheck = checkQuery(url);
-        const songs = await searchTrack(this.client, url).catch(() => undefined);
+        const queryCheck = checkQuery(query);
+        const songs = await searchTrack(this.client, query).catch(() => undefined);
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)]
