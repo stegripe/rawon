@@ -3,9 +3,9 @@
   "version": "3.0.0-dev",
   "private": true,
   "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
-  "repository": "https://github.com/Rahagia/rawon",
+  "repository": "https://github.com/Cyteliz/rawon",
   "license": "BSD-3-Clause",
-  "author": "mzrtamp <mozartrafikt@gmail.com>",
+  "author": "Cyteliz <admin@cyteliz.net>",
   "type": "module",
   "main": "index.js",
   "scripts": {

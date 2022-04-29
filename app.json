@@ -1,7 +1,7 @@
 {
     "name": "Rawon",
     "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
-    "logo": "https://raw.githubusercontent.com/Rahagia/rawon/main/.github/images/rawon.png",
+    "logo": "https://raw.githubusercontent.com/Cyteliz/rawon/main/.github/images/rawon.png",
     "env": {
         "DISCORD_TOKEN": {
             "description": "What is your Discord bot's token? | Example: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
@@ -108,8 +108,8 @@
             "value": "no"
         }
     },
-    "repository": "https://github.com/Rahagia/rawon",
-    "website": "https://rawon.rahagia.tech",
+    "repository": "https://github.com/Cyteliz/rawon",
+    "website": "https://rawon.cyteliz.net",
     "formation": {
         "worker": {
             "quantity": 1,

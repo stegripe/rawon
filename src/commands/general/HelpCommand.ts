@@ -33,11 +33,11 @@ export class HelpCommand extends BaseCommand {
             text: i18n.__mf("commands.general.help.footerString", {
                 prefix: this.client.config.mainPrefix
             }),
-            iconURL: "https://raw.githubusercontent.com/Rahagia/rawon/main/.github/images/info.png"
+            iconURL: "https://raw.githubusercontent.com/Cyteliz/rawon/main/.github/images/info.png"
         });
 
     private readonly infoEmbed = createEmbed("info")
-        .setThumbnail("https://raw.githubusercontent.com/Rahagia/rawon/main/.github/images/question_mark.png");
+        .setThumbnail("https://raw.githubusercontent.com/Cyteliz/rawon/main/.github/images/question_mark.png");
 
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
@@ -143,7 +143,7 @@ export class HelpCommand extends BaseCommand {
                     text: i18n.__mf("commands.general.help.commandUsageFooter", {
                         devOnly: command.meta.devOnly ? "(developer-only command)" : ""
                     }),
-                    iconURL: "https://raw.githubusercontent.com/Rahagia/rawon/.github/images/info.png"
+                    iconURL: "https://raw.githubusercontent.com/Cyteliz/rawon/.github/images/info.png"
                 })]
         }, "editReply");
     }
