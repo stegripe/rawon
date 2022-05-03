@@ -20,11 +20,15 @@ export class EvalCommand extends BaseCommand {
         const msg = ctx;
         const client = this.client;
 
+        const code = ctx.args.join(" ")
+            .replace(
+                /^\s*\n?(```(?:[^\s]+\n)?(.*?)```|.*)$/s,
+                (_, a: string, b) => a.startsWith("```") ? b : a
+            );
         const embed = createEmbed("info")
-            .addField("Input", `\`\`\`js\n${ctx.args.join(" ")}\`\`\``);
+            .addField("Input", `\`\`\`js\n${code}\`\`\``);
 
         try {
-            const code = ctx.args.join(" ");
             if (!code) {
                 return await ctx.send({
                     embeds: [createEmbed("error", i18n.__("commands.developers.eval.noCode"), true)]
