@@ -33,7 +33,7 @@ export class NowPlayingCommand extends BaseCommand {
                 song
                     ? `**[${song.title}](${song.url})**`
                     : i18n.__("commands.music.nowplaying.emptyQueue")
-            }`).setThumbnail(song?.thumbnail ?? "https://api.cyteliz.net/assets/images/icon.png");
+            }`).setThumbnail(song?.thumbnail ?? "https://api.clytage.org/assets/images/icon.png");
         }
 
         const buttons = new MessageActionRow()
