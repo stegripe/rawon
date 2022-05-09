@@ -121,6 +121,13 @@ export class CommandManager extends Collection<string, CommandComponent> {
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);
 
+        this.client.debugLog.logData("info", "COMMAND_MANAGER_HANDLE", [
+            ["Content", message.content],
+            ["Prefix", pref],
+            ["Cmd Name", cmd ?? "[???]"],
+            ["Is Command", command === undefined ? "No" : "Yes"]
+        ]);
+
         if (!command || command.meta.disable) return;
         if (!this.cooldowns.has(command.meta.name)) this.cooldowns.set(command.meta.name, new Collection());
 
