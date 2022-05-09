@@ -53,9 +53,9 @@ export class SpotifyUtil {
                 headers: {
                     Authorization: this.token
                 }
-            }).json<SpotifyPlaylist>();
-            next = nextPlaylistResponse.tracks.next;
-            playlistResponse.tracks.items.push(...nextPlaylistResponse.tracks.items);
+            }).json<SpotifyPlaylist["tracks"]>();
+            next = nextPlaylistResponse.next;
+            playlistResponse.tracks.items.push(...nextPlaylistResponse.items);
         }
         return playlistResponse.tracks.items;
     }
