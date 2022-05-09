@@ -17,6 +17,6 @@ export class DebugLogManager extends BaseLogger {
             messages.push(data);
         }
 
-        this.log(messages, level);
+        this.log([`${messages.join("\n")}\n`], level);
     }
 }
