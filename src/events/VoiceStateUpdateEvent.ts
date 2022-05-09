@@ -11,6 +11,38 @@ import { Message, StageChannel, VoiceState, VoiceChannel } from "discord.js";
 @Event<typeof VoiceStateUpdateEvent>("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
     public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message | undefined> {
+        if (this.client.config.debugMode) {
+            const oldCh = oldState.channel ? `${oldState.channel.name}(${oldState.channel.id})` : "Not connected";
+            const newCh = newState.channel ? `${newState.channel.name}(${newState.channel.id})` : "Not connected";
+            const chDiff = oldState.channel?.id === newState.channel?.id ? [] : [["Channel", `${oldCh} -> ${newCh}`]];
+
+            const oldServM = oldState.serverMute ? "Muted" : "Unmuted";
+            const newServM = newState.serverMute ? "Muted" : "Unmuted";
+            const servMute = oldServM === newServM ? [] : [["Server Mute", `${oldServM} -> ${newServM}`]];
+
+            const oldSelfM = oldState.selfMute ? "Muted" : "Unmuted";
+            const newSelfM = newState.selfMute ? "Muted" : "Unmuted";
+            const selfMute = oldSelfM === newSelfM ? [] : [["Self Mute", `${oldSelfM} -> ${newSelfM}`]];
+
+            const oldServD = oldState.serverDeaf ? "Deaf" : "Undeaf";
+            const newServD = newState.serverDeaf ? "Deaf" : "Undeaf";
+            const servDeaf = oldServD === newServD ? [] : [["Server Deaf", `${oldServD} -> ${newServD}`]];
+
+            const oldSelfD = oldState.selfDeaf ? "Deaf" : "Undeaf";
+            const newSelfD = newState.selfDeaf ? "Deaf" : "Undeaf";
+            const selfDeaf = oldSelfD === newSelfD ? [] : [["Self Deaf", `${oldSelfD} -> ${newSelfD}`]];
+
+            this.client.debugLog.logData("info", "VOICE_STATE_UPDATE", [
+                ["Guild", `${oldState.guild.name}(${oldState.guild.id})`],
+                ["User", oldState.member ? `${oldState.member.user.tag}(${oldState.member.user.id})` : "[???]"],
+                ...chDiff,
+                ...servMute,
+                ...selfMute,
+                ...servDeaf,
+                ...selfDeaf
+            ]);
+        }
+
         const queue = newState.guild.queue;
         if (!queue) return;
 
