@@ -5,6 +5,12 @@ import { GuildBan } from "discord.js";
 @Event("guildBanAdd")
 export class GuildBanAddEvent extends BaseEvent {
     public execute(ban: GuildBan): void {
+        this.client.debugLog.logData("info", "GUILD_BAN_ADD", [
+            ["User", `${ban.user.tag}(${ban.user.id})`],
+            ["Guild", `${ban.guild.name}(${ban.guild.id})`],
+            ["Reason", ban.reason ?? "[No Reason Provided]"]
+        ]);
+
         void this.client.modlogs.handleBanAdd(ban);
     }
 }
