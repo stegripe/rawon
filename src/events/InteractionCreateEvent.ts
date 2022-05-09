@@ -3,11 +3,34 @@ import { createEmbed } from "../utils/functions/createEmbed";
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
 import i18n from "../config";
-import { BitFieldResolvable, Interaction, Permissions, PermissionString } from "discord.js";
+import { BitFieldResolvable, Interaction, Permissions, PermissionString, TextChannel } from "discord.js";
 
 @Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
     public async execute(interaction: Interaction): Promise<void> {
+        this.client.debugLog.logData("info", "INTERACTION_CREATE", [
+            [
+                "Type",
+                interaction.type
+            ],
+            [
+                "Guild",
+                interaction.inGuild()
+                    ? `${interaction.guild?.name ?? "[???]"}(${interaction.guildId})`
+                    : "DM"
+            ],
+            [
+                "Channel",
+                (interaction.channel?.type ?? "DM") === "DM"
+                    ? "DM"
+                    : `${(interaction.channel as TextChannel).name}(${(interaction.channel as TextChannel).id})`
+            ],
+            [
+                "User",
+                `${interaction.user.tag}(${interaction.user.id})`
+            ]
+        ]);
+
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
 
         if (interaction.isButton()) {
