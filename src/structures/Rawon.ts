@@ -26,7 +26,31 @@ export class Rawon extends Client {
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
     public readonly soundcloud = soundcloud;
-    public readonly request = got;
+    public readonly request = got.extend({
+        hooks: {
+            beforeError: [
+                error => {
+                    this.debugLog.logData("error", "GOT_REQUEST", [
+                        ["URL", error.options.url?.toString() ?? "[???]"],
+                        ["Code", error.code],
+                        ["Response", error.response?.rawBody.toString("ascii") ?? "[???]"]
+                    ]);
+
+                    return error;
+                }
+            ],
+            beforeRequest: [
+                options => {
+                    this.debugLog.logData("info", "GOT_REQUEST", [
+                        ["URL", options.url?.toString() ?? "[???]"],
+                        ["Method", options.method],
+                        ["Encoding", options.encoding ?? "UTF-8"],
+                        ["Agent", options.agent.http ? "HTTP" : "HTTPS"]
+                    ]);
+                }
+            ]
+        }
+    });
 
     public constructor(opt: ClientOptions) { super(opt); }
 
