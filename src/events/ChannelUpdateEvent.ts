@@ -8,6 +8,11 @@ import i18n from "i18n";
 @Event("channelUpdate")
 export class ChannelUpdateEvent extends BaseEvent {
     public async execute(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
+        this.client.debugLog.logData("info", "CHANNEL_UPDATE_EVENT", [
+            ["Channel", `${newChannel.name}(${newChannel.id})`],
+            ["Type", newChannel.type]
+        ]);
+
         if (!newChannel.guild.queue ||
             newChannel.id !== newChannel.guild.queue.connection?.joinConfig.channelId ||
             (oldChannel.type !== "GUILD_VOICE" && oldChannel.type !== "GUILD_STAGE_VOICE") ||
