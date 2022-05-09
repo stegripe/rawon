@@ -28,7 +28,7 @@
   "dependencies": {
     "@discordjs/voice": "^0.9.0",
     "@swc/cli": "^0.1.57",
-    "@swc/core": "^1.2.177",
+    "@swc/core": "^1.2.179",
     "date-fns": "^2.28.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
@@ -48,7 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.14.0",
-    "typescript": "^4.5.5"
+    "typescript": "^4.6.4"
   },
   "engines": {
     "node": ">=16.6.0"
