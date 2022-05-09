@@ -7,6 +7,13 @@ import { Message, User } from "discord.js";
 @Event<typeof MessageCreateEvent>("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
     public execute(message: Message): Message | undefined {
+        this.client.debugLog.logData("info", "MESSAGE_CREATE", [
+            ["ID", message.id],
+            ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
+            ["Channel", message.channel.type === "DM" ? "DM" : `${message.channel.name}(${message.channel.id})`],
+            ["Author", `${message.author.tag}(${message.author.id})`]
+        ]);
+
         if (message.author.bot ||
             message.channel.type === "DM" ||
             !this.client.commands.isReady) return message;
