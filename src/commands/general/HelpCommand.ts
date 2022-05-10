@@ -57,7 +57,7 @@ export class HelpCommand extends BaseCommand {
 
             this.listEmbed.fields = [];
             for (const category of this.client.commands.categories.values()) {
-                const isDev = this.client.config.owners.includes(ctx.author.id);
+                const isDev = this.client.config.devs.includes(ctx.author.id);
                 const cmds = category.cmds
                     .filter(c => (isDev ? true : !c.meta.devOnly))
                     .map(c => `\`${c.meta.name}\``);
@@ -151,7 +151,7 @@ export class HelpCommand extends BaseCommand {
     private generateSelectMenu(cmd: string, author: string): MessageSelectOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
         const matching = [...this.client.commands.values()].filter(x => {
-            const isDev = this.client.config.owners.includes(author);
+            const isDev = this.client.config.devs.includes(author);
             if (isDev) return x.meta.name.includes(cmd);
             return x.meta.name.includes(cmd) && !x.meta.devOnly;
         }).slice(0, 10).map((x, i) => (
