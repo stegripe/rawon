@@ -1,6 +1,18 @@
 import { parseEnvValue } from "../utils/functions/parseEnvValue";
 import { PresenceData } from "../typings";
 import { ActivityType, ClientPresenceStatus } from "discord.js";
+import { existsSync, readFileSync } from "fs";
+import { parse } from "dotenv";
+import { resolve } from "path";
+
+// Parse the dev.env file
+const devEnvPath = resolve(process.cwd(), "dev.env");
+if (existsSync(devEnvPath)) {
+    const parsed = parse(readFileSync(devEnvPath));
+    for (const [k, v] of Object.entries(parsed)) {
+        process.env[k] = v;
+    }
+}
 
 // Boolean values
 export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
@@ -24,8 +36,8 @@ export const noEmoji = process.env.NO_EMOJI! || "❌";
 
 // Multiple values
 export const altPrefixes: string[] = parseEnvValue(process.env.ALT_PREFIX! || "{mention}").filter((x, i, a) => a.indexOf(x) === i && x !== mainPrefix);
-export const owners: string[] = parseEnvValue(process.env.OWNERS ?? "");
-export const devGuild = parseEnvValue(process.env.DEV_GUILD ?? "");
+export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
+export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
