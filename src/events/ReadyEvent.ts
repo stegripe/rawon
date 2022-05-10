@@ -6,7 +6,7 @@ import { Presence } from "discord.js";
 export class ReadyEvent extends BaseEvent {
     public async execute(): Promise<void> {
         if (this.client.application?.owner) {
-            this.client.config.owners.push(this.client.application.owner.id);
+            this.client.config.devs.push(this.client.application.owner.id);
         }
 
         await this.client.spotify.renew();
