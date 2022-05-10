@@ -4,7 +4,6 @@ import { RawonLogger } from "./utils/structures/RawonLogger";
 import { ShardingManager } from "discord.js";
 import { resolve } from "path";
 import { start } from "repl";
-import "dotenv/config";
 
 const log = new RawonLogger({ prod: isProd });
 
