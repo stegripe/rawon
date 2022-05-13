@@ -79,7 +79,7 @@ export class SearchCommand extends BaseCommand {
         const query = (
             ctx.args.join(" ") || ctx.options?.getString("query")
         ) ?? (
-            ctx.options as CommandInteractionOptionResolver<"present"> | null
+            ctx.options as CommandInteractionOptionResolver<"cached"> | null
         )?.getMessage("message")?.content;
 
         if (!query) {
