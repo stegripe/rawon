@@ -48,7 +48,11 @@ export class SkipToCommand extends BaseCommand {
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
-        if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) {
+        if (
+            this.client.data.data?.[ctx.guild!.id]?.dj?.enable &&
+            !ctx.member?.roles.cache.has(djRole?.id ?? "") &&
+            !ctx.member?.permissions.has("MANAGE_GUILD")
+        ) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"), true)]
             });
