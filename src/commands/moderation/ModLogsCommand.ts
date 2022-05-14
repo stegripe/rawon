@@ -52,7 +52,7 @@ export class ModLogsCommand extends BaseCommand {
                 let ch: string | null;
 
                 try {
-                    ch = this.client.data.data?.[ctx.guild?.id ?? ""]?.modLog.channel ?? null;
+                    ch = this.client.data.data?.[ctx.guild?.id ?? ""]?.modLog?.channel ?? null;
                     if (!ch) throw new Error("");
                 } catch {
                     ch = null;
@@ -87,7 +87,7 @@ export class ModLogsCommand extends BaseCommand {
                         infractions: guildData?.infractions ?? {},
                         modLog: {
                             channel: newCh,
-                            enable: guildData?.modLog.enable ?? false
+                            enable: guildData?.modLog?.enable ?? false
                         }
                     }
                 };
@@ -119,7 +119,7 @@ export class ModLogsCommand extends BaseCommand {
                         ...(guildData ?? {}),
                         infractions: guildData?.infractions ?? {},
                         modLog: {
-                            channel: guildData?.modLog.channel ?? null,
+                            channel: guildData?.modLog?.channel ?? null,
                             enable: false
                         }
                     }
@@ -143,7 +143,7 @@ export class ModLogsCommand extends BaseCommand {
                         ...(guildData ?? {}),
                         infractions: guildData?.infractions ?? {},
                         modLog: {
-                            channel: guildData?.modLog.channel ?? null,
+                            channel: guildData?.modLog?.channel ?? null,
                             enable: true
                         }
                     }
