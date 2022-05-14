@@ -19,14 +19,11 @@ export class ClientUtils {
             });
     }
 
-    public async fetchDJRole(guild: Guild): Promise<Role> {
-        return guild.roles.cache.find(x => x.name === this.client.config.djRoleName) ??
-            guild.roles.create({
-                mentionable: false,
-                name: this.client.config.djRoleName,
-                permissions: ["SEND_MESSAGES", "CONNECT"],
-                reason: "Create DJ role"
-            });
+    public async fetchDJRole(guild: Guild): Promise<Role | null> {
+        const data = this.client.data.data?.[guild.id]?.dj;
+        if (data?.enable && data.role) return guild.roles.fetch(data.role);
+
+        return null;
     }
 
     public requiredVoters(memberAmount: number): number {
