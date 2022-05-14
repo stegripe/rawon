@@ -67,7 +67,7 @@ export class ModerationLogs {
         try {
             // Temporary solution for mod-logs checking.
             const modlog = this.client.data.data![guild.id]!.modLog;
-            if (!modlog.enable) throw new Error();
+            if (!modlog?.enable) throw new Error();
 
             const id = modlog.channel;
             const channel = await guild.channels.fetch(id!).catch(() => undefined);
