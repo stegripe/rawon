@@ -168,6 +168,23 @@
 		},
 		"music": {
 			"categoryName": "MUSIC",
+			"dj": {
+				"description": "Change DJ feature settings",
+				"slashRoleDescription": "View or change the DJ role",
+				"slashRoleNewRoleOption": "New role for the DJ",
+				"slashEnableDescription": "Enable the DJ feature",
+				"slashDisableDescription": "Disable the DJ feature",
+				"role": {
+					"current": "Current DJ role: <@&{role}>",
+					"noRole": "DJ role hasn't been set",
+					"invalid": "Invalid role.",
+					"success": "DJ role has been set to <@&{role}>"
+				},
+				"embedTitle": "DJ",
+				"newRoleText": "new role",
+				"disable": "DJ feature has been **`DISABLED`**",
+				"enable": "DJ feature has been **`ENABLED`**"
+			},
 			"lyrics": {
 				"description": "Show the lyrics from the song",
 				"slashDescription": "Song to search",
