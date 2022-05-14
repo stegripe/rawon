@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
-import { InteractionTypes, MessageComponentTypes } from "../typings/enum";
 import { MessageInteractionAction } from "../typings";
-import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
     public additionalArgs: Collection<string, any> = new Collection();
@@ -91,49 +90,27 @@ export class CommandContext {
     }
 
     public isInteraction(): boolean {
-        return this.isCommand() ||
-        this.isContextMenu() ||
-        this.isMessageComponent() ||
-        this.isButton() ||
-        this.isSelectMenu();
+        return this.context instanceof Interaction;
     }
 
     public isCommand(): boolean {
-        return InteractionTypes[
-            (this.context as Interaction).type as Exclude<Interaction["type"], "APPLICATION_COMMAND_AUTOCOMPLETE">
-        ] === InteractionTypes.APPLICATION_COMMAND && "targetId" in this.context;
+        return this.context instanceof CommandInteraction;
     }
 
     public isContextMenu(): boolean {
-        return InteractionTypes[
-            (this.context as Interaction).type as Exclude<Interaction["type"], "APPLICATION_COMMAND_AUTOCOMPLETE">
-        ] === InteractionTypes.APPLICATION_COMMAND && "targetId" in this.context;
+        return this.context instanceof ContextMenuInteraction;
     }
 
     public isMessageComponent(): boolean {
-        return InteractionTypes[
-            (this.context as Interaction).type as Exclude<Interaction["type"], "APPLICATION_COMMAND_AUTOCOMPLETE">
-        ] === InteractionTypes.MESSAGE_COMPONENT;
+        return this.context instanceof MessageComponentInteraction;
     }
 
     public isButton(): boolean {
-        return (
-            InteractionTypes[
-                (this.context as Interaction).type as Exclude<Interaction["type"], "APPLICATION_COMMAND_AUTOCOMPLETE">
-            ] === InteractionTypes.MESSAGE_COMPONENT && MessageComponentTypes[
-                (this.context as ButtonInteraction).componentType
-            ] === MessageComponentTypes.BUTTON
-        );
+        return this.context instanceof ButtonInteraction;
     }
 
     public isSelectMenu(): boolean {
-        return (
-            InteractionTypes[
-                (this.context as Interaction).type as Exclude<Interaction["type"], "APPLICATION_COMMAND_AUTOCOMPLETE">
-            ] === InteractionTypes.MESSAGE_COMPONENT && MessageComponentTypes[
-                (this.context as SelectMenuInteraction).componentType
-            ] === MessageComponentTypes.SELECT_MENU
-        );
+        return this.context instanceof SelectMenuInteraction;
     }
 
     public get mentions(): MessageMentions | null {
