@@ -32,7 +32,11 @@ export class RemoveCommand extends BaseCommand {
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
-        if (!ctx.member?.roles.cache.has(djRole.id) && !ctx.member?.permissions.has("MANAGE_GUILD")) {
+        if (
+            this.client.data.data?.[ctx.guild!.id]?.dj?.enable &&
+            !ctx.member?.roles.cache.has(djRole?.id ?? "") &&
+            !ctx.member?.permissions.has("MANAGE_GUILD")
+        ) {
             void ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.remove.noPermission"), true)]
             });
