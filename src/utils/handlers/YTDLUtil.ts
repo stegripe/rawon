@@ -2,8 +2,8 @@ import { BasicYoutubeVideoInfo } from "../../typings";
 import { soundcloud } from "./SoundCloudUtil";
 import { streamStrategy } from "../../config";
 import { checkQuery } from "./GeneralUtil";
-import { stream as pldlStream, video_basic_info } from "play-dl";
 import ytdl, { exec } from "../../../yt-dlp-utils";
+import { stream as pldlStream, video_basic_info } from "play-dl";
 import { Readable } from "stream";
 
 export async function getStream(url: string): Promise<Readable> {

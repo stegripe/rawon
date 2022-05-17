@@ -2,8 +2,8 @@ import { parseEnvValue } from "../utils/functions/parseEnvValue";
 import { PresenceData } from "../typings";
 import { ActivityType, ClientPresenceStatus } from "discord.js";
 import { existsSync, readFileSync } from "fs";
-import { parse } from "dotenv";
 import { resolve } from "path";
+import { parse } from "dotenv";
 
 // Parse the dev.env file
 const devEnvPath = resolve(process.cwd(), "dev.env");
