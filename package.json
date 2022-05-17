@@ -3,6 +3,7 @@
     "version": "3.0.0-dev",
     "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "build": "npm run lint && npm run compile",
         "compile": "npx swc src -d dist",
