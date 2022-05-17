@@ -1,4 +1,4 @@
-name: Lint code & compile test
+name: Lint code and compile setup script
 
 on:
   push:
@@ -17,13 +17,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-  
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@17f8bd926464a1afa4c6a11669539e9c1ba77048 # tag=v3.2.0
       with:
         node-version: ${{ matrix.node-version }}
         check-latest: true
-        
+
     - name: Install dependencies
       run: npm ci
 
@@ -49,5 +49,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test compile
-        run: npm run tscompile && rm -rf dist
+      - name: Compile test
+        run: npm run compile && rm -rf dist
