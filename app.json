@@ -38,7 +38,7 @@
             "value": "PLAYING, LISTENING, WATCHING, PLAYING, COMPETING"
         },
         "MAIN_GUILD": {
-            "description": "What is your server's ID? | Example: \"521178509033340968, 521178509033340968\"",
+            "description": "What is your server's ID? | Example: \"972407605295198258, 972407605295198258\"",
             "required": false
         },
         "STREAM_STRATEGY": {
