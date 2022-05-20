@@ -182,8 +182,9 @@
                 },
                 "embedTitle": "DJ",
                 "newRoleText": "new role",
-                "disable": "DJ feature has been **`DISABLED`**",
-                "enable": "DJ feature has been **`ENABLED`**"
+                "changeText": "DJ feature has been **`{new}`**",
+                "disable": "Disabled",
+                "enable": "Enabled"
             },
             "lyrics": {
                 "description": "Show the lyrics from the song",
