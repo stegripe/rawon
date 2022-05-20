@@ -68,7 +68,9 @@ export class DJCommand extends BaseCommand {
 
             return ctx.reply({
                 embeds: [
-                    createEmbed("success", i18n.__("commands.music.dj.disable"))
+                    createEmbed("success", i18n.__mf("commands.music.dj.changeText", {
+                        new: i18n.__("commands.music.dj.disable").toUpperCase()
+                    }))
                 ]
             });
         },
@@ -92,19 +94,23 @@ export class DJCommand extends BaseCommand {
 
             return ctx.reply({
                 embeds: [
-                    createEmbed("success", i18n.__("commands.music.dj.enable"))
+                    createEmbed("success", i18n.__mf("commands.music.dj.changeText", {
+                        new: i18n.__("commands.music.dj.enable").toUpperCase()
+                    }))
                 ]
             });
         },
         role: async ctx => {
             const newRole = ctx.options?.getRole("newrole")?.id ??
                 ctx.args.shift()?.replace(/[^0-9]/g, "");
+            const txt = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable ? "enable" : "disable";
+            const footer = `${i18n.__("commands.music.dj.embedTitle")}: ${i18n.__(`commands.music.dj.${txt}`)}`;
 
             if (!newRole) {
                 let role: string | null;
 
                 try {
-                    role = this.client.data.data?.[ctx.guild?.id ?? ""]?.modLog?.channel ?? null;
+                    role = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.role ?? null;
                     if (!role) throw new Error("");
                 } catch {
                     role = null;
@@ -115,6 +121,9 @@ export class DJCommand extends BaseCommand {
                         createEmbed("info", role
                             ? i18n.__mf("commands.music.dj.role.current", { role })
                             : i18n.__("commands.music.dj.role.noRole"))
+                            .setFooter({
+                                text: footer
+                            })
                     ]
                 });
             }
@@ -148,6 +157,9 @@ export class DJCommand extends BaseCommand {
             return ctx.reply({
                 embeds: [
                     createEmbed("success", i18n.__mf("commands.music.dj.role.success", { role: newRole }))
+                        .setFooter({
+                            text: footer
+                        })
                 ]
             });
         }
