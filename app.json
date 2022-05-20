@@ -18,9 +18,9 @@
             "value": "{mention}"
         },
         "EMBED_COLOR": {
-            "description": "What should be your bot's embed color code? (hex) | Example: 3CAAFF",
+            "description": "What should be your bot's embed color code? (hex) | Example: 22C9FF",
             "required": false,
-            "value": "3CAAFF"
+            "value": "22C9FF"
         },
         "LOCALE": {
             "description": "What should be the language of your bot? | Example: en | Available: en, es, id",
