@@ -60,6 +60,19 @@ export class UnMuteCommand extends BaseCommand {
         const reason = ctx.options?.getString("reason") ?? (
             ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
         );
+        const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err as string | undefined));
+        if (unmute instanceof Error) {
+            return ctx.reply({
+                embeds: [createEmbed(
+                    "error",
+                    i18n.__mf("commands.moderation.unmute.unmuteFail", {
+                        message: unmute.message
+                    }),
+                    true
+                )]
+            });
+        }
+
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
@@ -73,20 +86,6 @@ export class UnMuteCommand extends BaseCommand {
                         iconURL: ctx.author.displayAvatarURL({ dynamic: true })
                     })
                     .setTimestamp(Date.now())]
-            });
-        }
-
-        const unmute = await member.roles.remove(muteRole, reason)
-            .catch(err => new Error(err as string | undefined));
-        if (unmute instanceof Error) {
-            return ctx.reply({
-                embeds: [createEmbed(
-                    "error",
-                    i18n.__mf("commands.moderation.unmute.unmuteFail", {
-                        message: unmute.message
-                    }),
-                    true
-                )]
             });
         }
 
