@@ -66,11 +66,6 @@
             "required": false,
             "value": "no"
         },
-        "MUTE_ROLE_NAME": {
-            "description": "What is your server's Muted role name? | Example: Muted",
-            "required": false,
-            "value": "Muted"
-        },
         "YES_EMOJI": {
             "description": "What should be your bot's emoji for every success sentence? | Example: ✅",
             "required": false,
