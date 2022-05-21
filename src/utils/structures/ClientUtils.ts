@@ -9,14 +9,9 @@ const { FFmpeg } = prism;
 export class ClientUtils {
     public constructor(public readonly client: Rawon) {}
 
-    public async fetchMuteRole(guild: Guild): Promise<Role> {
-        return guild.roles.cache.find(x => x.name === this.client.config.muteRoleName) ??
-            guild.roles.create({
-                mentionable: false,
-                name: this.client.config.muteRoleName,
-                permissions: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                reason: "Create Muted role"
-            });
+    public async fetchMuteRole(guild: Guild): Promise<Role | null> {
+        const id = this.client.data.data?.[guild.id]?.mute;
+        return id ? guild.roles.fetch(id).catch(() => null) : null;
     }
 
     public async fetchDJRole(guild: Guild): Promise<Role | null> {
