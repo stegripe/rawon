@@ -116,7 +116,7 @@
                 "userNoPermission": "Sorry, but you don't have **`MANAGE ROLES`** permission to use this command.",
                 "botNoPermission": "Sorry, but I don't have **`MANAGE ROLES`** permission.",
                 "cantMuteOwner": "You can't mute the server owner!",
-                "unableToCreateMuteRole": "Unable to create mute role",
+                "noRole": "Mute role hasn't been set. Please set it with `{prefix}setmute`.",
                 "alreadyMuted": "That member is already **`MUTED`**",
                 "userMuted": "You have been **`MUTED`** on **{guildName}**",
                 "mutedByString": "Muted by: {author}",
@@ -132,6 +132,13 @@
                 "invalidAmount": "Please specify a valid number of messages to delete.",
                 "purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
                 "purgeSuccess": "{amount, plural, one {**1** message} other {**#** messages}} have been **`PURGED`**"
+            },
+            "setmute": {
+                "description": "Set the mute role",
+                "slashRoleDescription": "The role to be used for muting",
+                "usage": "{prefix}setmute <role>",
+                "invalidRole": "Invalid role.",
+                "success": "Mute role has been set to <@&{role}>"
             },
             "unban": {
                 "description": "Un-ban someone from the server",
