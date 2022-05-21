@@ -76,16 +76,20 @@ export class MuteCommand extends BaseCommand {
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
-                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.userMuted"))
-                    .setColor("LIGHT_GREY")
-                    .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                    .setFooter({
-                        text: i18n.__mf("commands.moderation.mute.mutedByString", {
-                            author: ctx.author.tag
-                        }),
-                        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                    })
-                    .setTimestamp(Date.now())]
+                embeds: [
+                    createEmbed("error", i18n.__mf("commands.moderation.mute.userMuted", {
+                        guildName: ctx.guild.name
+                    }))
+                        .setColor("LIGHT_GREY")
+                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                        .setFooter({
+                            text: i18n.__mf("commands.moderation.mute.mutedByString", {
+                                author: ctx.author.tag
+                            }),
+                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                        })
+                        .setTimestamp(Date.now())
+                ]
             });
         }
 
