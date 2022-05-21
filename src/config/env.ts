@@ -29,7 +29,6 @@ export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C
 export const streamStrategy = process.env.STREAM_STRATEGY! || "yt-dlp";
 export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
 export const lang = (process.env.LOCALE?.toLowerCase() ?? "") || "en";
-export const muteRoleName = process.env.MUTE_ROLE_NAME! || "Muted";
 export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
 
