@@ -53,7 +53,7 @@ export class UnMuteCommand extends BaseCommand {
         }
         if (!member.roles.cache.has(muteRole.id)) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.moderation.unmute.noMuted"))]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.unmute.noMuted"), true)]
             });
         }
 
