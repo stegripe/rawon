@@ -82,7 +82,7 @@ export class RepeatCommand extends BaseCommand {
             embeds: [
                 createEmbed("success", `${mode[
                     ctx.guild!.queue!.loopMode
-                ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
+                ].emoji} **|** ${i18n.__mf("commands.music.repeat.newMode", {
                     mode: `\`${ctx.guild!.queue!.loopMode}\``
                 })}`)
             ]
