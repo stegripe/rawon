@@ -62,6 +62,7 @@ export class BanCommand extends BaseCommand {
                     embeds: [createEmbed("error", i18n.__mf("commands.moderation.ban.userBanned", {
                         guildName: ctx.guild.name
                     }))
+                        .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
                         .setFooter({
                             text: i18n.__mf(
