@@ -81,6 +81,7 @@ export class MuteCommand extends BaseCommand {
                         guildName: ctx.guild.name
                     }))
                         .setColor("LIGHT_GREY")
+                        .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
                         .setFooter({
                             text: i18n.__mf("commands.moderation.mute.mutedByString", {
