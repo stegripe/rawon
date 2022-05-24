@@ -46,7 +46,7 @@ export class UnBanCommand extends BaseCommand {
         }
         if (!resolved) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.moderation.unban.alreadyUnban"))]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.unban.alreadyUnban"), true)]
             });
         }
 
