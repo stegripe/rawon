@@ -46,7 +46,7 @@ export class MuteCommand extends BaseCommand {
         }
         if (ctx.guild.ownerId === member.id) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.moderation.mute.cantMuteOwner"))]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.cantMuteOwner"), true)]
             });
         }
 
@@ -54,7 +54,7 @@ export class MuteCommand extends BaseCommand {
         if (!muteRole) {
             return ctx.reply({
                 embeds: [
-                    createEmbed("error", i18n.__mf("commands.moderation.mute.noRole", {
+                    createEmbed("warn", i18n.__mf("commands.moderation.mute.noRole", {
                         prefix: this.client.config.mainPrefix
                     }))
                 ]
@@ -62,7 +62,7 @@ export class MuteCommand extends BaseCommand {
         }
         if (member.roles.cache.has(muteRole.id)) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.moderation.mute.alreadyMuted"))]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.mute.alreadyMuted"), true)]
             });
         }
 
