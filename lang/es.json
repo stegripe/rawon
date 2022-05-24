@@ -130,7 +130,7 @@
                 "botNoPermission": "Lo siento, pero no tengo el permiso **`MANAGE MESSAGES`** para usar este comando.",
                 "invalidAmount": "Por favor, especifica un número válido de mensajes a borrar.",
                 "purgeFail": "No se pudo **`BORRAR`** mensajes, razón: `{message}`",
-                "purgeSuccess": "**{amount}** mensaje(s) han sido **`BORRADOS`**"
+                "purgeSuccess": "**`{amount}`** mensaje(s) han sido **`BORRADOS`**"
             },
             "unban": {
                 "description": "Desbanea a alguien del servidor",

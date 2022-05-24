@@ -90,7 +90,7 @@
                 "usage": "{prefix}mute <@mention | id> [alasan]",
                 "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini.",
                 "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE ROLES`**.",
-                "cantMuteOwner": "Anda tidak bisa mute owner server!",
+                "cantMuteOwner": "Anda tidak bisa mute owner server.",
                 "unableToCreateMuteRole": "Tidak dapat membuat mute role",
                 "alreadyMuted": "Member tersebut sedang di **`MUTE`**",
                 "userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
@@ -106,7 +106,7 @@
                 "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE MESSAGES`**.",
                 "invalidAmount": "Mohon berikan jumlah yang benar.",
                 "purgeFail": "Tidak dapat **`PURGE`** pesan, dikarenakan: `{message}`",
-                "purgeSuccess": "**{amount}** pesan telah di **`PURGED`**"
+                "purgeSuccess": "**`{amount}`** pesan telah di **`PURGE`**"
             },
             "unban": {
                 "description": "Unban seseorang dari server",
