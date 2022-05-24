@@ -253,7 +253,7 @@
                 "usage": "{prefix}search <query> [source]",
                 "noQuery": "Please provide some query to search.",
                 "noTracks": "I can't obtain any search results.",
-                "queueEmbed": "Please select some music, you can choose more than one using blank space or {separator}.\n",
+                "queueEmbed": "Please select some music; you can choose more than one by using blank space or {separator}.\n",
                 "trackSelectionMessage": "Music Selection",
                 "cancelMessage": "Type {cancel} or c to cancel music selection.",
                 "noSelection": "No or invalid value entered, music selection canceled.",
@@ -279,7 +279,7 @@
                 "slashPositionDescription": "Song position in the queue",
                 "usage": "'{prefix}'skipto <{options} | number>",
                 "noPermission": "You don't have permission to use this command.",
-                "noSongPosition": "Unable to find song in that position.",
+                "noSongPosition": "Unable to find the song in that position.",
                 "cantPlay": "You can't skip to current music.",
                 "skipMessage": "Skipped to **{song}**"
             },
@@ -311,7 +311,7 @@
             "noQueue": "There is nothing playing.",
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
             "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel, make sure I have the proper permissions.",
+            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions.",
             "sameVC": "You need to be in the same voice channel as mine."
         },
         "generalHandler": {
@@ -346,7 +346,7 @@
             "joinStageMessage": "Successfully joined to the stage channel as Speaker.",
             "deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
             "deleteQueueFooter": "Queue Deleted",
-            "pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
+            "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
             "pauseQueueFooter": "Queue Paused",
             "resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
             "resumeQueueFooter": "Queue Resumed"
