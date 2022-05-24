@@ -54,16 +54,6 @@ export class BanCommand extends BaseCommand {
         const reason = ctx.options?.getString("reason") ?? (
             ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
         );
-        const ban = await ctx.guild.members.ban(user, {
-            reason
-        }).catch(err => new Error(err as string | undefined));
-        if (ban instanceof Error) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__mf("commands.moderation.ban.banFail", { message: ban.message }), true)
-                ]
-            });
-        }
 
         if (ctx.guild.members.cache.has(user.id)) {
             const dm = await user.createDM().catch(() => undefined);
@@ -84,6 +74,17 @@ export class BanCommand extends BaseCommand {
                         .setTimestamp(Date.now())]
                 });
             }
+        }
+
+        const ban = await ctx.guild.members.ban(user, {
+            reason
+        }).catch(err => new Error(err as string | undefined));
+        if (ban instanceof Error) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed("error", i18n.__mf("commands.moderation.ban.banFail", { message: ban.message }), true)
+                ]
+            });
         }
 
         return ctx.reply({
