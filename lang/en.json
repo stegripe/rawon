@@ -253,7 +253,7 @@
                 "usage": "{prefix}search <query> [source]",
                 "noQuery": "Please provide some query to search.",
                 "noTracks": "I can't obtain any search results.",
-                "queueEmbed": "Please select some music; you can choose more than one by using blank space or {separator}.\n",
+                "queueEmbed": "Please select some music; you can choose more than one using blank space or {separator}.\n",
                 "trackSelectionMessage": "Music Selection",
                 "cancelMessage": "Type {cancel} or c to cancel music selection.",
                 "noSelection": "No or invalid value entered, music selection canceled.",
