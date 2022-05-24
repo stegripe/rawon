@@ -32,7 +32,8 @@ export class PurgeCommand extends BaseCommand {
             });
         }
 
-        const purge = await (ctx.channel as TextChannel).bulkDelete(amount + 1, true)
+        await (ctx.context as Message).delete();
+        const purge = await (ctx.channel as TextChannel).bulkDelete(amount, true)
             .catch(err => new Error(err as string | undefined));
         if (purge instanceof Error) {
             return ctx.reply({
@@ -42,6 +43,6 @@ export class PurgeCommand extends BaseCommand {
             });
         }
 
-        return ctx.reply({ embeds: [createEmbed("success", `🧹 **|** ${i18n.__mf("commands.moderation.purge.purgeSuccess", { amount: purge.size })}`)] });
+        await ctx.reply({ embeds: [createEmbed("success", `🧹 **|** ${i18n.__mf("commands.moderation.purge.purgeSuccess", { amount: purge.size })}`)] }).then(msg => setTimeout(() => msg.delete(), 3500));
     }
 }
