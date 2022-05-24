@@ -279,7 +279,7 @@
                 "slashPositionDescription": "Song position in the queue",
                 "usage": "'{prefix}'skipto <{options} | number>",
                 "noPermission": "You don't have permission to use this command.",
-                "noSongPosition": "Unable to find the song in that position.",
+                "noSongPosition": "Unable to find a song in that position.",
                 "cantPlay": "You can't skip to current music.",
                 "skipMessage": "Skipped to **{song}**"
             },
@@ -343,7 +343,7 @@
             "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted.",
             "joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
             "unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
-            "joinStageMessage": "Successfully joined to the stage channel as Speaker.",
+            "joinStageMessage": "Successfully joined the stage channel as Speaker.",
             "deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
             "deleteQueueFooter": "Queue Deleted",
             "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
