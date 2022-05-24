@@ -43,7 +43,7 @@ export class LyricsCommand extends BaseCommand {
     }
 
     private getLyrics(ctx: CommandContext, song: string): void {
-        const url = `https://api.lxndr.dev/lyrics/?song=${encodeURI(song)}&from=${encodeURI(this.client.user!.id)}`;
+        const url = `https://api.lxndr.dev/lyrics?song=${encodeURI(song)}&from=DiscordRawon`;
         this.client.request.get(url).json<LyricsAPIResult<false>>()
             .then(async data => {
                 if ((data as { error: boolean }).error) {
