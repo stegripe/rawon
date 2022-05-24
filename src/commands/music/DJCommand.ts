@@ -70,7 +70,7 @@ export class DJCommand extends BaseCommand {
                 embeds: [
                     createEmbed("success", i18n.__mf("commands.music.dj.changeText", {
                         new: i18n.__("commands.music.dj.disable").toUpperCase()
-                    }))
+                    }), true)
                 ]
             });
         },
@@ -96,7 +96,7 @@ export class DJCommand extends BaseCommand {
                 embeds: [
                     createEmbed("success", i18n.__mf("commands.music.dj.changeText", {
                         new: i18n.__("commands.music.dj.enable").toUpperCase()
-                    }))
+                    }), true)
                 ]
             });
         },
@@ -132,7 +132,7 @@ export class DJCommand extends BaseCommand {
             if (!role) {
                 return ctx.reply({
                     embeds: [
-                        createEmbed("error", i18n.__("commands.music.dj.role.invalid"))
+                        createEmbed("error", i18n.__("commands.music.dj.role.invalid"), true)
                     ]
                 });
             }
@@ -156,7 +156,7 @@ export class DJCommand extends BaseCommand {
 
             return ctx.reply({
                 embeds: [
-                    createEmbed("success", i18n.__mf("commands.music.dj.role.success", { role: newRole }))
+                    createEmbed("success", i18n.__mf("commands.music.dj.role.success", { role: newRole }), true)
                         .setFooter({
                             text: footer
                         })

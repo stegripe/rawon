@@ -187,7 +187,7 @@
                     "invalid": "Invalid role.",
                     "success": "DJ role has been set to <@&{role}>"
                 },
-                "embedTitle": "DJ",
+                "embedTitle": "DJ feature",
                 "newRoleText": "new role",
                 "changeText": "DJ feature has been **`{new}`**",
                 "disable": "Disabled",
