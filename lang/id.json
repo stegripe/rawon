@@ -70,6 +70,13 @@
                 "banFail": "Tidak dapat **`BAN`** member, dikarenakan: `{message}`",
                 "banSuccess": "**{user}** telah di **`BAN`** dari server ini."
             },
+            "infractions": {
+                "description": "Menampilkan pelanggaran seorang member",
+                "slashMemberDescription": "Siapa yang ingin anda lihat?",
+                "usage": "{prefix}infractions <@mention | id>",
+                "embedAuthorText": "{user} - Pelanggaran",
+                "noInfractions": "Tidak ada pelanggaran."
+            },
             "kick": {
                 "description": "Kick seseorang dari server",
                 "slashMemberDescription": "Siapa yang ingin anda kick?",
@@ -83,6 +90,24 @@
                 "kickFail": "Tidak dapat **`KICK`** member, dikarenakan: `{message}`",
                 "kickSuccess": "**{user}** telah di **`KICK`** dari server ini."
             },
+            "modlogs": {
+                "description": "Mengubah setelah fitur moderation logs",
+                "slashChannelDescription": "Lihat atau ubah channel moderation logs",
+                "slashChannelNewChannelOption": "Channel baru untuk moderation logs",
+                "slashEnableDescription": "Menyalakan fitur moderation logs",
+                "slashDisableDescription": "Mematikan fitur moderation logs",
+                "usage": "modlogs",
+                "channel": {
+                    "current": "Channel moderation logs saat ini: <#{channel}>",
+                    "noChannel": "Channel moderation logs belum ditentukan.",
+                    "invalid": "Channel tidak valid. Channel harus berupa text channel.",
+                    "success": "Channel moderation logs telah diubah menjadi <#{channel}>."
+                },
+                "embedTitle": "Moderation Logs",
+                "newChannelText": "channel baru",
+                "disable": "Fitur moderation logs telah di **`MATIKAN`**.",
+                "enable": "Fitur moderation logs telah di **`NYALAKAN`**."
+            },
             "mute": {
                 "description": "Mute seseorang di server",
                 "slashMemberDescription": "Siapa yang ingin anda mute?",
@@ -91,7 +116,7 @@
                 "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini.",
                 "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE ROLES`**.",
                 "cantMuteOwner": "Anda tidak bisa mute owner server.",
-                "unableToCreateMuteRole": "Tidak dapat membuat mute role",
+                "noRole": "Role untuk mute belum diatur. Silahkan atur dengan perintah `{prefix}muterole`.",
                 "alreadyMuted": "Member tersebut sedang di **`MUTE`**",
                 "userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
                 "mutedByString": "Di mute oleh: {author}",
@@ -107,6 +132,13 @@
                 "invalidAmount": "Mohon berikan jumlah yang benar.",
                 "purgeFail": "Tidak dapat **`PURGE`** pesan, dikarenakan: `{message}`",
                 "purgeSuccess": "**`{amount}`** pesan telah di **`PURGE`**"
+            },
+            "setmute": {
+                "description": "Mengatur role mute",
+                "slashRoleDescription": "Role yang akan digunakan untuk mute",
+                "usage": "{prefix}setmute <role>",
+                "invalidRole": "Role tidak valid.",
+                "success": "Role mute telah diubah menjadi <@&{role}>"
             },
             "unban": {
                 "description": "Unban seseorang dari server",
@@ -142,6 +174,25 @@
         },
         "music": {
             "categoryName": "MUSIK",
+            "dj": {
+                "description": "Mengubah pengaturan fitur DJ",
+                "slashRoleDescription": "Lihat atau ubah role DJ",
+                "slashRoleNewRoleOption": "Role baru untuk DJ",
+                "slashEnableDescription": "Menyalakan fitur DJ",
+                "slashDisableDescription": "Mematikan fitur DJ",
+                "role": {
+                    "current": "Role DJ saat ini: <@&{role}>",
+                    "noRole": "Role DJ belum ditentukan.",
+                    "invalid": "Role tidak valid.",
+                    "success": "Role DJ telah diubah menjadi <@&{role}>"
+                },
+                "embedTitle": "Fitur DJ",
+                "newRoleText": "role baru",
+                "disableText": "Fitur DJ telah di **`MATIKAN`**",
+                "enableText": "Fitur DJ telah di **`NYALAKAN`**",
+                "disable": "Disabled",
+                "enable": "Enabled"
+            },
             "lyrics": {
                 "description": "Menampilkan lirik lagu",
                 "slashDescription": "Judul lagu untuk dicari",
@@ -169,12 +220,23 @@
             "queue": {
                 "description": "Menunjukkan daftar antrian"
             },
+            "remove": {
+                "description": "Hapus lagu dari antrian",
+                "slashPositionsDescription": "Posisi lagu yang ingin dihapus (dipisahkan dengan koma atau spasi)",
+                "usage": "{prefix}remove <posisi>",
+                "noPermission": "Anda tidak memiliki izin untuk menggunakan command ini.",
+                "noPositions": "Mohon berikan posisi lagu yang ingin dihapus.",
+                "songsRemoved": "{removed} lagu dihapus dari antrian\n\n",
+                "songSkip": "Lagu yang sedang dimainkan ikut terhapus, melewatkan lagu."
+            },
             "repeat": {
                 "description": "Mengulang lagu yang sedang dimainkan atau setelahnya",
                 "slashQueue": "Mengatur mode pengulangan ke **`QUEUE`**",
                 "slashSong": "Mengatur mode pengulangan ke **`SONG`**",
                 "slashDisable": "Mematikan mode pengulangan",
+                "usage": "{prefix}repeat <{opsi}>",
                 "actualMode": "Mode pengulangan: **`{mode}`**",
+                "footer": "Untuk mengubah mode, lihat {prefix}help repeat",
                 "newMode": "Mode pengulangan telah diatur ke **`{mode}`**"
             },
             "resume": {
@@ -205,7 +267,6 @@
             },
             "skip": {
                 "description": "Lewatkan lagu",
-                "voteMessage": "{actual}/{required} telah vote untuk melewatkan lagu yang sedang dimainkan",
                 "voteResultMessage": "{length}/{required} telah vote untuk melewatkan lagu yang sedang dimainkan",
                 "skipMessage": "**{song}** dilewatkan"
             },
@@ -276,6 +337,9 @@
         "createMessage": "Hai {author}, prefix-ku adalah **`{prefix}`**",
         "voiceStateUpdate": {
             "disconnectFromVCMessage": "Terputus dari voice channel, antrian telah dihapus.",
+            "reconfigureConnection": "Dipindahkan ke voice channel dengan region yang berbeda. Melakukan konfigurasi koneksi...",
+            "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",
+            "unableReconfigureConnection": "Tidak dapat melakukan konfigurasi koneksi, antrian telah dihapus.",
             "joiningAsSpeaker": "Dipindahkan ke stage channel, mencoba bergabung sebagai Speaker...",
             "unableJoinStageMessage": "Tidak dapat bergabung sebagai Speaker, antrian telah dihapus.",
             "joinStageMessage": "Berhasil bergabung ke stage channel sebagai Speaker.",
