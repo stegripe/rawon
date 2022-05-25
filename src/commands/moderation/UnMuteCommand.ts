@@ -45,10 +45,15 @@ export class UnMuteCommand extends BaseCommand {
             });
         }
 
-        const muteRole = await this.client.utils.fetchMuteRole(ctx.guild).catch(() => null);
+        const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
         if (!muteRole) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.moderation.unmute.unableToCreateMuteRole"))]
+                embeds: [createEmbed(
+                    "warn",
+                    i18n.__mf("commands.moderation.mute.noRole", {
+                        prefix: this.client.config.mainPrefix
+                    })
+                )]
             });
         }
         if (!member.roles.cache.has(muteRole.id)) {
