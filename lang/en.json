@@ -188,7 +188,8 @@
                 },
                 "embedTitle": "DJ feature",
                 "newRoleText": "new role",
-                "changeText": "DJ feature has been **`{new}`**",
+                "disableText": "DJ feature has been **`DISABLED`**",
+                "enableText": "DJ feature has been **`ENABLED`**",
                 "disable": "Disabled",
                 "enable": "Enabled"
             },
