@@ -154,7 +154,6 @@
                 "slashMemberDescription": "Who do you like to unmute?",
                 "slashReasonDescription": "Unmute reason",
                 "usage": "{prefix}unmute <@mention | id> [reason]",
-                "unableToCreateMuteRole": "Unable to create mute role",
                 "noMuted": "That member is not **`MUTED`**",
                 "userUnmuted": "You have been **`UN-MUTED`** on **{guildName}**",
                 "unmutedByString": "Un-muted by: {author}",
