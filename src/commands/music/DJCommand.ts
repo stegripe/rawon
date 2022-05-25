@@ -68,9 +68,7 @@ export class DJCommand extends BaseCommand {
 
             return ctx.reply({
                 embeds: [
-                    createEmbed("success", i18n.__mf("commands.music.dj.changeText", {
-                        new: i18n.__("commands.music.dj.disable").toUpperCase()
-                    }), true)
+                    createEmbed("success", i18n.__("commands.music.dj.disableText"), true)
                 ]
             });
         },
@@ -94,9 +92,7 @@ export class DJCommand extends BaseCommand {
 
             return ctx.reply({
                 embeds: [
-                    createEmbed("success", i18n.__mf("commands.music.dj.changeText", {
-                        new: i18n.__("commands.music.dj.enable").toUpperCase()
-                    }), true)
+                    createEmbed("success", i18n.__("commands.music.dj.enableText"), true)
                 ]
             });
         },
