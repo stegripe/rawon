@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
 import { MessageInteractionAction } from "../typings";
-import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageMentions, MessageOptions, MessagePayload, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageMentions, MessageOptions, MessagePayload, ModalSubmitFieldsResolver, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
     public additionalArgs: Collection<string, any> = new Collection();
@@ -112,6 +112,10 @@ export class CommandContext {
         return this.context instanceof SelectMenuInteraction;
     }
 
+    public isModal(): boolean {
+        return this.context instanceof ModalSubmitInteraction;
+    }
+
     public get mentions(): MessageMentions | null {
         return this.context instanceof Message ? this.context.mentions : null;
     }
@@ -125,6 +129,12 @@ export class CommandContext {
     public get options(): CommandInteraction["options"] | null {
         return this.context instanceof Interaction
             ? (this.context as CommandInteraction).options
+            : null;
+    }
+
+    public get fields(): ModalSubmitFieldsResolver | null {
+        return this.context instanceof ModalSubmitInteraction
+            ? (this.context as ModalSubmitInteraction).fields
             : null;
     }
 
