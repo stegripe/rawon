@@ -226,8 +226,8 @@
                 "usage": "{prefix}remove <positions>",
                 "noPermission": "You don't have permission to use this command.",
                 "noPositions": "Please specify the song positions to remove.",
-                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue\n\n",
-                "songSkip": "The current song was removed, song skipped."
+                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
+                "songSkip": "The current song was removed, song skipped.\n\n"
             },
             "repeat": {
                 "description": "Repeat current music or the queue",
