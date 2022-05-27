@@ -8,7 +8,7 @@ export class GuildBanRemoveEvent extends BaseEvent {
         this.client.debugLog.logData("info", "GUILD_BAN_REMOVE", [
             ["User", `${ban.user.tag}(${ban.user.id})`],
             ["Guild", `${ban.guild.name}(${ban.guild.id})`],
-            ["Reason", ban.reason ?? "[No Reason Provided]"]
+            ["Reason", ban.reason ?? "[Not specified]"]
         ]);
 
         void this.client.modlogs.handleBanRemove(ban);
