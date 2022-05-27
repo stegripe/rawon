@@ -16,6 +16,7 @@ export class ModerationLogs {
         if (!ch) return;
 
         const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.warnSuccess", { user: options.user.tag }))
+            .setThumbnail(options.user.displayAvatarURL({ dynamic: true, size: 1024 }))
             .addField(i18n.__("commands.moderation.common.reasonString"), options.reason ?? i18n.__("commands.moderation.common.noReasonString"))
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: options.author.tag }),
@@ -36,12 +37,12 @@ export class ModerationLogs {
         await ch.send({
             embeds: [
                 createEmbed("info", i18n.__mf("commands.moderation.ban.banSuccess", { user: fetched.user.tag }))
+                    .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
                     .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"))
                     .setFooter({
                         text: i18n.__mf("commands.moderation.ban.bannedByString", { author: fetched.user.tag }),
                         iconURL: fetched.user.displayAvatarURL({ dynamic: true })
                     })
-                    .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 2048 }))
             ]
         });
     }
@@ -56,7 +57,7 @@ export class ModerationLogs {
         await ch.send({
             embeds: [
                 createEmbed("info", i18n.__mf("commands.moderation.unban.ubanSuccess", { user: fetched.user.tag }))
-                    .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 2048 }))
+                    .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
             ]
         });
     }

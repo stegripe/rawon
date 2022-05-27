@@ -53,7 +53,7 @@ export class HelpCommand extends BaseCommand {
             this.client.commands.get(this.client.commands.aliases.get(val)!);
         if (!val) {
             const embed = this.listEmbed
-                .setThumbnail(ctx.guild!.iconURL({ dynamic: true, format: "png", size: 2048 })!);
+                .setThumbnail(ctx.guild!.iconURL({ dynamic: true, format: "png", size: 1024 })!);
 
             this.listEmbed.fields = [];
             for (const category of this.client.commands.categories.values()) {
