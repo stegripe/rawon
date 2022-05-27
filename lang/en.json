@@ -96,7 +96,7 @@
                 "slashChannelNewChannelOption": "New channel for the moderation logs",
                 "slashEnableDescription": "Enable the moderation logs feature",
                 "slashDisableDescription": "Disable the moderation logs feature",
-                "usage": "modlogs",
+                "usage": "{prefix}modlogs",
                 "channel": {
                     "current": "Current moderation logs channel: <#{channel}>",
                     "noChannel": "Moderation logs channel hasn't been set",
@@ -146,13 +146,14 @@
                 "slashReasonDescription": "Un-ban reason",
                 "usage": "{prefix}unban <id> [reason]",
                 "alreadyUnban": "That user is not **`BANNED`**",
+                "unbannedByString": "Un-banned by: {author}",
                 "unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
                 "ubanSuccess": "**{user}** has been **`UN-BANNED`** from the server."
             },
             "unmute": {
                 "description": "Unmute someone on the server",
                 "slashMemberDescription": "Who do you like to unmute?",
-                "slashReasonDescription": "Unmute reason",
+                "slashReasonDescription": "Un-mute reason",
                 "usage": "{prefix}unmute <@mention | id> [reason]",
                 "noMuted": "That member is not **`MUTED`**",
                 "userUnmuted": "You have been **`UN-MUTED`** on **{guildName}**",
@@ -203,7 +204,7 @@
             "nowplaying": {
                 "description": "Show the media player status",
                 "emptyQueue": "Queue is empty",
-                "disableButton": "This button is no longer active and removed."
+                "disableButton": "Previous buttons is no longer active and removed."
             },
             "pause": {
                 "description": "Pause the music player",
@@ -226,15 +227,15 @@
                 "usage": "{prefix}remove <positions>",
                 "noPermission": "You don't have permission to use this command.",
                 "noPositions": "Please specify the song positions to remove.",
-                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue\n\n",
-                "songSkip": "The current song was removed, song skipped."
+                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
+                "songSkip": "The current song was removed, song skipped.\n\n"
             },
             "repeat": {
                 "description": "Repeat current music or the queue",
                 "slashQueue": "Set repeat mode to **`QUEUE`**",
                 "slashSong": "Set repeat mode to **`SONG`**",
                 "slashDisable": "Disable repeat mode",
-                "usage": "{prefix}repeat <{options}>",
+                "usage": "'{prefix}'repeat <{options}>",
                 "actualMode": "Current repeat mode is **`{mode}`**",
                 "footer": "To change mode, see {prefix}help repeat",
                 "newMode": "The repeat mode has been set to **`{mode}`**"
@@ -252,7 +253,7 @@
                 "usage": "{prefix}search <query> [source]",
                 "noQuery": "Please provide some query to search.",
                 "noTracks": "I can't obtain any search results.",
-                "queueEmbed": "Please select some music, you can choose more than one using blank space or {separator}.\n",
+                "queueEmbed": "Please select some music; you can choose more than one using blank space or {separator}.\n",
                 "trackSelectionMessage": "Music Selection",
                 "cancelMessage": "Type {cancel} or c to cancel music selection.",
                 "noSelection": "No or invalid value entered, music selection canceled.",
@@ -262,7 +263,7 @@
             },
             "shuffle": {
                 "description": "Set mode for shuffle feature",
-                "actualState": "Shuffle mode is **`{state}`**",
+                "actualState": "Current shuffle mode is **`{state}`**",
                 "newState": "Shuffle mode is now set to **`{state}`**"
             },
             "skip": {
@@ -276,9 +277,9 @@
                 "slashLastDescription": "Skip to the last song in the queue",
                 "slashSpecificDescription": "Skip to a specific position in the queue",
                 "slashPositionDescription": "Song position in the queue",
-                "usage": "{prefix}skipto <{options} | number>",
+                "usage": "'{prefix}'skipto <{options} | number>",
                 "noPermission": "You don't have permission to use this command.",
-                "noSongPosition": "Unable to find song in that position.",
+                "noSongPosition": "Unable to find a song in that position.",
                 "cantPlay": "You can't skip to current music.",
                 "skipMessage": "Skipped to **{song}**"
             },
@@ -310,11 +311,11 @@
             "noQueue": "There is nothing playing.",
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
             "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel, make sure I have the proper permissions.",
+            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions.",
             "sameVC": "You need to be in the same voice channel as mine."
         },
         "generalHandler": {
-            "handleVideoInitial": "Added {length} songs to the queue\n\n",
+            "handleVideoInitial": "Added {length} songs to the queue",
             "errorJoining": "Error while joining the voice channel, because: `{message}`",
             "queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
             "leftVC": "Left from the voice channel because I've been inactive for too long.",
@@ -342,10 +343,10 @@
             "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted.",
             "joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
             "unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
-            "joinStageMessage": "Successfully joined to the stage channel as Speaker.",
+            "joinStageMessage": "Successfully joined the stage channel as Speaker.",
             "deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
             "deleteQueueFooter": "Queue Deleted",
-            "pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
+            "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
             "pauseQueueFooter": "Queue Paused",
             "resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
             "resumeQueueFooter": "Queue Resumed"

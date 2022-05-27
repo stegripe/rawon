@@ -47,18 +47,18 @@ export class StayInQueueCommand extends BaseCommand {
 
         if (!newState) {
             return ctx.reply({
-                embeds: [createEmbed("info", i18n.__mf("commands.music.stayInQueue.actualState", {
+                embeds: [createEmbed("info", `🔊 **|** ${i18n.__mf("commands.music.stayInQueue.actualState", {
                     state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\``
-                }))]
+                })}`)]
             });
         }
 
         ctx.guild!.queue!.stayInVC = newState === "enable";
 
         return ctx.reply({
-            embeds: [createEmbed("success", i18n.__mf("commands.music.stayInQueue.newState", {
+            embeds: [createEmbed("success", `🔊 **|** ${i18n.__mf("commands.music.stayInQueue.newState", {
                 state: `\`${ctx.guild?.queue?.stayInVC ? "ENABLED" : "DISABLED"}\``
-            }), true)]
+            })}`, true)]
         });
     }
 }

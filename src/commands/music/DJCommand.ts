@@ -42,7 +42,7 @@ export class DJCommand extends BaseCommand {
         default: ctx => ctx.reply({
             embeds: [
                 createEmbed("info")
-                    .setTitle(i18n.__("commands.music.dj.embedTitle"))
+                    .setAuthor(i18n.__("commands.music.dj.embedTitle"))
                     .addField(`${this.client.config.mainPrefix}dj enable`, i18n.__("commands.music.dj.slashEnableDescription"))
                     .addField(`${this.client.config.mainPrefix}dj disable`, i18n.__("commands.music.dj.slashDisableDescription"))
                     .addField(`${this.client.config.mainPrefix}dj role [${i18n.__("commands.music.dj.newRoleText")}]`, i18n.__("commands.music.dj.slashRoleDescription"))

@@ -33,11 +33,11 @@ export class HelpCommand extends BaseCommand {
             text: i18n.__mf("commands.general.help.footerString", {
                 prefix: this.client.config.mainPrefix
             }),
-            iconURL: "https://raw.githubusercontent.com/Clytage/rawon/main/.github/images/info.png"
+            iconURL: "https://api.clytage.org/assets/images/information.png"
         });
 
     private readonly infoEmbed = createEmbed("info")
-        .setThumbnail("https://raw.githubusercontent.com/Clytage/rawon/main/.github/images/question_mark.png");
+        .setThumbnail("https://api.clytage.org/assets/images/question_mark.png");
 
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
@@ -53,7 +53,7 @@ export class HelpCommand extends BaseCommand {
             this.client.commands.get(this.client.commands.aliases.get(val)!);
         if (!val) {
             const embed = this.listEmbed
-                .setThumbnail(ctx.guild!.iconURL({ dynamic: true, format: "png", size: 2048 })!);
+                .setThumbnail(ctx.guild!.iconURL({ dynamic: true, format: "png", size: 1024 })!);
 
             this.listEmbed.fields = [];
             for (const category of this.client.commands.categories.values()) {
@@ -143,7 +143,7 @@ export class HelpCommand extends BaseCommand {
                     text: i18n.__mf("commands.general.help.commandUsageFooter", {
                         devOnly: command.meta.devOnly ? "(developer-only command)" : ""
                     }),
-                    iconURL: "https://raw.githubusercontent.com/Clytage/rawon/.github/images/info.png"
+                    iconURL: "https://api.clytage.org/assets/images/information.png"
                 })]
         }, "editReply");
     }
