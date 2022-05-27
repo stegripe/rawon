@@ -57,7 +57,8 @@ export class SpotifyUtil {
             next = nextPlaylistResponse.next;
             playlistResponse.tracks.items.push(...nextPlaylistResponse.items);
         }
-        return playlistResponse.tracks.items;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        return playlistResponse.tracks.items.filter(spotifyTrack => spotifyTrack.track);
     }
 
     public getTrack(id: string): Promise<SpotifyTrack> {
