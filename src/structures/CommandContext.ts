@@ -27,17 +27,16 @@ export class CommandContext {
     | string
     | { askDeletion?: { reference: string } }, autoedit?: boolean): Promise<Message> {
         if (this.isInteraction()) {
-            if ((this.context as Interaction).isCommand() &&
+            if (((this.context as Interaction).isCommand() || (this.context as Interaction).isSelectMenu()) &&
             (this.context as CommandInteraction).replied &&
             !autoedit) throw new Error("Interaction is already replied.");
         }
 
-        const context = this.context as CommandInteraction | Message;
+        const context = this.context as CommandInteraction | Message | SelectMenuInteraction;
         const rep = await this.send(
             options,
             this.isInteraction()
-                ? (
-                    context as Interaction).isCommand()
+                ? ((context as Interaction).isCommand() || (context as Interaction).isSelectMenu())
                     ? (context as CommandInteraction).replied || (context as CommandInteraction).deferred
                         ? "editReply"
                         : "reply"
