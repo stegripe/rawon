@@ -96,7 +96,7 @@
                 "slashChannelNewChannelOption": "New channel for the moderation logs",
                 "slashEnableDescription": "Enable the moderation logs feature",
                 "slashDisableDescription": "Disable the moderation logs feature",
-                "usage": "modlogs",
+                "usage": "{prefix}modlogs",
                 "channel": {
                     "current": "Current moderation logs channel: <#{channel}>",
                     "noChannel": "Moderation logs channel hasn't been set",
