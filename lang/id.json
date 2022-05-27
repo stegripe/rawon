@@ -262,7 +262,7 @@
             },
             "shuffle": {
                 "description": "Acak antrian",
-                "actualState": "Mode acak: **`{state}`**",
+                "actualState": "Mode acak saat ini adalah **`{state}`**",
                 "newState": "Mode acak telah diatur ke **`{state}`**"
             },
             "skip": {

@@ -262,7 +262,7 @@
             },
             "shuffle": {
                 "description": "Set mode for shuffle feature",
-                "actualState": "Shuffle mode is **`{state}`**",
+                "actualState": "Current shuffle mode is **`{state}`**",
                 "newState": "Shuffle mode is now set to **`{state}`**"
             },
             "skip": {
