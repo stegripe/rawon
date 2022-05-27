@@ -11,6 +11,6 @@ export class GuildBanAddEvent extends BaseEvent {
             ["Reason", ban.reason ?? "[Not specified]"]
         ]);
 
-        void this.client.modlogs.handleBanAdd(ban);
+        void this.client.modlogs.handleBanAdd({ ban });
     }
 }

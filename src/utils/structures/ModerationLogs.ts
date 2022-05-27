@@ -27,7 +27,7 @@ export class ModerationLogs {
     }
 
     public async handleBanAdd(options: {
-        author: User;
+        author?: User;
         ban: GuildBan;
     }): Promise<void> {
         const fetched = await options.ban.fetch().catch(() => undefined);
@@ -36,21 +36,24 @@ export class ModerationLogs {
         const ch = await this.getCh(fetched.guild);
         if (!ch) return;
 
+        const embed = createEmbed("error", i18n.__mf("commands.moderation.ban.banSuccess", { user: fetched.user.tag }))
+            .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
+            .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"));
+
+        if (options.author) {
+            embed.setFooter({
+                text: i18n.__mf("commands.moderation.ban.bannedByString", { author: options.author.tag }),
+                iconURL: options.author.displayAvatarURL({ dynamic: true })
+            });
+        }
+
         await ch.send({
-            embeds: [
-                createEmbed("info", i18n.__mf("commands.moderation.ban.banSuccess", { user: fetched.user.tag }))
-                    .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-                    .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"))
-                    .setFooter({
-                        text: i18n.__mf("commands.moderation.ban.bannedByString", { author: options.author.tag }),
-                        iconURL: options.author.displayAvatarURL({ dynamic: true })
-                    })
-            ]
+            embeds: [embed]
         });
     }
 
     public async handleBanRemove(options: {
-        author: User;
+        author?: User;
         ban: GuildBan;
     }): Promise<void> {
         const fetched = await options.ban.fetch().catch(() => undefined);
@@ -59,16 +62,19 @@ export class ModerationLogs {
         const ch = await this.getCh(fetched.guild);
         if (!ch) return;
 
+        const embed = createEmbed("info", i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag }))
+            .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
+            .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"));
+
+        if (options.author) {
+            embed.setFooter({
+                text: i18n.__mf("commands.moderation.unban.unbannedByString", { author: options.author.tag }),
+                iconURL: options.author.displayAvatarURL({ dynamic: true })
+            });
+        }
+
         await ch.send({
-            embeds: [
-                createEmbed("info", i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag }))
-                    .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-                    .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"))
-                    .setFooter({
-                        text: i18n.__mf("commands.moderation.ban.unbannedByString", { author: options.author.tag }),
-                        iconURL: options.author.displayAvatarURL({ dynamic: true })
-                    })
-            ]
+            embeds: [embed]
         });
     }
 
