@@ -31,7 +31,7 @@ export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: 
         return new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(`\`\`\`\n${opening}${p}\`\`\``).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}` });
+                e.setDescription(`\`\`\`\n${p}\`\`\``).setAuthor(opening).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}` });
             },
             embed,
             pages

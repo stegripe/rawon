@@ -314,7 +314,7 @@
             "sameVC": "You need to be in the same voice channel as mine."
         },
         "generalHandler": {
-            "handleVideoInitial": "Added {length} songs to the queue\n\n",
+            "handleVideoInitial": "Added {length} songs to the queue",
             "errorJoining": "Error while joining the voice channel, because: `{message}`",
             "queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
             "leftVC": "Left from the voice channel because I've been inactive for too long.",
