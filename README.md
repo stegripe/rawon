@@ -1,5 +1,3 @@
-![Splash](https://repository-images.githubusercontent.com/236645319/8a781f4e-6955-499a-9e88-380c5adccfa5)
-
 # Rawon
 
 > A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
