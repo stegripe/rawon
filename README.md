@@ -70,4 +70,4 @@ Railway provide $5 each month for you to use in free plan, it will stay online 2
 ## Disclaimers
 Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 
-> © 2022 Clytage
+> © 2022 Clytage Development
