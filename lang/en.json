@@ -146,13 +146,14 @@
                 "slashReasonDescription": "Un-ban reason",
                 "usage": "{prefix}unban <id> [reason]",
                 "alreadyUnban": "That user is not **`BANNED`**",
+                "unbannedByString": "Un-banned by: {author}",
                 "unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
                 "ubanSuccess": "**{user}** has been **`UN-BANNED`** from the server."
             },
             "unmute": {
                 "description": "Unmute someone on the server",
                 "slashMemberDescription": "Who do you like to unmute?",
-                "slashReasonDescription": "Unmute reason",
+                "slashReasonDescription": "Un-mute reason",
                 "usage": "{prefix}unmute <@mention | id> [reason]",
                 "noMuted": "That member is not **`MUTED`**",
                 "userUnmuted": "You have been **`UN-MUTED`** on **{guildName}**",

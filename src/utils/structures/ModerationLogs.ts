@@ -21,14 +21,16 @@ export class ModerationLogs {
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: options.author.tag }),
                 iconURL: options.author.displayAvatarURL({ dynamic: true })
-            })
-            .setThumbnail(options.user.displayAvatarURL({ dynamic: true, size: 2048 }));
+            });
 
         await ch.send({ embeds: [embed] }).catch((er: Error) => console.log(`Failed to send warn logs: ${er.message}`));
     }
 
-    public async handleBanAdd(ban: GuildBan): Promise<void> {
-        const fetched = await ban.fetch().catch(() => undefined);
+    public async handleBanAdd(options: {
+        author: User;
+        ban: GuildBan;
+    }): Promise<void> {
+        const fetched = await options.ban.fetch().catch(() => undefined);
         if (!fetched) return;
 
         const ch = await this.getCh(fetched.guild);
@@ -40,15 +42,18 @@ export class ModerationLogs {
                     .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
                     .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"))
                     .setFooter({
-                        text: i18n.__mf("commands.moderation.ban.bannedByString", { author: fetched.user.tag }),
-                        iconURL: fetched.user.displayAvatarURL({ dynamic: true })
+                        text: i18n.__mf("commands.moderation.ban.bannedByString", { author: options.author.tag }),
+                        iconURL: options.author.displayAvatarURL({ dynamic: true })
                     })
             ]
         });
     }
 
-    public async handleBanRemove(ban: GuildBan): Promise<void> {
-        const fetched = await ban.fetch().catch(() => undefined);
+    public async handleBanRemove(options: {
+        author: User;
+        ban: GuildBan;
+    }): Promise<void> {
+        const fetched = await options.ban.fetch().catch(() => undefined);
         if (!fetched) return;
 
         const ch = await this.getCh(fetched.guild);
@@ -56,8 +61,13 @@ export class ModerationLogs {
 
         await ch.send({
             embeds: [
-                createEmbed("info", i18n.__mf("commands.moderation.unban.ubanSuccess", { user: fetched.user.tag }))
+                createEmbed("info", i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag }))
                     .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
+                    .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"))
+                    .setFooter({
+                        text: i18n.__mf("commands.moderation.ban.unbannedByString", { author: options.author.tag }),
+                        iconURL: options.author.displayAvatarURL({ dynamic: true })
+                    })
             ]
         });
     }
