@@ -52,7 +52,6 @@
         },
         "moderation": {
             "common": {
-                "categoryName": "MODERACIÓN",
                 "noUserSpecified": "Por favor especifica un usuario.",
                 "noReasonString": "[No especificado]",
                 "reasonString": "**Razón**"
@@ -112,7 +111,6 @@
                 "description": "Silencia a alguien en el servidor",
                 "slashMemberDescription": "¿A quién quisieras silenciar?",
                 "slashReasonDescription": "Razón de silencio",
-                "unableToCreateMuteRole": "No se pudo crear el rol para usuarios silenciados",
                 "usage": "{prefix}mute <@mención | id> [razón]",
                 "userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE ROLES`** para usar este comando.",
                 "botNoPermission": "Lo siento, pero no tengo el permiso **`MANAGE ROLES`**",
@@ -120,7 +118,9 @@
                 "userMuted": "Haz sido **`SILENCIADO`** en **{guildName}**",
                 "mutedByString": "Silenciado por: {author}",
                 "muteFail": "No se pudo **`SILENCIAR`** al miembro, razón: `{message}`",
-                "muteSuccess": "**{user}** ha sido **`SILENCIADO`** en el servidor."
+                "muteSuccess": "**{user}** ha sido **`SILENCIADO`** en el servidor.",
+                "cantMuteOwner": "",
+                "noRole": ""
             },
             "purge": {
                 "description": "Eliminar mensajes",
@@ -145,7 +145,6 @@
                 "description": "Desilenciar a alguien del servidor",
                 "slashMemberDescription": "A quién quisieras desilenciar?",
                 "slashReasonDescription": "Razón del desilencio",
-                "unableToCreateMuteRole": "No se pudo crear el rol de Silenciado",
                 "usage": "{prefix}unmute <@mención | id> [razón]",
                 "noMuted": "Ese miembro no ha sido **`SILENCIADO`**",
                 "userUnmuted": "Haz sido **`DESILENCIADO`** en **{guildName}**",
@@ -164,11 +163,17 @@
                 "warnedByString": "Advertido por: {author}",
                 "warnSuccess": "**{user}** ha sido **`ADVERTIDO`** en el servidor."
             },
-            "categoryName": "commands.moderation.categoryName"
+            "categoryName": "commands.moderation.categoryName",
+            "setmute": {
+                "description": "",
+                "slashRoleDescription": "",
+                "usage": "",
+                "invalidRole": "",
+                "success": ""
+            }
         },
         "music": {
             "lyrics": {
-                "categoryName": "MÚSICA",
                 "description": "Muestra la letra de una canción",
                 "slashDescription": "Canción a buscar",
                 "usage": "{prefix}lyrics [canción]",
@@ -233,7 +238,6 @@
             },
             "skip": {
                 "description": "Salta la canción actual",
-                "voteMessage": "{actual}/{required} votos requeridos para saltar la canción",
                 "voteResultMessage": "{length}/{required} han votado para saltar la canción",
                 "skipMessage": "Se ha saltado **{song}**"
             },
@@ -274,7 +278,30 @@
             "remove": {
                 "description": "commands.music.remove.description",
                 "slashPositionsDescription": "commands.music.remove.slashPositionsDescription",
-                "usage": "commands.music.remove.usage"
+                "usage": "commands.music.remove.usage",
+                "noPermission": "",
+                "noPositions": "",
+                "songsRemoved": "",
+                "songSkip": ""
+            },
+            "dj": {
+                "description": "",
+                "slashRoleDescription": "",
+                "slashRoleNewRoleOption": "",
+                "slashEnableDescription": "",
+                "slashDisableDescription": "",
+                "role": {
+                    "current": "",
+                    "noRole": "",
+                    "invalid": "",
+                    "success": ""
+                },
+                "embedTitle": "",
+                "newRoleText": "",
+                "disableText": "",
+                "enableText": "",
+                "disable": "",
+                "enable": ""
             }
         }
     },
