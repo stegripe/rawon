@@ -1,7 +1,7 @@
 {
     "name": "Rawon",
-    "description": "A dedicated open-sourced Discord bot with many features of utilization. Easy to use, and with no coding required.",
-    "logo": "https://raw.githubusercontent.com/mzrtamp/rawon/main/.github/images/rawon.png",
+    "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
+    "logo": "https://api.clytage.org/assets/images/rawon.png",
     "env": {
         "DISCORD_TOKEN": {
             "description": "What is your Discord bot's token? | Example: NTE5NjQ2MjIxNTU2Nzc2OTcw.XAcEQQ.0gjhNbGeWBsKP6FVuIyZWlG2cMd",
@@ -13,49 +13,38 @@
             "value": "!"
         },
         "ALT_PREFIX": {
-            "description": "What should be the alternative prefixes of your bot? | Example: [\"?\", \"{mention}\"] | Formats: {mention} = bot mention",
+            "description": "What should be the alternative prefixes of your bot? | Example: \"?, {mention}\" | Formats: {mention} = @bot mention",
             "required": false,
-            "value": "[\"{mention}\"]"
+            "value": "{mention}"
         },
         "EMBED_COLOR": {
-            "description": "What should be your bot's embed color code? (hex) | Example: 3CAAFF",
+            "description": "What should be your bot's embed color code? (hex) | Example: 22C9FF",
             "required": false,
-            "value": "3CAAFF"
+            "value": "22C9FF"
         },
         "LOCALE": {
-            "description": "What should be the language of your bot? Example: en | Available: en, es, id",
+            "description": "What should be the language of your bot? | Example: en | Available: en, es, id",
             "required": false,
             "value": "en"
         },
         "ACTIVITIES": {
-            "description": "Activity list | Example: [\"Hello!\"]",
+            "description": "Activity list, what text should be appear on your bot's status? | Example: \"Hello world!, My prefix is {prefix}\" | Formats: {prefix} = bot prefix, {userCount} = user amount, {textChannelsCount} = text channel amount, {serverCount} = server amount, {playingCount} = amount of server playing music using the bot, {username} = bot username",
             "required": false,
-            "value": "[\"My default prefix is {prefix}\", \"music with {userCount} users\", \"{textChannelsCount} text channels in {serverCount} guilds\", \"Hello there, my name is {username}\"]"
+            "value": "My default prefix is {prefix}, music with {userCount} users, {textChannelsCount} text channels in {serverCount} guilds, 'Hello there, my name is {username}'"
         },
         "ACTIVITY_TYPES": {
-            "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this | Example: [\"PLAYING\", \"COMPETING\"]",
+            "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this. | Example: \"PLAYING, COMPETING\" | Available: PLAYING, WATCHING, LISTENING, COMPETING",
             "required": false,
-            "value": "[\"PLAYING\", \"LISTENING\", \"WATCHING\", \"PLAYING\", \"COMPETING\"]"
+            "value": "PLAYING, LISTENING, WATCHING, PLAYING, COMPETING"
         },
-        "OWNERS": {
-            "description": "What is the owner's ID of the bot? | Example: [\"319872685897416725\", \"390045370240991234\"]",
-            "required": false,
-            "value": "[\"\"]"
-        },
-        "DEV_GUILD": {
-            "description": "What is your server's ID? | Example: [\"332877090003091456\"]",
-            "required": false,
-            "value": "[\"\"]"
-        },
-        "NODE_ENV": {
-            "description": "In which mode do you want to activate your bot? | Example: production | Available: production, development",
-            "required": false,
-            "value": "production"
+        "MAIN_GUILD": {
+            "description": "What is your server's ID? | Example: \"972407605295198258, 972407605295198258\"",
+            "required": false
         },
         "STREAM_STRATEGY": {
-            "description": "Which youtube downloader do you want to use? Note: if you use play-dl, it will support a few sites. | Example: \"play-dl\" | Available: \"play-dl\", \"youtube-dl\"",
+            "description": "Which youtube downloader do you want to use? But if you use play-dl, it will support a few sites. | Example: play-dl | Available: play-dl, yt-dlp",
             "required": false,
-            "value": "youtube-dl"
+            "value": "yt-dlp"
         },
         "ENABLE_SLASH_COMMAND": {
             "description": "Do you want to enable slash command support? | Example: yes",
@@ -63,7 +52,7 @@
             "value": "yes"
         },
         "MUSIC_SELECTION_TYPE": {
-            "description": "Which music selection type do you want to use? | Example: selectmenu | Available: message (just like in the previous version) or selectmenu (uses discord selection menu)",
+            "description": "Which music selection type do you want to use? | Example: selectmenu | Available: message (just like in the previous version), selectmenu (uses discord selection menu)",
             "required": false,
             "value": "message"
         },
@@ -73,19 +62,9 @@
             "value": "no"
         },
         "STAY_IN_VC_AFTER_FINISHED": {
-            "description": "Do you want to make your bot not leave the voice channel after playing a song? | Example: no",
+            "description": "Do you want to make your bot not leaving the voice channel after playing a song? | Example: no",
             "required": false,
             "value": "no"
-        },
-        "DJ_ROLE_NAME": {
-            "description": "What is your server's DJ role name? | Example: DJ",
-            "required": false,
-            "value": "DJ"
-        },
-        "MUTE_ROLE_NAME": {
-            "description": "What is your server's Muted role name? | Example: Muted",
-            "required": false,
-            "value": "Muted"
         },
         "YES_EMOJI": {
             "description": "What should be your bot's emoji for every success sentence? | Example: ✅",
@@ -98,8 +77,8 @@
             "value": "❌"
         }
     },
-    "repository": "https://github.com/mzrtamp/rawon",
-    "website": "https://rawon.tiramitzu.me",
+    "repository": "https://github.com/Clytage/rawon",
+    "website": "https://rawon.clytage.org",
     "formation": {
         "worker": {
             "quantity": 1,

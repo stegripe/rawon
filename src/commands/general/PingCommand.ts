@@ -1,22 +1,20 @@
 import { CommandContext } from "../../structures/CommandContext";
+import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
-import { createEmbed } from "../../utils/createEmbed";
+import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { ColorResolvable } from "discord.js";
 
+@Command<typeof PingCommand>({
+    aliases: ["pang", "pung", "peng", "pong"],
+    description: i18n.__("commands.general.ping.description"),
+    name: "ping",
+    slash: {
+        options: []
+    },
+    usage: "{prefix}ping"
+})
 export class PingCommand extends BaseCommand {
-    public constructor(client: BaseCommand["client"]) {
-        super(client, {
-            aliases: ["pang", "pung", "peng", "pong"],
-            description: i18n.__("commands.general.ping.description"),
-            name: "ping",
-            slash: {
-                options: []
-            },
-            usage: "{prefix}ping"
-        });
-    }
-
     public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         const before = Date.now();
@@ -30,19 +28,23 @@ export class PingCommand extends BaseCommand {
                 name: "🏓 PONG",
                 iconURL: this.client.user!.displayAvatarURL()
             })
-            .addFields({
-                name: "📶 **|** API",
-                value: `**\`${latency}\`** ms`,
-                inline: true
-            }, {
-                name: "🌐 **|** WebSocket",
-                value: `**\`${wsLatency}\`** ms`,
-                inline: true
-            }, {
-                name: "🔊 **|** Voice",
-                value: `**\`${vcLatency}\`** ms`,
-                inline: true
-            })
+            .addFields(
+                {
+                    name: "📶 **|** API",
+                    value: `**\`${latency}\`** ms`,
+                    inline: true
+                },
+                {
+                    name: "🌐 **|** WebSocket",
+                    value: `**\`${wsLatency}\`** ms`,
+                    inline: true
+                },
+                {
+                    name: "🔊 **|** Voice",
+                    value: `**\`${vcLatency}\`** ms`,
+                    inline: true
+                }
+            )
             .setFooter({
                 text: i18n.__mf("commands.general.ping.footerString", { user: this.client.user!.tag }),
                 iconURL: this.client.user!.displayAvatarURL()

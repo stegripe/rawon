@@ -1,9 +1,9 @@
-import { basicYoutubeVideoInfo } from "../../typings";
+import { BasicYoutubeVideoInfo } from "../../typings";
 import { soundcloud } from "./SoundCloudUtil";
 import { streamStrategy } from "../../config";
 import { checkQuery } from "./GeneralUtil";
+import ytdl, { exec } from "../../../yt-dlp-utils";
 import { stream as pldlStream, video_basic_info } from "play-dl";
-import ytdl, { exec } from "youtube-dl-exec";
 import { Readable } from "stream";
 
 export async function getStream(url: string): Promise<Readable> {
@@ -40,7 +40,7 @@ export async function getStream(url: string): Promise<Readable> {
     });
 }
 
-export async function getInfo(url: string): Promise<basicYoutubeVideoInfo> {
+export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
     if (streamStrategy === "play-dl") {
         const rawPlayDlVideoInfo = await video_basic_info(url);
         return {
@@ -50,7 +50,8 @@ export async function getInfo(url: string): Promise<basicYoutubeVideoInfo> {
             title: rawPlayDlVideoInfo.video_details.title!,
             url: rawPlayDlVideoInfo.video_details.url
         };
-    } return ytdl(url, {
+    }
+    return ytdl(url, {
         dumpJson: true
     });
 }
