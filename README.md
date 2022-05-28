@@ -61,9 +61,17 @@ Railway provide $5 each month for you to use in free plan, it will stay online 2
 <a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway"
  /></a>
 
-## Project Maintainer
+## Project Contributors
+
+### Developers
 - [@Mednoob](https://github.com/Mednoob)
 - [@mzrtamp](https://github.com/mzrtamp)
+- [@noxzym](https://github.com/noxzym)
+
+### Translators
+- [Developers](#developers) (en, id)
+- [@21Z](https://github.com/21Z) (en)
+- [@lxndr-rl](https://github.com/lxndr-rl) (es)
 
 ## Disclaimers
 Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
