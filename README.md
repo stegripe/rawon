@@ -8,9 +8,8 @@
 
 ## Features
 - Interaction support.
-- Basic music commands.
-- Basic moderation commands.
 - Configurable, and easy to use.
+- Basic music and moderation commands.
 - A production-ready project, set up the bot without coding.
 
 ## General Setup
