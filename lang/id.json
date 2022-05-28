@@ -4,46 +4,46 @@
             "categoryName": "PENGEMBANG",
             "eval": {
                 "description": "Evaluasi kode",
-                "usage": "{prefix}eval <kode>",
+                "errorString": "Error",
                 "noCode": "Tidak ada kode yang diberikan.",
                 "outputString": "Output",
-                "errorString": "Error"
+                "usage": "{prefix}eval <kode>"
             }
         },
         "general": {
-            "categoryName": "UMUM",
             "about": {
-                "description": "Menampilkan informasi bot",
-                "osUptimeString": "Uptime OS",
-                "processUptimeString": "Uptime Process",
+                "aboutFooter": "{botname} - Informasi Bot",
                 "botUptimeString": "Uptime Bot",
-                "nodeVersionString": "Versi Node.js",
+                "botVersionString": "Versi Bot",
+                "description": "Menampilkan informasi bot",
                 "discordJSVersionString": "Versi Discord.js",
                 "ffmpegVersionString": "Versi FFmpeg",
-                "botVersionString": "Versi Bot",
-                "sourceCodeString": "Kode sumber",
-                "aboutFooter": "{botname} - Informasi Bot"
+                "nodeVersionString": "Versi Node.js",
+                "osUptimeString": "Uptime OS",
+                "processUptimeString": "Uptime Process",
+                "sourceCodeString": "Kode sumber"
             },
+            "categoryName": "UMUM",
             "help": {
+                "aliasesString": "Alias",
+                "authorString": "{username} - Daftar Perintah",
+                "commandDetailTitle": "{username} - Informasi tentang perintah {command}",
+                "commandSelectionString": "Silahkan pilih perintah yang kamu tuju",
+                "commandUsageFooter": "<> = dibutuhkan | [] = opsional {devOnly}",
                 "description": "Menampilkan daftar perintah atau informasi tentang perintah tertentu",
+                "descriptionString": "Deskripsi",
+                "footerString": "{prefix}help <perintah> untuk mendapatkan informasi tentang perintah tertentu",
+                "nameString": "Nama",
+                "noCommanSuggest": "Tidak dapat menemukan perintah dengan nama tersebut. Mungkin maksudmu ini?",
+                "noCommand": "Tidak dapat menemukan perintah dengan nama tersebut.",
                 "slashDescription": "Nama perintah untuk melihat informasi tentang perintah tertentu",
                 "usage": "{prefix}help [nama perintah]",
-                "authorString": "{username} - Daftar Perintah",
-                "footerString": "{prefix}help <perintah> untuk mendapatkan informasi tentang perintah tertentu",
-                "noCommand": "Tidak dapat menemukan perintah dengan nama tersebut.",
-                "commandSelectionString": "Silahkan pilih perintah yang kamu tuju",
-                "noCommanSuggest": "Tidak dapat menemukan perintah dengan nama tersebut. Mungkin maksudmu ini?",
-                "commandDetailTitle": "{username} - Informasi tentang perintah {command}",
-                "nameString": "Nama",
-                "descriptionString": "Deskripsi",
-                "aliasesString": "Alias",
-                "usageString": "Penggunaan",
-                "commandUsageFooter": "<> = dibutuhkan | [] = opsional {devOnly}"
+                "usageString": "Penggunaan"
             },
             "invite": {
+                "clickURL": "**[Klik disini]({url})** untung meng-invite bot ini ke server anda.",
                 "description": "Dapatkan link invite untuk bot",
-                "inviteTitle": "{bot} - Link invite",
-                "clickURL": "**[Klik disini]({url})** untung meng-invite bot ini ke server anda."
+                "inviteTitle": "{bot} - Link invite"
             },
             "ping": {
                 "description": "Menunjukkan ping bot",
@@ -51,283 +51,264 @@
             }
         },
         "moderation": {
-            "categoryName": "MODERASI",
-            "common": {
-                "noUserSpecified": "Mohon mention seseorang.",
-                "noReasonString": "[Tidak disebutkan]",
-                "reasonString": "**Alasan**"
-            },
             "ban": {
+                "banFail": "Tidak dapat **`BAN`** member, dikarenakan: `{message}`",
+                "banSuccess": "**{user}** telah di **`BAN`** dari server ini.",
+                "bannedByString": "Di ban oleh: {author}",
+                "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`BAN MEMBERS`**.",
                 "description": "Ban seseorang dari server",
                 "slashMemberIDDescription": "Siapa yang ingin anda ban?",
                 "slashReasonDescription": "Alasan ban",
                 "usage": "{prefix}ban <@mention | id> [alasan]",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`BAN MEMBERS`** untuk menggunakan perintah ini.",
-                "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`BAN MEMBERS`**.",
-                "userNoBannable": "Mohon maaf, tetapi saya tidak dapat **`BAN`** kepada member tersebut.",
                 "userBanned": "Anda telah di **`BAN`** dari **{guildName}**",
-                "bannedByString": "Di ban oleh: {author}",
-                "banFail": "Tidak dapat **`BAN`** member, dikarenakan: `{message}`",
-                "banSuccess": "**{user}** telah di **`BAN`** dari server ini."
+                "userNoBannable": "Mohon maaf, tetapi saya tidak dapat **`BAN`** kepada member tersebut.",
+                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`BAN MEMBERS`** untuk menggunakan perintah ini."
+            },
+            "categoryName": "MODERASI",
+            "common": {
+                "noReasonString": "[Tidak disebutkan]",
+                "noUserSpecified": "Mohon mention seseorang.",
+                "reasonString": "**Alasan**"
             },
             "infractions": {
                 "description": "Menampilkan pelanggaran seorang member",
-                "slashMemberDescription": "Siapa yang ingin anda lihat?",
-                "usage": "{prefix}infractions <@mention | id>",
                 "embedAuthorText": "{user} - Pelanggaran",
-                "noInfractions": "Tidak ada pelanggaran."
+                "noInfractions": "Tidak ada pelanggaran.",
+                "slashMemberDescription": "Siapa yang ingin anda lihat?",
+                "usage": "{prefix}infractions <@mention | id>"
             },
             "kick": {
+                "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`KICK MEMBERS`**.",
                 "description": "Kick seseorang dari server",
+                "kickFail": "Tidak dapat **`KICK`** member, dikarenakan: `{message}`",
+                "kickSuccess": "**{user}** telah di **`KICK`** dari server ini.",
+                "kickedByString": "Di kick oleh: {author}",
                 "slashMemberDescription": "Siapa yang ingin anda kick?",
                 "slashReasonDescription": "Alasan kick",
                 "usage": "{prefix}kick <@mention | id> [alasan]",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`KICK MEMBERS`** untuk menggunakan perintah ini.",
-                "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`KICK MEMBERS`**.",
-                "userNoKickable": "Mohon maaf, tetapi saya tidak dapat **`KICK`** kepada member tersebut.",
                 "userKicked": "Anda telah di **`KICK`** dari **{guildName}**",
-                "kickedByString": "Di kick oleh: {author}",
-                "kickFail": "Tidak dapat **`KICK`** member, dikarenakan: `{message}`",
-                "kickSuccess": "**{user}** telah di **`KICK`** dari server ini."
+                "userNoKickable": "Mohon maaf, tetapi saya tidak dapat **`KICK`** kepada member tersebut.",
+                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`KICK MEMBERS`** untuk menggunakan perintah ini."
             },
             "modlogs": {
-                "description": "Mengubah setelah fitur moderation logs",
-                "slashChannelDescription": "Lihat atau ubah channel moderation logs",
-                "slashChannelNewChannelOption": "Channel baru untuk moderation logs",
-                "slashEnableDescription": "Menyalakan fitur moderation logs",
-                "slashDisableDescription": "Mematikan fitur moderation logs",
-                "usage": "modlogs",
                 "channel": {
                     "current": "Channel moderation logs saat ini: <#{channel}>",
-                    "noChannel": "Channel moderation logs belum ditentukan.",
                     "invalid": "Channel tidak valid, channel harus berupa text channel.",
+                    "noChannel": "Channel moderation logs belum ditentukan.",
                     "success": "Channel moderation logs telah diubah menjadi <#{channel}>."
                 },
-                "embedTitle": "Moderation Logs",
-                "newChannelText": "channel baru",
+                "description": "Mengubah setelah fitur moderation logs",
                 "disable": "Fitur moderation logs telah di **`MATIKAN`**.",
-                "enable": "Fitur moderation logs telah di **`NYALAKAN`**."
+                "embedTitle": "Moderation Logs",
+                "enable": "Fitur moderation logs telah di **`NYALAKAN`**.",
+                "newChannelText": "channel baru",
+                "slashChannelDescription": "Lihat atau ubah channel moderation logs",
+                "slashChannelNewChannelOption": "Channel baru untuk moderation logs",
+                "slashDisableDescription": "Mematikan fitur moderation logs",
+                "slashEnableDescription": "Menyalakan fitur moderation logs",
+                "usage": "modlogs"
             },
             "mute": {
+                "alreadyMuted": "Member tersebut sedang di **`MUTE`**",
+                "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE ROLES`**.",
+                "cantMuteOwner": "Anda tidak bisa **`MUTE`** owner server.",
                 "description": "Mute seseorang di server",
+                "muteFail": "Tidak dapat **`MUTE`** member, dikarenakan: `{message}`",
+                "muteSuccess": "**{user}** telah di **`MUTE`** di server ini.",
+                "mutedByString": "Di mute oleh: {author}",
+                "noRole": "Role untuk mute belum diatur, silahkan atur dengan perintah `{prefix}muterole`",
                 "slashMemberDescription": "Siapa yang ingin anda mute?",
                 "slashReasonDescription": "Alasan mute",
                 "usage": "{prefix}mute <@mention | id> [alasan]",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini.",
-                "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE ROLES`**.",
-                "cantMuteOwner": "Anda tidak bisa **`MUTE`** owner server.",
-                "noRole": "Role untuk mute belum diatur, silahkan atur dengan perintah `{prefix}muterole`",
-                "alreadyMuted": "Member tersebut sedang di **`MUTE`**",
                 "userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
-                "mutedByString": "Di mute oleh: {author}",
-                "muteFail": "Tidak dapat **`MUTE`** member, dikarenakan: `{message}`",
-                "muteSuccess": "**{user}** telah di **`MUTE`** di server ini."
+                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini."
             },
             "purge": {
-                "description": "Hapus pesan",
-                "slashAmountDescription": "Jumlah pesan yang ingin dihapus",
-                "usage": "{prefix}purge <jumlah>",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE MESSAGES`** untuk menggunakan perintah ini.",
                 "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE MESSAGES`**.",
+                "description": "Hapus pesan",
                 "invalidAmount": "Mohon berikan jumlah yang benar.",
                 "purgeFail": "Tidak dapat **`PURGE`** pesan, dikarenakan: `{message}`",
-                "purgeSuccess": "**`{amount}`** pesan telah di **`PURGE`**"
+                "purgeSuccess": "**`{amount}`** pesan telah di **`PURGE`**",
+                "slashAmountDescription": "Jumlah pesan yang ingin dihapus",
+                "usage": "{prefix}purge <jumlah>",
+                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE MESSAGES`** untuk menggunakan perintah ini."
             },
             "setmute": {
                 "description": "Mengatur role mute",
-                "slashRoleDescription": "Role yang akan digunakan untuk mute",
-                "usage": "{prefix}setmute <role>",
                 "invalidRole": "Role tidak valid.",
-                "success": "Role mute telah diubah menjadi <@&{role}>"
+                "slashRoleDescription": "Role yang akan digunakan untuk mute",
+                "success": "Role mute telah diubah menjadi <@&{role}>",
+                "usage": "{prefix}setmute <role>"
             },
             "unban": {
+                "alreadyUnban": "Orang itu sedang tidak di **`BAN`**",
                 "description": "Unban seseorang dari server",
                 "slashMemberDescription": "Siapa yang ingin anda un-ban?",
                 "slashReasonDescription": "Alasan un-ban",
-                "usage": "{prefix}unban <id> [alasan]",
-                "alreadyUnban": "Orang itu sedang tidak di **`BAN`**",
+                "ubanSuccess": "**{user}** telah di **`UN-BAN`** dari server ini.",
                 "unbanFail": "Tidak dapat **`UN-BAN`** member, dikarenakan: `{message}`",
-                "ubanSuccess": "**{user}** telah di **`UN-BAN`** dari server ini."
+                "usage": "{prefix}unban <id> [alasan]"
             },
             "unmute": {
                 "description": "Unmute seseorang di server",
+                "noMuted": "Member tersebut sedang tidak di **`MUTE`**",
                 "slashMemberDescription": "Siapa yang ingin anda un-mute?",
                 "slashReasonDescription": "Alasan un-mute",
-                "usage": "{prefix}unmute <@mention | id> [alasan]",
-                "noMuted": "Member tersebut sedang tidak di **`MUTE`**",
-                "userUnmuted": "Anda telah di **`UN-MUTE`** di **{guildName}**",
-                "unmutedByString": "Di unmute oleh: {author}",
                 "unmuteFail": "Tidak dapat **`UN-MUTE`** member, dikarenakan: `{message}`",
-                "unmuteSuccess": "**{user}** telah di **`UN-MUTE`** di server ini."
+                "unmuteSuccess": "**{user}** telah di **`UN-MUTE`** di server ini.",
+                "unmutedByString": "Di unmute oleh: {author}",
+                "usage": "{prefix}unmute <@mention | id> [alasan]",
+                "userUnmuted": "Anda telah di **`UN-MUTE`** di **{guildName}**"
             },
             "warn": {
                 "description": "Warn seseorang di server",
+                "noDM": "Tidak dapat membuka DM dengan pengguna tersebut, tetapi akan tetap saya warn.",
                 "slashMemberDescription": "Siapa yang ingin anda warn?",
                 "slashReasonDescription": "Alasan warn",
                 "usage": "{prefix}warn <@mention | id> [alasan]",
                 "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE SERVER`** untuk menggunakan perintah ini.",
-                "noDM": "Tidak dapat membuka DM dengan pengguna tersebut, tetapi akan tetap saya warn.",
                 "userWarned": "Kamu telah di **`WARN`** di **{guildName}**",
-                "warnedByString": "Di warn oleh: {author}",
-                "warnSuccess": "**{user}** telah di **`WARN`** di server ini."
+                "warnSuccess": "**{user}** telah di **`WARN`** di server ini.",
+                "warnedByString": "Di warn oleh: {author}"
             }
         },
         "music": {
             "categoryName": "MUSIK",
             "dj": {
                 "description": "Mengubah pengaturan fitur DJ",
-                "slashRoleDescription": "Lihat atau ubah role DJ",
-                "slashRoleNewRoleOption": "Role baru untuk DJ",
-                "slashEnableDescription": "Menyalakan fitur DJ",
-                "slashDisableDescription": "Mematikan fitur DJ",
+                "disable": "Disabled",
+                "disableText": "Fitur DJ telah di **`MATIKAN`**",
+                "embedTitle": "Fitur DJ",
+                "enable": "Enabled",
+                "enableText": "Fitur DJ telah di **`NYALAKAN`**",
+                "newRoleText": "role baru",
                 "role": {
                     "current": "Role DJ saat ini: <@&{role}>",
-                    "noRole": "Role DJ belum ditentukan, silahkan atur dengan perintah `{prefix}dj role`",
                     "invalid": "Role tidak valid.",
+                    "noRole": "Role DJ belum ditentukan, silahkan atur dengan perintah `{prefix}dj role`",
                     "success": "Role DJ telah diubah menjadi <@&{role}>"
                 },
-                "embedTitle": "Fitur DJ",
-                "newRoleText": "role baru",
-                "disableText": "Fitur DJ telah di **`MATIKAN`**",
-                "enableText": "Fitur DJ telah di **`NYALAKAN`**",
-                "disable": "Disabled",
-                "enable": "Enabled"
+                "slashDisableDescription": "Mematikan fitur DJ",
+                "slashEnableDescription": "Menyalakan fitur DJ",
+                "slashRoleDescription": "Lihat atau ubah role DJ",
+                "slashRoleNewRoleOption": "Role baru untuk DJ"
             },
             "lyrics": {
+                "apiError": "Tidak dapat menemukan lagu **{song}**, dikarenakan: `{message}`",
                 "description": "Menampilkan lirik lagu",
-                "slashDescription": "Judul lagu untuk dicari",
-                "usage": "{prefix}lyrics [song]",
                 "noQuery": "Tidak ada yang sedang dimainkan atau tidak ada argumen yang diberikan.",
-                "apiError": "Tidak dapat menemukan lagu **{song}**, dikarenakan: `{message}`"
+                "slashDescription": "Judul lagu untuk dicari",
+                "usage": "{prefix}lyrics [song]"
             },
             "nowplaying": {
                 "description": "Menunjukkan status media player",
-                "emptyQueue": "Antrian sedang kosong.",
-                "disableButton": "Tombol-tombol ini sudah tidak lagi aktif dan terhapus."
+                "disableButton": "Tombol-tombol ini sudah tidak lagi aktif dan terhapus.",
+                "emptyQueue": "Antrian sedang kosong."
             },
             "pause": {
-                "description": "Menjeda media player",
                 "alreadyPause": "Media player sedang dijeda.",
+                "description": "Menjeda media player",
                 "pauseMessage": "Media player telah dijeda."
             },
             "play": {
-                "description": "Memainkan beberapa lagu",
-                "slashQueryDescription": "Kata pencarian",
-                "usage": "{prefix}play <kata pencarian / link>",
                 "alreadyPlaying": "Media player sedang memainkan lagu di channel **`{voiceChannel}`**.",
-                "noSongData": "Link tersebut tidak memiliki data lagu."
+                "description": "Memainkan beberapa lagu",
+                "noSongData": "Link tersebut tidak memiliki data lagu.",
+                "slashQueryDescription": "Kata pencarian",
+                "usage": "{prefix}play <kata pencarian / link>"
             },
             "queue": {
                 "description": "Menunjukkan daftar antrian"
             },
             "remove": {
                 "description": "Hapus lagu dari antrian",
-                "slashPositionsDescription": "Posisi lagu yang ingin dihapus (dipisahkan dengan koma atau spasi)",
-                "usage": "{prefix}remove <posisi>",
                 "noPermission": "Anda tidak memiliki izin untuk menggunakan command ini.",
                 "noPositions": "Mohon berikan posisi lagu yang ingin dihapus.",
+                "slashPositionsDescription": "Posisi lagu yang ingin dihapus (dipisahkan dengan koma atau spasi)",
+                "songSkip": "Lagu yang sedang dimainkan ikut terhapus, melewatkan lagu.",
                 "songsRemoved": "{removed} lagu dihapus dari antrian\n\n",
-                "songSkip": "Lagu yang sedang dimainkan ikut terhapus, melewatkan lagu."
+                "usage": "{prefix}remove <posisi>"
             },
             "repeat": {
+                "actualMode": "Mode pengulangan: **`{mode}`**",
                 "description": "Mengulang lagu yang sedang dimainkan atau setelahnya",
+                "footer": "Untuk mengubah mode, lihat {prefix}help repeat",
+                "newMode": "Mode pengulangan telah diatur ke **`{mode}`**",
+                "slashDisable": "Mematikan mode pengulangan",
                 "slashQueue": "Mengatur mode pengulangan ke **`QUEUE`**",
                 "slashSong": "Mengatur mode pengulangan ke **`SONG`**",
-                "slashDisable": "Mematikan mode pengulangan",
-                "usage": "{prefix}repeat <{opsi}>",
-                "actualMode": "Mode pengulangan: **`{mode}`**",
-                "footer": "Untuk mengubah mode, lihat {prefix}help repeat",
-                "newMode": "Mode pengulangan telah diatur ke **`{mode}`**"
+                "usage": "{prefix}repeat <{opsi}>"
             },
             "resume": {
-                "description": "Melanjutkan media player",
                 "alreadyResume": "Media player sedang tidak dijeda.",
+                "description": "Melanjutkan media player",
                 "resumeMessage": "Media player telah dilanjutkan."
             },
             "search": {
+                "cancelMessage": "Ketik {cancel} atau c untuk membatalkan pemilihan lagu.",
+                "canceledMessage": "Pemilihan lagu dibatalkan.",
                 "description": "Memainkan beberapa lagu dengan kata pencarian yang diberikan",
+                "interactionContent": "Silahkan pilih beberapa lagu",
+                "interactionPlaceholder": "Silahkan pilih beberapa lagu",
+                "noQuery": "Mohon berikan kata pencarian untuk dicari.",
+                "noSelection": "Angka yang diberikan tidak valid, pemilihan lagu dibatalkan.",
+                "noTracks": "Saya tidak dapat menemukan hasil pencarian.",
+                "queueEmbed": "Silahkan pilih beberapa lagu, kamu bisa memilih lebih dari satu menggunakan spasi atau {separator}.\n",
                 "slashDescription": "Mencari lagu yang diberikan",
                 "slashQueryDescription": "Kata pencarian",
                 "slashSourceDescription": "Dari mana lagu harus di ambil?",
-                "usage": "{prefix}search <kata pencarian> [sumber]",
-                "noQuery": "Mohon berikan kata pencarian untuk dicari.",
-                "noTracks": "Saya tidak dapat menemukan hasil pencarian.",
-                "queueEmbed": "Silahkan pilih beberapa lagu, kamu bisa memilih lebih dari satu menggunakan spasi atau {separator}.\n",
                 "trackSelectionMessage": "Pemilihan lagu",
-                "cancelMessage": "Ketik {cancel} atau c untuk membatalkan pemilihan lagu.",
-                "noSelection": "Angka yang diberikan tidak valid, pemilihan lagu dibatalkan.",
-                "canceledMessage": "Pemilihan lagu dibatalkan.",
-                "interactionContent": "Silahkan pilih beberapa lagu",
-                "interactionPlaceholder": "Silahkan pilih beberapa lagu"
+                "usage": "{prefix}search <kata pencarian> [sumber]"
             },
             "shuffle": {
-                "description": "Acak antrian",
                 "actualState": "Mode acak saat ini adalah **`{state}`**",
+                "description": "Acak antrian",
                 "newState": "Mode acak telah diatur ke **`{state}`**"
             },
             "skip": {
                 "description": "Lewatkan lagu",
-                "voteResultMessage": "{length}/{required} telah vote untuk melewatkan lagu yang sedang dimainkan",
-                "skipMessage": "**{song}** dilewatkan"
+                "skipMessage": "**{song}** dilewatkan",
+                "voteResultMessage": "{length}/{required} telah vote untuk melewatkan lagu yang sedang dimainkan"
             },
             "skipTo": {
+                "cantPlay": "Tidak dapat melompat ke lagu yang sedang dimainkan.",
                 "description": "Lompat ke posisi tertentu pada antrian",
-                "slashFirstDescription": "Mundur ke lagu pertama pada antrian",
-                "slashLastDescription": "Lompat ke lagu terakhir pada antrian",
-                "slashSpecificDescription": "Lompat ke posisi tertentu pada antrian",
-                "slashPositionDescription": "Posisi lagu pada antrian",
-                "usage": "{prefix}skipto <{options} | angka>",
                 "noPermission": "Kamu tidak dapat menggunakan perintah ini.",
                 "noSongPosition": "Tidak dapat mencari lagu pada posisi tersebut.",
-                "cantPlay": "Tidak dapat melompat ke lagu yang sedang dimainkan.",
-                "skipMessage": "Melompat ke lagu **{song}**"
+                "skipMessage": "Melompat ke lagu **{song}**",
+                "slashFirstDescription": "Mundur ke lagu pertama pada antrian",
+                "slashLastDescription": "Lompat ke lagu terakhir pada antrian",
+                "slashPositionDescription": "Posisi lagu pada antrian",
+                "slashSpecificDescription": "Lompat ke posisi tertentu pada antrian",
+                "usage": "{prefix}skipto <{options} | angka>"
             },
             "stayInQueue": {
-                "description": "Membuat bot menetap di voice channel saat antrian lagu sudah berakhir",
-                "slashDescription": "Mengganti mode fitur Stay-in-voice",
                 "247Disabled": "Perintah Stay-in-voice dimatikan.",
                 "actualState": "Stay-in-voice: **{state}**",
-                "newState": "Stay-in-voice telah diatur ke **{state}**"
+                "description": "Membuat bot menetap di voice channel saat antrian lagu sudah berakhir",
+                "newState": "Stay-in-voice telah diatur ke **{state}**",
+                "slashDescription": "Mengganti mode fitur Stay-in-voice"
             },
             "stop": {
                 "description": "Menghentikan media player",
                 "stoppedMessage": "Media player telah dihentikan."
             },
             "volume": {
+                "changeVolume": "Untuk mengganti volume, berikan angka volume baru saat menggunakan perintah ini.",
+                "currentVolume": "Volume saat ini adalah **`{volume}`**",
                 "description": "Mengganti volume media player",
+                "newVolume": "Volume diatur ke **`{volume}`**",
+                "plsPause": "Mohon menjeda media player nya saja daripada mengatur volume ke **`{volume}`**",
                 "slashDescription": "Volume baru",
                 "usage": "{prefix}volume [volume baru]",
-                "currentVolume": "Volume saat ini adalah **`{volume}`**",
-                "changeVolume": "Untuk mengganti volume, berikan angka volume baru saat menggunakan perintah ini.",
-                "plsPause": "Mohon menjeda media player nya saja daripada mengatur volume ke **`{volume}`**",
-                "volumeLimit": "Saya tidak dapat mengatur volume di atas **`{maxVol}`**",
-                "newVolume": "Volume diatur ke **`{volume}`**"
+                "volumeLimit": "Saya tidak dapat mengatur volume di atas **`{maxVol}`**"
             }
         }
     },
-    "utils": {
-        "musicDecorator": {
-            "noQueue": "Antrian media player sedang kosong.",
-            "noInVC": "Mohon maaf, tetapi anda harus berada di sebuah voice channel untuk melakukannya.",
-            "validVCJoinable": "Mohon maaf, tetapi saya tidak dapat **`CONNECT`** ke voice channel anda, pastikan saya memiliki izin yang tepat.",
-            "validVCPermission": "Mohon maaf, tetapi saya tidak dapat **`SPEAK`** di voice channel, pastikan saya memiliki izin yang tepat.",
-            "sameVC": "Anda harus berada di voice channel yang sama dengan saya."
-        },
-        "generalHandler": {
-            "handleVideoInitial": "{length} lagu telah ditambahkan ke antrian\n\n",
-            "errorJoining": "Error saat memasuki voice channel, dikarenakan: `{message}`",
-            "queueEnded": "Antrian sudah berakhir, gunakan **{usage}** untuk memainkan lagu lagi.",
-            "leftVC": "Keluar dari voice channel karena tidak ada lagi aktivitas.",
-            "startPlaying": "Mulai memainkan **{song}**",
-            "stopPlaying": "Selesai memainkan **{song}**",
-            "errorPlaying": "Sebuah error terjadi saat mencoba memainkan lagu, dikarenakan: `{message}`"
-        },
-        "cooldownMessage": "{author}, mohon tunggu selama **`{timeleft}`** detik."
-    },
     "events": {
         "channelUpdate": {
-            "reconfigureConnection": "Region voice channel telah diganti, melakukan konfigurasi koneksi...",
             "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",
+            "reconfigureConnection": "Region voice channel telah diganti, melakukan konfigurasi koneksi...",
             "unableReconfigureConnection": "Tidak dapat melakukan konfigurasi koneksi, antrian telah dihapus."
         },
         "createInteraction": {
@@ -336,23 +317,42 @@
         },
         "createMessage": "Hai {author}, prefix-ku adalah **`{prefix}`**",
         "voiceStateUpdate": {
-            "disconnectFromVCMessage": "Terputus dari voice channel, antrian telah dihapus.",
-            "reconfigureConnection": "Dipindahkan ke voice channel dengan region yang berbeda, melakukan konfigurasi koneksi...",
             "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",
-            "unableReconfigureConnection": "Tidak dapat melakukan konfigurasi koneksi, antrian telah dihapus.",
-            "joiningAsSpeaker": "Dipindahkan ke stage channel, mencoba bergabung sebagai Speaker...",
-            "unableJoinStageMessage": "Tidak dapat bergabung sebagai Speaker, antrian telah dihapus.",
-            "joinStageMessage": "Berhasil bergabung ke stage channel sebagai Speaker.",
             "deleteQueue": "**`{duration}`** telah berlalu dan belum ada yang memasuki voice channel, antrian telah dihapus.",
             "deleteQueueFooter": "Antrian dihapus",
+            "disconnectFromVCMessage": "Terputus dari voice channel, antrian telah dihapus.",
+            "joinStageMessage": "Berhasil bergabung ke stage channel sebagai Speaker.",
+            "joiningAsSpeaker": "Dipindahkan ke stage channel, mencoba bergabung sebagai Speaker...",
             "pauseQueue": "Semua orang telah keluar dari voice channel. Untuk menyimpan penggunaan, antrian telah dijeda.\nJika masih tidak ada yang memasuki voice channel dalam **`{duration}`**, antrian akan dihapus.",
             "pauseQueueFooter": "Antrian dijeda",
+            "reconfigureConnection": "Dipindahkan ke voice channel dengan region yang berbeda, melakukan konfigurasi koneksi...",
             "resumeQueue": "Seseorang telah memasuki voice channel.\nMelanjutkan **{song}**",
-            "resumeQueueFooter": "Antrian dilanjutkan"
+            "resumeQueueFooter": "Antrian dilanjutkan",
+            "unableJoinStageMessage": "Tidak dapat bergabung sebagai Speaker, antrian telah dihapus.",
+            "unableReconfigureConnection": "Tidak dapat melakukan konfigurasi koneksi, antrian telah dihapus."
         }
     },
     "reusable": {
-        "pageFooter": "Halaman {actual} dari {total}",
-        "invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix} {name}`** untuk informasi lebih lanjut."
+        "invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix} {name}`** untuk informasi lebih lanjut.",
+        "pageFooter": "Halaman {actual} dari {total}"
+    },
+    "utils": {
+        "cooldownMessage": "{author}, mohon tunggu selama **`{timeleft}`** detik.",
+        "generalHandler": {
+            "errorJoining": "Error saat memasuki voice channel, dikarenakan: `{message}`",
+            "errorPlaying": "Sebuah error terjadi saat mencoba memainkan lagu, dikarenakan: `{message}`",
+            "handleVideoInitial": "{length} lagu telah ditambahkan ke antrian\n\n",
+            "leftVC": "Keluar dari voice channel karena tidak ada lagi aktivitas.",
+            "queueEnded": "Antrian sudah berakhir, gunakan **{usage}** untuk memainkan lagu lagi.",
+            "startPlaying": "Mulai memainkan **{song}**",
+            "stopPlaying": "Selesai memainkan **{song}**"
+        },
+        "musicDecorator": {
+            "noInVC": "Mohon maaf, tetapi anda harus berada di sebuah voice channel untuk melakukannya.",
+            "noQueue": "Antrian media player sedang kosong.",
+            "sameVC": "Anda harus berada di voice channel yang sama dengan saya.",
+            "validVCJoinable": "Mohon maaf, tetapi saya tidak dapat **`CONNECT`** ke voice channel anda, pastikan saya memiliki izin yang tepat.",
+            "validVCPermission": "Mohon maaf, tetapi saya tidak dapat **`SPEAK`** di voice channel, pastikan saya memiliki izin yang tepat."
+        }
     }
 }
