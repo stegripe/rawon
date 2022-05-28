@@ -5,4 +5,4 @@ const category = {
     hide: false
 };
 
-export = category;
+export default category;

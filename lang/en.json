@@ -1,307 +1,359 @@
 {
-	"commands": {
-		"developers": {
-			"categoryName": "DEVELOPER",
-			"eval": {
-				"description": "Evaluate to the bot",
-				"usage": "{prefix}eval <some code>",
-				"noCode": "No code was provided.",
-				"outputString": "Output",
-				"errorString": "Error"
-			}
-		},
-		"general": {
-			"categoryName": "GENERAL",
-			"about": {
-				"description": "Show the bot's information",
-				"osUptimeString": "OS Uptime",
-				"processUptimeString": "Process Uptime",
-				"botUptimeString": "Bot Uptime",
-				"nodeVersionString": "Node.js version",
-				"discordJSVersionString": "Discord.js version",
-				"ffmpegVersionString": "FFmpeg version",
-				"botVersionString": "Bot version",
-				"sourceCodeString": "Source code",
-				"aboutFooter": "{botname} - Bot Information"
-			},
-			"help": {
-				"description": "Shows the command list or information for a specific command",
-				"slashDescription": "Command name to view a specific information about the command",
-				"usage": "{prefix}help [command]",
-				"authorString": "{username} - Command List",
-				"footerString": "{prefix}help <command> to get more information on a specific command",
-				"noCommand": "Couldn't find any matching command name",
-				"commandSelectionString": "Please select the command",
-				"noCommanSuggest": "Couldn't find matching command name. Did you mean this?",
-				"commandDetailTitle": "{username} - Information about {command} command",
-				"nameString": "Name",
-				"descriptionString": "Description",
-				"aliasesString": "Aliases",
-				"usageString": "Usage",
-				"commandUsageFooter": "<> = required | [] = optional {devOnly}"
-			},
-			"invite": {
-				"description": "Get the invite link for the bot",
-				"inviteTitle": "{bot} - Invite Link",
-				"clickURL": "**[Click here]({url})** to invite this bot to your server."
-			},
-			"ping": {
-				"description": "Shows the current ping of the bot",
-				"footerString": "Latency of: {user}"
-			}
-		},
-		"moderation": {
-			"categoryName": "MODERATION",
-			"common": {
-				"noUserSpecified": "Please specify someone.",
-				"noReasonString": "[Not specified]",
-				"reasonString": "**Reason**"
-			},
-			"ban": {
-				"description": "Ban someone from the server",
-				"slashMemberIDDescription": "Who do you like to ban?",
-				"slashReasonDescription": "Ban reason",
-				"usage": "{prefix}ban <@mention | id> [reason]",
-				"userNoPermission": "Sorry, but you don't have **`BAN MEMBERS`** permission to use this command.",
-				"botNoPermission": "Sorry, but I don't have **`BAN MEMBERS`** permission.",
-				"userNoBannable": "Sorry, but I can't **`BAN`** that member.",
-				"userBanned": "You have been **`BANNED`** from **{guildName}**",
-				"bannedByString": "Banned by: {author}",
-				"banFail": "Unable to **`BAN`** member, because: `{message}`",
-				"banSuccess": "**{user}** has been **`BANNED`** from the server."
-			},
-			"kick": {
-				"description": "Kick someone from the server",
-				"slashMemberDescription": "Who do you like to kick?",
-				"slashReasonDescription": "Kick reason",
-				"usage": "{prefix}kick <@mention | id> [reason]",
-				"userNoPermission": "Sorry, but you don't have **`KICK MEMBERS`** permission to use this command.",
-				"botNoPermission": "Sorry, but I don't have **`KICK MEMBERS`** permission.",
-				"userNoKickable": "Sorry, but I can't **`KICK`** that member.",
-				"userKicked": "You have been **`KICKED`** from **{guildName}**",
-				"kickedByString": "Kicked by: {author}",
-				"kickFail": "Unable to **`KICK`** member, because: `{message}`",
-				"kickSuccess": "**{user}** has been **`KICKED`** from the server."
-			},
-			"mute": {
-				"description": "Mute someone on the server",
-				"slashMemberDescription": "Who do you like to mute?",
-				"slashReasonDescription": "Mute reason",
-				"usage": "{prefix}mute <@mention | id> [reason]",
-				"userNoPermission": "Sorry, but you don't have **`MANAGE ROLES`** permission to use this command.",
-				"botNoPermission": "Sorry, but I don't have **`MANAGE ROLES`** permission.",
-				"cantMuteOwner": "You can't mute the server owner!",
-				"unableToCreateMuteRole": "Unable to create mute role",
-				"alreadyMuted": "That member is already **`MUTED`**",
-				"userMuted": "You have been **`MUTED`** on **{guildName}**",
-				"mutedByString": "Muted by: {author}",
-				"muteFail": "Unable to **`MUTE`** member, because: `{message}`",
-				"muteSuccess": "**{user}** has been **`MUTED`** on the server."
-			},
-			"purge": {
-				"description": "Delete messages",
-				"slashAmountDescription": "Amount of messages to delete",
-				"usage": "{prefix}purge <amount>",
-				"userNoPermission": "Sorry, but you don't have **`MANAGE MESSAGES`** permission to use this command.",
-				"botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
-				"invalidAmount": "Please specify a valid number of messages to delete.",
-				"purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
-				"purgeSuccess": "**{amount}** messages have been **`PURGED`**"
-			},
-			"unban": {
-				"description": "Un-ban someone from the server",
-				"slashMemberDescription": "Who do you like to un-ban?",
-				"slashReasonDescription": "Un-ban reason",
-				"usage": "{prefix}unban <id> [reason]",
-				"alreadyUnban": "That user is not **`BANNED`**",
-				"unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
-				"ubanSuccess": "**{user}** has been **`UN-BANNED`** from the server."
-			},
-			"unmute": {
-				"description": "Unmute someone on the server",
-				"slashMemberDescription": "Who do you like to unmute?",
-				"slashReasonDescription": "Unmute reason",
-				"usage": "{prefix}unmute <@mention | id> [reason]",
-				"unableToCreateMuteRole": "Unable to create mute role",
-				"noMuted": "That member is not **`MUTED`**",
-				"userUnmuted": "You have been **`UN-MUTED`** on **{guildName}**",
-				"unmutedByString": "Un-muted by: {author}",
-				"unmuteFail": "Unable to **`UN-MUTE`** member, because: `{message}`",
-				"unmuteSuccess": "**{user}** has been **`UN-MUTED`** on the server."
-			},
-			"warn": {
-				"description": "Warn member on the server",
-				"slashMemberDescription": "Who do you like to warn?",
-				"slashReasonDescription": "Warn reason",
-				"usage": "{prefix}warn <@mention | id> [reason]",
-				"userNoPermission": "Sorry, but you don't have **`MANAGE SERVER`** permission to use this command.",
-				"noDM": "Unable to create a DM with that user, but I'll keep warn 'em.",
-				"userWarned": "You have been **`WARNED`** on **{guildName}**",
-				"warnedByString": "Warned by: {author}",
-				"warnSuccess": "**{user}** has been **`WARNED`** on the server."
-			}
-		},
-		"music": {
-			"categoryName": "MUSIC",
-			"lyrics": {
-				"description": "Show the lyrics from the song",
-				"slashDescription": "Song to search",
-				"usage": "{prefix}lyrics [song]",
-				"noQuery": "There is nothing playing or no arguments provided.",
-				"apiError": "The API could not find the song **{song}**, because: `{message}`"
-			},
-			"nowplaying": {
-				"description": "Show the media player status",
-				"emptyQueue": "Queue is empty",
-				"disableButton": "After 30 seconds, the buttons will no longer active."
-			},
-			"pause": {
-				"description": "Pause the music player",
-				"alreadyPause": "The music player is already paused.",
-				"pauseMessage": "The music player has been paused."
-			},
-			"play": {
-				"description": "Play some music",
-				"slashQueryDescription": "Query to search",
-				"usage": "{prefix}play <query | url>",
-				"alreadyPlaying": "The music player is already playing to **`{voiceChannel}`** voice channel.",
-				"noSongData": "That URL doesn't have any song data."
-			},
-			"queue": {
-				"description": "Show the queue list"
-			},
-			"remove": {
-				"description": "Remove song(s) from the queue",
-				"slashPositionsDescription": "Position of the songs to remove separated by comma or space",
-				"usage": "{prefix}remove <positions>",
-				"noPermission": "You don't have permission to use this command.",
-				"noPositions": "Please specify the song positions to remove.",
-				"songsRemoved": "Removed {removed} songs from the queue.",
-				"songSkip": "One of the removed song is the now-playing song, song skipped."
-			},
-			"repeat": {
-				"description": "Repeat current music or the queue",
-				"slashQueue": "Set repeat mode to **`QUEUE`**",
-				"slashSong": "Set repeat mode to **`SONG`**",
-				"slashDisable": "Disable repeat mode",
-				"usage": "{prefix}repeat <{options}>",
-				"actualMode": "Current repeat mode is **`{mode}`**",
-				"newMode": "The repeat mode has been set to **`{mode}`**"
-			},
-			"resume": {
-				"description": "Resume the music player",
-				"alreadyResume": "The music player is not paused.",
-				"resumeMessage": "The music player has been resumed."
-			},
-			"search": {
-				"description": "Play some music using provided query",
-				"slashDescription": "Search the specified music",
-				"slashQueryDescription": "Query to search",
-				"slashSourceDescription": "Where the music should be taken?",
-				"usage": "{prefix}search <query> [source]",
-				"noQuery": "Please provide some query to search.",
-				"noTracks": "I can't obtain any search results.",
-				"queueEmbed": "Please select some music, you can choose more than one using blank space or {separator}.\n",
-				"trackSelectionMessage": "Music Selection",
-				"cancelMessage": "Type {cancel} or c to cancel music selection.",
-				"noSelection": "No or invalid value entered, music selection canceled.",
-				"canceledMessage": "Music selection canceled.",
-				"interactionContent": "Please select some music",
-				"interactionPlaceholder": "Please select some music"
-			},
-			"shuffle": {
-				"description": "Set mode for shuffle feature",
-				"actualState": "Shuffle mode is **`{state}`**",
-				"newState": "Shuffle mode is now set to **`{state}`**"
-			},
-			"skip": {
-				"description": "Skip the music",
-				"voteResultMessage": "{length}/{required} voted to skip the current song",
-				"skipMessage": "Skipped **{song}**"
-			},
-			"skipTo": {
-				"description": "Skip to specific position in the queue",
-				"slashFirstDescription": "Rewind to the first song in the queue",
-				"slashLastDescription": "Skip to the last song in the queue",
-				"slashSpecificDescription": "Skip to a specific position in the queue",
-				"slashPositionDescription": "Song position in the queue",
-				"usage": "{prefix}skipto <{options} | number>",
-				"noPermission": "You don't have permission to use this comamnd.",
-				"noSongPosition": "Unable to find song in that position.",
-				"cantPlay": "You can't skip to current music.",
-				"skipMessage": "Skipped to **{song}**"
-			},
-			"stayInQueue": {
-				"description": "Makes the bot stay in the voice channel when the queue has ended",
-				"slashDescription": "Turns mode for stay-in-voice feature",
-				"247Disabled": "Stay-in-voice command is disabled.",
-				"actualState": "Stay-in-voice is **`{state}`**",
-				"newState": "Stay-in-voice is now set to **`{state}`**"
-			},
-			"stop": {
-				"description": "Stop the music player",
-				"stoppedMessage": "The music player has been stopped."
-			},
-			"volume": {
-				"description": "Change the media player volume",
-				"slashDescription": "New volume",
-				"usage": "{prefix}volume [new volume]",
-				"currentVolume": "The current volume is **`{volume}`**",
-				"changeVolume": "To change the volume, provide volume number when using this command.",
-				"plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
-				"volumeLimit": "I can't set the volume above **`{maxVol}`**",
-				"newVolume": "Volume has been set to **`{volume}`**"
-			}
-		}
-	},
-	"utils": {
-		"musicDecorator": {
-			"noQueue": "There is nothing playing.",
-			"noInVC": "Sorry, but you need to be in a voice channel to do that.",
-			"validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
-			"validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel, make sure I have the proper permissions.",
-			"sameVC": "You need to be in the same voice channel as mine."
-		},
-		"generalHandler": {
-			"handleVideoInitial": "Added {length} songs to the queue\n\n",
-			"errorJoining": "Error while joining the voice channel, because: `{message}`",
-			"queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
-			"leftVC": "Left from the voice channel because I've been inactive for too long.",
-			"startPlaying": "Started playing **{song}**",
-			"stopPlaying": "Stopped playing **{song}**",
-			"errorPlaying": "An error occurred while trying to play music, because: `{message}`"
-		},
-		"cooldownMessage": "{author}, please wait **`{timeleft}`** of cooldown time."
-	},
-	"events": {
-		"channelUpdate": {
-			"reconfigureConnection": "Voice channel region changed. Re-configuring connection...",
-			"connectionReconfigured": "Connection successfully re-configured.",
-			"unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
-		},
-		"createInteraction": {
-			"message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
-			"message2": "Sorry, but that interaction is only for <@{user}>"
-		},
-		"createMessage": "Hi {author}, my prefix is **`{prefix}`**",
-		"voiceStateUpdate": {
-			"disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
-			"reconfigureConnection": "Moved to a voice channel with a different region. Re-configuring connection...",
-			"connectionReconfigured": "Connection successfully re-configured.",
-			"unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted.",
-			"joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
-			"unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
-			"joinStageMessage": "Successfully joined to the stage channel as Speaker.",
-			"deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
-			"deleteQueueFooter": "Queue Deleted",
-			"pauseQueue": "Everyone has left from the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
-			"pauseQueueFooter": "Queue Paused",
-			"resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
-			"resumeQueueFooter": "Queue Resumed"
-		}
-	},
-	"reusable": {
-		"pageFooter": "Page {actual} of {total}",
-		"invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information."
-	}
+    "commands": {
+        "developers": {
+            "categoryName": "DEVELOPER",
+            "eval": {
+                "description": "Evaluate to the bot",
+                "errorString": "Error",
+                "noCode": "No code was provided.",
+                "outputString": "Output",
+                "usage": "{prefix}eval <some code>"
+            }
+        },
+        "general": {
+            "about": {
+                "aboutFooter": "{botname} - Bot Information",
+                "botUptimeString": "Bot Uptime",
+                "botVersionString": "Bot version",
+                "description": "Show the bot's information",
+                "discordJSVersionString": "Discord.js version",
+                "ffmpegVersionString": "FFmpeg version",
+                "nodeVersionString": "Node.js version",
+                "osUptimeString": "OS Uptime",
+                "processUptimeString": "Process Uptime",
+                "sourceCodeString": "Source code"
+            },
+            "categoryName": "GENERAL",
+            "help": {
+                "aliasesString": "Aliases",
+                "authorString": "{username} - Command List",
+                "commandDetailTitle": "{username} - Information about {command} command",
+                "commandSelectionString": "Please select the command",
+                "commandUsageFooter": "<> = required | [] = optional {devOnly}",
+                "description": "Shows the command list or information for a specific command",
+                "descriptionString": "Description",
+                "footerString": "{prefix}help <command> to get more information on a specific command",
+                "nameString": "Name",
+                "noCommanSuggest": "Couldn't find matching command name. Did you mean this?",
+                "noCommand": "Couldn't find any matching command name.",
+                "slashDescription": "Command name to view a specific information about the command",
+                "usage": "{prefix}help [command]",
+                "usageString": "Usage"
+            },
+            "invite": {
+                "clickURL": "**[Click here]({url})** to invite this bot to your server.",
+                "description": "Get the invite link for the bot",
+                "inviteTitle": "{bot} - Invite Link"
+            },
+            "ping": {
+                "description": "Shows the current ping of the bot",
+                "footerString": "Latency of: {user}"
+            }
+        },
+        "moderation": {
+            "ban": {
+                "banFail": "Unable to **`BAN`** member, because: `{message}`",
+                "banSuccess": "**{user}** has been **`BANNED`** from the server.",
+                "bannedByString": "Banned by: {author}",
+                "botNoPermission": "Sorry, but I don't have **`BAN MEMBERS`** permission.",
+                "description": "Ban someone from the server",
+                "slashMemberIDDescription": "Who do you like to ban?",
+                "slashReasonDescription": "Ban reason",
+                "usage": "{prefix}ban <@mention | id> [reason]",
+                "userBanned": "You have been **`BANNED`** from **{guildName}**",
+                "userNoBannable": "Sorry, but I can't **`BAN`** that member.",
+                "userNoPermission": "Sorry, but you don't have **`BAN MEMBERS`** permission to use this command."
+            },
+            "categoryName": "MODERATION",
+            "common": {
+                "noReasonString": "[Not specified]",
+                "noUserSpecified": "Please specify someone.",
+                "reasonString": "**Reason**"
+            },
+            "infractions": {
+                "description": "Show the infractions of a user",
+                "embedAuthorText": "{user} - Infractions",
+                "noInfractions": "No infractions.",
+                "slashMemberDescription": "Who do you like to see the infractions of?",
+                "usage": "{prefix}infractions [@mention | id]"
+            },
+            "kick": {
+                "botNoPermission": "Sorry, but I don't have **`KICK MEMBERS`** permission.",
+                "description": "Kick someone from the server",
+                "kickFail": "Unable to **`KICK`** member, because: `{message}`",
+                "kickSuccess": "**{user}** has been **`KICKED`** from the server.",
+                "kickedByString": "Kicked by: {author}",
+                "slashMemberDescription": "Who do you like to kick?",
+                "slashReasonDescription": "Kick reason",
+                "usage": "{prefix}kick <@mention | id> [reason]",
+                "userKicked": "You have been **`KICKED`** from **{guildName}**",
+                "userNoKickable": "Sorry, but I can't **`KICK`** that member.",
+                "userNoPermission": "Sorry, but you don't have **`KICK MEMBERS`** permission to use this command."
+            },
+            "modlogs": {
+                "channel": {
+                    "current": "Current moderation logs channel: <#{channel}>",
+                    "invalid": "Invalid channel, channel must be a text channel.",
+                    "noChannel": "Moderation logs channel hasn't been set.",
+                    "success": "Moderation logs channel has been set to <#{channel}>"
+                },
+                "description": "Change moderation logs feature settings",
+                "disable": "Moderation logs feature has been **`DISABLED`**",
+                "embedTitle": "Moderation Logs",
+                "enable": "Moderation logs feature has been **`ENABLED`**",
+                "newChannelText": "new channel",
+                "slashChannelDescription": "View or change the moderation logs channel",
+                "slashChannelNewChannelOption": "New channel for the moderation logs",
+                "slashDisableDescription": "Disable the moderation logs feature",
+                "slashEnableDescription": "Enable the moderation logs feature",
+                "usage": "{prefix}modlogs"
+            },
+            "mute": {
+                "alreadyMuted": "That member is already **`MUTED`**",
+                "botNoPermission": "Sorry, but I don't have **`MANAGE ROLES`** permission.",
+                "cantMuteOwner": "You can't **`MUTE`** the server owner.",
+                "description": "Mute someone on the server",
+                "muteFail": "Unable to **`MUTE`** member, because: `{message}`",
+                "muteSuccess": "**{user}** has been **`MUTED`** on the server.",
+                "mutedByString": "Muted by: {author}",
+                "noRole": "Mute role hasn't been set, please set it with `{prefix}setmute`",
+                "slashMemberDescription": "Who do you like to mute?",
+                "slashReasonDescription": "Mute reason",
+                "usage": "{prefix}mute <@mention | id> [reason]",
+                "userMuted": "You have been **`MUTED`** on **{guildName}**",
+                "userNoPermission": "Sorry, but you don't have **`MANAGE ROLES`** permission to use this command."
+            },
+            "purge": {
+                "botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
+                "description": "Delete messages",
+                "invalidAmount": "Please specify a valid number of messages to delete.",
+                "purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
+                "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} have been **`PURGED`**",
+                "slashAmountDescription": "Number of messages to delete",
+                "usage": "{prefix}purge <amount>",
+                "userNoPermission": "Sorry, but you don't have **`MANAGE MESSAGES`** permission to use this command."
+            },
+            "setmute": {
+                "description": "Set the mute role",
+                "invalidRole": "Invalid role.",
+                "slashRoleDescription": "The role to be used for mute",
+                "success": "Mute role has been set to <@&{role}>",
+                "usage": "{prefix}setmute <role>"
+            },
+            "unban": {
+                "alreadyUnban": "That user is not **`BANNED`**",
+                "description": "Un-ban someone from the server",
+                "slashMemberDescription": "Who do you like to un-ban?",
+                "slashReasonDescription": "Un-ban reason",
+                "ubanSuccess": "**{user}** has been **`UN-BANNED`** from the server.",
+                "unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
+                "unbannedByString": "Un-banned by: {author}",
+                "usage": "{prefix}unban <id> [reason]"
+            },
+            "unmute": {
+                "description": "Unmute someone on the server",
+                "noMuted": "That member is not **`MUTED`**",
+                "slashMemberDescription": "Who do you like to unmute?",
+                "slashReasonDescription": "Un-mute reason",
+                "unmuteFail": "Unable to **`UN-MUTE`** member, because: `{message}`",
+                "unmuteSuccess": "**{user}** has been **`UN-MUTED`** on the server.",
+                "unmutedByString": "Un-muted by: {author}",
+                "usage": "{prefix}unmute <@mention | id> [reason]",
+                "userUnmuted": "You have been **`UN-MUTED`** on **{guildName}**"
+            },
+            "warn": {
+                "description": "Warn member on the server",
+                "noDM": "Unable to create a DM with that user, but I'll keep warning 'em.",
+                "slashMemberDescription": "Who do you like to warn?",
+                "slashReasonDescription": "Warn reason",
+                "usage": "{prefix}warn <@mention | id> [reason]",
+                "userNoPermission": "Sorry, but you don't have **`MANAGE SERVER`** permission to use this command.",
+                "userWarned": "You have been **`WARNED`** on **{guildName}**",
+                "warnSuccess": "**{user}** has been **`WARNED`** on the server.",
+                "warnedByString": "Warned by: {author}"
+            }
+        },
+        "music": {
+            "categoryName": "MUSIC",
+            "dj": {
+                "description": "Change DJ feature settings",
+                "disable": "Disabled",
+                "disableText": "DJ feature has been **`DISABLED`**",
+                "embedTitle": "DJ feature",
+                "enable": "Enabled",
+                "enableText": "DJ feature has been **`ENABLED`**",
+                "newRoleText": "new role",
+                "role": {
+                    "current": "Current DJ role: <@&{role}>",
+                    "invalid": "Invalid role.",
+                    "noRole": "DJ role hasn't been set, please set it with `{prefix}dj role`",
+                    "success": "DJ role has been set to <@&{role}>"
+                },
+                "slashDisableDescription": "Disable the DJ feature",
+                "slashEnableDescription": "Enable the DJ feature",
+                "slashRoleDescription": "View or change the DJ role",
+                "slashRoleNewRoleOption": "New role for the DJ"
+            },
+            "lyrics": {
+                "apiError": "The API could not find the song **{song}**, because: `{message}`",
+                "description": "Show the lyrics from the song",
+                "noQuery": "There is nothing playing, or no arguments are provided.",
+                "slashDescription": "Song to search",
+                "usage": "{prefix}lyrics [song]"
+            },
+            "nowplaying": {
+                "description": "Show the media player status",
+                "disableButton": "Previous buttons is no longer active and removed.",
+                "emptyQueue": "Queue is empty."
+            },
+            "pause": {
+                "alreadyPause": "The music player is already paused.",
+                "description": "Pause the music player",
+                "pauseMessage": "The music player has been paused."
+            },
+            "play": {
+                "alreadyPlaying": "The music player is already playing to **`{voiceChannel}`** voice channel.",
+                "description": "Play some music",
+                "noSongData": "That URL doesn't have any song data.",
+                "slashQueryDescription": "Query to search",
+                "usage": "{prefix}play <query | url>"
+            },
+            "queue": {
+                "description": "Show the queue list"
+            },
+            "remove": {
+                "description": "Remove song(s) from the queue",
+                "noPermission": "You don't have permission to use this command.",
+                "noPositions": "Please specify the song positions to remove.",
+                "slashPositionsDescription": "Position of the songs to remove separated by comma or space",
+                "songSkip": "The current song was removed, song skipped.\n\n",
+                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
+                "usage": "{prefix}remove <positions>"
+            },
+            "repeat": {
+                "actualMode": "Current repeat mode is **`{mode}`**",
+                "description": "Repeat current music or the queue",
+                "footer": "To change mode, see {prefix}help repeat",
+                "newMode": "The repeat mode has been set to **`{mode}`**",
+                "slashDisable": "Disable repeat mode",
+                "slashQueue": "Set repeat mode to **`QUEUE`**",
+                "slashSong": "Set repeat mode to **`SONG`**",
+                "usage": "'{prefix}'repeat <{options}>"
+            },
+            "resume": {
+                "alreadyResume": "The music player is not paused.",
+                "description": "Resume the music player",
+                "resumeMessage": "The music player has been resumed."
+            },
+            "search": {
+                "cancelMessage": "Type {cancel} or c to cancel music selection.",
+                "canceledMessage": "Music selection canceled.",
+                "description": "Play some music using provided query",
+                "interactionContent": "Please select some music",
+                "interactionPlaceholder": "Please select some music",
+                "noQuery": "Please provide some query to search.",
+                "noSelection": "No or invalid value entered, music selection canceled.",
+                "noTracks": "I can't obtain any search results.",
+                "queueEmbed": "Please select some music; you can choose more than one using blank space or {separator}.\n",
+                "slashDescription": "Search the specified music",
+                "slashQueryDescription": "Query to search",
+                "slashSourceDescription": "Where the music should be taken?",
+                "trackSelectionMessage": "Music Selection",
+                "usage": "{prefix}search <query> [source]"
+            },
+            "shuffle": {
+                "actualState": "Current shuffle mode is **`{state}`**",
+                "description": "Set mode for shuffle feature",
+                "newState": "Shuffle mode is now set to **`{state}`**"
+            },
+            "skip": {
+                "description": "Skip the music",
+                "skipMessage": "Skipped **{song}**",
+                "voteResultMessage": "{length}/{required} voted to skip the current song"
+            },
+            "skipTo": {
+                "cantPlay": "You can't skip to current music.",
+                "description": "Skip to specific position in the queue",
+                "noPermission": "You don't have permission to use this command.",
+                "noSongPosition": "Unable to find a song in that position.",
+                "skipMessage": "Skipped to **{song}**",
+                "slashFirstDescription": "Rewind to the first song in the queue",
+                "slashLastDescription": "Skip to the last song in the queue",
+                "slashPositionDescription": "Song position in the queue",
+                "slashSpecificDescription": "Skip to a specific position in the queue",
+                "usage": "'{prefix}'skipto <{options} | number>"
+            },
+            "stayInQueue": {
+                "247Disabled": "Stay-in-voice command is disabled.",
+                "actualState": "Stay-in-voice is **`{state}`**",
+                "description": "Makes the bot stay in the voice channel when the queue has ended",
+                "newState": "Stay-in-voice is now set to **`{state}`**",
+                "slashDescription": "Turns mode for stay-in-voice feature"
+            },
+            "stop": {
+                "description": "Stop the music player",
+                "stoppedMessage": "The music player has been stopped."
+            },
+            "volume": {
+                "changeVolume": "To change the volume, provide volume number when using this command.",
+                "currentVolume": "The current volume is **`{volume}`**",
+                "description": "Change the media player volume",
+                "newVolume": "Volume has been set to **`{volume}`**",
+                "plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
+                "slashDescription": "New volume",
+                "usage": "{prefix}volume [new volume]",
+                "volumeLimit": "I can't set the volume above **`{maxVol}`**"
+            }
+        }
+    },
+    "events": {
+        "channelUpdate": {
+            "connectionReconfigured": "Connection successfully re-configured.",
+            "reconfigureConnection": "Voice channel region changed, re-configuring connection...",
+            "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
+        },
+        "createInteraction": {
+            "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
+            "message2": "Sorry, but that interaction is only for <@{user}>"
+        },
+        "createMessage": "Hi {author}, my prefix is **`{prefix}`**",
+        "voiceStateUpdate": {
+            "connectionReconfigured": "Connection successfully re-configured.",
+            "deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
+            "deleteQueueFooter": "Queue Deleted",
+            "disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
+            "joinStageMessage": "Successfully joined the stage channel as Speaker.",
+            "joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
+            "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
+            "pauseQueueFooter": "Queue Paused",
+            "reconfigureConnection": "Moved to a voice channel with a different region, re-configuring connection...",
+            "resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
+            "resumeQueueFooter": "Queue Resumed",
+            "unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
+            "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
+        }
+    },
+    "reusable": {
+        "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",
+        "pageFooter": "Page {actual} of {total}"
+    },
+    "utils": {
+        "cooldownMessage": "{author}, please wait **`{timeleft}`** of cooldown time.",
+        "generalHandler": {
+            "errorJoining": "Error while joining the voice channel, because: `{message}`",
+            "errorPlaying": "An error occurred while trying to play music, because: `{message}`",
+            "handleVideoInitial": "Added {length} songs to the queue",
+            "leftVC": "Left from the voice channel because I've been inactive for too long.",
+            "queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
+            "startPlaying": "Started playing **{song}**",
+            "stopPlaying": "Stopped playing **{song}**"
+        },
+        "musicDecorator": {
+            "noInVC": "Sorry, but you need to be in a voice channel to do that.",
+            "noQueue": "There is nothing playing.",
+            "sameVC": "You need to be in the same voice channel as mine.",
+            "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
+            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
+        }
+    }
 }
