@@ -120,8 +120,8 @@
                 "mutedByString": "Silenciado por: {author}",
                 "muteFail": "No se pudo **`SILENCIAR`** al miembro, razón: `{message}`",
                 "muteSuccess": "**{user}** ha sido **`SILENCIADO`** en el servidor.",
-                "cantMuteOwner": "",
-                "noRole": ""
+                "cantMuteOwner": "No puedes silenciar al propietario del servidor.",
+                "noRole": "El rol para usuario silenciado no ha sido establecido. Por favor usa `{prefix}setmute` para establecerlo."
             },
             "purge": {
                 "description": "Eliminar mensajes",
