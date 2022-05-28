@@ -30,7 +30,7 @@
                 "usage": "{prefix}help [comando]",
                 "authorString": "Lista de comandos de {username}",
                 "footerString": "{prefix}help <comando> para obtener más información de un comando específico",
-                "noCommand": "No se puede encontrar el comando",
+                "noCommand": "No se puede encontrar el comando.",
                 "commandSelectionString": "Por favor selecciona un comando",
                 "noCommanSuggest": "No se puede encontrar el comando. Quisiste decir este?",
                 "commandDetailTitle": "{username} - Información del comando {command}",
@@ -100,7 +100,7 @@
                 "channel": {
                     "current": "Canal de registro de moderación actual: <#{channel}>",
                     "noChannel": "El canal de registro de moderación aún no ha sido establecido.",
-                    "invalid": "Canal no válido. Asegúrate que sea un canal de texto.",
+                    "invalid": "Canal no válido, asegúrate que sea un canal de texto.",
                     "success": "El canal de registro de moderación ha sido establecido: <#{channel}>"
                 },
                 "embedTitle": "Registro de Moderación",
@@ -115,13 +115,13 @@
                 "usage": "{prefix}mute <@mención | id> [razón]",
                 "userNoPermission": "Lo siento, pero no tienes el permiso **`GESTIONAR ROLES`** para usar este comando.",
                 "botNoPermission": "Lo siento, pero no tengo el permiso **`GESTIONAR ROLES`**",
+                "cantMuteOwner": "No puedes **`SILENCIAR`** al propietario del servidor.",
+                "noRole": "El rol para usuario silenciado no ha sido establecido, por favor usa `{prefix}setmute` para establecerlo.",
                 "alreadyMuted": "Ese miembro ya ha sido **`SILENCIADO`** previamente.",
                 "userMuted": "Haz sido **`SILENCIADO`** en **{guildName}**",
                 "mutedByString": "Silenciado por: {author}",
                 "muteFail": "No se pudo **`SILENCIAR`** al miembro, razón: `{message}`",
-                "muteSuccess": "**{user}** ha sido **`SILENCIADO`** en el servidor.",
-                "cantMuteOwner": "No puedes silenciar al propietario del servidor.",
-                "noRole": "El rol para usuario silenciado no ha sido establecido. Por favor usa `{prefix}setmute` para establecerlo."
+                "muteSuccess": "**{user}** ha sido **`SILENCIADO`** en el servidor."
             },
             "purge": {
                 "description": "Eliminar mensajes",
@@ -183,7 +183,7 @@
                 "slashDisableDescription": "Desactiva la función DJ",
                 "role": {
                     "current": "<@&{role}> es el rol DJ actualmente.",
-                    "noRole": "No hay rol DJ establecido actualmente.",
+                    "noRole": "No hay rol DJ establecido actualmente, por favor usa `{prefix}dj role` para establecerlo.",
                     "invalid": "Rol no válido.",
                     "success": "<@&{role}> ha sido establecido como rol DJ."
                 },
@@ -203,7 +203,7 @@
             },
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
-                "emptyQueue": "La cola está vacía",
+                "emptyQueue": "La cola está vacía.",
                 "disableButton": "Este botón ya no está activo y ha sido eliminado."
             },
             "pause": {
@@ -327,7 +327,7 @@
     },
     "events": {
         "channelUpdate": {
-            "reconfigureConnection": "Se ha cambiado la región del canal de voz. Reconfigurando conexión...",
+            "reconfigureConnection": "Se ha cambiado la región del canal de voz, reconfigurando conexión...",
             "connectionReconfigured": "La conexión se ha reconfigurado con éxito.",
             "unableReconfigureConnection": "No se pudo reconfigurar la conexión, la cola ha sido eliminada."
         },
@@ -346,7 +346,7 @@
             "deleteQueueFooter": "Cola eliminada",
             "pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en **`{duration}`**, la cola se eliminará.",
             "pauseQueueFooter": "Cola pausada",
-            "reconfigureConnection": "He sido movido a un canal de voz en una región diferente. Reconfigurando conexión...",
+            "reconfigureConnection": "He sido movido a un canal de voz en una región diferente, reconfigurando conexión...",
             "resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando **{song}**",
             "resumeQueueFooter": "Cola reanudada",
             "unableReconfigureConnection": "No se pudo reconfigurar la conexión, la cola ha sido eliminada."

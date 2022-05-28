@@ -30,7 +30,7 @@
                 "usage": "{prefix}help [nama perintah]",
                 "authorString": "{username} - Daftar Perintah",
                 "footerString": "{prefix}help <perintah> untuk mendapatkan informasi tentang perintah tertentu",
-                "noCommand": "Tidak dapat menemukan perintah dengan nama tersebut",
+                "noCommand": "Tidak dapat menemukan perintah dengan nama tersebut.",
                 "commandSelectionString": "Silahkan pilih perintah yang kamu tuju",
                 "noCommanSuggest": "Tidak dapat menemukan perintah dengan nama tersebut. Mungkin maksudmu ini?",
                 "commandDetailTitle": "{username} - Informasi tentang perintah {command}",
@@ -100,7 +100,7 @@
                 "channel": {
                     "current": "Channel moderation logs saat ini: <#{channel}>",
                     "noChannel": "Channel moderation logs belum ditentukan.",
-                    "invalid": "Channel tidak valid. Channel harus berupa text channel.",
+                    "invalid": "Channel tidak valid, channel harus berupa text channel.",
                     "success": "Channel moderation logs telah diubah menjadi <#{channel}>."
                 },
                 "embedTitle": "Moderation Logs",
@@ -115,8 +115,8 @@
                 "usage": "{prefix}mute <@mention | id> [alasan]",
                 "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini.",
                 "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE ROLES`**.",
-                "cantMuteOwner": "Anda tidak bisa mute owner server.",
-                "noRole": "Role untuk mute belum diatur. Silahkan atur dengan perintah `{prefix}muterole`.",
+                "cantMuteOwner": "Anda tidak bisa **`MUTE`** owner server.",
+                "noRole": "Role untuk mute belum diatur, silahkan atur dengan perintah `{prefix}muterole`",
                 "alreadyMuted": "Member tersebut sedang di **`MUTE`**",
                 "userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
                 "mutedByString": "Di mute oleh: {author}",
@@ -182,7 +182,7 @@
                 "slashDisableDescription": "Mematikan fitur DJ",
                 "role": {
                     "current": "Role DJ saat ini: <@&{role}>",
-                    "noRole": "Role DJ belum ditentukan.",
+                    "noRole": "Role DJ belum ditentukan, silahkan atur dengan perintah `{prefix}dj role`",
                     "invalid": "Role tidak valid.",
                     "success": "Role DJ telah diubah menjadi <@&{role}>"
                 },
@@ -202,7 +202,7 @@
             },
             "nowplaying": {
                 "description": "Menunjukkan status media player",
-                "emptyQueue": "Antrian telah kosong",
+                "emptyQueue": "Antrian sedang kosong.",
                 "disableButton": "Tombol-tombol ini sudah tidak lagi aktif dan terhapus."
             },
             "pause": {
@@ -326,7 +326,7 @@
     },
     "events": {
         "channelUpdate": {
-            "reconfigureConnection": "Region voice channel telah diganti. Melakukan konfigurasi koneksi...",
+            "reconfigureConnection": "Region voice channel telah diganti, melakukan konfigurasi koneksi...",
             "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",
             "unableReconfigureConnection": "Tidak dapat melakukan konfigurasi koneksi, antrian telah dihapus."
         },
@@ -337,7 +337,7 @@
         "createMessage": "Hai {author}, prefix-ku adalah **`{prefix}`**",
         "voiceStateUpdate": {
             "disconnectFromVCMessage": "Terputus dari voice channel, antrian telah dihapus.",
-            "reconfigureConnection": "Dipindahkan ke voice channel dengan region yang berbeda. Melakukan konfigurasi koneksi...",
+            "reconfigureConnection": "Dipindahkan ke voice channel dengan region yang berbeda, melakukan konfigurasi koneksi...",
             "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",
             "unableReconfigureConnection": "Tidak dapat melakukan konfigurasi koneksi, antrian telah dihapus.",
             "joiningAsSpeaker": "Dipindahkan ke stage channel, mencoba bergabung sebagai Speaker...",

@@ -30,7 +30,7 @@
                 "usage": "{prefix}help [command]",
                 "authorString": "{username} - Command List",
                 "footerString": "{prefix}help <command> to get more information on a specific command",
-                "noCommand": "Couldn't find any matching command name",
+                "noCommand": "Couldn't find any matching command name.",
                 "commandSelectionString": "Please select the command",
                 "noCommanSuggest": "Couldn't find matching command name. Did you mean this?",
                 "commandDetailTitle": "{username} - Information about {command} command",
@@ -99,8 +99,8 @@
                 "usage": "{prefix}modlogs",
                 "channel": {
                     "current": "Current moderation logs channel: <#{channel}>",
-                    "noChannel": "Moderation logs channel hasn't been set",
-                    "invalid": "Invalid channel. Channel must be a text channel.",
+                    "noChannel": "Moderation logs channel hasn't been set.",
+                    "invalid": "Invalid channel, channel must be a text channel.",
                     "success": "Moderation logs channel has been set to <#{channel}>"
                 },
                 "embedTitle": "Moderation Logs",
@@ -115,8 +115,8 @@
                 "usage": "{prefix}mute <@mention | id> [reason]",
                 "userNoPermission": "Sorry, but you don't have **`MANAGE ROLES`** permission to use this command.",
                 "botNoPermission": "Sorry, but I don't have **`MANAGE ROLES`** permission.",
-                "cantMuteOwner": "You can't mute the server owner.",
-                "noRole": "Mute role hasn't been set. Please set it with `{prefix}setmute`.",
+                "cantMuteOwner": "You can't **`MUTE`** the server owner.",
+                "noRole": "Mute role hasn't been set, please set it with `{prefix}setmute`",
                 "alreadyMuted": "That member is already **`MUTED`**",
                 "userMuted": "You have been **`MUTED`** on **{guildName}**",
                 "mutedByString": "Muted by: {author}",
@@ -135,7 +135,7 @@
             },
             "setmute": {
                 "description": "Set the mute role",
-                "slashRoleDescription": "The role to be used for muting",
+                "slashRoleDescription": "The role to be used for mute",
                 "usage": "{prefix}setmute <role>",
                 "invalidRole": "Invalid role.",
                 "success": "Mute role has been set to <@&{role}>"
@@ -167,7 +167,7 @@
                 "slashReasonDescription": "Warn reason",
                 "usage": "{prefix}warn <@mention | id> [reason]",
                 "userNoPermission": "Sorry, but you don't have **`MANAGE SERVER`** permission to use this command.",
-                "noDM": "Unable to create a DM with that user, but I'll keep warn 'em.",
+                "noDM": "Unable to create a DM with that user, but I'll keep warning 'em.",
                 "userWarned": "You have been **`WARNED`** on **{guildName}**",
                 "warnedByString": "Warned by: {author}",
                 "warnSuccess": "**{user}** has been **`WARNED`** on the server."
@@ -183,7 +183,7 @@
                 "slashDisableDescription": "Disable the DJ feature",
                 "role": {
                     "current": "Current DJ role: <@&{role}>",
-                    "noRole": "DJ role hasn't been set",
+                    "noRole": "DJ role hasn't been set, please set it with `{prefix}dj role`",
                     "invalid": "Invalid role.",
                     "success": "DJ role has been set to <@&{role}>"
                 },
@@ -203,7 +203,7 @@
             },
             "nowplaying": {
                 "description": "Show the media player status",
-                "emptyQueue": "Queue is empty",
+                "emptyQueue": "Queue is empty.",
                 "disableButton": "Previous buttons is no longer active and removed."
             },
             "pause": {
@@ -327,7 +327,7 @@
     },
     "events": {
         "channelUpdate": {
-            "reconfigureConnection": "Voice channel region changed. Re-configuring connection...",
+            "reconfigureConnection": "Voice channel region changed, re-configuring connection...",
             "connectionReconfigured": "Connection successfully re-configured.",
             "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
         },
@@ -338,7 +338,7 @@
         "createMessage": "Hi {author}, my prefix is **`{prefix}`**",
         "voiceStateUpdate": {
             "disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
-            "reconfigureConnection": "Moved to a voice channel with a different region. Re-configuring connection...",
+            "reconfigureConnection": "Moved to a voice channel with a different region, re-configuring connection...",
             "connectionReconfigured": "Connection successfully re-configured.",
             "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted.",
             "joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
