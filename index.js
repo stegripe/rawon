@@ -1,7 +1,9 @@
-const { execSync } = require("child_process");
-const { existsSync, rmSync } = require("fs");
-const { resolve } = require("path");
-const { Server } = require("https");
+import { downloadExecutable } from "./yt-dlp-utils";
+import { execSync } from "child_process";
+import { existsSync, rmSync } from "fs";
+import { resolve } from "path";
+import { Server } from "https";
+import module from "module";
 
 const isGlitch = (
     process.env.PROJECT_DOMAIN !== undefined &&
@@ -51,7 +53,9 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
         const modulesPath = resolve(process.cwd(), "node_modules");
 
         if (existsSync(modulesPath)) {
-            rmSync(modulesPath, { recursive: true });
+            rmSync(modulesPath, {
+                recursive: true
+            });
         }
     }
 
@@ -95,6 +99,8 @@ if (isGitHub) {
     console.warn("[WARN] Running this bot using GitHub is not recommended.");
 }
 
+const require = module.createRequire(import.meta.url);
+
 if (!isGlitch) {
     try {
         require("ffmpeg-static");
@@ -116,38 +122,16 @@ if (isGlitch || isReplit) {
     console.info("[INFO] Compiled.");
 }
 
-(async () => {
-    const streamStrategy = process.env.STREAM_STRATEGY;
-    const isUnix = ["aix", "android", "darwin", "freebsd", "linux", "openbsd", "sunos"].includes(process.platform.toLowerCase());
-    process.env.YOUTUBE_DL_HOST = "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1";
-    process.env.YOUTUBE_DL_FILENAME = "yt-dlp";
-
-    if (streamStrategy !== "play-dl") {
-        try {
-            require("youtube-dl-exec");
-        } catch {
-            console.info("[INFO] Installing youtube-dl-exec...");
-            npmInstall(false, false, ["youtube-dl-exec"]);
-            console.info("[INFO] Youtube-dl-exec has been installed.");
-        }
-
-        const ytdlBinaryDir = resolve(__dirname, "node_modules", "youtube-dl-exec", "bin")
-        if (!existsSync(resolve(ytdlBinaryDir, isUnix ? "yt-dlp" : "yt-dlp.exe"))) {
-            console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
-            if (existsSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"))) rmSync(resolve(ytdlBinaryDir, isUnix ? "youtube-dl" : "youtube-dl.exe"));
-            await require("youtube-dl-exec/scripts/postinstall");
-            console.info("[INFO] Yt-dlp has been downloaded.");
-        }
+const streamStrategy = process.env.STREAM_STRATEGY;
+if (streamStrategy !== "play-dl") await downloadExecutable();
+if (streamStrategy === "play-dl") {
+    try {
+        require("play-dl");
+    } catch {
+        console.info("[INFO] Installing play-dl...");
+        npmInstall(false, false, ["play-dl"]);
+        console.info("[INFO] Play-dl has been installed.");
     }
-    if (streamStrategy === "play-dl") {
-        try {
-            require("play-dl");
-        } catch {
-            console.info("[INFO] Installing play-dl...");
-            npmInstall(false, false, ["play-dl"]);
-            console.info("[INFO] Play-dl has been installed.");
-        }
-    }
-    console.info("[INFO] Starting the bot...");
-    require("./dist/index.js");
-})();
+}
+console.info("[INFO] Starting the bot...");
+import("./dist/index.js");

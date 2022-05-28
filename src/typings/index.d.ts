@@ -2,136 +2,146 @@
 import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Rawon } from "../structures/Rawon";
-
-import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed } from "discord.js";
+import {
+    ActivityType,
+    ApplicationCommandOptionData,
+    ApplicationCommandType,
+    ClientEvents,
+    ClientPresenceStatus,
+    Client as OClient,
+    Collection,
+    GuildMember,
+    MessageEmbed,
+    Guild
+} from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
 export interface QueryData {
-    isURL: boolean;
     sourceType?: "query" | "soundcloud" | "spotify" | "unknown" | "youtube";
     type?: "playlist" | "track" | "unknown";
+    isURL: boolean;
 }
 
-export interface basicYoutubeVideoInfo {
-    id: string;
-    url: string;
-    title: string;
-    thumbnails: { url: string; width: number; height: number }[];
+export interface BasicYoutubeVideoInfo {
+    thumbnails?: { url: string; width: number; height: number }[];
     duration: number;
+    title: string;
+    url: string;
+    id: string;
 }
 
 export interface SearchTrackResult {
     type?: "results" | "selection";
-    items: ISong[];
+    items: Song[];
 }
 
 export interface PaginationPayload {
-    author: string;
+    edit: (index: number, embed: MessageEmbed, page: string) => unknown;
+    embed: MessageEmbed;
     content?: string;
     pages: string[];
-    embed: MessageEmbed;
-    edit: (index: number, embed: MessageEmbed, page: string) => unknown;
+    author: string;
 }
 
-export interface IRawonLoggerOptions {
+export interface RawonLoggerOptions {
     prod: boolean;
 }
 
 export interface SlashOption {
-    name?: string;
-    description?: string;
-    type?: ApplicationCommandType;
     options?: ApplicationCommandOptionData[];
+    type?: ApplicationCommandType;
     defaultPermission?: boolean;
+    description?: string;
+    name?: string;
 }
 
-export interface IpresenceData {
+export interface PresenceData {
     activities: { name: string; type: Exclude<ActivityType, "CUSTOM"> }[];
     status: ClientPresenceStatus[];
     interval: number;
 }
 
-export interface IEvent {
+export interface Event {
     readonly name: keyof ClientEvents;
     execute: (...args: any) => void;
 }
 
-export interface ICommandComponent {
+export interface CommandComponent {
+    execute: (context: CommandContext) => any;
     meta: {
+        readonly category?: string;
+        readonly path?: string;
+        contextChat?: string;
+        contextUser?: string;
+        description?: string;
+        slash?: SlashOption;
         aliases?: string[];
         cooldown?: number;
         disable?: boolean;
-        readonly path?: string;
         devOnly?: boolean;
-        description?: string;
-        readonly category?: string;
-        name: string;
         usage?: string;
-        slash?: SlashOption;
-        contextChat?: string;
-        contextUser?: string;
+        name: string;
     };
-    execute: (context: CommandContext) => any;
 }
 
-export interface ICategoryMeta {
-    name: string;
+export interface CategoryMeta {
+    cmds: Collection<string, CommandComponent>;
     hide: boolean;
-    cmds: Collection<string, ICommandComponent>;
+    name: string;
 }
 
 declare module "discord.js" {
     // @ts-expect-error Override typings
     export interface Client extends OClient {
+        commands: Rawon["commands"];
+        request: Rawon["request"];
         config: Rawon["config"];
         logger: Rawon["logger"];
-        request: Rawon["request"];
-        commands: Rawon["commands"];
         events: Rawon["events"];
 
         build: () => Promise<this>;
     }
 
     export interface Guild {
-        client: Rawon;
         queue?: ServerQueue;
+        client: Rawon;
     }
 }
 
-export interface ISong {
-    id: string;
+export interface Song {
+    thumbnail: string;
+    duration: number;
     title: string;
     url: string;
-    duration: number;
-    thumbnail: string;
+    id: string;
 }
 
-export interface IQueueSong {
-    song: ISong;
+export interface QueueSong {
     requester: GuildMember;
     index: number;
+    song: Song;
     key: string;
 }
 
 export type LoopMode = "OFF" | "QUEUE" | "SONG";
 
-export interface ILyricsAPIResult<E extends boolean> {
-    error: E;
-    artist?: E extends true ? null : string;
-    song?: E extends true ? null : string;
-    album_art?: E extends true ? null : string;
-    lyrics?: E extends true ? null : string;
-    url?: E extends true ? null : string;
-    message?: E extends true ? string : never;
+export interface LyricsAPIResult<E extends boolean> {
     synced: E extends true ? never : boolean | string;
+    album_art?: E extends true ? null : string;
+    message?: E extends true ? string : never;
+    artist?: E extends true ? null : string;
+    lyrics?: E extends true ? null : string;
+    song?: E extends true ? null : string;
+    url?: E extends true ? null : string;
+    error: E;
 }
 
-export interface ISpotifyAccessTokenAPIResult {
-    clientId: string;
-    accessToken?: string;
+export interface SpotifyAccessTokenAPIResult {
     accessTokenExpirationTimestampMs: number;
+    accessToken?: string;
     isAnonymous: boolean;
+    clientId: string;
 }
 
 export interface ExternalUrls {
@@ -141,10 +151,10 @@ export interface ExternalUrls {
 export interface ArtistsEntity {
     external_urls: ExternalUrls;
     href: string;
-    id: string;
     name: string;
     type: string;
     uri: string;
+    id: string;
 }
 
 export interface SpotifyArtist {
@@ -155,8 +165,8 @@ export interface SpotifyPlaylist {
     name: string;
     tracks: {
         items: { track: SpotifyTrack }[];
-        next: string | null;
         previous: string | null;
+        next: string | null;
     };
 }
 
@@ -166,10 +176,46 @@ export interface SpotifyTrack {
     external_urls: {
         spotify: string;
     };
-    id: string;
     name: string;
+    id: string;
 }
 
 export interface SpotifyArtist {
     tracks: SpotifyTrack[];
+}
+
+export interface GuildData {
+    dj?: {
+        enable: boolean;
+        role: string | null;
+    };
+    infractions: Record<
+        string,
+        {
+            on: number;
+            reason: string | null;
+        }[]
+    >;
+    modLog?: {
+        enable: boolean;
+        channel: string | null;
+    };
+    mute?: string | null;
+}
+
+export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;
+export type Constructor<Result = unknown> = NonAbstractConstructor<Result> | (abstract new (...args: any[]) => Result);
+
+export type MethodDecorator<Target, Result> = (
+    target: Target,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+) => Result;
+export type ClassDecorator<Target extends Constructor, Result = unknown> = (target: Target) => Result;
+export type Promisable<Output> = Output | Promise<Output>;
+export type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
+
+export interface RegisterCmdOptions {
+    onRegistered: (guild: Guild) => Promisable<any>;
+    onError: (guild: Guild | null, error: Error) => Promisable<any>;
 }

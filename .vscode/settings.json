@@ -1,7 +1,8 @@
 {
+    "files.eol": "\n",
     "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.preferences.importModuleSpecifierEnding": "js",
     "eslint.packageManager": "npm",
     "npm.packageManager": "npm",
-    "files.eol": "\n",
     "liveshare.languages.allowGuestCommandControl": true
 }

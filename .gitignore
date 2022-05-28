@@ -31,8 +31,6 @@ jspm_packages/
 
 *.tsbuildinfo
 
-dist/
-
 .npm
 
 .eslintcache
@@ -49,8 +47,8 @@ dist/
 .yarn-integrity
 
 .env
-.env
-.prod.env
+.env.test
+dev.env
 
 .cache
 
@@ -70,3 +68,6 @@ dist
 .dynamodb/
 
 .tern-port
+
+data.json
+scripts/
