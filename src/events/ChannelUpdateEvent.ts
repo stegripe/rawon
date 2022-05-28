@@ -13,10 +13,13 @@ export class ChannelUpdateEvent extends BaseEvent {
             ["Type", newChannel.type]
         ]);
 
-        if (!newChannel.guild.queue ||
+        if (
+            !newChannel.guild.queue ||
             newChannel.id !== newChannel.guild.queue.connection?.joinConfig.channelId ||
             (oldChannel.type !== "GUILD_VOICE" && oldChannel.type !== "GUILD_STAGE_VOICE") ||
-            (newChannel.type !== "GUILD_VOICE" && newChannel.type !== "GUILD_STAGE_VOICE")) return;
+            (newChannel.type !== "GUILD_VOICE" && newChannel.type !== "GUILD_STAGE_VOICE")
+        )
+            return;
 
         if ((oldChannel as VoiceChannel).rtcRegion !== (newChannel as VoiceChannel).rtcRegion) {
             const queue = newChannel.guild.queue;
@@ -35,10 +38,16 @@ export class ChannelUpdateEvent extends BaseEvent {
                 .catch(() => {
                     queue.destroy();
                     this.client.logger.info(
-                        `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Unable to re-configure network on ${newChannel.guild.name} voice channel, the queue was deleted.`
+                        `${
+                            this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                        } Unable to re-configure network on ${
+                            newChannel.guild.name
+                        } voice channel, the queue was deleted.`
                     );
                     void msg.edit({
-                        embeds: [createEmbed("error", i18n.__("events.channelUpdate.unableReconfigureConnection"), true)]
+                        embeds: [
+                            createEmbed("error", i18n.__("events.channelUpdate.unableReconfigureConnection"), true)
+                        ]
                     });
                 });
         }

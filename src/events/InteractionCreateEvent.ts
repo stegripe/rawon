@@ -9,26 +9,15 @@ import { BitFieldResolvable, Interaction, Permissions, PermissionString, TextCha
 export class InteractionCreateEvent extends BaseEvent {
     public async execute(interaction: Interaction): Promise<void> {
         this.client.debugLog.logData("info", "INTERACTION_CREATE", [
-            [
-                "Type",
-                interaction.type
-            ],
-            [
-                "Guild",
-                interaction.inGuild()
-                    ? `${interaction.guild?.name ?? "[???]"}(${interaction.guildId})`
-                    : "DM"
-            ],
+            ["Type", interaction.type],
+            ["Guild", interaction.inGuild() ? `${interaction.guild?.name ?? "[???]"}(${interaction.guildId})` : "DM"],
             [
                 "Channel",
                 (interaction.channel?.type ?? "DM") === "DM"
                     ? "DM"
                     : `${(interaction.channel as TextChannel).name}(${(interaction.channel as TextChannel).id})`
             ],
-            [
-                "User",
-                `${interaction.user.tag}(${interaction.user.id})`
-            ]
+            ["User", `${interaction.user.tag}(${interaction.user.id})`]
         ]);
 
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
@@ -39,19 +28,26 @@ export class InteractionCreateEvent extends BaseEvent {
             const cmd = val.split("_")[1] ?? "";
 
             if (cmd === "delete-msg") {
-                if (interaction.user.id !== user &&
+                if (
+                    interaction.user.id !== user &&
                     !new Permissions(
                         interaction.member.permissions as BitFieldResolvable<PermissionString, bigint> | undefined
-                    ).has("MANAGE_MESSAGES")) {
+                    ).has("MANAGE_MESSAGES")
+                ) {
                     void interaction.reply({
                         ephemeral: true,
-                        embeds: [createEmbed("error", i18n.__mf("events.createInteraction.message1", {
-                            user: user.toString()
-                        }), true)]
+                        embeds: [
+                            createEmbed(
+                                "error",
+                                i18n.__mf("events.createInteraction.message1", {
+                                    user: user.toString()
+                                }),
+                                true
+                            )
+                        ]
                     });
                 } else {
-                    const msg = await interaction.channel?.messages.fetch(interaction.message.id)
-                        .catch(() => null);
+                    const msg = await interaction.channel?.messages.fetch(interaction.message.id).catch(() => null);
                     if (msg?.deletable) {
                         void msg.delete();
                     }
@@ -62,10 +58,10 @@ export class InteractionCreateEvent extends BaseEvent {
         const context = new CommandContext(interaction);
         if (interaction.isContextMenu()) {
             const data = interaction.options.getUser("user") ?? interaction.options.getMessage("message");
-            const cmd = this.client.commands.find(
-                x => ((data as { type: string }).type === "MESSAGE"
+            const cmd = this.client.commands.find(x =>
+                (data as { type: string }).type === "MESSAGE"
                     ? x.meta.contextChat === interaction.commandName
-                    : x.meta.contextUser === interaction.commandName)
+                    : x.meta.contextUser === interaction.commandName
             );
             if (cmd) {
                 context.additionalArgs.set("options", data);
@@ -74,7 +70,8 @@ export class InteractionCreateEvent extends BaseEvent {
         }
 
         if (interaction.isCommand()) {
-            const cmd = this.client.commands.filter(x => x.meta.slash !== undefined)
+            const cmd = this.client.commands
+                .filter(x => x.meta.slash !== undefined)
                 .find(x => x.meta.slash!.name === interaction.commandName);
             if (cmd) {
                 void cmd.execute(context);
@@ -90,13 +87,20 @@ export class InteractionCreateEvent extends BaseEvent {
             if (interaction.user.id !== user) {
                 void interaction.reply({
                     ephemeral: true,
-                    embeds: [createEmbed("error", i18n.__mf("events.createInteraction.message1", {
-                        user: user.toString()
-                    }), true)]
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__mf("events.createInteraction.message1", {
+                                user: user.toString()
+                            }),
+                            true
+                        )
+                    ]
                 });
             }
             if (cmd && user === interaction.user.id && exec) {
-                const command = this.client.commands.filter(x => x.meta.slash !== undefined)
+                const command = this.client.commands
+                    .filter(x => x.meta.slash !== undefined)
                     .find(x => x.meta.name === cmd);
                 if (command) {
                     context.additionalArgs.set("values", interaction.values);

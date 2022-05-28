@@ -33,13 +33,18 @@ export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
 
 // Multiple values
-export const altPrefixes: string[] = parseEnvValue(process.env.ALT_PREFIX! || "{mention}").filter((x, i, a) => a.indexOf(x) === i && x !== mainPrefix);
+export const altPrefixes: string[] = parseEnvValue(process.env.ALT_PREFIX! || "{mention}").filter(
+    (x, i, a) => a.indexOf(x) === i && x !== mainPrefix
+);
 export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
 export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
-        type: (parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]?.toUpperCase() || "PLAYING") as Exclude<ActivityType, "CUSTOM">
+        type: (parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]?.toUpperCase() || "PLAYING") as Exclude<
+            ActivityType,
+            "CUSTOM"
+        >
     })),
     status: ["online"] as ClientPresenceStatus[],
     interval: 60000

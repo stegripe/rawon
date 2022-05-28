@@ -58,22 +58,28 @@ export class SkipToCommand extends BaseCommand {
             });
         }
 
-        const targetType = (ctx.args[0] as string | undefined) ??
-            ctx.options?.getSubcommand() ??
-            ctx.options?.getNumber("position");
+        const targetType =
+            (ctx.args[0] as string | undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position");
         if (!targetType) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", {
-                    prefix: `${this.client.config.mainPrefix}help`,
-                    name: `${this.meta.name}`
-                }))]
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("reusable.invalidUsage", {
+                            prefix: `${this.client.config.mainPrefix}help`,
+                            name: `${this.meta.name}`
+                        })
+                    )
+                ]
             });
         }
 
         const songs = [...ctx.guild!.queue!.songs.sortByIndex().values()];
-        if (!["first", "last"].includes(String(targetType).toLowerCase()) && (
-            !isNaN(Number(targetType)) && !songs[Number(targetType) - 1]
-        )) {
+        if (
+            !["first", "last"].includes(String(targetType).toLowerCase()) &&
+            !isNaN(Number(targetType)) &&
+            !songs[Number(targetType) - 1]
+        ) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true)]
             });
@@ -88,7 +94,10 @@ export class SkipToCommand extends BaseCommand {
             song = songs[Number(targetType) - 1];
         }
 
-        if (song.key === ((ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key) {
+        if (
+            song.key ===
+            ((ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key
+        ) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)]
             });
@@ -97,9 +106,14 @@ export class SkipToCommand extends BaseCommand {
         void play(ctx.guild!, song.key);
 
         return ctx.reply({
-            embeds: [createEmbed("success", `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
-                song: `[${song.song.title}](${song.song.url})`
-            })}`).setThumbnail(song.song.thumbnail)]
+            embeds: [
+                createEmbed(
+                    "success",
+                    `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
+                        song: `[${song.song.title}](${song.song.url})`
+                    })}`
+                ).setThumbnail(song.song.thumbnail)
+            ]
         });
     }
 }

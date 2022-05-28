@@ -9,9 +9,7 @@ export function memberReqPerms(
     return createCmdExecuteDecorator(ctx => {
         if (!ctx.member?.permissions.has(perms)) {
             void ctx.reply({
-                embeds: [
-                    createEmbed("error", fallbackMsg, true)
-                ]
+                embeds: [createEmbed("error", fallbackMsg, true)]
             });
             return false;
         }
@@ -25,9 +23,7 @@ export function botReqPerms(
     return createCmdExecuteDecorator(ctx => {
         if (!ctx.guild?.me?.permissions.has(perms)) {
             void ctx.reply({
-                embeds: [
-                    createEmbed("error", fallbackMsg, true)
-                ]
+                embeds: [createEmbed("error", fallbackMsg, true)]
             });
             return false;
         }

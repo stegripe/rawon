@@ -16,7 +16,7 @@ export function checkQuery(string: string): QueryData {
         isURL: true
     };
 
-    if ((/soundcloud|snd/g).exec(url.hostname)) {
+    if (/soundcloud|snd/g.exec(url.hostname)) {
         result.sourceType = "soundcloud";
 
         if (url.pathname.includes("/sets/")) {
@@ -24,17 +24,20 @@ export function checkQuery(string: string): QueryData {
         } else {
             result.type = "track";
         }
-    } else if ((/youtube|youtu\.be/g).exec(url.hostname)) {
+    } else if (/youtube|youtu\.be/g.exec(url.hostname)) {
         result.sourceType = "youtube";
 
-        if (!(/youtu\.be/g).exec(url.hostname) && url.pathname.startsWith("/playlist")) {
+        if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist")) {
             result.type = "playlist";
-        } else if (((/youtube/g).exec(url.hostname) && url.pathname.startsWith("/watch")) || ((/youtu\.be/g).exec(url.hostname) && url.pathname !== "")) {
+        } else if (
+            (/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) ||
+            (/youtu\.be/g.exec(url.hostname) && url.pathname !== "")
+        ) {
             result.type = "track";
         } else {
             result.type = "unknown";
         }
-    } else if ((/spotify/g).exec(url.hostname)) {
+    } else if (/spotify/g.exec(url.hostname)) {
         result.sourceType = "spotify";
 
         if (url.pathname.startsWith("/playlist")) {

@@ -20,13 +20,10 @@ export class EvalCommand extends BaseCommand {
         const msg = ctx;
         const client = this.client;
 
-        const code = ctx.args.join(" ")
-            .replace(
-                /^\s*\n?(```(?:[^\s]+\n)?(.*?)```|.*)$/s,
-                (_, a: string, b) => a.startsWith("```") ? b : a
-            );
-        const embed = createEmbed("info")
-            .addField("Input", `\`\`\`js\n${code}\`\`\``);
+        const code = ctx.args
+            .join(" ")
+            .replace(/^\s*\n?(```(?:[^\s]+\n)?(.*?)```|.*)$/s, (_, a: string, b) => (a.startsWith("```") ? b : a));
+        const embed = createEmbed("info").addField("Input", `\`\`\`js\n${code}\`\`\``);
 
         try {
             if (!code) {
@@ -35,25 +32,18 @@ export class EvalCommand extends BaseCommand {
                 });
             }
 
-            const isAsync = (/.* --async( +)?(--silent)?$/).test(code);
-            const isSilent = (/.* --silent( +)?(--async)?$/).test(code);
-            const toExecute = isAsync || isSilent
-                ? code.replace(/--(async|silent)( +)?(--(silent|async))?$/, "")
-                : code;
-            const evaled = inspect(
-                await eval(
-                    isAsync
-                        ? `(async () => {\n${toExecute}\n})()`
-                        : toExecute
-                ), { depth: 0 }
-            );
+            const isAsync = /.* --async( +)?(--silent)?$/.test(code);
+            const isSilent = /.* --silent( +)?(--async)?$/.test(code);
+            const toExecute =
+                isAsync || isSilent ? code.replace(/--(async|silent)( +)?(--(silent|async))?$/, "") : code;
+            const evaled = inspect(await eval(isAsync ? `(async () => {\n${toExecute}\n})()` : toExecute), {
+                depth: 0
+            });
 
             if (isSilent) return;
 
             const cleaned = this.clean(evaled);
-            const output = cleaned.length > 1024
-                ? `${await this.hastebin(cleaned)}.js`
-                : `\`\`\`js\n${cleaned}\`\`\``;
+            const output = cleaned.length > 1024 ? `${await this.hastebin(cleaned)}.js` : `\`\`\`js\n${cleaned}\`\`\``;
 
             embed.addField(i18n.__("commands.developers.eval.outputString"), output);
             ctx.send({
@@ -65,9 +55,7 @@ export class EvalCommand extends BaseCommand {
         } catch (e) {
             const cleaned = this.clean(String(e));
             const isTooLong = cleaned.length > 1024;
-            const error = isTooLong
-                ? `${await this.hastebin(cleaned)}.js`
-                : `\`\`\`js\n${cleaned}\`\`\``;
+            const error = isTooLong ? `${await this.hastebin(cleaned)}.js` : `\`\`\`js\n${cleaned}\`\`\``;
 
             embed.setColor("RED").addField(i18n.__("commands.developers.eval.errorString"), error);
             ctx.send({
@@ -88,9 +76,11 @@ export class EvalCommand extends BaseCommand {
     }
 
     private async hastebin(text: string): Promise<string> {
-        const result = await this.client.request.post("https://bin.clytage.org/documents", {
-            body: text
-        }).json<{ key: string }>();
+        const result = await this.client.request
+            .post("https://bin.clytage.org/documents", {
+                body: text
+            })
+            .json<{ key: string }>();
 
         return `https://bin.clytage.org/${result.key}`;
     }

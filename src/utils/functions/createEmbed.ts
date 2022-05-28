@@ -10,8 +10,7 @@ const hexColors: Record<hexColorsType, string> = {
 };
 
 export function createEmbed(type: hexColorsType, message?: string, emoji = false): MessageEmbed {
-    const embed = new MessageEmbed()
-        .setColor(hexColors[type] as ColorResolvable);
+    const embed = new MessageEmbed().setColor(hexColors[type] as ColorResolvable);
 
     if (message) embed.setDescription(message);
     if (type === "error" && emoji) embed.setDescription(`${noEmoji} **|** ${message!}`);

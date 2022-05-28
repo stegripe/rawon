@@ -51,28 +51,29 @@ export class RepeatCommand extends BaseCommand {
                 emoji: "🔂"
             }
         };
-        const selection = ctx.options?.getSubcommand() ||
-            ctx.args[0]
-            ? Object.keys(mode).find(
-                key => mode[key as LoopMode].aliases.includes(
-                    ctx.args[0] ?? ctx.options!.getSubcommand()
-                )
-            )
-            : undefined;
+        const selection =
+            ctx.options?.getSubcommand() || ctx.args[0]
+                ? Object.keys(mode).find(key =>
+                      mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand())
+                  )
+                : undefined;
 
         if (!selection) {
             return ctx.reply({
                 embeds: [
-                    createEmbed("info", `${mode[
-                        ctx.guild!.queue!.loopMode
-                    ].emoji} **|** ${i18n.__mf("commands.music.repeat.actualMode", {
-                        mode: `\`${ctx.guild!.queue!.loopMode}\``
-                    })}`)
-                        .setFooter({
-                            text: i18n.__mf("commands.music.repeat.footer", {
-                                prefix: this.client.config.mainPrefix
-                            })
+                    createEmbed(
+                        "info",
+                        `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf(
+                            "commands.music.repeat.actualMode",
+                            {
+                                mode: `\`${ctx.guild!.queue!.loopMode}\``
+                            }
+                        )}`
+                    ).setFooter({
+                        text: i18n.__mf("commands.music.repeat.footer", {
+                            prefix: this.client.config.mainPrefix
                         })
+                    })
                 ]
             });
         }
@@ -80,11 +81,12 @@ export class RepeatCommand extends BaseCommand {
 
         return ctx.reply({
             embeds: [
-                createEmbed("success", `${mode[
-                    ctx.guild!.queue!.loopMode
-                ].emoji} **|** ${i18n.__mf("commands.music.repeat.newMode", {
-                    mode: `\`${ctx.guild!.queue!.loopMode}\``
-                })}`)
+                createEmbed(
+                    "success",
+                    `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.newMode", {
+                        mode: `\`${ctx.guild!.queue!.loopMode}\``
+                    })}`
+                )
             ]
         });
     }

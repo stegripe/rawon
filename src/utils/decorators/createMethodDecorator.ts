@@ -1,9 +1,6 @@
 import { FunctionType, MethodDecorator, Promisable } from "../../typings";
 
-export function createMethodDecorator<
-    TC = any,
-    Target extends FunctionType = FunctionType
->(
+export function createMethodDecorator<TC = any, Target extends FunctionType = FunctionType>(
     func: (...args: Parameters<Target>) => Promisable<boolean | undefined>
 ): MethodDecorator<TC, any> {
     return (target, _, descriptor) => {

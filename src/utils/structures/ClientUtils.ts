@@ -50,15 +50,20 @@ export class ClientUtils {
 
         if (this.client.shard) {
             const shardChannels = await this.client.shard.broadcastEval(
-                (c, t) => c.channels.cache.filter(ch => {
-                    if (t) {
-                        return ch.type === "GUILD_TEXT" ||
-                        ch.type === "GUILD_PUBLIC_THREAD" ||
-                        ch.type === "GUILD_PRIVATE_THREAD";
-                    }
+                (c, t) =>
+                    c.channels.cache
+                        .filter(ch => {
+                            if (t) {
+                                return (
+                                    ch.type === "GUILD_TEXT" ||
+                                    ch.type === "GUILD_PUBLIC_THREAD" ||
+                                    ch.type === "GUILD_PRIVATE_THREAD"
+                                );
+                            }
 
-                    return true;
-                }).map(ch => ch.id),
+                            return true;
+                        })
+                        .map(ch => ch.id),
                 {
                     context: textOnly
                 }
@@ -68,15 +73,19 @@ export class ClientUtils {
                 arr = arr.concat(channels);
             }
         } else {
-            arr = this.client.channels.cache.filter(ch => {
-                if (textOnly) {
-                    return ch.type === "GUILD_TEXT" ||
-                    ch.type === "GUILD_PUBLIC_THREAD" ||
-                    ch.type === "GUILD_PRIVATE_THREAD";
-                }
+            arr = this.client.channels.cache
+                .filter(ch => {
+                    if (textOnly) {
+                        return (
+                            ch.type === "GUILD_TEXT" ||
+                            ch.type === "GUILD_PUBLIC_THREAD" ||
+                            ch.type === "GUILD_PRIVATE_THREAD"
+                        );
+                    }
 
-                return true;
-            }).map(ch => ch.id);
+                    return true;
+                })
+                .map(ch => ch.id);
         }
 
         return arr.filter((x, i) => arr.indexOf(x) === i).length;
@@ -105,18 +114,21 @@ export class ClientUtils {
     }
 
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
-        const file = await import(path)
-            .then(
-                m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]
-            );
+        const file = await import(path).then(
+            m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]
+        );
         return file ? new file(...(args as unknown[])) : undefined;
     }
 
     public getFFmpegVersion(): string {
         try {
             const ffmpeg = FFmpeg.getInfo();
-            return ffmpeg.version.split(/_|-| /).find(x => (/[0-9.]/).test(x))?.replace(/[^0-9.]/g, "") ??
-            "Unknown";
+            return (
+                ffmpeg.version
+                    .split(/_|-| /)
+                    .find(x => /[0-9.]/.test(x))
+                    ?.replace(/[^0-9.]/g, "") ?? "Unknown"
+            );
         } catch {
             return "Unknown";
         }

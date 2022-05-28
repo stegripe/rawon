@@ -50,7 +50,8 @@ export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
             title: rawPlayDlVideoInfo.video_details.title!,
             url: rawPlayDlVideoInfo.video_details.url
         };
-    } return ytdl(url, {
+    }
+    return ytdl(url, {
         dumpJson: true
     });
 }

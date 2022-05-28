@@ -34,7 +34,8 @@ export class UnMuteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
-        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
+        const memberId =
+            ctx.args.shift()?.replace(/[^0-9]/g, "") ??
             ctx.options?.getUser("user")?.id ??
             ctx.options?.getUser("member")?.id;
         const member = ctx.guild.members.resolve(memberId!);
@@ -48,12 +49,14 @@ export class UnMuteCommand extends BaseCommand {
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
         if (!muteRole) {
             return ctx.reply({
-                embeds: [createEmbed(
-                    "warn",
-                    i18n.__mf("commands.moderation.mute.noRole", {
-                        prefix: this.client.config.mainPrefix
-                    })
-                )]
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("commands.moderation.mute.noRole", {
+                            prefix: this.client.config.mainPrefix
+                        })
+                    )
+                ]
             });
         }
         if (!member.roles.cache.has(muteRole.id)) {
@@ -62,43 +65,55 @@ export class UnMuteCommand extends BaseCommand {
             });
         }
 
-        const reason = ctx.options?.getString("reason") ?? (
-            ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
-        );
+        const reason =
+            ctx.options?.getString("reason") ??
+            (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
         const unmute = await member.roles.remove(muteRole, reason).catch(err => new Error(err as string | undefined));
         if (unmute instanceof Error) {
             return ctx.reply({
-                embeds: [createEmbed(
-                    "error",
-                    i18n.__mf("commands.moderation.unmute.unmuteFail", {
-                        message: unmute.message
-                    }),
-                    true
-                )]
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.moderation.unmute.unmuteFail", {
+                            message: unmute.message
+                        }),
+                        true
+                    )
+                ]
             });
         }
 
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
-                embeds: [createEmbed("info",
-                    i18n.__mf("commands.moderation.unmute.userUnmuted", {
-                        guildName: ctx.guild.name
-                    }))
-                    .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-                    .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                    .setFooter({
-                        text: i18n.__mf("commands.moderation.unmute.unmutedByString", { author: ctx.author.tag }),
-                        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                    })
-                    .setTimestamp(Date.now())]
+                embeds: [
+                    createEmbed(
+                        "info",
+                        i18n.__mf("commands.moderation.unmute.userUnmuted", {
+                            guildName: ctx.guild.name
+                        })
+                    )
+                        .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
+                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                        .setFooter({
+                            text: i18n.__mf("commands.moderation.unmute.unmutedByString", { author: ctx.author.tag }),
+                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                        })
+                        .setTimestamp(Date.now())
+                ]
             });
         }
 
         return ctx.reply({
-            embeds: [createEmbed("success", i18n.__mf("commands.moderation.unmute.unmuteSuccess", {
-                user: member.user.tag
-            }), true)]
+            embeds: [
+                createEmbed(
+                    "success",
+                    i18n.__mf("commands.moderation.unmute.unmuteSuccess", {
+                        user: member.user.tag
+                    }),
+                    true
+                )
+            ]
         });
     }
 }

@@ -34,7 +34,8 @@ export class KickCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
-        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
+        const memberId =
+            ctx.args.shift()?.replace(/[^0-9]/g, "") ??
             ctx.options?.getUser("user")?.id ??
             ctx.options?.getUser("member")?.id;
         const member = ctx.guild.members.resolve(memberId!);
@@ -50,28 +51,50 @@ export class KickCommand extends BaseCommand {
             });
         }
 
-        const reason = ctx.options?.getString("reason") ?? (
-            ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
-        );
+        const reason =
+            ctx.options?.getString("reason") ??
+            (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
-                embeds: [createEmbed("error", i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name }))
-                    .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-                    .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                    .setFooter({
-                        text: i18n.__mf("commands.moderation.kick.kickedByString", {
-                            author: ctx.author.tag
-                        }),
-                        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                    })
-                    .setTimestamp(Date.now())]
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name })
+                    )
+                        .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
+                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                        .setFooter({
+                            text: i18n.__mf("commands.moderation.kick.kickedByString", {
+                                author: ctx.author.tag
+                            }),
+                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                        })
+                        .setTimestamp(Date.now())
+                ]
             });
         }
 
         const kick = await member.kick(reason).catch(err => new Error(err as string | undefined));
-        if (kick instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.kick.kickFail", { message: kick.message }), true)] });
+        if (kick instanceof Error)
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.moderation.kick.kickFail", { message: kick.message }),
+                        true
+                    )
+                ]
+            });
 
-        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.kick.kickSuccess", { user: member.user.tag }), true)] });
+        return ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    i18n.__mf("commands.moderation.kick.kickSuccess", { user: member.user.tag }),
+                    true
+                )
+            ]
+        });
     }
 }

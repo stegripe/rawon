@@ -38,8 +38,7 @@ export class PlayCommand extends BaseCommand {
             const toQueue: Song[] = [];
 
             for (const track of tracks) {
-                const song = await searchTrack(this.client, track as string)
-                    .catch(() => null);
+                const song = await searchTrack(this.client, track as string).catch(() => null);
                 if (!song) continue;
 
                 toQueue.push(song.items[0]);
@@ -48,32 +47,39 @@ export class PlayCommand extends BaseCommand {
             return handleVideos(this.client, ctx, toQueue, voiceChannel);
         }
 
-        const query = (
-            ctx.args.join(" ") || ctx.options?.getString("query")
-        ) ?? (
-            ctx.additionalArgs.get("values")
+        const query =
+            (ctx.args.join(" ") || ctx.options?.getString("query")) ??
+            (ctx.additionalArgs.get("values")
                 ? (ctx.additionalArgs.get("values") as (string | undefined)[])[0]
                 : undefined);
 
         if (!query) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__mf("reusable.invalidUsage", {
-                    prefix: `${this.client.config.mainPrefix}help`,
-                    name: `${this.meta.name}`
-                }))]
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("reusable.invalidUsage", {
+                            prefix: `${this.client.config.mainPrefix}help`,
+                            name: `${this.meta.name}`
+                        })
+                    )
+                ]
             });
         }
 
         if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
             return ctx.reply({
-                embeds: [createEmbed(
-                    "warn",
-                    i18n.__mf("commands.music.play.alreadyPlaying", {
-                        voiceChannel: ctx.guild.channels.cache
-                            .get((ctx.guild.queue.connection?.joinConfig as { channelId: string }).channelId)?.name ??
-                            "#unknown-channel"
-                    })
-                )]
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("commands.music.play.alreadyPlaying", {
+                            voiceChannel:
+                                ctx.guild.channels.cache.get(
+                                    (ctx.guild.queue.connection?.joinConfig as { channelId: string }).channelId
+                                )?.name ?? "#unknown-channel"
+                        })
+                    )
+                ]
             });
         }
 
@@ -88,9 +94,7 @@ export class PlayCommand extends BaseCommand {
         return handleVideos(
             this.client,
             ctx,
-            queryCheck.type === "playlist"
-                ? songs.items
-                : [songs.items[0]],
+            queryCheck.type === "playlist" ? songs.items : [songs.items[0]],
             voiceChannel
         );
     }

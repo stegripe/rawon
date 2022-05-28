@@ -43,10 +43,7 @@ export class RemoveCommand extends BaseCommand {
             return;
         }
 
-        const positions = (
-            ctx.options?.getString("positions") ??
-            ctx.args.join(" ")
-        ).split(/[, ]/).filter(Boolean);
+        const positions = (ctx.options?.getString("positions") ?? ctx.args.join(" ")).split(/[, ]/).filter(Boolean);
         if (!positions.length) {
             void ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.remove.noPositions"), true)]
@@ -60,7 +57,9 @@ export class RemoveCommand extends BaseCommand {
             ctx.guild!.queue!.songs.delete(song.key);
         }
 
-        const np = (ctx.guild?.queue?.player.state as (AudioPlayerState & { resource: AudioResource | undefined }) | undefined)?.resource?.metadata as QueueSong | undefined;
+        const np = (
+            ctx.guild?.queue?.player.state as (AudioPlayerState & { resource: AudioResource | undefined }) | undefined
+        )?.resource?.metadata as QueueSong | undefined;
         const isSkip = songs.map(x => x.key).includes(np?.key ?? "");
         if (isSkip) {
             this.client.commands.get("skip")?.execute(ctx);
@@ -69,35 +68,41 @@ export class RemoveCommand extends BaseCommand {
         const opening = `${i18n.__mf("commands.music.remove.songsRemoved", {
             removed: songs.length
         })}`;
-        const pages = await Promise.all(chunk(songs, 10).map(async (v, i) => {
-            const texts = await Promise.all(v.map(
-                (song, index) => `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(
-                    parseHTMLElements(song.song.title)
-                )}`
-            ));
+        const pages = await Promise.all(
+            chunk(songs, 10).map(async (v, i) => {
+                const texts = await Promise.all(
+                    v.map(
+                        (song, index) =>
+                            `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${
+                                i * 10 + (index + 1)
+                            }.) ${Util.escapeMarkdown(parseHTMLElements(song.song.title))}`
+                    )
+                );
 
-            return texts.join("\n");
-        }));
+                return texts.join("\n");
+            })
+        );
         const getText = (page: string): string => `\`\`\`\n${page}\`\`\``;
-        const embed = createEmbed("info", getText(pages[0])).setAuthor(opening).setFooter({
-            text: `• ${i18n.__mf("reusable.pageFooter", {
-                actual: 1,
-                total: pages.length
-            })}`
-        });
+        const embed = createEmbed("info", getText(pages[0]))
+            .setAuthor(opening)
+            .setFooter({
+                text: `• ${i18n.__mf("reusable.pageFooter", {
+                    actual: 1,
+                    total: pages.length
+                })}`
+            });
         const msg = await ctx.reply({ embeds: [embed] }).catch(() => undefined);
 
         if (!msg) return;
         void new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(getText(p))
-                    .setFooter({
-                        text: `• ${i18n.__mf("reusable.pageFooter", {
-                            actual: i + 1,
-                            total: pages.length
-                        })}`
-                    });
+                e.setDescription(getText(p)).setFooter({
+                    text: `• ${i18n.__mf("reusable.pageFooter", {
+                        actual: i + 1,
+                        total: pages.length
+                    })}`
+                });
             },
             embed,
             pages

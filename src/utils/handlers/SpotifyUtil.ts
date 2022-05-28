@@ -14,9 +14,11 @@ export class SpotifyUtil {
             .get("https://open.spotify.com/get_access_token", {
                 headers: {
                     // eslint-disable-next-line @typescript-eslint/naming-convention
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59"
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59"
                 }
-            }).json<SpotifyAccessTokenAPIResult>();
+            })
+            .json<SpotifyAccessTokenAPIResult>();
         if (!accessToken) throw new Error("Could not fetch self Spotify token.");
         this.token = `Bearer ${accessToken}`;
         return new Date(accessTokenExpirationTimestampMs).getMilliseconds() * 1000;
@@ -46,14 +48,17 @@ export class SpotifyUtil {
                 headers: {
                     Authorization: this.token
                 }
-            }).json<SpotifyPlaylist>();
+            })
+            .json<SpotifyPlaylist>();
         let next = playlistResponse.tracks.next;
         while (next) {
-            const nextPlaylistResponse = await this.client.request.get(next, {
-                headers: {
-                    Authorization: this.token
-                }
-            }).json<SpotifyPlaylist["tracks"]>();
+            const nextPlaylistResponse = await this.client.request
+                .get(next, {
+                    headers: {
+                        Authorization: this.token
+                    }
+                })
+                .json<SpotifyPlaylist["tracks"]>();
             next = nextPlaylistResponse.next;
             playlistResponse.tracks.items.push(...nextPlaylistResponse.items);
         }
@@ -67,6 +72,7 @@ export class SpotifyUtil {
                 headers: {
                     Authorization: this.token
                 }
-            }).json<SpotifyTrack>();
+            })
+            .json<SpotifyTrack>();
     }
 }

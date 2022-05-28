@@ -28,9 +28,11 @@ export class SkipCommand extends BaseCommand {
         const song = (ctx.guild!.queue!.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
 
         function ableToSkip(member: GuildMember): boolean {
-            return member.roles.cache.has(djRole?.id ?? "") ||
-            member.permissions.has("MANAGE_GUILD") ||
-            song.requester.id === member.id;
+            return (
+                member.roles.cache.has(djRole?.id ?? "") ||
+                member.permissions.has("MANAGE_GUILD") ||
+                song.requester.id === member.id
+            );
         }
 
         if (!ableToSkip(ctx.member!)) {
@@ -38,16 +40,16 @@ export class SkipCommand extends BaseCommand {
 
             if (ctx.guild?.queue?.skipVoters.includes(ctx.author.id)) {
                 await this.manager.add(() => {
-                    ctx.guild!.queue!.skipVoters = ctx.guild!.queue!.skipVoters.filter(
-                        x => x !== ctx.author.id
-                    );
+                    ctx.guild!.queue!.skipVoters = ctx.guild!.queue!.skipVoters.filter(x => x !== ctx.author.id);
 
                     return undefined;
                 });
-                await ctx.reply(i18n.__mf("commands.music.skip.voteResultMessage", {
-                    length: ctx.guild.queue.skipVoters.length,
-                    required
-                }));
+                await ctx.reply(
+                    i18n.__mf("commands.music.skip.voteResultMessage", {
+                        length: ctx.guild.queue.skipVoters.length,
+                        required
+                    })
+                );
 
                 return;
             }
@@ -66,10 +68,17 @@ export class SkipCommand extends BaseCommand {
 
         if (!ctx.guild?.queue?.playing) ctx.guild!.queue!.playing = true;
         ctx.guild?.queue?.player.stop(true);
-        void ctx.reply({
-            embeds: [createEmbed("success", `⏭ **|** ${i18n.__mf("commands.music.skip.skipMessage", {
-                song: `[${song.song.title}](${song.song.url}})`
-            })}`).setThumbnail(song.song.thumbnail)]
-        }).catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
+        void ctx
+            .reply({
+                embeds: [
+                    createEmbed(
+                        "success",
+                        `⏭ **|** ${i18n.__mf("commands.music.skip.skipMessage", {
+                            song: `[${song.song.title}](${song.song.url}})`
+                        })}`
+                    ).setThumbnail(song.song.thumbnail)
+                ]
+            })
+            .catch(e => this.client.logger.error("SKIP_CMD_ERR:", e));
     }
 }

@@ -6,18 +6,16 @@ import { Guild, GuildBan, TextChannel, User } from "discord.js";
 export class ModerationLogs {
     public constructor(public readonly client: Rawon) {}
 
-    public async handleWarn(options: {
-        author: User;
-        guild: Guild;
-        reason: string | null;
-        user: User;
-    }): Promise<void> {
+    public async handleWarn(options: { author: User; guild: Guild; reason: string | null; user: User }): Promise<void> {
         const ch = await this.getCh(options.guild);
         if (!ch) return;
 
         const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.warnSuccess", { user: options.user.tag }))
             .setThumbnail(options.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(i18n.__("commands.moderation.common.reasonString"), options.reason ?? i18n.__("commands.moderation.common.noReasonString"))
+            .addField(
+                i18n.__("commands.moderation.common.reasonString"),
+                options.reason ?? i18n.__("commands.moderation.common.noReasonString")
+            )
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: options.author.tag }),
                 iconURL: options.author.displayAvatarURL({ dynamic: true })
@@ -26,10 +24,7 @@ export class ModerationLogs {
         await ch.send({ embeds: [embed] }).catch((er: Error) => console.log(`Failed to send warn logs: ${er.message}`));
     }
 
-    public async handleBanAdd(options: {
-        author?: User;
-        ban: GuildBan;
-    }): Promise<void> {
+    public async handleBanAdd(options: { author?: User; ban: GuildBan }): Promise<void> {
         const fetched = await options.ban.fetch().catch(() => undefined);
         if (!fetched) return;
 
@@ -38,7 +33,10 @@ export class ModerationLogs {
 
         const embed = createEmbed("error", i18n.__mf("commands.moderation.ban.banSuccess", { user: fetched.user.tag }))
             .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"));
+            .addField(
+                i18n.__("commands.moderation.common.reasonString"),
+                fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
+            );
 
         if (options.author) {
             embed.setFooter({
@@ -52,19 +50,22 @@ export class ModerationLogs {
         });
     }
 
-    public async handleBanRemove(options: {
-        author?: User;
-        ban: GuildBan;
-    }): Promise<void> {
+    public async handleBanRemove(options: { author?: User; ban: GuildBan }): Promise<void> {
         const fetched = await options.ban.fetch().catch(() => undefined);
         if (!fetched) return;
 
         const ch = await this.getCh(fetched.guild);
         if (!ch) return;
 
-        const embed = createEmbed("info", i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag }))
+        const embed = createEmbed(
+            "info",
+            i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag })
+        )
             .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(i18n.__("commands.moderation.common.reasonString"), fetched.reason ?? i18n.__("commands.moderation.common.noReasonString"));
+            .addField(
+                i18n.__("commands.moderation.common.reasonString"),
+                fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
+            );
 
         if (options.author) {
             embed.setFooter({

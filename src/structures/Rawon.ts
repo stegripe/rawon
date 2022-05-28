@@ -52,7 +52,9 @@ export class Rawon extends Client {
         }
     });
 
-    public constructor(opt: ClientOptions) { super(opt); }
+    public constructor(opt: ClientOptions) {
+        super(opt);
+    }
 
     public build: () => Promise<this> = async () => {
         const start = Date.now();

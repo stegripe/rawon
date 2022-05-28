@@ -1,4 +1,14 @@
-import { CommandInteraction, ContextMenuInteraction, Interaction, InteractionButtonOptions, Message, MessageActionRow, MessageButton, SelectMenuInteraction, TextChannel } from "discord.js";
+import {
+    CommandInteraction,
+    ContextMenuInteraction,
+    Interaction,
+    InteractionButtonOptions,
+    Message,
+    MessageActionRow,
+    MessageButton,
+    SelectMenuInteraction,
+    TextChannel
+} from "discord.js";
 import { PaginationPayload } from "../../typings";
 
 const DATAS: InteractionButtonOptions[] = [
@@ -30,11 +40,15 @@ const DATAS: InteractionButtonOptions[] = [
 ];
 
 export class ButtonPagination {
-    public constructor(public readonly msg: CommandInteraction
-    | ContextMenuInteraction
-    | Interaction
-    | Message
-    | SelectMenuInteraction, public readonly payload: PaginationPayload) {}
+    public constructor(
+        public readonly msg:
+            | CommandInteraction
+            | ContextMenuInteraction
+            | Interaction
+            | Message
+            | SelectMenuInteraction,
+        public readonly payload: PaginationPayload
+    ) {}
 
     public async start(): Promise<void> {
         const embed = this.payload.embed;
@@ -48,18 +62,11 @@ export class ButtonPagination {
         const toSend = {
             content: this.payload.content,
             embeds: [embed],
-            components: pages.length < 2
-                ? []
-                : [
-                    new MessageActionRow()
-                        .addComponents(buttons)
-                ]
+            components: pages.length < 2 ? [] : [new MessageActionRow().addComponents(buttons)]
         };
-        const msg = await (
-            isInteraction
-                ? (this.msg as CommandInteraction).editReply(toSend)
-                : await (this.msg as Message).edit(toSend)
-        );
+        const msg = await (isInteraction
+            ? (this.msg as CommandInteraction).editReply(toSend)
+            : await (this.msg as Message).edit(toSend));
         const fetchedMsg = await (
             this.msg.client.channels.cache.get(this.msg.channelId!) as TextChannel
         ).messages.fetch(msg.id);
@@ -69,19 +76,30 @@ export class ButtonPagination {
         const collector = fetchedMsg.createMessageComponentCollector({
             filter: i => {
                 void i.deferUpdate();
-                return DATAS.map(
-                    x => x.customId.toLowerCase()
-                ).includes(i.customId.toLowerCase()) && i.user.id === this.payload.author;
+                return (
+                    DATAS.map(x => x.customId.toLowerCase()).includes(i.customId.toLowerCase()) &&
+                    i.user.id === this.payload.author
+                );
             }
         });
 
         collector.on("collect", async i => {
             switch (i.customId) {
-                case "PREV10": index -= 10; break;
-                case "PREV": index--; break;
-                case "NEXT": index++; break;
-                case "NEXT10": index += 10; break;
-                default: void (msg as Message).delete(); return;
+                case "PREV10":
+                    index -= 10;
+                    break;
+                case "PREV":
+                    index--;
+                    break;
+                case "NEXT":
+                    index++;
+                    break;
+                case "NEXT10":
+                    index += 10;
+                    break;
+                default:
+                    void (msg as Message).delete();
+                    return;
             }
 
             index = ((index % pages.length) + Number(pages.length)) % pages.length;
@@ -90,12 +108,7 @@ export class ButtonPagination {
             await fetchedMsg.edit({
                 embeds: [embed],
                 content: this.payload.content,
-                components: pages.length < 2
-                    ? []
-                    : [
-                        new MessageActionRow()
-                            .addComponents(buttons)
-                    ]
+                components: pages.length < 2 ? [] : [new MessageActionRow().addComponents(buttons)]
             });
         });
     }

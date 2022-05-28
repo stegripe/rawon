@@ -1,10 +1,18 @@
+/* eslint-disable no-nested-ternary */
 import { SongManager } from "../utils/structures/SongManager";
 import { createEmbed } from "../utils/functions/createEmbed";
 import { play } from "../utils/handlers/GeneralUtil";
 import { LoopMode, QueueSong } from "../typings";
 import { Rawon } from "./Rawon";
 import i18n from "../config";
-import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, AudioResource, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
+import {
+    AudioPlayer,
+    AudioPlayerPlayingState,
+    AudioPlayerStatus,
+    AudioResource,
+    createAudioPlayer,
+    VoiceConnection
+} from "@discordjs/voice";
 import { TextChannel, Snowflake } from "discord.js";
 
 export class ServerQueue {
@@ -38,39 +46,84 @@ export class ServerQueue {
             }
         });
 
-        // @ts-expect-error: Ignore a compile error due to typed emitter error
-        this.player.on("stateChange", (oldState, newState) => {
-            if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
-                newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
+        this.player
+            // @ts-expect-error: Ignore a compile error due to typed emitter error
+            .on("stateChange", (oldState, newState) => {
+                if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
+                    newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
-                const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).song;
-                this.sendStartPlayingMsg(newSong);
-            } else if (newState.status === AudioPlayerStatus.Idle) {
-                const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
-                this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${song.song.title}" on ${this.textChannel.guild.name} has ended.`);
-                this.skipVoters = [];
-                if (this.loopMode === "OFF") {
-                    this.songs.delete(song.key);
-                }
+                    const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong)
+                        .song;
+                    this.sendStartPlayingMsg(newSong);
+                } else if (newState.status === AudioPlayerStatus.Idle) {
+                    const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
+                    this.client.logger.info(
+                        `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${
+                            song.song.title
+                        }" on ${this.textChannel.guild.name} has ended.`
+                    );
+                    this.skipVoters = [];
+                    if (this.loopMode === "OFF") {
+                        this.songs.delete(song.key);
+                    }
 
-                // eslint-disable-next-line no-nested-ternary
-                const nextS = this.shuffle && this.loopMode !== "SONG" ? this.songs.random()?.key : this.loopMode === "SONG" ? song.key : this.songs.sortByIndex().filter(x => x.index > song.index).first()?.key ?? (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
+                    const nextS =
+                        this.shuffle && this.loopMode !== "SONG"
+                            ? this.songs.random()?.key
+                            : this.loopMode === "SONG"
+                            ? song.key
+                            : this.songs
+                                  .sortByIndex()
+                                  .filter(x => x.index > song.index)
+                                  .first()?.key ??
+                              (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
 
-                this.textChannel.send({ embeds: [createEmbed("info", `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", { song: `[${song.song.title}](${song.song.url})` })}`).setThumbnail(song.song.thumbnail)] })
-                    .then(m => this.lastMusicMsg = m.id)
-                    .catch(e => this.client.logger.error("PLAY_ERR:", e))
-                    .finally(() => {
-                        play(this.textChannel.guild, nextS).catch(e => {
-                            this.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${e as string}\`` }), true)] })
-                                .catch(er => this.client.logger.error("PLAY_ERR:", er));
-                            this.connection?.disconnect();
-                            return this.client.logger.error("PLAY_ERR:", e);
+                    this.textChannel
+                        .send({
+                            embeds: [
+                                createEmbed(
+                                    "info",
+                                    `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
+                                        song: `[${song.song.title}](${song.song.url})`
+                                    })}`
+                                ).setThumbnail(song.song.thumbnail)
+                            ]
+                        })
+                        .then(m => (this.lastMusicMsg = m.id))
+                        .catch(e => this.client.logger.error("PLAY_ERR:", e))
+                        .finally(() => {
+                            play(this.textChannel.guild, nextS).catch(e => {
+                                this.textChannel
+                                    .send({
+                                        embeds: [
+                                            createEmbed(
+                                                "error",
+                                                i18n.__mf("utils.generalHandler.errorPlaying", {
+                                                    message: `\`${e as string}\``
+                                                }),
+                                                true
+                                            )
+                                        ]
+                                    })
+                                    .catch(er => this.client.logger.error("PLAY_ERR:", er));
+                                this.connection?.disconnect();
+                                return this.client.logger.error("PLAY_ERR:", e);
+                            });
                         });
-                    });
-            }
-        })
+                }
+            })
             .on("error", err => {
-                this.textChannel.send({ embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }), true)] }).catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                this.textChannel
+                    .send({
+                        embeds: [
+                            createEmbed(
+                                "error",
+                                i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }),
+                                true
+                            )
+                        ]
+                    })
+                    .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
                 this.destroy();
                 this.client.logger.error("PLAY_ERR:", err);
             })
@@ -98,7 +151,9 @@ export class ServerQueue {
 
     public set volume(newVol: number) {
         this._volume = newVol;
-        (this.player.state as AudioPlayerPlayingState & { resource: AudioResource | undefined }).resource.volume?.setVolumeLogarithmic(this._volume / 100);
+        (
+            this.player.state as AudioPlayerPlayingState & { resource: AudioResource | undefined }
+        ).resource.volume?.setVolumeLogarithmic(this._volume / 100);
     }
 
     public get skipVoters(): Snowflake[] {
@@ -115,7 +170,8 @@ export class ServerQueue {
 
     public set lastMusicMsg(value: Snowflake | null) {
         if (this._lastMusicMsg !== null) {
-            this.textChannel.messages.fetch(this._lastMusicMsg, { cache: false })
+            this.textChannel.messages
+                .fetch(this._lastMusicMsg, { cache: false })
                 .then(msg => {
                     void msg.delete();
                 })
@@ -130,7 +186,8 @@ export class ServerQueue {
 
     public set lastVSUpdateMsg(value: Snowflake | null) {
         if (this._lastVSUpdateMsg !== null) {
-            this.textChannel.messages.fetch(this._lastVSUpdateMsg, { cache: false })
+            this.textChannel.messages
+                .fetch(this._lastVSUpdateMsg, { cache: false })
                 .then(msg => {
                     void msg.delete();
                 })
@@ -160,9 +217,23 @@ export class ServerQueue {
     }
 
     private sendStartPlayingMsg(newSong: QueueSong["song"]): void {
-        this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name} has started.`);
-        this.textChannel.send({ embeds: [createEmbed("info", `▶ **|** ${i18n.__mf("utils.generalHandler.startPlaying", { song: `[${newSong.title}](${newSong.url})` })}`).setThumbnail(newSong.thumbnail)] })
-            .then(m => this.lastMusicMsg = m.id)
+        this.client.logger.info(
+            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${
+                this.textChannel.guild.name
+            } has started.`
+        );
+        this.textChannel
+            .send({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `▶ **|** ${i18n.__mf("utils.generalHandler.startPlaying", {
+                            song: `[${newSong.title}](${newSong.url})`
+                        })}`
+                    ).setThumbnail(newSong.thumbnail)
+                ]
+            })
+            .then(m => (this.lastMusicMsg = m.id))
             .catch(e => this.client.logger.error("PLAY_ERR:", e));
     }
 }

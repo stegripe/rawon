@@ -34,7 +34,8 @@ export class BanCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
-        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
+        const memberId =
+            ctx.args.shift()?.replace(/[^0-9]/g, "") ??
             ctx.options?.getUser("user")?.id ??
             ctx.options?.getString("memberid");
         const user = await this.client.users.fetch(memberId!, { force: false }).catch(() => undefined);
@@ -51,35 +52,40 @@ export class BanCommand extends BaseCommand {
             });
         }
 
-        const reason = ctx.options?.getString("reason") ?? (
-            ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
-        );
+        const reason =
+            ctx.options?.getString("reason") ??
+            (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
 
         if (ctx.guild.members.cache.has(user.id)) {
             const dm = await user.createDM().catch(() => undefined);
             if (dm) {
                 await dm.send({
-                    embeds: [createEmbed("error", i18n.__mf("commands.moderation.ban.userBanned", {
-                        guildName: ctx.guild.name
-                    }))
-                        .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
-                        .setFooter({
-                            text: i18n.__mf(
-                                "commands.moderation.ban.bannedByString", {
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__mf("commands.moderation.ban.userBanned", {
+                                guildName: ctx.guild.name
+                            })
+                        )
+                            .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
+                            .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                            .setFooter({
+                                text: i18n.__mf("commands.moderation.ban.bannedByString", {
                                     author: ctx.author.tag
-                                }
-                            ),
-                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-                        })
-                        .setTimestamp(Date.now())]
+                                }),
+                                iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                            })
+                            .setTimestamp(Date.now())
+                    ]
                 });
             }
         }
 
-        const ban = await ctx.guild.members.ban(user, {
-            reason
-        }).catch(err => new Error(err as string | undefined));
+        const ban = await ctx.guild.members
+            .ban(user, {
+                reason
+            })
+            .catch(err => new Error(err as string | undefined));
         if (ban instanceof Error) {
             return ctx.reply({
                 embeds: [

@@ -6,11 +6,7 @@ import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 
 @Command<typeof ModLogsCommand>({
-    aliases: [
-        "modlog",
-        "moderationlogs",
-        "moderationlog"
-    ],
+    aliases: ["modlog", "moderationlogs", "moderationlog"],
     description: i18n.__("commands.moderation.modlogs.description"),
     name: "modlogs",
     slash: {
@@ -45,8 +41,7 @@ import i18n from "../../config";
 export class ModLogsCommand extends BaseCommand {
     private readonly options: Record<string, BaseCommand["execute"]> = {
         channel: async ctx => {
-            const newCh = ctx.options?.getChannel("newchannel")?.id ??
-                ctx.args.shift()?.replace(/[^0-9]/g, "");
+            const newCh = ctx.options?.getChannel("newchannel")?.id ?? ctx.args.shift()?.replace(/[^0-9]/g, "");
 
             if (!newCh) {
                 let ch: string | null;
@@ -60,9 +55,12 @@ export class ModLogsCommand extends BaseCommand {
 
                 return ctx.reply({
                     embeds: [
-                        createEmbed("info", ch
-                            ? i18n.__mf("commands.moderation.modlogs.channel.current", { channel: ch })
-                            : i18n.__("commands.moderation.modlogs.channel.noChannel"))
+                        createEmbed(
+                            "info",
+                            ch
+                                ? i18n.__mf("commands.moderation.modlogs.channel.current", { channel: ch })
+                                : i18n.__("commands.moderation.modlogs.channel.noChannel")
+                        )
                     ]
                 });
             }
@@ -70,9 +68,7 @@ export class ModLogsCommand extends BaseCommand {
             const ch = await ctx.guild?.channels.fetch(newCh).catch(() => undefined);
             if (!ch?.isText()) {
                 return ctx.reply({
-                    embeds: [
-                        createEmbed("error", i18n.__("commands.moderation.modlogs.channel.invalid"))
-                    ]
+                    embeds: [createEmbed("error", i18n.__("commands.moderation.modlogs.channel.invalid"))]
                 });
             }
 
@@ -95,19 +91,35 @@ export class ModLogsCommand extends BaseCommand {
 
             return ctx.reply({
                 embeds: [
-                    createEmbed("success", i18n.__mf("commands.moderation.modlogs.channel.success", { channel: newCh }), true)
+                    createEmbed(
+                        "success",
+                        i18n.__mf("commands.moderation.modlogs.channel.success", { channel: newCh }),
+                        true
+                    )
                 ]
             });
         },
-        default: ctx => ctx.reply({
-            embeds: [
-                createEmbed("info")
-                    .setAuthor(i18n.__("commands.moderation.modlogs.embedTitle"))
-                    .addField(`${this.client.config.mainPrefix}modlogs enable`, i18n.__("commands.moderation.modlogs.slashEnableDescription"))
-                    .addField(`${this.client.config.mainPrefix}modlogs disable`, i18n.__("commands.moderation.modlogs.slashDisableDescription"))
-                    .addField(`${this.client.config.mainPrefix}modlogs channel [${i18n.__("commands.moderation.modlogs.newChannelText")}]`, i18n.__("commands.moderation.modlogs.slashChannelDescription"))
-            ]
-        }),
+        default: ctx =>
+            ctx.reply({
+                embeds: [
+                    createEmbed("info")
+                        .setAuthor(i18n.__("commands.moderation.modlogs.embedTitle"))
+                        .addField(
+                            `${this.client.config.mainPrefix}modlogs enable`,
+                            i18n.__("commands.moderation.modlogs.slashEnableDescription")
+                        )
+                        .addField(
+                            `${this.client.config.mainPrefix}modlogs disable`,
+                            i18n.__("commands.moderation.modlogs.slashDisableDescription")
+                        )
+                        .addField(
+                            `${this.client.config.mainPrefix}modlogs channel [${i18n.__(
+                                "commands.moderation.modlogs.newChannelText"
+                            )}]`,
+                            i18n.__("commands.moderation.modlogs.slashChannelDescription")
+                        )
+                ]
+            }),
         disable: async ctx => {
             await this.client.data.save(() => {
                 const data = this.client.data.data;
@@ -127,9 +139,7 @@ export class ModLogsCommand extends BaseCommand {
             });
 
             return ctx.reply({
-                embeds: [
-                    createEmbed("success", i18n.__("commands.moderation.modlogs.disable"), true)
-                ]
+                embeds: [createEmbed("success", i18n.__("commands.moderation.modlogs.disable"), true)]
             });
         },
         enable: async ctx => {
@@ -151,9 +161,7 @@ export class ModLogsCommand extends BaseCommand {
             });
 
             return ctx.reply({
-                embeds: [
-                    createEmbed("success", i18n.__("commands.moderation.modlogs.enable"), true)
-                ]
+                embeds: [createEmbed("success", i18n.__("commands.moderation.modlogs.enable"), true)]
             });
         }
     };

@@ -34,7 +34,8 @@ export class MuteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
-        const memberId = ctx.args.shift()?.replace(/[^0-9]/g, "") ??
+        const memberId =
+            ctx.args.shift()?.replace(/[^0-9]/g, "") ??
             ctx.options?.getUser("user")?.id ??
             ctx.options?.getUser("member")?.id;
         const member = ctx.guild.members.resolve(memberId!);
@@ -54,9 +55,12 @@ export class MuteCommand extends BaseCommand {
         if (!muteRole) {
             return ctx.reply({
                 embeds: [
-                    createEmbed("warn", i18n.__mf("commands.moderation.mute.noRole", {
-                        prefix: this.client.config.mainPrefix
-                    }))
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("commands.moderation.mute.noRole", {
+                            prefix: this.client.config.mainPrefix
+                        })
+                    )
                 ]
             });
         }
@@ -66,20 +70,32 @@ export class MuteCommand extends BaseCommand {
             });
         }
 
-        const reason = ctx.options?.getString("reason") ?? (
-            ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString")
-        );
+        const reason =
+            ctx.options?.getString("reason") ??
+            (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
 
         const mute = await member.roles.add(muteRole, reason).catch(err => new Error(err as string | undefined));
-        if (mute instanceof Error) return ctx.reply({ embeds: [createEmbed("error", i18n.__mf("commands.moderation.mute.muteFail", { message: mute.message }), true)] });
+        if (mute instanceof Error)
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.moderation.mute.muteFail", { message: mute.message }),
+                        true
+                    )
+                ]
+            });
 
         const dm = await member.user.createDM().catch(() => undefined);
         if (dm) {
             await dm.send({
                 embeds: [
-                    createEmbed("error", i18n.__mf("commands.moderation.mute.userMuted", {
-                        guildName: ctx.guild.name
-                    }))
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.moderation.mute.userMuted", {
+                            guildName: ctx.guild.name
+                        })
+                    )
                         .setColor("LIGHT_GREY")
                         .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
                         .addField(i18n.__("commands.moderation.common.reasonString"), reason)
@@ -94,6 +110,14 @@ export class MuteCommand extends BaseCommand {
             });
         }
 
-        return ctx.reply({ embeds: [createEmbed("success", i18n.__mf("commands.moderation.mute.muteSuccess", { user: member.user.tag }), true)] });
+        return ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    i18n.__mf("commands.moderation.mute.muteSuccess", { user: member.user.tag }),
+                    true
+                )
+            ]
+        });
     }
 }

@@ -2,7 +2,18 @@
 import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Rawon } from "../structures/Rawon";
-import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed, Guild } from "discord.js";
+import {
+    ActivityType,
+    ApplicationCommandOptionData,
+    ApplicationCommandType,
+    ClientEvents,
+    ClientPresenceStatus,
+    Client as OClient,
+    Collection,
+    GuildMember,
+    MessageEmbed,
+    Guild
+} from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
@@ -178,10 +189,13 @@ export interface GuildData {
         enable: boolean;
         role: string | null;
     };
-    infractions: Record<string, {
-        on: number;
-        reason: string | null;
-    }[]>;
+    infractions: Record<
+        string,
+        {
+            on: number;
+            reason: string | null;
+        }[]
+    >;
     modLog?: {
         enable: boolean;
         channel: string | null;
@@ -190,14 +204,13 @@ export interface GuildData {
 }
 
 export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;
-export type Constructor<Result = unknown> =
-    | NonAbstractConstructor<Result>
-    | (abstract new (...args: any[]) => Result);
+export type Constructor<Result = unknown> = NonAbstractConstructor<Result> | (abstract new (...args: any[]) => Result);
 
 export type MethodDecorator<Target, Result> = (
     target: Target,
     propertyKey: string,
-    descriptor: PropertyDescriptor) => Result;
+    descriptor: PropertyDescriptor
+) => Result;
 export type ClassDecorator<Target extends Constructor, Result = unknown> = (target: Target) => Result;
 export type Promisable<Output> = Output | Promise<Output>;
 export type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;

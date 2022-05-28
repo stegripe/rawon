@@ -26,9 +26,7 @@ export class SetMuteCommand extends BaseCommand {
         const role = await ctx.guild?.roles.fetch(id).catch(() => undefined);
         if (!role) {
             await ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.moderation.setmute.invalidRole"))
-                ]
+                embeds: [createEmbed("error", i18n.__("commands.moderation.setmute.invalidRole"))]
             });
 
             return;
@@ -48,9 +46,7 @@ export class SetMuteCommand extends BaseCommand {
             };
         });
         await ctx.reply({
-            embeds: [
-                createEmbed("success", i18n.__mf("commands.moderation.setmute.success", { role: role.id }))
-            ]
+            embeds: [createEmbed("success", i18n.__mf("commands.moderation.setmute.success", { role: role.id }))]
         });
     }
 }

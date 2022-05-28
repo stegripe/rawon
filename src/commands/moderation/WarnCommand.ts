@@ -31,9 +31,9 @@ import { Message } from "discord.js";
 export class WarnCommand extends BaseCommand {
     @memberReqPerms(["MANAGE_GUILD"], i18n.__("commands.moderation.warn.userNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        const member = ctx.guild?.members.resolve(
-            ctx.args.shift()?.replace(/[^0-9]/g, "") ?? ""
-        )?.user ?? ctx.options?.getUser("member", true);
+        const member =
+            ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") ?? "")?.user ??
+            ctx.options?.getUser("member", true);
         if (!member) {
             return ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
@@ -90,15 +90,19 @@ export class WarnCommand extends BaseCommand {
             return newData;
         });
 
-        void this.client.modlogs.handleWarn({
-            author: ctx.author,
-            guild: ctx.guild!,
-            reason,
-            user: member
-        }).catch(() => null);
+        void this.client.modlogs
+            .handleWarn({
+                author: ctx.author,
+                guild: ctx.guild!,
+                reason,
+                user: member
+            })
+            .catch(() => null);
 
         return ctx.reply({
-            embeds: [createEmbed("success", i18n.__mf("commands.moderation.warn.warnSuccess", { user: member.tag }), true)]
+            embeds: [
+                createEmbed("success", i18n.__mf("commands.moderation.warn.warnSuccess", { user: member.tag }), true)
+            ]
         });
     }
 }

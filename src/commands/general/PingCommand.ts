@@ -28,26 +28,29 @@ export class PingCommand extends BaseCommand {
                 name: "🏓 PONG",
                 iconURL: this.client.user!.displayAvatarURL()
             })
-            .addFields({
-                name: "📶 **|** API",
-                value: `**\`${latency}\`** ms`,
-                inline: true
-            }, {
-                name: "🌐 **|** WebSocket",
-                value: `**\`${wsLatency}\`** ms`,
-                inline: true
-            }, {
-                name: "🔊 **|** Voice",
-                value: `**\`${vcLatency}\`** ms`,
-                inline: true
-            })
+            .addFields(
+                {
+                    name: "📶 **|** API",
+                    value: `**\`${latency}\`** ms`,
+                    inline: true
+                },
+                {
+                    name: "🌐 **|** WebSocket",
+                    value: `**\`${wsLatency}\`** ms`,
+                    inline: true
+                },
+                {
+                    name: "🔊 **|** Voice",
+                    value: `**\`${vcLatency}\`** ms`,
+                    inline: true
+                }
+            )
             .setFooter({
                 text: i18n.__mf("commands.general.ping.footerString", { user: this.client.user!.tag }),
                 iconURL: this.client.user!.displayAvatarURL()
             })
             .setTimestamp();
-        msg.edit({ content: " ", embeds: [embed] })
-            .catch(e => this.client.logger.error("PROMISE_ERR:", e));
+        msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
     }
 
     // eslint-disable-next-line class-methods-use-this

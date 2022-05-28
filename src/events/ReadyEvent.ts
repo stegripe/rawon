@@ -11,8 +11,12 @@ export class ReadyEvent extends BaseEvent {
 
         await this.client.spotify.renew();
         await this.doPresence();
-        this.client.logger.info(this.formatString("{username} is ready to serve {users.size} users on {guilds.size} guilds in " +
-        "{textChannels.size} text channels and {voiceChannels.size} voice channels!"));
+        this.client.logger.info(
+            this.formatString(
+                "{username} is ready to serve {users.size} users on {guilds.size} guilds in " +
+                    "{textChannels.size} text channels and {voiceChannels.size} voice channels!"
+            )
+        );
     }
 
     private async formatString(text: string): Promise<string> {
@@ -48,14 +52,14 @@ export class ReadyEvent extends BaseEvent {
         const activityNumber = random
             ? Math.floor(Math.random() * this.client.config.presenceData.activities.length)
             : 0;
-        const statusNumber = random
-            ? Math.floor(Math.random() * this.client.config.presenceData.status.length)
-            : 0;
-        const activity = (await Promise.all(
-            this.client.config.presenceData.activities.map(
-                async a => Object.assign(a, { name: await this.formatString(a.name) })
+        const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
+        const activity = (
+            await Promise.all(
+                this.client.config.presenceData.activities.map(async a =>
+                    Object.assign(a, { name: await this.formatString(a.name) })
+                )
             )
-        ))[activityNumber];
+        )[activityNumber];
 
         return this.client.user!.setPresence({
             activities: (activity as { name: string } | undefined) ? [activity] : [],

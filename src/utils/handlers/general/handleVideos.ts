@@ -11,7 +11,12 @@ import { play } from "./play";
 import { Message, StageChannel, TextChannel, Util, VoiceChannel } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 
-export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: Song[], voiceChannel: StageChannel | VoiceChannel): Promise<Message | undefined> {
+export async function handleVideos(
+    client: Rawon,
+    ctx: CommandContext,
+    toQueue: Song[],
+    voiceChannel: StageChannel | VoiceChannel
+): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
 
     async function sendPagination(): Promise<void> {
@@ -20,18 +25,29 @@ export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: 
         }
 
         const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", { length: toQueue.length });
-        const pages = await Promise.all(chunk(toQueue, 10).map(async (v, i) => {
-            const texts = await Promise.all(v.map((song, index) => `${(i * 10) + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`));
+        const pages = await Promise.all(
+            chunk(toQueue, 10).map(async (v, i) => {
+                const texts = await Promise.all(
+                    v.map(
+                        (song, index) =>
+                            `${i * 10 + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`
+                    )
+                );
 
-            return texts.join("\n");
-        }));
+                return texts.join("\n");
+            })
+        );
         const embed = createEmbed("info", opening);
         const msg = await ctx.reply({ embeds: [embed] }, true);
 
         return new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, e, p) => {
-                e.setDescription(`\`\`\`\n${p}\`\`\``).setAuthor(opening).setFooter({ text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}` });
+                e.setDescription(`\`\`\`\n${p}\`\`\``)
+                    .setAuthor(opening)
+                    .setFooter({
+                        text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`
+                    });
             },
             embed,
             pages
@@ -64,19 +80,37 @@ export async function handleVideos(client: Rawon, ctx: CommandContext, toQueue: 
         });
         ctx.guild!.queue.connection = connection;
 
-        client.debugLog.logData("info", "HANDLE_VIDEOS", `Connected to ${voiceChannel.name}(${voiceChannel.id}) in guild ${ctx.guild!.name}(${ctx.guild!.id})`);
+        client.debugLog.logData(
+            "info",
+            "HANDLE_VIDEOS",
+            `Connected to ${voiceChannel.name}(${voiceChannel.id}) in guild ${ctx.guild!.name}(${ctx.guild!.id})`
+        );
     } catch (error) {
         ctx.guild?.queue.songs.clear();
         delete ctx.guild!.queue;
 
-        client.debugLog.logData("error", "HANDLE_VIDEOS", `Error occured while connecting to ${ctx.guild!.name}(${ctx.guild!.id}). Reason: ${(error as Error).message}`);
+        client.debugLog.logData(
+            "error",
+            "HANDLE_VIDEOS",
+            `Error occured while connecting to ${ctx.guild!.name}(${ctx.guild!.id}). Reason: ${
+                (error as Error).message
+            }`
+        );
 
         client.logger.error("PLAY_CMD_ERR:", error);
-        void ctx.channel!.send({
-            embeds: [createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }), true)]
-        }).catch(e => {
-            client.logger.error("PLAY_CMD_ERR:", e);
-        });
+        void ctx
+            .channel!.send({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }),
+                        true
+                    )
+                ]
+            })
+            .catch(e => {
+                client.logger.error("PLAY_CMD_ERR:", e);
+            });
         return;
     }
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export const escapedHTMLElements: Record<string, string> = {
-    "\"": "&quot;",
+    '"': "&quot;",
     "&": "&amp;",
     "'": "&#39;",
     "/": "&#x2F;",

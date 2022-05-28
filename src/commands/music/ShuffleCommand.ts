@@ -35,12 +35,17 @@ export class ShuffleCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public execute(ctx: CommandContext): void {
-        const newState = ctx.options?.getString("state") ?? ctx.args[0] as string | undefined;
+        const newState = ctx.options?.getString("state") ?? (ctx.args[0] as string | undefined);
         if (!newState) {
             void ctx.reply({
-                embeds: [createEmbed("info", `🔀 **|** ${i18n.__mf("commands.music.shuffle.actualState", {
-                    state: `\`${ctx.guild?.queue?.shuffle ? "ENABLED" : "DISABLED"}\``
-                })}`)]
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `🔀 **|** ${i18n.__mf("commands.music.shuffle.actualState", {
+                            state: `\`${ctx.guild?.queue?.shuffle ? "ENABLED" : "DISABLED"}\``
+                        })}`
+                    )
+                ]
             });
             return;
         }
@@ -49,9 +54,14 @@ export class ShuffleCommand extends BaseCommand {
         const isShuffle = ctx.guild?.queue?.shuffle;
 
         void ctx.reply({
-            embeds: [createEmbed("success", `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", {
-                state: `\`${isShuffle ? "ENABLED" : "DISABLED"}\``
-            })}`)]
+            embeds: [
+                createEmbed(
+                    "success",
+                    `${isShuffle ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", {
+                        state: `\`${isShuffle ? "ENABLED" : "DISABLED"}\``
+                    })}`
+                )
+            ]
         });
     }
 }

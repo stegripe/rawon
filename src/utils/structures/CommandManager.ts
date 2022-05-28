@@ -14,19 +14,26 @@ export class CommandManager extends Collection<string, CommandComponent> {
     public readonly aliases: Collection<string, string> = new Collection();
     private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
 
-    public constructor(public client: Rawon, private readonly path: string) { super(); }
+    public constructor(public client: Rawon, private readonly path: string) {
+        super();
+    }
 
     public load(): void {
         fs.readdir(resolve(this.path))
             .then(async categories => {
                 this.client.logger.info(`Found ${categories.length} categories, registering...`);
                 for (const category of categories) {
-                    const meta = (await import(pathStringToURLString(resolve(this.path, category, "category.meta.js"))) as { default: CategoryMeta }).default;
+                    const meta = (
+                        (await import(pathStringToURLString(resolve(this.path, category, "category.meta.js")))) as {
+                            default: CategoryMeta;
+                        }
+                    ).default;
 
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);
 
-                    await fs.readdir(resolve(this.path, category))
+                    await fs
+                        .readdir(resolve(this.path, category))
                         .then(files => files.filter(f => f !== "category.meta.js"))
                         .then(async files => {
                             let disabledCount = 0;
@@ -39,37 +46,72 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                     const path = pathStringToURLString(resolve(this.path, category, file));
                                     const command = await this.client.utils.import<CommandComponent>(path, this.client);
 
-                                    if (command === undefined) throw new Error(`File ${file} is not a valid command file.`);
+                                    if (command === undefined)
+                                        throw new Error(`File ${file} is not a valid command file.`);
 
                                     command.meta = Object.assign(command.meta, { path, category });
                                     if (Number(command.meta.aliases?.length) > 0) {
-                                        for (const alias of (command.meta.aliases ?? [])) {
+                                        for (const alias of command.meta.aliases ?? []) {
                                             this.aliases.set(alias, command.meta.name);
                                         }
                                     }
                                     this.set(command.meta.name, command);
 
                                     if (command.meta.contextChat) {
-                                        await this.registerCmd({
-                                            name: command.meta.contextChat,
-                                            type: "MESSAGE"
-                                        }, {
-                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to message context for ${g?.id ?? "???"}, reason: ${err.message}`),
-                                            onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to message context for ${g.id}`)
-                                        });
-                                        if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to message context for global.`);
+                                        await this.registerCmd(
+                                            {
+                                                name: command.meta.contextChat,
+                                                type: "MESSAGE"
+                                            },
+                                            {
+                                                onError: (g, err) =>
+                                                    this.client.logger.error(
+                                                        `Unable to register ${
+                                                            command.meta.name
+                                                        } to message context for ${g?.id ?? "???"}, reason: ${
+                                                            err.message
+                                                        }`
+                                                    ),
+                                                onRegistered: g =>
+                                                    this.client.logger.info(
+                                                        `Registered ${command.meta.name} to message context for ${g.id}`
+                                                    )
+                                            }
+                                        );
+                                        if (!this.client.config.isDev)
+                                            this.client.logger.info(
+                                                `Registered ${command.meta.name} to message context for global.`
+                                            );
                                     }
                                     if (command.meta.contextUser) {
-                                        await this.registerCmd({
-                                            name: command.meta.contextUser,
-                                            type: "USER"
-                                        }, {
-                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to user context for ${g?.id ?? "???"}, reason: ${err.message}`),
-                                            onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to user context for ${g.id}`)
-                                        });
-                                        if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to user context for global.`);
+                                        await this.registerCmd(
+                                            {
+                                                name: command.meta.contextUser,
+                                                type: "USER"
+                                            },
+                                            {
+                                                onError: (g, err) =>
+                                                    this.client.logger.error(
+                                                        `Unable to register ${command.meta.name} to user context for ${
+                                                            g?.id ?? "???"
+                                                        }, reason: ${err.message}`
+                                                    ),
+                                                onRegistered: g =>
+                                                    this.client.logger.info(
+                                                        `Registered ${command.meta.name} to user context for ${g.id}`
+                                                    )
+                                            }
+                                        );
+                                        if (!this.client.config.isDev)
+                                            this.client.logger.info(
+                                                `Registered ${command.meta.name} to user context for global.`
+                                            );
                                     }
-                                    if (!allCmd.has(command.meta.name) && command.meta.slash && this.client.config.enableSlashCommand) {
+                                    if (
+                                        !allCmd.has(command.meta.name) &&
+                                        command.meta.slash &&
+                                        this.client.config.enableSlashCommand
+                                    ) {
                                         if (!command.meta.slash.name) {
                                             Object.assign(command.meta.slash, {
                                                 name: command.meta.name
@@ -82,25 +124,48 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                         }
 
                                         await this.registerCmd(command.meta.slash as ApplicationCommandData, {
-                                            onError: (g, err) => this.client.logger.error(`Unable to register ${command.meta.name} to slash command for ${g?.id ?? "???"}, reason: ${err.message}`),
-                                            onRegistered: g => this.client.logger.info(`Registered ${command.meta.name} to slash command for ${g.id}`)
+                                            onError: (g, err) =>
+                                                this.client.logger.error(
+                                                    `Unable to register ${command.meta.name} to slash command for ${
+                                                        g?.id ?? "???"
+                                                    }, reason: ${err.message}`
+                                                ),
+                                            onRegistered: g =>
+                                                this.client.logger.info(
+                                                    `Registered ${command.meta.name} to slash command for ${g.id}`
+                                                )
                                         });
-                                        if (!this.client.config.isDev) this.client.logger.info(`Registered ${command.meta.name} to slash command for global.`);
+                                        if (!this.client.config.isDev)
+                                            this.client.logger.info(
+                                                `Registered ${command.meta.name} to slash command for global.`
+                                            );
                                     }
-                                    this.client.logger.info(`Command ${command.meta.name} from ${category} category is now loaded.`);
+                                    this.client.logger.info(
+                                        `Command ${command.meta.name} from ${category} category is now loaded.`
+                                    );
                                     if (command.meta.disable) disabledCount++;
                                 } catch (err) {
-                                    this.client.logger.error(`Error occured while loading ${file}: ${(err as Error).message}`);
+                                    this.client.logger.error(
+                                        `Error occured while loading ${file}: ${(err as Error).message}`
+                                    );
                                 }
                             }
                             return { disabledCount, files };
                         })
                         .then(data => {
-                            this.categories.set(category, Object.assign(meta, {
-                                cmds: this.filter(c => c.meta.category === category)
-                            }));
-                            this.client.logger.info(`Done loading ${data.files.length} commands in ${category} category.`);
-                            if (data.disabledCount !== 0) this.client.logger.info(`${data.disabledCount} out of ${data.files.length} commands in ${category} category is disabled.`);
+                            this.categories.set(
+                                category,
+                                Object.assign(meta, {
+                                    cmds: this.filter(c => c.meta.category === category)
+                                })
+                            );
+                            this.client.logger.info(
+                                `Done loading ${data.files.length} commands in ${category} category.`
+                            );
+                            if (data.disabledCount !== 0)
+                                this.client.logger.info(
+                                    `${data.disabledCount} out of ${data.files.length} commands in ${category} category is disabled.`
+                                );
                         })
                         .catch(err => this.client.logger.error("CMD_LOADER_ERR:", err))
                         .finally(() => this.client.logger.info(`Done registering ${category} category.`));
@@ -116,7 +181,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
 
     public handle(message: Message, pref: string): void {
         // eslint-disable-next-line prefer-named-capture-group
-        const prefix = pref === "{mention}" ? (/<@(!)?\d*?>/).exec(message.content)![0] : pref;
+        const prefix = pref === "{mention}" ? /<@(!)?\d*?>/.exec(message.content)![0] : pref;
         const args = message.content.substring(prefix.length).trim().split(/ +/);
         const cmd = args.shift()?.toLowerCase();
         const command = this.get(cmd!) ?? this.get(this.aliases.get(cmd!)!);
@@ -139,9 +204,30 @@ export class CommandManager extends Collection<string, CommandComponent> {
             const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send({ embeds: [createEmbed("warn", `⚠️ **|** ${i18n.__mf("utils.cooldownMessage", { author: message.author.toString(), timeleft: timeLeft.toFixed(1) })}`, true)] }).then(msg => {
-                    void msg.delete().then(m => setTimeout(() => m.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)), 3500));
-                }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+                message.channel
+                    .send({
+                        embeds: [
+                            createEmbed(
+                                "warn",
+                                `⚠️ **|** ${i18n.__mf("utils.cooldownMessage", {
+                                    author: message.author.toString(),
+                                    timeleft: timeLeft.toFixed(1)
+                                })}`,
+                                true
+                            )
+                        ]
+                    })
+                    .then(msg => {
+                        void msg
+                            .delete()
+                            .then(m =>
+                                setTimeout(
+                                    () => m.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)),
+                                    3500
+                                )
+                            );
+                    })
+                    .catch(e => this.client.logger.error("PROMISE_ERR:", e));
                 return;
             }
 
@@ -161,8 +247,11 @@ export class CommandManager extends Collection<string, CommandComponent> {
             // eslint-disable-next-line no-unsafe-finally
             if (command.meta.devOnly && !this.client.config.devs.includes(message.author.id)) return;
             this.client.logger.info(
-                `${message.author.tag} [${message.author.id}] is using ${command.meta.name} command from ${command.meta.category!} category ` +
-                `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${message.guild!.name} [${message.guild!.id}]`
+                `${message.author.tag} [${message.author.id}] is using ${command.meta.name} command from ${command.meta
+                    .category!} category ` +
+                    `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${
+                        message.guild!.name
+                    } [${message.guild!.id}]`
             );
         }
     }

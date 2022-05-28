@@ -33,16 +33,32 @@ export class PurgeCommand extends BaseCommand {
         }
 
         await (ctx.context as Message).delete();
-        const purge = await (ctx.channel as TextChannel).bulkDelete(amount, true)
+        const purge = await (ctx.channel as TextChannel)
+            .bulkDelete(amount, true)
             .catch(err => new Error(err as string | undefined));
         if (purge instanceof Error) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__mf("commands.moderation.purge.purgeFail", {
-                    message: purge.message
-                }), true)]
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("commands.moderation.purge.purgeFail", {
+                            message: purge.message
+                        }),
+                        true
+                    )
+                ]
             });
         }
 
-        await ctx.reply({ embeds: [createEmbed("success", `🧹 **|** ${i18n.__mf("commands.moderation.purge.purgeSuccess", { amount: purge.size })}`)] }).then(msg => setTimeout(() => msg.delete(), 3500));
+        await ctx
+            .reply({
+                embeds: [
+                    createEmbed(
+                        "success",
+                        `🧹 **|** ${i18n.__mf("commands.moderation.purge.purgeSuccess", { amount: purge.size })}`
+                    )
+                ]
+            })
+            .then(msg => setTimeout(() => msg.delete(), 3500));
     }
 }

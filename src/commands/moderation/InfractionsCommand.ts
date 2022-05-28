@@ -27,15 +27,15 @@ import i18n from "../../config";
 export class InfractionsCommand extends BaseCommand {
     @memberReqPerms(["MANAGE_GUILD"], i18n.__("commands.moderation.warn.userNoPermission"))
     public async execute(ctx: CommandContext): Promise<void> {
-        const user = ctx.guild?.members.resolve(
-            ctx.args.shift()?.replace(/[^0-9]/g, "") ?? ""
-        )?.user ?? ctx.options?.getUser("member", false) ?? ctx.author;
-        const embed = createEmbed("info")
-            .setAuthor({
-                name: i18n.__mf("commands.moderation.infractions.embedAuthorText", {
-                    user: user.tag
-                })
-            });
+        const user =
+            ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") ?? "")?.user ??
+            ctx.options?.getUser("member", false) ??
+            ctx.author;
+        const embed = createEmbed("info").setAuthor({
+            name: i18n.__mf("commands.moderation.infractions.embedAuthorText", {
+                user: user.tag
+            })
+        });
         let infractions: { on: number; reason: string | null }[];
 
         try {
@@ -47,39 +47,40 @@ export class InfractionsCommand extends BaseCommand {
 
         if (!infractions.length) {
             await ctx.reply({
-                embeds: [
-                    embed
-                        .setDescription(i18n.__("commands.moderation.infractions.noInfractions"))
-                ]
+                embeds: [embed.setDescription(i18n.__("commands.moderation.infractions.noInfractions"))]
             });
             return;
         }
 
         const pages = await Promise.all(
             chunk(infractions, 10).map(async (s, n) => {
-                const infracts = await Promise.all(s.map(
-                    (inf, i) => `${(n * 10) + (i + 1)}. ${formatTime(inf.on)} - ${inf.reason ?? i18n.__("commands.moderation.common.noReasonString")}`
-                ));
+                const infracts = await Promise.all(
+                    s.map(
+                        (inf, i) =>
+                            `${n * 10 + (i + 1)}. ${formatTime(inf.on)} - ${
+                                inf.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                            }`
+                    )
+                );
 
                 return infracts.join("\n");
             })
         );
         const msg = await ctx.reply({
             embeds: [
-                embed.setDescription(pages[0])
-                    .setFooter({
-                        text: i18n.__mf("reusable.pageFooter", {
-                            actual: 1,
-                            total: pages.length
-                        })
+                embed.setDescription(pages[0]).setFooter({
+                    text: i18n.__mf("reusable.pageFooter", {
+                        actual: 1,
+                        total: pages.length
                     })
+                })
             ]
         });
 
         return new ButtonPagination(msg, {
             author: ctx.author.id,
-            edit: (i, e, p) => e.setDescription(p)
-                .setFooter({
+            edit: (i, e, p) =>
+                e.setDescription(p).setFooter({
                     text: i18n.__mf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length

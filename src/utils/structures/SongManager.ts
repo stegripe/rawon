@@ -3,7 +3,9 @@ import { Rawon } from "../../structures/Rawon";
 import { Collection, GuildMember, Snowflake, SnowflakeUtil } from "discord.js";
 
 export class SongManager extends Collection<Snowflake, QueueSong> {
-    public constructor(public readonly client: Rawon, public readonly guild: GuildMember["guild"]) { super(); }
+    public constructor(public readonly client: Rawon, public readonly guild: GuildMember["guild"]) {
+        super();
+    }
 
     public addSong(song: Song, requester: GuildMember): Snowflake {
         const key = SnowflakeUtil.generate();
@@ -19,12 +21,20 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
     }
 
     public set(key: Snowflake, data: QueueSong): this {
-        (this.client as Rawon | undefined)?.debugLog.logData("info", "SONG_MANAGER", `New value added to ${this.guild.name}(${this.guild.id}) song manager. Key: ${key}`);
+        (this.client as Rawon | undefined)?.debugLog.logData(
+            "info",
+            "SONG_MANAGER",
+            `New value added to ${this.guild.name}(${this.guild.id}) song manager. Key: ${key}`
+        );
         return super.set(key, data);
     }
 
     public delete(key: Snowflake): boolean {
-        (this.client as Rawon | undefined)?.debugLog.logData("info", "SONG_MANAGER", `Value ${key} deleted from ${this.guild.name}(${this.guild.id}) song manager.`);
+        (this.client as Rawon | undefined)?.debugLog.logData(
+            "info",
+            "SONG_MANAGER",
+            `Value ${key} deleted from ${this.guild.name}(${this.guild.id}) song manager.`
+        );
         return super.delete(key);
     }
 

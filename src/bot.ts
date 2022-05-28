@@ -6,7 +6,12 @@ const client = new Rawon(clientOptions);
 
 process
     .on("exit", code => client.logger.info(`NodeJS process exited with code ${code}`))
-    .on("unhandledRejection", reason => client.logger.error("UNHANDLED_REJECTION:", (reason as Error).stack ? reason : new NoStackError(reason as string)))
+    .on("unhandledRejection", reason =>
+        client.logger.error(
+            "UNHANDLED_REJECTION:",
+            (reason as Error).stack ? reason : new NoStackError(reason as string)
+        )
+    )
     .on("warning", (...args) => client.logger.warn(...args))
     .on("uncaughtException", err => {
         client.logger.error("UNCAUGHT_EXCEPTION:", err);
@@ -14,5 +19,4 @@ process
         process.exit(1);
     });
 
-client.build()
-    .catch(e => client.logger.error("PROMISE_ERR:", e));
+client.build().catch(e => client.logger.error("PROMISE_ERR:", e));
