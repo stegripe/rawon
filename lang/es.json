@@ -14,7 +14,7 @@
             "categoryName": "GENERAL",
             "about": {
                 "description": "Muestra la información del bot",
-                "osUptimeString": "Tiempo de actividad del SO",
+                "osUptimeString": "Tiempo de actividad del S.O.",
                 "processUptimeString": "Tiempo de actividad del proceso",
                 "botUptimeString": "Tiempo de actividad del bot",
                 "nodeVersionString": "Versión de Node.js",
@@ -51,6 +51,7 @@
             }
         },
         "moderation": {
+            "categoryName": "MODERACIÓN",
             "common": {
                 "noUserSpecified": "Por favor especifica un usuario.",
                 "noReasonString": "[No especificado]",
@@ -58,11 +59,11 @@
             },
             "ban": {
                 "description": "Banea a alguien en el servidor",
-                "slashMemberIDDescription": "A quién quisieras banear?",
+                "slashMemberIDDescription": "¿A quién quisieras banear?",
                 "slashReasonDescription": "Razón del ban",
                 "usage": "{prefix}ban <@mención | id> [razón]",
-                "userNoPermission": "Lo siento, pero no tienes el permiso **`BAN MEMBERS`** para usar este comando.",
-                "botNoPermission": "Lo siento, pero no tengo el permiso **`BAN MEMBERS`**.",
+                "userNoPermission": "Lo siento, pero no tienes el permiso **`BANEAR MIEMBROS`** para usar este comando.",
+                "botNoPermission": "Lo siento, pero no tengo el permiso **`BANEAR MIEMBROS`**.",
                 "userNoBannable": "Lo siento, no puedo **`BANEAR`** a ese miembro.",
                 "userBanned": "Haz sido **`BANEADO`** de **{guildName}**",
                 "bannedByString": "Baneado por: {author}",
@@ -78,11 +79,11 @@
             },
             "kick": {
                 "description": "Expulsa a alguien del servidor",
-                "slashMemberDescription": "¿A quién te quisieras expulsar?",
+                "slashMemberDescription": "¿A quién quisieras expulsar?",
                 "slashReasonDescription": "Razón de expulsión",
                 "usage": "{prefix}kick <@mención | id> [razón]",
-                "userNoPermission": "Lo siento, pero no tienes el permiso **`KICK MEMBERS`** para usar este comando.",
-                "botNoPermission": "Lo siento, pero no tengo el permiso **`KICK MEMBERS`**.",
+                "userNoPermission": "Lo siento, pero no tienes el permiso **`EXPULSAR MIEMBROS`** para usar este comando.",
+                "botNoPermission": "Lo siento, pero no tengo el permiso **`EXPULSAR MIEMBROS`**.",
                 "userNoKickable": "Lo siento, no puedo **`EXPULSAR`** a ese miembro.",
                 "userKicked": "Haz sido **`EXPULSADO`** de **{guildName}**",
                 "kickedByString": "Expulsado por: {author}",
@@ -104,46 +105,54 @@
                 },
                 "embedTitle": "Registro de Moderación",
                 "newChannelText": "Nuevo canal",
-                "disable": "Registro de moderación está **`DESACTIVO`**",
-                "enable": "Registro de moderación está **`ACTIVO`**"
+                "disable": "Registro de moderación está **`DESACTIVADO`**",
+                "enable": "Registro de moderación está **`ACTIVADO`**"
             },
             "mute": {
                 "description": "Silencia a alguien en el servidor",
                 "slashMemberDescription": "¿A quién quisieras silenciar?",
                 "slashReasonDescription": "Razón de silencio",
                 "usage": "{prefix}mute <@mención | id> [razón]",
-                "userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE ROLES`** para usar este comando.",
-                "botNoPermission": "Lo siento, pero no tengo el permiso **`MANAGE ROLES`**",
+                "userNoPermission": "Lo siento, pero no tienes el permiso **`GESTIONAR ROLES`** para usar este comando.",
+                "botNoPermission": "Lo siento, pero no tengo el permiso **`GESTIONAR ROLES`**",
                 "alreadyMuted": "Ese miembro ya ha sido **`SILENCIADO`** previamente.",
                 "userMuted": "Haz sido **`SILENCIADO`** en **{guildName}**",
                 "mutedByString": "Silenciado por: {author}",
                 "muteFail": "No se pudo **`SILENCIAR`** al miembro, razón: `{message}`",
                 "muteSuccess": "**{user}** ha sido **`SILENCIADO`** en el servidor.",
-                "cantMuteOwner": "",
-                "noRole": ""
+                "cantMuteOwner": "No puedes silenciar al propietario del servidor.",
+                "noRole": "El rol para usuario silenciado no ha sido establecido. Por favor usa `{prefix}setmute` para establecerlo."
             },
             "purge": {
                 "description": "Eliminar mensajes",
                 "slashAmountDescription": "Cantidad de mensajes a eliminar",
                 "usage": "{prefix}purge <monto>",
-                "userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE SERVER`** para usar este comando.",
-                "botNoPermission": "Lo siento, pero no tengo el permiso **`MANAGE MESSAGES`** para usar este comando.",
+                "userNoPermission": "Lo siento, pero no tienes el permiso **`GESTIONAR SERVIDOR`** para usar este comando.",
+                "botNoPermission": "Lo siento, pero no tengo el permiso **`GESTIONAR SERVIDOR`** para usar este comando.",
                 "invalidAmount": "Por favor, especifica un número válido de mensajes a borrar.",
                 "purgeFail": "No se pudo **`BORRAR`** mensajes, razón: `{message}`",
                 "purgeSuccess": "**`{amount}`** mensaje(s) han sido **`BORRADOS`**"
             },
+            "setmute": {
+                "description": "Establece el rol de usuario silencio",
+                "slashRoleDescription": "El rol a ser usado como usuario silenciado",
+                "usage": "{prefix}setmute <rol>",
+                "invalidRole": "Rol no válido.",
+                "success": "<@&{role}> ha sido establecido como rol de usuario silenciado."
+            },
             "unban": {
                 "description": "Desbanea a alguien del servidor",
-                "slashMemberDescription": "A quién quisieras desbanear?",
+                "slashMemberDescription": "¿A quién quisieras desbanear?",
                 "slashReasonDescription": "Razón de desbaneo",
                 "usage": "{prefix}unban <id> [razón]",
                 "alreadyUnban": "Este usuario no está **`BANEADO`**",
+                "unbannedByString": "Desbaneado por: {author}",
                 "unbanFail": "No se pudo **`DESBANEAR`** al miembro, razón: `{message}`",
                 "ubanSuccess": "**{user}** ha sido **`DESBANEADO`** del servidor."
             },
             "unmute": {
                 "description": "Desilenciar a alguien del servidor",
-                "slashMemberDescription": "A quién quisieras desilenciar?",
+                "slashMemberDescription": "¿A quién quisieras desilenciar?",
                 "slashReasonDescription": "Razón del desilencio",
                 "usage": "{prefix}unmute <@mención | id> [razón]",
                 "noMuted": "Ese miembro no ha sido **`SILENCIADO`**",
@@ -157,33 +166,45 @@
                 "slashMemberDescription": "¿A quién quisieras advertir?",
                 "slashReasonDescription": "Razón de advertencia",
                 "usage": "{prefix}warn <@mención | id> [razón]",
-                "userNoPermission": "Lo siento, pero no tienes el permiso **`MANAGE SERVER`** para usar este comando.",
+                "userNoPermission": "Lo siento, pero no tienes el permiso **`GESTIONAR SERVIDOR`** para usar este comando.",
                 "noDM": "No se pudo enviar advertencia al DM del usuario, pero igual ha sido advertido.",
                 "userWarned": "Haz sido **`ADVERTIDO`** en **{guildName}**",
                 "warnedByString": "Advertido por: {author}",
                 "warnSuccess": "**{user}** ha sido **`ADVERTIDO`** en el servidor."
-            },
-            "categoryName": "commands.moderation.categoryName",
-            "setmute": {
-                "description": "",
-                "slashRoleDescription": "",
-                "usage": "",
-                "invalidRole": "",
-                "success": ""
             }
         },
         "music": {
+            "categoryName": "MÚSICA",
+            "dj": {
+                "description": "Cambia la configuración del DJ",
+                "slashRoleDescription": "Mira o cambia la configuración del rol DJ",
+                "slashRoleNewRoleOption": "Nuevo rol DJ",
+                "slashEnableDescription": "Activa la función DJ",
+                "slashDisableDescription": "Desactiva la función DJ",
+                "role": {
+                    "current": "<@&{role}> es el rol DJ actualmente.",
+                    "noRole": "No hay rol DJ establecido actualmente.",
+                    "invalid": "Rol no válido.",
+                    "success": "<@&{role}> ha sido establecido como rol DJ."
+                },
+                "embedTitle": "DJ",
+                "newRoleText": "Nuevo rol",
+                "disableText": "La función DJ ha sido **`DESACTIVADA`**",
+                "enableText": "La función DJ ha sido **`ACTIVADA`**",
+                "disable": "Desactivado",
+                "enable": "Activado"
+            },
             "lyrics": {
                 "description": "Muestra la letra de una canción",
                 "slashDescription": "Canción a buscar",
                 "usage": "{prefix}lyrics [canción]",
-                "noQuery": "No se está reproduciendo nada o no se ingresaron argumentos.",
+                "noQuery": "No se está reproduciendo nada o no se ingresaró ninguna canción a buscar.",
                 "apiError": "El API no pudo encontrar la letra de la canción **{song}**, razón: {message}"
             },
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
                 "emptyQueue": "La cola está vacía",
-                "disableButton": "Este botón ya no está activo y eliminado."
+                "disableButton": "Este botón ya no está activo y ha sido eliminado."
             },
             "pause": {
                 "description": "Pausa la reproducción de música",
@@ -200,11 +221,20 @@
             "queue": {
                 "description": "Muestra la cola de reproducción"
             },
+            "remove": {
+                "description": "Quita canciones de la cola",
+                "slashPositionsDescription": "Posición de la cancion(es) a quitar, separadas por comas o espacios",
+                "usage": "{prefix}remove <posiciones>",
+                "noPermission": "No tienes permiso para usar este comando.",
+                "noPositions": "Por favor, especifica una posición válida.",
+                "songsRemoved": "Removida(s) {removed, plural, one {1 canción} other {# canciones}} de la cola",
+                "songSkip": "La canción actual ha sido saltada.\n\n"
+            },
             "repeat": {
                 "description": "Repite la canción actual o la cola completa",
-                "slashQueue": "Establece el mode repetición a **`QUEUE`**",
-                "slashSong": "Establece el mode repetición a **`ONE`**",
-                "footer": "Para cambiar el modo, mira '{prefix}help repeat'",
+                "slashQueue": "Establece el mode repetición a **`COLA`**",
+                "slashSong": "Establece el mode repetición a **`UNA`**",
+                "footer": "Para cambiar el modo, revisa '{prefix}help repeat'",
                 "slashDisable": "Desactiva el modo repetición",
                 "usage": "{prefix}repeat <{options}>",
                 "actualMode": "El modo de repetición actual es **`{mode}`**",
@@ -273,35 +303,6 @@
                 "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en **`{volume}`**",
                 "volumeLimit": "No puedo establecer el volúmen por encima de **`{maxVol}`**",
                 "newVolume": "Volúmen establecido en **`{volume}`**"
-            },
-            "categoryName": "commands.music.categoryName",
-            "remove": {
-                "description": "commands.music.remove.description",
-                "slashPositionsDescription": "commands.music.remove.slashPositionsDescription",
-                "usage": "commands.music.remove.usage",
-                "noPermission": "",
-                "noPositions": "",
-                "songsRemoved": "",
-                "songSkip": ""
-            },
-            "dj": {
-                "description": "",
-                "slashRoleDescription": "",
-                "slashRoleNewRoleOption": "",
-                "slashEnableDescription": "",
-                "slashDisableDescription": "",
-                "role": {
-                    "current": "",
-                    "noRole": "",
-                    "invalid": "",
-                    "success": ""
-                },
-                "embedTitle": "",
-                "newRoleText": "",
-                "disableText": "",
-                "enableText": "",
-                "disable": "",
-                "enable": ""
             }
         }
     },
@@ -309,8 +310,8 @@
         "musicDecorator": {
             "noQueue": "No se está reproduciendo nada.",
             "noInVC": "Lo siento, pero debes estar en un canal de voz para hacer eso.",
-            "validVCJoinable": "Lo siento, pero no tengo el permiso **`CONNECT`** en tu servidor.",
-            "validVCPermission": "Lo siento, pero no tengo el permiso **`SPEAK`** en tu servidor.",
+            "validVCJoinable": "Lo siento, pero no tengo el permiso **`CONECTAR`** en tu servidor.",
+            "validVCPermission": "Lo siento, pero no tengo el permiso **`HABLAR`** en tu servidor.",
             "sameVC": "Necesitas estar en el mismo canal de voz que yo."
         },
         "generalHandler": {
