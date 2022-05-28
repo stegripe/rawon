@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ES2021",
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "node",
         "lib": ["ES2021"],
         "strict": true,
         "outDir": "dist",
