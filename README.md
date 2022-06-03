@@ -4,7 +4,7 @@
 
 <a href="https://discord.com/oauth2/authorize?client_id=711712829031448637&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Rawon%237022&plastic&color=5865F2&logo=discord"></a>
 <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">
-<a href="https://github.com/Clytage/rawon/actions?query=workflow%3A%22Lint+code+%26+compile+test%22"><img src="https://github.com/Clytage/rawon/workflows/Lint%20code%20&%20compile%20test/badge.svg" alt="CI Status" /></a>
+<a href="https://github.com/Clytage/rawon/actions?query=workflow%3A%22Lint+code+and+compile+setup+script%22"><img src="https://github.com/Clytage/rawon/workflows/Lint%20code%20and%20compile%20setup%20script/badge.svg" alt="CI Status" /></a>
 
 ## Features
 - Interaction support.
