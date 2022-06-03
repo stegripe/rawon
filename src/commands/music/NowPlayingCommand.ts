@@ -1,3 +1,4 @@
+import { normalizeTime } from "../../utils/functions/normalizeTime";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { haveQueue } from "../../utils/decorators/MusicUtil";
@@ -8,7 +9,7 @@ import i18n from "../../config";
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
-@Command({
+@Command<typeof NowPlayingCommand>({
     aliases: ["np"],
     description: i18n.__("commands.music.nowplaying.description"),
     name: "nowplaying",
@@ -21,22 +22,24 @@ export class NowPlayingCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
         function getEmbed(): MessageEmbed {
-            const song = (
-                (
-                    ctx.guild?.queue?.player.state as
-                        | (AudioPlayerState & {
-                              resource: AudioResource | undefined;
-                          })
-                        | undefined
-                )?.resource?.metadata as QueueSong | undefined
-            )?.song;
+            const res = (ctx.guild?.queue?.player.state as
+                | (AudioPlayerState & {
+                    resource: AudioResource | undefined;
+                  })
+                | undefined)?.resource;
+            const song = (res?.metadata as QueueSong | undefined)?.song;
 
-            return createEmbed(
+            const embed =  createEmbed(
                 "info",
-                `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** ${
-                    song ? `**[${song.title}](${song.url})**` : i18n.__("commands.music.nowplaying.emptyQueue")
-                }`
+                `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** `
             ).setThumbnail(song?.thumbnail ?? "https://api.clytage.org/assets/images/icon.png");
+
+            embed.description += song
+                ? `**[${song.title}](${song.url})**\n` + 
+                    `${NowPlayingCommand.createBar(~~(res!.playbackDuration / 1000), song.duration)}`
+                : i18n.__("commands.music.nowplaying.emptyQueue")
+
+            return embed;
         }
 
         const buttons = new MessageActionRow().addComponents(
@@ -100,5 +103,11 @@ export class NowPlayingCommand extends BaseCommand {
                     components: []
                 });
             });
+    }
+
+    public static createBar(current: number, total: number): string {
+        const pos = Math.ceil(current / total * 10) || 1;
+
+        return `${normalizeTime(current)} ${"━".repeat(pos - 1)}⬤${"─".repeat(10 - pos)} ${total ? `${normalizeTime(total)}` : "??:??"}`;
     }
 }
