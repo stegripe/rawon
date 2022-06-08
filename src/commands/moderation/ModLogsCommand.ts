@@ -103,7 +103,9 @@ export class ModLogsCommand extends BaseCommand {
             ctx.reply({
                 embeds: [
                     createEmbed("info")
-                        .setAuthor(i18n.__("commands.moderation.modlogs.embedTitle"))
+                        .setAuthor({
+                            name: i18n.__("commands.moderation.modlogs.embedTitle")
+                        })
                         .addField(
                             `${this.client.config.mainPrefix}modlogs enable`,
                             i18n.__("commands.moderation.modlogs.slashEnableDescription")
