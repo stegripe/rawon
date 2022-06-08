@@ -108,6 +108,6 @@ export class NowPlayingCommand extends BaseCommand {
     public static createBar(current: number, total: number): string {
         const pos = Math.ceil(current / total * 10) || 1;
 
-        return `${normalizeTime(current)} ${"━".repeat(pos - 1)}⬤${"─".repeat(10 - pos)} ${total ? `${normalizeTime(total)}` : "??:??"}`;
+        return `${normalizeTime(current)} ${"━".repeat(pos - 1)}⬤${"─".repeat(10 - pos)} ${normalizeTime(total)}`;
     }
 }
