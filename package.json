@@ -55,7 +55,7 @@
 	"dependencies": {
 		"@discordjs/voice": "0.10.0",
 		"@swc/cli": "0.1.57",
-		"@swc/core": "1.2.197",
+		"@swc/core": "1.2.198",
 		"date-fns": "2.28.0",
 		"discord.js": "13.8.0",
 		"dotenv": "16.0.1",
@@ -66,7 +66,7 @@
 		"soundcloud.ts": "0.4.6",
 		"tslib": "2.4.0",
 		"tweetnacl": "1.0.3",
-		"youtubei": "0.0.1-rc.35"
+		"youtubei": "0.0.1-rc.36"
 	},
 	"devDependencies": {
 		"@clytage-pkg/eslint-config": "1.2.0",
