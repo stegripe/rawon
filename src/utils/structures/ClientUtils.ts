@@ -45,7 +45,7 @@ export class ClientUtils {
         return arr.filter((x, i) => arr.indexOf(x) === i).length;
     }
 
-    public async getChannelCount(textOnly = true): Promise<number> {
+    public async getChannelCount(textOnly = false, voiceOnly = false): Promise<number> {
         let arr: string[] = [];
 
         if (this.client.shard) {
@@ -53,19 +53,21 @@ export class ClientUtils {
                 (c, t) =>
                     c.channels.cache
                         .filter(ch => {
-                            if (t) {
+                            if (t.textOnly) {
                                 return (
                                     ch.type === "GUILD_TEXT" ||
                                     ch.type === "GUILD_PUBLIC_THREAD" ||
                                     ch.type === "GUILD_PRIVATE_THREAD"
                                 );
+                            } else if (t.voiceOnly) {
+                                return ch.type === "GUILD_VOICE";
                             }
 
                             return true;
                         })
                         .map(ch => ch.id),
                 {
-                    context: textOnly
+                    context: { textOnly, voiceOnly }
                 }
             );
 
@@ -81,6 +83,8 @@ export class ClientUtils {
                             ch.type === "GUILD_PUBLIC_THREAD" ||
                             ch.type === "GUILD_PRIVATE_THREAD"
                         );
+                    } else if (voiceOnly) {
+                        return ch.type === "GUILD_VOICE";
                     }
 
                     return true;
