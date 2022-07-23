@@ -3,6 +3,8 @@ import { Rawon } from "../../structures/Rawon";
 import { Collection, GuildMember, Snowflake, SnowflakeUtil } from "discord.js";
 
 export class SongManager extends Collection<Snowflake, QueueSong> {
+    private id = 0;
+
     public constructor(public readonly client: Rawon, public readonly guild: GuildMember["guild"]) {
         super();
     }
@@ -10,7 +12,7 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
     public addSong(song: Song, requester: GuildMember): Snowflake {
         const key = SnowflakeUtil.generate();
         const data: QueueSong = {
-            index: Date.now(),
+            index: this.id++,
             key,
             requester,
             song
