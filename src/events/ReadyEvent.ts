@@ -12,8 +12,9 @@ export class ReadyEvent extends BaseEvent {
         await this.client.spotify.renew();
         await this.doPresence();
         this.client.logger.info(
-            await this.formatString("{username} is ready to serve {users.size} users on {guilds.size} guilds in " +
-                "{textChannels.size} text channels and {voiceChannels.size} voice channels."
+            await this.formatString(
+                "{username} is ready to serve {userCount} users on {serverCount} guilds in " +
+                    "{textChannels.size} text channels and {voiceChannels.size} voice channels!"
             )
         );
     }
