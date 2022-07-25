@@ -14,7 +14,7 @@ export class ReadyEvent extends BaseEvent {
         this.client.logger.info(
             await this.formatString(
                 "{username} is ready to serve {userCount} users on {serverCount} guilds in " +
-                    "{textChannels.size} text channels and {voiceChannels.size} voice channels!"
+                    "{textChannelCount} text channels and {voiceChannelCount} voice channels!"
             )
         );
     }
@@ -27,15 +27,15 @@ export class ReadyEvent extends BaseEvent {
 
             newText = newText.replace(/{userCount}/g, users.toString());
         }
-        if (text.includes("{textChannels.size}")) {
+        if (text.includes("{textChannelCount}")) {
             const textChannels = await this.client.utils.getChannelCount(true);
 
-            newText = newText.replace(/{textChannels.size}/g, textChannels.toString());
+            newText = newText.replace(/{textChannelCount}/g, textChannels.toString());
         }
-        if (text.includes("{voiceChannels.size}")) {
+        if (text.includes("{voiceChannelCount}")) {
             const voiceChannels = await this.client.utils.getChannelCount(false, true);
 
-            newText = newText.replace(/{voiceChannels.size}/g, voiceChannels.toString());
+            newText = newText.replace(/{voiceChannelCount}/g, voiceChannels.toString());
         }
         if (text.includes("{serverCount}")) {
             const guilds = await this.client.utils.getGuildCount();
