@@ -28,9 +28,9 @@
             "value": "en"
         },
         "ACTIVITIES": {
-            "description": "Activity list, what text should be appear on your bot's status? | Example: \"Hello world!, My prefix is {prefix}\" | Formats: {prefix} = bot prefix, {userCount} = user amount, {textChannelsCount} = text channel amount, {serverCount} = server amount, {playingCount} = amount of server playing music using the bot, {username} = bot username",
+            "description": "Activity list, what text should be appear on your bot's status? | Example: \"Hello world!, My prefix is {prefix}\" | Formats: {prefix} = bot prefix, {userCount} = user amount, {textChannelCount} = text channel amount, {serverCount} = server amount, {playingCount} = amount of server playing music using the bot, {username} = bot username",
             "required": false,
-            "value": "My default prefix is {prefix}, music with {userCount} users, {textChannelsCount} text channels in {serverCount} guilds, 'Hello there, my name is {username}'"
+            "value": "My default prefix is {prefix}, music with {userCount} users, {textChannelCount} text channels in {serverCount} guilds, 'Hello there, my name is {username}'"
         },
         "ACTIVITY_TYPES": {
             "description": "Activity type list. The order of this value is the same as ACTIVITIES. For example, first value of ACTIVITIES will use first value of this. | Example: \"PLAYING, COMPETING\" | Available: PLAYING, WATCHING, LISTENING, COMPETING",
