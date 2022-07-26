@@ -173,6 +173,9 @@ export interface SpotifyPlaylist {
 export interface SpotifyTrack {
     artists: ArtistsEntity[];
     duration_ms: number;
+    external_ids?: {
+        isrc: string;
+    };
     external_urls: {
         spotify: string;
     };
