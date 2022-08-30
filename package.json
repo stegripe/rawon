@@ -55,10 +55,10 @@
 	"dependencies": {
 		"@discordjs/voice": "0.11.0",
 		"@swc/cli": "0.1.57",
-		"@swc/core": "1.2.244",
+		"@swc/core": "1.2.245",
 		"date-fns": "2.29.2",
 		"discord.js": "13.10.3",
-		"dotenv": "16.0.1",
+		"dotenv": "16.0.2",
 		"got": "12.3.1",
 		"i18n": "0.15.0",
 		"opusscript": "0.0.8",
