@@ -104,7 +104,7 @@ export async function searchTrack(
                             const tracks = await Promise.all(
                                 playlist.videos.map(
                                     (track): Song => ({
-                                        duration: track.duration === null ? 0 : track.duration,
+                                        duration: track.duration ?? 0,
                                         id: track.id,
                                         thumbnail: track.thumbnails.sort(
                                             (a, b) => b.height * b.width - a.height * a.width
@@ -259,7 +259,7 @@ export async function searchTrack(
             const tracks = await Promise.all(
                 searchRes.map(
                     (track): Song => ({
-                        duration: track.duration === null ? 0 : track.duration,
+                        duration: track.duration ?? 0,
                         id: track.id,
                         thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
                         title: track.title,

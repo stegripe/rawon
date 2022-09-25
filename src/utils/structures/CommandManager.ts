@@ -10,9 +10,9 @@ import { resolve } from "path";
 
 export class CommandManager extends Collection<string, CommandComponent> {
     public isReady = false;
-    public readonly categories: Collection<string, CategoryMeta> = new Collection();
-    public readonly aliases: Collection<string, string> = new Collection();
-    private readonly cooldowns: Collection<string, Collection<Snowflake, number>> = new Collection();
+    public readonly categories = new Collection<string, CategoryMeta>();
+    public readonly aliases = new Collection<string, string>();
+    private readonly cooldowns = new Collection<string, Collection<Snowflake, number>>();
 
     public constructor(public client: Rawon, private readonly path: string) {
         super();
