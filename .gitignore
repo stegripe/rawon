@@ -103,3 +103,4 @@ dist
 # Rawon cache directories and files
 data.json
 scripts/
+.DS_Store
