@@ -39,7 +39,8 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
 
         if (existsSync(modulesPath)) {
             rmSync(modulesPath, {
-                recursive: true
+                recursive: true,
+                force: true
             });
         }
     }
