@@ -1,6 +1,6 @@
 import { downloadExecutable } from "./yt-dlp-utils";
+import { existsSync, readFileSync, writeFileSync, rmSync } from "fs";
 import { execSync } from "child_process";
-import { existsSync, rmSync } from "fs";
 import { resolve } from "path";
 import { Server } from "https";
 import module from "module";
@@ -49,6 +49,17 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
 }
 
 if (isGlitch) {
+    const gitIgnorePath = resolve(process.cwd(), ".gitignore");
+    try {
+        const data = readFileSync(gitIgnorePath, "utf8").toString();
+        if (data.includes("dev.env")) {
+            writeFileSync(gitIgnorePath, data.replace("\ndev.env", ""));
+            console.info("Removed dev.env from .gitignore");
+        }
+    } catch {
+        console.error("Failed to remove dev.env from .gitignore");
+    }
+
     try {
         console.info("[INFO] Trying to re-install modules...");
         npmInstall();
