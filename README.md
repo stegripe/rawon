@@ -34,11 +34,6 @@ $ npm start
 
 ## Hosting Setup
 
-### Heroku
-You can host this bot to make it stay online on Heroku.
-
-<a href="https://heroku.com/deploy?template=https://github.com/Clytage/rawon"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
-
 ### Glitch
 You can use Glitch too for this project, featured with its code editor.
 
@@ -59,6 +54,9 @@ Railway provide $5 each month for you to use in free plan, it will stay online 2
 
 <a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway"
  /></a>
+ 
+## Disclaimers
+Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 
 ## Project Contributors
 
@@ -71,8 +69,6 @@ Railway provide $5 each month for you to use in free plan, it will stay online 2
 - [Developers](#developers) (en, id)
 - [@21Z](https://github.com/21Z) (en)
 - [@lxndr-rl](https://github.com/lxndr-rl) (es)
-
-## Disclaimers
-Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
+- [@MoustacheOff](https://github.com/MoustacheOff) (fr)
 
 > © 2022 Clytage Development
