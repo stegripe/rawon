@@ -34,11 +34,6 @@ $ npm start
 
 ## Hosting Setup
 
-### Heroku
-You can host this bot to make it stay online on Heroku.
-
-<a href="https://heroku.com/deploy?template=https://github.com/Clytage/rawon"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
-
 ### Glitch
 You can use Glitch too for this project, featured with its code editor.
 
