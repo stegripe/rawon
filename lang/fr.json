@@ -335,7 +335,7 @@
     },
     "reusable": {
         "invalidUsage": "Usage invalide, veuillez utiliser **`{prefix} {name}`** pour plus d'informations.",
-        "pageFooter": "Page {actual} of {total}"
+        "pageFooter": "Page {actual} sur {total}"
     },
     "utils": {
         "cooldownMessage": "{author}, veuillez attendre **`{timeleft}`** de cooldown.",
