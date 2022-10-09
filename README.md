@@ -34,10 +34,9 @@ $ npm start
 
 ## Hosting Setup
 
-### Heroku
-You can host this bot to make it stay online on Heroku.
-
-<a href="https://heroku.com/deploy?template=https://github.com/Clytage/rawon"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=9csIDZYpaJM" target="_blank">
+ <img src="http://img.youtube.com/vi/9csIDZYpaJM/0.jpg" alt="Setup Guide Video" width="360" border="10" />
+</a>
 
 ### Glitch
 You can use Glitch too for this project, featured with its code editor.
@@ -46,7 +45,7 @@ You can use Glitch too for this project, featured with its code editor.
 2. Go to [glitch.com](https://glitch.com) and make an account
 3. Click **New Project** then **Import from GitHub**, specify the pop-up field with `https://github.com/<your-name>/rawon` (without `<>`)
 4. Please wait for a while, this process takes some minutes
-5. Find `.env` file and delete it, find `.env_example` file and rename it back to `.env`
+5. Find `.env` file and delete it, then find `.env_example` file and rename it to `.env`
 6. After specifying `.env`, open **Tools** > **Terminal**
 7. Type `refresh`, and track the process from **Logs**
 
@@ -59,6 +58,9 @@ Railway provide $5 each month for you to use in free plan, it will stay online 2
 
 <a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway"
  /></a>
+ 
+## Disclaimers
+Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 
 ## Project Contributors
 
@@ -71,8 +73,6 @@ Railway provide $5 each month for you to use in free plan, it will stay online 2
 - [Developers](#developers) (en, id)
 - [@21Z](https://github.com/21Z) (en)
 - [@lxndr-rl](https://github.com/lxndr-rl) (es)
-
-## Disclaimers
-Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
+- [@MoustacheOff](https://github.com/MoustacheOff) (fr)
 
 > © 2022 Clytage Development
