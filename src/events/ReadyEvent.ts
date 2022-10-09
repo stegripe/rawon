@@ -12,9 +12,9 @@ export class ReadyEvent extends BaseEvent {
         await this.client.spotify.renew();
         await this.doPresence();
         this.client.logger.info(
-            this.formatString(
-                "{username} is ready to serve {users.size} users on {guilds.size} guilds in " +
-                    "{textChannels.size} text channels and {voiceChannels.size} voice channels!"
+            await this.formatString(
+                "{username} is ready to serve {userCount} users on {serverCount} guilds in " +
+                    "{textChannelCount} text channels and {voiceChannelCount} voice channels!"
             )
         );
     }
@@ -27,10 +27,15 @@ export class ReadyEvent extends BaseEvent {
 
             newText = newText.replace(/{userCount}/g, users.toString());
         }
-        if (text.includes("{textChannelsCount}")) {
+        if (text.includes("{textChannelCount}")) {
             const textChannels = await this.client.utils.getChannelCount(true);
 
-            newText = newText.replace(/{textChannelsCount}/g, textChannels.toString());
+            newText = newText.replace(/{textChannelCount}/g, textChannels.toString());
+        }
+        if (text.includes("{voiceChannelCount}")) {
+            const voiceChannels = await this.client.utils.getChannelCount(false, true);
+
+            newText = newText.replace(/{voiceChannelCount}/g, voiceChannels.toString());
         }
         if (text.includes("{serverCount}")) {
             const guilds = await this.client.utils.getGuildCount();
