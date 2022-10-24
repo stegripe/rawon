@@ -218,14 +218,10 @@ export class CommandManager extends Collection<string, CommandComponent> {
                         ]
                     })
                     .then(msg => {
-                        void msg
-                            .delete()
-                            .then(m =>
-                                setTimeout(
-                                    () => m.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)),
-                                    3500
-                                )
-                            );
+                        setTimeout(
+                            () => msg.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)),
+                            3500
+                        );
                     })
                     .catch(e => this.client.logger.error("PROMISE_ERR:", e));
                 return;
