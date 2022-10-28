@@ -1,10 +1,11 @@
+import { createProgressBar } from "../../utils/functions/createProgressBar";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { Message, MessageActionRow, MessageButton } from "discord.js";
 
 @Command({
     aliases: ["vol"],
@@ -26,21 +27,83 @@ export class VolumeCommand extends BaseCommand {
     @inVC
     @validVC
     @sameVC
-    public execute(ctx: CommandContext): Promise<Message> | undefined {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("volume", false));
         const current = ctx.guild!.queue!.volume;
 
         if (isNaN(volume)) {
-            return ctx.reply({
+            const buttons = new MessageActionRow().addComponents(
+                new MessageButton()
+                    .setCustomId("10")
+                    .setLabel("10%")
+                    .setStyle("PRIMARY"),
+                new MessageButton()
+                    .setCustomId("25")
+                    .setLabel("25%")
+                    .setStyle("PRIMARY"),
+                new MessageButton()
+                    .setCustomId("50")
+                    .setLabel("50%")
+                    .setStyle("PRIMARY"),
+                new MessageButton()
+                    .setCustomId("75")
+                    .setLabel("75%")
+                    .setStyle("PRIMARY"),
+                new MessageButton()
+                    .setCustomId("100")
+                    .setLabel("100%")
+                    .setStyle("PRIMARY")
+            );
+
+            const msg = await ctx.reply({
                 embeds: [
                     createEmbed(
                         "info",
                         `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
                             volume: `\`${current}\``
-                        })}`
+                        })}\n${current}% ${createProgressBar(current, 100)} 100%`
                     ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
-                ]
+                ],
+                components: [buttons]
             });
+
+            const collector = msg.createMessageComponentCollector({
+                filter: i => i.isButton() && i.user.id === ctx.author.id,
+                idle: 30000
+            });
+
+            collector.on("collect", async i => {
+                const newContext = new CommandContext(i, [i.customId]);
+                const newVolume = Number(i.customId);
+                await this.execute(newContext);
+
+                void msg.edit({
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
+                                volume: `\`${newVolume}\``
+                            })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`
+                        ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
+                    ],
+                    components: [buttons]
+                });
+            })
+                .on("end", () => {
+                    const cur = ctx.guild!.queue!.volume;
+                    void msg.edit({
+                        embeds: [
+                            createEmbed(
+                                "info",
+                                `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
+                                    volume: `\`${cur}\``
+                                })}\n${cur}% ${createProgressBar(cur, 100)} 100%`
+                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
+                        ],
+                        components: []
+                    });
+                });
+            return;
         }
         if (volume <= 0) {
             return ctx.reply({
