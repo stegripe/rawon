@@ -1,3 +1,4 @@
+import { createProgressBar } from "../../utils/functions/createProgressBar";
 import { normalizeTime } from "../../utils/functions/normalizeTime";
 import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../../utils/functions/createEmbed";
@@ -34,9 +35,10 @@ export class NowPlayingCommand extends BaseCommand {
                 `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** `
             ).setThumbnail(song?.thumbnail ?? "https://api.clytage.org/assets/images/icon.png");
 
+            const curr = ~~(res!.playbackDuration / 1000);
             embed.description += song
                 ? `**[${song.title}](${song.url})**\n` + 
-                    `${NowPlayingCommand.createBar(~~(res!.playbackDuration / 1000), song.duration)}`
+                    `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`
                 : i18n.__("commands.music.nowplaying.emptyQueue")
 
             return embed;
@@ -103,11 +105,5 @@ export class NowPlayingCommand extends BaseCommand {
                     components: []
                 });
             });
-    }
-
-    public static createBar(current: number, total: number): string {
-        const pos = Math.ceil(current / total * 10) || 1;
-
-        return `${normalizeTime(current)} ${"━".repeat(pos - 1)}⬤${"─".repeat(10 - pos)} ${normalizeTime(total)}`;
     }
 }
