@@ -44,7 +44,9 @@ export async function handleVideos(
             author: ctx.author.id,
             edit: (i, e, p) => {
                 e.setDescription(`\`\`\`\n${p}\`\`\``)
-                    .setAuthor(opening)
+                    .setAuthor({
+                        name: opening
+                    })
                     .setFooter({
                         text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`
                     });
