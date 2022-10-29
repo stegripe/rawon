@@ -81,24 +81,13 @@ if (isGlitch) {
     }
 }
 
-if (isReplit) {
-    console.warn("[WARN] We haven't added stable support for running this bot using Replit, bugs and errors may come up.");
-
-    if (Number(process.versions.node.split(".")[0]) < 16) {
-        console.info("[INFO] This Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
-        execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
-        console.info("[INFO] Node.js v16 has been installed, please restart the bot.");
-        process.exit(0);
-    }
-}
-
 if (isGitHub) {
     console.warn("[WARN] Running this bot using GitHub is not recommended.");
 }
 
 const require = module.createRequire(import.meta.url);
 
-if (!isGlitch) {
+if (!isGlitch && !isReplit) {
     try {
         require("ffmpeg-static");
     } catch {
