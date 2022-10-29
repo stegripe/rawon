@@ -47,7 +47,6 @@ export class ServerQueue {
         });
 
         this.player
-            // @ts-expect-error: Ignore a compile error due to typed emitter error
             .on("stateChange", (oldState, newState) => {
                 if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
