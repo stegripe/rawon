@@ -1,52 +1,37 @@
 import { downloadExecutable } from "./yt-dlp-utils";
+import { existsSync, readFileSync, writeFileSync, rmSync } from "fs";
 import { execSync } from "child_process";
-import { existsSync, rmSync } from "fs";
 import { resolve } from "path";
 import { Server } from "https";
 import module from "module";
 
-const isGlitch = (
-    process.env.PROJECT_DOMAIN !== undefined &&
-    process.env.PROJECT_INVITE_TOKEN !== undefined &&
-    process.env.API_SERVER_EXTERNAL !== undefined &&
-    process.env.PROJECT_REMIX_CHAIN !== undefined);
+const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
 
-const isReplit = (
-    process.env.REPLIT_DB_URL !== undefined &&
-    process.env.REPL_ID !== undefined &&
-    process.env.REPL_IMAGE !== undefined &&
-    process.env.REPL_LANGUAGE !== undefined &&
-    process.env.REPL_OWNER !== undefined &&
-    process.env.REPL_PUBKEYS !== undefined &&
-    process.env.REPL_SLUG !== undefined)
+const isGlitch = ensureEnv([
+    "PROJECT_DOMAIN",
+    "PROJECT_INVITE_TOKEN",
+    "API_SERVER_EXTERNAL",
+    "PROJECT_REMIX_CHAIN"
+]);
 
-const isGitHub = (
-    process.env.GITHUB_ENV !== undefined &&
-    process.env.GITHUB_EVENT_PATH !== undefined &&
-    process.env.GITHUB_REPOSITORY_OWNER !== undefined &&
-    process.env.GITHUB_RETENTION_DAYS !== undefined &&
-    process.env.GITHUB_HEAD_REF !== undefined &&
-    process.env.GITHUB_GRAPHQL_URL !== undefined &&
-    process.env.GITHUB_API_URL !== undefined &&
-    process.env.GITHUB_WORKFLOW !== undefined &&
-    process.env.GITHUB_RUN_ID !== undefined &&
-    process.env.GITHUB_BASE_REF !== undefined &&
-    process.env.GITHUB_ACTION_REPOSITORY !== undefined &&
-    process.env.GITHUB_ACTION !== undefined &&
-    process.env.GITHUB_RUN_NUMBER !== undefined &&
-    process.env.GITHUB_REPOSITORY !== undefined &&
-    process.env.GITHUB_ACTION_REF !== undefined &&
-    process.env.GITHUB_ACTIONS !== undefined &&
-    process.env.GITHUB_WORKSPACE !== undefined &&
-    process.env.GITHUB_JOB !== undefined &&
-    process.env.GITHUB_SHA !== undefined &&
-    process.env.GITHUB_RUN_ATTEMPT !== undefined &&
-    process.env.GITHUB_REF !== undefined &&
-    process.env.GITHUB_ACTOR !== undefined &&
-    process.env.GITHUB_PATH !== undefined &&
-    process.env.GITHUB_EVENT_NAME !== undefined &&
-    process.env.GITHUB_SERVER_URL !== undefined
-)
+const isReplit = ensureEnv([
+    "REPLIT_DB_URL",
+    "REPL_ID",
+    "REPL_IMAGE",
+    "REPL_LANGUAGE",
+    "REPL_OWNER",
+    "REPL_PUBKEYS",
+    "REPL_SLUG"
+]);
+
+const isGitHub = ensureEnv([
+    "GITHUB_ENV",
+    "GITHUB_REPOSITORY_OWNER",
+    "GITHUB_HEAD_REF",
+    "GITHUB_API_URL",
+    "GITHUB_REPOSITORY",
+    "GITHUB_SERVER_URL"
+]);
 
 function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []) {
     if (deleteDir) {
@@ -54,7 +39,8 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
 
         if (existsSync(modulesPath)) {
             rmSync(modulesPath, {
-                recursive: true
+                recursive: true,
+                force: true
             });
         }
     }
@@ -63,6 +49,17 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
 }
 
 if (isGlitch) {
+    const gitIgnorePath = resolve(process.cwd(), ".gitignore");
+    try {
+        const data = readFileSync(gitIgnorePath, "utf8").toString();
+        if (data.includes("dev.env")) {
+            writeFileSync(gitIgnorePath, data.replace("\ndev.env", ""));
+            console.info("Removed dev.env from .gitignore");
+        }
+    } catch {
+        console.error("Failed to remove dev.env from .gitignore");
+    }
+
     try {
         console.info("[INFO] Trying to re-install modules...");
         npmInstall();
@@ -84,24 +81,13 @@ if (isGlitch) {
     }
 }
 
-if (isReplit) {
-    console.warn("[WARN] We haven't added stable support for running this bot using Replit, bugs and errors may come up.");
-
-    if (Number(process.versions.node.split(".")[0]) < 16) {
-        console.info("[INFO] This Replit doesn't use Node.js v16 or newer, trying to install Node.js v16...");
-        execSync(`npm i --save-dev node@16.6.1 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH`);
-        console.info("[INFO] Node.js v16 has been installed, please restart the bot.");
-        process.exit(0);
-    }
-}
-
 if (isGitHub) {
     console.warn("[WARN] Running this bot using GitHub is not recommended.");
 }
 
 const require = module.createRequire(import.meta.url);
 
-if (!isGlitch) {
+if (!isGlitch && !isReplit) {
     try {
         require("ffmpeg-static");
     } catch {
