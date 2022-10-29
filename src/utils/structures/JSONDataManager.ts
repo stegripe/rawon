@@ -16,7 +16,7 @@ export class JSONDataManager<T> {
     public async save(data: () => T): Promise<T | null> {
         await this.manager.add(async () => {
             const dat = data();
-            await writeFile(this.fileDir, JSON.stringify(dat, null, 4));
+            await writeFile(this.fileDir, JSON.stringify(dat));
 
             return undefined;
         });

@@ -43,7 +43,9 @@ export class DJCommand extends BaseCommand {
             ctx.reply({
                 embeds: [
                     createEmbed("info")
-                        .setAuthor(i18n.__("commands.music.dj.embedTitle"))
+                        .setAuthor({
+                            name: i18n.__("commands.music.dj.embedTitle")
+                        })
                         .addField(
                             `${this.client.config.mainPrefix}dj enable`,
                             i18n.__("commands.music.dj.slashEnableDescription")
