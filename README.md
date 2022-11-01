@@ -67,7 +67,6 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 ### Developers
 - [@Mednoob](https://github.com/Mednoob)
 - [@mzrtamp](https://github.com/mzrtamp)
-- [@noxzym](https://github.com/noxzym)
 
 ### Translators
 - [Developers](#developers) (en, id)
