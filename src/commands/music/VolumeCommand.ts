@@ -28,7 +28,7 @@ export class VolumeCommand extends BaseCommand {
     @validVC
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        const volume = Number(ctx.args[0] ?? ctx.options?.getNumber("volume", false));
+        const volume = Number(ctx.args[0] ?? ctx.options?.get("volume", false)?.value);
         const current = ctx.guild!.queue!.volume;
 
         if (isNaN(volume)) {
