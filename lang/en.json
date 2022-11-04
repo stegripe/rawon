@@ -36,7 +36,7 @@
                 "nameString": "Name",
                 "noCommanSuggest": "Couldn't find matching command name. Did you mean this?",
                 "noCommand": "Couldn't find any matching command name.",
-                "slashDescription": "Command name to view a specific information about the command",
+                "slashDescription": "Command name to view specific information about the command",
                 "usage": "{prefix}help [command]",
                 "usageString": "Usage"
             },
@@ -203,7 +203,7 @@
             },
             "nowplaying": {
                 "description": "Show the media player status",
-                "disableButton": "Previous buttons is no longer active and removed.",
+                "disableButton": "Previous buttons are no longer active and removed.",
                 "emptyQueue": "Queue is empty."
             },
             "pause": {
@@ -248,7 +248,7 @@
             "search": {
                 "cancelMessage": "Type {cancel} or c to cancel music selection.",
                 "canceledMessage": "Music selection canceled.",
-                "description": "Play some music using provided query",
+                "description": "Play some music using the provided query",
                 "interactionContent": "Please select some music",
                 "interactionPlaceholder": "Please select some music",
                 "noQuery": "Please provide some query to search.",
@@ -273,7 +273,7 @@
             },
             "skipTo": {
                 "cantPlay": "You can't skip to current music.",
-                "description": "Skip to specific position in the queue",
+                "description": "Skip to a specific position in the queue",
                 "noPermission": "You don't have permission to use this command.",
                 "noSongPosition": "Unable to find a song in that position.",
                 "skipMessage": "Skipped to **{song}**",
@@ -288,14 +288,14 @@
                 "actualState": "Stay-in-voice is **`{state}`**",
                 "description": "Makes the bot stay in the voice channel when the queue has ended",
                 "newState": "Stay-in-voice is now set to **`{state}`**",
-                "slashDescription": "Turns mode for stay-in-voice feature"
+                "slashDescription": "Turns mode for the stay-in-voice feature"
             },
             "stop": {
                 "description": "Stop the music player",
                 "stoppedMessage": "The music player has been stopped."
             },
             "volume": {
-                "changeVolume": "To change the volume, provide volume number when using this command.",
+                "changeVolume": "To change the volume, provide the volume number when using this command.",
                 "currentVolume": "The current volume is **`{volume}`**",
                 "description": "Change the media player volume",
                 "newVolume": "Volume has been set to **`{volume}`**",
@@ -350,7 +350,7 @@
         },
         "musicDecorator": {
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
-            "noQueue": "There is nothing playing.",
+            "noQueue": "Nothing is being played.",
             "sameVC": "You need to be in the same voice channel as mine.",
             "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
             "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
