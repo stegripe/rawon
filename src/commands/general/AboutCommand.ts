@@ -6,13 +6,12 @@ import { formatMS } from "../../utils/functions/formatMS";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
+import { readFileSync } from "fs";
 import { uptime } from "os";
 
-const pkg = await import("../../../package.json", {
-    assert: {
-        type: "json"
-    }
-});
+const pkg: { version: string } = JSON.parse(
+    readFileSync(new URL("../../../package.json", import.meta.url)).toString()
+);
 
 @Command({
     aliases: ["information", "info", "botinfo", "stats"],
@@ -33,7 +32,7 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.nodeVersionString"), process.versions.node],
             [i18n.__("commands.general.about.discordJSVersionString"), DJSVersion],
             [i18n.__("commands.general.about.ffmpegVersionString"), this.client.utils.getFFmpegVersion()],
-            [i18n.__("commands.general.about.botVersionString"), pkg.default.version],
+            [i18n.__("commands.general.about.botVersionString"), pkg.version],
             [""],
             [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/Clytage/rawon"]
         ];
