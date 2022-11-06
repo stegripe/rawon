@@ -5,6 +5,7 @@
         "moduleResolution": "node",
         "lib": ["ES2021"],
         "strict": true,
+        "rootDir": "src",
         "outDir": "dist",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
