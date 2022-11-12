@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { Rawon } from "../../structures/Rawon";
-import { Guild, Role } from "discord.js";
+import { ChannelType, Guild, Role } from "discord.js";
 import { parse } from "path";
 import prism from "prism-media";
 
@@ -55,12 +55,12 @@ export class ClientUtils {
                         .filter(ch => {
                             if (t.textOnly) {
                                 return (
-                                    ch.type === "GUILD_TEXT" ||
-                                    ch.type === "GUILD_PUBLIC_THREAD" ||
-                                    ch.type === "GUILD_PRIVATE_THREAD"
+                                    ch.type === ChannelType.GuildText ||
+                                    ch.type === ChannelType.PublicThread ||
+                                    ch.type === ChannelType.PrivateThread
                                 );
                             } else if (t.voiceOnly) {
-                                return ch.type === "GUILD_VOICE";
+                                return ch.type === ChannelType.GuildVoice;
                             }
 
                             return true;
@@ -79,12 +79,12 @@ export class ClientUtils {
                 .filter(ch => {
                     if (textOnly) {
                         return (
-                            ch.type === "GUILD_TEXT" ||
-                            ch.type === "GUILD_PUBLIC_THREAD" ||
-                            ch.type === "GUILD_PRIVATE_THREAD"
+                            ch.type === ChannelType.GuildText ||
+                            ch.type === ChannelType.PublicThread ||
+                            ch.type === ChannelType.PrivateThread
                         );
                     } else if (voiceOnly) {
-                        return ch.type === "GUILD_VOICE";
+                        return ch.type === ChannelType.GuildVoice;
                     }
 
                     return true;

@@ -1,7 +1,7 @@
 import { createEmbed } from "../functions/createEmbed";
 import { Rawon } from "../../structures/Rawon";
 import i18n from "../../config";
-import { Guild, GuildBan, TextChannel, User } from "discord.js";
+import { ChannelType, Guild, GuildBan, TextChannel, User } from "discord.js";
 
 export class ModerationLogs {
     public constructor(public readonly client: Rawon) {}
@@ -11,14 +11,16 @@ export class ModerationLogs {
         if (!ch) return;
 
         const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.warnSuccess", { user: options.user.tag }))
-            .setThumbnail(options.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(
-                i18n.__("commands.moderation.common.reasonString"),
-                options.reason ?? i18n.__("commands.moderation.common.noReasonString")
-            )
+            .setThumbnail(options.user.displayAvatarURL({ size: 1024 }))
+            .addFields([
+                {
+                    name: i18n.__("commands.moderation.common.reasonString"),
+                    value: options.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                }
+            ])
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: options.author.tag }),
-                iconURL: options.author.displayAvatarURL({ dynamic: true })
+                iconURL: options.author.displayAvatarURL({})
             });
 
         await ch.send({ embeds: [embed] }).catch((er: Error) => console.log(`Failed to send warn logs: ${er.message}`));
@@ -32,16 +34,18 @@ export class ModerationLogs {
         if (!ch) return;
 
         const embed = createEmbed("error", i18n.__mf("commands.moderation.ban.banSuccess", { user: fetched.user.tag }))
-            .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(
-                i18n.__("commands.moderation.common.reasonString"),
-                fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
-            );
+            .setThumbnail(fetched.user.displayAvatarURL({ size: 1024 }))
+            .addFields([
+                {
+                    name: i18n.__("commands.moderation.common.reasonString"),
+                    value: fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                }
+            ]);
 
         if (options.author) {
             embed.setFooter({
                 text: i18n.__mf("commands.moderation.ban.bannedByString", { author: options.author.tag }),
-                iconURL: options.author.displayAvatarURL({ dynamic: true })
+                iconURL: options.author.displayAvatarURL({})
             });
         }
 
@@ -61,16 +65,18 @@ export class ModerationLogs {
             "info",
             i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag })
         )
-            .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(
-                i18n.__("commands.moderation.common.reasonString"),
-                fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
-            );
+            .setThumbnail(fetched.user.displayAvatarURL({ size: 1024 }))
+            .addFields([
+                {
+                    name: i18n.__("commands.moderation.common.reasonString"),
+                    value: fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                }
+            ]);
 
         if (options.author) {
             embed.setFooter({
                 text: i18n.__mf("commands.moderation.unban.unbannedByString", { author: options.author.tag }),
-                iconURL: options.author.displayAvatarURL({ dynamic: true })
+                iconURL: options.author.displayAvatarURL({})
             });
         }
 
@@ -89,7 +95,7 @@ export class ModerationLogs {
 
             const id = modlog.channel;
             const channel = await guild.channels.fetch(id!).catch(() => undefined);
-            if (channel?.type !== "GUILD_TEXT") throw new Error();
+            if (channel?.type !== ChannelType.GuildText) throw new Error();
 
             ch = channel;
         } catch {
