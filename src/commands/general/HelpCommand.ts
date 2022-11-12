@@ -6,10 +6,11 @@ import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import {
     Message,
-    MessageActionRow,
-    MessageSelectMenu,
-    MessageSelectOptionData,
-    SelectMenuInteraction
+    ActionRowBuilder,
+    SelectMenuBuilder,
+    SelectMenuComponentOptionData,
+    SelectMenuInteraction,
+    ApplicationCommandOptionType
 } from "discord.js";
 
 @Command<typeof HelpCommand>({
@@ -19,7 +20,7 @@ import {
     slash: {
         options: [
             {
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 name: "command",
                 description: i18n.__("commands.general.help.slashDescription")
             }
@@ -48,25 +49,28 @@ export class HelpCommand extends BaseCommand {
 
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
-        this.infoEmbed.fields = [];
+        this.infoEmbed.data.fields = [];
         const val =
             ctx.args[0] ??
-            ctx.options?.getString("command") ??
+            ctx.options?.get("command") ??
             (ctx.additionalArgs.get("values") ? (ctx.additionalArgs.get("values") as string[])[0] : null);
         const command =
             this.client.commands.get(val) ?? this.client.commands.get(this.client.commands.aliases.get(val)!);
         if (!val) {
-            const embed = this.listEmbed.setThumbnail(
-                ctx.guild!.iconURL({ dynamic: true, format: "png", size: 1024 })!
-            );
+            const embed = this.listEmbed.setThumbnail(ctx.guild!.iconURL({ extension: "png", size: 1024 }));
 
-            this.listEmbed.fields = [];
+            this.listEmbed.data.fields = [];
             for (const category of this.client.commands.categories.values()) {
                 const isDev = this.client.config.devs.includes(ctx.author.id);
                 const cmds = category.cmds.filter(c => (isDev ? true : !c.meta.devOnly)).map(c => `\`${c.meta.name}\``);
                 if (cmds.length === 0) continue;
                 if (category.hide && !isDev) continue;
-                embed.addField(`**${category.name}**`, cmds.join(", "));
+                embed.addFields([
+                    {
+                        name: `**${category.name}**`,
+                        value: cmds.join(", ")
+                    }
+                ]);
             }
 
             ctx.send({ embeds: [embed] }, "editReply").catch(e => this.client.logger.error("PROMISE_ERR:", e));
@@ -86,8 +90,8 @@ export class HelpCommand extends BaseCommand {
             return ctx.send(
                 {
                     components: [
-                        new MessageActionRow().addComponents(
-                            new MessageSelectMenu()
+                        new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+                            new SelectMenuBuilder()
                                 .setMinValues(1)
                                 .setMaxValues(1)
                                 .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
@@ -107,9 +111,9 @@ export class HelpCommand extends BaseCommand {
                 .fetch((ctx.context as SelectMenuInteraction).message.id)
                 .catch(() => undefined);
             if (msg !== undefined) {
-                const selection = msg.components[0].components.find(x => x.type === "SELECT_MENU");
-                selection!.setDisabled(true);
-                await msg.edit({ components: [new MessageActionRow().addComponents(selection!)] });
+                this.client.logger.info(msg.components);
+                // const selection = msg.components[0].components.find(x => x.type === ComponentType.ActionRow);
+                // await msg.edit({ components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(selection!)] });
             }
         }
         // Return information embed
@@ -124,24 +128,34 @@ export class HelpCommand extends BaseCommand {
                             }),
                             iconURL: this.client.user?.displayAvatarURL()!
                         })
-                        .addField(i18n.__("commands.general.help.nameString"), `**\`${command.meta.name}\`**`, false)
-                        .addField(
-                            i18n.__("commands.general.help.descriptionString"),
-                            `${command.meta.description!}`,
-                            true
-                        )
-                        .addField(
-                            i18n.__("commands.general.help.aliasesString"),
-                            Number(command.meta.aliases?.length) > 0
-                                ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")!
-                                : "None.",
-                            false
-                        )
-                        .addField(
-                            i18n.__("commands.general.help.usageString"),
-                            `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.mainPrefix)}\`**`,
-                            true
-                        )
+                        .addFields([
+                            {
+                                name: i18n.__("commands.general.help.nameString"),
+                                value: `**\`${command.meta.name}\`**`,
+                                inline: false
+                            },
+                            {
+                                name: i18n.__("commands.general.help.descriptionString"),
+                                value: `${command.meta.description!}`,
+                                inline: true
+                            },
+                            {
+                                name: i18n.__("commands.general.help.aliasesString"),
+                                value:
+                                    Number(command.meta.aliases?.length) > 0
+                                        ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")!
+                                        : "None.",
+                                inline: false
+                            },
+                            {
+                                name: i18n.__("commands.general.help.usageString"),
+                                value: `**\`${command.meta.usage!.replace(
+                                    /{prefix}/g,
+                                    this.client.config.mainPrefix
+                                )}\`**`,
+                                inline: true
+                            }
+                        ])
                         .setFooter({
                             text: i18n.__mf("commands.general.help.commandUsageFooter", {
                                 devOnly: command.meta.devOnly ? "(developer-only command)" : ""
@@ -154,7 +168,7 @@ export class HelpCommand extends BaseCommand {
         );
     }
 
-    private generateSelectMenu(cmd: string, author: string): MessageSelectOptionData[] {
+    private generateSelectMenu(cmd: string, author: string): SelectMenuComponentOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
         const matching = [...this.client.commands.values()]
             .filter(x => {
