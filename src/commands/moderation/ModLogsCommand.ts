@@ -106,20 +106,22 @@ export class ModLogsCommand extends BaseCommand {
                         .setAuthor({
                             name: i18n.__("commands.moderation.modlogs.embedTitle")
                         })
-                        .addField(
-                            `${this.client.config.mainPrefix}modlogs enable`,
-                            i18n.__("commands.moderation.modlogs.slashEnableDescription")
-                        )
-                        .addField(
-                            `${this.client.config.mainPrefix}modlogs disable`,
-                            i18n.__("commands.moderation.modlogs.slashDisableDescription")
-                        )
-                        .addField(
-                            `${this.client.config.mainPrefix}modlogs channel [${i18n.__(
-                                "commands.moderation.modlogs.newChannelText"
-                            )}]`,
-                            i18n.__("commands.moderation.modlogs.slashChannelDescription")
-                        )
+                        .addFields([
+                            {
+                                name: `${this.client.config.mainPrefix}modlogs enable`,
+                                value: i18n.__("commands.moderation.modlogs.slashEnableDescription")
+                            },
+                            {
+                                name: `${this.client.config.mainPrefix}modlogs disable`,
+                                value: i18n.__("commands.moderation.modlogs.slashDisableDescription")
+                            },
+                            {
+                                name: `${this.client.config.mainPrefix}modlogs channel [${i18n.__(
+                                    "commands.moderation.modlogs.newChannelText"
+                                )}]`,
+                                value: i18n.__("commands.moderation.modlogs.slashChannelDescription")
+                            }
+                        ])
                 ]
             }),
         disable: async ctx => {

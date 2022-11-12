@@ -12,10 +12,12 @@ export class ModerationLogs {
 
         const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.warnSuccess", { user: options.user.tag }))
             .setThumbnail(options.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(
-                i18n.__("commands.moderation.common.reasonString"),
-                options.reason ?? i18n.__("commands.moderation.common.noReasonString")
-            )
+            .addFields([
+                {
+                    name: i18n.__("commands.moderation.common.reasonString"),
+                    value: options.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                }
+            ])
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: options.author.tag }),
                 iconURL: options.author.displayAvatarURL({ dynamic: true })
@@ -33,10 +35,12 @@ export class ModerationLogs {
 
         const embed = createEmbed("error", i18n.__mf("commands.moderation.ban.banSuccess", { user: fetched.user.tag }))
             .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(
-                i18n.__("commands.moderation.common.reasonString"),
-                fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
-            );
+            .addFields([
+                {
+                    name: i18n.__("commands.moderation.common.reasonString"),
+                    value: fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                }
+            ]);
 
         if (options.author) {
             embed.setFooter({
@@ -62,10 +66,12 @@ export class ModerationLogs {
             i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag })
         )
             .setThumbnail(fetched.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .addField(
-                i18n.__("commands.moderation.common.reasonString"),
-                fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
-            );
+            .addFields([
+                {
+                    name: i18n.__("commands.moderation.common.reasonString"),
+                    value: fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                }
+            ]);
 
         if (options.author) {
             embed.setFooter({
