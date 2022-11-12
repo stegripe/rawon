@@ -23,7 +23,7 @@ export class EvalCommand extends BaseCommand {
         const code = ctx.args
             .join(" ")
             .replace(/^\s*\n?(```(?:[^\s]+\n)?(.*?)```|.*)$/s, (_, a: string, b) => (a.startsWith("```") ? b : a));
-        const embed = createEmbed("info").addField("Input", `\`\`\`js\n${code}\`\`\``);
+        const embed = createEmbed("info").addFields([{ name: "Input", value: `\`\`\`js\n${code}\`\`\`` }]);
 
         try {
             if (!code) {
@@ -45,7 +45,7 @@ export class EvalCommand extends BaseCommand {
             const cleaned = this.clean(evaled);
             const output = cleaned.length > 1024 ? `${await this.hastebin(cleaned)}.js` : `\`\`\`js\n${cleaned}\`\`\``;
 
-            embed.addField(i18n.__("commands.developers.eval.outputString"), output);
+            embed.addFields([{ name: i18n.__("commands.developers.eval.outputString"), value: output }]);
             ctx.send({
                 askDeletion: {
                     reference: ctx.author.id
@@ -57,7 +57,7 @@ export class EvalCommand extends BaseCommand {
             const isTooLong = cleaned.length > 1024;
             const error = isTooLong ? `${await this.hastebin(cleaned)}.js` : `\`\`\`js\n${cleaned}\`\`\``;
 
-            embed.setColor("RED").addField(i18n.__("commands.developers.eval.errorString"), error);
+            embed.setColor("RED").addFields([{ name: i18n.__("commands.developers.eval.errorString"), value: error }]);
             ctx.send({
                 askDeletion: {
                     reference: ctx.author.id
