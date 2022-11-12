@@ -68,7 +68,10 @@ export class BanCommand extends BaseCommand {
                             })
                         )
                             .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-                            .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                            .addFields({
+                                name: i18n.__("commands.moderation.common.reasonString"),
+                                value: reason
+                            })
                             .setFooter({
                                 text: i18n.__mf("commands.moderation.ban.bannedByString", {
                                     author: ctx.author.tag

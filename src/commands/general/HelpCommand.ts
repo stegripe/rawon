@@ -66,7 +66,12 @@ export class HelpCommand extends BaseCommand {
                 const cmds = category.cmds.filter(c => (isDev ? true : !c.meta.devOnly)).map(c => `\`${c.meta.name}\``);
                 if (cmds.length === 0) continue;
                 if (category.hide && !isDev) continue;
-                embed.addField(`**${category.name}**`, cmds.join(", "));
+                embed.addFields([
+                    {
+                        name: `**${category.name}**`,
+                        value: cmds.join(", ")
+                    }
+                ]);
             }
 
             ctx.send({ embeds: [embed] }, "editReply").catch(e => this.client.logger.error("PROMISE_ERR:", e));
@@ -124,24 +129,34 @@ export class HelpCommand extends BaseCommand {
                             }),
                             iconURL: this.client.user?.displayAvatarURL()!
                         })
-                        .addField(i18n.__("commands.general.help.nameString"), `**\`${command.meta.name}\`**`, false)
-                        .addField(
-                            i18n.__("commands.general.help.descriptionString"),
-                            `${command.meta.description!}`,
-                            true
-                        )
-                        .addField(
-                            i18n.__("commands.general.help.aliasesString"),
-                            Number(command.meta.aliases?.length) > 0
-                                ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")!
-                                : "None.",
-                            false
-                        )
-                        .addField(
-                            i18n.__("commands.general.help.usageString"),
-                            `**\`${command.meta.usage!.replace(/{prefix}/g, this.client.config.mainPrefix)}\`**`,
-                            true
-                        )
+                        .addFields([
+                            {
+                                name: i18n.__("commands.general.help.nameString"),
+                                value: `**\`${command.meta.name}\`**`,
+                                inline: false
+                            },
+                            {
+                                name: i18n.__("commands.general.help.descriptionString"),
+                                value: `${command.meta.description!}`,
+                                inline: true
+                            },
+                            {
+                                name: i18n.__("commands.general.help.aliasesString"),
+                                value:
+                                    Number(command.meta.aliases?.length) > 0
+                                        ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")!
+                                        : "None.",
+                                inline: false
+                            },
+                            {
+                                name: i18n.__("commands.general.help.usageString"),
+                                value: `**\`${command.meta.usage!.replace(
+                                    /{prefix}/g,
+                                    this.client.config.mainPrefix
+                                )}\`**`,
+                                inline: true
+                            }
+                        ])
                         .setFooter({
                             text: i18n.__mf("commands.general.help.commandUsageFooter", {
                                 devOnly: command.meta.devOnly ? "(developer-only command)" : ""
