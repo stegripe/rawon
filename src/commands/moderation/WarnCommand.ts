@@ -57,7 +57,12 @@ export class WarnCommand extends BaseCommand {
             })
         )
             .setThumbnail(ctx.guild!.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-            .addField(i18n.__("commands.moderation.common.reasonString"), displayReason)
+            .addFields([
+                {
+                    name: i18n.__("commands.moderation.common.reasonString"),
+                    value: displayReason
+                }
+            ])
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: ctx.author.tag }),
                 iconURL: ctx.author.displayAvatarURL({ dynamic: true })

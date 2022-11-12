@@ -63,7 +63,7 @@ export class KickCommand extends BaseCommand {
                         i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name })
                     )
                         .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-                        .addField(i18n.__("commands.moderation.common.reasonString"), reason)
+                        .addFields([{ name: i18n.__("commands.moderation.common.reasonString"), value: reason }])
                         .setFooter({
                             text: i18n.__mf("commands.moderation.kick.kickedByString", {
                                 author: ctx.author.tag
