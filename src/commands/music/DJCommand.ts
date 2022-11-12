@@ -46,18 +46,22 @@ export class DJCommand extends BaseCommand {
                         .setAuthor({
                             name: i18n.__("commands.music.dj.embedTitle")
                         })
-                        .addField(
-                            `${this.client.config.mainPrefix}dj enable`,
-                            i18n.__("commands.music.dj.slashEnableDescription")
-                        )
-                        .addField(
-                            `${this.client.config.mainPrefix}dj disable`,
-                            i18n.__("commands.music.dj.slashDisableDescription")
-                        )
-                        .addField(
-                            `${this.client.config.mainPrefix}dj role [${i18n.__("commands.music.dj.newRoleText")}]`,
-                            i18n.__("commands.music.dj.slashRoleDescription")
-                        )
+                        .addFields([
+                            {
+                                name: `${this.client.config.mainPrefix}dj enable`,
+                                value: i18n.__("commands.music.dj.slashEnableDescription")
+                            },
+                            {
+                                name: `${this.client.config.mainPrefix}dj disable`,
+                                value: i18n.__("commands.music.dj.slashDisableDescription")
+                            },
+                            {
+                                name: `${this.client.config.mainPrefix}dj role [${i18n.__(
+                                    "commands.music.dj.newRoleText"
+                                )}]`,
+                                value: i18n.__("commands.music.dj.slashRoleDescription")
+                            }
+                        ])
                 ]
             }),
         disable: async ctx => {
