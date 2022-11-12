@@ -1,6 +1,6 @@
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
-import { Presence } from "discord.js";
+import { ActivityType, Presence } from "discord.js";
 
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
@@ -58,16 +58,18 @@ export class ReadyEvent extends BaseEvent {
             ? Math.floor(Math.random() * this.client.config.presenceData.activities.length)
             : 0;
         const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const activity = (
             await Promise.all(
                 this.client.config.presenceData.activities.map(async a =>
-                    Object.assign(a, { name: await this.formatString(a.name) })
+                    Object.assign(a, { name: await this.formatString(a.name), type: a.type })
                 )
             )
         )[activityNumber];
 
         return this.client.user!.setPresence({
-            activities: (activity as { name: string } | undefined) ? [activity] : [],
+            // activities: (activity as { name: string } | undefined) ? [activity] : [],
+            activities: [{ name: "hello", type: ActivityType.Listening }],
             status: this.client.config.presenceData.status[statusNumber]
         });
     }
