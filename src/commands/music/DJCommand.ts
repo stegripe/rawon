@@ -4,6 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
+import { ApplicationCommandOptionType } from "discord.js";
 
 @Command<typeof DJCommand>({
     description: i18n.__("commands.music.dj.description"),
@@ -18,20 +19,20 @@ import i18n from "../../config";
                         description: i18n.__("commands.music.dj.slashRoleNewRoleOption"),
                         name: "newrole",
                         required: false,
-                        type: "ROLE"
+                        type: ApplicationCommandOptionType.Role
                     }
                 ],
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.music.dj.slashEnableDescription"),
                 name: "enable",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.music.dj.slashDisableDescription"),
                 name: "disable",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             }
         ]
     },
@@ -46,18 +47,22 @@ export class DJCommand extends BaseCommand {
                         .setAuthor({
                             name: i18n.__("commands.music.dj.embedTitle")
                         })
-                        .addField(
-                            `${this.client.config.mainPrefix}dj enable`,
-                            i18n.__("commands.music.dj.slashEnableDescription")
-                        )
-                        .addField(
-                            `${this.client.config.mainPrefix}dj disable`,
-                            i18n.__("commands.music.dj.slashDisableDescription")
-                        )
-                        .addField(
-                            `${this.client.config.mainPrefix}dj role [${i18n.__("commands.music.dj.newRoleText")}]`,
-                            i18n.__("commands.music.dj.slashRoleDescription")
-                        )
+                        .addFields([
+                            {
+                                name: `${this.client.config.mainPrefix}dj enable`,
+                                value: i18n.__("commands.music.dj.slashEnableDescription")
+                            },
+                            {
+                                name: `${this.client.config.mainPrefix}dj disable`,
+                                value: i18n.__("commands.music.dj.slashDisableDescription")
+                            },
+                            {
+                                name: `${this.client.config.mainPrefix}dj role [${i18n.__(
+                                    "commands.music.dj.newRoleText"
+                                )}]`,
+                                value: i18n.__("commands.music.dj.slashRoleDescription")
+                            }
+                        ])
                 ]
             }),
         disable: async ctx => {
@@ -171,7 +176,7 @@ export class DJCommand extends BaseCommand {
         }
     };
 
-    @memberReqPerms(["MANAGE_GUILD"], i18n.__("commands.moderation.warn.userNoPermission"))
+    @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
     public execute(ctx: CommandContext): void {
         const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
         let sub = this.options[subname!] as BaseCommand["execute"] | undefined;
