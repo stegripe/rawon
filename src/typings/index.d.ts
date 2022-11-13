@@ -11,8 +11,8 @@ import {
     Client as OClient,
     Collection,
     GuildMember,
-    MessageEmbed,
-    Guild
+    Guild,
+    EmbedBuilder
 } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
@@ -37,8 +37,8 @@ export interface SearchTrackResult {
 }
 
 export interface PaginationPayload {
-    edit: (index: number, embed: MessageEmbed, page: string) => unknown;
-    embed: MessageEmbed;
+    edit: (index: number, embed: EmbedBuilder, page: string) => unknown;
+    embed: EmbedBuilder;
     content?: string;
     pages: string[];
     author: string;
