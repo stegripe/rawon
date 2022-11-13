@@ -41,7 +41,7 @@ export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
-        type: (parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]?.toUpperCase() || "PLAYING") as Exclude<
+        type: (parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]?.toUpperCase() || ActivityType.Playing) as Exclude<
             ActivityType,
             "CUSTOM"
         >
