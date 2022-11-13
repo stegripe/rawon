@@ -10,7 +10,8 @@ import {
     SelectMenuBuilder,
     SelectMenuComponentOptionData,
     SelectMenuInteraction,
-    ApplicationCommandOptionType
+    ApplicationCommandOptionType,
+    ComponentType
 } from "discord.js";
 
 @Command<typeof HelpCommand>({
@@ -52,7 +53,7 @@ export class HelpCommand extends BaseCommand {
         this.infoEmbed.data.fields = [];
         const val =
             ctx.args[0] ??
-            ctx.options?.get("command") ??
+            ctx.options?.getString("command") ??
             (ctx.additionalArgs.get("values") ? (ctx.additionalArgs.get("values") as string[])[0] : null);
         const command =
             this.client.commands.get(val) ?? this.client.commands.get(this.client.commands.aliases.get(val)!);
@@ -104,18 +105,24 @@ export class HelpCommand extends BaseCommand {
                 "editReply"
             );
         }
+
         // Disable selection menu
-        if (ctx.isSelectMenu()) {
+        if (ctx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel!.messages
                 .fetch((ctx.context as SelectMenuInteraction).message.id)
                 .catch(() => undefined);
             if (msg !== undefined) {
                 this.client.logger.info(msg.components);
-                // const selection = msg.components[0].components.find(x => x.type === ComponentType.ActionRow);
-                // await msg.edit({ components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(selection!)] });
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
+                /* <------------ NOT SURE WHAT TO DO HERE ----------------> */
+                /* if(!selection) return;
+                   await msg.edit({ components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(selection)] }); */
             }
         }
+
+        this.client.logger.info(ctx.isStringSelectMenu());
         // Return information embed
         return ctx.send(
             {

@@ -3,6 +3,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
+import { ApplicationCommandOptionType } from "discord.js";
 
 @Command({
     aliases: ["setmuterole"],
@@ -13,7 +14,7 @@ import i18n from "../../config";
             {
                 description: i18n.__("commands.moderation.setmute.slashRoleDescription"),
                 name: "role",
-                type: "ROLE",
+                type: ApplicationCommandOptionType.Role,
                 required: true
             }
         ]
