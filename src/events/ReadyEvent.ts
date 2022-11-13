@@ -68,8 +68,8 @@ export class ReadyEvent extends BaseEvent {
         )[activityNumber];
 
         return this.client.user!.setPresence({
-            // activities: (activity as { name: string } | undefined) ? [activity] : [],
-            activities: [{ name: "hello", type: ActivityType.Listening }],
+            // activities: (activity as { name: string } | undefined) ? [activity] : [], // this line was giving error
+            activities: [{ name: "hello", type: ActivityType.Listening }], // added this temp line for now
             status: this.client.config.presenceData.status[statusNumber]
         });
     }
