@@ -170,7 +170,7 @@ export class ServerQueue {
     public set lastMusicMsg(value: Snowflake | null) {
         if (this._lastMusicMsg !== null) {
             this.textChannel.messages
-                .fetch(this._lastMusicMsg, { cache: false })
+                .fetch(this._lastMusicMsg)
                 .then(msg => {
                     void msg.delete();
                 })
@@ -186,7 +186,7 @@ export class ServerQueue {
     public set lastVSUpdateMsg(value: Snowflake | null) {
         if (this._lastVSUpdateMsg !== null) {
             this.textChannel.messages
-                .fetch(this._lastVSUpdateMsg, { cache: false })
+                .fetch(this._lastVSUpdateMsg)
                 .then(msg => {
                     void msg.delete();
                 })

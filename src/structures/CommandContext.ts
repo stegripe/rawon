@@ -22,7 +22,8 @@ import {
     User,
     InteractionResponse,
     ButtonStyle,
-    BaseInteraction
+    BaseInteraction,
+    ChatInputCommandInteraction
 } from "discord.js";
 
 export class CommandContext {
@@ -142,8 +143,13 @@ export class CommandContext {
         return this.context instanceof ButtonInteraction;
     }
 
-    public isSelectMenu(): boolean {
-        return this.context instanceof SelectMenuInteraction;
+    public isStringSelectMenu(): boolean {
+        /* NOT SURE WITH THIS CHANGES, 
+        OLD isSelectMenu method is now deprecated
+        NEW use isStringSelectMenu method  
+        ref :- https://discord.js.org/#/docs/discord.js/main/class/CommandInteraction?scrollTo=isSelectMenu
+        */
+        return this.context instanceof MessageComponentInteraction;
     }
 
     public isModal(): boolean {
@@ -158,8 +164,9 @@ export class CommandContext {
         return this.context instanceof BaseInteraction ? (this.context as CommandInteraction).deferred : false;
     }
 
-    public get options(): CommandInteraction["options"] | null {
-        return this.context instanceof BaseInteraction ? (this.context as CommandInteraction).options : null;
+    public get options(): ChatInputCommandInteraction["options"] | null {
+        /* Not sure about this but CommandInteraction does not provides getString method anymore */
+        return this.context instanceof BaseInteraction ? (this.context as ChatInputCommandInteraction).options : null;
     }
 
     public get fields(): ModalSubmitFields | null {
