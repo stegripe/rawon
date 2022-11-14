@@ -113,16 +113,20 @@ export class HelpCommand extends BaseCommand {
                 .fetch((ctx.context as SelectMenuInteraction).message.id)
                 .catch(() => undefined);
             if (msg !== undefined) {
-                this.client.logger.info(msg.components);
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
-                /* <------------ NOT SURE WHAT TO DO HERE ----------------> */
-                /* if(!selection) return;
-                   await msg.edit({ components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(selection)] }); */
+                if (!selection) return;
+                const disabledMenu = new SelectMenuBuilder()
+                    .setCustomId(selection.customId!)
+                    .setDisabled(true)
+                    .addOptions({
+                        label: "Nothing to select here",
+                        description: "Nothing to select here",
+                        value: "Nothing to select here"
+                    });
+                await msg.edit({ components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(disabledMenu)] });
             }
         }
 
-        this.client.logger.info(ctx.isStringSelectMenu());
         // Return information embed
         return ctx.send(
             {
