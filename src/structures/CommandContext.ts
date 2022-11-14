@@ -144,11 +144,6 @@ export class CommandContext {
     }
 
     public isStringSelectMenu(): boolean {
-        /* NOT SURE WITH THIS CHANGES, 
-        OLD isSelectMenu method is now deprecated
-        NEW use isStringSelectMenu method  
-        ref :- https://discord.js.org/#/docs/discord.js/main/class/CommandInteraction?scrollTo=isSelectMenu
-        */
         return this.context instanceof MessageComponentInteraction;
     }
 
