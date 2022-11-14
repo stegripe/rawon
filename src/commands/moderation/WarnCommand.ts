@@ -60,7 +60,7 @@ export class WarnCommand extends BaseCommand {
             .addFields([
                 {
                     name: i18n.__("commands.moderation.common.reasonString"),
-                    value: displayReason.toString()
+                    value: displayReason
                 }
             ])
             .setFooter({

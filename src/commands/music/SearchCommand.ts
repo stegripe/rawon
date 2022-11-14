@@ -30,7 +30,7 @@ import {
             {
                 description: i18n.__("commands.music.search.slashQueryDescription"),
                 name: "query",
-                type: ApplicationCommandOptionType.Subcommand
+                type: ApplicationCommandOptionType.String
             },
             {
                 choices: [

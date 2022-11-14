@@ -66,7 +66,7 @@ export class KickCommand extends BaseCommand {
                         .addFields([
                             {
                                 name: i18n.__("commands.moderation.common.reasonString"),
-                                value: reason.toString()
+                                value: reason
                             }
                         ])
                         .setFooter({
