@@ -1,6 +1,6 @@
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
-import { ActivityType, Presence } from "discord.js";
+import { Presence } from "discord.js";
 
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
@@ -68,8 +68,7 @@ export class ReadyEvent extends BaseEvent {
         )[activityNumber];
 
         return this.client.user!.setPresence({
-            // activities: (activity as { name: string } | undefined) ? [activity] : [], // this line was giving error
-            activities: [{ name: "hello", type: ActivityType.Listening }], // added this temp line for now
+            activities: (activity as { name: string } | undefined) ? [activity] : [],
             status: this.client.config.presenceData.status[statusNumber]
         });
     }
