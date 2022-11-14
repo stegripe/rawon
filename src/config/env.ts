@@ -43,7 +43,7 @@ export const presenceData: PresenceData = {
         name: x,
         type: (parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]?.toUpperCase() || ActivityType.Playing) as Exclude<
             ActivityType,
-            "CUSTOM"
+            ActivityType.Custom
         >
     })),
     status: ["online"] as ClientPresenceStatus[],

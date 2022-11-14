@@ -7,6 +7,7 @@ export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
     intents: [
         IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.MessageContent,
         IntentsBitField.Flags.GuildMessages,
         IntentsBitField.Flags.GuildEmojisAndStickers,
         IntentsBitField.Flags.GuildVoiceStates,
@@ -34,7 +35,6 @@ export const clientOptions: ClientOptions = {
             })
         }
     }
-    // retryLimit: 3
 };
 
 i18n.configure({
