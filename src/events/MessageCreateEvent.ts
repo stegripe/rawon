@@ -12,15 +12,14 @@ export class MessageCreateEvent extends BaseEvent {
             ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
             [
                 "Channel",
-                message.channel.type === ChannelType.DM
-                    ? ChannelType.DM.toString()
-                    : `${message.channel.name}(${message.channel.id})`
+                message.channel.type === ChannelType.DM ? "DM" : `${message.channel.name}(${message.channel.id})`
             ],
             ["Author", `${message.author.tag}(${message.author.id})`]
         ]);
 
-        if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady)
+        if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) {
             return message;
+        }
 
         if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
             message

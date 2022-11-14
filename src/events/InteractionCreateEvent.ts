@@ -7,6 +7,7 @@ import {
     ApplicationCommandType,
     BitFieldResolvable,
     Interaction,
+    Message,
     PermissionsBitField,
     PermissionsString,
     TextChannel
@@ -65,8 +66,14 @@ export class InteractionCreateEvent extends BaseEvent {
         const context = new CommandContext(interaction);
         if (interaction.isUserContextMenuCommand()) {
             const data = interaction.options.getUser("user") ?? interaction.options.getMessage("message");
+            let dataType = ApplicationCommandType.User;
+
+            if (data instanceof Message) {
+                dataType = ApplicationCommandType.Message;
+            }
+
             const cmd = this.client.commands.find(x =>
-                data?.toJSON() === ApplicationCommandType.Message
+                dataType === ApplicationCommandType.Message
                     ? x.meta.contextChat === interaction.commandName
                     : x.meta.contextUser === interaction.commandName
             );
