@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { Rawon } from "../../structures/Rawon";
-import { ChannelType, Guild, Role } from "discord.js";
+import { Guild, Role } from "discord.js";
 import { parse } from "path";
 import prism from "prism-media";
 
@@ -46,6 +46,11 @@ export class ClientUtils {
     }
 
     public async getChannelCount(textOnly = false, voiceOnly = false): Promise<number> {
+        /**
+         * This method is throwing reference error
+         * ChannelType is not defined, even though it is being imported
+         * for now i added channel types directly instead of using enums
+         */
         let arr: string[] = [];
 
         if (this.client.shard) {
@@ -54,13 +59,9 @@ export class ClientUtils {
                     c.channels.cache
                         .filter(ch => {
                             if (t.textOnly) {
-                                return (
-                                    ch.type === ChannelType.GuildText ||
-                                    ch.type === ChannelType.PublicThread ||
-                                    ch.type === ChannelType.PrivateThread
-                                );
+                                return ch.type === 0 || ch.type === 11 || ch.type === 12;
                             } else if (t.voiceOnly) {
-                                return ch.type === ChannelType.GuildVoice;
+                                return ch.type === 2;
                             }
 
                             return true;
@@ -78,13 +79,9 @@ export class ClientUtils {
             arr = this.client.channels.cache
                 .filter(ch => {
                     if (textOnly) {
-                        return (
-                            ch.type === ChannelType.GuildText ||
-                            ch.type === ChannelType.PublicThread ||
-                            ch.type === ChannelType.PrivateThread
-                        );
+                        return ch.type === 0 || ch.type === 11 || ch.type === 12;
                     } else if (voiceOnly) {
-                        return ch.type === ChannelType.GuildVoice;
+                        return ch.type === 2;
                     }
 
                     return true;

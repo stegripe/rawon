@@ -9,8 +9,7 @@ import {
     TextChannel,
     ButtonStyle,
     ComponentType,
-    InteractionButtonComponentData,
-    ButtonInteraction
+    InteractionButtonComponentData
 } from "discord.js";
 import { PaginationPayload } from "../../typings";
 
@@ -81,22 +80,15 @@ export class ButtonPagination {
 
         if (pages.length < 2) return;
 
-        /**
-         * @todo filter need to be fixed
-         */
-
-        const filter = (interaction: ButtonInteraction): any => {
-            void interaction.deferUpdate();
-            return (
-                DATAS.map(x => x.customId.toLowerCase()).includes(interaction.customId.toLowerCase()) &&
-                interaction.user.id === this.payload.author
-            );
-        };
-
-        this.msg.client.logger.debug(filter);
-
         const collector = fetchedMsg.createMessageComponentCollector({
-            filter
+            filter: i => {
+                void i.deferUpdate();
+                return (
+                    DATAS.map(x => x.customId.toLowerCase()).includes(i.customId.toLowerCase()) &&
+                    i.user.id === this.payload.author
+                );
+            },
+            componentType: ComponentType.Button
         });
 
         collector.on("collect", async i => {
