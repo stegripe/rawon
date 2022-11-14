@@ -57,7 +57,7 @@ export interface SlashOption {
 }
 
 export interface PresenceData {
-    activities: { name: string; type: Exclude<ActivityType, "CUSTOM"> }[];
+    activities: { name: string; type: Exclude<ActivityType, ActivityType.Custom> }[];
     status: ClientPresenceStatus[];
     interval: number;
 }
