@@ -19,7 +19,7 @@
                 "description": "Afficher les informations du bot",
                 "discordJSVersionString": "Version de Discord.js",
                 "ffmpegVersionString": "Version de FFmpeg",
-                "nodeVersionString": "Version Node.js",
+                "nodeVersionString": "Version de Node.js",
                 "osUptimeString": "Temps de fonctionnement de l'OS",
                 "processUptimeString": "Temps de fonctionnement du processus",
                 "sourceCodeString": "Code source"
