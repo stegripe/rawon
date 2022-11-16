@@ -3,7 +3,6 @@ import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Rawon } from "../structures/Rawon";
 import {
-    ActivityType,
     ApplicationCommandOptionData,
     ApplicationCommandType,
     ClientEvents,
@@ -56,8 +55,10 @@ export interface SlashOption {
     name?: string;
 }
 
+export type EnvActivityTypes = "Competing" | "Listening" | "Playing" | "Watching";
+
 export interface PresenceData {
-    activities: { name: string; type: Exclude<ActivityType, ActivityType.Custom> }[];
+    activities: { name: string; type: EnvActivityTypes }[];
     status: ClientPresenceStatus[];
     interval: number;
 }
