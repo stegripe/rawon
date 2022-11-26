@@ -146,7 +146,7 @@
                 "description": "Desbanea a alguien del servidor",
                 "slashMemberDescription": "¿A quién quisieras desbanear?",
                 "slashReasonDescription": "Razón de desbaneo",
-                "ubanSuccess": "**{user}** ha sido **`DESBANEADO`** del servidor.",
+                "unbanSuccess": "**{user}** ha sido **`DESBANEADO`** del servidor.",
                 "unbanFail": "No se pudo **`DESBANEAR`** al miembro, razón: `{message}`",
                 "unbannedByString": "Desbaneado por: {author}",
                 "usage": "{prefix}unban <id> [razón]"
