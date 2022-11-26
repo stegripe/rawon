@@ -262,7 +262,7 @@ export async function searchTrack(
 
             result.items = tracks;
         } else {
-            const searchRes = await youtube.search(query, { type: "video" });
+            const searchRes = (await youtube.search(query, { type: "video" }));
             const tracks = await Promise.all(
                 searchRes.map(
                     (track): Song => ({
