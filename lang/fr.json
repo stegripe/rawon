@@ -6,6 +6,7 @@
                 "description": "Évaluer au bot",
                 "errorString": "Erreur",
                 "noCode": "Aucun code n'a été fourni.",
+		        "inputString": "Entrée",
                 "outputString": "Sortie",
                 "usage": "{prefix}eval <du code>"
             }
@@ -18,7 +19,7 @@
                 "description": "Afficher les informations du bot",
                 "discordJSVersionString": "Version de Discord.js",
                 "ffmpegVersionString": "Version de FFmpeg",
-                "nodeVersionString": "Version Node.js",
+                "nodeVersionString": "Version de Node.js",
                 "osUptimeString": "Temps de fonctionnement de l'OS",
                 "processUptimeString": "Temps de fonctionnement du processus",
                 "sourceCodeString": "Code source"
@@ -32,7 +33,7 @@
                 "commandUsageFooter": "<> = requis | [] = facultatif {devOnly}",
                 "description": "Affiche la liste des commandes ou les informations relatives à une commande spécifique",
                 "descriptionString": "Description",
-                "footerString": "{prefix}help <command> pour obtenir plus d'informations sur une commande spécifique",
+                "footerString": "{prefix}help <commande> pour obtenir plus d'informations sur une commande spécifique",
                 "nameString": "Nom",
                 "noCommanSuggest": "Impossible de trouver le nom de commande correspondant. Vouliez-vous dire ceci ?",
                 "noCommand": "Impossible de trouver un nom de commande correspondant.",
@@ -286,22 +287,22 @@
             "stayInQueue": {
                 "247Disabled": "La commande Stay-in-voice est désactivée.",
                 "actualState": "Stay-in-voice est **`{state}`**",
-                "description": "Permet au robot de rester dans le canal vocal lorsque la file d'attente est terminée.",
+                "description": "Permet au bot de rester dans le salon vocal lorsque la file d'attente est terminée.",
                 "newState": "Stay-in-voice est désormais réglé sur **`{state}`**",
                 "slashDescription": "Active la fonctionnalité stay-in-voice"
             },
             "stop": {
                 "description": "Arrêter le lecteur de musique",
-                "stoppedMessage": "Le lecteur de musique a été arrêté."
+                "stoppedMessage": "Le lecteur de musique s'est arrêté."
             },
             "volume": {
-                "changeVolume": "Pour modifier le volume, fournissez le numéro de volume lorsque vous utilisez cette commande.",
+                "changeVolume": "Pour modifier le volume, veuillez donner  le numéro de volume lorsque vous utilisez cette commande.",
                 "currentVolume": "Le volume actuel est **`{volume}`**",
                 "description": "Modifier le volume du lecteur multimédia",
                 "newVolume": "Le volume a été réglé sur **`{volume}`**",
                 "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur **`{volume}`**",
                 "slashDescription": "Nouveau volume",
-                "usage": "{prefix}volume [nouveau voulume]",
+                "usage": "{prefix}volume [nouveau volume]",
                 "volumeLimit": "Je ne peux pas régler le volume au-dessus de **`{maxVol}`**"
             }
         }
@@ -319,15 +320,15 @@
         "createMessage": "Salut {author}, mon préfixe est **`{prefix}`**",
         "voiceStateUpdate": {
             "connectionReconfigured": "La connexion a été reconfigurée avec succès.",
-            "deleteQueue": "**`{duration}`** a été écoulé et il n'y a personne qui a rejoint le canal vocal, la file d'attente a été supprimée.",
+            "deleteQueue": "**`{duration}`** s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
             "deleteQueueFooter": "File d'attente supprimée",
-            "disconnectFromVCMessage": "Déconnecté du canal vocal, la file d'attente a été supprimée.",
-            "joinStageMessage": "A rejoint avec succès la chaîne de scène en tant que haut-parleur.",
-            "joiningAsSpeaker": "Déplacé sur le canal scène, j'essaie de me joindre en tant que haut-parleur...",
-            "pauseQueue": "Tout le monde a quitté le canal vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le canal vocal dans les prochaines **`{duration}`**, la file d'attente sera supprimée.",
+            "disconnectFromVCMessage": "Déconnecté du salon vocal, la file d'attente a été supprimée.",
+            "joinStageMessage": "A rejoint avec succès le salon Stage en tant que haut-parleur.",
+            "joiningAsSpeaker": "Déplacé sur le salon Stage, j'essaie de me joindre en tant que haut-parleur...",
+            "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici **`{duration}`**, la file d'attente sera supprimée.",
             "pauseQueueFooter": "File d'attente mise en pause",
-            "reconfigureConnection": "Déplacement vers un canal vocal avec une région différente, re-configuration de la connexion...",
-            "resumeQueue": "Quelqu'un a rejoint le canal vocal.\nReprise de **{song}**",
+            "reconfigureConnection": "Déplacement vers un salon vocal avec une région différente, re-configuration de la connexion...",
+            "resumeQueue": "Quelqu'un a rejoint le salon vocal.\nReprise de **{song}**",
             "resumeQueueFooter": "Reprise de la file d'attente",
             "unableJoinStageMessage": "Impossible de rejoindre comme haut-parleur, la file d'attente a été supprimée.",
             "unableReconfigureConnection": "Impossible de reconfigurer la connexion, la file d'attente a été supprimée."
@@ -340,20 +341,20 @@
     "utils": {
         "cooldownMessage": "{author}, veuillez attendre **`{timeleft}`** de cooldown.",
         "generalHandler": {
-            "errorJoining": "Erreur lors de la connexion au canal vocal, parce que : `{message}`",
+            "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : `{message}`",
             "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : `{message}`",
-            "handleVideoInitial": "Ajout de chansons {length} à la file d'attente",
-            "leftVC": "Parti du canal vocal parce que j'ai été inactif pendant trop longtemps.",
-            "queueEnded": "La file d'attente est terminée, utilisez **`{usage}`** pour jouer plus de musique.",
-            "startPlaying": "J'ai commencé à jouer **{song}**",
+            "handleVideoInitial": "Ajout de {length} chanson(s) à la file d'attente",
+            "leftVC": "Je me suis déconnecté du salon vocal parce que j'ai été inactif pendant trop longtemps.",
+            "queueEnded": "La lecture est terminée, utilisez **`{usage}`** pour jouer plus de musique.",
+            "startPlaying": "Lancement de la lecture de **{song}**",
             "stopPlaying": "Arrêt de la lecture de **{song}**"
         },
         "musicDecorator": {
-            "noInVC": "Désolé, mais vous devez être dans un canal vocal pour faire ça.",
+            "noInVC": "Désolé, mais vous devez être dans un salon vocal pour faire cela.",
             "noQueue": "Il n'y a rien à jouer.",
-            "sameVC": "Vous devez être dans le même canal vocal que le mien.",
-            "validVCJoinable": "Désolé, mais je ne peux pas **`ME CONNECTER`** à votre salon vocal, assurez-vous que j'ai les bonnes permissions.",
-            "validVCPermission": "Désolé, mais je ne peux pas **`PARLER`** dans ce salon vocal ; assurez-vous que j'ai les bonnes permissions."
+            "sameVC": "Vous devez être dans le même salon vocal que le mien.",
+            "validVCJoinable": "Désolé, mais je ne peux pas **`ME CONNECTER`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCPermission": "Désolé, mais je ne peux pas **`PARLER`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions."
         }
     }
 }
