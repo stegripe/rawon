@@ -1,36 +1,40 @@
 import { lang } from "./env";
-import { ClientOptions, Intents, Options, ShardingManagerMode, Sweepers } from "discord.js";
+import { ClientOptions, IntentsBitField, Options, ShardingManagerMode, Sweepers } from "discord.js";
 import { join } from "path";
 import i18n from "i18n";
 
 export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
     intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-        Intents.FLAGS.GUILD_VOICE_STATES,
-        Intents.FLAGS.GUILD_BANS
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.GuildEmojisAndStickers,
+        IntentsBitField.Flags.GuildVoiceStates,
+        IntentsBitField.Flags.GuildBans
     ],
     makeCache: Options.cacheWithLimits({
         MessageManager: {
-            maxSize: Infinity,
-            sweepInterval: 300,
-            sweepFilter: Sweepers.filterByLifetime({
-                lifetime: 10800
-            })
+            maxSize: Infinity
         },
         ThreadManager: {
-            maxSize: Infinity,
-            sweepInterval: 300,
-            sweepFilter: Sweepers.filterByLifetime({
+            maxSize: Infinity
+        }
+    }),
+    sweepers: {
+        messages: {
+            interval: 300,
+            filter: Sweepers.filterByLifetime({ lifetime: 10800 })
+        },
+        threads: {
+            interval: 300,
+            filter: Sweepers.filterByLifetime({
                 lifetime: 10800,
                 getComparisonTimestamp: e => e.archiveTimestamp!,
                 excludeFromSweep: e => !e.archived
             })
         }
-    }),
-    retryLimit: 3
+    }
 };
 
 i18n.configure({
