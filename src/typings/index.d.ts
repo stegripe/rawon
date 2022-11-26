@@ -2,7 +2,17 @@
 import { CommandContext } from "../structures/CommandContext";
 import { ServerQueue } from "../structures/ServerQueue";
 import { Rawon } from "../structures/Rawon";
-import { ActivityType, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Client as OClient, Collection, GuildMember, MessageEmbed, Guild } from "discord.js";
+import {
+    ApplicationCommandOptionData,
+    ApplicationCommandType,
+    ClientEvents,
+    ClientPresenceStatus,
+    Client as OClient,
+    Collection,
+    GuildMember,
+    Guild,
+    EmbedBuilder
+} from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
