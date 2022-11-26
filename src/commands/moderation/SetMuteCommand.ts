@@ -24,6 +24,14 @@ import { ApplicationCommandOptionType } from "discord.js";
 export class SetMuteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
         const id = ctx.options?.getRole("role", true).id ?? ctx.args[0].replace(/\D/g, "");
+        if (!id) {
+            await ctx.reply({
+                embeds: [createEmbed("error", i18n.__("commands.moderation.setmute.invalidRole"))]
+            });
+
+            return;
+        }
+
         const role = await ctx.guild?.roles.fetch(id).catch(() => undefined);
         if (!role) {
             await ctx.reply({
