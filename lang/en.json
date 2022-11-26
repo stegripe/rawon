@@ -6,6 +6,7 @@
                 "description": "Evaluate to the bot",
                 "errorString": "Error",
                 "noCode": "No code was provided.",
+                "inputString": "Input",
                 "outputString": "Output",
                 "usage": "{prefix}eval <some code>"
             }

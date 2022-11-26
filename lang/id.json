@@ -6,6 +6,7 @@
                 "description": "Evaluasi kode",
                 "errorString": "Error",
                 "noCode": "Tidak ada kode yang diberikan.",
+                "inputString": "Input",
                 "outputString": "Output",
                 "usage": "{prefix}eval <kode>"
             }
