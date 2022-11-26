@@ -23,7 +23,7 @@ export class EvalCommand extends BaseCommand {
         const code = ctx.args
             .join(" ")
             .replace(/^\s*\n?(```(?:[^\s]+\n)?(.*?)```|.*)$/s, (_, a: string, b) => (a.startsWith("```") ? b : a));
-        const embed = createEmbed("info").addFields([{ name: "Input", value: `\`\`\`js\n${code}\`\`\`` }]);
+        const embed = createEmbed("info").addFields([{ name: i18n.__("commands.developers.eval.inputString"), value: `\`\`\`js\n${code}\`\`\`` }]);
 
         try {
             if (!code) {
