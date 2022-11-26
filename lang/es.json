@@ -6,6 +6,7 @@
                 "description": "Evaluar al bot",
                 "errorString": "Error",
                 "noCode": "No se ingresó código.",
+                "inputString": "Entrada",
                 "outputString": "Salida",
                 "usage": "{prefix}eval <código>"
             }
