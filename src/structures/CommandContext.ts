@@ -1,30 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
 import { MessageInteractionAction } from "../typings";
-import {
-    ButtonInteraction,
-    Collection,
-    CommandInteraction,
-    ContextMenuCommandInteraction,
-    GuildMember,
-    Interaction,
-    InteractionReplyOptions,
-    Message,
-    ActionRowBuilder,
-    ButtonBuilder,
-    MessageComponentInteraction,
-    MessageMentions,
-    BaseMessageOptions,
-    MessagePayload,
-    ModalSubmitFields,
-    ModalSubmitInteraction,
-    SelectMenuInteraction,
-    TextBasedChannel,
-    User,
-    InteractionResponse,
-    ButtonStyle,
-    BaseInteraction,
-    ChatInputCommandInteraction
-} from "discord.js";
+import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageMentions, MessageOptions, MessagePayload, ModalSubmitFieldsResolver, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
