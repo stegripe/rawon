@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     description: i18n.__("commands.moderation.unban.description"),
@@ -15,21 +15,21 @@ import { Message } from "discord.js";
                 description: i18n.__("commands.moderation.unban.slashMemberDescription"),
                 name: "memberid",
                 required: true,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             },
             {
                 description: i18n.__("commands.moderation.unban.slashReasonDescription"),
                 name: "reason",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },
     usage: i18n.__("commands.moderation.unban.usage")
 })
 export class UnBanCommand extends BaseCommand {
-    @memberReqPerms(["BAN_MEMBERS"], i18n.__("commands.moderation.ban.userNoPermission"))
-    @botReqPerms(["BAN_MEMBERS"], i18n.__("commands.moderation.ban.botNoPermission"))
+    @memberReqPerms(["BanMembers"], i18n.__("commands.moderation.ban.userNoPermission"))
+    @botReqPerms(["BanMembers"], i18n.__("commands.moderation.ban.botNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
@@ -74,7 +74,7 @@ export class UnBanCommand extends BaseCommand {
 
         return ctx.reply({
             embeds: [
-                createEmbed("success", i18n.__mf("commands.moderation.unban.ubanSuccess", { user: user.tag }), true)
+                createEmbed("success", i18n.__mf("commands.moderation.unban.unbanSuccess", { user: user.tag }), true)
             ]
         });
     }

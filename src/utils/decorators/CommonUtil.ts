@@ -1,9 +1,9 @@
 import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator";
 import { createEmbed } from "../functions/createEmbed";
-import { PermissionString } from "discord.js";
+import { PermissionsString } from "discord.js";
 
 export function memberReqPerms(
-    perms: PermissionString[],
+    perms: PermissionsString[],
     fallbackMsg: string
 ): ReturnType<typeof createCmdExecuteDecorator> {
     return createCmdExecuteDecorator(ctx => {
@@ -17,11 +17,11 @@ export function memberReqPerms(
 }
 
 export function botReqPerms(
-    perms: PermissionString[],
+    perms: PermissionsString[],
     fallbackMsg: string
 ): ReturnType<typeof createCmdExecuteDecorator> {
     return createCmdExecuteDecorator(ctx => {
-        if (!ctx.guild?.me?.permissions.has(perms)) {
+        if (!ctx.guild?.members.me?.permissions.has(perms)) {
             void ctx.reply({
                 embeds: [createEmbed("error", fallbackMsg, true)]
             });

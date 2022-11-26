@@ -56,14 +56,14 @@ export class PingCommand extends BaseCommand {
     // eslint-disable-next-line class-methods-use-this
     private searchHex(ms: number | string): ColorResolvable {
         const listColorHex = [
-            [0, 20, "GREEN"],
-            [21, 50, "GREEN"],
-            [51, 100, "YELLOW"],
-            [101, 150, "YELLOW"],
-            [150, 200, "RED"]
+            [0, 20, "Green"],
+            [21, 50, "Green"],
+            [51, 100, "Yellow"],
+            [101, 150, "Yellow"],
+            [150, 200, "Red"]
         ];
 
-        const defaultColor = "RED";
+        const defaultColor = "Red";
 
         const min = listColorHex.map(e => e[0]);
         const max = listColorHex.map(e => e[1]);

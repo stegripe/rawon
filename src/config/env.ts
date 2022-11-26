@@ -1,6 +1,6 @@
 import { parseEnvValue } from "../utils/functions/parseEnvValue";
-import { PresenceData } from "../typings";
-import { ActivityType, ClientPresenceStatus } from "discord.js";
+import { EnvActivityTypes, PresenceData } from "../typings";
+import { ClientPresenceStatus } from "discord.js";
 import { existsSync, readFileSync } from "fs";
 import { resolve } from "path";
 import { parse } from "dotenv";
@@ -13,6 +13,12 @@ if (existsSync(devEnvPath)) {
         process.env[k] = v;
     }
 }
+
+// function to convert Uppercase to CapitalCase
+const toCapitalCase = (text: string): string => {
+    if (text === "") return "";
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+};
 
 // Boolean values
 export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
@@ -41,10 +47,7 @@ export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
-        type: (parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]?.toUpperCase() || "PLAYING") as Exclude<
-            ActivityType,
-            "CUSTOM"
-        >
+        type: (toCapitalCase(parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]) || "Playing") as EnvActivityTypes
     })),
     status: ["online"] as ClientPresenceStatus[],
     interval: 60000

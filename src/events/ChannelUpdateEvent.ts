@@ -2,7 +2,7 @@ import { createEmbed } from "../utils/functions/createEmbed";
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
-import { GuildChannel, VoiceChannel } from "discord.js";
+import { ChannelType, GuildChannel, VoiceChannel } from "discord.js";
 import i18n from "i18n";
 
 @Event("channelUpdate")
@@ -10,14 +10,14 @@ export class ChannelUpdateEvent extends BaseEvent {
     public async execute(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
         this.client.debugLog.logData("info", "CHANNEL_UPDATE_EVENT", [
             ["Channel", `${newChannel.name}(${newChannel.id})`],
-            ["Type", newChannel.type]
+            ["Type", newChannel.type.toString()]
         ]);
 
         if (
             !newChannel.guild.queue ||
             newChannel.id !== newChannel.guild.queue.connection?.joinConfig.channelId ||
-            (oldChannel.type !== "GUILD_VOICE" && oldChannel.type !== "GUILD_STAGE_VOICE") ||
-            (newChannel.type !== "GUILD_VOICE" && newChannel.type !== "GUILD_STAGE_VOICE")
+            (oldChannel.type !== ChannelType.GuildVoice && oldChannel.type !== ChannelType.GuildStageVoice) ||
+            (newChannel.type !== ChannelType.GuildVoice && newChannel.type !== ChannelType.GuildStageVoice)
         )
             return;
 

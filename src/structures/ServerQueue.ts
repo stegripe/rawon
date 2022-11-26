@@ -5,7 +5,14 @@ import { play } from "../utils/handlers/GeneralUtil";
 import { LoopMode, QueueSong } from "../typings";
 import { Rawon } from "./Rawon";
 import i18n from "../config";
-import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, AudioResource, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
+import {
+    AudioPlayer,
+    AudioPlayerPlayingState,
+    AudioPlayerStatus,
+    AudioResource,
+    createAudioPlayer,
+    VoiceConnection
+} from "@discordjs/voice";
 import { TextChannel, Snowflake } from "discord.js";
 
 export class ServerQueue {
@@ -163,7 +170,7 @@ export class ServerQueue {
     public set lastMusicMsg(value: Snowflake | null) {
         if (this._lastMusicMsg !== null) {
             this.textChannel.messages
-                .fetch(this._lastMusicMsg, { cache: false })
+                .fetch(this._lastMusicMsg)
                 .then(msg => {
                     void msg.delete();
                 })
@@ -179,7 +186,7 @@ export class ServerQueue {
     public set lastVSUpdateMsg(value: Snowflake | null) {
         if (this._lastVSUpdateMsg !== null) {
             this.textChannel.messages
-                .fetch(this._lastVSUpdateMsg, { cache: false })
+                .fetch(this._lastVSUpdateMsg)
                 .then(msg => {
                     void msg.delete();
                 })

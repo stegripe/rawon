@@ -7,7 +7,7 @@ import { play } from "../../utils/handlers/GeneralUtil";
 import { QueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     aliases: ["st"],
@@ -18,12 +18,12 @@ import { Message } from "discord.js";
             {
                 description: i18n.__("commands.music.skipTo.slashFirstDescription"),
                 name: "first",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.music.skipTo.slashLastDescription"),
                 name: "last",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.music.skipTo.slashSpecificDescription"),
@@ -33,10 +33,10 @@ import { Message } from "discord.js";
                         description: i18n.__("commands.music.skipTo.slashPositionDescription"),
                         name: "position",
                         required: true,
-                        type: "NUMBER"
+                        type: ApplicationCommandOptionType.Number
                     }
                 ],
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             }
         ]
     },
@@ -51,7 +51,7 @@ export class SkipToCommand extends BaseCommand {
         if (
             this.client.data.data?.[ctx.guild!.id]?.dj?.enable &&
             !ctx.member?.roles.cache.has(djRole?.id ?? "") &&
-            !ctx.member?.permissions.has("MANAGE_GUILD")
+            !ctx.member?.permissions.has("ManageGuild")
         ) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"), true)]
