@@ -55,21 +55,18 @@ export class ModerationLogs {
     }
 
     public async handleBanRemove(options: { author?: User; ban: GuildBan }): Promise<void> {
-        const fetched = await options.ban.fetch().catch(() => undefined);
-        if (!fetched) return;
-
-        const ch = await this.getCh(fetched.guild);
+        const ch = await this.getCh(options.ban.guild);
         if (!ch) return;
 
         const embed = createEmbed(
             "info",
-            i18n.__mf("commands.moderation.unban.unbanSuccess", { user: fetched.user.tag })
+            i18n.__mf("commands.moderation.unban.unbanSuccess", { user: options.ban.user.tag })
         )
-            .setThumbnail(fetched.user.displayAvatarURL({ size: 1024 }))
+            .setThumbnail(options.ban.user.displayAvatarURL({ size: 1024 }))
             .addFields([
                 {
                     name: i18n.__("commands.moderation.common.reasonString"),
-                    value: fetched.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                    value: options.ban.reason ?? i18n.__("commands.moderation.common.noReasonString")
                 }
             ]);
 
