@@ -74,7 +74,7 @@ export class UnBanCommand extends BaseCommand {
 
         return ctx.reply({
             embeds: [
-                createEmbed("success", i18n.__mf("commands.moderation.unban.ubanSuccess", { user: user.tag }), true)
+                createEmbed("success", i18n.__mf("commands.moderation.unban.unbanSuccess", { user: user.tag }), true)
             ]
         });
     }
