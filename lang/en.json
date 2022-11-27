@@ -146,7 +146,7 @@
                 "description": "Un-ban someone from the server",
                 "slashMemberDescription": "Who do you like to un-ban?",
                 "slashReasonDescription": "Un-ban reason",
-                "ubanSuccess": "**{user}** has been **`UN-BANNED`** from the server.",
+                "unbanSuccess": "**{user}** has been **`UN-BANNED`** from the server.",
                 "unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
                 "unbannedByString": "Un-banned by: {author}",
                 "usage": "{prefix}unban <id> [reason]"
