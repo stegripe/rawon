@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     aliases: ["stayinvc", "stay", "24/7"],
@@ -26,7 +26,7 @@ import { Message } from "discord.js";
                 description: i18n.__("commands.music.stayInQueue.slashDescription"),
                 name: "state",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },

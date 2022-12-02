@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     contextUser: "Ban Member",
@@ -16,21 +16,21 @@ import { Message } from "discord.js";
                 description: i18n.__("commands.moderation.ban.slashMemberIDDescription"),
                 name: "memberid",
                 required: true,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             },
             {
                 description: i18n.__("commands.moderation.ban.slashReasonDescription"),
                 name: "reason",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },
     usage: i18n.__("commands.moderation.ban.usage")
 })
 export class BanCommand extends BaseCommand {
-    @memberReqPerms(["BAN_MEMBERS"], i18n.__("commands.moderation.ban.userNoPermission"))
-    @botReqPerms(["BAN_MEMBERS"], i18n.__("commands.moderation.ban.botNoPermission"))
+    @memberReqPerms(["BanMembers"], i18n.__("commands.moderation.ban.userNoPermission"))
+    @botReqPerms(["BanMembers"], i18n.__("commands.moderation.ban.botNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
@@ -67,16 +67,18 @@ export class BanCommand extends BaseCommand {
                                 guildName: ctx.guild.name
                             })
                         )
-                            .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-                            .addFields({
-                                name: i18n.__("commands.moderation.common.reasonString"),
-                                value: reason
-                            })
+                            .setThumbnail(ctx.guild.iconURL({ extension: "png", size: 1024 }))
+                            .addFields([
+                                {
+                                    name: i18n.__("commands.moderation.common.reasonString"),
+                                    value: reason
+                                }
+                            ])
                             .setFooter({
                                 text: i18n.__mf("commands.moderation.ban.bannedByString", {
                                     author: ctx.author.tag
                                 }),
-                                iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                                iconURL: ctx.author.displayAvatarURL({})
                             })
                             .setTimestamp(Date.now())
                     ]

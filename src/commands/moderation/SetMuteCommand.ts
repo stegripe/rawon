@@ -3,6 +3,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
+import { ApplicationCommandOptionType } from "discord.js";
 
 @Command({
     aliases: ["setmuterole"],
@@ -13,7 +14,7 @@ import i18n from "../../config";
             {
                 description: i18n.__("commands.moderation.setmute.slashRoleDescription"),
                 name: "role",
-                type: "ROLE",
+                type: ApplicationCommandOptionType.Role,
                 required: true
             }
         ]
@@ -23,6 +24,14 @@ import i18n from "../../config";
 export class SetMuteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
         const id = ctx.options?.getRole("role", true).id ?? ctx.args[0].replace(/\D/g, "");
+        if (!id) {
+            await ctx.reply({
+                embeds: [createEmbed("error", i18n.__("commands.moderation.setmute.invalidRole"))]
+            });
+
+            return;
+        }
+
         const role = await ctx.guild?.roles.fetch(id).catch(() => undefined);
         if (!role) {
             await ctx.reply({

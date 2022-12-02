@@ -6,7 +6,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { Song } from "../../typings";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     aliases: ["p", "add"],
@@ -18,7 +18,7 @@ import { Message } from "discord.js";
             {
                 description: i18n.__("commands.music.play.slashQueryDescription"),
                 name: "query",
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 required: true
             }
         ]

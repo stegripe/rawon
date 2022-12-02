@@ -5,7 +5,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { GuildData } from "../../typings";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     description: i18n.__("commands.moderation.warn.description"),
@@ -16,20 +16,20 @@ import { Message } from "discord.js";
                 description: i18n.__("commands.moderation.warn.slashMemberDescription"),
                 name: "member",
                 required: true,
-                type: "USER"
+                type: ApplicationCommandOptionType.User
             },
             {
                 description: i18n.__("commands.moderation.warn.slashReasonDescription"),
                 name: "reason",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },
     usage: i18n.__("commands.moderation.warn.usage")
 })
 export class WarnCommand extends BaseCommand {
-    @memberReqPerms(["MANAGE_GUILD"], i18n.__("commands.moderation.warn.userNoPermission"))
+    @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const member =
             ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") ?? "")?.user ??
@@ -56,7 +56,7 @@ export class WarnCommand extends BaseCommand {
                 guildName: ctx.guild!.name
             })
         )
-            .setThumbnail(ctx.guild!.iconURL({ dynamic: true, format: "png", size: 1024 })!)
+            .setThumbnail(ctx.guild!.iconURL({ extension: "png", size: 1024 }))
             .addFields([
                 {
                     name: i18n.__("commands.moderation.common.reasonString"),
@@ -65,7 +65,7 @@ export class WarnCommand extends BaseCommand {
             ])
             .setFooter({
                 text: i18n.__mf("commands.moderation.warn.warnedByString", { author: ctx.author.tag }),
-                iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                iconURL: ctx.author.displayAvatarURL({})
             })
             .setTimestamp(time);
 
