@@ -1,31 +1,36 @@
-import { CommandInteraction, ContextMenuInteraction, Interaction, InteractionButtonOptions, Message, MessageActionRow, MessageButton, SelectMenuInteraction, TextChannel } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, ContextMenuCommandInteraction, Interaction, InteractionButtonComponentData, Message, SelectMenuInteraction, TextChannel } from "discord.js";
 import { PaginationPayload } from "../../typings";
 
-const DATAS: InteractionButtonOptions[] = [
+const DATAS: InteractionButtonComponentData[] = [
     {
-        style: "SECONDARY",
+        style: ButtonStyle.Secondary,
         emoji: "⏪",
-        customId: "PREV10"
+        customId: `PREV10`,
+        type: ComponentType.Button
     },
     {
-        style: "PRIMARY",
+        style: ButtonStyle.Primary,
         emoji: "⬅️",
-        customId: "PREV"
+        customId: "PREV",
+        type: ComponentType.Button
     },
     {
-        style: "DANGER",
+        style: ButtonStyle.Danger,
         emoji: "🚫",
-        customId: "STOP"
+        customId: "STOP",
+        type: ComponentType.Button
     },
     {
-        style: "PRIMARY",
+        style: ButtonStyle.Primary,
         emoji: "➡️",
-        customId: "NEXT"
+        customId: "NEXT",
+        type: ComponentType.Button
     },
     {
-        style: "SECONDARY",
+        style: ButtonStyle.Secondary,
         emoji: "⏩",
-        customId: "NEXT10"
+        customId: "NEXT10",
+        type: ComponentType.Button
     }
 ];
 
@@ -33,7 +38,7 @@ export class ButtonPagination {
     public constructor(
         public readonly msg:
             | CommandInteraction
-            | ContextMenuInteraction
+            | ContextMenuCommandInteraction
             | Interaction
             | Message
             | SelectMenuInteraction,
@@ -48,11 +53,11 @@ export class ButtonPagination {
         this.payload.edit.call(this, index, embed, pages[index]);
 
         const isInteraction = this.msg instanceof CommandInteraction;
-        const buttons = DATAS.map(d => new MessageButton(d));
+        const buttons = DATAS.map(d => new ButtonBuilder(d));
         const toSend = {
             content: this.payload.content,
             embeds: [embed],
-            components: pages.length < 2 ? [] : [new MessageActionRow().addComponents(buttons)]
+            components: pages.length < 2 ? [] : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)]
         };
         const msg = await (isInteraction
             ? (this.msg as CommandInteraction).editReply(toSend)
@@ -70,7 +75,8 @@ export class ButtonPagination {
                     DATAS.map(x => x.customId.toLowerCase()).includes(i.customId.toLowerCase()) &&
                     i.user.id === this.payload.author
                 );
-            }
+            },
+            componentType: ComponentType.Button
         });
 
         collector.on("collect", async i => {
@@ -88,7 +94,7 @@ export class ButtonPagination {
                     index += 10;
                     break;
                 default:
-                    void (msg as Message).delete();
+                    void msg.delete();
                     return;
             }
 
@@ -98,7 +104,7 @@ export class ButtonPagination {
             await fetchedMsg.edit({
                 embeds: [embed],
                 content: this.payload.content,
-                components: pages.length < 2 ? [] : [new MessageActionRow().addComponents(buttons)]
+                components: pages.length < 2 ? [] : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)]
             });
         });
     }

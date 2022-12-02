@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { TextChannel, Message } from "discord.js";
+import { TextChannel, Message, ApplicationCommandOptionType } from "discord.js";
 
 @Command({
     description: i18n.__("commands.moderation.purge.description"),
@@ -15,24 +15,27 @@ import { TextChannel, Message } from "discord.js";
                 description: i18n.__("commands.moderation.purge.slashAmountDescription"),
                 name: "amount",
                 required: true,
-                type: "NUMBER"
+                type: ApplicationCommandOptionType.Number
             }
         ]
     },
     usage: i18n.__("commands.moderation.purge.usage")
 })
 export class PurgeCommand extends BaseCommand {
-    @memberReqPerms(["MANAGE_MESSAGES"], i18n.__("commands.moderation.purge.userNoPermission"))
-    @botReqPerms(["MANAGE_MESSAGES"], i18n.__("commands.moderation.purge.botNoPermission"))
+    @memberReqPerms(["ManageMessages"], i18n.__("commands.moderation.purge.userNoPermission"))
+    @botReqPerms(["ManageMessages"], i18n.__("commands.moderation.purge.botNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        const amount = Number(ctx.options?.getString("amount") ?? ctx.args.shift());
+        const amount = Number(ctx.options?.getNumber("amount") ?? ctx.args.shift());
         if (isNaN(amount)) {
             return ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.moderation.purge.invalidAmount"))]
             });
         }
 
-        await (ctx.context as Message).delete();
+        if (!ctx.isInteraction()) {
+            await (ctx.context as Message).delete();
+        }
+
         const purge = await (ctx.channel as TextChannel)
             .bulkDelete(amount, true)
             .catch(err => new Error(err as string | undefined));

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
 import { MessageInteractionAction } from "../typings";
-import { ButtonInteraction, Collection, CommandInteraction, ContextMenuInteraction, GuildMember, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageMentions, MessageOptions, MessagePayload, ModalSubmitFieldsResolver, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, ModalSubmitFields, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
@@ -10,14 +10,14 @@ export class CommandContext {
     public constructor(
         public readonly context:
             | CommandInteraction
-            | ContextMenuInteraction
+            | ContextMenuCommandInteraction
             | Interaction
             | Message
             | SelectMenuInteraction,
         public args: string[] = []
     ) {}
 
-    public async deferReply(): Promise<void> {
+    public async deferReply(): Promise<InteractionResponse | undefined> {
         if (this.isInteraction()) {
             return (this.context as CommandInteraction).deferReply();
         }
@@ -26,8 +26,8 @@ export class CommandContext {
 
     public async reply(
         options:
+            | BaseMessageOptions
             | InteractionReplyOptions
-            | MessageOptions
             | MessagePayload
             | string
             | { askDeletion?: { reference: string } },
@@ -63,14 +63,16 @@ export class CommandContext {
 
     public async send(
         options:
+            | BaseMessageOptions
             | InteractionReplyOptions
-            | MessageOptions
             | MessagePayload
             | string
             | { askDeletion?: { reference: string } },
         type: MessageInteractionAction = "editReply"
     ): Promise<Message> {
-        const deletionBtn = new MessageActionRow().addComponents(new MessageButton().setEmoji("🗑️").setStyle("DANGER"));
+        const deletionBtn = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder().setEmoji("🗑️").setStyle(ButtonStyle.Danger)
+        );
         if ((options as { askDeletion?: { reference: string } }).askDeletion) {
             deletionBtn.components[0].setCustomId(
                 Buffer.from(
@@ -94,11 +96,11 @@ export class CommandContext {
         if ((options as InteractionReplyOptions).ephemeral) {
             throw new Error("Cannot send ephemeral message in a non-interaction context.");
         }
-        return this.context.channel!.send(options as MessageOptions | MessagePayload | string);
+        return this.context.channel!.send(options as BaseMessageOptions | MessagePayload | string);
     }
 
     public isInteraction(): boolean {
-        return this.context instanceof Interaction;
+        return this.context instanceof BaseInteraction;
     }
 
     public isCommand(): boolean {
@@ -106,7 +108,7 @@ export class CommandContext {
     }
 
     public isContextMenu(): boolean {
-        return this.context instanceof ContextMenuInteraction;
+        return this.context instanceof ContextMenuCommandInteraction;
     }
 
     public isMessageComponent(): boolean {
@@ -117,8 +119,8 @@ export class CommandContext {
         return this.context instanceof ButtonInteraction;
     }
 
-    public isSelectMenu(): boolean {
-        return this.context instanceof SelectMenuInteraction;
+    public isStringSelectMenu(): boolean {
+        return this.context instanceof MessageComponentInteraction;
     }
 
     public isModal(): boolean {
@@ -130,19 +132,20 @@ export class CommandContext {
     }
 
     public get deferred(): boolean {
-        return this.context instanceof Interaction ? (this.context as CommandInteraction).deferred : false;
+        return this.context instanceof BaseInteraction ? (this.context as CommandInteraction).deferred : false;
     }
 
-    public get options(): CommandInteraction["options"] | null {
-        return this.context instanceof Interaction ? (this.context as CommandInteraction).options : null;
+    public get options(): ChatInputCommandInteraction["options"] | null {
+        /* Not sure about this but CommandInteraction does not provides getString method anymore */
+        return this.context instanceof BaseInteraction ? (this.context as ChatInputCommandInteraction).options : null;
     }
 
-    public get fields(): ModalSubmitFieldsResolver | null {
-        return this.context instanceof ModalSubmitInteraction ? (this.context as ModalSubmitInteraction).fields : null;
+    public get fields(): ModalSubmitFields | null {
+        return this.context instanceof ModalSubmitInteraction ? this.context.fields : null;
     }
 
     public get author(): User {
-        return this.context instanceof Interaction ? this.context.user : this.context.author;
+        return this.context instanceof BaseInteraction ? this.context.user : this.context.author;
     }
 
     public get member(): GuildMember | null {

@@ -2,7 +2,7 @@ import { createEmbed } from "../utils/functions/createEmbed";
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
 import i18n from "../config";
-import { Message, User } from "discord.js";
+import { ChannelType, Message, User } from "discord.js";
 
 @Event<typeof MessageCreateEvent>("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
@@ -10,11 +10,16 @@ export class MessageCreateEvent extends BaseEvent {
         this.client.debugLog.logData("info", "MESSAGE_CREATE", [
             ["ID", message.id],
             ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
-            ["Channel", message.channel.type === "DM" ? "DM" : `${message.channel.name}(${message.channel.id})`],
+            [
+                "Channel",
+                message.channel.type === ChannelType.DM ? "DM" : `${message.channel.name}(${message.channel.id})`
+            ],
             ["Author", `${message.author.tag}(${message.author.id})`]
         ]);
 
-        if (message.author.bot || message.channel.type === "DM" || !this.client.commands.isReady) return message;
+        if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) {
+            return message;
+        }
 
         if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
             message

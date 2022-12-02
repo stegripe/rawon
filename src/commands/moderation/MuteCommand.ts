@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     contextUser: "Mute Member",
@@ -16,21 +16,21 @@ import { Message } from "discord.js";
                 description: i18n.__("commands.moderation.mute.slashMemberDescription"),
                 name: "member",
                 required: true,
-                type: "USER"
+                type: ApplicationCommandOptionType.User
             },
             {
                 description: i18n.__("commands.moderation.mute.slashReasonDescription"),
                 name: "reason",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },
     usage: i18n.__("commands.moderation.mute.usage")
 })
 export class MuteCommand extends BaseCommand {
-    @memberReqPerms(["MANAGE_ROLES"], i18n.__("commands.moderation.mute.userNoPermission"))
-    @botReqPerms(["MANAGE_ROLES"], i18n.__("commands.moderation.mute.botNoPermission"))
+    @memberReqPerms(["ManageRoles"], i18n.__("commands.moderation.mute.userNoPermission"))
+    @botReqPerms(["ManageRoles"], i18n.__("commands.moderation.mute.botNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
@@ -96,8 +96,8 @@ export class MuteCommand extends BaseCommand {
                             guildName: ctx.guild.name
                         })
                     )
-                        .setColor("LIGHT_GREY")
-                        .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
+                        .setColor("LightGrey")
+                        .setThumbnail(ctx.guild.iconURL({ extension: "png", size: 1024 }))
                         .addFields([
                             {
                                 name: i18n.__("commands.moderation.common.reasonString"),
@@ -108,7 +108,7 @@ export class MuteCommand extends BaseCommand {
                             text: i18n.__mf("commands.moderation.mute.mutedByString", {
                                 author: ctx.author.tag
                             }),
-                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                            iconURL: ctx.author.displayAvatarURL({})
                         })
                         .setTimestamp(Date.now())
                 ]
