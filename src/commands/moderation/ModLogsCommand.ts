@@ -4,6 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
+import { ApplicationCommandOptionType, ChannelType } from "discord.js";
 
 @Command<typeof ModLogsCommand>({
     aliases: ["modlog", "moderationlogs", "moderationlog"],
@@ -19,20 +20,20 @@ import i18n from "../../config";
                         description: i18n.__("commands.moderation.modlogs.slashChannelNewChannelOption"),
                         name: "newchannel",
                         required: false,
-                        type: "CHANNEL"
+                        type: ApplicationCommandOptionType.Channel
                     }
                 ],
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.moderation.modlogs.slashEnableDescription"),
                 name: "enable",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.moderation.modlogs.slashDisableDescription"),
                 name: "disable",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             }
         ]
     },
@@ -66,7 +67,7 @@ export class ModLogsCommand extends BaseCommand {
             }
 
             const ch = await ctx.guild?.channels.fetch(newCh).catch(() => undefined);
-            if (!ch?.isText()) {
+            if (ch?.type !== ChannelType.GuildText) {
                 return ctx.reply({
                     embeds: [createEmbed("error", i18n.__("commands.moderation.modlogs.channel.invalid"))]
                 });
@@ -170,7 +171,7 @@ export class ModLogsCommand extends BaseCommand {
         }
     };
 
-    @memberReqPerms(["MANAGE_GUILD"], i18n.__("commands.moderation.warn.userNoPermission"))
+    @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
     public execute(ctx: CommandContext): void {
         const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
         let sub = this.options[subname!] as BaseCommand["execute"] | undefined;

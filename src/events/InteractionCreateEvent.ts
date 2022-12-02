@@ -3,13 +3,21 @@ import { createEmbed } from "../utils/functions/createEmbed";
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
 import i18n from "../config";
-import { BitFieldResolvable, Interaction, Permissions, PermissionString, TextChannel } from "discord.js";
+import {
+    ApplicationCommandType,
+    BitFieldResolvable,
+    Interaction,
+    Message,
+    PermissionsBitField,
+    PermissionsString,
+    TextChannel
+} from "discord.js";
 
 @Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
     public async execute(interaction: Interaction): Promise<void> {
         this.client.debugLog.logData("info", "INTERACTION_CREATE", [
-            ["Type", interaction.type],
+            ["Type", interaction.type.toString()],
             ["Guild", interaction.inGuild() ? `${interaction.guild?.name ?? "[???]"}(${interaction.guildId})` : "DM"],
             [
                 "Channel",
@@ -30,9 +38,9 @@ export class InteractionCreateEvent extends BaseEvent {
             if (cmd === "delete-msg") {
                 if (
                     interaction.user.id !== user &&
-                    !new Permissions(
-                        interaction.member.permissions as BitFieldResolvable<PermissionString, bigint> | undefined
-                    ).has("MANAGE_MESSAGES")
+                    !new PermissionsBitField(
+                        interaction.member.permissions as BitFieldResolvable<PermissionsString, bigint> | undefined
+                    ).has(PermissionsBitField.Flags.ManageMessages)
                 ) {
                     void interaction.reply({
                         ephemeral: true,
@@ -56,10 +64,16 @@ export class InteractionCreateEvent extends BaseEvent {
         }
 
         const context = new CommandContext(interaction);
-        if (interaction.isContextMenu()) {
+        if (interaction.isUserContextMenuCommand()) {
             const data = interaction.options.getUser("user") ?? interaction.options.getMessage("message");
+            let dataType = ApplicationCommandType.User;
+
+            if (data instanceof Message) {
+                dataType = ApplicationCommandType.Message;
+            }
+
             const cmd = this.client.commands.find(x =>
-                (data as { type: string }).type === "MESSAGE"
+                dataType === ApplicationCommandType.Message
                     ? x.meta.contextChat === interaction.commandName
                     : x.meta.contextUser === interaction.commandName
             );

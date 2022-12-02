@@ -8,7 +8,7 @@ import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
 import i18n from "../../config";
 import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command<typeof LyricsCommand>({
     aliases: ["ly", "lyric"],
@@ -19,7 +19,7 @@ import { Message } from "discord.js";
             {
                 description: i18n.__("commands.music.lyrics.slashDescription"),
                 name: "query",
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 required: false
             }
         ]

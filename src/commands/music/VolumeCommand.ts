@@ -5,7 +5,14 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { Message, MessageActionRow, MessageButton } from "discord.js";
+import {
+    ActionRowBuilder,
+    ApplicationCommandOptionType,
+    ButtonBuilder,
+    ButtonStyle,
+    ComponentType,
+    Message
+} from "discord.js";
 
 @Command({
     aliases: ["vol"],
@@ -16,7 +23,7 @@ import { Message, MessageActionRow, MessageButton } from "discord.js";
             {
                 description: i18n.__("commands.music.volume.slashDescription"),
                 name: "volume",
-                type: "NUMBER",
+                type: ApplicationCommandOptionType.Number,
                 required: false
             }
         ]
@@ -32,27 +39,12 @@ export class VolumeCommand extends BaseCommand {
         const current = ctx.guild!.queue!.volume;
 
         if (isNaN(volume)) {
-            const buttons = new MessageActionRow().addComponents(
-                new MessageButton()
-                    .setCustomId("10")
-                    .setLabel("10%")
-                    .setStyle("PRIMARY"),
-                new MessageButton()
-                    .setCustomId("25")
-                    .setLabel("25%")
-                    .setStyle("PRIMARY"),
-                new MessageButton()
-                    .setCustomId("50")
-                    .setLabel("50%")
-                    .setStyle("PRIMARY"),
-                new MessageButton()
-                    .setCustomId("75")
-                    .setLabel("75%")
-                    .setStyle("PRIMARY"),
-                new MessageButton()
-                    .setCustomId("100")
-                    .setLabel("100%")
-                    .setStyle("PRIMARY")
+            const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+                new ButtonBuilder().setCustomId("10").setLabel("10%").setStyle(ButtonStyle.Primary),
+                new ButtonBuilder().setCustomId("25").setLabel("25%").setStyle(ButtonStyle.Primary),
+                new ButtonBuilder().setCustomId("50").setLabel("50%").setStyle(ButtonStyle.Primary),
+                new ButtonBuilder().setCustomId("75").setLabel("75%").setStyle(ButtonStyle.Primary),
+                new ButtonBuilder().setCustomId("100").setLabel("100%").setStyle(ButtonStyle.Primary)
             );
 
             const msg = await ctx.reply({
@@ -68,27 +60,29 @@ export class VolumeCommand extends BaseCommand {
             });
 
             const collector = msg.createMessageComponentCollector({
+                componentType: ComponentType.Button,
                 filter: i => i.isButton() && i.user.id === ctx.author.id,
                 idle: 30000
             });
 
-            collector.on("collect", async i => {
-                const newContext = new CommandContext(i, [i.customId]);
-                const newVolume = Number(i.customId);
-                await this.execute(newContext);
+            collector
+                .on("collect", async i => {
+                    const newContext = new CommandContext(i, [i.customId]);
+                    const newVolume = Number(i.customId);
+                    await this.execute(newContext);
 
-                void msg.edit({
-                    embeds: [
-                        createEmbed(
-                            "info",
-                            `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
-                                volume: `\`${newVolume}\``
-                            })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`
-                        ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
-                    ],
-                    components: [buttons]
-                });
-            })
+                    void msg.edit({
+                        embeds: [
+                            createEmbed(
+                                "info",
+                                `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
+                                    volume: `\`${newVolume}\``
+                                })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`
+                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
+                        ],
+                        components: [buttons]
+                    });
+                })
                 .on("end", () => {
                     const cur = ctx.guild!.queue!.volume;
                     void msg.edit({

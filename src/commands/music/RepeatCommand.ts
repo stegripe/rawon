@@ -5,7 +5,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { LoopMode } from "../../typings";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     aliases: ["loop", "music-repeat", "music-loop"],
@@ -16,17 +16,17 @@ import { Message } from "discord.js";
             {
                 description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "queue",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "song",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             },
             {
                 description: i18n.__("commands.music.repeat.slashDisable"),
                 name: "disable",
-                type: "SUB_COMMAND"
+                type: ApplicationCommandOptionType.Subcommand
             }
         ]
     },

@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
-import { Message } from "discord.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
     contextUser: "Kick Member",
@@ -16,21 +16,21 @@ import { Message } from "discord.js";
                 description: i18n.__("commands.moderation.kick.slashMemberDescription"),
                 name: "member",
                 required: true,
-                type: "USER"
+                type: ApplicationCommandOptionType.User
             },
             {
                 description: i18n.__("commands.moderation.kick.slashReasonDescription"),
                 name: "reason",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },
     usage: i18n.__("commands.moderation.kick.usage")
 })
 export class KickCommand extends BaseCommand {
-    @memberReqPerms(["KICK_MEMBERS"], i18n.__("commands.moderation.kick.userNoPermission"))
-    @botReqPerms(["KICK_MEMBERS"], i18n.__("commands.moderation.kick.botNoPermission"))
+    @memberReqPerms(["KickMembers"], i18n.__("commands.moderation.kick.userNoPermission"))
+    @botReqPerms(["KickMembers"], i18n.__("commands.moderation.kick.botNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (!ctx.guild) return;
 
@@ -62,13 +62,18 @@ export class KickCommand extends BaseCommand {
                         "error",
                         i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name })
                     )
-                        .setThumbnail(ctx.guild.iconURL({ dynamic: true, format: "png", size: 1024 })!)
-                        .addFields([{ name: i18n.__("commands.moderation.common.reasonString"), value: reason }])
+                        .setThumbnail(ctx.guild.iconURL({ extension: "png", size: 1024 }))
+                        .addFields([
+                            {
+                                name: i18n.__("commands.moderation.common.reasonString"),
+                                value: reason
+                            }
+                        ])
                         .setFooter({
                             text: i18n.__mf("commands.moderation.kick.kickedByString", {
                                 author: ctx.author.tag
                             }),
-                            iconURL: ctx.author.displayAvatarURL({ dynamic: true })
+                            iconURL: ctx.author.displayAvatarURL({})
                         })
                         .setTimestamp(Date.now())
                 ]

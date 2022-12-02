@@ -8,7 +8,7 @@ import { chunk } from "../../functions/chunk";
 import { Song } from "../../../typings";
 import i18n from "../../../config";
 import { play } from "./play";
-import { Message, StageChannel, TextChannel, Util, VoiceChannel } from "discord.js";
+import { escapeMarkdown, Message, StageChannel, TextChannel, VoiceChannel } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 
 export async function handleVideos(
@@ -28,10 +28,7 @@ export async function handleVideos(
         const pages = await Promise.all(
             chunk(toQueue, 10).map(async (v, i) => {
                 const texts = await Promise.all(
-                    v.map(
-                        (song, index) =>
-                            `${i * 10 + (index + 1)}.) ${Util.escapeMarkdown(parseHTMLElements(song.title))}`
-                    )
+                    v.map((song, index) => `${i * 10 + (index + 1)}.) ${escapeMarkdown(parseHTMLElements(song.title))}`)
                 );
 
                 return texts.join("\n");
