@@ -10,11 +10,13 @@ import i18n from "../../config";
 import {
     CommandInteractionOptionResolver,
     Message,
-    MessageActionRow,
-    MessageSelectOptionData,
-    MessageSelectMenu,
+    ActionRowBuilder,
+    SelectMenuBuilder,
     SelectMenuInteraction,
-    Util
+    ApplicationCommandOptionType,
+    ComponentType,
+    escapeMarkdown,
+    SelectMenuComponentOptionData
 } from "discord.js";
 
 @Command<typeof SearchCommand>({
@@ -28,7 +30,7 @@ import {
             {
                 description: i18n.__("commands.music.search.slashQueryDescription"),
                 name: "query",
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             },
             {
                 choices: [
@@ -44,7 +46,7 @@ import {
                 description: i18n.__("commands.music.search.slashSourceDescription"),
                 name: "source",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },
@@ -58,7 +60,7 @@ export class SearchCommand extends BaseCommand {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
         const values = ctx.additionalArgs.get("values");
-        if (values && ctx.isSelectMenu()) {
+        if (values && ctx.isStringSelectMenu()) {
             if (!ctx.deferred) await ctx.deferReply();
 
             const newCtx = new CommandContext(ctx.context, []);
@@ -71,9 +73,19 @@ export class SearchCommand extends BaseCommand {
                 .channel!.messages.fetch((ctx.context as SelectMenuInteraction).message.id)
                 .catch(() => undefined);
             if (msg !== undefined) {
-                const selection = msg.components[0].components.find(x => x.type === "SELECT_MENU");
-                selection!.setDisabled(true);
-                await msg.edit({ components: [new MessageActionRow().addComponents(selection!)] });
+                const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
+                if (!selection) return;
+                const disabledMenu = new SelectMenuBuilder()
+                    .setDisabled(true)
+                    .setCustomId(selection.customId!)
+                    .addOptions({
+                        label: "Nothing to select here",
+                        description: "Nothing to select here",
+                        value: "Nothing to select here"
+                    });
+                await msg.edit({
+                    components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(disabledMenu)]
+                });
             }
 
             return;
@@ -108,8 +120,8 @@ export class SearchCommand extends BaseCommand {
             return ctx.send({
                 content: i18n.__("commands.music.search.interactionContent"),
                 components: [
-                    new MessageActionRow().addComponents(
-                        new MessageSelectMenu()
+                    new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+                        new SelectMenuBuilder()
                             .setMinValues(1)
                             .setMaxValues(10)
                             .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
@@ -128,7 +140,7 @@ export class SearchCommand extends BaseCommand {
                         separator: "`,`",
                         example: "`1, 2, 3`"
                     })}\`\`\`\n${tracks.items
-                        .map((x, i) => `${i + 1} - ${Util.escapeMarkdown(parseHTMLElements(x.title))}`)
+                        .map((x, i) => `${i + 1} - ${escapeMarkdown(parseHTMLElements(x.title))}`)
                         .join("\n")}\`\`\``
                 )
                     .setAuthor({
@@ -184,7 +196,7 @@ export class SearchCommand extends BaseCommand {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    private generateSelectMenu(tracks: Song[]): MessageSelectOptionData[] {
+    private generateSelectMenu(tracks: Song[]): SelectMenuComponentOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
         return tracks.slice(0, 10).map((x, i) => ({

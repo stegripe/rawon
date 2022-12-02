@@ -6,7 +6,7 @@ import { Event } from "../utils/decorators/Event";
 import { QueueSong } from "../typings";
 import i18n from "../config";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
-import { Message, StageChannel, VoiceState, VoiceChannel } from "discord.js";
+import { Message, StageChannel, VoiceState, VoiceChannel, ChannelType } from "discord.js";
 
 @Event<typeof VoiceStateUpdateEvent>("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
@@ -117,13 +117,13 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     return;
                 }
             }
-            if (newVC?.type === "GUILD_STAGE_VOICE" && newState.suppress) {
+            if (newVC?.type === ChannelType.GuildStageVoice && newState.suppress) {
                 const msg = await queue.textChannel.send({
                     embeds: [createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpeaker"))]
                 });
                 const suppress = await newState.setSuppressed(false).catch(err => ({ error: err }));
 
-                if (suppress && "error" in suppress) {
+                if ("error" in suppress) {
                     queue.destroy();
                     this.client.logger.info(
                         `${

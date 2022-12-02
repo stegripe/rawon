@@ -7,6 +7,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
 import i18n from "../../config";
+import { ApplicationCommandOptionType } from "discord.js";
 
 @Command({
     contextUser: "Show user infractions",
@@ -18,14 +19,14 @@ import i18n from "../../config";
                 description: i18n.__("commands.moderation.infractions.slashMemberDescription"),
                 name: "member",
                 required: false,
-                type: "USER"
+                type: ApplicationCommandOptionType.User
             }
         ]
     },
     usage: i18n.__("commands.moderation.infractions.usage")
 })
 export class InfractionsCommand extends BaseCommand {
-    @memberReqPerms(["MANAGE_GUILD"], i18n.__("commands.moderation.warn.userNoPermission"))
+    @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
     public async execute(ctx: CommandContext): Promise<void> {
         const user =
             ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") ?? "")?.user ??

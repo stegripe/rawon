@@ -9,7 +9,7 @@ import { chunk } from "../../utils/functions/chunk";
 import { QueueSong } from "../../typings";
 import i18n from "../../config";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
-import { Util } from "discord.js";
+import { ApplicationCommandOptionType, escapeMarkdown } from "discord.js";
 
 @Command({
     description: i18n.__("commands.music.remove.description"),
@@ -20,7 +20,7 @@ import { Util } from "discord.js";
                 description: i18n.__("commands.music.remove.slashPositionsDescription"),
                 name: "positions",
                 required: true,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },
@@ -35,7 +35,7 @@ export class RemoveCommand extends BaseCommand {
         if (
             this.client.data.data?.[ctx.guild!.id]?.dj?.enable &&
             !ctx.member?.roles.cache.has(djRole?.id ?? "") &&
-            !ctx.member?.permissions.has("MANAGE_GUILD")
+            !ctx.member?.permissions.has("ManageGuild")
         ) {
             void ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.remove.noPermission"), true)]
@@ -75,7 +75,7 @@ export class RemoveCommand extends BaseCommand {
                         (song, index) =>
                             `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${
                                 i * 10 + (index + 1)
-                            }.) ${Util.escapeMarkdown(parseHTMLElements(song.song.title))}`
+                            }.) ${escapeMarkdown(parseHTMLElements(song.song.title))}`
                     )
                 );
 
@@ -84,7 +84,9 @@ export class RemoveCommand extends BaseCommand {
         );
         const getText = (page: string): string => `\`\`\`\n${page}\`\`\``;
         const embed = createEmbed("info", getText(pages[0]))
-            .setAuthor(opening)
+            .setAuthor({
+                name: opening
+            })
             .setFooter({
                 text: `• ${i18n.__mf("reusable.pageFooter", {
                     actual: 1,

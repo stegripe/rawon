@@ -4,6 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed";
 import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
+import { ApplicationCommandOptionType } from "discord.js";
 
 @Command({
     description: i18n.__("commands.music.shuffle.description"),
@@ -24,7 +25,7 @@ import i18n from "../../config";
                 description: i18n.__("commands.music.shuffle.description"),
                 name: "state",
                 required: false,
-                type: "STRING"
+                type: ApplicationCommandOptionType.String
             }
         ]
     },

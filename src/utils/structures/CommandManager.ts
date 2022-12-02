@@ -4,7 +4,15 @@ import { CommandContext } from "../../structures/CommandContext";
 import { createEmbed } from "../functions/createEmbed";
 import { Rawon } from "../../structures/Rawon";
 import i18n from "../../config";
-import { ApplicationCommandData, Collection, Guild, Message, Snowflake, TextChannel } from "discord.js";
+import {
+    ApplicationCommandData,
+    ApplicationCommandType,
+    Collection,
+    Guild,
+    Message,
+    Snowflake,
+    TextChannel
+} from "discord.js";
 import { promises as fs } from "fs";
 import { resolve } from "path";
 
@@ -61,7 +69,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                         await this.registerCmd(
                                             {
                                                 name: command.meta.contextChat,
-                                                type: "MESSAGE"
+                                                type: ApplicationCommandType.Message
                                             },
                                             {
                                                 onError: (g, err) =>
@@ -87,7 +95,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                         await this.registerCmd(
                                             {
                                                 name: command.meta.contextUser,
-                                                type: "USER"
+                                                type: ApplicationCommandType.User
                                             },
                                             {
                                                 onError: (g, err) =>
@@ -218,10 +226,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                         ]
                     })
                     .then(msg => {
-                        setTimeout(
-                            () => msg.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)),
-                            3500
-                        );
+                        setTimeout(() => msg.delete().catch(e => this.client.logger.error("PROMISE_ERR:", e)), 3500);
                     })
                     .catch(e => this.client.logger.error("PROMISE_ERR:", e));
                 return;

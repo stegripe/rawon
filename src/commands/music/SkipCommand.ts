@@ -30,13 +30,13 @@ export class SkipCommand extends BaseCommand {
         function ableToSkip(member: GuildMember): boolean {
             return (
                 member.roles.cache.has(djRole?.id ?? "") ||
-                member.permissions.has("MANAGE_GUILD") ||
+                member.permissions.has("ManageGuild") ||
                 song.requester.id === member.id
             );
         }
 
         if (!ableToSkip(ctx.member!)) {
-            const required = this.client.utils.requiredVoters(ctx.guild!.me!.voice.channel!.members.size);
+            const required = this.client.utils.requiredVoters(ctx.guild!.members.me!.voice.channel!.members.size);
 
             if (ctx.guild?.queue?.skipVoters.includes(ctx.author.id)) {
                 await this.manager.add(() => {

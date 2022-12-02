@@ -1,6 +1,7 @@
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
-import { Presence } from "discord.js";
+import { ActivityType, Presence } from "discord.js";
+import { EnvActivityTypes } from "../typings/index.js";
 
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
@@ -58,16 +59,33 @@ export class ReadyEvent extends BaseEvent {
             ? Math.floor(Math.random() * this.client.config.presenceData.activities.length)
             : 0;
         const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
-        const activity = (
+        const activity: {
+            name: string;
+            type: EnvActivityTypes;
+            typeNumber: number;
+        } = (
             await Promise.all(
-                this.client.config.presenceData.activities.map(async a =>
-                    Object.assign(a, { name: await this.formatString(a.name) })
-                )
+                this.client.config.presenceData.activities.map(async a => {
+                    let type = ActivityType.Playing;
+
+                    if (a.type === "Competing") type = ActivityType.Competing;
+                    if (a.type === "Watching") type = ActivityType.Watching;
+                    if (a.type === "Listening") type = ActivityType.Listening;
+
+                    return Object.assign(a, { name: await this.formatString(a.name), type: a.type, typeNumber: type });
+                })
             )
         )[activityNumber];
 
         return this.client.user!.setPresence({
-            activities: (activity as { name: string } | undefined) ? [activity] : [],
+            activities: (activity as { name: string } | undefined)
+                ? [
+                      {
+                          name: activity.name,
+                          type: activity.typeNumber
+                      }
+                  ]
+                : [],
             status: this.client.config.presenceData.status[statusNumber]
         });
     }
