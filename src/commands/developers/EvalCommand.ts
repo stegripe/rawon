@@ -57,7 +57,7 @@ export class EvalCommand extends BaseCommand {
             const isTooLong = cleaned.length > 1024;
             const error = isTooLong ? `${await this.hastebin(cleaned)}.js` : `\`\`\`js\n${cleaned}\`\`\``;
 
-            embed.setColor("RED").addFields([{ name: i18n.__("commands.developers.eval.errorString"), value: error }]);
+            embed.setColor("Red").addFields([{ name: i18n.__("commands.developers.eval.errorString"), value: error }]);
             ctx.send({
                 askDeletion: {
                     reference: ctx.author.id

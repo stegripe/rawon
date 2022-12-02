@@ -7,7 +7,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import { QueueSong } from "../../typings";
 import i18n from "../../config";
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from "discord.js";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
 @Command<typeof NowPlayingCommand>({
@@ -22,45 +22,55 @@ import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 export class NowPlayingCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
-        function getEmbed(): MessageEmbed {
-            const res = (ctx.guild?.queue?.player.state as
-                | (AudioPlayerState & {
-                    resource: AudioResource | undefined;
-                  })
-                | undefined)?.resource;
+        function getEmbed(): EmbedBuilder {
+            const res = (
+                ctx.guild?.queue?.player.state as
+                    | (AudioPlayerState & {
+                          resource: AudioResource | undefined;
+                      })
+                    | undefined
+            )?.resource;
             const song = (res?.metadata as QueueSong | undefined)?.song;
 
-            const embed =  createEmbed(
-                "info",
-                `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** `
-            ).setThumbnail(song?.thumbnail ?? "https://api.clytage.org/assets/images/icon.png");
+            const embed = createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** `).setThumbnail(
+                song?.thumbnail ?? "https://api.clytage.org/assets/images/icon.png"
+            );
 
             const curr = ~~(res!.playbackDuration / 1000);
-            embed.description += song
-                ? `**[${song.title}](${song.url})**\n` + 
-                    `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`
-                : i18n.__("commands.music.nowplaying.emptyQueue")
+            embed.data.description += song
+                ? `**[${song.title}](${song.url})**\n` +
+                  `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`
+                : i18n.__("commands.music.nowplaying.emptyQueue");
 
             return embed;
         }
 
-        const buttons = new MessageActionRow().addComponents(
-            new MessageButton()
+        const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
                 .setCustomId("TOGGLE_STATE_BUTTON")
                 .setLabel("Pause/Resume")
-                .setStyle("PRIMARY")
+                .setStyle(ButtonStyle.Primary)
                 .setEmoji("⏯️"),
-            new MessageButton().setCustomId("SKIP_BUTTON").setLabel("Skip").setStyle("SECONDARY").setEmoji("⏭"),
-            new MessageButton().setCustomId("STOP_BUTTON").setLabel("Stop Player").setStyle("DANGER").setEmoji("⏹"),
-            new MessageButton()
+            new ButtonBuilder()
+                .setCustomId("SKIP_BUTTON")
+                .setLabel("Skip")
+                .setStyle(ButtonStyle.Secondary)
+                .setEmoji("⏭"),
+            new ButtonBuilder()
+                .setCustomId("STOP_BUTTON")
+                .setLabel("Stop Player")
+                .setStyle(ButtonStyle.Danger)
+                .setEmoji("⏹"),
+            new ButtonBuilder()
                 .setCustomId("SHOW_QUEUE_BUTTON")
                 .setLabel("Show Queue")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
                 .setEmoji("#️⃣")
         );
         const msg = await ctx.reply({ embeds: [getEmbed()], components: [buttons] });
 
         const collector = msg.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: i => i.isButton() && i.user.id === ctx.author.id,
             idle: 30000
         });

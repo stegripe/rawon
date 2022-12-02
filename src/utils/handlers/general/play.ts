@@ -2,7 +2,7 @@ import { createEmbed } from "../../functions/createEmbed";
 import { getStream } from "../YTDLUtil";
 import i18n from "../../../config";
 import { AudioPlayerError, createAudioResource, entersState, VoiceConnectionStatus } from "@discordjs/voice";
-import { Guild } from "discord.js";
+import { ChannelType, Guild } from "discord.js";
 
 export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
@@ -47,21 +47,23 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     queue.connection?.subscribe(queue.player);
 
     async function playResource(): Promise<void> {
-        if (guild.channels.cache.get(queue!.connection!.joinConfig.channelId!)?.type === "GUILD_STAGE_VOICE") {
+        if (guild.channels.cache.get(queue!.connection!.joinConfig.channelId!)?.type === ChannelType.GuildStageVoice) {
             queue?.client.debugLog.logData(
                 "info",
                 "PLAY_HANDLER",
-                `Trying to be a speaker in ${guild.me?.voice.channel?.name ?? "Unknown"}(${
-                    guild.me?.voice.channel?.id ?? "ID UNKNOWN"
+                `Trying to be a speaker in ${guild.members.me?.voice.channel?.name ?? "Unknown"}(${
+                    guild.members.me?.voice.channel?.id ?? "ID UNKNOWN"
                 }) in guild ${guild.name}(${guild.id})`
             );
-            const suppressed = await guild.me?.voice.setSuppressed(false).catch((err: Error) => ({ error: err }));
+            const suppressed = await guild.members.me?.voice
+                .setSuppressed(false)
+                .catch((err: Error) => ({ error: err }));
             if (suppressed && "error" in suppressed) {
                 queue?.client.debugLog.logData(
                     "error",
                     "PLAY_HANDLER",
-                    `Failed to be a speaker in ${guild.me?.voice.channel?.name ?? "Unknown"}(${
-                        guild.me?.voice.channel?.id ?? "ID UNKNOWN"
+                    `Failed to be a speaker in ${guild.members.me?.voice.channel?.name ?? "Unknown"}(${
+                        guild.members.me?.voice.channel?.id ?? "ID UNKNOWN"
                     }) in guild ${guild.name}(${guild.id}). Reason: ${suppressed.error.message}`
                 );
                 queue?.player.emit("error", new AudioPlayerError(suppressed.error, resource));

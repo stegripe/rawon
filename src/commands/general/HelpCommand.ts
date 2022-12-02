@@ -6,10 +6,12 @@ import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import {
     Message,
-    MessageActionRow,
-    MessageSelectMenu,
-    MessageSelectOptionData,
-    SelectMenuInteraction
+    ActionRowBuilder,
+    SelectMenuBuilder,
+    SelectMenuComponentOptionData,
+    SelectMenuInteraction,
+    ApplicationCommandOptionType,
+    ComponentType
 } from "discord.js";
 
 @Command<typeof HelpCommand>({
@@ -19,7 +21,7 @@ import {
     slash: {
         options: [
             {
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 name: "command",
                 description: i18n.__("commands.general.help.slashDescription")
             }
@@ -48,7 +50,7 @@ export class HelpCommand extends BaseCommand {
 
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
-        this.infoEmbed.fields = [];
+        this.infoEmbed.data.fields = [];
         const val =
             ctx.args[0] ??
             ctx.options?.getString("command") ??
@@ -56,11 +58,9 @@ export class HelpCommand extends BaseCommand {
         const command =
             this.client.commands.get(val) ?? this.client.commands.get(this.client.commands.aliases.get(val)!);
         if (!val) {
-            const embed = this.listEmbed.setThumbnail(
-                ctx.guild!.iconURL({ dynamic: true, format: "png", size: 1024 })!
-            );
+            const embed = this.listEmbed.setThumbnail(ctx.guild!.iconURL({ extension: "png", size: 1024 }));
 
-            this.listEmbed.fields = [];
+            this.listEmbed.data.fields = [];
             for (const category of this.client.commands.categories.values()) {
                 const isDev = this.client.config.devs.includes(ctx.author.id);
                 const cmds = category.cmds.filter(c => (isDev ? true : !c.meta.devOnly)).map(c => `\`${c.meta.name}\``);
@@ -91,8 +91,8 @@ export class HelpCommand extends BaseCommand {
             return ctx.send(
                 {
                     components: [
-                        new MessageActionRow().addComponents(
-                            new MessageSelectMenu()
+                        new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+                            new SelectMenuBuilder()
                                 .setMinValues(1)
                                 .setMaxValues(1)
                                 .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
@@ -105,18 +105,28 @@ export class HelpCommand extends BaseCommand {
                 "editReply"
             );
         }
+
         // Disable selection menu
-        if (ctx.isSelectMenu()) {
+        if (ctx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel!.messages
                 .fetch((ctx.context as SelectMenuInteraction).message.id)
                 .catch(() => undefined);
             if (msg !== undefined) {
-                const selection = msg.components[0].components.find(x => x.type === "SELECT_MENU");
-                selection!.setDisabled(true);
-                await msg.edit({ components: [new MessageActionRow().addComponents(selection!)] });
+                const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
+                if (!selection) return;
+                const disabledMenu = new SelectMenuBuilder()
+                    .setCustomId(selection.customId!)
+                    .setDisabled(true)
+                    .addOptions({
+                        label: "Nothing to select here",
+                        description: "Nothing to select here",
+                        value: "Nothing to select here"
+                    });
+                await msg.edit({ components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(disabledMenu)] });
             }
         }
+
         // Return information embed
         return ctx.send(
             {
@@ -169,7 +179,7 @@ export class HelpCommand extends BaseCommand {
         );
     }
 
-    private generateSelectMenu(cmd: string, author: string): MessageSelectOptionData[] {
+    private generateSelectMenu(cmd: string, author: string): SelectMenuComponentOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
         const matching = [...this.client.commands.values()]
             .filter(x => {
