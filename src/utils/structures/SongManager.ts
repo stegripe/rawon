@@ -10,7 +10,7 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
     }
 
     public addSong(song: Song, requester: GuildMember): Snowflake {
-        const key = SnowflakeUtil.generate();
+        const key = SnowflakeUtil.generate().toLocaleString();
         const data: QueueSong = {
             index: this.id++,
             key,
