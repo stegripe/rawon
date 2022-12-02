@@ -37,6 +37,11 @@ export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
 export const lang = (process.env.LOCALE?.toLowerCase() ?? "") || "en";
 export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
+export const dbHost = process.env.DB_HOST! || "localhost";
+export const dbPort = Number(process.env.DB_PORT)! || 5432;
+export const dbName = process.env.DB_NAME;
+export const dbUsername = process.env.DB_USERNAME;
+export const dbPassword = process.env.DB_PASSWORD;
 
 // Multiple values
 export const altPrefixes: string[] = parseEnvValue(process.env.ALT_PREFIX! || "{mention}").filter(
