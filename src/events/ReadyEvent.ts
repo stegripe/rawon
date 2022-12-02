@@ -1,7 +1,8 @@
+import { EnvActivityTypes } from "../typings/index.js";
+import { formatMS } from "../utils/functions/formatMS";
 import { BaseEvent } from "../structures/BaseEvent";
 import { Event } from "../utils/decorators/Event";
 import { ActivityType, Presence } from "discord.js";
-import { EnvActivityTypes } from "../typings/index.js";
 
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
@@ -11,6 +12,9 @@ export class ReadyEvent extends BaseEvent {
         }
 
         await this.client.spotify.renew();
+
+        await this.client.commands.load();
+        this.client.logger.info(`Ready took ${formatMS(Date.now() - this.client.startTimestamp)}`);
         await this.doPresence();
         this.client.logger.info(
             await this.formatString(

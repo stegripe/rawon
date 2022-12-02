@@ -8,7 +8,6 @@ import { ClientUtils } from "../utils/structures/ClientUtils";
 import { RawonLogger } from "../utils/structures/RawonLogger";
 import { soundcloud } from "../utils/handlers/SoundCloudUtil";
 import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
-import { formatMS } from "../utils/functions/formatMS";
 import { GuildData } from "../typings";
 import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
@@ -16,6 +15,7 @@ import { resolve } from "path";
 import got from "got";
 
 export class Rawon extends Client {
+    public startTimestamp = 0;
     public readonly config = config;
     public readonly commands = new CommandManager(this, resolve(importURLToString(import.meta.url), "..", "commands"));
     public readonly events = new EventsLoader(this, resolve(importURLToString(import.meta.url), "..", "events"));
@@ -57,12 +57,8 @@ export class Rawon extends Client {
     }
 
     public build: () => Promise<this> = async () => {
-        const start = Date.now();
+        this.startTimestamp = Date.now();
         this.events.load();
-        this.on("ready", () => {
-            this.commands.load();
-            this.logger.info(`Ready took ${formatMS(Date.now() - start)}`);
-        });
         await this.login();
         return this;
     };
