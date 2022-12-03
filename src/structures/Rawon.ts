@@ -60,6 +60,7 @@ export class Rawon extends Client {
 
     public build: () => Promise<this> = async () => {
         this.startTimestamp = Date.now();
+        this.database.initialize();
         this.events.load();
         await this.login();
         return this;

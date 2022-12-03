@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, bold } from "discord.js";
-import { Note } from "../../database/entities/Note.js";
+import { NoteMethods } from "../../database/methods/NoteMethods.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
@@ -8,6 +8,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 @Command<typeof NoteCommand>({
     name: "note",
     description: "Display note content",
+    aliases: ["n"],
     usage: "{prefix}note name",
     slash: {
         name: "note",
@@ -23,7 +24,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     }
 })
 export class NoteCommand extends BaseCommand {
-    private readonly noteRespository = this.client.database.db.getRepository(Note);
+    private readonly noteRespository = new NoteMethods(this.client);
 
     public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
@@ -36,18 +37,15 @@ export class NoteCommand extends BaseCommand {
             return;
         }
 
-        const note = (await this.noteRespository
-            .createQueryBuilder("notes")
-            .select("notes.note_value", "value")
-            .where("notes.note_name = :name", { name: options.name })
-            .andWhere("notes.user_id = :authorId", { authorId: ctx.author.id })
-            .andWhere("notes.guild_id = :guildId", { guildId: ctx.guild?.id })
-            .execute()) as [] | [{ value: string }];
+        const note = await this.noteRespository.listNoteByNameAndUserId(options.name, ctx.author.id);
+
         if (note.length === 0) {
-            await ctx.send(`No note with name ${bold(options.name)} found on this server`, "editReply");
-            return;
+            await ctx.send(
+                { embeds: [createEmbed("error", `No note with name ${bold(options.name)} found`)] },
+                "editReply"
+            );
         }
 
-        await ctx.send({ content: note[0].value }, "editReply");
+        await ctx.send({ content: note[0].noteValue }, "editReply");
     }
 }

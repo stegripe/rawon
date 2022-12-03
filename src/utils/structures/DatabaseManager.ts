@@ -15,7 +15,9 @@ export class DatabaseManager {
         entities: [Note]
     });
 
-    public constructor(public client: Rawon) {
+    public constructor(public client: Rawon) {}
+
+    public initialize(): void {
         this.checkConfig();
         this.connect();
     }
