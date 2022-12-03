@@ -318,6 +318,7 @@
             "message2": "Sorry, but that interaction is only for <@{user}>"
         },
         "createMessage": "Hi {author}, my prefix is **`{prefix}`**",
+        "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Connection successfully re-configured.",
             "deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
