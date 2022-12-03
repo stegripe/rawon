@@ -317,6 +317,7 @@
             "message2": "Mohon maaf, tetapi interaction tersebut hanya untuk <@{user}>"
         },
         "createMessage": "Hai {author}, prefix-ku adalah **`{prefix}`**",
+        "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",
             "deleteQueue": "**`{duration}`** telah berlalu dan belum ada yang memasuki voice channel, antrian telah dihapus.",

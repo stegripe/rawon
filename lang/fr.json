@@ -318,6 +318,7 @@
             "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>"
         },
         "createMessage": "Salut {author}, mon préfixe est **`{prefix}`**",
+        "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La connexion a été reconfigurée avec succès.",
             "deleteQueue": "**`{duration}`** s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
