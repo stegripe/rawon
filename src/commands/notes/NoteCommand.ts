@@ -44,6 +44,7 @@ export class NoteCommand extends BaseCommand {
                 { embeds: [createEmbed("error", `No note with name ${bold(options.name)} found`)] },
                 "editReply"
             );
+            return;
         }
 
         await ctx.send({ content: note[0].noteValue }, "editReply");

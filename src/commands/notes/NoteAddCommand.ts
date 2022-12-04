@@ -71,6 +71,16 @@ export class NoteAddCommand extends BaseCommand {
             return;
         }
 
+        const noteAlreadyExists = await this.noteMethod.listNoteByNameAndUserId(options.name, ctx.author.id);
+
+        if (noteAlreadyExists.length > 0) {
+            await ctx.send(
+                { embeds: [createEmbed("error", `Note ${bold(options.name)} already exists`)] },
+                "editReply"
+            );
+            return;
+        }
+
         const note = await this.noteMethod.addNote({
             name: options.name,
             value: options.value,
