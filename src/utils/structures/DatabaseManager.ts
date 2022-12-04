@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { Note } from "../../database/entities/Note.js";
+import { Permission } from "../../database/entities/Permission.js";
 import { Rawon } from "../../structures/Rawon.js";
 
 export class DatabaseManager {
@@ -12,7 +13,7 @@ export class DatabaseManager {
         database: this.client.config.dbName,
         logger: "advanced-console",
         logging: ["error", "info", "warn"],
-        entities: [Note]
+        entities: [Note, Permission]
     });
 
     public constructor(public client: Rawon) {}
@@ -36,11 +37,19 @@ export class DatabaseManager {
         }
     }
 
+    private async checkEnviornment(): Promise<void> {
+        if (this.client.config.isDev) {
+            this.client.logger.warn("Running in dev mode, synchronizing database");
+            await this.db.synchronize(true);
+        }
+    }
+
     private connect(): void {
         this.db
             .initialize()
             .then(() => {
                 this.client.logger.info("Connected to database!");
+                void this.checkEnviornment();
             })
             .catch(error => {
                 if (error instanceof Error) {
