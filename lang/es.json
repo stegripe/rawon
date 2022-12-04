@@ -318,7 +318,7 @@
             "message2": "Lo siento, pero esta interacción es solo para <@{user}>"
         },
         "createMessage": "Hola {author}, mi prefix es **`{prefix}`**",
-        "cmdLoading": "Loading...",
+        "cmdLoading": "Cargando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La conexión se ha reconfigurado con éxito.",
             "deleteQueue": "Ha pasado **`{duration}`** y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
