@@ -15,7 +15,7 @@ export class Note {
     })
     id!: string;
 
-    @Index()
+    @Index("index_note_name")
     @Column({
         name: "note_name",
         type: "varchar",
@@ -30,7 +30,7 @@ export class Note {
     })
     value!: string;
 
-    @Index()
+    @Index("index_user_id")
     @Column({
         name: "user_id",
         type: "varchar",

@@ -14,7 +14,7 @@ export class Permission {
     })
     public id!: string;
 
-    @Index()
+    @Index("index_role_id")
     @Column({
         name: "role_id",
         type: "varchar",
@@ -23,7 +23,7 @@ export class Permission {
     })
     public roleId!: string;
 
-    @Index()
+    @Index("index_guild_id")
     @Column({
         name: "guild_id",
         type: "varchar",
