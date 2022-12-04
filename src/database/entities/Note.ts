@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 enum NoteType {
     MESSAGE = "message",
@@ -15,6 +15,7 @@ export class Note {
     })
     id!: string;
 
+    @Index()
     @Column({
         name: "note_name",
         type: "varchar",
@@ -29,6 +30,7 @@ export class Note {
     })
     value!: string;
 
+    @Index()
     @Column({
         name: "user_id",
         type: "varchar",
