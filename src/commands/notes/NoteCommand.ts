@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, bold } from "discord.js";
 import { NoteMethods } from "../../database/methods/NoteMethods.js";
+import { PermissionMethod } from "../../database/methods/PermissionMethod.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
@@ -25,9 +26,44 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 })
 export class NoteCommand extends BaseCommand {
     private readonly noteRespository = new NoteMethods(this.client);
+    private readonly permissionMethod = new PermissionMethod(this.client);
 
     public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
+
+        const permissions = await this.permissionMethod.getPermissions(ctx.guild!.id);
+
+        if (permissions.length === 0) {
+            await ctx.send({ embeds: [createEmbed("warn", "Note permission has not setuped yet")] }, "editReply");
+            return;
+        }
+
+        const userInGuild = await ctx.guild?.members.fetch(ctx.author.id);
+
+        const isEligible = permissions.some(permission => {
+            const getUserRole = userInGuild?.roles.cache.find(role => permission.roleId === role.id);
+
+            if (getUserRole) {
+                return true;
+            }
+
+            return false;
+        });
+
+        if (!isEligible) {
+            await ctx.send(
+                {
+                    embeds: [
+                        createEmbed(
+                            "warn",
+                            "You are not eligible to use notes feature, Please ask admin for appropriate role"
+                        )
+                    ]
+                },
+                "editReply"
+            );
+            return;
+        }
 
         const options = {
             name: (ctx.args[0] ?? ctx.options?.getString("name", true)) as string | undefined
