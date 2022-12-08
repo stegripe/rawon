@@ -9,9 +9,7 @@ import { version as DJSVersion } from "discord.js";
 import { readFileSync } from "fs";
 import { uptime } from "os";
 
-const pkg: { version: string } = JSON.parse(
-    readFileSync(new URL("../../../package.json", import.meta.url)).toString()
-);
+const pkg: { version: string } = JSON.parse(readFileSync(new URL("../../../package.json", import.meta.url)).toString());
 
 @Command({
     aliases: ["information", "info", "botinfo", "stats"],
@@ -34,7 +32,7 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.ffmpegVersionString"), this.client.utils.getFFmpegVersion()],
             [i18n.__("commands.general.about.botVersionString"), pkg.version],
             [""],
-            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/Clytage/rawon"]
+            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/godofwarOP/rawon"]
         ];
         const value = createTable(values);
 
