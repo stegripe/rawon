@@ -71,7 +71,7 @@
 	"devDependencies": {
 		"@clytage-pkg/eslint-config": "1.5.0",
 		"@types/i18n": "0.13.6",
-		"@types/node": "18.11.12",
+		"@types/node": "18.11.13",
 		"@typescript-eslint/eslint-plugin": "5.44.0",
 		"@typescript-eslint/parser": "5.44.0",
 		"eslint": "8.28.0",
