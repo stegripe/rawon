@@ -1,6 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
 import { MessageInteractionAction } from "../typings";
-import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, ModalSubmitFields, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import {
+    ActionRowBuilder,
+    BaseInteraction,
+    BaseMessageOptions,
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    Collection,
+    CommandInteraction,
+    ContextMenuCommandInteraction,
+    GuildMember,
+    Interaction,
+    InteractionReplyOptions,
+    InteractionResponse,
+    Message,
+    MessageComponentInteraction,
+    MessageMentions,
+    MessagePayload,
+    ModalSubmitFields,
+    ModalSubmitInteraction,
+    SelectMenuInteraction,
+    TextBasedChannel,
+    User
+} from "discord.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
@@ -35,7 +59,7 @@ export class CommandContext {
     ): Promise<Message> {
         if (this.isInteraction()) {
             if (
-                ((this.context as Interaction).isCommand() || (this.context as Interaction).isSelectMenu()) &&
+                ((this.context as Interaction).isCommand() || (this.context as Interaction).isStringSelectMenu()) &&
                 (this.context as CommandInteraction).replied &&
                 !autoedit
             )
@@ -46,7 +70,7 @@ export class CommandContext {
         const rep = await this.send(
             options,
             this.isInteraction()
-                ? (context as Interaction).isCommand() || (context as Interaction).isSelectMenu()
+                ? (context as Interaction).isCommand() || (context as Interaction).isStringSelectMenu()
                     ? (context as CommandInteraction).replied || (context as CommandInteraction).deferred
                         ? "editReply"
                         : "reply"
