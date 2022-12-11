@@ -35,7 +35,7 @@ export class CommandContext {
     ): Promise<Message> {
         if (this.isInteraction()) {
             if (
-                ((this.context as Interaction).isCommand() || (this.context as Interaction).isSelectMenu()) &&
+                ((this.context as Interaction).isCommand() || (this.context as Interaction).isStringSelectMenu()) &&
                 (this.context as CommandInteraction).replied &&
                 !autoedit
             )
@@ -46,7 +46,7 @@ export class CommandContext {
         const rep = await this.send(
             options,
             this.isInteraction()
-                ? (context as Interaction).isCommand() || (context as Interaction).isSelectMenu()
+                ? (context as Interaction).isCommand() || (context as Interaction).isStringSelectMenu()
                     ? (context as CommandInteraction).replied || (context as CommandInteraction).deferred
                         ? "editReply"
                         : "reply"

@@ -92,7 +92,7 @@ export class InteractionCreateEvent extends BaseEvent {
             }
         }
 
-        if (interaction.isSelectMenu()) {
+        if (interaction.isStringSelectMenu()) {
             const val = this.client.utils.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
