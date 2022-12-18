@@ -6,8 +6,8 @@ import { Command } from "../../utils/decorators/Command";
 import { play } from "../../utils/handlers/GeneralUtil";
 import { QueueSong } from "../../typings";
 import i18n from "../../config";
-import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { ApplicationCommandOptionType, Message } from "discord.js";
+import { AudioPlayerPlayingState } from "@discordjs/voice";
 
 @Command({
     aliases: ["st"],

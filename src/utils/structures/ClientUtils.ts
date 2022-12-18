@@ -1,8 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { Rawon } from "../../structures/Rawon";
-import { parse } from "path";
-import prism from "prism-media";
 import { Guild, Role, ChannelType } from "discord.js";
+import prism from "prism-media";
+import { parse } from "path";
 
 const { FFmpeg } = prism;
 
