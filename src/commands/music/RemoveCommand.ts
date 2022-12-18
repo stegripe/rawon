@@ -8,8 +8,8 @@ import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
 import { QueueSong } from "../../typings";
 import i18n from "../../config";
-import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 import { ApplicationCommandOptionType, escapeMarkdown } from "discord.js";
+import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
 @Command({
     description: i18n.__("commands.music.remove.description"),
