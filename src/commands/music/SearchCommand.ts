@@ -154,7 +154,7 @@ export class SearchCommand extends BaseCommand {
             .awaitMessages({
                 errors: ["time"],
                 filter: m => {
-                    const nums = m.content.split(/, /).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length);
+                    const nums = m.content.split(/\s*,\s*/).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length);
 
                     return (
                         m.author.id === ctx.author.id &&
@@ -185,12 +185,12 @@ export class SearchCommand extends BaseCommand {
 
         const songs = respond
             .first()!
-            .content.split(/, /)
+            .content.split(/\s*,\s*/)
             .filter(x => Number(x) > 0 && Number(x) <= tracks.items.length)
             .sort((a, b) => Number(a) - Number(b));
         const newCtx = new CommandContext(ctx.context, []);
 
-        newCtx.additionalArgs.set("values", [await Promise.all(songs.map(x => tracks.items[Number(x) - 1].url))]);
+        newCtx.additionalArgs.set("values", songs.map(x => tracks.items[Number(x) - 1].url));
         newCtx.additionalArgs.set("fromSearch", true);
         this.client.commands.get("play")!.execute(newCtx);
     }
