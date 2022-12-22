@@ -6,7 +6,7 @@ import { Command } from "../../utils/decorators/Command";
 import { play } from "../../utils/handlers/GeneralUtil";
 import { QueueSong } from "../../typings";
 import i18n from "../../config";
-import { ApplicationCommandOptionType, Message } from "discord.js";
+import { ApplicationCommandOptionType, Message, VoiceChannel } from "discord.js";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 
 @Command({
@@ -50,6 +50,9 @@ export class SkipToCommand extends BaseCommand {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (
             this.client.data.data?.[ctx.guild!.id]?.dj?.enable &&
+            (this.client.channels.cache.get(
+                ctx.guild?.queue?.connection?.joinConfig.channelId ?? ""
+            ) as VoiceChannel).members.size > 2 &&
             !ctx.member?.roles.cache.has(djRole?.id ?? "") &&
             !ctx.member?.permissions.has("ManageGuild")
         ) {
