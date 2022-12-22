@@ -8,7 +8,7 @@ import { Command } from "../../utils/decorators/Command";
 import { chunk } from "../../utils/functions/chunk";
 import { QueueSong } from "../../typings";
 import i18n from "../../config";
-import { ApplicationCommandOptionType, escapeMarkdown } from "discord.js";
+import { ApplicationCommandOptionType, escapeMarkdown, VoiceChannel } from "discord.js";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
 @Command({
@@ -34,6 +34,9 @@ export class RemoveCommand extends BaseCommand {
         const djRole = await this.client.utils.fetchDJRole(ctx.guild!);
         if (
             this.client.data.data?.[ctx.guild!.id]?.dj?.enable &&
+            (this.client.channels.cache.get(
+                ctx.guild?.queue?.connection?.joinConfig.channelId ?? ""
+            ) as VoiceChannel).members.size > 2 &&
             !ctx.member?.roles.cache.has(djRole?.id ?? "") &&
             !ctx.member?.permissions.has("ManageGuild")
         ) {
