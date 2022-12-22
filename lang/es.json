@@ -25,7 +25,7 @@
                 "nodeVersionString": "Versión de Node.js",
                 "osUptimeString": "Tiempo de actividad del S.O.",
                 "processUptimeString": "Tiempo de actividad del proceso",
-                "serversString": "Servers",
+                "serversString": "Servidores",
                 "sourceCodeString": "Código Fuente"
             },
             "categoryName": "GENERAL",
