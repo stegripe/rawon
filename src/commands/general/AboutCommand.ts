@@ -23,16 +23,21 @@ const pkg: { version: string } = JSON.parse(
     usage: "{prefix}about"
 })
 export class AboutCommand extends BaseCommand {
-    public execute(ctx: CommandContext): void {
+    public async execute(ctx: CommandContext): Promise<void> {
         const values = [
             [i18n.__("commands.general.about.osUptimeString"), formatMS(uptime() * 1000)],
             [i18n.__("commands.general.about.processUptimeString"), formatMS(process.uptime() * 1000)],
             [i18n.__("commands.general.about.botUptimeString"), formatMS(process.uptime() * 1000)],
             [""],
+            [i18n.__("commands.general.about.cachedUsersString"), `${await this.client.utils.getUserCount()}`],
+            [i18n.__("commands.general.about.channelsString"), `${await this.client.utils.getChannelCount()}`],
+            [i18n.__("commands.general.about.serversString"), `${await this.client.utils.getGuildCount()}`],
+            [""],
             [i18n.__("commands.general.about.nodeVersionString"), process.versions.node],
             [i18n.__("commands.general.about.discordJSVersionString"), DJSVersion],
             [i18n.__("commands.general.about.ffmpegVersionString"), this.client.utils.getFFmpegVersion()],
             [i18n.__("commands.general.about.botVersionString"), pkg.version],
+            [i18n.__("commands.general.about.commitString"), this.client.utils.getCommitHash("HEAD")],
             [""],
             [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/Clytage/rawon"]
         ];
