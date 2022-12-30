@@ -22,7 +22,18 @@ export class ServerQueue {
     public shuffle = false;
     public filters: Record<keyof typeof filterArgs, boolean> = {
         bassboost: false,
-        nightcore: false
+        nightcore: false,
+        "8d": false,
+        treble: false,
+        vaporwave: false,
+        flanger: false,
+        gate: false,
+        haas: false,
+        mcompand: false,
+        phaser: false,
+        reverse: false,
+        surround: false,
+        tremolo: false
     };
 
     private _lastVSUpdateMsg: Snowflake | null = null;

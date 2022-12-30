@@ -1,15 +1,27 @@
 export const filterArgs = {
-    bassboost: "bass=g=20,dynaudnorm=f=350",
-    nightcore: "aresample=48000,asetrate=48000*1.25"
+    bassboost: "bass=g=7.5",
+    nightcore: "aresample=48000,asetrate=48000*1.25",
+    vaporwave: "aresample=48000,asetrate=48000*0.8",
+    treble: "treble=g=5",
+    "8d": "apulsator=hz=0.08",
+    reverse: "areverse",
+    surround: "surround",
+    haas: "haas",
+    phaser: "aphaser=in_gain=0.4",
+    gate: "agate",
+    mcompand: "mcompand",
+    flanger: "flanger",
+    tremolo: "tremolo"
 }
 
 export function ffmpegArgs(filters: Record<keyof typeof filterArgs, boolean>): string[] {
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
     return [
         "-loglevel", "0",
-        "-f", "s16le",
         "-ar", "48000",
         "-ac", "2",
+        "-f", "opus",
+        "-acodec", "libopus",
         ...(
             keys.some(x => filters[x])
                 ? [
