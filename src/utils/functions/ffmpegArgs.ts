@@ -11,7 +11,10 @@ export const filterArgs = {
     gate: "agate",
     mcompand: "mcompand",
     flanger: "flanger",
-    tremolo: "tremolo"
+    tremolo: "tremolo",
+    karaoke: "stereotools=mlev=0.1",
+    vibrato: "vibrato=f=6.5",
+    echo: "aecho=0.8:0.9:1000:0.3"
 }
 
 export function ffmpegArgs(filters: Record<keyof typeof filterArgs, boolean>): string[] {
