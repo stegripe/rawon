@@ -3,10 +3,13 @@ import { SongManager } from "../utils/structures/SongManager";
 import { createEmbed } from "../utils/functions/createEmbed";
 import { play } from "../utils/handlers/GeneralUtil";
 import { LoopMode, QueueSong } from "../typings";
+import { filterArgs } from "../utils/functions/ffmpegArgs";
 import { Rawon } from "./Rawon";
 import i18n from "../config";
 import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, AudioResource, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
 import { TextChannel, Snowflake } from "discord.js";
+
+const nonEnum = { enumerable: false };
 
 export class ServerQueue {
     public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
@@ -17,6 +20,7 @@ export class ServerQueue {
     public readonly songs = new SongManager(this.client, this.textChannel.guild);
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
+    public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
 
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
@@ -25,18 +29,10 @@ export class ServerQueue {
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
-            _skipVoters: {
-                enumerable: false
-            },
-            _lastMusicMsg: {
-                enumerable: false
-            },
-            _lastVSUpdateMsg: {
-                enumerable: false
-            },
-            _volume: {
-                enumerable: false
-            }
+            _skipVoters: nonEnum,
+            _lastMusicMsg: nonEnum,
+            _lastVSUpdateMsg: nonEnum,
+            _volume: nonEnum
         });
 
         this.player
@@ -122,6 +118,16 @@ export class ServerQueue {
             .on("debug", message => {
                 this.client.logger.debug(message);
             });
+    }
+
+    public setFilter(filter: keyof typeof filterArgs, state: boolean): void {
+        const before = this.filters[filter];
+        this.filters[filter] = state;
+
+        if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
+            this.playing = false;
+            void play(this.textChannel.guild, (this.player.state.resource as AudioResource<QueueSong>).metadata.key, true);
+        }
     }
 
     public stop(): void {
