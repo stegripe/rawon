@@ -199,6 +199,19 @@
                 "slashRoleDescription": "View or change the DJ role",
                 "slashRoleNewRoleOption": "New role for the DJ"
             },
+            "filter": {
+                "availableFilters": "Available Filters",
+                "currentlyUsedFilters": "Currently Used Filters",
+                "currentState": "`{filter}` is currently `{state}`",
+                "description": "Configure song filter",
+                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
+                "filterSet": "`{filter}` filter is now `{state}`",
+                "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
+                "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
+                "slashStatusDescription": "Check the current status of song filters",
+                "slashStatusFilterDescription": "The song filter that you want to check",
+                "specifyFilter": "Please specify the song filter"
+            },
             "lyrics": {
                 "apiError": "The API could not find the song **{song}**, because: `{message}`",
                 "description": "Show the lyrics from the song",

@@ -198,6 +198,19 @@
                 "slashRoleDescription": "Lihat atau ubah role DJ",
                 "slashRoleNewRoleOption": "Role baru untuk DJ"
             },
+            "filter": {
+                "availableFilters": "Filter yang tersedia",
+                "currentlyUsedFilters": "Filter yang sedang digunakan",
+                "currentState": "Filter `{filter}` dalam status `{state}`",
+                "description": "Menyetel filter lagu",
+                "embedFooter": "Untuk {opstate, select, enable {menyalakan} other {mematikan}} filter tersebut, gunakan {prefix}filter {opstate} {filter}",
+                "filterSet": "filter `{filter}` sekarang `{state}`",
+                "slashStateDescription": "{state, select, enable {Menyalakan} other {Mematikan}} filter lagu",
+                "slashStateFilterDescription": "Filter lagu yang akan di{state, select, enable {nyalakan} other {matikan}}",
+                "slashStatusDescription": "Cek status filter lagu",
+                "slashStatusFilterDescription": "Filter yang ingin di cek",
+                "specifyFilter": "Mohon berikan filter lagu"
+            },
             "lyrics": {
                 "apiError": "Tidak dapat menemukan lagu **{song}**, dikarenakan: `{message}`",
                 "description": "Menampilkan lirik lagu",
