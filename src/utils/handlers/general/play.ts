@@ -1,8 +1,10 @@
 import { createEmbed } from "../../functions/createEmbed";
 import { getStream } from "../YTDLUtil";
+import { ffmpegArgs } from "../../functions/ffmpegArgs";
 import i18n from "../../../config";
-import { AudioPlayerError, createAudioResource, entersState, VoiceConnectionStatus } from "@discordjs/voice";
+import { AudioPlayerError, createAudioResource, entersState, StreamType, VoiceConnectionStatus } from "@discordjs/voice";
 import { ChannelType, Guild } from "discord.js";
+import prism from "prism-media";
 
 export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
@@ -40,7 +42,12 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         return;
     }
 
-    const resource = createAudioResource(await getStream(song.song.url), { inlineVolume: true, metadata: song });
+    const stream = new prism.FFmpeg({
+        args: ffmpegArgs(queue.filters)
+    });
+    (await getStream(song.song.url)).pipe(stream);
+
+    const resource = createAudioResource(stream, { inlineVolume: true, inputType: StreamType.OggOpus, metadata: song });
 
     queue.client.debugLog.logData("info", "PLAY_HANDLER", `Created audio resource for ${guild.name}(${guild.id})`);
 
