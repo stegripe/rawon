@@ -20,21 +20,7 @@ export class ServerQueue {
     public readonly songs = new SongManager(this.client, this.textChannel.guild);
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
-    public filters: Record<keyof typeof filterArgs, boolean> = {
-        bassboost: false,
-        nightcore: false,
-        "8d": false,
-        treble: false,
-        vaporwave: false,
-        flanger: false,
-        gate: false,
-        haas: false,
-        mcompand: false,
-        phaser: false,
-        reverse: false,
-        surround: false,
-        tremolo: false
-    };
+    public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
 
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
