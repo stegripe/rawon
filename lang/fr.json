@@ -204,10 +204,10 @@
                 "currentlyUsedFilters": "Filtres actuellement utilisés",
                 "currentState": "`{filter}` est actuellement `{state}`",
                 "description": "Configurer le filtre de musique",
-                "embedFooter": "Pour {opérer, sélectionner, activer {enable} ou {disable}} le filtre, utilisez {prefix}filter {opstate} {filter}",
+                "embedFooter": "Pour {opstate} le filtre, utilisez {prefix}filter {opstate} {filter}",
                 "filterSet": "Le filtre `{filter}` est désormais `{state}`",
-                "slashStateDescription": "{indiquer, sélectionner, activer {Enable} ou {Disable}} un filtre de musique",
-                "slashStateFilterDescription": "Le filtre de la chanson qui sera {indiquer, sélectionner, activer {enabled} ou {disabled}}",
+                "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de musique",
+                "slashStateFilterDescription": "Le filtre de musique qui sera {state, select, enable {activé} other {désactivé}}",
                 "slashStatusDescription": "Vérifier l'état actuel des filtres de musique",
                 "slashStatusFilterDescription": "Le filtre de la chanson que vous voulez vérifier",
                 "specifyFilter": "Veuillez spécifier le filtre de la chanson"

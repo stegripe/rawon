@@ -203,14 +203,14 @@
                 "availableFilters": "Filtros disponibles",
                 "currentlyUsedFilters": "Filtros utilizados actualmente",
                 "currentState": "`{filter}` es actualmente `{state}`",
-                "description": "Configurar el filtro de canciones",
-                "embedFooter": "Para {Optar, seleccionar, activar {enable} o {disable}} el filtro, utilice {prefix}filter {opstate} {filter}",
-                "filterSet": "El filtro `{filter}` ya está `{state}`",
-                "slashStateDescription": "{establecer, seleccionar, activar {Enable} o {Disable}} un filtro de canciones",
-                "slashStateFilterDescription": "El filtro de canciones que se {establecer, seleccionar, activar {enabled} o {disabled}}",
-                "slashStatusDescription": "Comprobar el estado actual de los filtros de canciones",
-                "slashStatusFilterDescription": "El filtro de canciones que desea comprobar",
-                "specifyFilter": "Por favor, especifique el filtro de canciones"
+                "description": "Configurar el filtro de canción",
+                "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
+                "filterSet": "`El filtro {filter}` ya está `{state}`",
+                "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
+                "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
+                "slashStatusDescription": "Comprobar el estado actual de los filtros de canción",
+                "slashStatusFilterDescription": "El filtro de canción que desea comprobar",
+                "specifyFilter": "Por favor, especifique el filtro de canción"
             },
             "lyrics": {
                 "apiError": "El API no pudo encontrar la letra de la canción **{song}**, razón: {message}",
