@@ -16,8 +16,8 @@
                 "aboutFooter": "{botname} - Informasi Bot",
                 "botUptimeString": "Uptime Bot",
                 "botVersionString": "Versi Bot",
-                "cachedUsersString": "Cached Users",
-                "channelsString": "Channels",
+                "cachedUsersString": "User dalam Cache",
+                "channelsString": "Channel",
                 "commitString": "Commit",
                 "description": "Menampilkan informasi bot",
                 "discordJSVersionString": "Versi Discord.js",
@@ -25,7 +25,7 @@
                 "nodeVersionString": "Versi Node.js",
                 "osUptimeString": "Uptime OS",
                 "processUptimeString": "Uptime Process",
-                "serversString": "Servers",
+                "serversString": "Server",
                 "sourceCodeString": "Kode sumber"
             },
             "categoryName": "UMUM",
@@ -334,7 +334,7 @@
             "message2": "Mohon maaf, tetapi interaction tersebut hanya untuk <@{user}>"
         },
         "createMessage": "Hai {author}, prefix-ku adalah **`{prefix}`**",
-        "cmdLoading": "Loading...",
+        "cmdLoading": "Memuat...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",
             "deleteQueue": "**`{duration}`** telah berlalu dan belum ada yang memasuki voice channel, antrian telah dihapus.",
