@@ -200,17 +200,17 @@
                 "slashRoleNewRoleOption": "Un nouveau rôle pour le DJ"
             },
             "filter": {
-                "availableFilters": "Available Filters",
-                "currentlyUsedFilters": "Currently Used Filters",
-                "currentState": "`{filter}` is currently `{state}`",
-                "description": "Configure song filter",
-                "embedFooter": "To {opstate, select, enable {enable} other {disable}} the filter, use {prefix}filter {opstate} {filter}",
-                "filterSet": "`{filter}` filter is now `{state}`",
-                "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
-                "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
-                "slashStatusDescription": "Check the current status of song filters",
-                "slashStatusFilterDescription": "The song filter that you want to check",
-                "specifyFilter": "Please specify the song filter"
+                "availableFilters": "Filtres disponibles",
+                "currentlyUsedFilters": "Filtres actuellement utilisés",
+                "currentState": "`{filter}` est actuellement `{state}`",
+                "description": "Configurer le filtre de musique",
+                "embedFooter": "Pour {opstate} le filtre, utilisez {prefix}filter {opstate} {filter}",
+                "filterSet": "Le filtre `{filter}` est désormais `{state}`",
+                "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de musique",
+                "slashStateFilterDescription": "Le filtre de musique qui sera {state, select, enable {activé} other {désactivé}}",
+                "slashStatusDescription": "Vérifier l'état actuel des filtres de musique",
+                "slashStatusFilterDescription": "Le filtre de la chanson que vous voulez vérifier",
+                "specifyFilter": "Veuillez spécifier le filtre de la chanson"
             },
             "lyrics": {
                 "apiError": "L'API n'a pas pu trouver la chanson **{song}**, parce que : `{message}`",
