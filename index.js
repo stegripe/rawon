@@ -1,6 +1,7 @@
 import { downloadExecutable } from "./yt-dlp-utils";
 import { existsSync, readFileSync, writeFileSync, rmSync } from "fs";
 import { execSync } from "child_process";
+import prism from "prism-media";
 import { resolve } from "path";
 import { Server } from "https";
 import module from "module";
@@ -87,14 +88,12 @@ if (isGitHub) {
 
 const require = module.createRequire(import.meta.url);
 
-if (!isGlitch && !isReplit) {
-    try {
-        require("ffmpeg-static");
-    } catch {
-        console.info("[INFO] This bot is not running on Glitch, trying to install ffmpeg-static...");
-        npmInstall(false, false, ["--no-save", "ffmpeg-static"]);
-        console.info("[INFO] ffmpeg-static has been installed.");
-    }
+try {
+    prism.FFmpeg.getInfo(true);
+} catch {
+    console.info("[INFO] Couldn't find FFmpeg/avconv, trying to install ffmpeg-static...");
+    npmInstall(false, false, ["--no-save", "ffmpeg-static"]);
+    console.info("[INFO] ffmpeg-static has been installed.");
 }
 
 if (isGlitch || isReplit) {
