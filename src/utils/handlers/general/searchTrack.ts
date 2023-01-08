@@ -3,7 +3,7 @@ import { Rawon } from "../../../structures/Rawon";
 import { checkQuery } from "./checkQuery";
 import { youtube } from "../YouTubeUtil";
 import { getInfo } from "../YTDLUtil";
-import { SearchResult, Video } from "youtubei";
+import { Playlist, SearchResult, Video, VideoCompact } from "youtubei";
 import { URL } from "url";
 
 export async function searchTrack(
@@ -80,6 +80,7 @@ export async function searchTrack(
                         const track = await youtube.getVideo(
                             /youtu\.be/g.exec(url.hostname) ? url.pathname.replace("/", "") : url.toString()
                         );
+                        console.log("abc:", track);
 
                         if (track) {
                             result.items = [
@@ -102,7 +103,7 @@ export async function searchTrack(
 
                         if (playlist) {
                             const tracks = await Promise.all(
-                                playlist.videos.map(
+                                (playlist instanceof Playlist ? playlist.videos.items : playlist.videos).map(
                                     (track): Song => ({
                                         duration: track.duration ?? 0,
                                         id: track.id,
@@ -129,8 +130,8 @@ export async function searchTrack(
 
             case "spotify": {
                 // eslint-disable-next-line no-inner-declarations
-                function sortVideos(track: SpotifyTrack, videos: SearchResult<"video">): SearchResult<"video"> {
-                    return videos.sort((a, b) => {
+                function sortVideos(track: SpotifyTrack, videos: SearchResult<"video">): VideoCompact[] {
+                    return videos.items.sort((a, b) => {
                         let aValue = 0;
                         let bValue = 0;
                         const aDurationDiff = a.duration ? a.duration - track.duration_ms : null;
@@ -162,7 +163,7 @@ export async function searchTrack(
                                 type: "video"
                             }
                         );
-                        if (!response.length) {
+                        if (!response.items.length) {
                             response = await youtube.search(`${songData.artists[0].name} - ${songData.name}`, {
                                 type: "video"
                             });
@@ -195,7 +196,7 @@ export async function searchTrack(
                                         `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
                                     { type: "video" }
                                 );
-                                if (!response.length) {
+                                if (!response.items.length) {
                                     response = await youtube.search(
                                         `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
                                         { type: "video" }
@@ -264,7 +265,7 @@ export async function searchTrack(
         } else {
             const searchRes = (await youtube.search(query, { type: "video" }));
             const tracks = await Promise.all(
-                searchRes.map(
+                searchRes.items.map(
                     (track): Song => ({
                         duration: track.duration ?? 0,
                         id: track.id,
