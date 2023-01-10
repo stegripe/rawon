@@ -78,7 +78,7 @@ export async function searchTrack(
                 switch (queryData.type) {
                     case "track": {
                         const track = await youtube.getVideo(
-                            /youtu\.be/g.exec(url.hostname) ? url.pathname.replace("/", "") : url.toString()
+                            /youtu\.be/g.exec(url.hostname) ? url.pathname.replace("/", "") : url.searchParams.get("v") ?? ''
                         );
                         console.log("abc:", track);
 
