@@ -17,7 +17,7 @@ export async function searchTrack(
 
     const queryData = checkQuery(query);
     if (queryData.isURL) {
-        const url = new URL(query);
+        let url = new URL(query);
         result.type = "results";
 
         switch (queryData.sourceType) {
@@ -77,6 +77,9 @@ export async function searchTrack(
             case "youtube": {
                 switch (queryData.type) {
                     case "track": {
+                        if (/youtube\.com/g.exec(url.hostname)) {
+                            url = new URL(`https://youtu.be/${url.href.split('watch?v=')[1]}`);
+                        }
                         const track = await youtube.getVideo(
                             /youtu\.be/g.exec(url.hostname) ? url.pathname.replace("/", "") : url.toString()
                         );
