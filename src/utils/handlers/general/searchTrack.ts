@@ -17,7 +17,7 @@ export async function searchTrack(
 
     const queryData = checkQuery(query);
     if (queryData.isURL) {
-        let url = new URL(query);
+        const url = new URL(query);
         result.type = "results";
 
         switch (queryData.sourceType) {
