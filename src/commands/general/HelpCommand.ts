@@ -7,9 +7,9 @@ import i18n from "../../config";
 import {
     Message,
     ActionRowBuilder,
-    SelectMenuBuilder,
+    StringSelectMenuBuilder,
     SelectMenuComponentOptionData,
-    SelectMenuInteraction,
+    StringSelectMenuInteraction,
     ApplicationCommandOptionType,
     ComponentType
 } from "discord.js";
@@ -91,8 +91,8 @@ export class HelpCommand extends BaseCommand {
             return ctx.send(
                 {
                     components: [
-                        new ActionRowBuilder<SelectMenuBuilder>().addComponents(
-                            new SelectMenuBuilder()
+                        new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                            new StringSelectMenuBuilder()
                                 .setMinValues(1)
                                 .setMaxValues(1)
                                 .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
@@ -110,12 +110,12 @@ export class HelpCommand extends BaseCommand {
         if (ctx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel!.messages
-                .fetch((ctx.context as SelectMenuInteraction).message.id)
+                .fetch((ctx.context as StringSelectMenuInteraction).message.id)
                 .catch(() => undefined);
             if (msg !== undefined) {
                 const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
                 if (!selection) return;
-                const disabledMenu = new SelectMenuBuilder()
+                const disabledMenu = new StringSelectMenuBuilder()
                     .setCustomId(selection.customId!)
                     .setDisabled(true)
                     .addOptions({
@@ -123,7 +123,7 @@ export class HelpCommand extends BaseCommand {
                         description: "Nothing to select here",
                         value: "Nothing to select here"
                     });
-                await msg.edit({ components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(disabledMenu)] });
+                await msg.edit({ components: [new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(disabledMenu)] });
             }
         }
 
