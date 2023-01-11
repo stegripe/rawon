@@ -11,8 +11,8 @@ import {
     CommandInteractionOptionResolver,
     Message,
     ActionRowBuilder,
-    SelectMenuBuilder,
-    SelectMenuInteraction,
+    StringSelectMenuBuilder,
+    StringSelectMenuInteraction,
     ApplicationCommandOptionType,
     ComponentType,
     escapeMarkdown,
@@ -70,12 +70,12 @@ export class SearchCommand extends BaseCommand {
             this.client.commands.get("play")!.execute(newCtx);
 
             const msg = await ctx
-                .channel!.messages.fetch((ctx.context as SelectMenuInteraction).message.id)
+                .channel!.messages.fetch((ctx.context as StringSelectMenuInteraction).message.id)
                 .catch(() => undefined);
             if (msg !== undefined) {
                 const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
                 if (!selection) return;
-                const disabledMenu = new SelectMenuBuilder()
+                const disabledMenu = new StringSelectMenuBuilder()
                     .setDisabled(true)
                     .setCustomId(selection.customId!)
                     .addOptions({
@@ -84,7 +84,7 @@ export class SearchCommand extends BaseCommand {
                         value: "Nothing to select here"
                     });
                 await msg.edit({
-                    components: [new ActionRowBuilder<SelectMenuBuilder>().addComponents(disabledMenu)]
+                    components: [new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(disabledMenu)]
                 });
             }
 
@@ -120,8 +120,8 @@ export class SearchCommand extends BaseCommand {
             return ctx.send({
                 content: i18n.__("commands.music.search.interactionContent"),
                 components: [
-                    new ActionRowBuilder<SelectMenuBuilder>().addComponents(
-                        new SelectMenuBuilder()
+                    new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                        new StringSelectMenuBuilder()
                             .setMinValues(1)
                             .setMaxValues(10)
                             .setCustomId(Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString("base64"))
