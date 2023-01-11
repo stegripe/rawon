@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
 import { MessageInteractionAction } from "../typings";
-import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, ModalSubmitFields, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, ModalSubmitFields, ModalSubmitInteraction, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
@@ -13,7 +13,7 @@ export class CommandContext {
             | ContextMenuCommandInteraction
             | Interaction
             | Message
-            | SelectMenuInteraction,
+            | StringSelectMenuInteraction,
         public args: string[] = []
     ) {}
 
@@ -42,7 +42,7 @@ export class CommandContext {
                 throw new Error("Interaction is already replied.");
         }
 
-        const context = this.context as CommandInteraction | Message | SelectMenuInteraction;
+        const context = this.context as CommandInteraction | Message | StringSelectMenuInteraction;
         const rep = await this.send(
             options,
             this.isInteraction()
