@@ -80,7 +80,6 @@ export async function searchTrack(
                         const track = await youtube.getVideo(
                             /youtu\.be/g.exec(url.hostname) ? url.pathname.replace("/", "") : url.searchParams.get("v") ?? ''
                         );
-                        console.log("abc:", track);
 
                         if (track) {
                             result.items = [
