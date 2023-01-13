@@ -66,7 +66,7 @@
 		"soundcloud.ts": "0.4.9",
 		"tslib": "2.4.1",
 		"tweetnacl": "1.0.3",
-		"youtubei": "1.1.1"
+		"youtubei": "1.1.2"
 	},
 	"devDependencies": {
 		"@clytage-pkg/eslint-config": "1.6.0",
