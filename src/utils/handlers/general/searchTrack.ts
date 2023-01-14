@@ -101,6 +101,7 @@ export async function searchTrack(
                         const list = url.searchParams.get("list") ?? "";
                         const playlist = await youtube.getPlaylist(list);
                         const songIndex = url.searchParams.get("index");
+                        let temp = null;
 
                         if (playlist) {
                             const tracks = await Promise.all(
@@ -117,12 +118,8 @@ export async function searchTrack(
                                 )
                             );
 
-                            if (songIndex) {
-                                const temp = parseInt(songIndex) < 101 ?
-                                    tracks.splice(parseInt(songIndex) - 1, 1)[0]
-                                    : null;
-                                if (temp) tracks.unshift(temp);
-                            }
+                            if (songIndex) temp = parseInt(songIndex) < 101 ? tracks.splice(parseInt(songIndex) - 1, 1)[0] : null;
+                            if (temp) tracks.unshift(temp);
 
                             result.items = tracks;
                         }
