@@ -27,7 +27,7 @@ export function checkQuery(string: string): QueryData {
     } else if (/youtube|youtu\.be/g.exec(url.hostname)) {
         result.sourceType = "youtube";
 
-        if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist")) {
+        if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist") || url.searchParams.has("list")) {
             result.type = "playlist";
         } else if (
             (/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) ||
