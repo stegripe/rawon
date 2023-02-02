@@ -12,7 +12,7 @@
 		"lint:fix": "eslint . --ignore-path .gitignore --ext .ts --fix",
 		"pretty": "prettier --check src/**/*.ts",
 		"pretty:write": "prettier --write src/**/*.ts",
-		"start": "node --es-module-specifier-resolution=node -r dotenv/config .",
+		"start": "node index.js",
 		"start:dev": "rimraf ./dist && npm run compile && npm start"
 	},
 	"repository": {
