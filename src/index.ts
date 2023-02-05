@@ -2,8 +2,8 @@ import { enableRepl, isProd, shardingMode, shardsCount } from "./config";
 import { importURLToString } from "./utils/functions/importURLToString";
 import { RawonLogger } from "./utils/structures/RawonLogger";
 import { ShardingManager } from "discord.js";
-import { resolve } from "path";
-import { start } from "repl";
+import { resolve } from "node:path";
+import { start } from "node:repl";
 
 const log = new RawonLogger({ prod: isProd });
 

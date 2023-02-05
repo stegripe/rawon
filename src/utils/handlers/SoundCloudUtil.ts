@@ -1,4 +1,4 @@
-import { createRequire } from "module";
+import { createRequire } from "node:module";
 import SC from "soundcloud.ts";
 
 // Temporary solution

@@ -1,6 +1,6 @@
-import { existsSync, mkdirSync, writeFileSync } from "fs";
-import { spawn } from "child_process";
-import { resolve } from "path";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { spawn } from "node:child_process";
+import { resolve } from "node:path";
 import got from "got";
 
 const suffix = process.platform === "win32" ? ".exe" : (

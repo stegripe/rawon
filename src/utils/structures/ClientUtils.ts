@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import { Rawon } from "../../structures/Rawon";
 import { Guild, Role, ChannelType } from "discord.js";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
+import { parse } from "node:path";
 import prism from "prism-media";
-import { parse } from "path";
 
 const { FFmpeg } = prism;
 
