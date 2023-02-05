@@ -5,7 +5,7 @@ import { BaseCommand } from "../../structures/BaseCommand";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { Message } from "discord.js";
-import { inspect } from "util";
+import { inspect } from "node:util";
 
 @Command<typeof EvalCommand>({
     aliases: ["evaluate", "ev", "js-exec"],

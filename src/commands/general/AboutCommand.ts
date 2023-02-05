@@ -6,8 +6,8 @@ import { formatMS } from "../../utils/functions/formatMS";
 import { Command } from "../../utils/decorators/Command";
 import i18n from "../../config";
 import { version as DJSVersion } from "discord.js";
-import { readFileSync } from "fs";
-import { uptime } from "os";
+import { readFileSync } from "node:fs";
+import { uptime } from "node:os";
 
 const pkg: { version: string } = JSON.parse(
     readFileSync(new URL("../../../package.json", import.meta.url)).toString()

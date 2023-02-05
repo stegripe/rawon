@@ -1,8 +1,8 @@
 import { pathStringToURLString } from "../functions/pathStringToURLString";
 import { Rawon } from "../../structures/Rawon";
 import { Event } from "../../typings";
-import { promises as fs } from "fs";
-import { resolve } from "path";
+import { promises as fs } from "node:fs";
+import { resolve } from "node:path";
 
 export class EventsLoader {
     public constructor(public client: Rawon, public path: string) {}
