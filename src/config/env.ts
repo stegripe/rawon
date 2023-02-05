@@ -1,8 +1,8 @@
 import { parseEnvValue } from "../utils/functions/parseEnvValue";
 import { EnvActivityTypes, PresenceData } from "../typings";
 import { ClientPresenceStatus } from "discord.js";
-import { existsSync, readFileSync } from "fs";
-import { resolve } from "path";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { parse } from "dotenv";
 
 // Parse the dev.env file

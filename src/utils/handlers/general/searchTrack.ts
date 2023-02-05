@@ -4,7 +4,7 @@ import { checkQuery } from "./checkQuery";
 import { youtube } from "../YouTubeUtil";
 import { getInfo } from "../YTDLUtil";
 import { Playlist, SearchResult, Video, VideoCompact } from "youtubei";
-import { URL } from "url";
+import { URL } from "node:url";
 
 export async function searchTrack(
     client: Rawon,

@@ -11,7 +11,7 @@ import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
 import { GuildData } from "../typings";
 import * as config from "../config";
 import { Client, ClientOptions } from "discord.js";
-import { resolve } from "path";
+import { resolve } from "node:path";
 import got from "got";
 
 export class Rawon extends Client {
