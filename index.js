@@ -1,10 +1,10 @@
 import { downloadExecutable } from "./yt-dlp-utils";
-import { existsSync, readFileSync, writeFileSync, rmSync } from "fs";
-import { execSync } from "child_process";
+import { existsSync, readFileSync, writeFileSync, rmSync } from "node:fs";
+import { execSync } from "node:child_process";
 import prism from "prism-media";
-import { resolve } from "path";
-import { Server } from "https";
-import module from "module";
+import { resolve } from "node:path";
+import { Server } from "node:https";
+import module from "node:module";
 
 const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
 

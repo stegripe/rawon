@@ -14,8 +14,8 @@ import {
     Snowflake,
     TextChannel
 } from "discord.js";
-import { promises as fs } from "fs";
-import { resolve } from "path";
+import { promises as fs } from "node:fs";
+import { resolve } from "node:path";
 
 export class CommandManager extends Collection<string, CommandComponent> {
     public isReady = false;

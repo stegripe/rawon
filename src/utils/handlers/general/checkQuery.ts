@@ -1,5 +1,5 @@
 import { QueryData } from "../../../typings";
-import { URL } from "url";
+import { URL } from "node:url";
 
 export function checkQuery(string: string): QueryData {
     let url: URL;
