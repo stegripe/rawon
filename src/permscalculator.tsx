@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { IPerm } from "../typings";
 import { ChangeEvent, useState } from "react";
 
@@ -269,61 +270,61 @@ function PermsCalculator(): JSX.Element {
     function permsToElements(permsArr: IPerm[]): JSX.Element[] {
         return permsArr.map(x => (
             <div key={x.name} className="m-1">
-                <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange} className="form-checkbox rounded border-transparent hover:bg-indigo-400 hover:text-indigo-400 checked:text-indigo-800 checked:hover:text-indigo-800 focus:border-transparent focus:ring-0 focus:outline-none"/>
-                <label htmlFor={x.name} className={`${x.auth ? "text-orange-400" : "dark:text-white"} ml-2`}>{x.name}</label>
+                <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange} className="form-checkbox rounded border-transparent bg-gray-700 hover:bg-indigo-400 hover:text-indigo-400 checked:text-indigo-800 checked:hover:text-indigo-800 focus:border-transparent focus:ring-0 focus:outline-none"/>
+                <label htmlFor={x.name} className={`${x.auth ? "text-orange-600" : ""} ml-2`}>{x.name}</label>
             </div>
         ));
     }
 
     return (
-        <div className="flex min-w-full h-full dark:bg-gray-900 text-sm">
+        <div className="flex min-w-full h-screen text-sm">
             <div className="m-10 w-full">
-                <p className="text-base md:text-xl font-bold dark:text-white">Permissions Calculator</p>
+                <p className="text-base md:text-xl font-bold">Permissions Calculator</p>
                 <div className="my-4 grid grid-cols-1 md:grid-cols-3">
                     <div className="my-2 md:my-0">
-                        <p className="dark:text-white">Client ID</p>
-                        <input className="focus:outline-none border border-black rounded-md dark:border-transparent" id="client-id" onChange={onChange}
+                        <p>Client ID</p>
+                        <input className="focus:outline-none border border-black rounded-md" id="client-id" onChange={onChange}
                             value={state.clientId} />
                     </div>
                     <div className="my-2 md:my-0">
-                        <p className="dark:text-white">Scope</p>
-                        <input className="focus:outline-none border border-black rounded-md dark:border-transparent" id="scope" onChange={onChange} value={state.scope} />
+                        <p>Scope</p>
+                        <input className="focus:outline-none border border-black rounded-md" id="scope" onChange={onChange} value={state.scope} />
                     </div>
                     <div className="my-2 md:my-0">
-                        <p className="dark:text-white">Redirect URI</p>
-                        <input className="focus:outline-none border border-black rounded-md dark:border-transparent" id="redirect-uri" onChange={onChange}
+                        <p>Redirect URI</p>
+                        <input className="focus:outline-none border border-black rounded-md" id="redirect-uri" onChange={onChange}
                             value={state.redirectUri} />
                     </div>
                 </div>
                 <div className="my-4 w-full">
-                    <p className="dark:text-white">Permissions</p>
-                    <div className="bg-black bg-opacity-25 w-full break-words">
+                    <p>Permissions</p>
+                    <div className="bg-opacity-25 w-full break-words">
                         <div className="grid grid-cols-1 grid-rows-3 md:grid-rows-2 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 w-full">
                             <div className="md:row-span-2 lg:row-span-1">
-                                <p className="mt-2 lg:mt-1 ml-1 text-sm font-bold dark:text-white">General</p>
+                                <p className="mt-2 lg:mt-1 ml-1 text-sm font-bold">General</p>
                                 <div className="grid grid-cols-1">
                                     {permsToElements([...perms].filter(x => x.type === "general"))}
                                 </div>
                             </div>
                             <div>
-                                <p className="mt-3 lg:mt-1 ml-1 text-sm font-bold dark:text-white">Text</p>
+                                <p className="mt-3 lg:mt-1 ml-1 text-sm font-bold">Text</p>
                                 <div className="grid grid-cols-1">
                                     {permsToElements([...perms].filter(x => x.type === "text"))}
                                 </div>
                             </div>
                             <div>
-                                <p className="mt-3 lg:mt-1 ml-1 text-sm font-bold dark:text-white">Voice</p>
+                                <p className="mt-3 lg:mt-1 ml-1 text-sm font-bold">Voice</p>
                                 <div className="grid grid-cols-1">
                                     {permsToElements([...perms].filter(x => x.type === "voice"))}
                                 </div>
                             </div>
                         </div>
-                        <p className="text-orange-400 mx-2 mt-1 text-xs">Colored means that the OAuth user needs to enable 2FA on their account if the server requires 2FA</p>
-                        <p className="dark:text-white m-3">{getEquation()} = {state.perms.map(x => `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
+                        <p className="text-orange-600 mx-2 mt-1 text-xs">Colored means that the OAuth user needs to enable 2FA on their account if the server requires 2FA</p>
+                        <p className="m-3">{getEquation()} = {state.perms.map(x => `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
                     </div>
                 </div>
                 <div className="my-4 w-full">
-                    <p className="dark:text-white">URL</p>
+                    <p>URL</p>
                     <p className="w-full bg-gray-500 rounded-md p-2" children={`https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(state.clientId) || "<CLIENT_ID_HERE>"
                     }&scope=${encodeURIComponent(state.scope) || "bot"}&permissions=${getEquation()}${state.redirectUri.length
                         ? `&redirect_uri=${encodeURIComponent(state.redirectUri)}`

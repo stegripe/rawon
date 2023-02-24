@@ -13,7 +13,7 @@ export interface DiscordEmbedData {
     color: number;
     footer: {
         text: string;
-        icon_url: string;
+        iconUrl: string;
     };
     image: {
         url: string;
@@ -24,7 +24,7 @@ export interface DiscordEmbedData {
     author: {
         name: string;
         url: string;
-        icon_url: string;
+        iconUrl: string;
     };
     fields: {
         name: string;

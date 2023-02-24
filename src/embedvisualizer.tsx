@@ -7,7 +7,7 @@ function HTMLDiscordEmbed({ embed }: { embed: DiscordEmbedData }): JSX.Element {
             borderColor: embed.color.toString(16)
         }}>
             <div id="embed-footer" className="flex items-center">
-                <img src={embed.author.icon_url} alt="" className="w-5 h-auto rounded-full"/>
+                <img src={embed.author.iconUrl} alt="" className="w-5 h-auto rounded-full"/>
                 <a className="ml-2 text-white text-sm" href={embed.author.url}>{embed.author.name}</a>
             </div>
             <a className="font-bold text-xl mt-4" href={embed.url}>{embed.title}</a>
@@ -18,16 +18,16 @@ function HTMLDiscordEmbed({ embed }: { embed: DiscordEmbedData }): JSX.Element {
 export default function EmbedVisualizer(): JSX.Element {
     const [data] = useState<DiscordEmbedData>({
         author: {
-            name: "ABC",
+            name: "Rawon",
             url: "",
-            icon_url: "https://disc-11.zhycorp.net/logo512.png"
+            iconUrl: "https://api.clytage.org/assets/images/rawon.webp"
         },
         color: 0x000000,
         description: "",
         fields: [],
         footer: {
             text: "",
-            icon_url: ""
+            iconUrl: ""
         },
         image: {
             url: ""
@@ -41,7 +41,7 @@ export default function EmbedVisualizer(): JSX.Element {
     });
 
     return (
-        <div className="flex items-center justify-center h-screen dark:bg-gray-900">
+        <div className="flex items-center justify-center h-screen">
             <HTMLDiscordEmbed embed={data} />
         </div>
     );

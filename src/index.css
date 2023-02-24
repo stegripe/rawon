@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+    background:#23272A;
+    padding: 10px 15px;
+    color:#8B8B8B;
+    border-radius:3px;
+    transition:.4s;
+}
