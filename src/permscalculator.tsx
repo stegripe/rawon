@@ -268,12 +268,10 @@ function PermsCalculator(): JSX.Element {
     }
 
     function permsToElements(permsArr: IPerm[]): JSX.Element[] {
-        return permsArr.map(x => (
-            <div key={x.name} className="m-1">
-                <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange} className="form-checkbox rounded border-transparent bg-gray-700 hover:bg-indigo-400 hover:text-indigo-400 checked:text-indigo-800 checked:hover:text-indigo-800 focus:border-transparent focus:ring-0 focus:outline-none"/>
-                <label htmlFor={x.name} className={`${x.auth ? "text-orange-600" : ""} ml-2`}>{x.name}</label>
-            </div>
-        ));
+        return permsArr.map(x => <div key={x.name} className="m-1">
+            <input type="checkbox" id={x.name} name={x.name} onChange={onCheckboxChange} className="form-checkbox rounded border-transparent bg-gray-700 hover:bg-indigo-400 hover:text-indigo-400 checked:text-indigo-800 checked:hover:text-indigo-800 focus:border-transparent focus:ring-0 focus:outline-none"/>
+            <label htmlFor={x.name} className={`${x.auth ? "text-orange-600" : ""} ml-2`}>{x.name}</label>
+        </div>);
     }
 
     return (

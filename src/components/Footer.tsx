@@ -28,14 +28,11 @@ export default function Footer(): JSX.Element {
                 &nbsp;All rights reserved.
                 </p>
                 <div className="flex mt-3">
-                    {socialList.map(x => (
-                        <a key={x.name} href={x.href} className="mx-3" target="_blank" rel="noopener noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={`w-6 h-6
-                    transition-colors duration-200 hover:text-tertiary ${x.className}`} viewBox="0 0 16 16">
-                                <path d={x.path} />
-                            </svg>
-                        </a>
-                    ))}
+                    {socialList.map(x => <a key={x.name} href={x.href} className="mx-3" target="_blank" rel="noopener noreferrer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={`w-6 h-6 transition-colors duration-200 hover:text-tertiary ${x.className}`} viewBox="0 0 16 16">
+                            <path d={x.path} />
+                        </svg>
+                    </a>)}
                 </div>
             </div>
         </footer>
