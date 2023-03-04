@@ -77,6 +77,24 @@ export async function handleVideos(
         }).on("debug", message => {
             client.logger.debug(message);
         });
+
+        connection.on('stateChange', (oldState, newState) => {
+            const oldNetworking = Reflect.get(oldState, 'networking');
+            const newNetworking = Reflect.get(newState, 'networking');
+        
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+            const networkStateChangeHandler = (oldNetworkState: any, newNetworkState: any) => {
+                const newUdp = Reflect.get(newNetworkState, 'udp');
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+                clearInterval(newUdp?.keepAliveInterval);
+            }
+        
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            oldNetworking?.off('stateChange', networkStateChangeHandler);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            newNetworking?.on('stateChange', networkStateChangeHandler);
+        });
+
         ctx.guild!.queue.connection = connection;
 
         client.debugLog.logData(
