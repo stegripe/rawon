@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
 import { MessageInteractionAction } from "../typings";
-import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, ModalSubmitFields, ModalSubmitInteraction, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, MessageReplyOptions, ModalSubmitFields, ModalSubmitInteraction, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
@@ -96,7 +96,12 @@ export class CommandContext {
         if ((options as InteractionReplyOptions).ephemeral) {
             throw new Error("Cannot send ephemeral message in a non-interaction context.");
         }
-        return this.context.channel!.send(options as BaseMessageOptions | MessagePayload | string);
+        if (typeof options === "string") {
+            options = { content: options };
+        }
+
+        ((options as MessageReplyOptions).allowedMentions ??= {}).repliedUser = false;
+        return (this.context as Message).reply(options as MessageReplyOptions); 
     }
 
     public isInteraction(): boolean {
