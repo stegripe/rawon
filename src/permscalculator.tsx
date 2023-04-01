@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 import { IPerm } from "../typings";
 import { ChangeEvent, useState } from "react";
+import CloseIcon from "@heroicons/react/solid/XIcon";
 
 const perms: IPerm[] = [
     {
@@ -275,59 +276,64 @@ function PermsCalculator(): JSX.Element {
     }
 
     return (
-        <div className="flex min-w-full h-screen text-sm">
-            <div className="m-10 w-full">
-                <p className="text-base md:text-xl font-bold">Permissions Calculator</p>
-                <div className="my-4 grid grid-cols-1 md:grid-cols-3">
-                    <div className="my-2 md:my-0">
-                        <p>Client ID</p>
-                        <input className="focus:outline-none border border-black rounded-md" id="client-id" onChange={onChange}
-                            value={state.clientId} />
-                    </div>
-                    <div className="my-2 md:my-0">
-                        <p>Scope</p>
-                        <input className="focus:outline-none border border-black rounded-md" id="scope" onChange={onChange} value={state.scope} />
-                    </div>
-                    <div className="my-2 md:my-0">
-                        <p>Redirect URI</p>
-                        <input className="focus:outline-none border border-black rounded-md" id="redirect-uri" onChange={onChange}
-                            value={state.redirectUri} />
-                    </div>
+        <div className="flex w-full flex-col p-8 gap-5">
+            <div className="flex w-full gap-3 items-center">
+                <a className="" href="/"><CloseIcon className="w-8 h-8" /></a>
+                <p className="text-xl font-bold">Permissions Calculator</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="flex flex-col w-full gap-1">
+                    <p>Client ID</p>
+                    <input className="focus:outline-none border border-black rounded-md px-3 py-2" id="client-id" onChange={onChange}
+                        value={state.clientId} />
                 </div>
-                <div className="my-4 w-full">
-                    <p>Permissions</p>
-                    <div className="bg-opacity-25 w-full break-words">
-                        <div className="grid grid-cols-1 grid-rows-3 md:grid-rows-2 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 w-full">
-                            <div className="md:row-span-2 lg:row-span-1">
-                                <p className="mt-2 lg:mt-1 ml-1 text-sm font-bold">General</p>
-                                <div className="grid grid-cols-1">
-                                    {permsToElements([...perms].filter(x => x.type === "general"))}
-                                </div>
-                            </div>
-                            <div>
-                                <p className="mt-3 lg:mt-1 ml-1 text-sm font-bold">Text</p>
-                                <div className="grid grid-cols-1">
-                                    {permsToElements([...perms].filter(x => x.type === "text"))}
-                                </div>
-                            </div>
-                            <div>
-                                <p className="mt-3 lg:mt-1 ml-1 text-sm font-bold">Voice</p>
-                                <div className="grid grid-cols-1">
-                                    {permsToElements([...perms].filter(x => x.type === "voice"))}
-                                </div>
+                <div className="flex flex-col w-full gap-1">
+                    <p>Scope</p>
+                    <input className="focus:outline-none border border-black rounded-md px-3 py-2" id="scope" onChange={onChange} value={state.scope} />
+                </div>
+                <div className="flex flex-col w-full gap-1">
+                    <p>Redirect URI</p>
+                    <input className="focus:outline-none border border-black rounded-md px-3 py-2" id="redirect-uri" onChange={onChange}
+                        value={state.redirectUri} />
+                </div>
+            </div>
+            <div className="flex flex-col w-full gap-3">
+                <p className="text-lg font-bold">Permissions</p>
+                <div className="bg-opacity-25 w-full break-words">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
+                        <div className="md:row-span-2 lg:row-span-1">
+                            <p className="text-sm font-bold">General</p>
+                            <div className="grid grid-cols-1">
+                                {permsToElements([...perms].filter(x => x.type === "general"))}
                             </div>
                         </div>
-                        <p className="text-orange-600 mx-2 mt-1 text-xs">Colored means that the OAuth user needs to enable 2FA on their account if the server requires 2FA</p>
-                        <p className="m-3">{getEquation()} = {state.perms.map(x => `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
+                        <div>
+                            <p className="text-sm font-bold">Text</p>
+                            <div className="grid grid-cols-1">
+                                {permsToElements([...perms].filter(x => x.type === "text"))}
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-sm font-bold">Voice</p>
+                            <div className="grid grid-cols-1">
+                                {permsToElements([...perms].filter(x => x.type === "voice"))}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="my-4 w-full">
-                    <p>URL</p>
-                    <p className="w-full bg-gray-500 rounded-md p-2" children={`https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(state.clientId) || "<CLIENT_ID_HERE>"
-                    }&scope=${encodeURIComponent(state.scope) || "bot"}&permissions=${getEquation()}${state.redirectUri.length
+            </div>
+            <div className="flex flex-col w-full gap-1">
+                <p className="text-orange-600 mx-2 text-xs">Colored means that the OAuth user needs to enable 2FA on their account if the server requires 2FA</p>
+                <p className="m-3">{getEquation()} = {state.perms.map(x => `0x${perms.find(y => y.name === x)!.value.toString(16)}`).join(" | ")}</p>
+            </div>
+            <div className="w-full">
+                <p>URL</p>
+                <p className="bg-gray-500 rounded-md p-2 break-all">
+                    https://discord.com/oauth2/authorize?client_id={encodeURIComponent(state.clientId) || "<CLIENT_ID_HERE>"
+                    }&scope={encodeURIComponent(state.scope) || "bot"}&permissions={getEquation()}{state.redirectUri.length
                         ? `&redirect_uri=${encodeURIComponent(state.redirectUri)}`
-                        : ""}`} />
-                </div>
+                        : ""}
+                </p>
             </div>
         </div>
     );
