@@ -1,0 +1,378 @@
+{
+    "commands": {
+        "developers": {
+            "categoryName": "开发者",
+            "eval": {
+                "description": "对代码进行评估",
+                "errorString": "错误",
+                "noCode": "未提供任何代码。",
+                "inputString": "输入",
+                "outputString": "输出",
+                "usage": "{prefix}eval <一些代码>"
+            }
+        },
+        "general": {
+            "about": {
+                "aboutFooter": "{botname} - 机器人资讯",
+                "botUptimeString": "机器人上线时间",
+                "botVersionString": "机器人版本",
+                "cachedUsersString": "缓存用户",
+                "channelsString": "频道",
+                "commitString": "提交",
+                "description": "显示机器人的资讯",
+                "discordJSVersionString": "Discord.js 版本",
+                "ffmpegVersionString": "FFmpeg 版本",
+                "nodeVersionString": "Node.js 版本",
+                "osUptimeString": "OS 上线时间",
+                "processUptimeString": "Process 上线时间",
+                "serversString": "伺服器",
+                "sourceCodeString": "源代码"
+            },
+            "categoryName": "全体",
+            "help": {
+                "aliasesString": "化名",
+                "authorString": "{username} - 指令列表",
+                "commandDetailTitle": "{username} - 关于 {command} 指令资讯",
+                "commandSelectionString": "请选择指令",
+                "commandUsageFooter": "<> = 必需 | [] = 可选 {devOnly}",
+                "description": "显示特定指令的指令列表或资讯",
+                "descriptionString": "描述",
+                "footerString": "{prefix}help <指令> 获取更多有关特定指令的资讯",
+                "nameString": "名称",
+                "noCommanSuggest": "找不到匹配的指令名称。 您是这个意思吗？",
+                "noCommand": "找不到匹配的指令名称。",
+                "slashDescription": "使用指令名称查看有关指令的特定信息",
+                "usage": "{prefix}help [指令]",
+                "usageString": "用法"
+            },
+            "invite": {
+                "clickURL": "**[点击这里]({url})** 邀请此机器人到您的伺服器。",
+                "description": "获取机器人的邀请链接",
+                "inviteTitle": "{bot} - 邀请链接"
+            },
+            "ping": {
+                "description": "显示当前机器人的ping",
+                "footerString": "延迟时间: {user}"
+            }
+        },
+        "moderation": {
+            "ban": {
+                "banFail": "无法**`封禁`**成员，因为: `{message}`",
+                "banSuccess": "**{user}** 已被此伺服器**`封禁`**。",
+                "bannedByString": "被 {author} 封禁",
+                "botNoPermission": "抱歉，我没有**`封禁成员`**权限。",
+                "description": "从伺服器封禁某人",
+                "slashMemberIDDescription": "您想封禁谁？",
+                "slashReasonDescription": "封禁原因",
+                "usage": "{prefix}ban <@提及 | id> [原因]",
+                "userBanned": "你已被 **{guildName}** 伺服器**`封禁`**",
+                "userNoBannable": "抱歉，我无法**`封禁`**该成员。",
+                "userNoPermission": "抱歉，您没有**`封禁成员`**权限使用此指令。"
+            },
+            "categoryName": "管理",
+            "common": {
+                "noReasonString": "[未标明]",
+                "noUserSpecified": "请指定某人。",
+                "reasonString": "**原因**"
+            },
+            "infractions": {
+                "description": "显示用户的违规行为",
+                "embedAuthorText": "{user} - 违规行为",
+                "noInfractions": "没有违规行为。",
+                "slashMemberDescription": "您想查看哪一个人的违规行为?",
+                "usage": "{prefix}infractions [@提及 | id]"
+            },
+            "kick": {
+                "botNoPermission": "抱歉，我没有**`踢出成员`**权限。",
+                "description": "将某人踢出此伺服器",
+                "kickFail": "无法**`踢出`**成员，因为: `{message}`",
+                "kickSuccess": "**{user}**已被此伺服器**`踢出`**。",
+                "kickedByString": "被{author}踢出",
+                "slashMemberDescription": "您想踢出谁？",
+                "slashReasonDescription": "踢出原因",
+                "usage": "{prefix}kick <@提及 | id> [原因]",
+                "userKicked": "你已被 **{guildName}** 伺服器**`踢出`**",
+                "userNoKickable": "抱歉，我无法**`踢出`**该成员。",
+                "userNoPermission": "抱歉，您没有**`踢出成员`**权限使用此指令。"
+            },
+            "modlogs": {
+                "channel": {
+                    "current": "目前审核日志频道: <#{channel}>",
+                    "invalid": "无效频道，频道必须是文字频道。",
+                    "noChannel": "尚未设定审核日志频道。",
+                    "success": "审核日志频道已设置为 <#{channel}>"
+                },
+                "description": "更改审核日志功能设定",
+                "disable": "审核日志功能设定已**`禁用`**",
+                "embedTitle": "审核日志",
+                "enable": "审核日志功能设定已**`启用`**",
+                "newChannelText": "新频道",
+                "slashChannelDescription": "查看或更改审核日志频道",
+                "slashChannelNewChannelOption": "审核日志的新频道",
+                "slashDisableDescription": "禁用审核日志功能",
+                "slashEnableDescription": "启用审核日志功能",
+                "usage": "{prefix}modlogs"
+            },
+            "mute": {
+                "alreadyMuted": "该成员已被**`禁言`**",
+                "botNoPermission": "抱歉，我没有**`管理身分组`**权限。",
+                "cantMuteOwner": "你不能**`禁言`**伺服器拥有者。 ",
+                "description": "在伺服器上禁言某人",
+                "muteFail": "无法**`禁言`**成员，因为: `{message}`",
+                "muteSuccess": "**{user}**已被此伺服器**`禁言`**。",
+                "mutedByString": "被{author}禁言",
+                "noRole": "禁言身分组尚未设定，请使用`{prefix}setmute`设置",
+                "slashMemberDescription": "您想禁言谁？",
+                "slashReasonDescription": "禁言原因",
+                "usage": "{prefix}mute <@提及 | id> [原因]",
+                "userMuted": "你已被 **{guildName}** 伺服器**`禁言`**",
+                "userNoPermission": "抱歉，您没有**`管理身分组`**权限使用此指令。"
+            },
+            "purge": {
+                "botNoPermission": "抱歉，我没有**`管理讯息`**权限。",
+                "description": "删除讯息",
+                "invalidAmount": "请指定要删除讯息的有效数字。",
+                "purgeFail": "无法**`清除`**讯息，因为: `{message}`",
+                "purgeSuccess": "{amount, plural, one {**`1`** 个讯息} other {**`#`** 个讯息}}已被**`清除`**",
+                "slashAmountDescription": "要删除讯息的数字",
+                "usage": "{prefix}purge <数目>",
+                "userNoPermission": "抱歉，您没有**`管理讯息`**权限使用此指令。"
+            },
+            "setmute": {
+                "description": "设置禁言身分组",
+                "invalidRole": "无效的身分组。",
+                "slashRoleDescription": "用于禁言的身分组",
+                "success": "禁言身分组已设置为 <@&{role}>",
+                "usage": "{prefix}setmute <身分组>"
+            },
+            "unban": {
+                "alreadyUnban": "该用户没有被**`封禁`**",
+                "description": "在伺服器上解禁某人",
+                "slashMemberDescription": "您想解禁谁？",
+                "slashReasonDescription": "解禁原因",
+                "unbanSuccess": "**{user}**已被此伺服器**`解禁`**。",
+                "unbanFail": "无法**`解禁`**成员，因为: `{message}`",
+                "unbannedByString": "被{author}解禁",
+                "usage": "{prefix}unban <id> [原因]"
+            },
+            "unmute": {
+                "description": "在伺服器上解除禁言某人",
+                "noMuted": "该用户没有被**`禁言`**",
+                "slashMemberDescription": "您想解除禁言谁？",
+                "slashReasonDescription": "解除禁言原因",
+                "unmuteFail": "无法**`解除禁言`**成员，因为: `{message}`",
+                "unmuteSuccess": "**{user}**已被此伺服器**`解除禁言`**。",
+                "unmutedByString": "被{author}解除禁言",
+                "usage": "{prefix}unmute <@提及 | id> [原因]",
+                "userUnmuted": "你在 **{guildName}** 伺服器上已被**`解除禁言`**"
+            },
+            "warn": {
+                "description": "在伺服器上警告成员",
+                "noDM": "无法与该用户创建私信，但我会继续警告他。",
+                "slashMemberDescription": "您想警告谁？",
+                "slashReasonDescription": "警告原因",
+                "usage": "{prefix}warn <@提及 | id> [原因]",
+                "userNoPermission": "抱歉，您没有**`管理伺服器`**权限使用此指令。",
+                "userWarned": "你在 **{guildName}** 伺服器上已被警告",
+                "warnSuccess": "**{user}**已被此伺服器**`警告`**。",
+                "warnedByString": "被{author}警告"
+            }
+        },
+        "music": {
+            "categoryName": "音乐",
+            "dj": {
+                "description": "更改 DJ 功能设置",
+                "disable": "停用",
+                "disableText": "DJ 功能已**`停用`**",
+                "embedTitle": "DJ 功能",
+                "enable": "启用",
+                "enableText": "DJ 功能已**`启用`**",
+                "newRoleText": "新身分组",
+                "role": {
+                    "current": "目前 DJ 身分组: <@&{role}>",
+                    "invalid": "无效的身分组。",
+                    "noRole": "DJ 身分组尚未设定，请使用`{prefix}dj role`设置",
+                    "success": "DJ 身分组已设置为 <@&{role}>"
+                },
+                "slashDisableDescription": "停用 DJ 功能",
+                "slashEnableDescription": "启用  DJ 功能",
+                "slashRoleDescription": "查看或更改 DJ 身分组",
+                "slashRoleNewRoleOption": "新 DJ 身分组"
+            },
+            "filter": {
+                "availableFilters": "可用过滤器",
+                "currentlyUsedFilters": "目前已使用的过滤器",
+                "currentState": "`{filter}` 目前是 `{state}`",
+                "description": "配置歌曲过滤器",
+                "embedFooter": "如 {opstate} 过滤器，请使用 {prefix}filter {opstate} {filter}",
+                "filterSet": "`{filter}` 过滤器现已 `{state}`",
+                "slashStateDescription": "{state, select, enable {启用} other {停用}}歌曲过滤器",
+                "slashStateFilterDescription": "歌曲过滤器将会 {state, select, enable {启用} other {停用}}",
+                "slashStatusDescription": "检查歌曲过滤器的当前状态",
+                "slashStatusFilterDescription": "您要检查的歌曲过滤器",
+                "specifyFilter": "请指定歌曲过滤器"
+            },
+            "lyrics": {
+                "apiError": "API 无法寻找歌曲 **{song}**， 因为: `{message}`",
+                "description": "显示歌曲的歌词",
+                "noQuery": "目前没有播放任何内容，或者没有提供任何参数。",
+                "slashDescription": "要搜索的歌曲",
+                "usage": "{prefix}lyrics [歌曲]"
+            },
+            "nowplaying": {
+                "description": "显示媒体播放器状态",
+                "disableButton": "以前的按钮不再处于活动状态并被删除。",
+                "emptyQueue": "队列为空。"
+            },
+            "pause": {
+                "alreadyPause": "音乐播放器已经被暂停。",
+                "description": "暂停音乐播放器",
+                "pauseMessage": "音乐播放器已暂停。"
+            },
+            "play": {
+                "alreadyPlaying": "音乐播放器已经在 **`{voiceChannel}`** 语音通讯通道播放。",
+                "description": "播放一些音乐",
+                "noSongData": "该 URL 没有任何歌曲数据。",
+                "slashQueryDescription": "查询搜索",
+                "usage": "{prefix}play <查询 | url>"
+            },
+            "queue": {
+                "description": "显示队列列表"
+            },
+            "remove": {
+                "description": "从队列中移除歌曲",
+                "noPermission": "你无权使用此指令。",
+                "noPositions": "请指定要移除的歌曲位置。",
+                "slashPositionsDescription": "以逗号或空格分隔指定要移除的歌曲位置",
+                "songSkip": "当前歌曲已移除，歌曲被跳过。\n\n",
+                "songsRemoved": "已在队列中移除 {removed, plural, one {1 首歌曲} other {# 首歌曲}}",
+                "usage": "{prefix}remove <位置>"
+            },
+            "repeat": {
+                "actualMode": "目前的重复模式是 **`{mode}`**",
+                "description": "重复当前的音乐或队列",
+                "footer": "如改变模式，请查看 {prefix}help repeat",
+                "newMode": "重复模式已设置为 **`{mode}`**",
+                "slashDisable": "停用重复模式",
+                "slashQueue": "重复模式为 **`队列`**",
+                "slashSong": "重复模式为 **`音乐`**",
+                "usage": "'{prefix}'repeat <{options}>"
+            },
+            "resume": {
+                "alreadyResume": "音乐播放器没有被暂停。",
+                "description": "恢复播放音乐",
+                "resumeMessage": "音乐播放器已继续播放音乐。"
+            },
+            "search": {
+                "cancelMessage": "输入 {cancel} 或 c 取消选曲。",
+                "canceledMessage": "选曲已取消。",
+                "description": "使用已提供的资讯播放一些音乐",
+                "interactionContent": "请选择一些音乐",
+                "interactionPlaceholder": "请选择一些音乐",
+                "noQuery": "请提供一些资讯以进行搜索。",
+                "noSelection": "未输入值或输入无效值，选曲已取消。",
+                "noTracks": "我无法获得任何搜索结果。",
+                "queueEmbed": "请选择一些音乐； 您可以使用空格选择多个或 {separator}.\n",
+                "slashDescription": "搜索指定音乐",
+                "slashQueryDescription": "查询搜索",
+                "slashSourceDescription": "应该把音乐带到哪里？",
+                "trackSelectionMessage": "选曲",
+                "usage": "{prefix}search <查询> [来源]"
+            },
+            "shuffle": {
+                "actualState": "当前随机播放模式是 **`{state}`**",
+                "description": "设置随机播放模式的功能",
+                "newState": "随机播放模式已设置为**`{state}`**"
+            },
+            "skip": {
+                "description": "略过音乐",
+                "skipMessage": "已略过 **{song}**",
+                "voteResultMessage": "{length}/{required} 已投票跳过当前歌曲"
+            },
+            "skipTo": {
+                "cantPlay": "您不能跳到当前音乐。",
+                "description": "跳到队列中的特定位置",
+                "noPermission": "你无权使用此指令。",
+                "noSongPosition": "无法在该位置找到歌曲。",
+                "skipMessage": "已略过到 **{song}**",
+                "slashFirstDescription": "倒回到队列中的第一首歌曲",
+                "slashLastDescription": "跳到队列中的最后一首歌曲",
+                "slashPositionDescription": "歌曲在队列中的位置",
+                "slashSpecificDescription": "跳到队列中的特定位置",
+                "usage": "'{prefix}'skipto <{options} | 数字>"
+            },
+            "stayInQueue": {
+                "247Disabled": "保持语音指令已停用",
+                "actualState": "保持语音目前是 **`{state}`**",
+                "description": "使机器人在队列结束时留在语音通道中",
+                "newState": "保持语音已设置为 **`{state}`**",
+                "slashDescription": "保持语音功能的轮流模式"
+            },
+            "stop": {
+                "description": "停止音乐播放器",
+                "stoppedMessage": "音乐播放器已停止。"
+            },
+            "volume": {
+                "changeVolume": "如更改音量，请在使用此指令时提供音量数字。",
+                "currentVolume": "目前音量是 **`{volume}`**",
+                "description": "更改音乐播放器音量",
+                "newVolume": "音量已设置为 **`{volume}`**",
+                "plsPause": "请暂停音乐而不是将音量调到 **`{volume}`**",
+                "slashDescription": "新音量",
+                "usage": "{prefix}volume [新音量]",
+                "volumeLimit": "我无法设置音量高于 **`{maxVol}`**"
+            }
+        }
+    },
+    "events": {
+        "channelUpdate": {
+            "connectionReconfigured": "已成功重新配置连接。",
+            "reconfigureConnection": "语音通道区域已更改，重新配置连接...",
+            "unableReconfigureConnection": "无法重新配置连接，队列已被删除。"
+        },
+        "createInteraction": {
+            "message1": "抱歉，该互动仅限于 <@{user}> 和伺服器权限者。",
+            "message2": "抱歉，该互动仅限于 <@{user}>"
+        },
+        "createMessage": "你好 {author}, 我的前缀是 **`{prefix}`**",
+        "cmdLoading": "加载中...",
+        "voiceStateUpdate": {
+            "connectionReconfigured": "已成功重新配置连接。",
+            "deleteQueue": "**`{duration}`** 已过，没有人加入语音频道，队列已被删除。",
+            "deleteQueueFooter": "队列已被删除",
+            "disconnectFromVCMessage": "与语音通道断开连接，队列已被删除。",
+            "joinStageMessage": "成功以演讲者身份加入舞台频道。",
+            "joiningAsSpeaker": "已移至舞台频道，正在尝试以演讲者身份加入...",
+            "pauseQueue": "所有人都离开了语音频道。为了节省资源，队列已暂停。\n如果在**`{duration}`**期内没有人加入语音频道，队列将被删除。",
+            "pauseQueueFooter": "队列已暂停",
+            "reconfigureConnection": "移动到不同地区的语音通道，重新配置连接...",
+            "resumeQueue": "有人加入了语音频道。\n恢复中 **{song}**",
+            "resumeQueueFooter": "队列已恢复",
+            "unableJoinStageMessage": "无法以演讲者身份加入，队列已被删除。",
+            "unableReconfigureConnection": "无法重新配置连接，队列已被删除。"
+        }
+    },
+    "reusable": {
+        "invalidUsage": "无效的用法，请用 **`{prefix} {name}`**了解更多资讯。",
+        "pageFooter": "{actual}/{total} 页"
+    },
+    "utils": {
+        "cooldownMessage": "{author}，请稍等 **`{timeleft}`**的冷却时间。",
+        "generalHandler": {
+            "errorJoining": "加入语音通道时出错，因为: `{message}`",
+            "errorPlaying": "尝试播放音乐时出错，因为: `{message}`",
+            "handleVideoInitial": "已将 {length} 首歌曲添加到队列中",
+            "leftVC": "离开了语音频道是因为我待用太久了。",
+            "queueEnded": "队列已经结束，使用**`{usage}`**播放更多音乐。",
+            "startPlaying": "开始播放**{song}**",
+            "stopPlaying": "停止播放**{song}**"
+        },
+        "musicDecorator": {
+            "noInVC": "抱歉，您需要在语音频道中才能执行此操作。",
+            "noQueue": "没有播放任何内容。",
+            "sameVC": "你需要和我在同一个语音频道。",
+            "validVCJoinable": "对不起，我不能**`连接`**到你的语音频道，请确保我有正确的权限。",
+            "validVCPermission": "对不起，我不能在这个语音频道**`说话`**;请确保我有正确的权限。"
+        }
+    }
+}
