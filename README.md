@@ -73,5 +73,6 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@21Z](https://github.com/21Z) (en)
 - [@lxndr-rl](https://github.com/lxndr-rl) (es)
 - [@MoustacheOff](https://github.com/MoustacheOff) (fr)
+- [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
 
 > © 2022 Clytage Development
