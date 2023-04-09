@@ -34,6 +34,7 @@ $ npm start
 
 ## Hosting Setup
 
+Setup Tutorial Video (YouTube)
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=9csIDZYpaJM" target="_blank">
  <img src="http://img.youtube.com/vi/9csIDZYpaJM/0.jpg" alt="Setup Guide Video" width="360" border="10" />
 </a>
@@ -75,4 +76,4 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@MoustacheOff](https://github.com/MoustacheOff) (fr)
 - [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
 
-> © 2022 Clytage Development
+> © 2023 Clytage Development
