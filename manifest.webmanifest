@@ -1,0 +1,32 @@
+{
+    "name": "Rawon Discord Bot",
+    "short_name": "Rawon",
+    "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
+    "theme_color": "#FFF3D1",
+    "background_color": "#FFF3D1",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

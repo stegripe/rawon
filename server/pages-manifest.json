@@ -1,9 +1,0 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/": "pages/index.html",
-  "/permission-calculator": "pages/permission-calculator.html",
-  "/script-generator": "pages/script-generator.html",
-  "/404": "pages/404.html"
-}
