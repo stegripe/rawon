@@ -1,69 +1,76 @@
 {
-  "name": "disc-11",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@codemirror/lang-javascript": "^0.19.4",
-    "@codemirror/state": "^0.19.6",
-    "@codemirror/theme-one-dark": "^0.19.1",
-    "@codemirror/view": "^0.19.37",
-    "@headlessui/react": "^1.4.2",
-    "@heroicons/react": "^1.0.5",
-    "@tailwindcss/forms": "^0.4.0",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.0.3",
-    "@types/node": "^16.11.17",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
-    "typescript": "^4.5.4",
-    "web-vitals": "^2.1.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "@clytage-pkg/eslint-config/typescript"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.ts?(x)"
+    "name": "rawon",
+    "version": "1.0.0",
+    "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
+    "homepage": "https://github.com/clytage/rawon#readme",
+    "bugs": {
+        "url": "https://github.com/clytage/rawon/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/clytage/rawon.git"
+    },
+    "license": "BSD-3-Clause",
+    "author": "noxzym",
+    "scripts": {
+        "build": "next build",
+        "dev": "next dev",
+        "lint": "next lint",
+        "start": "next start"
+    },
+    "prettier": {
+        "arrowParens": "avoid",
+        "tabWidth": 4,
+        "trailingComma": "none"
+    },
+    "eslintConfig": {
+        "parserOptions": {
+            "project": "tsconfig.json"
+        },
+        "plugins": [
+            "prettier"
+        ],
+        "extends": [
+            "next",
+            "next/core-web-vitals",
+            "prettier"
         ]
-      }
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@clytage-pkg/eslint-config": "^1.6.0",
-    "@typescript-eslint/eslint-plugin": "^5.8.1",
-    "@typescript-eslint/parser": "^5.8.1",
-    "autoprefixer": "^10.4.1",
-    "eslint": "^8.5.0",
-    "eslint-config-react-app": "^7.0.0",
-    "postcss": "^8.4.5",
-    "tailwindcss": "^3.0.8"
-  }
+    },
+    "dependencies": {
+        "@emotion/react": "^11.11.0",
+        "@emotion/styled": "^11.11.0",
+        "@mui/icons-material": "^5.11.16",
+        "@mui/material": "^5.13.3",
+        "framer-motion": "^10.12.16",
+        "next": "^13.4.4",
+        "next-pwa": "^5.6.0",
+        "next-seo": "^6.0.0",
+        "react": "^18.2.0",
+        "react-code-blocks": "^0.0.9-0",
+        "react-dom": "18.2.0",
+        "react-icons": "^4.9.0",
+        "sass": "^1.62.1",
+        "swr": "^2.1.5"
+    },
+    "devDependencies": {
+        "@types/node": "^18.16.16",
+        "@types/react": "^18.2.7",
+        "@types/react-dom": "^18.2.4",
+        "@typescript-eslint/eslint-plugin": "^5.59.8",
+        "@typescript-eslint/parser": "^5.59.8",
+        "autoprefixer": "^10.4.14",
+        "eslint": "^8.41.0",
+        "eslint-config-next": "^13.4.4",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "postcss": "^8.4.24",
+        "prettier": "^2.8.8",
+        "prettier-plugin-tailwindcss": "^0.3.0",
+        "tailwindcss": "^3.3.2",
+        "typescript": "^5.0.4"
+    },
+    "engines": {
+        "node": ">=16.6.0",
+        "npm": ">=7.0.0"
+    }
 }
