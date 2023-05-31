@@ -1,10 +1,13 @@
 const WithPWA = require("next-pwa");
 
+const isProd = process.env.NODE_ENV === "production";
+
 module.exports = WithPWA({
     dest: "public",
     register: true,
     skipWaiting: true
 })({
+    output: isProd ? "export" : "standalone",
     reactStrictMode: true,
     swcMinify: true,
     modularizeImports: {
@@ -12,21 +15,8 @@ module.exports = WithPWA({
             transform: "@mui/icons-material/{{ matches.[1] }}/{{member}}"
         }
     },
-    redirects: async () => [
-        {
-            source: "/discord",
-            destination: "https://clytage.org/discord",
-            permanent: true
-        },
-        {
-            source: "/github",
-            destination: "https://github.com/clytage/rawon",
-            permanent: true
-        },
-        {
-            source: "/clytage",
-            destination: "https://clytage.org",
-            permanent: true
-        }
-    ]
+    assetPrefix: isProd ? "/rawon" : "",
+    images: {
+        unoptimized: true
+    }
 });
