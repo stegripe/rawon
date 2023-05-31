@@ -1,0 +1,41 @@
+{
+  "pages": {
+    "/_app": [
+      "static/media/7a78f1ce0329757f-s.p.woff2",
+      "static/media/d36a2a2bb416f59e-s.p.woff2",
+      "static/media/c04551857776278f-s.p.woff2",
+      "static/media/916d3686010a8de2-s.p.woff2",
+      "static/media/7777133e901cd5ed-s.p.woff2",
+      "static/media/d869208648ca5469-s.p.woff2",
+      "static/media/9a881e2ac07d406b-s.p.woff2",
+      "static/media/376dd8dc38524313-s.p.woff2",
+      "static/media/bd427f25ac24d036-s.p.woff2"
+    ]
+  },
+  "app": {
+    "/home/runner/work/rawon/rawon/node_modules/next/font/google/target.css?{\"path\":\"src/pages/_app.tsx\",\"import\":\"Poppins\",\"arguments\":[{\"weight\":[\"100\",\"200\",\"300\",\"400\",\"500\",\"600\",\"700\",\"800\",\"900\"],\"subsets\":[\"latin\"]}],\"variableName\":\"poppins\"}": [
+      "static/media/7a78f1ce0329757f-s.p.woff2",
+      "static/media/d36a2a2bb416f59e-s.p.woff2",
+      "static/media/c04551857776278f-s.p.woff2",
+      "static/media/916d3686010a8de2-s.p.woff2",
+      "static/media/7777133e901cd5ed-s.p.woff2",
+      "static/media/d869208648ca5469-s.p.woff2",
+      "static/media/9a881e2ac07d406b-s.p.woff2",
+      "static/media/376dd8dc38524313-s.p.woff2",
+      "static/media/bd427f25ac24d036-s.p.woff2"
+    ],
+    "/home/runner/work/rawon/rawon/node_modules/next/font/google/target.css.webpack[javascript/auto]!=!/home/runner/work/rawon/rawon/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[1].oneOf[3].use[1]!/home/runner/work/rawon/rawon/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[1].oneOf[3].use[2]!/home/runner/work/rawon/rawon/node_modules/next/font/google/target.css?{\"path\":\"src/pages/_app.tsx\",\"import\":\"Poppins\",\"arguments\":[{\"weight\":[\"100\",\"200\",\"300\",\"400\",\"500\",\"600\",\"700\",\"800\",\"900\"],\"subsets\":[\"latin\"]}],\"variableName\":\"poppins\"}": [
+      "static/media/7a78f1ce0329757f-s.p.woff2",
+      "static/media/d36a2a2bb416f59e-s.p.woff2",
+      "static/media/c04551857776278f-s.p.woff2",
+      "static/media/916d3686010a8de2-s.p.woff2",
+      "static/media/7777133e901cd5ed-s.p.woff2",
+      "static/media/d869208648ca5469-s.p.woff2",
+      "static/media/9a881e2ac07d406b-s.p.woff2",
+      "static/media/376dd8dc38524313-s.p.woff2",
+      "static/media/bd427f25ac24d036-s.p.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": true
+}
