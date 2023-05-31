@@ -47,7 +47,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     {
                         rel: "icon",
                         type: "image/png",
-                        href: "/icons/icon-512x512.png",
+                        href: "/favicon.ico",
                         sizes: "16x16"
                     }
                 ]}

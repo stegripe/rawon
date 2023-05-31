@@ -28,27 +28,33 @@ export default function HomePage() {
                     <div className="flex w-full flex-col items-center gap-4">
                         <Link
                             href="https://discord.com/api/oauth2/authorize?client_id=999162626036740138&permissions=275183430727&scope=applications.commands%20bot"
-                            className="h-9 w-48 rounded-lg text-inherit no-underline"
+                            passHref
+                            legacyBehavior
                         >
-                            <Button
-                                id="inviteButton"
-                                color="inherit"
-                                className="h-full w-full rounded-lg bg-secondary font-sans text-lg font-semibold text-white"
-                            >
-                                invite
-                            </Button>
+                            <a target="_blank" rel="noreferrer">
+                                <Button
+                                    id="inviteButton"
+                                    color="inherit"
+                                    className="h-9 w-48 rounded-lg bg-secondary font-sans text-lg font-semibold text-white"
+                                >
+                                    invite
+                                </Button>
+                            </a>
                         </Link>
                         <Link
-                            href="/discord"
-                            className="h-9 w-48 rounded-lg text-inherit no-underline"
+                            href="https://clytage.org/discord"
+                            passHref
+                            legacyBehavior
                         >
-                            <Button
-                                id="supportButton"
-                                color="inherit"
-                                className="h-full w-full rounded-lg border-2 border-solid border-secondary font-sans text-lg font-semibold text-secondary"
-                            >
-                                support
-                            </Button>
+                            <a target="_blank" rel="noreferrer">
+                                <Button
+                                    id="supportButton"
+                                    color="inherit"
+                                    className="h-9 w-48 rounded-lg border-2 border-solid border-secondary font-sans text-lg font-semibold text-secondary"
+                                >
+                                    support
+                                </Button>
+                            </a>
                         </Link>
                     </div>
                 </div>

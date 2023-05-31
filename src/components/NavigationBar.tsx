@@ -36,15 +36,15 @@ const NavigationItems = [
 const ExternalLinks = [
     {
         name: "Discord",
-        path: "/discord"
+        path: "https://clytage.org/discord"
     },
     {
         name: "Github",
-        path: "/github"
+        path: "https://github.com/clytage/rawon"
     },
     {
         name: "Clytage",
-        path: "/clytage"
+        path: "https://clytage.org"
     }
 ];
 
