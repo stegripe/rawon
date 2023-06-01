@@ -1,19 +1,17 @@
 import { ArrowBackRounded } from "@mui/icons-material";
 import { Button, Container, Input, Typography } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CopyBlock, dracula } from "react-code-blocks";
+
 export default function ScriptGeneratorPage() {
+    const inputRef = useRef<HTMLInputElement>(null);
     const [URL, setURL] = useState([]);
 
     const addURL = () => {
-        const urlInput = document?.getElementById("urlInput") as
-            | HTMLInputElement
-            | undefined;
-        const value = urlInput?.value;
-        if (value) {
-            setURL([...URL, value]);
-            urlInput.value = "";
+        if (inputRef.current.value) {
+            setURL([...URL, inputRef?.current?.value]);
+            inputRef.current.value = "";
         }
     };
 
@@ -51,7 +49,7 @@ export default function ScriptGeneratorPage() {
                                     URL
                                 </Typography>
                                 <Input
-                                    id="urlInput"
+                                    inputRef={inputRef}
                                     disableUnderline
                                     fullWidth
                                     className="h-10 rounded-lg border-1 border-solid px-3"
@@ -86,7 +84,7 @@ export default function ScriptGeneratorPage() {
     const url = ${
         URL.length
             ? `[
-        ${URL.map(x => `"${x}"`).join(",\n")}
+        ${URL.map(x => `"${x}"`).join(",\n        ")}
     ];`
             : "[];"
     }
