@@ -15,7 +15,7 @@ module.exports = WithPWA({
             transform: "@mui/icons-material/{{ matches.[1] }}/{{member}}"
         }
     },
-    assetPrefix: isProd ? "/" : "",
+    assetPrefix: isProd ? "https://rawon.clytage.org" : "",
     images: {
         unoptimized: true
     }
