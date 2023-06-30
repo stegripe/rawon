@@ -33,7 +33,7 @@ export class NowPlayingCommand extends BaseCommand {
             const song = (res?.metadata as QueueSong | undefined)?.song;
 
             const embed = createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** `).setThumbnail(
-                song?.thumbnail ?? "https://api.clytage.org/assets/images/icon.png"
+                song?.thumbnail ?? "https://cdn.clytage.org/images/icon.png"
             );
 
             const curr = ~~(res!.playbackDuration / 1000);
