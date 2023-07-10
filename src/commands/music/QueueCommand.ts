@@ -1,12 +1,12 @@
-import { ButtonPagination } from "../../utils/structures/ButtonPagination";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { haveQueue } from "../../utils/decorators/MusicUtil";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import { chunk } from "../../utils/functions/chunk";
-import { QueueSong } from "../../typings";
-import i18n from "../../config";
+import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { haveQueue } from "../../utils/decorators/MusicUtil.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { chunk } from "../../utils/functions/chunk.js";
+import { QueueSong } from "../../typings/index.js";
+import i18n from "../../config/index.js";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 
 @Command({

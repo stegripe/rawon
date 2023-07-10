@@ -1,11 +1,11 @@
-import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
-import { OperationManager } from "../../utils/structures/OperationManager";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import { QueueSong } from "../../typings";
-import i18n from "../../config";
+import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { OperationManager } from "../../utils/structures/OperationManager.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { QueueSong } from "../../typings/index.js";
+import i18n from "../../config/index.js";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
 

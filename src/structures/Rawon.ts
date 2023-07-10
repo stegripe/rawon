@@ -1,18 +1,18 @@
-import { importURLToString } from "../utils/functions/importURLToString";
-import { DebugLogManager } from "../utils/structures/DebugLogManager";
-import { JSONDataManager } from "../utils/structures/JSONDataManager";
-import { CommandManager } from "../utils/structures/CommandManager";
-import { ModerationLogs } from "../utils/structures/ModerationLogs";
-import { EventsLoader } from "../utils/structures/EventsLoader";
-import { ClientUtils } from "../utils/structures/ClientUtils";
-import { RawonLogger } from "../utils/structures/RawonLogger";
-import { soundcloud } from "../utils/handlers/SoundCloudUtil";
-import { SpotifyUtil } from "../utils/handlers/SpotifyUtil";
-import { GuildData } from "../typings";
-import * as config from "../config";
+import { importURLToString } from "../utils/functions/importURLToString.js";
+import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
+import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
+import { CommandManager } from "../utils/structures/CommandManager.js";
+import { ModerationLogs } from "../utils/structures/ModerationLogs.js";
+import { EventsLoader } from "../utils/structures/EventsLoader.js";
+import { ClientUtils } from "../utils/structures/ClientUtils.js";
+import { RawonLogger } from "../utils/structures/RawonLogger.js";
+import { SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
+import { GuildData } from "../typings/index.js";
+import * as config from "../config/index.js";
 import { Client, ClientOptions } from "discord.js";
 import { resolve } from "node:path";
 import got from "got";
+import Soundcloud from "soundcloud.ts";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -25,7 +25,7 @@ export class Rawon extends Client {
     public readonly modlogs = new ModerationLogs(this);
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
-    public readonly soundcloud = soundcloud;
+    public readonly soundcloud = new Soundcloud.default();
     public readonly request = got.extend({
         hooks: {
             beforeError: [

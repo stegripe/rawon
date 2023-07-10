@@ -1,13 +1,13 @@
-import { parseHTMLElements } from "../../utils/functions/parseHTMLElements";
-import { ButtonPagination } from "../../utils/structures/ButtonPagination";
-import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import { chunk } from "../../utils/functions/chunk";
-import { QueueSong } from "../../typings";
-import i18n from "../../config";
+import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
+import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
+import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { chunk } from "../../utils/functions/chunk.js";
+import { QueueSong } from "../../typings/index.js";
+import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType, escapeMarkdown, VoiceChannel } from "discord.js";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
@@ -76,8 +76,7 @@ export class RemoveCommand extends BaseCommand {
                 const texts = await Promise.all(
                     v.map(
                         (song, index) =>
-                            `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${
-                                i * 10 + (index + 1)
+                            `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${i * 10 + (index + 1)
                             }.) ${escapeMarkdown(parseHTMLElements(song.song.title))}`
                     )
                 );

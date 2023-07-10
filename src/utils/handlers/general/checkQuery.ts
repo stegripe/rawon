@@ -1,4 +1,4 @@
-import { QueryData } from "../../../typings";
+import { QueryData } from "../../../typings/index.js";
 import { URL } from "node:url";
 
 export function checkQuery(string: string): QueryData {

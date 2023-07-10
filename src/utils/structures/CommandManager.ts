@@ -1,10 +1,10 @@
 /* eslint-disable max-depth */
-import { CategoryMeta, CommandComponent, RegisterCmdOptions } from "../../typings";
-import { pathStringToURLString } from "../functions/pathStringToURLString";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../functions/createEmbed";
-import { Rawon } from "../../structures/Rawon";
-import i18n from "../../config";
+import { CategoryMeta, CommandComponent, RegisterCmdOptions } from "../../typings/index.js";
+import { pathStringToURLString } from "../functions/pathStringToURLString.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../functions/createEmbed.js";
+import { Rawon } from "../../structures/Rawon.js";
+import i18n from "../../config/index.js";
 import {
     ApplicationCommandData,
     ApplicationCommandType,
@@ -39,26 +39,26 @@ export class CommandManager extends Collection<string, CommandComponent> {
                             pathStringToURLString(resolve(this.path, category, "category.meta.js"))
                         ) as { default: CategoryMeta }
                     ).default;
-    
+
                     this.categories.set(category, meta);
                     this.client.logger.info(`Registering ${category} category...`);
-    
+
                     const files = (await fs.readdir(resolve(this.path, category)))
                         .filter(f => f !== "category.meta.js");
-    
+
                     let disabledCount = 0;
-    
+
                     this.client.logger.info(`Found ${files.length} of commands in ${category}, loading...`);
                     const allCmd = await this.client.application!.commands.fetch();
-    
+
                     for (const file of files) {
                         try {
                             const path = pathStringToURLString(resolve(this.path, category, file));
                             const command = await this.client.utils.import<CommandComponent>(path, this.client);
-    
+
                             if (command === undefined)
                                 throw new Error(`File ${file} is not a valid command file.`);
-    
+
                             command.meta = Object.assign(command.meta, { path, category });
                             if (Number(command.meta.aliases?.length) > 0) {
                                 for (const alias of command.meta.aliases ?? []) {
@@ -66,7 +66,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                 }
                             }
                             this.set(command.meta.name, command);
-    
+
                             if (command.meta.contextChat) {
                                 await this.registerCmd(
                                     {
@@ -76,10 +76,8 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                     {
                                         onError: (g, err) =>
                                             this.client.logger.error(
-                                                `Unable to register ${
-                                                    command.meta.name
-                                                } to message context for ${g?.id ?? "???"}, reason: ${
-                                                    err.message
+                                                `Unable to register ${command.meta.name
+                                                } to message context for ${g?.id ?? "???"}, reason: ${err.message
                                                 }`
                                             ),
                                         onRegistered: g =>
@@ -102,8 +100,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                     {
                                         onError: (g, err) =>
                                             this.client.logger.error(
-                                                `Unable to register ${command.meta.name} to user context for ${
-                                                    g?.id ?? "???"
+                                                `Unable to register ${command.meta.name} to user context for ${g?.id ?? "???"
                                                 }, reason: ${err.message}`
                                             ),
                                         onRegistered: g =>
@@ -132,12 +129,11 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                         description: command.meta.description
                                     });
                                 }
-    
+
                                 await this.registerCmd(command.meta.slash as ApplicationCommandData, {
                                     onError: (g, err) =>
                                         this.client.logger.error(
-                                            `Unable to register ${command.meta.name} to slash command for ${
-                                                g?.id ?? "???"
+                                            `Unable to register ${command.meta.name} to slash command for ${g?.id ?? "???"
                                             }, reason: ${err.message}`
                                         ),
                                     onRegistered: g =>
@@ -160,18 +156,18 @@ export class CommandManager extends Collection<string, CommandComponent> {
                             );
                         }
                     }
-    
+
                     this.categories.set(
                         category,
                         Object.assign(meta, {
                             cmds: this.filter(c => c.meta.category === category)
                         })
                     );
-    
+
                     this.client.logger.info(
                         `Done loading ${files.length} commands in ${category} category.`
                     );
-    
+
                     if (disabledCount > 0) {
                         this.client.logger.info(
                             `${disabledCount} out of ${files.length} commands in ${category} category is disabled.`
@@ -255,9 +251,8 @@ export class CommandManager extends Collection<string, CommandComponent> {
             this.client.logger.info(
                 `${message.author.tag} [${message.author.id}] is using ${command.meta.name} command from ${command.meta
                     .category!} category ` +
-                    `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${
-                        message.guild!.name
-                    } [${message.guild!.id}]`
+                `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${message.guild!.name
+                } [${message.guild!.id}]`
             );
         }
     }

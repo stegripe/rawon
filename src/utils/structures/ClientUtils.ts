@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { Rawon } from "../../structures/Rawon";
+import { Rawon } from "../../structures/Rawon.js";
 import { Guild, Role, ChannelType } from "discord.js";
 import { execSync } from "node:child_process";
 import { parse } from "node:path";
@@ -8,7 +8,7 @@ import prism from "prism-media";
 const { FFmpeg } = prism;
 
 export class ClientUtils {
-    public constructor(public readonly client: Rawon) {}
+    public constructor(public readonly client: Rawon) { }
 
     public async fetchMuteRole(guild: Guild): Promise<Role | null> {
         const id = this.client.data.data?.[guild.id]?.mute;

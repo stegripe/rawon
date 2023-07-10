@@ -1,4 +1,4 @@
-import { FunctionType, MethodDecorator, Promisable } from "../../typings";
+import { FunctionType, MethodDecorator, Promisable } from "../../typings/index.js";
 
 export function createMethodDecorator<TC = any, Target extends FunctionType = FunctionType>(
     func: (...args: Parameters<Target>) => Promisable<boolean | undefined>

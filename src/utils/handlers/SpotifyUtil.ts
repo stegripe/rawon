@@ -1,5 +1,5 @@
-import { SpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings";
-import { Rawon } from "../../structures/Rawon";
+import { SpotifyAccessTokenAPIResult, SpotifyPlaylist, SpotifyTrack } from "../../typings/index.js";
+import { Rawon } from "../../structures/Rawon.js";
 
 export class SpotifyUtil {
     // eslint-disable-next-line prefer-named-capture-group
@@ -7,7 +7,7 @@ export class SpotifyUtil {
     public baseURI = "https://api.spotify.com/v1";
     private token!: string;
 
-    public constructor(public client: Rawon) {}
+    public constructor(public client: Rawon) { }
 
     public async fetchToken(): Promise<number> {
         const { accessToken, accessTokenExpirationTimestampMs } = await this.client.request
