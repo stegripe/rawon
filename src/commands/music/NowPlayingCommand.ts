@@ -1,12 +1,12 @@
-import { createProgressBar } from "../../utils/functions/createProgressBar";
-import { normalizeTime } from "../../utils/functions/normalizeTime";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { haveQueue } from "../../utils/decorators/MusicUtil";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import { QueueSong } from "../../typings";
-import i18n from "../../config";
+import { createProgressBar } from "../../utils/functions/createProgressBar.js";
+import { normalizeTime } from "../../utils/functions/normalizeTime.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { haveQueue } from "../../utils/decorators/MusicUtil.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { QueueSong } from "../../typings/index.js";
+import i18n from "../../config/index.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from "discord.js";
 import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
@@ -25,10 +25,10 @@ export class NowPlayingCommand extends BaseCommand {
         function getEmbed(): EmbedBuilder {
             const res = (
                 ctx.guild?.queue?.player.state as
-                    | (AudioPlayerState & {
-                          resource: AudioResource | undefined;
-                      })
-                    | undefined
+                | (AudioPlayerState & {
+                    resource: AudioResource | undefined;
+                })
+                | undefined
             )?.resource;
             const song = (res?.metadata as QueueSong | undefined)?.song;
 
@@ -39,7 +39,7 @@ export class NowPlayingCommand extends BaseCommand {
             const curr = ~~(res!.playbackDuration / 1000);
             embed.data.description += song
                 ? `**[${song.title}](${song.url})**\n` +
-                  `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`
+                `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`
                 : i18n.__("commands.music.nowplaying.emptyQueue");
 
             return embed;

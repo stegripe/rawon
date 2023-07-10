@@ -1,7 +1,7 @@
-import { createEmbed } from "../../functions/createEmbed";
-import { getStream } from "../YTDLUtil";
-import { ffmpegArgs } from "../../functions/ffmpegArgs";
-import i18n from "../../../config";
+import { createEmbed } from "../../functions/createEmbed.js";
+import { getStream } from "../YTDLUtil.js";
+import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
+import i18n from "../../../config/index.js";
 import { AudioPlayerError, createAudioResource, entersState, StreamType, VoiceConnectionStatus } from "@discordjs/voice";
 import { ChannelType, Guild } from "discord.js";
 import prism from "prism-media";
@@ -29,15 +29,15 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         queue.dcTimeout = queue.stayInVC
             ? null
             : setTimeout(() => {
-                  queue.destroy();
-                  void queue.textChannel
-                      .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
-                      .then(msg => {
-                          setTimeout(() => {
-                              void msg.delete();
-                          }, 3500);
-                      });
-              }, 60000);
+                queue.destroy();
+                void queue.textChannel
+                    .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
+                    .then(msg => {
+                        setTimeout(() => {
+                            void msg.delete();
+                        }, 3500);
+                    });
+            }, 60000);
         queue.client.debugLog.logData("info", "PLAY_HANDLER", `Queue ended for ${guild.name}(${guild.id})`);
         return;
     }
@@ -45,7 +45,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     const stream = new prism.FFmpeg({
         args: ffmpegArgs(queue.filters)
     });
-    (await getStream(song.song.url)).pipe(stream);
+    (await getStream(queue.client, song.song.url)).pipe(stream);
 
     const resource = createAudioResource(stream, { inlineVolume: true, inputType: StreamType.OggOpus, metadata: song });
 
@@ -58,8 +58,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
             queue?.client.debugLog.logData(
                 "info",
                 "PLAY_HANDLER",
-                `Trying to be a speaker in ${guild.members.me?.voice.channel?.name ?? "Unknown"}(${
-                    guild.members.me?.voice.channel?.id ?? "ID UNKNOWN"
+                `Trying to be a speaker in ${guild.members.me?.voice.channel?.name ?? "Unknown"}(${guild.members.me?.voice.channel?.id ?? "ID UNKNOWN"
                 }) in guild ${guild.name}(${guild.id})`
             );
             const suppressed = await guild.members.me?.voice
@@ -69,8 +68,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
                 queue?.client.debugLog.logData(
                     "error",
                     "PLAY_HANDLER",
-                    `Failed to be a speaker in ${guild.members.me?.voice.channel?.name ?? "Unknown"}(${
-                        guild.members.me?.voice.channel?.id ?? "ID UNKNOWN"
+                    `Failed to be a speaker in ${guild.members.me?.voice.channel?.name ?? "Unknown"}(${guild.members.me?.voice.channel?.id ?? "ID UNKNOWN"
                     }) in guild ${guild.name}(${guild.id}). Reason: ${suppressed.error.message}`
                 );
                 queue?.player.emit("error", new AudioPlayerError(suppressed.error, resource));

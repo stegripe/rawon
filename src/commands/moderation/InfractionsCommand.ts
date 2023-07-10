@@ -1,12 +1,12 @@
-import { ButtonPagination } from "../../utils/structures/ButtonPagination";
-import { memberReqPerms } from "../../utils/decorators/CommonUtil";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { formatTime } from "../../utils/functions/formatMS";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import { chunk } from "../../utils/functions/chunk";
-import i18n from "../../config";
+import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
+import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatTime } from "../../utils/functions/formatMS.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { chunk } from "../../utils/functions/chunk.js";
+import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType } from "discord.js";
 
 @Command({
@@ -58,8 +58,7 @@ export class InfractionsCommand extends BaseCommand {
                 const infracts = await Promise.all(
                     s.map(
                         (inf, i) =>
-                            `${n * 10 + (i + 1)}. ${formatTime(inf.on)} - ${
-                                inf.reason ?? i18n.__("commands.moderation.common.noReasonString")
+                            `${n * 10 + (i + 1)}. ${formatTime(inf.on)} - ${inf.reason ?? i18n.__("commands.moderation.common.noReasonString")
                             }`
                     )
                 );

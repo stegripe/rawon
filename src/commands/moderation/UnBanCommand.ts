@@ -1,9 +1,9 @@
-import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import i18n from "../../config";
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType, Message } from "discord.js";
 
 @Command({
@@ -55,7 +55,7 @@ export class UnBanCommand extends BaseCommand {
             .remove(
                 user.id,
                 ctx.options?.getString("reason") ??
-                    (ctx.args.length ? ctx.args.join(" ") : i18n.__("commands.moderation.common.noReasonString"))
+                (ctx.args.length ? ctx.args.join(" ") : i18n.__("commands.moderation.common.noReasonString"))
             )
             .catch(err => new Error(err as string | undefined));
         if (unban instanceof Error) {

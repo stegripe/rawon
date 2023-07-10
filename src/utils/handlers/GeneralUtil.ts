@@ -1,4 +1,4 @@
-export { handleVideos } from "./general/handleVideos";
-export { searchTrack } from "./general/searchTrack";
-export { checkQuery } from "./general/checkQuery";
-export { play } from "./general/play";
+export { handleVideos } from "./general/handleVideos.js";
+export { searchTrack } from "./general/searchTrack.js";
+export { checkQuery } from "./general/checkQuery.js";
+export { play } from "./general/play.js";

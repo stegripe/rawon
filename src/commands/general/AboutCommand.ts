@@ -1,10 +1,10 @@
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { createTable } from "../../utils/functions/createTable";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { formatMS } from "../../utils/functions/formatMS";
-import { Command } from "../../utils/decorators/Command";
-import i18n from "../../config";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { createTable } from "../../utils/functions/createTable.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { formatMS } from "../../utils/functions/formatMS.js";
+import { Command } from "../../utils/decorators/Command.js";
+import i18n from "../../config/index.js";
 import { version as DJSVersion } from "discord.js";
 import { readFileSync } from "node:fs";
 import { uptime } from "node:os";

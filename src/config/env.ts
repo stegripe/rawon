@@ -1,5 +1,5 @@
-import { parseEnvValue } from "../utils/functions/parseEnvValue";
-import { EnvActivityTypes, PresenceData } from "../typings";
+import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
+import { EnvActivityTypes, PresenceData } from "../typings/index.js";
 import { ClientPresenceStatus } from "discord.js";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";

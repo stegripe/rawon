@@ -1,10 +1,10 @@
-import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import { filterArgs } from "../../utils/functions/ffmpegArgs";
-import i18n from "../../config";
+import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
+import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType, Message } from "discord.js";
 
 type FilterSubCmd = "disable" | "enable" | "status";

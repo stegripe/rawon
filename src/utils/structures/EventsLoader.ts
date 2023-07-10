@@ -1,11 +1,11 @@
-import { pathStringToURLString } from "../functions/pathStringToURLString";
-import { Rawon } from "../../structures/Rawon";
-import { Event } from "../../typings";
+import { pathStringToURLString } from "../functions/pathStringToURLString.js";
+import { Rawon } from "../../structures/Rawon.js";
+import { Event } from "../../typings/index.js";
 import { promises as fs } from "node:fs";
 import { resolve } from "node:path";
 
 export class EventsLoader {
-    public constructor(public client: Rawon, public path: string) {}
+    public constructor(public client: Rawon, public path: string) { }
     public load(): void {
         fs.readdir(resolve(this.path))
             .then(async events => {

@@ -1,6 +1,6 @@
-import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator";
-import { createEmbed } from "../functions/createEmbed";
-import i18n from "../../config";
+import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
+import { createEmbed } from "../functions/createEmbed.js";
+import i18n from "../../config/index.js";
 import { PermissionFlagsBits } from "discord.js";
 
 export const haveQueue = createCmdExecuteDecorator(ctx => {

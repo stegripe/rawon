@@ -1,4 +1,4 @@
-import { lang } from "./env";
+import { lang } from "./env.js";
 import { ClientOptions, IntentsBitField, Options, ShardingManagerMode, Sweepers } from "discord.js";
 import { join } from "node:path";
 import i18n from "i18n";
@@ -48,5 +48,5 @@ i18n.setLocale(lang);
 
 export const shardsCount: number | "auto" = "auto";
 export const shardingMode: ShardingManagerMode = "worker";
-export * from "./env";
+export * from "./env.js";
 export default i18n;
