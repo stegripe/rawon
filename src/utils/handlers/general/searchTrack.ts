@@ -1,8 +1,8 @@
-import { Song, SearchTrackResult, SpotifyTrack } from "../../../typings";
-import { Rawon } from "../../../structures/Rawon";
-import { checkQuery } from "./checkQuery";
-import { youtube } from "../YouTubeUtil";
-import { getInfo } from "../YTDLUtil";
+import { Song, SearchTrackResult, SpotifyTrack } from "../../../typings/index.js";
+import { Rawon } from "../../../structures/Rawon.js";
+import { checkQuery } from "./checkQuery.js";
+import { youtube } from "../YouTubeUtil.js";
+import { getInfo } from "../YTDLUtil.js";
 import { Playlist, SearchResult, Video, VideoCompact } from "youtubei";
 import { URL } from "node:url";
 
@@ -198,7 +198,7 @@ export async function searchTrack(
                             songs.map(async (x): Promise<void> => {
                                 let response = await youtube.search(
                                     x.track.external_ids?.isrc ??
-                                        `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
+                                    `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
                                     { type: "video" }
                                 );
                                 if (!response.items.length) {

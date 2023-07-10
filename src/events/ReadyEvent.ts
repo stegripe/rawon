@@ -1,8 +1,8 @@
 import { EnvActivityTypes } from "../typings/index.js";
-import { formatMS } from "../utils/functions/formatMS";
-import { BaseEvent } from "../structures/BaseEvent";
-import { Event } from "../utils/decorators/Event";
-import i18n from "../config";
+import { formatMS } from "../utils/functions/formatMS.js";
+import { BaseEvent } from "../structures/BaseEvent.js";
+import { Event } from "../utils/decorators/Event.js";
+import i18n from "../config/index.js";
 import { ActivityType, Presence } from "discord.js";
 
 @Event<typeof ReadyEvent>("ready")
@@ -30,7 +30,7 @@ export class ReadyEvent extends BaseEvent {
         this.client.logger.info(
             await this.formatString(
                 "{username} is ready to serve {userCount} users on {serverCount} guilds in " +
-                    "{textChannelCount} text channels and {voiceChannelCount} voice channels!"
+                "{textChannelCount} text channels and {voiceChannelCount} voice channels!"
             )
         );
     }
@@ -95,11 +95,11 @@ export class ReadyEvent extends BaseEvent {
         return this.client.user!.setPresence({
             activities: (activity as { name: string } | undefined)
                 ? [
-                      {
-                          name: activity.name,
-                          type: activity.typeNumber
-                      }
-                  ]
+                    {
+                        name: activity.name,
+                        type: activity.typeNumber
+                    }
+                ]
                 : [],
             status: this.client.config.presenceData.status[statusNumber]
         });

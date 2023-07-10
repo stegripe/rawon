@@ -1,7 +1,7 @@
-import { createEmbed } from "../utils/functions/createEmbed";
-import { BaseEvent } from "../structures/BaseEvent";
-import { Event } from "../utils/decorators/Event";
-import i18n from "../config";
+import { createEmbed } from "../utils/functions/createEmbed.js";
+import { BaseEvent } from "../structures/BaseEvent.js";
+import { Event } from "../utils/decorators/Event.js";
+import i18n from "../config/index.js";
 import { ChannelType, Message, User } from "discord.js";
 
 @Event<typeof MessageCreateEvent>("messageCreate")

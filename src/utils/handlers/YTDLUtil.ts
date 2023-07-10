@@ -1,16 +1,16 @@
-import { BasicYoutubeVideoInfo } from "../../typings";
-import ytdl, { exec } from "../../../yt-dlp-utils";
-import { soundcloud } from "./SoundCloudUtil";
-import { streamStrategy } from "../../config";
-import { checkQuery } from "./GeneralUtil";
+import { BasicYoutubeVideoInfo } from "../../typings/index.js";
+import ytdl, { exec } from "../../../yt-dlp-utils/index.js";
+import { streamStrategy } from "../../config/index.js";
+import { checkQuery } from "./GeneralUtil.js";
 import { stream as pldlStream, video_basic_info } from "play-dl";
 import { Readable } from "node:stream";
+import { Rawon } from "../../structures/Rawon.js";
 
-export async function getStream(url: string): Promise<Readable> {
+export async function getStream(client: Rawon, url: string): Promise<Readable> {
     if (streamStrategy === "play-dl") {
         const isSoundcloudUrl = checkQuery(url);
         if (isSoundcloudUrl.sourceType === "soundcloud") {
-            return soundcloud.util.streamTrack(url) as unknown as Readable;
+            return client.soundcloud.util.streamTrack(url) as unknown as Readable;
         }
         const rawPlayDlStream = await pldlStream(url, { discordPlayerCompatibility: true });
         return rawPlayDlStream.stream;

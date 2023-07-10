@@ -1,8 +1,8 @@
-import { Event } from "../typings";
-import { Rawon } from "./Rawon";
+import { Event } from "../typings/index.js";
+import { Rawon } from "./Rawon.js";
 
 export abstract class BaseEvent implements Event {
-    public constructor(public client: Rawon, public readonly name: Event["name"]) {}
+    public constructor(public client: Rawon, public readonly name: Event["name"]) { }
 
     public abstract execute(...args: any): any;
 }

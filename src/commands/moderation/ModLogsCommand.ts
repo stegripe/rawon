@@ -1,9 +1,9 @@
-import { memberReqPerms } from "../../utils/decorators/CommonUtil";
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import i18n from "../../config";
+import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType, ChannelType } from "discord.js";
 
 @Command<typeof ModLogsCommand>({
