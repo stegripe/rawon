@@ -1,5 +1,5 @@
-import { BaseEvent } from "../structures/BaseEvent";
-import { Event } from "../utils/decorators/Event";
+import { BaseEvent } from "../structures/BaseEvent.js";
+import { Event } from "../utils/decorators/Event.js";
 
 @Event("debug")
 export class DebugEvent extends BaseEvent {

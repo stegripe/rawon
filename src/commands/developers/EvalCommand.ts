@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, no-eval, prefer-named-capture-group */
-import { CommandContext } from "../../structures/CommandContext";
-import { createEmbed } from "../../utils/functions/createEmbed";
-import { BaseCommand } from "../../structures/BaseCommand";
-import { Command } from "../../utils/decorators/Command";
-import i18n from "../../config";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { Command } from "../../utils/decorators/Command.js";
+import i18n from "../../config/index.js";
 import { Message } from "discord.js";
 import { inspect } from "node:util";
 

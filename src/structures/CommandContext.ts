@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
-import { MessageInteractionAction } from "../typings";
+import { MessageInteractionAction } from "../typings/index.js";
 import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, MessageReplyOptions, ModalSubmitFields, ModalSubmitInteraction, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 
 export class CommandContext {
@@ -15,7 +15,7 @@ export class CommandContext {
             | Message
             | StringSelectMenuInteraction,
         public args: string[] = []
-    ) {}
+    ) { }
 
     public async deferReply(): Promise<InteractionResponse | undefined> {
         if (this.isInteraction()) {
@@ -101,7 +101,7 @@ export class CommandContext {
         }
 
         ((options as MessageReplyOptions).allowedMentions ??= {}).repliedUser = false;
-        return (this.context as Message).reply(options as MessageReplyOptions); 
+        return (this.context as Message).reply(options as MessageReplyOptions);
     }
 
     public isInteraction(): boolean {

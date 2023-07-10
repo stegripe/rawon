@@ -17,7 +17,7 @@ export const filterArgs = {
     echo: "aecho=0.8:0.9:1000:0.3"
 }
 
-export function ffmpegArgs(filters: Record<keyof typeof filterArgs, boolean>): string[] {
+export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, boolean>>): string[] {
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
     return [
         "-loglevel", "0",

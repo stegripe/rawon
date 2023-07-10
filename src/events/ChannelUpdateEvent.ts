@@ -1,6 +1,6 @@
-import { createEmbed } from "../utils/functions/createEmbed";
-import { BaseEvent } from "../structures/BaseEvent";
-import { Event } from "../utils/decorators/Event";
+import { createEmbed } from "../utils/functions/createEmbed.js";
+import { BaseEvent } from "../structures/BaseEvent.js";
+import { Event } from "../utils/decorators/Event.js";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { ChannelType, GuildChannel, VoiceChannel } from "discord.js";
 import i18n from "i18n";
@@ -38,10 +38,8 @@ export class ChannelUpdateEvent extends BaseEvent {
                 .catch(() => {
                     queue.destroy();
                     this.client.logger.info(
-                        `${
-                            this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
-                        } Unable to re-configure network on ${
-                            newChannel.guild.name
+                        `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                        } Unable to re-configure network on ${newChannel.guild.name
                         } voice channel, the queue was deleted.`
                     );
                     void msg.edit({

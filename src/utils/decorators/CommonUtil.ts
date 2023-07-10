@@ -1,5 +1,5 @@
-import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator";
-import { createEmbed } from "../functions/createEmbed";
+import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
+import { createEmbed } from "../functions/createEmbed.js";
 import { PermissionsString } from "discord.js";
 
 export function memberReqPerms(
