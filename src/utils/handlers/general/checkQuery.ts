@@ -30,7 +30,7 @@ export function checkQuery(string: string): QueryData {
         if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist") || url.searchParams.has("list")) {
             result.type = "playlist";
         } else if (
-            (/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) ||
+            (/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) ??
             (/youtu\.be/g.exec(url.hostname) && url.pathname !== "")
         ) {
             result.type = "track";

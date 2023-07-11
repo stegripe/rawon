@@ -52,7 +52,7 @@ export class RepeatCommand extends BaseCommand {
             }
         };
         const selection =
-            ctx.options?.getSubcommand() || ctx.args[0]
+            ctx.options?.getSubcommand() ?? ctx.args[0]
                 ? Object.keys(mode).find(key =>
                     mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand())
                 )
