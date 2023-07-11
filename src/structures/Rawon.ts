@@ -12,7 +12,7 @@ import * as config from "../config/index.js";
 import { Client, ClientOptions } from "discord.js";
 import { resolve } from "node:path";
 import got from "got";
-import Soundcloud from "soundcloud.ts";
+import { Soundcloud } from "soundcloud.ts";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -25,7 +25,7 @@ export class Rawon extends Client {
     public readonly modlogs = new ModerationLogs(this);
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
-    public readonly soundcloud = new Soundcloud.default();
+    public readonly soundcloud = new Soundcloud();
     public readonly request = got.extend({
         hooks: {
             beforeError: [
