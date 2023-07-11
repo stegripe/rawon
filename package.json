@@ -19,7 +19,7 @@
 		"type": "git",
 		"url": "git+https://github.com/clytage/rawon.git"
 	},
-	"author": "Clytage <support@clytage.org>",
+	"author": "Clytage <admin@clytage.org>",
 	"license": "BSD-3-Clause",
 	"bugs": {
 		"url": "https://github.com/clytage/rawon/issues"
