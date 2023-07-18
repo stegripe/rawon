@@ -1,3 +1,4 @@
+/* eslint-disable prefer-named-capture-group */
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
@@ -39,7 +40,6 @@ export class MessageCreateEvent extends BaseEvent {
 
         const pref = this.client.config.altPrefixes.concat(this.client.config.mainPrefix).find(p => {
             if (p === "{mention}") {
-                // eslint-disable-next-line prefer-named-capture-group
                 const userMention = /<@(!)?\d*?>/.exec(message.content);
                 if (userMention?.index !== 0) return false;
 
@@ -56,7 +56,6 @@ export class MessageCreateEvent extends BaseEvent {
     }
 
     private getUserFromMention(mention: string): User | undefined {
-        // eslint-disable-next-line prefer-named-capture-group
         const matches = /^<@!?(\d+)>$/.exec(mention);
         if (!matches) return undefined;
 

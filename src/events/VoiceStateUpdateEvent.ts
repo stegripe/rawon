@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
 import { formatMS } from "../utils/functions/formatMS.js";
@@ -163,7 +164,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         if (newID === queueVC.id && !member?.user.bot && queue.timeout) this.resume(queueVCMembers, queue, newState);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private timeout(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
         if (vcMembers.size !== 0) return;
 
@@ -202,7 +202,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             .then(msg => (queue.lastVSUpdateMsg = msg.id));
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private resume(vcMembers: VoiceChannel["members"], queue: ServerQueue, state: VoiceState): void {
         if (vcMembers.size <= 0) return;
 

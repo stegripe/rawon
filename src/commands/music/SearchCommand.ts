@@ -7,17 +7,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { Song } from "../../typings/index.js";
 import i18n from "../../config/index.js";
-import {
-    CommandInteractionOptionResolver,
-    Message,
-    ActionRowBuilder,
-    StringSelectMenuBuilder,
-    StringSelectMenuInteraction,
-    ApplicationCommandOptionType,
-    ComponentType,
-    escapeMarkdown,
-    SelectMenuComponentOptionData
-} from "discord.js";
+import { CommandInteractionOptionResolver, Message, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, ApplicationCommandOptionType, ComponentType, escapeMarkdown, SelectMenuComponentOptionData } from "discord.js";
 
 @Command<typeof SearchCommand>({
     aliases: ["sc"],

@@ -141,6 +141,7 @@ export async function searchTrack(
                         let bValue = 0;
                         const aDurationDiff = a.duration ? a.duration - track.duration_ms : null;
                         const bDurationDiff = b.duration ? b.duration - track.duration_ms : null;
+                        
                         if (a.title.toLowerCase().includes(track.name.toLowerCase())) aValue--;
                         if (track.artists.some(x => a.channel?.name.toLowerCase().includes(x.name))) aValue--;
                         if (a.channel?.name.endsWith("- Topic")) aValue -= 2;

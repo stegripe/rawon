@@ -1,7 +1,7 @@
 import { createEmbed } from "../../functions/createEmbed.js";
-import { getStream } from "../YTDLUtil.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
 import i18n from "../../../config/index.js";
+import { getStream } from "../YTDLUtil.js";
 import { AudioPlayerError, createAudioResource, entersState, StreamType, VoiceConnectionStatus } from "@discordjs/voice";
 import { ChannelType, Guild } from "discord.js";
 import prism from "prism-media";
@@ -92,7 +92,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
                 await playResource();
             })
             .catch((err: Error) => {
-                if (err.message === "The operation was aborted")
+                if (err.message === "The operation was aborted.")
                     err.message = "Cannot establish a voice connection within 15 seconds.";
                 queue.client.debugLog.logData(
                     "error",

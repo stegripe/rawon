@@ -13,7 +13,6 @@ export class SpotifyUtil {
         const { accessToken, accessTokenExpirationTimestampMs } = await this.client.request
             .get("https://open.spotify.com/get_access_token", {
                 headers: {
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     "User-Agent":
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59"
                 }

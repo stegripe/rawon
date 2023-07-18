@@ -1,7 +1,7 @@
-import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 import { EnvActivityTypes, PresenceData } from "../typings/index.js";
-import { ClientPresenceStatus } from "discord.js";
+import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 import { existsSync, readFileSync } from "node:fs";
+import { ClientPresenceStatus } from "discord.js";
 import { resolve } from "node:path";
 import { parse } from "dotenv";
 
@@ -27,7 +27,7 @@ export const enableRepl = process.env.REPL?.toLowerCase() === "yes";
 export const isProd = !isDev;
 
 export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
-export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
+export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "00AD95";
 export const streamStrategy = process.env.STREAM_STRATEGY! || "yt-dlp";
 export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
 export const lang = (process.env.LOCALE?.toLowerCase() ?? "") || "en";
