@@ -1,0 +1,14 @@
+name: Lint code and compile setup script
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  test:
+    uses: clytage/workflows/.github/workflows/pnpm-lint-and-test.yml@main
+    secrets: inherit
