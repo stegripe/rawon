@@ -15,21 +15,21 @@
 ## General Setup
 1. Download and install [Node.js](https://nodejs.org) version `16.6.0` or higher
 2. Open the `.env_example` file and rename it to `.env`
-3. Install required and optional dependencies
+3. Install required and optional dependencies. You still can use `npm` too.
 ```sh
-$ npm install
+$ pnpm install
 ```
 4. Compile the file
 ```sh
-$ npm run build
+$ pnpm run build
 ```
 5. If you want to save your disk spaces, let's prune the dev dependencies
 ```sh
-$ npm prune --production
+$ pnpm prune --production
 ```
 6. Finally, you can start the bot
 ```sh
-$ npm start
+$ pnpm start
 ```
 
 ## Hosting Setup
@@ -51,7 +51,7 @@ You can use Glitch too for this project, featured with its code editor.
 6. After specifying `.env`, open **Tools** > **Terminal**
 7. Type `refresh`, and track the process from **Logs**
 
-<a href="https://glitch.com/edit/#!/import/github/Clytage/rawon"><img src="https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg" alt="Remix on Glitch"></a>
+<a href="https://glitch.com/edit/#!/import/github/clytage/rawon"><img src="https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg" alt="Remix on Glitch"></a>
 
 ### Railway
 Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
@@ -67,8 +67,9 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 ## Project Contributors
 
 ### Developers
-- [@Mednoob](https://github.com/Mednoob)
 - [@mzrtamp](https://github.com/mzrtamp)
+- [@noxyzm](https://github.com/noxyzm)
+- [@Mednoob](https://github.com/Mednoob)
 
 ### Translators
 - [Developers](#developers) (en, id)
