@@ -20,7 +20,7 @@
 		"url": "git+https://github.com/clytage/rawon.git"
 	},
 	"author": "Clytage <admin@clytage.org>",
-	"license": "BSD-3-Clause",
+	"license": "AGPL-3.0",
 	"bugs": {
 		"url": "https://github.com/clytage/rawon/issues"
 	},
