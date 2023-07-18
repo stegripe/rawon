@@ -4,15 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { Command } from "../../utils/decorators/Command.js";
 import i18n from "../../config/index.js";
-import {
-    Message,
-    ActionRowBuilder,
-    StringSelectMenuBuilder,
-    SelectMenuComponentOptionData,
-    StringSelectMenuInteraction,
-    ApplicationCommandOptionType,
-    ComponentType
-} from "discord.js";
+import { ActionRowBuilder, ApplicationCommandOptionType, ComponentType, Message, SelectMenuComponentOptionData, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
 
 @Command<typeof HelpCommand>({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
@@ -127,7 +119,6 @@ export class HelpCommand extends BaseCommand {
             }
         }
 
-        // Return information embed
         return ctx.send(
             {
                 embeds: [

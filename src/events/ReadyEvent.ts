@@ -1,5 +1,5 @@
-import { EnvActivityTypes } from "../typings/index.js";
 import { formatMS } from "../utils/functions/formatMS.js";
+import { EnvActivityTypes } from "../typings/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
 import i18n from "../config/index.js";
@@ -30,7 +30,7 @@ export class ReadyEvent extends BaseEvent {
         this.client.logger.info(
             await this.formatString(
                 "{username} is ready to serve {userCount} users on {serverCount} guilds in " +
-                "{textChannelCount} text channels and {voiceChannelCount} voice channels!"
+                "{textChannelCount} text channels and {voiceChannelCount} voice channels."
             )
         );
     }

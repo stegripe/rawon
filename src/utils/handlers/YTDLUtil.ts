@@ -1,10 +1,10 @@
 import { BasicYoutubeVideoInfo } from "../../typings/index.js";
 import ytdl, { exec } from "../../../yt-dlp-utils/index.js";
 import { streamStrategy } from "../../config/index.js";
+import { Rawon } from "../../structures/Rawon.js";
 import { checkQuery } from "./GeneralUtil.js";
 import { stream as pldlStream, video_basic_info } from "play-dl";
 import { Readable } from "node:stream";
-import { Rawon } from "../../structures/Rawon.js";
 
 export async function getStream(client: Rawon, url: string): Promise<Readable> {
     if (streamStrategy === "play-dl") {

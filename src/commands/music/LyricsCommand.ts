@@ -1,8 +1,7 @@
-/* eslint-disable no-nested-ternary */
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { LyricsAPIResult, QueueSong } from "../../typings/index.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { chunk } from "../../utils/functions/chunk.js";
@@ -29,6 +28,7 @@ import { ApplicationCommandOptionType, Message } from "discord.js";
 export class LyricsCommand extends BaseCommand {
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         const query =
+            // eslint-disable-next-line no-nested-ternary
             ctx.args.length >= 1
                 ? ctx.args.join(" ")
                 : ctx.options?.getString("query")

@@ -83,7 +83,6 @@ export interface CategoryMeta {
 }
 
 declare module "discord.js" {
-    // @ts-expect-error Override typings
     export interface Client extends OClient {
         commands: Rawon["commands"];
         request: Rawon["request"];

@@ -10,9 +10,9 @@ import { SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
 import { GuildData } from "../typings/index.js";
 import * as config from "../config/index.js";
 import { Client, ClientOptions } from "discord.js";
+import { Soundcloud } from "soundcloud.ts";
 import { resolve } from "node:path";
 import got from "got";
-import { Soundcloud } from "soundcloud.ts";
 
 export class Rawon extends Client {
     public startTimestamp = 0;

@@ -5,15 +5,7 @@ import { CommandContext } from "../../structures/CommandContext.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { Rawon } from "../../structures/Rawon.js";
 import i18n from "../../config/index.js";
-import {
-    ApplicationCommandData,
-    ApplicationCommandType,
-    Collection,
-    Guild,
-    Message,
-    Snowflake,
-    TextChannel
-} from "discord.js";
+import { ApplicationCommandData, ApplicationCommandType, Collection, Guild, Message, Snowflake, TextChannel } from "discord.js";
 import { promises as fs } from "node:fs";
 import { resolve } from "node:path";
 
@@ -264,7 +256,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
 
                 try {
                     guild = await this.client.guilds.fetch(id).catch(() => null);
-                    if (!guild) throw new Error("Invalid Guild");
+                    if (!guild) throw new Error("Invalid Guild.");
 
                     await guild.commands.create(data);
                     void options.onRegistered(guild);

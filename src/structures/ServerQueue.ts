@@ -1,11 +1,10 @@
-/* eslint-disable no-nested-ternary */
 import { SongManager } from "../utils/structures/SongManager.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
-import { play } from "../utils/handlers/GeneralUtil.js";
-import { LoopMode, QueueSong } from "../typings/index.js";
 import { filterArgs } from "../utils/functions/ffmpegArgs.js";
-import { Rawon } from "./Rawon.js";
+import { LoopMode, QueueSong } from "../typings/index.js";
+import { play } from "../utils/handlers/GeneralUtil.js";
 import i18n from "../config/index.js";
+import { Rawon } from "./Rawon.js";
 import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, AudioResource, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
 import { TextChannel, Snowflake } from "discord.js";
 
@@ -55,6 +54,7 @@ export class ServerQueue {
                     }
 
                     const nextS =
+                        // eslint-disable-next-line no-nested-ternary
                         this.shuffle && this.loopMode !== "SONG"
                             ? this.songs.random()?.key
                             : this.loopMode === "SONG"

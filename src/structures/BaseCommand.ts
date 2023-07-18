@@ -1,5 +1,5 @@
-import { CommandContext } from "./CommandContext.js";
 import { CommandComponent } from "../typings/index.js";
+import { CommandContext } from "./CommandContext.js";
 import { Rawon } from "./Rawon.js";
 
 export abstract class BaseCommand implements CommandComponent {

@@ -3,15 +3,7 @@ import { createEmbed } from "../utils/functions/createEmbed.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
 import i18n from "../config/index.js";
-import {
-    ApplicationCommandType,
-    BitFieldResolvable,
-    Interaction,
-    Message,
-    PermissionsBitField,
-    PermissionsString,
-    TextChannel
-} from "discord.js";
+import { ApplicationCommandType, BitFieldResolvable, Interaction, Message, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 
 @Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
