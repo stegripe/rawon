@@ -1,5 +1,5 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, ContextMenuCommandInteraction, Interaction, InteractionButtonComponentData, Message, StringSelectMenuInteraction, TextChannel } from "discord.js";
 import { PaginationPayload } from "../../typings/index.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, ContextMenuCommandInteraction, Interaction, InteractionButtonComponentData, Message, StringSelectMenuInteraction, TextChannel } from "discord.js";
 
 const DATAS: InteractionButtonComponentData[] = [
     {
