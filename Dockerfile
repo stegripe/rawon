@@ -41,5 +41,8 @@ COPY --from=build-stage /tmp/build/index.js ./index.js
 # Additional Environment Variables
 ENV NODE_ENV production
 
+# Add scripts volumes
+VOLUME /scripts
+
 # Start the app with node
 CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
