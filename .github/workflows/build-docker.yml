@@ -1,0 +1,19 @@
+name: Build & Push Docker Image to container image registry
+
+on:
+  release:
+    types: [created]
+  push:
+    branches:
+      - main
+      - feat/docker
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "Dockerfile"
+
+jobs:
+  docker:
+    uses: clytage/workflows/.github/workflows/docker-build.yml@main
+    secrets: inherit
