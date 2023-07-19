@@ -40,6 +40,27 @@ Setup Tutorial Video (YouTube)
  <img src="http://img.youtube.com/vi/9csIDZYpaJM/0.jpg" alt="Setup Guide Video" width="360" border="10" />
 </a>
 
+### Docker
+You can use our official Docker image:
+```bash
+$ docker run -v ./scripts:/app/scripts --env-file ./.env -d ghcr.io/clytage/rawon:latest 
+```
+
+...or with docker-compose:
+```yml
+services:
+  rawon:
+    image: ghcr.io/clytage/rawon:latest
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - "./scripts:/app/scripts"
+```
+
+Don't forget to create `.env` file and fill environment values from `.env_example` file
+
+NOTE: You **must** attach `/app/scripts` volume if you use `yt-dlp` stream strategy.
+
 ### Glitch
 You can use Glitch too for this project, featured with its code editor.
 
