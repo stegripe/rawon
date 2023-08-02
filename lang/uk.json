@@ -57,7 +57,7 @@
         },
         "moderation": {
             "ban": {
-                "banFail": "Не вдалось **`ЗАБЛОКУВАТИ`** учасника, тому-що: `{message}`",
+                "banFail": "Не вдалось **`ЗАБЛОКУВАТИ`** учасника, тому що: `{message}`",
                 "banSuccess": "**{user}** був **`ЗАБЛОКОВАНИЙ`** на цьому сервері.",
                 "bannedByString": "Блокування наклав: {author}",
                 "botNoPermission": "Пробачте, але я не маю права **`Блокувати учасників`**.",
@@ -84,8 +84,8 @@
             },
             "kick": {
                 "botNoPermission": "Пробачте, але я не маю права **`Виганяти учасників`**.",
-                "description": "Вигнати учасника з серверу",
-                "kickFail": "Не вдалось **`ВИГНАТИ`** учасника, тому-що: `{message}`",
+                "description": "Вигнати учасника з сервера",
+                "kickFail": "Не вдалось **`ВИГНАТИ`** учасника, тому що: `{message}`",
                 "kickSuccess": "**{user}** був **`ВИГНАНИЙ`** з цього серверу.",
                 "kickedByString": "Вигнав: {author}",
                 "slashMemberDescription": "Кого ви бажаєте вигнати?",
@@ -118,10 +118,10 @@
                 "botNoPermission": "Пробачте, але я не маю права **`Керувати ролями`**.",
                 "cantMuteOwner": "Ви не можете **`ОБМЕЖИТИ`** власника сервера.",
                 "description": "Обмежте когось на сервері",
-                "muteFail": "Не вдалось **`ОБМЕЖИТИ`** учасника, тому-що: `{message}`",
+                "muteFail": "Не вдалось **`ОБМЕЖИТИ`** учасника, тому що: `{message}`",
                 "muteSuccess": "**{user}** був **`ОБМЕЖЕНИЙ`** на цьому сервері.",
                 "mutedByString": "Обмежений: {author}",
-                "noRole": "Роль обмеження не була встановлена, будь-ласка встановіть її через `{prefix}setmute`",
+                "noRole": "Роль обмеження не була встановлена, будь ласка встановіть її через `{prefix}setmute`",
                 "slashMemberDescription": "Кого ви бажаєте обмежити?",
                 "slashReasonDescription": "Причина обмеження",
                 "usage": "{prefix}mute <@згадка | id> [причина]",
@@ -132,7 +132,7 @@
                 "botNoPermission": "Пробачте, але я не маю права **`Керувати повідомленнями`**.",
                 "description": "Видалити повідомлення",
                 "invalidAmount": "Будь ласка, вкажіть дійсне число повідомлень які потрібно видалити.",
-                "purgeFail": "Не вдалось **`ВИДАЛИТИ`** повідомлення, тому-що: `{message}`",
+                "purgeFail": "Не вдалось **`ВИДАЛИТИ`** повідомлення, тому що: `{message}`",
                 "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} have been **`PURGED`**", //pls explain
                 "slashAmountDescription": "Кількість повідомлень для видалення",
                 "usage": "{prefix}purge <кількість>",
@@ -151,7 +151,7 @@
                 "slashMemberDescription": "Кого ви бажаєте розблокувати",
                 "slashReasonDescription": "Причина розблокування",
                 "unbanSuccess": "**{user}** був **`РОЗБЛОКОВАНИЙ`** на цьому сервері.",
-                "unbanFail": "Не вдалось знайти учасника для **`РОЗБЛОКУВАННЯ`**, тому-що: `{message}`",
+                "unbanFail": "Не вдалось знайти учасника для **`РОЗБЛОКУВАННЯ`**, тому що: `{message}`",
                 "unbannedByString": "Розблоковано ким: {author}",
                 "usage": "{prefix}unban <id> [причина]"
             },
@@ -160,7 +160,7 @@
                 "noMuted": "Не учасник не **`ОБМЕЖЕНИЙ`**",
                 "slashMemberDescription": "З кого Ви бажаєте зняти обмеження?",
                 "slashReasonDescription": "Причина зняття обмеження",
-                "unmuteFail": "Не вдалось знайти учасника щоб **`ЗНЯТИ ОБМЕЖЕННЯ`**, тому-що: `{message}`",
+                "unmuteFail": "Не вдалось знайти учасника щоб **`ЗНЯТИ ОБМЕЖЕННЯ`**, тому що: `{message}`",
                 "unmuteSuccess": "З **{user}** було знято обмеження **`UN-MUTED`** на цьому сервері.",
                 "unmutedByString": "Обмеження знято ким: {author}",
                 "usage": "{prefix}unmute <згадка | id> [причина]",
@@ -191,7 +191,7 @@
                 "role": {
                     "current": "Поточна роль DJ: <@&{role}>",
                     "invalid": "Недійсна роль.",
-                    "noRole": "Роль DJ не була встановлена, будь-ласка встановіть її через `{prefix}dj role`",
+                    "noRole": "Роль DJ не була встановлена, будь ласка встановіть її через `{prefix}dj role`",
                     "success": "Роль DJ була встановлена: <@&{role}>"
                 },
                 "slashDisableDescription": "Вимкнути функцію DJ",
@@ -202,18 +202,18 @@
             "filter": {
                 "availableFilters": "Доступні фільтри",
                 "currentlyUsedFilters": "Фільтри що наразі використовуються",
-                "currentState": "Стан фільтру '`{filter}`': `{state}`",
+                "currentState": "Стан фільтра '`{filter}`': `{state}`",
                 "description": "Налаштувати фільтр пісень",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}", //pls explain
-                "filterSet": "Новий стан фільтру '`{filter}`': `{state}`",
+                "filterSet": "Новий стан фільтра '`{filter}`': `{state}`",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter", //pls explain
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}", //pls explain
                 "slashStatusDescription": "Перевірте поточний стан фільтрів пісень",
                 "slashStatusFilterDescription": "Фільтр, стан якого ви бажаєте перевірити",
-                "specifyFilter": "Будь-ласка, вкажіть назву фільтру"
+                "specifyFilter": "Будь ласка, вкажіть назву фільтра"
             },
             "lyrics": {
-                "apiError": "API не змогло найти пісню **{song}**, тому-що: `{message}`",
+                "apiError": "API не змогло найти пісню **{song}**, тому що: `{message}`",
                 "description": "Показати слова пісні",
                 "noQuery": "Зараз нічого не програється або не було аргументи.",
                 "slashDescription": "Пісня для пошуку",
@@ -221,7 +221,7 @@
             },
             "nowplaying": {
                 "description": "Показати статус медіа програвача",
-                "disableButton": "Попередні кнопки більше не активні на будуть видалені.",
+                "disableButton": "Попередні кнопки більше не активні та будуть видалені.",
                 "emptyQueue": "Черга пуста."
             },
             "pause": {
@@ -264,15 +264,15 @@
                 "resumeMessage": "Програвання продовжено."
             },
             "search": {
-                "cancelMessage": "Напишіть {cancel} або c щоб відмінити вибір пісні.",
-                "canceledMessage": "Виріб пісні відмінено.",
+                "cancelMessage": "Напишіть {cancel} або `c` щоб скасувати вибір пісні.",
+                "canceledMessage": "Виріб пісні скасовано.",
                 "description": "Відтворіть музику за наданим запитом",
-                "interactionContent": "Будь ласка виберіть музику",
-                "interactionPlaceholder": "Будь ласка виберіть музику",
+                "interactionContent": "Будь ласка, оберіть музику",
+                "interactionPlaceholder": "Будь ласка, оберіть музику",
                 "noQuery": "Введіть запит для пошуку.",
                 "noSelection": "Значення не введено або введено недійсне, вибір музики скасовано.",
                 "noTracks": "Я не можу отримати результати пошуку.",
-                "queueEmbed": "Будь ласка, виберіть музику; Ви можете вибрати кілька, використовуючи пробіл або {separator}.\n",
+                "queueEmbed": "Будь ласка, оберіть музику; Ви можете вибрати кілька, використовуючи пробіл або {separator}.\n",
                 "slashDescription": "Пошук зазначеної музики",
                 "slashQueryDescription": "Запит для пошуку",
                 "slashSourceDescription": "Звідки музика повинна бути взята?",
@@ -357,7 +357,7 @@
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
-        "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористайтись цією командою.",
+        "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористатись цією командою.",
         "generalHandler": {
             "errorJoining": "Помилка при спробі приєднатись до каналу: `{message}`",
             "errorPlaying": "Помилка при спробі почати програвання музики: `{message}`",
@@ -370,7 +370,7 @@
         "musicDecorator": {
             "noInVC": "Вибачте, але Ви повинні бути в каналі для використання цієї команди.",
             "noQueue": "Наразі нічого не лунає.",
-            "sameVC": "Ви повинні бути в тому-ж каналі що і я.",
+            "sameVC": "Ви повинні бути в тому ж каналі що і я.",
             "validVCJoinable": "Пробачте, але я не можу **`ПРИЄДНАТИСЬ`** до Вашого каналу, перевірте чи я маю на це право.",
             "validVCPermission": "Пробачте, але я не можу **`РОЗМОВЛЯТИ`** у Вашому каналі, перевірте чи я маю на це право."
         }
