@@ -353,26 +353,26 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",
+        "invalidUsage": "Некоректне використання, будь ласка, скористайтесь **`{prefix} {name}`** для отримання інформації.",
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
-        "cooldownMessage": "{author}, please wait **`{timeleft}`** of cooldown time.",
+        "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористайтись цією командою.",
         "generalHandler": {
-            "errorJoining": "Error while joining the voice channel, because: `{message}`",
-            "errorPlaying": "An error occurred while trying to play music, because: `{message}`",
-            "handleVideoInitial": "Added {length} songs to the queue",
-            "leftVC": "Left from the voice channel because I've been inactive for too long.",
-            "queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
-            "startPlaying": "Started playing **{song}**",
-            "stopPlaying": "Stopped playing **{song}**"
+            "errorJoining": "Помилка при спробі приєднатись до каналу: `{message}`",
+            "errorPlaying": "Помилка при спробі почати програвання музики: `{message}`",
+            "handleVideoInitial": "Додано {length} пісень до черги",
+            "leftVC": "Я покинув канал через неактивність.",
+            "queueEnded": "Черга скінчилась, використовуйте **`{usage}`** щоб почати програвання.",
+            "startPlaying": "Програвання почато: **{song}**",
+            "stopPlaying": "Програвання зупинено: **{song}**"
         },
         "musicDecorator": {
-            "noInVC": "Sorry, but you need to be in a voice channel to do that.",
-            "noQueue": "Nothing is being played.",
-            "sameVC": "You need to be in the same voice channel as mine.",
-            "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
+            "noInVC": "Вибачте, але Ви повинні бути в каналі для використання цієї команди.",
+            "noQueue": "Наразі нічого не лунає.",
+            "sameVC": "Ви повинні бути в тому-ж каналі що і я.",
+            "validVCJoinable": "Пробачте, але я не можу **`ПРИЄДНАТИСЬ`** до Вашого каналу, перевірте чи я маю на це право.",
+            "validVCPermission": "Пробачте, але я не можу **`РОЗМОВЛЯТИ`** у Вашому каналі, перевірте чи я маю на це право."
         }
     }
 }
