@@ -1,4 +1,4 @@
-FROM ghcr.io/hazmi35/node:20-dev-alpine as build-stage
+FROM ghcr.io/hazmi35/node:18-dev-alpine as build-stage
 
 RUN corepack enable && corepack prepare pnpm@latest
 
@@ -14,7 +14,7 @@ RUN pnpm run build
 
 RUN pnpm prune --production
 
-FROM ghcr.io/hazmi35/node:20-alpine
+FROM ghcr.io/hazmi35/node:18-alpine
 
 LABEL name "rawon"
 LABEL maintainer "Clytage <admin@clytage.org>"
