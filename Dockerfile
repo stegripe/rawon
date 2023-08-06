@@ -25,7 +25,7 @@ RUN pnpm prune --production
 FROM ghcr.io/hazmi35/node:20-alpine
 
 LABEL name "rawon"
-LABEL maintainer "Clytage Development <admin@clytage.org>"
+LABEL maintainer "Clytage <admin@clytage.org>"
 
 # Install ffmpeg
 RUN apk add --no-cache ffmpeg
