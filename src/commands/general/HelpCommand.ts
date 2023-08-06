@@ -98,7 +98,6 @@ export class HelpCommand extends BaseCommand {
             );
         }
 
-        // Disable selection menu
         if (ctx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel!.messages
