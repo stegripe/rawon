@@ -133,7 +133,7 @@
                 "description": "Видалити повідомлення",
                 "invalidAmount": "Будь ласка, вкажіть дійсне число повідомлень які потрібно видалити.",
                 "purgeFail": "Не вдалось **`ВИДАЛИТИ`** повідомлення, тому що: `{message}`",
-                "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} have been **`PURGED`**", //pls explain
+                "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} have been **`PURGED`**",
                 "slashAmountDescription": "Кількість повідомлень для видалення",
                 "usage": "{prefix}purge <кількість>",
                 "userNoPermission": "Пробачте, але Ви не маєте права **`Керувати повідомленнями`**"
@@ -204,10 +204,10 @@
                 "currentlyUsedFilters": "Фільтри що наразі використовуються",
                 "currentState": "Стан фільтра '`{filter}`': `{state}`",
                 "description": "Налаштувати фільтр пісень",
-                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}", //pls explain
+                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
                 "filterSet": "Новий стан фільтра '`{filter}`': `{state}`",
-                "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter", //pls explain
-                "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}", //pls explain
+                "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
+                "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Перевірте поточний стан фільтрів пісень",
                 "slashStatusFilterDescription": "Фільтр, стан якого ви бажаєте перевірити",
                 "specifyFilter": "Будь ласка, вкажіть назву фільтра"
@@ -245,7 +245,7 @@
                 "noPositions": "Будь ласка, вкажіть позицію пісні в черзі щоб вилучити.",
                 "slashPositionsDescription": "Позиції пісень, розділені комою або пробілом",
                 "songSkip": "Поточна пісня була вилучена, пропускаємо.\n\n",
-                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue", //pls explain
+                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
                 "usage": "{prefix}remove <позиції>"
             },
             "repeat": {
