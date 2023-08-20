@@ -40,7 +40,7 @@ export function checkQuery(string: string): QueryData {
     } else if (/spotify/g.exec(url.hostname)) {
         result.sourceType = "spotify";
 
-        if (url.pathname.startsWith("/playlist")) {
+        if (["/playlist", "/album"].some((path) => url.pathname.startsWith(path))) {
             result.type = "playlist";
         } else if (url.pathname.startsWith("/track")) {
             result.type = "track";
