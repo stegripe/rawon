@@ -151,6 +151,15 @@ export interface SpotifyArtist {
     name: string;
 }
 
+export interface SpotifyAlbum {
+    name: string;
+    tracks: {
+        items: SpotifyTrack[];
+        previous: string | null;
+        next: string | null;
+    };
+}
+
 export interface SpotifyPlaylist {
     name: string;
     tracks: {
