@@ -151,14 +151,18 @@ export interface SpotifyArtist {
     name: string;
 }
 
-export interface SpotifyPlaylist {
+interface SpotifyData<T> {
     name: string;
     tracks: {
-        items: { track: SpotifyTrack }[];
+        items: T[];
         previous: string | null;
         next: string | null;
     };
 }
+
+export type SpotifyAlbum = SpotifyData<SpotifyTrack>;
+
+export type SpotifyPlaylist = SpotifyData<{ track: SpotifyTrack }>;
 
 export interface SpotifyTrack {
     artists: ArtistsEntity[];
