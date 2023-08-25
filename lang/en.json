@@ -150,7 +150,7 @@
                 "description": "Un-ban someone from the server",
                 "slashMemberDescription": "Who do you like to un-ban?",
                 "slashReasonDescription": "Un-ban reason",
-                "unbanSuccess": "**{user}** has been **`UN-BANNED`** from the server.",
+                "unbanSuccess": "**{user}** has been **`UN-BANNED`** on the server.",
                 "unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
                 "unbannedByString": "Un-banned by: {author}",
                 "usage": "{prefix}unban <id> [reason]"
@@ -168,7 +168,7 @@
             },
             "warn": {
                 "description": "Warn member on the server",
-                "noDM": "Unable to create a DM with that user, but I'll keep warning 'em.",
+                "noDM": "Unable to create a DM with that user, but I'll keep warning them.",
                 "slashMemberDescription": "Who do you like to warn?",
                 "slashReasonDescription": "Warn reason",
                 "usage": "{prefix}warn <@mention | id> [reason]",

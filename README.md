@@ -98,5 +98,6 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@lxndr-rl](https://github.com/lxndr-rl) (es)
 - [@MoustacheOff](https://github.com/MoustacheOff) (fr)
 - [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
+- [@RomaDevWorld](https://github.com/RomaDevWorld) (uk)
 
 > © 2023 Clytage Development
