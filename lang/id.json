@@ -255,7 +255,7 @@
                 "slashDisable": "Mematikan mode pengulangan",
                 "slashQueue": "Mengatur mode pengulangan ke **`QUEUE`**",
                 "slashSong": "Mengatur mode pengulangan ke **`SONG`**",
-                "usage": "{prefix}repeat <{opsi}>"
+                "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Media player sedang tidak dijeda.",
