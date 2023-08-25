@@ -1,0 +1,378 @@
+{
+    "commands": {
+        "developers": {
+            "categoryName": "РОЗРОБНИК",
+            "eval": {
+                "description": "Виконати код на боті",
+                "errorString": "Помилка",
+                "noCode": "Код не був вказаний.",
+                "inputString": "Ввід",
+                "outputString": "Вивід",
+                "usage": "{prefix}eval <код>"
+            }
+        },
+        "general": {
+            "about": {
+                "aboutFooter": "{botname} - Інформація про бота",
+                "botUptimeString": "Час роботи бота",
+                "botVersionString": "Версія бота",
+                "cachedUsersString": "Кешовані користувачі",
+                "channelsString": "Канали",
+                "commitString": "Коміт",
+                "description": "Показати інформацію про бота",
+                "discordJSVersionString": "Версія Discord.js",
+                "ffmpegVersionString": "Версія FFmpeg",
+                "nodeVersionString": "Версія Node.js",
+                "osUptimeString": "Час роботи ОС",
+                "processUptimeString": "Час роботи процесу",
+                "serversString": "Сервери",
+                "sourceCodeString": "Source code"
+            },
+            "categoryName": "ЗАГАЛЬНІ",
+            "help": {
+                "aliasesString": "Аліаси",
+                "authorString": "{username} - список команд",
+                "commandDetailTitle": "{username} - Інформація про команду {command}",
+                "commandSelectionString": "Будь ласка, оберіть команду",
+                "commandUsageFooter": "<> = обов'язково | [] = опціонально {devOnly}",
+                "description": "Показує список команд або інформацію про окрему команду",
+                "descriptionString": "Опис",
+                "footerString": "{prefix}help <command> щоб отримати більше інформації про окрему команду",
+                "nameString": "Назва",
+                "noCommanSuggest": "Не вдалось знайти команду з такою назвою. Чи це ви мали на увазі?",
+                "noCommand": "Не вдалось знайти команду з такою назвою.",
+                "slashDescription": "Назва команди щоб відобразити інформацію про окрему команду",
+                "usage": "{prefix}help [команда]",
+                "usageString": "Приклад використання"
+            },
+            "invite": {
+                "clickURL": "**[Натисніть тут]({url})** щоб запросити бота на свій сервер.",
+                "description": "Отримати посилання для додавання бота на свій сервер",
+                "inviteTitle": "{bot} - Запрошувальне посилання"
+            },
+            "ping": {
+                "description": "Показує поточну затримку бота",
+                "footerString": "Затримка: {user}"
+            }
+        },
+        "moderation": {
+            "ban": {
+                "banFail": "Не вдалось **`ЗАБЛОКУВАТИ`** учасника, тому що: `{message}`",
+                "banSuccess": "**{user}** був **`ЗАБЛОКОВАНИЙ`** на цьому сервері.",
+                "bannedByString": "Блокування наклав: {author}",
+                "botNoPermission": "Пробачте, але я не маю права **`Блокувати учасників`**.",
+                "description": "Заблокувати учасника цього серверу",
+                "slashMemberIDDescription": "Кого ви бажаєте заблокувати?",
+                "slashReasonDescription": "Причина блокування",
+                "usage": "{prefix}ban <@згадка | id> [причина]",
+                "userBanned": "Ви були **`ЗАБЛОКОВАНІ`** на сервері **{guildName}**",
+                "userNoBannable": "Пробачте, але я не можу **`ЗАБЛОКУВАТИ`** цього учасника.",
+                "userNoPermission": "Пробачте, але Ви не маєте права **`Блокувати учасників`**."
+            },
+            "categoryName": "МОДЕРАЦІЯ",
+            "common": {
+                "noReasonString": "[Не вказано]",
+                "noUserSpecified": "Будь ласка, вкажіть учасника.",
+                "reasonString": "**Причина**"
+            },
+            "infractions": {
+                "description": "Показати порушення учасника",
+                "embedAuthorText": "{user} - Порушення",
+                "noInfractions": "Порушення відсутні.",
+                "slashMemberDescription": "Кого ви бажаєте переглянути порушення?",
+                "usage": "{prefix}infractions [@згадка | id]"
+            },
+            "kick": {
+                "botNoPermission": "Пробачте, але я не маю права **`Виганяти учасників`**.",
+                "description": "Вигнати учасника з сервера",
+                "kickFail": "Не вдалось **`ВИГНАТИ`** учасника, тому що: `{message}`",
+                "kickSuccess": "**{user}** був **`ВИГНАНИЙ`** з цього серверу.",
+                "kickedByString": "Вигнав: {author}",
+                "slashMemberDescription": "Кого ви бажаєте вигнати?",
+                "slashReasonDescription": "Причина вигнання",
+                "usage": "{prefix}kick <@згадка | id> [причина]",
+                "userKicked": "Ви були **`ВИГНАНІ`** з серверу **{guildName}**",
+                "userNoKickable": "Пробачте, але я не можу **`ВИГНАТИ`** that member.",
+                "userNoPermission": "Пробачте, але Ви не маєте права **`Виганяти учасників`**"
+            },
+            "modlogs": {
+                "channel": {
+                    "current": "Поточний канал для повідомлень журналу аудиту модерації: <#{channel}>",
+                    "invalid": "Недійсний канал, повинен бути текстовим.",
+                    "noChannel": "Канал журналу аудиту не був встановлений.",
+                    "success": "Канал журналу аудиту був встановлений: <#{channel}>"
+                },
+                "description": "Змінити налаштування журналу аудиту",
+                "disable": "Журнал аудиту був **`ВИМКНЕНИЙ`**",
+                "embedTitle": "Журнал аудиту модераторів",
+                "enable": "Журнал аудиту був **`УВІМКНЕНИЙ`**",
+                "newChannelText": "новий канал",
+                "slashChannelDescription": "Переглянути або змінити канал журналу аудиту",
+                "slashChannelNewChannelOption": "Новий канал для журналу аудиту",
+                "slashDisableDescription": "Вимкнути журнал аудиту",
+                "slashEnableDescription": "Увімкнути журнал аудиту",
+                "usage": "{prefix}modlogs"
+            },
+            "mute": {
+                "alreadyMuted": "Цей учасник вже обмежений **`ОБМЕЖЕНИЙ`**",
+                "botNoPermission": "Пробачте, але я не маю права **`Керувати ролями`**.",
+                "cantMuteOwner": "Ви не можете **`ОБМЕЖИТИ`** власника сервера.",
+                "description": "Обмежте когось на сервері",
+                "muteFail": "Не вдалось **`ОБМЕЖИТИ`** учасника, тому що: `{message}`",
+                "muteSuccess": "**{user}** був **`ОБМЕЖЕНИЙ`** на цьому сервері.",
+                "mutedByString": "Обмежений: {author}",
+                "noRole": "Роль обмеження не була встановлена, будь ласка встановіть її через `{prefix}setmute`",
+                "slashMemberDescription": "Кого ви бажаєте обмежити?",
+                "slashReasonDescription": "Причина обмеження",
+                "usage": "{prefix}mute <@згадка | id> [причина]",
+                "userMuted": "Ви були **`ОБМЕЖЕНІ`** на сервері **{guildName}**",
+                "userNoPermission": "Пробачте, але Ви не маєте права **`Керувати ролями`**"
+            },
+            "purge": {
+                "botNoPermission": "Пробачте, але я не маю права **`Керувати повідомленнями`**.",
+                "description": "Видалити повідомлення",
+                "invalidAmount": "Будь ласка, вкажіть дійсне число повідомлень які потрібно видалити.",
+                "purgeFail": "Не вдалось **`ВИДАЛИТИ`** повідомлення, тому що: `{message}`",
+                "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} have been **`PURGED`**",
+                "slashAmountDescription": "Кількість повідомлень для видалення",
+                "usage": "{prefix}purge <кількість>",
+                "userNoPermission": "Пробачте, але Ви не маєте права **`Керувати повідомленнями`**"
+            },
+            "setmute": {
+                "description": "Встановити роль для обмеження",
+                "invalidRole": "Недійсна роль.",
+                "slashRoleDescription": "Роль, що буде використовуватись для обмеження (mute)",
+                "success": "Роль обмеження була встановлена: <@&{role}>",
+                "usage": "{prefix}setmute <роль>"
+            },
+            "unban": {
+                "alreadyUnban": "Цей користувач не **`ЗАБЛОКОВАНИЙ`**",
+                "description": "Розблокуйте когось на сервері",
+                "slashMemberDescription": "Кого ви бажаєте розблокувати",
+                "slashReasonDescription": "Причина розблокування",
+                "unbanSuccess": "**{user}** був **`РОЗБЛОКОВАНИЙ`** на цьому сервері.",
+                "unbanFail": "Не вдалось знайти учасника для **`РОЗБЛОКУВАННЯ`**, тому що: `{message}`",
+                "unbannedByString": "Розблоковано ким: {author}",
+                "usage": "{prefix}unban <id> [причина]"
+            },
+            "unmute": {
+                "description": "Зніміть обмеження (unmute) з учасника цього серверу",
+                "noMuted": "Не учасник не **`ОБМЕЖЕНИЙ`**",
+                "slashMemberDescription": "З кого Ви бажаєте зняти обмеження?",
+                "slashReasonDescription": "Причина зняття обмеження",
+                "unmuteFail": "Не вдалось знайти учасника щоб **`ЗНЯТИ ОБМЕЖЕННЯ`**, тому що: `{message}`",
+                "unmuteSuccess": "З **{user}** було знято обмеження **`UN-MUTED`** на цьому сервері.",
+                "unmutedByString": "Обмеження знято ким: {author}",
+                "usage": "{prefix}unmute <згадка | id> [причина]",
+                "userUnmuted": "З вас було **`ЗНЯТО ОБМЕЖЕННЯ`** на сервері **{guildName}**"
+            },
+            "warn": {
+                "description": "Попередьте учасника цього серверу",
+                "noDM": "Не вдалось відправити Особисте повідомлення цьому користувачеві, але я буду продовжувати попереджувати його",
+                "slashMemberDescription": "Кого ви бажаєте попередити?",
+                "slashReasonDescription": "Причина попередження",
+                "usage": "{prefix}warn <згадка | id> [причина]",
+                "userNoPermission": "Пробачте, але Ви не маєте права **`Керувати сервером`**.",
+                "userWarned": "Ви були **`ПОПЕРЕДЖЕНІ`** на сервері **{guildName}**",
+                "warnSuccess": "**{user}** був **`ПОПЕРЕДЖЕНИЙ`** на цьому сервері",
+                "warnedByString": "Попередження видав: {author}"
+            }
+        },
+        "music": {
+            "categoryName": "МУЗИКА",
+            "dj": {
+                "description": "Змінити налаштування функції DJ",
+                "disable": "Вимкнено",
+                "disableText": "Функція DJ була **`ВИМКНЕНА`**",
+                "embedTitle": "Функція DJ",
+                "enable": "Увімкнено",
+                "enableText": "Функція DJ була **`УВІМКНЕНА`**",
+                "newRoleText": "нова роль",
+                "role": {
+                    "current": "Поточна роль DJ: <@&{role}>",
+                    "invalid": "Недійсна роль.",
+                    "noRole": "Роль DJ не була встановлена, будь ласка встановіть її через `{prefix}dj role`",
+                    "success": "Роль DJ була встановлена: <@&{role}>"
+                },
+                "slashDisableDescription": "Вимкнути функцію DJ",
+                "slashEnableDescription": "Увімкнути функцію DJ",
+                "slashRoleDescription": "Переглянути або змінити роль DJ",
+                "slashRoleNewRoleOption": "Нова роль для DJ"
+            },
+            "filter": {
+                "availableFilters": "Доступні фільтри",
+                "currentlyUsedFilters": "Фільтри що наразі використовуються",
+                "currentState": "Стан фільтра '`{filter}`': `{state}`",
+                "description": "Налаштувати фільтр пісень",
+                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
+                "filterSet": "Новий стан фільтра '`{filter}`': `{state}`",
+                "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
+                "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
+                "slashStatusDescription": "Перевірте поточний стан фільтрів пісень",
+                "slashStatusFilterDescription": "Фільтр, стан якого ви бажаєте перевірити",
+                "specifyFilter": "Будь ласка, вкажіть назву фільтра"
+            },
+            "lyrics": {
+                "apiError": "API не змогло найти пісню **{song}**, тому що: `{message}`",
+                "description": "Показати слова пісні",
+                "noQuery": "Зараз нічого не програється або не було аргументи.",
+                "slashDescription": "Пісня для пошуку",
+                "usage": "{prefix}lyrics [пісня]"
+            },
+            "nowplaying": {
+                "description": "Показати статус медіа програвача",
+                "disableButton": "Попередні кнопки більше не активні та будуть видалені.",
+                "emptyQueue": "Черга пуста."
+            },
+            "pause": {
+                "alreadyPause": "Медіа програвач вже на паузі.",
+                "description": "Поставити медіа програвач на паузу",
+                "pauseMessage": "Медіа програвач поставлений на паузу."
+            },
+            "play": {
+                "alreadyPlaying": "Медіа програвач вже активний в каналі **`{voiceChannel}`**.",
+                "description": "Зіграти музику",
+                "noSongData": "Цей URL не має даних про пісню.",
+                "slashQueryDescription": "Запит для пошуку",
+                "usage": "{prefix}play <запит | url>"
+            },
+            "queue": {
+                "description": "Показати чергу"
+            },
+            "remove": {
+                "description": "Вилучити пісню з черги",
+                "noPermission": "Ви не маєте права використовувати цю команду.",
+                "noPositions": "Будь ласка, вкажіть позицію пісні в черзі щоб вилучити.",
+                "slashPositionsDescription": "Позиції пісень, розділені комою або пробілом",
+                "songSkip": "Поточна пісня була вилучена, пропускаємо.\n\n",
+                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
+                "usage": "{prefix}remove <позиції>"
+            },
+            "repeat": {
+                "actualMode": "Поточний режим повтору: **`{mode}`**",
+                "description": "Повторювати поточну пісню або всю чергу",
+                "footer": "Щоб змінити режим, перегляньте {prefix}help repeat",
+                "newMode": "Режим повтору був встановлений на: **`{mode}`**",
+                "slashDisable": "Вимкнути режим повтору",
+                "slashQueue": "Встановити режим повтору для **`ЧЕРГИ`**",
+                "slashSong": "Встановити режим повтору для **`ПІСНІ`**",
+                "usage": "'{prefix}'repeat <{options}>"
+            },
+            "resume": {
+                "alreadyResume": "Медіа програвач не стоїть на паузі.",
+                "description": "Продовжити програвання",
+                "resumeMessage": "Програвання продовжено."
+            },
+            "search": {
+                "cancelMessage": "Напишіть {cancel} або `c` щоб скасувати вибір пісні.",
+                "canceledMessage": "Виріб пісні скасовано.",
+                "description": "Відтворіть музику за наданим запитом",
+                "interactionContent": "Будь ласка, оберіть музику",
+                "interactionPlaceholder": "Будь ласка, оберіть музику",
+                "noQuery": "Введіть запит для пошуку.",
+                "noSelection": "Значення не введено або введено недійсне, вибір музики скасовано.",
+                "noTracks": "Я не можу отримати результати пошуку.",
+                "queueEmbed": "Будь ласка, оберіть музику; Ви можете вибрати кілька, використовуючи пробіл або {separator}.\n",
+                "slashDescription": "Пошук зазначеної музики",
+                "slashQueryDescription": "Запит для пошуку",
+                "slashSourceDescription": "Звідки музика повинна бути взята?",
+                "trackSelectionMessage": "Вибір Музики",
+                "usage": "{prefix}search <запит> [джерело]"
+            },
+            "shuffle": {
+                "actualState": "Поточний режим перемішування: **`{state}`**",
+                "description": "Встановити режим для функції перемішування",
+                "newState": "Режим перемішування тепер встановлено: **`{state}`**"
+            },
+            "skip": {
+                "description": "Пропустити пісню",
+                "skipMessage": "Пісню пропущено: **{song}**",
+                "voteResultMessage": "{length}/{required} проголосували за пропуск поточної пісні"
+            },
+            "skipTo": {
+                "cantPlay": "Ви не можете перейти до поточної музики.",
+                "description": "Перейти до певної позиції в черзі",
+                "noPermission": "У вас немає дозволу на використання цієї команди.",
+                "noSongPosition": "Неможливо знайти пісню в цій позиції.",
+                "skipMessage": "Пропущено до **{song}**",
+                "slashFirstDescription": "Перемотати до першої пісні в черзі",
+                "slashLastDescription": "Перейти до останньої пісні в черзі",
+                "slashPositionDescription": "Позиція пісні в черзі",
+                "slashSpecificDescription": "Перейти до певної позиції в черзі",
+                "usage": "'{prefix}'skipto <{options} | number>"
+            },
+            "stayInQueue": {
+                "247Disabled": "Команда Stay-in-voice вимкнена.",
+                "actualState": "Стан функції Stay-in-voice: **`{state}`**",
+                "description": "Змушує бота залишатися в голосовому каналі після завершення черги",
+                "newState": "Stay-in-voice тепер встановлено на: **`{state}`**",
+                "slashDescription": "Вмикає режим stay-in-voice"
+            },
+            "stop": {
+                "description": "Зупинити музичний плеєр",
+                "stoppedMessage": "Музичний плеєр зупинено."
+            },
+            "volume": {
+                "changeVolume": "Щоб змінити гучність, введіть номер гучності під час використання цієї команди.",
+                "currentVolume": "Поточна гучність: **`{volume}`**",
+                "description": "Змінити гучність медіаплеєра",
+                "newVolume": "Гучність встановлено на: **`{volume}`**",
+                "plsPause": "Будь ласка, призупиніть музику, а не встановлюйте гучність на **`{volume}`**",
+                "slashDescription": "Нова гучність:",
+                "usage": "{префікс}volume [нова гучність]",
+                "volumeLimit": "Я не можу встановити гучність вище **`{maxVol}`**"
+            }
+        }
+    },
+    "events": {
+        "channelUpdate": {
+            "connectionReconfigured": "З'єднання успішно повторно налаштовано.",
+            "reconfigureConnection": "Регіон голосового каналу змінено, повторне налаштування з'єднання...",
+            "unableReconfigureConnection": "Неможливо повторно налаштувати з'єднання, чергу видалено."
+        },
+        "createInteraction": {
+            "message1": "Вибачте, але ця взаємодія лише для <@{user}> та персоналу сервера.",
+            "message2": "Вибачте, але ця взаємодія лише для <@{user}>"
+        },
+        "createMessage": "Привіт {author}, мій префікс **`{prefix}`**",
+        "cmdLoading": "Завантаження...",
+        "voiceStateUpdate": {
+            "connectionReconfigured": "З'єднання успішно повторно налаштовано.",
+            "deleteQueue": "**`{duration}`** минуло, і ніхто не приєднався до голосового каналу, чергу видалено.",
+            "deleteQueueFooter": "Чергу видалено",
+            "disconnectFromVCMessage": "Відключено від голосового каналу, чергу видалено.",
+            "joinStageMessage": "Успішно приєднався до сцени як спікер.",
+            "joiningAsSpeaker": "Перейшов на канал сцени, намагаючись приєднатися як спікер...",
+            "pauseQueue": "Усі покинули голосовий канал. Для економії ресурсів чергу призупинено.\nЯкщо ніхто не приєднається до голосового каналу протягом наступних **`{duration}`**, чергу буде видалено." ,
+            "pauseQueueFooter": "Чергу призупинено",
+            "reconfigureConnection": "Переміщено на голосовий канал з іншим регіоном, переналаштування з'єднання...",
+            "resumeQueue": "Хтось приєднався до голосового каналу.\nПродовжуємо: **{song}**",
+            "resumeQueueFooter": "Чергу продовжено",
+            "unableJoinStageMessage": "Неможливо приєднатися як спікер, чергу видалено.",
+            "unableReconfigureConnection": "Неможливо повторно налаштувати з'єднання, чергу видалено."
+        }
+    },
+    "reusable": {
+        "invalidUsage": "Некоректне використання, будь ласка, скористайтесь **`{prefix} {name}`** для отримання інформації.",
+        "pageFooter": "Page {actual} of {total}"
+    },
+    "utils": {
+        "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористатись цією командою.",
+        "generalHandler": {
+            "errorJoining": "Помилка при спробі приєднатись до каналу: `{message}`",
+            "errorPlaying": "Помилка при спробі почати програвання музики: `{message}`",
+            "handleVideoInitial": "Додано {length} пісень до черги",
+            "leftVC": "Я покинув канал через неактивність.",
+            "queueEnded": "Черга скінчилась, використовуйте **`{usage}`** щоб почати програвання.",
+            "startPlaying": "Програвання почато: **{song}**",
+            "stopPlaying": "Програвання зупинено: **{song}**"
+        },
+        "musicDecorator": {
+            "noInVC": "Вибачте, але Ви повинні бути в каналі для використання цієї команди.",
+            "noQueue": "Наразі нічого не лунає.",
+            "sameVC": "Ви повинні бути в тому ж каналі що і я.",
+            "validVCJoinable": "Пробачте, але я не можу **`ПРИЄДНАТИСЬ`** до Вашого каналу, перевірте чи я маю на це право.",
+            "validVCPermission": "Пробачте, але я не можу **`РОЗМОВЛЯТИ`** у Вашому каналі, перевірте чи я маю на це право."
+        }
+    }
+}
