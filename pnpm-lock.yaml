@@ -56,13 +56,13 @@ optionalDependencies:
 devDependencies:
   '@clytage/eslint-config':
     specifier: ^3.0.1
-    version: 3.0.1(@eslint/js@8.47.0)(@typescript-eslint/eslint-plugin@6.4.1)(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2)
+    version: 3.0.1(@eslint/js@8.48.0)(@typescript-eslint/eslint-plugin@6.4.1)(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2)
   '@types/i18n':
     specifier: 0.13.6
     version: 0.13.6
   '@types/node':
-    specifier: 18.17.11
-    version: 18.17.11
+    specifier: 18.17.12
+    version: 18.17.12
   '@typescript-eslint/eslint-plugin':
     specifier: 6.4.1
     version: 6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2)
@@ -102,7 +102,7 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
-  /@clytage/eslint-config@3.0.1(@eslint/js@8.47.0)(@typescript-eslint/eslint-plugin@6.4.1)(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2):
+  /@clytage/eslint-config@3.0.1(@eslint/js@8.48.0)(@typescript-eslint/eslint-plugin@6.4.1)(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2):
     resolution: {integrity: sha512-vSxaKElSjPs7jLu7qTP4K14P73UNKU3TPme2jZpr8iJ/UE20WNq2Xdv9sruCWNRc1sKd6xWEiABUtTG9nD/Tbw==}
     peerDependencies:
       '@eslint/js': ^8.44.0
@@ -118,7 +118,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@eslint/js': 8.47.0
+      '@eslint/js': 8.48.0
       '@typescript-eslint/eslint-plugin': 6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2)
       '@typescript-eslint/parser': 6.4.1(eslint@8.48.0)(typescript@5.2.2)
       eslint: 8.48.0
@@ -236,11 +236,6 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@eslint/js@8.47.0:
-    resolution: {integrity: sha512-P6omY1zv5MItm93kLM8s2vr1HICJH8v0dvddDhysbIuZ+vcjOHg5Zbkf1mTkcmi2JA9oBG2anOkRnW8WJTS8Og==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
   /@eslint/js@8.48.0:
@@ -551,7 +546,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.1
       '@types/keyv': 3.1.4
-      '@types/node': 18.17.11
+      '@types/node': 18.17.12
       '@types/responselike': 1.0.0
     dev: false
 
@@ -570,16 +565,16 @@ packages:
   /@types/keyv@3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.17.11
+      '@types/node': 18.17.12
     dev: false
 
-  /@types/node@18.17.11:
-    resolution: {integrity: sha512-r3hjHPBu+3LzbGBa8DHnr/KAeTEEOrahkcL+cZc4MaBMTM+mk8LtXR+zw+nqfjuDZZzYTYgTcpHuP+BEQk069g==}
+  /@types/node@18.17.12:
+    resolution: {integrity: sha512-d6xjC9fJ/nSnfDeU0AMDsaJyb1iHsqCSOdi84w4u+SlN/UgQdY5tRhpMzaFYsI4mnpvgTivEaQd0yOUhAtOnEQ==}
 
   /@types/responselike@1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 18.17.11
+      '@types/node': 18.17.12
     dev: false
 
   /@types/semver@7.5.0:
@@ -589,7 +584,7 @@ packages:
   /@types/ws@8.5.5:
     resolution: {integrity: sha512-lwhs8hktwxSjf9UaZ9tG5M03PGogvFaH8gUgLNbN9HKIg0dvv6q+gkSuJ8HN4/VbyxkuLzCjlN7GquQ0gUJfIg==}
     dependencies:
-      '@types/node': 18.17.11
+      '@types/node': 18.17.12
     dev: false
 
   /@typescript-eslint/eslint-plugin@6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2):
