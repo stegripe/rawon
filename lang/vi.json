@@ -1,0 +1,378 @@
+{
+    "commands": {
+        "developers": {
+            "categoryName": "PHÁT TRIỂN",
+            "eval": {
+                "description": "Đánh giá bot",
+                "errorString": "Lỗi",
+                "noCode": "Mã không được cung cấp.",
+                "inputString": "Input",
+                "outputString": "Output",
+                "usage": "{prefix}eval <code>"
+            }
+        },
+        "general": {
+            "about": {
+                "aboutFooter": "{botname} - Thông tin Bot",
+                "botUptimeString": "Thời gian bot hoạt động",
+                "botVersionString": "Phiên bản bot",
+                "cachedUsersString": "Số người dùng bộ đệm",
+                "channelsString": "Kênh",
+                "commitString": "Commit",
+                "description": "Hiển thị thông tin bot",
+                "discordJSVersionString": "Phiên bản discord.js",
+                "ffmpegVersionString": "Phiên bản FFmpeg",
+                "nodeVersionString": "Phiên bản sode.js",
+                "osUptimeString": "Thời gian hoạt động của hđh",
+                "processUptimeString": "Thời gian hoạt động thực",
+                "serversString": "Máy chủ",
+                "sourceCodeString": "Mã nguồn"
+            },
+            "categoryName": "CHUNG",
+            "help": {
+                "aliasesString": "Các bí danh",
+                "authorString": "{username} - Danh sách lệnh",
+                "commandDetailTitle": "{username} - Thông tin về lệnh {command}",
+                "commandSelectionString": "Vui lòng chọn lệnh",
+                "commandUsageFooter": "<> = yêu cầu | [] = lựa chọn {devOnly}",
+                "description": "Hiển thị danh sách lệnh hoặc thông tin lệnh",
+                "descriptionString": "Mô tả",
+                "footerString": "{prefix}help <lệnh> để có thêm thông tin về lệnh",
+                "nameString": "Tên",
+                "noCommanSuggest": "Không thể tìm thấy tên lệnh phù hợp. Ý bạn là?",
+                "noCommand": "Không thể tìm thấy bất kỳ lệnh nào.",
+                "slashDescription": "Tên lệnh để xem thông tin cụ thể về lệnh",
+                "usage": "{prefix}help [lệnh]",
+                "usageString": "Cách dùng"
+            },
+            "invite": {
+                "clickURL": "**[Nhấn vào đây]({url})** để mời bot vào máy chủ của bạn",
+                "description": "Nhận liên kết mời bot",
+                "inviteTitle": "{bot} - Link mời"
+            },
+            "ping": {
+                "description": "Hiển thị ping hiện tại",
+                "footerString": "Độ trễ của: {user}"
+            }
+        },
+        "moderation": {
+            "ban": {
+                "banFail": "Không thể **`CẤM`** thành viên, vì: `{message}`",
+                "banSuccess": "**{user}** đã bị **`CẤM`** khỏi máy chủ.",
+                "bannedByString": "Người cấm: {author}",
+                "botNoPermission": "Xin lỗi, tôi không có quyền **`CẤM NGƯỜI DÙNG`**.",
+                "description": "Cấm ai đó khỏi máy chủ",
+                "slashMemberIDDescription": "Bạn có muốn cấm?",
+                "slashReasonDescription": "Lý do cấm",
+                "usage": "{prefix}ban <@đề cập | id> [lý do]",
+                "userBanned": "Bạn đã bị **`CẤM`** khỏi **{guildName}**",
+                "userNoBannable": "Xin lỗi, tôi không thể **`CẤM`** người đó.",
+                "userNoPermission": "Xin lỗi, bạn không có quyền **`CẤM NGƯỜI DÙNG`** để dùng lệnh này."
+            },
+            "categoryName": "QUẢN LÝ",
+            "common": {
+                "noReasonString": "[Chưa được chỉ định]",
+                "noUserSpecified": "Vui lòng chỉ định ai đó.",
+                "reasonString": "**Lý do**"
+            },
+            "infractions": {
+                "description": "Hiển thị các vi phạm của người dùng",
+                "embedAuthorText": "{user} - Vi phạm",
+                "noInfractions": "Không có vi phạm.",
+                "slashMemberDescription": "Bạn muốn xem vi phạm của ai?",
+                "usage": "{prefix}infractions [@đề cập | id]"
+            },
+            "kick": {
+                "botNoPermission": "Xin lỗi, tôi không có quyền **`ĐUỔI NGƯỜI DÙNG`**.",
+                "description": "Đuổi ai đó khỏi máy chủ",
+                "kickFail": "Không thể **`ĐUỔI`** người dùng, vì: `{message}`",
+                "kickSuccess": "**{user}** đã bị **`ĐUỔI`** khỏi máy chủ.",
+                "kickedByString": "Người đuổi: {author}",
+                "slashMemberDescription": "Bạn muốn đuổi ai?",
+                "slashReasonDescription": "Lý do đuổi",
+                "usage": "{prefix}kick <@đề cập | id> [lý do]",
+                "userKicked": "Bạn đã bị **`ĐUỔI`** khỏi **{guildName}**",
+                "userNoKickable": "Xin lỗi, tôi không thể **`ĐUỔI`** người dùng đó.",
+                "userNoPermission": "Xin lỗi, bạn không có quyền **`ĐUỔI NGƯỜI DÙNG`** để dùng lệnh này."
+            },
+            "modlogs": {
+                "channel": {
+                    "current": "Kênh nhật ký kiểm duyệt hiện tại: <#{channel}>",
+                    "invalid": "Kênh không hợp lệ, kênh phải là kênh văn bản.",
+                    "noChannel": "Kênh nhật ký kiểm duyệt chưa được đặt.",
+                    "success": "Kênh nhật ký kiểm duyệt đã được đặt vào kênh <#{channel}>"
+                },
+                "description": "Thay đổi cài đặt tính năng nhật ký kiểm duyệt",
+                "disable": "Tính năng nhật ký kiểm duyệt đã bị **`TẮT`**",
+                "embedTitle": "Nhật ký kiểm duyệt",
+                "enable": "Tính năng nhật ký kiểm duyệt đã được **`BẬT`**",
+                "newChannelText": "kênh mới",
+                "slashChannelDescription": "Xem hoặc thay đổi kênh nhật ký kiểm duyệt",
+                "slashChannelNewChannelOption": "Kênh mới cho nhật ký kiểm duyệt",
+                "slashDisableDescription": "Tắt tính năng nhật ký kiểm duyệt",
+                "slashEnableDescription": "Bật tính năng nhật ký kiểm duyệt",
+                "usage": "{prefix}modlogs"
+            },
+            "mute": {
+                "alreadyMuted": "Thành viên đó đã bị **`HẠN CHẾ`**",
+                "botNoPermission": "Xin lỗi, tôi không có quyền **`NGƯỜI QUẢN LÝ`**.",
+                "cantMuteOwner": "Bạn không thể **`HẠN CHẾ`** chủ sở hữu máy chủ.",
+                "description": "Hạn chế ai đó trong máy chủ",
+                "muteFail": "Không thể **`HẠN CHẾ`** người dùng, vì: `{message}`",
+                "muteSuccess": "**{user}**đã bị **`HẠN CHẾ`** trong máy chủ.",
+                "mutedByString": "Hạn chế bởi: {author}",
+                "noRole": "Vai trò hạn chế chưa được bật, vui lòng dùng lệnh `{prefix}setmute` để bật",
+                "slashMemberDescription": "Bạn muốn hạn chế ai?",
+                "slashReasonDescription": "Lý do hạn chế",
+                "usage": "{prefix}mute <@đề cập | id> [lý do]",
+                "userMuted": "Bạn đã bị **`HẠN CHẾ`** khỏi **{guildName}**",
+                "userNoPermission": "Xin lỗi, bạn không có quyền **`HẠN CHẾ`** để dùng lệnh này."
+            },
+            "purge": {
+                "botNoPermission": "Xin lỗi, tôi không có quyền **`NGƯỜI QUẢN LÝ`**.",
+                "description": "Xóa tin nhắn",
+                "invalidAmount": "Vui lòng chỉ định số lượng tin nhắn hợp lệ để xóa.",
+                "purgeFail": "Không thể **`XÓA`** tin nhắn, vì: `{message}`",
+                "purgeSuccess": "**`{amount}`** tinh nhắn đã bị **`XÓA`**",
+                "slashAmountDescription": "Số lượng tin nhắn cần xóa",
+                "usage": "{prefix}purge <lượng>",
+                "userNoPermission": "Xin lỗi, bạn không có quyền **`QUẢN LÝ TIN NHẮN`** để dùng lệnh này."
+            },
+            "setmute": {
+                "description": "Đặt vai trò hạn chế",
+                "invalidRole": "Vai trò không hợp lệ.",
+                "slashRoleDescription": "Vai trò dùng để hạn chế",
+                "success": "<@&{role}> đã được đặt làm vai trò hạn chế",
+                "usage": "{prefix}setmute <vai trò>"
+            },
+            "unban": {
+                "alreadyUnban": "Người dùng đó không bị **`CẤM`**",
+                "description": "Gỡ cấm ai đó khỏi máy chủ",
+                "slashMemberDescription": "Bạn muốn gỡ cấm ai?",
+                "slashReasonDescription": "Lý do gỡ cấm",
+                "unbanSuccess": "**{user}** đã được **`GỠ CẤM`** khỏi máy chủ.",
+                "unbanFail": "Không thể **`GỠ CẤM** người dùng, vì: `{message}`",
+                "unbannedByString": "Gỡ cấm bởi: {author}",
+                "usage": "{prefix}unban <id> [lý do]"
+            },
+            "unmute": {
+                "description": "Gỡ hạn chế ai đó trong server",
+                "noMuted": "Người dùng đó không bị **`HẠN CHẾ`**",
+                "slashMemberDescription": "Bạn muốn gỡ hạn chế ai?",
+                "slashReasonDescription": "Lý do gỡ hạn chế",
+                "unmuteFail": "Không thể **`GỠ HẠN CHẾ** người dùng, vì: `{message}`",
+                "unmuteSuccess": "**{user}** đã được **`GỠ HẠN CHẾ`** trong máy chủ.",
+                "unmutedByString": "Gỡ hạn chế bởi: {author}",
+                "usage": "{prefix}unmute <@đề cập | id> [lý do]",
+                "userUnmuted": "Bạn đã được **`GỠ HẠN CHẾ`** trong **{guildName}**"
+            },
+            "warn": {
+                "description": "Cảnh báo người dùng trên máy chủ",
+                "noDM": "Không thể nhắn tin với người dùng đó, nhưng sẽ tiếp tục cảnh báo.",
+                "slashMemberDescription": "Bạn muốn cảnh báo ai?",
+                "slashReasonDescription": "Lý do cảnh báo",
+                "usage": "{prefix}warn <@mention | id> [lý do]",
+                "userNoPermission": "Xin lỗi, bạn không có quyền **`QUẢN LÝ SERVER`** để dùng lệnh này.",
+                "userWarned": "Bạn đã bị **`CẢNH BÁO`** trong **{guildName}**",
+                "warnSuccess": "**{user}** đã bị **`CẢNH BÁO`** trong máy chủ.",
+                "warnedByString": "Cảnh báo bởi: {author}"
+            }
+        },
+        "music": {
+            "categoryName": "NHẠC",
+            "dj": {
+                "description": "Thay đổi cài đặt tính năng DJ",
+                "disable": "Đã tắt",
+                "disableText": "Tính năng DJ đã bị **`TẮT`**",
+                "embedTitle": "tính năng DJ",
+                "enable": "Đã bật",
+                "enableText": "Tính năng DJ đã được **`BẬT`**",
+                "newRoleText": "vai trò mới",
+                "role": {
+                    "current": "Vai trò DJ hiện tại: <@&{role}>",
+                    "invalid": "Vai trò không hợp lệ.",
+                    "noRole": "Vai trò DJ chưa được thiết lập, vui lòng dùng lệnh `{prefix}dj role` để thiết lập",
+                    "success": "<@&{role}> đã được thiết lập thành vai trò DJ"
+                },
+                "slashDisableDescription": "Tắt tính năng DJ",
+                "slashEnableDescription": "Bật tính năng DJ",
+                "slashRoleDescription": "Xem hoặc thay đổi vai trò DJ",
+                "slashRoleNewRoleOption": "Vai trò mới cho DJ"
+            },
+            "filter": {
+                "availableFilters": "Bộ lọc có sẵn",
+                "currentlyUsedFilters": "Bộ lọc đang sử dụng",
+                "currentState": "`{filter}` đang được `{state}`",
+                "description": "Định cấu hình bộ lọc bài hát",
+                "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}",
+                "filterSet": " Bộ lọc `{filter}` đang `{state}`",
+                "slashStateDescription": "{state, select, enable {Enable} other {Disable}} bộ lọc bài hát",
+                "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {bật} other {tắt}}",
+                "slashStatusDescription": "Kiểm tra trạng thái hiện tại của bộ lọc bài hát",
+                "slashStatusFilterDescription": "Bộ lọc bài hát mà bạn muốn kiểm tra",
+                "specifyFilter": "Vui lòng chỉ định bộ lọc bài hát"
+            },
+            "lyrics": {
+                "apiError": "Không thể tìm bài hát **{song}**, vì: `{message}`",
+                "description": "Hiển thị lời bài hát",
+                "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
+                "slashDescription": "Tìm bài hát",
+                "usage": "{prefix}lyrics [bài hát]"
+            },
+            "nowplaying": {
+                "description": "Hiển thị trạng thái trình phát đa phương tiện",
+                "disableButton": "Các nút trước đó không còn hoạt động và bị loại bỏ.",
+                "emptyQueue": "Hàng đợi trống."
+            },
+            "pause": {
+                "alreadyPause": "Trình phát nhạc đã bị tạm dừng.",
+                "description": "Tạm dừng trình phát nhạc",
+                "pauseMessage": "Trình phát nhạc đã bị tạm dừng."
+            },
+            "play": {
+                "alreadyPlaying": "Đã phát trong kênh thoại **`{voiceChannel}`**.",
+                "description": "Phát nhạc",
+                "noSongData": "URL không có dữ liệu bài hát.",
+                "slashQueryDescription": "Tìm kiếm truy vấn",
+                "usage": "{prefix}play <truy vấn | url>"
+            },
+            "queue": {
+                "description": "Hiển thị danh sách hàng đợi"
+            },
+            "remove": {
+                "description": "Xóa (các) bài hát khỏi hàng đợi",
+                "noPermission": "Bạn không có quyền sử dụng lệnh này.",
+                "noPositions": "Vui lòng chỉ định bài hát cần xóa.",
+                "slashPositionsDescription": "Bài hát cần xóa được phân tách bằng dấu phẩy hoặc dấu cách",
+                "songSkip": "Bài hát hiện tại đã bị xóa, đã bỏ qua.\n\n",
+                "songsRemoved": "Xóa {removed} bài khỏi hàng đợi",
+                "usage": "{prefix}remove <vị trí>"
+            },
+            "repeat": {
+                "actualMode": "Chế độ lặp lại hiện tại là **`{mode}`**",
+                "description": "Lặp lại bài nhạc hiện tại hoặc trong hàng đợi",
+                "footer": "Để thay đổi chế độ, nhập {prefix}help repeat",
+                "newMode": "Chế độ lặp lại đã được đặt thành **`{mode}`**",
+                "slashDisable": "Tắt chế độ lặp lại",
+                "slashQueue": "Đặt chế độ lặp lại trong **`HÀNG ĐỢI`**",
+                "slashSong": "Đặt chế độ lặp lại tới **`BÀI HÁT`**",
+                "usage": "'{prefix}'repeat <{options}>"
+            },
+            "resume": {
+                "alreadyResume": "Trình phát nhạc không bị tạm dừng.",
+                "description": "Tiếp tục trình phát nhạc",
+                "resumeMessage": "Tiếp tục phát nhạc."
+            },
+            "search": {
+                "cancelMessage": "Gõ {cancel} hoặc c để hủy chọn bài hát.",
+                "canceledMessage": "Đã hủy chọn bài hát.",
+                "description": "Phát bài nhạc từ truy vấn",
+                "interactionContent": "Vui lòng chọn bài nhạc",
+                "interactionPlaceholder": "Vui lòng chọn bài nhạc",
+                "noQuery": "Vui lòng cung cấp một số truy vấn để tìm kiếm.",
+                "noSelection": "Không có giá trị hoặc nhập giá trị không hợp lệ, đã hủy.",
+                "noTracks": "Không có bất kỳ kết quả tìm kiếm nào.",
+                "queueEmbed": "Vui lòng chọn bài nhạc; bạn có thể chọn nhiều hơn một bằng cách sử dụng dấu cách hoặc {separator}.\n",
+                "slashDescription": "Tìm kiếm nhạc được chỉ định",
+                "slashQueryDescription": "Tìm kiếm truy vấn",
+                "slashSourceDescription": "Phát bài hát từ?",
+                "trackSelectionMessage": "Chọn bài hát",
+                "usage": "{prefix}search <query> [nguồn]"
+            },
+            "shuffle": {
+                "actualState": "Chế độ phát ngẫu nhiên hiện tại là **`{state}`**",
+                "description": "Đặt chế độ cho tính năng phát ngẫu nhiên",
+                "newState": "Chế độ phát ngẫu nhiên được đặt thành **`{state}`**"
+            },
+            "skip": {
+                "description": "Bỏ qua bài nhạc",
+                "skipMessage": "Đã bỏ qua **{song}**",
+                "voteResultMessage": "{length}/{required} đã bình chọn để bỏ qua bài hát hiện tại"
+            },
+            "skipTo": {
+                "cantPlay": "Bạn không thể bỏ qua bài hát hiện tại.",
+                "description": "Bỏ qua tới một vị trí cụ thể trong hàng đợi",
+                "noPermission": "Bạn không có quyền sử dụng lệnh này.",
+                "noSongPosition": "Không thể tìm thấy một bài hát ở vị trí đó.",
+                "skipMessage": "Bỏ qua tới **{song}**",
+                "slashFirstDescription": "Tua lại bài hát đầu tiên trong hàng đợi",
+                "slashLastDescription": "Chuyển đến bài hát cuối cùng trong hàng đợi",
+                "slashPositionDescription": "Vị trí bài hát trong hàng đợi",
+                "slashSpecificDescription": "Chuyển đến một vị trí cụ thể trong hàng đợi",
+                "usage": "'{prefix}'skipto <{options} | số thứ tự>"
+            },
+            "stayInQueue": {
+                "247Disabled": "Lệnh ở lại kênh thoại bị tắt.",
+                "actualState": "Ở lại kênh thoại bị **`{state}`**",
+                "description": "Giữ bot ở lại kênh thoại khi hàng đợi kết thúc",
+                "newState": "Ở lại kênh thoại được đặt thành **`{state}`**",
+                "slashDescription": "Bật chế độ ở lại kênh thoại"
+            },
+            "stop": {
+                "description": "Dừng phát nhạc",
+                "stoppedMessage": "Trình phát nhạc đã bị dừng."
+            },
+            "volume": {
+                "changeVolume": "Trình phát nhạc đã dừng. Để thay đổi âm lượng, hãy cung cấp số âm lượng khi sử dụng lệnh này.",
+                "currentVolume": "Âm lượng hiện tại là **`{volume}`**",
+                "description": "Thay đổi âm lượng trình phát đa phương tiện",
+                "newVolume": "Âm lượng đã được thiết lập thành **`{volume}`**",
+                "plsPause": "Vui lòng tạm dừng nhạc để đặt âm lượng thành **`{volume}`**",
+                "slashDescription": "Âm lượng mới",
+                "usage": "{prefix}volume [âm lượng mới]",
+                "volumeLimit": "Tôi không thể đặt âm lượng trên **`{maxVol}`**"
+            }
+        }
+    },
+    "events": {
+        "channelUpdate": {
+            "connectionReconfigured": "Kết nối lại cấu hình thành công.",
+            "reconfigureConnection": "Vùng kênh thoại đã thay đổi, đang cấu hình lại kết nối...",
+            "unableReconfigureConnection": "Không thể cấu hình lại kết nối, hàng đợi đã bị xóa."
+        },
+        "createInteraction": {
+            "message1": "Xin lỗi, tương tác chỉ dành cho <@{user}> và quản lý máy chủ.",
+            "message2": "Xin lỗi, tương tác chỉ dành cho <@{user}>"
+        },
+        "createMessage": "Chào {author}, tiền tố của tôi là **`{prefix}`**",
+        "cmdLoading": "Đang tải...",
+        "voiceStateUpdate": {
+            "connectionReconfigured": "Kết nối lại cấu hình thành công.",
+            "deleteQueue": "**`{duration}`** đã qua qua và không có ai tham gia kênh thoại, hàng đợi đã bị xóa.",
+            "deleteQueueFooter": "Đã xóa hàng đợi",
+            "disconnectFromVCMessage": "Đã ngắt kết nối khỏi kênh thoại, hàng đợi đã bị xóa.",
+            "joinStageMessage": "Gia nhập thành công kênh sân khấu với vai trò Diễn giả.",
+            "joiningAsSpeaker": "Đã chuyển sang kênh sân khấu, đang cố gắng tham gia với tư cách Diễn giả...",
+            "pauseQueue": "Mọi người đã rời khỏi kênh thoại. Để tiết kiệm tài nguyên, hàng đợi đã bị tạm dừng.\nNếu không có ai tham gia kênh thoại trong **`{duration}`**, hàng đợi sẽ bị xóa.",
+            "pauseQueueFooter": "Đã tạm dừng hàng đợi",
+            "reconfigureConnection": "Đã chuyển sang kênh thoại tại vùng khác, đang định cấu hình lại kết nối...",
+            "resumeQueue": "Ai đó đã tham gia kênh thoại.\nĐang phát **{song}**",
+            "resumeQueueFooter": "Tiếp tục phát hàng đợi",
+            "unableJoinStageMessage": "Không thể tham gia với tư cách Diễn giả, hàng đợi đã bị xóa.",
+            "unableReconfigureConnection": "Không thể định cấu hình lại kết nối, hàng đợi đã bị xóa."
+        }
+    },
+    "reusable": {
+        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập **`{prefix} {name}`** để biết thêm thông tin.",
+        "pageFooter": "Trang {actual} trong {total}"
+    },
+    "utils": {
+        "cooldownMessage": "{author}, vui lòng đợi **`{timeleft}`**.",
+        "generalHandler": {
+            "errorJoining": "Lỗi khi tham gia kênh thoại, vì: `{message}`",
+            "errorPlaying": "Đã xảy ra lỗi khi cố gắng phát nhạc, vì: `{message}`",
+            "handleVideoInitial": "Đã thêm {length} bài hát vào hàng đợi",
+            "leftVC": "Rời khỏi kênh thoại do không hoạt động quá lâu.",
+            "queueEnded": "Hàng đợi đã hết, sử dụng **`{usage}`** để phát thêm nhạc.",
+            "startPlaying": "Bắt đầu phát **{song}**",
+            "stopPlaying": "Dừng phát **{song}**"
+        },
+        "musicDecorator": {
+            "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
+            "noQueue": "Đang rảnh rỗi.",
+            "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
+            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp."
+        }
+    }
+}
