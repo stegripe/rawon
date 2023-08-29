@@ -1,14 +1,14 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "PHÁTTRIỂN",
+            "categoryName": "PHÁT TRIỂN",
             "eval": {
                 "description": "Đánh giá bot",
                 "errorString": "Lỗi",
                 "noCode": "Mã không được cung cấp.",
                 "inputString": "Input",
                 "outputString": "Output",
-                "usage": "{prefix}eval <mã>"
+                "usage": "{prefix}eval <code>"
             }
         },
         "general": {
@@ -16,7 +16,7 @@
                 "aboutFooter": "{botname} - Thông tin Bot",
                 "botUptimeString": "Thời gian bot hoạt động",
                 "botVersionString": "Phiên bản bot",
-                "cachedUsersString": "Dùng cache",
+                "cachedUsersString": "Số người dùng bộ đệm",
                 "channelsString": "Kênh",
                 "commitString": "Commit",
                 "description": "Hiển thị thông tin bot",
@@ -25,7 +25,7 @@
                 "nodeVersionString": "Phiên bản sode.js",
                 "osUptimeString": "Thời gian hoạt động của hđh",
                 "processUptimeString": "Thời gian hoạt động thực",
-                "serversString": "Server",
+                "serversString": "Máy chủ",
                 "sourceCodeString": "Mã nguồn"
             },
             "categoryName": "CHUNG",
@@ -37,7 +37,7 @@
                 "commandUsageFooter": "<> = yêu cầu | [] = lựa chọn {devOnly}",
                 "description": "Hiển thị danh sách lệnh hoặc thông tin lệnh",
                 "descriptionString": "Mô tả",
-                "footerString": "{prefix}help <command> để có thêm thông tin về lệnh",
+                "footerString": "{prefix}help <lệnh> để có thêm thông tin về lệnh",
                 "nameString": "Tên",
                 "noCommanSuggest": "Không thể tìm thấy tên lệnh phù hợp. Ý bạn là?",
                 "noCommand": "Không thể tìm thấy bất kỳ lệnh nào.",
@@ -46,8 +46,8 @@
                 "usageString": "Cách dùng"
             },
             "invite": {
-                "clickURL": "**[Nhấn vào đây]({url})** để mời bot vào server của bạn",
-                "description": "Nhận link mời bot",
+                "clickURL": "**[Nhấn vào đây]({url})** để mời bot vào máy chủ của bạn",
+                "description": "Nhận liên kết mời bot",
                 "inviteTitle": "{bot} - Link mời"
             },
             "ping": {
@@ -58,13 +58,13 @@
         "moderation": {
             "ban": {
                 "banFail": "Không thể **`CẤM`** thành viên, vì: `{message}`",
-                "banSuccess": "**{user}** đã bị **`CẤM`** khỏi server.",
+                "banSuccess": "**{user}** đã bị **`CẤM`** khỏi máy chủ.",
                 "bannedByString": "Người cấm: {author}",
                 "botNoPermission": "Xin lỗi, tôi không có quyền **`CẤM NGƯỜI DÙNG`**.",
                 "description": "Cấm ai đó khỏi máy chủ",
                 "slashMemberIDDescription": "Bạn có muốn cấm?",
                 "slashReasonDescription": "Lý do cấm",
-                "usage": "{prefix}ban <@mention | id> [reason]",
+                "usage": "{prefix}ban <@đề cập | id> [lý do]",
                 "userBanned": "Bạn đã bị **`CẤM`** khỏi **{guildName}**",
                 "userNoBannable": "Xin lỗi, tôi không thể **`CẤM`** người đó.",
                 "userNoPermission": "Xin lỗi, bạn không có quyền **`CẤM NGƯỜI DÙNG`** để dùng lệnh này."
@@ -78,9 +78,9 @@
             "infractions": {
                 "description": "Hiển thị các vi phạm của người dùng",
                 "embedAuthorText": "{user} - Vi phạm",
-                "noInfractions": "Không vi phạm.",
+                "noInfractions": "Không có vi phạm.",
                 "slashMemberDescription": "Bạn muốn xem vi phạm của ai?",
-                "usage": "{prefix}infractions [@mention | id]"
+                "usage": "{prefix}infractions [@đề cập | id]"
             },
             "kick": {
                 "botNoPermission": "Xin lỗi, tôi không có quyền **`ĐUỔI NGƯỜI DÙNG`**.",
@@ -90,7 +90,7 @@
                 "kickedByString": "Người đuổi: {author}",
                 "slashMemberDescription": "Bạn muốn đuổi ai?",
                 "slashReasonDescription": "Lý do đuổi",
-                "usage": "{prefix}kick <@mention | id> [lý do]",
+                "usage": "{prefix}kick <@đề cập | id> [lý do]",
                 "userKicked": "Bạn đã bị **`ĐUỔI`** khỏi **{guildName}**",
                 "userNoKickable": "Xin lỗi, tôi không thể **`ĐUỔI`** người dùng đó.",
                 "userNoPermission": "Xin lỗi, bạn không có quyền **`ĐUỔI NGƯỜI DÙNG`** để dùng lệnh này."
@@ -124,7 +124,7 @@
                 "noRole": "Vai trò hạn chế chưa được bật, vui lòng dùng lệnh `{prefix}setmute` để bật",
                 "slashMemberDescription": "Bạn muốn hạn chế ai?",
                 "slashReasonDescription": "Lý do hạn chế",
-                "usage": "{prefix}mute <@mention | id> [lý do]",
+                "usage": "{prefix}mute <@đề cập | id> [lý do]",
                 "userMuted": "Bạn đã bị **`HẠN CHẾ`** khỏi **{guildName}**",
                 "userNoPermission": "Xin lỗi, bạn không có quyền **`HẠN CHẾ`** để dùng lệnh này."
             },
@@ -133,9 +133,9 @@
                 "description": "Xóa tin nhắn",
                 "invalidAmount": "Vui lòng chỉ định số lượng tin nhắn hợp lệ để xóa.",
                 "purgeFail": "Không thể **`XÓA`** tin nhắn, vì: `{message}`",
-                "purgeSuccess": "{amount, plural, one {**`1`** tin nhắn} other {**`#`** messages}} đã bị **`XÓA`**",
+                "purgeSuccess": "**`{amount}`** tinh nhắn đã bị **`XÓA`**",
                 "slashAmountDescription": "Số lượng tin nhắn cần xóa",
-                "usage": "{prefix}purge <amount>",
+                "usage": "{prefix}purge <lượng>",
                 "userNoPermission": "Xin lỗi, bạn không có quyền **`QUẢN LÝ TIN NHẮN`** để dùng lệnh này."
             },
             "setmute": {
@@ -143,17 +143,17 @@
                 "invalidRole": "Vai trò không hợp lệ.",
                 "slashRoleDescription": "Vai trò dùng để hạn chế",
                 "success": "<@&{role}> đã được đặt làm vai trò hạn chế",
-                "usage": "{prefix}setmute <role>"
+                "usage": "{prefix}setmute <vai trò>"
             },
             "unban": {
                 "alreadyUnban": "Người dùng đó không bị **`CẤM`**",
-                "description": "Gỡ cấm ai đó khỏi server",
+                "description": "Gỡ cấm ai đó khỏi máy chủ",
                 "slashMemberDescription": "Bạn muốn gỡ cấm ai?",
                 "slashReasonDescription": "Lý do gỡ cấm",
                 "unbanSuccess": "**{user}** đã được **`GỠ CẤM`** khỏi máy chủ.",
                 "unbanFail": "Không thể **`GỠ CẤM** người dùng, vì: `{message}`",
                 "unbannedByString": "Gỡ cấm bởi: {author}",
-                "usage": "{prefix}unban <id> [reason]"
+                "usage": "{prefix}unban <id> [lý do]"
             },
             "unmute": {
                 "description": "Gỡ hạn chế ai đó trong server",
@@ -163,7 +163,7 @@
                 "unmuteFail": "Không thể **`GỠ HẠN CHẾ** người dùng, vì: `{message}`",
                 "unmuteSuccess": "**{user}** đã được **`GỠ HẠN CHẾ`** trong máy chủ.",
                 "unmutedByString": "Gỡ hạn chế bởi: {author}",
-                "usage": "{prefix}unmute <@mention | id> [reason]",
+                "usage": "{prefix}unmute <@đề cập | id> [lý do]",
                 "userUnmuted": "Bạn đã được **`GỠ HẠN CHẾ`** trong **{guildName}**"
             },
             "warn": {
@@ -171,7 +171,7 @@
                 "noDM": "Không thể nhắn tin với người dùng đó, nhưng sẽ tiếp tục cảnh báo.",
                 "slashMemberDescription": "Bạn muốn cảnh báo ai?",
                 "slashReasonDescription": "Lý do cảnh báo",
-                "usage": "{prefix}warn <@mention | id> [reason]",
+                "usage": "{prefix}warn <@mention | id> [lý do]",
                 "userNoPermission": "Xin lỗi, bạn không có quyền **`QUẢN LÝ SERVER`** để dùng lệnh này.",
                 "userWarned": "Bạn đã bị **`CẢNH BÁO`** trong **{guildName}**",
                 "warnSuccess": "**{user}** đã bị **`CẢNH BÁO`** trong máy chủ.",
@@ -207,7 +207,7 @@
                 "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}",
                 "filterSet": " Bộ lọc `{filter}` đang `{state}`",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} bộ lọc bài hát",
-                "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {enabled} other {disabled}}",
+                "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {bật} other {tắt}}",
                 "slashStatusDescription": "Kiểm tra trạng thái hiện tại của bộ lọc bài hát",
                 "slashStatusFilterDescription": "Bộ lọc bài hát mà bạn muốn kiểm tra",
                 "specifyFilter": "Vui lòng chỉ định bộ lọc bài hát"
@@ -217,7 +217,7 @@
                 "description": "Hiển thị lời bài hát",
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
                 "slashDescription": "Tìm bài hát",
-                "usage": "{prefix}lyrics [song]"
+                "usage": "{prefix}lyrics [bài hát]"
             },
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
@@ -245,13 +245,13 @@
                 "noPositions": "Vui lòng chỉ định bài hát cần xóa.",
                 "slashPositionsDescription": "Bài hát cần xóa được phân tách bằng dấu phẩy hoặc dấu cách",
                 "songSkip": "Bài hát hiện tại đã bị xóa, đã bỏ qua.\n\n",
-                "songsRemoved": "Xóa {removed, plural, one {1 song} other {# songs}} khỏi hàng đợi",
-                "usage": "{prefix}remove <positions>"
+                "songsRemoved": "Xóa {removed} bài khỏi hàng đợi",
+                "usage": "{prefix}remove <vị trí>"
             },
             "repeat": {
                 "actualMode": "Chế độ lặp lại hiện tại là **`{mode}`**",
                 "description": "Lặp lại bài nhạc hiện tại hoặc trong hàng đợi",
-                "footer": "Để thay đổi chế độ, xem {prefix}help repeat",
+                "footer": "Để thay đổi chế độ, nhập {prefix}help repeat",
                 "newMode": "Chế độ lặp lại đã được đặt thành **`{mode}`**",
                 "slashDisable": "Tắt chế độ lặp lại",
                 "slashQueue": "Đặt chế độ lặp lại trong **`HÀNG ĐỢI`**",
@@ -299,7 +299,7 @@
                 "slashLastDescription": "Chuyển đến bài hát cuối cùng trong hàng đợi",
                 "slashPositionDescription": "Vị trí bài hát trong hàng đợi",
                 "slashSpecificDescription": "Chuyển đến một vị trí cụ thể trong hàng đợi",
-                "usage": "'{prefix}'skipto <{options} | number>"
+                "usage": "'{prefix}'skipto <{options} | số thứ tự>"
             },
             "stayInQueue": {
                 "247Disabled": "Lệnh ở lại kênh thoại bị tắt.",
@@ -369,7 +369,7 @@
         },
         "musicDecorator": {
             "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
-            "noQueue": "Không phát gì.",
+            "noQueue": "Đang rảnh rỗi.",
             "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
             "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
             "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp."
