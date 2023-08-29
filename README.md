@@ -99,5 +99,6 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@MoustacheOff](https://github.com/MoustacheOff) (fr)
 - [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
 - [@RomaDevWorld](https://github.com/RomaDevWorld) (uk)
+- [@hmz121](https://github.com/hmz121) (vi)
 
 > © 2023 Clytage Development
