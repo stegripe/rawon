@@ -1,5 +1,5 @@
 import { OperationManager } from "./OperationManager.js";
-import { readFile, writeFile } from "fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 
 export class JSONDataManager<T> {
     private readonly manager = new OperationManager();
