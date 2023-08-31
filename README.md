@@ -88,9 +88,9 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 ## Project Contributors
 
 ### Developers
+- [@Mednoob](https://github.com/Mednoob)
 - [@mzrtamp](https://github.com/mzrtamp)
 - [@noxyzm](https://github.com/noxyzm)
-- [@Mednoob](https://github.com/Mednoob)
 
 ### Translators
 - [Developers](#developers) (en, id)
