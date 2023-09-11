@@ -18,6 +18,15 @@ const toCapitalCase = (text: string): string => {
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 };
 
+const formatLocale = (locale: string | undefined): string => {
+    if (!locale) return "en";
+    const parts = locale.toLowerCase().split('-');
+    if (parts.length === 2) {
+        parts[1] = parts[1].toUpperCase();
+    }
+    return parts.join('-');
+};
+
 export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
@@ -30,7 +39,7 @@ export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "00AD95";
 export const streamStrategy = process.env.STREAM_STRATEGY! || "yt-dlp";
 export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
-export const lang = (process.env.LOCALE?.toLowerCase() ?? "") || "en";
+export const lang = formatLocale(process.env.LOCALE) || "en";
 export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
 
