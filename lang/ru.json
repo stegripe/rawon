@@ -28,7 +28,7 @@
                 "serversString": "Сервера",
                 "sourceCodeString": "Исходный код"
             },
-            "categoryName": "GENERAL",
+            "categoryName": "ОБЩИЕ",
             "help": {
                 "aliasesString": "Псевдонимы",
                 "authorString": "{username} - Список Команд",
@@ -46,7 +46,7 @@
                 "usageString": "Использование"
             },
             "invite": {
-                "clickURL": "**[Нажмите сюда]({url})** чтобы пригласить этого бота на ваш сервер.",
+                "clickURL": "**[Нажмите сюда]({url})** чтобы пригласить этого бота на свой сервер.",
                 "description": "Получить ссылку для приглашения бота",
                 "inviteTitle": "{bot} - Ссылка приглашения"
             },
@@ -59,17 +59,17 @@
             "ban": {
                 "banFail": "Невозможно **`ЗАБАНИТЬ`** участника, потому-что: `{message}`",
                 "banSuccess": "**{user}** был **`ЗАБАНЕН`** с этого сервера.",
-                "bannedByString": Забанен пользователем: {author}",
+                "bannedByString": "Забанен пользователем: {author}",
                 "botNoPermission": "Извините, но у меня нет разрешения **`БАНИТЬ УЧАСТНИКОВ`**.",
                 "description": "Забанить кого-то с сервера",
                 "slashMemberIDDescription": "Кого вы бы хотели забанить?",
                 "slashReasonDescription": "Причина бана",
                 "usage": "{prefix}ban <@mention | id> [reason]",
-                "userBanned": "Вы **`ЗАБАНИЛИ`** участника с **{guildName}**",
+                "userBanned": "Вы **`ЗАБАНИЛИ`** участника на сервере **{guildName}**",
                 "userNoBannable": "Извините, но я не могу **`ЗАБАНИТЬ`** этого участника.",
                 "userNoPermission": "Извините, но у вас нету разрешения **`БАНИТЬ УЧАСТНИКОВ`** чтобы использовать эту команду."
             },
-            "categoryName": "MODERATION",
+            "categoryName": "МОДЕРАЦИЯ",
             "common": {
                 "noReasonString": "[Не указана]",
                 "noUserSpecified": "Пожалуйста укажите кого-то.",
@@ -91,7 +91,7 @@
                 "slashMemberDescription": "Кого вы бы хотели кикнуть?",
                 "slashReasonDescription": "Причина кика",
                 "usage": "{prefix}кик <@mention | id> [reason]",
-                "userKicked": "Вы были **`КИКНУТЫ`** с **{guildName}**",
+                "userKicked": "Вы были **`КИКНУТЫ`** с сервера **{guildName}**",
                 "userNoKickable": "Извините, но я не могу **`КИКНУТЬ`** этого участника.",
                 "userNoPermission": "Извините, но у меня нет разрешения **`КИКАТЬ УЧАСТНИКОВ`** чтобы использовать эту команду."
             },
@@ -107,272 +107,272 @@
                 "embedTitle": "Логи",
                 "enable": "Функция логов была **`ВКЛЮЧЕНА`**",
                 "newChannelText": "новый канал",
-                "slashChannelDescription": "View or change the moderation logs channel",
-                "slashChannelNewChannelOption": "New channel for the moderation logs",
-                "slashDisableDescription": "Disable the moderation logs feature",
-                "slashEnableDescription": "Enable the moderation logs feature",
+                "slashChannelDescription": "Просмотр или изменение канала логов",
+                "slashChannelNewChannelOption": "Новый канал для логов",
+                "slashDisableDescription": "Отключить функцию логов",
+                "slashEnableDescription": "Включить функцию логов",
                 "usage": "{prefix}modlogs"
             },
             "mute": {
-                "alreadyMuted": "That member is already **`MUTED`**",
-                "botNoPermission": "Sorry, but I don't have **`MANAGE ROLES`** permission.",
-                "cantMuteOwner": "You can't **`MUTE`** the server owner.",
-                "description": "Mute someone on the server",
-                "muteFail": "Unable to **`MUTE`** member, because: `{message}`",
-                "muteSuccess": "**{user}** has been **`MUTED`** on the server.",
-                "mutedByString": "Muted by: {author}",
-                "noRole": "Mute role hasn't been set, please set it with `{prefix}setmute`",
-                "slashMemberDescription": "Who do you like to mute?",
-                "slashReasonDescription": "Mute reason",
+                "alreadyMuted": "Этот участник уже **`ЗАМЬЮЧЕН`**",
+                "botNoPermission": "Извините, но у меня нету разрешения **`УПРАВЛЯТЬ РОЛЯМИ`**.",
+                "cantMuteOwner": "Вы не можете **`ЗАМЬЮТИТЬ`** владельца сервера.",
+                "description": "Мьютить кого-то на этом сервере",
+                "muteFail": "Невозможно **`ЗАМЬЮТИТЬ`** участника, потому-что: `{message}`",
+                "muteSuccess": "**{user}** был **`ЗАМЬЮЧЕН`** на сервере.",
+                "mutedByString": "Замьючен пользователем: {author}",
+                "noRole": "Роль мьюта не была указана, пожалуйста укажите ее через `{prefix}setmute`",
+                "slashMemberDescription": "Кого вы бы хотели замьютить?",
+                "slashReasonDescription": "Причина мьюта",
                 "usage": "{prefix}mute <@mention | id> [reason]",
-                "userMuted": "You have been **`MUTED`** on **{guildName}**",
-                "userNoPermission": "Sorry, but you don't have **`MANAGE ROLES`** permission to use this command."
+                "userMuted": "Вы были **`ЗАМЬЮЧЕНЫ`** на сервере **{guildName}**",
+                "userNoPermission": "Извините, но у вас нету разрешения **`УПРАВЛЯТЬ РОЛЯМИ`** чтобы использовать эту команду."
             },
             "purge": {
-                "botNoPermission": "Sorry, but I don't have **`MANAGE MESSAGES`** permission.",
-                "description": "Delete messages",
-                "invalidAmount": "Please specify a valid number of messages to delete.",
-                "purgeFail": "Unable to **`PURGE`** messages, because: `{message}`",
+                "botNoPermission": "Извините, но у меня нету разрешения **`УПРАВЛЯТЬ СООБЩЕНИЯМИ`**.",
+                "description": "Удаление сообщений",
+                "invalidAmount": "Пожалуйста укажите допустимое количество сообщений для очистки.",
+                "purgeFail": "Невозможно **`ОЧИСТИТЬ`** сообщения, потому-что: `{message}`",
                 "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} have been **`PURGED`**",
                 "slashAmountDescription": "Number of messages to delete",
-                "usage": "{prefix}purge <amount>",
-                "userNoPermission": "Sorry, but you don't have **`MANAGE MESSAGES`** permission to use this command."
+                "usage": "{prefix}purge <количество>",
+                "userNoPermission": "Извините, но у вас нету разрешения **`УПРАВЛЯТЬ СООБЩЕНИЯМИ`** чтобы использовать эту команду."
             },
             "setmute": {
-                "description": "Set the mute role",
-                "invalidRole": "Invalid role.",
-                "slashRoleDescription": "The role to be used for mute",
-                "success": "Mute role has been set to <@&{role}>",
-                "usage": "{prefix}setmute <role>"
+                "description": "Указывание роль мьюта",
+                "invalidRole": "Неверная роль.",
+                "slashRoleDescription": "Роль которая будет использоваться для мьюта",
+                "success": "Мьют роль была указана: <@&{role}>",
+                "usage": "{prefix}setmute <роль>"
             },
             "unban": {
-                "alreadyUnban": "That user is not **`BANNED`**",
-                "description": "Un-ban someone from the server",
-                "slashMemberDescription": "Who do you like to un-ban?",
-                "slashReasonDescription": "Un-ban reason",
-                "unbanSuccess": "**{user}** has been **`UN-BANNED`** on the server.",
-                "unbanFail": "Unable to **`UN-BAN`** member, because: `{message}`",
-                "unbannedByString": "Un-banned by: {author}",
-                "usage": "{prefix}unban <id> [reason]"
+                "alreadyUnban": "Этот пользователь не **`ЗАБАНЕН`**",
+                "description": "Разбанивает кого-то с этого сервера",
+                "slashMemberDescription": "Кого вы бы хотели разбанить?",
+                "slashReasonDescription": "Причина разбана",
+                "unbanSuccess": "**{user}** был **`РАЗБАНЕН`** на сервере.",
+                "unbanFail": "Невозможно **`РАЗБАНИТЬ`** участника, потому-что: `{message}`",
+                "unbannedByString": "Разбанен пользователем: {author}",
+                "usage": "{prefix}unban <id> [причина]"
             },
             "unmute": {
-                "description": "Unmute someone on the server",
-                "noMuted": "That member is not **`MUTED`**",
-                "slashMemberDescription": "Who do you like to unmute?",
-                "slashReasonDescription": "Un-mute reason",
-                "unmuteFail": "Unable to **`UN-MUTE`** member, because: `{message}`",
-                "unmuteSuccess": "**{user}** has been **`UN-MUTED`** on the server.",
-                "unmutedByString": "Un-muted by: {author}",
-                "usage": "{prefix}unmute <@mention | id> [reason]",
-                "userUnmuted": "You have been **`UN-MUTED`** on **{guildName}**"
+                "description": "Размьючивает кого-то на этом сервере",
+                "noMuted": "Этот участник не **`ЗАМЬЮЧЕН`**",
+                "slashMemberDescription": "Кого вы бы хотели размьютить?",
+                "slashReasonDescription": "Причина размьюта",
+                "unmuteFail": "Невозможно **`РАЗМЬЮТИТЬ`** участника, потому-что: `{message}`",
+                "unmuteSuccess": "**{user}** был **`РАЗМЬЮЧЕН`** на сервере.",
+                "unmutedByString": "Размьючен пользователем: {author}",
+                "usage": "{prefix}unmute <@mention | id> [причина]",
+                "userUnmuted": "Вы были **`РАЗМЬЮЧЕНЫ`** на сервере **{guildName}**"
             },
             "warn": {
-                "description": "Warn member on the server",
-                "noDM": "Unable to create a DM with that user, but I'll keep warning them.",
-                "slashMemberDescription": "Who do you like to warn?",
-                "slashReasonDescription": "Warn reason",
-                "usage": "{prefix}warn <@mention | id> [reason]",
-                "userNoPermission": "Sorry, but you don't have **`MANAGE SERVER`** permission to use this command.",
-                "userWarned": "You have been **`WARNED`** on **{guildName}**",
-                "warnSuccess": "**{user}** has been **`WARNED`** on the server.",
-                "warnedByString": "Warned by: {author}"
+                "description": "Предупредите участника на сервере",
+                "noDM": "Невозможно создать ЛС с этим пользователем, но я буду продолжать предупреждать его.",
+                "slashMemberDescription": "Кого вы бы хотели предупредить?",
+                "slashReasonDescription": "Причина предупреждения",
+                "usage": "{prefix}warn <@mention | id> [причина]",
+                "userNoPermission": "Извините, но у вас нету разрешения **`УПРАВЛЯТЬ СЕРВЕРОМ`** чтобы использовать эту команду.",
+                "userWarned": "Вы были **`ПРЕДУПРЕЖДЕНЫ`** на сервере **{guildName}**",
+                "warnSuccess": "**{user}** был **`ПРЕДУПРЕЖДЕН`** на сервере.",
+                "warnedByString": "Предупрежден пользователем: {author}"
             }
         },
         "music": {
-            "categoryName": "MUSIC",
+            "categoryName": "МУЗЫКА",
             "dj": {
-                "description": "Change DJ feature settings",
-                "disable": "Disabled",
-                "disableText": "DJ feature has been **`DISABLED`**",
-                "embedTitle": "DJ feature",
-                "enable": "Enabled",
-                "enableText": "DJ feature has been **`ENABLED`**",
+                "description": "Поменять настройки функции DJ",
+                "disable": "Отключено",
+                "disableText": "Функция DJ была **`ОТКЛЮЧЕНА`**",
+                "embedTitle": "Функция DJ",
+                "enable": "Включено",
+                "enableText": "Функция DJ была **`ВКЛЮЧЕНА`**",
                 "newRoleText": "new role",
                 "role": {
-                    "current": "Current DJ role: <@&{role}>",
-                    "invalid": "Invalid role.",
-                    "noRole": "DJ role hasn't been set, please set it with `{prefix}dj role`",
-                    "success": "DJ role has been set to <@&{role}>"
+                    "current": "Текущая роль DJ: <@&{role}>",
+                    "invalid": "Неверная роль.",
+                    "noRole": "Роль DJ не была указана, пожалуйста укажите ее через `{prefix}dj role`",
+                    "success": "Роль DJ была указана: <@&{role}>"
                 },
-                "slashDisableDescription": "Disable the DJ feature",
-                "slashEnableDescription": "Enable the DJ feature",
-                "slashRoleDescription": "View or change the DJ role",
-                "slashRoleNewRoleOption": "New role for the DJ"
+                "slashDisableDescription": "Отключить функцию DJ",
+                "slashEnableDescription": "Включить функцию DJ",
+                "slashRoleDescription": "Показать или поменять роль DJ",
+                "slashRoleNewRoleOption": "Новая роль для DJ"
             },
             "filter": {
-                "availableFilters": "Available Filters",
-                "currentlyUsedFilters": "Currently Used Filters",
-                "currentState": "`{filter}` is currently `{state}`",
-                "description": "Configure song filter",
+                "availableFilters": "Доступные фильтры",
+                "currentlyUsedFilters": "Используемые в настоящее время фильтры",
+                "currentState": "`Состояние фильтра '`{filter}`': `{state}`",
+                "description": "Найстройка фильтра песни",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
-                "filterSet": "`{filter}` filter is now `{state}`",
+                "filterSet": "Новое состояние фильтра `{filter}`: `{state}`",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
-                "slashStatusDescription": "Check the current status of song filters",
-                "slashStatusFilterDescription": "The song filter that you want to check",
-                "specifyFilter": "Please specify the song filter"
+                "slashStatusDescription": "Проверьте текущий статус фильтров песен",
+                "slashStatusFilterDescription": "Фильтр который вы хотите проверить",
+                "specifyFilter": "Пожалуйста укажите фильтр"
             },
             "lyrics": {
-                "apiError": "The API could not find the song **{song}**, because: `{message}`",
-                "description": "Show the lyrics from the song",
-                "noQuery": "There is nothing playing, or no arguments are provided.",
-                "slashDescription": "Song to search",
-                "usage": "{prefix}lyrics [song]"
+                "apiError": "API не смог найти песню **{song}**, потому-что: `{message}`",
+                "description": "Показать слова из песни",
+                "noQuery": "Ничего не проигрывается, или аргументы не были предоставлены.",
+                "slashDescription": "Песня для поиска",
+                "usage": "{prefix}lyrics [песня]"
             },
             "nowplaying": {
-                "description": "Show the media player status",
-                "disableButton": "Previous buttons are no longer active and removed.",
-                "emptyQueue": "Queue is empty."
+                "description": "Показать статус медиа проигрывателя",
+                "disableButton": "Предыдущие кнопки больше неактивные и будут удалены.",
+                "emptyQueue": "Очередь пустая."
             },
             "pause": {
-                "alreadyPause": "The music player is already paused.",
-                "description": "Pause the music player",
-                "pauseMessage": "The music player has been paused."
+                "alreadyPause": "Музыкальный проигрыватель уже на паузе.",
+                "description": "Поставить на паузу музыкальный проигрыватель",
+                "pauseMessage": "Музыкальный проигрыватель был поставлен на паузу."
             },
             "play": {
-                "alreadyPlaying": "The music player is already playing to **`{voiceChannel}`** voice channel.",
-                "description": "Play some music",
-                "noSongData": "That URL doesn't have any song data.",
-                "slashQueryDescription": "Query to search",
-                "usage": "{prefix}play <query | url>"
+                "alreadyPlaying": "Музыкальный проигрыватель уже активный в канале **`{voiceChannel}`**.",
+                "description": "Сыграйте музыку",
+                "noSongData": "У этого URL нету данных о песне.",
+                "slashQueryDescription": "Запрос для поиска",
+                "usage": "{prefix}play <запрос | url>"
             },
             "queue": {
-                "description": "Show the queue list"
+                "description": "Показать очередь"
             },
             "remove": {
-                "description": "Remove song(s) from the queue",
-                "noPermission": "You don't have permission to use this command.",
-                "noPositions": "Please specify the song positions to remove.",
-                "slashPositionsDescription": "Position of the songs to remove separated by comma or space",
-                "songSkip": "The current song was removed, song skipped.\n\n",
+                "description": "Удалить песню из очереди",
+                "noPermission": "У вас нету разрешения чтобы использовать эту команду.",
+                "noPositions": "Пожалуйста укажите позицию песни в очереди чтобы удалить.",
+                "slashPositionsDescription": "Расположение удаляемых песен разделенных запятой или пробелом",
+                "songSkip": "Текущая песня была удалена, пропуск.\n\n",
                 "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
-                "usage": "{prefix}remove <positions>"
+                "usage": "{prefix}remove <позиции>"
             },
             "repeat": {
-                "actualMode": "Current repeat mode is **`{mode}`**",
-                "description": "Repeat current music or the queue",
-                "footer": "To change mode, see {prefix}help repeat",
-                "newMode": "The repeat mode has been set to **`{mode}`**",
-                "slashDisable": "Disable repeat mode",
-                "slashQueue": "Set repeat mode to **`QUEUE`**",
-                "slashSong": "Set repeat mode to **`SONG`**",
+                "actualMode": "Текущий повторный режим: **`{mode}`**",
+                "description": "Повторить текущую песню или очередь",
+                "footer": "Чтобы поменять режим, смотрите {prefix}help repeat",
+                "newMode": "Режим повтора был установлен на: **`{mode}`**",
+                "slashDisable": "Отключить режим повтора",
+                "slashQueue": "Указать режим повтора для **`ОЧЕРЕДИ`**",
+                "slashSong": "Указать режим повтора для **`ПЕСНИ`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "The music player is not paused.",
-                "description": "Resume the music player",
-                "resumeMessage": "The music player has been resumed."
+                "alreadyResume": "Музыкальный проигрыватель не стоит на паузе.",
+                "description": "Возобновить музыкальный проигрыватель",
+                "resumeMessage": "Музыкальный проигрыватель был возобновлен."
             },
             "search": {
-                "cancelMessage": "Type {cancel} or c to cancel music selection.",
-                "canceledMessage": "Music selection canceled.",
-                "description": "Play some music using the provided query",
-                "interactionContent": "Please select some music",
-                "interactionPlaceholder": "Please select some music",
-                "noQuery": "Please provide some query to search.",
-                "noSelection": "No or invalid value entered, music selection canceled.",
-                "noTracks": "I can't obtain any search results.",
-                "queueEmbed": "Please select some music; you can choose more than one using blank space or {separator}.\n",
-                "slashDescription": "Search the specified music",
-                "slashQueryDescription": "Query to search",
-                "slashSourceDescription": "Where the music should be taken?",
-                "trackSelectionMessage": "Music Selection",
-                "usage": "{prefix}search <query> [source]"
+                "cancelMessage": "Напишите {cancel} или `c` чтобы отменить выбор песни.",
+                "canceledMessage": "Выбор песни отменен.",
+                "description": "Сыграйте песню использую предоставленную очередь",
+                "interactionContent": "Пожалуйста выберите какую-то песню",
+                "interactionPlaceholder": "Пожалуйста выберите какую-то песню",
+                "noQuery": "Пожалуйста предоставьте очередь чтобы искать.",
+                "noSelection": "Не введено или является недопустимым значением, выбор музыки отменен.",
+                "noTracks": "Я не могу получить результаты поиска.",
+                "queueEmbed": "Пожалуйста выберите какую-то песню; вы можете выбрать несколько вариантов используя пробел или {separator}.\n",
+                "slashDescription": "Поиск конкретной песни",
+                "slashQueryDescription": "Запрос для поиска",
+                "slashSourceDescription": "Откуда следует брать музыку?",
+                "trackSelectionMessage": "Выбор Музыки",
+                "usage": "{prefix}search <запрос> [источник]"
             },
             "shuffle": {
-                "actualState": "Current shuffle mode is **`{state}`**",
-                "description": "Set mode for shuffle feature",
-                "newState": "Shuffle mode is now set to **`{state}`**"
+                "actualState": "Текущий режим перемешивания: **`{state}`**",
+                "description": "Установка режима для функции перемешивания",
+                "newState": "Режим перемешивания теперь установлен на: **`{state}`**"
             },
             "skip": {
-                "description": "Skip the music",
-                "skipMessage": "Skipped **{song}**",
-                "voteResultMessage": "{length}/{required} voted to skip the current song"
+                "description": "Пропустить песню",
+                "skipMessage": "Пропущена **{song}**",
+                "voteResultMessage": "{length}/{required} проголосовали за то чтобы пропустить текущую песню"
             },
             "skipTo": {
-                "cantPlay": "You can't skip to current music.",
-                "description": "Skip to a specific position in the queue",
-                "noPermission": "You don't have permission to use this command.",
-                "noSongPosition": "Unable to find a song in that position.",
-                "skipMessage": "Skipped to **{song}**",
-                "slashFirstDescription": "Rewind to the first song in the queue",
-                "slashLastDescription": "Skip to the last song in the queue",
-                "slashPositionDescription": "Song position in the queue",
-                "slashSpecificDescription": "Skip to a specific position in the queue",
+                "cantPlay": "Вы не можете перейти к текущей музыке.",
+                "description": "Пропуск до указанной позиции в очереди",
+                "noPermission": "У вас нету разрешения чтобы использовать эту команду.",
+                "noSongPosition": "Невозможно найти песню в такой позиции.",
+                "skipMessage": "Пропущено к **{song}**",
+                "slashFirstDescription": "Перемотать назад к первой песне в очереди",
+                "slashLastDescription": "Пропустить к последней песне в очереди",
+                "slashPositionDescription": "Позиция песни в очереди",
+                "slashSpecificDescription": "Пропустить до указанной позиции в очереди",
                 "usage": "'{prefix}'skipto <{options} | number>"
             },
             "stayInQueue": {
-                "247Disabled": "Stay-in-voice command is disabled.",
-                "actualState": "Stay-in-voice is **`{state}`**",
-                "description": "Makes the bot stay in the voice channel when the queue has ended",
-                "newState": "Stay-in-voice is now set to **`{state}`**",
-                "slashDescription": "Turns mode for the stay-in-voice feature"
+                "247Disabled": "Команда Stay-in-voice отключена.",
+                "actualState": "Состояние функции Stay-in-voice: **`{state}`**",
+                "description": "Делает так чтобы бот оставался в голосовом канале когда очередь закончится",
+                "newState": "Stay-in-voice теперь установлен на: *`{state}`**",
+                "slashDescription": "Включает режим stay-in-voice"
             },
             "stop": {
-                "description": "Stop the music player",
-                "stoppedMessage": "The music player has been stopped."
+                "description": "Остановить музыкальный проигрыватель",
+                "stoppedMessage": "Музыкальный проигрыватель был остановлен."
             },
             "volume": {
-                "changeVolume": "To change the volume, provide the volume number when using this command.",
-                "currentVolume": "The current volume is **`{volume}`**",
-                "description": "Change the media player volume",
-                "newVolume": "Volume has been set to **`{volume}`**",
-                "plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
-                "slashDescription": "New volume",
-                "usage": "{prefix}volume [new volume]",
-                "volumeLimit": "I can't set the volume above **`{maxVol}`**"
+                "changeVolume": "Чтобы изменить громкость, укажите номер громкости при использовании этой команды.",
+                "currentVolume": "Текущая громкость: **`{volume}`**",
+                "description": "Поменять громкость музыкального проигрывателя",
+                "newVolume": "Громкость была установлена на: **`{volume}`**",
+                "plsPause": "Пожалуйста поставьте музыку на паузу вместо того чтобы устанавливать громкость на **`{volume}`**",
+                "slashDescription": "Новая громкость",
+                "usage": "{prefix}volume [новая громкость]",
+                "volumeLimit": "Я не могу установить громкость выше **`{maxVol}`**"
             }
         }
     },
     "events": {
         "channelUpdate": {
-            "connectionReconfigured": "Connection successfully re-configured.",
-            "reconfigureConnection": "Voice channel region changed, re-configuring connection...",
-            "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
+            "connectionReconfigured": "Соединение успешно перенастроено.",
+            "reconfigureConnection": "Изменен регион голосового канала, повторная настройка соединения...",
+            "unableReconfigureConnection": "Невозможно повторно настроить подключение, очередь была удалена."
         },
         "createInteraction": {
-            "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
-            "message2": "Sorry, but that interaction is only for <@{user}>"
+            "message1": "Извините, но это взаимодействие предназначено только для <@{user}> и персонала сервера.",
+            "message2": "Извините, но это взаимодействие предназначено только для <@{user}>"
         },
-        "createMessage": "Hi {author}, my prefix is **`{prefix}`**",
-        "cmdLoading": "Loading...",
+        "createMessage": "Привет {author}, мой префикс **`{prefix}`**",
+        "cmdLoading": "Загрузка...",
         "voiceStateUpdate": {
-            "connectionReconfigured": "Connection successfully re-configured.",
-            "deleteQueue": "**`{duration}`** has been passed and there's no one who joined the voice channel, the queue has been deleted.",
-            "deleteQueueFooter": "Queue Deleted",
-            "disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
-            "joinStageMessage": "Successfully joined the stage channel as Speaker.",
-            "joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
-            "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next **`{duration}`**, the queue will be deleted.",
-            "pauseQueueFooter": "Queue Paused",
-            "reconfigureConnection": "Moved to a voice channel with a different region, re-configuring connection...",
-            "resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
-            "resumeQueueFooter": "Queue Resumed",
-            "unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
-            "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
+            "connectionReconfigured": "Соединение успешно перенастроено.",
+            "deleteQueue": "**`{duration}`** пройдена и никто не присоединился к голосовому каналу, очередь была удалена.",
+            "deleteQueueFooter": "Очередь удалена",
+            "disconnectFromVCMessage": "Отключен от голосового канала, очередь была удалена.",
+            "joinStageMessage": "Успешно присоединился к сцене в качестве спикера.",
+            "joiningAsSpeaker": "Перешел на канал сцены, пытаясь присоединиться в качестве спикера...",
+            "pauseQueue": "Все покинули голосовой канал. Для экономии ресурсов очередь была приостановлена.\nесли никто не подключится к голосовому каналу в течение следующего **`{duration}`**, очередь будет удалена."
+            "pauseQueueFooter": "Очередь на паузе",
+            "reconfigureConnection": "Переход в голосовой канал с другим регионом, повторная настройка соединения...",
+            "resumeQueue": "Кто-то присоединился к голосовому каналу.\nВозобновление **{song}**",
+            "resumeQueueFooter": "Очередь возобновлена",
+            "unableJoinStageMessage": "Невозможно присоединиться в качестве спикера, очередь была удалена.",
+            "unableReconfigureConnection": "Невозможно повторно настроить подключение, очередь была удалена."
         }
     },
     "reusable": {
-        "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",
+        "invalidUsage": "Неверное использование, пожалуйста используйте **`{prefix} {name}`** для большей информации.",
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
-        "cooldownMessage": "{author}, please wait **`{timeleft}`** of cooldown time.",
+        "cooldownMessage": "{author}, пожалуйста подождите **`{timeleft}`** чтобы использовать эту команду.",
         "generalHandler": {
-            "errorJoining": "Error while joining the voice channel, because: `{message}`",
-            "errorPlaying": "An error occurred while trying to play music, because: `{message}`",
-            "handleVideoInitial": "Added {length} songs to the queue",
-            "leftVC": "Left from the voice channel because I've been inactive for too long.",
-            "queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
-            "startPlaying": "Started playing **{song}**",
-            "stopPlaying": "Stopped playing **{song}**"
+            "errorJoining": "Ошибка при подключении к голосовому каналу, потому-что: `{message}`",
+            "errorPlaying": "При попытке воспроизвести музыку произошла ошибка, потому-что: `{message}`",
+            "handleVideoInitial": "Добавлено {length} песен в очередь",
+            "leftVC": "Вышел из голосового канала потому что я слишком долго был неактивен.",
+            "queueEnded": "Очередь закончилась, используйте **`{usage}`** чтобы воспроизвести больше музыки.",
+            "startPlaying": "Играет: **{song}**",
+            "stopPlaying": "Остановлено проигрывание: **{song}**"
         },
         "musicDecorator": {
-            "noInVC": "Sorry, but you need to be in a voice channel to do that.",
-            "noQueue": "Nothing is being played.",
-            "sameVC": "You need to be in the same voice channel as mine.",
-            "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
+            "noInVC": "Извините, но для этого вам нужно быть в голосовом канале.",
+            "noQueue": "Ничего не воспроизводится.",
+            "sameVC": "Вы должны быть на том же голосовом канале где нахожусь я.",
+            "validVCJoinable": "Извините, но я не могу **`ПОДКЛЮЧИТЬСЯ`** к вашему голосовому каналу, убедитесь что у меня есть соответствующие разрешения."
+            "validVCPermission": "Извините, но я не могу **`ГОВОРИТЬ`** в этом голосовом канале; убедитесь что у меня есть соответствующие разрешения".
         }
     }
 }
