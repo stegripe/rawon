@@ -71,14 +71,14 @@
 	"devDependencies": {
 		"@clytage/eslint-config": "^3.0.1",
 		"@types/i18n": "0.13.6",
-		"@types/node": "18.17.19",
+		"@types/node": "18.18.0",
 		"@typescript-eslint/eslint-plugin": "6.7.3",
 		"@typescript-eslint/parser": "6.7.3",
 		"eslint": "8.50.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-prettier": "^5.0.0",
 		"prettier": "^3.0.3",
-		"rimraf": "^5.0.1",
+		"rimraf": "^5.0.2",
 		"typescript": "5.2.2"
 	},
 	"optionalDependencies": {
