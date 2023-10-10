@@ -12,6 +12,21 @@ http.createServer(function (req, res) {
   res.end();
 }).listen(8080);
 
+// script for script.google.com
+/* function trigger() {
+    const url = [
+        "Your PROJECT URL"
+    ];
+    for (const uri of url) {
+        try {
+            UrlFetchApp.fetch(uri);
+        } catch (err) {
+            Logger.log(err.message);
+        }
+    }
+}
+*/
+
 const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
 
 const isGlitch = ensureEnv([
