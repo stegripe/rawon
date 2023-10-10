@@ -2,7 +2,7 @@ import { downloadExecutable } from "./yt-dlp-utils";
 import { existsSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { resolve } from "node:path";
-import { Server } from "node:https";
+import { Server } from "node:http";
 import module from "node:module";
 import prism from "prism-media";
 
