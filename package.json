@@ -70,7 +70,7 @@
 	},
 	"devDependencies": {
 		"@clytage/eslint-config": "^3.0.1",
-		"@types/i18n": "0.13.6",
+		"@types/i18n": "0.13.7",
 		"@types/node": "18.18.4",
 		"@typescript-eslint/eslint-plugin": "6.7.5",
 		"@typescript-eslint/parser": "6.7.5",
