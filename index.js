@@ -5,6 +5,12 @@ import { resolve } from "node:path";
 import { Server } from "node:https";
 import module from "node:module";
 import prism from "prism-media";
+import http from "http";
+
+http.createServer(function (req, res) {
+  res.write("For 'script.google.com' code to no longer get error so it can ping the url to keep it 24/7");
+  res.end();
+}).listen(8080);
 
 const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
 
