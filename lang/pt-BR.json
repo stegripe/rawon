@@ -1,0 +1,378 @@
+{
+    "commands": {
+        "developers": {
+            "categoryName": "DESENVOLVEDOR",
+            "eval": {
+                "description": "Avaliar o bot",
+                "errorString": "Erro",
+                "noCode": "Nenhum código fornecido.",
+                "inputString": "Entrada",
+                "outputString": "Saída",
+                "usage": "{prefix}eval <algum código>"
+            }
+        },
+        "general": {
+            "about": {
+                "aboutFooter": "Informação do bot {botname}",
+                "botUptimeString": "Tempo de atividade do bot",
+                "botVersionString": "Versão do bot",
+                "cachedUsersString": "Usuários em cache",
+                "channelsString": "Canais",
+                "commitString": "Commit",
+                "description": "Mostra as informações do bot",
+                "discordJSVersionString": "Versão do Discord.js",
+                "ffmpegVersionString": "Versão do FFmpeg",
+                "nodeVersionString": "Versão do Node.js",
+                "osUptimeString": "Tempo de atividade do SO",
+                "processUptimeString": "Tempo de atividade do processo",
+                "serversString": "Servidores",
+                "sourceCodeString": "Código-fonte"
+            },
+            "categoryName": "GERAL",
+            "help": {
+                "aliasesString": "Alias",
+                "authorString": "Lista de comandos de {username}",
+                "commandDetailTitle": "{username} - Informação do comando {command}",
+                "commandSelectionString": "Por favor selecione um comando",
+                "commandUsageFooter": "<> = obrigatório | [] = opcional {devOnly}",
+                "description": "Mostra a lista de comandos ou informações sobre um comando específico",
+                "descriptionString": "Descrição",
+                "footerString": "{prefix}help <comando> para obter mais informação sobre um comando",
+                "nameString": "Nome",
+                "noCommanSuggest": "Não foi possível encontrar o comando. Quis dizer este?",
+                "noCommand": "Não foi possível encontrar o comando.",
+                "slashDescription": "Nome do comando para ver informações específicas sobre tal comando.",
+                "usage": "{prefix}help [comando]",
+                "usageString": "Uso"
+            },
+            "invite": {
+                "clickURL": "**[Clique aqui]({url})** para convidar este bot ao seu servidor.",
+                "description": "Obtém o link de convite do bot",
+                "inviteTitle": "{bot} - Link de convite"
+            },
+            "ping": {
+                "description": "Mostra o ping atual do bot",
+                "footerString": "Latência de: {user}"
+            }
+        },
+        "moderation": {
+            "ban": {
+                "banFail": "Não foi possível **`BANIR`** o membro, motivo: `{message}`",
+                "banSuccess": "**{user}** foi **`BANIDO`** do servidor.",
+                "bannedByString": "Banido por: {author}",
+                "botNoPermission": "Desculpe, mas não possuo permissão para **`BANIR MEMBROS`**.",
+                "description": "Bane alguém do servidor",
+                "slashMemberIDDescription": "Quem você gostaria de banir?",
+                "slashReasonDescription": "Motivo do banimento",
+                "usage": "{prefix}ban <@menção | id> [motivo]",
+                "userBanned": "Você foi **`BANIDO`** de **{guildName}**",
+                "userNoBannable": "Desculpe, mas não posso **`BANIR`** aquele membro.",
+                "userNoPermission": "Desculpe, mas você não possui a permissão para **`BANIR MEMBROS`** para utilizar este comando."
+            },
+            "categoryName": "MODERAÇÃO",
+            "common": {
+                "noReasonString": "[Não especificado]",
+                "noUserSpecified": "Por favor especifique alguém.",
+                "reasonString": "**Motivo**"
+            },
+            "infractions": {
+                "description": "Mostra as infrações de um usuário",
+                "embedAuthorText": "{user} - Infrações",
+                "noInfractions": "Sem infrações.",
+                "slashMemberDescription": "De quem gostaria de ver as infrações?",
+                "usage": "{prefix}infractions [@menção | id]"
+            },
+            "kick": {
+                "botNoPermission": "Desculpe, mas não possuo permissão para **`EXPULSAR MEMBROS`**.",
+                "description": "Expulsa alguém do servidor",
+                "kickFail": "Não foi possível **`EXPULSAR`** o membro, motivo: `{message}`",
+                "kickSuccess": "**{user}** foi **`EXPULSO`** do servidor.",
+                "kickedByString": "Expulso por: {author}",
+                "slashMemberDescription": "Quem você gostaria de expulsar?",
+                "slashReasonDescription": "Motivo da expulsão",
+                "usage": "{prefix}kick <@menção | id> [motivo]",
+                "userKicked": "Você foi **`EXPULSO`** de **{guildName}**",
+                "userNoKickable": "Desculpe, mas não posso **`EXPULSAR`** aquele membro.",
+                "userNoPermission": "Desculpe, mas você não possui a permissão para **`EXPULSAR MEMBROS`** para utilizar este comando."
+            },
+            "modlogs": {
+                "channel": {
+                    "current": "Canal de registro de moderação atual: <#{channel}>",
+                    "invalid": "Canal inválido,o canal deve ser um canal de texto.",
+                    "noChannel": "O canal de registro de moderação não foi configurado.",
+                    "success": "O canal de registro de moderação foi configurado em: <#{channel}>"
+                },
+                "description": "Muda os ajustes do registro de moderação",
+                "disable": "Registro de moderação **`DESATIVADO`**",
+                "embedTitle": "Registro de moderação",
+                "enable": "O registro de moderação foi **`ATIVADO`**",
+                "newChannelText": "novo canal",
+                "slashChannelDescription": "Vê ou modifica o canal de registro de moderação",
+                "slashChannelNewChannelOption": "Novo canal para o registro de moderação",
+                "slashDisableDescription": "Desativa o registro de moderação",
+                "slashEnableDescription": "Ativa o registro de moderação",
+                "usage": "{prefix}modlogs"
+            },
+            "mute": {
+                "alreadyMuted": "Esse membro já está **`MUTADO`**",
+                "botNoPermission": "Desculpe, mas não possuo permissão para **`GERENCIAR CARGOS`**.",
+                "cantMuteOwner": "Você não pode **`MUTAR`** o dono do servidor.",
+                "description": "Muta alguém no servidor",
+                "muteFail": "Não foi possível **`MUTAR`** o membro, motivo: `{message}`",
+                "muteSuccess": "**{user}** foi **`MUTADO`** no servidor.",
+                "mutedByString": "Mutado por: {author}",
+                "noRole": "Cargo mutado não foi escolhido, por favor escolha usando `{prefix}setmute`",
+                "slashMemberDescription": "Quem você gostaria de mutar?",
+                "slashReasonDescription": "Motivo do mute",
+                "usage": "{prefix}mute <@menção | id> [motivo]",
+                "userMuted": "Você foi **`MUTADO`** no **{guildName}**",
+                "userNoPermission": "Desculpe, mas você não possui a permissão para **`GERENCIAR CARGOS`** para usar este comando."
+            },
+            "purge": {
+                "botNoPermission": "Desculpe, mas não possuo permissão para **`GERENCIAR MENSAGENS`**.",
+                "description": "Deleta múltiplas mensagens",
+                "invalidAmount": "Por favor forneça um número válido de mensagens para deletar.",
+                "purgeFail": "Não foi possível **`EXPURGAR`** as mensagens, motivo: `{message}`",
+                "purgeSuccess": "{amount, plural, one {**`1`** mensagem} other {**`#`** mensagens}} foram **`EXPURGADAS`**",
+                "slashAmountDescription": "Número de mensagens para deletar",
+                "usage": "{prefix}purge <quantidade>",
+                "userNoPermission": "Desculpe, mas você não possui a permissão para **`GERENCIAR MENSAGENS`**."
+            },
+            "setmute": {
+                "description": "Configura o cargo mutado",
+                "invalidRole": "Cargo inválido.",
+                "slashRoleDescription": "O cargo a ser mutado",
+                "success": "Cargo mutado foi configurado como: <@&{role}>",
+                "usage": "{prefix}setmute <cargo>"
+            },
+            "unban": {
+                "alreadyUnban": "Esse usuário não está **`BANIDO`**",
+                "description": "Desbane alguém do servidor",
+                "slashMemberDescription": "Quem você gostaria de desbanir?",
+                "slashReasonDescription": "Motivo do desbanimento",
+                "unbanSuccess": "**{user}** foi **`DESBANIDO`** do servidor.",
+                "unbanFail": "Não foi possível **`DESBANIR`** o membro, motivo: `{message}`",
+                "unbannedByString": "Desbanido por: {author}",
+                "usage": "{prefix}unban <id> [motivo]"
+            },
+            "unmute": {
+                "description": "Desmuta alguém do servidor",
+                "noMuted": "O membro não está **`MUTADO`**",
+                "slashMemberDescription": "Quem você gostaria de desmutar?",
+                "slashReasonDescription": "Motivo de desmutar",
+                "unmuteFail": "Não foi possível **`DESMUTAR`** o membro, motivo: `{message}`",
+                "unmuteSuccess": "**{user}** foi **`DESMUTADO`** no servidor.",
+                "unmutedByString": "Desmutado por: {author}",
+                "usage": "{prefix}unmute <@menção | id> [motivo]",
+                "userUnmuted": "Você foi **`DESMUTADO`** no **{guildName}**"
+            },
+            "warn": {
+                "description": "Notifica um membro do servidor",
+                "noDM": "Não consegui criar uma DM com aquele usuário, mas irei continuar notificando.",
+                "slashMemberDescription": "Quem você gostaria de notificar?",
+                "slashReasonDescription": "Motivo da notificação",
+                "usage": "{prefix}warn <@menção | id> [motivo]",
+                "userNoPermission": "Desculpe, mas você não possui permissão para **`GERENCIAR SERVIDOR`** para usar este comando.",
+                "userWarned": "Você foi **`NOTIFICADO`** em **{guildName}**",
+                "warnSuccess": "**{user}** foi **`NOTIFICADO`** no servidor.",
+                "warnedByString": "Notificado por: {author}"
+            }
+        },
+        "music": {
+            "categoryName": "MÚSICA",
+            "dj": {
+                "description": "Muda a configuração do DJ",
+                "disable": "Desativado",
+                "disableText": "A função DJ foi **`DESATIVADA`**",
+                "embedTitle": "DJ",
+                "enable": "Ativado",
+                "enableText": "A função DJ foi **`ATIVADA`**",
+                "newRoleText": "novo Cargo",
+                "role": {
+                    "current": "Cargo atual de DJ: <@&{role}>",
+                    "invalid": "Cargo inválido.",
+                    "noRole": "Cargo de DJ não foi escolhido, escolha usando `{prefix}dj role`",
+                    "success": "Cargo de DJ escolhido: <@&{role}>"
+                },
+                "slashDisableDescription": "Desativa a função DJ",
+                "slashEnableDescription": "Ativa a função DJ",
+                "slashRoleDescription": "Veja ou mude o cargo de DJ",
+                "slashRoleNewRoleOption": "Novo cargo para o DJ"
+            },
+            "filter": {
+                "availableFilters": "Filtros disponíveis",
+                "currentlyUsedFilters": "Filtros em uso",
+                "currentState": "`{filter}` está `{state}`",
+                "description": "Configura o filtro da música",
+                "embedFooter": "Para {opstate} o filtro, use {prefix}filter {opstate} {filter}",
+                "filterSet": "`O filtro {filter}` está `{state}`",
+                "slashStateDescription": "{state, select, enable {Ativar} other {Desativar}} um filtro de música",
+                "slashStateFilterDescription": "O filtro de música a ser {state, select, enable {ativado} other {desativado}}",
+                "slashStatusDescription": "Verifica o status dos filtros de música",
+                "slashStatusFilterDescription": "O filtro de música a ser verificado",
+                "specifyFilter": "Por favor especifique um filtro." 
+            },
+            "lyrics": {
+                "apiError": "A API não conseguiu encontrar **{song}**, motivo: `{message}`",
+                "description": "Mostra a letra da música",
+                "noQuery": "Nenhuma música está tocando, ou nenhum argumento foi fornecido.",
+                "slashDescription": "Música a buscar",
+                "usage": "{prefix}lyrics [música]"
+            },
+            "nowplaying": {
+                "description": "Mostra o status do player de mídia",
+                "disableButton": "Este botão já não está ativo e foi removido.",
+                "emptyQueue": "A fila está vazia."
+            },
+            "pause": {
+                "alreadyPause": "O player de música já está pausado.",
+                "description": "Pausa o player de música",
+                "pauseMessage": "O player de música foi pausado."
+            },
+            "play": {
+                "alreadyPlaying": "O player de música já está tocando no canal **`{voiceChannel}`**.",
+                "description": "Toca uma música",
+                "noSongData": "Essa URL não tem nenhuma música.",
+                "slashQueryDescription": "Busca",
+                "usage": "{prefix}play <busca | url>"
+            },
+            "queue": {
+                "description": "Mostra as músicas da fila"
+            },
+            "remove": {
+                "description": "Remove música(s) da fila",
+                "noPermission": "Você não possui permissão para usar esse comando.",
+                "noPositions": "Por favor especifique as posições das músicas a serem removidas.",
+                "slashPositionsDescription": "Posição das músicas a serem removidas separadas por espaços ou vírgulas", 
+                "songSkip": "A músical atual foi removida, pulando música.\n\n",
+                "songsRemoved": "Removido(s) {removed, plural, one {1 música} other {# músicas}} da fila",
+                "usage": "{prefix}remove <posições>"
+            },
+            "repeat": {
+                "actualMode": "Modo de repetição está **`{mode}`**",
+                "description": "Repete a música atual ou a fila",
+                "footer": "Para mudar o modo, veja {prefix}help repeat",
+                "newMode": "O modo de repetição agora está **`{mode}`**",
+                "slashDisable": "Desativa o modo de repetição",
+                "slashQueue": "Altera o modo de repetição para **`FILA`**",
+                "slashSong": "Altera o modo de repetição para **`MÚSICA`**",
+                "usage": "'{prefix}'repeat <{options}>"
+            },
+            "resume": {
+                "alreadyResume": "O player de música não está pausado.",
+                "description": "Retoma o player de música",
+                "resumeMessage": "O player de música foi retomado."
+            },
+            "search": {
+                "cancelMessage": "Digite {cancel} ou c para cancelar a seleção de música.",
+                "canceledMessage": "Seleção de música cancelada.",
+                "description": "Toca a música buscada",
+                "interactionContent": "Por favor selecione uma música",
+                "interactionPlaceholder": "Por favor selecione uma música",
+                "noQuery": "Por favor forneça uma busca.",
+                "noSelection": "Nenhum valor ou um valor inválido foi fornecido, busca por músicas cancelada.",
+                "noTracks": "Não obtive resultados.",
+                "queueEmbed": "Por favor escolha uma música; você pode escolher mais de uma usando espaços em branco ou {separator}.\n",
+                "slashDescription": "Procura a música especificada",
+                "slashQueryDescription": "Busca",
+                "slashSourceDescription": "Onde devo buscar a música?",
+                "trackSelectionMessage": "Seleção de músicas",
+                "usage": "{prefix}search <canção> [origem]"
+            },
+            "shuffle": {
+                "actualState": "Modo aleatório está **`{state}`**",
+                "description": "Configura o modo aleatório",
+                "newState": "Modo aleatório agora está **`{state}`**"
+            },
+            "skip": {
+                "description": "Pula a música",
+                "skipMessage": "Pulei **{song}**",
+                "voteResultMessage": "{length}/{required} votaram para pular a música atual"
+            },
+            "skipTo": {
+                "cantPlay": "Você não pode pular a música atual.",
+                "description": "Pula para uma posição específica na fila",
+                "noPermission": "Você não possui permissão para usar esse comando.",
+                "noSongPosition": "Não foi possível encontrar uma música nessa posição.",
+                "skipMessage": "Pulei para **{song}**",
+                "slashFirstDescription": "Rebobina para a primeira música da fila",
+                "slashLastDescription": "Pula para a última música da fila",
+                "slashPositionDescription": "Posição da música na fila",
+                "slashSpecificDescription": "Pula para uma posição específica na fila",
+                "usage": "'{prefix}'skipto <{options} | número>"
+            },
+            "stayInQueue": {
+                "247Disabled": "Comando permanecer-conectado desativado.",
+                "actualState": "Permanecer-conectado está **`{state}`**",
+                "description": "Faz o bot permanecer no canal de voz quando a fila terminar",
+                "newState": "Permanecer-conectado agora está **`{state}`**",
+                "slashDescription": "Alterna o estado do comando permanecer-conectado"
+            },
+            "stop": {
+                "description": "Para o player de música",
+                "stoppedMessage": "O player de música parou."
+            },
+            "volume": {
+                "changeVolume": "Para mudar o volume, forneça o número do volume ao usar este comando.",
+                "currentVolume": "O volume atual é **`{volume}`**",
+                "description": "Muda o volume do player de mídia",
+                "newVolume": "Volume posto em **`{volume}`**",
+                "plsPause": "Por favor pause a música ao invés de por o volume em**`{volume}`**",
+                "slashDescription": "Novo volume",
+                "usage": "{prefix}volume [novo volume]",
+                "volumeLimit": "Não posso por o volume acima de **`{maxVol}`**"
+            }
+        }
+    },
+    "events": {
+        "channelUpdate": {
+            "connectionReconfigured": "Conexão re-configurada com sucesso.",
+            "reconfigureConnection": "Região do canal de voz mudada, re-configurando conexão...",
+            "unableReconfigureConnection": "Não foi possível re-configurar a conexão, a fila foi deletada."
+        },
+        "createInteraction": {
+            "message1": "Desculpe, mas essa interação é somente para <@{user}> e a moderação do servidor.",
+            "message2": "Desculpe, mas essa interação é somente para <@{user}>"
+        },
+        "createMessage": "Olá {author}, meu prefixo é **`{prefix}`**",
+        "cmdLoading": "Carregando...",
+        "voiceStateUpdate": {
+            "connectionReconfigured": "Conexão re-configurada com sucesso.",
+            "deleteQueue": "**`{duration}`** se passaram e ninguém entrou no canal de voz, a fila foi deletada.",
+            "deleteQueueFooter": "Fila deletada",
+            "disconnectFromVCMessage": "Desconectado do canal de voz, a fila foi deletada.",
+            "joinStageMessage": "Entrei com sucesso no canal de palco com permissão de fala.",
+            "joiningAsSpeaker": "Movido para o canal de palco, tentando entrar com permissão de fala...",
+            "pauseQueue": "Todos deixaram o canal de voz. Para poupar recursos, a fila foi pausada.\nSe ninguém entrar no canal de voz nos próximos **`{duration}`**, a fila será deletada.",
+            "pauseQueueFooter": "Fila pausada",
+            "reconfigureConnection": "Movido para um canal com região diferente, re-configurando conexão...",
+            "resumeQueue": "Alguém entrou no canal de voz.\nRetomando **{song}**",
+            "resumeQueueFooter": "Fila retomada",
+            "unableJoinStageMessage": "Não foi possível entrar com permissão de fala, a fila foi deletada.",
+            "unableReconfigureConnection": "Não foi possível re-configurar a conexão, a fila foi deletada."
+        }
+    },
+    "reusable": {
+        "invalidUsage": "Uso inválido, por favor use **`{prefix} {name}`** para mais informações.",
+        "pageFooter": "Página {actual} de {total}"
+    },
+    "utils": {
+        "cooldownMessage": "{author}, por favor espere **`{timeleft}`** para fazer isso.",
+        "generalHandler": {
+            "errorJoining": "Erro ao entrar no canal de voz, motivo: `{message}`",
+            "errorPlaying": "Um erro ocorreu ao tentar tocar música, motivo: `{message}`",
+            "handleVideoInitial": "{length} músicas adicionadas à fila",
+            "leftVC": "Saindo do canal porque estive inativo por muito tempo.",
+            "queueEnded": "A fila terminou, use **`{usage}`** para adicionar mais músicas.",
+            "startPlaying": "Começando a tocar **{song}**",
+            "stopPlaying": "Parando de tocar **{song}**"
+        },
+        "musicDecorator": {
+            "noInVC": "Desculpe, mas você precisa estar em um canal de voz para fazer isso.",
+            "noQueue": "Nada está tocando.",
+            "sameVC": "Você precisa estar no mesmo canal de voz que o meu.",
+            "validVCJoinable": "Desculpe, mas não posso me **`CONECTAR`** ao seu canal de voz, certifique-se de que eu tenho as permissões necessárias.",
+            "validVCPermission": "Desculpe, mas eu não posso **`FALAR`** nesse canal de voz; certifique-se de que eu tenho as permissões necessárias."
+        }
+    }
+}

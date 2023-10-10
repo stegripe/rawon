@@ -88,9 +88,9 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 ## Project Contributors
 
 ### Developers
+- [@Mednoob](https://github.com/Mednoob)
 - [@mzrtamp](https://github.com/mzrtamp)
 - [@noxyzm](https://github.com/noxyzm)
-- [@Mednoob](https://github.com/Mednoob)
 
 ### Translators
 - [Developers](#developers) (en, id)
@@ -100,5 +100,7 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
 - [@RomaDevWorld](https://github.com/RomaDevWorld) (uk)
 - [@hmz121](https://github.com/hmz121) (vi)
+- [@melloirl](https://github.com/melloirl) (pt-BR)
+- [@Ronner231](https://github.com/Ronner231) (ru)
 
 > © 2023 Clytage Development
