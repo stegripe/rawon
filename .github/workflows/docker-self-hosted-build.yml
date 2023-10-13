@@ -1,4 +1,4 @@
-name: Build & Push Docker Image to container image registry
+name: Self-hosted Build & Push Docker Image to container image registry
 
 on:
   release:
@@ -14,5 +14,5 @@ on:
 
 jobs:
   docker:
-    uses: clytage/workflows/.github/workflows/docker-build.yml@main
+    uses: clytage/workflows/.github/workflows/docker-self-hosted-build.yml@main
     secrets: inherit
