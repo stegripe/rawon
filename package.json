@@ -17,14 +17,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/clytage/rawon.git"
+		"url": "git+https://github.com/stegripe/rawon.git"
 	},
-	"author": "Clytage <admin@clytage.org>",
+	"author": "Stegripe <admin@stegripe.org>",
 	"license": "AGPL-3.0",
 	"bugs": {
-		"url": "https://github.com/clytage/rawon/issues"
+		"url": "https://github.com/stegripe/rawon/issues"
 	},
-	"homepage": "https://github.com/clytage/rawon#readme",
+	"homepage": "https://github.com/stegripe/rawon#readme",
 	"engines": {
 		"node": ">=16.6.0",
 		"npm": ">=7.0.0"
