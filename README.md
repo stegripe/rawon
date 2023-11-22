@@ -43,14 +43,14 @@ Setup Tutorial Video (YouTube)
 ### Docker
 You can use our official Docker image:
 ```bash
-$ docker run -v ./scripts:/app/scripts --env-file ./.env -d ghcr.io/clytage/rawon:latest 
+$ docker run -v ./scripts:/app/scripts --env-file ./.env -d ghcr.io/stegripe/rawon:latest 
 ```
 
 ...or with docker-compose:
 ```yml
 services:
   rawon:
-    image: ghcr.io/clytage/rawon:latest
+    image: ghcr.io/stegripe/rawon:latest
     restart: unless-stopped
     env_file: .env
     volumes:
