@@ -53,9 +53,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 ]}
                 openGraph={{
                     type: "website",
-                    url: "rawon.clytage.org",
+                    url: "rawon.stegripe.org",
                     title: "Rawon",
-                    siteName: "rawon.clytage.og",
+                    siteName: "rawon.stegripe.og",
                     description:
                         "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
                     images: [
@@ -78,7 +78,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     },
                     {
                         name: "author",
-                        content: "Clytage"
+                        content: "Stegripe"
                     }
                 ]}
             />

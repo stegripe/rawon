@@ -42,7 +42,7 @@ export default function HomePage() {
                             </a>
                         </Link>
                         <Link
-                            href="https://clytage.org/discord"
+                            href="https://stegripe.org/discord"
                             passHref
                             legacyBehavior
                         >

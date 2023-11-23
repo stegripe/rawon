@@ -2,13 +2,13 @@
     "name": "rawon",
     "version": "1.0.0",
     "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
-    "homepage": "https://github.com/clytage/rawon#readme",
+    "homepage": "https://github.com/stegripe/rawon#readme",
     "bugs": {
-        "url": "https://github.com/clytage/rawon/issues"
+        "url": "https://github.com/stegripe/rawon/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/clytage/rawon.git"
+        "url": "git+https://github.com/stegripe/rawon.git"
     },
     "license": "BSD-3-Clause",
     "author": "noxzym",
