@@ -1,13 +1,13 @@
-import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
+import { createCmdDecorator } from "./createCmdDecorator.js";
 import { createEmbed } from "../functions/createEmbed.js";
-import { PermissionsString } from "discord.js";
+import { PermissionFlagsBits, PermissionResolvable } from "discord.js";
 
 export function memberReqPerms(
-    perms: PermissionsString[],
+    perms: PermissionResolvable,
     fallbackMsg: string
-): ReturnType<typeof createCmdExecuteDecorator> {
-    return createCmdExecuteDecorator(ctx => {
-        if (!ctx.member?.permissions.has(perms)) {
+): ReturnType<typeof createCmdDecorator> {
+    return createCmdDecorator(ctx => {
+        if (!ctx.member!.permissions.has(perms)) {
             void ctx.reply({
                 embeds: [createEmbed("error", fallbackMsg, true)]
             });
@@ -17,15 +17,22 @@ export function memberReqPerms(
 }
 
 export function botReqPerms(
-    perms: PermissionsString[],
+    perms: PermissionResolvable,
     fallbackMsg: string
-): ReturnType<typeof createCmdExecuteDecorator> {
-    return createCmdExecuteDecorator(ctx => {
-        if (!ctx.guild?.members.me?.permissions.has(perms)) {
+): ReturnType<typeof createCmdDecorator> {
+    return createCmdDecorator(ctx => {
+        if (!ctx.guild!.members.me!.permissions.has(perms)) {
             void ctx.reply({
                 embeds: [createEmbed("error", fallbackMsg, true)]
             });
             return false;
         }
     });
+}
+
+export function isModerator(): ReturnType<typeof createCmdDecorator> {
+    return memberReqPerms(
+        [PermissionFlagsBits.ManageRoles],
+        "Sorry, but you're not the server staff."
+    );
 }

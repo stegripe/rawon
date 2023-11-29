@@ -1,10 +1,4 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["github>stegripe/renovate-config"],
-    "packageRules": [
-        {
-            "matchPackageNames": ["opusscript"],
-            "allowedVersions": ">0.1"
-        }
-    ]
+    "extends": ["github>stegripe/renovate-config"]
 }

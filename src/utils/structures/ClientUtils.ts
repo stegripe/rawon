@@ -1,30 +1,11 @@
 /* eslint-disable class-methods-use-this */
-import { Rawon } from "../../structures/Rawon.js";
-import { Guild, Role, ChannelType } from "discord.js";
-import { execSync } from "node:child_process";
+import { BotClient } from "../../structures/BotClient.js";
+import { pathToFileURL } from "node:url";
 import { parse } from "node:path";
-import prism from "prism-media";
-
-const { FFmpeg } = prism;
+import { ChannelType } from "discord.js";
 
 export class ClientUtils {
-    public constructor(public readonly client: Rawon) { }
-
-    public async fetchMuteRole(guild: Guild): Promise<Role | null> {
-        const id = this.client.data.data?.[guild.id]?.mute;
-        return id ? guild.roles.fetch(id).catch(() => null) : null;
-    }
-
-    public async fetchDJRole(guild: Guild): Promise<Role | null> {
-        const data = this.client.data.data?.[guild.id]?.dj;
-        if (data?.enable && data.role) return guild.roles.fetch(data.role);
-
-        return null;
-    }
-
-    public requiredVoters(memberAmount: number): number {
-        return Math.round(memberAmount / 2);
-    }
+    public constructor(public readonly client: BotClient) {}
 
     public decode(string: string): string {
         return Buffer.from(string, "base64").toString("ascii");
@@ -51,22 +32,21 @@ export class ClientUtils {
 
         if (this.client.shard) {
             const shardChannels = await this.client.shard.broadcastEval(
-                (c, t) =>
-                    c.channels.cache
-                        .filter(ch => {
-                            if (t.textOnly) {
-                                return (
-                                    ch.type === t.types.GuildText ||
-                                    ch.type === t.types.PublicThread ||
-                                    ch.type === t.types.PrivateThread
-                                );
-                            } else if (t.voiceOnly) {
-                                return ch.type === t.types.GuildVoice;
-                            }
+                (c, t) => c.channels.cache
+                    .filter(ch => {
+                        if (t.textOnly) {
+                            return (
+                                ch.type === t.types.GuildText ||
+                                ch.type === t.types.PublicThread ||
+                                ch.type === t.types.PrivateThread
+                            );
+                        } else if (t.voiceOnly) {
+                            return ch.type === t.types.GuildVoice;
+                        }
 
-                            return true;
-                        })
-                        .map(ch => ch.id),
+                        return true;
+                    })
+                    .map(ch => ch.id),
                 {
                     context: { textOnly, voiceOnly, types: ChannelType }
                 }
@@ -106,45 +86,13 @@ export class ClientUtils {
         return this.client.guilds.cache.size;
     }
 
-    public async getPlayingCount(): Promise<number> {
-        if (this.client.shard) {
-            const playings = await this.client.shard.broadcastEval(
-                c => c.guilds.cache.filter(x => x.queue?.playing === true).size
-            );
-
-            return playings.reduce((prev, curr) => prev + curr);
-        }
-
-        return this.client.guilds.cache.filter(x => x.queue?.playing === true).size;
+    public async importFile<T>(path: string): Promise<T> {
+        return import(pathToFileURL(path).toString());
     }
 
-    public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
-        const file = await import(path).then(
-            m => (m as Record<string, (new (...argument: any[]) => T) | undefined>)[parse(path).name]
-        );
-        return file ? new file(...(args as unknown[])) : undefined;
-    }
-
-    public getFFmpegVersion(): string {
-        try {
-            const ffmpeg = FFmpeg.getInfo();
-            return (
-                ffmpeg.version
-                    .split(/_|-| /)
-                    .find(x => /[0-9.]/.test(x))
-                    ?.replace(/[^0-9.]/g, "") ?? "Unknown"
-            );
-        } catch {
-            return "Unknown";
-        }
-    }
-
-    public getCommitHash(ref: string, short = true): string {
-        try {
-            const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
-            return res.toString().trim();
-        } catch {
-            return "???"
-        }
+    public async importClass<T>(path: string, ...args: any[]): Promise<T | undefined> {
+        const file = await this.importFile<Record<string, (new (...argument: any[]) => T) | undefined>>(path);
+        const name = parse(path).name;
+        return file[name] ? new file[name]!(...args as unknown[]) : undefined;
     }
 }

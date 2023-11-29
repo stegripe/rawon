@@ -1,38 +1,13 @@
-import { formatMS } from "../utils/functions/formatMS.js";
-import { EnvActivityTypes } from "../typings/index.js";
+import { Presence } from "discord.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
-import i18n from "../config/index.js";
-import { ActivityType, Presence } from "discord.js";
 
-@Event<typeof ReadyEvent>("ready")
+@Event("ready")
 export class ReadyEvent extends BaseEvent {
     public async execute(): Promise<void> {
-        if (this.client.application?.owner) {
-            this.client.config.devs.push(this.client.application.owner.id);
-        }
-
-        await this.client.spotify.renew();
-
-        this.client.user?.setPresence({
-            activities: [
-                {
-                    name: i18n.__("events.cmdLoading"),
-                    type: ActivityType.Playing
-                }
-            ],
-            status: "dnd"
-        })
-        await this.client.commands.load();
-        this.client.logger.info(`Ready took ${formatMS(Date.now() - this.client.startTimestamp)}`);
-
         await this.doPresence();
-        this.client.logger.info(
-            await this.formatString(
-                "{username} is ready to serve {userCount} users on {serverCount} guilds in " +
-                "{textChannelCount} text channels and {voiceChannelCount} voice channels."
-            )
-        );
+        this.client.logger.info(await this.formatString("{tag} is ready to serve {userCount} users on {guildCount} guilds with " +
+            "{textChannelCount} text channels and {voiceChannelCount} voice channels."));
     }
 
     private async formatString(text: string): Promise<string> {
@@ -53,54 +28,34 @@ export class ReadyEvent extends BaseEvent {
 
             newText = newText.replace(/{voiceChannelCount}/g, voiceChannels.toString());
         }
-        if (text.includes("{serverCount}")) {
+        if (text.includes("{guildCount}")) {
             const guilds = await this.client.utils.getGuildCount();
 
-            newText = newText.replace(/{serverCount}/g, guilds.toString());
-        }
-        if (text.includes("{playingCount}")) {
-            const playings = await this.client.utils.getPlayingCount();
-
-            newText = newText.replace(/{playingCount}/g, playings.toString());
+            newText = newText.replace(/{guildCount}/g, guilds.toString());
         }
 
         return newText
-            .replace(/{prefix}/g, this.client.config.mainPrefix)
-            .replace(/{username}/g, this.client.user!.username);
+            .replace(/{prefix}/g, this.client.config.prefix)
+            .replace(/{tag}/g, this.client.user!.tag);
     }
 
     private async setPresence(random: boolean): Promise<Presence> {
         const activityNumber = random
             ? Math.floor(Math.random() * this.client.config.presenceData.activities.length)
             : 0;
-        const statusNumber = random ? Math.floor(Math.random() * this.client.config.presenceData.status.length) : 0;
-        const activity: {
-            name: string;
-            type: EnvActivityTypes;
-            typeNumber: number;
-        } = (
+        const statusNumber = random
+            ? Math.floor(Math.random() * this.client.config.presenceData.status.length)
+            : 0;
+        const activity = (
             await Promise.all(
-                this.client.config.presenceData.activities.map(async a => {
-                    let type = ActivityType.Playing;
-
-                    if (a.type === "Competing") type = ActivityType.Competing;
-                    if (a.type === "Watching") type = ActivityType.Watching;
-                    if (a.type === "Listening") type = ActivityType.Listening;
-
-                    return Object.assign(a, { name: await this.formatString(a.name), type: a.type, typeNumber: type });
-                })
+                this.client.config.presenceData.activities.map(
+                    async a => Object.assign(a, { name: await this.formatString(a.name) })
+                )
             )
         )[activityNumber];
 
         return this.client.user!.setPresence({
-            activities: (activity as { name: string } | undefined)
-                ? [
-                    {
-                        name: activity.name,
-                        type: activity.typeNumber
-                    }
-                ]
-                : [],
+            activities: (activity as { name: string } | undefined) ? [activity] : [],
             status: this.client.config.presenceData.status[statusNumber]
         });
     }

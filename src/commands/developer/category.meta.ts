@@ -1,6 +1,6 @@
 const cat = {
-    name: "GENERAL",
-    hide: false
+    name: "DEVELOPER",
+    hide: true
 };
 
 export default cat;

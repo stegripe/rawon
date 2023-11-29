@@ -67,7 +67,6 @@ jspm_packages/
 # dotenv environment variables file
 .env
 .env.test
-dev.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -99,7 +98,3 @@ dist
 
 # TernJS port file
 .tern-port
-
-# Rawon cache directories and files
-data.json
-scripts/

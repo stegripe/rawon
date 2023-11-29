@@ -1,87 +1,52 @@
 {
-	"name": "rawon",
-	"version": "3.2.1",
-	"description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
-	"main": "index.js",
-	"type": "module",
-	"scripts": {
-		"build": "npm run lint && npm run compile",
-		"compile": "npx swc src -d dist",
-		"tscompile": "tsc --build tsconfig.json",
-		"lint": "eslint . --cache --cache-file .eslintcache --ignore-path .gitignore --ext .ts",
-		"lint:fix": "eslint . --cache --cache-file .eslintcache --ignore-path .gitignore --ext .ts --fix",
-		"pretty": "prettier --check src/**/*.ts",
-		"pretty:write": "prettier --write src/**/*.ts",
-		"start": "node --es-module-specifier-resolution=node -r dotenv/config .",
-		"start:dev": "rimraf ./dist && npm run compile && npm start"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/stegripe/rawon.git"
-	},
-	"author": "Stegripe <admin@stegripe.org>",
-	"license": "AGPL-3.0",
-	"bugs": {
-		"url": "https://github.com/stegripe/rawon/issues"
-	},
-	"homepage": "https://github.com/stegripe/rawon#readme",
-	"engines": {
-		"node": ">=16.6.0",
-		"npm": ">=7.0.0"
-	},
-	"eslintConfig": {
-		"extends": [
-			"@clytage/eslint-config/typescript",
-			"prettier"
-		],
-		"plugins": [
-			"prettier"
-		],
-		"ignorePatterns": [
-			"dist/*",
-			"index.js",
-			"yt-dlp-utils/"
-		],
-		"rules": {
-			"@typescript-eslint/no-extra-parens": "off"
-		}
-	},
-	"prettier": {
-		"tabWidth": 4,
-		"trailingComma": "none",
-		"arrowParens": "avoid",
-		"printWidth": 120
-	},
-	"dependencies": {
-		"@discordjs/voice": "^0.16.1",
-		"@swc/cli": "0.1.63",
-		"@swc/core": "1.3.99",
-		"date-fns": "2.30.0",
-		"discord.js": "14.14.1",
-		"dotenv": "16.3.1",
-		"got": "13.0.0",
-		"i18n": "0.15.1",
-		"opusscript": "0.0.8",
-		"prism-media": "1.3.5",
-		"soundcloud.ts": "^0.5.2",
-		"tslib": "2.6.2",
-		"tweetnacl": "1.0.3",
-		"youtubei": "1.2.1"
-	},
-	"devDependencies": {
-		"@clytage/eslint-config": "^3.0.1",
-		"@types/i18n": "0.13.10",
-		"@types/node": "20.10.0",
-		"@typescript-eslint/eslint-plugin": "6.13.1",
-		"@typescript-eslint/parser": "6.13.1",
-		"eslint": "8.54.0",
-		"eslint-config-prettier": "^9.0.0",
-		"eslint-plugin-prettier": "^5.0.1",
-		"prettier": "^3.1.0",
-		"rimraf": "^5.0.5",
-		"typescript": "5.3.2"
-	},
-	"optionalDependencies": {
-		"play-dl": "^1.9.7"
-	}
+    "name": "template",
+    "version": "1.0.0",
+    "description": "A template to generate well-configured project base for Stegripe.",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
+        "build": "npm run lint && npm run compile",
+        "compile": "tsc --build tsconfig.json",
+        "lint": "eslint . --ignore-path .gitignore --ext .ts",
+        "lint:fix": "npm run lint -- --fix",
+        "start": "node --es-module-specifier-resolution=node -r dotenv/config . | pino-pretty -t \"SYS:yyyy-MM-dd HH:mm:ss\"",
+        "start:dev": "rimraf ./dist && npm run compile && npm start"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stegripe/template.git"
+    },
+    "author": "Stegripe <admin@stegripe.org>",
+    "license": "AGPL-3.0",
+    "bugs": {
+        "url": "https://github.com/stegripe/template/issues"
+    },
+    "homepage": "https://github.com/stegripe/template#readme",
+    "engines": {
+        "node": ">=16.6.0",
+        "npm": ">=7.0.0"
+    },
+    "eslintConfig": {
+        "extends": "@clytage/eslint-config/typescript",
+        "ignorePatterns": "dist/*"
+    },
+    "devDependencies": {
+        "@clytage/eslint-config": "^3.0.1",
+        "@types/node": "^20.10.0",
+        "@typescript-eslint/eslint-plugin": "^6.4.1",
+        "@typescript-eslint/parser": "^6.4.1",
+        "eslint": "^8.47.0",
+        "rimraf": "^5.0.5",
+        "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "date-fns": "^2.30.0",
+        "discord.js": "^14.14.1",
+        "dotenv": "^16.3.1",
+        "got": "^13.0.0",
+        "pino": "^8.16.2",
+        "pino-pretty": "^10.2.3",
+        "tree-kill": "^1.2.2",
+        "tslib": "^2.6.2"
+    }
 }

@@ -1,4 +1,4 @@
-FROM ghcr.io/hazmi35/node:18-dev-alpine as build-stage
+FROM ghcr.io/hazmi35/node:21-dev-alpine as build-stage
 
 # Prepare pnpm with corepack (experimental feature)
 RUN corepack enable && corepack prepare pnpm@latest
@@ -22,27 +22,18 @@ RUN pnpm run build
 RUN pnpm prune --production
 
 # Get ready for production
-FROM ghcr.io/hazmi35/node:18-alpine
+FROM ghcr.io/hazmi35/node:21-alpine
 
-LABEL name "rawon"
+LABEL name "template"
 LABEL maintainer "Clytage <admin@clytage.org>"
-
-# Install ffmpeg
-RUN apk add --no-cache ffmpeg
 
 # Copy needed files
 COPY --from=build-stage /tmp/build/package.json .
 COPY --from=build-stage /tmp/build/node_modules ./node_modules
 COPY --from=build-stage /tmp/build/dist ./dist
-COPY --from=build-stage /tmp/build/yt-dlp-utils ./yt-dlp-utils
-COPY --from=build-stage /tmp/build/lang ./lang
-COPY --from=build-stage /tmp/build/index.js ./index.js
 
 # Additional Environment Variables
 ENV NODE_ENV production
 
-# Add scripts volumes
-VOLUME /app/scripts
-
 # Start the app with node
-CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
+CMD ["node", "--es-module-specifier-resolution=node", "dist/index.js"]

@@ -1,65 +1,39 @@
-/* eslint-disable prefer-named-capture-group */
-import { createEmbed } from "../utils/functions/createEmbed.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
-import i18n from "../config/index.js";
-import { ChannelType, Message, User } from "discord.js";
+import { Message, User } from "discord.js";
+import { createEmbed } from "../utils/functions/createEmbed.js";
 
-@Event<typeof MessageCreateEvent>("messageCreate")
+@Event("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
-    public execute(message: Message): Message | undefined {
-        this.client.debugLog.logData("info", "MESSAGE_CREATE", [
-            ["ID", message.id],
-            ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
-            [
-                "Channel",
-                message.channel.type === ChannelType.DM ? "DM" : `${message.channel.name}(${message.channel.id})`
-            ],
-            ["Author", `${message.author.tag}(${message.author.id})`]
-        ]);
+    public execute(message: Message): void {
+        if (message.author.bot || message.channel.isDMBased()) return;
 
-        if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) {
-            return message;
+        if (message.content.startsWith(this.client.config.prefix)) {
+            this.client.commands.handle(message);
+            return;
         }
 
-        if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
+        if (this.getUserFromMention(message.content)?.id === this.client.user!.id) {
             message
                 .reply({
                     embeds: [
                         createEmbed(
                             "info",
-                            `👋 **|** ${i18n.__mf("events.createMessage", {
-                                author: message.author.toString(),
-                                prefix: `\`${this.client.config.mainPrefix}\``
-                            })}`
+                            `👋 **|** Hi ${message.author.toString()}, my prefix is **\`${
+                                this.client.config.prefix
+                            }\`**`
                         )
                     ]
                 })
                 .catch(e => this.client.logger.error("PROMISE_ERR:", e));
         }
-
-        const pref = this.client.config.altPrefixes.concat(this.client.config.mainPrefix).find(p => {
-            if (p === "{mention}") {
-                const userMention = /<@(!)?\d*?>/.exec(message.content);
-                if (userMention?.index !== 0) return false;
-
-                const user = this.getUserFromMention(userMention[0]);
-
-                return user?.id === this.client.user?.id;
-            }
-
-            return message.content.startsWith(p);
-        });
-        if (pref) {
-            this.client.commands.handle(message, pref);
-        }
     }
 
     private getUserFromMention(mention: string): User | undefined {
-        const matches = /^<@!?(\d+)>$/.exec(mention);
-        if (!matches) return undefined;
+        const match = (/^<@!?(?<id>\d+)>$/).exec(mention);
+        if (!match) return undefined;
 
-        const id = matches[1];
+        const id = match.groups!.id;
         return this.client.users.cache.get(id);
     }
 }

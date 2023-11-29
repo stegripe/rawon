@@ -2,59 +2,41 @@ import { CommandContext } from "../../structures/CommandContext.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { Command } from "../../utils/decorators/Command.js";
-import i18n from "../../config/index.js";
 import { ColorResolvable } from "discord.js";
 
 @Command<typeof PingCommand>({
-    aliases: ["pang", "pung", "peng", "pong"],
-    description: i18n.__("commands.general.ping.description"),
+    aliases: ["pong", "pang", "pung", "peng", "pingpong"],
+    description: "Shows current ping of the bot",
     name: "ping",
-    slash: {
-        options: []
-    },
     usage: "{prefix}ping"
 })
 export class PingCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
-        if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
-        const before = Date.now();
-        const msg = await ctx.reply({ content: "🏓" });
-        const latency = Date.now() - before;
+        const msg = await ctx.reply("🏓");
+        const latency = msg.createdTimestamp - ctx.context.createdTimestamp;
         const wsLatency = this.client.ws.ping.toFixed(0);
-        const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "N/A";
         const embed = createEmbed("info")
-            .setColor(this.searchHex(wsLatency))
-            .setAuthor({
-                name: "🏓 PONG",
-                iconURL: this.client.user!.displayAvatarURL()
+            .setColor(PingCommand.searchHex(wsLatency))
+            .setAuthor({ name: "🏓 PONG" })
+            .addFields({
+                name: "📶 **|** API",
+                value: `**\`${latency}\`** ms`,
+                inline: true
+            }, {
+                name: "🌐 **|** WebSocket",
+                value: `**\`${wsLatency}\`** ms`,
+                inline: true
             })
-            .addFields(
-                {
-                    name: "📶 **|** API",
-                    value: `**\`${latency}\`** ms`,
-                    inline: true
-                },
-                {
-                    name: "🌐 **|** WebSocket",
-                    value: `**\`${wsLatency}\`** ms`,
-                    inline: true
-                },
-                {
-                    name: "🔊 **|** Voice",
-                    value: `**\`${vcLatency}\`** ms`,
-                    inline: true
-                }
-            )
             .setFooter({
-                text: i18n.__mf("commands.general.ping.footerString", { user: this.client.user!.tag }),
-                iconURL: this.client.user!.displayAvatarURL()
+                text: `Latency of: ${this.client.user!.tag}`,
+                iconURL: this.client.user?.displayAvatarURL()
             })
             .setTimestamp();
-        msg.edit({ content: " ", embeds: [embed] }).catch(e => this.client.logger.error("PROMISE_ERR:", e));
+
+        await msg.edit({ content: " ", embeds: [embed] });
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    private searchHex(ms: number | string): ColorResolvable {
+    private static searchHex(ms: number | string): ColorResolvable {
         const listColorHex = [
             [0, 20, "Green"],
             [21, 50, "Green"],

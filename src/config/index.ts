@@ -1,52 +1,40 @@
-import { lang } from "./env.js";
-import { ClientOptions, IntentsBitField, Options, ShardingManagerMode, Sweepers } from "discord.js";
-import { join } from "node:path";
-import i18n from "i18n";
+import { PresenceData } from "../typings/index.js";
+import { prefix } from "./env.js";
+import { ActivityType, IntentsBitField, ClientOptions, Options } from "discord.js";
 
 export const clientOptions: ClientOptions = {
-    allowedMentions: { parse: ["users"], repliedUser: true },
     intents: [
-        IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.MessageContent,
         IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.GuildEmojisAndStickers,
-        IntentsBitField.Flags.GuildVoiceStates,
-        IntentsBitField.Flags.GuildBans
+        IntentsBitField.Flags.Guilds
     ],
     makeCache: Options.cacheWithLimits({
-        MessageManager: {
-            maxSize: Infinity
-        },
+        ...Options.DefaultSweeperSettings,
         ThreadManager: {
             maxSize: Infinity
         }
     }),
     sweepers: {
-        messages: {
-            interval: 300,
-            filter: Sweepers.filterByLifetime({ lifetime: 10800 })
-        },
+        ...Options.DefaultSweeperSettings,
         threads: {
             interval: 300,
-            filter: Sweepers.filterByLifetime({
-                lifetime: 10800,
-                getComparisonTimestamp: e => e.archiveTimestamp!,
-                excludeFromSweep: e => !e.archived
-            })
+            lifetime: 10800
         }
     }
 };
 
-i18n.configure({
-    defaultLocale: "en",
-    directory: join(process.cwd(), "lang"),
-    locales: ["en", "es", "id", "fr", "zh-CN", "zh-TW", "uk", "vi", "pt-BR", "ru"],
-    objectNotation: true
-});
+export const presenceData: PresenceData = {
+    activities: [
+        { name: `my prefix is ${prefix}`, type: ActivityType.Playing },
+        { name: "with {userCount} users", type: ActivityType.Playing },
+        {
+            name: "{textChannelCount} of text channels in {guildCount} guilds",
+            type: ActivityType.Watching
+        }
+    ],
+    interval: 60000,
+    status: ["online"]
+};
 
-i18n.setLocale(lang);
-
-export const shardsCount: number | "auto" = "auto";
-export const shardingMode: ShardingManagerMode = "worker";
+export * from "./constants.js";
 export * from "./env.js";
-export default i18n;
