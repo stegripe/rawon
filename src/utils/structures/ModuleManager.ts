@@ -24,7 +24,7 @@ export class ModuleManager {
                 continue;
             }
 
-            if (this.modules.has(path)) throw new Error(`Module "${path}" has already been loaded.`);
+            if (this.modules.has(module.id)) throw new Error(`Failed to load "${path}" module. Module with the same ID has already been loaded.`);
             module.path = path;
 
             const inner = this.client.utils.readDir(path);
@@ -32,8 +32,8 @@ export class ModuleManager {
             if (inner.includes("events")) await this.client.events.readFromDir(resolve(path, "events"));
             if (inner.includes("modules")) await this.load(resolve(path, "modules"));
 
-            this.modules.set(path, module);
-            this.client.logger.info(`Event listeners in module "${path}" has been loaded.`);
+            this.modules.set(module.id, module);
+            this.client.logger.info(`Event listeners in module "${module.id}" has been loaded.`);
         }
 
         await beforeCmd?.();

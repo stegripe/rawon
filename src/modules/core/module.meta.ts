@@ -1,7 +1,8 @@
 const mod = {
-    name: "core",
+    name: "Core",
     description: "Core module of the bot.",
-    enabled: true
+    enabled: true,
+    id: "core"
 };
 
 export default mod;

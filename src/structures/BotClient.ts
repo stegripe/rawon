@@ -34,6 +34,8 @@ export class BotClient extends Client {
             this.removeListener("ready", listener);
         };
 
+        globalThis.getModule = (id: string) => this.modules.modules.get(id)?.exports;
+
         this.on("ready", listener);
         await this.modules.load(resolve(path, "..", "modules"), () => this.login(token));
 

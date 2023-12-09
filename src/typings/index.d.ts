@@ -52,6 +52,8 @@ export interface Module {
     description: string;
     path: string;
     enabled: boolean;
+    id: string;
+    exports?: any;
 }
 
 export type NonAbstractConstructor<R = unknown> = new (...args: any[]) => R;
@@ -75,4 +77,8 @@ export type RegisterCmdOptions<T = false> = (T extends true ? { guild?: Guild } 
 declare global {
     type Promisable<T> = Promise<T> | T;
     type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
+
+    module globalThis{
+        function getModule<T extends keyof RawonModules>(moduleName: T): RawonModules[T] | undefined;
+    }
 }
