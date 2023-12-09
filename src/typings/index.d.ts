@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { ActivityOptions, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, Guild } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
@@ -79,6 +80,6 @@ declare global {
     type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
 
     module globalThis{
-        function getModule<T extends keyof RawonModules>(moduleName: T): RawonModules[T] | undefined;
+        function getModule<T extends keyof RawonModules | (string & {})>(moduleName: T): T extends keyof RawonModules ? RawonModules[T] | undefined : any;
     }
 }
