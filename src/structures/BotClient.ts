@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { Client } from "discord.js";
 import got from "got";
 import { formatMS } from "../utils/functions/formatMS.js";
+import { ModuleManager } from "../utils/structures/ModuleManager.js";
 
 const path = dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +16,7 @@ export class BotClient extends Client {
     public readonly request = got;
     public readonly config = config;
     public readonly utils = new ClientUtils(this);
+    public readonly modules = new ModuleManager(this);
     public readonly commands = new CommandManager(this);
     public readonly events = new EventLoader(this);
     public readonly logger = createLogger({
@@ -26,16 +28,15 @@ export class BotClient extends Client {
 
     public async build(token?: string): Promise<this> {
         const start = Date.now();
-        await this.events.readFromDir(resolve(path, "..", "events"));
         const listener = (): void => {
-            void this.commands.readFromDir(resolve(path, "..", "commands"));
             this.logger.info(`Ready in ${formatMS(Date.now() - start)}.`);
 
             this.removeListener("ready", listener);
         };
 
         this.on("ready", listener);
-        await this.login(token);
+        await this.modules.load(resolve(path, "..", "modules"), () => this.login(token));
+
         return this;
     }
 }

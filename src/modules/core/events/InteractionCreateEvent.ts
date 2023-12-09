@@ -1,7 +1,7 @@
-import { CommandContext } from "../structures/CommandContext.js";
-import { createEmbed } from "../utils/functions/createEmbed.js";
-import { BaseEvent } from "../structures/BaseEvent.js";
-import { Event } from "../utils/decorators/Event.js";
+import { CommandContext } from "#rawon/structures/CommandContext.js";
+import { createEmbed } from "#rawon/utils/functions/createEmbed.js";
+import { BaseEvent } from "#rawon/structures/BaseEvent.js";
+import { Event } from "#rawon/utils/decorators/Event.js";
 import { Interaction, Message } from "discord.js";
 
 @Event("interactionCreate")

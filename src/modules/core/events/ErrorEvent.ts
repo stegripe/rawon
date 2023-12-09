@@ -1,5 +1,5 @@
-import { BaseEvent } from "../structures/BaseEvent.js";
-import { Event } from "../utils/decorators/Event.js";
+import { BaseEvent } from "#rawon/structures/BaseEvent.js";
+import { Event } from "#rawon/utils/decorators/Event.js";
 
 @Event("error")
 export class ErrorEvent extends BaseEvent {

@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "module": "ESNext",
+        "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "lib": [
             "ESNext"
@@ -15,11 +15,14 @@
         "skipLibCheck": true,
         "noEmitHelpers": true,
         "importHelpers": true,
-        "resolveJsonModule": true,
         "typeRoots": [
             "node_modules/@types",
-            "src/typings"
-        ]
+            "src/**/typings"
+        ],
+        "baseUrl": "./src",
+        "paths": {
+            "#rawon/*": ["*"]
+        }
     },
     "exclude": [],
     "include": [

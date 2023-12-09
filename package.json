@@ -9,7 +9,7 @@
         "compile": "tsc --build tsconfig.json",
         "lint": "eslint . --ignore-path .gitignore --ext .ts",
         "lint:fix": "npm run lint -- --fix",
-        "start": "node --es-module-specifier-resolution=node -r dotenv/config . | pino-pretty -t \"SYS:yyyy-MM-dd HH:mm:ss\"",
+        "start": "node --es-module-specifier-resolution=node -r dotenv/config -r tsconfig-paths/register . | pino-pretty -t \"SYS:yyyy-MM-dd HH:mm:ss\"",
         "start:dev": "rimraf ./dist && npm run compile && npm start"
     },
     "repository": {
@@ -30,6 +30,9 @@
         "extends": "@clytage/eslint-config/typescript",
         "ignorePatterns": "dist/*"
     },
+    "imports": {
+        "#rawon/*": "./dist/*"
+    },
     "devDependencies": {
         "@clytage/eslint-config": "^3.0.1",
         "@types/node": "^20.10.0",
@@ -47,6 +50,7 @@
         "pino": "^8.16.2",
         "pino-pretty": "^10.2.3",
         "tree-kill": "^1.2.2",
+        "tsconfig-paths": "^4.2.0",
         "tslib": "^2.6.2"
     }
 }

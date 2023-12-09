@@ -1,7 +1,7 @@
-import { BaseEvent } from "../structures/BaseEvent.js";
-import { Event } from "../utils/decorators/Event.js";
+import { BaseEvent } from "#rawon/structures/BaseEvent.js";
+import { Event } from "#rawon/utils/decorators/Event.js";
 import { Message, User } from "discord.js";
-import { createEmbed } from "../utils/functions/createEmbed.js";
+import { createEmbed } from "#rawon/utils/functions/createEmbed.js";
 
 @Event("messageCreate")
 export class MessageCreateEvent extends BaseEvent {

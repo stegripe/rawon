@@ -3,7 +3,6 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { BotClient } from "../../structures/BotClient.js";
 import { ApplicationCommandData, ApplicationCommandType, Collection, Message, Snowflake, TextChannel } from "discord.js";
-import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { CommandContext } from "../../structures/CommandContext.js";
 
@@ -28,7 +27,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
 
     public async readFromDir(dir: string): Promise<void> {
         this.client.logger.info(`Loading commands from "${dir}"...`);
-        const catFolders = readdirSync(dir);
+        const catFolders = this.client.utils.readDir(dir);
 
         this.client.logger.info(`Found ${catFolders.length} categories, registering...`);
 
@@ -41,7 +40,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
             this.client.logger.info(`Registering category "${meta.name}"...`);
             meta.cmds = [];
 
-            const files = readdirSync(resolve(dir, cf)).filter(x => x !== "category.meta.js");
+            const files = this.client.utils.readDir(resolve(dir, cf)).filter(x => x !== "category.meta.js");
 
             for (const file of files) {
                 try {

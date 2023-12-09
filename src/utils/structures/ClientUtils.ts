@@ -2,6 +2,7 @@
 import { BotClient } from "../../structures/BotClient.js";
 import { pathToFileURL } from "node:url";
 import { parse } from "node:path";
+import { readdirSync } from "node:fs";
 import { ChannelType } from "discord.js";
 
 export class ClientUtils {
@@ -94,5 +95,9 @@ export class ClientUtils {
         const file = await this.importFile<Record<string, (new (...argument: any[]) => T) | undefined>>(path);
         const name = parse(path).name;
         return file[name] ? new file[name]!(...args as unknown[]) : undefined;
+    }
+
+    public readDir(dir: string): string[] {
+        return readdirSync(dir);
     }
 }

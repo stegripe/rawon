@@ -18,7 +18,7 @@ export interface PresenceData {
     interval: number;
 }
 
-export interface Event<T extends keyof ClientEvents = unknown> {
+export interface Event<T extends keyof ClientEvents = keyof ClientEvents> {
     readonly name: T;
     execute: (...args: ClientEvents[T]) => Promise<void>;
 }
@@ -45,6 +45,13 @@ export interface CategoryMeta {
     cmds: string[];
     hide: boolean;
     name: string;
+}
+
+export interface Module {
+    name: string;
+    description: string;
+    path: string;
+    enabled: boolean;
 }
 
 export type NonAbstractConstructor<R = unknown> = new (...args: any[]) => R;

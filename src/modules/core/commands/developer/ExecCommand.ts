@@ -1,7 +1,7 @@
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { CommandContext } from "#rawon/structures/CommandContext.js";
+import { createEmbed } from "#rawon/utils/functions/createEmbed.js";
+import { BaseCommand } from "#rawon/structures/BaseCommand.js";
+import { Command } from "#rawon/utils/decorators/Command.js";
 import { execSync } from "node:child_process";
 
 @Command<typeof ExecCommand>({
