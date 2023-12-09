@@ -1,9 +1,9 @@
-import { BotClient } from "./BotClient.js";
+import { Rawon } from "./Rawon.js";
 import { ClientEvents } from "discord.js";
 
 export abstract class BaseEvent {
     public constructor(
-        public readonly client: BotClient,
+        public readonly client: Rawon,
         public readonly name: keyof ClientEvents
     ) {}
 

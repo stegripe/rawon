@@ -12,7 +12,7 @@ import { ModuleManager } from "../utils/structures/ModuleManager.js";
 
 const path = dirname(fileURLToPath(import.meta.url));
 
-export class BotClient extends Client {
+export class Rawon extends Client {
     public readonly request = got;
     public readonly config = config;
     public readonly utils = new ClientUtils(this);

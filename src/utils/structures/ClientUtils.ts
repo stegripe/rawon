@@ -1,12 +1,12 @@
 /* eslint-disable class-methods-use-this */
-import { BotClient } from "../../structures/BotClient.js";
+import { Rawon } from "../../structures/Rawon.js";
 import { pathToFileURL } from "node:url";
 import { parse } from "node:path";
 import { readdirSync } from "node:fs";
 import { ChannelType } from "discord.js";
 
 export class ClientUtils {
-    public constructor(public readonly client: BotClient) {}
+    public constructor(public readonly client: Rawon) {}
 
     public decode(string: string): string {
         return Buffer.from(string, "base64").toString("ascii");

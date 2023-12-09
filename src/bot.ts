@@ -1,7 +1,7 @@
-import { BotClient } from "./structures/BotClient.js";
+import { Rawon } from "./structures/Rawon.js";
 import { clientOptions } from "./config/index.js";
 
-const client = new BotClient(clientOptions);
+const client = new Rawon(clientOptions);
 
 process.on("exit", code => {
     client.logger.info(`NodeJS process exited with code ${code}`);

@@ -1,4 +1,4 @@
-import { BotClient } from "../../structures/BotClient.js";
+import { Rawon } from "../../structures/Rawon.js";
 import { Event } from "../../typings/index.js";
 import { Collection } from "discord.js";
 import { resolve } from "node:path";
@@ -6,7 +6,7 @@ import { resolve } from "node:path";
 export class EventLoader {
     public readonly events = new Collection<Event["name"], Event[]>();
 
-    public constructor(public readonly client: BotClient) {}
+    public constructor(public readonly client: Rawon) {}
 
     public async readFromDir(dir: string): Promise<void> {
         this.client.logger.info(`Loading events from "${dir}"...`);

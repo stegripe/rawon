@@ -1,12 +1,12 @@
 import { resolve } from "node:path";
-import { BotClient } from "../../structures/BotClient.js";
+import { Rawon } from "../../structures/Rawon.js";
 import { Module } from "../../typings/index.js";
 import { Collection } from "discord.js";
 
 export class ModuleManager {
     public readonly modules = new Collection<string, Module>();
 
-    public constructor(public readonly client: BotClient) {}
+    public constructor(public readonly client: Rawon) {}
 
     public async load(dir: string, beforeCmd?: () => Promisable<any>): Promise<void> {
         const mods = this.client.utils.readDir(dir);
