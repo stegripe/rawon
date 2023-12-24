@@ -102,5 +102,6 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@hmz121](https://github.com/hmz121) (vi)
 - [@melloirl](https://github.com/melloirl) (pt-BR)
 - [@Ronner231](https://github.com/Ronner231) (ru)
+- [@Fyphen1223](https://github.com/Fyphen1223) (ja)
 
 > © 2023 Stegripe Development
