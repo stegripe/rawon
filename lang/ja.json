@@ -130,7 +130,7 @@
             },
             "purge": {
                 "botNoPermission": "**`MANAGE MESSAGES`**の権限がありません。",
-                "description": "メッセージを削除"
+                "description": "メッセージを削除",
                 "invalidAmount": "削除するメッセージの数を有効な範囲で指定してください。",
                 "purgeFail": "`{message}`のため**`パージ`**が失敗しました。",
                 "purgeSuccess": "{amount, plural, one {**`1`** メッセージ} 他 {**`#`** メッセージ}}が**`パージ`**されました。",
