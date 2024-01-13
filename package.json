@@ -17,14 +17,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/clytage/rawon.git"
+		"url": "git+https://github.com/stegripe/rawon.git"
 	},
-	"author": "Clytage <admin@clytage.org>",
+	"author": "Stegripe <admin@stegripe.org>",
 	"license": "AGPL-3.0",
 	"bugs": {
-		"url": "https://github.com/clytage/rawon/issues"
+		"url": "https://github.com/stegripe/rawon/issues"
 	},
-	"homepage": "https://github.com/clytage/rawon#readme",
+	"homepage": "https://github.com/stegripe/rawon#readme",
 	"engines": {
 		"node": ">=16.6.0",
 		"npm": ">=7.0.0"
@@ -53,33 +53,33 @@
 		"printWidth": 120
 	},
 	"dependencies": {
-		"@discordjs/voice": "^0.16.0",
-		"@swc/cli": "0.1.62",
-		"@swc/core": "1.3.92",
-		"date-fns": "2.30.0",
-		"discord.js": "14.13.0",
+		"@discordjs/voice": "^0.16.1",
+		"@swc/cli": "0.1.63",
+		"@swc/core": "1.3.102",
+		"date-fns": "3.2.0",
+		"discord.js": "14.14.1",
 		"dotenv": "16.3.1",
-		"got": "13.0.0",
+		"got": "14.0.0",
 		"i18n": "0.15.1",
 		"opusscript": "0.0.8",
 		"prism-media": "1.3.5",
 		"soundcloud.ts": "^0.5.2",
 		"tslib": "2.6.2",
 		"tweetnacl": "1.0.3",
-		"youtubei": "1.1.2"
+		"youtubei": "1.3.3"
 	},
 	"devDependencies": {
 		"@clytage/eslint-config": "^3.0.1",
-		"@types/i18n": "0.13.7",
-		"@types/node": "18.18.4",
-		"@typescript-eslint/eslint-plugin": "6.7.5",
-		"@typescript-eslint/parser": "6.7.5",
-		"eslint": "8.51.0",
-		"eslint-config-prettier": "^9.0.0",
-		"eslint-plugin-prettier": "^5.0.0",
-		"prettier": "^3.0.3",
+		"@types/i18n": "0.13.10",
+		"@types/node": "20.11.0",
+		"@typescript-eslint/eslint-plugin": "6.18.1",
+		"@typescript-eslint/parser": "6.18.1",
+		"eslint": "8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-prettier": "^5.1.3",
+		"prettier": "^3.2.1",
 		"rimraf": "^5.0.5",
-		"typescript": "5.2.2"
+		"typescript": "5.3.3"
 	},
 	"optionalDependencies": {
 		"play-dl": "^1.9.7"

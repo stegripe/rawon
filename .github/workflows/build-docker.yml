@@ -14,5 +14,5 @@ on:
 
 jobs:
   docker:
-    uses: clytage/workflows/.github/workflows/docker-build.yml@main
+    uses: stegripe/workflows/.github/workflows/docker-build.yml@main
     secrets: inherit
