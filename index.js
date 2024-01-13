@@ -1,4 +1,4 @@
-import { downloadExecutable } from "./yt-dlp-utils";
+import { downloadExecutable } from "./yt-dlp-utils/index.js";
 import { existsSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { resolve } from "node:path";

@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/naming-convention */
 import { BasicYoutubeVideoInfo } from "../../typings/index.js";
 import ytdl, { exec } from "../../../yt-dlp-utils/index.js";
 import { streamStrategy } from "../../config/index.js";
 import { Rawon } from "../../structures/Rawon.js";
 import { checkQuery } from "./GeneralUtil.js";
-import { stream as pldlStream, video_basic_info } from "play-dl";
 import { Readable } from "node:stream";
+
+// @ts-expect-error play-dl is optional
+const { stream: pldlStream, video_basic_info } = await import("play-dl").catch(() => ({ stream: null, video_basic_info: null }));
 
 export async function getStream(client: Rawon, url: string): Promise<Readable> {
     if (streamStrategy === "play-dl") {
