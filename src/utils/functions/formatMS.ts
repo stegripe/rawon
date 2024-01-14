@@ -1,8 +1,9 @@
 import { lang } from "../../config/index.js";
-import { format, formatDuration, intervalToDuration } from "date-fns";
+import { format, formatDuration, intervalToDuration, Locale } from "date-fns";
+import { createRequire } from "node:module";
 
-// @ts-expect-error fix for v20
-const locales: Record<string, globalThis.Locale> = await import("date-fns/locale/index.js");
+const req = createRequire(import.meta.url);
+const locales: Record<string, Locale> = req("date-fns/locale");
 
 const key = Object.keys(locales).find(v => v.toLowerCase() === lang.toLowerCase());
 const locale = key ? locales[key] : locales.enUS;
