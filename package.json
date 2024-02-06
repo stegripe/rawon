@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "npm run lint && npm run compile",
-		"compile": "npx swc src -d dist",
+		"compile": "npx swc src -d dist --strip-leading-paths",
 		"tscompile": "tsc --build tsconfig.json",
 		"lint": "eslint . --cache --cache-file .eslintcache --ignore-path .gitignore --ext .ts",
 		"lint:fix": "eslint . --cache --cache-file .eslintcache --ignore-path .gitignore --ext .ts --fix",
