@@ -147,18 +147,24 @@ export class CommandManager extends Collection<string, CommandComponent> {
             await manager.create({
                 name: cmd.meta.name,
                 type: ApplicationCommandType.Message
-            }).catch(err => options.onError(options.guild ?? null, err as Error, "message"));
+            })
+                .then(_ => options.onRegistered(options.guild ?? null, "message"))
+                .catch(err => options.onError(options.guild ?? null, err as Error, "message"));
         }
 
         if (cmd.meta.contextUser) {
             await manager.create({
                 name: cmd.meta.name,
                 type: ApplicationCommandType.User
-            }).catch(err => options.onError(options.guild ?? null, err as Error, "user"));
+            })
+                .then(_ => options.onRegistered(options.guild ?? null, "user"))
+                .catch(err => options.onError(options.guild ?? null, err as Error, "user"));
         }
 
         if (cmd.meta.slash) {
-            await manager.create(cmd.meta.slash as ApplicationCommandData).catch(err => options.onError(options.guild ?? null, err as Error, "slash"));
+            await manager.create(cmd.meta.slash as ApplicationCommandData)
+                .then(_ => options.onRegistered(options.guild ?? null, "slash"))
+                .catch(err => options.onError(options.guild ?? null, err as Error, "slash"));
         }
     }
 
