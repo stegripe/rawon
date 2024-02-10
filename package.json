@@ -6,6 +6,7 @@
     "type": "module",
     "scripts": {
         "build": "npm run lint && npm run compile",
+        "gen-lang": "node --no-warnings gen-lang-types.js",
         "compile": "tsc --build tsconfig.json",
         "lint": "eslint . --ignore-path .gitignore --ext .ts",
         "lint:fix": "npm run lint -- --fix",
@@ -28,13 +29,17 @@
     },
     "eslintConfig": {
         "extends": "@clytage/eslint-config/typescript",
-        "ignorePatterns": "dist/*"
+        "ignorePatterns": [
+            "dist/*",
+            "gen-lang-types.js"
+        ]
     },
     "imports": {
         "#rawon/*": "./dist/*"
     },
     "devDependencies": {
         "@clytage/eslint-config": "^3.0.1",
+        "@types/i18n": "^0.13.10",
         "@types/node": "^20.10.0",
         "@typescript-eslint/eslint-plugin": "^6.4.1",
         "@typescript-eslint/parser": "^6.4.1",
@@ -43,10 +48,12 @@
         "typescript": "^5.1.6"
     },
     "dependencies": {
+        "@messageformat/parser": "^5.1.0",
         "date-fns": "^2.30.0",
         "discord.js": "^14.14.1",
         "dotenv": "^16.3.1",
         "got": "^13.0.0",
+        "i18n": "^0.15.1",
         "pino": "^8.16.2",
         "pino-pretty": "^10.2.3",
         "tree-kill": "^1.2.2",

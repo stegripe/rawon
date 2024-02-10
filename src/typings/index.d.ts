@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { ActivityOptions, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, Guild } from "discord.js";
+import { CommandContext } from "../structures/CommandContext.js";
+import { ActivityOptions, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Guild } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
@@ -77,7 +78,11 @@ export type RegisterCmdOptions<T = false> = (T extends true ? { guild?: Guild } 
 
 declare global {
     type Promisable<T> = Promise<T> | T;
+    // eslint-disable-next-line @typescript-eslint/no-type-alias
+    type Values<T> = T[keyof T];
     type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
+
+    interface RawonModules {}
 
     module globalThis{
         function getModule<T extends keyof RawonModules | (string & {})>(moduleName: T): T extends keyof RawonModules ? RawonModules[T] | undefined : any;
