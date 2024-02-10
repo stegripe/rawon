@@ -1,5 +1,5 @@
-import { Rawon } from "./structures/Rawon.js";
 import { clientOptions } from "./config/index.js";
+import { Rawon } from "./structures/Rawon.js";
 
 const client = new Rawon(clientOptions);
 

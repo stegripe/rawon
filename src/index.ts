@@ -1,5 +1,6 @@
 import { isDev, shardingMode, shardsCount } from "./config/index.js";
 import { createLogger } from "./utils/functions/createLogger.js";
+
 import { ShardingManager } from "discord.js";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";

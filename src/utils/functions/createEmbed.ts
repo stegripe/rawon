@@ -1,4 +1,5 @@
 import { embedColor } from "../../config/index.js";
+
 import { ColorResolvable, EmbedBuilder } from "discord.js";
 
 type hexColorsType = "error" | "info" | "success" | "warn";

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { RawonLang } from "../../typings/langs.js";
+
 import { resolve } from "node:path";
 import i18n from "i18n";
 

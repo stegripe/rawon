@@ -1,9 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import { Rawon } from "../../structures/Rawon.js";
-import { pathToFileURL } from "node:url";
-import { parse } from "node:path";
-import { readdirSync } from "node:fs";
+
 import { ChannelType } from "discord.js";
+import { pathToFileURL } from "node:url";
+import { readdirSync } from "node:fs";
+import { parse } from "node:path";
 
 export class ClientUtils {
     public constructor(public readonly client: Rawon) {}

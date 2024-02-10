@@ -1,17 +1,15 @@
+import { createEmbed } from "#rawon/utils/functions/createEmbed.js";
 import { BaseEvent } from "#rawon/structures/BaseEvent.js";
 import { Event } from "#rawon/utils/decorators/Event.js";
+
 import { Message, User } from "discord.js";
-import { createEmbed } from "#rawon/utils/functions/createEmbed.js";
 
 @Event("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
     public execute(message: Message): void {
         if (message.author.bot || message.channel.isDMBased()) return;
 
-        if (message.content.startsWith(this.client.config.prefix)) {
-            this.client.commands.handle(message);
-            return;
-        }
+        if (message.content.startsWith(this.client.config.prefix)) return this.client.commands.handle(message);
 
         if (this.getUserFromMention(message.content)?.id === this.client.user!.id) {
             message

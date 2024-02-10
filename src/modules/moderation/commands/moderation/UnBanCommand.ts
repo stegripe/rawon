@@ -4,6 +4,7 @@ import { createEmbed } from "#rawon/utils/functions/createEmbed.js";
 import { BaseCommand } from "#rawon/structures/BaseCommand.js";
 import { Command } from "#rawon/utils/decorators/Command.js";
 import i18n from "#rawon/utils/functions/i18n.js";
+
 import { ApplicationCommandOptionType } from "discord.js";
 
 @Command({

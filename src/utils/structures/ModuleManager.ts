@@ -1,7 +1,8 @@
-import { resolve } from "node:path";
 import { Rawon } from "../../structures/Rawon.js";
 import { Module } from "../../typings/index.js";
+
 import { Collection } from "discord.js";
+import { resolve } from "node:path";
 
 export class ModuleManager {
     public readonly modules = new Collection<string, Module>();

@@ -1,6 +1,7 @@
-import { Presence } from "discord.js";
 import { BaseEvent } from "#rawon/structures/BaseEvent.js";
 import { Event } from "#rawon/utils/decorators/Event.js";
+
+import { Presence } from "discord.js";
 
 @Event("ready")
 export class ReadyEvent extends BaseEvent {

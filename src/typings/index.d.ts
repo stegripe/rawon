@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { CommandContext } from "../structures/CommandContext.js";
+
 import { ActivityOptions, ApplicationCommandOptionData, ApplicationCommandType, ClientEvents, ClientPresenceStatus, Guild } from "discord.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";

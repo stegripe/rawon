@@ -1,10 +1,11 @@
 import { CategoryMeta, CommandComponent, RegisterCmdOptions } from "../../typings/index.js";
+import { CommandContext } from "../../structures/CommandContext.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { Rawon } from "../../structures/Rawon.js";
+
 import { ApplicationCommandData, ApplicationCommandType, Collection, Message, Snowflake, TextChannel } from "discord.js";
 import { resolve } from "node:path";
-import { CommandContext } from "../../structures/CommandContext.js";
 
 export class CommandManager extends Collection<string, CommandComponent> {
     public readonly categories = new Collection<string, CategoryMeta>();

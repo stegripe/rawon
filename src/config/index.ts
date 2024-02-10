@@ -1,5 +1,6 @@
 import { PresenceData } from "../typings/index.js";
 import { prefix } from "./env.js";
+
 import { ActivityType, IntentsBitField, ClientOptions, Options } from "discord.js";
 
 export const clientOptions: ClientOptions = {

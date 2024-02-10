@@ -2,6 +2,7 @@ import { CommandContext } from "#rawon/structures/CommandContext.js";
 import { createEmbed } from "#rawon/utils/functions/createEmbed.js";
 import { BaseCommand } from "#rawon/structures/BaseCommand.js";
 import { Command } from "#rawon/utils/decorators/Command.js";
+
 import { inspect } from "node:util";
 
 @Command<typeof EvalCommand>({
