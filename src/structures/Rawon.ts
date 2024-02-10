@@ -1,14 +1,14 @@
 import { CommandManager } from "../utils/structures/CommandManager.js";
+import { ModuleManager } from "../utils/structures/ModuleManager.js";
 import { createLogger } from "../utils/functions/createLogger.js";
 import { ClientUtils } from "../utils/structures/ClientUtils.js";
 import { EventLoader } from "../utils/structures/EventLoader.js";
+import { formatMS } from "../utils/functions/formatMS.js";
 import * as config from "../config/index.js";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Client } from "discord.js";
 import got from "got";
-import { formatMS } from "../utils/functions/formatMS.js";
-import { ModuleManager } from "../utils/structures/ModuleManager.js";
 
 const path = dirname(fileURLToPath(import.meta.url));
 
