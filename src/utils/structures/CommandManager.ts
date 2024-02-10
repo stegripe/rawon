@@ -134,7 +134,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
             this.client.logger.error(err, "COMMAND_HANDLER_ERR:");
         } finally {
             this.client.logger.info(
-                `${message.author.tag} [${message.author.id}] is using ${command.meta.name} [${command.meta.category!}] command` +
+                `${message.author.tag} [${message.author.id}] is using ${command.meta.name} [${command.meta.category!}] command ` +
                 `on #${(message.channel as TextChannel).name} [${message.channel.id}] channel in ${message.guild!.name} [${message.guild!.id}] guild.`
             );
         }
