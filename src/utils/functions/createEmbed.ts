@@ -9,12 +9,13 @@ const hexColors: Record<hexColorsType, string> = {
     warn: "Yellow"
 };
 
-export function createEmbed(type: hexColorsType, message?: string, emoji = false): EmbedBuilder {
+export function createEmbed(type: hexColorsType, message?: string, emoji: boolean | string = false): EmbedBuilder {
     const embed = new EmbedBuilder()
         .setColor(hexColors[type] as ColorResolvable);
 
     if (message) embed.setDescription(message);
-    if (type === "error" && emoji) embed.setDescription(`❌ **|** ${message!}`);
-    if (type === "success" && emoji) embed.setDescription(`✅ **|** ${message!}`);
+    if (typeof emoji === "string") embed.setDescription(`${emoji} **|** ${message!}`);
+    if (type === "error" && emoji === true) embed.setDescription(`❌ **|** ${message!}`);
+    if (type === "success" && emoji === true) embed.setDescription(`✅ **|** ${message!}`);
     return embed;
 }
