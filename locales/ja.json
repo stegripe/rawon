@@ -1,0 +1,378 @@
+{
+    "commands": {
+        "developers": {
+            "categoryName": "開発者向け",
+            "eval": {
+                "description": "Botを評価",
+                "errorString": "エラー",
+                "noCode": "コードが渡されませんでした。",
+                "inputString": "インプット",
+                "outputString": "アウトプット",
+                "usage": "{prefix}eval <何かのコード>"
+            }
+        },
+        "general": {
+            "about": {
+                "aboutFooter": "{botname} - Bot情報",
+                "botUptimeString": "Botのアップタイム",
+                "botVersionString": "Botのバージョン",
+                "cachedUsersString": "キャッシュされたユーザー",
+                "channelsString": "チャンネル",
+                "commitString": "コミット",
+                "description": "Botの情報を照会",
+                "discordJSVersionString": "Discord.jsのバージョン",
+                "ffmpegVersionString": "FFmpegのバージョン",
+                "nodeVersionString": "Node.jsのバージョン",
+                "osUptimeString": "OSのアップタイム",
+                "processUptimeString": "プロセスのアップタイム",
+                "serversString": "サーバー",
+                "sourceCodeString": "ソースコード"
+            },
+            "categoryName": "一般",
+            "help": {
+                "aliasesString": "エイリアス",
+                "authorString": "{username} - コマンドリスト",
+                "commandDetailTitle": "{username} - {command} コマンドに関する情報",
+                "commandSelectionString": "コマンドを選択してください",
+                "commandUsageFooter": "<> = 必須 | [] = オプション {devOnly}",
+                "description": "コマンドリストもしくは特定のコマンドの情報を照会",
+                "descriptionString": "説明",
+                "footerString": "{prefix}help <コマンドの名前> を実行してコマンドの詳細な情報を照会",
+                "nameString": "名前",
+                "noCommanSuggest": "一致したコマンドがありません。こちらのコマンドのことですか？",
+                "noCommand": "一致したコマンドがありません。",
+                "slashDescription": "詳細な情報を紹介するコマンドの名前",
+                "usage": "{prefix}help [コマンド]",
+                "usageString": "使い方"
+            },
+            "invite": {
+                "clickURL": "**[ここをクリック]({url})**してこのBotをサーバーに招待",
+                "description": "このBotの招待リンクを取得",
+                "inviteTitle": "{bot} - 招待リンク"
+            },
+            "ping": {
+                "description": "現在のBotのping値を表示",
+                "footerString": "{user}のレイテンシ"
+            }
+        },
+        "moderation": {
+            "ban": {
+                "banFail": "`{message}`のためメンバーを**BAN**することに失敗しました。",
+                "banSuccess": "**{user}**はこのサーバーからBANされました。",
+                "bannedByString": "{author}がBANを実行",
+                "botNoPermission": "**`BAN MEMBERS`**の権限がありません。",
+                "description": "メンバーをサーバーからBANします",
+                "slashMemberIDDescription": "誰をBANしたいですか？",
+                "slashReasonDescription": "BANの理由",
+                "usage": "{prefix}ban <@メンション | ID> [理由]",
+                "userBanned": "あなたは**{guildName}**から**`BAN`**されました。",
+                "userNoBannable": "そのユーザーを**`BAN`**することに失敗しました。",
+                "userNoPermission": "**`BAN MEMBERS`**の権限があなたにありません。"
+            },
+            "categoryName": "管理",
+            "common": {
+                "noReasonString": "[未指定]",
+                "noUserSpecified": "誰かを指定してください。",
+                "reasonString": "**理由**"
+            },
+            "infractions": {
+                "description": "ユーザーの違反を表示",
+                "embedAuthorText": "{user} - 違反",
+                "noInfractions": "違反がありません。",
+                "slashMemberDescription": "誰の違反を照会したいですか？",
+                "usage": "{prefix}infractions [@メンション | ID]"
+            },
+            "kick": {
+                "botNoPermission": "**`KICK MEMBERS`** の権限がありません。",
+                "description": "誰かをこのサーバーからKick",
+                "kickFail": "`{message}`のためメンバーを**`KICK`**することに失敗しました。",
+                "kickSuccess": "**{user}**はこのサーバーから**`KICK`** されました。",
+                "kickedByString": "{author}がKickを実行",
+                "slashMemberDescription": "誰をKickしたいですか？",
+                "slashReasonDescription": "Kickの理由",
+                "usage": "{prefix}kick <@メンション | ID> [理由]",
+                "userKicked": "あなたは**{guildName}**から**`KICK`**されました。",
+                "userNoKickable": "そのメンバーは**`KICK`**できません。",
+                "userNoPermission": "あなたに**`KICK MEMBERS`**の権限がありません。"
+            },
+            "modlogs": {
+                "channel": {
+                    "current": "現在の管理ログチャンネル: <#{channel}>",
+                    "invalid": "無効なチャンネルです。チャンネルはテキストチャンネルである必要があります。",
+                    "noChannel": "管理ログチャンネルは未セットアップです。.",
+                    "success": "管理ログチャンネルが<#{channel}>にセットされました。"
+                },
+                "description": "管理ログの設定を変更",
+                "disable": "管理ログの機能が **`無効化`** されました。",
+                "embedTitle": "管理ログ",
+                "enable": "管理ログの機能が**`有効化`** されました。",
+                "newChannelText": "新しいチャンネル",
+                "slashChannelDescription": "管理ログチャンネルを照会・変更",
+                "slashChannelNewChannelOption": "管理ログのための新しいチャンネル",
+                "slashDisableDescription": "管理ログの機能を無効化",
+                "slashEnableDescription": "管理ログの機能を有効化",
+                "usage": "{prefix}modlogs"
+            },
+            "mute": {
+                "alreadyMuted": "そのメンバーはすでに**`MUTE`**されています。",
+                "botNoPermission": "**`MANAGE ROLES`** の権限がありません。",
+                "cantMuteOwner": "サーバーオーナーを**`MUTE`**することはできません。",
+                "description": "誰かをミュート",
+                "muteFail": "`{message}`のためメンバーを**`ミュート`**することに失敗しました。",
+                "muteSuccess": "**{user}**は**`ミュート`**されました。",
+                "mutedByString": "{author}がミュートを実行",
+                "noRole": "ミュートロールがセットされていません。`{prefix}setmute`を使用して設定してください。",
+                "slashMemberDescription": "誰をミュートしたいですか？",
+                "slashReasonDescription": "ミュートの理由",
+                "usage": "{prefix}mute <@メンション | ID> [理由]",
+                "userMuted": "あなたは**{guildName}**で**`ミュート`**されました。",
+                "userNoPermission": "あなたに**`MANAGE ROLES`**の権限がありません。"
+            },
+            "purge": {
+                "botNoPermission": "**`MANAGE MESSAGES`**の権限がありません。",
+                "description": "メッセージを削除",
+                "invalidAmount": "削除するメッセージの数を有効な範囲で指定してください。",
+                "purgeFail": "`{message}`のため**`パージ`**が失敗しました。",
+                "purgeSuccess": "{amount, plural, one {**`1`** メッセージ} 他 {**`#`** メッセージ}}が**`パージ`**されました。",
+                "slashAmountDescription": "削除するメッセージの数",
+                "usage": "{prefix}purge <削除するメッセージの数>",
+                "userNoPermission": "あなたに**`MANAGE MESSAGES`**の権限がありません。"
+            },
+            "setmute": {
+                "description": "ミュートロールを設定",
+                "invalidRole": "無効なロールです。",
+                "slashRoleDescription": "ミュート用に使われるロール",
+                "success": "ミュートロールは<@&{role}>に設定されました。",
+                "usage": "{prefix}setmute <ロール>"
+            },
+            "unban": {
+                "alreadyUnban": "そのユーザーは**`BAN`**されていません。",
+                "description": "誰かをのBANを解除",
+                "slashMemberDescription": "誰のBANを解除したいですか？",
+                "slashReasonDescription": "BAN解除の理由",
+                "unbanSuccess": "**{user}**は**`BAN解除`**されました。",
+                "unbanFail": "`{message}`のため**`BAN解除`**を失敗しました。",
+                "unbannedByString": "{author}によりUn-Banが実行",
+                "usage": "{prefix}unban <ID> [理由]"
+            },
+            "unmute": {
+                "description": "誰かのミュートを解除",
+                "noMuted": "そのメンバーは**`ミュート`**されていません。",
+                "slashMemberDescription": "誰のミュートを解除したいですか？",
+                "slashReasonDescription": "ミュートを解除する理由",
+                "unmuteFail": "`{message}`のためメンバー**`ミュートを解除`**することに失敗しました。",
+                "unmuteSuccess": "**{user}**は**`ミュート解除`**されました。",
+                "unmutedByString": "{author}によりミュート解除が実行",
+                "usage": "{prefix}unmute <@メンション | ID> [理由]",
+                "userUnmuted": "あなたの**{guildName}**でのミュートは**`解除`**されました。"
+            },
+            "warn": {
+                "description": "サーバーメンバーを警告",
+                "noDM": "そのユーザーのDMを開くことはできませんでしたが、警告を続けます。",
+                "slashMemberDescription": "誰を警告したいですか？",
+                "slashReasonDescription": "警告の理由",
+                "usage": "{prefix}warn <@メンション | ID> [理由]",
+                "userNoPermission": "あなたに**`MANAGE SERVER`**の権限がありません。",
+                "userWarned": "あなたは**{guildName}**で**`警告`**されました。",
+                "warnSuccess": "**{user}**は**`警告`**されました。",
+                "warnedByString": "{author}により警告が実行"
+            }
+        },
+        "music": {
+            "categoryName": "音楽",
+            "dj": {
+                "description": "DJ機能の設定",
+                "disable": "無効",
+                "disableText": "DJ機能は**`無効化`**されました。",
+                "embedTitle": "DJ機能",
+                "enable": "有効",
+                "enableText": "DJは**`有効化`**されました。",
+                "newRoleText": "新しいロール",
+                "role": {
+                    "current": "現在のDJロール:<@&{role}>",
+                    "invalid": "無効なロールです。",
+                    "noRole": "DJロールは設定されていません。 `{prefix}dj ロール`で設定してください。",
+                    "success": "DJロールは<@&{role}に>にセットされました。"
+                },
+                "slashDisableDescription": "DJ機能を無効化",
+                "slashEnableDescription": "DJ機能を有効化",
+                "slashRoleDescription": "DJロール設定を照会・変更",
+                "slashRoleNewRoleOption": "DJロールのための新しいロール"
+            },
+            "filter": {
+                "availableFilters": "利用可能なフィルター",
+                "currentlyUsedFilters": "現在使われているフィルター",
+                "currentState": "`{filter}`は現在`{state}`です",
+                "description": "フィルターを設定",
+                "embedFooter": "そのフィルターを{opstate}するには、 {prefix}filter {opstate} {filter}を使用してください。",
+                "filterSet": "`{filter}`フィルターは現在`{state}`です。",
+                "slashStateDescription": "{state, select, enable {有効化} other {無効化}} フィルター",
+                "slashStateFilterDescription": "フィルターは{state, select, enable {有効化} other {無効化}}になります。",
+                "slashStatusDescription": "現在のフィルターの状態を確認",
+                "slashStatusFilterDescription": "確認したいフィルター",
+                "specifyFilter": "フィルターを指定してください。"
+            },
+            "lyrics": {
+                "apiError": "`{message}`のためAPIは**{song}**を見つけられませんでした。",
+                "description": "曲の歌詞を表示",
+                "noQuery": "再生中の曲がないか引数が渡されていません。",
+                "slashDescription": "検索する曲",
+                "usage": "{prefix}lyrics [曲]"
+            },
+            "nowplaying": {
+                "description": "メディアプレイヤーのステータス",
+                "disableButton": "「前に戻る」ボタンは無効化され、削除されました。",
+                "emptyQueue": "キューは空です。"
+            },
+            "pause": {
+                "alreadyPause": "プレイヤーはすでに一時停止しています。",
+                "description": "プレイヤーを一時停止",
+                "pauseMessage": "プレイヤーは一時停止されました。"
+            },
+            "play": {
+                "alreadyPlaying": "そのプレイヤーは**`{voiceChannel}`**ですでに再生しています。",
+                "description": "音楽を再生",
+                "noSongData": "そのURLは曲データを含んでいません。",
+                "slashQueryDescription": "検索キーワード",
+                "usage": "{prefix}play <キーワード | URL>"
+            },
+            "queue": {
+                "description": "キューリストを表示"
+            },
+            "remove": {
+                "description": "キューから曲を削除",
+                "noPermission": "あなたに権限がありません。",
+                "noPositions": "削除したい曲の位置を指定してください。",
+                "slashPositionsDescription": "コンマもしくはスペースで区切られた削除したい曲のポジション",
+                "songSkip": "現在の曲が削除されたため、スキップされます。\n\n",
+                "songsRemoved": "{removed, plural, one {1曲} other {# 曲}}をキューから削除しました。",
+                "usage": "{prefix}remove <ポジション>"
+            },
+            "repeat": {
+                "actualMode": "現在のリピートモードは**`{mode}`**です。",
+                "description": "現在の曲もしくはキューをリピート",
+                "footer": "モードを変更するには、{prefix}help repeatを見てください。",
+                "newMode": "リピートモードは**`{mode}`**にセットされました。",
+                "slashDisable": "リピートモードを無効化",
+                "slashQueue": "**`キュー`**リピートモードを設定しました。",
+                "slashSong": "**`曲`**リピートモードを設定しました。",
+                "usage": "'{prefix}'repeat <{options}>"
+            },
+            "resume": {
+                "alreadyResume": "プレイヤーは一時停止されていません。",
+                "description": "プレイバックを再開",
+                "resumeMessage": "プレイヤーのプレイバックは再開されました。"
+            },
+            "search": {
+                "cancelMessage": "{cancel}もしくはcと送信し検索をキャンセルできます。",
+                "canceledMessage": "曲選択はキャンセルされました。",
+                "description": "渡されたキーワードを使用し曲を再生",
+                "interactionContent": "曲を選択してください",
+                "interactionPlaceholder": "曲を選択してください",
+                "noQuery": "キーワードを入れてください。",
+                "noSelection": "無効もしくは空のキーワードです。曲選択をキャンセルします。",
+                "noTracks": "検索結果を入手できませんでした。",
+                "queueEmbed": "音楽を選択してください。スペースもしくは{separator}で区切ることにより複数の音楽を選択できます。\n",
+                "slashDescription": "指定された曲を検索",
+                "slashQueryDescription": "検索キーワード",
+                "slashSourceDescription": "何を使用して曲を再生しますか？",
+                "trackSelectionMessage": "曲選択",
+                "usage": "{prefix}search <キーワード> [プラットフォーム]"
+            },
+            "shuffle": {
+                "actualState": "現在のシャッフルモードは**`{state}`**です。",
+                "description": "シャッフルモードを設定",
+                "newState": "シャッフルモードは**`{state}`**にセットされました。"
+            },
+            "skip": {
+                "description": "曲をスキップ",
+                "skipMessage": "**{song}**をスキップしました。",
+                "voteResultMessage": "曲をスキップするには{length}/{required}の投票が必要です。"
+            },
+            "skipTo": {
+                "cantPlay": "現在の曲をスキップすることはできません。",
+                "description": "キューの特定のポジションまでスキップ",
+                "noPermission": "あなたに権限がありません。",
+                "noSongPosition": "そのポジションに曲がありません。",
+                "skipMessage": "**{song}**にスキップ",
+                "slashFirstDescription": "キューの一番最初まで戻る",
+                "slashLastDescription": "キューの一番最後までスキップ",
+                "slashPositionDescription": "キュー内の曲のポジション",
+                "slashSpecificDescription": "キュー内の特定のポジションにスキップ",
+                "usage": "'{prefix}'skipto <{options} | 数>"
+            },
+            "stayInQueue": {
+                "247Disabled": "常時接続は無効化されています。.",
+                "actualState": "常時接続は**`{state}`**です。",
+                "description": "キューが終了してもBotにVCに接続させる",
+                "newState": "常時接続は**`{state}`**です。",
+                "slashDescription": "常時接続を設定"
+            },
+            "stop": {
+                "description": "プレイヤーをストップ",
+                "stoppedMessage": "プレイヤーはストップされました。"
+            },
+            "volume": {
+                "changeVolume": "ボリュームを変えるには、有効な数値を引数として提供してください。",
+                "currentVolume": "現在のボリュームは**`{volume}`**です。",
+                "description": "メディアプレイヤーのボリュームを変更",
+                "newVolume": "ボリュームは**`{volume}`**にセットされました。",
+                "plsPause": "**`{volume}`**にボリュームをセットするのではなくプレイヤーを一時停止してください。",
+                "slashDescription": "新しいボリューム",
+                "usage": "{prefix}volume [ボリューム]",
+                "volumeLimit": "**`{maxVol}`**以上にボリュームをセットできません。"
+            }
+        }
+    },
+    "events": {
+        "channelUpdate": {
+            "connectionReconfigured": "接続の再構成が成功しました。",
+            "reconfigureConnection": "VCの地域が変更されました、接続を再構成しています…",
+            "unableReconfigureConnection": "接続の再構成に失敗しました。キューは削除されました。"
+        },
+        "createInteraction": {
+            "message1": "そのインタラクションは<@{user}>とサーバースタッフのためのものです。",
+            "message2": "そのインタラクションは<@{user}>のためのものです。"
+        },
+        "createMessage": "こんにちは、{author}、私のプレフィックスは**`{prefix}`**です。",
+        "cmdLoading": "起動中...",
+        "voiceStateUpdate": {
+            "connectionReconfigured": "接続は正常に再構成されました。",
+            "deleteQueue": "**`{duration}`**が経過しても誰もVCに参加していないため、キューを削除します。",
+            "deleteQueueFooter": "キューを削除",
+            "disconnectFromVCMessage": "VCにから切断します。キューは削除されます。",
+            "joinStageMessage": "ステージチャンネルにスピーカーとして接続しました。",
+            "joiningAsSpeaker": "ステージチャンネルに移動しています、スピーカーとして接続しています…",
+            "pauseQueue": "VCに誰もいません。リソースを削減するため、キューは一時停止されています。\nもし**`{duration}`**以内に誰もVCをに参加しない場合、キューは削除されます。",
+            "pauseQueueFooter": "キューの一時停止",
+            "reconfigureConnection": "異なる地域のVCに接続しました、接続を再構成しています…",
+            "resumeQueue": "VCにユーザーが接続しました。\n**{song}**を再開します。",
+            "resumeQueueFooter": "キューの再開",
+            "unableJoinStageMessage": "スピーカーとして参加できませんでした、キューは削除されます。",
+            "unableReconfigureConnection": "接続を再構成できませんでした、キューは削除されます。"
+        }
+    },
+    "reusable": {
+        "invalidUsage": "無効な使用方法です。**`{prefix} {name}`**を実行して情報を照会してください。",
+        "pageFooter": "ページ {actual}/{total}"
+    },
+    "utils": {
+        "cooldownMessage": "{author}、クールダウンタイムは残り**`{timeleft}`**です。お待ち下さい。",
+        "generalHandler": {
+            "errorJoining": "ボイスチャンネルに接続中にエラーが発生しました。エラー:`{message}`",
+            "errorPlaying": "音楽を再生している間にエラーが発生しました。エラー:`{message}`",
+            "handleVideoInitial": "キューに{length}曲を追加しました。",
+            "leftVC": "非アクティブが続いたためVCから切断しました。",
+            "queueEnded": "キューが終了しました。**`{usage}`**を使用して曲を再生してください。",
+            "startPlaying": "**{song}**の再生が開始",
+            "stopPlaying": "**{song}**の再生が終了"
+        },
+        "musicDecorator": {
+            "noInVC": "それを行うにはVCに参加している必要があります。",
+            "noQueue": "何も再生されていません。",
+            "sameVC": "あなたは私と同じVCに参加する必要があります。",
+            "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
+            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。"
+        }
+    }
+}
