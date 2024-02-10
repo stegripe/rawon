@@ -7,6 +7,7 @@ import i18n from "#rawon/utils/functions/i18n.js";
 import { ApplicationCommandOptionType, TextChannel } from "discord.js";
 
 @Command({
+    description: i18n.__("commands.moderation.purge.description"),
     name: "purge",
     slash: {
         options: [
