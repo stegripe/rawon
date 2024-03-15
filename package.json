@@ -56,7 +56,7 @@
 		"@discordjs/voice": "^0.16.1",
 		"@swc/cli": "0.3.10",
 		"@swc/core": "1.4.8",
-		"date-fns": "3.4.0",
+		"date-fns": "3.5.0",
 		"discord.js": "14.14.1",
 		"dotenv": "16.4.5",
 		"got": "14.2.1",
@@ -71,7 +71,7 @@
 	"devDependencies": {
 		"@clytage/eslint-config": "^3.0.1",
 		"@types/i18n": "0.13.10",
-		"@types/node": "20.11.27",
+		"@types/node": "20.11.28",
 		"@typescript-eslint/eslint-plugin": "6.18.1",
 		"@typescript-eslint/parser": "6.18.1",
 		"eslint": "8.56.0",
