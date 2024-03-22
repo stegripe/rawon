@@ -45,8 +45,8 @@ dependencies:
     specifier: 1.0.3
     version: 1.0.3
   youtubei:
-    specifier: 1.3.5
-    version: 1.3.5
+    specifier: 1.3.6
+    version: 1.3.6
 
 optionalDependencies:
   play-dl:
@@ -2607,8 +2607,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /youtubei@1.3.5:
-    resolution: {integrity: sha512-OeRcML5v6mDkAX4IPDMt8Z8lO8vN3jR89OY4PU9SUsdK8HFGin5dMm4sEOGgdvGKxtJaddhtZ+wGXGqzHuB/cg==}
+  /youtubei@1.3.6:
+    resolution: {integrity: sha512-H7Xm5XpBw2bSnT18girRebyYPI04dRYAWgkFxu1lxofBzXjD3m/dcnxySURU5+fZBSqCsD+1OHIRk/AqSRy94Q==}
     dependencies:
       node-fetch: 2.6.7
       protobufjs: 7.2.4
