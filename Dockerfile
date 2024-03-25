@@ -28,7 +28,7 @@ LABEL name "rawon"
 LABEL maintainer "Clytage <admin@clytage.org>"
 
 # Install ffmpeg
-RUN apk add --no-cache ffmpeg
+RUN apk add --no-cache ffmpeg python3 && ln -sf python3 /usr/bin/python
 
 # Copy needed files
 COPY --from=build-stage /tmp/build/package.json .
