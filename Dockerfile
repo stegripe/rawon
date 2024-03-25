@@ -19,7 +19,7 @@ FROM ghcr.io/hazmi35/node:18-alpine
 LABEL name "rawon"
 LABEL maintainer "Clytage <admin@clytage.org>"
 
-RUN apk add --no-cache ffmpeg
+RUN apk add --no-cache ffmpeg python3 && ln -sf python3 /usr/bin/python
 
 COPY --from=build-stage /tmp/build/package.json .
 COPY --from=build-stage /tmp/build/node_modules ./node_modules
