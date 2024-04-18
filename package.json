@@ -55,7 +55,7 @@
 	"dependencies": {
 		"@discordjs/voice": "^0.16.1",
 		"@swc/cli": "0.3.12",
-		"@swc/core": "1.4.15",
+		"@swc/core": "1.4.16",
 		"date-fns": "3.6.0",
 		"discord.js": "14.14.1",
 		"dotenv": "16.4.5",
