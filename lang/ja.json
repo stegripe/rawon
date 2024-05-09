@@ -340,7 +340,7 @@
             "connectionReconfigured": "接続は正常に再構成されました。",
             "deleteQueue": "**`{duration}`**が経過しても誰もVCに参加していないため、キューを削除します。",
             "deleteQueueFooter": "キューを削除",
-            "disconnectFromVCMessage": "VCにから切断します。キューは削除されます。",
+            "disconnectFromVCMessage": "VCから切断します。キューは削除されます。",
             "joinStageMessage": "ステージチャンネルにスピーカーとして接続しました。",
             "joiningAsSpeaker": "ステージチャンネルに移動しています、スピーカーとして接続しています…",
             "pauseQueue": "VCに誰もいません。リソースを削減するため、キューは一時停止されています。\nもし**`{duration}`**以内に誰もVCをに参加しない場合、キューは削除されます。",
