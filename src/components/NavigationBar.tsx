@@ -39,7 +39,7 @@ const ExternalLinks = [
         path: "https://stegripe.org/discord"
     },
     {
-        name: "Github",
+        name: "GitHub",
         path: "https://github.com/stegripe/rawon"
     },
     {
