@@ -11,20 +11,20 @@ import { TextChannel, Snowflake } from "discord.js";
 const nonEnum = { enumerable: false };
 
 export class ServerQueue {
-    public stayInVC = this.textChannel.client.config.stayInVCAfterFinished;
+    public stayInVC = this.client.config.stayInVCAfterFinished;
     public readonly player: AudioPlayer = createAudioPlayer();
     public connection: VoiceConnection | null = null;
     public dcTimeout: NodeJS.Timeout | null = null;
     public timeout: NodeJS.Timeout | null = null;
-    public readonly songs = new SongManager(this.client, this.textChannel.guild);
+    public readonly songs: SongManager;
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
 
+    private _volume = this.client.config.defaultVolume;
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
     private _skipVoters: Snowflake[] = [];
-    private _volume = 100;
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -33,6 +33,8 @@ export class ServerQueue {
             _lastVSUpdateMsg: nonEnum,
             _volume: nonEnum
         });
+
+        this.songs = new SongManager(this.client, this.textChannel.guild);
 
         this.player
             .on("stateChange", (oldState, newState) => {

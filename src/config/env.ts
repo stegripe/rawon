@@ -37,8 +37,9 @@ export const isProd = !isDev;
 
 export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "00AD95";
-export const streamStrategy = process.env.STREAM_STRATEGY! || "yt-dlp";
+export const defaultVolume = Number(process.env.DEFAULT_VOLUME ?? 100) || 100;
 export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
+export const streamStrategy = process.env.STREAM_STRATEGY! || "yt-dlp";
 export const lang = formatLocale(process.env.LOCALE) || "en";
 export const yesEmoji = process.env.YES_EMOJI! || "✅";
 export const noEmoji = process.env.NO_EMOJI! || "❌";
