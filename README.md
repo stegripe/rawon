@@ -32,14 +32,6 @@ $ pnpm prune --production
 $ pnpm start
 ```
 
-## Hosting Setup
-
-Setup Tutorial Video (YouTube)
-
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=9csIDZYpaJM" target="_blank">
- <img src="http://img.youtube.com/vi/9csIDZYpaJM/0.jpg" alt="Setup Guide Video" width="360" border="10" />
-</a>
-
 ### Docker
 You can use our official Docker image:
 ```bash
@@ -105,4 +97,4 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@Fyphen1223](https://github.com/Fyphen1223) (ja)
 - [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
 
-> © 2023 Stegripe Development
+> © 2024 Stegripe Development
