@@ -1,7 +1,9 @@
-import { lang } from "./env.js";
-import { ClientOptions, IntentsBitField, Options, ShardingManagerMode, Sweepers } from "discord.js";
-import { join } from "node:path";
+import path from "node:path";
+import process from "node:process";
+import type { ClientOptions, ShardingManagerMode} from "discord.js";
+import { IntentsBitField, Options, Sweepers } from "discord.js";
 import i18n from "i18n";
+import { lang } from "./env.js";
 
 export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
@@ -24,14 +26,14 @@ export const clientOptions: ClientOptions = {
     sweepers: {
         messages: {
             interval: 300,
-            filter: Sweepers.filterByLifetime({ lifetime: 10800 })
+            filter: Sweepers.filterByLifetime({ lifetime: 10_800 })
         },
         threads: {
             interval: 300,
             filter: Sweepers.filterByLifetime({
-                lifetime: 10800,
-                getComparisonTimestamp: e => e.archiveTimestamp!,
-                excludeFromSweep: e => !e.archived
+                lifetime: 10_800,
+                getComparisonTimestamp: el => el.archiveTimestamp ?? 0,
+                excludeFromSweep: el => el.archived !== true
             })
         }
     }
@@ -39,7 +41,7 @@ export const clientOptions: ClientOptions = {
 
 i18n.configure({
     defaultLocale: "en",
-    directory: join(process.cwd(), "lang"),
+    directory: path.join(process.cwd(), "lang"),
     locales: ["en", "es", "id", "fr", "zh-CN", "zh-TW", "uk", "vi", "pt-BR", "ru", "ja", "tr"],
     objectNotation: true
 });
@@ -49,4 +51,6 @@ i18n.setLocale(lang);
 export const shardsCount: number | "auto" = "auto";
 export const shardingMode: ShardingManagerMode = "worker";
 export * from "./env.js";
-export default i18n;
+
+
+export {default} from "i18n";

@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition, no-nested-ternary */
-import { MessageInteractionAction } from "../typings/index.js";
-import { ActionRowBuilder, BaseInteraction, BaseMessageOptions, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, Collection, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, Message, MessageComponentInteraction, MessageMentions, MessagePayload, MessageReplyOptions, ModalSubmitFields, ModalSubmitInteraction, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { Buffer } from "node:buffer";
+import type { BaseMessageOptions, ChatInputCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, MessageMentions, MessagePayload, MessageReplyOptions, ModalSubmitFields, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { ActionRowBuilder, BaseInteraction, ButtonBuilder, ButtonInteraction, ButtonStyle, Collection, CommandInteraction, ContextMenuCommandInteraction, Message, MessageComponentInteraction, ModalSubmitInteraction } from "discord.js";
+import type { MessageInteractionAction } from "../typings/index.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
-    public channel: TextBasedChannel | null = this.context.channel;
-    public guild = this.context.guild;
+    public channel: TextBasedChannel | null;
+    public guild;
 
     public constructor(
         public readonly context:
@@ -15,13 +16,16 @@ export class CommandContext {
             | Message
             | StringSelectMenuInteraction,
         public args: string[] = []
-    ) { }
+    ) {
+        this.channel = this.context.channel;
+        this.guild = this.context.guild;
+    }
 
     public async deferReply(): Promise<InteractionResponse | undefined> {
         if (this.isInteraction()) {
             return (this.context as CommandInteraction).deferReply();
         }
-        return Promise.resolve(undefined);
+        return undefined;
     }
 
     public async reply(
@@ -33,14 +37,11 @@ export class CommandContext {
             | { askDeletion?: { reference: string } },
         autoedit?: boolean
     ): Promise<Message> {
-        if (this.isInteraction()) {
-            if (
+        if (this.isInteraction() && 
                 ((this.context as Interaction).isCommand() || (this.context as Interaction).isStringSelectMenu()) &&
                 (this.context as CommandInteraction).replied &&
-                !autoedit
-            )
-                throw new Error("Interaction is already replied.");
-        }
+                autoedit !== true
+            ) throw new Error("Interaction is already replied.");
 
         const context = this.context as CommandInteraction | Message | StringSelectMenuInteraction;
         const rep = await this.send(
@@ -52,12 +53,13 @@ export class CommandContext {
                         : "reply"
                     : "reply"
                 : "reply"
-        ).catch(e => ({ error: e }));
-        if (!rep || "error" in rep) {
-            throw new Error(`Unable to reply context, because: ${rep ? (rep.error as Error).message : "Unknown"}`);
+        ).catch((error: unknown) => ({ error }));
+        if ("error" in rep) {
+            throw new Error(`Unable to reply context, because: ${(rep.error as Error).message}`);
         }
 
         // @ts-expect-error-next-line
+        // eslint-disable-next-line typescript/no-unsafe-return
         return rep instanceof Message ? rep : new Message(this.context.client, rep);
     }
 
@@ -90,13 +92,14 @@ export class CommandContext {
                 options as InteractionReplyOptions | MessagePayload | string
             )) as Message;
             const channel = this.context.channel;
-            const res = await channel!.messages.fetch(msg.id).catch(() => null);
+            const res = await channel?.messages.fetch(msg.id).catch(() => null);
             return res ?? msg;
         }
-        if ((options as InteractionReplyOptions).ephemeral) {
+        if ((options as InteractionReplyOptions).ephemeral === true) {
             throw new Error("Cannot send ephemeral message in a non-interaction context.");
         }
         if (typeof options === "string") {
+            // eslint-disable-next-line no-param-reassign
             options = { content: options };
         }
 
@@ -154,6 +157,6 @@ export class CommandContext {
     }
 
     public get member(): GuildMember | null {
-        return this.guild!.members.resolve(this.author.id);
+        return this.guild?.members.resolve(this.author.id) ?? null;
     }
 }

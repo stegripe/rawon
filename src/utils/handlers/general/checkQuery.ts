@@ -1,5 +1,6 @@
-import { QueryData } from "../../../typings/index.js";
+/* eslint-disable typescript/strict-boolean-expressions */
 import { URL } from "node:url";
+import type { QueryData } from "../../../typings/index.js";
 
 export function checkQuery(string: string): QueryData {
     let url: URL;
@@ -16,28 +17,24 @@ export function checkQuery(string: string): QueryData {
         isURL: true
     };
 
-    if (/soundcloud|snd/g.exec(url.hostname)) {
+    if (/soundcloud|snd/gu.test(url.hostname)) {
         result.sourceType = "soundcloud";
 
-        if (url.pathname.includes("/sets/")) {
-            result.type = "playlist";
-        } else {
-            result.type = "track";
-        }
-    } else if (/youtube|youtu\.be/g.exec(url.hostname)) {
+        result.type = url.pathname.includes("/sets/") ? "playlist" : "track";
+    } else if (/youtube|youtu\.be/gu.test(url.hostname)) {
         result.sourceType = "youtube";
 
-        if (!/youtu\.be/g.exec(url.hostname) && url.pathname.startsWith("/playlist") || url.searchParams.has("list")) {
+        if (!/youtu\.be/gu.test(url.hostname) && url.pathname.startsWith("/playlist") || url.searchParams.has("list")) {
             result.type = "playlist";
         } else if (
-            (/youtube/g.exec(url.hostname) && url.pathname.startsWith("/watch")) ??
-            (/youtu\.be/g.exec(url.hostname) && url.pathname !== "")
+            (/youtube/gu.exec(url.hostname) && url.pathname.startsWith("/watch")) ??
+            (/youtu\.be/gu.exec(url.hostname) && url.pathname !== "")
         ) {
             result.type = "track";
         } else {
             result.type = "unknown";
         }
-    } else if (/spotify/g.exec(url.hostname)) {
+    } else if (/spotify/gu.test(url.hostname)) {
         result.sourceType = "spotify";
 
         if (["/playlist", "/album"].some((path) => url.pathname.startsWith(path))) {

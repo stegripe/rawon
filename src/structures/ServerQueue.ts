@@ -1,12 +1,14 @@
-import { SongManager } from "../utils/structures/SongManager.js";
-import { createEmbed } from "../utils/functions/createEmbed.js";
-import { filterArgs } from "../utils/functions/ffmpegArgs.js";
-import { LoopMode, QueueSong } from "../typings/index.js";
-import { play } from "../utils/handlers/GeneralUtil.js";
+import { clearTimeout } from "node:timers";
+import type { AudioPlayer, AudioPlayerPlayingState, AudioResource, VoiceConnection } from "@discordjs/voice";
+import { AudioPlayerStatus, createAudioPlayer } from "@discordjs/voice";
+import type { TextChannel, Snowflake } from "discord.js";
 import i18n from "../config/index.js";
-import { Rawon } from "./Rawon.js";
-import { AudioPlayer, AudioPlayerPlayingState, AudioPlayerStatus, AudioResource, createAudioPlayer, VoiceConnection } from "@discordjs/voice";
-import { TextChannel, Snowflake } from "discord.js";
+import type { LoopMode, QueueSong } from "../typings/index.js";
+import { createEmbed } from "../utils/functions/createEmbed.js";
+import type { filterArgs } from "../utils/functions/ffmpegArgs.js";
+import { play } from "../utils/handlers/GeneralUtil.js";
+import { SongManager } from "../utils/structures/SongManager.js";
+import type { Rawon } from "./Rawon.js";
 
 const nonEnum = { enumerable: false };
 
@@ -37,7 +39,7 @@ export class ServerQueue {
         this.songs = new SongManager(this.client, this.textChannel.guild);
 
         this.player
-            .on("stateChange", (oldState, newState) => {
+            .on("stateChange", async (oldState, newState) => {
                 if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
@@ -56,7 +58,7 @@ export class ServerQueue {
                     }
 
                     const nextS =
-                        // eslint-disable-next-line no-nested-ternary
+                         
                         this.shuffle && this.loopMode !== "SONG"
                             ? this.songs.random()?.key
                             : this.loopMode === "SONG"
@@ -67,7 +69,7 @@ export class ServerQueue {
                                     .first()?.key ??
                                 (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
 
-                    this.textChannel
+                    await this.textChannel
                         .send({
                             embeds: [
                                 createEmbed(
@@ -78,31 +80,32 @@ export class ServerQueue {
                                 ).setThumbnail(song.song.thumbnail)
                             ]
                         })
-                        .then(m => (this.lastMusicMsg = m.id))
-                        .catch(e => this.client.logger.error("PLAY_ERR:", e))
-                        .finally(() => {
-                            play(this.textChannel.guild, nextS).catch(e => {
-                                this.textChannel
-                                    .send({
-                                        embeds: [
-                                            createEmbed(
-                                                "error",
-                                                i18n.__mf("utils.generalHandler.errorPlaying", {
-                                                    message: `\`${e as string}\``
-                                                }),
-                                                true
-                                            )
-                                        ]
-                                    })
-                                    .catch(er => this.client.logger.error("PLAY_ERR:", er));
-                                this.connection?.disconnect();
-                                return this.client.logger.error("PLAY_ERR:", e);
-                            });
-                        });
+                        .then(ms => (this.lastMusicMsg = ms.id))
+                        .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error))
+                        .finally(async () => play(this.textChannel.guild, nextS).catch(async (error: unknown) => {
+                            await this.textChannel
+                                .send({
+                                    embeds: [
+                                        createEmbed(
+                                            "error",
+                                            i18n.__mf("utils.generalHandler.errorPlaying", {
+                                                message: `\`${error as string}\``
+                                            }),
+                                            true
+                                        )
+                                    ]
+                                })
+                                // eslint-disable-next-line promise/no-nesting, typescript/naming-convention
+                                .catch((error_: unknown) => this.client.logger.error("PLAY_ERR:", error_));
+                            this.connection?.disconnect();
+                            this.client.logger.error("PLAY_ERR:", error);
+                        }));
                 }
             })
             .on("error", err => {
-                this.textChannel
+                (async () => {
+                    // eslint-disable-next-line promise/no-promise-in-callback
+                    await this.textChannel
                     .send({
                         embeds: [
                             createEmbed(
@@ -112,7 +115,8 @@ export class ServerQueue {
                             )
                         ]
                     })
-                    .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+                    .catch((error: unknown) => this.client.logger.error("PLAY_CMD_ERR:", error));
+                })();
                 this.destroy();
                 this.client.logger.error("PLAY_ERR:", err);
             })
@@ -139,8 +143,8 @@ export class ServerQueue {
     public destroy(): void {
         this.stop();
         this.connection?.disconnect();
-        clearTimeout(this.timeout!);
-        clearTimeout(this.dcTimeout!);
+        clearTimeout(this.timeout ?? undefined);
+        clearTimeout(this.dcTimeout ?? undefined);
         delete this.textChannel.guild.queue;
     }
 
@@ -169,12 +173,15 @@ export class ServerQueue {
 
     public set lastMusicMsg(value: Snowflake | null) {
         if (this._lastMusicMsg !== null) {
-            this.textChannel.messages
-                .fetch(this._lastMusicMsg)
+            (async () => {
+                await this.textChannel.messages
+                .fetch(this._lastMusicMsg ?? "")
                 .then(msg => {
                     void msg.delete();
+                    return 0;
                 })
-                .catch(err => this.textChannel.client.logger.error("DELETE_LAST_MUSIC_MESSAGE_ERR:", err));
+                .catch((error: unknown) => this.textChannel.client.logger.error("DELETE_LAST_MUSIC_MESSAGE_ERR:", error))
+            })();
         }
         this._lastMusicMsg = value;
     }
@@ -185,12 +192,15 @@ export class ServerQueue {
 
     public set lastVSUpdateMsg(value: Snowflake | null) {
         if (this._lastVSUpdateMsg !== null) {
-            this.textChannel.messages
-                .fetch(this._lastVSUpdateMsg)
+            (async () => {
+                await this.textChannel.messages
+                .fetch(this._lastVSUpdateMsg ?? "")
                 .then(msg => {
                     void msg.delete();
+                    return 0;
                 })
-                .catch(err => this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", err));
+                .catch((error: unknown) => this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", error))
+            })();
         }
         this._lastVSUpdateMsg = value;
     }
@@ -220,7 +230,8 @@ export class ServerQueue {
             `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name
             } has started.`
         );
-        this.textChannel
+        (async () => {
+            await this.textChannel
             .send({
                 embeds: [
                     createEmbed(
@@ -231,7 +242,8 @@ export class ServerQueue {
                     ).setThumbnail(newSong.thumbnail)
                 ]
             })
-            .then(m => (this.lastMusicMsg = m.id))
-            .catch(e => this.client.logger.error("PLAY_ERR:", e));
+            .then(ms => (this.lastMusicMsg = ms.id))
+            .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error))
+        })();
     }
 }

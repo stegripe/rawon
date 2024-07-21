@@ -1,10 +1,11 @@
-import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import i18n from "../../config/index.js";
+/* eslint-disable unicorn/filename-case */
 import { ApplicationCommandOptionType } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command<typeof DJCommand>({
     description: i18n.__("commands.music.dj.description"),
@@ -40,7 +41,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 })
 export class DJCommand extends BaseCommand {
     private readonly options: Record<string, BaseCommand["execute"]> = {
-        default: ctx =>
+        default: async ctx =>
             ctx.reply({
                 embeds: [
                     createEmbed("info")
@@ -71,9 +72,9 @@ export class DJCommand extends BaseCommand {
                 const guildData = data?.[ctx.guild?.id ?? ""];
 
                 return {
-                    ...(data ?? {}),
-                    [ctx.guild!.id]: {
-                        ...(guildData ?? {}),
+                    ...data,
+                    [ctx.guild?.id ?? "..."]: {
+                        ...guildData,
                         dj: {
                             enable: false,
                             role: guildData?.dj?.role ?? null
@@ -93,9 +94,9 @@ export class DJCommand extends BaseCommand {
                 const guildData = data?.[ctx.guild?.id ?? ""];
 
                 return {
-                    ...(data ?? {}),
-                    [ctx.guild!.id]: {
-                        ...(guildData ?? {}),
+                    ...data,
+                    [ctx.guild?.id ?? "..."]: {
+                        ...guildData,
                         dj: {
                             enable: true,
                             role: guildData?.dj?.role ?? null
@@ -110,26 +111,19 @@ export class DJCommand extends BaseCommand {
             });
         },
         role: async ctx => {
-            const newRole = ctx.options?.getRole("newrole")?.id ?? ctx.args.shift()?.replace(/[^0-9]/g, "");
-            const txt = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable ? "enable" : "disable";
+            const newRole = ctx.options?.getRole("newrole")?.id ?? ctx.args.shift()?.replace(/\D/gu, "");
+            const txt = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true ? "enable" : "disable";
             const footer = `${i18n.__("commands.music.dj.embedTitle")}: ${i18n.__(`commands.music.dj.${txt}`)}`;
 
-            if (!newRole) {
-                let role: string | null;
-
-                try {
-                    role = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.role ?? null;
-                    if (!role) throw new Error("");
-                } catch {
-                    role = null;
-                }
+            if ((newRole?.length ?? 0) === 0) {
+                const cur = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.role ?? null;
 
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "info",
-                            role
-                                ? i18n.__mf("commands.music.dj.role.current", { role })
+                            (cur?.length ?? 0) > 0
+                                ? i18n.__mf("commands.music.dj.role.current", { cur })
                                 : i18n.__("commands.music.dj.role.noRole")
                         ).setFooter({
                             text: footer
@@ -138,7 +132,7 @@ export class DJCommand extends BaseCommand {
                 });
             }
 
-            const role = await ctx.guild?.roles.fetch(newRole).catch(() => undefined);
+            const role = await ctx.guild?.roles.fetch(newRole ?? "")?.catch(() => void 0);
             if (!role) {
                 return ctx.reply({
                     embeds: [createEmbed("error", i18n.__("commands.music.dj.role.invalid"), true)]
@@ -150,9 +144,9 @@ export class DJCommand extends BaseCommand {
                 const guildData = data?.[ctx.guild?.id ?? ""];
 
                 return {
-                    ...(data ?? {}),
-                    [ctx.guild!.id]: {
-                        ...(guildData ?? {}),
+                    ...data,
+                    [ctx.guild?.id ?? "..."]: {
+                        ...guildData,
                         dj: {
                             enable: guildData?.dj?.enable ?? false,
                             role: role.id
@@ -179,7 +173,7 @@ export class DJCommand extends BaseCommand {
     @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
     public execute(ctx: CommandContext): void {
         const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
-        let sub = this.options[subname!] as BaseCommand["execute"] | undefined;
+        let sub = this.options[subname ?? ""] as BaseCommand["execute"] | undefined;
 
         if (!sub) sub = this.options.default;
         sub(ctx);

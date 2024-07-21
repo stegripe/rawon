@@ -1,10 +1,10 @@
-import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { ApplicationCommandOptionType } from "discord.js";
 import i18n from "../../config/index.js";
-import { ApplicationCommandOptionType, Message } from "discord.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
     contextUser: "Mute Member",
@@ -31,29 +31,31 @@ import { ApplicationCommandOptionType, Message } from "discord.js";
 export class MuteCommand extends BaseCommand {
     @memberReqPerms(["ManageRoles"], i18n.__("commands.moderation.mute.userNoPermission"))
     @botReqPerms(["ManageRoles"], i18n.__("commands.moderation.mute.botNoPermission"))
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async execute(ctx: CommandContext): Promise<void> {
         if (!ctx.guild) return;
 
         const memberId =
-            ctx.args.shift()?.replace(/[^0-9]/g, "") ??
+            ctx.args.shift()?.replace(/\D/gu, "") ??
             ctx.options?.getUser("user")?.id ??
             ctx.options?.getUser("member")?.id;
-        const member = ctx.guild.members.resolve(memberId!);
+        const member = ctx.guild.members.resolve(memberId ?? "");
 
         if (!member) {
-            return ctx.reply({
+            await ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
+            return;
         }
         if (ctx.guild.ownerId === member.id) {
-            return ctx.reply({
+            await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.moderation.mute.cantMuteOwner"), true)]
             });
+            return;
         }
 
         const muteRole = await this.client.utils.fetchMuteRole(ctx.guild);
         if (!muteRole) {
-            return ctx.reply({
+            await ctx.reply({
                 embeds: [
                     createEmbed(
                         "warn",
@@ -63,20 +65,22 @@ export class MuteCommand extends BaseCommand {
                     )
                 ]
             });
+            return;
         }
         if (member.roles.cache.has(muteRole.id)) {
-            return ctx.reply({
+            await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.moderation.mute.alreadyMuted"), true)]
             });
+            return;
         }
 
         const reason =
             ctx.options?.getString("reason") ??
             (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
 
-        const mute = await member.roles.add(muteRole, reason).catch(err => new Error(err as string | undefined));
-        if (mute instanceof Error)
-            return ctx.reply({
+        const mute = await member.roles.add(muteRole, reason).catch((error: unknown) => new Error(error as string | undefined));
+        if (mute instanceof Error) {
+            await ctx.reply({
                 embeds: [
                     createEmbed(
                         "error",
@@ -85,8 +89,10 @@ export class MuteCommand extends BaseCommand {
                     )
                 ]
             });
+            return;
+        }
 
-        const dm = await member.user.createDM().catch(() => undefined);
+        const dm = await member.user.createDM().catch(() => void 0);
         if (dm) {
             await dm.send({
                 embeds: [
@@ -97,7 +103,7 @@ export class MuteCommand extends BaseCommand {
                         })
                     )
                         .setColor("LightGrey")
-                        .setThumbnail(ctx.guild.iconURL({ extension: "png", size: 1024 }))
+                        .setThumbnail(ctx.guild.iconURL({ extension: "png", size: 1_024 }))
                         .addFields([
                             {
                                 name: i18n.__("commands.moderation.common.reasonString"),
@@ -115,7 +121,7 @@ export class MuteCommand extends BaseCommand {
             });
         }
 
-        return ctx.reply({
+        await ctx.reply({
             embeds: [
                 createEmbed(
                     "success",

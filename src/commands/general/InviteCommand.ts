@@ -1,9 +1,9 @@
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import i18n from "../../config/index.js";
 import { OAuth2Scopes, PermissionFlagsBits } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
     aliases: ["inv"],
@@ -47,10 +47,10 @@ export class InviteCommand extends BaseCommand {
                         name: i18n.__mf("commands.general.invite.inviteTitle", {
                             bot: this.client.user?.username
                         }),
-                        iconURL: this.client.user!.displayAvatarURL()
+                        iconURL: this.client.user?.displayAvatarURL()
                     })
                 ]
             })
-            .catch(e => this.client.logger.error("PLAY_CMD_ERR:", e));
+            .catch((error: unknown) => this.client.logger.error("PLAY_CMD_ERR:", error));
     }
 }

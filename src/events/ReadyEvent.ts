@@ -1,9 +1,10 @@
-import { formatMS } from "../utils/functions/formatMS.js";
-import { EnvActivityTypes } from "../typings/index.js";
-import { BaseEvent } from "../structures/BaseEvent.js";
-import { Event } from "../utils/decorators/Event.js";
-import i18n from "../config/index.js";
+import { setInterval } from "node:timers";
 import { ActivityType, Presence } from "discord.js";
+import i18n from "../config/index.js";
+import { BaseEvent } from "../structures/BaseEvent.js";
+import { EnvActivityTypes } from "../typings/index.js";
+import { Event } from "../utils/decorators/Event.js";
+import { formatMS } from "../utils/functions/formatMS.js";
 
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
@@ -41,32 +42,32 @@ export class ReadyEvent extends BaseEvent {
         if (text.includes("{userCount}")) {
             const users = await this.client.utils.getUserCount();
 
-            newText = newText.replace(/{userCount}/g, users.toString());
+            newText = newText.replaceAll('{userCount}', users.toString());
         }
         if (text.includes("{textChannelCount}")) {
             const textChannels = await this.client.utils.getChannelCount(true);
 
-            newText = newText.replace(/{textChannelCount}/g, textChannels.toString());
+            newText = newText.replaceAll('{textChannelCount}', textChannels.toString());
         }
         if (text.includes("{voiceChannelCount}")) {
             const voiceChannels = await this.client.utils.getChannelCount(false, true);
 
-            newText = newText.replace(/{voiceChannelCount}/g, voiceChannels.toString());
+            newText = newText.replaceAll('{voiceChannelCount}', voiceChannels.toString());
         }
         if (text.includes("{serverCount}")) {
             const guilds = await this.client.utils.getGuildCount();
 
-            newText = newText.replace(/{serverCount}/g, guilds.toString());
+            newText = newText.replaceAll('{serverCount}', guilds.toString());
         }
         if (text.includes("{playingCount}")) {
             const playings = await this.client.utils.getPlayingCount();
 
-            newText = newText.replace(/{playingCount}/g, playings.toString());
+            newText = newText.replaceAll('{playingCount}', playings.toString());
         }
 
         return newText
-            .replace(/{prefix}/g, this.client.config.mainPrefix)
-            .replace(/{username}/g, this.client.user!.username);
+            .replaceAll('{prefix}', this.client.config.mainPrefix)
+            .replaceAll('{username}', this.client.user?.username ?? "");
     }
 
     private async setPresence(random: boolean): Promise<Presence> {
@@ -78,21 +79,19 @@ export class ReadyEvent extends BaseEvent {
             name: string;
             type: EnvActivityTypes;
             typeNumber: number;
-        } = (
-            await Promise.all(
-                this.client.config.presenceData.activities.map(async a => {
-                    let type = ActivityType.Playing;
+        } = await Promise.all(
+            this.client.config.presenceData.activities.map(async a => {
+                let type = ActivityType.Playing;
 
-                    if (a.type === "Competing") type = ActivityType.Competing;
-                    if (a.type === "Watching") type = ActivityType.Watching;
-                    if (a.type === "Listening") type = ActivityType.Listening;
+                if (a.type === "Competing") type = ActivityType.Competing;
+                if (a.type === "Watching") type = ActivityType.Watching;
+                if (a.type === "Listening") type = ActivityType.Listening;
 
-                    return Object.assign(a, { name: await this.formatString(a.name), type: a.type, typeNumber: type });
-                })
-            )
-        )[activityNumber];
+                return Object.assign(a, { name: await this.formatString(a.name), type: a.type, typeNumber: type });
+            })
+        ).then(x => x[activityNumber]);
 
-        return this.client.user!.setPresence({
+        return this.client.user?.setPresence({
             activities: (activity as { name: string } | undefined)
                 ? [
                     {
@@ -102,19 +101,19 @@ export class ReadyEvent extends BaseEvent {
                 ]
                 : [],
             status: this.client.config.presenceData.status[statusNumber]
-        });
+        }) as Presence;
     }
 
     private async doPresence(): Promise<Presence | undefined> {
         try {
             return await this.setPresence(false);
-        } catch (e) {
-            if ((e as Error).message !== "Shards are still being spawned.") {
-                this.client.logger.error(String(e));
+        } catch (error) {
+            if ((error as Error).message !== "Shards are still being spawned.") {
+                this.client.logger.error(String(error));
             }
             return undefined;
         } finally {
-            setInterval(() => this.setPresence(true), this.client.config.presenceData.interval);
+            setInterval(async () => this.setPresence(true), this.client.config.presenceData.interval);
         }
     }
 }
