@@ -18,8 +18,8 @@
         "build": "npm run lint && npm run compile",
         "compile": "npx swc src -d dist --strip-leading-paths",
         "tscompile": "tsc --build tsconfig.json",
-        "lint": "eslint . --cache --cache-file .eslintcache --ignore-pattern .gitignore",
-        "lint:fix": "eslint . --cache --cache-file .eslintcache --ignore-pattern .gitignore --fix",
+        "lint": "eslint . --cache --cache-file .eslintcache",
+        "lint:fix": "eslint . --cache --cache-file .eslintcache --fix",
         "pretty": "prettier --check src/**/*.ts",
         "pretty:write": "prettier --write src/**/*.ts",
         "start": "node --es-module-specifier-resolution=node -r dotenv/config .",
@@ -52,6 +52,7 @@
         "youtubei": "1.5.4"
     },
     "devDependencies": {
+        "@eslint/compat": "^1.1.1",
         "@stegripe/eslint-config": "^1.0.1",
         "@types/i18n": "0.13.12",
         "@types/node": "20.14.11",
