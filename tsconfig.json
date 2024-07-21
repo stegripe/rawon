@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "target": "ES2022",
-        "module": "ESNext",
-        "moduleResolution": "Node16",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "lib": [
             "ES2022"
         ],
@@ -19,7 +19,8 @@
         "rootDir": "src",
         "typeRoots": [
             "node_modules/@types",
-            "src/typings"
+            "src/typings",
+            "yt-dlp-utils/"
         ]
     },
     "include": [
