@@ -1,4 +1,4 @@
-import { Promisable } from "../../typings/index.js";
+import type { Promisable } from "../../typings/index.js";
 
 export class OperationManager {
     private _runningOperation!: boolean;
@@ -18,7 +18,7 @@ export class OperationManager {
         return this._runningOperation;
     }
 
-    public add(operation: () => Promisable<undefined>): Promise<undefined> {
+    public async add(operation: () => Promisable<undefined>): Promise<undefined> {
         return new Promise((resolve, reject) => {
             this.operations.push([resolve, reject, operation]);
 
@@ -36,8 +36,8 @@ export class OperationManager {
             try {
                 await operation[2]();
                 operation[0]();
-            } catch (err) {
-                operation[1](err);
+            } catch (error) {
+                operation[1](error);
             } finally {
                 void this.runOperations();
             }

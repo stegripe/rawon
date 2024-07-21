@@ -1,11 +1,11 @@
-import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
+import { ApplicationCommandOptionType, Message } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import i18n from "../../config/index.js";
-import { ApplicationCommandOptionType, Message } from "discord.js";
 
 type FilterSubCmd = "disable" | "enable" | "status";
 
@@ -75,7 +75,7 @@ export class FilterCommand extends BaseCommand {
     @inVC
     @validVC
     @sameVC
-    public execute(ctx: CommandContext): Promise<Message> {
+    public async execute(ctx: CommandContext): Promise<Message> {
         const mode: Record<string, FilterSubCmd> = {
             on: "enable",
             off: "disable",
@@ -114,12 +114,12 @@ export class FilterCommand extends BaseCommand {
                 embeds: [
                     createEmbed("info", i18n.__mf("commands.music.filter.currentState", {
                         filter,
-                        state: ctx.guild?.queue?.filters[filter] ? "ENABLED" : "DISABLED"
+                        state: ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED"
                     }))
                         .setFooter({
                             text: i18n.__mf("commands.music.filter.embedFooter", {
                                 filter,
-                                opstate: ctx.guild?.queue?.filters[filter] ? "disable" : "enable",
+                                opstate: ctx.guild?.queue?.filters[filter] === true ? "disable" : "enable",
                                 prefix: ctx.isCommand() ? "/" : this.client.config.mainPrefix
                             })
                         })
@@ -135,7 +135,7 @@ export class FilterCommand extends BaseCommand {
                         {
                             name: i18n.__("commands.music.filter.availableFilters"),
                             value: keys
-                                .filter(x => !ctx.guild?.queue?.filters[x])
+                                .filter(x => ctx.guild?.queue?.filters[x] !== true)
                                 .map(x => `\`${x}\``)
                                 .join("\n") || "-",
                             inline: true

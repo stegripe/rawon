@@ -1,5 +1,6 @@
-import { PaginationPayload } from "../../typings/index.js";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, ContextMenuCommandInteraction, Interaction, InteractionButtonComponentData, Message, StringSelectMenuInteraction, TextChannel } from "discord.js";
+import type { ContextMenuCommandInteraction, Interaction, InteractionButtonComponentData, Message, StringSelectMenuInteraction, TextChannel } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType } from "discord.js";
+import type { PaginationPayload } from "../../typings/index.js";
 
 const DATAS: InteractionButtonComponentData[] = [
     {
@@ -53,7 +54,7 @@ export class ButtonPagination {
         this.payload.edit.call(this, index, embed, pages[index]);
 
         const isInteraction = this.msg instanceof CommandInteraction;
-        const buttons = DATAS.map(d => new ButtonBuilder(d));
+        const buttons = DATAS.map(data => new ButtonBuilder(data));
         const toSend = {
             content: this.payload.content,
             embeds: [embed],
@@ -63,7 +64,7 @@ export class ButtonPagination {
             ? (this.msg as CommandInteraction).editReply(toSend)
             : await (this.msg as Message).edit(toSend));
         const fetchedMsg = await (
-            this.msg.client.channels.cache.get(this.msg.channelId!) as TextChannel
+            this.msg.client.channels.cache.get(this.msg.channelId ?? "") as TextChannel
         ).messages.fetch(msg.id);
 
         if (pages.length < 2) return;

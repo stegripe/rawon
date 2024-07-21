@@ -1,7 +1,8 @@
-import { createEmbed } from "../functions/createEmbed.js";
-import { Rawon } from "../../structures/Rawon.js";
+import type { Guild, GuildBan, TextChannel, User } from "discord.js";
+import { ChannelType } from "discord.js";
 import i18n from "../../config/index.js";
-import { ChannelType, Guild, GuildBan, TextChannel, User } from "discord.js";
+import type { Rawon } from "../../structures/Rawon.js";
+import { createEmbed } from "../functions/createEmbed.js";
 
 export class ModerationLogs {
     public constructor(public readonly client: Rawon) { }
@@ -11,7 +12,7 @@ export class ModerationLogs {
         if (!ch) return;
 
         const embed = createEmbed("warn", i18n.__mf("commands.moderation.warn.warnSuccess", { user: options.user.tag }))
-            .setThumbnail(options.user.displayAvatarURL({ size: 1024 }))
+            .setThumbnail(options.user.displayAvatarURL({ size: 1_024 }))
             .addFields([
                 {
                     name: i18n.__("commands.moderation.common.reasonString"),
@@ -23,18 +24,18 @@ export class ModerationLogs {
                 iconURL: options.author.displayAvatarURL({})
             });
 
-        await ch.send({ embeds: [embed] }).catch((er: Error) => console.log(`Failed to send warn logs: ${er.message}`));
+        await ch.send({ embeds: [embed] }).catch((error: unknown) => console.log(`Failed to send warn logs: ${(error as Error).message}`));
     }
 
     public async handleBanAdd(options: { author?: User; ban: GuildBan }): Promise<void> {
-        const fetched = await options.ban.fetch().catch(() => undefined);
+        const fetched = await options.ban.fetch().catch(() => void 0);
         if (!fetched) return;
 
         const ch = await this.getCh(fetched.guild);
         if (!ch) return;
 
         const embed = createEmbed("error", i18n.__mf("commands.moderation.ban.banSuccess", { user: fetched.user.tag }))
-            .setThumbnail(fetched.user.displayAvatarURL({ size: 1024 }))
+            .setThumbnail(fetched.user.displayAvatarURL({ size: 1_024 }))
             .addFields([
                 {
                     name: i18n.__("commands.moderation.common.reasonString"),
@@ -62,7 +63,7 @@ export class ModerationLogs {
             "info",
             i18n.__mf("commands.moderation.unban.unbanSuccess", { user: options.ban.user.tag })
         )
-            .setThumbnail(options.ban.user.displayAvatarURL({ size: 1024 }))
+            .setThumbnail(options.ban.user.displayAvatarURL({ size: 1_024 }))
             .addFields([
                 {
                     name: i18n.__("commands.moderation.common.reasonString"),
@@ -86,12 +87,12 @@ export class ModerationLogs {
         let ch: TextChannel | undefined;
 
         try {
-            const modlog = this.client.data.data![guild.id]!.modLog;
-            if (!modlog?.enable) throw new Error();
+            const modlog = this.client.data.data?.[guild.id].modLog;
+            if (modlog?.enable !== true) throw new Error("...");
 
             const id = modlog.channel;
-            const channel = await guild.channels.fetch(id!).catch(() => undefined);
-            if (channel?.type !== ChannelType.GuildText) throw new Error();
+            const channel = await guild.channels.fetch(id ?? "").catch(() => void 0);
+            if (channel?.type !== ChannelType.GuildText) throw new Error("...");
 
             ch = channel;
         } catch {

@@ -1,7 +1,7 @@
-import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
-import { createEmbed } from "../functions/createEmbed.js";
-import i18n from "../../config/index.js";
 import { PermissionFlagsBits } from "discord.js";
+import i18n from "../../config/index.js";
+import { createEmbed } from "../functions/createEmbed.js";
+import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
 
 export const haveQueue = createCmdExecuteDecorator(ctx => {
     if (!ctx.guild?.queue) {
@@ -10,6 +10,7 @@ export const haveQueue = createCmdExecuteDecorator(ctx => {
         });
         return false;
     }
+    return true;
 });
 
 export const inVC = createCmdExecuteDecorator(ctx => {
@@ -19,17 +20,19 @@ export const inVC = createCmdExecuteDecorator(ctx => {
         });
         return false;
     }
+    return true;
 });
 
 export const validVC = createCmdExecuteDecorator(ctx => {
     const voiceChannel = ctx.member?.voice.channel;
 
-    if (!ctx.guild?.members.me) return;
-    if (voiceChannel?.id === ctx.guild.members.me.voice.channel?.id) return;
-    if (!voiceChannel?.joinable) {
+    if (!ctx.guild?.members.me) return true;
+    if (voiceChannel?.id === ctx.guild.members.me.voice.channel?.id) return true;
+    if (voiceChannel?.joinable !== true) {
         void ctx.reply({
             embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCJoinable"), true)]
         });
+
         return false;
     }
     if (!voiceChannel.permissionsFor(ctx.guild.members.me).has(PermissionFlagsBits.Speak)) {
@@ -38,10 +41,12 @@ export const validVC = createCmdExecuteDecorator(ctx => {
         });
         return false;
     }
+
+    return true;
 });
 
 export const sameVC = createCmdExecuteDecorator(ctx => {
-    if (!ctx.guild?.members.me?.voice.channel) return;
+    if (!ctx.guild?.members.me?.voice.channel) return true;
 
     const botVC = ctx.guild.queue?.connection?.joinConfig.channelId ?? ctx.guild.members.me.voice.channel.id;
     if (ctx.member?.voice.channel?.id !== botVC) {
@@ -50,4 +55,6 @@ export const sameVC = createCmdExecuteDecorator(ctx => {
         });
         return false;
     }
+
+    return true;
 });

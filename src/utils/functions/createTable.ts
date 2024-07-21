@@ -2,7 +2,7 @@ export function createTable(values: string[][]): string {
     const value = values
         .map(
             x =>
-                `${x
+                x
                     .map((y, i) => {
                         const sortingArr = [...values];
                         const spacing = " ".repeat(
@@ -11,7 +11,7 @@ export function createTable(values: string[][]): string {
 
                         return `${y}${spacing}`;
                     })
-                    .join("   ::   ")}`
+                    .join("   ::   ")
         )
         .join("\n");
 

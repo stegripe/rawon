@@ -1,12 +1,12 @@
-import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil.js";
-import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import { Song } from "../../typings/index.js";
+import { ApplicationCommandOptionType, Message, VoiceBasedChannel } from "discord.js";
 import i18n from "../../config/index.js";
-import { ApplicationCommandOptionType, Message } from "discord.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Song } from "../../typings/index.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
 @Command({
     aliases: ["p", "add"],
@@ -32,13 +32,13 @@ export class PlayCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
 
-        const voiceChannel = ctx.member!.voice.channel!;
-        if (ctx.additionalArgs.get("fromSearch")) {
-            const tracks = ctx.additionalArgs.get("values");
+        const voiceChannel = ctx.member?.voice.channel as unknown as VoiceBasedChannel;
+        if (ctx.additionalArgs.get("fromSearch") !== undefined) {
+            const tracks = ctx.additionalArgs.get("values") as string[];
             const toQueue: Song[] = [];
 
-            for (const track of tracks) {
-                const song = await searchTrack(this.client, track as string).catch(() => null);
+            for await (const track of tracks) {
+                const song = await searchTrack(this.client, track).catch(() => null);
                 if (!song) continue;
 
                 toQueue.push(song.items[0]);
@@ -49,18 +49,18 @@ export class PlayCommand extends BaseCommand {
 
         const query =
             (ctx.args.join(" ") || ctx.options?.getString("query")) ??
-            (ctx.additionalArgs.get("values")
-                ? (ctx.additionalArgs.get("values") as (string | undefined)[])[0]
-                : undefined);
+            (ctx.additionalArgs.get("values") === undefined
+                ? undefined
+                : (ctx.additionalArgs.get("values") as (string | undefined)[])[0]);
 
-        if (!query) {
+        if ((query?.length ?? 0) === 0) {
             return ctx.reply({
                 embeds: [
                     createEmbed(
                         "warn",
                         i18n.__mf("reusable.invalidUsage", {
                             prefix: `${this.client.config.mainPrefix}help`,
-                            name: `${this.meta.name}`
+                            name: this.meta.name
                         })
                     )
                 ]
@@ -83,8 +83,8 @@ export class PlayCommand extends BaseCommand {
             });
         }
 
-        const queryCheck = checkQuery(query);
-        const songs = await searchTrack(this.client, query).catch(() => undefined);
+        const queryCheck = checkQuery(query ?? "");
+        const songs = await searchTrack(this.client, query ?? "").catch(() => void 0);
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)]
