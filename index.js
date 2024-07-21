@@ -1,10 +1,12 @@
 /* eslint-disable node/no-sync */
 import { execSync } from "node:child_process";
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { Server } from "node:http";
 import nodePath from "node:path";
 import process from "node:process";
+import got from "got";
 import prism from "prism-media";
+import { extract } from "zip-lib";
 import { downloadExecutable } from "./yt-dlp-utils/index.js";
 
 const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
@@ -109,8 +111,17 @@ if (isGlitch || isReplit) {
 const streamStrategy = process.env.STREAM_STRATEGY;
 if (streamStrategy !== "play-dl") await downloadExecutable();
 if (streamStrategy === "play-dl" && !existsSync(nodePath.resolve(process.cwd(), "play-dl-fix"))) {
-    console.log("[INFO] Cloning play-dl fix...");
-    execSync("git clone https://github.com/YuzuZensai/play-dl-test.git play-dl-fix && cd play-dl-fix && git reset --hard 2bfbfe6");
+    console.log("[INFO] Downloading play-dl fix...");
+    writeFileSync(nodePath.resolve(process.cwd(), "temp.zip"), await got.get("https://github.com/YuzuZensai/play-dl-test/archive/2bfbfe6decd68261747ba55800319f9906f12b03.zip").buffer());
+
+    console.log("[INFO] Extracting play-dl fix...");
+    mkdirSync(nodePath.resolve(process.cwd(), "play-dl-fix"), { recursive: true });
+    await extract(nodePath.resolve(process.cwd(), "temp.zip"), nodePath.resolve(process.cwd(), "play-dl-fix"), { overwrite: true });
+
+    const dirs = readdirSync(nodePath.resolve(process.cwd(), "play-dl-fix"));
+    cpSync(nodePath.resolve(process.cwd(), "play-dl-fix", dirs[0]), nodePath.resolve(process.cwd(), "play-dl-fix"), { force: true, recursive: true });
+    rmSync(nodePath.resolve(process.cwd(), "play-dl-fix", dirs[0]), { force: true, recursive: true });
+    rmSync(nodePath.resolve(process.cwd(), "temp.zip"), { force: true });
 
     console.log("[INFO] Installing packages for play-dl...");
     execSync("cd play-dl-fix && npm install");

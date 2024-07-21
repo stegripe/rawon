@@ -49,7 +49,8 @@
         "soundcloud.ts": "^0.5.3",
         "tslib": "2.6.3",
         "tweetnacl": "1.0.3",
-        "youtubei": "1.5.4"
+        "youtubei": "1.5.4",
+        "zip-lib": "^1.0.4"
     },
     "devDependencies": {
         "@eslint/compat": "^1.1.1",
