@@ -7,7 +7,7 @@ import { Event } from "../utils/decorators/Event.js";
 import { QueueSong } from "../typings/index.js";
 import i18n from "../config/index.js";
 import { AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
-import { Message, StageChannel, VoiceState, VoiceChannel, ChannelType } from "discord.js";
+import { ChannelType, Message, StageChannel, VoiceState, VoiceChannel } from "discord.js";
 
 @Event<typeof VoiceStateUpdateEvent>("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
