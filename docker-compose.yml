@@ -1,0 +1,23 @@
+x-common-general: &common-general
+  restart: unless-stopped
+  deploy:
+    resources:
+      limits:
+        memory: 512M
+
+services:
+  rawon:
+    <<: *common-general
+    image: ghcr.io/stegripe/rawon:latest-dev
+    container_name: rawon-bot
+    env_file: .env
+    networks:
+      - net
+    volumes:
+      - rawon:/app/scripts
+
+networks:
+  net:
+
+volumes:
+  rawon:
