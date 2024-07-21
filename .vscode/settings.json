@@ -1,7 +1,7 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
     "files.eol": "\n",
-    "npm.packageManager": "npm",
+    "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.preferences.importModuleSpecifierEnding": "js",
+    "npm.packageManager": "npm",
     "liveshare.languages.allowGuestCommandControl": true
 }
