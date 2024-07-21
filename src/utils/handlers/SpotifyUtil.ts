@@ -1,9 +1,11 @@
-import { SpotifyAccessTokenAPIResult, SpotifyAlbum, SpotifyPlaylist, SpotifyTrack } from "../../typings/index.js";
-import { Rawon } from "../../structures/Rawon.js";
+/* eslint-disable no-await-in-loop */
+import { setTimeout } from "node:timers";
+import type { Rawon } from "../../structures/Rawon.js";
+import type { SpotifyAccessTokenAPIResult, SpotifyAlbum, SpotifyPlaylist, SpotifyTrack } from "../../typings/index.js";
 
 export class SpotifyUtil {
     // eslint-disable-next-line prefer-named-capture-group
-    public spotifyRegex = /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(track|playlist|album)[/:]([A-Za-z0-9]+)/;
+    public spotifyRegex = /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(track|playlist|album)[/:]([\dA-Za-z]+)/u;
     public baseURI = "https://api.spotify.com/v1";
     private token!: string;
 
@@ -18,14 +20,14 @@ export class SpotifyUtil {
                 }
             })
             .json<SpotifyAccessTokenAPIResult>();
-        if (!accessToken) throw new Error("Could not fetch self Spotify token.");
+        if ((accessToken?.length ?? 0) === 0) throw new Error("Could not fetch self Spotify token.");
         this.token = `Bearer ${accessToken}`;
-        return new Date(accessTokenExpirationTimestampMs).getMilliseconds() * 1000;
+        return new Date(accessTokenExpirationTimestampMs).getMilliseconds() * 1_000;
     }
 
     public async renew(): Promise<void> {
         const lastRenew = await this.fetchToken();
-        setTimeout(() => this.renew(), lastRenew);
+        setTimeout(async () => this.renew(), lastRenew);
     }
 
     public resolveTracks(url: string): Promise<{ track: SpotifyTrack }[]> | Promise<SpotifyTrack> | undefined {
@@ -42,7 +44,11 @@ export class SpotifyUtil {
             case "album": {
                 return this.getAlbum(id);
             }
+
+            default: break;
         }
+
+        return undefined;
     }
 
     public async getAlbum(id: string): Promise<{ track: SpotifyTrack }[]> {
@@ -54,9 +60,9 @@ export class SpotifyUtil {
             })
             .json<SpotifyAlbum>();
         let next = albumResponse.tracks.next;
-        while (next) {
+        while ((next?.length ?? 0) > 0) {
             const nextPlaylistResponse = await this.client.request
-                .get(next, {
+                .get(next as unknown as string, {
                     headers: {
                         Authorization: this.token
                     }
@@ -77,9 +83,9 @@ export class SpotifyUtil {
             })
             .json<SpotifyPlaylist>();
         let next = playlistResponse.tracks.next;
-        while (next) {
+        while ((next?.length ?? 0) > 0) {
             const nextPlaylistResponse = await this.client.request
-                .get(next, {
+                .get(next as unknown as string, {
                     headers: {
                         Authorization: this.token
                     }
@@ -88,11 +94,11 @@ export class SpotifyUtil {
             next = nextPlaylistResponse.next;
             playlistResponse.tracks.items.push(...nextPlaylistResponse.items);
         }
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
         return playlistResponse.tracks.items.filter(spotifyTrack => spotifyTrack.track);
     }
 
-    public getTrack(id: string): Promise<SpotifyTrack> {
+    public async getTrack(id: string): Promise<SpotifyTrack> {
         return this.client.request
             .get(`${this.baseURI}/tracks/${id}`, {
                 headers: {

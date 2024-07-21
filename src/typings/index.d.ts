@@ -1,18 +1,19 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { CommandContext } from "../structures/CommandContext.js";
-import { ServerQueue } from "../structures/ServerQueue.js";
-import { Rawon } from "../structures/Rawon.js";
-import { ApplicationCommandOptionData, ApplicationCommandType, Client as OClient, ClientEvents, ClientPresenceStatus, Collection, Guild, GuildMember, EmbedBuilder } from "discord.js";
+/* eslint-disable typescript/consistent-type-definitions */
+/* eslint-disable typescript/naming-convention */
+import type { ApplicationCommandOptionData, ApplicationCommandType, Client as OClient, ClientEvents, ClientPresenceStatus, Collection, Guild as OG, GuildMember, EmbedBuilder } from "discord.js";
+import type { CommandContext } from "../structures/CommandContext.js";
+import type { Rawon } from "../structures/Rawon.js";
+import type { ServerQueue } from "../structures/ServerQueue.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
-export interface QueryData {
+export type QueryData = {
     sourceType?: "query" | "soundcloud" | "spotify" | "unknown" | "youtube";
     type?: "playlist" | "track" | "unknown";
     isURL: boolean;
 }
 
-export interface BasicYoutubeVideoInfo {
+export type BasicYoutubeVideoInfo = {
     thumbnails?: { url: string; width: number; height: number }[];
     duration: number;
     title: string;
@@ -20,24 +21,24 @@ export interface BasicYoutubeVideoInfo {
     id: string;
 }
 
-export interface SearchTrackResult {
+export type SearchTrackResult = {
     type?: "results" | "selection";
     items: Song[];
 }
 
-export interface PaginationPayload {
-    edit: (index: number, embed: EmbedBuilder, page: string) => unknown;
+export type PaginationPayload = {
+    edit(index: number, embed: EmbedBuilder, page: string): unknown;
     embed: EmbedBuilder;
     content?: string;
     pages: string[];
     author: string;
 }
 
-export interface RawonLoggerOptions {
+export type RawonLoggerOptions = {
     prod: boolean;
 }
 
-export interface SlashOption {
+export type SlashOption = {
     options?: ApplicationCommandOptionData[];
     type?: ApplicationCommandType;
     defaultPermission?: boolean;
@@ -47,19 +48,19 @@ export interface SlashOption {
 
 export type EnvActivityTypes = "Competing" | "Listening" | "Playing" | "Watching";
 
-export interface PresenceData {
+export type PresenceData = {
     activities: { name: string; type: EnvActivityTypes }[];
     status: ClientPresenceStatus[];
     interval: number;
 }
 
-export interface Event {
+export type Event = {
     readonly name: keyof ClientEvents;
-    execute: (...args: any) => void;
+    execute(...args: any): void;
 }
 
-export interface CommandComponent {
-    execute: (context: CommandContext) => any;
+export type CommandComponent = {
+    execute(context: CommandContext): any;
     meta: {
         readonly category?: string;
         readonly path?: string;
@@ -76,7 +77,7 @@ export interface CommandComponent {
     };
 }
 
-export interface CategoryMeta {
+export type CategoryMeta = {
     cmds: Collection<string, CommandComponent>;
     hide: boolean;
     name: string;
@@ -90,16 +91,16 @@ declare module "discord.js" {
         logger: Rawon["logger"];
         events: Rawon["events"];
 
-        build: () => Promise<this>;
+        build(): Promise<this>;
     }
 
-    export interface Guild {
+    export interface Guild extends OG {
         queue?: ServerQueue;
         client: Rawon;
     }
 }
 
-export interface Song {
+export type Song = {
     thumbnail: string;
     duration: number;
     title: string;
@@ -107,7 +108,7 @@ export interface Song {
     id: string;
 }
 
-export interface QueueSong {
+export type QueueSong = {
     requester: GuildMember;
     index: number;
     song: Song;
@@ -116,7 +117,7 @@ export interface QueueSong {
 
 export type LoopMode = "OFF" | "QUEUE" | "SONG";
 
-export interface LyricsAPIResult<E extends boolean> {
+export type LyricsAPIResult<E extends boolean> = {
     synced: E extends true ? never : boolean | string;
     album_art?: E extends true ? null : string;
     message?: E extends true ? string : never;
@@ -127,18 +128,18 @@ export interface LyricsAPIResult<E extends boolean> {
     error: E;
 }
 
-export interface SpotifyAccessTokenAPIResult {
+export type SpotifyAccessTokenAPIResult = {
     accessTokenExpirationTimestampMs: number;
     accessToken?: string;
     isAnonymous: boolean;
     clientId: string;
 }
 
-export interface ExternalUrls {
+export type ExternalUrls = {
     spotify: string;
 }
 
-export interface ArtistsEntity {
+export type ArtistsEntity = {
     external_urls: ExternalUrls;
     href: string;
     name: string;
@@ -147,11 +148,12 @@ export interface ArtistsEntity {
     id: string;
 }
 
-export interface SpotifyArtist {
+export type SpotifyArtist = {
     name: string;
+    tracks: SpotifyTrack[];
 }
 
-interface SpotifyData<T> {
+type SpotifyData<T> = {
     name: string;
     tracks: {
         items: T[];
@@ -164,7 +166,7 @@ export type SpotifyAlbum = SpotifyData<SpotifyTrack>;
 
 export type SpotifyPlaylist = SpotifyData<{ track: SpotifyTrack }>;
 
-export interface SpotifyTrack {
+export type SpotifyTrack = {
     artists: ArtistsEntity[];
     duration_ms: number;
     external_ids?: {
@@ -177,11 +179,7 @@ export interface SpotifyTrack {
     id: string;
 }
 
-export interface SpotifyArtist {
-    tracks: SpotifyTrack[];
-}
-
-export interface GuildData {
+export type GuildData = {
     dj?: {
         enable: boolean;
         role: string | null;
@@ -212,7 +210,7 @@ export type ClassDecorator<Target extends Constructor, Result = unknown> = (targ
 export type Promisable<Output> = Output | Promise<Output>;
 export type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
 
-export interface RegisterCmdOptions {
-    onRegistered: (guild: Guild) => Promisable<any>;
-    onError: (guild: Guild | null, error: Error) => Promisable<any>;
+export type RegisterCmdOptions = {
+    onRegistered(guild: OG): Promisable<any>;
+    onError(guild: OG | null, error: Error): Promisable<any>;
 }

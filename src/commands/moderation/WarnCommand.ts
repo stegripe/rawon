@@ -1,11 +1,11 @@
-import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import { GuildData } from "../../typings/index.js";
-import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType, Message } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { GuildData } from "../../typings/index.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
     description: i18n.__("commands.moderation.warn.description"),
@@ -32,7 +32,7 @@ export class WarnCommand extends BaseCommand {
     @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const member =
-            ctx.guild?.members.resolve(ctx.args.shift()?.replace(/[^0-9]/g, "") ?? "")?.user ??
+            ctx.guild?.members.resolve(ctx.args.shift()?.replace(/\D/gu, "") ?? "")?.user ??
             ctx.options?.getUser("member", true);
         if (!member) {
             return ctx.reply({
@@ -40,7 +40,7 @@ export class WarnCommand extends BaseCommand {
             });
         }
 
-        const dm = await member.createDM().catch(() => undefined);
+        const dm = await member.createDM().catch(() => void 0);
         if (!dm) {
             await ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.moderation.warn.noDM"))]
@@ -53,10 +53,10 @@ export class WarnCommand extends BaseCommand {
         const embed = createEmbed(
             "warn",
             i18n.__mf("commands.moderation.warn.userWarned", {
-                guildName: ctx.guild!.name
+                guildName: ctx.guild?.name
             })
         )
-            .setThumbnail(ctx.guild!.iconURL({ extension: "png", size: 1024 }))
+            .setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null)
             .addFields([
                 {
                     name: i18n.__("commands.moderation.common.reasonString"),
@@ -71,12 +71,12 @@ export class WarnCommand extends BaseCommand {
 
         await dm?.send({ embeds: [embed] });
         await this.client.data.save(() => {
-            const prefGuildData = this.client.data.data?.[ctx.guild!.id];
+            const prefGuildData = this.client.data.data?.[ctx.guild?.id ?? ''];
             const newData: Record<string, GuildData> = {
-                ...(this.client.data.data ?? {}),
-                [ctx.guild!.id]: {
+                ...this.client.data.data,
+                [ctx.guild?.id ?? "..."]: {
                     infractions: {
-                        ...(prefGuildData?.infractions ?? {}),
+                        ...prefGuildData?.infractions,
                         [member.id]: [
                             ...(prefGuildData?.infractions[member.id] ?? []),
                             {
@@ -95,14 +95,16 @@ export class WarnCommand extends BaseCommand {
             return newData;
         });
 
-        void this.client.modlogs
+        (async () => {
+            await this.client.modlogs
             .handleWarn({
                 author: ctx.author,
-                guild: ctx.guild!,
+                guild: ctx.guild as unknown as Exclude<typeof ctx.guild, null>,
                 reason,
                 user: member
             })
             .catch(() => null);
+        })();
 
         return ctx.reply({
             embeds: [

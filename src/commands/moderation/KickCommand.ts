@@ -1,10 +1,10 @@
-import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { ApplicationCommandOptionType } from "discord.js";
 import i18n from "../../config/index.js";
-import { ApplicationCommandOptionType, Message } from "discord.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
     contextUser: "Kick Member",
@@ -31,30 +31,32 @@ import { ApplicationCommandOptionType, Message } from "discord.js";
 export class KickCommand extends BaseCommand {
     @memberReqPerms(["KickMembers"], i18n.__("commands.moderation.kick.userNoPermission"))
     @botReqPerms(["KickMembers"], i18n.__("commands.moderation.kick.botNoPermission"))
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async execute(ctx: CommandContext): Promise<void> {
         if (!ctx.guild) return;
 
         const memberId =
-            ctx.args.shift()?.replace(/[^0-9]/g, "") ??
+            ctx.args.shift()?.replace(/\D/gu, "") ??
             ctx.options?.getUser("user")?.id ??
             ctx.options?.getUser("member")?.id;
-        const member = ctx.guild.members.resolve(memberId!);
+        const member = ctx.guild.members.resolve(memberId ?? "");
 
         if (!member) {
-            return ctx.reply({
+            await ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.moderation.common.noUserSpecified"))]
             });
+            return;
         }
         if (!member.kickable) {
-            return ctx.reply({
+            await ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.moderation.kick.userNoKickable"), true)]
             });
+            return;
         }
 
         const reason =
             ctx.options?.getString("reason") ??
             (ctx.args.join(" ") || i18n.__("commands.moderation.common.noReasonString"));
-        const dm = await member.user.createDM().catch(() => undefined);
+        const dm = await member.user.createDM().catch(() => void 0);
         if (dm) {
             await dm.send({
                 embeds: [
@@ -62,7 +64,7 @@ export class KickCommand extends BaseCommand {
                         "error",
                         i18n.__mf("commands.moderation.kick.userKicked", { guildName: ctx.guild.name })
                     )
-                        .setThumbnail(ctx.guild.iconURL({ extension: "png", size: 1024 }))
+                        .setThumbnail(ctx.guild.iconURL({ extension: "png", size: 1_024 }))
                         .addFields([
                             {
                                 name: i18n.__("commands.moderation.common.reasonString"),
@@ -80,9 +82,9 @@ export class KickCommand extends BaseCommand {
             });
         }
 
-        const kick = await member.kick(reason).catch(err => new Error(err as string | undefined));
-        if (kick instanceof Error)
-            return ctx.reply({
+        const kick = await member.kick(reason).catch((error: unknown) => new Error(error as string | undefined));
+        if (kick instanceof Error) {
+            await ctx.reply({
                 embeds: [
                     createEmbed(
                         "error",
@@ -91,8 +93,11 @@ export class KickCommand extends BaseCommand {
                     )
                 ]
             });
+            return;
+        }
 
-        return ctx.reply({
+
+        await ctx.reply({
             embeds: [
                 createEmbed(
                     "success",

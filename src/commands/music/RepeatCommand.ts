@@ -1,11 +1,11 @@
-import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import { LoopMode } from "../../typings/index.js";
-import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType, Message } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { LoopMode } from "../../typings/index.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
     aliases: ["loop", "music-repeat", "music-loop"],
@@ -54,19 +54,19 @@ export class RepeatCommand extends BaseCommand {
         const selection =
             ctx.options?.getSubcommand() ?? ctx.args[0]
                 ? Object.keys(mode).find(key =>
-                    mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options!.getSubcommand())
+                    mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options?.getSubcommand())
                 )
                 : undefined;
 
-        if (!selection) {
+        if ((selection?.length ?? 0) === 0) {
             return ctx.reply({
                 embeds: [
                     createEmbed(
                         "info",
-                        `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf(
+                        `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf(
                             "commands.music.repeat.actualMode",
                             {
-                                mode: `\`${ctx.guild!.queue!.loopMode}\``
+                                mode: `\`${ctx.guild?.queue?.loopMode}\``
                             }
                         )}`
                     ).setFooter({
@@ -77,14 +77,14 @@ export class RepeatCommand extends BaseCommand {
                 ]
             });
         }
-        ctx.guild!.queue!.loopMode = selection as LoopMode;
+        (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).loopMode = selection as LoopMode;
 
         return ctx.reply({
             embeds: [
                 createEmbed(
                     "success",
-                    `${mode[ctx.guild!.queue!.loopMode].emoji} **|** ${i18n.__mf("commands.music.repeat.newMode", {
-                        mode: `\`${ctx.guild!.queue!.loopMode}\``
+                    `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf("commands.music.repeat.newMode", {
+                        mode: `\`${ctx.guild?.queue?.loopMode}\``
                     })}`
                 )
             ]

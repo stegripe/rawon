@@ -1,6 +1,7 @@
-import { Song, QueueSong } from "../../typings/index.js";
-import { Rawon } from "../../structures/Rawon.js";
-import { Collection, GuildMember, Snowflake, SnowflakeUtil } from "discord.js";
+import type { GuildMember, Snowflake} from "discord.js";
+import { Collection, SnowflakeUtil } from "discord.js";
+import type { Rawon } from "../../structures/Rawon.js";
+import type { Song, QueueSong } from "../../typings/index.js";
 
 export class SongManager extends Collection<Snowflake, QueueSong> {
     private id = 0;

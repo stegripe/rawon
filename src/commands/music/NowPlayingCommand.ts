@@ -1,14 +1,14 @@
+import { AudioPlayerState, AudioResource } from "@discordjs/voice";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { QueueSong } from "../../typings/index.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { haveQueue } from "../../utils/decorators/MusicUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { haveQueue } from "../../utils/decorators/MusicUtil.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import { QueueSong } from "../../typings/index.js";
-import i18n from "../../config/index.js";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from "discord.js";
-import { AudioPlayerState, AudioResource } from "@discordjs/voice";
 
 @Command<typeof NowPlayingCommand>({
     aliases: ["np"],
@@ -32,11 +32,11 @@ export class NowPlayingCommand extends BaseCommand {
             )?.resource;
             const song = (res?.metadata as QueueSong | undefined)?.song;
 
-            const embed = createEmbed("info", `${ctx.guild?.queue?.playing ? "▶" : "⏸"} **|** `).setThumbnail(
+            const embed = createEmbed("info", `${ctx.guild?.queue?.playing === true ? "▶" : "⏸"} **|** `).setThumbnail(
                 song?.thumbnail ?? "https://cdn.clytage.org/images/icon.png"
             );
 
-            const curr = ~~(res!.playbackDuration / 1000);
+            const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
             embed.data.description += song
                 ? `**[${song.title}](${song.url})**\n` +
                 `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`
@@ -72,7 +72,7 @@ export class NowPlayingCommand extends BaseCommand {
         const collector = msg.createMessageComponentCollector({
             componentType: ComponentType.Button,
             filter: i => i.isButton() && i.user.id === ctx.author.id,
-            idle: 30000
+            idle: 30_000
         });
 
         collector
@@ -82,7 +82,7 @@ export class NowPlayingCommand extends BaseCommand {
 
                 switch (i.customId) {
                     case "TOGGLE_STATE_BUTTON": {
-                        cmdName = ctx.guild?.queue?.playing ? "pause" : "resume";
+                        cmdName = ctx.guild?.queue?.playing === true ? "pause" : "resume";
                         break;
                     }
 
@@ -100,6 +100,8 @@ export class NowPlayingCommand extends BaseCommand {
                         cmdName = "stop";
                         break;
                     }
+
+                    default: break;
                 }
                 await this.client.commands.get(cmdName)?.execute(newCtx);
 

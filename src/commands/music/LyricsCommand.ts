@@ -1,13 +1,13 @@
-import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
+import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import { ApplicationCommandOptionType } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { LyricsAPIResult, QueueSong } from "../../typings/index.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { chunk } from "../../utils/functions/chunk.js";
-import i18n from "../../config/index.js";
-import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
-import { ApplicationCommandOptionType, Message } from "discord.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 
 @Command<typeof LyricsCommand>({
     aliases: ["ly", "lyric"],
@@ -26,13 +26,13 @@ import { ApplicationCommandOptionType, Message } from "discord.js";
     usage: i18n.__("commands.music.lyrics.usage")
 })
 export class LyricsCommand extends BaseCommand {
-    public execute(ctx: CommandContext): Promise<Message> | undefined {
+    public async execute(ctx: CommandContext): Promise<void> {
         const query =
-            // eslint-disable-next-line no-nested-ternary
-            ctx.args.length >= 1
+             
+            ctx.args.length > 0
                 ? ctx.args.join(" ")
-                : ctx.options?.getString("query")
-                    ? ctx.options.getString("query")
+                : (ctx.options?.getString("query")?.length ?? 0) > 0
+                    ? ctx.options?.getString("query") ?? ""
                     : (
                         (
                             (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as
@@ -40,18 +40,20 @@ export class LyricsCommand extends BaseCommand {
                             | undefined
                         )?.metadata as QueueSong | undefined
                     )?.song.title;
-        if (!query) {
-            return ctx.reply({
+        if ((query?.length ?? 0) === 0) {
+            await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)]
             });
+
+            return;
         }
 
-        this.getLyrics(ctx, query);
+        await this.getLyrics(ctx, query as unknown as string);
     }
 
-    private getLyrics(ctx: CommandContext, song: string): void {
+    private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
         const url = `https://api.lxndr.dev/lyrics?song=${encodeURI(song)}&from=DiscordRawon`;
-        this.client.request
+        await this.client.request
             .get(url)
             .json<LyricsAPIResult<false>>()
             .then(async data => {
@@ -62,7 +64,7 @@ export class LyricsCommand extends BaseCommand {
                                 "error",
                                 i18n.__mf("commands.music.lyrics.apiError", {
                                     song: `\`${song}\``,
-                                    message: `\`${(data as { message?: string }).message!}\``
+                                    message: `\`${(data as { message?: string }).message}\``
                                 }),
                                 true
                             )
@@ -71,18 +73,18 @@ export class LyricsCommand extends BaseCommand {
                 }
 
                 const albumArt = data.album_art ?? "https://cdn.clytage.org/images/icon.png";
-                const pages: string[] = chunk(data.lyrics!, 2048);
+                const pages: string[] = chunk(data.lyrics ?? "", 2_048);
                 const embed = createEmbed("info", pages[0])
                     .setAuthor({
-                        name: data.song && data.artist ? `${data.song} - ${data.artist}` : song.toUpperCase()
+                        name: ((data.song?.length ?? 0) > 0) && ((data.artist?.length ?? 0) > 0) ? `${data.song} - ${data.artist}` : song.toUpperCase()
                     })
                     .setThumbnail(albumArt);
                 const msg = await ctx.reply({ embeds: [embed] });
 
                 return new ButtonPagination(msg, {
                     author: ctx.author.id,
-                    edit: (i, e, p) =>
-                        e.setDescription(p).setFooter({
+                    edit: (i, emb, page) =>
+                        emb.setDescription(page).setFooter({
                             text: i18n.__mf("reusable.pageFooter", {
                                 actual: i + 1,
                                 total: pages.length
@@ -92,6 +94,6 @@ export class LyricsCommand extends BaseCommand {
                     pages
                 }).start();
             })
-            .catch(error => console.error(error));
+            .catch((error: unknown) => console.error(error));
     }
 }

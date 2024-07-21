@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain, @typescript-eslint/no-unnecessary-condition */
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { Buffer } from "node:buffer";
+import { ActionRowBuilder, ApplicationCommandOptionType, ComponentType, SelectMenuComponentOptionData, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
 import i18n from "../../config/index.js";
-import { ActionRowBuilder, ApplicationCommandOptionType, ComponentType, Message, SelectMenuComponentOptionData, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command<typeof HelpCommand>({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
@@ -25,9 +25,9 @@ export class HelpCommand extends BaseCommand {
     private readonly listEmbed = createEmbed("info")
         .setAuthor({
             name: i18n.__mf("commands.general.help.authorString", {
-                username: this.client.user!.username
+                username: this.client.user?.username
             }),
-            iconURL: this.client.user?.displayAvatarURL()!
+            iconURL: this.client.user?.displayAvatarURL()
         })
         .setFooter({
             text: i18n.__mf("commands.general.help.footerString", {
@@ -40,22 +40,22 @@ export class HelpCommand extends BaseCommand {
         "https://cdn.clytage.org/images/question_mark.png"
     );
 
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
         this.infoEmbed.data.fields = [];
         const val =
             ctx.args[0] ??
             ctx.options?.getString("command") ??
-            (ctx.additionalArgs.get("values") ? (ctx.additionalArgs.get("values") as string[])[0] : null);
+            (ctx.additionalArgs.get("values") === undefined ? null : (ctx.additionalArgs.get("values") as string[])[0]);
         const command =
-            this.client.commands.get(val) ?? this.client.commands.get(this.client.commands.aliases.get(val)!);
+            this.client.commands.get(val) ?? this.client.commands.get(this.client.commands.aliases.get(val) ?? "");
         if (!val) {
-            const embed = this.listEmbed.setThumbnail(ctx.guild!.iconURL({ extension: "png", size: 1024 }));
+            const embed = this.listEmbed.setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null);
 
             this.listEmbed.data.fields = [];
             for (const category of this.client.commands.categories.values()) {
                 const isDev = this.client.config.devs.includes(ctx.author.id);
-                const cmds = category.cmds.filter(c => (isDev ? true : !c.meta.devOnly)).map(c => `\`${c.meta.name}\``);
+                const cmds = category.cmds.filter(c => (isDev ? true : c.meta.devOnly !== true)).map(c => `\`${c.meta.name}\``);
                 if (cmds.length === 0) continue;
                 if (category.hide && !isDev) continue;
                 embed.addFields([
@@ -66,21 +66,22 @@ export class HelpCommand extends BaseCommand {
                 ]);
             }
 
-            ctx.send({ embeds: [embed] }, "editReply").catch(e => this.client.logger.error("PROMISE_ERR:", e));
+            await ctx.send({ embeds: [embed] }, "editReply").catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
             return;
         }
         if (!command) {
             const matching = this.generateSelectMenu(val, ctx.author.id);
-            if (!matching.length) {
-                return ctx.send(
+            if (matching.length === 0) {
+                await ctx.send(
                     {
                         embeds: [createEmbed("error", i18n.__("commands.general.help.noCommand"), true)]
                     },
                     "editReply"
                 );
+                return;
             }
 
-            return ctx.send(
+            await ctx.send(
                 {
                     components: [
                         new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
@@ -100,14 +101,14 @@ export class HelpCommand extends BaseCommand {
 
         if (ctx.isStringSelectMenu()) {
             const channel = ctx.channel;
-            const msg = await channel!.messages
+            const msg = await channel?.messages
                 .fetch((ctx.context as StringSelectMenuInteraction).message.id)
-                .catch(() => undefined);
+                .catch(() => void 0);
             if (msg !== undefined) {
                 const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
                 if (!selection) return;
                 const disabledMenu = new StringSelectMenuBuilder()
-                    .setCustomId(selection.customId!)
+                    .setCustomId(selection.customId ?? "")
                     .setDisabled(true)
                     .addOptions({
                         label: "Nothing to select here",
@@ -118,40 +119,40 @@ export class HelpCommand extends BaseCommand {
             }
         }
 
-        return ctx.send(
+        await ctx.send(
             {
                 embeds: [
                     this.infoEmbed
                         .setAuthor({
                             name: i18n.__mf("commands.general.help.commandDetailTitle", {
-                                username: this.client.user!.username,
-                                command: command.meta.name
+                                username: this.client.user?.username,
+                                command: command?.meta.name
                             }),
-                            iconURL: this.client.user?.displayAvatarURL()!
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
                         .addFields([
                             {
                                 name: i18n.__("commands.general.help.nameString"),
-                                value: `**\`${command.meta.name}\`**`,
+                                value: `**\`${command?.meta.name}\`**`,
                                 inline: false
                             },
                             {
                                 name: i18n.__("commands.general.help.descriptionString"),
-                                value: `${command.meta.description!}`,
+                                value: `${command?.meta.description}`,
                                 inline: true
                             },
                             {
                                 name: i18n.__("commands.general.help.aliasesString"),
                                 value:
-                                    Number(command.meta.aliases?.length) > 0
-                                        ? command.meta.aliases?.map(c => `**\`${c}\`**`).join(", ")!
+                                    Number(command?.meta.aliases?.length) > 0
+                                        ? command?.meta.aliases?.map(c => `**\`${c}\`**`).join(", ") ?? "None."
                                         : "None.",
                                 inline: false
                             },
                             {
                                 name: i18n.__("commands.general.help.usageString"),
-                                value: `**\`${command.meta.usage!.replace(
-                                    /{prefix}/g,
+                                value: `**\`${command?.meta.usage?.replaceAll(
+                                    '{prefix}',
                                     this.client.config.mainPrefix
                                 )}\`**`,
                                 inline: true
@@ -159,7 +160,7 @@ export class HelpCommand extends BaseCommand {
                         ])
                         .setFooter({
                             text: i18n.__mf("commands.general.help.commandUsageFooter", {
-                                devOnly: command.meta.devOnly ? "(developer-only command)" : ""
+                                devOnly: command?.meta.devOnly === true ? "(developer-only command)" : ""
                             }),
                             iconURL: "https://cdn.clytage.org/images/information.png"
                         })
@@ -175,14 +176,14 @@ export class HelpCommand extends BaseCommand {
             .filter(x => {
                 const isDev = this.client.config.devs.includes(author);
                 if (isDev) return x.meta.name.includes(cmd);
-                return x.meta.name.includes(cmd) && !x.meta.devOnly;
+                return x.meta.name.includes(cmd) && (x.meta.devOnly !== true);
             })
             .slice(0, 10)
             .map((x, i) => ({
                 label: x.meta.name,
                 emoji: emojis[i],
                 description:
-                    x.meta.description!.length > 47 ? `${x.meta.description!.slice(0, 47)}...` : x.meta.description!,
+                    (x.meta.description?.length ?? 0) > 47 ? `${x.meta.description?.slice(0, 47)}...` : x.meta.description,
                 value: x.meta.name
             }));
         return matching;

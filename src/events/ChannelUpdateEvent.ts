@@ -1,9 +1,9 @@
-import { createEmbed } from "../utils/functions/createEmbed.js";
-import { BaseEvent } from "../structures/BaseEvent.js";
-import { Event } from "../utils/decorators/Event.js";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { ChannelType, GuildChannel, VoiceChannel } from "discord.js";
 import i18n from "i18n";
+import { BaseEvent } from "../structures/BaseEvent.js";
+import { Event } from "../utils/decorators/Event.js";
+import { createEmbed } from "../utils/functions/createEmbed.js";
 
 @Event("channelUpdate")
 export class ChannelUpdateEvent extends BaseEvent {
@@ -29,11 +29,12 @@ export class ChannelUpdateEvent extends BaseEvent {
             });
             queue.connection?.configureNetworking();
 
-            entersState(queue.connection!, VoiceConnectionStatus.Ready, 20000)
+            await entersState(queue.connection as unknown as NonNullable<typeof queue.connection>, VoiceConnectionStatus.Ready, 20_000)
                 .then(() => {
                     void msg.edit({
                         embeds: [createEmbed("success", i18n.__("events.channelUpdate.connectionReconfigured"), true)]
                     });
+                    return 0;
                 })
                 .catch(() => {
                     queue.destroy();
