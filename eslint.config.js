@@ -3,4 +3,10 @@ import { common, modules, node, prettier, typescript, extend, ignores } from "@s
 export default [...common, ...modules, ...node, ...prettier, ...extend(typescript, [{
     rule: "typescript/no-unnecessary-condition",
     option: ["off"]
-}], ...ignores)];
+}], ...ignores[{
+    pattern: [
+        "dist/*",
+        "index.js",
+        "yt-dlp-utils/"
+    ]
+}])];

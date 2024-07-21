@@ -35,23 +35,6 @@
         "arrowParens": "avoid",
         "printWidth": 120
     },
-    "eslintConfig": {
-        "extends": [
-            "@clytage/eslint-config/typescript",
-            "prettier"
-        ],
-        "plugins": [
-            "prettier"
-        ],
-        "ignorePatterns": [
-            "dist/*",
-            "index.js",
-            "yt-dlp-utils/"
-        ],
-        "rules": {
-            "@typescript-eslint/no-extra-parens": "off"
-        }
-    },
     "dependencies": {
         "@discordjs/voice": "^0.17.0",
         "@swc/cli": "0.4.0",
