@@ -210,7 +210,7 @@
                 "slashStateFilterDescription": "O filtro de música a ser {state, select, enable {ativado} other {desativado}}",
                 "slashStatusDescription": "Verifica o status dos filtros de música",
                 "slashStatusFilterDescription": "O filtro de música a ser verificado",
-                "specifyFilter": "Por favor especifique um filtro." 
+                "specifyFilter": "Por favor especifique um filtro."
             },
             "lyrics": {
                 "apiError": "A API não conseguiu encontrar **{song}**, motivo: `{message}`",
@@ -243,7 +243,7 @@
                 "description": "Remove música(s) da fila",
                 "noPermission": "Você não possui permissão para usar esse comando.",
                 "noPositions": "Por favor especifique as posições das músicas a serem removidas.",
-                "slashPositionsDescription": "Posição das músicas a serem removidas separadas por espaços ou vírgulas", 
+                "slashPositionsDescription": "Posição das músicas a serem removidas separadas por espaços ou vírgulas",
                 "songSkip": "A músical atual foi removida, pulando música.\n\n",
                 "songsRemoved": "Removido(s) {removed, plural, one {1 música} other {# músicas}} da fila",
                 "usage": "{prefix}remove <posições>"

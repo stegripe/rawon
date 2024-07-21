@@ -4,7 +4,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { Command } from "../../utils/decorators/Command.js";
 import i18n from "../../config/index.js";
-import { TextChannel, Message, ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, Message, TextChannel } from "discord.js";
 
 @Command({
     description: i18n.__("commands.moderation.purge.description"),

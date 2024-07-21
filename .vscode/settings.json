@@ -1,7 +1,7 @@
 {
-    "typescript.preferences.importModuleSpecifierEnding": "js",
-    "liveshare.languages.allowGuestCommandControl": true,
     "typescript.tsdk": "node_modules/typescript/lib",
+    "files.eol": "\n",
     "npm.packageManager": "npm",
-    "files.eol": "\n"
+    "typescript.preferences.importModuleSpecifierEnding": "js",
+    "liveshare.languages.allowGuestCommandControl": true
 }
