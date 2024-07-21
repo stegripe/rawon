@@ -17,7 +17,7 @@ RUN pnpm prune --production
 FROM ghcr.io/hazmi35/node:18-alpine
 
 LABEL name "rawon"
-LABEL maintainer "Clytage <admin@clytage.org>"
+LABEL maintainer "Stegripe Development <support@stegripe.org>"
 
 RUN apk add --no-cache ffmpeg python3 && ln -sf python3 /usr/bin/python
 

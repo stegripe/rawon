@@ -1,4 +1,4 @@
-name: Build & Push Docker Image to container image registry
+name: Build and Push Docker Image to the container image registry
 
 on:
   release:
@@ -14,5 +14,5 @@ on:
 
 jobs:
   docker:
-    uses: stegripe/workflows/.github/workflows/docker-build.yml@main
+    uses: stegripe/workflows/.github/workflows/docker-build-and-push.yaml@main
     secrets: inherit

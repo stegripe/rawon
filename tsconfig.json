@@ -7,8 +7,6 @@
             "ES2022"
         ],
         "strict": true,
-        "rootDir": "src",
-        "outDir": "dist",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
@@ -17,13 +15,15 @@
         "noEmitHelpers": true,
         "importHelpers": true,
         "resolveJsonModule": true,
+        "outDir": "dist",
+        "rootDir": "src",
         "typeRoots": [
             "node_modules/@types",
             "src/typings"
         ]
     },
-    "exclude": [],
     "include": [
         "src/**/*"
-    ]
+    ],
+    "exclude": []
 }
