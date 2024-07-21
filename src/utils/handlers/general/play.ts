@@ -1,18 +1,21 @@
+import type EventEmitter from "node:events";
+import { clearTimeout, setTimeout } from "node:timers";
+import { AudioPlayerError, createAudioResource, entersState, StreamType, VoiceConnectionStatus } from "@discordjs/voice";
+import type { Guild } from "discord.js";
+import { ChannelType } from "discord.js";
+import prism from "prism-media";
+import i18n from "../../../config/index.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
-import i18n from "../../../config/index.js";
 import { getStream } from "../YTDLUtil.js";
-import { AudioPlayerError, createAudioResource, entersState, StreamType, VoiceConnectionStatus } from "@discordjs/voice";
-import { ChannelType, Guild } from "discord.js";
-import prism from "prism-media";
 
 export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
     if (!queue) return;
 
-    const song = nextSong ? queue.songs.get(nextSong) : queue.songs.first();
+    const song = (nextSong?.length ?? 0) > 0 ? queue.songs.get(nextSong as unknown as string) : queue.songs.first();
 
-    clearTimeout(queue.dcTimeout!);
+    clearTimeout(queue.dcTimeout ?? undefined);
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
@@ -28,16 +31,17 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         });
         queue.dcTimeout = queue.stayInVC
             ? null
-            : setTimeout(() => {
+            : setTimeout(async () => {
                 queue.destroy();
-                void queue.textChannel
+                await queue.textChannel
                     .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
                     .then(msg => {
                         setTimeout(() => {
                             void msg.delete();
-                        }, 3500);
+                        }, 3_500);
+                        return 0;
                     });
-            }, 60000);
+            }, 60_000);
         queue.client.debugLog.logData("info", "PLAY_HANDLER", `Queue ended for ${guild.name}(${guild.id})`);
         return;
     }
@@ -45,7 +49,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     const stream = new prism.FFmpeg({
         args: ffmpegArgs(queue.filters)
     });
-    (await getStream(queue.client, song.song.url)).pipe(stream);
+    await getStream(queue.client, song.song.url).then(x => x.pipe(stream as unknown as NodeJS.WritableStream));
 
     const resource = createAudioResource(stream, { inlineVolume: true, inputType: StreamType.OggOpus, metadata: song });
 
@@ -54,7 +58,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     queue.connection?.subscribe(queue.player);
 
     async function playResource(): Promise<void> {
-        if (guild.channels.cache.get(queue!.connection!.joinConfig.channelId!)?.type === ChannelType.GuildStageVoice) {
+        if (guild.channels.cache.get(queue?.connection?.joinConfig.channelId ?? "")?.type === ChannelType.GuildStageVoice) {
             queue?.client.debugLog.logData(
                 "info",
                 "PLAY_HANDLER",
@@ -63,15 +67,15 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
             );
             const suppressed = await guild.members.me?.voice
                 .setSuppressed(false)
-                .catch((err: Error) => ({ error: err }));
+                .catch((error: unknown) => ({ error }));
             if (suppressed && "error" in suppressed) {
                 queue?.client.debugLog.logData(
                     "error",
                     "PLAY_HANDLER",
                     `Failed to be a speaker in ${guild.members.me?.voice.channel?.name ?? "Unknown"}(${guild.members.me?.voice.channel?.id ?? "ID UNKNOWN"
-                    }) in guild ${guild.name}(${guild.id}). Reason: ${suppressed.error.message}`
+                    }) in guild ${guild.name}(${guild.id}). Reason: ${(suppressed.error as Error).message}`
                 );
-                queue?.player.emit("error", new AudioPlayerError(suppressed.error, resource));
+                (queue?.player as unknown as EventEmitter).emit("error", new AudioPlayerError(suppressed.error as Error, resource));
                 return;
             }
         }
@@ -79,7 +83,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         queue?.player.play(resource);
     }
 
-    if (wasIdle) {
+    if (wasIdle === true) {
         void playResource();
     } else {
         queue.client.debugLog.logData(
@@ -87,19 +91,20 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
             "PLAY_HANDLER",
             `Trying to enter Ready state in guild ${guild.name}(${guild.id}) voice connection`
         );
-        entersState(queue.connection!, VoiceConnectionStatus.Ready, 15000)
+        await entersState(queue.connection as unknown as NonNullable<typeof queue.connection>, VoiceConnectionStatus.Ready, 15_000)
             .then(async () => {
                 await playResource();
+                return 0;
             })
-            .catch((err: Error) => {
-                if (err.message === "The operation was aborted.")
-                    err.message = "Cannot establish a voice connection within 15 seconds.";
+            .catch((error: unknown) => {
+                if ((error as Error).message === "The operation was aborted.")
+                    (error as Error).message = "Cannot establish a voice connection within 15 seconds.";
                 queue.client.debugLog.logData(
                     "error",
                     "PLAY_HANDLER",
-                    `Failed to enter Ready state in guild ${guild.name}(${guild.id}) voice connection. Reason: ${err.message}`
+                    `Failed to enter Ready state in guild ${guild.name}(${guild.id}) voice connection. Reason: ${(error as Error).message}`
                 );
-                queue.player.emit("error", new AudioPlayerError(err, resource));
+                (queue.player as unknown as EventEmitter).emit("error", new AudioPlayerError(error as Error, resource));
             });
     }
 }

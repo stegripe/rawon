@@ -1,15 +1,16 @@
-import { EnvActivityTypes, PresenceData } from "../typings/index.js";
-import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 import { existsSync, readFileSync } from "node:fs";
-import { ClientPresenceStatus } from "discord.js";
-import { resolve } from "node:path";
+import path from "node:path";
+import process from "node:process";
+import type { ClientPresenceStatus } from "discord.js";
 import { parse } from "dotenv";
+import type { EnvActivityTypes, PresenceData } from "../typings/index.js";
+import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 
-const devEnvPath = resolve(process.cwd(), "dev.env");
+const devEnvPath = path.resolve(process.cwd(), "dev.env");
 if (existsSync(devEnvPath)) {
     const parsed = parse(readFileSync(devEnvPath));
-    for (const [k, v] of Object.entries(parsed)) {
-        process.env[k] = v;
+    for (const [key, val] of Object.entries(parsed)) {
+        process.env[key] = val;
     }
 }
 
@@ -19,8 +20,8 @@ const toCapitalCase = (text: string): string => {
 };
 
 const formatLocale = (locale: string | undefined): string => {
-    if (!locale) return "en";
-    const parts = locale.toLowerCase().split('-');
+    if ((locale?.length ?? 0) === 0) return "en";
+    const parts = locale?.toLowerCase().split('-') ?? [];
     if (parts.length === 2) {
         parts[1] = parts[1].toUpperCase();
     }
@@ -38,13 +39,13 @@ export const isProd = !isDev;
 export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "00AD95";
 export const defaultVolume = Number(process.env.DEFAULT_VOLUME ?? 100) || 100;
-export const mainPrefix = isDev ? "d!" : process.env.MAIN_PREFIX! || "!";
-export const streamStrategy = process.env.STREAM_STRATEGY! || "yt-dlp";
+export const mainPrefix = isDev ? "d!" : (process.env.MAIN_PREFIX ?? "") || "!";
+export const streamStrategy = (process.env.STREAM_STRATEGY ?? "") || "yt-dlp";
 export const lang = formatLocale(process.env.LOCALE) || "en";
-export const yesEmoji = process.env.YES_EMOJI! || "✅";
-export const noEmoji = process.env.NO_EMOJI! || "❌";
+export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
+export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
 
-export const altPrefixes: string[] = parseEnvValue(process.env.ALT_PREFIX! || "{mention}").filter(
+export const altPrefixes: string[] = parseEnvValue((process.env.ALT_PREFIX ?? "") || "{mention}").filter(
     (x, i, a) => a.indexOf(x) === i && x !== mainPrefix
 );
 export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
@@ -55,5 +56,5 @@ export const presenceData: PresenceData = {
         type: (toCapitalCase(parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]) || "Playing") as EnvActivityTypes
     })),
     status: ["online"] as ClientPresenceStatus[],
-    interval: 60000
+    interval: 60_000
 };

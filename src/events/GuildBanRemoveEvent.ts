@@ -1,6 +1,6 @@
+import { GuildBan } from "discord.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
-import { GuildBan } from "discord.js";
 
 @Event("guildBanRemove")
 export class GuildBanRemoveEvent extends BaseEvent {

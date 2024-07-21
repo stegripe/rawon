@@ -1,9 +1,9 @@
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
     aliases: ["setmuterole"],
@@ -23,7 +23,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 })
 export class SetMuteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
-        const id = ctx.options?.getRole("role", true).id ?? ctx.args[0].replace(/\D/g, "");
+        const id = ctx.options?.getRole("role", true).id ?? ctx.args[0].replaceAll(/\D/gu, "");
         if (!id) {
             await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.moderation.setmute.invalidRole"))]
@@ -32,7 +32,7 @@ export class SetMuteCommand extends BaseCommand {
             return;
         }
 
-        const role = await ctx.guild?.roles.fetch(id).catch(() => undefined);
+        const role = await ctx.guild?.roles.fetch(id).catch(() => void 0);
         if (!role) {
             await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.moderation.setmute.invalidRole"))]
@@ -46,9 +46,9 @@ export class SetMuteCommand extends BaseCommand {
             const guildData = data?.[ctx.guild?.id ?? ""];
 
             return {
-                ...(data ?? {}),
-                [ctx.guild!.id]: {
-                    ...(guildData ?? {}),
+                ...data,
+                [ctx.guild?.id ?? "..."]: {
+                    ...guildData,
                     infractions: guildData?.infractions ?? {},
                     mute: role.id
                 }

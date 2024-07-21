@@ -1,10 +1,11 @@
-import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import i18n from "../../config/index.js";
+import { setTimeout } from "node:timers";
 import { ApplicationCommandOptionType, Message, TextChannel } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { botReqPerms, memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
     description: i18n.__("commands.moderation.purge.description"),
@@ -24,12 +25,13 @@ import { ApplicationCommandOptionType, Message, TextChannel } from "discord.js";
 export class PurgeCommand extends BaseCommand {
     @memberReqPerms(["ManageMessages"], i18n.__("commands.moderation.purge.userNoPermission"))
     @botReqPerms(["ManageMessages"], i18n.__("commands.moderation.purge.botNoPermission"))
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        const amount = Number(ctx.options?.getNumber("amount") ?? ctx.args.shift());
-        if (isNaN(amount)) {
-            return ctx.reply({
+    public async execute(ctx: CommandContext): Promise<void> {
+        const amount = Number(ctx.options?.getNumber("amount") ?? ctx.args.shift() ?? Number.NaN) ;
+        if (Number.isNaN(amount)) {
+            await ctx.reply({
                 embeds: [createEmbed("warn", i18n.__("commands.moderation.purge.invalidAmount"))]
             });
+            return;
         }
 
         if (!ctx.isInteraction()) {
@@ -38,9 +40,9 @@ export class PurgeCommand extends BaseCommand {
 
         const purge = await (ctx.channel as TextChannel)
             .bulkDelete(amount, true)
-            .catch(err => new Error(err as string | undefined));
+            .catch((error: unknown) => new Error(error as string | undefined));
         if (purge instanceof Error) {
-            return ctx.reply({
+            await ctx.reply({
                 embeds: [
                     createEmbed(
                         "warn",
@@ -51,6 +53,7 @@ export class PurgeCommand extends BaseCommand {
                     )
                 ]
             });
+            return;
         }
 
         await ctx
@@ -62,6 +65,6 @@ export class PurgeCommand extends BaseCommand {
                     )
                 ]
             })
-            .then(msg => setTimeout(() => msg.delete(), 3500));
+            .then(msg => setTimeout(async () => msg.delete(), 3_500));
     }
 }

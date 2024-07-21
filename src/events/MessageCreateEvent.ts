@@ -1,13 +1,13 @@
 /* eslint-disable prefer-named-capture-group */
-import { createEmbed } from "../utils/functions/createEmbed.js";
+import { ChannelType, Message, User } from "discord.js";
+import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
-import i18n from "../config/index.js";
-import { ChannelType, Message, User } from "discord.js";
+import { createEmbed } from "../utils/functions/createEmbed.js";
 
 @Event<typeof MessageCreateEvent>("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
-    public execute(message: Message): Message | undefined {
+    public async execute(message: Message): Promise<void> {
         this.client.debugLog.logData("info", "MESSAGE_CREATE", [
             ["ID", message.id],
             ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
@@ -18,12 +18,10 @@ export class MessageCreateEvent extends BaseEvent {
             ["Author", `${message.author.tag}(${message.author.id})`]
         ]);
 
-        if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) {
-            return message;
-        }
+        if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) return;
 
         if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
-            message
+            await message
                 .reply({
                     embeds: [
                         createEmbed(
@@ -35,12 +33,12 @@ export class MessageCreateEvent extends BaseEvent {
                         )
                     ]
                 })
-                .catch(e => this.client.logger.error("PROMISE_ERR:", e));
+                .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
         }
 
-        const pref = this.client.config.altPrefixes.concat(this.client.config.mainPrefix).find(p => {
-            if (p === "{mention}") {
-                const userMention = /<@(!)?\d*?>/.exec(message.content);
+        const pref = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(pr => {
+            if (pr === "{mention}") {
+                const userMention = /<@(!)?\d*?>/u.exec(message.content);
                 if (userMention?.index !== 0) return false;
 
                 const user = this.getUserFromMention(userMention[0]);
@@ -48,15 +46,15 @@ export class MessageCreateEvent extends BaseEvent {
                 return user?.id === this.client.user?.id;
             }
 
-            return message.content.startsWith(p);
+            return message.content.startsWith(pr);
         });
-        if (pref) {
-            this.client.commands.handle(message, pref);
+        if ((pref?.length ?? 0) > 0) {
+            this.client.commands.handle(message, pref as unknown as string);
         }
     }
 
     private getUserFromMention(mention: string): User | undefined {
-        const matches = /^<@!?(\d+)>$/.exec(mention);
+        const matches = /^<@!?(\d+)>$/u.exec(mention);
         if (!matches) return undefined;
 
         const id = matches[1];

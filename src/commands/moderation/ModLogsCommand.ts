@@ -1,10 +1,10 @@
-import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { Command } from "../../utils/decorators/Command.js";
-import i18n from "../../config/index.js";
 import { ApplicationCommandOptionType, ChannelType } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { CommandContext } from "../../structures/CommandContext.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command<typeof ModLogsCommand>({
     aliases: ["modlog", "moderationlogs", "moderationlog"],
@@ -42,31 +42,24 @@ import { ApplicationCommandOptionType, ChannelType } from "discord.js";
 export class ModLogsCommand extends BaseCommand {
     private readonly options: Record<string, BaseCommand["execute"]> = {
         channel: async ctx => {
-            const newCh = ctx.options?.getChannel("newchannel")?.id ?? ctx.args.shift()?.replace(/[^0-9]/g, "");
+            const newCh = ctx.options?.getChannel("newchannel")?.id ?? ctx.args.shift()?.replace(/\D/gu, "");
 
-            if (!newCh) {
-                let ch: string | null;
-
-                try {
-                    ch = this.client.data.data?.[ctx.guild?.id ?? ""]?.modLog?.channel ?? null;
-                    if (!ch) throw new Error("");
-                } catch {
-                    ch = null;
-                }
+            if ((newCh?.length ?? 0) === 0) {
+                const chn = this.client.data.data?.[ctx.guild?.id ?? ""]?.modLog?.channel ?? null;
 
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "info",
-                            ch
-                                ? i18n.__mf("commands.moderation.modlogs.channel.current", { channel: ch })
+                            (chn?.length ?? 0) > 0
+                                ? i18n.__mf("commands.moderation.modlogs.channel.current", { channel: chn })
                                 : i18n.__("commands.moderation.modlogs.channel.noChannel")
                         )
                     ]
                 });
             }
 
-            const ch = await ctx.guild?.channels.fetch(newCh).catch(() => undefined);
+            const ch = await ctx.guild?.channels.fetch(newCh ?? "")?.catch(() => void 0);
             if (ch?.type !== ChannelType.GuildText) {
                 return ctx.reply({
                     embeds: [createEmbed("error", i18n.__("commands.moderation.modlogs.channel.invalid"))]
@@ -78,12 +71,12 @@ export class ModLogsCommand extends BaseCommand {
                 const guildData = data?.[ctx.guild?.id ?? ""];
 
                 return {
-                    ...(data ?? {}),
-                    [ctx.guild!.id]: {
-                        ...(guildData ?? {}),
+                    ...data,
+                    [ctx.guild?.id ?? "..."]: {
+                        ...guildData,
                         infractions: guildData?.infractions ?? {},
                         modLog: {
-                            channel: newCh,
+                            channel: newCh ?? null,
                             enable: guildData?.modLog?.enable ?? false
                         }
                     }
@@ -100,7 +93,7 @@ export class ModLogsCommand extends BaseCommand {
                 ]
             });
         },
-        default: ctx =>
+        default: async ctx =>
             ctx.reply({
                 embeds: [
                     createEmbed("info")
@@ -131,9 +124,9 @@ export class ModLogsCommand extends BaseCommand {
                 const guildData = data?.[ctx.guild?.id ?? ""];
 
                 return {
-                    ...(data ?? {}),
-                    [ctx.guild!.id]: {
-                        ...(guildData ?? {}),
+                    ...data,
+                    [ctx.guild?.id ?? "..."]: {
+                        ...guildData,
                         infractions: guildData?.infractions ?? {},
                         modLog: {
                             channel: guildData?.modLog?.channel ?? null,
@@ -153,9 +146,9 @@ export class ModLogsCommand extends BaseCommand {
                 const guildData = data?.[ctx.guild?.id ?? ""];
 
                 return {
-                    ...(data ?? {}),
-                    [ctx.guild!.id]: {
-                        ...(guildData ?? {}),
+                    ...data,
+                    [ctx.guild?.id ?? "..."]: {
+                        ...guildData,
                         infractions: guildData?.infractions ?? {},
                         modLog: {
                             channel: guildData?.modLog?.channel ?? null,
@@ -174,7 +167,7 @@ export class ModLogsCommand extends BaseCommand {
     @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
     public execute(ctx: CommandContext): void {
         const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
-        let sub = this.options[subname!] as BaseCommand["execute"] | undefined;
+        let sub = this.options[subname ?? ""] as BaseCommand["execute"] | undefined;
 
         if (!sub) sub = this.options.default;
         sub(ctx);
