@@ -79,10 +79,10 @@ export class CommandContext {
                     `${(options as { askDeletion: { reference: string } }).askDeletion.reference}_delete-msg`
                 ).toString("base64")
             );
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            (options as InteractionReplyOptions).components
-                ? (options as InteractionReplyOptions).components!.push(deletionBtn)
-                : ((options as InteractionReplyOptions).components = [deletionBtn]);
+            (options as InteractionReplyOptions).components = [
+                ...(options as InteractionReplyOptions).components ?? [],
+                deletionBtn
+            ];
         }
         if (this.isInteraction()) {
             (options as InteractionReplyOptions).fetchReply = true;
