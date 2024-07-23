@@ -112,12 +112,12 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                 command.meta.slash &&
                                 this.client.config.enableSlashCommand
                             ) {
-                                if (command.meta.slash.name?.length ?? 0) {
+                                if ((command.meta.slash.name?.length ?? 0) === 0) {
                                     Object.assign(command.meta.slash, {
                                         name: command.meta.name
                                     });
                                 }
-                                if ((command.meta.slash.description?.length ?? 0)) {
+                                if ((command.meta.slash.description?.length ?? 0) === 0) {
                                     Object.assign(command.meta.slash, {
                                         description: command.meta.description
                                     });
