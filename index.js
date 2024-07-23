@@ -112,7 +112,11 @@ const streamStrategy = process.env.STREAM_STRATEGY;
 if (streamStrategy !== "play-dl") await downloadExecutable();
 if (streamStrategy === "play-dl" && !existsSync(nodePath.resolve(process.cwd(), "play-dl-fix"))) {
     console.log("[INFO] Downloading play-dl fix...");
-    writeFileSync(nodePath.resolve(process.cwd(), "temp.zip"), await got.get("https://github.com/YuzuZensai/play-dl-test/archive/2bfbfe6decd68261747ba55800319f9906f12b03.zip").buffer());
+    writeFileSync(
+        nodePath.resolve(process.cwd(), "temp.zip"),
+        await got.get("https://github.com/YuzuZensai/play-dl-test/archive/2bfbfe6decd68261747ba55800319f9906f12b03.zip").buffer(),
+        { mode: 0o777 }
+    );
 
     console.log("[INFO] Extracting play-dl fix...");
     mkdirSync(nodePath.resolve(process.cwd(), "play-dl-fix"), { recursive: true });
