@@ -2,6 +2,6 @@
     "files.eol": "\n",
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.preferences.importModuleSpecifierEnding": "js",
-    "npm.packageManager": "npm",
+    "npm.packageManager": "pnpm",
     "liveshare.languages.allowGuestCommandControl": true
 }

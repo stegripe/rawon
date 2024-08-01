@@ -15,7 +15,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "build": "npm run lint && npm run compile",
+        "build": "pnpm run lint && pnpm run compile",
         "compile": "npx swc src -d dist --strip-leading-paths",
         "tscompile": "tsc --build tsconfig.json",
         "lint": "eslint . --cache --cache-file .eslintcache",
@@ -23,7 +23,7 @@
         "pretty": "prettier --check src/**/*.ts",
         "pretty:write": "prettier --write src/**/*.ts",
         "start": "node --es-module-specifier-resolution=node -r dotenv/config .",
-        "start:dev": "rimraf ./dist && npm run compile && npm start"
+        "start:dev": "rimraf ./dist && pnpm run compile && pnpm start"
     },
     "engines": {
         "node": ">=16.6.0",
