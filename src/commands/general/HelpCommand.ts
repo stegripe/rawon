@@ -33,11 +33,11 @@ export class HelpCommand extends BaseCommand {
             text: i18n.__mf("commands.general.help.footerString", {
                 prefix: this.client.config.mainPrefix
             }),
-            iconURL: "https://cdn.clytage.org/images/information.png"
+            iconURL: "https://cdn.stegripe.org/images/information.png"
         });
 
     private readonly infoEmbed = createEmbed("info").setThumbnail(
-        "https://cdn.clytage.org/images/question_mark.png"
+        "https://cdn.stegripe.org/images/question_mark.png"
     );
 
     public async execute(ctx: CommandContext): Promise<void> {
@@ -162,7 +162,7 @@ export class HelpCommand extends BaseCommand {
                             text: i18n.__mf("commands.general.help.commandUsageFooter", {
                                 devOnly: command?.meta.devOnly === true ? "(developer-only command)" : ""
                             }),
-                            iconURL: "https://cdn.clytage.org/images/information.png"
+                            iconURL: "https://cdn.stegripe.org/images/information.png"
                         })
                 ]
             },
