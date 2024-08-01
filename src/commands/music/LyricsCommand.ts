@@ -72,7 +72,7 @@ export class LyricsCommand extends BaseCommand {
                     });
                 }
 
-                const albumArt = data.album_art ?? "https://cdn.clytage.org/images/icon.png";
+                const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
                 const pages: string[] = chunk(data.lyrics ?? "", 2_048);
                 const embed = createEmbed("info", pages[0])
                     .setAuthor({
