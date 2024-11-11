@@ -1,3 +1,7 @@
+## ⚠️ This project is no longer maintained due to lack of developer team members.
+
+#### If you're willing to revive this project, feel free to contact us on [Discord server](https://stegripe.org/discord) 😊
+
 # Rawon
 
 > A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
@@ -80,7 +84,6 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 ## Project Contributors
 
 ### Developers
-- [@Mednoob](https://github.com/Mednoob)
 - [@mzrtamp](https://github.com/mzrtamp)
 - [@noxyzm](https://github.com/noxyzm)
 
