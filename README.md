@@ -1,8 +1,4 @@
-## ⚠️ This project is no longer maintained due to lack of developer team members.
-
-#### If you're willing to revive this project, feel free to contact us on [Discord server](https://stegripe.org/discord) 😊
-
-# Rawon
+# PIXL (Forked From Rawon Archived)
 
 > A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
 
