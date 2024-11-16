@@ -82,6 +82,7 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 ### Developers
 - [@mzrtamp](https://github.com/mzrtamp)
 - [@noxyzm](https://github.com/noxyzm)
+- [@PixlGalaxy](https://github.com/PixlGalaxy)
 
 ### Translators
 - [Developers](#developers) (en, id)
