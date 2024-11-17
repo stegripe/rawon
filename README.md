@@ -2,7 +2,7 @@
 
 > A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
 
-<a href="https://www.itzgalaxy.com/pixl"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=PIXL%232575&plastic&color=5865F2&logo=discord"></a>
+<a href="https://www.itzgalaxy.com/pixl"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=PIXL&plastic&color=5865F2&logo=discord"></a>
 
 ## Features
 - Interaction support.
