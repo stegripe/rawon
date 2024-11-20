@@ -94,5 +94,3 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@Ronner231](https://github.com/Ronner231) (ru)
 - [@Fyphen1223](https://github.com/Fyphen1223) (ja)
 - [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
-
-> © 2024 Stegripe Development
