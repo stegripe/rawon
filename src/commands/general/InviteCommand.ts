@@ -16,41 +16,48 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 })
 export class InviteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
-        const invite = this.client.generateInvite({
-            permissions: [
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.CreatePublicThreads,
-                PermissionFlagsBits.CreatePrivateThreads,
-                PermissionFlagsBits.EmbedLinks,
-                PermissionFlagsBits.AttachFiles,
-                PermissionFlagsBits.UseExternalEmojis,
-                PermissionFlagsBits.UseExternalStickers,
-                PermissionFlagsBits.AddReactions,
-                PermissionFlagsBits.Connect,
-                PermissionFlagsBits.Speak,
-                PermissionFlagsBits.UseVAD,
-                PermissionFlagsBits.PrioritySpeaker,
-                PermissionFlagsBits.ReadMessageHistory
-            ],
-            scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands]
-        });
-        await ctx
-            .send({
-                embeds: [
-                    createEmbed(
-                        "info",
-                        i18n.__mf("commands.general.invite.clickURL", {
-                            url: invite
+        try {
+            // Defer the reply to avoid the InteractionNotReplied error
+            await ctx.deferReply();
+
+            const invite = this.client.generateInvite({
+                permissions: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.CreatePublicThreads,
+                    PermissionFlagsBits.CreatePrivateThreads,
+                    PermissionFlagsBits.EmbedLinks,
+                    PermissionFlagsBits.AttachFiles,
+                    PermissionFlagsBits.UseExternalEmojis,
+                    PermissionFlagsBits.UseExternalStickers,
+                    PermissionFlagsBits.AddReactions,
+                    PermissionFlagsBits.Connect,
+                    PermissionFlagsBits.Speak,
+                    PermissionFlagsBits.UseVAD,
+                    PermissionFlagsBits.PrioritySpeaker,
+                    PermissionFlagsBits.ReadMessageHistory
+                ],
+                scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands]
+            });
+
+            await ctx
+                .send({
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            i18n.__mf("commands.general.invite.clickURL", {
+                                url: invite
+                            })
+                        ).setAuthor({
+                            name: i18n.__mf("commands.general.invite.inviteTitle", {
+                                bot: this.client.user?.username
+                            }),
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
-                    ).setAuthor({
-                        name: i18n.__mf("commands.general.invite.inviteTitle", {
-                            bot: this.client.user?.username
-                        }),
-                        iconURL: this.client.user?.displayAvatarURL()
-                    })
-                ]
-            })
-            .catch((error: unknown) => this.client.logger.error("PLAY_CMD_ERR:", error));
+                    ]
+                });
+        } catch (error: unknown) {
+            this.client.logger.error("PLAY_CMD_ERR:", error);
+        }
     }
 }
