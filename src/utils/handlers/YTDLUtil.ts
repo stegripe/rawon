@@ -34,13 +34,33 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
                 stdio: ["ignore", "pipe", "ignore"]
             }
         );
-
+    
+        // Validate if stdout exists
         if (!stream.stdout) {
             reject(new Error("Unable to retrieve audio data from the URL."));
+            return; // Explicitly exit to avoid continuing the flow
         }
-
-        void stream.on("spawn", () => {
-            resolve(stream.stdout as unknown as Readable);
+    
+        const output = stream.stdout;
+    
+        // Configure events for the stream
+        stream.on("spawn", () => {
+            output.on("end", () => {
+                stream.kill("SIGTERM"); // Terminate the yt-dlp process
+            });
+    
+            output.on("error", (error) => {
+                stream.kill("SIGTERM"); // Terminate the process in case of an error
+                reject(error); // Reject the promise if an error occurs
+            });
+    
+            resolve(output); // Resolve the promise with the stream
+        });
+    
+        // Handle errors in the main process
+        stream.on("error", (error) => {
+            stream.kill("SIGTERM"); // Release resources if an error occurs in the process
+            reject(error); // Reject the promise
         });
     });
 }
