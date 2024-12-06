@@ -41,7 +41,7 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.botVersionString"), pkg.version],
             [i18n.__("commands.general.about.commitString"), this.client.utils.getCommitHash("HEAD")],
             [""],
-            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/stegripe/rawon"]
+            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/PixlGalaxy/Pixl"]
         ];
         const value = createTable(values);
 
