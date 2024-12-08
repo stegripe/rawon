@@ -24,8 +24,8 @@ RUN pnpm prune --production
 # Get ready for production
 FROM ghcr.io/hazmi35/node:22-alpine
 
-LABEL name "rawon"
-LABEL maintainer "Stegripe Development <support@stegripe.org>"
+LABEL name "pixl"
+LABEL maintainer "PixlGalaxy <https://github.com/PixlGalaxy>"
 
 # Install ffmpeg
 RUN apk add --no-cache ffmpeg python3 && ln -sf python3 /usr/bin/python
