@@ -11,14 +11,25 @@ type Unpromisify<T> = T extends Promise<infer U> ? U : T;
 
 const { stream: pldlStream, video_basic_info } = await import("../../../play-dl-importer/index.js").then(x => x.default).catch(() => ({ stream: null, video_basic_info: null }));
 
+let currentStream: Readable | null = null; // Store current audio stream
+let currentProcess: ReturnType<typeof exec> | null = null; // Store current yt-dlp process
+
 export async function getStream(client: Rawon, url: string): Promise<Readable> {
     if (streamStrategy === "play-dl") {
         const isSoundcloudUrl = checkQuery(url);
         if (isSoundcloudUrl.sourceType === "soundcloud") {
             return client.soundcloud.util.streamTrack(url) as unknown as Readable;
         }
+
         const rawPlayDlStream = await pldlStream?.(url, { discordPlayerCompatibility: true });
-        return rawPlayDlStream?.stream as unknown as Readable;
+
+        // Verify that the stream exists explicitly
+        if (rawPlayDlStream?.stream === undefined || rawPlayDlStream?.stream === null) {
+            throw new Error("Failed to retrieve a valid stream.");
+        }
+
+        currentStream = rawPlayDlStream.stream;
+        return currentStream;
     }
 
     return new Promise((resolve, reject) => {
@@ -34,35 +45,55 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
                 stdio: ["ignore", "pipe", "ignore"]
             }
         );
-    
-        // Validate if stdout exists
+
         if (!stream.stdout) {
             reject(new Error("Unable to retrieve audio data from the URL."));
-            return; // Explicitly exit to avoid continuing the flow
+            return;
         }
-    
-        const output = stream.stdout;
-    
-        // Configure events for the stream
+
+        currentStream = stream.stdout;
+        currentProcess = stream;
+
         stream.on("spawn", () => {
-            output.on("end", () => {
+            if (currentStream === null) {
+                reject(new Error("Stream is null unexpectedly."));
+                return;
+            }
+
+            currentStream.on("end", () => {
                 stream.kill("SIGTERM"); // Terminate the yt-dlp process
             });
-    
-            output.on("error", (error) => {
+
+            currentStream.on("error", (error) => {
                 stream.kill("SIGTERM"); // Terminate the process in case of an error
                 reject(error); // Reject the promise if an error occurs
             });
-    
-            resolve(output); // Resolve the promise with the stream
+
+            resolve(currentStream);
         });
-    
-        // Handle errors in the main process
+
         stream.on("error", (error) => {
-            stream.kill("SIGTERM"); // Release resources if an error occurs in the process
-            reject(error); // Reject the promise
+            stream.kill("SIGTERM"); // Terminate process if an error occurs
+            reject(error);
         });
     });
+}
+
+
+// Stop the current stream and release resources
+export function destroyStream(): void {
+    if (currentStream) {
+        currentStream.destroy();
+        currentStream = null;
+    }
+}
+
+// Kill the current yt-dlp process
+export function killProcess(): void {
+    if (currentProcess) {
+        currentProcess.kill("SIGTERM");
+        currentProcess = null;
+    }
 }
 
 export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
