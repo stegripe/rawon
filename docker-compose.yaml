@@ -6,18 +6,18 @@ x-common-general: &common-general
         memory: 512M
 
 services:
-  rawon:
+  pixl:
     <<: *common-general
     image: ghcr.io/stegripe/rawon:latest-dev
-    container_name: rawon-bot
+    container_name: pixl
     env_file: .env
     networks:
       - net
     volumes:
-      - rawon:/app/scripts
+      - pixl:/app/scripts
 
 networks:
   net:
 
 volumes:
-  rawon:
+  pixl:
