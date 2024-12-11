@@ -18,7 +18,6 @@
                 "botVersionString": "Versi Bot",
                 "cachedUsersString": "User dalam Cache",
                 "channelsString": "Channel",
-                "commitString": "Commit",
                 "description": "Menampilkan informasi bot",
                 "discordJSVersionString": "Versi Discord.js",
                 "ffmpegVersionString": "Versi FFmpeg",
@@ -46,7 +45,7 @@
                 "usageString": "Penggunaan"
             },
             "invite": {
-                "clickURL": "**[Klik disini]({url})** untung meng-invite bot ini ke server anda.",
+                "clickURL": "**[Klik disini]({url})** untung meng-invite {bot} ke server anda.",
                 "description": "Dapatkan link invite untuk bot",
                 "inviteTitle": "{bot} - Link invite"
             },

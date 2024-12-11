@@ -18,7 +18,6 @@
                 "botVersionString": "Bot sürümü",
                 "cachedUsersString": "Önbelleğe Alınmış Kullanıcılar",
                 "channelsString": "Kanallar",
-                "commitString": "işle",
                 "description": "Bot bilgilerini görüntüle",
                 "discordJSVersionString": "Discord.js sürümü",
                 "ffmpegVersionString": "FFmpeg sürümü",
@@ -46,7 +45,7 @@
                 "usageString": "Kullanım"
             },
             "invite": {
-                "clickURL": "Botu sunucuna eklemek için **[buraya tıkla]({url})**",
+                "clickURL": "Botu sunucuna eklemek için **[buraya tıkla]({url})** {bot} için.",
                 "description": "Bot için davet bağlantısını edinin",
                 "inviteTitle": "{bot} - Davet Linki"
             },

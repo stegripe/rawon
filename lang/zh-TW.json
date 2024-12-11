@@ -18,7 +18,6 @@
                 "botVersionString": "機器人版本",
                 "cachedUsersString": "緩存用戶",
                 "channelsString": "頻道",
-                "commitString": "提交",
                 "description": "顯示機器人的資訊",
                 "discordJSVersionString": "Discord.js 版本",
                 "ffmpegVersionString": "FFmpeg 版本",
@@ -46,7 +45,7 @@
                 "usageString": "用法"
             },
             "invite": {
-                "clickURL": "**[點擊這裡]({url})** 邀請此機器人到您的伺服器。",
+                "clickURL": "**[點擊這裡]({url})** 邀請{bot}到您的伺服器。",
                 "description": "獲取機器人的邀請鏈接",
                 "inviteTitle": "{bot} - 邀請鏈接"
             },

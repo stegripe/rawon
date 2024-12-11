@@ -18,7 +18,6 @@
                 "botVersionString": "Botのバージョン",
                 "cachedUsersString": "キャッシュされたユーザー",
                 "channelsString": "チャンネル",
-                "commitString": "コミット",
                 "description": "Botの情報を照会",
                 "discordJSVersionString": "Discord.jsのバージョン",
                 "ffmpegVersionString": "FFmpegのバージョン",
@@ -46,7 +45,7 @@
                 "usageString": "使い方"
             },
             "invite": {
-                "clickURL": "**[ここをクリック]({url})**してこのBotをサーバーに招待",
+                "clickURL": "**[ここをクリック]({url})**して{bot}をサーバーに招待",
                 "description": "このBotの招待リンクを取得",
                 "inviteTitle": "{bot} - 招待リンク"
             },

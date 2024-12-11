@@ -46,11 +46,12 @@ export class InviteCommand extends BaseCommand {
                         createEmbed(
                             "info",
                             i18n.__mf("commands.general.invite.clickURL", {
-                                url: invite
+                                url: invite,
+                                bot: this.client.user?.username ?? "PIXL"
                             })
                         ).setAuthor({
                             name: i18n.__mf("commands.general.invite.inviteTitle", {
-                                bot: this.client.user?.username
+                                bot: this.client.user?.username ?? "PIXL"
                             }),
                             iconURL: this.client.user?.displayAvatarURL()
                         })

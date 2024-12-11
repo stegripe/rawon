@@ -18,7 +18,6 @@
                 "botVersionString": "Phiên bản bot",
                 "cachedUsersString": "Số người dùng bộ đệm",
                 "channelsString": "Kênh",
-                "commitString": "Commit",
                 "description": "Hiển thị thông tin bot",
                 "discordJSVersionString": "Phiên bản discord.js",
                 "ffmpegVersionString": "Phiên bản FFmpeg",
@@ -46,7 +45,7 @@
                 "usageString": "Cách dùng"
             },
             "invite": {
-                "clickURL": "**[Nhấn vào đây]({url})** để mời bot vào máy chủ của bạn",
+                "clickURL": "**[Nhấn vào đây]({url})** để mời {bot} vào máy chủ của bạn",
                 "description": "Nhận liên kết mời bot",
                 "inviteTitle": "{bot} - Link mời"
             },

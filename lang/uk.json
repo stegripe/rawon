@@ -18,7 +18,6 @@
                 "botVersionString": "Версія бота",
                 "cachedUsersString": "Кешовані користувачі",
                 "channelsString": "Канали",
-                "commitString": "Коміт",
                 "description": "Показати інформацію про бота",
                 "discordJSVersionString": "Версія Discord.js",
                 "ffmpegVersionString": "Версія FFmpeg",
@@ -46,7 +45,7 @@
                 "usageString": "Приклад використання"
             },
             "invite": {
-                "clickURL": "**[Натисніть тут]({url})** щоб запросити бота на свій сервер.",
+                "clickURL": "**[Натисніть тут]({url})** щоб запросити {bot} на свій сервер.",
                 "description": "Отримати посилання для додавання бота на свій сервер",
                 "inviteTitle": "{bot} - Запрошувальне посилання"
             },

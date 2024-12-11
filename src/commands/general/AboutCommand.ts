@@ -39,9 +39,8 @@ export class AboutCommand extends BaseCommand {
             [i18n.__("commands.general.about.discordJSVersionString"), DJSVersion],
             [i18n.__("commands.general.about.ffmpegVersionString"), this.client.utils.getFFmpegVersion()],
             [i18n.__("commands.general.about.botVersionString"), pkg.version],
-            [i18n.__("commands.general.about.commitString"), this.client.utils.getCommitHash("HEAD")],
             [""],
-            [i18n.__("commands.general.about.sourceCodeString"), "https://github.com/PixlGalaxy/Pixl"]
+            [i18n.__("commands.general.about.sourceCodeString"), "GitHub.com/PixlGalaxy/Pixl"]
         ];
         const value = createTable(values);
 
@@ -50,7 +49,7 @@ export class AboutCommand extends BaseCommand {
                 embeds: [
                     createEmbed("info", `\`\`\`asciidoc\n${value}\n\`\`\``).setAuthor({
                         name: i18n.__mf("commands.general.about.aboutFooter", {
-                            botname: this.client.user?.username ?? "Unknown"
+                            botname: this.client.user?.username ?? "PIXL"
                         })
                     })
                 ]

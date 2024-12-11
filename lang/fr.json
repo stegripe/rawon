@@ -18,7 +18,6 @@
                 "botVersionString": "Version du bot",
                 "cachedUsersString": "Utilisateurs mis en cache",
                 "channelsString": "Salons",
-                "commitString": "Commit",
                 "description": "Afficher les informations du bot",
                 "discordJSVersionString": "Version de Discord.js",
                 "ffmpegVersionString": "Version de FFmpeg",
@@ -46,7 +45,7 @@
                 "usageString": "Usage"
             },
             "invite": {
-                "clickURL": "**[Cliquez ici]({url})** pour inviter ce bot sur votre serveur.",
+                "clickURL": "**[Cliquez ici]({url})** pour inviter {bot} sur votre serveur.",
                 "description": "Obtenez le lien d'invitation pour le bot",
                 "inviteTitle": "{bot} - Lien d'invitation"
             },
