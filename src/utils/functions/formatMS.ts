@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/filename-case */
 import { createRequire } from "node:module";
 import type { Locale } from "date-fns";
-import { format, formatDuration, intervalToDuration } from "date-fns";
+import { format} from "date-fns";
 import { lang } from "../../config/index.js";
 
 const req = createRequire(import.meta.url);
@@ -11,11 +11,22 @@ const key = Object.keys(locales).find(val => val.toLowerCase() === lang.toLowerC
 const locale = key === undefined ? locales.enUS : locales[key];
 
 export function formatMS(ms: number): string {
-    if (Number.isNaN(ms)) throw new Error("Value is not a number.");
+    if (Number.isNaN(ms) || ms < 0) throw new Error("Value must be a positive number.");
 
-    return formatDuration(intervalToDuration({ start: 0, end: ms }), {
-        locale
-    });
+    const seconds = Math.floor(ms / 1_000) % 60;
+    const minutes = Math.floor(ms / (1_000 * 60)) % 60;
+    const hours = Math.floor(ms / (1_000 * 60 * 60)) % 24;
+    const days = Math.floor(ms / (1_000 * 60 * 60 * 24)) % 30;
+    const months = Math.floor(ms / (1_000 * 60 * 60 * 24 * 30));    
+
+    const parts = [];
+    if (months > 0) parts.push(`${months} months`);
+    if (days > 0) parts.push(`${days} days`);
+    if (hours > 0) parts.push(`${hours} hours`);
+    if (minutes > 0) parts.push(`${minutes} minutes`);
+    if (seconds > 0) parts.push(`${seconds} seconds`);
+
+    return parts.join(" ");
 }
 
 export function formatTime(time: number): string {
