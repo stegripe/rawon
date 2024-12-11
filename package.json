@@ -3,15 +3,15 @@
     "version": "3.2.1",
     "description": "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
     "license": "AGPL-3.0",
-    "author": "Stegripe Development <support@stegripe.org>",
+    "author": "Stegripe Development <support@stegripe.org>, PixlGalaxy <https://github.com/PixlGalaxy>",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/stegripe/rawon.git"
+        "url": "git+https://github.com/PixlGalaxy/Pixl.git"
     },
     "bugs": {
-        "url": "https://github.com/stegripe/rawon/issues"
+        "url": "https://github.com/PixlGalaxy/Pixl/issues"
     },
-    "homepage": "https://github.com/stegripe/rawon#readme",
+    "homepage": "https://github.com/PixlGalaxy/Pixl#readme",
     "main": "index.js",
     "type": "module",
     "scripts": {

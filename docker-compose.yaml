@@ -8,7 +8,7 @@ x-common-general: &common-general
 services:
   pixl:
     <<: *common-general
-    image: ghcr.io/stegripe/rawon:latest-dev
+    image: ghcr.io/pixlgalaxy/pixl
     container_name: pixl
     env_file: .env
     networks:
