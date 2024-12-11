@@ -43,7 +43,8 @@ export class SpotifyUtil {
     public async renew(): Promise<void> {
         try {
             const renewInterval = await this.fetchTokenWithRetries();
-            this.client.logger.info(`[SpotifyUtil] Token fetched successfully. Renewing in ${(renewInterval / 1_000 / 60).toFixed(2)} minutes.`);
+            this.client.logger.info(`[SpotifyUtil] Token fetched successfully.`);
+            this.client.logger.info(`[SpotifyUtil] Renewing token in ${(renewInterval / 1_000 / 60).toFixed(2)} minutes.`);
             setTimeout(async () => this.renew(), renewInterval);
         }   
         catch (error) {
