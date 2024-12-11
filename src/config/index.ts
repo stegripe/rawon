@@ -59,9 +59,6 @@ i18n.configure({
 
 i18n.setLocale(lang);
 
-// Log i18n configuration
-console.log("Language set to:", lang);
-
 export const shardsCount: number | "auto" = "auto";
 export const shardingMode: ShardingManagerMode = "worker";
 export * from "./env.js";
