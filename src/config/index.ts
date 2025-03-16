@@ -53,7 +53,7 @@ export const clientOptions: ClientOptions = {
 i18n.configure({
     defaultLocale: "en",
     directory: path.join(process.cwd(), "lang"),
-    locales: ["en", "es", "id", "fr", "zh-CN", "zh-TW", "uk", "vi", "pt-BR", "ru", "ja", "tr"],
+    locales: ["en", "es", "id", "fr", "zh-CN", "zh-TW", "uk", "vi", "pt-BR", "ja", "tr"],
     objectNotation: true
 });
 
