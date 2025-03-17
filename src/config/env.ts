@@ -46,6 +46,9 @@ export const lang = formatLocale(process.env.LOCALE) || "en";
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
 export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
 
+export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
+export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
+
 export const altPrefixes: string[] = parseEnvValue((process.env.ALT_PREFIX ?? "") || "{mention}").filter(
     (x, i, a) => a.indexOf(x) === i && x !== mainPrefix
 );
