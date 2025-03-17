@@ -1,4 +1,3 @@
-import { setTimeout } from "node:timers/promises";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { GuildMember } from "discord.js";
 import i18n from "../../config/index.js";
@@ -8,7 +7,6 @@ import { QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { destroyStream, killProcess } from "../../utils/handlers/YTDLUtil.js"; // Import functions
 import { OperationManager } from "../../utils/structures/OperationManager.js";
 
 @Command<typeof SkipCommand>({
@@ -22,7 +20,6 @@ import { OperationManager } from "../../utils/structures/OperationManager.js";
 })
 export class SkipCommand extends BaseCommand {
     private readonly manager = new OperationManager();
-
     @inVC
     @haveQueue
     @sameVC
@@ -43,8 +40,7 @@ export class SkipCommand extends BaseCommand {
 
             if (ctx.guild?.queue?.skipVoters.includes(ctx.author.id) === true) {
                 await this.manager.add((): undefined => {
-                    (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).skipVoters =
-                        ctx.guild?.queue?.skipVoters.filter(x => x !== ctx.author.id) as unknown as string[];
+                    (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).skipVoters = ctx.guild?.queue?.skipVoters.filter(x => x !== ctx.author.id) as unknown as string[];
                 });
                 await ctx.reply(
                     i18n.__mf("commands.music.skip.voteResultMessage", {
@@ -66,42 +62,15 @@ export class SkipCommand extends BaseCommand {
             if (length < required) return;
         }
 
-        if (ctx.guild?.queue?.playing !== true) {
-            (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).playing = true;
-        }
-
-        const queue = ctx.guild?.queue;
-
-        // Ensure the current stream and process are destroyed before continuing
-        destroyStream();
-        killProcess();
-
-        // Introduce a slight delay to ensure the process is fully terminated
-        await setTimeout(500);
-
-        if (!queue || queue.songs.size === 0) {
-            await ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "warn",
-                        i18n.__("commands.music.skip.noSongsRemaining")
-                    )
-                ]
-            });
-            return;
-        }
-
-        // Stop the current song
-        queue.player.stop(true);
-
-        // Send a success message
+        if (ctx.guild?.queue?.playing !== true) (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).playing = true;
+        ctx.guild?.queue?.player.stop(true);
         await ctx
             .reply({
                 embeds: [
                     createEmbed(
                         "success",
                         `⏭ **|** ${i18n.__mf("commands.music.skip.skipMessage", {
-                            song: `[${song.song.title}](${song.song.url})`
+                            song: `[${song.song.title}](${song.song.url}})`
                         })}`
                     ).setThumbnail(song.song.thumbnail)
                 ]

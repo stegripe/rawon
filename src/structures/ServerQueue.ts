@@ -7,7 +7,6 @@ import type { LoopMode, QueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import type { filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
-import { destroyStream, killProcess } from "../utils/handlers/YTDLUtil.js"; // Import cleanup functions
 import { SongManager } from "../utils/structures/SongManager.js";
 import type { Rawon } from "./Rawon.js";
 
@@ -46,7 +45,7 @@ export class ServerQueue {
 
                     const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong)
                         .song;
-                    await this.sendStartPlayingMsg(newSong);
+                    this.sendStartPlayingMsg(newSong);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
                     this.client.logger.info(
@@ -58,55 +57,68 @@ export class ServerQueue {
                         this.songs.delete(song.key);
                     }
 
-                    const nextSong = this.shuffle && this.loopMode !== "SONG"
-                        ? this.songs.random()?.key
-                        : this.loopMode === "SONG"
-                            ? song.key
-                            : this.songs.sortByIndex().filter(x => x.index > song.index).first()?.key
-                            ?? (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
+                    const nextS =
+                         
+                        this.shuffle && this.loopMode !== "SONG"
+                            ? this.songs.random()?.key
+                            : this.loopMode === "SONG"
+                                ? song.key
+                                : this.songs
+                                    .sortByIndex()
+                                    .filter(x => x.index > song.index)
+                                    .first()?.key ??
+                                (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
 
-                    if (nextSong === null || nextSong === undefined || nextSong === "") {
-                        destroyStream();
-                        killProcess();
-                    }
-
-                    try {
-                        await play(this.textChannel.guild, nextSong);
-                    } catch (error) {
-                        await this.textChannel
-                            .send({
-                                embeds: [
-                                    createEmbed(
-                                        "error",
-                                        i18n.__mf("utils.generalHandler.errorPlaying", {
-                                            message: `\`${error as string}\``
-                                        }),
-                                        true
-                                    )
-                                ]
-                            })
-                            .catch((nestedError: unknown) => this.client.logger.error("PLAY_ERR:", nestedError));
-                        this.connection?.disconnect();
-                        this.client.logger.error("PLAY_ERR:", error);
-                    }                    
+                    await this.textChannel
+                        .send({
+                            embeds: [
+                                createEmbed(
+                                    "info",
+                                    `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
+                                        song: `[${song.song.title}](${song.song.url})`
+                                    })}`
+                                ).setThumbnail(song.song.thumbnail)
+                            ]
+                        })
+                        .then(ms => (this.lastMusicMsg = ms.id))
+                        .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error))
+                        .finally(async () => play(this.textChannel.guild, nextS).catch(async (error: unknown) => {
+                            await this.textChannel
+                                .send({
+                                    embeds: [
+                                        createEmbed(
+                                            "error",
+                                            i18n.__mf("utils.generalHandler.errorPlaying", {
+                                                message: `\`${error as string}\``
+                                            }),
+                                            true
+                                        )
+                                    ]
+                                })
+                                // eslint-disable-next-line promise/no-nesting, typescript/naming-convention
+                                .catch((error_: unknown) => this.client.logger.error("PLAY_ERR:", error_));
+                            this.connection?.disconnect();
+                            this.client.logger.error("PLAY_ERR:", error);
+                        }));
                 }
             })
-            .on("error", async (error) => {
-                try {
-                    await this.textChannel.send({
+            .on("error", err => {
+                (async () => {
+                    // eslint-disable-next-line promise/no-promise-in-callback
+                    await this.textChannel
+                    .send({
                         embeds: [
                             createEmbed(
                                 "error",
-                                i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${error.message}\`` }),
+                                i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }),
                                 true
                             )
                         ]
-                    });
-                } catch (sendError) {
-                    this.client.logger.error("PLAY_CMD_ERR:", sendError);
-                }
+                    })
+                    .catch((error: unknown) => this.client.logger.error("PLAY_CMD_ERR:", error));
+                })();
                 this.destroy();
-                this.client.logger.error("PLAY_ERR:", error);
+                this.client.logger.error("PLAY_ERR:", err);
             })
             .on("debug", message => {
                 this.client.logger.debug(message);
@@ -126,19 +138,13 @@ export class ServerQueue {
     public stop(): void {
         this.songs.clear();
         this.player.stop(true);
-
-        // Cleanup resources
-        destroyStream();
-        killProcess();
     }
 
     public destroy(): void {
-        this.stop(); // Stop the queue and cleanup
+        this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
         clearTimeout(this.dcTimeout ?? undefined);
-
-        // Delete the queue reference
         delete this.textChannel.guild.queue;
     }
 
@@ -168,12 +174,13 @@ export class ServerQueue {
     public set lastMusicMsg(value: Snowflake | null) {
         if (this._lastMusicMsg !== null) {
             (async () => {
-                try {
-                    const msg = await this.textChannel.messages.fetch(this._lastMusicMsg ?? "");
+                await this.textChannel.messages
+                .fetch(this._lastMusicMsg ?? "")
+                .then(msg => {
                     void msg.delete();
-                } catch (error) {
-                    this.textChannel.client.logger.error("DELETE_LAST_MUSIC_MESSAGE_ERR:", error);
-                }
+                    return 0;
+                })
+                .catch((error: unknown) => this.textChannel.client.logger.error("DELETE_LAST_MUSIC_MESSAGE_ERR:", error))
             })();
         }
         this._lastMusicMsg = value;
@@ -186,12 +193,13 @@ export class ServerQueue {
     public set lastVSUpdateMsg(value: Snowflake | null) {
         if (this._lastVSUpdateMsg !== null) {
             (async () => {
-                try {
-                    const msg = await this.textChannel.messages.fetch(this._lastVSUpdateMsg ?? "");
+                await this.textChannel.messages
+                .fetch(this._lastVSUpdateMsg ?? "")
+                .then(msg => {
                     void msg.delete();
-                } catch (error) {
-                    this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", error);
-                }
+                    return 0;
+                })
+                .catch((error: unknown) => this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", error))
             })();
         }
         this._lastVSUpdateMsg = value;
@@ -217,13 +225,14 @@ export class ServerQueue {
         return this.textChannel.client as Rawon;
     }
 
-    private async sendStartPlayingMsg(newSong: QueueSong["song"]): Promise<void> {
+    private sendStartPlayingMsg(newSong: QueueSong["song"]): void {
         this.client.logger.info(
             `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name
             } has started.`
         );
-        try {
-            const ms = await this.textChannel.send({
+        (async () => {
+            await this.textChannel
+            .send({
                 embeds: [
                     createEmbed(
                         "info",
@@ -232,10 +241,9 @@ export class ServerQueue {
                         })}`
                     ).setThumbnail(newSong.thumbnail)
                 ]
-            });
-            this.lastMusicMsg = ms.id;
-        } catch (error) {
-            this.client.logger.error("PLAY_ERR:", error);
-        }
+            })
+            .then(ms => (this.lastMusicMsg = ms.id))
+            .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error))
+        })();
     }
 }
