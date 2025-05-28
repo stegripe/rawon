@@ -80,8 +80,8 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 ## Project Contributors
 
 ### Developers
-- [@Mednoob](https://github.com/Mednoob)
 - [@mzrtamp](https://github.com/mzrtamp)
+- [@Tiramitzu](https://github.com/Tiramitzu)
 - [@noxyzm](https://github.com/noxyzm)
 
 ### Translators
@@ -97,4 +97,4 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@Fyphen1223](https://github.com/Fyphen1223) (ja)
 - [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
 
-> © 2024 Stegripe Development
+> © 2025 Stegripe Development
