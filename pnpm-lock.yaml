@@ -53,6 +53,10 @@ importers:
       zip-lib:
         specifier: ^1.0.4
         version: 1.0.4
+    optionalDependencies:
+      play-dl:
+        specifier: ^1.9.7
+        version: 1.9.7
     devDependencies:
       '@eslint/compat':
         specifier: ^1.1.1
@@ -84,10 +88,6 @@ importers:
       typescript:
         specifier: 5.6.2
         version: 5.6.2
-    optionalDependencies:
-      play-dl:
-        specifier: ^1.9.7
-        version: 1.9.7
 
 packages:
 
