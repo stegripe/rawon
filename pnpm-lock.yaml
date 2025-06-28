@@ -24,8 +24,8 @@ importers:
         specifier: 14.15.3
         version: 14.15.3
       dotenv:
-        specifier: 16.4.5
-        version: 16.4.5
+        specifier: 17.0.0
+        version: 17.0.0
       got:
         specifier: 14.4.2
         version: 14.4.2
@@ -822,8 +822,8 @@ packages:
     resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
     engines: {node: '>=6.0.0'}
 
-  dotenv@16.4.5:
-    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+  dotenv@17.0.0:
+    resolution: {integrity: sha512-A0BJ5lrpJVSfnMMXjmeO0xUnoxqsBHWCoqqTnGwGYVdnctqXXUEhJOO7LxmgxJon9tEZFGpe0xPRX0h2v3AANQ==}
     engines: {node: '>=12'}
 
   eastasianwidth@0.2.0:
@@ -3123,7 +3123,7 @@ snapshots:
     dependencies:
       esutils: 2.0.3
 
-  dotenv@16.4.5: {}
+  dotenv@17.0.0: {}
 
   eastasianwidth@0.2.0: {}
 
