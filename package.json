@@ -36,7 +36,7 @@
         "printWidth": 120
     },
     "dependencies": {
-        "@discordjs/voice": "^0.17.0",
+        "@discordjs/voice": "^0.18.0",
         "@swc/cli": "0.4.0",
         "@swc/core": "1.7.14",
         "date-fns": "4.1.0",
