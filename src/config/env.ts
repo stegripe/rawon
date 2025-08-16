@@ -30,7 +30,7 @@ const formatLocale = (locale: string | undefined): string => {
 export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 
-export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "00AD95";
+export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
 export const lang = formatLocale(process.env.LOCALE) || "en";
 export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
 export const streamStrategy = (process.env.STREAM_STRATEGY ?? "") || "yt-dlp";
