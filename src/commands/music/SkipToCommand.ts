@@ -52,7 +52,7 @@ export class SkipToCommand extends BaseCommand {
             (this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true) &&
             (this.client.channels.cache.get(
                 ctx.guild?.queue?.connection?.joinConfig.channelId ?? ""
-            ) as VoiceChannel).members.size > 2 &&
+            ) as VoiceChannel)?.members.size > 2 &&
             (ctx.member?.roles.cache.has(djRole?.id ?? "") !== true) &&
             (ctx.member?.permissions.has("ManageGuild") !== true)
         ) {
@@ -62,9 +62,29 @@ export class SkipToCommand extends BaseCommand {
             return;
         }
 
-        const targetType =
-            (ctx.args[0] as string | undefined) ?? ctx.options?.getSubcommand() ?? ctx.options?.getNumber("position") ?? Number.NaN;
-        if (targetType === "" || targetType === 0 || Number.isNaN(targetType)) {
+        const subcommand = ctx.options?.getSubcommand(false);
+        let targetType: number | string;
+
+        if (subcommand === "specific") {
+            const position = ctx.options?.getNumber("position");
+            if (typeof position !== "number" || Number.isNaN(position)) {
+                await ctx.reply({
+                    embeds: [createEmbed("error", i18n.__("commands.music.skipTo.invalidPosition"), true)]
+                });
+                return;
+            }
+            targetType = position;
+        } else if (subcommand === "first" || subcommand === "last") {
+            targetType = subcommand;
+        } else {
+            const arg = ctx.args[0];
+            targetType = Number.isNaN(Number(arg)) ? arg : Number(arg);
+        }
+        
+        if (
+            (typeof targetType === "string" && targetType.trim() === "") ||
+            (typeof targetType === "number" && (Number.isNaN(targetType) || targetType <= 0)  
+            )) {
             await ctx.reply({
                 embeds: [
                     createEmbed(
@@ -92,12 +112,27 @@ export class SkipToCommand extends BaseCommand {
         }
 
         let song: QueueSong;
-        if (String(targetType).toLowerCase() === "first") {
-            song = songs[0];
-        } else if (String(targetType).toLowerCase() === "last") {
-            song = songs.at(-1) as unknown as QueueSong;
+        if (typeof targetType === "string") {
+            const lower = targetType.toLowerCase();
+            if (lower === "first") {
+                song = songs[0];
+            } else if (lower === "last") {
+                const lastSong = songs.at(-1);
+                if (!lastSong) {
+                    await ctx.reply({
+                        embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true)]
+                    });
+                    return;
+                }
+                song = lastSong;
+            } else {
+                await ctx.reply({
+                    embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true)]
+                });
+                return;
+            }
         } else {
-            song = songs[Number(targetType) - 1];
+            song = songs[targetType - 1];
         }
 
         if (
