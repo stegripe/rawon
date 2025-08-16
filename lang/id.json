@@ -46,7 +46,7 @@
                 "usageString": "Penggunaan"
             },
             "invite": {
-                "clickURL": "**[Klik disini]({url})** untung meng-invite bot ini ke server anda.",
+                "clickURL": "**[Klik disini]({url})** untung meng-invite bot ini ke server kamu.",
                 "description": "Dapatkan link invite untuk bot",
                 "inviteTitle": "{bot} - Link invite"
             },
@@ -62,12 +62,12 @@
                 "bannedByString": "Di ban oleh: {author}",
                 "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`BAN MEMBERS`**.",
                 "description": "Ban seseorang dari server",
-                "slashMemberIDDescription": "Siapa yang ingin anda ban?",
+                "slashMemberIDDescription": "Siapa yang ingin kamu ban?",
                 "slashReasonDescription": "Alasan ban",
                 "usage": "{prefix}ban <@mention | id> [alasan]",
                 "userBanned": "Anda telah di **`BAN`** dari **{guildName}**",
                 "userNoBannable": "Mohon maaf, tetapi saya tidak dapat **`BAN`** kepada member tersebut.",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`BAN MEMBERS`** untuk menggunakan perintah ini."
+                "userNoPermission": "Mohon maaf, tetapi kamu tidak memiliki izin **`BAN MEMBERS`** untuk menggunakan perintah ini."
             },
             "categoryName": "MODERASI",
             "common": {
@@ -79,7 +79,7 @@
                 "description": "Menampilkan pelanggaran seorang member",
                 "embedAuthorText": "{user} - Pelanggaran",
                 "noInfractions": "Tidak ada pelanggaran.",
-                "slashMemberDescription": "Siapa yang ingin anda lihat?",
+                "slashMemberDescription": "Siapa yang ingin kamu lihat?",
                 "usage": "{prefix}infractions <@mention | id>"
             },
             "kick": {
@@ -88,12 +88,12 @@
                 "kickFail": "Tidak dapat **`KICK`** member, dikarenakan: `{message}`",
                 "kickSuccess": "**{user}** telah di **`KICK`** dari server ini.",
                 "kickedByString": "Di kick oleh: {author}",
-                "slashMemberDescription": "Siapa yang ingin anda kick?",
+                "slashMemberDescription": "Siapa yang ingin kamu kick?",
                 "slashReasonDescription": "Alasan kick",
                 "usage": "{prefix}kick <@mention | id> [alasan]",
                 "userKicked": "Anda telah di **`KICK`** dari **{guildName}**",
                 "userNoKickable": "Mohon maaf, tetapi saya tidak dapat **`KICK`** kepada member tersebut.",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`KICK MEMBERS`** untuk menggunakan perintah ini."
+                "userNoPermission": "Mohon maaf, tetapi kamu tidak memiliki izin **`KICK MEMBERS`** untuk menggunakan perintah ini."
             },
             "modlogs": {
                 "channel": {
@@ -122,11 +122,11 @@
                 "muteSuccess": "**{user}** telah di **`MUTE`** di server ini.",
                 "mutedByString": "Di mute oleh: {author}",
                 "noRole": "Role untuk mute belum diatur, silahkan atur dengan perintah `{prefix}muterole`",
-                "slashMemberDescription": "Siapa yang ingin anda mute?",
+                "slashMemberDescription": "Siapa yang ingin kamu mute?",
                 "slashReasonDescription": "Alasan mute",
                 "usage": "{prefix}mute <@mention | id> [alasan]",
                 "userMuted": "Anda telah di **`MUTE`** di **{guildName}**",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini."
+                "userNoPermission": "Mohon maaf, tetapi kamu tidak memiliki izin **`MANAGE ROLES`** untuk menggunakan perintah ini."
             },
             "purge": {
                 "botNoPermission": "Mohon maaf, tetapi saya tidak memiliki izin **`MANAGE MESSAGES`**.",
@@ -136,7 +136,7 @@
                 "purgeSuccess": "**`{amount}`** pesan telah di **`PURGE`**",
                 "slashAmountDescription": "Jumlah pesan yang ingin dihapus",
                 "usage": "{prefix}purge <jumlah>",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE MESSAGES`** untuk menggunakan perintah ini."
+                "userNoPermission": "Mohon maaf, tetapi kamu tidak memiliki izin **`MANAGE MESSAGES`** untuk menggunakan perintah ini."
             },
             "setmute": {
                 "description": "Mengatur role mute",
@@ -148,7 +148,7 @@
             "unban": {
                 "alreadyUnban": "Orang itu sedang tidak di **`BAN`**",
                 "description": "Unban seseorang dari server",
-                "slashMemberDescription": "Siapa yang ingin anda un-ban?",
+                "slashMemberDescription": "Siapa yang ingin kamu un-ban?",
                 "slashReasonDescription": "Alasan un-ban",
                 "unbanSuccess": "**{user}** telah di **`UN-BAN`** dari server ini.",
                 "unbanFail": "Tidak dapat **`UN-BAN`** member, dikarenakan: `{message}`",
@@ -157,7 +157,7 @@
             "unmute": {
                 "description": "Unmute seseorang di server",
                 "noMuted": "Member tersebut sedang tidak di **`MUTE`**",
-                "slashMemberDescription": "Siapa yang ingin anda un-mute?",
+                "slashMemberDescription": "Siapa yang ingin kamu un-mute?",
                 "slashReasonDescription": "Alasan un-mute",
                 "unmuteFail": "Tidak dapat **`UN-MUTE`** member, dikarenakan: `{message}`",
                 "unmuteSuccess": "**{user}** telah di **`UN-MUTE`** di server ini.",
@@ -168,10 +168,10 @@
             "warn": {
                 "description": "Warn seseorang di server",
                 "noDM": "Tidak dapat membuka DM dengan pengguna tersebut, tetapi akan tetap saya warn.",
-                "slashMemberDescription": "Siapa yang ingin anda warn?",
+                "slashMemberDescription": "Siapa yang ingin kamu warn?",
                 "slashReasonDescription": "Alasan warn",
                 "usage": "{prefix}warn <@mention | id> [alasan]",
-                "userNoPermission": "Mohon maaf, tetapi anda tidak memiliki izin **`MANAGE SERVER`** untuk menggunakan perintah ini.",
+                "userNoPermission": "Mohon maaf, tetapi kamu tidak memiliki izin **`MANAGE SERVER`** untuk menggunakan perintah ini.",
                 "userWarned": "Kamu telah di **`WARN`** di **{guildName}**",
                 "warnSuccess": "**{user}** telah di **`WARN`** di server ini.",
                 "warnedByString": "Di warn oleh: {author}"
@@ -367,10 +367,10 @@
             "stopPlaying": "Selesai memainkan **{song}**"
         },
         "musicDecorator": {
-            "noInVC": "Mohon maaf, tetapi anda harus berada di sebuah voice channel untuk melakukannya.",
+            "noInVC": "Mohon maaf, tetapi kamu harus berada di sebuah voice channel untuk melakukannya.",
             "noQueue": "Antrian media player sedang kosong.",
             "sameVC": "Anda harus berada di voice channel yang sama dengan saya.",
-            "validVCJoinable": "Mohon maaf, tetapi saya tidak dapat **`CONNECT`** ke voice channel anda, pastikan saya memiliki izin yang tepat.",
+            "validVCJoinable": "Mohon maaf, tetapi saya tidak dapat **`CONNECT`** ke voice channel kamu, pastikan saya memiliki izin yang tepat.",
             "validVCPermission": "Mohon maaf, tetapi saya tidak dapat **`SPEAK`** di voice channel, pastikan saya memiliki izin yang tepat."
         }
     }

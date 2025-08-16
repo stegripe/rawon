@@ -1,5 +1,4 @@
-/* eslint-disable unicorn/filename-case */
-/* eslint-disable typescript/naming-convention */
+/* eslint-disable unicorn/filename-case, typescript/naming-convention */
 import type { Readable } from "node:stream";
 import ytdl, { exec } from "../../../yt-dlp-utils/index.js";
 import { streamStrategy } from "../../config/index.js";
@@ -21,28 +20,41 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
         return rawPlayDlStream?.stream as unknown as Readable;
     }
 
-    return new Promise((resolve, reject) => {
-        const stream = exec(
-            url,
-            {
-                output: "-",
-                quiet: true,
-                format: "bestaudio",
-                limitRate: "100K"
-            },
-            {
-                stdio: ["ignore", "pipe", "ignore"]
-            }
-        );
+  return new Promise<Readable>((resolve, reject) => {
+    const proc = exec(
+      url,
+      {
+        output: "-",
+        quiet: true,
+        format: "bestaudio",
+        limitRate: "300K"
+      },
+      { stdio: ["ignore", "pipe", "ignore"] }
+    );
 
-        if (!stream.stdout) {
-            reject(new Error("Unable to retrieve audio data from the URL."));
-        }
+    if (!proc.stdout) {
+      reject(new Error("Error obtaining stdout from process."));
+      return;
+    }
 
-        void stream.on("spawn", () => {
-            resolve(stream.stdout as unknown as Readable);
-        });
+    proc.once("error", err => {
+      proc.kill("SIGKILL");
+      reject(err);
     });
+
+    proc.stdout.once("error", err => {
+      proc.kill("SIGKILL");
+      reject(err);
+    });
+
+    proc.stdout.once("end", () => {
+      proc.kill("SIGKILL");
+    });
+
+    void proc.once("spawn", () => {
+      resolve(proc.stdout as unknown as Readable);
+    });
+  });
 }
 
 export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
