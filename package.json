@@ -36,12 +36,13 @@
         "printWidth": 120
     },
     "dependencies": {
-        "@discordjs/voice": "^0.17.0",
+        "@discordjs/voice": "^0.18.0",
         "@swc/cli": "0.4.0",
         "@swc/core": "1.7.14",
         "date-fns": "4.1.0",
         "discord.js": "14.15.3",
         "dotenv": "17.0.0",
+        "ffmpeg-static": "^5.2.0",
         "got": "14.4.2",
         "i18n": "0.15.1",
         "opusscript": "0.0.8",
