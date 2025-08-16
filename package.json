@@ -54,16 +54,16 @@
         "zip-lib": "^1.0.4"
     },
     "devDependencies": {
-        "@eslint/compat": "^1.1.1",
+        "@eslint/compat": "^1.2.2",
         "@stegripe/eslint-config": "^1.0.1",
         "@types/i18n": "0.13.12",
         "@types/node": "22.15.24",
-        "eslint": "9.10.0",
+        "eslint": "9.14.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-prettier": "^5.2.1",
         "prettier": "^3.3.3",
         "rimraf": "^6.0.1",
-        "typescript": "5.6.2"
+        "typescript": "5.6.3"
     },
     "optionalDependencies": {
         "play-dl": "^1.9.7"
