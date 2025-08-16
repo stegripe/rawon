@@ -36,12 +36,13 @@
         "printWidth": 120
     },
     "dependencies": {
-        "@discordjs/voice": "^0.17.0",
+        "@discordjs/voice": "^0.18.0",
         "@swc/cli": "0.4.0",
         "@swc/core": "1.7.14",
         "date-fns": "4.1.0",
         "discord.js": "14.15.3",
         "dotenv": "17.0.0",
+        "ffmpeg-static": "^5.2.0",
         "got": "14.4.2",
         "i18n": "0.15.1",
         "opusscript": "0.0.8",
@@ -53,16 +54,16 @@
         "zip-lib": "^1.0.4"
     },
     "devDependencies": {
-        "@eslint/compat": "^1.1.1",
+        "@eslint/compat": "^1.2.2",
         "@stegripe/eslint-config": "^1.0.1",
         "@types/i18n": "0.13.12",
         "@types/node": "22.15.24",
-        "eslint": "9.10.0",
+        "eslint": "9.14.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-prettier": "^5.2.1",
         "prettier": "^3.3.3",
         "rimraf": "^6.0.1",
-        "typescript": "5.6.2"
+        "typescript": "5.6.3"
     },
     "optionalDependencies": {
         "play-dl": "^1.9.7"
