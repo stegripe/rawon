@@ -53,19 +53,6 @@ Don't forget to create `.env` file and fill environment values from `.env_exampl
 
 NOTE: You **must** attach `/app/scripts` volume if you use `yt-dlp` stream strategy.
 
-### Glitch
-You can use Glitch too for this project, featured with its code editor.
-
-1. Star and fork this project
-2. Go to [glitch.com](https://glitch.com) and make an account
-3. Click **New Project** then **Import from GitHub**, specify the pop-up field with `https://github.com/<your-name>/rawon` (without `<>`)
-4. Please wait for a while, this process takes some minutes
-5. Find the `.env` file and delete it, then find `.env_example` file and rename it to `.env`
-6. After specifying `.env`, open **Tools** > **Terminal**
-7. Type `refresh`, and track the process from **Logs**
-
-<a href="https://glitch.com/edit/#!/import/github/stegripe/rawon"><img src="https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg" alt="Remix on Glitch"></a>
-
 ### Railway
 Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
 
