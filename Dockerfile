@@ -1,4 +1,4 @@
-FROM ghcr.io/hazmi35/node:22-dev-alpine as build-stage
+FROM ghcr.io/hazmi35/node:24-dev-alpine as build-stage
 
 RUN corepack enable && corepack prepare pnpm@latest
 
@@ -14,7 +14,7 @@ RUN pnpm run build
 
 RUN pnpm prune --production
 
-FROM ghcr.io/hazmi35/node:22-alpine
+FROM ghcr.io/hazmi35/node:24-alpine
 
 LABEL name "rawon"
 LABEL maintainer "Stegripe Development <support@stegripe.org>"
