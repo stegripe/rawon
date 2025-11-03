@@ -57,7 +57,7 @@
         "@eslint/compat": "^1.2.2",
         "@stegripe/eslint-config": "^1.0.1",
         "@types/i18n": "0.13.12",
-        "@types/node": "22.15.24",
+        "@types/node": "24.10.0",
         "eslint": "9.14.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-prettier": "^5.2.1",
