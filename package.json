@@ -54,7 +54,7 @@
         "zip-lib": "^1.0.4"
     },
     "devDependencies": {
-        "@eslint/compat": "^1.2.2",
+        "@eslint/compat": "^2.0.0",
         "@stegripe/eslint-config": "^1.0.1",
         "@types/i18n": "0.13.12",
         "@types/node": "24.10.0",
