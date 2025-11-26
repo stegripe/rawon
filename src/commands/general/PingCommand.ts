@@ -25,8 +25,7 @@ export class PingCommand extends BaseCommand {
         const embed = createEmbed("info")
             .setColor(this.searchHex(wsLatency))
             .setAuthor({
-                name: "🏓 PONG",
-                iconURL: this.client.user?.displayAvatarURL()
+                name: "🏓 PONG"
             })
             .addFields(
                 {
