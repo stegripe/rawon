@@ -107,10 +107,10 @@ export class HelpCommand extends BaseCommand {
             if (msg !== undefined && msg.components.length > 0) {
                 const actionRow = msg.components[0];
                 if (!('components' in actionRow)) return;
-                const selection = actionRow.components.find((x): x is typeof x & { type: ComponentType.StringSelect } => x.type === ComponentType.StringSelect);
-                if (selection?.data.custom_id === undefined) return;
+                const selection = actionRow.components.find(x => x.type === ComponentType.StringSelect);
+                if (selection === undefined || !('customId' in selection.data)) return;
                 const disabledMenu = new StringSelectMenuBuilder()
-                    .setCustomId(selection.data.custom_id)
+                    .setCustomId(selection.data.customId as string)
                     .setDisabled(true)
                     .addOptions({
                         label: "Nothing to select here",
