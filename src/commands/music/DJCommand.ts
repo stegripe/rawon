@@ -175,7 +175,7 @@ export class DJCommand extends BaseCommand {
         const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
         let sub = this.options[subname ?? ""] as BaseCommand["execute"] | undefined;
 
-        if (!sub) sub = this.options.default;
+        sub ??= this.options.default;
         sub(ctx);
     }
 }
