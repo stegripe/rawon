@@ -26,7 +26,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
             const categories = await fs.readdir(nodePath.resolve(this.path));
             this.client.logger.info(`Found ${categories.length} categories, registering...`);
 
-            for await (const category of categories) {
+            for (const category of categories) {
                 try {
                     const meta = (
                         await import(
@@ -44,7 +44,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                     this.client.logger.info(`Found ${files.length} of commands in ${category}, loading...`);
                     const allCmd = await (this.client.application as unknown as NonNullable<typeof this.client.application>).commands.fetch();
 
-                    for await (const file of files) {
+                    for (const file of files) {
                         try {
                             const path = pathStringToURLString(nodePath.resolve(this.path, category, file));
                             const command = await this.client.utils.import<CommandComponent>(path, this.client);

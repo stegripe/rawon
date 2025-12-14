@@ -10,7 +10,7 @@ const intents: number[] = [
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildEmojisAndStickers,
     IntentsBitField.Flags.GuildVoiceStates,
-    IntentsBitField.Flags.GuildBans
+    IntentsBitField.Flags.GuildModeration
 ];
 
 if (enablePrefix) {
