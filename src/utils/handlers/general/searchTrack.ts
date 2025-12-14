@@ -7,6 +7,14 @@ import { getInfo } from "../YTDLUtil.js";
 import { youtube } from "../YouTubeUtil.js";
 import { checkQuery } from "./checkQuery.js";
 
+// Helper function to extract video ID from YouTube URL
+function extractVideoId(url: URL): string | null {
+    if (/youtu\.be/gu.test(url.hostname)) {
+        return url.pathname.replace("/", "");
+    }
+    return url.searchParams.get("v");
+}
+
 export async function searchTrack(
     client: Rawon,
     query: string,
@@ -78,22 +86,46 @@ export async function searchTrack(
             case "youtube": {
                 switch (queryData.type) {
                     case "track": {
-                        const track = await youtube.getVideo(
-                            /youtu\.be/gu.test(url.hostname) ? url.pathname.replace("/", "") : url.searchParams.get("v") ?? ''
-                        );
+                        const videoId = extractVideoId(url);
+                        if (videoId === null || videoId.length === 0) break;
 
-                        if (track) {
-                            result.items = [
-                                {
-                                    duration: track.isLiveContent ? 0 : (track as Video).duration,
-                                    id: track.id,
-                                    thumbnail: track.thumbnails.sort(
-                                        (a, b) => b.height * b.width - a.height * a.width
-                                    )[0].url,
-                                    title: track.title,
-                                    url: `https://youtube.com/watch?v=${track.id}`
+                        try {
+                            const track = await youtube.getVideo(videoId);
+                            if (track) {
+                                result.items = [
+                                    {
+                                        duration: track.isLiveContent ? 0 : (track as Video).duration,
+                                        id: track.id,
+                                        thumbnail: track.thumbnails.sort(
+                                            (a, b) => b.height * b.width - a.height * a.width
+                                        )[0].url,
+                                        title: track.title,
+                                        url: `https://youtube.com/watch?v=${track.id}`
+                                    }
+                                ];
+                            }
+                        } catch {
+                            // youtubei failed, try fallback with yt-dlp
+                            try {
+                                const videoUrl = `https://youtube.com/watch?v=${videoId}`;
+                                const videoInfo = await getInfo(videoUrl);
+                                
+                                if (videoInfo?.id) {
+                                    result.items = [
+                                        {
+                                            duration: videoInfo.duration ?? 0,
+                                            id: videoInfo.id,
+                                            thumbnail: videoInfo.thumbnails?.sort(
+                                                (a, b) => (b.height * b.width) - (a.height * a.width)
+                                            )[0]?.url ?? "",
+                                            title: videoInfo.title ?? "Unknown",
+                                            url: videoInfo.url ?? videoUrl
+                                        }
+                                    ];
                                 }
-                            ];
+                            } catch {
+                                // Both methods failed, result.items will remain empty
+                            }
                         }
                         break;
                     }
@@ -269,20 +301,24 @@ export async function searchTrack(
 
             result.items = tracks;
         } else {
-            const searchRes = (await youtube.search(query, { type: "video" }));
-            const tracks = await Promise.all(
-                searchRes.items.map(
-                    (track): Song => ({
-                        duration: track.duration ?? 0,
-                        id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
-                        title: track.title,
-                        url: `https://youtube.com/watch?v=${track.id}`
-                    })
-                )
-            );
+            try {
+                const searchRes = await youtube.search(query, { type: "video" });
+                const tracks = await Promise.all(
+                    searchRes.items.map(
+                        (track): Song => ({
+                            duration: track.duration ?? 0,
+                            id: track.id,
+                            thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                            title: track.title,
+                            url: `https://youtube.com/watch?v=${track.id}`
+                        })
+                    )
+                );
 
-            result.items = tracks;
+                result.items = tracks;
+            } catch {
+                // youtubei search failed, result.items will remain empty
+            }
         }
     }
 
