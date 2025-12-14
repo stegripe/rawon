@@ -8,7 +8,7 @@ import { lang, enablePrefix, enableSlashCommand } from "./env.js";
 const intents: number[] = [
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.GuildEmojisAndStickers,
+    IntentsBitField.Flags.GuildExpressions,
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.GuildModeration
 ];
