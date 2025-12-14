@@ -104,11 +104,13 @@ export class HelpCommand extends BaseCommand {
             const msg = await channel?.messages
                 .fetch((ctx.context as StringSelectMenuInteraction).message.id)
                 .catch(() => void 0);
-            if (msg !== undefined) {
-                const selection = msg.components[0].components.find(x => x.type === ComponentType.StringSelect);
-                if (!selection) return;
+            if (msg !== undefined && msg.components.length > 0) {
+                const actionRow = msg.components[0];
+                if (!('components' in actionRow)) return;
+                const selection = actionRow.components.find(x => x.type === ComponentType.StringSelect);
+                if (selection === undefined || !('customId' in selection.data)) return;
                 const disabledMenu = new StringSelectMenuBuilder()
-                    .setCustomId(selection.customId ?? "")
+                    .setCustomId(selection.data.customId as string)
                     .setDisabled(true)
                     .addOptions({
                         label: "Nothing to select here",

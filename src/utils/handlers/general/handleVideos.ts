@@ -95,20 +95,22 @@ export async function handleVideos(
         );
 
         client.logger.error("PLAY_CMD_ERR:", error);
-        await ctx
-            .channel?.send({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }),
-                        true
-                    )
-                ]
-            })
-            // eslint-disable-next-line typescript/naming-convention
-            .catch((error_: unknown) => {
+        const channel = ctx.channel;
+        if (channel !== null && 'send' in channel) {
+            try {
+                await channel.send({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }),
+                            true
+                        )
+                    ]
+                });
+            } catch (error_: unknown) {
                 client.logger.error("PLAY_CMD_ERR:", error_);
-            });
+            }
+        }
         return;
     }
 
