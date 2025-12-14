@@ -27,15 +27,11 @@ export async function handleVideos(
         }
 
         const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", { length: toQueue.length });
-        const pages = await Promise.all(
-            chunk(toQueue, 10).map(async (vals, i) => {
-                const texts = await Promise.all(
-                    vals.map((song, index) => `${i * 10 + (index + 1)}.) ${escapeMarkdown(parseHTMLElements(song.title))}`)
-                );
+        const pages = chunk(toQueue, 10).map((vals, i) => {
+            const texts = vals.map((song, index) => `${i * 10 + (index + 1)}.) ${escapeMarkdown(parseHTMLElements(song.title))}`);
 
-                return texts.join("\n");
-            })
-        );
+            return texts.join("\n");
+        });
         const embed = createEmbed("info", opening);
         const msg = await ctx.reply({ embeds: [embed] }, true);
 

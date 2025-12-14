@@ -11,7 +11,9 @@ export class EventsLoader {
             await fs.readdir(nodePath.resolve(this.path))
             .then(async events => {
                 this.client.logger.info(`Loading ${events.length} events...`);
-                for await (const file of events) {
+                // Events must be loaded sequentially to maintain proper initialization order
+                for (const file of events) {
+                    // eslint-disable-next-line no-await-in-loop
                     const event = await this.client.utils.import<Event>(
                         pathStringToURLString(nodePath.resolve(this.path, file)),
                         this.client
