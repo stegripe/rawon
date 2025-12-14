@@ -62,7 +62,7 @@ importers:
         version: 2.0.0(eslint@9.39.2)
       '@stegripe/eslint-config':
         specifier: ^3.0.0
-        version: 3.0.0(@stylistic/eslint-plugin@5.6.1(eslint@9.39.2))(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.49.0(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.2))(eslint-plugin-jsdoc@51.4.1(eslint@9.39.2))(eslint-plugin-n@17.23.1(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-promise@7.2.1(eslint@9.39.2))(eslint-plugin-tsdoc@0.5.0(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-unicorn@60.0.0(eslint@9.39.2))(eslint@9.39.2)(globals@16.5.0)(typescript-eslint@8.49.0(eslint@9.39.2)(typescript@5.9.3))(typescript@5.9.3)
+        version: 3.0.0(@stylistic/eslint-plugin@5.6.1(eslint@9.39.2))(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.49.0(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.2))(eslint-plugin-jsdoc@53.0.1(eslint@9.39.2))(eslint-plugin-n@17.23.1(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-promise@7.2.1(eslint@9.39.2))(eslint-plugin-tsdoc@0.5.0(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-unicorn@60.0.0(eslint@9.39.2))(eslint@9.39.2)(globals@16.5.0)(typescript-eslint@8.49.0(eslint@9.39.2)(typescript@5.9.3))(typescript@5.9.3)
       '@stylistic/eslint-plugin':
         specifier: ^5.6.1
         version: 5.6.1(eslint@9.39.2)
@@ -82,8 +82,8 @@ importers:
         specifier: ^4.16.1
         version: 4.16.1(@typescript-eslint/utils@8.49.0(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.2)
       eslint-plugin-jsdoc:
-        specifier: ^51.4.1
-        version: 51.4.1(eslint@9.39.2)
+        specifier: ^53.0.1
+        version: 53.0.1(eslint@9.39.2)
       eslint-plugin-n:
         specifier: ^17.23.1
         version: 17.23.1(eslint@9.39.2)(typescript@5.9.3)
@@ -1040,8 +1040,8 @@ packages:
       eslint-import-resolver-node:
         optional: true
 
-  eslint-plugin-jsdoc@51.4.1:
-    resolution: {integrity: sha512-y4CA9OkachG8v5nAtrwvcvjIbdcKgSyS6U//IfQr4FZFFyeBFwZFf/tfSsMr46mWDJgidZjBTqoCRlXywfFBMg==}
+  eslint-plugin-jsdoc@53.0.1:
+    resolution: {integrity: sha512-9gYQy6pXAHnJXPFMATQS56O3js39okRrve61VlaXhKyaa9dZuuvTlReStF3eQ+ygG5vybFl7YTw6MkYkrf2GUQ==}
     engines: {node: '>=20.11.0'}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
@@ -2247,13 +2247,13 @@ snapshots:
 
   '@sindresorhus/is@7.1.1': {}
 
-  '@stegripe/eslint-config@3.0.0(@stylistic/eslint-plugin@5.6.1(eslint@9.39.2))(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.49.0(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.2))(eslint-plugin-jsdoc@51.4.1(eslint@9.39.2))(eslint-plugin-n@17.23.1(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-promise@7.2.1(eslint@9.39.2))(eslint-plugin-tsdoc@0.5.0(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-unicorn@60.0.0(eslint@9.39.2))(eslint@9.39.2)(globals@16.5.0)(typescript-eslint@8.49.0(eslint@9.39.2)(typescript@5.9.3))(typescript@5.9.3)':
+  '@stegripe/eslint-config@3.0.0(@stylistic/eslint-plugin@5.6.1(eslint@9.39.2))(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.49.0(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.2))(eslint-plugin-jsdoc@53.0.1(eslint@9.39.2))(eslint-plugin-n@17.23.1(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-promise@7.2.1(eslint@9.39.2))(eslint-plugin-tsdoc@0.5.0(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-unicorn@60.0.0(eslint@9.39.2))(eslint@9.39.2)(globals@16.5.0)(typescript-eslint@8.49.0(eslint@9.39.2)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@stylistic/eslint-plugin': 5.6.1(eslint@9.39.2)
       eslint: 9.39.2
       eslint-config-prettier: 10.1.8(eslint@9.39.2)
       eslint-plugin-import-x: 4.16.1(@typescript-eslint/utils@8.49.0(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.2)
-      eslint-plugin-jsdoc: 51.4.1(eslint@9.39.2)
+      eslint-plugin-jsdoc: 53.0.1(eslint@9.39.2)
       eslint-plugin-n: 17.23.1(eslint@9.39.2)(typescript@5.9.3)
       eslint-plugin-promise: 7.2.1(eslint@9.39.2)
       eslint-plugin-tsdoc: 0.5.0(eslint@9.39.2)(typescript@5.9.3)
@@ -2963,7 +2963,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-jsdoc@51.4.1(eslint@9.39.2):
+  eslint-plugin-jsdoc@53.0.1(eslint@9.39.2):
     dependencies:
       '@es-joy/jsdoccomment': 0.52.0
       are-docs-informative: 0.0.2
