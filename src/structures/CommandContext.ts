@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
 import type { BaseMessageOptions, ChatInputCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, MessageMentions, MessagePayload, MessageReplyOptions, ModalSubmitFields, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
-import { ActionRowBuilder, BaseInteraction, ButtonBuilder, ButtonInteraction, ButtonStyle, Collection, CommandInteraction, ContextMenuCommandInteraction, Message, MessageComponentInteraction, ModalSubmitInteraction } from "discord.js";
+import { ActionRowBuilder, BaseInteraction, ButtonBuilder, ButtonInteraction, ButtonStyle, Collection, CommandInteraction, ContextMenuCommandInteraction, Message, MessageComponentInteraction, MessageFlags, ModalSubmitInteraction } from "discord.js";
 import type { MessageInteractionAction } from "../typings/index.js";
 
 export class CommandContext {
@@ -87,7 +87,7 @@ export class CommandContext {
             ];
         }
         if (this.isInteraction()) {
-            (options as InteractionReplyOptions).fetchReply = true;
+            (options as InteractionReplyOptions).withResponse = true;
             const msg = (await (this.context as CommandInteraction)[type](
                 options as InteractionReplyOptions | MessagePayload | string
             )) as Message;
@@ -95,7 +95,8 @@ export class CommandContext {
             const res = await channel?.messages.fetch(msg.id).catch(() => null);
             return res ?? msg;
         }
-        if ((options as InteractionReplyOptions).ephemeral === true) {
+        const flags = (options as InteractionReplyOptions).flags;
+        if (flags !== undefined && ((flags as number) & MessageFlags.Ephemeral) !== 0) {
             throw new Error("Cannot send ephemeral message in a non-interaction context.");
         }
         if (typeof options === "string") {
