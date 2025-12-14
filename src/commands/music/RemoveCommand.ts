@@ -74,12 +74,10 @@ export class RemoveCommand extends BaseCommand {
         });
         const pages = await Promise.all(
             chunk(songs, 10).map(async (vals, ind) => {
-                const texts = await Promise.all(
-                    vals.map(
-                        (song, index) =>
-                            `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${ind * 10 + (index + 1)
-                            }.) ${escapeMarkdown(parseHTMLElements(song.song.title))}`
-                    )
+                const texts = vals.map(
+                    (song, index) =>
+                        `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${ind * 10 + (index + 1)
+                        }.) ${escapeMarkdown(parseHTMLElements(song.song.title))}`
                 );
 
                 return texts.join("\n");

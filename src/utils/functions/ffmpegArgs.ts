@@ -26,7 +26,7 @@ export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, bool
         "-f", "opus",
         "-acodec", "libopus",
         ...(
-            keys.some(x => filters[x])
+            keys.some(x => filters[x] === true)
                 ? [
                     "-af",
                     keys.reduce<string[]>((pr, cu) => {

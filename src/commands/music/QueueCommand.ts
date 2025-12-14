@@ -27,14 +27,12 @@ export class QueueCommand extends BaseCommand {
         const songs = ctx.guild?.queue?.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);
         const pages = await Promise.all(
             chunk([...songs.values()], 10).map(async (sngs, ind) => {
-                const names = await Promise.all(
-                    sngs.map((song, i) => {
-                        const npKey = np.key;
-                        const addition = song.key === npKey ? "**" : "";
+                const names = sngs.map((song, i) => {
+                    const npKey = np.key;
+                    const addition = song.key === npKey ? "**" : "";
 
-                        return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
-                    })
-                );
+                    return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
+                });
 
                 return names.join("\n");
             })
