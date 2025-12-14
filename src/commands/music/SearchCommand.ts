@@ -1,5 +1,5 @@
 import { Buffer } from "node:buffer";
-import { ActionRowBuilder, ApplicationCommandOptionType, CommandInteractionOptionResolver, ComponentType, escapeMarkdown, Message, SelectMenuComponentOptionData, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
+import { ActionRowBuilder, ApplicationCommandOptionType, Collection, CommandInteractionOptionResolver, ComponentType, escapeMarkdown, Message, SelectMenuComponentOptionData, StringSelectMenuBuilder, StringSelectMenuInteraction } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
@@ -63,12 +63,14 @@ export class SearchCommand extends BaseCommand {
             const prev = await ctx
                 .channel?.messages.fetch((ctx.context as StringSelectMenuInteraction).message.id)
                 .catch(() => void 0);
-            if (prev !== undefined) {
-                const selection = prev.components[0].components.find(x => x.type === ComponentType.StringSelect);
-                if (!selection) return;
+            if (prev !== undefined && prev.components.length > 0) {
+                const actionRow = prev.components[0];
+                if (!('components' in actionRow)) return;
+                const selection = actionRow.components.find((x): x is typeof x & { type: ComponentType.StringSelect } => x.type === ComponentType.StringSelect);
+                if (selection?.data.custom_id === undefined) return;
                 const disabledMenu = new StringSelectMenuBuilder()
                     .setDisabled(true)
-                    .setCustomId(selection.customId ?? "")
+                    .setCustomId(selection.data.custom_id)
                     .addOptions({
                         label: "Nothing to select here",
                         description: "Nothing to select here",
@@ -145,21 +147,29 @@ export class SearchCommand extends BaseCommand {
                     .setFooter({ text: i18n.__mf("commands.music.search.cancelMessage", { cancel: "cancel", c: "c" }) })
             ]
         });
-        const respond = await msg.channel
-            .awaitMessages({
-                errors: ["time"],
-                filter: ms => {
-                    const nums = ms.content.split(/\s*,\s*/u).filter(x => Number(x) > 0 && Number(x) <= tracks.items.length);
+        let respond: Collection<string, Message> | undefined;
+        const msgChannel = msg.channel;
+        if (msgChannel !== null && 'awaitMessages' in msgChannel) {
+            try {
+                respond = await msgChannel.awaitMessages({
+                    errors: ["time"],
+                    filter: (ms: Message) => {
+                        const nums = ms.content.split(/\s*,\s*/u).filter((x: string) => Number(x) > 0 && Number(x) <= tracks.items.length);
 
-                    return (
-                        ms.author.id === ctx.author.id &&
-                        (["c", "cancel"].includes(ms.content.toLowerCase()) || nums.length > 0)
-                    );
-                },
-                max: 1
-            })
-            .catch(() => void 0);
-        if (!respond) {
+                        return (
+                            ms.author.id === ctx.author.id &&
+                            (["c", "cancel"].includes(ms.content.toLowerCase()) || nums.length > 0)
+                        );
+                    },
+                    max: 1
+                });
+            } catch {
+                respond = undefined;
+            }
+        } else {
+            respond = undefined;
+        }
+        if (respond === undefined) {
             await msg.delete().catch((error: unknown) => this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error));
             await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"), true)]

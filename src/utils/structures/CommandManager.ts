@@ -206,27 +206,38 @@ export class CommandManager extends Collection<string, CommandComponent> {
             const expirationTime = (timestamps.get(message.author.id) as unknown as number) + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1_000;
-                (async () => {
-                    await message.channel
-                    .send({
-                        embeds: [
-                            createEmbed(
-                                "warn",
-                                `⚠️ **|** ${i18n.__mf("utils.cooldownMessage", {
-                                    author: message.author.toString(),
-                                    timeleft: timeLeft.toFixed(1)
-                                })}`,
-                                true
-                            )
-                        ]
-                    })
-                    .then(msg => {
-                        // eslint-disable-next-line promise/no-nesting
-                        setTimeout(async () => msg.delete().catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error)), 3_500);
-                        return 0;
-                    })
-                    .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error))
-                })();
+                const msgChannel = message.channel;
+                if ('send' in msgChannel) {
+                    void (async () => {
+                        try {
+                            const sentMsg = await msgChannel.send({
+                                embeds: [
+                                    createEmbed(
+                                        "warn",
+                                        `⚠️ **|** ${i18n.__mf("utils.cooldownMessage", {
+                                            author: message.author.toString(),
+                                            timeleft: timeLeft.toFixed(1)
+                                        })}`,
+                                        true
+                                    )
+                                ]
+                            });
+                            setTimeout(() => {
+                                void (async () => {
+                                    if ('delete' in sentMsg) {
+                                        try {
+                                            await sentMsg.delete();
+                                        } catch (error: unknown) {
+                                            this.client.logger.error("PROMISE_ERR:", error);
+                                        }
+                                    }
+                                })();
+                            }, 3_500);
+                        } catch (error: unknown) {
+                            this.client.logger.error("PROMISE_ERR:", error);
+                        }
+                    })();
+                }
                 return;
             }
 

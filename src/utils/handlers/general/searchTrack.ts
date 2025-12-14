@@ -44,7 +44,7 @@ export async function searchTrack(
                 const newQueryData = checkQuery(scUrl.toString());
                 switch (newQueryData.type) {
                     case "track": {
-                        const track = await client.soundcloud.tracks.getV2(scUrl.toString());
+                        const track = await client.soundcloud.tracks.get(scUrl.toString());
 
                         result.items = [
                             {
@@ -59,7 +59,7 @@ export async function searchTrack(
                     }
 
                     case "playlist": {
-                        const playlist = await client.soundcloud.playlists.getV2(scUrl.toString());
+                        const playlist = await client.soundcloud.playlists.get(scUrl.toString());
                         const tracks = playlist.tracks.map(
                             (track): Song => ({
                                 duration: track.full_duration,
@@ -279,7 +279,7 @@ export async function searchTrack(
         result.type = "selection";
 
         if (source === "soundcloud") {
-            const searchRes = await client.soundcloud.tracks.searchV2({
+            const searchRes = await client.soundcloud.tracks.search({
                 // eslint-disable-next-line id-length
                 q: query
             });
