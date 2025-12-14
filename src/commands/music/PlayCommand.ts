@@ -2,7 +2,6 @@ import { ApplicationCommandOptionType, Message, VoiceBasedChannel } from "discor
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
-import { Song } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -35,14 +34,10 @@ export class PlayCommand extends BaseCommand {
         const voiceChannel = ctx.member?.voice.channel as unknown as VoiceBasedChannel;
         if (ctx.additionalArgs.get("fromSearch") !== undefined) {
             const tracks = ctx.additionalArgs.get("values") as string[];
-            const toQueue: Song[] = [];
-
-            for (const track of tracks) {
-                const song = await searchTrack(this.client, track).catch(() => null);
-                if (!song) continue;
-
-                toQueue.push(song.items[0]);
-            }
+            const searchResults = await Promise.all(
+                tracks.map(async track => searchTrack(this.client, track).catch(() => null))
+            );
+            const toQueue = searchResults.filter((result): result is NonNullable<typeof result> => result !== null).map(result => result.items[0]);
 
             return handleVideos(this.client, ctx, toQueue, voiceChannel);
         }
