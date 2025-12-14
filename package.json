@@ -55,7 +55,7 @@
     },
     "devDependencies": {
         "@eslint/compat": "^2.0.0",
-        "@stegripe/eslint-config": "^1.0.1",
+        "@stegripe/eslint-config": "^3.0.0",
         "@types/i18n": "0.13.12",
         "@types/node": "24.10.0",
         "eslint": "9.14.0",
