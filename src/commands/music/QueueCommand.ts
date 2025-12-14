@@ -25,20 +25,16 @@ export class QueueCommand extends BaseCommand {
         const np = (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
         const full = ctx.guild?.queue?.songs.sortByIndex() as unknown as SongManager;
         const songs = ctx.guild?.queue?.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);
-        const pages = await Promise.all(
-            chunk([...songs.values()], 10).map(async (sngs, ind) => {
-                const names = await Promise.all(
-                    sngs.map((song, i) => {
-                        const npKey = np.key;
-                        const addition = song.key === npKey ? "**" : "";
+        const pages = chunk([...songs.values()], 10).map((sngs, ind) => {
+            const names = sngs.map((song, i) => {
+                const npKey = np.key;
+                const addition = song.key === npKey ? "**" : "";
 
-                        return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
-                    })
-                );
+                return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
+            });
 
-                return names.join("\n");
-            })
-        );
+            return names.join("\n");
+        });
         const embed = createEmbed("info", pages[0]).setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null);
         const msg = await ctx.reply({ embeds: [embed] });
 

@@ -143,7 +143,7 @@ export class FilterCommand extends BaseCommand {
                         {
                             name: i18n.__("commands.music.filter.currentlyUsedFilters"),
                             value: keys
-                                .filter(x => ctx.guild?.queue?.filters[x])
+                                .filter(x => ctx.guild?.queue?.filters[x] === true)
                                 .map(x => `\`${x}\``)
                                 .join("\n") || "-",
                             inline: true
