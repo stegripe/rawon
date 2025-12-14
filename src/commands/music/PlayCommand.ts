@@ -85,6 +85,7 @@ export class PlayCommand extends BaseCommand {
 
         const queryCheck = checkQuery(query ?? "");
         const songs = await searchTrack(this.client, query ?? "").catch(() => void 0);
+        
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)]
