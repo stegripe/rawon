@@ -40,9 +40,12 @@ export class MessageCreateEvent extends BaseEvent {
         // Handle request channel messages (but allow prefix commands to work normally)
         if (message.guild && this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)) {
             if ((prefixMatch?.length ?? 0) > 0) {
-                // It's a prefix command - handle it normally but ephemeral-style (delete after response)
-                await message.delete().catch(() => null);
+                // It's a prefix command - handle it normally, then delete user message after a delay
                 this.client.commands.handle(message, prefixMatch as unknown as string);
+                // Delete user's command message after 5 seconds
+                setTimeout(() => {
+                    void message.delete().catch(() => null);
+                }, 5_000);
                 return;
             }
             await this.handleRequestChannelMessage(message);

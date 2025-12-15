@@ -94,9 +94,10 @@ export class RequestChannelManager {
                 .setImage(requestChannelThumbnail)
                 .addFields([
                     { name: i18n.__("requestChannel.status"), value: `🎵 ${i18n.__("requestChannel.idle")}`, inline: true },
-                    { name: i18n.__("requestChannel.volume"), value: `🔊 ${this.client.config.defaultVolume}%`, inline: true },
-                    { name: i18n.__("requestChannel.queueLength"), value: "📋 0", inline: true }
-                ]);
+                    { name: i18n.__("requestChannel.shuffle"), value: "🔀 OFF", inline: true },
+                    { name: i18n.__("requestChannel.volume"), value: `🔊 ${this.client.config.defaultVolume}%`, inline: true }
+                ])
+                .setFooter({ text: i18n.__mf("requestChannel.queueFooter", { count: 0 }) });
         }
 
         const res = (
@@ -117,13 +118,13 @@ export class RequestChannelManager {
         const isLive = duration === 0 && isYouTubeUrl;
 
         const loopModeEmoji: Record<string, string> = {
-            OFF: "▶",
+            OFF: "▶️",
             SONG: "🔂",
             QUEUE: "🔁"
         };
 
-        const statusEmoji = queue.playing ? "▶" : "⏸";
-        const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶";
+        const statusEmoji = queue.playing ? "▶️" : "⏸️";
+        const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶️";
 
         // Use song thumbnail if available, fallback to env default
         const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
@@ -159,11 +160,13 @@ export class RequestChannelManager {
             embed.setDescription(`${statusEmoji} ${i18n.__("requestChannel.standby")}`);
         }
 
+        const shuffleState = queue.shuffle ? "ON" : "OFF";
         embed.addFields([
             { name: i18n.__("requestChannel.status"), value: `${loopEmoji} ${queue.loopMode}`, inline: true },
-            { name: i18n.__("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true },
-            { name: i18n.__("requestChannel.queueLength"), value: `📋 ${queue.songs.size}`, inline: true }
+            { name: i18n.__("requestChannel.shuffle"), value: `🔀 ${shuffleState}`, inline: true },
+            { name: i18n.__("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true }
         ]);
+        embed.setFooter({ text: i18n.__mf("requestChannel.queueFooter", { count: queue.songs.size }) });
 
         return embed;
     }
@@ -176,11 +179,11 @@ export class RequestChannelManager {
                 .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId("RC_SKIP")
-                .setEmoji("⏭")
+                .setEmoji("⏭️")
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
                 .setCustomId("RC_STOP")
-                .setEmoji("⏹")
+                .setEmoji("⏹️")
                 .setStyle(ButtonStyle.Danger),
             new ButtonBuilder()
                 .setCustomId("RC_LOOP")
