@@ -42,6 +42,7 @@ export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase
 export const defaultVolume = Number(process.env.DEFAULT_VOLUME ?? 100) || 100;
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
 export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
+export const requestChannelThumbnail = (process.env.REQUEST_CHANNEL_THUMBNAIL ?? "") || "https://cdn.stegripe.org/images/icon.png";
 
 export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
 export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";

@@ -6,7 +6,7 @@ import {
     ButtonStyle,
     ChannelType
 } from "discord.js";
-import i18n from "../../config/index.js";
+import i18n, { requestChannelThumbnail } from "../../config/index.js";
 import type { Rawon } from "../../structures/Rawon.js";
 import type { QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
@@ -90,7 +90,7 @@ export class RequestChannelManager {
         if (!queue || queue.songs.size === 0) {
             return createEmbed("info", i18n.__("requestChannel.standby"))
                 .setTitle(i18n.__("requestChannel.title"))
-                .setThumbnail("https://cdn.stegripe.org/images/icon.png")
+                .setThumbnail(requestChannelThumbnail)
                 .addFields([
                     { name: i18n.__("requestChannel.status"), value: `🎵 ${i18n.__("requestChannel.idle")}`, inline: true },
                     { name: i18n.__("requestChannel.volume"), value: `🔊 ${this.client.config.defaultVolume}%`, inline: true },
@@ -123,7 +123,7 @@ export class RequestChannelManager {
 
         const embed = createEmbed("info")
             .setTitle(i18n.__("requestChannel.title"))
-            .setThumbnail(song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png");
+            .setThumbnail(requestChannelThumbnail);
 
         if (song) {
             const progressLine = isLive

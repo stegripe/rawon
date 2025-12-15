@@ -19,28 +19,40 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
-        void queue.textChannel.send({
-            embeds: [
-                createEmbed(
-                    "info",
-                    `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
-                        usage: `\`${guild.client.config.mainPrefix}play\``
-                    })}`
-                )
-            ]
-        });
+        
+        // Don't send "queue ended" message in request channel to avoid spam
+        const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(guild, queue.textChannel.id);
+        if (!isRequestChannel) {
+            void queue.textChannel.send({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
+                            usage: `\`${guild.client.config.mainPrefix}play\``
+                        })}`
+                    )
+                ]
+            });
+        }
+        
+        // Update the request channel player embed to show standby state
+        void queue.client.requestChannelManager.updatePlayerMessage(guild);
+        
         queue.dcTimeout = queue.stayInVC
             ? null
             : setTimeout(async () => {
                 queue.destroy();
-                await queue.textChannel
-                    .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
-                    .then(msg => {
-                        setTimeout(() => {
-                            void msg.delete();
-                        }, 3_500);
-                        return 0;
-                    });
+                // Don't send "left VC" message in request channel
+                if (!isRequestChannel) {
+                    await queue.textChannel
+                        .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
+                        .then(msg => {
+                            setTimeout(() => {
+                                void msg.delete();
+                            }, 3_500);
+                            return 0;
+                        });
+                }
             }, 60_000);
         queue.client.debugLog.logData("info", "PLAY_HANDLER", `Queue ended for ${guild.name}(${guild.id})`);
         return;
