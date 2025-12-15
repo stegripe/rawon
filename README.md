@@ -13,7 +13,7 @@
 - A production-ready project, set up the bot without coding.
 
 ## General Setup
-1. Download and install [Node.js](https://nodejs.org) version `16.6.0` or higher
+1. Download and install [Node.js](https://nodejs.org) version `24.11.0` or higher
 2. Open the `.env_example` file and rename it to `.env`
 3. Install required and optional dependencies. You still can use `npm` too.
 ```sh
