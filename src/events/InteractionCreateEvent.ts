@@ -229,7 +229,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 const modes: LoopMode[] = ["OFF", "SONG", "QUEUE"];
                 const currentIndex = modes.indexOf(queue.loopMode);
                 const nextMode = modes[(currentIndex + 1) % modes.length];
-                queue.loopMode = nextMode;
+                queue.setLoopMode(nextMode);
 
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
@@ -247,7 +247,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
-                queue.shuffle = !queue.shuffle;
+                queue.setShuffle(!queue.shuffle);
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" }))]
@@ -282,7 +282,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
-                const newVolUp = Math.min(100, queue.volume + 10);
+                const newVolUp = queue.volume + 10;
                 queue.volume = newVolUp;
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,

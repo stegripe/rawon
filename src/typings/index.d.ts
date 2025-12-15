@@ -200,6 +200,12 @@ export type GuildData = {
         channelId: string | null;
         messageId: string | null;
     };
+    playerState?: {
+        loopMode: LoopMode;
+        shuffle: boolean;
+        volume: number;
+        filters: Record<string, boolean>;
+    };
 }
 
 export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;

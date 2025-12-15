@@ -1,7 +1,7 @@
 import { clearInterval, clearTimeout, setInterval } from "node:timers";
 import type { AudioPlayer, AudioPlayerPlayingState, AudioResource, VoiceConnection } from "@discordjs/voice";
 import { AudioPlayerStatus, createAudioPlayer } from "@discordjs/voice";
-import type { TextChannel, Snowflake } from "discord.js";
+import type { TextChannel, Snowflake, Guild } from "discord.js";
 import i18n from "../config/index.js";
 import type { LoopMode, QueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
@@ -38,6 +38,9 @@ export class ServerQueue {
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
+
+        // Load saved state from data.json
+        this.loadSavedState();
 
         this.player
             .on("stateChange", async (oldState, newState) => {
@@ -160,14 +163,55 @@ export class ServerQueue {
             });
     }
 
+    private loadSavedState(): void {
+        const savedState = this.client.data.data?.[this.textChannel.guild.id]?.playerState;
+        if (savedState) {
+            this.loopMode = savedState.loopMode ?? "OFF";
+            this.shuffle = savedState.shuffle ?? false;
+            this._volume = savedState.volume ?? this.client.config.defaultVolume;
+            this.filters = (savedState.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
+            this.client.logger.info(`Loaded saved player state for guild ${this.textChannel.guild.name}`);
+        }
+    }
+
+    public async saveState(): Promise<void> {
+        const currentData = this.client.data.data ?? {};
+        const guildData = currentData[this.textChannel.guild.id] ?? { infractions: {} };
+
+        guildData.playerState = {
+            loopMode: this.loopMode,
+            shuffle: this.shuffle,
+            volume: this._volume,
+            filters: this.filters as Record<string, boolean>
+        };
+
+        await this.client.data.save(() => ({
+            ...currentData,
+            [this.textChannel.guild.id]: guildData
+        }));
+    }
+
     public setFilter(filter: keyof typeof filterArgs, state: boolean): void {
         const before = this.filters[filter];
         this.filters[filter] = state;
+
+        // Save state when filter changes
+        void this.saveState();
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
             this.playing = false;
             void play(this.textChannel.guild, (this.player.state.resource as AudioResource<QueueSong>).metadata.key, true);
         }
+    }
+
+    public setLoopMode(mode: LoopMode): void {
+        this.loopMode = mode;
+        void this.saveState();
+    }
+
+    public setShuffle(value: boolean): void {
+        this.shuffle = value;
+        void this.saveState();
     }
 
     public stop(): void {
@@ -196,6 +240,8 @@ export class ServerQueue {
         (
             this.player.state as AudioPlayerPlayingState & { resource: AudioResource | undefined }
         ).resource.volume?.setVolumeLogarithmic(this._volume / 100);
+        // Save state when volume changes
+        void this.saveState();
     }
 
     public get skipVoters(): Snowflake[] {

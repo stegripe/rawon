@@ -86,16 +86,21 @@ export class RequestChannelManager {
 
     public createPlayerEmbed(guild: Guild): EmbedBuilder {
         const queue = guild.queue;
+        const savedState = this.client.data.data?.[guild.id]?.playerState;
 
         if (!queue || queue.songs.size === 0) {
-            // Idle state - no thumbnail
+            // Idle state - show saved state values or defaults
+            const savedLoopMode = savedState?.loopMode ?? "OFF";
+            const savedShuffle = savedState?.shuffle ?? false;
+            const savedVolume = savedState?.volume ?? this.client.config.defaultVolume;
+
             return createEmbed("info", i18n.__("requestChannel.standby"))
                 .setTitle(i18n.__("requestChannel.title"))
                 .setImage(requestChannelThumbnail)
                 .addFields([
-                    { name: i18n.__("requestChannel.status"), value: "▶️ OFF", inline: true },
-                    { name: i18n.__("requestChannel.shuffle"), value: "🔀 OFF", inline: true },
-                    { name: i18n.__("requestChannel.volume"), value: `🔊 ${this.client.config.defaultVolume}%`, inline: true }
+                    { name: i18n.__("requestChannel.status"), value: `▶️ ${savedLoopMode}`, inline: true },
+                    { name: i18n.__("requestChannel.shuffle"), value: `🔀 ${savedShuffle ? "ON" : "OFF"}`, inline: true },
+                    { name: i18n.__("requestChannel.volume"), value: `🔊 ${savedVolume}%`, inline: true }
                 ])
                 .setFooter({ text: i18n.__mf("requestChannel.queueFooter", { count: 0 }) });
         }

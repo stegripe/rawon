@@ -78,7 +78,8 @@ export class RepeatCommand extends BaseCommand {
                 ]
             });
         }
-        (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).loopMode = selection as LoopMode;
+        // Use setLoopMode to save state
+        ctx.guild?.queue?.setLoopMode(selection as LoopMode);
 
         return ctx.reply({
             embeds: [
