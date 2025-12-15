@@ -36,7 +36,6 @@ export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
 export const streamStrategy = (process.env.STREAM_STRATEGY ?? "") || "yt-dlp";
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
-export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
 export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const defaultVolume = Number(process.env.DEFAULT_VOLUME ?? 100) || 100;
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";

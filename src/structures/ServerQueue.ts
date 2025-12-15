@@ -13,10 +13,8 @@ import type { Rawon } from "./Rawon.js";
 const nonEnum = { enumerable: false };
 
 export class ServerQueue {
-    public stayInVC = this.client.config.stayInVCAfterFinished;
     public readonly player: AudioPlayer = createAudioPlayer();
     public connection: VoiceConnection | null = null;
-    public dcTimeout: NodeJS.Timeout | null = null;
     public timeout: NodeJS.Timeout | null = null;
     public readonly songs: SongManager;
     public loopMode: LoopMode = "OFF";
@@ -223,7 +221,6 @@ export class ServerQueue {
         this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
-        clearTimeout(this.dcTimeout ?? undefined);
         if (this.playerUpdateInterval !== null) {
             clearInterval(this.playerUpdateInterval);
             this.playerUpdateInterval = null;

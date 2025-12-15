@@ -1,5 +1,5 @@
 import type EventEmitter from "node:events";
-import { clearTimeout, setTimeout } from "node:timers";
+import { setTimeout } from "node:timers";
 import { AudioPlayerError, createAudioResource, entersState, StreamType, VoiceConnectionStatus } from "@discordjs/voice";
 import type { Guild } from "discord.js";
 import { ChannelType } from "discord.js";
@@ -15,7 +15,6 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
 
     const song = (nextSong?.length ?? 0) > 0 ? queue.songs.get(nextSong as unknown as string) : queue.songs.first();
 
-    clearTimeout(queue.dcTimeout ?? undefined);
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
@@ -38,22 +37,20 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         // Update the request channel player embed to show standby state
         void queue.client.requestChannelManager.updatePlayerMessage(guild);
         
-        queue.dcTimeout = queue.stayInVC
-            ? null
-            : setTimeout(async () => {
+        // Always disconnect after 60 seconds of inactivity
+        setTimeout(async () => {
+            if (!guild.queue?.songs.first()) {
                 queue.destroy();
                 // Don't send "left VC" message in request channel
                 if (!isRequestChannel) {
-                    await queue.textChannel
-                        .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
-                        .then(msg => {
-                            setTimeout(() => {
-                                void msg.delete();
-                            }, 3_500);
-                            return 0;
-                        });
+                    const msg = await queue.textChannel
+                        .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] });
+                    setTimeout(() => {
+                        void msg.delete();
+                    }, 3_500);
                 }
-            }, 60_000);
+            }
+        }, 60_000);
         queue.client.debugLog.logData("info", "PLAY_HANDLER", `Queue ended for ${guild.name}(${guild.id})`);
         return;
     }
