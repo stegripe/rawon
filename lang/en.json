@@ -302,13 +302,6 @@
                 "slashSpecificDescription": "Skip to a specific position in the queue",
                 "usage": "'{prefix}'skipto <{options} | number>"
             },
-            "stayInQueue": {
-                "247Disabled": "Stay-in-voice command is disabled.",
-                "actualState": "Stay-in-voice is **`{state}`**",
-                "description": "Makes the bot stay in the voice channel when the queue has ended",
-                "newState": "Stay-in-voice is now set to **`{state}`**",
-                "slashDescription": "Turns mode for the stay-in-voice feature"
-            },
             "stop": {
                 "description": "Stop the music player",
                 "stoppedMessage": "The music player has been stopped."
@@ -391,10 +384,10 @@
         "alreadyPlaying": "▶ **|** The music is already playing.",
         "nothingPlaying": "🎵 **|** Nothing is currently playing.",
         "volumeLimit": "🔊 **|** Volume must be between 1 and 100.",
-        "setChannel": "✅ **|** Request channel has been set to {channel}.",
-        "removeChannel": "✅ **|** Request channel has been removed.",
-        "noChannel": "ℹ️ **|** No request channel is currently set.",
-        "currentChannel": "ℹ️ **|** Current request channel: {channel}"
+        "setChannel": "Request channel has been set to {channel}.",
+        "removeChannel": "Request channel has been removed.",
+        "noChannel": "No request channel is currently set.",
+        "currentChannel": "Current request channel: {channel}"
     },
     "reusable": {
         "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",

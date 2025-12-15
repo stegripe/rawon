@@ -326,24 +326,6 @@ export class InteractionCreateEvent extends BaseEvent {
                 break;
             }
 
-            case "RC_CLEAR_QUEUE": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
-                    });
-                    return;
-                }
-
-                queue.songs.clear();
-                queue.player.stop(true);
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", i18n.__("requestChannel.queueCleared"))]
-                });
-                break;
-            }
-
             default:
                 break;
         }

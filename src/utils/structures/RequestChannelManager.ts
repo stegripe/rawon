@@ -144,8 +144,8 @@ export class RequestChannelManager {
             if (isLive) {
                 progressLine = `🔴 ${i18n.__("requestChannel.live")}`;
             } else if (duration === 0) {
-                // Unknown duration (audio files) - show elapsed time only
-                progressLine = `🎵 ${normalizeTime(curr)}`;
+                // Unknown duration (audio files) - show elapsed time with infinite duration bar
+                progressLine = `${normalizeTime(curr)} ${createProgressBar(0, 1)} --:--`;
             } else {
                 progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, duration)} ${normalizeTime(duration)}`;
             }
@@ -204,11 +204,7 @@ export class RequestChannelManager {
             new ButtonBuilder()
                 .setCustomId("RC_QUEUE_LIST")
                 .setEmoji("📋")
-                .setStyle(ButtonStyle.Secondary),
-            new ButtonBuilder()
-                .setCustomId("RC_CLEAR_QUEUE")
-                .setEmoji("🗑️")
-                .setStyle(ButtonStyle.Danger)
+                .setStyle(ButtonStyle.Secondary)
         );
 
         return [row1, row2];
