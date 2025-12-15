@@ -134,7 +134,7 @@ export class ClientUtils {
                 ffmpeg.version
                     .split(/[ _-]/u)
                     .find(x => /[\d.]/u.test(x))
-                    ?.replaceAll(/[^\d.]/u, "") ?? "Unknown"
+                    ?.replaceAll(/[^\d.]/gu, "") ?? "Unknown"
             );
         } catch {
             return "Unknown";
