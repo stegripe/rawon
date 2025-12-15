@@ -111,7 +111,7 @@ export class DJCommand extends BaseCommand {
             });
         },
         role: async ctx => {
-            const newRole = ctx.options?.getRole("newrole")?.id ?? ctx.args.shift()?.replace(/\D/gu, "");
+            const newRole = ctx.options?.getRole("newrole")?.id ?? ctx.args.shift()?.replaceAll(/\D/gu, "");
             const txt = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true ? "enable" : "disable";
             const footer = `${i18n.__("commands.music.dj.embedTitle")}: ${i18n.__(`commands.music.dj.${txt}`)}`;
 
