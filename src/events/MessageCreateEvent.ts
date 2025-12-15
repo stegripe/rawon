@@ -81,14 +81,14 @@ export class MessageCreateEvent extends BaseEvent {
         // Check if user is in a voice channel
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
-            await this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", i18n.__("requestChannel.notInVoice")));
+            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", i18n.__("requestChannel.notInVoice")));
             return;
         }
 
         // Search for the track
         const songs = await searchTrack(this.client, query).catch(() => null);
         if (!songs || songs.items.length === 0) {
-            await this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("error", i18n.__("requestChannel.noResults"), true));
+            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("error", i18n.__("requestChannel.noResults"), true));
             return;
         }
 
@@ -114,7 +114,7 @@ export class MessageCreateEvent extends BaseEvent {
                 guild.queue?.songs.clear();
                 delete guild.queue;
 
-                await this.sendTemporaryMessage(
+                this.sendTemporaryMessage(
                     message.channel as TextChannel,
                     createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }), true)
                 );
@@ -136,19 +136,25 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         // Send confirmation (will be deleted)
-        await this.sendTemporaryMessage(
+        this.sendTemporaryMessage(
             message.channel as TextChannel,
             createEmbed("success", i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title }))
         );
     }
 
-    private async sendTemporaryMessage(channel: TextChannel, embed: ReturnType<typeof createEmbed>): Promise<void> {
-        const msg = await channel.send({ embeds: [embed] });
-        setTimeout(() => { 
-            void (async () => {
-                await msg.delete().catch(() => null);
-            })();
-        }, 5_000);
+    private sendTemporaryMessage(channel: TextChannel, embed: ReturnType<typeof createEmbed>): void {
+        void (async () => {
+            const msg = await channel.send({ embeds: [embed] });
+            setTimeout(() => { 
+                void (async () => {
+                    try {
+                        await msg.delete();
+                    } catch {
+                        // Message might already be deleted
+                    }
+                })();
+            }, 5_000);
+        })();
     }
 
     private getUserFromMention(mention: string): User | undefined {

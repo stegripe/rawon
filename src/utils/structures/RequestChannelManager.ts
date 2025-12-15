@@ -16,9 +16,13 @@ import { normalizeTime } from "../functions/normalizeTime.js";
 export class RequestChannelManager {
     public constructor(public readonly client: Rawon) {}
 
+    private isValidId(id: string | null | undefined): id is string {
+        return id !== null && id !== undefined && id.length > 0;
+    }
+
     public getRequestChannel(guild: Guild): TextChannel | null {
         const data = this.client.data.data?.[guild.id]?.requestChannel;
-        if (data?.channelId === null || data?.channelId === undefined || data.channelId.length === 0) return null;
+        if (!this.isValidId(data?.channelId)) return null;
 
         const channel = guild.channels.cache.get(data.channelId);
         if (!channel || channel.type !== ChannelType.GuildText) return null;
@@ -28,8 +32,8 @@ export class RequestChannelManager {
 
     public async getPlayerMessage(guild: Guild): Promise<Message | null> {
         const data = this.client.data.data?.[guild.id]?.requestChannel;
-        if (data?.channelId === null || data?.channelId === undefined || data.channelId.length === 0) return null;
-        if (data.messageId === null || data.messageId === undefined || data.messageId.length === 0) return null;
+        if (!this.isValidId(data?.channelId)) return null;
+        if (!this.isValidId(data?.messageId)) return null;
 
         const channel = this.getRequestChannel(guild);
         if (!channel) return null;
@@ -39,6 +43,11 @@ export class RequestChannelManager {
         } catch {
             return null;
         }
+    }
+
+    public hasRequestChannel(guild: Guild): boolean {
+        const data = this.client.data.data?.[guild.id]?.requestChannel;
+        return this.isValidId(data?.channelId);
     }
 
     public async setRequestChannel(guild: Guild, channelId: string | null): Promise<void> {

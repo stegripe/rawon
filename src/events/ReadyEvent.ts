@@ -43,11 +43,11 @@ export class ReadyEvent extends BaseEvent {
         const data = this.client.data.data;
         if (!data) return;
 
-        const restorePromises = Object.entries(data)
-            .filter(([, guildData]) => guildData.requestChannel?.channelId !== null && guildData.requestChannel?.channelId !== undefined && guildData.requestChannel.channelId.length > 0)
-            .map(async ([guildId]) => {
+        const restorePromises = Object.keys(data)
+            .map(async guildId => {
                 const guild = this.client.guilds.cache.get(guildId);
                 if (!guild) return;
+                if (!this.client.requestChannelManager.hasRequestChannel(guild)) return;
 
                 try {
                     await this.client.requestChannelManager.createOrUpdatePlayerMessage(guild);
