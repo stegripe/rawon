@@ -112,6 +112,9 @@ importers:
         specifier: ^8.49.0
         version: 8.49.0(eslint@9.39.2)(typescript@5.9.3)
     optionalDependencies:
+      '@snazzah/davey':
+        specifier: ^0.1.8
+        version: 0.1.8
       play-dl:
         specifier: ^1.9.7
         version: 1.9.7
@@ -288,6 +291,9 @@ packages:
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
 
+  '@napi-rs/wasm-runtime@1.1.0':
+    resolution: {integrity: sha512-Fq6DJW+Bb5jaWE69/qOE0D1TUN9+6uWhCeZpdnSBk14pjLcCWR7Q8n49PTSPHazM37JqrsdpEthXy2xn6jWWiA==}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -360,6 +366,93 @@ packages:
   '@sindresorhus/is@7.1.1':
     resolution: {integrity: sha512-rO92VvpgMc3kfiTjGT52LEtJ8Yc5kCWhZjLQ3LwlA4pSgPpQO7bVpYXParOD8Jwf+cVQECJo3yP/4I8aZtUQTQ==}
     engines: {node: '>=18'}
+
+  '@snazzah/davey-android-arm-eabi@0.1.8':
+    resolution: {integrity: sha512-kRrrU2AldUEG8+Qqj+d5bofm1xzHEX2e657TFHOzKXObU7igqINFL61opcb30cMHcnMTGthV3bFFlh6ky0xrqw==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [android]
+
+  '@snazzah/davey-android-arm64@0.1.8':
+    resolution: {integrity: sha512-ttGznhY/vy0aUI+wwvt9Ati0U4gujKKjVwBOaOY6Ug+DKaPIc3Sah73XMXoX9QB9TyUBkH7lxvhpI+VneIcg4w==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+
+  '@snazzah/davey-darwin-arm64@0.1.8':
+    resolution: {integrity: sha512-c75j0DuAWZ20XgaTVCXzks2Gl9L0+dC0ID1NSdvoOqBRCphjHBUSf1te2hdWJKI3Dq1uPaJ00JL6fYUkpb+Wxw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@snazzah/davey-darwin-x64@0.1.8':
+    resolution: {integrity: sha512-/SAvTmkEc73R4JSAfwVGMcVzwtjvmduaZHWnF49fCO1iFGR688U8k4W1obM9JkaNoLg4LPvU4HGMuDvfxh/gUA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@snazzah/davey-freebsd-x64@0.1.8':
+    resolution: {integrity: sha512-91gPSY0gcbq/o7yqpBfWyrck7yZ4nciH3LJlk55tpC+NExedWUtH2HvsqVqqoS8TmNu+1msT0+5nJsq65flWPQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@snazzah/davey-linux-arm-gnueabihf@0.1.8':
+    resolution: {integrity: sha512-nJQOsykF5XFngsxxv6zKQX0bPfqE2YotlcPajHKVR7COSbrYgFXZ+Cck+nILiDqpCU+4fk7ae+8Knx181qbWYg==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+
+  '@snazzah/davey-linux-arm64-gnu@0.1.8':
+    resolution: {integrity: sha512-IaALezD2F3Qt2n1GL5Wm2aQEjeiJI6gzSEhEHYiqyZUM/LygCyRXSDkoPAvHGuu3Xwy5m58Z20pfukxA49xbGQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@snazzah/davey-linux-arm64-musl@0.1.8':
+    resolution: {integrity: sha512-OhEwQmZ/ntiqHoSAxRe1qVfELdKMREqwlf52vhPMFVa4XNyT6jNYXGanTMjYX2+jhH9SlJ7cqsADm1VFvjRnGA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@snazzah/davey-linux-x64-gnu@0.1.8':
+    resolution: {integrity: sha512-yghgG7iXZUHy734Cq3PcgrbRnLhhB233JNTX5VPRxRqdwFAg2MzAJ2iSWpP12K6hSqKq9hw0sdt8CNpr0mEXjQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@snazzah/davey-linux-x64-musl@0.1.8':
+    resolution: {integrity: sha512-WwCiAge27ZOEu7NRx5NFjpCAkGcUGHGtoROBY4ElRYE0Tp3DfuzWU06qSu6JBQPlzhTTBN29X2/kGP8iRUwqnQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@snazzah/davey-wasm32-wasi@0.1.8':
+    resolution: {integrity: sha512-VAUY6eMhiS4HkHDh0SCjVbwf2SUR/cHs0IzS02p4lYwuUaqPFQnraxMNZ6R2MNOK8NmtPbCpWvi7kYMxMJuL2A==}
+    engines: {node: '>=14.0.0'}
+    cpu: [wasm32]
+
+  '@snazzah/davey-win32-arm64-msvc@0.1.8':
+    resolution: {integrity: sha512-4ZcEhyfuRH+ni4pHBrgm+2zumwgaac5+OGOKHEGezJmUd3omn/iKpcj9Z0+Y9qQ8UGslzBrgesW46ENXoOfv2Q==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@snazzah/davey-win32-ia32-msvc@0.1.8':
+    resolution: {integrity: sha512-znL43C+hxocxLgk/zbgCukOSNW14HYQE5G6fNeWtANHVCstkTN7hrJVbZfBnuKD+Jw1RbCs4gxLsYja1n1iZnA==}
+    engines: {node: '>= 10'}
+    cpu: [ia32]
+    os: [win32]
+
+  '@snazzah/davey-win32-x64-msvc@0.1.8':
+    resolution: {integrity: sha512-JKIco1miwtM4NgVwU/H9TJdUaSlJ+kdtydy3+tiV9cmJv0u1SM2NpwjV85H44xAQWW2zcRBHP0ZDriciHw09qQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@snazzah/davey@0.1.8':
+    resolution: {integrity: sha512-f4NkCtU/4r9DUohp636qkZkxCF19v8Xq6W/1m4IKY2emZm+M2IdhWIv4GQxog2bQBWLNRRLD4DNM/UXEUb8W/A==}
+    engines: {node: '>= 10'}
 
   '@stegripe/eslint-config@3.0.0':
     resolution: {integrity: sha512-lPQqZooewRSY5Vlm3/T5yUYGwBCN4jWOQU/4T5rAz27gOm0KajxgGGbvk5wQnpkqCUhmad/xiUSyklSdPa5WCw==}
@@ -2197,6 +2290,13 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
+  '@napi-rs/wasm-runtime@1.1.0':
+    dependencies:
+      '@emnapi/core': 1.7.1
+      '@emnapi/runtime': 1.7.1
+      '@tybys/wasm-util': 0.10.1
+    optional: true
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -2250,6 +2350,68 @@ snapshots:
   '@sindresorhus/is@5.6.0': {}
 
   '@sindresorhus/is@7.1.1': {}
+
+  '@snazzah/davey-android-arm-eabi@0.1.8':
+    optional: true
+
+  '@snazzah/davey-android-arm64@0.1.8':
+    optional: true
+
+  '@snazzah/davey-darwin-arm64@0.1.8':
+    optional: true
+
+  '@snazzah/davey-darwin-x64@0.1.8':
+    optional: true
+
+  '@snazzah/davey-freebsd-x64@0.1.8':
+    optional: true
+
+  '@snazzah/davey-linux-arm-gnueabihf@0.1.8':
+    optional: true
+
+  '@snazzah/davey-linux-arm64-gnu@0.1.8':
+    optional: true
+
+  '@snazzah/davey-linux-arm64-musl@0.1.8':
+    optional: true
+
+  '@snazzah/davey-linux-x64-gnu@0.1.8':
+    optional: true
+
+  '@snazzah/davey-linux-x64-musl@0.1.8':
+    optional: true
+
+  '@snazzah/davey-wasm32-wasi@0.1.8':
+    dependencies:
+      '@napi-rs/wasm-runtime': 1.1.0
+    optional: true
+
+  '@snazzah/davey-win32-arm64-msvc@0.1.8':
+    optional: true
+
+  '@snazzah/davey-win32-ia32-msvc@0.1.8':
+    optional: true
+
+  '@snazzah/davey-win32-x64-msvc@0.1.8':
+    optional: true
+
+  '@snazzah/davey@0.1.8':
+    optionalDependencies:
+      '@snazzah/davey-android-arm-eabi': 0.1.8
+      '@snazzah/davey-android-arm64': 0.1.8
+      '@snazzah/davey-darwin-arm64': 0.1.8
+      '@snazzah/davey-darwin-x64': 0.1.8
+      '@snazzah/davey-freebsd-x64': 0.1.8
+      '@snazzah/davey-linux-arm-gnueabihf': 0.1.8
+      '@snazzah/davey-linux-arm64-gnu': 0.1.8
+      '@snazzah/davey-linux-arm64-musl': 0.1.8
+      '@snazzah/davey-linux-x64-gnu': 0.1.8
+      '@snazzah/davey-linux-x64-musl': 0.1.8
+      '@snazzah/davey-wasm32-wasi': 0.1.8
+      '@snazzah/davey-win32-arm64-msvc': 0.1.8
+      '@snazzah/davey-win32-ia32-msvc': 0.1.8
+      '@snazzah/davey-win32-x64-msvc': 0.1.8
+    optional: true
 
   '@stegripe/eslint-config@3.0.0(@stylistic/eslint-plugin@5.6.1(eslint@9.39.2))(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.49.0(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.2))(eslint-plugin-jsdoc@61.5.0(eslint@9.39.2))(eslint-plugin-n@17.23.1(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-promise@7.2.1(eslint@9.39.2))(eslint-plugin-tsdoc@0.5.0(eslint@9.39.2)(typescript@5.9.3))(eslint-plugin-unicorn@62.0.0(eslint@9.39.2))(eslint@9.39.2)(globals@16.5.0)(typescript-eslint@8.49.0(eslint@9.39.2)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
