@@ -52,6 +52,8 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     await getStream(queue.client, song.song.url).then(x => x.pipe(stream as unknown as NodeJS.WritableStream));
 
     const resource = createAudioResource(stream, { inlineVolume: true, inputType: StreamType.OggOpus, metadata: song });
+    
+    resource.volume?.setVolumeLogarithmic(queue.volume / 100);
 
     queue.client.debugLog.logData("info", "PLAY_HANDLER", `Created audio resource for ${guild.name}(${guild.id})`);
 
