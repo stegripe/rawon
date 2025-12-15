@@ -15,11 +15,10 @@ services:
       - net
     volumes:
       - rawon-scripts:/app/scripts
-      - rawon-data:/app/data.json
+      - ./data.json:/app/data.json
 
 networks:
   net:
 
 volumes:
   rawon-scripts:
-  rawon-data:

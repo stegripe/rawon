@@ -215,6 +215,7 @@
             "lyrics": {
                 "apiError": "The API could not find the song **{song}**, because: `{message}`",
                 "description": "Show the lyrics from the song",
+                "noLyrics": "🎵 **|** No lyrics found for **{song}**.",
                 "noQuery": "There is nothing playing, or no arguments are provided.",
                 "slashDescription": "Song to search",
                 "usage": "{prefix}lyrics [song]"
@@ -414,6 +415,7 @@
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
             "noQueue": "Nothing is being played.",
             "sameVC": "You need to be in the same voice channel as mine.",
+            "useRequestChannel": "🎵 **|** Please use the request channel {channel} for music commands.",
             "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
             "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
         }

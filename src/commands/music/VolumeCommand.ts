@@ -3,7 +3,7 @@ import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
+import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 
@@ -24,6 +24,7 @@ import { createProgressBar } from "../../utils/functions/createProgressBar.js";
     usage: i18n.__("commands.music.volume.usage")
 })
 export class VolumeCommand extends BaseCommand {
+    @useRequestChannel
     @inVC
     @validVC
     @sameVC

@@ -26,8 +26,25 @@ export class MessageCreateEvent extends BaseEvent {
 
         if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) return;
 
-        // Handle request channel messages
+        // Check if this is a prefix command
+        const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(pr => {
+            if (pr === "{mention}") {
+                const userMention = /<@(!)?\d*?>/u.exec(message.content);
+                if (userMention?.index !== 0) return false;
+                const user = this.getUserFromMention(userMention[0]);
+                return user?.id === this.client.user?.id;
+            }
+            return message.content.startsWith(pr);
+        });
+
+        // Handle request channel messages (but allow prefix commands to work normally)
         if (message.guild && this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)) {
+            if ((prefixMatch?.length ?? 0) > 0) {
+                // It's a prefix command - handle it normally but ephemeral-style (delete after response)
+                await message.delete().catch(() => null);
+                this.client.commands.handle(message, prefixMatch as unknown as string);
+                return;
+            }
             await this.handleRequestChannelMessage(message);
             return;
         }
@@ -48,20 +65,8 @@ export class MessageCreateEvent extends BaseEvent {
                 .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
         }
 
-        const pref = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(pr => {
-            if (pr === "{mention}") {
-                const userMention = /<@(!)?\d*?>/u.exec(message.content);
-                if (userMention?.index !== 0) return false;
-
-                const user = this.getUserFromMention(userMention[0]);
-
-                return user?.id === this.client.user?.id;
-            }
-
-            return message.content.startsWith(pr);
-        });
-        if ((pref?.length ?? 0) > 0) {
-            this.client.commands.handle(message, pref as unknown as string);
+        if ((prefixMatch?.length ?? 0) > 0) {
+            this.client.commands.handle(message, prefixMatch as unknown as string);
         }
     }
 
@@ -135,11 +140,12 @@ export class MessageCreateEvent extends BaseEvent {
             void play(guild);
         }
 
-        // Send confirmation (will be deleted)
-        this.sendTemporaryMessage(
-            message.channel as TextChannel,
-            createEmbed("success", i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title }))
-        );
+        // Send confirmation with thumbnail (will be deleted)
+        const confirmEmbed = createEmbed("success", i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title }));
+        if (songs.items[0].thumbnail) {
+            confirmEmbed.setThumbnail(songs.items[0].thumbnail);
+        }
+        this.sendTemporaryMessage(message.channel as TextChannel, confirmEmbed);
     }
 
     private sendTemporaryMessage(channel: TextChannel, embed: ReturnType<typeof createEmbed>): void {

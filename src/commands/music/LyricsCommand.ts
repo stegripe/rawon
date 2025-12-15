@@ -52,48 +52,76 @@ export class LyricsCommand extends BaseCommand {
     }
 
     private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
-        const url = `https://api.lxndr.dev/lyrics?song=${encodeURI(song)}&from=DiscordRawon`;
-        await this.client.request
-            .get(url)
-            .json<LyricsAPIResult<false>>()
-            .then(async data => {
-                if ((data as { error: boolean }).error) {
-                    return ctx.reply({
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__mf("commands.music.lyrics.apiError", {
-                                    song: `\`${song}\``,
-                                    message: `\`${(data as { message?: string }).message}\``
-                                }),
-                                true
-                            )
-                        ]
-                    });
-                }
+        const url = `https://api.lxndr.dev/lyrics?song=${encodeURIComponent(song)}&from=DiscordRawon`;
+        
+        try {
+            const data = await this.client.request.get(url).json<LyricsAPIResult<false>>();
+            
+            if ((data as { error: boolean }).error) {
+                await ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__mf("commands.music.lyrics.apiError", {
+                                song: `\`${song}\``,
+                                message: `\`${(data as { message?: string }).message ?? "Unknown error"}\``
+                            }),
+                            true
+                        )
+                    ]
+                });
+                return;
+            }
 
-                const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
-                const pages: string[] = chunk(data.lyrics ?? "", 2_048);
-                const embed = createEmbed("info", pages[0])
-                    .setAuthor({
-                        name: ((data.song?.length ?? 0) > 0) && ((data.artist?.length ?? 0) > 0) ? `${data.song} - ${data.artist}` : song.toUpperCase()
-                    })
-                    .setThumbnail(albumArt);
-                const msg = await ctx.reply({ embeds: [embed] });
-
-                return new ButtonPagination(msg, {
-                    author: ctx.author.id,
-                    edit: (i, emb, page) =>
-                        emb.setDescription(page).setFooter({
-                            text: i18n.__mf("reusable.pageFooter", {
-                                actual: i + 1,
-                                total: pages.length
+            if ((data.lyrics?.length ?? 0) === 0) {
+                await ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "warn",
+                            i18n.__mf("commands.music.lyrics.noLyrics", {
+                                song: `\`${song}\``
                             })
+                        )
+                    ]
+                });
+                return;
+            }
+
+            const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+            const pages: string[] = chunk(data.lyrics ?? "", 2_048);
+            const embed = createEmbed("info", pages[0])
+                .setAuthor({
+                    name: ((data.song?.length ?? 0) > 0) && ((data.artist?.length ?? 0) > 0) ? `${data.song} - ${data.artist}` : song.toUpperCase()
+                })
+                .setThumbnail(albumArt);
+            const msg = await ctx.reply({ embeds: [embed] });
+
+            await new ButtonPagination(msg, {
+                author: ctx.author.id,
+                edit: (i, emb, page) =>
+                    emb.setDescription(page).setFooter({
+                        text: i18n.__mf("reusable.pageFooter", {
+                            actual: i + 1,
+                            total: pages.length
+                        })
+                    }),
+                embed,
+                pages
+            }).start();
+        } catch (error) {
+            this.client.logger.error("LYRICS_CMD_ERR:", error);
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.music.lyrics.apiError", {
+                            song: `\`${song}\``,
+                            message: `\`${(error as Error).message ?? "Connection error"}\``
                         }),
-                    embed,
-                    pages
-                }).start();
-            })
-            .catch((error: unknown) => console.error(error));
+                        true
+                    )
+                ]
+            });
+        }
     }
 }

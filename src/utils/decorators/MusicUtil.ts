@@ -1,5 +1,6 @@
 import { PermissionFlagsBits } from "discord.js";
 import i18n from "../../config/index.js";
+import type { Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
 
@@ -57,4 +58,21 @@ export const sameVC = createCmdExecuteDecorator(ctx => {
     }
 
     return true;
+});
+
+export const useRequestChannel = createCmdExecuteDecorator(ctx => {
+    // Check if guild has a request channel set up
+    if (!ctx.guild) return true;
+    
+    const requestChannel = (ctx.guild.client as Rawon).requestChannelManager.getRequestChannel(ctx.guild);
+    if (requestChannel === null) return true;
+    
+    // If already in the request channel, allow the command
+    if (ctx.channel?.id === requestChannel.id) return true;
+    
+    // Redirect to request channel
+    void ctx.reply({
+        embeds: [createEmbed("warn", i18n.__mf("utils.musicDecorator.useRequestChannel", { channel: `<#${requestChannel.id}>` }))]
+    });
+    return false;
 });
