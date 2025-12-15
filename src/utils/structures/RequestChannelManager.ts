@@ -90,7 +90,7 @@ export class RequestChannelManager {
         if (!queue || queue.songs.size === 0) {
             return createEmbed("info", i18n.__("requestChannel.standby"))
                 .setTitle(i18n.__("requestChannel.title"))
-                .setThumbnail(requestChannelThumbnail)
+                .setImage(requestChannelThumbnail)
                 .addFields([
                     { name: i18n.__("requestChannel.status"), value: `🎵 ${i18n.__("requestChannel.idle")}`, inline: true },
                     { name: i18n.__("requestChannel.volume"), value: `🔊 ${this.client.config.defaultVolume}%`, inline: true },
@@ -110,7 +110,10 @@ export class RequestChannelManager {
 
         const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
         const duration = song?.duration ?? 0;
-        const isLive = duration === 0;
+        // Check if this is a live stream (YouTube live) vs unknown duration (audio files)
+        // Live streams have duration 0 and are from YouTube, audio files may have duration 0 but aren't live
+        const isYouTubeUrl = (song?.url?.includes("youtube.com") ?? false) || (song?.url?.includes("youtu.be") ?? false);
+        const isLive = duration === 0 && isYouTubeUrl;
 
         const loopModeEmoji: Record<string, string> = {
             OFF: "▶",
@@ -121,14 +124,24 @@ export class RequestChannelManager {
         const statusEmoji = queue.playing ? "▶" : "⏸";
         const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶";
 
+        // Use song thumbnail if available, fallback to env default
+        const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
+        const imageUrl = hasThumbnail ? song?.thumbnail : requestChannelThumbnail;
+
         const embed = createEmbed("info")
             .setTitle(i18n.__("requestChannel.title"))
-            .setThumbnail(requestChannelThumbnail);
+            .setImage(imageUrl ?? requestChannelThumbnail);
 
         if (song) {
-            const progressLine = isLive
-                ? `🔴 ${i18n.__("requestChannel.live")}`
-                : `${normalizeTime(curr)} ${createProgressBar(curr, duration)} ${normalizeTime(duration)}`;
+            let progressLine: string;
+            if (isLive) {
+                progressLine = `🔴 ${i18n.__("requestChannel.live")}`;
+            } else if (duration === 0) {
+                // Unknown duration (audio files) - show elapsed time only
+                progressLine = `🎵 ${normalizeTime(curr)}`;
+            } else {
+                progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, duration)} ${normalizeTime(duration)}`;
+            }
 
             embed.setDescription(
                 `${statusEmoji} **[${song.title}](${song.url})**\n\n` +
@@ -195,16 +208,21 @@ export class RequestChannelManager {
     }
 
     public async updatePlayerMessage(guild: Guild): Promise<void> {
-        const message = await this.getPlayerMessage(guild);
+        const message = await this.getPlayerMessage(guild).catch(() => null);
         if (!message) return;
 
         try {
+            const embed = this.createPlayerEmbed(guild);
+            const components = this.createPlayerButtons();
             await message.edit({
-                embeds: [this.createPlayerEmbed(guild)],
-                components: this.createPlayerButtons()
+                embeds: [embed],
+                components
+            }).catch((error: unknown) => {
+                this.client.logger.debug(`Failed to update player message: ${(error as Error).message}`);
             });
-        } catch {
-            // Message might have been deleted
+        } catch (error) {
+            // Message might have been deleted or other error
+            this.client.logger.debug(`Error in updatePlayerMessage: ${(error as Error).message}`);
         }
     }
 

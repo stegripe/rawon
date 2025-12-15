@@ -45,7 +45,17 @@ export class ServerQueue {
 
                     const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong)
                         .song;
-                    this.sendStartPlayingMsg(newSong);
+                    
+                    // Only send "started playing" message if NOT in request channel
+                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
+                    if (isRequestChannel) {
+                        // Just log it without sending message
+                        this.client.logger.info(
+                            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name} has started.`
+                        );
+                    } else {
+                        this.sendStartPlayingMsg(newSong);
+                    }
                     
                     // Update request channel player message
                     void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
@@ -75,20 +85,27 @@ export class ServerQueue {
                     // Update request channel player message
                     void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
 
-                    await this.textChannel
-                        .send({
-                            embeds: [
-                                createEmbed(
-                                    "info",
-                                    `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
-                                        song: `[${song.song.title}](${song.song.url})`
-                                    })}`
-                                ).setThumbnail(song.song.thumbnail)
-                            ]
-                        })
-                        .then(ms => (this.lastMusicMsg = ms.id))
-                        .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error))
-                        .finally(async () => play(this.textChannel.guild, nextS).catch(async (error: unknown) => {
+                    // Only send "stopped playing" message if NOT in request channel
+                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
+                    if (!isRequestChannel) {
+                        await this.textChannel
+                            .send({
+                                embeds: [
+                                    createEmbed(
+                                        "info",
+                                        `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
+                                            song: `[${song.song.title}](${song.song.url})`
+                                        })}`
+                                    ).setThumbnail(song.song.thumbnail)
+                                ]
+                            })
+                            .then(ms => (this.lastMusicMsg = ms.id))
+                            .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
+                    }
+
+                    // Play next song
+                    await play(this.textChannel.guild, nextS).catch(async (error: unknown) => {
+                        if (!isRequestChannel) {
                             await this.textChannel
                                 .send({
                                     embeds: [
@@ -101,11 +118,11 @@ export class ServerQueue {
                                         )
                                     ]
                                 })
-                                // eslint-disable-next-line promise/no-nesting, typescript/naming-convention
-                                .catch((error_: unknown) => this.client.logger.error("PLAY_ERR:", error_));
-                            this.connection?.disconnect();
-                            this.client.logger.error("PLAY_ERR:", error);
-                        }));
+                                .catch((playErr: unknown) => this.client.logger.error("PLAY_ERR:", playErr));
+                        }
+                        this.connection?.disconnect();
+                        this.client.logger.error("PLAY_ERR:", error);
+                    });
                 }
             })
             .on("error", err => {
