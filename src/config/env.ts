@@ -48,7 +48,6 @@ export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
 export const isProd = !isDev;
 export const mainPrefix = isDev ? "d!" : (process.env.MAIN_PREFIX ?? "") || "!";
 export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";
-export const enableRepl = process.env.REPL?.toLowerCase() === "yes";
 
 export const altPrefixes: string[] = parseEnvValue((process.env.ALT_PREFIX ?? "") || "{mention}").filter(
     (x, i, a) => a.indexOf(x) === i && x !== mainPrefix

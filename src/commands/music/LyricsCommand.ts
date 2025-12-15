@@ -78,7 +78,7 @@ export class LyricsCommand extends BaseCommand {
                         // eslint-disable-next-line typescript/naming-convention
                         album_art: "https://cdn.stegripe.org/images/icon.png",
                         synced: false,
-                        url: null,
+                        url: undefined,
                         error: false
                     } as LyricsAPIResult<false>;
                 }

@@ -217,7 +217,8 @@
                 "description": "曲の歌詞を表示",
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "slashDescription": "検索する曲",
-                "usage": "{prefix}lyrics [曲]"
+                "usage": "{prefix}lyrics [曲]",
+                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",
@@ -301,13 +302,6 @@
                 "slashSpecificDescription": "キュー内の特定のポジションにスキップ",
                 "usage": "'{prefix}'skipto <{options} | 数>"
             },
-            "stayInQueue": {
-                "247Disabled": "常時接続は無効化されています。.",
-                "actualState": "常時接続は**`{state}`**です。",
-                "description": "キューが終了してもBotにVCに接続させる",
-                "newState": "常時接続は**`{state}`**です。",
-                "slashDescription": "常時接続を設定"
-            },
             "stop": {
                 "description": "プレイヤーをストップ",
                 "stoppedMessage": "プレイヤーはストップされました。"
@@ -321,6 +315,16 @@
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]",
                 "volumeLimit": "**`{maxVol}`**以上にボリュームをセットできません。"
+            },
+            "requestChannel": {
+                "description": "Set up a request channel for music",
+                "noPermission": "You need the **Manage Server** permission to use this command.",
+                "invalidChannel": "Please provide a valid text channel.",
+                "slashSetDescription": "Set a channel as the request channel",
+                "slashRemoveDescription": "Remove the request channel",
+                "slashStatusDescription": "Show the current request channel",
+                "slashChannelDescription": "The channel to set as request channel",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -372,7 +376,43 @@
             "noQueue": "何も再生されていません。",
             "sameVC": "あなたは私と同じVCに参加する必要があります。",
             "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
-            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。"
+            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。",
+            "useRequestChannel": "🎵 **|** Please use the request channel {channel} for music commands."
         }
+    },
+    "requestChannel": {
+        "title": "🎵 Music Player",
+        "standby": "No music playing. Send a song name or URL to start playing!",
+        "status": "Loop Mode",
+        "shuffle": "Shuffle",
+        "volume": "Volume",
+        "queueLength": "Queue",
+        "queueFooter": "• Total song(s) in queue: {count}",
+        "idle": "Idle",
+        "live": "LIVE",
+        "requestedBy": "Requested by",
+        "unknown": "Unknown",
+        "notInVoice": "🎤 **|** You need to be in a voice channel to request music.",
+        "noResults": "No results found for your query.",
+        "addedToQueue": "🎶 **|** Added **{song}** to the queue.",
+        "startedPlaying": "▶️ **|** Now playing **{song}**",
+        "paused": "⏸️ **|** Paused the music.",
+        "resumed": "▶️ **|** Resumed the music.",
+        "skipped": "⏭️ **|** Skipped the current song.",
+        "stopped": "⏹️ **|** Stopped the music and cleared the queue.",
+        "loopChanged": "🔁 **|** Loop mode changed to **{mode}**.",
+        "shuffleChanged": "🔀 **|** Shuffle mode is now **{state}**.",
+        "volumeChanged": "🔊 **|** Volume changed to **{volume}%**.",
+        "queueCleared": "🗑️ **|** Queue has been cleared.",
+        "queueListTitle": "📋 Queue List",
+        "emptyQueue": "📋 **|** The queue is empty.",
+        "alreadyPaused": "⏸️ **|** The music is already paused.",
+        "alreadyPlaying": "▶️ **|** The music is already playing.",
+        "nothingPlaying": "🎵 **|** Nothing is currently playing.",
+        "volumeLimit": "🔊 **|** Volume must be between 1 and 100.",
+        "setChannel": "Request channel has been set to {channel}.",
+        "removeChannel": "Request channel has been removed.",
+        "noChannel": "No request channel is currently set.",
+        "currentChannel": "Current request channel: {channel}"
     }
 }

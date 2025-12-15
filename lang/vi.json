@@ -217,7 +217,8 @@
                 "description": "Hiển thị lời bài hát",
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
                 "slashDescription": "Tìm bài hát",
-                "usage": "{prefix}lyrics [bài hát]"
+                "usage": "{prefix}lyrics [bài hát]",
+                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
@@ -301,13 +302,6 @@
                 "slashSpecificDescription": "Chuyển đến một vị trí cụ thể trong hàng đợi",
                 "usage": "'{prefix}'skipto <{options} | số thứ tự>"
             },
-            "stayInQueue": {
-                "247Disabled": "Lệnh ở lại kênh thoại bị tắt.",
-                "actualState": "Ở lại kênh thoại bị **`{state}`**",
-                "description": "Giữ bot ở lại kênh thoại khi hàng đợi kết thúc",
-                "newState": "Ở lại kênh thoại được đặt thành **`{state}`**",
-                "slashDescription": "Bật chế độ ở lại kênh thoại"
-            },
             "stop": {
                 "description": "Dừng phát nhạc",
                 "stoppedMessage": "Trình phát nhạc đã bị dừng."
@@ -321,6 +315,16 @@
                 "slashDescription": "Âm lượng mới",
                 "usage": "{prefix}volume [âm lượng mới]",
                 "volumeLimit": "Tôi không thể đặt âm lượng trên **`{maxVol}`**"
+            },
+            "requestChannel": {
+                "description": "Set up a request channel for music",
+                "noPermission": "You need the **Manage Server** permission to use this command.",
+                "invalidChannel": "Please provide a valid text channel.",
+                "slashSetDescription": "Set a channel as the request channel",
+                "slashRemoveDescription": "Remove the request channel",
+                "slashStatusDescription": "Show the current request channel",
+                "slashChannelDescription": "The channel to set as request channel",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -372,7 +376,43 @@
             "noQueue": "Đang rảnh rỗi.",
             "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
             "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp."
+            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "useRequestChannel": "🎵 **|** Please use the request channel {channel} for music commands."
         }
+    },
+    "requestChannel": {
+        "title": "🎵 Music Player",
+        "standby": "No music playing. Send a song name or URL to start playing!",
+        "status": "Loop Mode",
+        "shuffle": "Shuffle",
+        "volume": "Volume",
+        "queueLength": "Queue",
+        "queueFooter": "• Total song(s) in queue: {count}",
+        "idle": "Idle",
+        "live": "LIVE",
+        "requestedBy": "Requested by",
+        "unknown": "Unknown",
+        "notInVoice": "🎤 **|** You need to be in a voice channel to request music.",
+        "noResults": "No results found for your query.",
+        "addedToQueue": "🎶 **|** Added **{song}** to the queue.",
+        "startedPlaying": "▶️ **|** Now playing **{song}**",
+        "paused": "⏸️ **|** Paused the music.",
+        "resumed": "▶️ **|** Resumed the music.",
+        "skipped": "⏭️ **|** Skipped the current song.",
+        "stopped": "⏹️ **|** Stopped the music and cleared the queue.",
+        "loopChanged": "🔁 **|** Loop mode changed to **{mode}**.",
+        "shuffleChanged": "🔀 **|** Shuffle mode is now **{state}**.",
+        "volumeChanged": "🔊 **|** Volume changed to **{volume}%**.",
+        "queueCleared": "🗑️ **|** Queue has been cleared.",
+        "queueListTitle": "📋 Queue List",
+        "emptyQueue": "📋 **|** The queue is empty.",
+        "alreadyPaused": "⏸️ **|** The music is already paused.",
+        "alreadyPlaying": "▶️ **|** The music is already playing.",
+        "nothingPlaying": "🎵 **|** Nothing is currently playing.",
+        "volumeLimit": "🔊 **|** Volume must be between 1 and 100.",
+        "setChannel": "Request channel has been set to {channel}.",
+        "removeChannel": "Request channel has been removed.",
+        "noChannel": "No request channel is currently set.",
+        "currentChannel": "Current request channel: {channel}"
     }
 }

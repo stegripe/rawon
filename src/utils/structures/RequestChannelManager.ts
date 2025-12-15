@@ -185,7 +185,7 @@ export class RequestChannelManager {
             new ButtonBuilder()
                 .setCustomId("RC_SKIP")
                 .setEmoji("⏭️")
-                .setStyle(ButtonStyle.Secondary),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId("RC_STOP")
                 .setEmoji("⏹️")

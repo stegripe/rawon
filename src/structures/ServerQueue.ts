@@ -1,7 +1,7 @@
 import { clearInterval, clearTimeout, setInterval } from "node:timers";
 import type { AudioPlayer, AudioPlayerPlayingState, AudioResource, VoiceConnection } from "@discordjs/voice";
 import { AudioPlayerStatus, createAudioPlayer } from "@discordjs/voice";
-import type { TextChannel, Snowflake, Guild } from "discord.js";
+import type { TextChannel, Snowflake } from "discord.js";
 import i18n from "../config/index.js";
 import type { LoopMode, QueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
