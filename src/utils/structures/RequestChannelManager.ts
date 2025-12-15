@@ -93,7 +93,7 @@ export class RequestChannelManager {
                 .setTitle(i18n.__("requestChannel.title"))
                 .setImage(requestChannelThumbnail)
                 .addFields([
-                    { name: i18n.__("requestChannel.status"), value: `▶️ ${i18n.__("requestChannel.idle")}`, inline: true },
+                    { name: i18n.__("requestChannel.status"), value: "▶️ OFF", inline: true },
                     { name: i18n.__("requestChannel.shuffle"), value: "🔀 OFF", inline: true },
                     { name: i18n.__("requestChannel.volume"), value: `🔊 ${this.client.config.defaultVolume}%`, inline: true }
                 ])
