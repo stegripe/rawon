@@ -33,6 +33,8 @@ pnpm prune --production
 ```sh
 pnpm start
 ```
+8. (Optional) Setup the special player channel:
+`<prefix>requestchannel <#rawon>`
 
 ## Docker Setup
 
