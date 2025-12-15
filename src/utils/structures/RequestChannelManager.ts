@@ -182,6 +182,10 @@ export class RequestChannelManager {
                 .setEmoji("🔊")
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
+                .setCustomId("RC_QUEUE_LIST")
+                .setEmoji("📋")
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
                 .setCustomId("RC_CLEAR_QUEUE")
                 .setEmoji("🗑️")
                 .setStyle(ButtonStyle.Danger)

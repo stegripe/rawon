@@ -1,10 +1,13 @@
+import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
-import type { LoopMode } from "../typings/index.js";
+import type { LoopMode, QueueSong } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
+import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import type { SongManager } from "../utils/structures/SongManager.js";
 
 @Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
@@ -284,6 +287,41 @@ export class InteractionCreateEvent extends BaseEvent {
                 await interaction.reply({
                     ephemeral: true,
                     embeds: [createEmbed("success", i18n.__mf("requestChannel.volumeChanged", { volume: newVolUp }))]
+                });
+                break;
+            }
+
+            case "RC_QUEUE_LIST": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const np = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
+                const full = queue.songs.sortByIndex() as unknown as SongManager;
+                const songs = queue.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);
+                const pages = chunk([...songs.values()], 10).map((sngs, ind) => {
+                    const names = sngs.map((song, i) => {
+                        const npKey = np.key;
+                        const addition = song.key === npKey ? "**" : "";
+
+                        return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
+                    });
+
+                    return names.join("\n");
+                });
+
+                const embed = createEmbed("info", pages[0] ?? i18n.__("requestChannel.emptyQueue"))
+                    .setTitle(i18n.__("requestChannel.queueListTitle"))
+                    .setThumbnail(guild.iconURL({ extension: "png", size: 1_024 }) ?? null)
+                    .setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length || 1 }) });
+
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [embed]
                 });
                 break;
             }

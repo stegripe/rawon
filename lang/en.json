@@ -384,6 +384,8 @@
         "shuffleChanged": "🔀 Shuffle mode is now **{state}**.",
         "volumeChanged": "🔊 Volume changed to **{volume}%**.",
         "queueCleared": "🗑️ Queue has been cleared.",
+        "queueListTitle": "📋 Queue List",
+        "emptyQueue": "The queue is empty.",
         "alreadyPaused": "The music is already paused.",
         "alreadyPlaying": "The music is already playing.",
         "nothingPlaying": "Nothing is currently playing.",
