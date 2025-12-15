@@ -88,6 +88,7 @@ export class RequestChannelManager {
         const queue = guild.queue;
 
         if (!queue || queue.songs.size === 0) {
+            // Idle state - no thumbnail
             return createEmbed("info", i18n.__("requestChannel.standby"))
                 .setTitle(i18n.__("requestChannel.title"))
                 .setImage(requestChannelThumbnail)
@@ -131,6 +132,12 @@ export class RequestChannelManager {
         const embed = createEmbed("info")
             .setTitle(i18n.__("requestChannel.title"))
             .setImage(imageUrl ?? requestChannelThumbnail);
+
+        // Add guild icon as thumbnail when playing
+        const guildIcon = guild.iconURL({ size: 128 });
+        if (guildIcon !== null && guildIcon.length > 0) {
+            embed.setThumbnail(guildIcon);
+        }
 
         if (song) {
             let progressLine: string;

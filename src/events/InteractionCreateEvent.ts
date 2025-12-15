@@ -1,5 +1,5 @@
 import { AudioPlayerPlayingState } from "@discordjs/voice";
-import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
+import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, MessageFlags, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
@@ -45,7 +45,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     ).has(PermissionsBitField.Flags.ManageMessages)
                 ) {
                     void interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [
                             createEmbed(
                                 "error",
@@ -102,7 +102,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
             if (interaction.user.id !== user) {
                 void interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [
                         createEmbed(
                             "error",
@@ -136,7 +136,7 @@ export class InteractionCreateEvent extends BaseEvent {
         // Check if user is in a voice channel
         if (!voiceChannel) {
             await interaction.reply({
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
                 embeds: [createEmbed("warn", i18n.__("requestChannel.notInVoice"))]
             });
             return;
@@ -146,7 +146,7 @@ export class InteractionCreateEvent extends BaseEvent {
         const botVoiceChannel = guild.members.me?.voice.channel;
         if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
             await interaction.reply({
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
                 embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.sameVC"))]
             });
             return;
@@ -158,7 +158,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_PAUSE_RESUME": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -167,13 +167,13 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (queue.playing) {
                     queue.playing = false;
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("success", i18n.__("requestChannel.paused"))]
                     });
                 } else {
                     queue.playing = true;
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("success", i18n.__("requestChannel.resumed"))]
                     });
                 }
@@ -183,7 +183,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_SKIP": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -194,7 +194,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 }
                 queue.player.stop(true);
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__("requestChannel.skipped"))]
                 });
                 break;
@@ -203,7 +203,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_STOP": {
                 if (!queue) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -211,7 +211,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 queue.destroy();
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__("requestChannel.stopped"))]
                 });
                 break;
@@ -220,7 +220,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_LOOP": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -232,7 +232,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.loopMode = nextMode;
 
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__mf("requestChannel.loopChanged", { mode: nextMode }))]
                 });
                 break;
@@ -241,7 +241,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_SHUFFLE": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -249,7 +249,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 queue.shuffle = !queue.shuffle;
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" }))]
                 });
                 break;
@@ -258,7 +258,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_VOL_DOWN": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -267,7 +267,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 const newVolDown = Math.max(1, queue.volume - 10);
                 queue.volume = newVolDown;
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__mf("requestChannel.volumeChanged", { volume: newVolDown }))]
                 });
                 break;
@@ -276,7 +276,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_VOL_UP": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -285,7 +285,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 const newVolUp = Math.min(100, queue.volume + 10);
                 queue.volume = newVolUp;
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__mf("requestChannel.volumeChanged", { volume: newVolUp }))]
                 });
                 break;
@@ -294,7 +294,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_QUEUE_LIST": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -320,7 +320,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     .setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length || 1 }) });
 
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [embed]
                 });
                 break;
@@ -329,7 +329,7 @@ export class InteractionCreateEvent extends BaseEvent {
             case "RC_CLEAR_QUEUE": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
@@ -338,7 +338,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.songs.clear();
                 queue.player.stop(true);
                 await interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", i18n.__("requestChannel.queueCleared"))]
                 });
                 break;

@@ -1,4 +1,4 @@
-import { clearTimeout } from "node:timers";
+import { clearInterval, clearTimeout, setInterval } from "node:timers";
 import type { AudioPlayer, AudioPlayerPlayingState, AudioResource, VoiceConnection } from "@discordjs/voice";
 import { AudioPlayerStatus, createAudioPlayer } from "@discordjs/voice";
 import type { TextChannel, Snowflake } from "discord.js";
@@ -22,6 +22,7 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
+    public playerUpdateInterval: NodeJS.Timeout | null = null;
 
     private _volume = this.client.config.defaultVolume;
     private _lastVSUpdateMsg: Snowflake | null = null;
@@ -59,6 +60,15 @@ export class ServerQueue {
                     
                     // Update request channel player message
                     void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+                    
+                    // Start player update interval (every 5 seconds) for request channel
+                    if (this.playerUpdateInterval === null) {
+                        this.playerUpdateInterval = setInterval(() => {
+                            if (this.playing) {
+                                void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+                            }
+                        }, 5_000);
+                    }
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
                     this.client.logger.info(
@@ -168,6 +178,10 @@ export class ServerQueue {
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
         clearTimeout(this.dcTimeout ?? undefined);
+        if (this.playerUpdateInterval !== null) {
+            clearInterval(this.playerUpdateInterval);
+            this.playerUpdateInterval = null;
+        }
         delete this.textChannel.guild.queue;
     }
 
