@@ -42,10 +42,16 @@ export class MessageCreateEvent extends BaseEvent {
             if ((prefixMatch?.length ?? 0) > 0) {
                 // It's a prefix command - handle it normally, then delete user message after a delay
                 this.client.commands.handle(message, prefixMatch as unknown as string);
-                // Delete user's command message after 5 seconds
+                // Delete user's command message after 30 seconds
                 setTimeout(() => {
-                    void message.delete().catch(() => null);
-                }, 5_000);
+                    void (async () => {
+                        try {
+                            await message.delete();
+                        } catch {
+                            // Message might already be deleted
+                        }
+                    })();
+                }, 30_000);
                 return;
             }
             await this.handleRequestChannelMessage(message);

@@ -1,6 +1,5 @@
 import { PermissionFlagsBits } from "discord.js";
 import i18n from "../../config/index.js";
-import type { Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
 
@@ -64,7 +63,7 @@ export const useRequestChannel = createCmdExecuteDecorator(ctx => {
     // Check if guild has a request channel set up
     if (!ctx.guild) return true;
     
-    const requestChannel = (ctx.guild.client as Rawon).requestChannelManager.getRequestChannel(ctx.guild);
+    const requestChannel = (ctx.guild.client).requestChannelManager.getRequestChannel(ctx.guild);
     if (requestChannel === null) return true;
     
     // If already in the request channel, allow the command

@@ -61,14 +61,12 @@ export class ServerQueue {
                     // Update request channel player message
                     void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
                     
-                    // Start player update interval (every 5 seconds) for request channel
-                    if (this.playerUpdateInterval === null) {
-                        this.playerUpdateInterval = setInterval(() => {
-                            if (this.playing) {
-                                void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
-                            }
-                        }, 5_000);
-                    }
+                    // Start player update interval (every 15 seconds) for request channel
+                    this.playerUpdateInterval ??= setInterval(() => {
+                        if (this.playing) {
+                            void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+                        }
+                    }, 15_000);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
                     this.client.logger.info(
@@ -114,10 +112,12 @@ export class ServerQueue {
                     }
 
                     // Play next song
-                    await play(this.textChannel.guild, nextS).catch(async (error: unknown) => {
+                    try {
+                        await play(this.textChannel.guild, nextS);
+                    } catch (error) {
                         if (!isRequestChannel) {
-                            await this.textChannel
-                                .send({
+                            try {
+                                await this.textChannel.send({
                                     embeds: [
                                         createEmbed(
                                             "error",
@@ -127,12 +127,14 @@ export class ServerQueue {
                                             true
                                         )
                                     ]
-                                })
-                                .catch((playErr: unknown) => this.client.logger.error("PLAY_ERR:", playErr));
+                                });
+                            } catch (playError) {
+                                this.client.logger.error("PLAY_ERR:", playError);
+                            }
                         }
                         this.connection?.disconnect();
                         this.client.logger.error("PLAY_ERR:", error);
-                    });
+                    }
                 }
             })
             .on("error", err => {
