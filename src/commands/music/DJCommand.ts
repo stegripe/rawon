@@ -78,8 +78,7 @@ export class DJCommand extends BaseCommand {
                         dj: {
                             enable: false,
                             role: guildData?.dj?.role ?? null
-                        },
-                        infractions: guildData?.infractions ?? {}
+                        }
                     }
                 };
             });
@@ -100,8 +99,7 @@ export class DJCommand extends BaseCommand {
                         dj: {
                             enable: true,
                             role: guildData?.dj?.role ?? null
-                        },
-                        infractions: guildData?.infractions ?? {}
+                        }
                     }
                 };
             });
@@ -150,8 +148,7 @@ export class DJCommand extends BaseCommand {
                         dj: {
                             enable: guildData?.dj?.enable ?? false,
                             role: role.id
-                        },
-                        infractions: guildData?.infractions ?? {}
+                        }
                     }
                 };
             });
