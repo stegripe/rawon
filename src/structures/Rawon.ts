@@ -15,6 +15,7 @@ import { EventsLoader } from "../utils/structures/EventsLoader.js";
 import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
 import { ModerationLogs } from "../utils/structures/ModerationLogs.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
+import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -28,6 +29,7 @@ export class Rawon extends Client {
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
     public readonly soundcloud = new Soundcloud();
+    public readonly requestChannelManager = new RequestChannelManager(this);
     public readonly request = got.extend({
         hooks: {
             beforeError: [

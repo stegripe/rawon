@@ -1,7 +1,8 @@
-import { ApplicationCommandType, BitFieldResolvable, Interaction, Message, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
+import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
+import type { LoopMode } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 
@@ -23,6 +24,12 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
 
         if (interaction.isButton()) {
+            // Handle request channel buttons
+            if (interaction.customId.startsWith("RC_")) {
+                await this.handleRequestChannelButton(interaction);
+                return;
+            }
+
             const val = this.client.utils.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
@@ -114,5 +121,196 @@ export class InteractionCreateEvent extends BaseEvent {
                 }
             }
         }
+    }
+
+    private async handleRequestChannelButton(interaction: ButtonInteraction): Promise<void> {
+        const guild = interaction.guild;
+        if (!guild) return;
+
+        const member = guild.members.cache.get(interaction.user.id);
+        const voiceChannel = member?.voice.channel;
+
+        // Check if user is in a voice channel
+        if (!voiceChannel) {
+            await interaction.reply({
+                ephemeral: true,
+                embeds: [createEmbed("warn", i18n.__("requestChannel.notInVoice"))]
+            });
+            return;
+        }
+
+        // Check if user is in the same voice channel as the bot
+        const botVoiceChannel = guild.members.me?.voice.channel;
+        if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
+            await interaction.reply({
+                ephemeral: true,
+                embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.sameVC"))]
+            });
+            return;
+        }
+
+        const queue = guild.queue;
+
+        switch (interaction.customId) {
+            case "RC_PAUSE_RESUME": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                if (queue.playing) {
+                    queue.playing = false;
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("success", i18n.__("requestChannel.paused"))]
+                    });
+                } else {
+                    queue.playing = true;
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("success", i18n.__("requestChannel.resumed"))]
+                    });
+                }
+                break;
+            }
+
+            case "RC_SKIP": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                if (!queue.playing) {
+                    queue.playing = true;
+                }
+                queue.player.stop(true);
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [createEmbed("success", i18n.__("requestChannel.skipped"))]
+                });
+                break;
+            }
+
+            case "RC_STOP": {
+                if (!queue) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                queue.destroy();
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [createEmbed("success", i18n.__("requestChannel.stopped"))]
+                });
+                break;
+            }
+
+            case "RC_LOOP": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const modes: LoopMode[] = ["OFF", "SONG", "QUEUE"];
+                const currentIndex = modes.indexOf(queue.loopMode);
+                const nextMode = modes[(currentIndex + 1) % modes.length];
+                queue.loopMode = nextMode;
+
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [createEmbed("success", i18n.__mf("requestChannel.loopChanged", { mode: nextMode }))]
+                });
+                break;
+            }
+
+            case "RC_SHUFFLE": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                queue.shuffle = !queue.shuffle;
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [createEmbed("success", i18n.__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" }))]
+                });
+                break;
+            }
+
+            case "RC_VOL_DOWN": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const newVolDown = Math.max(1, queue.volume - 10);
+                queue.volume = newVolDown;
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [createEmbed("success", i18n.__mf("requestChannel.volumeChanged", { volume: newVolDown }))]
+                });
+                break;
+            }
+
+            case "RC_VOL_UP": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const newVolUp = Math.min(100, queue.volume + 10);
+                queue.volume = newVolUp;
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [createEmbed("success", i18n.__mf("requestChannel.volumeChanged", { volume: newVolUp }))]
+                });
+                break;
+            }
+
+            case "RC_CLEAR_QUEUE": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        ephemeral: true,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                queue.songs.clear();
+                queue.player.stop(true);
+                await interaction.reply({
+                    ephemeral: true,
+                    embeds: [createEmbed("success", i18n.__("requestChannel.queueCleared"))]
+                });
+                break;
+            }
+
+            default:
+                break;
+        }
+
+        // Update the player message after any action
+        await this.client.requestChannelManager.updatePlayerMessage(guild);
     }
 }

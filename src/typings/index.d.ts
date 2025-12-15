@@ -196,6 +196,10 @@ export type GuildData = {
         channel: string | null;
     };
     mute?: string | null;
+    requestChannel?: {
+        channelId: string | null;
+        messageId: string | null;
+    };
 }
 
 export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;

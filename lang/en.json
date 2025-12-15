@@ -321,6 +321,16 @@
                 "slashDescription": "New volume",
                 "usage": "{prefix}volume [new volume]",
                 "volumeLimit": "I can't set the volume above **`{maxVol}`**"
+            },
+            "requestChannel": {
+                "description": "Set up a request channel for music",
+                "noPermission": "You need the **Manage Server** permission to use this command.",
+                "invalidChannel": "Please provide a valid text channel.",
+                "slashSetDescription": "Set a channel as the request channel",
+                "slashRemoveDescription": "Remove the request channel",
+                "slashStatusDescription": "Show the current request channel",
+                "slashChannelDescription": "The channel to set as request channel",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -351,6 +361,37 @@
             "unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
             "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
         }
+    },
+    "requestChannel": {
+        "title": "🎵 Music Player",
+        "standby": "No music playing. Send a song name or URL to start playing!",
+        "status": "Loop Mode",
+        "volume": "Volume",
+        "queueLength": "Queue",
+        "idle": "Idle",
+        "live": "LIVE",
+        "requestedBy": "Requested by",
+        "unknown": "Unknown",
+        "notInVoice": "You need to be in a voice channel to request music.",
+        "noResults": "No results found for your query.",
+        "addedToQueue": "Added **{song}** to the queue.",
+        "startedPlaying": "Now playing **{song}**",
+        "paused": "⏸ Paused the music.",
+        "resumed": "▶ Resumed the music.",
+        "skipped": "⏭ Skipped the current song.",
+        "stopped": "⏹ Stopped the music and cleared the queue.",
+        "loopChanged": "🔁 Loop mode changed to **{mode}**.",
+        "shuffleChanged": "🔀 Shuffle mode is now **{state}**.",
+        "volumeChanged": "🔊 Volume changed to **{volume}%**.",
+        "queueCleared": "🗑️ Queue has been cleared.",
+        "alreadyPaused": "The music is already paused.",
+        "alreadyPlaying": "The music is already playing.",
+        "nothingPlaying": "Nothing is currently playing.",
+        "volumeLimit": "Volume must be between 1 and 100.",
+        "setChannel": "✅ Request channel has been set to {channel}.",
+        "removeChannel": "✅ Request channel has been removed.",
+        "noChannel": "No request channel is currently set.",
+        "currentChannel": "Current request channel: {channel}"
     },
     "reusable": {
         "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",

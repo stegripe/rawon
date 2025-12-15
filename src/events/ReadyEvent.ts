@@ -34,6 +34,30 @@ export class ReadyEvent extends BaseEvent {
                 "{textChannelCount} text channels and {voiceChannelCount} voice channels."
             )
         );
+
+        // Restore request channel player messages
+        await this.restoreRequestChannelMessages();
+    }
+
+    private async restoreRequestChannelMessages(): Promise<void> {
+        const data = this.client.data.data;
+        if (!data) return;
+
+        const restorePromises = Object.entries(data)
+            .filter(([, guildData]) => guildData.requestChannel?.channelId !== null && guildData.requestChannel?.channelId !== undefined && guildData.requestChannel.channelId.length > 0)
+            .map(async ([guildId]) => {
+                const guild = this.client.guilds.cache.get(guildId);
+                if (!guild) return;
+
+                try {
+                    await this.client.requestChannelManager.createOrUpdatePlayerMessage(guild);
+                    this.client.logger.info(`Restored request channel player message for guild ${guild.name}(${guild.id})`);
+                } catch (error) {
+                    this.client.logger.error(`Failed to restore request channel for guild ${guildId}:`, error);
+                }
+            });
+
+        await Promise.all(restorePromises);
     }
 
     private async formatString(text: string): Promise<string> {

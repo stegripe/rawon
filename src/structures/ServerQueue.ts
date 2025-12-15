@@ -46,6 +46,9 @@ export class ServerQueue {
                     const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong)
                         .song;
                     this.sendStartPlayingMsg(newSong);
+                    
+                    // Update request channel player message
+                    void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
                     this.client.logger.info(
@@ -68,6 +71,9 @@ export class ServerQueue {
                                     .filter(x => x.index > song.index)
                                     .first()?.key ??
                                 (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
+
+                    // Update request channel player message
+                    void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
 
                     await this.textChannel
                         .send({
