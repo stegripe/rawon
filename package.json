@@ -74,7 +74,6 @@
         "typescript-eslint": "^8.50.0"
     },
     "optionalDependencies": {
-        "@snazzah/davey": "^0.1.8",
-        "play-dl": "^1.9.7"
+        "@snazzah/davey": "^0.1.8"
     }
 }

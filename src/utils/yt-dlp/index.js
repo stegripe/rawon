@@ -17,8 +17,8 @@ function args(url, options) {
         .flatMap(([key, val]) => {
             const flag = key.replaceAll(/[A-Z]/gu, ms => `-${ms.toLowerCase()}`);
             return [
-                `--${(typeof v === "boolean") && !val ? "no-" : ""}${flag}`,
-                typeof v === "boolean" ? "" : val
+                `--${(typeof val === "boolean") && !val ? "no-" : ""}${flag}`,
+                typeof val === "boolean" ? "" : val
             ]
         })
         .filter(Boolean);

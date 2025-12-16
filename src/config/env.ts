@@ -33,7 +33,6 @@ export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
 export const lang = formatLocale(process.env.LOCALE) || "en";
 export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
-export const streamStrategy = (process.env.STREAM_STRATEGY ?? "") || "yt-dlp";
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
