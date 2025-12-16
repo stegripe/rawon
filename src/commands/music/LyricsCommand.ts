@@ -63,15 +63,21 @@ export class LyricsCommand extends BaseCommand {
 
         if (data === null || (data as { error: boolean }).error) {
             try {
-                const cleanSong = song.replaceAll(/\(.*?\)|\[.*?\]/gu, "").trim();
-                const fallbackUrl = `https://api.lyrics.ovh/v1/${encodeURIComponent(cleanSong)}/${encodeURIComponent(cleanSong)}`;
+                // Clean up the song title for better search results
+                const cleanSong = song.replaceAll(/\(.*?\)|\[.*?\]|official|video|audio|lyrics|hd|hq|mv/giu, "").trim();
+                // Try to extract artist and title from common formats like "Artist - Title"
+                const parts = cleanSong.split(/\s*[-–—]\s*/u);
+                const artist = parts.length > 1 ? parts[0].trim() : "";
+                const title = parts.length > 1 ? parts.slice(1).join(" ").trim() : cleanSong;
+                
+                const fallbackUrl = `https://api.lyrics.ovh/v1/${encodeURIComponent(artist || title)}/${encodeURIComponent(title)}`;
                 const fallbackData = await this.client.request.get(fallbackUrl, { timeout: { request: 5_000 } }).json<{ lyrics?: string; error?: string }>();
                 
                 if ((fallbackData.lyrics?.length ?? 0) > 0) {
                     data = {
                         lyrics: fallbackData.lyrics,
-                        song,
-                        artist: "",
+                        song: title,
+                        artist,
                         // eslint-disable-next-line typescript/naming-convention
                         album_art: "https://cdn.stegripe.org/images/icon.png",
                         synced: false,

@@ -16,12 +16,6 @@ const DATAS: InteractionButtonComponentData[] = [
         type: ComponentType.Button
     },
     {
-        style: ButtonStyle.Danger,
-        emoji: "🚫",
-        customId: "STOP",
-        type: ComponentType.Button
-    },
-    {
         style: ButtonStyle.Primary,
         emoji: "➡️",
         customId: "NEXT",
@@ -95,7 +89,6 @@ export class ButtonPagination {
                     index += 10;
                     break;
                 default:
-                    void msg.delete();
                     return;
             }
 

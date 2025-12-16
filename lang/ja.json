@@ -198,6 +198,9 @@
                 "description": "音楽リクエストチャンネルを設定する",
                 "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
                 "invalidChannel": "有効なテキストチャンネルを指定してください。",
+                "noBotPermissions": "そのチャンネルの権限を確認できませんでした。",
+                "missingBotPermissions": "そのチャンネルで次の権限が不足しています: **{permissions}**",
+                "failedToSetup": "リクエストチャンネルの設定に失敗しました。権限を確認してください。",
                 "slashSetDescription": "チャンネルをリクエストチャンネルとして設定",
                 "slashRemoveDescription": "リクエストチャンネルを削除",
                 "slashStatusDescription": "現在のリクエストチャンネルを表示",
@@ -239,6 +242,9 @@
         "pageFooter": "ページ {actual}/{total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}、クールダウンタイムは残り**`{timeleft}`**です。お待ち下さい。",
         "generalHandler": {
             "errorJoining": "ボイスチャンネルに接続中にエラーが発生しました。エラー:`{message}`",

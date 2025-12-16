@@ -198,6 +198,9 @@
                 "description": "設定音樂點播頻道",
                 "noPermission": "您需要**管理伺服器**權限才能使用此指令。",
                 "invalidChannel": "請提供有效的文字頻道。",
+                "noBotPermissions": "我無法檢查該頻道的權限。",
+                "missingBotPermissions": "我在該頻道缺少以下權限: **{permissions}**",
+                "failedToSetup": "設定點播頻道失敗。請檢查我的權限。",
                 "slashSetDescription": "設定頻道為點播頻道",
                 "slashRemoveDescription": "移除點播頻道",
                 "slashStatusDescription": "顯示目前點播頻道",
@@ -239,6 +242,9 @@
         "pageFooter": "{actual}/{total} 頁"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}，請稍等 **`{timeleft}`**的冷卻時間。",
         "generalHandler": {
             "errorJoining": "加入語音通道時出錯，因為: `{message}`",

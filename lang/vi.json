@@ -198,6 +198,9 @@
                 "description": "Thiết lập kênh yêu cầu nhạc",
                 "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "invalidChannel": "Vui lòng cung cấp một kênh văn bản hợp lệ.",
+                "noBotPermissions": "Tôi không thể kiểm tra quyền của mình trong kênh đó.",
+                "missingBotPermissions": "Tôi đang thiếu các quyền sau trong kênh đó: **{permissions}**",
+                "failedToSetup": "Không thể thiết lập kênh yêu cầu. Vui lòng kiểm tra quyền của tôi.",
                 "slashSetDescription": "Đặt kênh làm kênh yêu cầu",
                 "slashRemoveDescription": "Xóa kênh yêu cầu",
                 "slashStatusDescription": "Hiển thị kênh yêu cầu hiện tại",
@@ -239,6 +242,9 @@
         "pageFooter": "Trang {actual} trong {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, vui lòng đợi **`{timeleft}`**.",
         "generalHandler": {
             "errorJoining": "Lỗi khi tham gia kênh thoại, vì: `{message}`",

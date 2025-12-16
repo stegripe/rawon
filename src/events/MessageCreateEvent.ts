@@ -45,7 +45,7 @@ export class MessageCreateEvent extends BaseEvent {
                     void (async (): Promise<void> => {
                         try { await message.delete(); } catch { /* ignore */ }
                     })();
-                }, 30_000);
+                }, 60_000);
                 
                 const textChannel = message.channel as TextChannel;
                 const collector: MessageCollector = textChannel.createMessageCollector({

@@ -1,6 +1,6 @@
 import { setTimeout } from "node:timers";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
-import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, MessageFlags, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
+import { ActionRowBuilder, ApplicationCommandType, BitFieldResolvable, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, Interaction, Message, MessageFlags, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
@@ -164,28 +164,26 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 if (queue.playing) {
                     queue.playing = false;
-                    const reply = await interaction.reply({
+                    await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)],
-                        withResponse: true
+                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)]
                     });
                     setTimeout(async () => {
                         try {
-                            await reply.resource?.message?.delete();
+                            await interaction.deleteReply();
                         } catch {
                             // ignore error
                         }
                     }, 30_000);
                 } else {
                     queue.playing = true;
-                    const reply = await interaction.reply({
+                    await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)],
-                        withResponse: true
+                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)]
                     });
                     setTimeout(async () => {
                         try {
-                            await reply.resource?.message?.delete();
+                            await interaction.deleteReply();
                         } catch {
                             // ignore error
                         }
@@ -328,15 +326,92 @@ export class InteractionCreateEvent extends BaseEvent {
                     return names.join("\n");
                 });
 
+                let currentPage = 0;
                 const embed = createEmbed("info", pages[0] ?? `📋 **|** ${i18n.__("requestChannel.emptyQueue")}`)
                     .setTitle(`📋 ${i18n.__("requestChannel.queueListTitle")}`)
                     .setThumbnail(guild.iconURL({ extension: "png", size: 1_024 }) ?? null)
                     .setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length || 1 }) });
 
+                const createPaginationButtons = (page: number, totalPages: number): ActionRowBuilder<ButtonBuilder>[] => {
+                    if (totalPages <= 1) return [];
+                    
+                    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+                        new ButtonBuilder()
+                            .setCustomId("RCQ_PREV10")
+                            .setEmoji("⏪")
+                            .setStyle(ButtonStyle.Secondary)
+                            .setDisabled(page < 10),
+                        new ButtonBuilder()
+                            .setCustomId("RCQ_PREV")
+                            .setEmoji("⬅️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page === 0),
+                        new ButtonBuilder()
+                            .setCustomId("RCQ_NEXT")
+                            .setEmoji("➡️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page >= totalPages - 1),
+                        new ButtonBuilder()
+                            .setCustomId("RCQ_NEXT10")
+                            .setEmoji("⏩")
+                            .setStyle(ButtonStyle.Secondary)
+                            .setDisabled(page >= totalPages - 10)
+                    );
+                    return [row];
+                };
+
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [embed]
+                    embeds: [embed],
+                    components: createPaginationButtons(currentPage, pages.length)
                 });
+
+                if (pages.length > 1) {
+                    const message = await interaction.fetchReply();
+                    const collector = message.createMessageComponentCollector({
+                        componentType: ComponentType.Button,
+                        filter: (i) => i.user.id === interaction.user.id && i.customId.startsWith("RCQ_"),
+                        time: 120_000
+                    });
+
+                    collector.on("collect", async (i) => {
+                        switch (i.customId) {
+                            case "RCQ_PREV10":
+                                currentPage = Math.max(0, currentPage - 10);
+                                break;
+                            case "RCQ_PREV":
+                                currentPage = Math.max(0, currentPage - 1);
+                                break;
+                            case "RCQ_NEXT":
+                                currentPage = Math.min(pages.length - 1, currentPage + 1);
+                                break;
+                            case "RCQ_NEXT10":
+                                currentPage = Math.min(pages.length - 1, currentPage + 10);
+                                break;
+                            default:
+                                return;
+                        }
+
+                        embed.setDescription(pages[currentPage])
+                            .setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: currentPage + 1, total: pages.length }) });
+
+                        await i.update({
+                            embeds: [embed],
+                            components: createPaginationButtons(currentPage, pages.length)
+                        });
+                    });
+
+                    collector.on("end", async () => {
+                        try {
+                            await interaction.editReply({
+                                embeds: [embed],
+                                components: []
+                            });
+                        } catch {
+                            // Message might be deleted
+                        }
+                    });
+                }
                 break;
             }
 

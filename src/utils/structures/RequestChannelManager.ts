@@ -169,11 +169,17 @@ export class RequestChannelManager {
         return embed;
     }
 
-    public createPlayerButtons(): ActionRowBuilder<ButtonBuilder>[] {
+    public createPlayerButtons(guild: Guild): ActionRowBuilder<ButtonBuilder>[] {
+        const queue = guild.queue;
+        const isPlaying = queue?.playing ?? false;
+        
+        // Button shows opposite action: if playing, show pause button; if paused, show play button
+        const pauseResumeEmoji = isPlaying ? "⏸️" : "▶️";
+        
         const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
                 .setCustomId("RC_PAUSE_RESUME")
-                .setEmoji("⏯️")
+                .setEmoji(pauseResumeEmoji)
                 .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId("RC_SKIP")
@@ -217,7 +223,7 @@ export class RequestChannelManager {
 
         try {
             const embed = this.createPlayerEmbed(guild);
-            const components = this.createPlayerButtons();
+            const components = this.createPlayerButtons(guild);
             await message.edit({
                 embeds: [embed],
                 components
@@ -239,12 +245,12 @@ export class RequestChannelManager {
             if (message) {
                 await message.edit({
                     embeds: [this.createPlayerEmbed(guild)],
-                    components: this.createPlayerButtons()
+                    components: this.createPlayerButtons(guild)
                 });
             } else {
                 message = await channel.send({
                     embeds: [this.createPlayerEmbed(guild)],
-                    components: this.createPlayerButtons()
+                    components: this.createPlayerButtons(guild)
                 });
                 await this.setPlayerMessageId(guild, message.id);
             }

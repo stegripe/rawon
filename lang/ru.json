@@ -198,6 +198,9 @@
                 "description": "Настройка канала запросов для музыки",
                 "noPermission": "Вам нужно разрешение **Управление сервером** для использования этой команды.",
                 "invalidChannel": "Пожалуйста, укажите действительный текстовый канал.",
+                "noBotPermissions": "Не удалось проверить мои права для этого канала.",
+                "missingBotPermissions": "Мне не хватает следующих прав в этом канале: **{permissions}**",
+                "failedToSetup": "Не удалось настроить канал запросов. Пожалуйста, проверьте мои права.",
                 "slashSetDescription": "Установить канал как канал запросов",
                 "slashRemoveDescription": "Удалить канал запросов",
                 "slashStatusDescription": "Показать текущий канал запросов",
@@ -239,6 +242,9 @@
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, пожалуйста подождите **`{timeleft}`** чтобы использовать эту команду.",
         "generalHandler": {
             "errorJoining": "Ошибка при подключении к голосовому каналу, потому-что: `{message}`",
