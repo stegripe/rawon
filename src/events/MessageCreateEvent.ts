@@ -102,7 +102,7 @@ export class MessageCreateEvent extends BaseEvent {
 
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
-            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", `🎤 **|** ${i18n.__("requestChannel.notInVoice")}`));
+            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", i18n.__("requestChannel.notInVoice")));
             return;
         }
 
