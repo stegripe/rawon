@@ -15,7 +15,7 @@ services:
       - net
     volumes:
       - rawon:/app/scripts
-      - rawon-data:/app/data
+      - rawon-data:/app/data.json
 
 networks:
   net:

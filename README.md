@@ -55,7 +55,7 @@ services:
     env_file: .env
     volumes:
       - rawon:/app/scripts
-      - rawon-data:/app/data
+      - rawon-data:/app/data.json
 
 volumes:
   rawon:
@@ -68,14 +68,14 @@ docker run -d \
   --name rawon-bot \
   --env-file .env \
   -v rawon:/app/scripts \
-  -v rawon-data:/app/data \
+  -v rawon-data:/app/data.json \
   --restart unless-stopped \
   ghcr.io/stegripe/rawon:latest
 ```
 
 ### Volume Explanations
 - `/app/scripts` - Required if you use `yt-dlp` stream strategy (stores yt-dlp binary)
-- `/app/data` - Stores persistent data like request channels and player settings (data.json)
+- `/app/data.json` - Stores persistent data like request channels and player settings
 
 ## Railway Deployment
 Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
