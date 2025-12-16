@@ -2,3 +2,4 @@ onlyBuiltDependencies:
   - '@swc/core'
   - ffmpeg-static
   - protobufjs
+  - unrs-resolver

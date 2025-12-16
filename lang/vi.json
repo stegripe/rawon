@@ -55,129 +55,6 @@
                 "footerString": "Độ trễ của: {user}"
             }
         },
-        "moderation": {
-            "ban": {
-                "banFail": "Không thể **`CẤM`** thành viên, vì: `{message}`",
-                "banSuccess": "**{user}** đã bị **`CẤM`** khỏi máy chủ.",
-                "bannedByString": "Người cấm: {author}",
-                "botNoPermission": "Xin lỗi, tôi không có quyền **`CẤM NGƯỜI DÙNG`**.",
-                "description": "Cấm ai đó khỏi máy chủ",
-                "slashMemberIDDescription": "Bạn có muốn cấm?",
-                "slashReasonDescription": "Lý do cấm",
-                "usage": "{prefix}ban <@đề cập | id> [lý do]",
-                "userBanned": "Bạn đã bị **`CẤM`** khỏi **{guildName}**",
-                "userNoBannable": "Xin lỗi, tôi không thể **`CẤM`** người đó.",
-                "userNoPermission": "Xin lỗi, bạn không có quyền **`CẤM NGƯỜI DÙNG`** để dùng lệnh này."
-            },
-            "categoryName": "QUẢN LÝ",
-            "common": {
-                "noReasonString": "[Chưa được chỉ định]",
-                "noUserSpecified": "Vui lòng chỉ định ai đó.",
-                "reasonString": "**Lý do**"
-            },
-            "infractions": {
-                "description": "Hiển thị các vi phạm của người dùng",
-                "embedAuthorText": "{user} - Vi phạm",
-                "noInfractions": "Không có vi phạm.",
-                "slashMemberDescription": "Bạn muốn xem vi phạm của ai?",
-                "usage": "{prefix}infractions [@đề cập | id]"
-            },
-            "kick": {
-                "botNoPermission": "Xin lỗi, tôi không có quyền **`ĐUỔI NGƯỜI DÙNG`**.",
-                "description": "Đuổi ai đó khỏi máy chủ",
-                "kickFail": "Không thể **`ĐUỔI`** người dùng, vì: `{message}`",
-                "kickSuccess": "**{user}** đã bị **`ĐUỔI`** khỏi máy chủ.",
-                "kickedByString": "Người đuổi: {author}",
-                "slashMemberDescription": "Bạn muốn đuổi ai?",
-                "slashReasonDescription": "Lý do đuổi",
-                "usage": "{prefix}kick <@đề cập | id> [lý do]",
-                "userKicked": "Bạn đã bị **`ĐUỔI`** khỏi **{guildName}**",
-                "userNoKickable": "Xin lỗi, tôi không thể **`ĐUỔI`** người dùng đó.",
-                "userNoPermission": "Xin lỗi, bạn không có quyền **`ĐUỔI NGƯỜI DÙNG`** để dùng lệnh này."
-            },
-            "modlogs": {
-                "channel": {
-                    "current": "Kênh nhật ký kiểm duyệt hiện tại: <#{channel}>",
-                    "invalid": "Kênh không hợp lệ, kênh phải là kênh văn bản.",
-                    "noChannel": "Kênh nhật ký kiểm duyệt chưa được đặt.",
-                    "success": "Kênh nhật ký kiểm duyệt đã được đặt vào kênh <#{channel}>"
-                },
-                "description": "Thay đổi cài đặt tính năng nhật ký kiểm duyệt",
-                "disable": "Tính năng nhật ký kiểm duyệt đã bị **`TẮT`**",
-                "embedTitle": "Nhật ký kiểm duyệt",
-                "enable": "Tính năng nhật ký kiểm duyệt đã được **`BẬT`**",
-                "newChannelText": "kênh mới",
-                "slashChannelDescription": "Xem hoặc thay đổi kênh nhật ký kiểm duyệt",
-                "slashChannelNewChannelOption": "Kênh mới cho nhật ký kiểm duyệt",
-                "slashDisableDescription": "Tắt tính năng nhật ký kiểm duyệt",
-                "slashEnableDescription": "Bật tính năng nhật ký kiểm duyệt",
-                "usage": "{prefix}modlogs"
-            },
-            "mute": {
-                "alreadyMuted": "Thành viên đó đã bị **`HẠN CHẾ`**",
-                "botNoPermission": "Xin lỗi, tôi không có quyền **`NGƯỜI QUẢN LÝ`**.",
-                "cantMuteOwner": "Bạn không thể **`HẠN CHẾ`** chủ sở hữu máy chủ.",
-                "description": "Hạn chế ai đó trong máy chủ",
-                "muteFail": "Không thể **`HẠN CHẾ`** người dùng, vì: `{message}`",
-                "muteSuccess": "**{user}**đã bị **`HẠN CHẾ`** trong máy chủ.",
-                "mutedByString": "Hạn chế bởi: {author}",
-                "noRole": "Vai trò hạn chế chưa được bật, vui lòng dùng lệnh `{prefix}setmute` để bật",
-                "slashMemberDescription": "Bạn muốn hạn chế ai?",
-                "slashReasonDescription": "Lý do hạn chế",
-                "usage": "{prefix}mute <@đề cập | id> [lý do]",
-                "userMuted": "Bạn đã bị **`HẠN CHẾ`** khỏi **{guildName}**",
-                "userNoPermission": "Xin lỗi, bạn không có quyền **`HẠN CHẾ`** để dùng lệnh này."
-            },
-            "purge": {
-                "botNoPermission": "Xin lỗi, tôi không có quyền **`NGƯỜI QUẢN LÝ`**.",
-                "description": "Xóa tin nhắn",
-                "invalidAmount": "Vui lòng chỉ định số lượng tin nhắn hợp lệ để xóa.",
-                "purgeFail": "Không thể **`XÓA`** tin nhắn, vì: `{message}`",
-                "purgeSuccess": "**`{amount}`** tinh nhắn đã bị **`XÓA`**",
-                "slashAmountDescription": "Số lượng tin nhắn cần xóa",
-                "usage": "{prefix}purge <lượng>",
-                "userNoPermission": "Xin lỗi, bạn không có quyền **`QUẢN LÝ TIN NHẮN`** để dùng lệnh này."
-            },
-            "setmute": {
-                "description": "Đặt vai trò hạn chế",
-                "invalidRole": "Vai trò không hợp lệ.",
-                "slashRoleDescription": "Vai trò dùng để hạn chế",
-                "success": "<@&{role}> đã được đặt làm vai trò hạn chế",
-                "usage": "{prefix}setmute <vai trò>"
-            },
-            "unban": {
-                "alreadyUnban": "Người dùng đó không bị **`CẤM`**",
-                "description": "Gỡ cấm ai đó khỏi máy chủ",
-                "slashMemberDescription": "Bạn muốn gỡ cấm ai?",
-                "slashReasonDescription": "Lý do gỡ cấm",
-                "unbanSuccess": "**{user}** đã được **`GỠ CẤM`** khỏi máy chủ.",
-                "unbanFail": "Không thể **`GỠ CẤM** người dùng, vì: `{message}`",
-                "unbannedByString": "Gỡ cấm bởi: {author}",
-                "usage": "{prefix}unban <id> [lý do]"
-            },
-            "unmute": {
-                "description": "Gỡ hạn chế ai đó trong server",
-                "noMuted": "Người dùng đó không bị **`HẠN CHẾ`**",
-                "slashMemberDescription": "Bạn muốn gỡ hạn chế ai?",
-                "slashReasonDescription": "Lý do gỡ hạn chế",
-                "unmuteFail": "Không thể **`GỠ HẠN CHẾ** người dùng, vì: `{message}`",
-                "unmuteSuccess": "**{user}** đã được **`GỠ HẠN CHẾ`** trong máy chủ.",
-                "unmutedByString": "Gỡ hạn chế bởi: {author}",
-                "usage": "{prefix}unmute <@đề cập | id> [lý do]",
-                "userUnmuted": "Bạn đã được **`GỠ HẠN CHẾ`** trong **{guildName}**"
-            },
-            "warn": {
-                "description": "Cảnh báo người dùng trên máy chủ",
-                "noDM": "Không thể nhắn tin với người dùng đó, nhưng sẽ tiếp tục cảnh báo.",
-                "slashMemberDescription": "Bạn muốn cảnh báo ai?",
-                "slashReasonDescription": "Lý do cảnh báo",
-                "usage": "{prefix}warn <@mention | id> [lý do]",
-                "userNoPermission": "Xin lỗi, bạn không có quyền **`QUẢN LÝ SERVER`** để dùng lệnh này.",
-                "userWarned": "Bạn đã bị **`CẢNH BÁO`** trong **{guildName}**",
-                "warnSuccess": "**{user}** đã bị **`CẢNH BÁO`** trong máy chủ.",
-                "warnedByString": "Cảnh báo bởi: {author}"
-            }
-        },
         "music": {
             "categoryName": "NHẠC",
             "dj": {
@@ -188,6 +65,7 @@
                 "enable": "Đã bật",
                 "enableText": "Tính năng DJ đã được **`BẬT`**",
                 "newRoleText": "vai trò mới",
+                "noPermission": "Bạn không có quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "role": {
                     "current": "Vai trò DJ hiện tại: <@&{role}>",
                     "invalid": "Vai trò không hợp lệ.",
@@ -217,7 +95,8 @@
                 "description": "Hiển thị lời bài hát",
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
                 "slashDescription": "Tìm bài hát",
-                "usage": "{prefix}lyrics [bài hát]"
+                "usage": "{prefix}lyrics [bài hát]",
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
@@ -301,13 +180,6 @@
                 "slashSpecificDescription": "Chuyển đến một vị trí cụ thể trong hàng đợi",
                 "usage": "'{prefix}'skipto <{options} | số thứ tự>"
             },
-            "stayInQueue": {
-                "247Disabled": "Lệnh ở lại kênh thoại bị tắt.",
-                "actualState": "Ở lại kênh thoại bị **`{state}`**",
-                "description": "Giữ bot ở lại kênh thoại khi hàng đợi kết thúc",
-                "newState": "Ở lại kênh thoại được đặt thành **`{state}`**",
-                "slashDescription": "Bật chế độ ở lại kênh thoại"
-            },
             "stop": {
                 "description": "Dừng phát nhạc",
                 "stoppedMessage": "Trình phát nhạc đã bị dừng."
@@ -321,6 +193,16 @@
                 "slashDescription": "Âm lượng mới",
                 "usage": "{prefix}volume [âm lượng mới]",
                 "volumeLimit": "Tôi không thể đặt âm lượng trên **`{maxVol}`**"
+            },
+            "requestChannel": {
+                "description": "Thiết lập kênh yêu cầu nhạc",
+                "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
+                "invalidChannel": "Vui lòng cung cấp một kênh văn bản hợp lệ.",
+                "slashSetDescription": "Đặt kênh làm kênh yêu cầu",
+                "slashRemoveDescription": "Xóa kênh yêu cầu",
+                "slashStatusDescription": "Hiển thị kênh yêu cầu hiện tại",
+                "slashChannelDescription": "Kênh để đặt làm kênh yêu cầu",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -372,7 +254,43 @@
             "noQueue": "Đang rảnh rỗi.",
             "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
             "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp."
+            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc."
         }
+    },
+    "requestChannel": {
+        "title": "Trình phát nhạc",
+        "standby": "Không có nhạc đang phát. Gửi tên bài hát hoặc URL để bắt đầu!",
+        "status": "Chế độ lặp",
+        "shuffle": "Trộn",
+        "volume": "Âm lượng",
+        "queueLength": "Hàng đợi",
+        "queueFooter": "• Tổng số bài hát trong hàng đợi: {count}",
+        "idle": "Chờ",
+        "live": "TRỰC TIẾP",
+        "requestedBy": "Yêu cầu bởi",
+        "unknown": "Không rõ",
+        "notInVoice": "Bạn cần ở trong kênh thoại để yêu cầu nhạc.",
+        "noResults": "Không tìm thấy kết quả cho tìm kiếm của bạn.",
+        "addedToQueue": "Đã thêm **{song}** vào hàng đợi.",
+        "startedPlaying": "Đang phát **{song}**",
+        "paused": "Đã tạm dừng nhạc.",
+        "resumed": "Đã tiếp tục phát nhạc.",
+        "skipped": "Đã bỏ qua bài hát hiện tại.",
+        "stopped": "Đã dừng nhạc và xóa hàng đợi.",
+        "loopChanged": "Chế độ lặp đã thay đổi thành **{mode}**.",
+        "shuffleChanged": "Chế độ trộn bây giờ là **{state}**.",
+        "volumeChanged": "Âm lượng đã thay đổi thành **{volume}%**.",
+        "queueCleared": "Hàng đợi đã được xóa.",
+        "queueListTitle": "Danh sách hàng đợi",
+        "emptyQueue": "Hàng đợi trống.",
+        "alreadyPaused": "Nhạc đã được tạm dừng.",
+        "alreadyPlaying": "Nhạc đang phát.",
+        "nothingPlaying": "Hiện không có gì đang phát.",
+        "volumeLimit": "Âm lượng phải từ 1 đến 100.",
+        "setChannel": "Kênh yêu cầu đã được đặt thành {channel}.",
+        "removeChannel": "Kênh yêu cầu đã được xóa.",
+        "noChannel": "Hiện không có kênh yêu cầu nào được đặt.",
+        "currentChannel": "Kênh yêu cầu hiện tại: {channel}"
     }
 }

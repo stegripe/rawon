@@ -13,8 +13,8 @@ import { CommandManager } from "../utils/structures/CommandManager.js";
 import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
 import { EventsLoader } from "../utils/structures/EventsLoader.js";
 import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
-import { ModerationLogs } from "../utils/structures/ModerationLogs.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
+import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -24,10 +24,10 @@ export class Rawon extends Client {
     public readonly data = new JSONDataManager<Record<string, GuildData>>(path.resolve(process.cwd(), "data.json"));
     public readonly logger = new RawonLogger({ prod: this.config.isProd });
     public readonly debugLog = new DebugLogManager(this.config.debugMode, this.config.isProd);
-    public readonly modlogs = new ModerationLogs(this);
     public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
     public readonly soundcloud = new Soundcloud();
+    public readonly requestChannelManager = new RequestChannelManager(this);
     public readonly request = got.extend({
         hooks: {
             beforeError: [

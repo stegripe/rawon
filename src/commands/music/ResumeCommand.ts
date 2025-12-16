@@ -3,7 +3,7 @@ import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
@@ -15,6 +15,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     usage: "{prefix}resume"
 })
 export class ResumeCommand extends BaseCommand {
+    @useRequestChannel
     @inVC
     @haveQueue
     @sameVC

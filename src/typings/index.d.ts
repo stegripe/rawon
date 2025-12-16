@@ -184,18 +184,16 @@ export type GuildData = {
         enable: boolean;
         role: string | null;
     };
-    infractions: Record<
-        string,
-        {
-            on: number;
-            reason: string | null;
-        }[]
-    >;
-    modLog?: {
-        enable: boolean;
-        channel: string | null;
+    requestChannel?: {
+        channelId: string | null;
+        messageId: string | null;
     };
-    mute?: string | null;
+    playerState?: {
+        loopMode: LoopMode;
+        shuffle: boolean;
+        volume: number;
+        filters: Record<string, boolean>;
+    };
 }
 
 export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;

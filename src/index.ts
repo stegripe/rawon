@@ -1,8 +1,7 @@
 import nodePath from "node:path";
 import process from "node:process";
-import { start } from "node:repl";
 import { ShardingManager } from "discord.js";
-import { enableRepl, isProd, shardingMode, shardsCount } from "./config/index.js";
+import { isProd, shardingMode, shardsCount } from "./config/index.js";
 import { importURLToString } from "./utils/functions/importURLToString.js";
 import { RawonLogger } from "./utils/structures/RawonLogger.js";
 
@@ -14,16 +13,6 @@ const manager = new ShardingManager(nodePath.resolve(importURLToString(import.me
     token: process.env.DISCORD_TOKEN,
     mode: shardingMode
 });
-
-if (enableRepl) {
-    const repl = start({
-        prompt: "> "
-    });
-
-    repl.context.shardManager = manager;
-    process.stdin.on("data", () => repl.displayPrompt(true));
-    repl.on("exit", () => process.exit());
-}
 
 await manager
     .on("shardCreate", shard => {

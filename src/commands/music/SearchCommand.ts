@@ -5,7 +5,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { Song } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { inVC, validVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
@@ -44,6 +44,7 @@ import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
     usage: i18n.__("commands.music.search.usage")
 })
 export class SearchCommand extends BaseCommand {
+    @useRequestChannel
     @inVC
     @validVC
     @sameVC

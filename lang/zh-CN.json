@@ -55,129 +55,6 @@
                 "footerString": "延迟时间: {user}"
             }
         },
-        "moderation": {
-            "ban": {
-                "banFail": "无法**`封禁`**成员，因为: `{message}`",
-                "banSuccess": "**{user}** 已被此伺服器**`封禁`**。",
-                "bannedByString": "被 {author} 封禁",
-                "botNoPermission": "抱歉，我没有**`封禁成员`**权限。",
-                "description": "从伺服器封禁某人",
-                "slashMemberIDDescription": "您想封禁谁？",
-                "slashReasonDescription": "封禁原因",
-                "usage": "{prefix}ban <@提及 | id> [原因]",
-                "userBanned": "你已被 **{guildName}** 伺服器**`封禁`**",
-                "userNoBannable": "抱歉，我无法**`封禁`**该成员。",
-                "userNoPermission": "抱歉，您没有**`封禁成员`**权限使用此指令。"
-            },
-            "categoryName": "管理",
-            "common": {
-                "noReasonString": "[未标明]",
-                "noUserSpecified": "请指定某人。",
-                "reasonString": "**原因**"
-            },
-            "infractions": {
-                "description": "显示用户的违规行为",
-                "embedAuthorText": "{user} - 违规行为",
-                "noInfractions": "没有违规行为。",
-                "slashMemberDescription": "您想查看哪一个人的违规行为?",
-                "usage": "{prefix}infractions [@提及 | id]"
-            },
-            "kick": {
-                "botNoPermission": "抱歉，我没有**`踢出成员`**权限。",
-                "description": "将某人踢出此伺服器",
-                "kickFail": "无法**`踢出`**成员，因为: `{message}`",
-                "kickSuccess": "**{user}**已被此伺服器**`踢出`**。",
-                "kickedByString": "被{author}踢出",
-                "slashMemberDescription": "您想踢出谁？",
-                "slashReasonDescription": "踢出原因",
-                "usage": "{prefix}kick <@提及 | id> [原因]",
-                "userKicked": "你已被 **{guildName}** 伺服器**`踢出`**",
-                "userNoKickable": "抱歉，我无法**`踢出`**该成员。",
-                "userNoPermission": "抱歉，您没有**`踢出成员`**权限使用此指令。"
-            },
-            "modlogs": {
-                "channel": {
-                    "current": "目前审核日志频道: <#{channel}>",
-                    "invalid": "无效频道，频道必须是文字频道。",
-                    "noChannel": "尚未设定审核日志频道。",
-                    "success": "审核日志频道已设置为 <#{channel}>"
-                },
-                "description": "更改审核日志功能设定",
-                "disable": "审核日志功能设定已**`禁用`**",
-                "embedTitle": "审核日志",
-                "enable": "审核日志功能设定已**`启用`**",
-                "newChannelText": "新频道",
-                "slashChannelDescription": "查看或更改审核日志频道",
-                "slashChannelNewChannelOption": "审核日志的新频道",
-                "slashDisableDescription": "禁用审核日志功能",
-                "slashEnableDescription": "启用审核日志功能",
-                "usage": "{prefix}modlogs"
-            },
-            "mute": {
-                "alreadyMuted": "该成员已被**`禁言`**",
-                "botNoPermission": "抱歉，我没有**`管理身分组`**权限。",
-                "cantMuteOwner": "你不能**`禁言`**伺服器拥有者。 ",
-                "description": "在伺服器上禁言某人",
-                "muteFail": "无法**`禁言`**成员，因为: `{message}`",
-                "muteSuccess": "**{user}**已被此伺服器**`禁言`**。",
-                "mutedByString": "被{author}禁言",
-                "noRole": "禁言身分组尚未设定，请使用`{prefix}setmute`设置",
-                "slashMemberDescription": "您想禁言谁？",
-                "slashReasonDescription": "禁言原因",
-                "usage": "{prefix}mute <@提及 | id> [原因]",
-                "userMuted": "你已被 **{guildName}** 伺服器**`禁言`**",
-                "userNoPermission": "抱歉，您没有**`管理身分组`**权限使用此指令。"
-            },
-            "purge": {
-                "botNoPermission": "抱歉，我没有**`管理讯息`**权限。",
-                "description": "删除讯息",
-                "invalidAmount": "请指定要删除讯息的有效数字。",
-                "purgeFail": "无法**`清除`**讯息，因为: `{message}`",
-                "purgeSuccess": "{amount, plural, one {**`1`** 个讯息} other {**`#`** 个讯息}}已被**`清除`**",
-                "slashAmountDescription": "要删除讯息的数字",
-                "usage": "{prefix}purge <数目>",
-                "userNoPermission": "抱歉，您没有**`管理讯息`**权限使用此指令。"
-            },
-            "setmute": {
-                "description": "设置禁言身分组",
-                "invalidRole": "无效的身分组。",
-                "slashRoleDescription": "用于禁言的身分组",
-                "success": "禁言身分组已设置为 <@&{role}>",
-                "usage": "{prefix}setmute <身分组>"
-            },
-            "unban": {
-                "alreadyUnban": "该用户没有被**`封禁`**",
-                "description": "在伺服器上解禁某人",
-                "slashMemberDescription": "您想解禁谁？",
-                "slashReasonDescription": "解禁原因",
-                "unbanSuccess": "**{user}**已被此伺服器**`解禁`**。",
-                "unbanFail": "无法**`解禁`**成员，因为: `{message}`",
-                "unbannedByString": "被{author}解禁",
-                "usage": "{prefix}unban <id> [原因]"
-            },
-            "unmute": {
-                "description": "在伺服器上解除禁言某人",
-                "noMuted": "该用户没有被**`禁言`**",
-                "slashMemberDescription": "您想解除禁言谁？",
-                "slashReasonDescription": "解除禁言原因",
-                "unmuteFail": "无法**`解除禁言`**成员，因为: `{message}`",
-                "unmuteSuccess": "**{user}**已被此伺服器**`解除禁言`**。",
-                "unmutedByString": "被{author}解除禁言",
-                "usage": "{prefix}unmute <@提及 | id> [原因]",
-                "userUnmuted": "你在 **{guildName}** 伺服器上已被**`解除禁言`**"
-            },
-            "warn": {
-                "description": "在伺服器上警告成员",
-                "noDM": "无法与该用户创建私信，但我会继续警告他。",
-                "slashMemberDescription": "您想警告谁？",
-                "slashReasonDescription": "警告原因",
-                "usage": "{prefix}warn <@提及 | id> [原因]",
-                "userNoPermission": "抱歉，您没有**`管理伺服器`**权限使用此指令。",
-                "userWarned": "你在 **{guildName}** 伺服器上已被警告",
-                "warnSuccess": "**{user}**已被此伺服器**`警告`**。",
-                "warnedByString": "被{author}警告"
-            }
-        },
         "music": {
             "categoryName": "音乐",
             "dj": {
@@ -188,6 +65,7 @@
                 "enable": "启用",
                 "enableText": "DJ 功能已**`启用`**",
                 "newRoleText": "新身分组",
+                "noPermission": "您没有**管理服务器**权限来使用此命令。",
                 "role": {
                     "current": "目前 DJ 身分组: <@&{role}>",
                     "invalid": "无效的身分组。",
@@ -217,7 +95,8 @@
                 "description": "显示歌曲的歌词",
                 "noQuery": "目前没有播放任何内容，或者没有提供任何参数。",
                 "slashDescription": "要搜索的歌曲",
-                "usage": "{prefix}lyrics [歌曲]"
+                "usage": "{prefix}lyrics [歌曲]",
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "显示媒体播放器状态",
@@ -301,13 +180,6 @@
                 "slashSpecificDescription": "跳到队列中的特定位置",
                 "usage": "'{prefix}'skipto <{options} | 数字>"
             },
-            "stayInQueue": {
-                "247Disabled": "保持语音指令已停用",
-                "actualState": "保持语音目前是 **`{state}`**",
-                "description": "使机器人在队列结束时留在语音通道中",
-                "newState": "保持语音已设置为 **`{state}`**",
-                "slashDescription": "保持语音功能的轮流模式"
-            },
             "stop": {
                 "description": "停止音乐播放器",
                 "stoppedMessage": "音乐播放器已停止。"
@@ -321,6 +193,16 @@
                 "slashDescription": "新音量",
                 "usage": "{prefix}volume [新音量]",
                 "volumeLimit": "我无法设置音量高于 **`{maxVol}`**"
+            },
+            "requestChannel": {
+                "description": "设置音乐点播频道",
+                "noPermission": "您需要**管理服务器**权限才能使用此命令。",
+                "invalidChannel": "请提供有效的文字频道。",
+                "slashSetDescription": "设置频道为点播频道",
+                "slashRemoveDescription": "移除点播频道",
+                "slashStatusDescription": "显示当前点播频道",
+                "slashChannelDescription": "要设置为点播频道的频道",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -372,7 +254,43 @@
             "noQueue": "没有播放任何内容。",
             "sameVC": "你需要和我在同一个语音频道。",
             "validVCJoinable": "对不起，我不能**`连接`**到你的语音频道，请确保我有正确的权限。",
-            "validVCPermission": "对不起，我不能在这个语音频道**`说话`**;请确保我有正确的权限。"
+            "validVCPermission": "对不起，我不能在这个语音频道**`说话`**;请确保我有正确的权限。",
+            "useRequestChannel": "请使用点歌频道 {channel} 来执行音乐命令。"
         }
+    },
+    "requestChannel": {
+        "title": "音乐播放器",
+        "standby": "没有音乐播放中。发送歌曲名称或URL开始播放！",
+        "status": "循环模式",
+        "shuffle": "随机播放",
+        "volume": "音量",
+        "queueLength": "队列",
+        "queueFooter": "• 队列中的歌曲总数：{count}",
+        "idle": "空闲",
+        "live": "直播",
+        "requestedBy": "点播者",
+        "unknown": "未知",
+        "notInVoice": "您需要在语音频道中才能点歌。",
+        "noResults": "没有找到您搜索的结果。",
+        "addedToQueue": "已将 **{song}** 添加到队列。",
+        "startedPlaying": "正在播放 **{song}**",
+        "paused": "音乐已暂停。",
+        "resumed": "音乐已恢复。",
+        "skipped": "已跳过当前歌曲。",
+        "stopped": "音乐已停止，队列已清空。",
+        "loopChanged": "循环模式已更改为 **{mode}**。",
+        "shuffleChanged": "随机播放模式现在是 **{state}**。",
+        "volumeChanged": "音量已更改为 **{volume}%**。",
+        "queueCleared": "队列已清空。",
+        "queueListTitle": "队列列表",
+        "emptyQueue": "队列是空的。",
+        "alreadyPaused": "音乐已经暂停了。",
+        "alreadyPlaying": "音乐已经在播放了。",
+        "nothingPlaying": "当前没有播放任何内容。",
+        "volumeLimit": "音量必须在1到100之间。",
+        "setChannel": "点歌频道已设置为 {channel}。",
+        "removeChannel": "点歌频道已移除。",
+        "noChannel": "当前没有设置点歌频道。",
+        "currentChannel": "当前点歌频道：{channel}"
     }
 }

@@ -88,9 +88,8 @@ export class CommandContext {
         }
         if (this.isInteraction()) {
             (options as InteractionReplyOptions).withResponse = true;
-            const msg = (await (this.context as CommandInteraction)[type](
-                options as InteractionReplyOptions | MessagePayload | string
-            )) as Message;
+            // eslint-disable-next-line typescript/no-unsafe-argument
+            const msg = (await (this.context as CommandInteraction)[type](options as any)) as Message;
             const channel = this.context.channel;
             const res = await channel?.messages.fetch(msg.id).catch(() => null);
             return res ?? msg;

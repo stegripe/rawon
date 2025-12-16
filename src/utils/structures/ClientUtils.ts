@@ -11,12 +11,6 @@ const { FFmpeg } = prism;
 export class ClientUtils {
     public constructor(public readonly client: Rawon) { }
 
-    public async fetchMuteRole(guild: Guild): Promise<Role | null> {
-        const id = this.client.data.data?.[guild.id]?.mute;
-        // eslint-disable-next-line promise/prefer-await-to-then
-        return (id?.length ?? 0) > 0 ? guild.roles.fetch(id ?? "").catch(() => null) : null;
-    }
-
     public async fetchDJRole(guild: Guild): Promise<Role | null> {
         const data = this.client.data.data?.[guild.id]?.dj;
         if (data?.enable === true && (data.role?.length ?? 0) > 0) return guild.roles.fetch(data.role ?? "");
