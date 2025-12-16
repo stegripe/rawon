@@ -45,6 +45,10 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
             rawPlayDlStream = await playDlModule.stream(url, { discordPlayerCompatibility: true });
         } catch (streamError) {
             const errorMessage = streamError instanceof Error ? streamError.message : String(streamError);
+            // Check if this is a YouTube bot detection error
+            if (errorMessage.includes("Sign in to confirm you're not a bot") || errorMessage.includes("confirm you're not a bot")) {
+                throw new Error(`YouTube is blocking the request. You may need to set YouTube cookies using play-dl's setToken function. URL: "${url}", Original error: ${errorMessage}`);
+            }
             throw new Error(`play-dl stream failed for URL "${url}": ${errorMessage}`);
         }
         if (rawPlayDlStream.stream === undefined || rawPlayDlStream.stream === null) {
