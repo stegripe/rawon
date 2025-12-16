@@ -284,6 +284,7 @@
         "paused": "Musique en pause.",
         "resumed": "Musique reprise.",
         "skipped": "Chanson actuelle passée.",
+        "removed": "Supprimé **{song}** de la file d'attente et passée.",
         "stopped": "Musique arrêtée et file d'attente vidée.",
         "loopChanged": "Mode boucle changé en **{mode}**.",
         "shuffleChanged": "Mode aléatoire maintenant **{state}**.",

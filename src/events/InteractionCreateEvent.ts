@@ -359,6 +359,52 @@ export class InteractionCreateEvent extends BaseEvent {
                 break;
             }
 
+            case "RC_REMOVE": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                    });
+                    return;
+                }
+
+                const currentSong = (
+                    queue.player.state as
+                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
+                        | undefined
+                )?.resource?.metadata;
+
+                if (!currentSong) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                    });
+                    return;
+                }
+
+                const songTitle = currentSong.song.title;
+
+                // Remove the current song from the queue
+                queue.songs.delete(currentSong.key);
+
+                // Skip to the next song
+                if (!queue.playing) {
+                    queue.playing = true;
+                }
+                queue.player.stop(true);
+
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [
+                        createEmbed(
+                            "success",
+                            `🗑️ **|** ${i18n.__mf("requestChannel.removed", { song: songTitle })}`,
+                        ),
+                    ],
+                });
+                break;
+            }
+
             case "RC_QUEUE_LIST": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({

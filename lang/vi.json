@@ -284,6 +284,7 @@
         "paused": "Đã tạm dừng nhạc.",
         "resumed": "Đã tiếp tục phát nhạc.",
         "skipped": "Đã bỏ qua bài hát hiện tại.",
+        "removed": "Đã xóa **{song}** khỏi hàng đợi và bỏ qua.",
         "stopped": "Đã dừng nhạc và xóa hàng đợi.",
         "loopChanged": "Chế độ lặp đã thay đổi thành **{mode}**.",
         "shuffleChanged": "Chế độ trộn bây giờ là **{state}**.",

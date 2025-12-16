@@ -284,6 +284,7 @@
         "paused": "音乐已暂停。",
         "resumed": "音乐已恢复。",
         "skipped": "已跳过当前歌曲。",
+        "removed": "已从队列中移除 **{song}** 并跳过。",
         "stopped": "音乐已停止，队列已清空。",
         "loopChanged": "循环模式已更改为 **{mode}**。",
         "shuffleChanged": "随机播放模式现在是 **{state}**。",
