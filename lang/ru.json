@@ -242,6 +242,9 @@
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, пожалуйста подождите **`{timeleft}`** чтобы использовать эту команду.",
         "generalHandler": {
             "errorJoining": "Ошибка при подключении к голосовому каналу, потому-что: `{message}`",

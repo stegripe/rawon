@@ -242,6 +242,9 @@
         "pageFooter": "{actual}/{total} 頁"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}，請稍等 **`{timeleft}`**的冷卻時間。",
         "generalHandler": {
             "errorJoining": "加入語音通道時出錯，因為: `{message}`",

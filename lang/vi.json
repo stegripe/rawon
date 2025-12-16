@@ -242,6 +242,9 @@
         "pageFooter": "Trang {actual} trong {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, vui lòng đợi **`{timeleft}`**.",
         "generalHandler": {
             "errorJoining": "Lỗi khi tham gia kênh thoại, vì: `{message}`",

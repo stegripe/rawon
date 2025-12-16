@@ -277,6 +277,9 @@
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, please wait **`{timeleft}`** of cooldown time.",
         "generalHandler": {
             "errorJoining": "Error while joining the voice channel, because: `{message}`",

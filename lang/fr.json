@@ -242,6 +242,9 @@
         "pageFooter": "Page {actual} sur {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, veuillez attendre **`{timeleft}`** de cooldown.",
         "generalHandler": {
             "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : `{message}`",

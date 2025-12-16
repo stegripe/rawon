@@ -242,6 +242,9 @@
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористатись цією командою.",
         "generalHandler": {
             "errorJoining": "Помилка при спробі приєднатись до каналу: `{message}`",

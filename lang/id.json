@@ -242,6 +242,9 @@
         "pageFooter": "Halaman {actual} dari {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "Saya kekurangan izin berikut di {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, mohon tunggu selama **`{timeleft}`** detik.",
         "generalHandler": {
             "errorJoining": "Error saat memasuki voice channel, dikarenakan: `{message}`",

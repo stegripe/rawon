@@ -242,6 +242,9 @@
         "pageFooter": "Sayfa {actual}/{total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, lütfen **{timeleft}`** kadar bekleyin.",
         "generalHandler": {
             "errorJoining": "Ses kanalına katılırken hata oluştu, çünkü: `{message}`",
