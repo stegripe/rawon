@@ -2,6 +2,7 @@ import { URL } from "node:url";
 import { Playlist, type SearchResult, type Video, type VideoCompact } from "youtubei";
 import { type Rawon } from "../../../structures/Rawon.js";
 import { type SearchTrackResult, type Song, type SpotifyTrack } from "../../../typings/index.js";
+import { getMaxResThumbnail } from "../../functions/getMaxResThumbnail.js";
 import { youtube, youtubeMusic } from "../YouTubeUtil.js";
 import { getInfo } from "../YTDLUtil.js";
 import { checkQuery } from "./checkQuery.js";
@@ -100,9 +101,11 @@ export async function searchTrack(
                                             ? 0
                                             : (track as Video).duration,
                                         id: track.id,
-                                        thumbnail: track.thumbnails.sort(
-                                            (a, b) => b.height * b.width - a.height * a.width,
-                                        )[0].url,
+                                        thumbnail: getMaxResThumbnail(
+                                            track.thumbnails.sort(
+                                                (a, b) => b.height * b.width - a.height * a.width,
+                                            )[0].url,
+                                        ),
                                         title: track.title,
                                         url: `https://youtube.com/watch?v=${track.id}`,
                                     },
@@ -118,11 +121,12 @@ export async function searchTrack(
                                         {
                                             duration: videoInfo.duration ?? 0,
                                             id: videoInfo.id,
-                                            thumbnail:
+                                            thumbnail: getMaxResThumbnail(
                                                 videoInfo.thumbnails?.sort(
                                                     (a, b) =>
                                                         b.height * b.width - a.height * a.width,
                                                 )[0]?.url ?? "",
+                                            ),
                                             title: videoInfo.title ?? "Unknown",
                                             url: videoInfo.url ?? videoUrl,
                                         },
@@ -150,9 +154,11 @@ export async function searchTrack(
                                 (track): Song => ({
                                     duration: track.duration ?? 0,
                                     id: track.id,
-                                    thumbnail: track.thumbnails.sort(
-                                        (a, b) => b.height * b.width - a.height * a.width,
-                                    )[0].url,
+                                    thumbnail: getMaxResThumbnail(
+                                        track.thumbnails.sort(
+                                            (a, b) => b.height * b.width - a.height * a.width,
+                                        )[0].url,
+                                    ),
                                     title: track.title,
                                     url: `https://youtube.com/watch?v=${track.id}`,
                                 }),
@@ -268,9 +274,11 @@ export async function searchTrack(
                                 {
                                     duration: track[0].duration ?? 0,
                                     id: track[0].id,
-                                    thumbnail: track[0].thumbnails.sort(
-                                        (a, b) => b.height * b.width - a.height * a.width,
-                                    )[0].url,
+                                    thumbnail: getMaxResThumbnail(
+                                        track[0].thumbnails.sort(
+                                            (a, b) => b.height * b.width - a.height * a.width,
+                                        )[0].url,
+                                    ),
                                     title: track[0].title,
                                     url: `https://youtube.com/watch?v=${track[0].id}`,
                                 },
@@ -303,9 +311,11 @@ export async function searchTrack(
                                     result.items.push({
                                         duration: track[0].duration ?? 0,
                                         id: track[0].id,
-                                        thumbnail: track[0].thumbnails.sort(
-                                            (a, b) => b.height * b.width - a.height * a.width,
-                                        )[0].url,
+                                        thumbnail: getMaxResThumbnail(
+                                            track[0].thumbnails.sort(
+                                                (a, b) => b.height * b.width - a.height * a.width,
+                                            )[0].url,
+                                        ),
                                         title: track[0].title,
                                         url: `https://youtube.com/watch?v=${track[0].id}`,
                                     });
@@ -329,10 +339,11 @@ export async function searchTrack(
                     {
                         duration: info?.duration ?? 0,
                         id: info?.id ?? "",
-                        thumbnail:
+                        thumbnail: getMaxResThumbnail(
                             info?.thumbnails?.sort(
                                 (a, b) => b.height * b.width - a.height * a.width,
                             )[0].url ?? "",
+                        ),
                         title: info?.title ?? "Unknown Song",
                         url: info?.url ?? url.toString(),
                     },
@@ -368,9 +379,11 @@ export async function searchTrack(
                         (track): Song => ({
                             duration: track.duration ?? 0,
                             id: track.id,
-                            thumbnail: track.thumbnails.sort(
-                                (a, b) => b.height * b.width - a.height * a.width,
-                            )[0].url,
+                            thumbnail: getMaxResThumbnail(
+                                track.thumbnails.sort(
+                                    (a, b) => b.height * b.width - a.height * a.width,
+                                )[0].url,
+                            ),
                             title: track.title,
                             url: `https://youtube.com/watch?v=${track.id}`,
                         }),
@@ -383,9 +396,11 @@ export async function searchTrack(
                         (track): Song => ({
                             duration: track.duration ?? 0,
                             id: track.id,
-                            thumbnail: track.thumbnails.sort(
-                                (a, b) => b.height * b.width - a.height * a.width,
-                            )[0].url,
+                            thumbnail: getMaxResThumbnail(
+                                track.thumbnails.sort(
+                                    (a, b) => b.height * b.width - a.height * a.width,
+                                )[0].url,
+                            ),
                             title: track.title,
                             url: `https://youtube.com/watch?v=${track.id}`,
                         }),
@@ -400,9 +415,11 @@ export async function searchTrack(
                         (track): Song => ({
                             duration: track.duration ?? 0,
                             id: track.id,
-                            thumbnail: track.thumbnails.sort(
-                                (a, b) => b.height * b.width - a.height * a.width,
-                            )[0].url,
+                            thumbnail: getMaxResThumbnail(
+                                track.thumbnails.sort(
+                                    (a, b) => b.height * b.width - a.height * a.width,
+                                )[0].url,
+                            ),
                             title: track.title,
                             url: `https://youtube.com/watch?v=${track.id}`,
                         }),
