@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync } from "node:fs";
+import { mkdirSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import type { ClientOptions } from "discord.js";
@@ -18,8 +18,13 @@ import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 
 const dataDir = process.env.DATA_DIR ?? process.cwd();
-if (!existsSync(dataDir)) {
+try {
     mkdirSync(dataDir, { recursive: true });
+} catch (error) {
+    // Ignore EEXIST errors (directory already exists)
+    if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
+        throw error;
+    }
 }
 
 export class Rawon extends Client {
