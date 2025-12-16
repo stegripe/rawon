@@ -23,6 +23,22 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
         return key;
     }
 
+    public restoreSong(key: Snowflake, index: number, song: Song, requester: GuildMember): void {
+        const data: QueueSong = {
+            index,
+            key,
+            requester,
+            song
+        };
+        
+        // Update internal id counter to be after the highest restored index
+        if (index >= this.id) {
+            this.id = index + 1;
+        }
+
+        this.set(key, data);
+    }
+
     public set(key: Snowflake, data: QueueSong): this {
         (this.client as Rawon | undefined)?.debugLog.logData(
             "info",

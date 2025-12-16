@@ -77,11 +77,11 @@ export class ReadyEvent extends BaseEvent {
                     // Create a new queue
                     guild.queue = new ServerQueue(textChannel);
 
-                    // Restore songs to the queue
+                    // Restore songs to the queue with their original keys and indices
                     const memberFetches = queueState.songs.map(async savedSong => {
                         const member = await guild.members.fetch(savedSong.requesterId).catch(() => null);
                         if (member) {
-                            guild.queue?.songs.addSong(savedSong.song, member);
+                            guild.queue?.songs.restoreSong(savedSong.key, savedSong.index, savedSong.song, member);
                         }
                     });
                     await Promise.all(memberFetches);
@@ -104,11 +104,11 @@ export class ReadyEvent extends BaseEvent {
 
                     guild.queue.connection = connection;
 
-                    // Start playing from the saved current song or the first song
+                    // Start playing from the saved current song or the first song (by index)
                     const currentSongKey = queueState.currentSongKey;
                     const startSongKey = currentSongKey !== null && currentSongKey.length > 0 && guild.queue.songs.has(currentSongKey)
                         ? currentSongKey
-                        : guild.queue.songs.first()?.key;
+                        : guild.queue.songs.sortByIndex().first()?.key;
 
                     void play(guild, startSongKey);
 

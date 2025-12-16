@@ -185,9 +185,13 @@ export class ServerQueue {
         const currentData = this.client.data.data ?? {};
         const guildData = currentData[this.textChannel.guild.id] ?? {};
 
-        const currentSongKey = this.player.state.status === AudioPlayerStatus.Playing
-            ? (this.player.state.resource.metadata as QueueSong).key
-            : null;
+        let currentSongKey: string | null = null;
+        if (this.player.state.status === AudioPlayerStatus.Playing) {
+            const metadata = this.player.state.resource.metadata as QueueSong | undefined;
+            if (metadata !== undefined) {
+                currentSongKey = metadata.key;
+            }
+        }
 
         const savedSongs: SavedQueueSong[] = this.songs.sortByIndex().map(queueSong => ({
             requesterId: queueSong.requester.id,
