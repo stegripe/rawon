@@ -1,7 +1,7 @@
-import { ApplicationCommandOptionType, Message, VoiceBasedChannel } from "discord.js";
+import { ApplicationCommandOptionType, type Message, type VoiceBasedChannel } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -18,11 +18,11 @@ import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/Gene
                 description: i18n.__("commands.music.play.slashQueryDescription"),
                 name: "query",
                 type: ApplicationCommandOptionType.String,
-                required: true
-            }
-        ]
+                required: true,
+            },
+        ],
     },
-    usage: i18n.__("commands.music.play.usage")
+    usage: i18n.__("commands.music.play.usage"),
 })
 export class PlayCommand extends BaseCommand {
     @useRequestChannel
@@ -30,15 +30,19 @@ export class PlayCommand extends BaseCommand {
     @validVC
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        if (ctx.isInteraction() && !ctx.deferred) await ctx.deferReply();
+        if (ctx.isInteraction() && !ctx.deferred) {
+            await ctx.deferReply();
+        }
 
         const voiceChannel = ctx.member?.voice.channel as unknown as VoiceBasedChannel;
         if (ctx.additionalArgs.get("fromSearch") !== undefined) {
             const tracks = ctx.additionalArgs.get("values") as string[];
             const searchResults = await Promise.all(
-                tracks.map(async track => searchTrack(this.client, track).catch(() => null))
+                tracks.map(async (track) => searchTrack(this.client, track).catch(() => null)),
             );
-            const toQueue = searchResults.filter((result): result is NonNullable<typeof result> => result !== null).map(result => result.items[0]);
+            const toQueue = searchResults
+                .filter((result): result is NonNullable<typeof result> => result !== null)
+                .map((result) => result.items[0]);
 
             return handleVideos(this.client, ctx, toQueue, voiceChannel);
         }
@@ -56,14 +60,17 @@ export class PlayCommand extends BaseCommand {
                         "warn",
                         i18n.__mf("reusable.invalidUsage", {
                             prefix: `${this.client.config.mainPrefix}help`,
-                            name: this.meta.name
-                        })
-                    )
-                ]
+                            name: this.meta.name,
+                        }),
+                    ),
+                ],
             });
         }
 
-        if (ctx.guild?.queue && voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId) {
+        if (
+            ctx.guild?.queue &&
+            voiceChannel.id !== ctx.guild.queue.connection?.joinConfig.channelId
+        ) {
             return ctx.reply({
                 embeds: [
                     createEmbed(
@@ -71,20 +78,24 @@ export class PlayCommand extends BaseCommand {
                         i18n.__mf("commands.music.play.alreadyPlaying", {
                             voiceChannel:
                                 ctx.guild.channels.cache.get(
-                                    (ctx.guild.queue.connection?.joinConfig as { channelId: string }).channelId
-                                )?.name ?? "#unknown-channel"
-                        })
-                    )
-                ]
+                                    (
+                                        ctx.guild.queue.connection?.joinConfig as {
+                                            channelId: string;
+                                        }
+                                    ).channelId,
+                                )?.name ?? "#unknown-channel",
+                        }),
+                    ),
+                ],
             });
         }
 
         const queryCheck = checkQuery(query ?? "");
         const songs = await searchTrack(this.client, query ?? "").catch(() => void 0);
-        
+
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)]
+                embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)],
             });
         }
 
@@ -92,7 +103,7 @@ export class PlayCommand extends BaseCommand {
             this.client,
             ctx,
             queryCheck.type === "playlist" ? songs.items : [songs.items[0]],
-            voiceChannel
+            voiceChannel,
         );
     }
 }

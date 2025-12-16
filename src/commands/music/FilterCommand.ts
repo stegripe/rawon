@@ -1,7 +1,7 @@
-import { ApplicationCommandOptionType, Message } from "discord.js";
+import { ApplicationCommandOptionType, type Message } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -9,7 +9,7 @@ import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
 
 type FilterSubCmd = "disable" | "enable" | "status";
 
-const slashFilterChoices = Object.keys(filterArgs).map(x => ({ name: x, value: x }));
+const slashFilterChoices = Object.keys(filterArgs).map((x) => ({ name: x, value: x }));
 
 @Command({
     aliases: [],
@@ -19,39 +19,42 @@ const slashFilterChoices = Object.keys(filterArgs).map(x => ({ name: x, value: x
         options: [
             {
                 description: i18n.__mf("commands.music.filter.slashStateDescription", {
-                    state: "enable"
+                    state: "enable",
                 }),
                 name: "enable",
                 options: [
                     {
                         choices: slashFilterChoices,
-                        description: i18n.__mf("commands.music.filter.slashStateFilterDescription", {
-                            state: "enable"
-                        }),
+                        description: i18n.__mf(
+                            "commands.music.filter.slashStateFilterDescription",
+                            {
+                                state: "enable",
+                            },
+                        ),
                         name: "filter",
                         required: true,
-                        type: ApplicationCommandOptionType.String
-                    }
+                        type: ApplicationCommandOptionType.String,
+                    },
                 ],
-                type: ApplicationCommandOptionType.Subcommand
+                type: ApplicationCommandOptionType.Subcommand,
             },
             {
                 description: i18n.__mf("commands.music.filter.slashStateDescription", {
-                    state: "disable"
+                    state: "disable",
                 }),
                 name: "disable",
                 options: [
                     {
                         choices: slashFilterChoices,
                         description: i18n.__("commands.music.filter.slashStateFilterDescription", {
-                            state: "disable"
+                            state: "disable",
                         }),
                         name: "filter",
                         required: true,
-                        type: ApplicationCommandOptionType.String
-                    }
+                        type: ApplicationCommandOptionType.String,
+                    },
                 ],
-                type: ApplicationCommandOptionType.Subcommand
+                type: ApplicationCommandOptionType.Subcommand,
             },
             {
                 description: i18n.__("commands.music.filter.slashStatusDescription"),
@@ -62,14 +65,14 @@ const slashFilterChoices = Object.keys(filterArgs).map(x => ({ name: x, value: x
                         description: i18n.__("commands.music.filter.slashStatusFilterDescription"),
                         name: "filter",
                         required: false,
-                        type: ApplicationCommandOptionType.String
-                    }
+                        type: ApplicationCommandOptionType.String,
+                    },
                 ],
-                type: ApplicationCommandOptionType.Subcommand
-            }
-        ]
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+        ],
     },
-    usage: "{prefix}filter"
+    usage: "{prefix}filter",
 })
 export class FilterCommand extends BaseCommand {
     @inVC
@@ -82,74 +85,85 @@ export class FilterCommand extends BaseCommand {
             enable: "enable",
             disable: "disable",
             stats: "status",
-            status: "status"
-        }
+            status: "status",
+        };
         const subcmd = mode[
             (
-                ctx.options?.getSubcommand() ??
-                ctx.args[0] as string | undefined
+                ctx.options?.getSubcommand() ?? (ctx.args[0] as string | undefined)
             )?.toLowerCase() as unknown as string
         ] as FilterSubCmd | undefined;
-        const filter = (ctx.options?.getString("filter") ?? ctx.args[subcmd ? 1 : 0] as string | undefined)?.toLowerCase() as keyof typeof filterArgs;
+        const filter = (
+            ctx.options?.getString("filter") ?? (ctx.args[subcmd ? 1 : 0] as string | undefined)
+        )?.toLowerCase() as keyof typeof filterArgs;
         if (subcmd === "enable" || subcmd === "disable") {
             if (!filterArgs[filter]) {
                 return ctx.reply({
-                    embeds: [createEmbed("error", i18n.__("commands.music.filter.specifyFilter"), true)]
+                    embeds: [
+                        createEmbed("error", i18n.__("commands.music.filter.specifyFilter"), true),
+                    ],
                 });
             }
 
             ctx.guild?.queue?.setFilter(filter, subcmd === "enable");
             return ctx.reply({
                 embeds: [
-                    createEmbed("info", i18n.__mf("commands.music.filter.filterSet", {
-                        filter,
-                        state: subcmd === "enable" ? "ENABLED" : "DISABLED"
-                    }))
-                ]
+                    createEmbed(
+                        "info",
+                        i18n.__mf("commands.music.filter.filterSet", {
+                            filter,
+                            state: subcmd === "enable" ? "ENABLED" : "DISABLED",
+                        }),
+                    ),
+                ],
             });
         }
 
         if (filterArgs[filter]) {
             return ctx.reply({
                 embeds: [
-                    createEmbed("info", i18n.__mf("commands.music.filter.currentState", {
-                        filter,
-                        state: ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED"
-                    }))
-                        .setFooter({
-                            text: i18n.__mf("commands.music.filter.embedFooter", {
-                                filter,
-                                opstate: ctx.guild?.queue?.filters[filter] === true ? "disable" : "enable",
-                                prefix: ctx.isCommand() ? "/" : this.client.config.mainPrefix
-                            })
-                        })
-                ]
+                    createEmbed(
+                        "info",
+                        i18n.__mf("commands.music.filter.currentState", {
+                            filter,
+                            state:
+                                ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED",
+                        }),
+                    ).setFooter({
+                        text: i18n.__mf("commands.music.filter.embedFooter", {
+                            filter,
+                            opstate:
+                                ctx.guild?.queue?.filters[filter] === true ? "disable" : "enable",
+                            prefix: ctx.isCommand() ? "/" : this.client.config.mainPrefix,
+                        }),
+                    }),
+                ],
             });
         }
 
-        const keys = Object.keys(filterArgs) as (keyof typeof filterArgs)[]
+        const keys = Object.keys(filterArgs) as (keyof typeof filterArgs)[];
         return ctx.reply({
             embeds: [
-                createEmbed("info")
-                    .addFields(
-                        {
-                            name: i18n.__("commands.music.filter.availableFilters"),
-                            value: keys
-                                .filter(x => ctx.guild?.queue?.filters[x] !== true)
-                                .map(x => `\`${x}\``)
+                createEmbed("info").addFields(
+                    {
+                        name: i18n.__("commands.music.filter.availableFilters"),
+                        value:
+                            keys
+                                .filter((x) => ctx.guild?.queue?.filters[x] !== true)
+                                .map((x) => `\`${x}\``)
                                 .join("\n") || "-",
-                            inline: true
-                        },
-                        {
-                            name: i18n.__("commands.music.filter.currentlyUsedFilters"),
-                            value: keys
-                                .filter(x => ctx.guild?.queue?.filters[x] === true)
-                                .map(x => `\`${x}\``)
+                        inline: true,
+                    },
+                    {
+                        name: i18n.__("commands.music.filter.currentlyUsedFilters"),
+                        value:
+                            keys
+                                .filter((x) => ctx.guild?.queue?.filters[x] === true)
+                                .map((x) => `\`${x}\``)
                                 .join("\n") || "-",
-                            inline: true
-                        }
-                    )
-            ]
-        })
+                        inline: true,
+                    },
+                ),
+            ],
+        });
     }
 }

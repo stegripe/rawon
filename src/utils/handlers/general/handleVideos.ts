@@ -1,12 +1,16 @@
-import type { DiscordGatewayAdapterCreator} from "@discordjs/voice";
-import { joinVoiceChannel } from "@discordjs/voice";
-import type { Message, StageChannel, TextChannel, VoiceChannel } from "discord.js";
-import { escapeMarkdown } from "discord.js";
+import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
+import {
+    escapeMarkdown,
+    type Message,
+    type StageChannel,
+    type TextChannel,
+    type VoiceChannel,
+} from "discord.js";
 import i18n from "../../../config/index.js";
-import type { CommandContext } from "../../../structures/CommandContext.js";
-import type { Rawon } from "../../../structures/Rawon.js";
+import { type CommandContext } from "../../../structures/CommandContext.js";
+import { type Rawon } from "../../../structures/Rawon.js";
 import { ServerQueue } from "../../../structures/ServerQueue.js";
-import type { Song } from "../../../typings/index.js";
+import { type Song } from "../../../typings/index.js";
 import { chunk } from "../../functions/chunk.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { parseHTMLElements } from "../../functions/parseHTMLElements.js";
@@ -17,18 +21,26 @@ export async function handleVideos(
     client: Rawon,
     ctx: CommandContext,
     toQueue: Song[],
-    voiceChannel: StageChannel | VoiceChannel
+    voiceChannel: StageChannel | VoiceChannel,
 ): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
 
     async function sendPagination(): Promise<void> {
         for (const song of toQueue) {
-            ctx.guild?.queue?.songs.addSong(song, ctx.member as unknown as NonNullable<typeof ctx.member>);
+            ctx.guild?.queue?.songs.addSong(
+                song,
+                ctx.member as unknown as NonNullable<typeof ctx.member>,
+            );
         }
 
-        const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", { length: toQueue.length });
+        const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", {
+            length: toQueue.length,
+        });
         const pages = chunk(toQueue, 10).map((vals, i) => {
-            const texts = vals.map((song, index) => `${i * 10 + (index + 1)}.) ${escapeMarkdown(parseHTMLElements(song.title))}`);
+            const texts = vals.map(
+                (song, index) =>
+                    `${i * 10 + (index + 1)}.) ${escapeMarkdown(parseHTMLElements(song.title))}`,
+            );
 
             return texts.join("\n");
         });
@@ -40,14 +52,14 @@ export async function handleVideos(
             edit: (i, emb, page) => {
                 emb.setDescription(`\`\`\`\n${page}\`\`\``)
                     .setAuthor({
-                        name: opening
+                        name: opening,
                     })
                     .setFooter({
-                        text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`
+                        text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`,
                     });
             },
             embed,
-            pages
+            pages,
         }).start();
     }
 
@@ -61,27 +73,35 @@ export async function handleVideos(
         return;
     }
 
-    (ctx.guild as unknown as NonNullable<typeof ctx.guild>).queue = new ServerQueue(ctx.channel as TextChannel);
+    (ctx.guild as unknown as NonNullable<typeof ctx.guild>).queue = new ServerQueue(
+        ctx.channel as TextChannel,
+    );
     await sendPagination();
 
-    client.debugLog.logData("info", "HANDLE_VIDEOS", `Created a server queue for ${ctx.guild?.name}(${ctx.guild?.id})`);
+    client.debugLog.logData(
+        "info",
+        "HANDLE_VIDEOS",
+        `Created a server queue for ${ctx.guild?.name}(${ctx.guild?.id})`,
+    );
 
     try {
         const connection = joinVoiceChannel({
             adapterCreator: ctx.guild?.voiceAdapterCreator as DiscordGatewayAdapterCreator,
             channelId: voiceChannel.id,
             guildId: ctx.guild?.id ?? "",
-            selfDeaf: true
-        }).on("debug", message => {
+            selfDeaf: true,
+        }).on("debug", (message) => {
             client.logger.debug(message);
         });
 
-        (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).connection = connection;
+        (
+            ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
+        ).connection = connection;
 
         client.debugLog.logData(
             "info",
             "HANDLE_VIDEOS",
-            `Connected to ${voiceChannel.name}(${voiceChannel.id}) in guild ${ctx.guild?.name}(${ctx.guild?.id})`
+            `Connected to ${voiceChannel.name}(${voiceChannel.id}) in guild ${ctx.guild?.name}(${ctx.guild?.id})`,
         );
     } catch (error) {
         ctx.guild?.queue?.songs.clear();
@@ -90,22 +110,25 @@ export async function handleVideos(
         client.debugLog.logData(
             "error",
             "HANDLE_VIDEOS",
-            `Error occured while connecting to ${ctx.guild?.name}(${ctx.guild?.id}). Reason: ${(error as Error).message
-            }`
+            `Error occured while connecting to ${ctx.guild?.name}(${ctx.guild?.id}). Reason: ${
+                (error as Error).message
+            }`,
         );
 
         client.logger.error("PLAY_CMD_ERR:", error);
         const channel = ctx.channel;
-        if (channel !== null && 'send' in channel) {
+        if (channel !== null && "send" in channel) {
             try {
                 await channel.send({
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }),
-                            true
-                        )
-                    ]
+                            i18n.__mf("utils.generalHandler.errorJoining", {
+                                message: `\`${(error as Error).message}\``,
+                            }),
+                            true,
+                        ),
+                    ],
                 });
             } catch (error_: unknown) {
                 client.logger.error("PLAY_CMD_ERR:", error_);

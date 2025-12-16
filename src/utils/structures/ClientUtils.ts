@@ -1,19 +1,20 @@
 import { Buffer } from "node:buffer";
 import { execSync } from "node:child_process";
 import nodePath from "node:path";
-import type { Guild, Role} from "discord.js";
-import { ChannelType } from "discord.js";
+import { ChannelType, type Guild, type Role } from "discord.js";
 import prism from "prism-media";
-import type { Rawon } from "../../structures/Rawon.js";
+import { type Rawon } from "../../structures/Rawon.js";
 
 const { FFmpeg } = prism;
 
 export class ClientUtils {
-    public constructor(public readonly client: Rawon) { }
+    public constructor(public readonly client: Rawon) {}
 
     public async fetchDJRole(guild: Guild): Promise<Role | null> {
         const data = this.client.data.data?.[guild.id]?.dj;
-        if (data?.enable === true && (data.role?.length ?? 0) > 0) return guild.roles.fetch(data.role ?? "");
+        if (data?.enable === true && (data.role?.length ?? 0) > 0) {
+            return guild.roles.fetch(data.role ?? "");
+        }
 
         return null;
     }
@@ -30,13 +31,15 @@ export class ClientUtils {
         let arr: string[] = [];
 
         if (this.client.shard) {
-            const shardUsers = await this.client.shard.broadcastEval(c => c.users.cache.map(x => x.id));
+            const shardUsers = await this.client.shard.broadcastEval((c) =>
+                c.users.cache.map((x) => x.id),
+            );
 
             for (const users of shardUsers) {
                 arr = [...arr, ...users];
             }
         } else {
-            arr = this.client.users.cache.map(x => x.id);
+            arr = this.client.users.cache.map((x) => x.id);
         }
 
         return arr.filter((x, i) => arr.indexOf(x) === i).length;
@@ -49,23 +52,24 @@ export class ClientUtils {
             const shardChannels = await this.client.shard.broadcastEval(
                 (c, ty) =>
                     c.channels.cache
-                        .filter(ch => {
+                        .filter((ch) => {
                             if (ty.textOnly) {
                                 return (
                                     ch.type === ty.types.GuildText ||
                                     ch.type === ty.types.PublicThread ||
                                     ch.type === ty.types.PrivateThread
                                 );
-                            } else if (ty.voiceOnly) {
+                            }
+                            if (ty.voiceOnly) {
                                 return ch.type === ty.types.GuildVoice;
                             }
 
                             return true;
                         })
-                        .map(ch => ch.id),
+                        .map((ch) => ch.id),
                 {
-                    context: { textOnly, voiceOnly, types: ChannelType }
-                }
+                    context: { textOnly, voiceOnly, types: ChannelType },
+                },
             );
 
             for (const channels of shardChannels) {
@@ -73,20 +77,21 @@ export class ClientUtils {
             }
         } else {
             arr = this.client.channels.cache
-                .filter(ch => {
+                .filter((ch) => {
                     if (textOnly) {
                         return (
                             ch.type === ChannelType.GuildText ||
                             ch.type === ChannelType.PublicThread ||
                             ch.type === ChannelType.PrivateThread
                         );
-                    } else if (voiceOnly) {
+                    }
+                    if (voiceOnly) {
                         return ch.type === ChannelType.GuildVoice;
                     }
 
                     return true;
                 })
-                .map(ch => ch.id);
+                .map((ch) => ch.id);
         }
 
         return arr.filter((x, i) => arr.indexOf(x) === i).length;
@@ -94,7 +99,7 @@ export class ClientUtils {
 
     public async getGuildCount(): Promise<number> {
         if (this.client.shard) {
-            const guilds = await this.client.shard.broadcastEval(c => c.guilds.cache.size);
+            const guilds = await this.client.shard.broadcastEval((c) => c.guilds.cache.size);
 
             return guilds.reduce((prev, curr) => prev + curr);
         }
@@ -105,18 +110,21 @@ export class ClientUtils {
     public async getPlayingCount(): Promise<number> {
         if (this.client.shard) {
             const playings = await this.client.shard.broadcastEval(
-                c => c.guilds.cache.filter(x => x.queue?.playing === true).size
+                (c) => c.guilds.cache.filter((x) => x.queue?.playing === true).size,
             );
 
             return playings.reduce((prev, curr) => prev + curr);
         }
 
-        return this.client.guilds.cache.filter(x => x.queue?.playing === true).size;
+        return this.client.guilds.cache.filter((x) => x.queue?.playing === true).size;
     }
 
     public async import<T>(path: string, ...args: any[]): Promise<T | undefined> {
         const file = await import(path).then(
-            mod => (mod as Record<string, (new (...argument: any[]) => T) | undefined>)[nodePath.parse(path).name]
+            (mod) =>
+                (mod as Record<string, (new (...argument: any[]) => T) | undefined>)[
+                    nodePath.parse(path).name
+                ],
         );
         return file ? new file(...(args as unknown[])) : undefined;
     }
@@ -127,7 +135,7 @@ export class ClientUtils {
             return (
                 ffmpeg.version
                     .split(/[ _-]/u)
-                    .find(x => /[\d.]/u.test(x))
+                    .find((x) => /[\d.]/u.test(x))
                     ?.replaceAll(/[^\d.]/gu, "") ?? "Unknown"
             );
         } catch {
@@ -141,7 +149,7 @@ export class ClientUtils {
             const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
             return res.toString().trim();
         } catch {
-            return "???"
+            return "???";
         }
     }
 }

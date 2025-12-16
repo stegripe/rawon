@@ -1,4 +1,11 @@
-import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, ComponentType, Message } from "discord.js";
+import {
+    ActionRowBuilder,
+    ApplicationCommandOptionType,
+    ButtonBuilder,
+    ButtonStyle,
+    ComponentType,
+    type Message,
+} from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
@@ -17,11 +24,11 @@ import { createProgressBar } from "../../utils/functions/createProgressBar.js";
                 description: i18n.__("commands.music.volume.slashDescription"),
                 name: "volume",
                 type: ApplicationCommandOptionType.Number,
-                required: false
-            }
-        ]
+                required: false,
+            },
+        ],
     },
-    usage: i18n.__("commands.music.volume.usage")
+    usage: i18n.__("commands.music.volume.usage"),
 })
 export class VolumeCommand extends BaseCommand {
     @inVC
@@ -37,7 +44,10 @@ export class VolumeCommand extends BaseCommand {
                 new ButtonBuilder().setCustomId("25").setLabel("25%").setStyle(ButtonStyle.Primary),
                 new ButtonBuilder().setCustomId("50").setLabel("50%").setStyle(ButtonStyle.Primary),
                 new ButtonBuilder().setCustomId("75").setLabel("75%").setStyle(ButtonStyle.Primary),
-                new ButtonBuilder().setCustomId("100").setLabel("100%").setStyle(ButtonStyle.Primary)
+                new ButtonBuilder()
+                    .setCustomId("100")
+                    .setLabel("100%")
+                    .setStyle(ButtonStyle.Primary),
             );
 
             const msg = await ctx.reply({
@@ -45,21 +55,21 @@ export class VolumeCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
-                            volume: `\`${current}\``
-                        })}\n${current}% ${createProgressBar(current, 100)} 100%`
-                    ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
+                            volume: `\`${current}\``,
+                        })}\n${current}% ${createProgressBar(current, 100)} 100%`,
+                    ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") }),
                 ],
-                components: [buttons]
+                components: [buttons],
             });
 
             const collector = msg.createMessageComponentCollector({
                 componentType: ComponentType.Button,
-                filter: i => i.isButton() && i.user.id === ctx.author.id,
-                idle: 30_000
+                filter: (i) => i.isButton() && i.user.id === ctx.author.id,
+                idle: 30_000,
             });
 
             collector
-                .on("collect", async i => {
+                .on("collect", async (i) => {
                     const newContext = new CommandContext(i, [i.customId]);
                     const newVolume = Number(i.customId);
                     await this.execute(newContext);
@@ -69,11 +79,11 @@ export class VolumeCommand extends BaseCommand {
                             createEmbed(
                                 "info",
                                 `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
-                                    volume: `\`${newVolume}\``
-                                })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`
-                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
+                                    volume: `\`${newVolume}\``,
+                                })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`,
+                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") }),
                         ],
-                        components: [buttons]
+                        components: [buttons],
                     });
                 })
                 .on("end", () => {
@@ -83,11 +93,11 @@ export class VolumeCommand extends BaseCommand {
                             createEmbed(
                                 "info",
                                 `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
-                                    volume: `\`${cur}\``
-                                })}\n${cur}% ${createProgressBar(cur, 100)} 100%`
-                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") })
+                                    volume: `\`${cur}\``,
+                                })}\n${cur}% ${createProgressBar(cur, 100)} 100%`,
+                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") }),
                         ],
-                        components: []
+                        components: [],
                     });
                 });
             return;
@@ -98,25 +108,26 @@ export class VolumeCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         i18n.__mf("commands.music.volume.plsPause", {
-                            volume: `\`${volume}\``
-                        })
-                    )
-                ]
+                            volume: `\`${volume}\``,
+                        }),
+                    ),
+                ],
             });
             return;
         }
 
-
-        (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).volume = volume;
+        (
+            ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
+        ).volume = volume;
         await ctx.reply({
             embeds: [
                 createEmbed(
                     "success",
                     `🔊 **|** ${i18n.__mf("commands.music.volume.newVolume", {
-                        volume
-                    })}`
-                )
-            ]
+                        volume,
+                    })}`,
+                ),
+            ],
         });
     }
 }

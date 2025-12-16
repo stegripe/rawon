@@ -1,8 +1,8 @@
-import { ApplicationCommandOptionType, Message } from "discord.js";
+import { ApplicationCommandOptionType, type Message } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { LoopMode } from "../../typings/index.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
+import { type LoopMode } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -16,21 +16,21 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
             {
                 description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "queue",
-                type: ApplicationCommandOptionType.Subcommand
+                type: ApplicationCommandOptionType.Subcommand,
             },
             {
                 description: i18n.__("commands.music.repeat.slashQueue"),
                 name: "song",
-                type: ApplicationCommandOptionType.Subcommand
+                type: ApplicationCommandOptionType.Subcommand,
             },
             {
                 description: i18n.__("commands.music.repeat.slashDisable"),
                 name: "disable",
-                type: ApplicationCommandOptionType.Subcommand
-            }
-        ]
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+        ],
     },
-    usage: i18n.__mf("commands.music.repeat.usage", { options: "queue | one | disable" })
+    usage: i18n.__mf("commands.music.repeat.usage", { options: "queue | one | disable" }),
 })
 export class RepeatCommand extends BaseCommand {
     @useRequestChannel
@@ -41,22 +41,24 @@ export class RepeatCommand extends BaseCommand {
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {
             OFF: {
                 aliases: ["disable", "off", "0"],
-                emoji: "▶️"
+                emoji: "▶️",
             },
             QUEUE: {
                 aliases: ["all", "queue"],
-                emoji: "🔁"
+                emoji: "🔁",
             },
             SONG: {
                 aliases: ["one", "song", "current", "this", "1"],
-                emoji: "🔂"
-            }
+                emoji: "🔂",
+            },
         };
         const selection =
-            ctx.options?.getSubcommand() ?? ctx.args[0]
-                ? Object.keys(mode).find(key =>
-                    mode[key as LoopMode].aliases.includes(ctx.args[0] ?? ctx.options?.getSubcommand())
-                )
+            (ctx.options?.getSubcommand() ?? ctx.args[0])
+                ? Object.keys(mode).find((key) =>
+                      mode[key as LoopMode].aliases.includes(
+                          ctx.args[0] ?? ctx.options?.getSubcommand(),
+                      ),
+                  )
                 : undefined;
 
         if ((selection?.length ?? 0) === 0) {
@@ -67,15 +69,15 @@ export class RepeatCommand extends BaseCommand {
                         `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf(
                             "commands.music.repeat.actualMode",
                             {
-                                mode: `\`${ctx.guild?.queue?.loopMode}\``
-                            }
-                        )}`
+                                mode: `\`${ctx.guild?.queue?.loopMode}\``,
+                            },
+                        )}`,
                     ).setFooter({
                         text: i18n.__mf("commands.music.repeat.footer", {
-                            prefix: this.client.config.mainPrefix
-                        })
-                    })
-                ]
+                            prefix: this.client.config.mainPrefix,
+                        }),
+                    }),
+                ],
             });
         }
         ctx.guild?.queue?.setLoopMode(selection as LoopMode);
@@ -84,11 +86,14 @@ export class RepeatCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf("commands.music.repeat.newMode", {
-                        mode: `\`${ctx.guild?.queue?.loopMode}\``
-                    })}`
-                )
-            ]
+                    `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf(
+                        "commands.music.repeat.newMode",
+                        {
+                            mode: `\`${ctx.guild?.queue?.loopMode}\``,
+                        },
+                    )}`,
+                ),
+            ],
         });
     }
 }

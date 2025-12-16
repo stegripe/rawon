@@ -1,32 +1,43 @@
-import type { ContextMenuCommandInteraction, Interaction, InteractionButtonComponentData, Message, StringSelectMenuInteraction, TextChannel } from "discord.js";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType } from "discord.js";
-import type { PaginationPayload } from "../../typings/index.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    CommandInteraction,
+    ComponentType,
+    type ContextMenuCommandInteraction,
+    type Interaction,
+    type InteractionButtonComponentData,
+    type Message,
+    type StringSelectMenuInteraction,
+    type TextChannel,
+} from "discord.js";
+import { type PaginationPayload } from "../../typings/index.js";
 
 const DATAS: InteractionButtonComponentData[] = [
     {
         style: ButtonStyle.Secondary,
         emoji: "⏪",
         customId: `PREV10`,
-        type: ComponentType.Button
+        type: ComponentType.Button,
     },
     {
         style: ButtonStyle.Primary,
         emoji: "⬅️",
         customId: "PREV",
-        type: ComponentType.Button
+        type: ComponentType.Button,
     },
     {
         style: ButtonStyle.Primary,
         emoji: "➡️",
         customId: "NEXT",
-        type: ComponentType.Button
+        type: ComponentType.Button,
     },
     {
         style: ButtonStyle.Secondary,
         emoji: "⏩",
         customId: "NEXT10",
-        type: ComponentType.Button
-    }
+        type: ComponentType.Button,
+    },
 ];
 
 export class ButtonPagination {
@@ -37,8 +48,8 @@ export class ButtonPagination {
             | Interaction
             | Message
             | StringSelectMenuInteraction,
-        public readonly payload: PaginationPayload
-    ) { }
+        public readonly payload: PaginationPayload,
+    ) {}
 
     public async start(): Promise<void> {
         const embed = this.payload.embed;
@@ -48,11 +59,14 @@ export class ButtonPagination {
         this.payload.edit.call(this, index, embed, pages[index]);
 
         const isInteraction = this.msg instanceof CommandInteraction;
-        const buttons = DATAS.map(data => new ButtonBuilder(data));
+        const buttons = DATAS.map((data) => new ButtonBuilder(data));
         const toSend = {
             content: this.payload.content,
             embeds: [embed],
-            components: pages.length < 2 ? [] : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)]
+            components:
+                pages.length < 2
+                    ? []
+                    : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)],
         };
         const msg = await (isInteraction
             ? (this.msg as CommandInteraction).editReply(toSend)
@@ -61,20 +75,22 @@ export class ButtonPagination {
             this.msg.client.channels.cache.get(this.msg.channelId ?? "") as TextChannel
         ).messages.fetch(msg.id);
 
-        if (pages.length < 2) return;
+        if (pages.length < 2) {
+            return;
+        }
 
         const collector = fetchedMsg.createMessageComponentCollector({
-            filter: i => {
+            filter: (i) => {
                 void i.deferUpdate();
                 return (
-                    DATAS.map(x => x.customId.toLowerCase()).includes(i.customId.toLowerCase()) &&
+                    DATAS.map((x) => x.customId.toLowerCase()).includes(i.customId.toLowerCase()) &&
                     i.user.id === this.payload.author
                 );
             },
-            componentType: ComponentType.Button
+            componentType: ComponentType.Button,
         });
 
-        collector.on("collect", async i => {
+        collector.on("collect", async (i) => {
             switch (i.customId) {
                 case "PREV10":
                     index -= 10;
@@ -98,7 +114,10 @@ export class ButtonPagination {
             await fetchedMsg.edit({
                 embeds: [embed],
                 content: this.payload.content,
-                components: pages.length < 2 ? [] : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)]
+                components:
+                    pages.length < 2
+                        ? []
+                        : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)],
             });
         });
     }
