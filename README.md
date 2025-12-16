@@ -40,11 +40,7 @@ pnpm start
 
 ### Using Docker Compose (Recommended)
 1. Create a `.env` file with your configuration (copy from `.env.example`)
-2. Create an empty `data.json` file for persistence:
-```sh
-touch data.json
-```
-3. Start the bot:
+2. Start the bot:
 ```sh
 docker compose up -d
 ```
@@ -57,12 +53,15 @@ services:
     container_name: rawon-bot
     restart: unless-stopped
     env_file: .env
+    environment:
+      - DATA_DIR=/app/data
     volumes:
       - rawon:/app/scripts
-      - ./data.json:/app/data.json
+      - rawon-data:/app/data
 
 volumes:
   rawon:
+  rawon-data:
 ```
 
 ### Using Docker Run
@@ -70,15 +69,16 @@ volumes:
 docker run -d \
   --name rawon-bot \
   --env-file .env \
+  -e DATA_DIR=/app/data \
   -v rawon:/app/scripts \
-  -v ./data.json:/app/data.json \
+  -v rawon-data:/app/data \
   --restart unless-stopped \
   ghcr.io/stegripe/rawon:latest
 ```
 
 ### Volume Explanations
 - `/app/scripts` - Required if you use `yt-dlp` stream strategy (stores yt-dlp binary)
-- `/app/data.json` - Stores persistent data like request channels and player settings
+- `/app/data` - Stores persistent data like request channels and player settings (data.json)
 
 ## Railway Deployment
 Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
