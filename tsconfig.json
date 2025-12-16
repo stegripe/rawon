@@ -20,7 +20,7 @@
         "typeRoots": [
             "node_modules/@types",
             "src/typings",
-            "yt-dlp-utils/"
+            "src/utils/yt-dlp/"
         ]
     },
     "include": [

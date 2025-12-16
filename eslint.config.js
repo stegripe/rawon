@@ -10,6 +10,6 @@ export default [...common, ...modules, ...node, ...prettier, ...extend(typescrip
     option: ["off"]
 }], ...ignores), includeIgnoreFile(gitIgnore), {
     ignores: [
-        "yt-dlp-utils/*"
+        "src/utils/yt-dlp/*"
     ]
 }];

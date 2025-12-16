@@ -4,7 +4,7 @@ import { existsSync, rmSync } from "node:fs";
 import nodePath from "node:path";
 import process from "node:process";
 import prism from "prism-media";
-import { downloadExecutable } from "./yt-dlp-utils/index.js";
+import { downloadExecutable } from "./src/utils/yt-dlp/index.js";
 
 const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
 

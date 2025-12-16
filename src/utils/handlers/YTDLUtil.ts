@@ -1,8 +1,8 @@
 /* eslint-disable unicorn/filename-case */
 import type { Readable } from "node:stream";
-import ytdl, { exec } from "../../../yt-dlp-utils/index.js";
 import type { Rawon } from "../../structures/Rawon.js";
 import type { BasicYoutubeVideoInfo } from "../../typings/index.js";
+import ytdl, { exec } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
 export async function getStream(client: Rawon, url: string): Promise<Readable> {
