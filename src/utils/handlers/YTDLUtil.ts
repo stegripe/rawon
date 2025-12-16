@@ -1,5 +1,6 @@
 /* eslint-disable unicorn/filename-case, typescript/naming-convention */
 import type { Readable } from "node:stream";
+import { URL } from "node:url";
 import ytdl, { exec } from "../../../yt-dlp-utils/index.js";
 import { streamStrategy } from "../../config/index.js";
 import type { Rawon } from "../../structures/Rawon.js";
@@ -29,6 +30,15 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
                 ? `play-dl failed to load: ${playDlImportError.message}` 
                 : "play-dl is not available. Please install play-dl or use yt-dlp as the stream strategy.";
             throw new Error(errorMessage);
+        }
+        // Validate URL before passing to play-dl
+        if (!url) {
+            throw new Error("Cannot stream: URL is empty or undefined.");
+        }
+        try {
+            new URL(url);
+        } catch {
+            throw new Error(`Cannot stream: Invalid URL format - "${url}"`);
         }
         const rawPlayDlStream = await playDlModule.stream(url, { discordPlayerCompatibility: true });
         if (rawPlayDlStream.stream === undefined || rawPlayDlStream.stream === null) {
