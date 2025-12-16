@@ -100,5 +100,4 @@ dist
 # Rawon cache directories and files
 data.json
 scripts/
-play-dl-fix/
 package-lock.json
