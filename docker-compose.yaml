@@ -11,8 +11,6 @@ services:
     image: ghcr.io/stegripe/rawon:latest-dev
     container_name: rawon-bot
     env_file: .env
-    environment:
-      - DATA_DIR=/app/data
     networks:
       - net
     volumes:

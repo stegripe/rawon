@@ -1,4 +1,3 @@
-import { mkdirSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import type { ClientOptions } from "discord.js";
@@ -17,22 +16,12 @@ import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 
-const dataDir = process.env.DATA_DIR ?? process.cwd();
-try {
-    mkdirSync(dataDir, { recursive: true });
-} catch (error) {
-    // Ignore EEXIST errors (directory already exists)
-    if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
-        throw error;
-    }
-}
-
 export class Rawon extends Client {
     public startTimestamp = 0;
     public readonly config = config;
     public readonly commands = new CommandManager(this, path.resolve(importURLToString(import.meta.url), "..", "commands"));
     public readonly events = new EventsLoader(this, path.resolve(importURLToString(import.meta.url), "..", "events"));
-    public readonly data = new JSONDataManager<Record<string, GuildData>>(path.resolve(dataDir, "data.json"));
+    public readonly data = new JSONDataManager<Record<string, GuildData>>(path.resolve(process.cwd(), "data.json"));
     public readonly logger = new RawonLogger({ prod: this.config.isProd });
     public readonly debugLog = new DebugLogManager(this.config.debugMode, this.config.isProd);
     public readonly spotify = new SpotifyUtil(this);
