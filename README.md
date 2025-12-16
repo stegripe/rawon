@@ -13,7 +13,7 @@
 - Configurable, and easy to use.
 - Basic music commands.
 
-## General Setup
+## General Setup (Installation)
 1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
 2. Clone or download this repository
 3. Rename `.env.example` to `.env` and fill in the required values
@@ -33,12 +33,12 @@ pnpm prune --production
 ```sh
 pnpm start
 ```
-8. (Optional) Setup the special player channel:
+8. (Optional) After the bot online, you can setup the special/dedicated channel:
 `<prefix>requestchannel <#channel>` (Example: `xrequestchannel #request-music`)
 
-## Docker Setup
+### Docker Setup
 
-### Using Docker Compose (Recommended)
+#### Using Docker Compose (Recommended)
 1. Create a `.env` file with your configuration (copy from `.env.example`)
 2. Start the bot:
 ```sh
@@ -60,7 +60,7 @@ volumes:
   rawon:
 ```
 
-### Using Docker Run
+#### Using Docker Run
 ```sh
 docker run -d \
   --name rawon-bot \
@@ -73,19 +73,12 @@ docker run -d \
 #### Volume Explanations
 `/app` - Required if you use `yt-dlp` stream strategy (stores yt-dlp binary) and stores persistent data like request channels and player settings (data.json).
 
-## Railway Deployment
+### Railway Deployment
 Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
 
 **IMPORTANT:** Read [Disclaimers](./DISCLAIMERS.md) before deploying to Railway.
 
 <a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway" /></a>
-
-## Environment Variables
-See `.env.example` for all available configuration options. Key variables:
-- `DISCORD_TOKEN` - Your Discord bot token (required)
-- `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` - Spotify API credentials (optional, for Spotify support)
-- `MAIN_PREFIX` - Bot command prefix (default: `!`)
-- `STREAM_STRATEGY` - `yt-dlp` (default) or `play-dl`
 
 ## Disclaimers
 Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
