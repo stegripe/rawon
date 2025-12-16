@@ -9,9 +9,9 @@
 ## Features
 - Interaction support (slash commands and buttons).
 - Request channel feature for a seamless music experience.
-- Configurable, and easy to use.
-- Basic music and moderation commands.
 - A production-ready project, set up the bot without coding.
+- Configurable, and easy to use.
+- Basic music commands.
 
 ## General Setup
 1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
@@ -34,7 +34,7 @@ pnpm prune --production
 pnpm start
 ```
 8. (Optional) Setup the special player channel:
-`<prefix>requestchannel <#rawon>`
+`<prefix>requestchannel <#channel>` (Example: `xrequestchannel #rawon`)
 
 ## Docker Setup
 
@@ -97,6 +97,9 @@ See `.env.example` for all available configuration options. Key variables:
 ## Disclaimers
 Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 
+## Support & Questions
+Only provided on our [Discord server](https://stegripe.org/discord).
+
 ## Project Contributors
 
 ### Developers
@@ -116,4 +119,4 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@Fyphen1223](https://github.com/Fyphen1223) (ja)
 - [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
 
-> © 2025 Stegripe Development
+> © 2026 Stegripe Development
