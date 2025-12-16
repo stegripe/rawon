@@ -18,22 +18,14 @@
         "build": "pnpm run lint && pnpm run compile",
         "compile": "npx swc src -d dist --strip-leading-paths",
         "tscompile": "tsc --build tsconfig.json",
-        "lint": "eslint . --cache --cache-file .eslintcache",
-        "lint:fix": "eslint . --cache --cache-file .eslintcache --fix",
-        "pretty": "prettier --check src/**/*.ts",
-        "pretty:write": "prettier --write src/**/*.ts",
+        "lint": "biome check .",
+        "lint:fix": "biome check --write .",
         "start": "node --es-module-specifier-resolution=node -r dotenv/config .",
         "start:dev": "rimraf ./dist && pnpm run compile && pnpm start"
     },
     "engines": {
         "node": ">=16.6.0",
         "npm": ">=7.0.0"
-    },
-    "prettier": {
-        "tabWidth": 4,
-        "trailingComma": "none",
-        "arrowParens": "avoid",
-        "printWidth": 120
     },
     "dependencies": {
         "@discordjs/voice": "^0.19.0",
@@ -54,24 +46,12 @@
         "zip-lib": "^1.1.2"
     },
     "devDependencies": {
-        "@eslint/compat": "^2.0.0",
-        "@stegripe/eslint-config": "^3.0.0",
-        "@stylistic/eslint-plugin": "^5.6.1",
+        "@biomejs/biome": "^2.3.9",
+        "@stegripe/biomejs-config": "^1.1.0",
         "@types/i18n": "0.13.12",
         "@types/node": "24.10.4",
-        "eslint": "^9.39.2",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-import-x": "^4.16.1",
-        "eslint-plugin-jsdoc": "^61.5.0",
-        "eslint-plugin-n": "^17.23.1",
-        "eslint-plugin-promise": "^7.2.1",
-        "eslint-plugin-tsdoc": "^0.5.0",
-        "eslint-plugin-unicorn": "^62.0.0",
-        "globals": "^16.5.0",
-        "prettier": "^3.7.4",
         "rimraf": "^6.1.2",
-        "typescript": "5.9.3",
-        "typescript-eslint": "^8.50.0"
+        "typescript": "5.9.3"
     },
     "optionalDependencies": {
         "@snazzah/davey": "^0.1.8"

@@ -3,9 +3,7 @@
         "target": "ES2022",
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
-        "lib": [
-            "ES2022"
-        ],
+        "lib": ["ES2022"],
         "strict": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
@@ -17,14 +15,8 @@
         "resolveJsonModule": true,
         "outDir": "dist",
         "rootDir": "src",
-        "typeRoots": [
-            "node_modules/@types",
-            "src/typings",
-            "src/utils/yt-dlp/"
-        ]
+        "typeRoots": ["node_modules/@types", "src/typings", "src/utils/yt-dlp/"]
     },
-    "include": [
-        "src/**/*"
-    ],
+    "include": ["src/**/*"],
     "exclude": []
 }
