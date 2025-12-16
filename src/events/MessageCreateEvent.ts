@@ -201,7 +201,7 @@ export class MessageCreateEvent extends BaseEvent {
             `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`,
         );
         if (songs.items[0].thumbnail) {
-            confirmEmbed.setImage(songs.items[0].thumbnail);
+            confirmEmbed.setThumbnail(songs.items[0].thumbnail);
         }
         this.sendTemporaryMessage(message.channel as TextChannel, confirmEmbed);
     }

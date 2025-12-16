@@ -127,7 +127,7 @@ export class ServerQueue {
                                         `⏹️ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
                                             song: `[${song.song.title}](${song.song.url})`,
                                         })}`,
-                                    ).setImage(song.song.thumbnail),
+                                    ).setThumbnail(song.song.thumbnail),
                                 ],
                             })
                             .then((ms) => (this.lastMusicMsg = ms.id))
@@ -424,7 +424,7 @@ export class ServerQueue {
                             `▶️ **|** ${i18n.__mf("utils.generalHandler.startPlaying", {
                                 song: `[${newSong.title}](${newSong.url})`,
                             })}`,
-                        ).setImage(newSong.thumbnail),
+                        ).setThumbnail(newSong.thumbnail),
                     ],
                 })
                 .then((ms) => (this.lastMusicMsg = ms.id))
