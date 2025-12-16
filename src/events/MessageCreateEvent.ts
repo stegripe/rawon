@@ -59,7 +59,7 @@ export class MessageCreateEvent extends BaseEvent {
                         void (async (): Promise<void> => {
                             try { await botMsg.delete(); } catch { /* ignore */ }
                         })();
-                    }, 60_000);
+                    }, 30_000);
                 });
                 return;
             }
