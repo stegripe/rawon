@@ -9,9 +9,11 @@
             "style": {
                 "useNamingConvention": "off",
                 "useFilenamingConvention": "off",
+                "useNumberNamespace": "off",
                 "noNonNullAssertion": "off",
                 "noNestedTernary": "off",
-                "noParameterAssign": "off"
+                "noParameterAssign": "off",
+                "noUselessElse": "off"
             },
             "suspicious": {
                 "noExplicitAny": "off",

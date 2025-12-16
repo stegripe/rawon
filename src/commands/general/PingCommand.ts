@@ -78,8 +78,9 @@ export class PingCommand extends BaseCommand {
             if (min[i] <= ms && ms <= max[i]) {
                 ret = hex[i];
                 break;
+            } else {
+                ret = defaultColor;
             }
-            ret = defaultColor;
         }
         return ret as ColorResolvable;
     }

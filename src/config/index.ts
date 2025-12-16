@@ -31,8 +31,8 @@ export const clientOptions: ClientOptions = {
     allowedMentions: { parse: ["users"], repliedUser: true },
     intents,
     makeCache: Options.cacheWithLimits({
-        MessageManager: { maxSize: Number.POSITIVE_INFINITY },
-        ThreadManager: { maxSize: Number.POSITIVE_INFINITY },
+        MessageManager: { maxSize: Infinity },
+        ThreadManager: { maxSize: Infinity },
     }),
     sweepers: {
         messages: {
