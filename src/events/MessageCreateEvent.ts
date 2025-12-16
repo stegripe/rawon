@@ -64,7 +64,7 @@ export class MessageCreateEvent extends BaseEvent {
                         void (async (): Promise<void> => {
                             try { await botMsg.delete(); } catch { /* ignore */ }
                         })();
-                    }, 120_000); // Delete bot message after 2 minutes
+                    }, 60_000); // Delete bot message after 1 minute
                 });
                 return;
             }
