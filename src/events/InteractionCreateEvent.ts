@@ -136,7 +136,7 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!voiceChannel) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", `**|** ${i18n.__("requestChannel.notInVoice")}`)]
+                embeds: [createEmbed("warn", `⚠️ **|** ${i18n.__("requestChannel.notInVoice")}`)]
             });
             return;
         }
