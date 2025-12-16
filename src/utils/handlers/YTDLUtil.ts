@@ -40,7 +40,13 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
         } catch {
             throw new Error(`Cannot stream: Invalid URL format - "${url}"`);
         }
-        const rawPlayDlStream = await playDlModule.stream(url, { discordPlayerCompatibility: true });
+        let rawPlayDlStream;
+        try {
+            rawPlayDlStream = await playDlModule.stream(url, { discordPlayerCompatibility: true });
+        } catch (streamError) {
+            const errorMessage = streamError instanceof Error ? streamError.message : String(streamError);
+            throw new Error(`play-dl stream failed for URL "${url}": ${errorMessage}`);
+        }
         if (rawPlayDlStream.stream === undefined || rawPlayDlStream.stream === null) {
             throw new Error("Failed to get stream from play-dl. The stream returned was undefined.");
         }
