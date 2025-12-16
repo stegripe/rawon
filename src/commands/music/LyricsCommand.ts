@@ -52,7 +52,6 @@ export class LyricsCommand extends BaseCommand {
     }
 
     private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
-        // Try primary API first
         let data: LyricsAPIResult<false> | null = null;
         
         try {
@@ -62,10 +61,8 @@ export class LyricsCommand extends BaseCommand {
             // Primary API failed, try fallback
         }
 
-        // If primary API failed or returned error, try fallback (lyrics.ovh)
         if (data === null || (data as { error: boolean }).error) {
             try {
-                // Clean up song title for better search results
                 const cleanSong = song.replaceAll(/\(.*?\)|\[.*?\]/gu, "").trim();
                 const fallbackUrl = `https://api.lyrics.ovh/v1/${encodeURIComponent(cleanSong)}/${encodeURIComponent(cleanSong)}`;
                 const fallbackData = await this.client.request.get(fallbackUrl, { timeout: { request: 5_000 } }).json<{ lyrics?: string; error?: string }>();
@@ -87,7 +84,6 @@ export class LyricsCommand extends BaseCommand {
             }
         }
 
-        // Check if we got any data
         if (data === null || (data as { error: boolean }).error) {
             await ctx.reply({
                 embeds: [

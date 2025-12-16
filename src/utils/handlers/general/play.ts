@@ -19,7 +19,6 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
         
-        // Don't send "queue ended" message in request channel to avoid spam
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(guild, queue.textChannel.id);
         if (!isRequestChannel) {
             void queue.textChannel.send({
@@ -34,14 +33,11 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
             });
         }
         
-        // Update the request channel player embed to show standby state
         void queue.client.requestChannelManager.updatePlayerMessage(guild);
         
-        // Always disconnect after 60 seconds of inactivity
         setTimeout(async () => {
             if (!guild.queue?.songs.first()) {
                 queue.destroy();
-                // Don't send "left VC" message in request channel
                 if (!isRequestChannel) {
                     const msg = await queue.textChannel
                         .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] });
@@ -62,7 +58,6 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
 
     const resource = createAudioResource(stream, { inlineVolume: true, inputType: StreamType.OggOpus, metadata: song });
     
-    // Set volume immediately to prevent audio burst at the start
     resource.volume?.setVolumeLogarithmic(queue.volume / 100);
 
     queue.client.debugLog.logData("info", "PLAY_HANDLER", `Created audio resource for ${guild.name}(${guild.id})`);

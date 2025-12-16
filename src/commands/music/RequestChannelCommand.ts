@@ -83,7 +83,6 @@ export class RequestChannelCommand extends BaseCommand {
             });
         }
 
-        // Status (default)
         const currentChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
 
         if (currentChannel) {

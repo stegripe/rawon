@@ -37,7 +37,6 @@ export class ServerQueue {
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
 
-        // Load saved state from data.json
         this.loadSavedState();
 
         this.player
@@ -48,10 +47,8 @@ export class ServerQueue {
                     const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong)
                         .song;
                     
-                    // Only send "started playing" message if NOT in request channel
                     const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
                     if (isRequestChannel) {
-                        // Just log it without sending message
                         this.client.logger.info(
                             `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name} has started.`
                         );
@@ -59,10 +56,8 @@ export class ServerQueue {
                         this.sendStartPlayingMsg(newSong);
                     }
                     
-                    // Update request channel player message
                     void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
                     
-                    // Start player update interval (every 15 seconds) for request channel
                     this.playerUpdateInterval ??= setInterval(() => {
                         if (this.playing) {
                             void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
@@ -91,10 +86,8 @@ export class ServerQueue {
                                     .first()?.key ??
                                 (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
 
-                    // Update request channel player message
                     void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
 
-                    // Only send "stopped playing" message if NOT in request channel
                     const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
                     if (!isRequestChannel) {
                         await this.textChannel
@@ -112,7 +105,6 @@ export class ServerQueue {
                             .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
                     }
 
-                    // Play next song
                     try {
                         await play(this.textChannel.guild, nextS);
                     } catch (error) {
@@ -193,7 +185,6 @@ export class ServerQueue {
         const before = this.filters[filter];
         this.filters[filter] = state;
 
-        // Save state when filter changes
         void this.saveState();
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
@@ -237,7 +228,6 @@ export class ServerQueue {
         (
             this.player.state as AudioPlayerPlayingState & { resource: AudioResource | undefined }
         ).resource.volume?.setVolumeLogarithmic(this._volume / 100);
-        // Save state when volume changes
         void this.saveState();
     }
 

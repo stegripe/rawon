@@ -52,7 +52,6 @@ export class ShuffleCommand extends BaseCommand {
             return;
         }
 
-        // Use setShuffle to save state
         ctx.guild?.queue?.setShuffle(newState === "enable");
         const isShuffle = ctx.guild?.queue?.shuffle;
 

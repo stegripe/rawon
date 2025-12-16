@@ -55,7 +55,6 @@ export class RequestChannelManager {
         const guildData = currentData[guild.id] ?? {};
 
         if (channelId === null) {
-            // Remove the player message before clearing data
             const existingMessage = await this.getPlayerMessage(guild);
             if (existingMessage) {
                 await existingMessage.delete().catch(() => null);
@@ -89,7 +88,6 @@ export class RequestChannelManager {
         const savedState = this.client.data.data?.[guild.id]?.playerState;
 
         if (!queue || queue.songs.size === 0) {
-            // Idle state - show saved state values or defaults
             const savedLoopMode = savedState?.loopMode ?? "OFF";
             const savedShuffle = savedState?.shuffle ?? false;
             const savedVolume = savedState?.volume ?? this.client.config.defaultVolume;
@@ -117,8 +115,6 @@ export class RequestChannelManager {
 
         const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
         const duration = song?.duration ?? 0;
-        // Check if this is a live stream (YouTube live) vs unknown duration (audio files)
-        // Live streams have duration 0 and are from YouTube, audio files may have duration 0 but aren't live
         const isYouTubeUrl = (song?.url?.includes("youtube.com") ?? false) || (song?.url?.includes("youtu.be") ?? false);
         const isLive = duration === 0 && isYouTubeUrl;
 
@@ -131,7 +127,6 @@ export class RequestChannelManager {
         const statusEmoji = queue.playing ? "▶️" : "⏸️";
         const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶️";
 
-        // Use song thumbnail if available, fallback to env default
         const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
         const imageUrl = hasThumbnail ? song?.thumbnail : requestChannelThumbnail;
 
@@ -139,7 +134,6 @@ export class RequestChannelManager {
             .setTitle(`🎵  |  ${i18n.__("requestChannel.title")}`)
             .setImage(imageUrl ?? requestChannelThumbnail);
 
-        // Add guild icon as thumbnail when playing
         const guildIcon = guild.iconURL({ size: 128 });
         if (guildIcon !== null && guildIcon.length > 0) {
             embed.setThumbnail(guildIcon);
@@ -150,7 +144,6 @@ export class RequestChannelManager {
             if (isLive) {
                 progressLine = `🔴 ${i18n.__("requestChannel.live")}`;
             } else if (duration === 0) {
-                // Unknown duration (audio files) - show elapsed time with infinite duration bar
                 progressLine = `${normalizeTime(curr)} ${createProgressBar(0, 1)} --:--`;
             } else {
                 progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, duration)} ${normalizeTime(duration)}`;
@@ -232,7 +225,6 @@ export class RequestChannelManager {
                 this.client.logger.debug(`Failed to update player message: ${(error as Error).message}`);
             });
         } catch (error) {
-            // Message might have been deleted or other error
             this.client.logger.debug(`Error in updatePlayerMessage: ${(error as Error).message}`);
         }
     }

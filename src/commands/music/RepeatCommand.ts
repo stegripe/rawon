@@ -78,7 +78,6 @@ export class RepeatCommand extends BaseCommand {
                 ]
             });
         }
-        // Use setLoopMode to save state
         ctx.guild?.queue?.setLoopMode(selection as LoopMode);
 
         return ctx.reply({

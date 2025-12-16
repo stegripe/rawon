@@ -66,8 +66,6 @@ export class RemoveCommand extends BaseCommand {
         )?.resource?.metadata as QueueSong | undefined;
         const isSkip = songs.map(x => x.key).includes(np?.key ?? "");
         if (isSkip && ctx.guild?.queue) {
-            // Skip the current song directly instead of calling the skip command
-            // This avoids triggering the useRequestChannel decorator
             if (!ctx.guild.queue.playing) {
                 ctx.guild.queue.playing = true;
             }

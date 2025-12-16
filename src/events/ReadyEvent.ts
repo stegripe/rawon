@@ -35,7 +35,6 @@ export class ReadyEvent extends BaseEvent {
             )
         );
 
-        // Restore request channel player messages
         await this.restoreRequestChannelMessages();
     }
 

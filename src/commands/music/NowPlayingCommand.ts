@@ -46,11 +46,9 @@ export class NowPlayingCommand extends BaseCommand {
             return embed;
         }
 
-        // Check if request channel is installed - if so, don't show buttons
         const hasRequestChannel = ctx.guild ? (ctx.guild.client as unknown as Rawon).requestChannelManager.hasRequestChannel(ctx.guild) : false;
         
         if (hasRequestChannel) {
-            // No buttons when request channel is installed
             await ctx.reply({ embeds: [getEmbed()] });
             return;
         }

@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, MessageFlags, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
@@ -27,7 +28,6 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
 
         if (interaction.isButton()) {
-            // Handle request channel buttons
             if (interaction.customId.startsWith("RC_")) {
                 await this.handleRequestChannelButton(interaction);
                 return;
@@ -133,16 +133,14 @@ export class InteractionCreateEvent extends BaseEvent {
         const member = guild.members.cache.get(interaction.user.id);
         const voiceChannel = member?.voice.channel;
 
-        // Check if user is in a voice channel
         if (!voiceChannel) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", `🎤 **|** ${i18n.__("requestChannel.notInVoice")}`)]
+                embeds: [createEmbed("warn", `**|** ${i18n.__("requestChannel.notInVoice")}`)]
             });
             return;
         }
 
-        // Check if user is in the same voice channel as the bot
         const botVoiceChannel = guild.members.me?.voice.channel;
         if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
             await interaction.reply({
@@ -171,7 +169,13 @@ export class InteractionCreateEvent extends BaseEvent {
                         embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)],
                         withResponse: true
                     });
-                    setTimeout(() => reply.resource?.message?.delete().catch(() => null), 30_000);
+                    setTimeout(async () => {
+                        try {
+                            await reply.resource?.message?.delete();
+                        } catch {
+                            // ignore error
+                        }
+                    }, 30_000);
                 } else {
                     queue.playing = true;
                     const reply = await interaction.reply({
@@ -179,7 +183,13 @@ export class InteractionCreateEvent extends BaseEvent {
                         embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)],
                         withResponse: true
                     });
-                    setTimeout(() => reply.resource?.message?.delete().catch(() => null), 30_000);
+                    setTimeout(async () => {
+                        try {
+                            await reply.resource?.message?.delete();
+                        } catch {
+                            // ignore error
+                        }
+                    }, 30_000);
                 }
                 break;
             }
@@ -334,7 +344,6 @@ export class InteractionCreateEvent extends BaseEvent {
                 break;
         }
 
-        // Update the player message after any action
         await this.client.requestChannelManager.updatePlayerMessage(guild);
     }
 }

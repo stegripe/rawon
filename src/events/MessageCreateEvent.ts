@@ -27,7 +27,6 @@ export class MessageCreateEvent extends BaseEvent {
 
         if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) return;
 
-        // Check if this is a prefix command
         const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(pr => {
             if (pr === "{mention}") {
                 const userMention = /<@(!)?\d*?>/u.exec(message.content);
@@ -38,24 +37,20 @@ export class MessageCreateEvent extends BaseEvent {
             return message.content.startsWith(pr);
         });
 
-        // Handle request channel messages (but allow prefix commands to work normally)
         if (message.guild && this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)) {
             if ((prefixMatch?.length ?? 0) > 0) {
-                // It's a prefix command - handle it normally
                 this.client.commands.handle(message, prefixMatch as unknown as string);
                 
-                // Delete user's command message after 30 seconds
                 setTimeout(() => {
                     void (async (): Promise<void> => {
                         try { await message.delete(); } catch { /* ignore */ }
                     })();
                 }, 30_000);
                 
-                // Watch for bot's reply and delete it after 2 minutes to keep channel clean
                 const textChannel = message.channel as TextChannel;
                 const collector: MessageCollector = textChannel.createMessageCollector({
                     filter: (msg: Message) => msg.author.id === this.client.user?.id,
-                    time: 10_000, // Collect for 10 seconds
+                    time: 10_000,
                     max: 1
                 });
                 
@@ -64,7 +59,7 @@ export class MessageCreateEvent extends BaseEvent {
                         void (async (): Promise<void> => {
                             try { await botMsg.delete(); } catch { /* ignore */ }
                         })();
-                    }, 60_000); // Delete bot message after 1 minute
+                    }, 60_000);
                 });
                 return;
             }
@@ -97,7 +92,6 @@ export class MessageCreateEvent extends BaseEvent {
         const guild = message.guild;
         if (!guild) return;
 
-        // Delete the user's message to keep the channel clean
         await message.delete().catch(() => null);
 
         const query = message.content.trim();
@@ -106,14 +100,12 @@ export class MessageCreateEvent extends BaseEvent {
         const member = message.member;
         if (!member) return;
 
-        // Check if user is in a voice channel
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
             this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", `🎤 **|** ${i18n.__("requestChannel.notInVoice")}`));
             return;
         }
 
-        // Search for the track
         const songs = await searchTrack(this.client, query).catch(() => null);
         if (!songs || songs.items.length === 0) {
             this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("error", i18n.__("requestChannel.noResults"), true));
@@ -123,7 +115,6 @@ export class MessageCreateEvent extends BaseEvent {
         const wasIdle = guild.queue?.idle ?? false;
         const isNewQueue = !guild.queue;
 
-        // Create queue if it doesn't exist
         if (!guild.queue) {
             guild.queue = new ServerQueue(message.channel as TextChannel);
 
@@ -150,20 +141,16 @@ export class MessageCreateEvent extends BaseEvent {
             }
         }
 
-        // Add songs to queue
         for (const song of songs.type === "results" ? songs.items : [songs.items[0]]) {
             guild.queue.songs.addSong(song, member);
         }
 
-        // Update the player message
         await this.client.requestChannelManager.updatePlayerMessage(guild);
 
-        // Start playback if queue was idle or new
         if (isNewQueue || wasIdle) {
             void play(guild);
         }
 
-        // Send confirmation with thumbnail (will be deleted)
         const confirmEmbed = createEmbed("success", `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`);
         if (songs.items[0].thumbnail) {
             confirmEmbed.setThumbnail(songs.items[0].thumbnail);
