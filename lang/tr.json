@@ -96,7 +96,7 @@
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
                 "slashDescription": "Aranacak şarkı",
                 "usage": "{prefix}lyrics [şarkı]",
-                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu göster",

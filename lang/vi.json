@@ -96,7 +96,7 @@
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
                 "slashDescription": "Tìm bài hát",
                 "usage": "{prefix}lyrics [bài hát]",
-                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",

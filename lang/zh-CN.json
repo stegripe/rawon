@@ -96,7 +96,7 @@
                 "noQuery": "目前没有播放任何内容，或者没有提供任何参数。",
                 "slashDescription": "要搜索的歌曲",
                 "usage": "{prefix}lyrics [歌曲]",
-                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "显示媒体播放器状态",

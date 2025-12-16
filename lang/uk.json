@@ -96,7 +96,7 @@
                 "noQuery": "Зараз нічого не програється або не було аргументи.",
                 "slashDescription": "Пісня для пошуку",
                 "usage": "{prefix}lyrics [пісня]",
-                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Показати статус медіа програвача",

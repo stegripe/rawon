@@ -96,7 +96,7 @@
                 "noQuery": "Nenhuma música está tocando, ou nenhum argumento foi fornecido.",
                 "slashDescription": "Música a buscar",
                 "usage": "{prefix}lyrics [música]",
-                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Mostra o status do player de mídia",

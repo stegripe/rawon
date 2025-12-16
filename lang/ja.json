@@ -96,7 +96,7 @@
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "slashDescription": "検索する曲",
                 "usage": "{prefix}lyrics [曲]",
-                "noLyrics": "🎵 **|** No lyrics found for **{song}**."
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",

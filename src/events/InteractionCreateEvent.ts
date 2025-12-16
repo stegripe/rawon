@@ -159,7 +159,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }
@@ -188,7 +188,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }
@@ -208,7 +208,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }
@@ -225,7 +225,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }
@@ -246,7 +246,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }
@@ -263,7 +263,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }
@@ -281,7 +281,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }
@@ -299,7 +299,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
                     });
                     return;
                 }

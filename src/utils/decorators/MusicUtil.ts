@@ -72,14 +72,14 @@ export const useRequestChannel = createCmdExecuteDecorator(ctx => {
     // If in request channel but using prefix command, block it (should type song title directly)
     if (ctx.channel?.id === requestChannel.id && !ctx.isInteraction()) {
         void ctx.reply({
-            embeds: [createEmbed("info", `🎵 **|** ${i18n.__("utils.musicDecorator.useRequestChannelDirect")}`)]
+            embeds: [createEmbed("info", i18n.__("utils.musicDecorator.useRequestChannelDirect"))]
         });
         return false;
     }
     
     // Redirect to request channel
     void ctx.reply({
-        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__mf("utils.musicDecorator.useRequestChannel", { channel: `<#${requestChannel.id}>` })}`)]
+        embeds: [createEmbed("warn", i18n.__mf("utils.musicDecorator.useRequestChannel", { channel: `<#${requestChannel.id}>` }))]
     });
     return false;
 });
