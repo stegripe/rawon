@@ -71,7 +71,7 @@ export class RequestChannelCommand extends BaseCommand {
             await this.client.requestChannelManager.createOrUpdatePlayerMessage(ctx.guild);
 
             return ctx.reply({
-                embeds: [createEmbed("success", i18n.__mf("requestChannel.setChannel", { channel: `<#${channel.id}>` }))]
+                embeds: [createEmbed("success", i18n.__mf("requestChannel.setChannel", { channel: `<#${channel.id}>` }), true)]
             });
         }
 
@@ -79,7 +79,7 @@ export class RequestChannelCommand extends BaseCommand {
             await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
 
             return ctx.reply({
-                embeds: [createEmbed("success", i18n.__("requestChannel.removeChannel"))]
+                embeds: [createEmbed("success", i18n.__("requestChannel.removeChannel"), true)]
             });
         }
 
