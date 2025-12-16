@@ -4,12 +4,15 @@ import { Playlist } from "youtubei";
 import type { Rawon } from "../../../structures/Rawon.js";
 import type { Song, SearchTrackResult, SpotifyTrack } from "../../../typings/index.js";
 import { getInfo } from "../YTDLUtil.js";
-import { youtube } from "../YouTubeUtil.js";
+import { youtube, youtubeMusic } from "../YouTubeUtil.js";
 import { checkQuery } from "./checkQuery.js";
 
 function extractVideoId(url: URL): string | null {
     if (/youtu\.be/gu.test(url.hostname)) {
         return url.pathname.replace("/", "");
+    }
+    if (url.pathname.startsWith("/shorts/")) {
+        return url.pathname.replace("/shorts/", "").split("/")[0];
     }
     return url.searchParams.get("v");
 }
@@ -293,19 +296,46 @@ export async function searchTrack(
             result.items = tracks;
         } else {
             try {
-                const searchRes = await youtube.search(query, { type: "video" });
-                const tracks = searchRes.items.map(
-                    (track): Song => ({
-                        duration: track.duration ?? 0,
-                        id: track.id,
-                        thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
-                        title: track.title,
-                        url: `https://youtube.com/watch?v=${track.id}`
-                    })
-                );
-
-                result.items = tracks;
+                const musicSearchRes = await youtubeMusic.search(query, "song");
+                if (musicSearchRes.items.length > 0) {
+                    const tracks = musicSearchRes.items.map(
+                        (track): Song => ({
+                            duration: track.duration ?? 0,
+                            id: track.id,
+                            thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                            title: track.title,
+                            url: `https://youtube.com/watch?v=${track.id}`
+                        })
+                    );
+                    result.items = tracks;
+                } else {
+                    const searchRes = await youtube.search(query, { type: "video" });
+                    const tracks = searchRes.items.map(
+                        (track): Song => ({
+                            duration: track.duration ?? 0,
+                            id: track.id,
+                            thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                            title: track.title,
+                            url: `https://youtube.com/watch?v=${track.id}`
+                        })
+                    );
+                    result.items = tracks;
+                }
             } catch {
+                try {
+                    const searchRes = await youtube.search(query, { type: "video" });
+                    const tracks = searchRes.items.map(
+                        (track): Song => ({
+                            duration: track.duration ?? 0,
+                            id: track.id,
+                            thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                            title: track.title,
+                            url: `https://youtube.com/watch?v=${track.id}`
+                        })
+                    );
+                    result.items = tracks;
+                } catch {
+                }
             }
         }
     }

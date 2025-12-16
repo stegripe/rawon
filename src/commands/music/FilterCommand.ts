@@ -94,7 +94,7 @@ export class FilterCommand extends BaseCommand {
         if (subcmd === "enable" || subcmd === "disable") {
             if (!filterArgs[filter]) {
                 return ctx.reply({
-                    embeds: [createEmbed("error", i18n.__("commands.music.filter.specifyFilter"))]
+                    embeds: [createEmbed("error", i18n.__("commands.music.filter.specifyFilter"), true)]
                 });
             }
 

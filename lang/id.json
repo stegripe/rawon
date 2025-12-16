@@ -198,6 +198,9 @@
                 "description": "Atur channel request untuk musik",
                 "noPermission": "Kamu membutuhkan izin **Kelola Server** untuk menggunakan perintah ini.",
                 "invalidChannel": "Mohon berikan channel teks yang valid.",
+                "noBotPermissions": "Saya tidak bisa memeriksa izin saya untuk channel tersebut.",
+                "missingBotPermissions": "Saya kekurangan izin berikut di channel tersebut: **{permissions}**",
+                "failedToSetup": "Gagal mengatur channel request. Mohon periksa izin saya.",
                 "slashSetDescription": "Atur channel sebagai channel request",
                 "slashRemoveDescription": "Hapus channel request",
                 "slashStatusDescription": "Tampilkan channel request saat ini",
@@ -239,6 +242,9 @@
         "pageFooter": "Halaman {actual} dari {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "Saya kekurangan izin berikut di {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, mohon tunggu selama **`{timeleft}`** detik.",
         "generalHandler": {
             "errorJoining": "Error saat memasuki voice channel, dikarenakan: `{message}`",

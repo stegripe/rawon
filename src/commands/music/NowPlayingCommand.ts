@@ -33,7 +33,7 @@ export class NowPlayingCommand extends BaseCommand {
             )?.resource;
             const song = (res?.metadata as QueueSong | undefined)?.song;
 
-            const embed = createEmbed("info", `${ctx.guild?.queue?.playing === true ? "▶" : "⏸"} **|** `).setThumbnail(
+            const embed = createEmbed("info", `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `).setThumbnail(
                 song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png"
             );
 
@@ -63,12 +63,12 @@ export class NowPlayingCommand extends BaseCommand {
                 .setCustomId("SKIP_BUTTON")
                 .setLabel("Skip")
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji("⏭"),
+                .setEmoji("⏭️"),
             new ButtonBuilder()
                 .setCustomId("STOP_BUTTON")
                 .setLabel("Stop Player")
                 .setStyle(ButtonStyle.Danger)
-                .setEmoji("⏹"),
+                .setEmoji("⏹️"),
             new ButtonBuilder()
                 .setCustomId("SHOW_QUEUE_BUTTON")
                 .setLabel("Show Queue")

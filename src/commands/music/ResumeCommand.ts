@@ -28,7 +28,7 @@ export class ResumeCommand extends BaseCommand {
         (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).playing = true;
 
         return ctx.reply({
-            embeds: [createEmbed("success", `▶ **|** ${i18n.__("commands.music.resume.resumeMessage")}`)]
+            embeds: [createEmbed("success", `▶️ **|** ${i18n.__("commands.music.resume.resumeMessage")}`)]
         });
     }
 }
