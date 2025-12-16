@@ -6,9 +6,17 @@ import type { Rawon } from "../../structures/Rawon.js";
 import type { BasicYoutubeVideoInfo } from "../../typings/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
-type Unpromisify<T> = T extends Promise<infer U> ? U : T;
+type PldlStreamFn = (url: string, options: { discordPlayerCompatibility: boolean }) => Promise<{ stream: Readable }>;
+type VideoBasicInfoFn = (url: string) => Promise<{ video_details: { durationInSec: number; id: string | null; thumbnails: unknown[]; title: string | null; url: string } }>;
 
-const { stream: pldlStream, video_basic_info } = await import("../../../play-dl-importer/index.js").then(x => x.default).catch(() => ({ stream: null, video_basic_info: null }));
+let playDlModule: { stream: PldlStreamFn; video_basic_info: VideoBasicInfoFn } | null = null;
+let playDlImportError: Error | null = null;
+
+try {
+    playDlModule = await import("../../../play-dl-importer/index.js").then(x => x.default);
+} catch (error) {
+    playDlImportError = error as Error;
+}
 
 export async function getStream(client: Rawon, url: string): Promise<Readable> {
     if (streamStrategy === "play-dl") {
@@ -16,10 +24,13 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
         if (isSoundcloudUrl.sourceType === "soundcloud") {
             return client.soundcloud.util.streamTrack(url) as unknown as Readable;
         }
-        if (!pldlStream) {
-            throw new Error("play-dl is not available. Please install play-dl or use yt-dlp as the stream strategy.");
+        if (!playDlModule) {
+            const errorMessage = playDlImportError 
+                ? `play-dl failed to load: ${playDlImportError.message}` 
+                : "play-dl is not available. Please install play-dl or use yt-dlp as the stream strategy.";
+            throw new Error(errorMessage);
         }
-        const rawPlayDlStream = await pldlStream(url, { discordPlayerCompatibility: true });
+        const rawPlayDlStream = await playDlModule.stream(url, { discordPlayerCompatibility: true });
         if (rawPlayDlStream.stream === undefined || rawPlayDlStream.stream === null) {
             throw new Error("Failed to get stream from play-dl. The stream returned was undefined.");
         }
@@ -65,10 +76,13 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
 
 export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
     if (streamStrategy === "play-dl") {
-        if (!video_basic_info) {
-            throw new Error("play-dl is not available. Please install play-dl or use yt-dlp as the stream strategy.");
+        if (!playDlModule) {
+            const errorMessage = playDlImportError 
+                ? `play-dl failed to load: ${playDlImportError.message}` 
+                : "play-dl is not available. Please install play-dl or use yt-dlp as the stream strategy.";
+            throw new Error(errorMessage);
         }
-        const rawPlayDlVideoInfo = await video_basic_info(url) as unknown as Unpromisify<ReturnType<NonNullable<typeof video_basic_info>>>;
+        const rawPlayDlVideoInfo = await playDlModule.video_basic_info(url);
         return {
             duration: rawPlayDlVideoInfo.video_details.durationInSec * 1_000,
             id: rawPlayDlVideoInfo.video_details.id ?? "",
