@@ -93,7 +93,7 @@ export class RequestChannelManager {
             const savedVolume = savedState?.volume ?? this.client.config.defaultVolume;
 
             return createEmbed("info", i18n.__("requestChannel.standby"))
-                .setTitle(`🎵  |  ${i18n.__("requestChannel.title")}`)
+                .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
                 .setImage(requestChannelThumbnail)
                 .addFields([
                     { name: i18n.__("requestChannel.status"), value: `▶️ ${savedLoopMode}`, inline: true },
@@ -131,7 +131,7 @@ export class RequestChannelManager {
         const imageUrl = hasThumbnail ? song?.thumbnail : requestChannelThumbnail;
 
         const embed = createEmbed("info")
-            .setTitle(`🎵  |  ${i18n.__("requestChannel.title")}`)
+            .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
             .setImage(imageUrl ?? requestChannelThumbnail);
 
         const guildIcon = guild.iconURL({ size: 128 });
