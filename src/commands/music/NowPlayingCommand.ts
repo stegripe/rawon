@@ -3,6 +3,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuild
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
+import type { Rawon } from "../../structures/Rawon.js";
 import { QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue } from "../../utils/decorators/MusicUtil.js";
@@ -43,6 +44,13 @@ export class NowPlayingCommand extends BaseCommand {
                 : i18n.__("commands.music.nowplaying.emptyQueue");
 
             return embed;
+        }
+
+        const hasRequestChannel = ctx.guild ? (ctx.guild.client as unknown as Rawon).requestChannelManager.hasRequestChannel(ctx.guild) : false;
+        
+        if (hasRequestChannel) {
+            await ctx.reply({ embeds: [getEmbed()] });
+            return;
         }
 
         const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -107,15 +115,15 @@ export class NowPlayingCommand extends BaseCommand {
 
                 const embed = getEmbed();
 
-                await msg.edit({ embeds: [embed] });
+                await msg.edit({ embeds: [embed] }).catch(() => null);
             })
-            .on("end", () => {
+            .on("end", async () => {
                 const embed = getEmbed().setFooter({ text: i18n.__("commands.music.nowplaying.disableButton") });
 
-                void msg.edit({
+                await msg.edit({
                     embeds: [embed],
                     components: []
-                });
+                }).catch(() => null);
             });
     }
 }

@@ -30,6 +30,4 @@ COPY --from=build-stage /tmp/build/index.js ./index.js
 
 ENV NODE_ENV production
 
-VOLUME /app/scripts
-
 CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
