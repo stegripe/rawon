@@ -16,8 +16,14 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
         if (isSoundcloudUrl.sourceType === "soundcloud") {
             return client.soundcloud.util.streamTrack(url) as unknown as Readable;
         }
-        const rawPlayDlStream = await pldlStream?.(url, { discordPlayerCompatibility: true });
-        return rawPlayDlStream?.stream as unknown as Readable;
+        if (!pldlStream) {
+            throw new Error("play-dl is not installed or failed to load. Please install it with 'pnpm add play-dl' or switch to 'yt-dlp' strategy.");
+        }
+        const rawPlayDlStream = await pldlStream(url, { discordPlayerCompatibility: true });
+        if (rawPlayDlStream?.stream === undefined || rawPlayDlStream.stream === null) {
+            throw new Error(`Failed to obtain stream from play-dl for URL: ${url}`);
+        }
+        return rawPlayDlStream.stream as unknown as Readable;
     }
 
   return new Promise<Readable>((resolve, reject) => {
@@ -59,7 +65,13 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
 
 export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
     if (streamStrategy === "play-dl") {
-        const rawPlayDlVideoInfo = await video_basic_info?.(url) as unknown as Unpromisify<ReturnType<NonNullable<typeof video_basic_info>>>;
+        if (!video_basic_info) {
+            throw new Error("play-dl is not installed or failed to load. Please install it with 'pnpm add play-dl' or switch to 'yt-dlp' strategy.");
+        }
+        const rawPlayDlVideoInfo = await video_basic_info(url) as unknown as Unpromisify<ReturnType<NonNullable<typeof video_basic_info>>>;
+        if (rawPlayDlVideoInfo?.video_details === undefined || rawPlayDlVideoInfo.video_details === null) {
+            throw new Error(`Failed to obtain video info from play-dl for URL: ${url}`);
+        }
         return {
             duration: rawPlayDlVideoInfo.video_details.durationInSec * 1_000,
             id: rawPlayDlVideoInfo.video_details.id ?? "",
