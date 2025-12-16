@@ -2,6 +2,7 @@
 import { setTimeout } from "node:timers";
 import type { DiscordGatewayAdapterCreator } from "@discordjs/voice";
 import { joinVoiceChannel } from "@discordjs/voice";
+import type { MessageCollector } from "discord.js";
 import { ChannelType, Message, TextChannel, User } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
@@ -40,18 +41,31 @@ export class MessageCreateEvent extends BaseEvent {
         // Handle request channel messages (but allow prefix commands to work normally)
         if (message.guild && this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)) {
             if ((prefixMatch?.length ?? 0) > 0) {
-                // It's a prefix command - handle it normally, then delete user message after a delay
+                // It's a prefix command - handle it normally
                 this.client.commands.handle(message, prefixMatch as unknown as string);
+                
                 // Delete user's command message after 30 seconds
                 setTimeout(() => {
-                    void (async () => {
-                        try {
-                            await message.delete();
-                        } catch {
-                            // Message might already be deleted
-                        }
+                    void (async (): Promise<void> => {
+                        try { await message.delete(); } catch { /* ignore */ }
                     })();
                 }, 30_000);
+                
+                // Watch for bot's reply and delete it after 2 minutes to keep channel clean
+                const textChannel = message.channel as TextChannel;
+                const collector: MessageCollector = textChannel.createMessageCollector({
+                    filter: (msg: Message) => msg.author.id === this.client.user?.id,
+                    time: 10_000, // Collect for 10 seconds
+                    max: 1
+                });
+                
+                collector.on("collect", (botMsg: Message) => {
+                    setTimeout(() => {
+                        void (async (): Promise<void> => {
+                            try { await botMsg.delete(); } catch { /* ignore */ }
+                        })();
+                    }, 120_000); // Delete bot message after 2 minutes
+                });
                 return;
             }
             await this.handleRequestChannelMessage(message);
