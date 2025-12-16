@@ -17,16 +17,11 @@ export function getMaxResThumbnail(url: string | undefined | null): string {
     }
 
     // Replace quality variants with maxresdefault
-    // Common patterns: default.jpg, mqdefault.jpg, hqdefault.jpg, sddefault.jpg
-    const upgraded = url.replace(
-        /\/(default|mqdefault|hqdefault|sddefault|hq720)(\.(jpg|webp))/gu,
-        "/maxresdefault$2",
-    );
-
-    // Also handle URLs with query parameters (like the example in the issue)
-    // https://i.ytimg.com/vi/{videoId}/hqdefault.jpg?sqp=...
-    return upgraded.replace(
-        /\/(default|mqdefault|hqdefault|sddefault|hq720)\.jpg\?/gu,
-        "/maxresdefault.jpg?",
+    // Handles: default, mqdefault, hqdefault, sddefault, hq720
+    // Handles extensions: jpg, jpeg, webp, png
+    // Handles URLs with or without query parameters
+    return url.replace(
+        /\/(default|mqdefault|hqdefault|sddefault|hq720)\.(jpg|jpeg|webp|png)/gu,
+        "/maxresdefault.$2",
     );
 }
