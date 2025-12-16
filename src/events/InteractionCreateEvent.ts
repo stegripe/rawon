@@ -1,4 +1,3 @@
-import { setTimeout } from "node:timers";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, MessageFlags, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
@@ -164,32 +163,16 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 if (queue.playing) {
                     queue.playing = false;
-                    const reply = await interaction.reply({
+                    await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)],
-                        withResponse: true
+                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)]
                     });
-                    setTimeout(async () => {
-                        try {
-                            await reply.resource?.message?.delete();
-                        } catch {
-                            // ignore error
-                        }
-                    }, 30_000);
                 } else {
                     queue.playing = true;
-                    const reply = await interaction.reply({
+                    await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)],
-                        withResponse: true
+                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)]
                     });
-                    setTimeout(async () => {
-                        try {
-                            await reply.resource?.message?.delete();
-                        } catch {
-                            // ignore error
-                        }
-                    }, 30_000);
                 }
                 break;
             }

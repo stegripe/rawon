@@ -183,7 +183,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 embeds: [
                     createEmbed(
                         "error",
-                        `⏹ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
+                        `⏹️ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
                             duration: `\`${duration}\``
                         })}`
                     ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") })
@@ -196,7 +196,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 embeds: [
                     createEmbed(
                         "warn",
-                        `⏸ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
+                        `⏸️ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
                             duration: `\`${duration}\``
                         })}`
                     ).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") })
@@ -220,7 +220,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 embeds: [
                     createEmbed(
                         "info",
-                        `▶ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
+                        `▶️ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
                             song: `[${song.title}](${song.url})`
                         })}`
                     )

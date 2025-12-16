@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ChannelType, Message, PermissionsBitField } from "discord.js";
+import { ApplicationCommandOptionType, ChannelType, Message, PermissionsBitField, TextChannel } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
@@ -66,9 +66,47 @@ export class RequestChannelCommand extends BaseCommand {
                 });
             }
 
+            const textChannel = channel as TextChannel;
+            const botPermissions = textChannel.permissionsFor(ctx.guild.members.me ?? this.client.user?.id ?? "");
+            
+            if (!botPermissions) {
+                return ctx.reply({
+                    embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.noBotPermissions"), true)]
+                });
+            }
+
+            const requiredPermissions = [
+                PermissionsBitField.Flags.ViewChannel,
+                PermissionsBitField.Flags.SendMessages,
+                PermissionsBitField.Flags.EmbedLinks,
+                PermissionsBitField.Flags.ReadMessageHistory,
+                PermissionsBitField.Flags.ManageMessages
+            ];
+
+            const missingPermissions = requiredPermissions.filter(perm => !botPermissions.has(perm));
+            
+            if (missingPermissions.length > 0) {
+                const permissionNames = missingPermissions.map(perm => {
+                    const flagName = Object.entries(PermissionsBitField.Flags).find(([, value]) => value === perm)?.[0];
+                    return flagName ?? "Unknown";
+                });
+                return ctx.reply({
+                    embeds: [createEmbed("error", i18n.__mf("commands.music.requestChannel.missingBotPermissions", { 
+                        permissions: permissionNames.join(", ") 
+                    }), true)]
+                });
+            }
+
             await this.client.requestChannelManager.setRequestChannel(ctx.guild, channel.id);
             
-            await this.client.requestChannelManager.createOrUpdatePlayerMessage(ctx.guild);
+            const playerMessage = await this.client.requestChannelManager.createOrUpdatePlayerMessage(ctx.guild);
+            
+            if (!playerMessage) {
+                await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
+                return ctx.reply({
+                    embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.failedToSetup"), true)]
+                });
+            }
 
             return ctx.reply({
                 embeds: [createEmbed("success", i18n.__mf("requestChannel.setChannel", { channel: `<#${channel.id}>` }), true)]

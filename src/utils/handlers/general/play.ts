@@ -25,7 +25,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
                 embeds: [
                     createEmbed(
                         "info",
-                        `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
+                        `⏹️ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
                             usage: `\`${guild.client.config.mainPrefix}play\``
                         })}`
                     )

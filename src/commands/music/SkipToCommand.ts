@@ -151,7 +151,7 @@ export class SkipToCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `⏭ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
+                    `⏭️ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
                         song: `[${song.song.title}](${song.song.url})`
                     })}`
                 ).setThumbnail(song.song.thumbnail)

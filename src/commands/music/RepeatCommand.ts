@@ -41,7 +41,7 @@ export class RepeatCommand extends BaseCommand {
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {
             OFF: {
                 aliases: ["disable", "off", "0"],
-                emoji: "▶"
+                emoji: "▶️"
             },
             QUEUE: {
                 aliases: ["all", "queue"],
