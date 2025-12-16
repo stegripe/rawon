@@ -38,6 +38,9 @@ COPY --from=build-stage /tmp/build/yt-dlp-utils ./yt-dlp-utils
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
 
+# Create empty data.json for persistence volume mount
+RUN echo '{}' > /app/data.json
+
 # Additional Environment Variables
 ENV NODE_ENV production
 
