@@ -52,7 +52,7 @@ export class RequestChannelManager {
 
     public async setRequestChannel(guild: Guild, channelId: string | null): Promise<void> {
         const currentData = this.client.data.data ?? {};
-        const guildData = currentData[guild.id] ?? { infractions: {} };
+        const guildData = currentData[guild.id] ?? {};
 
         if (channelId === null) {
             // Remove the player message before clearing data
@@ -73,7 +73,7 @@ export class RequestChannelManager {
 
     public async setPlayerMessageId(guild: Guild, messageId: string | null): Promise<void> {
         const currentData = this.client.data.data ?? {};
-        const guildData = currentData[guild.id] ?? { infractions: {} };
+        const guildData = currentData[guild.id] ?? {};
 
         guildData.requestChannel ??= { channelId: null, messageId: null };
         guildData.requestChannel.messageId = messageId;

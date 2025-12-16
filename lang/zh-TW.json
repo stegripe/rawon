@@ -65,6 +65,7 @@
                 "enable": "啟用",
                 "enableText": "DJ 功能已**`啟用`**",
                 "newRoleText": "新身分組",
+                "noPermission": "您沒有**管理伺服器**權限來使用此指令。",
                 "role": {
                     "current": "目前 DJ 身分組: <@&{role}>",
                     "invalid": "無效的身分組。",
@@ -194,13 +195,13 @@
                 "volumeLimit": "我無法設置音量高於 **`{maxVol}`**"
             },
             "requestChannel": {
-                "description": "Set up a request channel for music",
-                "noPermission": "You need the **Manage Server** permission to use this command.",
-                "invalidChannel": "Please provide a valid text channel.",
-                "slashSetDescription": "Set a channel as the request channel",
-                "slashRemoveDescription": "Remove the request channel",
-                "slashStatusDescription": "Show the current request channel",
-                "slashChannelDescription": "The channel to set as request channel",
+                "description": "設定音樂點播頻道",
+                "noPermission": "您需要**管理伺服器**權限才能使用此指令。",
+                "invalidChannel": "請提供有效的文字頻道。",
+                "slashSetDescription": "設定頻道為點播頻道",
+                "slashRemoveDescription": "移除點播頻道",
+                "slashStatusDescription": "顯示目前點播頻道",
+                "slashChannelDescription": "要設定為點播頻道的頻道",
                 "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }

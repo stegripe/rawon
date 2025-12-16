@@ -65,6 +65,7 @@
                 "enable": "Activado",
                 "enableText": "La función DJ ha sido **`ACTIVADA`**",
                 "newRoleText": "Nuevo rol",
+                "noPermission": "No tienes el permiso **Gestionar Servidor** para usar este comando.",
                 "role": {
                     "current": "<@&{role}> es el rol DJ actualmente.",
                     "invalid": "Rol no válido.",
@@ -194,13 +195,13 @@
                 "volumeLimit": "No puedo establecer el volúmen por encima de **`{maxVol}`**"
             },
             "requestChannel": {
-                "description": "Set up a request channel for music",
-                "noPermission": "You need the **Manage Server** permission to use this command.",
-                "invalidChannel": "Please provide a valid text channel.",
-                "slashSetDescription": "Set a channel as the request channel",
-                "slashRemoveDescription": "Remove the request channel",
-                "slashStatusDescription": "Show the current request channel",
-                "slashChannelDescription": "The channel to set as request channel",
+                "description": "Configurar un canal de solicitudes para música",
+                "noPermission": "Necesitas el permiso **Gestionar Servidor** para usar este comando.",
+                "invalidChannel": "Por favor proporciona un canal de texto válido.",
+                "slashSetDescription": "Establecer un canal como canal de solicitudes",
+                "slashRemoveDescription": "Eliminar el canal de solicitudes",
+                "slashStatusDescription": "Mostrar el canal de solicitudes actual",
+                "slashChannelDescription": "El canal a establecer como canal de solicitudes",
                 "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }

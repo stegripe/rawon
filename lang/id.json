@@ -65,6 +65,7 @@
                 "enable": "Enabled",
                 "enableText": "Fitur DJ telah di **`NYALAKAN`**",
                 "newRoleText": "role baru",
+                "noPermission": "Kamu tidak memiliki izin **Kelola Server** untuk menggunakan perintah ini.",
                 "role": {
                     "current": "Role DJ saat ini: <@&{role}>",
                     "invalid": "Role tidak valid.",
@@ -194,13 +195,13 @@
                 "volumeLimit": "Saya tidak dapat mengatur volume di atas **`{maxVol}`**"
             },
             "requestChannel": {
-                "description": "Set up a request channel for music",
-                "noPermission": "You need the **Manage Server** permission to use this command.",
-                "invalidChannel": "Please provide a valid text channel.",
-                "slashSetDescription": "Set a channel as the request channel",
-                "slashRemoveDescription": "Remove the request channel",
-                "slashStatusDescription": "Show the current request channel",
-                "slashChannelDescription": "The channel to set as request channel",
+                "description": "Atur channel request untuk musik",
+                "noPermission": "Kamu membutuhkan izin **Kelola Server** untuk menggunakan perintah ini.",
+                "invalidChannel": "Mohon berikan channel teks yang valid.",
+                "slashSetDescription": "Atur channel sebagai channel request",
+                "slashRemoveDescription": "Hapus channel request",
+                "slashStatusDescription": "Tampilkan channel request saat ini",
+                "slashChannelDescription": "Channel untuk diatur sebagai channel request",
                 "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }

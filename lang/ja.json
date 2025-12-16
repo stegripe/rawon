@@ -65,6 +65,7 @@
                 "enable": "有効",
                 "enableText": "DJは**`有効化`**されました。",
                 "newRoleText": "新しいロール",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
                 "role": {
                     "current": "現在のDJロール:<@&{role}>",
                     "invalid": "無効なロールです。",
@@ -194,13 +195,13 @@
                 "volumeLimit": "**`{maxVol}`**以上にボリュームをセットできません。"
             },
             "requestChannel": {
-                "description": "Set up a request channel for music",
-                "noPermission": "You need the **Manage Server** permission to use this command.",
-                "invalidChannel": "Please provide a valid text channel.",
-                "slashSetDescription": "Set a channel as the request channel",
-                "slashRemoveDescription": "Remove the request channel",
-                "slashStatusDescription": "Show the current request channel",
-                "slashChannelDescription": "The channel to set as request channel",
+                "description": "音楽リクエストチャンネルを設定する",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
+                "invalidChannel": "有効なテキストチャンネルを指定してください。",
+                "slashSetDescription": "チャンネルをリクエストチャンネルとして設定",
+                "slashRemoveDescription": "リクエストチャンネルを削除",
+                "slashStatusDescription": "現在のリクエストチャンネルを表示",
+                "slashChannelDescription": "リクエストチャンネルとして設定するチャンネル",
                 "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }

@@ -65,6 +65,7 @@
                 "enable": "Enabled",
                 "enableText": "DJ feature has been **`ENABLED`**",
                 "newRoleText": "new role",
+                "noPermission": "You don't have the **Manage Server** permission to use this command.",
                 "role": {
                     "current": "Current DJ role: <@&{role}>",
                     "invalid": "Invalid role.",

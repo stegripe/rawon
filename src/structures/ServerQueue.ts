@@ -174,7 +174,7 @@ export class ServerQueue {
 
     public async saveState(): Promise<void> {
         const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? { infractions: {} };
+        const guildData = currentData[this.textChannel.guild.id] ?? {};
 
         guildData.playerState = {
             loopMode: this.loopMode,

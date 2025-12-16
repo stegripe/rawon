@@ -167,7 +167,7 @@ export class DJCommand extends BaseCommand {
         }
     };
 
-    @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
+    @memberReqPerms(["ManageGuild"], i18n.__("commands.music.dj.noPermission"))
     public execute(ctx: CommandContext): void {
         const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
         let sub = this.options[subname ?? ""] as BaseCommand["execute"] | undefined;

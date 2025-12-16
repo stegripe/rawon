@@ -65,6 +65,7 @@
                 "enable": "Etkin",
                 "enableText": "DJ özelliği **`ETKİN`**",
                 "newRoleText": "yeni rol",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine sahip değilsiniz.",
                 "role": {
                     "current": "Mevcut DJ Rolü: <@&{role}>",
                     "invalid": "Geçersiz rol.",
@@ -194,13 +195,13 @@
                 "volumeLimit": "Ses seviyesini **`{maxVol}`** değerinin üzerine ayarlayamıyorum."
             },
             "requestChannel": {
-                "description": "Set up a request channel for music",
-                "noPermission": "You need the **Manage Server** permission to use this command.",
-                "invalidChannel": "Please provide a valid text channel.",
-                "slashSetDescription": "Set a channel as the request channel",
-                "slashRemoveDescription": "Remove the request channel",
-                "slashStatusDescription": "Show the current request channel",
-                "slashChannelDescription": "The channel to set as request channel",
+                "description": "Müzik için bir istek kanalı ayarla",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
+                "invalidChannel": "Lütfen geçerli bir metin kanalı belirtin.",
+                "slashSetDescription": "Bir kanalı istek kanalı olarak ayarla",
+                "slashRemoveDescription": "İstek kanalını kaldır",
+                "slashStatusDescription": "Mevcut istek kanalını göster",
+                "slashChannelDescription": "İstek kanalı olarak ayarlanacak kanal",
                 "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
