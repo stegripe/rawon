@@ -67,13 +67,15 @@ export class RequestChannelCommand extends BaseCommand {
             }
 
             const textChannel = channel as TextChannel;
-            const botPermissions = textChannel.permissionsFor(ctx.guild.members.me ?? this.client.user?.id ?? "");
+            const botMember = ctx.guild.members.me;
             
-            if (!botPermissions) {
+            if (!botMember) {
                 return ctx.reply({
                     embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.noBotPermissions"), true)]
                 });
             }
+            
+            const botPermissions = textChannel.permissionsFor(botMember);
 
             const requiredPermissions = [
                 PermissionsBitField.Flags.ViewChannel,
