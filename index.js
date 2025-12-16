@@ -6,7 +6,7 @@ import process from "node:process";
 import prism from "prism-media";
 import { downloadExecutable } from "./src/utils/yt-dlp/index.js";
 
-const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
+const ensureEnv = (arr) => arr.every((x) => process.env[x] !== undefined);
 
 const isGitHub = ensureEnv([
     "GITHUB_ENV",
@@ -14,7 +14,7 @@ const isGitHub = ensureEnv([
     "GITHUB_HEAD_REF",
     "GITHUB_API_URL",
     "GITHUB_REPOSITORY",
-    "GITHUB_SERVER_URL"
+    "GITHUB_SERVER_URL",
 ]);
 
 function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []) {
@@ -24,7 +24,7 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
         if (existsSync(modulesPath)) {
             rmSync(modulesPath, {
                 recursive: true,
-                force: true
+                force: true,
             });
         }
     }

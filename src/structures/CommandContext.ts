@@ -1,7 +1,32 @@
 import { Buffer } from "node:buffer";
-import type { BaseMessageOptions, ChatInputCommandInteraction, GuildMember, Interaction, InteractionReplyOptions, InteractionResponse, MessageMentions, MessagePayload, MessageReplyOptions, ModalSubmitFields, StringSelectMenuInteraction, TextBasedChannel, User } from "discord.js";
-import { ActionRowBuilder, BaseInteraction, ButtonBuilder, ButtonInteraction, ButtonStyle, Collection, CommandInteraction, ContextMenuCommandInteraction, Message, MessageComponentInteraction, MessageFlags, ModalSubmitInteraction } from "discord.js";
-import type { MessageInteractionAction } from "../typings/index.js";
+import {
+    ActionRowBuilder,
+    BaseInteraction,
+    type BaseMessageOptions,
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    type ChatInputCommandInteraction,
+    Collection,
+    CommandInteraction,
+    ContextMenuCommandInteraction,
+    type GuildMember,
+    type Interaction,
+    type InteractionReplyOptions,
+    type InteractionResponse,
+    Message,
+    MessageComponentInteraction,
+    MessageFlags,
+    type MessageMentions,
+    type MessagePayload,
+    type MessageReplyOptions,
+    type ModalSubmitFields,
+    ModalSubmitInteraction,
+    type StringSelectMenuInteraction,
+    type TextBasedChannel,
+    type User,
+} from "discord.js";
+import { type MessageInteractionAction } from "../typings/index.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
@@ -15,7 +40,7 @@ export class CommandContext {
             | Interaction
             | Message
             | StringSelectMenuInteraction,
-        public args: string[] = []
+        public args: string[] = [],
     ) {
         this.channel = this.context.channel;
         this.guild = this.context.guild;
@@ -35,24 +60,30 @@ export class CommandContext {
             | MessagePayload
             | string
             | { askDeletion?: { reference: string } },
-        autoedit?: boolean
+        autoedit?: boolean,
     ): Promise<Message> {
-        if (this.isInteraction() && 
-                ((this.context as Interaction).isCommand() || (this.context as Interaction).isStringSelectMenu()) &&
-                (this.context as CommandInteraction).replied &&
-                autoedit !== true
-            ) throw new Error("Interaction is already replied.");
+        if (
+            this.isInteraction() &&
+            ((this.context as Interaction).isCommand() ||
+                (this.context as Interaction).isStringSelectMenu()) &&
+            (this.context as CommandInteraction).replied &&
+            autoedit !== true
+        ) {
+            throw new Error("Interaction is already replied.");
+        }
 
         const context = this.context as CommandInteraction | Message | StringSelectMenuInteraction;
         const rep = await this.send(
             options,
             this.isInteraction()
-                ? (context as Interaction).isCommand() || (context as Interaction).isStringSelectMenu()
-                    ? (context as CommandInteraction).replied || (context as CommandInteraction).deferred
+                ? (context as Interaction).isCommand() ||
+                  (context as Interaction).isStringSelectMenu()
+                    ? (context as CommandInteraction).replied ||
+                      (context as CommandInteraction).deferred
                         ? "editReply"
                         : "reply"
                     : "reply"
-                : "reply"
+                : "reply",
         ).catch((error: unknown) => ({ error }));
         if ("error" in rep) {
             throw new Error(`Unable to reply context, because: ${(rep.error as Error).message}`);
@@ -70,26 +101,28 @@ export class CommandContext {
             | MessagePayload
             | string
             | { askDeletion?: { reference: string } },
-        type: MessageInteractionAction = "editReply"
+        type: MessageInteractionAction = "editReply",
     ): Promise<Message> {
         const deletionBtn = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder().setEmoji("🗑️").setStyle(ButtonStyle.Danger)
+            new ButtonBuilder().setEmoji("🗑️").setStyle(ButtonStyle.Danger),
         );
         if ((options as { askDeletion?: { reference: string } }).askDeletion) {
             deletionBtn.components[0].setCustomId(
                 Buffer.from(
-                    `${(options as { askDeletion: { reference: string } }).askDeletion.reference}_delete-msg`
-                ).toString("base64")
+                    `${(options as { askDeletion: { reference: string } }).askDeletion.reference}_delete-msg`,
+                ).toString("base64"),
             );
             (options as InteractionReplyOptions).components = [
-                ...(options as InteractionReplyOptions).components ?? [],
-                deletionBtn
+                ...((options as InteractionReplyOptions).components ?? []),
+                deletionBtn,
             ];
         }
         if (this.isInteraction()) {
             (options as InteractionReplyOptions).withResponse = true;
             // eslint-disable-next-line typescript/no-unsafe-argument
-            const msg = (await (this.context as CommandInteraction)[type](options as any)) as Message;
+            const msg = (await (this.context as CommandInteraction)[type](
+                options as any,
+            )) as Message;
             const channel = this.context.channel;
             const res = await channel?.messages.fetch(msg.id).catch(() => null);
             return res ?? msg;
@@ -140,12 +173,16 @@ export class CommandContext {
     }
 
     public get deferred(): boolean {
-        return this.context instanceof BaseInteraction ? (this.context as CommandInteraction).deferred : false;
+        return this.context instanceof BaseInteraction
+            ? (this.context as CommandInteraction).deferred
+            : false;
     }
 
     public get options(): ChatInputCommandInteraction["options"] | null {
         /* Not sure about this but CommandInteraction does not provides getString method anymore */
-        return this.context instanceof BaseInteraction ? (this.context as ChatInputCommandInteraction).options : null;
+        return this.context instanceof BaseInteraction
+            ? (this.context as ChatInputCommandInteraction).options
+            : null;
     }
 
     public get fields(): ModalSubmitFields | null {

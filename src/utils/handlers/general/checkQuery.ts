@@ -1,6 +1,6 @@
 /* eslint-disable typescript/strict-boolean-expressions */
 import { URL } from "node:url";
-import type { QueryData } from "../../../typings/index.js";
+import { type QueryData } from "../../../typings/index.js";
 
 export function checkQuery(string: string): QueryData {
     let url: URL;
@@ -9,12 +9,12 @@ export function checkQuery(string: string): QueryData {
     } catch {
         return {
             isURL: false,
-            sourceType: "query"
+            sourceType: "query",
         };
     }
 
     const result: QueryData = {
-        isURL: true
+        isURL: true,
     };
 
     if (/soundcloud|snd/gu.test(url.hostname)) {
@@ -24,7 +24,10 @@ export function checkQuery(string: string): QueryData {
     } else if (/youtube|youtu\.be/gu.test(url.hostname)) {
         result.sourceType = "youtube";
 
-        if (!/youtu\.be/gu.test(url.hostname) && url.pathname.startsWith("/playlist") || url.searchParams.has("list")) {
+        if (
+            (!/youtu\.be/gu.test(url.hostname) && url.pathname.startsWith("/playlist")) ||
+            url.searchParams.has("list")
+        ) {
             result.type = "playlist";
         } else if (
             (/youtube/gu.exec(url.hostname) && url.pathname.startsWith("/watch")) ??

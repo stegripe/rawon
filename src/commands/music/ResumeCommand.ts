@@ -1,7 +1,7 @@
-import { Message } from "discord.js";
+import { type Message } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -10,9 +10,9 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     description: i18n.__("commands.music.resume.description"),
     name: "resume",
     slash: {
-        options: []
+        options: [],
     },
-    usage: "{prefix}resume"
+    usage: "{prefix}resume",
 })
 export class ResumeCommand extends BaseCommand {
     @useRequestChannel
@@ -22,13 +22,17 @@ export class ResumeCommand extends BaseCommand {
     public execute(ctx: CommandContext): Promise<Message> | undefined {
         if (ctx.guild?.queue?.playing === true) {
             return ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.music.resume.alreadyResume"))]
+                embeds: [createEmbed("warn", i18n.__("commands.music.resume.alreadyResume"))],
             });
         }
-        (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).playing = true;
+        (
+            ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
+        ).playing = true;
 
         return ctx.reply({
-            embeds: [createEmbed("success", `▶️ **|** ${i18n.__("commands.music.resume.resumeMessage")}`)]
+            embeds: [
+                createEmbed("success", `▶️ **|** ${i18n.__("commands.music.resume.resumeMessage")}`),
+            ],
         });
     }
 }

@@ -1,16 +1,19 @@
-import type { Promisable } from "../../typings/index.js";
+import { type Promisable } from "../../typings/index.js";
 
 export class OperationManager {
     private _runningOperation!: boolean;
-    private readonly operations: [(arg?: undefined) => void, (reason?: any) => void, () => Promisable<undefined>][] =
-        [];
+    private readonly operations: [
+        (arg?: undefined) => void,
+        (reason?: any) => void,
+        () => Promisable<undefined>,
+    ][] = [];
 
     public constructor() {
         Object.defineProperty(this, "_runningOperation", {
             configurable: false,
             enumerable: false,
             value: false,
-            writable: true
+            writable: true,
         });
     }
 

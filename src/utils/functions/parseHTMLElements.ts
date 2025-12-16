@@ -7,14 +7,18 @@ export const escapedHTMLElements: Record<string, string> = {
     "<": "&lt;",
     "=": "&#x3D;",
     ">": "&gt;",
-    "`": "&#x60;"
+    "`": "&#x60;",
 };
 
 export function parseHTMLElements(text: string): string {
     let res = text;
     const sortedElements = Object.keys(escapedHTMLElements).sort((a, b) => {
-        if (a === "&") return 1;
-        if (b === "&") return -1;
+        if (a === "&") {
+            return 1;
+        }
+        if (b === "&") {
+            return -1;
+        }
         return 0;
     });
 

@@ -1,14 +1,20 @@
 import { clearInterval, clearTimeout, setInterval } from "node:timers";
-import type { AudioPlayer, AudioPlayerPlayingState, AudioResource, VoiceConnection } from "@discordjs/voice";
-import { AudioPlayerStatus, createAudioPlayer } from "@discordjs/voice";
-import type { TextChannel, Snowflake } from "discord.js";
+import {
+    type AudioPlayer,
+    type AudioPlayerPlayingState,
+    AudioPlayerStatus,
+    type AudioResource,
+    createAudioPlayer,
+    type VoiceConnection,
+} from "@discordjs/voice";
+import { type Snowflake, type TextChannel } from "discord.js";
 import i18n from "../config/index.js";
-import type { LoopMode, QueueSong, SavedQueueSong } from "../typings/index.js";
+import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
-import type { filterArgs } from "../utils/functions/ffmpegArgs.js";
+import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
-import type { Rawon } from "./Rawon.js";
+import { type Rawon } from "./Rawon.js";
 
 const nonEnum = { enumerable: false };
 
@@ -32,7 +38,7 @@ export class ServerQueue {
             _skipVoters: nonEnum,
             _lastMusicMsg: nonEnum,
             _lastVSUpdateMsg: nonEnum,
-            _volume: nonEnum
+            _volume: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -41,36 +47,50 @@ export class ServerQueue {
 
         this.player
             .on("stateChange", async (oldState, newState) => {
-                if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
+                if (
+                    newState.status === AudioPlayerStatus.Playing &&
+                    oldState.status !== AudioPlayerStatus.Paused
+                ) {
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
-                    const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong)
-                        .song;
-                    
-                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
+                    const newSong = (
+                        (this.player.state as AudioPlayerPlayingState).resource
+                            .metadata as QueueSong
+                    ).song;
+
+                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                        this.textChannel.guild,
+                        this.textChannel.id,
+                    );
                     if (isRequestChannel) {
                         this.client.logger.info(
-                            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name} has started.`
+                            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name} has started.`,
                         );
                     } else {
                         this.sendStartPlayingMsg(newSong);
                     }
-                    
-                    void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
-                    
+
+                    void this.client.requestChannelManager.updatePlayerMessage(
+                        this.textChannel.guild,
+                    );
+
                     // Save queue state with new current song key when a new song starts playing
                     void this.saveQueueState();
-                    
+
                     this.playerUpdateInterval ??= setInterval(() => {
                         if (this.playing) {
-                            void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+                            void this.client.requestChannelManager.updatePlayerMessage(
+                                this.textChannel.guild,
+                            );
                         }
                     }, 15_000);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
-                    const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
+                    const song = (oldState as AudioPlayerPlayingState).resource
+                        .metadata as QueueSong;
                     this.client.logger.info(
-                        `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${song.song.title
-                        }" on ${this.textChannel.guild.name} has ended.`
+                        `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${
+                            song.song.title
+                        }" on ${this.textChannel.guild.name} has ended.`,
                     );
                     this.skipVoters = [];
                     if (this.loopMode === "OFF") {
@@ -78,20 +98,26 @@ export class ServerQueue {
                     }
 
                     const nextS =
-                         
                         this.shuffle && this.loopMode !== "SONG"
                             ? this.songs.random()?.key
                             : this.loopMode === "SONG"
-                                ? song.key
-                                : this.songs
+                              ? song.key
+                              : (this.songs
                                     .sortByIndex()
-                                    .filter(x => x.index > song.index)
+                                    .filter((x) => x.index > song.index)
                                     .first()?.key ??
-                                (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
+                                (this.loopMode === "QUEUE"
+                                    ? (this.songs.sortByIndex().first()?.key ?? "")
+                                    : ""));
 
-                    void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+                    void this.client.requestChannelManager.updatePlayerMessage(
+                        this.textChannel.guild,
+                    );
 
-                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
+                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                        this.textChannel.guild,
+                        this.textChannel.id,
+                    );
                     if (!isRequestChannel) {
                         await this.textChannel
                             .send({
@@ -99,13 +125,15 @@ export class ServerQueue {
                                     createEmbed(
                                         "info",
                                         `⏹️ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
-                                            song: `[${song.song.title}](${song.song.url})`
-                                        })}`
-                                    ).setThumbnail(song.song.thumbnail)
-                                ]
+                                            song: `[${song.song.title}](${song.song.url})`,
+                                        })}`,
+                                    ).setThumbnail(song.song.thumbnail),
+                                ],
                             })
-                            .then(ms => (this.lastMusicMsg = ms.id))
-                            .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
+                            .then((ms) => (this.lastMusicMsg = ms.id))
+                            .catch((error: unknown) =>
+                                this.client.logger.error("PLAY_ERR:", error),
+                            );
                     }
 
                     try {
@@ -118,11 +146,11 @@ export class ServerQueue {
                                         createEmbed(
                                             "error",
                                             i18n.__mf("utils.generalHandler.errorPlaying", {
-                                                message: `\`${error as string}\``
+                                                message: `\`${error as string}\``,
                                             }),
-                                            true
-                                        )
-                                    ]
+                                            true,
+                                        ),
+                                    ],
                                 });
                             } catch (playError) {
                                 this.client.logger.error("PLAY_ERR:", playError);
@@ -133,25 +161,29 @@ export class ServerQueue {
                     }
                 }
             })
-            .on("error", err => {
+            .on("error", (err) => {
                 (async () => {
                     // eslint-disable-next-line promise/no-promise-in-callback
                     await this.textChannel
-                    .send({
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__mf("utils.generalHandler.errorPlaying", { message: `\`${err.message}\`` }),
-                                true
-                            )
-                        ]
-                    })
-                    .catch((error: unknown) => this.client.logger.error("PLAY_CMD_ERR:", error));
+                        .send({
+                            embeds: [
+                                createEmbed(
+                                    "error",
+                                    i18n.__mf("utils.generalHandler.errorPlaying", {
+                                        message: `\`${err.message}\``,
+                                    }),
+                                    true,
+                                ),
+                            ],
+                        })
+                        .catch((error: unknown) =>
+                            this.client.logger.error("PLAY_CMD_ERR:", error),
+                        );
                 })();
                 this.destroy();
                 this.client.logger.error("PLAY_ERR:", err);
             })
-            .on("debug", message => {
+            .on("debug", (message) => {
                 this.client.logger.debug(message);
             });
     }
@@ -162,8 +194,12 @@ export class ServerQueue {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
             this._volume = savedState.volume ?? this.client.config.defaultVolume;
-            this.filters = (savedState.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
-            this.client.logger.info(`Loaded saved player state for guild ${this.textChannel.guild.name}`);
+            this.filters = (savedState.filters ?? {}) as Partial<
+                Record<keyof typeof filterArgs, boolean>
+            >;
+            this.client.logger.info(
+                `Loaded saved player state for guild ${this.textChannel.guild.name}`,
+            );
         }
     }
 
@@ -175,12 +211,12 @@ export class ServerQueue {
             loopMode: this.loopMode,
             shuffle: this.shuffle,
             volume: this._volume,
-            filters: this.filters as Record<string, boolean>
+            filters: this.filters as Record<string, boolean>,
         };
 
         await this.client.data.save(() => ({
             ...currentData,
-            [this.textChannel.guild.id]: guildData
+            [this.textChannel.guild.id]: guildData,
         }));
     }
 
@@ -196,16 +232,20 @@ export class ServerQueue {
             }
         }
 
-        const savedSongs: SavedQueueSong[] = this.songs.sortByIndex().map(queueSong => ({
+        const savedSongs: SavedQueueSong[] = this.songs.sortByIndex().map((queueSong) => ({
             requesterId: queueSong.requester.id,
             index: queueSong.index,
             song: queueSong.song,
-            key: queueSong.key
+            key: queueSong.key,
         }));
 
         const voiceChannelId = this.connection?.joinConfig.channelId;
         // Only save queue state if we have a valid voice channel connection
-        if (voiceChannelId === undefined || voiceChannelId === null || voiceChannelId.length === 0) {
+        if (
+            voiceChannelId === undefined ||
+            voiceChannelId === null ||
+            voiceChannelId.length === 0
+        ) {
             return;
         }
 
@@ -213,15 +253,17 @@ export class ServerQueue {
             textChannelId: this.textChannel.id,
             voiceChannelId,
             songs: savedSongs,
-            currentSongKey
+            currentSongKey,
         };
 
         await this.client.data.save(() => ({
             ...currentData,
-            [this.textChannel.guild.id]: guildData
+            [this.textChannel.guild.id]: guildData,
         }));
 
-        this.client.logger.info(`Saved queue state for guild ${this.textChannel.guild.name} with ${savedSongs.length} songs`);
+        this.client.logger.info(
+            `Saved queue state for guild ${this.textChannel.guild.name} with ${savedSongs.length} songs`,
+        );
     }
 
     public async clearQueueState(): Promise<void> {
@@ -232,7 +274,7 @@ export class ServerQueue {
 
         await this.client.data.save(() => ({
             ...currentData,
-            [this.textChannel.guild.id]: guildData
+            [this.textChannel.guild.id]: guildData,
         }));
     }
 
@@ -244,7 +286,11 @@ export class ServerQueue {
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
             this.playing = false;
-            void play(this.textChannel.guild, (this.player.state.resource as AudioResource<QueueSong>).metadata.key, true);
+            void play(
+                this.textChannel.guild,
+                (this.player.state.resource as AudioResource<QueueSong>).metadata.key,
+                true,
+            );
         }
     }
 
@@ -303,12 +349,17 @@ export class ServerQueue {
         if (this._lastMusicMsg !== null) {
             (async () => {
                 await this.textChannel.messages
-                .fetch(this._lastMusicMsg ?? "")
-                .then(msg => {
-                    void msg.delete();
-                    return 0;
-                })
-                .catch((error: unknown) => this.textChannel.client.logger.error("DELETE_LAST_MUSIC_MESSAGE_ERR:", error))
+                    .fetch(this._lastMusicMsg ?? "")
+                    .then((msg) => {
+                        void msg.delete();
+                        return 0;
+                    })
+                    .catch((error: unknown) =>
+                        this.textChannel.client.logger.error(
+                            "DELETE_LAST_MUSIC_MESSAGE_ERR:",
+                            error,
+                        ),
+                    );
             })();
         }
         this._lastMusicMsg = value;
@@ -322,12 +373,17 @@ export class ServerQueue {
         if (this._lastVSUpdateMsg !== null) {
             (async () => {
                 await this.textChannel.messages
-                .fetch(this._lastVSUpdateMsg ?? "")
-                .then(msg => {
-                    void msg.delete();
-                    return 0;
-                })
-                .catch((error: unknown) => this.textChannel.client.logger.error("DELETE_LAST_VS_UPDATE_MESSAGE_ERR:", error))
+                    .fetch(this._lastVSUpdateMsg ?? "")
+                    .then((msg) => {
+                        void msg.delete();
+                        return 0;
+                    })
+                    .catch((error: unknown) =>
+                        this.textChannel.client.logger.error(
+                            "DELETE_LAST_VS_UPDATE_MESSAGE_ERR:",
+                            error,
+                        ),
+                    );
             })();
         }
         this._lastVSUpdateMsg = value;
@@ -355,23 +411,24 @@ export class ServerQueue {
 
     private sendStartPlayingMsg(newSong: QueueSong["song"]): void {
         this.client.logger.info(
-            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name
-            } has started.`
+            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${
+                this.textChannel.guild.name
+            } has started.`,
         );
         (async () => {
             await this.textChannel
-            .send({
-                embeds: [
-                    createEmbed(
-                        "info",
-                        `▶️ **|** ${i18n.__mf("utils.generalHandler.startPlaying", {
-                            song: `[${newSong.title}](${newSong.url})`
-                        })}`
-                    ).setThumbnail(newSong.thumbnail)
-                ]
-            })
-            .then(ms => (this.lastMusicMsg = ms.id))
-            .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error))
+                .send({
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            `▶️ **|** ${i18n.__mf("utils.generalHandler.startPlaying", {
+                                song: `[${newSong.title}](${newSong.url})`,
+                            })}`,
+                        ).setThumbnail(newSong.thumbnail),
+                    ],
+                })
+                .then((ms) => (this.lastMusicMsg = ms.id))
+                .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
         })();
     }
 }

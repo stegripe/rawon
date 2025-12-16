@@ -1,7 +1,13 @@
-import { ApplicationCommandOptionType, ChannelType, Message, PermissionsBitField, TextChannel } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    ChannelType,
+    type Message,
+    PermissionsBitField,
+    type TextChannel,
+} from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 
@@ -17,64 +23,94 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
-                        description: i18n.__("commands.music.requestChannel.slashChannelDescription"),
+                        description: i18n.__(
+                            "commands.music.requestChannel.slashChannelDescription",
+                        ),
                         name: "channel",
                         type: ApplicationCommandOptionType.Channel,
                         channelTypes: [ChannelType.GuildText],
-                        required: true
-                    }
-                ]
+                        required: true,
+                    },
+                ],
             },
             {
                 description: i18n.__("commands.music.requestChannel.slashRemoveDescription"),
                 name: "remove",
-                type: ApplicationCommandOptionType.Subcommand
+                type: ApplicationCommandOptionType.Subcommand,
             },
             {
                 description: i18n.__("commands.music.requestChannel.slashStatusDescription"),
                 name: "status",
-                type: ApplicationCommandOptionType.Subcommand
-            }
-        ]
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+        ],
     },
-    usage: i18n.__("commands.music.requestChannel.usage")
+    usage: i18n.__("commands.music.requestChannel.usage"),
 })
 export class RequestChannelCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
-        const hasPermission = ctx.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) ?? false;
+        const hasPermission =
+            ctx.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) ?? false;
         if (!hasPermission) {
             return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.noPermission"), true)]
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__("commands.music.requestChannel.noPermission"),
+                        true,
+                    ),
+                ],
             });
         }
 
         if (!ctx.guild) {
             return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.noPermission"), true)]
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__("commands.music.requestChannel.noPermission"),
+                        true,
+                    ),
+                ],
             });
         }
 
         const subcommand = ctx.options?.getSubcommand() ?? ctx.args[0]?.toLowerCase();
 
         if (subcommand === "set") {
-            const channel = ctx.options?.getChannel("channel") ?? 
-                (ctx.args[1] ? ctx.guild.channels.cache.get(ctx.args[1].replaceAll(/[<#>]/gu, "")) : undefined);
+            const channel =
+                ctx.options?.getChannel("channel") ??
+                (ctx.args[1]
+                    ? ctx.guild.channels.cache.get(ctx.args[1].replaceAll(/[<#>]/gu, ""))
+                    : undefined);
 
             if (!channel || channel.type !== ChannelType.GuildText) {
                 return ctx.reply({
-                    embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.invalidChannel"), true)]
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__("commands.music.requestChannel.invalidChannel"),
+                            true,
+                        ),
+                    ],
                 });
             }
 
             const textChannel = channel as TextChannel;
             const botMember = ctx.guild.members.me;
-            
+
             if (!botMember) {
                 return ctx.reply({
-                    embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.noBotPermissions"), true)]
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__("commands.music.requestChannel.noBotPermissions"),
+                            true,
+                        ),
+                    ],
                 });
             }
-            
+
             const botPermissions = textChannel.permissionsFor(botMember);
 
             const requiredPermissions = [
@@ -82,36 +118,59 @@ export class RequestChannelCommand extends BaseCommand {
                 PermissionsBitField.Flags.SendMessages,
                 PermissionsBitField.Flags.EmbedLinks,
                 PermissionsBitField.Flags.ReadMessageHistory,
-                PermissionsBitField.Flags.ManageMessages
+                PermissionsBitField.Flags.ManageMessages,
             ];
 
-            const missingPermissions = requiredPermissions.filter(perm => !botPermissions.has(perm));
-            
+            const missingPermissions = requiredPermissions.filter(
+                (perm) => !botPermissions.has(perm),
+            );
+
             if (missingPermissions.length > 0) {
-                const permissionNames = missingPermissions.map(perm => {
-                    const flagName = Object.entries(PermissionsBitField.Flags).find(([, value]) => value === perm)?.[0];
+                const permissionNames = missingPermissions.map((perm) => {
+                    const flagName = Object.entries(PermissionsBitField.Flags).find(
+                        ([, value]) => value === perm,
+                    )?.[0];
                     return flagName ?? "Unknown";
                 });
                 return ctx.reply({
-                    embeds: [createEmbed("error", i18n.__mf("commands.music.requestChannel.missingBotPermissions", { 
-                        permissions: permissionNames.join(", ") 
-                    }), true)]
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__mf("commands.music.requestChannel.missingBotPermissions", {
+                                permissions: permissionNames.join(", "),
+                            }),
+                            true,
+                        ),
+                    ],
                 });
             }
 
             await this.client.requestChannelManager.setRequestChannel(ctx.guild, channel.id);
-            
-            const playerMessage = await this.client.requestChannelManager.createOrUpdatePlayerMessage(ctx.guild);
-            
+
+            const playerMessage =
+                await this.client.requestChannelManager.createOrUpdatePlayerMessage(ctx.guild);
+
             if (!playerMessage) {
                 await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
                 return ctx.reply({
-                    embeds: [createEmbed("error", i18n.__("commands.music.requestChannel.failedToSetup"), true)]
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__("commands.music.requestChannel.failedToSetup"),
+                            true,
+                        ),
+                    ],
                 });
             }
 
             return ctx.reply({
-                embeds: [createEmbed("success", i18n.__mf("requestChannel.setChannel", { channel: `<#${channel.id}>` }), true)]
+                embeds: [
+                    createEmbed(
+                        "success",
+                        i18n.__mf("requestChannel.setChannel", { channel: `<#${channel.id}>` }),
+                        true,
+                    ),
+                ],
             });
         }
 
@@ -119,7 +178,7 @@ export class RequestChannelCommand extends BaseCommand {
             await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
 
             return ctx.reply({
-                embeds: [createEmbed("success", i18n.__("requestChannel.removeChannel"), true)]
+                embeds: [createEmbed("success", i18n.__("requestChannel.removeChannel"), true)],
             });
         }
 
@@ -127,12 +186,19 @@ export class RequestChannelCommand extends BaseCommand {
 
         if (currentChannel) {
             return ctx.reply({
-                embeds: [createEmbed("info", i18n.__mf("requestChannel.currentChannel", { channel: `<#${currentChannel.id}>` }))]
+                embeds: [
+                    createEmbed(
+                        "info",
+                        i18n.__mf("requestChannel.currentChannel", {
+                            channel: `<#${currentChannel.id}>`,
+                        }),
+                    ),
+                ],
             });
         }
 
         return ctx.reply({
-            embeds: [createEmbed("warn", i18n.__("requestChannel.noChannel"))]
+            embeds: [createEmbed("warn", i18n.__("requestChannel.noChannel"))],
         });
     }
 }

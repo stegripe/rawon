@@ -18,8 +18,6 @@ export class JSONDataManager<T> {
         await this.manager.add(async () => {
             const dat = data();
             await writeFile(this.fileDir, JSON.stringify(dat));
-
-            
         });
 
         return this.load();
@@ -28,7 +26,9 @@ export class JSONDataManager<T> {
     private async load(): Promise<T | null> {
         try {
             await this.manager.add(async () => {
-                this._data = JSON.parse(await readFile(this.fileDir, "utf8").then(x => x.toString())) as T;
+                this._data = JSON.parse(
+                    await readFile(this.fileDir, "utf8").then((x) => x.toString()),
+                ) as T;
             });
 
             return this._data;
