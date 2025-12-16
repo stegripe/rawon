@@ -92,7 +92,7 @@ export class SkipCommand extends BaseCommand {
                         `⏭️ **|** ${i18n.__mf("commands.music.skip.skipMessage", {
                             song: `[${song.song.title}](${song.song.url})`,
                         })}`,
-                    ).setThumbnail(song.song.thumbnail),
+                    ).setImage(song.song.thumbnail),
                 ],
             })
             .catch((error: unknown) => this.client.logger.error("SKIP_CMD_ERR:", error));

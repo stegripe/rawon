@@ -179,7 +179,7 @@ export class SkipToCommand extends BaseCommand {
                     `⏭️ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
                         song: `[${song.song.title}](${song.song.url})`,
                     })}`,
-                ).setThumbnail(song.song.thumbnail),
+                ).setImage(song.song.thumbnail),
             ],
         });
     }

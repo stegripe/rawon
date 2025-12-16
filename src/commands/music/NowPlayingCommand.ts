@@ -42,7 +42,7 @@ export class NowPlayingCommand extends BaseCommand {
             const embed = createEmbed(
                 "info",
                 `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `,
-            ).setThumbnail(song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png");
+            ).setImage(song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png");
 
             const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
             embed.data.description += song
