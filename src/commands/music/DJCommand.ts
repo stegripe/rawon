@@ -41,6 +41,8 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 })
 export class DJCommand extends BaseCommand {
     private readonly options: Record<string, BaseCommand["execute"]> = {
+        // eslint-disable-next-line typescript/no-unsafe-return
+        set: ctx => this.options.role(ctx),
         default: async ctx =>
             ctx.reply({
                 embeds: [
