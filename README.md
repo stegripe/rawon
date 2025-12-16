@@ -54,11 +54,11 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - rawon:/app/scripts
+      - rawon-scripts:/app/scripts
       - rawon-data:/app/data.json
 
 volumes:
-  rawon:
+  rawon-scripts:
   rawon-data:
 ```
 
@@ -67,7 +67,7 @@ volumes:
 docker run -d \
   --name rawon-bot \
   --env-file .env \
-  -v rawon:/app/scripts \
+  -v rawon-scripts:/app/scripts \
   -v rawon-data:/app/data.json \
   --restart unless-stopped \
   ghcr.io/stegripe/rawon:latest
