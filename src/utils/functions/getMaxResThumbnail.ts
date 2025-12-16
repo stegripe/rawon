@@ -11,8 +11,18 @@ export function getMaxResThumbnail(url: string | undefined | null): string {
         return "";
     }
 
-    // Check if it's a YouTube thumbnail URL (i.ytimg.com or img.youtube.com)
-    if (!url.includes("i.ytimg.com") && !url.includes("img.youtube.com")) {
+    // Parse URL to properly validate the hostname
+    let parsedUrl: URL;
+    try {
+        parsedUrl = new URL(url);
+    } catch {
+        // Invalid URL, return as-is
+        return url;
+    }
+
+    // Check if it's a YouTube thumbnail URL by validating the hostname
+    const validHosts = ["i.ytimg.com", "img.youtube.com"];
+    if (!validHosts.includes(parsedUrl.hostname)) {
         return url;
     }
 
