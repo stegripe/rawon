@@ -11,6 +11,10 @@ function extractVideoId(url: URL): string | null {
     if (/youtu\.be/gu.test(url.hostname)) {
         return url.pathname.replace("/", "");
     }
+    // Handle YouTube Shorts URLs (youtube.com/shorts/{videoId})
+    if (url.pathname.startsWith("/shorts/")) {
+        return url.pathname.replace("/shorts/", "").split("/")[0];
+    }
     return url.searchParams.get("v");
 }
 

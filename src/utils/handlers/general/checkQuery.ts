@@ -28,6 +28,7 @@ export function checkQuery(string: string): QueryData {
             result.type = "playlist";
         } else if (
             (/youtube/gu.exec(url.hostname) && url.pathname.startsWith("/watch")) ??
+            (/youtube/gu.exec(url.hostname) && url.pathname.startsWith("/shorts/")) ??
             (/youtu\.be/gu.exec(url.hostname) && url.pathname !== "")
         ) {
             result.type = "track";
