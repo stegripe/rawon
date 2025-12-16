@@ -105,20 +105,7 @@ export class VolumeCommand extends BaseCommand {
             });
             return;
         }
-        if (volume > 100) {
-            await ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__mf("commands.music.volume.volumeLimit", {
-                            maxVol: "`100`"
-                        }),
-                        true
-                    )
-                ]
-            });
-            return;
-        }
+
 
         (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).volume = volume;
         await ctx.reply({

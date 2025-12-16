@@ -55,129 +55,6 @@
                 "footerString": "Затримка: {user}"
             }
         },
-        "moderation": {
-            "ban": {
-                "banFail": "Не вдалось **`ЗАБЛОКУВАТИ`** учасника, тому що: `{message}`",
-                "banSuccess": "**{user}** був **`ЗАБЛОКОВАНИЙ`** на цьому сервері.",
-                "bannedByString": "Блокування наклав: {author}",
-                "botNoPermission": "Пробачте, але я не маю права **`Блокувати учасників`**.",
-                "description": "Заблокувати учасника цього серверу",
-                "slashMemberIDDescription": "Кого ви бажаєте заблокувати?",
-                "slashReasonDescription": "Причина блокування",
-                "usage": "{prefix}ban <@згадка | id> [причина]",
-                "userBanned": "Ви були **`ЗАБЛОКОВАНІ`** на сервері **{guildName}**",
-                "userNoBannable": "Пробачте, але я не можу **`ЗАБЛОКУВАТИ`** цього учасника.",
-                "userNoPermission": "Пробачте, але Ви не маєте права **`Блокувати учасників`**."
-            },
-            "categoryName": "МОДЕРАЦІЯ",
-            "common": {
-                "noReasonString": "[Не вказано]",
-                "noUserSpecified": "Будь ласка, вкажіть учасника.",
-                "reasonString": "**Причина**"
-            },
-            "infractions": {
-                "description": "Показати порушення учасника",
-                "embedAuthorText": "{user} - Порушення",
-                "noInfractions": "Порушення відсутні.",
-                "slashMemberDescription": "Кого ви бажаєте переглянути порушення?",
-                "usage": "{prefix}infractions [@згадка | id]"
-            },
-            "kick": {
-                "botNoPermission": "Пробачте, але я не маю права **`Виганяти учасників`**.",
-                "description": "Вигнати учасника з сервера",
-                "kickFail": "Не вдалось **`ВИГНАТИ`** учасника, тому що: `{message}`",
-                "kickSuccess": "**{user}** був **`ВИГНАНИЙ`** з цього серверу.",
-                "kickedByString": "Вигнав: {author}",
-                "slashMemberDescription": "Кого ви бажаєте вигнати?",
-                "slashReasonDescription": "Причина вигнання",
-                "usage": "{prefix}kick <@згадка | id> [причина]",
-                "userKicked": "Ви були **`ВИГНАНІ`** з серверу **{guildName}**",
-                "userNoKickable": "Пробачте, але я не можу **`ВИГНАТИ`** that member.",
-                "userNoPermission": "Пробачте, але Ви не маєте права **`Виганяти учасників`**"
-            },
-            "modlogs": {
-                "channel": {
-                    "current": "Поточний канал для повідомлень журналу аудиту модерації: <#{channel}>",
-                    "invalid": "Недійсний канал, повинен бути текстовим.",
-                    "noChannel": "Канал журналу аудиту не був встановлений.",
-                    "success": "Канал журналу аудиту був встановлений: <#{channel}>"
-                },
-                "description": "Змінити налаштування журналу аудиту",
-                "disable": "Журнал аудиту був **`ВИМКНЕНИЙ`**",
-                "embedTitle": "Журнал аудиту модераторів",
-                "enable": "Журнал аудиту був **`УВІМКНЕНИЙ`**",
-                "newChannelText": "новий канал",
-                "slashChannelDescription": "Переглянути або змінити канал журналу аудиту",
-                "slashChannelNewChannelOption": "Новий канал для журналу аудиту",
-                "slashDisableDescription": "Вимкнути журнал аудиту",
-                "slashEnableDescription": "Увімкнути журнал аудиту",
-                "usage": "{prefix}modlogs"
-            },
-            "mute": {
-                "alreadyMuted": "Цей учасник вже обмежений **`ОБМЕЖЕНИЙ`**",
-                "botNoPermission": "Пробачте, але я не маю права **`Керувати ролями`**.",
-                "cantMuteOwner": "Ви не можете **`ОБМЕЖИТИ`** власника сервера.",
-                "description": "Обмежте когось на сервері",
-                "muteFail": "Не вдалось **`ОБМЕЖИТИ`** учасника, тому що: `{message}`",
-                "muteSuccess": "**{user}** був **`ОБМЕЖЕНИЙ`** на цьому сервері.",
-                "mutedByString": "Обмежений: {author}",
-                "noRole": "Роль обмеження не була встановлена, будь ласка встановіть її через `{prefix}setmute`",
-                "slashMemberDescription": "Кого ви бажаєте обмежити?",
-                "slashReasonDescription": "Причина обмеження",
-                "usage": "{prefix}mute <@згадка | id> [причина]",
-                "userMuted": "Ви були **`ОБМЕЖЕНІ`** на сервері **{guildName}**",
-                "userNoPermission": "Пробачте, але Ви не маєте права **`Керувати ролями`**"
-            },
-            "purge": {
-                "botNoPermission": "Пробачте, але я не маю права **`Керувати повідомленнями`**.",
-                "description": "Видалити повідомлення",
-                "invalidAmount": "Будь ласка, вкажіть дійсне число повідомлень які потрібно видалити.",
-                "purgeFail": "Не вдалось **`ВИДАЛИТИ`** повідомлення, тому що: `{message}`",
-                "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} have been **`PURGED`**",
-                "slashAmountDescription": "Кількість повідомлень для видалення",
-                "usage": "{prefix}purge <кількість>",
-                "userNoPermission": "Пробачте, але Ви не маєте права **`Керувати повідомленнями`**"
-            },
-            "setmute": {
-                "description": "Встановити роль для обмеження",
-                "invalidRole": "Недійсна роль.",
-                "slashRoleDescription": "Роль, що буде використовуватись для обмеження (mute)",
-                "success": "Роль обмеження була встановлена: <@&{role}>",
-                "usage": "{prefix}setmute <роль>"
-            },
-            "unban": {
-                "alreadyUnban": "Цей користувач не **`ЗАБЛОКОВАНИЙ`**",
-                "description": "Розблокуйте когось на сервері",
-                "slashMemberDescription": "Кого ви бажаєте розблокувати",
-                "slashReasonDescription": "Причина розблокування",
-                "unbanSuccess": "**{user}** був **`РОЗБЛОКОВАНИЙ`** на цьому сервері.",
-                "unbanFail": "Не вдалось знайти учасника для **`РОЗБЛОКУВАННЯ`**, тому що: `{message}`",
-                "unbannedByString": "Розблоковано ким: {author}",
-                "usage": "{prefix}unban <id> [причина]"
-            },
-            "unmute": {
-                "description": "Зніміть обмеження (unmute) з учасника цього серверу",
-                "noMuted": "Не учасник не **`ОБМЕЖЕНИЙ`**",
-                "slashMemberDescription": "З кого Ви бажаєте зняти обмеження?",
-                "slashReasonDescription": "Причина зняття обмеження",
-                "unmuteFail": "Не вдалось знайти учасника щоб **`ЗНЯТИ ОБМЕЖЕННЯ`**, тому що: `{message}`",
-                "unmuteSuccess": "З **{user}** було знято обмеження **`UN-MUTED`** на цьому сервері.",
-                "unmutedByString": "Обмеження знято ким: {author}",
-                "usage": "{prefix}unmute <згадка | id> [причина]",
-                "userUnmuted": "З вас було **`ЗНЯТО ОБМЕЖЕННЯ`** на сервері **{guildName}**"
-            },
-            "warn": {
-                "description": "Попередьте учасника цього серверу",
-                "noDM": "Не вдалось відправити Особисте повідомлення цьому користувачеві, але я буду продовжувати попереджувати його",
-                "slashMemberDescription": "Кого ви бажаєте попередити?",
-                "slashReasonDescription": "Причина попередження",
-                "usage": "{prefix}warn <згадка | id> [причина]",
-                "userNoPermission": "Пробачте, але Ви не маєте права **`Керувати сервером`**.",
-                "userWarned": "Ви були **`ПОПЕРЕДЖЕНІ`** на сервері **{guildName}**",
-                "warnSuccess": "**{user}** був **`ПОПЕРЕДЖЕНИЙ`** на цьому сервері",
-                "warnedByString": "Попередження видав: {author}"
-            }
-        },
         "music": {
             "categoryName": "МУЗИКА",
             "dj": {
@@ -188,6 +65,7 @@
                 "enable": "Увімкнено",
                 "enableText": "Функція DJ була **`УВІМКНЕНА`**",
                 "newRoleText": "нова роль",
+                "noPermission": "У вас немає дозволу **Керувати сервером** для використання цієї команди.",
                 "role": {
                     "current": "Поточна роль DJ: <@&{role}>",
                     "invalid": "Недійсна роль.",
@@ -217,7 +95,8 @@
                 "description": "Показати слова пісні",
                 "noQuery": "Зараз нічого не програється або не було аргументи.",
                 "slashDescription": "Пісня для пошуку",
-                "usage": "{prefix}lyrics [пісня]"
+                "usage": "{prefix}lyrics [пісня]",
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Показати статус медіа програвача",
@@ -301,13 +180,6 @@
                 "slashSpecificDescription": "Перейти до певної позиції в черзі",
                 "usage": "'{prefix}'skipto <{options} | number>"
             },
-            "stayInQueue": {
-                "247Disabled": "Команда Stay-in-voice вимкнена.",
-                "actualState": "Стан функції Stay-in-voice: **`{state}`**",
-                "description": "Змушує бота залишатися в голосовому каналі після завершення черги",
-                "newState": "Stay-in-voice тепер встановлено на: **`{state}`**",
-                "slashDescription": "Вмикає режим stay-in-voice"
-            },
             "stop": {
                 "description": "Зупинити музичний плеєр",
                 "stoppedMessage": "Музичний плеєр зупинено."
@@ -321,6 +193,16 @@
                 "slashDescription": "Нова гучність:",
                 "usage": "{префікс}volume [нова гучність]",
                 "volumeLimit": "Я не можу встановити гучність вище **`{maxVol}`**"
+            },
+            "requestChannel": {
+                "description": "Налаштувати канал запитів для музики",
+                "noPermission": "Вам потрібен дозвіл **Керувати сервером** для використання цієї команди.",
+                "invalidChannel": "Будь ласка, вкажіть дійсний текстовий канал.",
+                "slashSetDescription": "Встановити канал як канал запитів",
+                "slashRemoveDescription": "Видалити канал запитів",
+                "slashStatusDescription": "Показати поточний канал запитів",
+                "slashChannelDescription": "Канал для встановлення як канал запитів",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -372,7 +254,43 @@
             "noQueue": "Наразі нічого не лунає.",
             "sameVC": "Ви повинні бути в тому ж каналі що і я.",
             "validVCJoinable": "Пробачте, але я не можу **`ПРИЄДНАТИСЬ`** до Вашого каналу, перевірте чи я маю на це право.",
-            "validVCPermission": "Пробачте, але я не можу **`РОЗМОВЛЯТИ`** у Вашому каналі, перевірте чи я маю на це право."
+            "validVCPermission": "Пробачте, але я не можу **`РОЗМОВЛЯТИ`** у Вашому каналі, перевірте чи я маю на це право.",
+            "useRequestChannel": "Будь ласка, використовуйте канал запитів {channel} для музичних команд."
         }
+    },
+    "requestChannel": {
+        "title": "Музичний плеєр",
+        "standby": "Музика не грає. Надішліть назву пісні або URL щоб почати!",
+        "status": "Режим повтору",
+        "shuffle": "Перемішати",
+        "volume": "Гучність",
+        "queueLength": "Черга",
+        "queueFooter": "• Всього пісень у черзі: {count}",
+        "idle": "Очікування",
+        "live": "НАЖИВО",
+        "requestedBy": "Запитав",
+        "unknown": "Невідомо",
+        "notInVoice": "Ви повинні бути в голосовому каналі щоб запросити музику.",
+        "noResults": "За вашим запитом нічого не знайдено.",
+        "addedToQueue": "Додано **{song}** до черги.",
+        "startedPlaying": "Зараз грає **{song}**",
+        "paused": "Музику призупинено.",
+        "resumed": "Музику відновлено.",
+        "skipped": "Поточну пісню пропущено.",
+        "stopped": "Музику зупинено та чергу очищено.",
+        "loopChanged": "Режим повтору змінено на **{mode}**.",
+        "shuffleChanged": "Режим перемішування тепер **{state}**.",
+        "volumeChanged": "Гучність змінено на **{volume}%**.",
+        "queueCleared": "Чергу очищено.",
+        "queueListTitle": "Список черги",
+        "emptyQueue": "Черга порожня.",
+        "alreadyPaused": "Музика вже призупинена.",
+        "alreadyPlaying": "Музика вже грає.",
+        "nothingPlaying": "Наразі нічого не грає.",
+        "volumeLimit": "Гучність повинна бути від 1 до 100.",
+        "setChannel": "Канал запитів встановлено на {channel}.",
+        "removeChannel": "Канал запитів видалено.",
+        "noChannel": "Канал запитів наразі не встановлено.",
+        "currentChannel": "Поточний канал запитів: {channel}"
     }
 }

@@ -1,4 +1,4 @@
-import { clearTimeout } from "node:timers";
+import { clearInterval, clearTimeout, setInterval } from "node:timers";
 import type { AudioPlayer, AudioPlayerPlayingState, AudioResource, VoiceConnection } from "@discordjs/voice";
 import { AudioPlayerStatus, createAudioPlayer } from "@discordjs/voice";
 import type { TextChannel, Snowflake } from "discord.js";
@@ -13,15 +13,14 @@ import type { Rawon } from "./Rawon.js";
 const nonEnum = { enumerable: false };
 
 export class ServerQueue {
-    public stayInVC = this.client.config.stayInVCAfterFinished;
     public readonly player: AudioPlayer = createAudioPlayer();
     public connection: VoiceConnection | null = null;
-    public dcTimeout: NodeJS.Timeout | null = null;
     public timeout: NodeJS.Timeout | null = null;
     public readonly songs: SongManager;
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
+    public playerUpdateInterval: NodeJS.Timeout | null = null;
 
     private _volume = this.client.config.defaultVolume;
     private _lastVSUpdateMsg: Snowflake | null = null;
@@ -38,6 +37,8 @@ export class ServerQueue {
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
 
+        this.loadSavedState();
+
         this.player
             .on("stateChange", async (oldState, newState) => {
                 if (newState.status === AudioPlayerStatus.Playing && oldState.status !== AudioPlayerStatus.Paused) {
@@ -45,7 +46,23 @@ export class ServerQueue {
 
                     const newSong = ((this.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong)
                         .song;
-                    this.sendStartPlayingMsg(newSong);
+                    
+                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
+                    if (isRequestChannel) {
+                        this.client.logger.info(
+                            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${this.textChannel.guild.name} has started.`
+                        );
+                    } else {
+                        this.sendStartPlayingMsg(newSong);
+                    }
+                    
+                    void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+                    
+                    this.playerUpdateInterval ??= setInterval(() => {
+                        if (this.playing) {
+                            void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+                        }
+                    }, 15_000);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource.metadata as QueueSong;
                     this.client.logger.info(
@@ -69,22 +86,31 @@ export class ServerQueue {
                                     .first()?.key ??
                                 (this.loopMode === "QUEUE" ? this.songs.sortByIndex().first()?.key ?? "" : "");
 
-                    await this.textChannel
-                        .send({
-                            embeds: [
-                                createEmbed(
-                                    "info",
-                                    `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
-                                        song: `[${song.song.title}](${song.song.url})`
-                                    })}`
-                                ).setThumbnail(song.song.thumbnail)
-                            ]
-                        })
-                        .then(ms => (this.lastMusicMsg = ms.id))
-                        .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error))
-                        .finally(async () => play(this.textChannel.guild, nextS).catch(async (error: unknown) => {
-                            await this.textChannel
-                                .send({
+                    void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
+
+                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(this.textChannel.guild, this.textChannel.id);
+                    if (!isRequestChannel) {
+                        await this.textChannel
+                            .send({
+                                embeds: [
+                                    createEmbed(
+                                        "info",
+                                        `⏹ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
+                                            song: `[${song.song.title}](${song.song.url})`
+                                        })}`
+                                    ).setThumbnail(song.song.thumbnail)
+                                ]
+                            })
+                            .then(ms => (this.lastMusicMsg = ms.id))
+                            .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
+                    }
+
+                    try {
+                        await play(this.textChannel.guild, nextS);
+                    } catch (error) {
+                        if (!isRequestChannel) {
+                            try {
+                                await this.textChannel.send({
                                     embeds: [
                                         createEmbed(
                                             "error",
@@ -94,12 +120,14 @@ export class ServerQueue {
                                             true
                                         )
                                     ]
-                                })
-                                // eslint-disable-next-line promise/no-nesting, typescript/naming-convention
-                                .catch((error_: unknown) => this.client.logger.error("PLAY_ERR:", error_));
-                            this.connection?.disconnect();
-                            this.client.logger.error("PLAY_ERR:", error);
-                        }));
+                                });
+                            } catch (playError) {
+                                this.client.logger.error("PLAY_ERR:", playError);
+                            }
+                        }
+                        this.connection?.disconnect();
+                        this.client.logger.error("PLAY_ERR:", error);
+                    }
                 }
             })
             .on("error", err => {
@@ -125,14 +153,54 @@ export class ServerQueue {
             });
     }
 
+    private loadSavedState(): void {
+        const savedState = this.client.data.data?.[this.textChannel.guild.id]?.playerState;
+        if (savedState) {
+            this.loopMode = savedState.loopMode ?? "OFF";
+            this.shuffle = savedState.shuffle ?? false;
+            this._volume = savedState.volume ?? this.client.config.defaultVolume;
+            this.filters = (savedState.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
+            this.client.logger.info(`Loaded saved player state for guild ${this.textChannel.guild.name}`);
+        }
+    }
+
+    public async saveState(): Promise<void> {
+        const currentData = this.client.data.data ?? {};
+        const guildData = currentData[this.textChannel.guild.id] ?? {};
+
+        guildData.playerState = {
+            loopMode: this.loopMode,
+            shuffle: this.shuffle,
+            volume: this._volume,
+            filters: this.filters as Record<string, boolean>
+        };
+
+        await this.client.data.save(() => ({
+            ...currentData,
+            [this.textChannel.guild.id]: guildData
+        }));
+    }
+
     public setFilter(filter: keyof typeof filterArgs, state: boolean): void {
         const before = this.filters[filter];
         this.filters[filter] = state;
+
+        void this.saveState();
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
             this.playing = false;
             void play(this.textChannel.guild, (this.player.state.resource as AudioResource<QueueSong>).metadata.key, true);
         }
+    }
+
+    public setLoopMode(mode: LoopMode): void {
+        this.loopMode = mode;
+        void this.saveState();
+    }
+
+    public setShuffle(value: boolean): void {
+        this.shuffle = value;
+        void this.saveState();
     }
 
     public stop(): void {
@@ -144,7 +212,10 @@ export class ServerQueue {
         this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
-        clearTimeout(this.dcTimeout ?? undefined);
+        if (this.playerUpdateInterval !== null) {
+            clearInterval(this.playerUpdateInterval);
+            this.playerUpdateInterval = null;
+        }
         delete this.textChannel.guild.queue;
     }
 
@@ -157,6 +228,7 @@ export class ServerQueue {
         (
             this.player.state as AudioPlayerPlayingState & { resource: AudioResource | undefined }
         ).resource.volume?.setVolumeLogarithmic(this._volume / 100);
+        void this.saveState();
     }
 
     public get skipVoters(): Snowflake[] {

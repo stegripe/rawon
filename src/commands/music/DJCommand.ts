@@ -78,8 +78,7 @@ export class DJCommand extends BaseCommand {
                         dj: {
                             enable: false,
                             role: guildData?.dj?.role ?? null
-                        },
-                        infractions: guildData?.infractions ?? {}
+                        }
                     }
                 };
             });
@@ -100,8 +99,7 @@ export class DJCommand extends BaseCommand {
                         dj: {
                             enable: true,
                             role: guildData?.dj?.role ?? null
-                        },
-                        infractions: guildData?.infractions ?? {}
+                        }
                     }
                 };
             });
@@ -150,8 +148,7 @@ export class DJCommand extends BaseCommand {
                         dj: {
                             enable: guildData?.dj?.enable ?? false,
                             role: role.id
-                        },
-                        infractions: guildData?.infractions ?? {}
+                        }
                     }
                 };
             });
@@ -170,7 +167,7 @@ export class DJCommand extends BaseCommand {
         }
     };
 
-    @memberReqPerms(["ManageGuild"], i18n.__("commands.moderation.warn.userNoPermission"))
+    @memberReqPerms(["ManageGuild"], i18n.__("commands.music.dj.noPermission"))
     public execute(ctx: CommandContext): void {
         const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
         let sub = this.options[subname ?? ""] as BaseCommand["execute"] | undefined;

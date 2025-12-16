@@ -7,7 +7,6 @@ import { getInfo } from "../YTDLUtil.js";
 import { youtube } from "../YouTubeUtil.js";
 import { checkQuery } from "./checkQuery.js";
 
-// Helper function to extract video ID from YouTube URL
 function extractVideoId(url: URL): string | null {
     if (/youtu\.be/gu.test(url.hostname)) {
         return url.pathname.replace("/", "");
@@ -103,7 +102,6 @@ export async function searchTrack(
                                 ];
                             }
                         } catch {
-                            // youtubei failed, try fallback with yt-dlp
                             try {
                                 const videoUrl = `https://youtube.com/watch?v=${videoId}`;
                                 const videoInfo = await getInfo(videoUrl);

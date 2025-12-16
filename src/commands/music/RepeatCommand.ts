@@ -4,7 +4,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { LoopMode } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
@@ -33,6 +33,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     usage: i18n.__mf("commands.music.repeat.usage", { options: "queue | one | disable" })
 })
 export class RepeatCommand extends BaseCommand {
+    @useRequestChannel
     @inVC
     @haveQueue
     @sameVC
@@ -77,7 +78,7 @@ export class RepeatCommand extends BaseCommand {
                 ]
             });
         }
-        (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).loopMode = selection as LoopMode;
+        ctx.guild?.queue?.setLoopMode(selection as LoopMode);
 
         return ctx.reply({
             embeds: [

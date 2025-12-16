@@ -52,48 +52,86 @@ export class LyricsCommand extends BaseCommand {
     }
 
     private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
-        const url = `https://api.lxndr.dev/lyrics?song=${encodeURI(song)}&from=DiscordRawon`;
-        await this.client.request
-            .get(url)
-            .json<LyricsAPIResult<false>>()
-            .then(async data => {
-                if ((data as { error: boolean }).error) {
-                    return ctx.reply({
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__mf("commands.music.lyrics.apiError", {
-                                    song: `\`${song}\``,
-                                    message: `\`${(data as { message?: string }).message}\``
-                                }),
-                                true
-                            )
-                        ]
-                    });
+        let data: LyricsAPIResult<false> | null = null;
+        
+        try {
+            const url = `https://api.lxndr.dev/lyrics?song=${encodeURIComponent(song)}&from=DiscordRawon`;
+            data = await this.client.request.get(url, { timeout: { request: 5_000 } }).json<LyricsAPIResult<false>>();
+        } catch {
+            // Primary API failed, try fallback
+        }
+
+        if (data === null || (data as { error: boolean }).error) {
+            try {
+                const cleanSong = song.replaceAll(/\(.*?\)|\[.*?\]/gu, "").trim();
+                const fallbackUrl = `https://api.lyrics.ovh/v1/${encodeURIComponent(cleanSong)}/${encodeURIComponent(cleanSong)}`;
+                const fallbackData = await this.client.request.get(fallbackUrl, { timeout: { request: 5_000 } }).json<{ lyrics?: string; error?: string }>();
+                
+                if ((fallbackData.lyrics?.length ?? 0) > 0) {
+                    data = {
+                        lyrics: fallbackData.lyrics,
+                        song,
+                        artist: "",
+                        // eslint-disable-next-line typescript/naming-convention
+                        album_art: "https://cdn.stegripe.org/images/icon.png",
+                        synced: false,
+                        url: undefined,
+                        error: false
+                    } as LyricsAPIResult<false>;
                 }
+            } catch {
+                // Both APIs failed
+            }
+        }
 
-                const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
-                const pages: string[] = chunk(data.lyrics ?? "", 2_048);
-                const embed = createEmbed("info", pages[0])
-                    .setAuthor({
-                        name: ((data.song?.length ?? 0) > 0) && ((data.artist?.length ?? 0) > 0) ? `${data.song} - ${data.artist}` : song.toUpperCase()
-                    })
-                    .setThumbnail(albumArt);
-                const msg = await ctx.reply({ embeds: [embed] });
+        if (data === null || (data as { error: boolean }).error) {
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("commands.music.lyrics.noLyrics", {
+                            song: `\`${song}\``
+                        })
+                    )
+                ]
+            });
+            return;
+        }
 
-                return new ButtonPagination(msg, {
-                    author: ctx.author.id,
-                    edit: (i, emb, page) =>
-                        emb.setDescription(page).setFooter({
-                            text: i18n.__mf("reusable.pageFooter", {
-                                actual: i + 1,
-                                total: pages.length
-                            })
-                        }),
-                    embed,
-                    pages
-                }).start();
+        if ((data.lyrics?.length ?? 0) === 0) {
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("commands.music.lyrics.noLyrics", {
+                            song: `\`${song}\``
+                        })
+                    )
+                ]
+            });
+            return;
+        }
+
+        const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+        const pages: string[] = chunk(data.lyrics ?? "", 2_048);
+        const embed = createEmbed("info", pages[0])
+            .setAuthor({
+                name: ((data.song?.length ?? 0) > 0) && ((data.artist?.length ?? 0) > 0) ? `${data.song} - ${data.artist}` : song.toUpperCase()
             })
-            .catch((error: unknown) => console.error(error));
+            .setThumbnail(albumArt);
+        const msg = await ctx.reply({ embeds: [embed] });
+
+        await new ButtonPagination(msg, {
+            author: ctx.author.id,
+            edit: (i, emb, page) =>
+                emb.setDescription(page).setFooter({
+                    text: i18n.__mf("reusable.pageFooter", {
+                        actual: i + 1,
+                        total: pages.length
+                    })
+                }),
+            embed,
+            pages
+        }).start();
     }
 }

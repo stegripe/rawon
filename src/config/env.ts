@@ -36,19 +36,17 @@ export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
 export const streamStrategy = (process.env.STREAM_STRATEGY ?? "") || "yt-dlp";
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
-export const is247Allowed = process.env.ENABLE_24_7_COMMAND?.toLowerCase() === "yes";
-export const stayInVCAfterFinished = process.env.STAY_IN_VC_AFTER_FINISHED?.toLowerCase() === "yes";
 export const musicSelectionType = (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const defaultVolume = Number(process.env.DEFAULT_VOLUME ?? 100) || 100;
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
 export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
+export const requestChannelThumbnail = (process.env.REQUEST_CHANNEL_THUMBNAIL ?? "") || "https://cdn.stegripe.org/images/icon.png";
 
 export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
 export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
 export const isProd = !isDev;
 export const mainPrefix = isDev ? "d!" : (process.env.MAIN_PREFIX ?? "") || "!";
 export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";
-export const enableRepl = process.env.REPL?.toLowerCase() === "yes";
 
 export const altPrefixes: string[] = parseEnvValue((process.env.ALT_PREFIX ?? "") || "{mention}").filter(
     (x, i, a) => a.indexOf(x) === i && x !== mainPrefix

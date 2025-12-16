@@ -1,7 +1,6 @@
 /* eslint-disable node/no-sync */
 import { execSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { Server } from "node:http";
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import nodePath from "node:path";
 import process from "node:process";
 import got from "got";
@@ -10,23 +9,6 @@ import { extract } from "zip-lib";
 import { downloadExecutable } from "./yt-dlp-utils/index.js";
 
 const ensureEnv = arr => arr.every(x => process.env[x] !== undefined);
-
-const isGlitch = ensureEnv([
-    "PROJECT_DOMAIN",
-    "PROJECT_INVITE_TOKEN",
-    "API_SERVER_EXTERNAL",
-    "PROJECT_REMIX_CHAIN"
-]);
-
-const isReplit = ensureEnv([
-    "REPLIT_DB_URL",
-    "REPL_ID",
-    "REPL_IMAGE",
-    "REPL_LANGUAGE",
-    "REPL_OWNER",
-    "REPL_PUBKEYS",
-    "REPL_SLUG"
-]);
 
 const isGitHub = ensureEnv([
     "GITHUB_ENV",
@@ -49,40 +31,7 @@ function npmInstall(deleteDir = false, forceInstall = false, additionalArgs = []
         }
     }
 
-    execSync(`pnpm install${isGlitch ? " --only=prod" : ""}${forceInstall ? " --force" : ""} ${additionalArgs.join(" ")}`);
-}
-
-if (isGlitch) {
-    const gitIgnorePath = nodePath.resolve(process.cwd(), ".gitignore");
-    try {
-        const data = readFileSync(gitIgnorePath, "utf8").toString();
-        if (data.includes("dev.env")) {
-            writeFileSync(gitIgnorePath, data.replace("\ndev.env", ""));
-            console.info("Removed dev.env from .gitignore");
-        }
-    } catch {
-        console.error("Failed to remove dev.env from .gitignore");
-    }
-
-    try {
-        console.info("[INFO] Trying to re-install modules...");
-        npmInstall();
-        console.info("[INFO] Modules successfully re-installed.");
-    } catch {
-        console.info("[INFO] Failed to re-install modules, trying to delete node_modules and re-install...");
-        try {
-            npmInstall(true);
-            console.info("[INFO] Modules successfully re-installed.");
-        } catch {
-            console.info("[INFO] Failed to re-install modules, trying to delete node_modules and install modules forcefully...");
-            try {
-                npmInstall(true, true);
-                console.info("[INFO] Modules successfully re-installed.");
-            } catch {
-                console.warn("[WARN] Failed to re-install modules, please re-install manually.");
-            }
-        }
-    }
+    execSync(`pnpm install${forceInstall ? " --force" : ""} ${additionalArgs.join(" ")}`);
 }
 
 if (isGitHub) {
@@ -95,17 +44,6 @@ try {
     console.info("[INFO] Couldn't find FFmpeg/avconv, trying to install ffmpeg-static...");
     npmInstall(false, false, ["--no-save", "ffmpeg-static"]);
     console.info("[INFO] ffmpeg-static has been installed.");
-}
-
-if (isGlitch || isReplit) {
-    new Server((req, res) => {
-        const now = new Date().toLocaleString("en-US");
-        res.end(`OK (200) - ${now}`);
-    }).listen(Number(process.env.PORT || 3_000) || 3_000);
-
-    console.info(`[INFO] ${isGlitch ? "Glitch" : "Replit"} environment detected, trying to compile...`);
-    execSync(`pnpm run compile`);
-    console.info("[INFO] Compiled.");
 }
 
 const streamStrategy = process.env.STREAM_STRATEGY;

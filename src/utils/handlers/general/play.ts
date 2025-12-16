@@ -1,5 +1,5 @@
 import type EventEmitter from "node:events";
-import { clearTimeout, setTimeout } from "node:timers";
+import { setTimeout } from "node:timers";
 import { AudioPlayerError, createAudioResource, entersState, StreamType, VoiceConnectionStatus } from "@discordjs/voice";
 import type { Guild } from "discord.js";
 import { ChannelType } from "discord.js";
@@ -15,33 +15,38 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
 
     const song = (nextSong?.length ?? 0) > 0 ? queue.songs.get(nextSong as unknown as string) : queue.songs.first();
 
-    clearTimeout(queue.dcTimeout ?? undefined);
     if (!song) {
         queue.lastMusicMsg = null;
         queue.lastVSUpdateMsg = null;
-        void queue.textChannel.send({
-            embeds: [
-                createEmbed(
-                    "info",
-                    `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
-                        usage: `\`${guild.client.config.mainPrefix}play\``
-                    })}`
-                )
-            ]
-        });
-        queue.dcTimeout = queue.stayInVC
-            ? null
-            : setTimeout(async () => {
+        
+        const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(guild, queue.textChannel.id);
+        if (!isRequestChannel) {
+            void queue.textChannel.send({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `⏹ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
+                            usage: `\`${guild.client.config.mainPrefix}play\``
+                        })}`
+                    )
+                ]
+            });
+        }
+        
+        void queue.client.requestChannelManager.updatePlayerMessage(guild);
+        
+        setTimeout(async () => {
+            if (!guild.queue?.songs.first()) {
                 queue.destroy();
-                await queue.textChannel
-                    .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] })
-                    .then(msg => {
-                        setTimeout(() => {
-                            void msg.delete();
-                        }, 3_500);
-                        return 0;
-                    });
-            }, 60_000);
+                if (!isRequestChannel) {
+                    const msg = await queue.textChannel
+                        .send({ embeds: [createEmbed("info", `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`)] });
+                    setTimeout(() => {
+                        void msg.delete();
+                    }, 3_500);
+                }
+            }
+        }, 60_000);
         queue.client.debugLog.logData("info", "PLAY_HANDLER", `Queue ended for ${guild.name}(${guild.id})`);
         return;
     }
@@ -53,7 +58,6 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
 
     const resource = createAudioResource(stream, { inlineVolume: true, inputType: StreamType.OggOpus, metadata: song });
     
-    // Set volume immediately to prevent audio burst at the start
     resource.volume?.setVolumeLogarithmic(queue.volume / 100);
 
     queue.client.debugLog.logData("info", "PLAY_HANDLER", `Created audio resource for ${guild.name}(${guild.id})`);

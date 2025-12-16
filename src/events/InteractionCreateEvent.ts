@@ -1,9 +1,14 @@
-import { ApplicationCommandType, BitFieldResolvable, Interaction, Message, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
+import { setTimeout } from "node:timers";
+import { AudioPlayerPlayingState } from "@discordjs/voice";
+import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, MessageFlags, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
+import type { LoopMode, QueueSong } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
+import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import type { SongManager } from "../utils/structures/SongManager.js";
 
 @Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
@@ -23,6 +28,11 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!interaction.inGuild() || !this.client.commands.isReady) return;
 
         if (interaction.isButton()) {
+            if (interaction.customId.startsWith("RC_")) {
+                await this.handleRequestChannelButton(interaction);
+                return;
+            }
+
             const val = this.client.utils.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
@@ -35,7 +45,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     ).has(PermissionsBitField.Flags.ManageMessages)
                 ) {
                     void interaction.reply({
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                         embeds: [
                             createEmbed(
                                 "error",
@@ -92,7 +102,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
             if (interaction.user.id !== user) {
                 void interaction.reply({
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                     embeds: [
                         createEmbed(
                             "error",
@@ -114,5 +124,226 @@ export class InteractionCreateEvent extends BaseEvent {
                 }
             }
         }
+    }
+
+    private async handleRequestChannelButton(interaction: ButtonInteraction): Promise<void> {
+        const guild = interaction.guild;
+        if (!guild) return;
+
+        const member = guild.members.cache.get(interaction.user.id);
+        const voiceChannel = member?.voice.channel;
+
+        if (!voiceChannel) {
+            await interaction.reply({
+                flags: MessageFlags.Ephemeral,
+                embeds: [createEmbed("warn", `**|** ${i18n.__("requestChannel.notInVoice")}`)]
+            });
+            return;
+        }
+
+        const botVoiceChannel = guild.members.me?.voice.channel;
+        if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
+            await interaction.reply({
+                flags: MessageFlags.Ephemeral,
+                embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.sameVC"))]
+            });
+            return;
+        }
+
+        const queue = guild.queue;
+
+        switch (interaction.customId) {
+            case "RC_PAUSE_RESUME": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                if (queue.playing) {
+                    queue.playing = false;
+                    const reply = await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)],
+                        withResponse: true
+                    });
+                    setTimeout(async () => {
+                        try {
+                            await reply.resource?.message?.delete();
+                        } catch {
+                            // ignore error
+                        }
+                    }, 30_000);
+                } else {
+                    queue.playing = true;
+                    const reply = await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)],
+                        withResponse: true
+                    });
+                    setTimeout(async () => {
+                        try {
+                            await reply.resource?.message?.delete();
+                        } catch {
+                            // ignore error
+                        }
+                    }, 30_000);
+                }
+                break;
+            }
+
+            case "RC_SKIP": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                if (!queue.playing) {
+                    queue.playing = true;
+                }
+                queue.player.stop(true);
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [createEmbed("success", `⏭️ **|** ${i18n.__("requestChannel.skipped")}`)]
+                });
+                break;
+            }
+
+            case "RC_STOP": {
+                if (!queue) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                queue.destroy();
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [createEmbed("success", `⏹️ **|** ${i18n.__("requestChannel.stopped")}`)]
+                });
+                break;
+            }
+
+            case "RC_LOOP": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const modes: LoopMode[] = ["OFF", "SONG", "QUEUE"];
+                const currentIndex = modes.indexOf(queue.loopMode);
+                const nextMode = modes[(currentIndex + 1) % modes.length];
+                queue.setLoopMode(nextMode);
+
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [createEmbed("success", `🔁 **|** ${i18n.__mf("requestChannel.loopChanged", { mode: nextMode })}`)]
+                });
+                break;
+            }
+
+            case "RC_SHUFFLE": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                queue.setShuffle(!queue.shuffle);
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [createEmbed("success", `🔀 **|** ${i18n.__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" })}`)]
+                });
+                break;
+            }
+
+            case "RC_VOL_DOWN": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const newVolDown = Math.max(1, queue.volume - 10);
+                queue.volume = newVolDown;
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [createEmbed("success", `🔊 **|** ${i18n.__mf("requestChannel.volumeChanged", { volume: newVolDown })}`)]
+                });
+                break;
+            }
+
+            case "RC_VOL_UP": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const newVolUp = queue.volume + 10;
+                queue.volume = newVolUp;
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [createEmbed("success", `🔊 **|** ${i18n.__mf("requestChannel.volumeChanged", { volume: newVolUp })}`)]
+                });
+                break;
+            }
+
+            case "RC_QUEUE_LIST": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                    });
+                    return;
+                }
+
+                const np = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
+                const full = queue.songs.sortByIndex() as unknown as SongManager;
+                const songs = queue.loopMode === "QUEUE" ? full : full.filter(val => val.index >= np.index);
+                const pages = chunk([...songs.values()], 10).map((sngs, ind) => {
+                    const names = sngs.map((song, i) => {
+                        const npKey = np.key;
+                        const addition = song.key === npKey ? "**" : "";
+
+                        return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
+                    });
+
+                    return names.join("\n");
+                });
+
+                const embed = createEmbed("info", pages[0] ?? `📋 **|** ${i18n.__("requestChannel.emptyQueue")}`)
+                    .setTitle(`📋 ${i18n.__("requestChannel.queueListTitle")}`)
+                    .setThumbnail(guild.iconURL({ extension: "png", size: 1_024 }) ?? null)
+                    .setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length || 1 }) });
+
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [embed]
+                });
+                break;
+            }
+
+            default:
+                break;
+        }
+
+        await this.client.requestChannelManager.updatePlayerMessage(guild);
     }
 }

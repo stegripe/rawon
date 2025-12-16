@@ -7,62 +7,98 @@
 <a href="https://github.com/stegripe/rawon/actions?query=workflow%3A%22Lint+code+and+compile+setup+script%22"><img src="https://github.com/stegripe/rawon/workflows/Lint%20code%20and%20compile%20setup%20script/badge.svg" alt="CI Status" /></a>
 
 ## Features
-- Interaction support.
-- Configurable, and easy to use.
-- Basic music and moderation commands.
+- Interaction support (slash commands and buttons).
+- Request channel feature for a seamless music experience.
 - A production-ready project, set up the bot without coding.
+- Configurable, and easy to use.
+- Basic music commands.
 
 ## General Setup
-1. Download and install [Node.js](https://nodejs.org) version `24.11.0` or higher
-2. Open the `.env_example` file and rename it to `.env`
-3. Install required and optional dependencies. You still can use `npm` too.
+1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
+2. Clone or download this repository
+3. Rename `.env.example` to `.env` and fill in the required values
+4. Install dependencies:
 ```sh
-$ pnpm install
+pnpm install
 ```
-4. Compile the file
+5. Build the project:
 ```sh
-$ pnpm run build
+pnpm run build
 ```
-5. If you want to save your disk spaces, let's prune the dev dependencies
+6. (Optional) Prune dev dependencies to save disk space:
 ```sh
-$ pnpm prune --production
+pnpm prune --production
 ```
-6. Finally, you can start the bot
+7. Start the bot:
 ```sh
-$ pnpm start
+pnpm start
+```
+8. (Optional) Setup the special player channel:
+`<prefix>requestchannel <#channel>` (Example: `xrequestchannel #rawon`)
+
+## Docker Setup
+
+### Using Docker Compose (Recommended)
+1. Create a `.env` file with your configuration (copy from `.env.example`)
+2. Create an empty `data.json` file for persistence:
+```sh
+touch data.json
+```
+3. Start the bot:
+```sh
+docker compose up -d
 ```
 
-### Docker
-You can use our official Docker image:
-```bash
-$ docker run -v ./scripts:/app/scripts --env-file ./.env -d ghcr.io/stegripe/rawon:latest 
-```
-
-...or with docker-compose:
-```yml
+Example `docker-compose.yaml`:
+```yaml
 services:
   rawon:
     image: ghcr.io/stegripe/rawon:latest
+    container_name: rawon-bot
     restart: unless-stopped
     env_file: .env
     volumes:
-      - "./scripts:/app/scripts"
+      - rawon:/app/scripts
+      - ./data.json:/app/data.json
+
+volumes:
+  rawon:
 ```
 
-Don't forget to create `.env` file and fill environment values from `.env_example` file
+### Using Docker Run
+```sh
+docker run -d \
+  --name rawon-bot \
+  --env-file .env \
+  -v rawon:/app/scripts \
+  -v ./data.json:/app/data.json \
+  --restart unless-stopped \
+  ghcr.io/stegripe/rawon:latest
+```
 
-NOTE: You **must** attach `/app/scripts` volume if you use `yt-dlp` stream strategy.
+### Volume Explanations
+- `/app/scripts` - Required if you use `yt-dlp` stream strategy (stores yt-dlp binary)
+- `/app/data.json` - Stores persistent data like request channels and player settings
 
-### Railway
+## Railway Deployment
 Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
 
 **IMPORTANT:** Read [Disclaimers](./DISCLAIMERS.md) before deploying to Railway.
 
-<a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway"
- /></a>
- 
+<a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway" /></a>
+
+## Environment Variables
+See `.env.example` for all available configuration options. Key variables:
+- `DISCORD_TOKEN` - Your Discord bot token (required)
+- `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` - Spotify API credentials (optional, for Spotify support)
+- `MAIN_PREFIX` - Bot command prefix (default: `!`)
+- `STREAM_STRATEGY` - `yt-dlp` (default) or `play-dl`
+
 ## Disclaimers
 Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
+
+## Support & Questions
+Only provided on our [Discord server](https://stegripe.org/discord).
 
 ## Project Contributors
 
@@ -83,4 +119,4 @@ Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 - [@Fyphen1223](https://github.com/Fyphen1223) (ja)
 - [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
 
-> © 2025 Stegripe Development
+> © 2026 Stegripe Development

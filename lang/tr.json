@@ -55,129 +55,6 @@
                 "footerString": "Gecikme Süresi: {user}"
             }
         },
-        "moderation": {
-            "ban": {
-                "banFail": "Üye **`YASAKLANAMIYOR`**, çünkü: `{message}`",
-                "banSuccess": "**{user}** isimli üye başarıyla sunucudan **`YASAKLANDI`**",
-                "bannedByString": "Yetkili: {author}",
-                "botNoPermission": "Üzgünüm, fakat **`ÜYELERİ YASAKLA`** yetkisine sahip değilim",
-                "description": "Birini sunucudan yasaklayın",
-                "slashMemberIDDescription": "Kimi yasaklamak istiyorsun?",
-                "slashReasonDescription": "Yasaklama sebebi",
-                "usage": "{prefix}ban <@etiket | id> [sebep]",
-                "userBanned": "Merhaba, **{guildName}** isimli sunucudan **`YASAKLANDIN`**",
-                "userNoBannable": "Üzgünüm, fakat bu üyeyi **`YASAKLAYAMAM`**",
-                "userNoPermission": "Üzgünüm, fakat **`ÜYELERİ YASAKLA`** yetkisine sahip değilsin"
-            },
-            "categoryName": "MODERASYON",
-            "common": {
-                "noReasonString": "[Belirtilmemiş]",
-                "noUserSpecified": "Lütfen bir şey belirtin.",
-                "reasonString": "**Sebep**"
-            },
-            "infractions": {
-                "description": "Bir kullanıcının ihlallerini gösterir",
-                "embedAuthorText": "{user} - İhlaller",
-                "noInfractions": "Herhangi bir ihlal yok.",
-                "slashMemberDescription": "Kimin ihlallerini görmek istersiniz?",
-                "usage": "{prefix}infractions [@etiket | id]"
-            },
-            "kick": {
-                "botNoPermission": "Üzgünüm ama **ÜYELERİ AT** iznim yok.",
-                "description": "Birini sunucudan uzaklaştırır",
-                "kickFail": "Üye **`ATILAMIYOR`**, çünkü: `{message}`",
-                "kickSuccess": "**{user}** isimli üye, sunucudan başarıyla **`ATILDI`**",
-                "kickedByString": "{author} tarafından uzaklaştırıldı",
-                "slashMemberDescription": "Kimi sunucudan atmak istiyorsun?",
-                "slashReasonDescription": "Uzaklaştırma Sebebi",
-                "usage": "{prefix}kick <@etiket | id> [sebep]",
-                "userKicked": "**{guildName}** isimli sunucudan **`ATILDIN`**",
-                "userNoKickable": "Üzgünüm ama bu kullanıcıyı sunucudan **`UZAKLAŞTIRAMAM`**",
-                "userNoPermission": "Üzgünüm ama bu komutu kullanabilmek için **`ÜYELERİ AT`** iznine sahip değilsin."
-            },
-            "modlogs": {
-                "channel": {
-                    "current": "Güncel moderasyon kanalı: <#{channel}>",
-                    "invalid": "Geçersiz kanal girdisi, kanal bir metin kanalı olmalıdır.",
-                    "noChannel": "Moderasyon günlükleri kanalı ayarlanmadı.",
-                    "success": "Moderasyon günlükleri kanalı <#{channel}> olarak ayarlandı."
-                },
-                "description": "Moderasyon günlükleri özellik ayarlarını değiştirme",
-                "disable": "Moderasyon günlükleri özelliği **`DEVRE DIŞI BIRAKILDI`**",
-                "embedTitle": "Moderasyon Günlükleri",
-                "enable": "Moderasyon günlükleri özelliği **`ETKİNLEŞTİRİLDİ`**",
-                "newChannelText": "yeni kanal",
-                "slashChannelDescription": "Moderasyon günlükleri kanalını görüntüleme veya değiştirme",
-                "slashChannelNewChannelOption": "Moderasyon günlükleri için yeni kanal",
-                "slashDisableDescription": "Moderasyon günlükleri özelliğini devre dışı bırakın",
-                "slashEnableDescription": "Moderasyon günlükleri özelliğini etkinleştirin",
-                "usage": "{prefix}modlogs"
-            },
-            "mute": {
-                "alreadyMuted": "Bu üye zaten **`SUSTURULMUŞ`** durumda.",
-                "botNoPermission": "Üzgünüm ama **`ROLLERİ YÖNET`** iznim yok.",
-                "cantMuteOwner": "Sunucu sahibini **`SUSTURAMAZSINIZ`**.",
-                "description": "Sunucudaki birinin sesini kapatın",
-                "muteFail": "Üye **`SUSTURULAMIYOR`**, çünkü: `{message}`",
-                "muteSuccess": "**{user}** isimli üye, başarıyla sunucuda **`SUSTURULDU`**",
-                "mutedByString": "{author} tarafından susturuldu",
-                "noRole": "Susturulmuş üye rolü ayarlanmadı, lütfen `{prefix}setmute` ile ayarlayın",
-                "slashMemberDescription": "Kimi susturmak istersin?",
-                "slashReasonDescription": "Susturma Sebebi",
-                "usage": "{prefix}mute <@etiket | id> [sebep]",
-                "userMuted": "**{guildName}** isimli sunucuda **`SUSTURULDUN`**",
-                "userNoPermission": "Üzgünüm, ancak bu komutu kullanmak için **`ROLLERİ YÖNET`** iznine sahip değilsin."
-            },
-            "purge": {
-                "botNoPermission": "Üzgünüm ama **`MESAJLARI YÖNET`** iznim yok.",
-                "description": "Mesajları sil",
-                "invalidAmount": "Lütfen silinecek geçerli bir mesaj sayısı belirtin.",
-                "purgeFail": "Mesajlar **`TEMİZLENEMİYOR`**, çünkü: `{message}`",
-                "purgeSuccess": "{amount, plural, one {**`1`** message} other {**`#`** messages}} **`TEMİZLENMİŞTİR`**",
-                "slashAmountDescription": "Silinecek mesaj sayısı",
-                "usage": "{prefix}purge <miktar>",
-                "userNoPermission": "Üzgünüm, ancak bu komutu kullanmak için **`MESAJLARI YÖNET`** iznin yok."
-            },
-            "setmute": {
-                "description": "Sessiz rolünü ayarlayın",
-                "invalidRole": "Geçersiz rol.",
-                "slashRoleDescription": "Sessize almak için kullanılacak rol",
-                "success": "Sessiz rolü <@&{role}> olarak ayarlandı",
-                "usage": "{prefix}setmute <rol>"
-            },
-            "unban": {
-                "alreadyUnban": "Bu kullanıcı **`YASAKLI`** değil",
-                "description": "Birinin sunucudan yasağını kaldırır",
-                "slashMemberDescription": "Kimin yasağını kaldırmak istersiniz?",
-                "slashReasonDescription": "Yasağı kaldırma nedeni",
-                "unbanSuccess": "**{user}** isimli üyenin **`YASAKLANDIRMASI`** sunucudan kaldırılmıştır.",
-                "unbanFail": "Üye **`YASAĞI KALDIRILAMIYOR`**, çünkü: `{message}`",
-                "unbannedByString": "{author} tarafından yasaklandırma kaldırıldı",
-                "usage": "{prefix}unban <id> [sebep]"
-            },
-            "unmute": {
-                "description": "Sunucudaki birinin susturmasını kaldırır",
-                "noMuted": "Bu üye **`SUSTURULMUŞ`** durumda değil.",
-                "slashMemberDescription": "Kimin susturmasını kaldırmak istiyorsun?",
-                "slashReasonDescription": "Susturmayı kaldırma nedeni",
-                "unmuteFail": "Üyenin **`SUSTURMASI`** kaldırılamıyor, çünkü: `{message}`",
-                "unmuteSuccess": "**{user}** isimli üyenin, sunucuda bulunan **`SUSTURMASI`** kaldırılmıştır.",
-                "unmutedByString": "{author} tarafından susturulma kaldırıldı",
-                "usage": "{prefix}unmute <@etiket | id> [sebep]",
-                "userUnmuted": "**{guildName}** isimli sunucuda olan **`SUSTURMA`** cezan kaldırıldı."
-            },
-            "warn": {
-                "description": "Sunucudaki üyeyi uyarır",
-                "noDM": "Bu kullanıcı ile DM oluşturulamıyor, ancak onu uyarmaya devam edeceğim.",
-                "slashMemberDescription": "Kimi uyarmak istersin?",
-                "slashReasonDescription": "Uyarı nedeni",
-                "usage": "{prefix}warn <@etiket | id> [sebep]",
-                "userNoPermission": "Üzgünüm, ancak bu komutu kullanmak için **`SUNUCUYU YÖNET`** iznine sahip değilsin.",
-                "userWarned": "**{guildName}** isimli sunucuda **`UYARILDIN`**",
-                "warnSuccess": "**{user}** isimli üye başarıyla **`UYARILDI`**",
-                "warnedByString": "{author} tarafından uyarıldı"
-            }
-        },
         "music": {
             "categoryName": "MÜZİK",
             "dj": {
@@ -188,6 +65,7 @@
                 "enable": "Etkin",
                 "enableText": "DJ özelliği **`ETKİN`**",
                 "newRoleText": "yeni rol",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine sahip değilsiniz.",
                 "role": {
                     "current": "Mevcut DJ Rolü: <@&{role}>",
                     "invalid": "Geçersiz rol.",
@@ -217,7 +95,8 @@
                 "description": "Şarkının sözlerini gösterir",
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
                 "slashDescription": "Aranacak şarkı",
-                "usage": "{prefix}lyrics [şarkı]"
+                "usage": "{prefix}lyrics [şarkı]",
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu göster",
@@ -301,13 +180,6 @@
                 "slashSpecificDescription": "Kuyrukta belirli bir konuma atlama",
                 "usage": "'{prefix}'skipto <{tercihler} | numara>"
             },
-            "stayInQueue": {
-                "247Disabled": "Sesli kal komutu devre dışı bırakılır.",
-                "actualState": "Sesli kalma **`{state}`**",
-                "description": "Sıra sona erdiğinde botun ses kanalında kalmasını sağlar",
-                "newState": "Sesli kalma şimdi **`{state}`** olarak ayarlandı",
-                "slashDescription": "Sesli kalma özelliği için modu açar"
-            },
             "stop": {
                 "description": "Müzik çaları durdurur",
                 "stoppedMessage": "Müzik çalar durduruldu."
@@ -321,6 +193,16 @@
                 "slashDescription": "Yeni ses seviyesi",
                 "usage": "{prefix}volume [yeni değer]",
                 "volumeLimit": "Ses seviyesini **`{maxVol}`** değerinin üzerine ayarlayamıyorum."
+            },
+            "requestChannel": {
+                "description": "Müzik için bir istek kanalı ayarla",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
+                "invalidChannel": "Lütfen geçerli bir metin kanalı belirtin.",
+                "slashSetDescription": "Bir kanalı istek kanalı olarak ayarla",
+                "slashRemoveDescription": "İstek kanalını kaldır",
+                "slashStatusDescription": "Mevcut istek kanalını göster",
+                "slashChannelDescription": "İstek kanalı olarak ayarlanacak kanal",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -372,7 +254,43 @@
             "noQueue": "Hiçbir şey çalınmıyor.",
             "sameVC": "Benimle aynı ses kanalında olmanız gerekiyor.",
             "validVCJoinable": "Üzgünüm ama ses kanalınıza **`BAĞLANAMIYORUM`**, uygun izinlere sahip olduğumdan emin olun.",
-            "validVCPermission": "Üzgünüm ama bu ses kanalında **`KONUŞMA`** yetkim yok; uygun izinlere sahip olduğumdan emin olun."
+            "validVCPermission": "Üzgünüm ama bu ses kanalında **`KONUŞMA`** yetkim yok; uygun izinlere sahip olduğumdan emin olun.",
+            "useRequestChannel": "Müzik komutları için lütfen istek kanalını {channel} kullanın."
         }
+    },
+    "requestChannel": {
+        "title": "Müzik Çalar",
+        "standby": "Müzik çalmıyor. Başlamak için şarkı adı veya URL gönderin!",
+        "status": "Döngü Modu",
+        "shuffle": "Karıştır",
+        "volume": "Ses Seviyesi",
+        "queueLength": "Kuyruk",
+        "queueFooter": "• Kuyruktaki toplam şarkı sayısı: {count}",
+        "idle": "Boşta",
+        "live": "CANLI",
+        "requestedBy": "İsteyen",
+        "unknown": "Bilinmiyor",
+        "notInVoice": "Müzik istemek için bir ses kanalında olmanız gerekiyor.",
+        "noResults": "Aramanız için sonuç bulunamadı.",
+        "addedToQueue": "**{song}** kuyruğa eklendi.",
+        "startedPlaying": "Şimdi çalıyor **{song}**",
+        "paused": "Müzik duraklatıldı.",
+        "resumed": "Müzik devam ettiriliyor.",
+        "skipped": "Mevcut şarkı atlandı.",
+        "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
+        "loopChanged": "Döngü modu **{mode}** olarak değiştirildi.",
+        "shuffleChanged": "Karıştırma modu şimdi **{state}**.",
+        "volumeChanged": "Ses seviyesi **{volume}%** olarak değiştirildi.",
+        "queueCleared": "Kuyruk temizlendi.",
+        "queueListTitle": "Kuyruk Listesi",
+        "emptyQueue": "Kuyruk boş.",
+        "alreadyPaused": "Müzik zaten duraklatılmış.",
+        "alreadyPlaying": "Müzik zaten çalıyor.",
+        "nothingPlaying": "Şu anda hiçbir şey çalmıyor.",
+        "volumeLimit": "Ses seviyesi 1 ile 100 arasında olmalıdır.",
+        "setChannel": "İstek kanalı {channel} olarak ayarlandı.",
+        "removeChannel": "İstek kanalı kaldırıldı.",
+        "noChannel": "Şu anda ayarlanmış istek kanalı yok.",
+        "currentChannel": "Mevcut istek kanalı: {channel}"
     }
 }

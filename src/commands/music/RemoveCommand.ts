@@ -65,8 +65,11 @@ export class RemoveCommand extends BaseCommand {
             ctx.guild?.queue?.player.state as (AudioPlayerState & { resource: AudioResource | undefined }) | undefined
         )?.resource?.metadata as QueueSong | undefined;
         const isSkip = songs.map(x => x.key).includes(np?.key ?? "");
-        if (isSkip) {
-            this.client.commands.get("skip")?.execute(ctx);
+        if (isSkip && ctx.guild?.queue) {
+            if (!ctx.guild.queue.playing) {
+                ctx.guild.queue.playing = true;
+            }
+            ctx.guild.queue.player.stop(true);
         }
 
         const opening = i18n.__mf("commands.music.remove.songsRemoved", {

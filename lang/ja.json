@@ -55,129 +55,6 @@
                 "footerString": "{user}のレイテンシ"
             }
         },
-        "moderation": {
-            "ban": {
-                "banFail": "`{message}`のためメンバーを**BAN**することに失敗しました。",
-                "banSuccess": "**{user}**はこのサーバーからBANされました。",
-                "bannedByString": "{author}がBANを実行",
-                "botNoPermission": "**`BAN MEMBERS`**の権限がありません。",
-                "description": "メンバーをサーバーからBANします",
-                "slashMemberIDDescription": "誰をBANしたいですか？",
-                "slashReasonDescription": "BANの理由",
-                "usage": "{prefix}ban <@メンション | ID> [理由]",
-                "userBanned": "あなたは**{guildName}**から**`BAN`**されました。",
-                "userNoBannable": "そのユーザーを**`BAN`**することに失敗しました。",
-                "userNoPermission": "**`BAN MEMBERS`**の権限があなたにありません。"
-            },
-            "categoryName": "管理",
-            "common": {
-                "noReasonString": "[未指定]",
-                "noUserSpecified": "誰かを指定してください。",
-                "reasonString": "**理由**"
-            },
-            "infractions": {
-                "description": "ユーザーの違反を表示",
-                "embedAuthorText": "{user} - 違反",
-                "noInfractions": "違反がありません。",
-                "slashMemberDescription": "誰の違反を照会したいですか？",
-                "usage": "{prefix}infractions [@メンション | ID]"
-            },
-            "kick": {
-                "botNoPermission": "**`KICK MEMBERS`** の権限がありません。",
-                "description": "誰かをこのサーバーからKick",
-                "kickFail": "`{message}`のためメンバーを**`KICK`**することに失敗しました。",
-                "kickSuccess": "**{user}**はこのサーバーから**`KICK`** されました。",
-                "kickedByString": "{author}がKickを実行",
-                "slashMemberDescription": "誰をKickしたいですか？",
-                "slashReasonDescription": "Kickの理由",
-                "usage": "{prefix}kick <@メンション | ID> [理由]",
-                "userKicked": "あなたは**{guildName}**から**`KICK`**されました。",
-                "userNoKickable": "そのメンバーは**`KICK`**できません。",
-                "userNoPermission": "あなたに**`KICK MEMBERS`**の権限がありません。"
-            },
-            "modlogs": {
-                "channel": {
-                    "current": "現在の管理ログチャンネル: <#{channel}>",
-                    "invalid": "無効なチャンネルです。チャンネルはテキストチャンネルである必要があります。",
-                    "noChannel": "管理ログチャンネルは未セットアップです。.",
-                    "success": "管理ログチャンネルが<#{channel}>にセットされました。"
-                },
-                "description": "管理ログの設定を変更",
-                "disable": "管理ログの機能が **`無効化`** されました。",
-                "embedTitle": "管理ログ",
-                "enable": "管理ログの機能が**`有効化`** されました。",
-                "newChannelText": "新しいチャンネル",
-                "slashChannelDescription": "管理ログチャンネルを照会・変更",
-                "slashChannelNewChannelOption": "管理ログのための新しいチャンネル",
-                "slashDisableDescription": "管理ログの機能を無効化",
-                "slashEnableDescription": "管理ログの機能を有効化",
-                "usage": "{prefix}modlogs"
-            },
-            "mute": {
-                "alreadyMuted": "そのメンバーはすでに**`MUTE`**されています。",
-                "botNoPermission": "**`MANAGE ROLES`** の権限がありません。",
-                "cantMuteOwner": "サーバーオーナーを**`MUTE`**することはできません。",
-                "description": "誰かをミュート",
-                "muteFail": "`{message}`のためメンバーを**`ミュート`**することに失敗しました。",
-                "muteSuccess": "**{user}**は**`ミュート`**されました。",
-                "mutedByString": "{author}がミュートを実行",
-                "noRole": "ミュートロールがセットされていません。`{prefix}setmute`を使用して設定してください。",
-                "slashMemberDescription": "誰をミュートしたいですか？",
-                "slashReasonDescription": "ミュートの理由",
-                "usage": "{prefix}mute <@メンション | ID> [理由]",
-                "userMuted": "あなたは**{guildName}**で**`ミュート`**されました。",
-                "userNoPermission": "あなたに**`MANAGE ROLES`**の権限がありません。"
-            },
-            "purge": {
-                "botNoPermission": "**`MANAGE MESSAGES`**の権限がありません。",
-                "description": "メッセージを削除",
-                "invalidAmount": "削除するメッセージの数を有効な範囲で指定してください。",
-                "purgeFail": "`{message}`のため**`パージ`**が失敗しました。",
-                "purgeSuccess": "{amount, plural, one {**`1`** メッセージ} 他 {**`#`** メッセージ}}が**`パージ`**されました。",
-                "slashAmountDescription": "削除するメッセージの数",
-                "usage": "{prefix}purge <削除するメッセージの数>",
-                "userNoPermission": "あなたに**`MANAGE MESSAGES`**の権限がありません。"
-            },
-            "setmute": {
-                "description": "ミュートロールを設定",
-                "invalidRole": "無効なロールです。",
-                "slashRoleDescription": "ミュート用に使われるロール",
-                "success": "ミュートロールは<@&{role}>に設定されました。",
-                "usage": "{prefix}setmute <ロール>"
-            },
-            "unban": {
-                "alreadyUnban": "そのユーザーは**`BAN`**されていません。",
-                "description": "誰かをのBANを解除",
-                "slashMemberDescription": "誰のBANを解除したいですか？",
-                "slashReasonDescription": "BAN解除の理由",
-                "unbanSuccess": "**{user}**は**`BAN解除`**されました。",
-                "unbanFail": "`{message}`のため**`BAN解除`**を失敗しました。",
-                "unbannedByString": "{author}によりUn-Banが実行",
-                "usage": "{prefix}unban <ID> [理由]"
-            },
-            "unmute": {
-                "description": "誰かのミュートを解除",
-                "noMuted": "そのメンバーは**`ミュート`**されていません。",
-                "slashMemberDescription": "誰のミュートを解除したいですか？",
-                "slashReasonDescription": "ミュートを解除する理由",
-                "unmuteFail": "`{message}`のためメンバー**`ミュートを解除`**することに失敗しました。",
-                "unmuteSuccess": "**{user}**は**`ミュート解除`**されました。",
-                "unmutedByString": "{author}によりミュート解除が実行",
-                "usage": "{prefix}unmute <@メンション | ID> [理由]",
-                "userUnmuted": "あなたの**{guildName}**でのミュートは**`解除`**されました。"
-            },
-            "warn": {
-                "description": "サーバーメンバーを警告",
-                "noDM": "そのユーザーのDMを開くことはできませんでしたが、警告を続けます。",
-                "slashMemberDescription": "誰を警告したいですか？",
-                "slashReasonDescription": "警告の理由",
-                "usage": "{prefix}warn <@メンション | ID> [理由]",
-                "userNoPermission": "あなたに**`MANAGE SERVER`**の権限がありません。",
-                "userWarned": "あなたは**{guildName}**で**`警告`**されました。",
-                "warnSuccess": "**{user}**は**`警告`**されました。",
-                "warnedByString": "{author}により警告が実行"
-            }
-        },
         "music": {
             "categoryName": "音楽",
             "dj": {
@@ -188,6 +65,7 @@
                 "enable": "有効",
                 "enableText": "DJは**`有効化`**されました。",
                 "newRoleText": "新しいロール",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
                 "role": {
                     "current": "現在のDJロール:<@&{role}>",
                     "invalid": "無効なロールです。",
@@ -217,7 +95,8 @@
                 "description": "曲の歌詞を表示",
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "slashDescription": "検索する曲",
-                "usage": "{prefix}lyrics [曲]"
+                "usage": "{prefix}lyrics [曲]",
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",
@@ -301,13 +180,6 @@
                 "slashSpecificDescription": "キュー内の特定のポジションにスキップ",
                 "usage": "'{prefix}'skipto <{options} | 数>"
             },
-            "stayInQueue": {
-                "247Disabled": "常時接続は無効化されています。.",
-                "actualState": "常時接続は**`{state}`**です。",
-                "description": "キューが終了してもBotにVCに接続させる",
-                "newState": "常時接続は**`{state}`**です。",
-                "slashDescription": "常時接続を設定"
-            },
             "stop": {
                 "description": "プレイヤーをストップ",
                 "stoppedMessage": "プレイヤーはストップされました。"
@@ -321,6 +193,16 @@
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]",
                 "volumeLimit": "**`{maxVol}`**以上にボリュームをセットできません。"
+            },
+            "requestChannel": {
+                "description": "音楽リクエストチャンネルを設定する",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
+                "invalidChannel": "有効なテキストチャンネルを指定してください。",
+                "slashSetDescription": "チャンネルをリクエストチャンネルとして設定",
+                "slashRemoveDescription": "リクエストチャンネルを削除",
+                "slashStatusDescription": "現在のリクエストチャンネルを表示",
+                "slashChannelDescription": "リクエストチャンネルとして設定するチャンネル",
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
@@ -372,7 +254,43 @@
             "noQueue": "何も再生されていません。",
             "sameVC": "あなたは私と同じVCに参加する必要があります。",
             "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
-            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。"
+            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。",
+            "useRequestChannel": "音楽コマンドにはリクエストチャンネル {channel} を使用してください。"
         }
+    },
+    "requestChannel": {
+        "title": "ミュージックプレーヤー",
+        "standby": "音楽は再生されていません。曲名またはURLを送信して再生を開始してください！",
+        "status": "ループモード",
+        "shuffle": "シャッフル",
+        "volume": "音量",
+        "queueLength": "キュー",
+        "queueFooter": "• キュー内の曲数: {count}",
+        "idle": "待機中",
+        "live": "ライブ",
+        "requestedBy": "リクエスト者",
+        "unknown": "不明",
+        "notInVoice": "音楽をリクエストするにはボイスチャンネルに参加する必要があります。",
+        "noResults": "検索結果が見つかりませんでした。",
+        "addedToQueue": "**{song}** をキューに追加しました。",
+        "startedPlaying": "**{song}** を再生中",
+        "paused": "音楽を一時停止しました。",
+        "resumed": "音楽を再開しました。",
+        "skipped": "現在の曲をスキップしました。",
+        "stopped": "音楽を停止し、キューをクリアしました。",
+        "loopChanged": "ループモードを **{mode}** に変更しました。",
+        "shuffleChanged": "シャッフルモードは現在 **{state}** です。",
+        "volumeChanged": "音量を **{volume}%** に変更しました。",
+        "queueCleared": "キューがクリアされました。",
+        "queueListTitle": "キューリスト",
+        "emptyQueue": "キューは空です。",
+        "alreadyPaused": "音楽は既に一時停止中です。",
+        "alreadyPlaying": "音楽は既に再生中です。",
+        "nothingPlaying": "現在何も再生されていません。",
+        "volumeLimit": "音量は1から100の間で設定してください。",
+        "setChannel": "リクエストチャンネルを {channel} に設定しました。",
+        "removeChannel": "リクエストチャンネルを削除しました。",
+        "noChannel": "現在リクエストチャンネルは設定されていません。",
+        "currentChannel": "現在のリクエストチャンネル: {channel}"
     }
 }
