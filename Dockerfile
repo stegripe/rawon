@@ -28,6 +28,8 @@ COPY --from=build-stage /tmp/build/yt-dlp-utils ./yt-dlp-utils
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
 
+RUN echo '{}' > /app/data.json
+
 ENV NODE_ENV production
 
 CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
