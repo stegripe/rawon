@@ -255,7 +255,8 @@
             "sameVC": "Anda harus berada di voice channel yang sama dengan saya.",
             "validVCJoinable": "Mohon maaf, tetapi saya tidak dapat **`CONNECT`** ke voice channel kamu, pastikan saya memiliki izin yang tepat.",
             "validVCPermission": "Mohon maaf, tetapi saya tidak dapat **`SPEAK`** di voice channel, pastikan saya memiliki izin yang tepat.",
-            "useRequestChannel": "Silakan gunakan channel request {channel} untuk perintah musik."
+            "useRequestChannel": "Silakan gunakan channel request {channel} untuk perintah musik.",
+            "useRequestChannelDirect": "Cukup ketik judul lagu atau tautan langsung di channel ini untuk memutar musik."
         }
     },
     "requestChannel": {

@@ -255,7 +255,8 @@
             "sameVC": "Vous devez être dans le même salon vocal que le mien.",
             "validVCJoinable": "Désolé, mais je ne peux pas **`ME CONNECTER`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
             "validVCPermission": "Désolé, mais je ne peux pas **`PARLER`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
-            "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales."
+            "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
+            "useRequestChannelDirect": "Tapez simplement le titre de la chanson ou le lien directement dans ce salon pour jouer de la musique."
         }
     },
     "requestChannel": {

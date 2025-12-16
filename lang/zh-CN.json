@@ -255,7 +255,8 @@
             "sameVC": "你需要和我在同一个语音频道。",
             "validVCJoinable": "对不起，我不能**`连接`**到你的语音频道，请确保我有正确的权限。",
             "validVCPermission": "对不起，我不能在这个语音频道**`说话`**;请确保我有正确的权限。",
-            "useRequestChannel": "请使用点歌频道 {channel} 来执行音乐命令。"
+            "useRequestChannel": "请使用点歌频道 {channel} 来执行音乐命令。",
+            "useRequestChannelDirect": "只需在此频道直接输入歌曲名称或链接即可播放音乐。"
         }
     },
     "requestChannel": {
