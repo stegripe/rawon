@@ -58,6 +58,9 @@ export class ServerQueue {
                     
                     void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
                     
+                    // Save queue state with new current song key when a new song starts playing
+                    void this.saveQueueState();
+                    
                     this.playerUpdateInterval ??= setInterval(() => {
                         if (this.playing) {
                             void this.client.requestChannelManager.updatePlayerMessage(this.textChannel.guild);
