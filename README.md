@@ -34,7 +34,7 @@ pnpm prune --production
 pnpm start
 ```
 8. (Optional) Setup the special player channel:
-`<prefix>requestchannel <#channel>` (Example: `xrequestchannel #rawon`)
+`<prefix>requestchannel <#channel>` (Example: `xrequestchannel #request-music`)
 
 ## Docker Setup
 
@@ -95,7 +95,7 @@ See `.env.example` for all available configuration options. Key variables:
 Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 
 ## Support & Questions
-Only provided on our [Discord server](https://stegripe.org/discord).
+Only available on our official [Discord server](https://stegripe.org/discord).
 
 ## Project Contributors
 
