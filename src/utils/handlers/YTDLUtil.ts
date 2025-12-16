@@ -35,21 +35,28 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
         if (!url) {
             throw new Error("Cannot stream: URL is empty or undefined.");
         }
+        let parsedUrl: URL;
         try {
-            new URL(url);
+            parsedUrl = new URL(url);
         } catch {
             throw new Error(`Cannot stream: Invalid URL format - "${url}"`);
         }
+        // Normalize YouTube URLs to use www.youtube.com (some play-dl versions require this)
+        let normalizedUrl = url;
+        if (parsedUrl.hostname === "youtube.com") {
+            parsedUrl.hostname = "www.youtube.com";
+            normalizedUrl = parsedUrl.toString();
+        }
         let rawPlayDlStream;
         try {
-            rawPlayDlStream = await playDlModule.stream(url, { discordPlayerCompatibility: true });
+            rawPlayDlStream = await playDlModule.stream(normalizedUrl, { discordPlayerCompatibility: true });
         } catch (streamError) {
             const errorMessage = streamError instanceof Error ? streamError.message : String(streamError);
             // Check if this is a YouTube bot detection error
             if (errorMessage.includes("Sign in to confirm you're not a bot") || errorMessage.includes("confirm you're not a bot")) {
-                throw new Error(`YouTube is blocking the request. You may need to set YouTube cookies using play-dl's setToken function. URL: "${url}", Original error: ${errorMessage}`);
+                throw new Error(`YouTube is blocking the request. You may need to set YouTube cookies using play-dl's setToken function. URL: "${normalizedUrl}", Original error: ${errorMessage}`);
             }
-            throw new Error(`play-dl stream failed for URL "${url}": ${errorMessage}`);
+            throw new Error(`play-dl stream failed for URL "${normalizedUrl}": ${errorMessage}`);
         }
         if (rawPlayDlStream.stream === undefined || rawPlayDlStream.stream === null) {
             throw new Error("Failed to get stream from play-dl. The stream returned was undefined.");
@@ -102,12 +109,23 @@ export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
                 : "play-dl is not available. Please install play-dl or use yt-dlp as the stream strategy.";
             throw new Error(errorMessage);
         }
-        const rawPlayDlVideoInfo = await playDlModule.video_basic_info(url);
+        // Normalize YouTube URLs to use www.youtube.com (some play-dl versions require this)
+        let normalizedUrl = url;
+        try {
+            const parsedUrl = new URL(url);
+            if (parsedUrl.hostname === "youtube.com") {
+                parsedUrl.hostname = "www.youtube.com";
+                normalizedUrl = parsedUrl.toString();
+            }
+        } catch {
+            // If URL parsing fails, just use the original URL
+        }
+        const rawPlayDlVideoInfo = await playDlModule.video_basic_info(normalizedUrl);
         const videoId = rawPlayDlVideoInfo.video_details.id;
         // Ensure we always have a valid URL - construct from video ID if url is missing
         let videoUrl = rawPlayDlVideoInfo.video_details.url;
         if (videoUrl === undefined || videoUrl === null || videoUrl === "") {
-            videoUrl = videoId !== null && videoId !== "" ? `https://www.youtube.com/watch?v=${videoId}` : url;
+            videoUrl = videoId !== null && videoId !== "" ? `https://www.youtube.com/watch?v=${videoId}` : normalizedUrl;
         }
         return {
             duration: rawPlayDlVideoInfo.video_details.durationInSec * 1_000,
