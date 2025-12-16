@@ -347,10 +347,6 @@ export class InteractionCreateEvent extends BaseEvent {
                             .setStyle(ButtonStyle.Primary)
                             .setDisabled(page === 0),
                         new ButtonBuilder()
-                            .setCustomId("RCQ_STOP")
-                            .setEmoji("🚫")
-                            .setStyle(ButtonStyle.Danger),
-                        new ButtonBuilder()
                             .setCustomId("RCQ_NEXT")
                             .setEmoji("➡️")
                             .setStyle(ButtonStyle.Primary)
@@ -392,13 +388,6 @@ export class InteractionCreateEvent extends BaseEvent {
                             case "RCQ_NEXT10":
                                 currentPage = Math.min(pages.length - 1, currentPage + 10);
                                 break;
-                            case "RCQ_STOP":
-                                collector.stop();
-                                await i.update({
-                                    embeds: [embed.setDescription(pages[currentPage])],
-                                    components: []
-                                });
-                                return;
                             default:
                                 return;
                         }
