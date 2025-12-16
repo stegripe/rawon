@@ -137,7 +137,7 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!voiceChannel) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", i18n.__("requestChannel.notInVoice"))]
+                embeds: [createEmbed("warn", `🎤 **|** ${i18n.__("requestChannel.notInVoice")}`)]
             });
             return;
         }
@@ -159,7 +159,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -168,13 +168,13 @@ export class InteractionCreateEvent extends BaseEvent {
                     queue.playing = false;
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", i18n.__("requestChannel.paused"))]
+                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)]
                     });
                 } else {
                     queue.playing = true;
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", i18n.__("requestChannel.resumed"))]
+                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)]
                     });
                 }
                 break;
@@ -184,7 +184,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -195,7 +195,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.player.stop(true);
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", i18n.__("requestChannel.skipped"))]
+                    embeds: [createEmbed("success", `⏭️ **|** ${i18n.__("requestChannel.skipped")}`)]
                 });
                 break;
             }
@@ -204,7 +204,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -212,7 +212,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.destroy();
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", i18n.__("requestChannel.stopped"))]
+                    embeds: [createEmbed("success", `⏹️ **|** ${i18n.__("requestChannel.stopped")}`)]
                 });
                 break;
             }
@@ -221,7 +221,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -233,7 +233,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", i18n.__mf("requestChannel.loopChanged", { mode: nextMode }))]
+                    embeds: [createEmbed("success", `🔁 **|** ${i18n.__mf("requestChannel.loopChanged", { mode: nextMode })}`)]
                 });
                 break;
             }
@@ -242,7 +242,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -250,7 +250,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.setShuffle(!queue.shuffle);
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", i18n.__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" }))]
+                    embeds: [createEmbed("success", `🔀 **|** ${i18n.__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" })}`)]
                 });
                 break;
             }
@@ -259,7 +259,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -268,7 +268,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.volume = newVolDown;
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", i18n.__mf("requestChannel.volumeChanged", { volume: newVolDown }))]
+                    embeds: [createEmbed("success", `🔊 **|** ${i18n.__mf("requestChannel.volumeChanged", { volume: newVolDown })}`)]
                 });
                 break;
             }
@@ -277,7 +277,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -286,7 +286,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.volume = newVolUp;
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", i18n.__mf("requestChannel.volumeChanged", { volume: newVolUp }))]
+                    embeds: [createEmbed("success", `🔊 **|** ${i18n.__mf("requestChannel.volumeChanged", { volume: newVolUp })}`)]
                 });
                 break;
             }
@@ -295,7 +295,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))]
+                        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__("requestChannel.nothingPlaying")}`)]
                     });
                     return;
                 }
@@ -314,8 +314,8 @@ export class InteractionCreateEvent extends BaseEvent {
                     return names.join("\n");
                 });
 
-                const embed = createEmbed("info", pages[0] ?? i18n.__("requestChannel.emptyQueue"))
-                    .setTitle(i18n.__("requestChannel.queueListTitle"))
+                const embed = createEmbed("info", pages[0] ?? `📋 **|** ${i18n.__("requestChannel.emptyQueue")}`)
+                    .setTitle(`📋 ${i18n.__("requestChannel.queueListTitle")}`)
                     .setThumbnail(guild.iconURL({ extension: "png", size: 1_024 }) ?? null)
                     .setFooter({ text: i18n.__mf("reusable.pageFooter", { actual: 1, total: pages.length || 1 }) });
 

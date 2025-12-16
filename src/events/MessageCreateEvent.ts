@@ -109,7 +109,7 @@ export class MessageCreateEvent extends BaseEvent {
         // Check if user is in a voice channel
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
-            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", i18n.__("requestChannel.notInVoice")));
+            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", `🎤 **|** ${i18n.__("requestChannel.notInVoice")}`));
             return;
         }
 
@@ -164,7 +164,7 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         // Send confirmation with thumbnail (will be deleted)
-        const confirmEmbed = createEmbed("success", i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title }));
+        const confirmEmbed = createEmbed("success", `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`);
         if (songs.items[0].thumbnail) {
             confirmEmbed.setThumbnail(songs.items[0].thumbnail);
         }

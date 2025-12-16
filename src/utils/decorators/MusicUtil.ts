@@ -71,7 +71,7 @@ export const useRequestChannel = createCmdExecuteDecorator(ctx => {
     
     // Redirect to request channel
     void ctx.reply({
-        embeds: [createEmbed("warn", i18n.__mf("utils.musicDecorator.useRequestChannel", { channel: `<#${requestChannel.id}>` }))]
+        embeds: [createEmbed("warn", `🎵 **|** ${i18n.__mf("utils.musicDecorator.useRequestChannel", { channel: `<#${requestChannel.id}>` })}`)]
     });
     return false;
 });
