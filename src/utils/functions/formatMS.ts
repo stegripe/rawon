@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 import { createRequire } from "node:module";
 import { format, type Locale } from "date-fns";
 import { lang } from "../../config/index.js";

@@ -1,5 +1,3 @@
-/* eslint-disable typescript/consistent-type-definitions */
-/* eslint-disable typescript/naming-convention */
 import type {
     ApplicationCommandOptionData,
     ApplicationCommandType,

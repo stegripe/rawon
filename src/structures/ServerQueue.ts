@@ -74,7 +74,6 @@ export class ServerQueue {
                         this.textChannel.guild,
                     );
 
-                    // Save queue state with new current song key when a new song starts playing
                     void this.saveQueueState();
 
                     this.playerUpdateInterval ??= setInterval(() => {
@@ -163,7 +162,6 @@ export class ServerQueue {
             })
             .on("error", (err) => {
                 (async () => {
-                    // eslint-disable-next-line promise/no-promise-in-callback
                     await this.textChannel
                         .send({
                             embeds: [
@@ -240,7 +238,6 @@ export class ServerQueue {
         }));
 
         const voiceChannelId = this.connection?.joinConfig.channelId;
-        // Only save queue state if we have a valid voice channel connection
         if (
             voiceChannelId === undefined ||
             voiceChannelId === null ||

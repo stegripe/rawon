@@ -201,9 +201,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     setTimeout(async () => {
                         try {
                             await interaction.deleteReply();
-                        } catch {
-                            // ignore error
-                        }
+                        } catch {}
                     }, 30_000);
                 } else {
                     queue.playing = true;
@@ -216,9 +214,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     setTimeout(async () => {
                         try {
                             await interaction.deleteReply();
-                        } catch {
-                            // ignore error
-                        }
+                        } catch {}
                     }, 30_000);
                 }
                 break;
@@ -384,10 +380,8 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 const songTitle = currentSong.song.title;
 
-                // Remove the current song from the queue
                 queue.songs.delete(currentSong.key);
 
-                // Skip to the next song
                 if (!queue.playing) {
                     queue.playing = true;
                 }
@@ -529,9 +523,7 @@ export class InteractionCreateEvent extends BaseEvent {
                                 embeds: [embed],
                                 components: [],
                             });
-                        } catch {
-                            // Message might be deleted
-                        }
+                        } catch {}
                     });
                 }
                 break;

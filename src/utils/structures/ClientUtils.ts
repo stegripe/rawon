@@ -145,7 +145,6 @@ export class ClientUtils {
 
     public getCommitHash(ref: string, short = true): string {
         try {
-            // eslint-disable-next-line node/no-sync
             const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
             return res.toString().trim();
         } catch {

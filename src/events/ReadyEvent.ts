@@ -84,10 +84,8 @@ export class ReadyEvent extends BaseEvent {
             }
 
             try {
-                // Create a new queue
                 guild.queue = new ServerQueue(textChannel);
 
-                // Restore songs to the queue with their original keys and indices
                 const memberFetches = queueState.songs.map(async (savedSong) => {
                     const member = await guild.members
                         .fetch(savedSong.requesterId)
@@ -104,7 +102,6 @@ export class ReadyEvent extends BaseEvent {
                 await Promise.all(memberFetches);
 
                 if (guild.queue.songs.size === 0) {
-                    // Clear the invalid queue state to prevent repeated restoration attempts
                     await guild.queue.clearQueueState();
                     delete guild.queue;
                     this.client.logger.warn(
@@ -113,7 +110,6 @@ export class ReadyEvent extends BaseEvent {
                     return;
                 }
 
-                // Connect to voice channel
                 const connection = joinVoiceChannel({
                     adapterCreator: guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
                     channelId: voiceChannel.id,
@@ -125,7 +121,6 @@ export class ReadyEvent extends BaseEvent {
 
                 guild.queue.connection = connection;
 
-                // Start playing from the saved current song or the first song (by index)
                 const currentSongKey = queueState.currentSongKey;
                 const firstSongKey = guild.queue.songs.sortByIndex().first()?.key;
                 const startSongKey =
