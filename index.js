@@ -66,10 +66,10 @@ if (streamStrategy === "play-dl" && !existsSync(nodePath.resolve(process.cwd(), 
     rmSync(nodePath.resolve(process.cwd(), "temp.zip"), { force: true });
 
     console.log("[INFO] Installing packages for play-dl...");
-    execSync("cd play-dl-fix && pnpm install");
+    execSync("pnpm install", { cwd: nodePath.resolve(process.cwd(), "play-dl-fix") });
 
     console.log("[INFO] Compiling play-dl...");
-    execSync("cd play-dl-fix && pnpm run build");
+    execSync("pnpm run build", { cwd: nodePath.resolve(process.cwd(), "play-dl-fix") });
 }
 console.info("[INFO] Starting the bot...");
 
