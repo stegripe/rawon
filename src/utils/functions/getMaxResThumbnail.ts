@@ -1,10 +1,9 @@
 /**
- * Upgrades YouTube thumbnail URLs to maximum resolution.
- * YouTube thumbnails have quality variants: default, mqdefault, hqdefault, sddefault, maxresdefault
- * This function replaces lower quality variants with maxresdefault for better image quality.
+ * Upgrades YouTube thumbnail URLs to maximum resolution using img.youtube.com.
+ * Extracts the video ID and constructs a maxresdefault thumbnail URL.
  *
  * @param url - The thumbnail URL to upgrade
- * @returns The upgraded URL with maxresdefault quality, or original URL if not a YouTube thumbnail
+ * @returns The upgraded URL with maxresdefault quality from img.youtube.com, or original URL if not a YouTube thumbnail
  */
 export function getMaxResThumbnail(url: string | undefined | null): string {
     if (!url || url.length === 0) {
@@ -26,12 +25,12 @@ export function getMaxResThumbnail(url: string | undefined | null): string {
         return url;
     }
 
-    // Replace quality variants with maxresdefault
-    // Handles: default, mqdefault, hqdefault, sddefault, hq720
-    // Handles extensions: jpg, jpeg, webp, png
-    // Handles URLs with or without query parameters
-    return url.replace(
-        /\/(default|mqdefault|hqdefault|sddefault|hq720)\.(jpg|jpeg|webp|png)/gu,
-        "/maxresdefault.$2",
-    );
+    // Extract video ID from the URL path (e.g., /vi/VIDEO_ID/...)
+    const videoIdMatch = parsedUrl.pathname.match(/\/vi\/([^/]+)/u);
+    if (!videoIdMatch?.[1]) {
+        return url;
+    }
+
+    // Return maxresdefault thumbnail URL from img.youtube.com
+    return `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`;
 }
