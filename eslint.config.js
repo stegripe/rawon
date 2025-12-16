@@ -10,7 +10,6 @@ export default [...common, ...modules, ...node, ...prettier, ...extend(typescrip
     option: ["off"]
 }], ...ignores), includeIgnoreFile(gitIgnore), {
     ignores: [
-        "yt-dlp-utils/*",
-        "play-dl-importer/*"
+        "yt-dlp-utils/*"
     ]
 }];

@@ -44,8 +44,7 @@ try {
     console.info("[INFO] ffmpeg-static has been installed.");
 }
 
-const streamStrategy = process.env.STREAM_STRATEGY;
-if (streamStrategy !== "play-dl") await downloadExecutable();
+await downloadExecutable();
 console.info("[INFO] Starting the bot...");
 
 import("./dist/index.js");
