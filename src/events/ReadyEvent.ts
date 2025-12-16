@@ -1,10 +1,14 @@
 import { setInterval } from "node:timers";
-import { ActivityType, Presence } from "discord.js";
+import type { DiscordGatewayAdapterCreator } from "@discordjs/voice";
+import { joinVoiceChannel } from "@discordjs/voice";
+import { ActivityType, ChannelType, Presence } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
-import { EnvActivityTypes } from "../typings/index.js";
+import { ServerQueue } from "../structures/ServerQueue.js";
+import type { EnvActivityTypes } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 import { formatMS } from "../utils/functions/formatMS.js";
+import { play } from "../utils/handlers/GeneralUtil.js";
 
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
@@ -36,6 +40,88 @@ export class ReadyEvent extends BaseEvent {
         );
 
         await this.restoreRequestChannelMessages();
+        await this.restoreQueueStates();
+    }
+
+    private async restoreQueueStates(): Promise<void> {
+        const data = this.client.data.data;
+        if (!data) return;
+
+        const restorePromises = Object.keys(data)
+            .map(async guildId => {
+                const guildData = data[guildId];
+                const queueState = guildData?.queueState;
+                if (!queueState || queueState.songs.length === 0) return;
+
+                const guild = this.client.guilds.cache.get(guildId);
+                if (!guild) return;
+
+                const textChannel = guild.channels.cache.get(queueState.textChannelId);
+                if (!textChannel || textChannel.type !== ChannelType.GuildText) {
+                    this.client.logger.warn(`Could not find text channel ${queueState.textChannelId} for queue restore in guild ${guildId}`);
+                    return;
+                }
+
+                const voiceChannel = guild.channels.cache.get(queueState.voiceChannelId);
+                if (!voiceChannel) {
+                    this.client.logger.warn(`Could not find voice channel ${queueState.voiceChannelId} for queue restore in guild ${guildId}`);
+                    return;
+                }
+                const isVoiceBased = voiceChannel.isVoiceBased();
+                if (!isVoiceBased) {
+                    this.client.logger.warn(`Channel ${queueState.voiceChannelId} is not a voice channel for queue restore in guild ${guildId}`);
+                    return;
+                }
+
+                try {
+                    // Create a new queue
+                    guild.queue = new ServerQueue(textChannel);
+
+                    // Restore songs to the queue
+                    const memberFetches = queueState.songs.map(async savedSong => {
+                        const member = await guild.members.fetch(savedSong.requesterId).catch(() => null);
+                        if (member) {
+                            guild.queue?.songs.addSong(savedSong.song, member);
+                        }
+                    });
+                    await Promise.all(memberFetches);
+
+                    if (guild.queue.songs.size === 0) {
+                        delete guild.queue;
+                        this.client.logger.warn(`No valid songs to restore for guild ${guild.name}(${guildId})`);
+                        return;
+                    }
+
+                    // Connect to voice channel
+                    const connection = joinVoiceChannel({
+                        adapterCreator: guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
+                        channelId: voiceChannel.id,
+                        guildId: guild.id,
+                        selfDeaf: true
+                    }).on("debug", message => {
+                        this.client.logger.debug(message);
+                    });
+
+                    guild.queue.connection = connection;
+
+                    // Start playing from the saved current song or the first song
+                    const currentSongKey = queueState.currentSongKey;
+                    const startSongKey = currentSongKey !== null && currentSongKey.length > 0 && guild.queue.songs.has(currentSongKey)
+                        ? currentSongKey
+                        : guild.queue.songs.first()?.key;
+
+                    void play(guild, startSongKey);
+
+                    this.client.logger.info(`Restored queue for guild ${guild.name}(${guildId}) with ${guild.queue.songs.size} songs`);
+                } catch (error) {
+                    this.client.logger.error(`Failed to restore queue for guild ${guildId}:`, error);
+                    if (guild.queue) {
+                        guild.queue.destroy();
+                    }
+                }
+            });
+
+        await Promise.all(restorePromises);
     }
 
     private async restoreRequestChannelMessages(): Promise<void> {

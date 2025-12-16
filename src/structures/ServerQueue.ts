@@ -3,7 +3,7 @@ import type { AudioPlayer, AudioPlayerPlayingState, AudioResource, VoiceConnecti
 import { AudioPlayerStatus, createAudioPlayer } from "@discordjs/voice";
 import type { TextChannel, Snowflake } from "discord.js";
 import i18n from "../config/index.js";
-import type { LoopMode, QueueSong } from "../typings/index.js";
+import type { LoopMode, QueueSong, SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import type { filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
@@ -181,6 +181,48 @@ export class ServerQueue {
         }));
     }
 
+    public async saveQueueState(): Promise<void> {
+        const currentData = this.client.data.data ?? {};
+        const guildData = currentData[this.textChannel.guild.id] ?? {};
+
+        const currentSongKey = this.player.state.status === AudioPlayerStatus.Playing
+            ? (this.player.state.resource.metadata as QueueSong).key
+            : null;
+
+        const savedSongs: SavedQueueSong[] = this.songs.sortByIndex().map(queueSong => ({
+            requesterId: queueSong.requester.id,
+            index: queueSong.index,
+            song: queueSong.song,
+            key: queueSong.key
+        }));
+
+        guildData.queueState = {
+            textChannelId: this.textChannel.id,
+            voiceChannelId: this.connection?.joinConfig.channelId ?? "",
+            songs: savedSongs,
+            currentSongKey
+        };
+
+        await this.client.data.save(() => ({
+            ...currentData,
+            [this.textChannel.guild.id]: guildData
+        }));
+
+        this.client.logger.info(`Saved queue state for guild ${this.textChannel.guild.name} with ${savedSongs.length} songs`);
+    }
+
+    public async clearQueueState(): Promise<void> {
+        const currentData = this.client.data.data ?? {};
+        const guildData = currentData[this.textChannel.guild.id] ?? {};
+
+        delete guildData.queueState;
+
+        await this.client.data.save(() => ({
+            ...currentData,
+            [this.textChannel.guild.id]: guildData
+        }));
+    }
+
     public setFilter(filter: keyof typeof filterArgs, state: boolean): void {
         const before = this.filters[filter];
         this.filters[filter] = state;
@@ -216,6 +258,7 @@ export class ServerQueue {
             clearInterval(this.playerUpdateInterval);
             this.playerUpdateInterval = null;
         }
+        void this.clearQueueState();
         delete this.textChannel.guild.queue;
     }
 

@@ -29,7 +29,9 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
             "SONG_MANAGER",
             `New value added to ${this.guild.name}(${this.guild.id}) song manager. Key: ${key}`
         );
-        return super.set(key, data);
+        const result = super.set(key, data);
+        void this.saveQueueState();
+        return result;
     }
 
     public delete(key: Snowflake): boolean {
@@ -38,10 +40,19 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
             "SONG_MANAGER",
             `Value ${key} deleted from ${this.guild.name}(${this.guild.id}) song manager.`
         );
-        return super.delete(key);
+        const result = super.delete(key);
+        void this.saveQueueState();
+        return result;
     }
 
     public sortByIndex(): this {
         return this.sort((a, b) => a.index - b.index);
+    }
+
+    private async saveQueueState(): Promise<void> {
+        const queue = this.guild.queue;
+        if (queue) {
+            await queue.saveQueueState();
+        }
     }
 }
