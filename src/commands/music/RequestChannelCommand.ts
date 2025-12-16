@@ -92,7 +92,7 @@ export class RequestChannelCommand extends BaseCommand {
         }
 
         return ctx.reply({
-            embeds: [createEmbed("info", i18n.__("requestChannel.noChannel"))]
+            embeds: [createEmbed("warn", i18n.__("requestChannel.noChannel"))]
         });
     }
 }
