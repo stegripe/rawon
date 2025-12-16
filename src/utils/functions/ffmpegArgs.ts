@@ -14,7 +14,10 @@ export const filterArgs = {
     tremolo: "tremolo",
     karaoke: "stereotools=mlev=0.1",
     vibrato: "vibrato=f=6.5",
-    echo: "aecho=0.8:0.9:1000:0.3"
+    echo: "aecho=0.8:0.9:1000:0.3",
+    spedup: "atempo=1.25",
+    slowed: "atempo=0.8",
+    reverb: "aecho=0.8:0.88:60:0.4"
 }
 
 export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, boolean>>): string[] {
