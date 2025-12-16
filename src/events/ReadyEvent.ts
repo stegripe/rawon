@@ -87,6 +87,8 @@ export class ReadyEvent extends BaseEvent {
                     await Promise.all(memberFetches);
 
                     if (guild.queue.songs.size === 0) {
+                        // Clear the invalid queue state to prevent repeated restoration attempts
+                        await guild.queue.clearQueueState();
                         delete guild.queue;
                         this.client.logger.warn(`No valid songs to restore for guild ${guild.name}(${guildId})`);
                         return;
@@ -106,11 +108,14 @@ export class ReadyEvent extends BaseEvent {
 
                     // Start playing from the saved current song or the first song (by index)
                     const currentSongKey = queueState.currentSongKey;
+                    const firstSongKey = guild.queue.songs.sortByIndex().first()?.key;
                     const startSongKey = currentSongKey !== null && currentSongKey.length > 0 && guild.queue.songs.has(currentSongKey)
                         ? currentSongKey
-                        : guild.queue.songs.sortByIndex().first()?.key;
+                        : firstSongKey;
 
-                    void play(guild, startSongKey);
+                    if (startSongKey !== undefined) {
+                        void play(guild, startSongKey);
+                    }
 
                     this.client.logger.info(`Restored queue for guild ${guild.name}(${guildId}) with ${guild.queue.songs.size} songs`);
                 } catch (error) {

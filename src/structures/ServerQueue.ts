@@ -200,9 +200,15 @@ export class ServerQueue {
             key: queueSong.key
         }));
 
+        const voiceChannelId = this.connection?.joinConfig.channelId;
+        // Only save queue state if we have a valid voice channel connection
+        if (voiceChannelId === undefined || voiceChannelId === null || voiceChannelId.length === 0) {
+            return;
+        }
+
         guildData.queueState = {
             textChannelId: this.textChannel.id,
-            voiceChannelId: this.connection?.joinConfig.channelId ?? "",
+            voiceChannelId,
             songs: savedSongs,
             currentSongKey
         };
