@@ -198,6 +198,9 @@
                 "description": "Configurer un canal de requête pour la musique",
                 "noPermission": "Vous avez besoin de la permission **Gérer le serveur** pour utiliser cette commande.",
                 "invalidChannel": "Veuillez fournir un canal texte valide.",
+                "noBotPermissions": "Je n'ai pas pu vérifier mes permissions pour ce canal.",
+                "missingBotPermissions": "Il me manque les permissions suivantes dans ce canal: **{permissions}**",
+                "failedToSetup": "Échec de la configuration du canal de requête. Veuillez vérifier mes permissions.",
                 "slashSetDescription": "Définir un canal comme canal de requête",
                 "slashRemoveDescription": "Supprimer le canal de requête",
                 "slashStatusDescription": "Afficher le canal de requête actuel",
@@ -239,6 +242,9 @@
         "pageFooter": "Page {actual} sur {total}"
     },
     "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+        },
         "cooldownMessage": "{author}, veuillez attendre **`{timeleft}`** de cooldown.",
         "generalHandler": {
             "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : `{message}`",

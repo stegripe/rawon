@@ -24,7 +24,7 @@ export class StopCommand extends BaseCommand {
         (ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).lastMusicMsg = null;
 
         await ctx.reply({
-            embeds: [createEmbed("success", `⏹ **|** ${i18n.__("commands.music.stop.stoppedMessage")}`)]
+            embeds: [createEmbed("success", `⏹️ **|** ${i18n.__("commands.music.stop.stoppedMessage")}`)]
         }).catch((error: unknown) => this.client.logger.error("STOP_CMD_ERR:", error));
     }
 }

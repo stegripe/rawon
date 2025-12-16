@@ -59,7 +59,7 @@ export class ShuffleCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `${isShuffle === true ? "🔀" : "▶"} **|** ${i18n.__mf("commands.music.shuffle.newState", {
+                    `${isShuffle === true ? "🔀" : "▶️"} **|** ${i18n.__mf("commands.music.shuffle.newState", {
                         state: `\`${isShuffle === true ? "ENABLED" : "DISABLED"}\``
                     })}`
                 )
