@@ -255,7 +255,8 @@
             "sameVC": "Benimle aynı ses kanalında olmanız gerekiyor.",
             "validVCJoinable": "Üzgünüm ama ses kanalınıza **`BAĞLANAMIYORUM`**, uygun izinlere sahip olduğumdan emin olun.",
             "validVCPermission": "Üzgünüm ama bu ses kanalında **`KONUŞMA`** yetkim yok; uygun izinlere sahip olduğumdan emin olun.",
-            "useRequestChannel": "Müzik komutları için lütfen istek kanalını {channel} kullanın."
+            "useRequestChannel": "Müzik komutları için lütfen istek kanalını {channel} kullanın.",
+            "useRequestChannelDirect": "Müzik çalmak için şarkı adını veya bağlantıyı doğrudan bu kanala yazmanız yeterli."
         }
     },
     "requestChannel": {

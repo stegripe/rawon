@@ -255,7 +255,8 @@
             "sameVC": "Necesitas estar en el mismo canal de voz que yo.",
             "validVCJoinable": "Lo siento, pero no tengo el permiso **`CONECTAR`** en tu servidor.",
             "validVCPermission": "Lo siento, pero no tengo el permiso **`HABLAR`** en tu servidor.",
-            "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música."
+            "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música.",
+            "useRequestChannelDirect": "Simplemente escribe el título de la canción o el enlace directamente en este canal para reproducir música."
         }
     },
     "requestChannel": {
