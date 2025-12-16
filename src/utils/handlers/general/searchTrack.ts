@@ -1,10 +1,9 @@
 import { URL } from "node:url";
-import type { SearchResult, Video, VideoCompact } from "youtubei";
-import { Playlist } from "youtubei";
-import type { Rawon } from "../../../structures/Rawon.js";
-import type { Song, SearchTrackResult, SpotifyTrack } from "../../../typings/index.js";
-import { getInfo } from "../YTDLUtil.js";
+import { Playlist, type SearchResult, type Video, type VideoCompact } from "youtubei";
+import { type Rawon } from "../../../structures/Rawon.js";
+import { type SearchTrackResult, type Song, type SpotifyTrack } from "../../../typings/index.js";
 import { youtube, youtubeMusic } from "../YouTubeUtil.js";
+import { getInfo } from "../YTDLUtil.js";
 import { checkQuery } from "./checkQuery.js";
 
 function extractVideoId(url: URL): string | null {
@@ -21,10 +20,10 @@ function extractVideoId(url: URL): string | null {
 export async function searchTrack(
     client: Rawon,
     query: string,
-    source: "soundcloud" | "youtube" | undefined = "youtube"
+    source: "soundcloud" | "youtube" | undefined = "youtube",
 ): Promise<SearchTrackResult> {
     const result: SearchTrackResult = {
-        items: []
+        items: [],
     };
 
     const queryData = checkQuery(query);
@@ -55,8 +54,8 @@ export async function searchTrack(
                                 id: track.id.toString(),
                                 thumbnail: track.artwork_url,
                                 title: track.title,
-                                url: track.permalink_url
-                            }
+                                url: track.permalink_url,
+                            },
                         ];
                         break;
                     }
@@ -69,8 +68,8 @@ export async function searchTrack(
                                 id: track.id.toString(),
                                 thumbnail: track.artwork_url,
                                 title: track.title,
-                                url: track.permalink_url
-                            })
+                                url: track.permalink_url,
+                            }),
                         );
 
                         result.items = tracks;
@@ -88,39 +87,45 @@ export async function searchTrack(
                 switch (queryData.type) {
                     case "track": {
                         const videoId = extractVideoId(url);
-                        if (videoId === null || videoId.length === 0) break;
+                        if (videoId === null || videoId.length === 0) {
+                            break;
+                        }
 
                         try {
                             const track = await youtube.getVideo(videoId);
                             if (track) {
                                 result.items = [
                                     {
-                                        duration: track.isLiveContent ? 0 : (track as Video).duration,
+                                        duration: track.isLiveContent
+                                            ? 0
+                                            : (track as Video).duration,
                                         id: track.id,
                                         thumbnail: track.thumbnails.sort(
-                                            (a, b) => b.height * b.width - a.height * a.width
+                                            (a, b) => b.height * b.width - a.height * a.width,
                                         )[0].url,
                                         title: track.title,
-                                        url: `https://youtube.com/watch?v=${track.id}`
-                                    }
+                                        url: `https://youtube.com/watch?v=${track.id}`,
+                                    },
                                 ];
                             }
                         } catch {
                             try {
                                 const videoUrl = `https://youtube.com/watch?v=${videoId}`;
                                 const videoInfo = await getInfo(videoUrl);
-                                
+
                                 if (videoInfo?.id) {
                                     result.items = [
                                         {
                                             duration: videoInfo.duration ?? 0,
                                             id: videoInfo.id,
-                                            thumbnail: videoInfo.thumbnails?.sort(
-                                                (a, b) => (b.height * b.width) - (a.height * a.width)
-                                            )[0]?.url ?? "",
+                                            thumbnail:
+                                                videoInfo.thumbnails?.sort(
+                                                    (a, b) =>
+                                                        b.height * b.width - a.height * a.width,
+                                                )[0]?.url ?? "",
                                             title: videoInfo.title ?? "Unknown",
-                                            url: videoInfo.url ?? videoUrl
-                                        }
+                                            url: videoInfo.url ?? videoUrl,
+                                        },
                                     ];
                                 }
                             } catch {
@@ -137,20 +142,34 @@ export async function searchTrack(
                         let temp = null;
 
                         if (playlist) {
-                            const tracks = (playlist instanceof Playlist ? playlist.videos.items : playlist.videos).map(
+                            const tracks = (
+                                playlist instanceof Playlist
+                                    ? playlist.videos.items
+                                    : playlist.videos
+                            ).map(
                                 (track): Song => ({
                                     duration: track.duration ?? 0,
                                     id: track.id,
                                     thumbnail: track.thumbnails.sort(
-                                        (a, b) => b.height * b.width - a.height * a.width
+                                        (a, b) => b.height * b.width - a.height * a.width,
                                     )[0].url,
                                     title: track.title,
-                                    url: `https://youtube.com/watch?v=${track.id}`
-                                })
+                                    url: `https://youtube.com/watch?v=${track.id}`,
+                                }),
                             );
 
-                            if ((songIndex?.length ?? 0) > 0) temp = Number.parseInt(songIndex ?? "", 10) < 101 ? tracks.splice(Number.parseInt(songIndex ?? "", 10) - 1, 1)[0] : null;
-                            if (temp) tracks.unshift(temp);
+                            if ((songIndex?.length ?? 0) > 0) {
+                                temp =
+                                    Number.parseInt(songIndex ?? "", 10) < 101
+                                        ? tracks.splice(
+                                              Number.parseInt(songIndex ?? "", 10) - 1,
+                                              1,
+                                          )[0]
+                                        : null;
+                            }
+                            if (temp) {
+                                tracks.unshift(temp);
+                            }
 
                             result.items = tracks;
                         }
@@ -165,23 +184,59 @@ export async function searchTrack(
             }
 
             case "spotify": {
-                 
-                function sortVideos(track: SpotifyTrack, videos: SearchResult<"video">): VideoCompact[] {
+                function sortVideos(
+                    track: SpotifyTrack,
+                    videos: SearchResult<"video">,
+                ): VideoCompact[] {
                     return videos.items.sort((a, b) => {
                         let aValue = 0;
                         let bValue = 0;
-                        const aDurationDiff = (a.duration ?? 0) > 0 ? (a.duration ?? 0) - track.duration_ms : null;
-                        const bDurationDiff = (b.duration ?? 0) > 0 ? (b.duration ?? 0) - track.duration_ms : null;
-                        
-                        if (a.title.toLowerCase().includes(track.name.toLowerCase())) aValue--;
-                        if (track.artists.some(x => a.channel?.name.toLowerCase().includes(x.name) === true)) aValue--;
-                        if (a.channel?.name.endsWith("- Topic") === true) aValue -= 2;
-                        if (aDurationDiff !== null && aDurationDiff <= 5_000 && aDurationDiff >= -5_000) aValue -= 2;
+                        const aDurationDiff =
+                            (a.duration ?? 0) > 0 ? (a.duration ?? 0) - track.duration_ms : null;
+                        const bDurationDiff =
+                            (b.duration ?? 0) > 0 ? (b.duration ?? 0) - track.duration_ms : null;
 
-                        if (b.title.toLowerCase().includes(track.name.toLowerCase())) bValue++;
-                        if (track.artists.some(x => b.channel?.name.toLowerCase().includes(x.name) === true)) bValue++;
-                        if (b.channel?.name.endsWith(" - Topic") === true) bValue += 2;
-                        if (bDurationDiff !== null && bDurationDiff <= 5_000 && bDurationDiff >= -5_000) bValue += 2;
+                        if (a.title.toLowerCase().includes(track.name.toLowerCase())) {
+                            aValue--;
+                        }
+                        if (
+                            track.artists.some(
+                                (x) => a.channel?.name.toLowerCase().includes(x.name) === true,
+                            )
+                        ) {
+                            aValue--;
+                        }
+                        if (a.channel?.name.endsWith("- Topic") === true) {
+                            aValue -= 2;
+                        }
+                        if (
+                            aDurationDiff !== null &&
+                            aDurationDiff <= 5_000 &&
+                            aDurationDiff >= -5_000
+                        ) {
+                            aValue -= 2;
+                        }
+
+                        if (b.title.toLowerCase().includes(track.name.toLowerCase())) {
+                            bValue++;
+                        }
+                        if (
+                            track.artists.some(
+                                (x) => b.channel?.name.toLowerCase().includes(x.name) === true,
+                            )
+                        ) {
+                            bValue++;
+                        }
+                        if (b.channel?.name.endsWith(" - Topic") === true) {
+                            bValue += 2;
+                        }
+                        if (
+                            bDurationDiff !== null &&
+                            bDurationDiff <= 5_000 &&
+                            bDurationDiff >= -5_000
+                        ) {
+                            bValue += 2;
+                        }
 
                         return aValue + bValue;
                     });
@@ -190,18 +245,22 @@ export async function searchTrack(
                 switch (queryData.type) {
                     case "track": {
                         const songData = (await client.spotify.resolveTracks(
-                            url.toString()
+                            url.toString(),
                         )) as unknown as SpotifyTrack;
                         let response = await youtube.search(
-                            songData.external_ids?.isrc ?? `${songData.artists[0].name} - ${songData.name}`,
+                            songData.external_ids?.isrc ??
+                                `${songData.artists[0].name} - ${songData.name}`,
                             {
-                                type: "video"
-                            }
+                                type: "video",
+                            },
                         );
                         if (response.items.length === 0) {
-                            response = await youtube.search(`${songData.artists[0].name} - ${songData.name}`, {
-                                type: "video"
-                            });
+                            response = await youtube.search(
+                                `${songData.artists[0].name} - ${songData.name}`,
+                                {
+                                    type: "video",
+                                },
+                            );
                         }
                         const track = sortVideos(songData, response);
                         if (track.length > 0) {
@@ -210,31 +269,33 @@ export async function searchTrack(
                                     duration: track[0].duration ?? 0,
                                     id: track[0].id,
                                     thumbnail: track[0].thumbnails.sort(
-                                        (a, b) => b.height * b.width - a.height * a.width
+                                        (a, b) => b.height * b.width - a.height * a.width,
                                     )[0].url,
                                     title: track[0].title,
-                                    url: `https://youtube.com/watch?v=${track[0].id}`
-                                }
+                                    url: `https://youtube.com/watch?v=${track[0].id}`,
+                                },
                             ];
                         }
                         break;
                     }
 
                     case "playlist": {
-                        const songs = (await client.spotify.resolveTracks(url.toString())) as unknown as {
+                        const songs = (await client.spotify.resolveTracks(
+                            url.toString(),
+                        )) as unknown as {
                             track: SpotifyTrack;
                         }[];
                         await Promise.all(
                             songs.map(async (x): Promise<void> => {
                                 let response = await youtube.search(
                                     x.track.external_ids?.isrc ??
-                                    `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
-                                    { type: "video" }
+                                        `${x.track.artists.map((y) => y.name).join(", ")}${x.track.name}`,
+                                    { type: "video" },
                                 );
                                 if (response.items.length === 0) {
                                     response = await youtube.search(
-                                        `${x.track.artists.map(y => y.name).join(", ")}${x.track.name}`,
-                                        { type: "video" }
+                                        `${x.track.artists.map((y) => y.name).join(", ")}${x.track.name}`,
+                                        { type: "video" },
                                     );
                                 }
                                 const track = sortVideos(x.track, response);
@@ -243,13 +304,13 @@ export async function searchTrack(
                                         duration: track[0].duration ?? 0,
                                         id: track[0].id,
                                         thumbnail: track[0].thumbnails.sort(
-                                            (a, b) => b.height * b.width - a.height * a.width
+                                            (a, b) => b.height * b.width - a.height * a.width,
                                         )[0].url,
                                         title: track[0].title,
-                                        url: `https://youtube.com/watch?v=${track[0].id}`
+                                        url: `https://youtube.com/watch?v=${track[0].id}`,
                                     });
                                 }
-                            })
+                            }),
                         );
                         break;
                     }
@@ -269,10 +330,12 @@ export async function searchTrack(
                         duration: info?.duration ?? 0,
                         id: info?.id ?? "",
                         thumbnail:
-                            info?.thumbnails?.sort((a, b) => b.height * b.width - a.height * a.width)[0].url ?? "",
+                            info?.thumbnails?.sort(
+                                (a, b) => b.height * b.width - a.height * a.width,
+                            )[0].url ?? "",
                         title: info?.title ?? "Unknown Song",
-                        url: info?.url ?? url.toString()
-                    }
+                        url: info?.url ?? url.toString(),
+                    },
                 ];
                 break;
             }
@@ -283,7 +346,7 @@ export async function searchTrack(
         if (source === "soundcloud") {
             const searchRes = await client.soundcloud.tracks.search({
                 // eslint-disable-next-line id-length
-                q: query
+                q: query,
             });
             const tracks = searchRes.collection.map(
                 (track): Song => ({
@@ -291,8 +354,8 @@ export async function searchTrack(
                     id: track.id.toString(),
                     thumbnail: track.artwork_url,
                     title: track.title,
-                    url: track.permalink_url
-                })
+                    url: track.permalink_url,
+                }),
             );
 
             result.items = tracks;
@@ -305,10 +368,12 @@ export async function searchTrack(
                         (track): Song => ({
                             duration: track.duration ?? 0,
                             id: track.id,
-                            thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                            thumbnail: track.thumbnails.sort(
+                                (a, b) => b.height * b.width - a.height * a.width,
+                            )[0].url,
                             title: track.title,
-                            url: `https://youtube.com/watch?v=${track.id}`
-                        })
+                            url: `https://youtube.com/watch?v=${track.id}`,
+                        }),
                     );
                     result.items = tracks;
                 } else {
@@ -318,10 +383,12 @@ export async function searchTrack(
                         (track): Song => ({
                             duration: track.duration ?? 0,
                             id: track.id,
-                            thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                            thumbnail: track.thumbnails.sort(
+                                (a, b) => b.height * b.width - a.height * a.width,
+                            )[0].url,
                             title: track.title,
-                            url: `https://youtube.com/watch?v=${track.id}`
-                        })
+                            url: `https://youtube.com/watch?v=${track.id}`,
+                        }),
                     );
                     result.items = tracks;
                 }
@@ -333,10 +400,12 @@ export async function searchTrack(
                         (track): Song => ({
                             duration: track.duration ?? 0,
                             id: track.id,
-                            thumbnail: track.thumbnails.sort((a, b) => b.height * b.width - a.height * a.width)[0].url,
+                            thumbnail: track.thumbnails.sort(
+                                (a, b) => b.height * b.width - a.height * a.width,
+                            )[0].url,
                             title: track.title,
-                            url: `https://youtube.com/watch?v=${track.id}`
-                        })
+                            url: `https://youtube.com/watch?v=${track.id}`,
+                        }),
                     );
                     result.items = tracks;
                 } catch {

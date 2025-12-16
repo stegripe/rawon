@@ -1,0 +1,35 @@
+{
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "extends": ["@stegripe/biomejs-config"],
+    "files": {
+        "includes": ["**", "!**/src/utils/yt-dlp/*"]
+    },
+    "linter": {
+        "rules": {
+            "style": {
+                "useNamingConvention": "off",
+                "useFilenamingConvention": "off",
+                "useNumberNamespace": "off",
+                "noNonNullAssertion": "off",
+                "noNestedTernary": "off",
+                "noParameterAssign": "off",
+                "noUselessElse": "off"
+            },
+            "suspicious": {
+                "noExplicitAny": "off",
+                "useAwait": "off",
+                "noAssignInExpressions": "off"
+            },
+            "security": {
+                "noGlobalEval": "off"
+            },
+            "correctness": {
+                "noUnsafeFinally": "off"
+            },
+            "nursery": {
+                "useExplicitType": "off",
+                "noFloatingPromises": "off"
+            }
+        }
+    }
+}

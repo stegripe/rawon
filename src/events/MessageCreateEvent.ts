@@ -1,9 +1,13 @@
 /* eslint-disable prefer-named-capture-group */
 import { setTimeout } from "node:timers";
-import type { DiscordGatewayAdapterCreator } from "@discordjs/voice";
-import { joinVoiceChannel } from "@discordjs/voice";
-import type { MessageCollector } from "discord.js";
-import { ChannelType, Message, TextChannel, User } from "discord.js";
+import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
+import {
+    ChannelType,
+    type Message,
+    type MessageCollector,
+    type TextChannel,
+    type User,
+} from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
@@ -20,44 +24,67 @@ export class MessageCreateEvent extends BaseEvent {
             ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
             [
                 "Channel",
-                message.channel.type === ChannelType.DM ? "DM" : `${message.channel.name}(${message.channel.id})`
+                message.channel.type === ChannelType.DM
+                    ? "DM"
+                    : `${message.channel.name}(${message.channel.id})`,
             ],
-            ["Author", `${message.author.tag}(${message.author.id})`]
+            ["Author", `${message.author.tag}(${message.author.id})`],
         ]);
 
-        if (message.author.bot || message.channel.type === ChannelType.DM || !this.client.commands.isReady) return;
+        if (
+            message.author.bot ||
+            message.channel.type === ChannelType.DM ||
+            !this.client.commands.isReady
+        ) {
+            return;
+        }
 
-        const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(pr => {
-            if (pr === "{mention}") {
-                const userMention = /<@(!)?\d*?>/u.exec(message.content);
-                if (userMention?.index !== 0) return false;
-                const user = this.getUserFromMention(userMention[0]);
-                return user?.id === this.client.user?.id;
-            }
-            return message.content.startsWith(pr);
-        });
+        const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
+            (pr) => {
+                if (pr === "{mention}") {
+                    const userMention = /<@(!)?\d*?>/u.exec(message.content);
+                    if (userMention?.index !== 0) {
+                        return false;
+                    }
+                    const user = this.getUserFromMention(userMention[0]);
+                    return user?.id === this.client.user?.id;
+                }
+                return message.content.startsWith(pr);
+            },
+        );
 
-        if (message.guild && this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)) {
+        if (
+            message.guild &&
+            this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)
+        ) {
             if ((prefixMatch?.length ?? 0) > 0) {
                 this.client.commands.handle(message, prefixMatch as unknown as string);
-                
+
                 setTimeout(() => {
                     void (async (): Promise<void> => {
-                        try { await message.delete(); } catch { /* ignore */ }
+                        try {
+                            await message.delete();
+                        } catch {
+                            /* ignore */
+                        }
                     })();
                 }, 60_000);
-                
+
                 const textChannel = message.channel as TextChannel;
                 const collector: MessageCollector = textChannel.createMessageCollector({
                     filter: (msg: Message) => msg.author.id === this.client.user?.id,
                     time: 10_000,
-                    max: 1
+                    max: 1,
                 });
-                
+
                 collector.on("collect", (botMsg: Message) => {
                     setTimeout(() => {
                         void (async (): Promise<void> => {
-                            try { await botMsg.delete(); } catch { /* ignore */ }
+                            try {
+                                await botMsg.delete();
+                            } catch {
+                                /* ignore */
+                            }
                         })();
                     }, 60_000);
                 });
@@ -75,10 +102,10 @@ export class MessageCreateEvent extends BaseEvent {
                             "info",
                             `👋 **|** ${i18n.__mf("events.createMessage", {
                                 author: message.author.toString(),
-                                prefix: `\`${this.client.config.mainPrefix}\``
-                            })}`
-                        )
-                    ]
+                                prefix: `\`${this.client.config.mainPrefix}\``,
+                            })}`,
+                        ),
+                    ],
                 })
                 .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
         }
@@ -90,25 +117,37 @@ export class MessageCreateEvent extends BaseEvent {
 
     private async handleRequestChannelMessage(message: Message): Promise<void> {
         const guild = message.guild;
-        if (!guild) return;
+        if (!guild) {
+            return;
+        }
 
         await message.delete().catch(() => null);
 
         const query = message.content.trim();
-        if (query.length === 0) return;
+        if (query.length === 0) {
+            return;
+        }
 
         const member = message.member;
-        if (!member) return;
+        if (!member) {
+            return;
+        }
 
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
-            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("warn", i18n.__("requestChannel.notInVoice")));
+            this.sendTemporaryMessage(
+                message.channel as TextChannel,
+                createEmbed("warn", i18n.__("requestChannel.notInVoice")),
+            );
             return;
         }
 
         const songs = await searchTrack(this.client, query).catch(() => null);
         if (!songs || songs.items.length === 0) {
-            this.sendTemporaryMessage(message.channel as TextChannel, createEmbed("error", i18n.__("requestChannel.noResults"), true));
+            this.sendTemporaryMessage(
+                message.channel as TextChannel,
+                createEmbed("error", i18n.__("requestChannel.noResults"), true),
+            );
             return;
         }
 
@@ -123,8 +162,8 @@ export class MessageCreateEvent extends BaseEvent {
                     adapterCreator: guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
                     channelId: voiceChannel.id,
                     guildId: guild.id,
-                    selfDeaf: true
-                }).on("debug", debugMessage => {
+                    selfDeaf: true,
+                }).on("debug", (debugMessage) => {
                     this.client.logger.debug(debugMessage);
                 });
 
@@ -135,7 +174,13 @@ export class MessageCreateEvent extends BaseEvent {
 
                 this.sendTemporaryMessage(
                     message.channel as TextChannel,
-                    createEmbed("error", i18n.__mf("utils.generalHandler.errorJoining", { message: `\`${(error as Error).message}\`` }), true)
+                    createEmbed(
+                        "error",
+                        i18n.__mf("utils.generalHandler.errorJoining", {
+                            message: `\`${(error as Error).message}\``,
+                        }),
+                        true,
+                    ),
                 );
                 return;
             }
@@ -151,17 +196,23 @@ export class MessageCreateEvent extends BaseEvent {
             void play(guild);
         }
 
-        const confirmEmbed = createEmbed("success", `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`);
+        const confirmEmbed = createEmbed(
+            "success",
+            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`,
+        );
         if (songs.items[0].thumbnail) {
             confirmEmbed.setThumbnail(songs.items[0].thumbnail);
         }
         this.sendTemporaryMessage(message.channel as TextChannel, confirmEmbed);
     }
 
-    private sendTemporaryMessage(channel: TextChannel, embed: ReturnType<typeof createEmbed>): void {
+    private sendTemporaryMessage(
+        channel: TextChannel,
+        embed: ReturnType<typeof createEmbed>,
+    ): void {
         void (async () => {
             const msg = await channel.send({ embeds: [embed] });
-            setTimeout(() => { 
+            setTimeout(() => {
                 void (async () => {
                     try {
                         await msg.delete();
@@ -175,7 +226,9 @@ export class MessageCreateEvent extends BaseEvent {
 
     private getUserFromMention(mention: string): User | undefined {
         const matches = /^<@!?(\d+)>$/u.exec(mention);
-        if (!matches) return undefined;
+        if (!matches) {
+            return undefined;
+        }
 
         const id = matches[1];
         return this.client.users.cache.get(id);

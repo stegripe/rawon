@@ -1,7 +1,7 @@
 import { OAuth2Scopes, PermissionFlagsBits } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 
@@ -10,9 +10,9 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     description: i18n.__("commands.general.invite.description"),
     name: "invite",
     slash: {
-        options: []
+        options: [],
     },
-    usage: "{prefix}invite"
+    usage: "{prefix}invite",
 })
 export class InviteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
@@ -31,9 +31,9 @@ export class InviteCommand extends BaseCommand {
                 PermissionFlagsBits.Speak,
                 PermissionFlagsBits.UseVAD,
                 PermissionFlagsBits.PrioritySpeaker,
-                PermissionFlagsBits.ReadMessageHistory
+                PermissionFlagsBits.ReadMessageHistory,
             ],
-            scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands]
+            scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
         });
         await ctx
             .send({
@@ -41,15 +41,15 @@ export class InviteCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         i18n.__mf("commands.general.invite.clickURL", {
-                            url: invite
-                        })
+                            url: invite,
+                        }),
                     ).setAuthor({
                         name: i18n.__mf("commands.general.invite.inviteTitle", {
-                            bot: this.client.user?.username
+                            bot: this.client.user?.username,
                         }),
-                        iconURL: this.client.user?.displayAvatarURL()
-                    })
-                ]
+                        iconURL: this.client.user?.displayAvatarURL(),
+                    }),
+                ],
             })
             .catch((error: unknown) => this.client.logger.error("PLAY_CMD_ERR:", error));
     }

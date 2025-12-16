@@ -1,9 +1,9 @@
-import { AudioPlayerPlayingState, AudioResource } from "@discordjs/voice";
+import { type AudioPlayerPlayingState, type AudioResource } from "@discordjs/voice";
 import { ApplicationCommandOptionType } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { LyricsAPIResult, QueueSong } from "../../typings/index.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
+import { type LyricsAPIResult, type QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -19,30 +19,29 @@ import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
                 description: i18n.__("commands.music.lyrics.slashDescription"),
                 name: "query",
                 type: ApplicationCommandOptionType.String,
-                required: false
-            }
-        ]
+                required: false,
+            },
+        ],
     },
-    usage: i18n.__("commands.music.lyrics.usage")
+    usage: i18n.__("commands.music.lyrics.usage"),
 })
 export class LyricsCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
         const query =
-             
             ctx.args.length > 0
                 ? ctx.args.join(" ")
                 : (ctx.options?.getString("query")?.length ?? 0) > 0
-                    ? ctx.options?.getString("query") ?? ""
-                    : (
+                  ? (ctx.options?.getString("query") ?? "")
+                  : (
                         (
                             (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as
-                            | AudioResource
-                            | undefined
+                                | AudioResource
+                                | undefined
                         )?.metadata as QueueSong | undefined
                     )?.song.title;
         if ((query?.length ?? 0) === 0) {
             await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)]
+                embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)],
             });
 
             return;
@@ -53,10 +52,12 @@ export class LyricsCommand extends BaseCommand {
 
     private async getLyrics(ctx: CommandContext, song: string): Promise<void> {
         let data: LyricsAPIResult<false> | null = null;
-        
+
         try {
             const url = `https://api.lxndr.dev/lyrics?song=${encodeURIComponent(song)}&from=DiscordRawon`;
-            data = await this.client.request.get(url, { timeout: { request: 5_000 } }).json<LyricsAPIResult<false>>();
+            data = await this.client.request
+                .get(url, { timeout: { request: 5_000 } })
+                .json<LyricsAPIResult<false>>();
         } catch {
             // Primary API failed, try fallback
         }
@@ -64,15 +65,19 @@ export class LyricsCommand extends BaseCommand {
         if (data === null || (data as { error: boolean }).error) {
             try {
                 // Clean up the song title for better search results
-                const cleanSong = song.replaceAll(/\(.*?\)|\[.*?\]|official|video|audio|lyrics|hd|hq|mv/giu, "").trim();
+                const cleanSong = song
+                    .replaceAll(/\(.*?\)|\[.*?\]|official|video|audio|lyrics|hd|hq|mv/giu, "")
+                    .trim();
                 // Try to extract artist and title from common formats like "Artist - Title"
                 const parts = cleanSong.split(/\s*[-–—]\s*/u);
                 const artist = parts.length > 1 ? parts[0].trim() : "";
                 const title = parts.length > 1 ? parts.slice(1).join(" ").trim() : cleanSong;
-                
+
                 const fallbackUrl = `https://api.lyrics.ovh/v1/${encodeURIComponent(artist || title)}/${encodeURIComponent(title)}`;
-                const fallbackData = await this.client.request.get(fallbackUrl, { timeout: { request: 5_000 } }).json<{ lyrics?: string; error?: string }>();
-                
+                const fallbackData = await this.client.request
+                    .get(fallbackUrl, { timeout: { request: 5_000 } })
+                    .json<{ lyrics?: string; error?: string }>();
+
                 if ((fallbackData.lyrics?.length ?? 0) > 0) {
                     data = {
                         lyrics: fallbackData.lyrics,
@@ -82,7 +87,7 @@ export class LyricsCommand extends BaseCommand {
                         album_art: "https://cdn.stegripe.org/images/icon.png",
                         synced: false,
                         url: undefined,
-                        error: false
+                        error: false,
                     } as LyricsAPIResult<false>;
                 }
             } catch {
@@ -96,10 +101,10 @@ export class LyricsCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         i18n.__mf("commands.music.lyrics.noLyrics", {
-                            song: `\`${song}\``
-                        })
-                    )
-                ]
+                            song: `\`${song}\``,
+                        }),
+                    ),
+                ],
             });
             return;
         }
@@ -110,10 +115,10 @@ export class LyricsCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         i18n.__mf("commands.music.lyrics.noLyrics", {
-                            song: `\`${song}\``
-                        })
-                    )
-                ]
+                            song: `\`${song}\``,
+                        }),
+                    ),
+                ],
             });
             return;
         }
@@ -122,7 +127,10 @@ export class LyricsCommand extends BaseCommand {
         const pages: string[] = chunk(data.lyrics ?? "", 2_048);
         const embed = createEmbed("info", pages[0])
             .setAuthor({
-                name: ((data.song?.length ?? 0) > 0) && ((data.artist?.length ?? 0) > 0) ? `${data.song} - ${data.artist}` : song.toUpperCase()
+                name:
+                    (data.song?.length ?? 0) > 0 && (data.artist?.length ?? 0) > 0
+                        ? `${data.song} - ${data.artist}`
+                        : song.toUpperCase(),
             })
             .setThumbnail(albumArt);
         const msg = await ctx.reply({ embeds: [embed] });
@@ -133,11 +141,11 @@ export class LyricsCommand extends BaseCommand {
                 emb.setDescription(page).setFooter({
                     text: i18n.__mf("reusable.pageFooter", {
                         actual: i + 1,
-                        total: pages.length
-                    })
+                        total: pages.length,
+                    }),
                 }),
             embed,
-            pages
+            pages,
         }).start();
     }
 }

@@ -17,26 +17,34 @@ export const filterArgs = {
     echo: "aecho=0.8:0.9:1000:0.3",
     spedup: "aresample=48000,asetrate=48000*1.15",
     slowed: "aresample=48000,asetrate=48000*0.9",
-    reverb: "aecho=0.8:0.88:60:0.4"
-}
+    reverb: "aecho=0.8:0.88:60:0.4",
+};
 
 export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, boolean>>): string[] {
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
     return [
-        "-loglevel", "0",
-        "-ar", "48000",
-        "-ac", "2",
-        "-f", "opus",
-        "-acodec", "libopus",
-        ...(
-            keys.some(x => filters[x] === true)
-                ? [
-                    "-af",
-                    keys.reduce<string[]>((pr, cu) => {
-                        if (filters[cu] === true) pr.push(filterArgs[cu]);
-                        return pr;
-                    }, []).join(",")
-                ] : []
-        )
-    ]
+        "-loglevel",
+        "0",
+        "-ar",
+        "48000",
+        "-ac",
+        "2",
+        "-f",
+        "opus",
+        "-acodec",
+        "libopus",
+        ...(keys.some((x) => filters[x] === true)
+            ? [
+                  "-af",
+                  keys
+                      .reduce<string[]>((pr, cu) => {
+                          if (filters[cu] === true) {
+                              pr.push(filterArgs[cu]);
+                          }
+                          return pr;
+                      }, [])
+                      .join(","),
+              ]
+            : []),
+    ];
 }

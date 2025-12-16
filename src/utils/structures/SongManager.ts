@@ -1,12 +1,14 @@
-import type { GuildMember, Snowflake} from "discord.js";
-import { Collection, SnowflakeUtil } from "discord.js";
-import type { Rawon } from "../../structures/Rawon.js";
-import type { Song, QueueSong } from "../../typings/index.js";
+import { Collection, type GuildMember, type Snowflake, SnowflakeUtil } from "discord.js";
+import { type Rawon } from "../../structures/Rawon.js";
+import { type QueueSong, type Song } from "../../typings/index.js";
 
 export class SongManager extends Collection<Snowflake, QueueSong> {
     private id = 0;
 
-    public constructor(public readonly client: Rawon, public readonly guild: GuildMember["guild"]) {
+    public constructor(
+        public readonly client: Rawon,
+        public readonly guild: GuildMember["guild"],
+    ) {
         super();
     }
 
@@ -16,7 +18,7 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
             index: this.id++,
             key,
             requester,
-            song
+            song,
         };
 
         this.set(key, data);
@@ -28,9 +30,9 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
             index,
             key,
             requester,
-            song
+            song,
         };
-        
+
         // Update internal id counter to be after the highest restored index
         if (index >= this.id) {
             this.id = index + 1;
@@ -43,7 +45,7 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
         (this.client as Rawon | undefined)?.debugLog.logData(
             "info",
             "SONG_MANAGER",
-            `New value added to ${this.guild.name}(${this.guild.id}) song manager. Key: ${key}`
+            `New value added to ${this.guild.name}(${this.guild.id}) song manager. Key: ${key}`,
         );
         const result = super.set(key, data);
         void this.saveQueueState();
@@ -54,7 +56,7 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
         (this.client as Rawon | undefined)?.debugLog.logData(
             "info",
             "SONG_MANAGER",
-            `Value ${key} deleted from ${this.guild.name}(${this.guild.id}) song manager.`
+            `Value ${key} deleted from ${this.guild.name}(${this.guild.id}) song manager.`,
         );
         const result = super.delete(key);
         void this.saveQueueState();

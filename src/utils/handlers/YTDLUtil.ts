@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/filename-case */
-import type { Readable } from "node:stream";
-import type { Rawon } from "../../structures/Rawon.js";
-import type { BasicYoutubeVideoInfo } from "../../typings/index.js";
+import { type Readable } from "node:stream";
+import { type Rawon } from "../../structures/Rawon.js";
+import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
 import ytdl, { exec } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
@@ -18,9 +18,9 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
                 output: "-",
                 quiet: true,
                 format: "bestaudio",
-                limitRate: "300K"
+                limitRate: "300K",
             },
-            { stdio: ["ignore", "pipe", "ignore"] }
+            { stdio: ["ignore", "pipe", "ignore"] },
         );
 
         if (!proc.stdout) {
@@ -28,12 +28,12 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
             return;
         }
 
-        proc.once("error", err => {
+        proc.once("error", (err) => {
             proc.kill("SIGKILL");
             reject(err);
         });
 
-        proc.stdout.once("error", err => {
+        proc.stdout.once("error", (err) => {
             proc.kill("SIGKILL");
             reject(err);
         });
@@ -50,6 +50,6 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
 
 export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
     return ytdl(url, {
-        dumpJson: true
+        dumpJson: true,
     });
 }
