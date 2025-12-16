@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers";
 import { AudioPlayerPlayingState } from "@discordjs/voice";
 import { ApplicationCommandType, BitFieldResolvable, ButtonInteraction, Interaction, Message, MessageFlags, PermissionsBitField, PermissionsString, TextChannel } from "discord.js";
 import i18n from "../config/index.js";
@@ -167,12 +168,26 @@ export class InteractionCreateEvent extends BaseEvent {
                         flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)]
                     });
+                    setTimeout(async () => {
+                        try {
+                            await interaction.deleteReply();
+                        } catch {
+                            // ignore error
+                        }
+                    }, 30_000);
                 } else {
                     queue.playing = true;
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)]
                     });
+                    setTimeout(async () => {
+                        try {
+                            await interaction.deleteReply();
+                        } catch {
+                            // ignore error
+                        }
+                    }, 30_000);
                 }
                 break;
             }
