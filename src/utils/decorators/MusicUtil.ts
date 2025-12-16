@@ -66,8 +66,16 @@ export const useRequestChannel = createCmdExecuteDecorator(ctx => {
     const requestChannel = (ctx.guild.client).requestChannelManager.getRequestChannel(ctx.guild);
     if (requestChannel === null) return true;
     
-    // If already in the request channel, allow the command
-    if (ctx.channel?.id === requestChannel.id) return true;
+    // If already in the request channel and using interaction (slash command), allow
+    if (ctx.channel?.id === requestChannel.id && ctx.isInteraction()) return true;
+    
+    // If in request channel but using prefix command, block it (should type song title directly)
+    if (ctx.channel?.id === requestChannel.id && !ctx.isInteraction()) {
+        void ctx.reply({
+            embeds: [createEmbed("info", `🎵 **|** ${i18n.__("utils.musicDecorator.useRequestChannelDirect")}`)]
+        });
+        return false;
+    }
     
     // Redirect to request channel
     void ctx.reply({

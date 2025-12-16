@@ -166,16 +166,20 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 if (queue.playing) {
                     queue.playing = false;
-                    await interaction.reply({
+                    const reply = await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)]
+                        embeds: [createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`)],
+                        withResponse: true
                     });
+                    setTimeout(() => reply.resource?.message?.delete().catch(() => null), 30_000);
                 } else {
                     queue.playing = true;
-                    await interaction.reply({
+                    const reply = await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)]
+                        embeds: [createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`)],
+                        withResponse: true
                     });
+                    setTimeout(() => reply.resource?.message?.delete().catch(() => null), 30_000);
                 }
                 break;
             }

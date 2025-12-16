@@ -289,6 +289,7 @@
             "noQueue": "Nothing is being played.",
             "sameVC": "You need to be in the same voice channel as mine.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
+            "useRequestChannelDirect": "Just type the song title or link directly in this channel to play music.",
             "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
             "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
         }
