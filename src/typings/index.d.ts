@@ -115,6 +115,13 @@ export type QueueSong = {
     key: string;
 }
 
+export type SavedQueueSong = {
+    requesterId: string;
+    index: number;
+    song: Song;
+    key: string;
+}
+
 export type LoopMode = "OFF" | "QUEUE" | "SONG";
 
 export type LyricsAPIResult<E extends boolean> = {
@@ -193,6 +200,12 @@ export type GuildData = {
         shuffle: boolean;
         volume: number;
         filters: Record<string, boolean>;
+    };
+    queueState?: {
+        textChannelId: string;
+        voiceChannelId: string;
+        songs: SavedQueueSong[];
+        currentSongKey: string | null;
     };
 }
 
