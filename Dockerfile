@@ -34,7 +34,7 @@ RUN apk add --no-cache ffmpeg python3 && ln -sf python3 /usr/bin/python
 COPY --from=build-stage /tmp/build/package.json .
 COPY --from=build-stage /tmp/build/node_modules ./node_modules
 COPY --from=build-stage /tmp/build/dist ./dist
-COPY --from=build-stage /tmp/build/yt-dlp-utils ./yt-dlp-utils
+COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
 
