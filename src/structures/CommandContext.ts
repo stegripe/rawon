@@ -88,7 +88,7 @@ export class CommandContext {
         }
         if (this.isInteraction()) {
             (options as InteractionReplyOptions).withResponse = true;
-            // eslint-disable-next-line typescript/no-unsafe-argument -- Dynamic method call with complex union types
+            // eslint-disable-next-line typescript/no-unsafe-argument
             const msg = (await (this.context as CommandInteraction)[type](options as any)) as Message;
             const channel = this.context.channel;
             const res = await channel?.messages.fetch(msg.id).catch(() => null);
