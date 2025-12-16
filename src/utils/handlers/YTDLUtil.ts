@@ -7,7 +7,7 @@ import type { BasicYoutubeVideoInfo } from "../../typings/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
 type PldlStreamFn = (url: string, options: { discordPlayerCompatibility: boolean }) => Promise<{ stream: Readable }>;
-type VideoBasicInfoFn = (url: string) => Promise<{ video_details: { durationInSec: number; id: string | null; thumbnails: unknown[]; title: string | null; url: string } }>;
+type VideoBasicInfoFn = (url: string) => Promise<{ video_details: { durationInSec: number; id: string | null; thumbnails: unknown[]; title: string | null; url: string | undefined } }>;
 
 let playDlModule: { stream: PldlStreamFn; video_basic_info: VideoBasicInfoFn } | null = null;
 let playDlImportError: Error | null = null;
@@ -83,12 +83,18 @@ export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
             throw new Error(errorMessage);
         }
         const rawPlayDlVideoInfo = await playDlModule.video_basic_info(url);
+        const videoId = rawPlayDlVideoInfo.video_details.id;
+        // Ensure we always have a valid URL - construct from video ID if url is missing
+        let videoUrl = rawPlayDlVideoInfo.video_details.url;
+        if (videoUrl === undefined || videoUrl === null || videoUrl === "") {
+            videoUrl = videoId !== null && videoId !== "" ? `https://www.youtube.com/watch?v=${videoId}` : url;
+        }
         return {
             duration: rawPlayDlVideoInfo.video_details.durationInSec * 1_000,
-            id: rawPlayDlVideoInfo.video_details.id ?? "",
+            id: videoId ?? "",
             thumbnails: rawPlayDlVideoInfo.video_details.thumbnails,
             title: rawPlayDlVideoInfo.video_details.title ?? "",
-            url: rawPlayDlVideoInfo.video_details.url
+            url: videoUrl
         };
     }
     return ytdl(url, {
