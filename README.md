@@ -40,11 +40,7 @@ pnpm start
 
 ### Using Docker Compose (Recommended)
 1. Create a `.env` file with your configuration (copy from `.env.example`)
-2. Create an empty `data.json` file for persistence:
-```sh
-touch data.json
-```
-3. Start the bot:
+2. Start the bot:
 ```sh
 docker compose up -d
 ```
@@ -58,11 +54,12 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - rawon:/app/scripts
-      - ./data.json:/app/data.json
+      - rawon-scripts:/app/scripts
+      - rawon-data:/app/data.json
 
 volumes:
-  rawon:
+  rawon-scripts:
+  rawon-data:
 ```
 
 ### Using Docker Run
@@ -70,8 +67,8 @@ volumes:
 docker run -d \
   --name rawon-bot \
   --env-file .env \
-  -v rawon:/app/scripts \
-  -v ./data.json:/app/data.json \
+  -v rawon-scripts:/app/scripts \
+  -v rawon-data:/app/data.json \
   --restart unless-stopped \
   ghcr.io/stegripe/rawon:latest
 ```
