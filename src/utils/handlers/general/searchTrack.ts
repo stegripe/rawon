@@ -131,7 +131,9 @@ export async function searchTrack(
                                         },
                                     ];
                                 }
-                            } catch {}
+                            } catch {
+                                // Ignore errors
+                            }
                         }
                         break;
                     }
@@ -418,7 +420,9 @@ export async function searchTrack(
                         }),
                     );
                     result.items = tracks;
-                } catch {}
+                } catch {
+                    // Ignore errors
+                }
             }
         }
     }

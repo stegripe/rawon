@@ -215,7 +215,9 @@ export class MessageCreateEvent extends BaseEvent {
                 void (async () => {
                     try {
                         await msg.delete();
-                    } catch {}
+                    } catch {
+                        // Ignore errors
+                    }
                 })();
             }, 5_000);
         })();

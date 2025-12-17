@@ -73,7 +73,9 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
                     ),
                 ],
             });
-        } catch {}
+        } catch {
+            // Ignore errors
+        }
         return false;
     }
 

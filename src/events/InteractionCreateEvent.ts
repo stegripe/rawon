@@ -201,7 +201,9 @@ export class InteractionCreateEvent extends BaseEvent {
                     setTimeout(async () => {
                         try {
                             await interaction.deleteReply();
-                        } catch {}
+                        } catch {
+                            // Ignore errors
+                        }
                     }, 30_000);
                 } else {
                     queue.playing = true;
@@ -214,7 +216,9 @@ export class InteractionCreateEvent extends BaseEvent {
                     setTimeout(async () => {
                         try {
                             await interaction.deleteReply();
-                        } catch {}
+                        } catch {
+                            // Ignore errors
+                        }
                     }, 30_000);
                 }
                 break;
@@ -523,7 +527,9 @@ export class InteractionCreateEvent extends BaseEvent {
                                 embeds: [embed],
                                 components: [],
                             });
-                        } catch {}
+                        } catch {
+                            // Ignore errors
+                        }
                     });
                 }
                 break;

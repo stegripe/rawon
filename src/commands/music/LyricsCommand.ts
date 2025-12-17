@@ -58,7 +58,9 @@ export class LyricsCommand extends BaseCommand {
             data = await this.client.request
                 .get(url, { timeout: { request: 5_000 } })
                 .json<LyricsAPIResult<false>>();
-        } catch {}
+        } catch {
+            // Ignore errors and try fallbacks
+        }
 
         if (data === null || (data as { error: boolean }).error) {
             try {
@@ -85,7 +87,9 @@ export class LyricsCommand extends BaseCommand {
                         error: false,
                     } as LyricsAPIResult<false>;
                 }
-            } catch {}
+            } catch {
+                // Ignore errors
+            }
         }
 
         if (data === null || (data as { error: boolean }).error) {
