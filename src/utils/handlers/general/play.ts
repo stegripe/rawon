@@ -77,7 +77,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     const stream = new prism.FFmpeg({
         args: ffmpegArgs(queue.filters),
     });
-    await getStream(queue.client, song.song.url).then((x) =>
+    await getStream(queue.client, song.song.url, song.song.isLive).then((x) =>
         x.pipe(stream as unknown as NodeJS.WritableStream),
     );
 

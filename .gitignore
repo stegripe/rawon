@@ -66,5 +66,5 @@ dist
 .tern-port
 
 data.json
-scripts/
+cache/
 package-lock.json

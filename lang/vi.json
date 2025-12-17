@@ -101,7 +101,8 @@
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
                 "disableButton": "Các nút trước đó không còn hoạt động và bị loại bỏ.",
-                "emptyQueue": "Hàng đợi trống."
+                "emptyQueue": "Hàng đợi trống.",
+                "live": "TRỰC TIẾP"
             },
             "pause": {
                 "alreadyPause": "Trình phát nhạc đã bị tạm dừng.",

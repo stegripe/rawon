@@ -45,9 +45,17 @@ export class NowPlayingCommand extends BaseCommand {
             ).setThumbnail(song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png");
 
             const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
+            let progressLine: string;
+            if (song?.isLive === true) {
+                progressLine = `🔴 **\`${i18n.__("commands.music.nowplaying.live")}\`**`;
+            } else if (song) {
+                progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`;
+            } else {
+                progressLine = "";
+            }
+
             embed.data.description += song
-                ? `**[${song.title}](${song.url})**\n` +
-                  `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`
+                ? `**[${song.title}](${song.url})**\n${progressLine}`
                 : i18n.__("commands.music.nowplaying.emptyQueue");
 
             return embed;

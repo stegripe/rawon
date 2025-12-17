@@ -1,4 +1,6 @@
+import { existsSync, mkdirSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
 import { OperationManager } from "./OperationManager.js";
 
 export class JSONDataManager<T> {
@@ -6,7 +8,15 @@ export class JSONDataManager<T> {
     private _data: T | null = null;
 
     public constructor(public readonly fileDir: string) {
+        this.ensureDirectory();
         void this.load();
+    }
+
+    private ensureDirectory(): void {
+        const dir = path.dirname(this.fileDir);
+        if (!existsSync(dir)) {
+            mkdirSync(dir, { recursive: true });
+        }
     }
 
     public get data(): T | null {

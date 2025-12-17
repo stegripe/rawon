@@ -27,6 +27,7 @@ export type BasicYoutubeVideoInfo = {
     title: string;
     url: string;
     id: string;
+    is_live?: boolean;
 };
 
 export type SearchTrackResult = {
@@ -114,6 +115,7 @@ export type Song = {
     title: string;
     url: string;
     id: string;
+    isLive?: boolean;
 };
 
 export type QueueSong = {
