@@ -1,4 +1,4 @@
-FROM ghcr.io/hazmi35/node:24-dev-alpine as build-stage
+FROM node:24-alpine as build-stage
 
 # Prepare pnpm with corepack (experimental feature)
 RUN corepack enable && corepack prepare pnpm@latest
@@ -22,7 +22,7 @@ RUN pnpm run build
 RUN pnpm prune --production
 
 # Get ready for production
-FROM ghcr.io/hazmi35/node:24-alpine
+FROM node:24-alpine
 
 LABEL name "rawon"
 LABEL maintainer "Stegripe Development <support@stegripe.org>"
@@ -39,7 +39,7 @@ COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
 
 # Create empty data.json for persistence volume mount
-RUN echo '{}' > /app/data.json
+RUN echo '{}' > /app/cache/data.json
 
 # Additional Environment Variables
 ENV NODE_ENV production

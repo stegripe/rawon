@@ -14,7 +14,7 @@ services:
     networks:
       - net
     volumes:
-      - rawon:/app
+      - rawon:/app/cache
 
 networks:
   net:
