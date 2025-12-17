@@ -8,7 +8,7 @@ x-common-general: &common-general
 services:
   rawon:
     <<: *common-general
-    image: ghcr.io/stegripe/rawon:latest-dev
+    image: ghcr.io/stegripe/rawon:latest
     container_name: rawon-bot
     env_file: .env
     networks:
