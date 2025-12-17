@@ -10,9 +10,6 @@ RUN pnpm install --offline --frozen-lockfile
 
 COPY . .
 
-ARG GIT_COMMIT_HASH=""
-ENV GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
-
 RUN pnpm run build
 
 RUN pnpm prune --production
@@ -34,7 +31,5 @@ COPY --from=build-stage /tmp/build/index.js ./index.js
 RUN echo '{}' > /app/data.json
 
 ENV NODE_ENV production
-ARG GIT_COMMIT_HASH=""
-ENV GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
 
 CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
