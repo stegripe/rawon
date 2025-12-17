@@ -10,7 +10,7 @@ export function getMaxResThumbnail(url: string | undefined | null): string {
         return url;
     }
 
-    const validHosts = "img.youtube.com";
+    const validHosts = ["img.youtube.com", "i.ytimg.com"];
     if (!validHosts.includes(parsedUrl.hostname)) {
         return url;
     }
