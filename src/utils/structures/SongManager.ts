@@ -33,7 +33,6 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
             song,
         };
 
-        // Update internal id counter to be after the highest restored index
         if (index >= this.id) {
             this.id = index + 1;
         }

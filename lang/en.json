@@ -256,6 +256,7 @@
         "paused": "Paused the music.",
         "resumed": "Resumed the music.",
         "skipped": "Skipped the current song.",
+        "removed": "Removed **{song}** from the queue and skipped.",
         "stopped": "Stopped the music and cleared the queue.",
         "loopChanged": "Loop mode changed to **{mode}**.",
         "shuffleChanged": "Shuffle mode is now **{state}**.",

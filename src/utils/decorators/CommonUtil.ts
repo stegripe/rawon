@@ -60,7 +60,6 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
             return "Unknown";
         });
 
-        // Try to DM the user since we can't send to the channel
         try {
             await ctx.author.send({
                 embeds: [
@@ -75,7 +74,7 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
                 ],
             });
         } catch {
-            // Can't DM either, silently fail
+            // Ignore errors
         }
         return false;
     }

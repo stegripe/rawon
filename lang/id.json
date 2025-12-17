@@ -284,6 +284,7 @@
         "paused": "Musik dijeda.",
         "resumed": "Melanjutkan musik.",
         "skipped": "Melewati lagu saat ini.",
+        "removed": "Menghapus **{song}** dari antrian dan melewati.",
         "stopped": "Menghentikan musik dan mengosongkan antrian.",
         "loopChanged": "Mode ulangi diubah ke **{mode}**.",
         "shuffleChanged": "Mode acak sekarang **{state}**.",

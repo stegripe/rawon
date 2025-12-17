@@ -1,4 +1,3 @@
-/* eslint-disable node/no-sync */
 import { execSync } from "node:child_process";
 import { existsSync, rmSync } from "node:fs";
 import nodePath from "node:path";

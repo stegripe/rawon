@@ -16,7 +16,6 @@ export class EventsLoader {
                 .then(async (events) => {
                     this.client.logger.info(`Loading ${events.length} events...`);
                     for (const file of events) {
-                        // eslint-disable-next-line no-await-in-loop
                         const event = await this.client.utils.import<Event>(
                             pathStringToURLString(nodePath.resolve(this.path, file)),
                             this.client,

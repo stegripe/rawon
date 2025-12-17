@@ -206,7 +206,6 @@ export class RequestChannelManager {
         const queue = guild.queue;
         const isPlaying = queue?.playing ?? false;
 
-        // Button shows opposite action: if playing, show pause button; if paused, show play button
         const pauseResumeEmoji = isPlaying ? "⏸️" : "▶️";
 
         const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -235,6 +234,7 @@ export class RequestChannelManager {
                 .setCustomId("RC_VOL_UP")
                 .setEmoji("🔊")
                 .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder().setCustomId("RC_REMOVE").setEmoji("🗑️").setStyle(ButtonStyle.Danger),
             new ButtonBuilder()
                 .setCustomId("RC_QUEUE_LIST")
                 .setEmoji("📋")

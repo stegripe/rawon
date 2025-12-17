@@ -11,7 +11,6 @@ function extractVideoId(url: URL): string | null {
     if (/youtu\.be/gu.test(url.hostname)) {
         return url.pathname.replace("/", "");
     }
-    // Handle YouTube Shorts URLs (youtube.com/shorts/{videoId})
     if (url.pathname.startsWith("/shorts/")) {
         return url.pathname.replace("/shorts/", "").split("/")[0];
     }
@@ -133,7 +132,7 @@ export async function searchTrack(
                                     ];
                                 }
                             } catch {
-                                // Both methods failed, result.items will remain empty
+                                // Ignore errors
                             }
                         }
                         break;
@@ -356,7 +355,6 @@ export async function searchTrack(
 
         if (source === "soundcloud") {
             const searchRes = await client.soundcloud.tracks.search({
-                // eslint-disable-next-line id-length
                 q: query,
             });
             const tracks = searchRes.collection.map(
@@ -372,7 +370,6 @@ export async function searchTrack(
             result.items = tracks;
         } else {
             try {
-                // Try YouTube Music first to prioritize music content
                 const musicSearchRes = await youtubeMusic.search(query, "song");
                 if (musicSearchRes.items.length > 0) {
                     const tracks = musicSearchRes.items.map(
@@ -390,7 +387,6 @@ export async function searchTrack(
                     );
                     result.items = tracks;
                 } else {
-                    // Fallback to regular YouTube search if no music results
                     const searchRes = await youtube.search(query, { type: "video" });
                     const tracks = searchRes.items.map(
                         (track): Song => ({
@@ -408,7 +404,6 @@ export async function searchTrack(
                     result.items = tracks;
                 }
             } catch {
-                // YouTube Music search failed, try regular YouTube
                 try {
                     const searchRes = await youtube.search(query, { type: "video" });
                     const tracks = searchRes.items.map(
@@ -426,7 +421,7 @@ export async function searchTrack(
                     );
                     result.items = tracks;
                 } catch {
-                    // Both searches failed, result.items will remain empty
+                    // Ignore errors
                 }
             }
         }

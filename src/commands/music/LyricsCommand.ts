@@ -59,16 +59,14 @@ export class LyricsCommand extends BaseCommand {
                 .get(url, { timeout: { request: 5_000 } })
                 .json<LyricsAPIResult<false>>();
         } catch {
-            // Primary API failed, try fallback
+            // Ignore errors and try fallbacks
         }
 
         if (data === null || (data as { error: boolean }).error) {
             try {
-                // Clean up the song title for better search results
                 const cleanSong = song
                     .replaceAll(/\(.*?\)|\[.*?\]|official|video|audio|lyrics|hd|hq|mv/giu, "")
                     .trim();
-                // Try to extract artist and title from common formats like "Artist - Title"
                 const parts = cleanSong.split(/\s*[-–—]\s*/u);
                 const artist = parts.length > 1 ? parts[0].trim() : "";
                 const title = parts.length > 1 ? parts.slice(1).join(" ").trim() : cleanSong;
@@ -83,7 +81,6 @@ export class LyricsCommand extends BaseCommand {
                         lyrics: fallbackData.lyrics,
                         song: title,
                         artist,
-                        // eslint-disable-next-line typescript/naming-convention
                         album_art: "https://cdn.stegripe.org/images/icon.png",
                         synced: false,
                         url: undefined,
@@ -91,7 +88,7 @@ export class LyricsCommand extends BaseCommand {
                     } as LyricsAPIResult<false>;
                 }
             } catch {
-                // Both APIs failed
+                // Ignore errors
             }
         }
 

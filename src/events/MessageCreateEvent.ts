@@ -1,4 +1,3 @@
-/* eslint-disable prefer-named-capture-group */
 import { setTimeout } from "node:timers";
 import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import {
@@ -217,7 +216,7 @@ export class MessageCreateEvent extends BaseEvent {
                     try {
                         await msg.delete();
                     } catch {
-                        // Message might already be deleted
+                        // Ignore errors
                     }
                 })();
             }, 5_000);

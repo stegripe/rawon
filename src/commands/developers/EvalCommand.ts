@@ -1,7 +1,3 @@
-/* eslint-disable typescript/no-unused-vars */
-/* eslint-disable unicorn/catch-error-name */
-/* eslint-disable prefer-named-capture-group */
-/* eslint-disable no-eval */
 import process from "node:process";
 import { inspect } from "node:util";
 import i18n from "../../config/index.js";
