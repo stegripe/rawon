@@ -71,7 +71,6 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         return true;
     }
 
-    // Allow requests that come from search command
     if (ctx.additionalArgs.get("fromSearch") !== undefined) {
         return true;
     }

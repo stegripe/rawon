@@ -63,7 +63,6 @@ export async function handleVideos(
         const embed = createEmbed("info", opening);
         const msg = await ctx.reply({ embeds: [embed] }, true);
 
-        // Auto-delete in request channel
         if (inRequestChannel && msg) {
             autoDeleteMessage(msg);
         }

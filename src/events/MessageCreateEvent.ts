@@ -127,9 +127,6 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
-        // Skip messages that look like search selection inputs (numbers 1-10, or "c"/"cancel")
-        // These are handled by the search command's awaitMessages
-        // Only skip numbers 1-10 to allow song titles with numbers like "2002"
         const isSearchSelection =
             /^(?:[1-9]|10)(?:\s*,\s*(?:[1-9]|10))*$/u.test(query) ||
             ["c", "cancel"].includes(query.toLowerCase());
