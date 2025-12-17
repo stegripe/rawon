@@ -38,6 +38,9 @@ COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
 
+# Create necessary directory for cache
+RUN mkdir -p /app/cache
+
 # Create empty data.json for persistence volume mount
 RUN echo '{}' > /app/cache/data.json
 
