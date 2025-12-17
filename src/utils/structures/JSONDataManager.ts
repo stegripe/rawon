@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 import { readFile, writeFile } from "node:fs/promises";
 import { OperationManager } from "./OperationManager.js";
 

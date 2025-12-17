@@ -162,7 +162,6 @@ export class ServerQueue {
             })
             .on("error", (err) => {
                 (async () => {
-                    // eslint-disable-next-line promise/no-promise-in-callback
                     await this.textChannel
                         .send({
                             embeds: [

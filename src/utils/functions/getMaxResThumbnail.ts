@@ -10,13 +10,15 @@ export function getMaxResThumbnail(url: string | undefined | null): string {
         return url;
     }
 
-    const validHosts = ["i.ytimg.com", "img.youtube.com"];
+    const validHosts = "img.youtube.com";
     if (!validHosts.includes(parsedUrl.hostname)) {
         return url;
     }
 
-    return url.replace(
-        /\/(default|mqdefault|hqdefault|sddefault|hq720)\.(jpg|jpeg|webp|png)/gu,
-        "/maxresdefault.$2",
-    );
+    const videoIdMatch = parsedUrl.pathname.match(/\/vi\/([^/]+)/u);
+    if (!videoIdMatch?.[1]) {
+        return url;
+    }
+
+    return `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`;
 }

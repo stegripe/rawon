@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 export const escapedHTMLElements: Record<string, string> = {
     '"': "&quot;",
     "&": "&amp;",

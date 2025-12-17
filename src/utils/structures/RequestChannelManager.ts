@@ -234,6 +234,7 @@ export class RequestChannelManager {
                 .setCustomId("RC_VOL_UP")
                 .setEmoji("🔊")
                 .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder().setCustomId("RC_REMOVE").setEmoji("🗑️").setStyle(ButtonStyle.Danger),
             new ButtonBuilder()
                 .setCustomId("RC_QUEUE_LIST")
                 .setEmoji("📋")

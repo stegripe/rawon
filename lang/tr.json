@@ -284,6 +284,7 @@
         "paused": "Müzik duraklatıldı.",
         "resumed": "Müzik devam ettiriliyor.",
         "skipped": "Mevcut şarkı atlandı.",
+        "removed": "**{song}** kuyruktan kaldırıldı ve atlandı.",
         "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
         "loopChanged": "Döngü modu **{mode}** olarak değiştirildi.",
         "shuffleChanged": "Karıştırma modu şimdi **{state}**.",

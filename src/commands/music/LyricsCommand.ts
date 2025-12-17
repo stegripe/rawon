@@ -80,7 +80,6 @@ export class LyricsCommand extends BaseCommand {
                         lyrics: fallbackData.lyrics,
                         song: title,
                         artist,
-                        // eslint-disable-next-line typescript/naming-convention
                         album_art: "https://cdn.stegripe.org/images/icon.png",
                         synced: false,
                         url: undefined,

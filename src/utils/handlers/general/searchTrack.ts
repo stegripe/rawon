@@ -354,7 +354,6 @@ export async function searchTrack(
 
         if (source === "soundcloud") {
             const searchRes = await client.soundcloud.tracks.search({
-                // eslint-disable-next-line id-length
                 q: query,
             });
             const tracks = searchRes.collection.map(

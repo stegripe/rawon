@@ -1,4 +1,3 @@
-/* eslint-disable prefer-named-capture-group */
 import { setTimeout } from "node:timers";
 import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import {

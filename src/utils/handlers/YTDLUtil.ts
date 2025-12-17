@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 import { type Readable } from "node:stream";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
