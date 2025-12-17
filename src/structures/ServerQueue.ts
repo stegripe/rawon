@@ -1,4 +1,4 @@
-import { clearInterval, clearTimeout, setInterval } from "node:timers";
+import { clearInterval, clearTimeout, setInterval, setTimeout } from "node:timers";
 import {
     type AudioPlayer,
     type AudioPlayerPlayingState,
@@ -162,7 +162,12 @@ export class ServerQueue {
             })
             .on("error", (err) => {
                 (async () => {
-                    await this.textChannel
+                    const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                        this.textChannel.guild,
+                        this.textChannel.id,
+                    );
+
+                    const errorMsg = await this.textChannel
                         .send({
                             embeds: [
                                 createEmbed(
@@ -174,9 +179,17 @@ export class ServerQueue {
                                 ),
                             ],
                         })
-                        .catch((error: unknown) =>
-                            this.client.logger.error("PLAY_CMD_ERR:", error),
-                        );
+                        .catch((error: unknown) => {
+                            this.client.logger.error("PLAY_CMD_ERR:", error);
+                            return null;
+                        });
+
+                    // Auto-delete error message in request channel after 10 seconds
+                    if (isRequestChannel && errorMsg) {
+                        setTimeout(() => {
+                            errorMsg.delete().catch(() => null);
+                        }, 10_000);
+                    }
                 })();
                 this.destroy();
                 this.client.logger.error("PLAY_ERR:", err);

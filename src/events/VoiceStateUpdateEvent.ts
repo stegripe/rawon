@@ -135,6 +135,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 return;
             }
             queue.skipVoters = [];
+            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                newState.guild,
+                queue.textChannel.id,
+            );
             if (oldVc?.rtcRegion !== newVc?.rtcRegion) {
                 const msg = await queue.textChannel.send({
                     embeds: [
@@ -144,6 +148,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         ),
                     ],
                 });
+
                 queue.connection?.configureNetworking();
 
                 try {
@@ -161,6 +166,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             ),
                         ],
                     });
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 10_000);
+                    }
                 } catch {
                     queue.destroy();
                     this.client.logger.info(
@@ -179,6 +189,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             ),
                         ],
                     });
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 10_000);
+                    }
                     return;
                 }
             }
@@ -199,7 +214,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
                         } Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`,
                     );
-                    await queue.textChannel
+                    const errorMsg = await queue.textChannel
                         .send({
                             embeds: [
                                 createEmbed(
@@ -211,7 +226,16 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         })
                         .catch((error: unknown) => {
                             this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
+                            return null;
                         });
+                    if (isRequestChannel) {
+                        void msg.delete().catch(() => null);
+                        if (errorMsg) {
+                            setTimeout(() => {
+                                void errorMsg.delete().catch(() => null);
+                            }, 10_000);
+                        }
+                    }
                     return;
                 }
 
@@ -224,6 +248,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         ),
                     ],
                 });
+                if (isRequestChannel) {
+                    setTimeout(() => {
+                        void msg.delete().catch(() => null);
+                    }, 10_000);
+                }
             }
             if (newVcMembers.size === 0 && queue.timeout === null && !queue.idle) {
                 this.timeout(newVcMembers, queue, newState);
