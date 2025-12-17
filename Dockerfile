@@ -28,6 +28,8 @@ COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
 
+RUN mkdir -p /app/cache
+
 RUN echo '{}' > /app/cache/data.json
 
 ENV NODE_ENV production
