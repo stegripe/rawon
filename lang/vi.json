@@ -262,7 +262,7 @@
             "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
             "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
             "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc.",
-            "useRequestChannelDirect": "Chỉ cần nhập tên bài hát hoặc liên kết trực tiếp vào kênh này để phát nhạc."
+            "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp."
         }
     },
     "requestChannel": {

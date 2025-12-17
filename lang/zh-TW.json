@@ -262,7 +262,7 @@
             "validVCJoinable": "對不起，我不能**`連接`**到你的語音頻道，請確保我有正確的權限。",
             "validVCPermission": "對不起，我不能在這個語音頻道**`說話`**;請確保我有正確的權限。",
             "useRequestChannel": "請使用點歌頻道 {channel} 來執行音樂指令。",
-            "useRequestChannelDirect": "只需在此頻道直接輸入歌曲名稱或連結即可播放音樂。"
+            "useRequestChannelDirect": "此命令在請求頻道中已禁用。請使用播放器按鈕或直接輸入歌曲名稱/連結。"
         }
     },
     "requestChannel": {

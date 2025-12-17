@@ -262,7 +262,7 @@
             "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
             "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。",
             "useRequestChannel": "音楽コマンドにはリクエストチャンネル {channel} を使用してください。",
-            "useRequestChannelDirect": "このチャンネルで曲名またはリンクを直接入力するだけで音楽を再生できます。"
+            "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。プレイヤーのボタンを使用するか、曲名/リンクを直接入力してください。"
         }
     },
     "requestChannel": {

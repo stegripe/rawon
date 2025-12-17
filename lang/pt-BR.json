@@ -262,7 +262,7 @@
             "validVCJoinable": "Desculpe, mas não posso me **`CONECTAR`** ao seu canal de voz, certifique-se de que eu tenho as permissões necessárias.",
             "validVCPermission": "Desculpe, mas eu não posso **`FALAR`** nesse canal de voz; certifique-se de que eu tenho as permissões necessárias.",
             "useRequestChannel": "Por favor, use o canal de pedidos {channel} para comandos de música.",
-            "useRequestChannelDirect": "Basta digitar o título da música ou o link diretamente neste canal para tocar música."
+            "useRequestChannelDirect": "Este comando está desativado no canal de solicitações. Por favor, use os botões do player ou digite o título/link da música diretamente."
         }
     },
     "requestChannel": {
