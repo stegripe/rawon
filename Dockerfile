@@ -18,6 +18,9 @@ COPY . .
 # Build TypeScript Project
 RUN pnpm run build
 
+# Generate commit hash file for production use
+RUN git rev-parse --short HEAD > commit-hash.txt 2>/dev/null || echo "???" > commit-hash.txt
+
 # Prune devDependencies
 RUN pnpm prune --production
 
@@ -37,6 +40,7 @@ COPY --from=build-stage /tmp/build/dist ./dist
 COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
+COPY --from=build-stage /tmp/build/commit-hash.txt ./commit-hash.txt
 
 # Create necessary directory for cache
 RUN mkdir -p /app/cache

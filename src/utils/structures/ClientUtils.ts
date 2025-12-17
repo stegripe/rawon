@@ -1,11 +1,16 @@
 import { Buffer } from "node:buffer";
 import { execSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import nodePath from "node:path";
+import process from "node:process";
 import { ChannelType, type Guild, type Role } from "discord.js";
 import prism from "prism-media";
 import { type Rawon } from "../../structures/Rawon.js";
 
 const { FFmpeg } = prism;
+
+// Fallback value when commit hash cannot be determined
+const UNKNOWN_COMMIT_HASH = "???";
 
 export class ClientUtils {
     public constructor(public readonly client: Rawon) {}
@@ -145,10 +150,23 @@ export class ClientUtils {
 
     public getCommitHash(ref: string, short = true): string {
         try {
+            // First try to read from commit-hash.txt (for Docker/production)
+            // Use process.cwd() to get the project root directory
+            const commitHashPath = nodePath.join(process.cwd(), "commit-hash.txt");
+            try {
+                const hash = readFileSync(commitHashPath, "utf-8").trim();
+                if (hash && hash !== UNKNOWN_COMMIT_HASH) {
+                    return hash;
+                }
+            } catch {
+                // File doesn't exist, fall through to git command
+            }
+
+            // Fall back to git command (for development)
             const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
             return res.toString().trim();
         } catch {
-            return "???";
+            return UNKNOWN_COMMIT_HASH;
         }
     }
 }

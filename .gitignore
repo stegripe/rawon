@@ -100,3 +100,6 @@ dist
 data.json
 cache/
 package-lock.json
+
+# Build-generated files
+commit-hash.txt
