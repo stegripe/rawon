@@ -166,7 +166,7 @@ export class RequestChannelManager {
         if (song) {
             let progressLine: string;
             if (isLive) {
-                progressLine = `🔴 ${i18n.__("requestChannel.live")}`;
+                progressLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
             } else if (duration === 0) {
                 progressLine = `${normalizeTime(curr)} ${createProgressBar(0, 1)} --:--`;
             } else {

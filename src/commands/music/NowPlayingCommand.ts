@@ -47,7 +47,7 @@ export class NowPlayingCommand extends BaseCommand {
             const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
             let progressLine: string;
             if (song?.isLive === true) {
-                progressLine = `🔴 ${i18n.__("commands.music.nowplaying.live")}`;
+                progressLine = `🔴 **\`${i18n.__("commands.music.nowplaying.live")}\`**`;
             } else if (song) {
                 progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`;
             } else {
