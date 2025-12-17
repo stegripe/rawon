@@ -1,4 +1,4 @@
-FROM ghcr.io/hazmi35/node:24-dev-alpine as build-stage
+FROM node:24-alpine as build-stage
 
 RUN corepack enable && corepack prepare pnpm@latest
 
@@ -14,7 +14,7 @@ RUN pnpm run build
 
 RUN pnpm prune --production
 
-FROM ghcr.io/hazmi35/node:24-alpine
+FROM node:24-alpine
 
 LABEL name "rawon"
 LABEL maintainer "Stegripe Development <support@stegripe.org>"
@@ -28,7 +28,7 @@ COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
 
-RUN echo '{}' > /app/data.json
+RUN echo '{}' > /app/cache/data.json
 
 ENV NODE_ENV production
 
