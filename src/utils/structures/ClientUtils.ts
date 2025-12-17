@@ -144,6 +144,11 @@ export class ClientUtils {
     }
 
     public getCommitHash(ref: string, short = true): string {
+        const envCommit = process.env.GIT_COMMIT_HASH;
+        if ((envCommit?.length ?? 0) > 0) {
+            return short ? envCommit!.slice(0, 7) : envCommit!;
+        }
+
         try {
             const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
             return res.toString().trim();

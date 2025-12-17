@@ -161,7 +161,7 @@ export class RequestChannelManager {
             .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
             .setImage(imageUrl ?? requestChannelThumbnail);
 
-        const guildIcon = guild.iconURL({ size: 128 });
+        const guildIcon = guild.iconURL({ size: 2_048 });
         if (guildIcon !== null && guildIcon.length > 0) {
             embed.setThumbnail(guildIcon);
         }
@@ -196,7 +196,7 @@ export class RequestChannelManager {
             { name: i18n.__("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true },
         ]);
         embed.setFooter({
-            text: i18n.__mf("requestChannel.queueFooter", { count: queue.songs.size }),
+            text: i18n.__mf("requestChannel.queueFooter", { count: queue.songs.size.toString() }),
         });
 
         return embed;

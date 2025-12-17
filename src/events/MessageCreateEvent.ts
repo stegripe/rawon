@@ -219,7 +219,7 @@ export class MessageCreateEvent extends BaseEvent {
                         // Ignore errors
                     }
                 })();
-            }, 5_000);
+            }, 60_000);
         })();
     }
 

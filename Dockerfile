@@ -15,6 +15,10 @@ RUN pnpm install --offline --frozen-lockfile
 # Copy Project files
 COPY . .
 
+# Capture git commit hash before build (if available)
+ARG GIT_COMMIT_HASH=""
+ENV GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
+
 # Build TypeScript Project
 RUN pnpm run build
 
@@ -43,6 +47,8 @@ RUN echo '{}' > /app/data.json
 
 # Additional Environment Variables
 ENV NODE_ENV production
+ARG GIT_COMMIT_HASH=""
+ENV GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
 
 # Start the app with node
 CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
