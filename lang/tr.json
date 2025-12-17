@@ -109,7 +109,7 @@
                 "pauseMessage": "Müzik duraklatıldı."
             },
             "play": {
-                "alreadyPlaying": "Müzik zaten {formatted} ses kanalında çalıyor.",
+                "alreadyPlaying": "Müzik zaten {voiceChannel} ses kanalında çalıyor.",
                 "description": "Biraz müzik çalın",
                 "noSongData": "Bu URL'de herhangi bir şarkı verisi yok.",
                 "slashQueryDescription": "Aranacak sorgu",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <pozisyon>"
             },
             "repeat": {
-                "actualMode": "Geçerli tekrar modu {formatted}",
+                "actualMode": "Geçerli tekrar modu {mode}",
                 "description": "Mevcut müziği veya kuyruğu tekrarla",
                 "footer": "Modu değiştirmek için bkz. {prefix}help repeat",
-                "newMode": "Tekrar modu {formatted} olarak ayarlanmıştır",
+                "newMode": "Tekrar modu {mode} olarak ayarlanmıştır",
                 "slashDisable": "Tekrar modunu devre dışı bırak",
                 "slashQueue": "Tekrar modunu ŞARKI KUYRUĞU olarak ayarlayın",
                 "slashSong": "Tekrar modunu ŞARKI olarak ayarlayın",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <sorgu> [kaynak]"
             },
             "shuffle": {
-                "actualState": "Geçerli karıştırma modu {formatted}",
+                "actualState": "Geçerli karıştırma modu {mode}",
                 "description": "Karıştırma özelliği için modu ayarlama",
-                "newState": "Karıştırma modu şimdi {formatted} olarak ayarlandı"
+                "newState": "Karıştırma modu şimdi {state} olarak ayarlandı"
             },
             "skip": {
                 "description": "Müziği atlayın",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Ses düzeyini değiştirmek için, bu komutu kullanırken ses düzeyini girin.",
-                "currentVolume": "Mevcut ses düzeyi {formatted}",
+                "currentVolume": "Mevcut ses düzeyi {volume}",
                 "description": "Medya oynatıcının ses düzeyini değiştir",
-                "newVolume": "Ses seviyesi {formatted} olarak ayarlandı",
-                "plsPause": "Lütfen ses seviyesini {formatted} olarak ayarlamak yerine müziği duraklatın",
+                "newVolume": "Ses seviyesi {volume} olarak ayarlandı",
+                "plsPause": "Lütfen ses seviyesini {volume} olarak ayarlamak yerine müziği duraklatın",
                 "slashDescription": "Yeni ses seviyesi",
                 "usage": "{prefix}volume [yeni değer]",
-                "volumeLimit": "Ses seviyesini {formatted} değerinin üzerine ayarlayamıyorum."
+                "volumeLimit": "Ses seviyesini {maxVol} değerinin üzerine ayarlayamıyorum."
             },
             "requestChannel": {
                 "description": "Müzik için bir istek kanalı ayarla",
@@ -219,16 +219,16 @@
             "message1": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> ve sunucu moderatörleri için kullanılabilir.",
             "message2": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> için kullanılabilir."
         },
-        "createMessage": "Merhaba {author}, benim ön ekim: *{prefix}",
+        "createMessage": "Merhaba {author}, benim ön ekim: {prefix}",
         "cmdLoading": "Yükleniyor...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Bağlantı başarıyla yeniden yapılandırıldı.",
-            "deleteQueue": "{formatted} geçti ve ses kanalına katılan kimse yok, sıra silindi.",
+            "deleteQueue": "{duration} geçti ve ses kanalına katılan kimse yok, sıra silindi.",
             "deleteQueueFooter": "Şarkı Sırası Silindi",
             "disconnectFromVCMessage": "Ses kanalıyla bağlantı kesildi, sıra silindi.",
             "joinStageMessage": "Konuşmacı olarak sahne kanalına başarıyla katıldım.",
             "joiningAsSpeaker": "Sahne kanalına taşındı, Konuşmacı olarak katılmaya çalışıyorum...",
-            "pauseQueue": "Herkes ses kanalından ayrıldı. Kaynakları korumak için sıra duraklatıldı.\nBir sonraki {formatted} içinde ses kanalına kimse katılmazsa, sıra silinecektir.",
+            "pauseQueue": "Herkes ses kanalından ayrıldı. Kaynakları korumak için sıra duraklatıldı.\nBir sonraki {duration} içinde ses kanalına kimse katılmazsa, sıra silinecektir.",
             "pauseQueueFooter": "Şarkı Sırası Durduruldu",
             "reconfigureConnection": "Farklı bir bölgeye sahip bir ses kanalına taşındı, bağlantı yeniden yapılandırılıyor...",
             "resumeQueue": "Birisi ses kanalına katıldı.\n{song} devam ediyor",
@@ -243,15 +243,15 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
+            "botMissingChannelPerms": "{channel} kanalında şu izinlerim eksik: {permissions}"
         },
-        "cooldownMessage": "{author}, lütfen **{timeleft}` kadar bekleyin.",
+        "cooldownMessage": "{author}, lütfen {timeleft} kadar bekleyin.",
         "generalHandler": {
             "errorJoining": "Ses kanalına katılırken hata oluştu, çünkü: {message}",
             "errorPlaying": "Müzik çalmaya çalışırken bir hata oluştu, çünkü: {message}",
             "handleVideoInitial": "Kuyruğa {length} adet yeni şarkı eklendi",
             "leftVC": "Çok uzun süredir aktif olmadığım için ses kanalından ayrıldım.",
-            "queueEnded": "Çalma kuyruğu sona erdi, daha fazla müzik çalmak için {formatted} kullanın.",
+            "queueEnded": "Çalma kuyruğu sona erdi, daha fazla müzik çalmak için {usage} kullanın.",
             "startPlaying": "{song} çalınmaya başladı.",
             "stopPlaying": "{song} durduruldu."
         },

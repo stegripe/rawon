@@ -80,12 +80,12 @@
             "filter": {
                 "availableFilters": "Доступные фильтры",
                 "currentlyUsedFilters": "Используемые в настоящее время фильтры",
-                "currentState": "Состояние фильтра '{filter}': {state}`",
+                "currentState": "Состояние фильтра {filter}: {state}",
                 "description": "Найстройка фильтра песни",
-                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
+                "embedFooter": "Чтобы {opstate} фильтр, используйте {prefix}filter {opstate} {filter}",
                 "filterSet": "Новое состояние фильтра {filter}: {state}",
-                "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
-                "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
+                "slashStateDescription": "{state, select, enable {Включить} other {Выключить}} фильтр песни",
+                "slashStateFilterDescription": "Фильтр песни который будет {state, select, enable {включен} other {выключен}}",
                 "slashStatusDescription": "Проверьте текущий статус фильтров песен",
                 "slashStatusFilterDescription": "Фильтр который вы хотите проверить",
                 "specifyFilter": "Пожалуйста укажите фильтр"
@@ -109,7 +109,7 @@
                 "pauseMessage": "Музыкальный проигрыватель был поставлен на паузу."
             },
             "play": {
-                "alreadyPlaying": "Музыкальный проигрыватель уже активный в канале {formatted}.",
+                "alreadyPlaying": "Музыкальный проигрыватель уже активный в канале {voiceChannel}.",
                 "description": "Сыграйте музыку",
                 "noSongData": "У этого URL нету данных о песне.",
                 "slashQueryDescription": "Запрос для поиска",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <позиции>"
             },
             "repeat": {
-                "actualMode": "Текущий повторный режим: {formatted}",
+                "actualMode": "Текущий повторный режим: {mode}",
                 "description": "Повторить текущую песню или очередь",
                 "footer": "Чтобы поменять режим, смотрите {prefix}help repeat",
-                "newMode": "Режим повтора был установлен на: {formatted}",
+                "newMode": "Режим повтора был установлен на: {mode}",
                 "slashDisable": "Отключить режим повтора",
                 "slashQueue": "Указать режим повтора для ОЧЕРЕДИ",
                 "slashSong": "Указать режим повтора для ПЕСНИ",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <запрос> [источник]"
             },
             "shuffle": {
-                "actualState": "Текущий режим перемешивания: {formatted}",
+                "actualState": "Текущий режим перемешивания: {state}",
                 "description": "Установка режима для функции перемешивания",
-                "newState": "Режим перемешивания теперь установлен на: {formatted}"
+                "newState": "Режим перемешивания теперь установлен на: {state}"
             },
             "skip": {
                 "description": "Пропустить песню",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Чтобы изменить громкость, укажите номер громкости при использовании этой команды.",
-                "currentVolume": "Текущая громкость: {formatted}",
+                "currentVolume": "Текущая громкость: {volume}",
                 "description": "Поменять громкость музыкального проигрывателя",
-                "newVolume": "Громкость была установлена на: {formatted}",
-                "plsPause": "Пожалуйста поставьте музыку на паузу вместо того чтобы устанавливать громкость на {formatted}",
+                "newVolume": "Громкость была установлена на: {volume}",
+                "plsPause": "Пожалуйста поставьте музыку на паузу вместо того чтобы устанавливать громкость на {volume}",
                 "slashDescription": "Новая громкость",
                 "usage": "{prefix}volume [новая громкость]",
-                "volumeLimit": "Я не могу установить громкость выше {formatted}"
+                "volumeLimit": "Я не могу установить громкость выше {maxVol}"
             },
             "requestChannel": {
                 "description": "Настройка канала запросов для музыки",
@@ -219,16 +219,16 @@
             "message1": "Извините, но это взаимодействие предназначено только для <@{user}> и персонала сервера.",
             "message2": "Извините, но это взаимодействие предназначено только для <@{user}>"
         },
-        "createMessage": "Привет {author}, мой префикс {formatted}",
+        "createMessage": "Привет {author}, мой префикс {prefix}",
         "cmdLoading": "Загрузка...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Соединение успешно перенастроено.",
-            "deleteQueue": "{formatted} пройдена и никто не присоединился к голосовому каналу, очередь была удалена.",
+            "deleteQueue": "{duration} пройдена и никто не присоединился к голосовому каналу, очередь была удалена.",
             "deleteQueueFooter": "Очередь удалена",
             "disconnectFromVCMessage": "Отключен от голосового канала, очередь была удалена.",
             "joinStageMessage": "Успешно присоединился к сцене в качестве спикера.",
             "joiningAsSpeaker": "Перешел на канал сцены, пытаясь присоединиться в качестве спикера...",
-            "pauseQueue": "Все покинули голосовой канал. Для экономии ресурсов очередь была приостановлена.\nесли никто не подключится к голосовому каналу в течение следующего {formatted}, очередь будет удалена.",
+            "pauseQueue": "Все покинули голосовой канал. Для экономии ресурсов очередь была приостановлена.\nесли никто не подключится к голосовому каналу в течение следующего {duration}, очередь будет удалена.",
             "pauseQueueFooter": "Очередь на паузе",
             "reconfigureConnection": "Переход в голосовой канал с другим регионом, повторная настройка соединения...",
             "resumeQueue": "Кто-то присоединился к голосовому каналу.\nВозобновление {song}",
@@ -245,13 +245,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, пожалуйста подождите {formatted} чтобы использовать эту команду.",
+        "cooldownMessage": "{author}, пожалуйста подождите {timeleft} чтобы использовать эту команду.",
         "generalHandler": {
             "errorJoining": "Ошибка при подключении к голосовому каналу, потому-что: {message}",
             "errorPlaying": "При попытке воспроизвести музыку произошла ошибка, потому-что: {message}",
             "handleVideoInitial": "Добавлено {length} песен в очередь",
             "leftVC": "Вышел из голосового канала потому что я слишком долго был неактивен.",
-            "queueEnded": "Очередь закончилась, используйте {formatted} чтобы воспроизвести больше музыки.",
+            "queueEnded": "Очередь закончилась, используйте {usage} чтобы воспроизвести больше музыки.",
             "startPlaying": "Играет: {song}",
             "stopPlaying": "Остановлено проигрывание: {song}"
         },

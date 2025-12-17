@@ -109,7 +109,7 @@
                 "pauseMessage": "音樂播放器已暫停。"
             },
             "play": {
-                "alreadyPlaying": "音樂播放器已經在 {formatted} 語音通訊通道播放。",
+                "alreadyPlaying": "音樂播放器已經在 {voiceChannel} 語音通訊通道播放。",
                 "description": "播放一些音樂",
                 "noSongData": "該 URL 沒有任何歌曲數據。",
                 "slashQueryDescription": "查詢搜索",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <位置>"
             },
             "repeat": {
-                "actualMode": "目前的重复模式是 {formatted}",
+                "actualMode": "目前的重复模式是 {mode}",
                 "description": "重複當前的音樂或隊列",
                 "footer": "如改變模式，請查看 {prefix}help repeat",
-                "newMode": "重複模式已設置為 {formatted}",
+                "newMode": "重複模式已設置為 {mode}",
                 "slashDisable": "停用重複模式",
                 "slashQueue": "重複模式為 隊列",
                 "slashSong": "重複模式為 音樂",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <查詢> [來源]"
             },
             "shuffle": {
-                "actualState": "當前隨機播放模式是 {formatted}",
+                "actualState": "當前隨機播放模式是 {mode}",
                 "description": "設置隨機播放模式的功能",
-                "newState": "隨機播放模式已設置為{formatted}"
+                "newState": "隨機播放模式已設置為 {state}"
             },
             "skip": {
                 "description": "略過音樂",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "如更改音量，請在使用此指令時提供音量數字。",
-                "currentVolume": "目前音量是 {formatted}",
+                "currentVolume": "目前音量是 {volume}",
                 "description": "更改音樂播放器音量",
-                "newVolume": "音量已設置為 {formatted}",
-                "plsPause": "請暫停音樂而不是將音量調到 {formatted}",
+                "newVolume": "音量已設置為 {volume}",
+                "plsPause": "請暫停音樂而不是將音量調到 {volume}",
                 "slashDescription": "新音量",
                 "usage": "{prefix}volume [新音量]",
-                "volumeLimit": "我無法設置音量高於 {formatted}"
+                "volumeLimit": "我無法設置音量高於 {maxVol}"
             },
             "requestChannel": {
                 "description": "設定音樂點播頻道",
@@ -219,16 +219,16 @@
             "message1": "抱歉，該互動僅限於 <@{user}> 和伺服器權限者。",
             "message2": "抱歉，該互動僅限於 <@{user}>"
         },
-        "createMessage": "你好 {author}, 我的前綴是 {formatted}",
+        "createMessage": "你好 {author}, 我的前綴是 {prefix}",
         "cmdLoading": "加載中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "已成功重新配置連接。",
-            "deleteQueue": "{formatted} 已過，沒有人加入語音頻道，隊列已被刪除。",
+            "deleteQueue": "{duration} 已過，沒有人加入語音頻道，隊列已被刪除。",
             "deleteQueueFooter": "隊列已被刪除",
             "disconnectFromVCMessage": "與語音通道斷開連接，隊列已被刪除。",
             "joinStageMessage": "成功以演講者身份加入舞台頻道。",
             "joiningAsSpeaker": "已移至舞台頻道，正在嘗試以演講者身份加入...",
-            "pauseQueue": "所有人都離開了語音頻道。為了節省資源，隊列已暫停。\n如果在{formatted}期內沒有人加入語音頻道，隊列將被刪除。",
+            "pauseQueue": "所有人都離開了語音頻道。為了節省資源，隊列已暫停。\n如果{duration}期內沒有人加入語音頻道，隊列將被刪除。",
             "pauseQueueFooter": "隊列已暫停",
             "reconfigureConnection": "移動到不同地區的語音通道，重新配置連接...",
             "resumeQueue": "有人加入了語音頻道。\n恢復中 {song}",
@@ -245,13 +245,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}，請稍等 {formatted}的冷卻時間。",
+        "cooldownMessage": "{author}，請稍等 {timeleft} 的冷卻時間。",
         "generalHandler": {
             "errorJoining": "加入語音通道時出錯，因為: {message}",
             "errorPlaying": "嘗試播放音樂時出錯，因為: {message}",
             "handleVideoInitial": "已將 {length} 首歌曲添加到隊列中",
             "leftVC": "離開了語音頻道是因為我待用太久了。",
-            "queueEnded": "隊列已經結束，使用{formatted}播放更多音樂。",
+            "queueEnded": "隊列已經結束，使用 {usage} 播放更多音樂。",
             "startPlaying": "開始播放{song}",
             "stopPlaying": "停止播放{song}"
         },

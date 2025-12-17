@@ -109,7 +109,7 @@
                 "pauseMessage": "Se ha pausado el reproductor de música."
             },
             "play": {
-                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz {formatted}.",
+                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz {voiceChannel}.",
                 "description": "Reproduce algo de música",
                 "noSongData": "Este URL no tiene datos de canciones.",
                 "slashQueryDescription": "Canción a reproducir",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <posiciones>"
             },
             "repeat": {
-                "actualMode": "El modo de repetición actual es {formatted}",
+                "actualMode": "El modo de repetición actual es {mode}",
                 "description": "Repite la canción actual o la cola completa",
                 "footer": "Para cambiar el modo, revisa '{prefix}help repeat'",
-                "newMode": "El modo de reproducción ha sido establecido a {formatted}",
+                "newMode": "El modo de reproducción ha sido establecido a {mode}",
                 "slashDisable": "Desactiva el modo repetición",
                 "slashQueue": "Establece el mode repetición a COLA",
                 "slashSong": "Establece el mode repetición a UNA",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <canción> [fuente]"
             },
             "shuffle": {
-                "actualState": "El modo aleatorio está {formatted}",
+                "actualState": "El modo aleatorio está {state}",
                 "description": "Aleatoriza la cola",
-                "newState": "El modo aleatorio se estableció ahora a {formatted}"
+                "newState": "El modo aleatorio se estableció ahora a {state}"
             },
             "skip": {
                 "description": "Salta la canción actual",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Para cambiar el volúmen, ingresa un número usando este comando.",
-                "currentVolume": "El volúmen actual es {formatted}",
+                "currentVolume": "El volúmen actual es {mode}",
                 "description": "Cambia el volúmen del reproductor de música",
-                "newVolume": "Volúmen establecido en {formatted}",
-                "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en {formatted}",
+                "newVolume": "Volúmen establecido en {volume}",
+                "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en {volume}",
                 "slashDescription": "Nuevo volúmen",
                 "usage": "{prefix}volume [volumen]",
-                "volumeLimit": "No puedo establecer el volúmen por encima de {formatted}"
+                "volumeLimit": "No puedo establecer el volúmen por encima de {maxVol}"
             },
             "requestChannel": {
                 "description": "Configurar un canal de solicitudes para música",
@@ -219,16 +219,16 @@
             "message1": "Lo siento, pero esta interacción es solo para <@{user}> y el staff del servidor.",
             "message2": "Lo siento, pero esta interacción es solo para <@{user}>"
         },
-        "createMessage": "Hola {author}, mi prefix es {formatted}",
+        "createMessage": "Hola {author}, mi prefix es {prefix}",
         "cmdLoading": "Cargando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La conexión se ha reconfigurado con éxito.",
-            "deleteQueue": "Ha pasado {formatted} y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
+            "deleteQueue": "Ha pasado {duration} y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
             "deleteQueueFooter": "Cola eliminada",
             "disconnectFromVCMessage": "Desconectado del canal de voz, la cola ha sido eliminada.",
             "joinStageMessage": "Me uní al canal escenario con éxito como orador.",
             "joiningAsSpeaker": "Movido a un canal de escenario, intentando unirse como Orador...",
-            "pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en {formatted}, la cola se eliminará.",
+            "pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en {duration}, la cola se eliminará.",
             "pauseQueueFooter": "Cola pausada",
             "reconfigureConnection": "He sido movido a un canal de voz en una región diferente, reconfigurando conexión...",
             "resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando {song}",
@@ -245,13 +245,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, por favor espera {formatted} para poder hacer eso.",
+        "cooldownMessage": "{author}, por favor espera {timeleft} para poder hacer eso.",
         "generalHandler": {
             "errorJoining": "Error al unirse al canal de voz, razón: {message}",
             "errorPlaying": "Ocurrió un error al tratar de reproducir música, razón: ${message}",
             "handleVideoInitial": "Se han añadido {length} canciones a la cola\n\n",
             "leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
-            "queueEnded": "La cola ha terminado, usa {formatted} para reproducir más música.",
+            "queueEnded": "La cola ha terminado, usa {usage} para reproducir más música.",
             "startPlaying": "Se empezó a reproducir {song}",
             "stopPlaying": "Se detuvo la reproducción {song}"
         },

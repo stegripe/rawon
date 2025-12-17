@@ -109,7 +109,7 @@
                 "pauseMessage": "O player de música foi pausado."
             },
             "play": {
-                "alreadyPlaying": "O player de música já está tocando no canal {formatted}.",
+                "alreadyPlaying": "O player de música já está tocando no canal {voiceChannel}.",
                 "description": "Toca uma música",
                 "noSongData": "Essa URL não tem nenhuma música.",
                 "slashQueryDescription": "Busca",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <posições>"
             },
             "repeat": {
-                "actualMode": "Modo de repetição está {formatted}",
+                "actualMode": "Modo de repetição está {mode}",
                 "description": "Repete a música atual ou a fila",
                 "footer": "Para mudar o modo, veja {prefix}help repeat",
-                "newMode": "O modo de repetição agora está {formatted}",
+                "newMode": "O modo de repetição agora está {mode}",
                 "slashDisable": "Desativa o modo de repetição",
                 "slashQueue": "Altera o modo de repetição para FILA",
                 "slashSong": "Altera o modo de repetição para MÚSICA",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <canção> [origem]"
             },
             "shuffle": {
-                "actualState": "Modo aleatório está {formatted}",
+                "actualState": "Modo aleatório está {mode}",
                 "description": "Configura o modo aleatório",
-                "newState": "Modo aleatório agora está {formatted}"
+                "newState": "Modo aleatório agora está {mode}"
             },
             "skip": {
                 "description": "Pula a música",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Para mudar o volume, forneça o número do volume ao usar este comando.",
-                "currentVolume": "O volume atual é {formatted}",
+                "currentVolume": "O volume atual é {volume}",
                 "description": "Muda o volume do player de mídia",
-                "newVolume": "Volume posto em {formatted}",
-                "plsPause": "Por favor pause a música ao invés de por o volume em{formatted}",
+                "newVolume": "Volume posto em {volume}",
+                "plsPause": "Por favor pause a música ao invés de por o volume em {volume}",
                 "slashDescription": "Novo volume",
                 "usage": "{prefix}volume [novo volume]",
-                "volumeLimit": "Não posso por o volume acima de {formatted}"
+                "volumeLimit": "Não posso por o volume acima de {maxVol}"
             },
             "requestChannel": {
                 "description": "Configurar um canal de solicitação para música",
@@ -219,16 +219,16 @@
             "message1": "Desculpe, mas essa interação é somente para <@{user}> e a moderação do servidor.",
             "message2": "Desculpe, mas essa interação é somente para <@{user}>"
         },
-        "createMessage": "Olá {author}, meu prefixo é {formatted}",
+        "createMessage": "Olá {author}, meu prefixo é {prefix}",
         "cmdLoading": "Carregando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Conexão re-configurada com sucesso.",
-            "deleteQueue": "{formatted} se passaram e ninguém entrou no canal de voz, a fila foi deletada.",
+            "deleteQueue": "{duration} se passaram e ninguém entrou no canal de voz, a fila foi deletada.",
             "deleteQueueFooter": "Fila deletada",
             "disconnectFromVCMessage": "Desconectado do canal de voz, a fila foi deletada.",
             "joinStageMessage": "Entrei com sucesso no canal de palco com permissão de fala.",
             "joiningAsSpeaker": "Movido para o canal de palco, tentando entrar com permissão de fala...",
-            "pauseQueue": "Todos deixaram o canal de voz. Para poupar recursos, a fila foi pausada.\nSe ninguém entrar no canal de voz nos próximos {formatted}, a fila será deletada.",
+            "pauseQueue": "Todos deixaram o canal de voz. Para poupar recursos, a fila foi pausada.\nSe ninguém entrar no canal de voz nos próximos {duration}, a fila será deletada.",
             "pauseQueueFooter": "Fila pausada",
             "reconfigureConnection": "Movido para um canal com região diferente, re-configurando conexão...",
             "resumeQueue": "Alguém entrou no canal de voz.\nRetomando {song}",
@@ -245,13 +245,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, por favor espere {formatted} para fazer isso.",
+        "cooldownMessage": "{author}, por favor espere {timeleft} para fazer isso.",
         "generalHandler": {
             "errorJoining": "Erro ao entrar no canal de voz, motivo: {message}",
             "errorPlaying": "Um erro ocorreu ao tentar tocar música, motivo: {message}",
             "handleVideoInitial": "{length} músicas adicionadas à fila",
             "leftVC": "Saindo do canal porque estive inativo por muito tempo.",
-            "queueEnded": "A fila terminou, use {formatted} para adicionar mais músicas.",
+            "queueEnded": "A fila terminou, use {usage} para adicionar mais músicas.",
             "startPlaying": "Começando a tocar {song}",
             "stopPlaying": "Parando de tocar {song}"
         },

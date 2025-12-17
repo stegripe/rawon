@@ -109,7 +109,7 @@
                 "pauseMessage": "Le lecteur de musique a été mis en pause."
             },
             "play": {
-                "alreadyPlaying": "Le lecteur de musique est déjà en train de jouer sur le salon vocal {formatted}.",
+                "alreadyPlaying": "Le lecteur de musique est déjà en train de jouer sur le salon vocal {voiceChannel}.",
                 "description": "Jouer de la musique",
                 "noSongData": "Cette URL ne contient pas de données sur les musiques.",
                 "slashQueryDescription": "Requête à rechercher",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
-                "actualMode": "Le mode de répétition actuel est {formatted}",
+                "actualMode": "Le mode de répétition actuel est {mode}",
                 "description": "Répéter la musique en cours ou la file d'attente",
                 "footer": "Pour changer de mode, consultez {prefix}help repeat",
-                "newMode": "Le mode de répétition a été défini sur {formatted}",
+                "newMode": "Le mode de répétition a été défini sur {mode}",
                 "slashDisable": "Désactiver le mode répétition",
                 "slashQueue": "Régler le mode de répétition sur LISTE D'ATTENTE",
                 "slashSong": "Régler le mode de répétition sur LISTE D'ATTENTE",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <requête> [source]"
             },
             "shuffle": {
-                "actualState": "Le mode Shuffle est {formatted}",
+                "actualState": "Le mode Shuffle est {state}",
                 "description": "Définir le mode de la fonction de lecture aléatoire",
-                "newState": "Le mode aléatoire est maintenant réglé sur {formatted}"
+                "newState": "Le mode aléatoire est maintenant réglé sur {state}"
             },
             "skip": {
                 "description": "Sauter la musique",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Pour modifier le volume, veuillez donner  le numéro de volume lorsque vous utilisez cette commande.",
-                "currentVolume": "Le volume actuel est {formatted}",
+                "currentVolume": "Le volume actuel est {mode}",
                 "description": "Modifier le volume du lecteur multimédia",
-                "newVolume": "Le volume a été réglé sur {formatted}",
-                "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur {formatted}",
+                "newVolume": "Le volume a été réglé sur {state}",
+                "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur {volume}",
                 "slashDescription": "Nouveau volume",
                 "usage": "{prefix}volume [nouveau volume]",
-                "volumeLimit": "Je ne peux pas régler le volume au-dessus de {formatted}"
+                "volumeLimit": "Je ne peux pas régler le volume au-dessus de {maxVol}"
             },
             "requestChannel": {
                 "description": "Configurer un canal de requête pour la musique",
@@ -219,16 +219,16 @@
             "message1": "Désolé, mais cette interaction est uniquement pour <@{user}> et le staff du serveur.",
             "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>"
         },
-        "createMessage": "Salut {author}, mon préfixe est {formatted}",
+        "createMessage": "Salut {author}, mon préfixe est {prefix}",
         "cmdLoading": "Chargement en cours...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La connexion a été reconfigurée avec succès.",
-            "deleteQueue": "{formatted} s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
+            "deleteQueue": "{duration} s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
             "deleteQueueFooter": "File d'attente supprimée",
             "disconnectFromVCMessage": "Déconnecté du salon vocal, la file d'attente a été supprimée.",
             "joinStageMessage": "A rejoint avec succès le salon Stage en tant que haut-parleur.",
             "joiningAsSpeaker": "Déplacé sur le salon Stage, j'essaie de me joindre en tant que haut-parleur...",
-            "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici {formatted}, la file d'attente sera supprimée.",
+            "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici {duration}, la file d'attente sera supprimée.",
             "pauseQueueFooter": "File d'attente mise en pause",
             "reconfigureConnection": "Déplacement vers un salon vocal avec une région différente, re-configuration de la connexion...",
             "resumeQueue": "Quelqu'un a rejoint le salon vocal.\nReprise de {song}",
@@ -245,13 +245,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, veuillez attendre {formatted} de cooldown.",
+        "cooldownMessage": "{author}, veuillez attendre {timeleft} de cooldown.",
         "generalHandler": {
             "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : {message}",
             "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : {message}",
             "handleVideoInitial": "Ajout de {length} chanson(s) à la file d'attente",
             "leftVC": "Je me suis déconnecté du salon vocal parce que j'ai été inactif pendant trop longtemps.",
-            "queueEnded": "La lecture est terminée, utilisez {formatted} pour jouer plus de musique.",
+            "queueEnded": "La lecture est terminée, utilisez {usage} pour jouer plus de musique.",
             "startPlaying": "Lancement de la lecture de {song}",
             "stopPlaying": "Arrêt de la lecture de {song}"
         },

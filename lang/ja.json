@@ -109,7 +109,7 @@
                 "pauseMessage": "プレイヤーは一時停止されました。"
             },
             "play": {
-                "alreadyPlaying": "そのプレイヤーは{formatted}ですでに再生しています。",
+                "alreadyPlaying": "そのプレイヤーは{voiceChannel}ですでに再生しています。",
                 "description": "音楽を再生",
                 "noSongData": "そのURLは曲データを含んでいません。",
                 "slashQueryDescription": "検索キーワード",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <ポジション>"
             },
             "repeat": {
-                "actualMode": "現在のリピートモードは{formatted}です。",
+                "actualMode": "現在のリピートモードは{mode}です。",
                 "description": "現在の曲もしくはキューをリピート",
                 "footer": "モードを変更するには、{prefix}help repeatを見てください。",
-                "newMode": "リピートモードは{formatted}にセットされました。",
+                "newMode": "リピートモードは{mode}にセットされました。",
                 "slashDisable": "リピートモードを無効化",
                 "slashQueue": "キューリピートモードを設定しました。",
                 "slashSong": "曲リピートモードを設定しました。",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <キーワード> [プラットフォーム]"
             },
             "shuffle": {
-                "actualState": "現在のシャッフルモードは{formatted}です。",
+                "actualState": "現在のシャッフルモードは{mode}です。",
                 "description": "シャッフルモードを設定",
-                "newState": "シャッフルモードは{formatted}にセットされました。"
+                "newState": "シャッフルモードは{mode}にセットされました。"
             },
             "skip": {
                 "description": "曲をスキップ",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "ボリュームを変えるには、有効な数値を引数として提供してください。",
-                "currentVolume": "現在のボリュームは{formatted}です。",
+                "currentVolume": "現在のボリュームは{volume}です。",
                 "description": "メディアプレイヤーのボリュームを変更",
-                "newVolume": "ボリュームは{formatted}にセットされました。",
-                "plsPause": "{formatted}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
+                "newVolume": "ボリュームは{volume}にセットされました。",
+                "plsPause": "にボリュームをセットするのではなくプレイヤーを一時停止してください。",
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]",
-                "volumeLimit": "{formatted}以上にボリュームをセットできません。"
+                "volumeLimit": "{maxVol}以上にボリュームをセットできません。"
             },
             "requestChannel": {
                 "description": "音楽リクエストチャンネルを設定する",
@@ -219,16 +219,16 @@
             "message1": "そのインタラクションは<@{user}>とサーバースタッフのためのものです。",
             "message2": "そのインタラクションは<@{user}>のためのものです。"
         },
-        "createMessage": "こんにちは、{author}、私のプレフィックスは{formatted}です。",
+        "createMessage": "こんにちは、{author}、私のプレフィックスは{prefix}です。",
         "cmdLoading": "起動中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "接続は正常に再構成されました。",
-            "deleteQueue": "{formatted}が経過しても誰もVCに参加していないため、キューを削除します。",
+            "deleteQueue": "{duration}が経過しても誰もVCに参加していないため、キューを削除します。",
             "deleteQueueFooter": "キューを削除",
             "disconnectFromVCMessage": "VCから切断します。キューは削除されます。",
             "joinStageMessage": "ステージチャンネルにスピーカーとして接続しました。",
             "joiningAsSpeaker": "ステージチャンネルに移動しています、スピーカーとして接続しています…",
-            "pauseQueue": "VCに誰もいません。リソースを削減するため、キューは一時停止されています。\nもし{formatted}以内に誰もVCをに参加しない場合、キューは削除されます。",
+            "pauseQueue": "VCに誰もいません。リソースを削減するため、キューは一時停止されています。\nもし{duration}以内に誰もVCをに参加しない場合、キューは削除されます。",
             "pauseQueueFooter": "キューの一時停止",
             "reconfigureConnection": "異なる地域のVCに接続しました、接続を再構成しています…",
             "resumeQueue": "VCにユーザーが接続しました。\n{song}を再開します。",
@@ -245,13 +245,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}、クールダウンタイムは残り{formatted}です。お待ち下さい。",
+        "cooldownMessage": "{author}、クールダウンタイムは残り{timeleft}です。お待ち下さい。",
         "generalHandler": {
             "errorJoining": "ボイスチャンネルに接続中にエラーが発生しました。エラー:{message}",
             "errorPlaying": "音楽を再生している間にエラーが発生しました。エラー:{message}",
             "handleVideoInitial": "キューに{length}曲を追加しました。",
             "leftVC": "非アクティブが続いたためVCから切断しました。",
-            "queueEnded": "キューが終了しました。{formatted}を使用して曲を再生してください。",
+            "queueEnded": "キューが終了しました。{usage}を使用して曲を再生してください。",
             "startPlaying": "{song}の再生が開始",
             "stopPlaying": "{song}の再生が終了"
         },
