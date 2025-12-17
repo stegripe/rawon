@@ -101,7 +101,8 @@
             "nowplaying": {
                 "description": "Mostra o status do player de mídia",
                 "disableButton": "Este botão já não está ativo e foi removido.",
-                "emptyQueue": "A fila está vazia."
+                "emptyQueue": "A fila está vazia.",
+                "live": "AO VIVO"
             },
             "pause": {
                 "alreadyPause": "O player de música já está pausado.",
