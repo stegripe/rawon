@@ -17,7 +17,7 @@
 1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
 2. Clone or download this repository
 3. Rename `.env.example` to `.env` and fill in the required values
-4. Install dependencies:
+4. Install dependencies (or with `npm`):
 ```sh
 pnpm install
 ```
