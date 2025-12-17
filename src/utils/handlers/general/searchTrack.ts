@@ -103,6 +103,7 @@ export async function searchTrack(
                                         thumbnail: getYouTubeThumbnail(track.id),
                                         title: track.title,
                                         url: `https://youtube.com/watch?v=${track.id}`,
+                                        isLive: track.isLiveContent,
                                     },
                                 ];
                             }

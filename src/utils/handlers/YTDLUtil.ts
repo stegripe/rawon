@@ -4,14 +4,14 @@ import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
 import ytdl, { exec } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
-export async function getStream(client: Rawon, url: string): Promise<Readable> {
+export async function getStream(client: Rawon, url: string, isLive = false): Promise<Readable> {
     const isSoundcloudUrl = checkQuery(url);
     if (isSoundcloudUrl.sourceType === "soundcloud") {
         return client.soundcloud.util.streamTrack(url) as unknown as Readable;
     }
 
-    // Check if the audio is already cached
-    if (client.audioCache.isCached(url)) {
+    // Skip caching for live streams - they can't be cached and need real-time streaming
+    if (!isLive && client.audioCache.isCached(url)) {
         const cachedStream = client.audioCache.getFromCache(url);
         if (cachedStream !== null) {
             return cachedStream;
@@ -25,7 +25,8 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
                 output: "-",
                 quiet: true,
                 format: "bestaudio",
-                limitRate: "300K",
+                // Don't limit rate for live streams to avoid buffering issues
+                ...(isLive ? {} : { limitRate: "300K" }),
             },
             { stdio: ["ignore", "pipe", "ignore"] },
         );
@@ -50,6 +51,12 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
         });
 
         void proc.once("spawn", () => {
+            // Don't cache live streams - they're endless and can't be cached properly
+            if (isLive) {
+                resolve(proc.stdout as unknown as Readable);
+                return;
+            }
+
             // Cache the stream while returning it for playback
             const passthroughStream = client.audioCache.cacheStream(
                 url,

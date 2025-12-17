@@ -114,6 +114,7 @@ export type Song = {
     title: string;
     url: string;
     id: string;
+    isLive?: boolean;
 };
 
 export type QueueSong = {
