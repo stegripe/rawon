@@ -96,7 +96,7 @@
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
                 "slashDescription": "Tìm bài hát",
                 "usage": "{prefix}lyrics [bài hát]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "Không tìm thấy lời bài hát cho **{song}**."
             },
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Tôi đang thiếu các quyền sau trong {channel}: **{permissions}**"
         },
         "cooldownMessage": "{author}, vui lòng đợi **`{timeleft}`**.",
         "generalHandler": {

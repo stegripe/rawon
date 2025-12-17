@@ -96,7 +96,7 @@
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
                 "slashDescription": "Aranacak şarkı",
                 "usage": "{prefix}lyrics [şarkı]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "**{song}** için şarkı sözü bulunamadı."
             },
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu göster",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "{channel} kanalında şu izinlerim eksik: **{permissions}**"
         },
         "cooldownMessage": "{author}, lütfen **{timeleft}`** kadar bekleyin.",
         "generalHandler": {

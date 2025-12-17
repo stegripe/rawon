@@ -96,7 +96,7 @@
                 "noQuery": "Nenhuma música está tocando, ou nenhum argumento foi fornecido.",
                 "slashDescription": "Música a buscar",
                 "usage": "{prefix}lyrics [música]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "Não foram encontradas letras para **{song}**."
             },
             "nowplaying": {
                 "description": "Mostra o status do player de mídia",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Estou faltando as seguintes permissões em {channel}: **{permissions}**"
         },
         "cooldownMessage": "{author}, por favor espere **`{timeleft}`** para fazer isso.",
         "generalHandler": {

@@ -96,7 +96,7 @@
                 "noQuery": "Tidak ada yang sedang dimainkan atau tidak ada argumen yang diberikan.",
                 "slashDescription": "Judul lagu untuk dicari",
                 "usage": "{prefix}lyrics [song]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "Tidak menemukan lirik untuk **{song}**."
             },
             "nowplaying": {
                 "description": "Menunjukkan status media player",

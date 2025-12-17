@@ -96,7 +96,7 @@
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "slashDescription": "検索する曲",
                 "usage": "{prefix}lyrics [曲]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "**{song}** の歌詞が見つかりませんでした。"
             },
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "そのチャンネルで次の権限が不足しています {channel}: **{permissions}**"
         },
         "cooldownMessage": "{author}、クールダウンタイムは残り**`{timeleft}`**です。お待ち下さい。",
         "generalHandler": {

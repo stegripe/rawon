@@ -96,7 +96,7 @@
                 "noQuery": "目前没有播放任何内容，或者没有提供任何参数。",
                 "slashDescription": "要搜索的歌曲",
                 "usage": "{prefix}lyrics [歌曲]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "找不到 **{song}** 的歌词。"
             },
             "nowplaying": {
                 "description": "显示媒体播放器状态",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "我在 {channel} 中缺少以下权限：**{permissions}**"
         },
         "cooldownMessage": "{author}，请稍等 **`{timeleft}`**的冷却时间。",
         "generalHandler": {

@@ -96,7 +96,7 @@
                 "noQuery": "Зараз нічого не програється або не було аргументи.",
                 "slashDescription": "Пісня для пошуку",
                 "usage": "{prefix}lyrics [пісня]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "Текст для **{song}** не знайдено."
             },
             "nowplaying": {
                 "description": "Показати статус медіа програвача",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Мені бракує наступних дозволів у {channel}: **{permissions}**"
         },
         "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористатись цією командою.",
         "generalHandler": {
