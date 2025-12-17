@@ -93,22 +93,21 @@ export class AudioCacheManager {
      * Cache a stream and return a passthrough stream for immediate consumption
      * This allows the audio to be played while being cached simultaneously
      */
-    public async cacheStream(url: string, sourceStream: Readable): Promise<Readable> {
+    public cacheStream(url: string, sourceStream: Readable): Readable {
         const cachePath = this.getCachePath(url);
         const key = this.getCacheKey(url);
 
-        const passthrough = new PassThrough();
+        // Create two separate passthrough streams from the source
+        const playbackStream = new PassThrough();
+        const cacheStream = new PassThrough();
         const writeStream = createWriteStream(cachePath);
 
-        // Track this cache entry
-        this.cachedFiles.set(key, {
-            path: cachePath,
-            lastAccess: Date.now(),
-        });
+        // Pipe source to both passthrough streams
+        sourceStream.pipe(playbackStream);
+        sourceStream.pipe(cacheStream);
 
-        // Pipe to both the passthrough (for playback) and file (for caching)
-        sourceStream.pipe(passthrough);
-        sourceStream.pipe(writeStream);
+        // Pipe cache stream to file
+        cacheStream.pipe(writeStream);
 
         writeStream.on("error", (error) => {
             this.client.logger.error("[AudioCacheManager] Error writing cache file:", error);
@@ -122,6 +121,11 @@ export class AudioCacheManager {
         });
 
         writeStream.on("finish", () => {
+            // Only add to cache after successful write
+            this.cachedFiles.set(key, {
+                path: cachePath,
+                lastAccess: Date.now(),
+            });
             this.client.logger.info(
                 `[AudioCacheManager] Cached audio for: ${url.substring(0, 50)}...`,
             );
@@ -129,6 +133,8 @@ export class AudioCacheManager {
 
         sourceStream.on("error", (error) => {
             this.client.logger.error("[AudioCacheManager] Source stream error:", error);
+            // Forward error to playback stream so consumers can handle it
+            playbackStream.destroy(error);
             // Clean up partial cache file
             this.cachedFiles.delete(key);
             try {
@@ -138,7 +144,7 @@ export class AudioCacheManager {
             }
         });
 
-        return passthrough;
+        return playbackStream;
     }
 
     /**

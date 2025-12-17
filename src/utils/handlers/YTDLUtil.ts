@@ -49,9 +49,9 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
             proc.kill("SIGKILL");
         });
 
-        void proc.once("spawn", async () => {
+        void proc.once("spawn", () => {
             // Cache the stream while returning it for playback
-            const passthroughStream = await client.audioCache.cacheStream(
+            const passthroughStream = client.audioCache.cacheStream(
                 url,
                 proc.stdout as unknown as Readable,
             );
