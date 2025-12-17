@@ -1,6 +1,7 @@
 import { Buffer } from "node:buffer";
 import { execSync } from "node:child_process";
 import nodePath from "node:path";
+import process from "node:process";
 import { ChannelType, type Guild, type Role } from "discord.js";
 import prism from "prism-media";
 import { type Rawon } from "../../structures/Rawon.js";
