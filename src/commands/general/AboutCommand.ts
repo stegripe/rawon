@@ -16,7 +16,7 @@ const pkg = JSON.parse(
 ) as { version: string };
 
 @Command({
-    aliases: ["information", "info", "botinfo", "stats"],
+    aliases: ["information", "info", "botinfo", "stats", "status"],
     description: i18n.__("commands.general.about.description"),
     name: "about",
     slash: {
