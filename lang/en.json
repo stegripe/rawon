@@ -101,7 +101,8 @@
             "nowplaying": {
                 "description": "Show the media player status",
                 "disableButton": "Previous buttons are no longer active and removed.",
-                "emptyQueue": "Queue is empty."
+                "emptyQueue": "Queue is empty.",
+                "live": "LIVE"
             },
             "pause": {
                 "alreadyPause": "The music player is already paused.",

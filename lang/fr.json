@@ -101,7 +101,8 @@
             "nowplaying": {
                 "description": "Afficher l'état du lecteur multimédia",
                 "disableButton": "Les boutons précédents ne sont plus actifs et ont été supprimés.",
-                "emptyQueue": "La file d'attente est vide."
+                "emptyQueue": "La file d'attente est vide.",
+                "live": "EN DIRECT"
             },
             "pause": {
                 "alreadyPause": "Le lecteur de musique est déjà en pause.",

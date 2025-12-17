@@ -101,7 +101,8 @@
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu göster",
                 "disableButton": "Önceki düğmeler artık etkin değildir ve kaldırılmıştır.",
-                "emptyQueue": "Kuyruk boş."
+                "emptyQueue": "Kuyruk boş.",
+                "live": "CANLI"
             },
             "pause": {
                 "alreadyPause": "Müzik zaten duraklatılmıştır.",

@@ -101,7 +101,8 @@
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
                 "disableButton": "Este botón ya no está activo y ha sido eliminado.",
-                "emptyQueue": "La cola está vacía."
+                "emptyQueue": "La cola está vacía.",
+                "live": "EN VIVO"
             },
             "pause": {
                 "alreadyPause": "El reproductor de música ya está en pausa.",
