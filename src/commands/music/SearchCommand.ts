@@ -1,4 +1,5 @@
 import { Buffer } from "node:buffer";
+import { setTimeout } from "node:timers";
 import {
     ActionRowBuilder,
     ApplicationCommandOptionType,
@@ -55,6 +56,20 @@ import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
     usage: i18n.__("commands.music.search.usage"),
 })
 export class SearchCommand extends BaseCommand {
+    private isRequestChannel(ctx: CommandContext): boolean {
+        if (!ctx.guild) {
+            return false;
+        }
+        const requestChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+        return requestChannel !== null && ctx.channel?.id === requestChannel.id;
+    }
+
+    private autoDeleteMessage(msg: Message, delay = 60_000): void {
+        setTimeout(() => {
+            msg.delete().catch(() => null);
+        }, delay);
+    }
+
     @inVC
     @validVC
     @sameVC
@@ -119,13 +134,17 @@ export class SearchCommand extends BaseCommand {
             )?.content;
 
         if ((query?.length ?? 0) === 0) {
-            await ctx.send({
+            const noQueryMsg = await ctx.send({
                 embeds: [createEmbed("warn", i18n.__("commands.music.search.noQuery"))],
             });
+            if (this.isRequestChannel(ctx) && noQueryMsg) {
+                this.autoDeleteMessage(noQueryMsg);
+            }
             return;
         }
         if (checkQuery(query ?? "").isURL) {
             const playCtx = new CommandContext(ctx.context, [String(query)]);
+            playCtx.additionalArgs.set("fromSearch", true);
             this.client.commands.get("play")?.execute(playCtx);
             return;
         }
@@ -138,13 +157,16 @@ export class SearchCommand extends BaseCommand {
             .then((x) => ({ items: x.items.slice(0, 10), type: x.type }))
             .catch(() => void 0);
         if (!tracks || tracks.items.length <= 0) {
-            await ctx.reply({
+            const noTracksMsg = await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.search.noTracks"), true)],
             });
+            if (this.isRequestChannel(ctx) && noTracksMsg) {
+                this.autoDeleteMessage(noTracksMsg);
+            }
             return;
         }
         if (this.client.config.musicSelectionType === "selectmenu") {
-            await ctx.send({
+            const selectMenuMsg = await ctx.send({
                 content: i18n.__("commands.music.search.interactionContent"),
                 components: [
                     new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
@@ -163,6 +185,9 @@ export class SearchCommand extends BaseCommand {
                     ),
                 ],
             });
+            if (this.isRequestChannel(ctx) && selectMenuMsg) {
+                this.autoDeleteMessage(selectMenuMsg);
+            }
             return;
         }
 
@@ -221,9 +246,12 @@ export class SearchCommand extends BaseCommand {
                 .catch((error: unknown) =>
                     this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
-            await ctx.reply({
+            const noSelectionMsg = await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"), true)],
             });
+            if (this.isRequestChannel(ctx) && noSelectionMsg) {
+                this.autoDeleteMessage(noSelectionMsg);
+            }
             return;
         }
         if (["c", "cancel"].includes(respond.first()?.content.toLowerCase() ?? "")) {
@@ -232,11 +260,14 @@ export class SearchCommand extends BaseCommand {
                 .catch((error: unknown) =>
                     this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
-            await ctx.reply({
+            const canceledMsg = await ctx.reply({
                 embeds: [
                     createEmbed("info", i18n.__("commands.music.search.canceledMessage"), true),
                 ],
             });
+            if (this.isRequestChannel(ctx) && canceledMsg) {
+                this.autoDeleteMessage(canceledMsg);
+            }
             return;
         }
 
