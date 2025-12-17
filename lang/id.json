@@ -101,7 +101,8 @@
             "nowplaying": {
                 "description": "Menunjukkan status media player",
                 "disableButton": "Tombol-tombol ini sudah tidak lagi aktif dan terhapus.",
-                "emptyQueue": "Antrian sedang kosong."
+                "emptyQueue": "Antrian sedang kosong.",
+                "live": "SIARAN LANGSUNG"
             },
             "pause": {
                 "alreadyPause": "Media player sedang dijeda.",

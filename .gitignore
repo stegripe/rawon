@@ -98,5 +98,5 @@ dist
 
 # Rawon cache directories and files
 data.json
-scripts/
+cache/
 package-lock.json

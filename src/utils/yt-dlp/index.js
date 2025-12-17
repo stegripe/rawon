@@ -8,7 +8,7 @@ const suffix = process.platform === "win32" ? ".exe" : (
     process.platform === "darwin" ? "_macos" : ""
 );
 const filename = `yt-dlp${suffix}`;
-const scriptsPath = nodePath.resolve(process.cwd(), "scripts");
+const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
 function args(url, options) {

@@ -103,6 +103,7 @@ export async function searchTrack(
                                         thumbnail: getYouTubeThumbnail(track.id),
                                         title: track.title,
                                         url: `https://youtube.com/watch?v=${track.id}`,
+                                        isLive: track.isLiveContent,
                                     },
                                 ];
                             }
@@ -114,11 +115,14 @@ export async function searchTrack(
                                 if (videoInfo?.id) {
                                     result.items = [
                                         {
-                                            duration: videoInfo.duration ?? 0,
+                                            duration: videoInfo.is_live
+                                                ? 0
+                                                : (videoInfo.duration ?? 0),
                                             id: videoInfo.id,
                                             thumbnail: getYouTubeThumbnail(videoInfo.id),
                                             title: videoInfo.title ?? "Unknown",
                                             url: videoInfo.url ?? videoUrl,
+                                            isLive: videoInfo.is_live,
                                         },
                                     ];
                                 }
@@ -315,7 +319,7 @@ export async function searchTrack(
 
                 result.items = [
                     {
-                        duration: info?.duration ?? 0,
+                        duration: info?.is_live ? 0 : (info?.duration ?? 0),
                         id: info?.id ?? "",
                         thumbnail: getMaxResThumbnail(
                             info?.thumbnails?.sort(
@@ -324,6 +328,7 @@ export async function searchTrack(
                         ),
                         title: info?.title ?? "Unknown Song",
                         url: info?.url ?? url.toString(),
+                        isLive: info?.is_live,
                     },
                 ];
                 break;

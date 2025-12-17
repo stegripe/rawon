@@ -140,10 +140,7 @@ export class RequestChannelManager {
 
         const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
         const duration = song?.duration ?? 0;
-        const isYouTubeUrl =
-            (song?.url?.includes("youtube.com") ?? false) ||
-            (song?.url?.includes("youtu.be") ?? false);
-        const isLive = duration === 0 && isYouTubeUrl;
+        const isLive = song?.isLive === true;
 
         const loopModeEmoji: Record<string, string> = {
             OFF: "▶️",
@@ -169,7 +166,7 @@ export class RequestChannelManager {
         if (song) {
             let progressLine: string;
             if (isLive) {
-                progressLine = `🔴 ${i18n.__("requestChannel.live")}`;
+                progressLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
             } else if (duration === 0) {
                 progressLine = `${normalizeTime(curr)} ${createProgressBar(0, 1)} --:--`;
             } else {
