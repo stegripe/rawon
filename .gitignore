@@ -68,3 +68,5 @@ dist
 data.json
 cache/
 package-lock.json
+
+commit-hash.txt
