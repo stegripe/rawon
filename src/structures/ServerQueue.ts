@@ -187,7 +187,7 @@ export class ServerQueue {
                     if (isRequestChannel && errorMsg) {
                         setTimeout(() => {
                             errorMsg.delete().catch(() => null);
-                        }, 10_000);
+                        }, 60_000);
                     }
                 })();
                 this.destroy();
