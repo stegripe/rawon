@@ -16,18 +16,13 @@ import { type Rawon } from "../../structures/Rawon.js";
 export class AudioCacheManager {
     public readonly cacheDir: string;
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
-    // Track files that are currently being written to prevent serving incomplete files
     private readonly inProgressFiles = new Set<string>();
 
     public constructor(public readonly client: Rawon) {
         this.cacheDir = path.resolve(process.cwd(), "cache", "audio");
-        // Clear any existing cache files from previous sessions on startup
         this.clearCacheOnStartup();
     }
 
-    /**
-     * Clear cache directory on startup to prevent stale files from accumulating
-     */
     private clearCacheOnStartup(): void {
         if (existsSync(this.cacheDir)) {
             rmSync(this.cacheDir, { recursive: true, force: true });
@@ -43,34 +38,23 @@ export class AudioCacheManager {
         }
     }
 
-    /**
-     * Generate a unique cache key for a URL
-     */
     public getCacheKey(url: string): string {
         return createHash("md5").update(url).digest("hex");
     }
 
-    /**
-     * Get the file path for a cached audio
-     */
     public getCachePath(url: string): string {
         const key = this.getCacheKey(url);
         return path.join(this.cacheDir, `${key}.opus`);
     }
 
-    /**
-     * Check if an audio file is cached and fully written (not in-progress)
-     */
     public isCached(url: string): boolean {
         const key = this.getCacheKey(url);
         const cachePath = this.getCachePath(url);
 
-        // Don't serve files that are still being written
         if (this.inProgressFiles.has(key)) {
             return false;
         }
 
-        // Check if we have it tracked as complete
         if (this.cachedFiles.has(key) && existsSync(cachePath)) {
             return true;
         }
@@ -78,9 +62,6 @@ export class AudioCacheManager {
         return false;
     }
 
-    /**
-     * Get a readable stream from cache
-     */
     public getFromCache(url: string): ReadStream | null {
         if (!this.isCached(url)) {
             return null;
@@ -89,7 +70,6 @@ export class AudioCacheManager {
         const cachePath = this.getCachePath(url);
         const key = this.getCacheKey(url);
 
-        // Update last access time
         const cacheEntry = this.cachedFiles.get(key);
         if (cacheEntry) {
             cacheEntry.lastAccess = Date.now();
@@ -99,32 +79,23 @@ export class AudioCacheManager {
         return createReadStream(cachePath);
     }
 
-    /**
-     * Cache a stream and return a passthrough stream for immediate consumption
-     * This allows the audio to be played while being cached simultaneously
-     */
     public cacheStream(url: string, sourceStream: Readable): Readable {
         const cachePath = this.getCachePath(url);
         const key = this.getCacheKey(url);
 
-        // Mark file as in-progress
         this.inProgressFiles.add(key);
 
-        // Create two separate passthrough streams from the source
         const playbackStream = new PassThrough();
         const cacheStream = new PassThrough();
         const writeStream = createWriteStream(cachePath);
 
-        // Pipe source to both passthrough streams
         sourceStream.pipe(playbackStream);
         sourceStream.pipe(cacheStream);
 
-        // Pipe cache stream to file
         cacheStream.pipe(writeStream);
 
         writeStream.on("error", (error) => {
             this.client.logger.error("[AudioCacheManager] Error writing cache file:", error);
-            // Remove failed cache entry and mark as no longer in-progress
             this.inProgressFiles.delete(key);
             this.cachedFiles.delete(key);
             try {
@@ -135,7 +106,6 @@ export class AudioCacheManager {
         });
 
         writeStream.on("finish", () => {
-            // Mark file as complete (no longer in-progress) and add to cache
             this.inProgressFiles.delete(key);
             this.cachedFiles.set(key, {
                 path: cachePath,
@@ -148,9 +118,7 @@ export class AudioCacheManager {
 
         sourceStream.on("error", (error) => {
             this.client.logger.error("[AudioCacheManager] Source stream error:", error);
-            // Forward error to playback stream so consumers can handle it
             playbackStream.destroy(error);
-            // Clean up partial cache file and mark as no longer in-progress
             this.inProgressFiles.delete(key);
             this.cachedFiles.delete(key);
             try {
@@ -163,9 +131,6 @@ export class AudioCacheManager {
         return playbackStream;
     }
 
-    /**
-     * Clear all cached audio files
-     */
     public clearCache(): void {
         this.cachedFiles.clear();
         this.inProgressFiles.clear();
@@ -177,9 +142,6 @@ export class AudioCacheManager {
         }
     }
 
-    /**
-     * Get cache statistics
-     */
     public getStats(): { files: number; totalSize: number; inProgress: number } {
         let totalSize = 0;
         let files = 0;
@@ -190,7 +152,6 @@ export class AudioCacheManager {
                 totalSize += stats.size;
                 files++;
             } else {
-                // Clean up stale entry
                 this.cachedFiles.delete(key);
             }
         }

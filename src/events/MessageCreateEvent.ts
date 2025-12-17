@@ -64,7 +64,7 @@ export class MessageCreateEvent extends BaseEvent {
                         try {
                             await message.delete();
                         } catch {
-                            /* ignore */
+                            // Ignore errors
                         }
                     })();
                 }, 60_000);
@@ -82,7 +82,7 @@ export class MessageCreateEvent extends BaseEvent {
                             try {
                                 await botMsg.delete();
                             } catch {
-                                /* ignore */
+                                // Ignore errors
                             }
                         })();
                     }, 60_000);

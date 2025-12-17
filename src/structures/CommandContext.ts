@@ -176,7 +176,6 @@ export class CommandContext {
     }
 
     public get options(): ChatInputCommandInteraction["options"] | null {
-        /* Not sure about this but CommandInteraction does not provides getString method anymore */
         return this.context instanceof BaseInteraction
             ? (this.context as ChatInputCommandInteraction).options
             : null;

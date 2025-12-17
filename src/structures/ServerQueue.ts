@@ -184,7 +184,6 @@ export class ServerQueue {
                             return null;
                         });
 
-                    // Auto-delete error message in request channel after 10 seconds
                     if (isRequestChannel && errorMsg) {
                         setTimeout(() => {
                             errorMsg.delete().catch(() => null);
