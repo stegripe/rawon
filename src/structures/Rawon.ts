@@ -28,7 +28,7 @@ export class Rawon extends Client {
         path.resolve(importURLToString(import.meta.url), "..", "events"),
     );
     public readonly data = new JSONDataManager<Record<string, GuildData>>(
-        path.resolve(process.cwd(), "data.json"),
+        path.resolve(process.cwd(), "cache", "data.json"),
     );
     public readonly logger = new RawonLogger({ prod: this.config.isProd });
     public readonly debugLog = new DebugLogManager(this.config.debugMode, this.config.isProd);

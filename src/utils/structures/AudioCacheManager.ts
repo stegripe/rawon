@@ -19,6 +19,18 @@ export class AudioCacheManager {
 
     public constructor(public readonly client: Rawon) {
         this.cacheDir = path.resolve(process.cwd(), "cache", "audio");
+        // Clear any existing cache files from previous sessions on startup
+        this.clearCacheOnStartup();
+    }
+
+    /**
+     * Clear cache directory on startup to prevent stale files from accumulating
+     */
+    private clearCacheOnStartup(): void {
+        if (existsSync(this.cacheDir)) {
+            rmSync(this.cacheDir, { recursive: true, force: true });
+            this.client.logger.info("[AudioCacheManager] Cleared old cache files on startup.");
+        }
         this.ensureCacheDir();
     }
 
