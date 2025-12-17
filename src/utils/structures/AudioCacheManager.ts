@@ -18,7 +18,7 @@ export class AudioCacheManager {
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
 
     public constructor(public readonly client: Rawon) {
-        this.cacheDir = path.resolve(process.cwd(), ".audio-cache");
+        this.cacheDir = path.resolve(process.cwd(), "cache", "audio");
         this.ensureCacheDir();
     }
 
