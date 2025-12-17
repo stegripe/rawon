@@ -7,6 +7,7 @@ import * as config from "../config/index.js";
 import { type GuildData } from "../typings/index.js";
 import { importURLToString } from "../utils/functions/importURLToString.js";
 import { SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
+import { AudioCacheManager } from "../utils/structures/AudioCacheManager.js";
 import { ClientUtils } from "../utils/structures/ClientUtils.js";
 import { CommandManager } from "../utils/structures/CommandManager.js";
 import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
@@ -35,6 +36,7 @@ export class Rawon extends Client {
     public readonly utils = new ClientUtils(this);
     public readonly soundcloud = new Soundcloud();
     public readonly requestChannelManager = new RequestChannelManager(this);
+    public readonly audioCache = new AudioCacheManager(this);
     public readonly request = got.extend({
         hooks: {
             beforeError: [

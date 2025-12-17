@@ -100,3 +100,4 @@ dist
 data.json
 scripts/
 package-lock.json
+.audio-cache/

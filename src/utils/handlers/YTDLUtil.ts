@@ -10,6 +10,14 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
         return client.soundcloud.util.streamTrack(url) as unknown as Readable;
     }
 
+    // Check if the audio is already cached
+    if (client.audioCache.isCached(url)) {
+        const cachedStream = client.audioCache.getFromCache(url);
+        if (cachedStream !== null) {
+            return cachedStream;
+        }
+    }
+
     return new Promise<Readable>((resolve, reject) => {
         const proc = exec(
             url,
@@ -41,8 +49,13 @@ export async function getStream(client: Rawon, url: string): Promise<Readable> {
             proc.kill("SIGKILL");
         });
 
-        void proc.once("spawn", () => {
-            resolve(proc.stdout as unknown as Readable);
+        void proc.once("spawn", async () => {
+            // Cache the stream while returning it for playback
+            const passthroughStream = await client.audioCache.cacheStream(
+                url,
+                proc.stdout as unknown as Readable,
+            );
+            resolve(passthroughStream);
         });
     });
 }
