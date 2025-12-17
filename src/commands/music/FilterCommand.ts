@@ -110,8 +110,8 @@ export class FilterCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         i18n.__mf("commands.music.filter.filterSet", {
-                            filter,
-                            state: subcmd === "enable" ? "ENABLED" : "DISABLED",
+                            filter: `\`${filter}\``,
+                            state: `\`${subcmd === "enable" ? "ENABLED" : "DISABLED"}\``,
                         }),
                     ),
                 ],
@@ -124,9 +124,8 @@ export class FilterCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         i18n.__mf("commands.music.filter.currentState", {
-                            filter,
-                            state:
-                                ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED",
+                            filter: `\`${filter}\``,
+                            state: `\`${ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED"}\``,
                         }),
                     ).setFooter({
                         text: i18n.__mf("commands.music.filter.embedFooter", {

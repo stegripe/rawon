@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Filtros disponibles",
                 "currentlyUsedFilters": "Filtros utilizados actualmente",
-                "currentState": "`{filter}` es actualmente `{state}`",
+                "currentState": "{filter} es actualmente {state}",
                 "description": "Configurar el filtro de canción",
                 "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
-                "filterSet": "`El filtro {filter}` ya está `{state}`",
+                "filterSet": "`El filtro {filter}` ya está {state}",
                 "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
                 "slashStatusDescription": "Comprobar el estado actual de los filtros de canción",
@@ -96,7 +96,7 @@
                 "noQuery": "No se está reproduciendo nada o no se ingresaró ninguna canción a buscar.",
                 "slashDescription": "Canción a buscar",
                 "usage": "{prefix}lyrics [canción]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "No se encontraron letras para **{song}**."
             },
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <posiciones>"
             },
             "repeat": {
-                "actualMode": "El modo de repetición actual es **`{mode}`**",
+                "actualMode": "El modo de repetición actual es {mode}",
                 "description": "Repite la canción actual o la cola completa",
                 "footer": "Para cambiar el modo, revisa '{prefix}help repeat'",
-                "newMode": "El modo de reproducción ha sido establecido a **`{mode}`**",
+                "newMode": "El modo de reproducción ha sido establecido a {mode}",
                 "slashDisable": "Desactiva el modo repetición",
                 "slashQueue": "Establece el mode repetición a **`COLA`**",
                 "slashSong": "Establece el mode repetición a **`UNA`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <canción> [fuente]"
             },
             "shuffle": {
-                "actualState": "El modo aleatorio está **`{state}`**",
+                "actualState": "El modo aleatorio está {state}",
                 "description": "Aleatoriza la cola",
-                "newState": "El modo aleatorio se estableció ahora a **`{state}`**"
+                "newState": "El modo aleatorio se estableció ahora a {state}"
             },
             "skip": {
                 "description": "Salta la canción actual",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Para cambiar el volúmen, ingresa un número usando este comando.",
-                "currentVolume": "El volúmen actual es **`{volume}`**",
+                "currentVolume": "El volúmen actual es {volume}",
                 "description": "Cambia el volúmen del reproductor de música",
-                "newVolume": "Volúmen establecido en **`{volume}`**",
-                "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en **`{volume}`**",
+                "newVolume": "Volúmen establecido en {volume}",
+                "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en {volume}",
                 "slashDescription": "Nuevo volúmen",
                 "usage": "{prefix}volume [volumen]",
-                "volumeLimit": "No puedo establecer el volúmen por encima de **`{maxVol}`**"
+                "volumeLimit": "No puedo establecer el volúmen por encima de {maxVol}"
             },
             "requestChannel": {
                 "description": "Configurar un canal de solicitudes para música",
@@ -219,7 +219,7 @@
             "message1": "Lo siento, pero esta interacción es solo para <@{user}> y el staff del servidor.",
             "message2": "Lo siento, pero esta interacción es solo para <@{user}>"
         },
-        "createMessage": "Hola {author}, mi prefix es **`{prefix}`**",
+        "createMessage": "Hola {author}, mi prefix es {prefix}",
         "cmdLoading": "Cargando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La conexión se ha reconfigurado con éxito.",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Me faltan los siguientes permisos en {channel}: **{permissions}**"
         },
         "cooldownMessage": "{author}, por favor espera **`{timeleft}`** para poder hacer eso.",
         "generalHandler": {
@@ -262,7 +262,7 @@
             "validVCJoinable": "Lo siento, pero no tengo el permiso **`CONECTAR`** en tu servidor.",
             "validVCPermission": "Lo siento, pero no tengo el permiso **`HABLAR`** en tu servidor.",
             "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música.",
-            "useRequestChannelDirect": "Simplemente escribe el título de la canción o el enlace directamente en este canal para reproducir música."
+            "useRequestChannelDirect": "Este comando está deshabilitado en el canal de solicitudes. Por favor, usa los botones del reproductor o escribe el título/enlace de la canción directamente."
         }
     },
     "requestChannel": {
@@ -272,7 +272,7 @@
         "shuffle": "Aleatorio",
         "volume": "Volumen",
         "queueLength": "Cola",
-        "queueFooter": "• Total de canción(es) en cola: {count}",
+        "queueFooter": "• Esta función puede causar retraso o desincronización. Total de canción(es) en cola: {count}",
         "idle": "Inactivo",
         "live": "EN VIVO",
         "requestedBy": "Solicitado por",
@@ -283,7 +283,7 @@
         "startedPlaying": "Reproduciendo **{song}**",
         "paused": "Música pausada.",
         "resumed": "Música reanudada.",
-        "skipped": "Se saltó la canción actual.",
+        "skipped": "Se saltó **{song}**",
         "removed": "Eliminado **{song}** de la cola y saltado.",
         "stopped": "Se detuvo la música y se vació la cola.",
         "loopChanged": "Modo de bucle cambiado a **{mode}**.",

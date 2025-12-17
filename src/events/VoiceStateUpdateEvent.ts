@@ -86,6 +86,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
             const isIdle = queue.idle;
+            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                newState.guild,
+                queue.textChannel.id,
+            );
 
             queue.destroy();
             if (!isIdle) {
@@ -95,7 +99,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     } Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`,
                 );
                 (async () => {
-                    await queue.textChannel
+                    const msg = await queue.textChannel
                         .send({
                             embeds: [
                                 createEmbed(
@@ -104,9 +108,15 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                                 ),
                             ],
                         })
-                        .catch((error: unknown) =>
-                            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error),
-                        );
+                        .catch((error: unknown) => {
+                            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
+                            return null;
+                        });
+                    if (msg && isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
                 })();
             }
         }
@@ -253,34 +263,49 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const timeout = 60_000;
         const duration = formatMS(timeout);
+        const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
+            state.guild,
+            queue.textChannel.id,
+        );
 
         queue.lastVSUpdateMsg = null;
         (state.guild.queue as unknown as ServerQueue).timeout = setTimeout(() => {
             queue.destroy();
-            void queue.textChannel.send({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        `⏹️ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
-                            duration: `\`${duration}\``,
-                        })}`,
-                    ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") }),
-                ],
-            });
-        }, timeout);
-        (async () => {
-            await queue.textChannel
-                .send({
+            void (async () => {
+                const msg = await queue.textChannel.send({
                     embeds: [
                         createEmbed(
-                            "warn",
-                            `⏸️ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
+                            "error",
+                            `⏹️ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
                                 duration: `\`${duration}\``,
                             })}`,
-                        ).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") }),
+                        ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") }),
                     ],
-                })
-                .then((msg) => (queue.lastVSUpdateMsg = msg.id));
+                });
+                if (isRequestChannel) {
+                    setTimeout(() => {
+                        void msg.delete().catch(() => null);
+                    }, 60_000);
+                }
+            })();
+        }, timeout);
+        (async () => {
+            const msg = await queue.textChannel.send({
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        `⏸️ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
+                            duration: `\`${duration}\``,
+                        })}`,
+                    ).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") }),
+                ],
+            });
+            queue.lastVSUpdateMsg = msg.id;
+            if (isRequestChannel) {
+                setTimeout(() => {
+                    void msg.delete().catch(() => null);
+                }, 60_000);
+            }
         })();
     }
 
@@ -298,24 +323,32 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const song = ((queue.player.state as AudioPlayerPausedState).resource.metadata as QueueSong)
             .song;
+        const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
+            state.guild,
+            queue.textChannel.id,
+        );
 
         (async () => {
-            await queue.textChannel
-                .send({
-                    embeds: [
-                        createEmbed(
-                            "info",
-                            `▶️ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
-                                song: `[${song.title}](${song.url})`,
-                            })}`,
-                        )
-                            .setThumbnail(song.thumbnail)
-                            .setAuthor({
-                                name: i18n.__("events.voiceStateUpdate.resumeQueueFooter"),
-                            }),
-                    ],
-                })
-                .then((msg) => (queue.lastVSUpdateMsg = msg.id));
+            const msg = await queue.textChannel.send({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `▶️ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
+                            song: `[${song.title}](${song.url})`,
+                        })}`,
+                    )
+                        .setThumbnail(song.thumbnail)
+                        .setAuthor({
+                            name: i18n.__("events.voiceStateUpdate.resumeQueueFooter"),
+                        }),
+                ],
+            });
+            queue.lastVSUpdateMsg = msg.id;
+            if (isRequestChannel) {
+                setTimeout(() => {
+                    void msg.delete().catch(() => null);
+                }, 60_000);
+            }
         })();
         state.guild.queue?.player.unpause();
     }

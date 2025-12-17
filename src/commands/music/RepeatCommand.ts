@@ -69,7 +69,7 @@ export class RepeatCommand extends BaseCommand {
                         `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf(
                             "commands.music.repeat.actualMode",
                             {
-                                mode: `\`${ctx.guild?.queue?.loopMode}\``,
+                                mode: `**\`${ctx.guild?.queue?.loopMode}\`**`,
                             },
                         )}`,
                     ).setFooter({
@@ -89,7 +89,7 @@ export class RepeatCommand extends BaseCommand {
                     `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf(
                         "commands.music.repeat.newMode",
                         {
-                            mode: `\`${ctx.guild?.queue?.loopMode}\``,
+                            mode: `**\`${ctx.guild?.queue?.loopMode}\`**`,
                         },
                     )}`,
                 ),

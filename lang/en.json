@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Available Filters",
                 "currentlyUsedFilters": "Currently Used Filters",
-                "currentState": "`{filter}` is currently `{state}`",
+                "currentState": "{filter} is currently {state}",
                 "description": "Configure song filter",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
-                "filterSet": "`{filter}` filter is now `{state}`",
+                "filterSet": "{filter} filter is now {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Check the current status of song filters",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
-                "actualMode": "Current repeat mode is **`{mode}`**",
+                "actualMode": "Current repeat mode is {mode}",
                 "description": "Repeat current music or the queue",
                 "footer": "To change mode, see {prefix}help repeat",
-                "newMode": "The repeat mode has been set to **`{mode}`**",
+                "newMode": "The repeat mode has been set to {mode}",
                 "slashDisable": "Disable repeat mode",
                 "slashQueue": "Set repeat mode to **`QUEUE`**",
                 "slashSong": "Set repeat mode to **`SONG`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <query> [source]"
             },
             "shuffle": {
-                "actualState": "Current shuffle mode is **`{state}`**",
+                "actualState": "Current shuffle mode is {state}",
                 "description": "Set mode for shuffle feature",
-                "newState": "Shuffle mode is now set to **`{state}`**"
+                "newState": "Shuffle mode is now set to {state}"
             },
             "skip": {
                 "description": "Skip the music",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "To change the volume, provide the volume number when using this command.",
-                "currentVolume": "The current volume is **`{volume}`**",
+                "currentVolume": "The current volume is {volume}",
                 "description": "Change the media player volume",
-                "newVolume": "Volume has been set to **`{volume}`**",
-                "plsPause": "Please pause the music instead of setting the volume to **`{volume}`**",
+                "newVolume": "Volume has been set to {volume}",
+                "plsPause": "Please pause the music instead of setting the volume to {volume}",
                 "slashDescription": "New volume",
                 "usage": "{prefix}volume [new volume]",
-                "volumeLimit": "I can't set the volume above **`{maxVol}`**"
+                "volumeLimit": "I can't set the volume above {maxVol}"
             },
             "requestChannel": {
                 "description": "Set up a request channel for music",
@@ -219,7 +219,7 @@
             "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
             "message2": "Sorry, but that interaction is only for <@{user}>"
         },
-        "createMessage": "Hi {author}, my prefix is **`{prefix}`**",
+        "createMessage": "Hi {author}, my prefix is {prefix}",
         "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Connection successfully re-configured.",
@@ -244,7 +244,7 @@
         "shuffle": "Shuffle",
         "volume": "Volume",
         "queueLength": "Queue",
-        "queueFooter": "• Total song(s) in queue: {count}",
+        "queueFooter": "• This feature may cause delay or desync. Total track(s) in queue: {count}",
         "idle": "Idle",
         "live": "LIVE",
         "requestedBy": "Requested by",
@@ -255,7 +255,7 @@
         "startedPlaying": "Now playing **{song}**",
         "paused": "Paused the music.",
         "resumed": "Resumed the music.",
-        "skipped": "Skipped the current song.",
+        "skipped": "Skipped **{song}**",
         "removed": "Removed **{song}** from the queue and skipped.",
         "stopped": "Stopped the music and cleared the queue.",
         "loopChanged": "Loop mode changed to **{mode}**.",
@@ -296,7 +296,7 @@
             "noQueue": "Nothing is being played.",
             "sameVC": "You need to be in the same voice channel as mine.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
-            "useRequestChannelDirect": "Just type the song title or link directly in this channel to play music.",
+            "useRequestChannelDirect": "This command is disabled in the request channel. Please use the player buttons or type the song title/link directly.",
             "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
             "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
         }
