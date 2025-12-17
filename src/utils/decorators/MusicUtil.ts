@@ -34,30 +34,14 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
     }
     if (voiceChannel?.joinable !== true) {
         void ctx.reply({
-            embeds: [
-                createEmbed(
-                    "error",
-                    i18n.__mf("utils.musicDecorator.validVCJoinable", {
-                        permission: "**`CONNECT`**",
-                    }),
-                    true,
-                ),
-            ],
+            embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCJoinable"), true)],
         });
 
         return false;
     }
     if (!voiceChannel.permissionsFor(ctx.guild.members.me).has(PermissionFlagsBits.Speak)) {
         void ctx.reply({
-            embeds: [
-                createEmbed(
-                    "error",
-                    i18n.__mf("utils.musicDecorator.validVCPermission", {
-                        permission: "**`SPEAK`**",
-                    }),
-                    true,
-                ),
-            ],
+            embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCPermission"), true)],
         });
         return false;
     }

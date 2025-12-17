@@ -84,13 +84,7 @@ export class DJCommand extends BaseCommand {
             });
 
             return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "success",
-                        i18n.__mf("commands.music.dj.disableText", { state: "**`DISABLED`**" }),
-                        true,
-                    ),
-                ],
+                embeds: [createEmbed("success", i18n.__("commands.music.dj.disableText"), true)],
             });
         },
         enable: async (ctx) => {
@@ -111,13 +105,7 @@ export class DJCommand extends BaseCommand {
             });
 
             return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "success",
-                        i18n.__mf("commands.music.dj.enableText", { state: "**`ENABLED`**" }),
-                        true,
-                    ),
-                ],
+                embeds: [createEmbed("success", i18n.__("commands.music.dj.enableText"), true)],
             });
         },
         role: async (ctx) => {
@@ -138,9 +126,7 @@ export class DJCommand extends BaseCommand {
                             "info",
                             (cur?.length ?? 0) > 0
                                 ? i18n.__mf("commands.music.dj.role.current", { cur })
-                                : i18n.__mf("commands.music.dj.role.noRole", {
-                                      prefix: `\`${this.client.config.mainPrefix}dj role\``,
-                                  }),
+                                : i18n.__("commands.music.dj.role.noRole"),
                         ).setFooter({
                             text: footer,
                         }),

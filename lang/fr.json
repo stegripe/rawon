@@ -46,7 +46,7 @@
                 "usageString": "Usage"
             },
             "invite": {
-                "clickURL": "[Cliquez ici]({url}) pour inviter ce bot sur votre serveur.",
+                "clickURL": "**[Cliquez ici]({url})** pour inviter ce bot sur votre serveur.",
                 "description": "Obtenez le lien d'invitation pour le bot",
                 "inviteTitle": "{bot} - Lien d'invitation"
             },
@@ -60,16 +60,16 @@
             "dj": {
                 "description": "Modifier les paramètres de la fonctionnalité DJ",
                 "disable": "Désactivé",
-                "disableText": "La fonctionnalité DJ a été {state}",
+                "disableText": "La fonctionnalité DJ a été **`DÉSACTIVÉE`**",
                 "embedTitle": "Fonctionnalité DJ",
                 "enable": "Activé",
-                "enableText": "La fonctionnalité DJ a été {state}",
+                "enableText": "La fonctionnalité DJ a été **`ACTIVÉ`**",
                 "newRoleText": "nouveau rôle",
-                "noPermission": "Vous n'avez pas la permission Gérer le serveur pour utiliser cette commande.",
+                "noPermission": "Vous n'avez pas la permission **Gérer le serveur** pour utiliser cette commande.",
                 "role": {
                     "current": "Rôle actuel de DJ : <@&{role}>",
                     "invalid": "Rôle invalide.",
-                    "noRole": "Le rôle de DJ n'a pas été défini, veuillez le définir avec {prefix}",
+                    "noRole": "Le rôle de DJ n'a pas été défini, veuillez le définir avec `{prefix}dj role`",
                     "success": "Le rôle de DJ a été défini à <@&{role}>"
                 },
                 "slashDisableDescription": "Désactiver la fonctionnalité DJe",
@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Filtres disponibles",
                 "currentlyUsedFilters": "Filtres actuellement utilisés",
-                "currentState": "{filter} est actuellement {state}",
+                "currentState": "`{filter}` est actuellement `{state}`",
                 "description": "Configurer le filtre de musique",
                 "embedFooter": "Pour {opstate} le filtre, utilisez {prefix}filter {opstate} {filter}",
-                "filterSet": "Le filtre {filter} est désormais {state}",
+                "filterSet": "Le filtre `{filter}` est désormais `{state}`",
                 "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de musique",
                 "slashStateFilterDescription": "Le filtre de musique qui sera {state, select, enable {activé} other {désactivé}}",
                 "slashStatusDescription": "Vérifier l'état actuel des filtres de musique",
@@ -91,12 +91,12 @@
                 "specifyFilter": "Veuillez spécifier le filtre de la chanson"
             },
             "lyrics": {
-                "apiError": "L'API n'a pas pu trouver la chanson {song}, parce que : {message}",
+                "apiError": "L'API n'a pas pu trouver la chanson **{song}**, parce que : `{message}`",
                 "description": "Montrez les paroles de la chanson",
                 "noQuery": "Il n'y a rien à jouer, ou aucun argument n'est fourni.",
                 "slashDescription": "Musique à rechercher",
                 "usage": "{prefix}lyrics [musique]",
-                "noLyrics": "No lyrics found for {song}."
+                "noLyrics": "No lyrics found for **{song}**."
             },
             "nowplaying": {
                 "description": "Afficher l'état du lecteur multimédia",
@@ -109,7 +109,7 @@
                 "pauseMessage": "Le lecteur de musique a été mis en pause."
             },
             "play": {
-                "alreadyPlaying": "Le lecteur de musique est déjà en train de jouer sur le salon vocal {voiceChannel}.",
+                "alreadyPlaying": "Le lecteur de musique est déjà en train de jouer sur le salon vocal **`{voiceChannel}`**.",
                 "description": "Jouer de la musique",
                 "noSongData": "Cette URL ne contient pas de données sur les musiques.",
                 "slashQueryDescription": "Requête à rechercher",
@@ -128,13 +128,13 @@
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
-                "actualMode": "Le mode de répétition actuel est {mode}",
+                "actualMode": "Le mode de répétition actuel est **`{mode}`**",
                 "description": "Répéter la musique en cours ou la file d'attente",
                 "footer": "Pour changer de mode, consultez {prefix}help repeat",
-                "newMode": "Le mode de répétition a été défini sur {mode}",
+                "newMode": "Le mode de répétition a été défini sur **`{mode}`**",
                 "slashDisable": "Désactiver le mode répétition",
-                "slashQueue": "Régler le mode de répétition sur LISTE D'ATTENTE",
-                "slashSong": "Régler le mode de répétition sur LISTE D'ATTENTE",
+                "slashQueue": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
+                "slashSong": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -159,13 +159,13 @@
                 "usage": "{prefix}search <requête> [source]"
             },
             "shuffle": {
-                "actualState": "Le mode Shuffle est {state}",
+                "actualState": "Le mode Shuffle est **`{state}`**",
                 "description": "Définir le mode de la fonction de lecture aléatoire",
-                "newState": "Le mode aléatoire est maintenant réglé sur {state}"
+                "newState": "Le mode aléatoire est maintenant réglé sur **`{state}`**"
             },
             "skip": {
                 "description": "Sauter la musique",
-                "skipMessage": "{song} a été sautée.",
+                "skipMessage": "**{song}** a été sautée.",
                 "voteResultMessage": "{length}/{required} voté pour sauter la chanson en cours"
             },
             "skipTo": {
@@ -173,7 +173,7 @@
                 "description": "Passer à une position spécifique dans la file d'attente",
                 "noPermission": "Vous n'avez pas à utiliser cette commande.",
                 "noSongPosition": "Impossible de trouver une chanson dans cette position.",
-                "skipMessage": "Passé à {song}",
+                "skipMessage": "Passé à **{song}**",
                 "slashFirstDescription": "Revenir à la première chanson de la file d'attente",
                 "slashLastDescription": "Passer à la dernière chanson de la file d'attente",
                 "slashPositionDescription": "Position du morceau dans la file d'attente",
@@ -186,20 +186,20 @@
             },
             "volume": {
                 "changeVolume": "Pour modifier le volume, veuillez donner  le numéro de volume lorsque vous utilisez cette commande.",
-                "currentVolume": "Le volume actuel est {mode}",
+                "currentVolume": "Le volume actuel est **`{volume}`**",
                 "description": "Modifier le volume du lecteur multimédia",
-                "newVolume": "Le volume a été réglé sur {state}",
-                "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur {volume}",
+                "newVolume": "Le volume a été réglé sur **`{volume}`**",
+                "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur **`{volume}`**",
                 "slashDescription": "Nouveau volume",
                 "usage": "{prefix}volume [nouveau volume]",
-                "volumeLimit": "Je ne peux pas régler le volume au-dessus de {maxVol}"
+                "volumeLimit": "Je ne peux pas régler le volume au-dessus de **`{maxVol}`**"
             },
             "requestChannel": {
                 "description": "Configurer un canal de requête pour la musique",
-                "noPermission": "Vous avez besoin de la permission Gérer le serveur pour utiliser cette commande.",
+                "noPermission": "Vous avez besoin de la permission **Gérer le serveur** pour utiliser cette commande.",
                 "invalidChannel": "Veuillez fournir un canal texte valide.",
                 "noBotPermissions": "Je n'ai pas pu vérifier mes permissions pour ce canal.",
-                "missingBotPermissions": "Il me manque les permissions suivantes dans ce canal: {permissions}",
+                "missingBotPermissions": "Il me manque les permissions suivantes dans ce canal: **{permissions}**",
                 "failedToSetup": "Échec de la configuration du canal de requête. Veuillez vérifier mes permissions.",
                 "slashSetDescription": "Définir un canal comme canal de requête",
                 "slashRemoveDescription": "Supprimer le canal de requête",
@@ -219,48 +219,48 @@
             "message1": "Désolé, mais cette interaction est uniquement pour <@{user}> et le staff du serveur.",
             "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>"
         },
-        "createMessage": "Salut {author}, mon préfixe est {prefix}",
+        "createMessage": "Salut {author}, mon préfixe est **`{prefix}`**",
         "cmdLoading": "Chargement en cours...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La connexion a été reconfigurée avec succès.",
-            "deleteQueue": "{duration} s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
+            "deleteQueue": "**`{duration}`** s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
             "deleteQueueFooter": "File d'attente supprimée",
             "disconnectFromVCMessage": "Déconnecté du salon vocal, la file d'attente a été supprimée.",
             "joinStageMessage": "A rejoint avec succès le salon Stage en tant que haut-parleur.",
             "joiningAsSpeaker": "Déplacé sur le salon Stage, j'essaie de me joindre en tant que haut-parleur...",
-            "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici {duration}, la file d'attente sera supprimée.",
+            "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici **`{duration}`**, la file d'attente sera supprimée.",
             "pauseQueueFooter": "File d'attente mise en pause",
             "reconfigureConnection": "Déplacement vers un salon vocal avec une région différente, re-configuration de la connexion...",
-            "resumeQueue": "Quelqu'un a rejoint le salon vocal.\nReprise de {song}",
+            "resumeQueue": "Quelqu'un a rejoint le salon vocal.\nReprise de **{song}**",
             "resumeQueueFooter": "Reprise de la file d'attente",
             "unableJoinStageMessage": "Impossible de rejoindre comme haut-parleur, la file d'attente a été supprimée.",
             "unableReconfigureConnection": "Impossible de reconfigurer la connexion, la file d'attente a été supprimée."
         }
     },
     "reusable": {
-        "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",
+        "invalidUsage": "Usage invalide, veuillez utiliser **`{prefix} {name}`** pour plus d'informations.",
         "pageFooter": "Page {actual} sur {total}"
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
         },
-        "cooldownMessage": "{author}, veuillez attendre {timeleft} de cooldown.",
+        "cooldownMessage": "{author}, veuillez attendre **`{timeleft}`** de cooldown.",
         "generalHandler": {
-            "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : {message}",
-            "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : {message}",
+            "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : `{message}`",
+            "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : `{message}`",
             "handleVideoInitial": "Ajout de {length} chanson(s) à la file d'attente",
             "leftVC": "Je me suis déconnecté du salon vocal parce que j'ai été inactif pendant trop longtemps.",
-            "queueEnded": "La lecture est terminée, utilisez {usage} pour jouer plus de musique.",
-            "startPlaying": "Lancement de la lecture de {song}",
-            "stopPlaying": "Arrêt de la lecture de {song}"
+            "queueEnded": "La lecture est terminée, utilisez **`{usage}`** pour jouer plus de musique.",
+            "startPlaying": "Lancement de la lecture de **{song}**",
+            "stopPlaying": "Arrêt de la lecture de **{song}**"
         },
         "musicDecorator": {
             "noInVC": "Désolé, mais vous devez être dans un salon vocal pour faire cela.",
             "noQueue": "Il n'y a rien à jouer.",
             "sameVC": "Vous devez être dans le même salon vocal que le mien.",
-            "validVCJoinable": "Désolé, mais je ne peux pas {permission} à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
-            "validVCPermission": "Désolé, mais je ne peux pas {permission} dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCJoinable": "Désolé, mais je ne peux pas **`ME CONNECTER`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCPermission": "Désolé, mais je ne peux pas **`PARLER`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
             "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
             "useRequestChannelDirect": "Tapez simplement le titre de la chanson ou le lien directement dans ce salon pour jouer de la musique."
         }
@@ -279,16 +279,16 @@
         "unknown": "Inconnu",
         "notInVoice": "Vous devez être dans un salon vocal pour demander de la musique.",
         "noResults": "Aucun résultat trouvé pour votre recherche.",
-        "addedToQueue": "Ajouté {song} à la file d'attente.",
-        "startedPlaying": "Lecture de {song}",
+        "addedToQueue": "Ajouté **{song}** à la file d'attente.",
+        "startedPlaying": "Lecture de **{song}**",
         "paused": "Musique en pause.",
         "resumed": "Musique reprise.",
-        "skipped": "{song} passée.",
-        "removed": "Supprimé {song} de la file d'attente et passée.",
+        "skipped": "**{song}** passée.",
+        "removed": "Supprimé **{song}** de la file d'attente et passée.",
         "stopped": "Musique arrêtée et file d'attente vidée.",
-        "loopChanged": "Mode boucle changé en {mode}.",
-        "shuffleChanged": "Mode aléatoire maintenant {state}.",
-        "volumeChanged": "Volume changé à {volume}%.",
+        "loopChanged": "Mode boucle changé en **{mode}**.",
+        "shuffleChanged": "Mode aléatoire maintenant **{state}**.",
+        "volumeChanged": "Volume changé à **{volume}%**.",
         "queueCleared": "La file d'attente a été vidée.",
         "queueListTitle": "Liste de File d'attente",
         "emptyQueue": "La file d'attente est vide.",
