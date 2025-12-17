@@ -195,9 +195,11 @@ export class MessageCreateEvent extends BaseEvent {
             void play(guild);
         }
 
+        const songTitle = songs.items[0].title;
+        const songUrl = songs.items[0].url;
         const confirmEmbed = createEmbed(
             "success",
-            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`,
+            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: `[${songTitle}](${songUrl})` })}`,
         );
         if (songs.items[0].thumbnail) {
             confirmEmbed.setThumbnail(songs.items[0].thumbnail);
