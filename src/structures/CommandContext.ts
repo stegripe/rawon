@@ -90,7 +90,6 @@ export class CommandContext {
         }
 
         // @ts-expect-error-next-line
-        // eslint-disable-next-line typescript/no-unsafe-return
         return rep instanceof Message ? rep : new Message(this.context.client, rep);
     }
 
@@ -119,7 +118,6 @@ export class CommandContext {
         }
         if (this.isInteraction()) {
             (options as InteractionReplyOptions).withResponse = true;
-            // eslint-disable-next-line typescript/no-unsafe-argument
             const msg = (await (this.context as CommandInteraction)[type](
                 options as any,
             )) as Message;
@@ -132,7 +130,6 @@ export class CommandContext {
             throw new Error("Cannot send ephemeral message in a non-interaction context.");
         }
         if (typeof options === "string") {
-            // eslint-disable-next-line no-param-reassign
             options = { content: options };
         }
 

@@ -1,4 +1,3 @@
-/* eslint-disable typescript/strict-boolean-expressions */
 import { URL } from "node:url";
 import { type QueryData } from "../../../typings/index.js";
 

@@ -284,6 +284,7 @@
         "paused": "Música pausada.",
         "resumed": "Música reanudada.",
         "skipped": "Se saltó la canción actual.",
+        "removed": "Eliminado **{song}** de la cola y saltado.",
         "stopped": "Se detuvo la música y se vació la cola.",
         "loopChanged": "Modo de bucle cambiado a **{mode}**.",
         "shuffleChanged": "Modo aleatorio ahora está **{state}**.",
