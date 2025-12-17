@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Filtros disponíveis",
                 "currentlyUsedFilters": "Filtros em uso",
-                "currentState": "`{filter}` está `{state}`",
+                "currentState": "{filter} está {state}",
                 "description": "Configura o filtro da música",
                 "embedFooter": "Para {opstate} o filtro, use {prefix}filter {opstate} {filter}",
-                "filterSet": "`O filtro {filter}` está `{state}`",
+                "filterSet": "`O filtro {filter}` está {state}",
                 "slashStateDescription": "{state, select, enable {Ativar} other {Desativar}} um filtro de música",
                 "slashStateFilterDescription": "O filtro de música a ser {state, select, enable {ativado} other {desativado}}",
                 "slashStatusDescription": "Verifica o status dos filtros de música",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <posições>"
             },
             "repeat": {
-                "actualMode": "Modo de repetição está **`{mode}`**",
+                "actualMode": "Modo de repetição está {mode}",
                 "description": "Repete a música atual ou a fila",
                 "footer": "Para mudar o modo, veja {prefix}help repeat",
-                "newMode": "O modo de repetição agora está **`{mode}`**",
+                "newMode": "O modo de repetição agora está {mode}",
                 "slashDisable": "Desativa o modo de repetição",
                 "slashQueue": "Altera o modo de repetição para **`FILA`**",
                 "slashSong": "Altera o modo de repetição para **`MÚSICA`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <canção> [origem]"
             },
             "shuffle": {
-                "actualState": "Modo aleatório está **`{state}`**",
+                "actualState": "Modo aleatório está {state}",
                 "description": "Configura o modo aleatório",
-                "newState": "Modo aleatório agora está **`{state}`**"
+                "newState": "Modo aleatório agora está {state}"
             },
             "skip": {
                 "description": "Pula a música",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Para mudar o volume, forneça o número do volume ao usar este comando.",
-                "currentVolume": "O volume atual é **`{volume}`**",
+                "currentVolume": "O volume atual é {volume}",
                 "description": "Muda o volume do player de mídia",
-                "newVolume": "Volume posto em **`{volume}`**",
-                "plsPause": "Por favor pause a música ao invés de por o volume em**`{volume}`**",
+                "newVolume": "Volume posto em {volume}",
+                "plsPause": "Por favor pause a música ao invés de por o volume em{volume}",
                 "slashDescription": "Novo volume",
                 "usage": "{prefix}volume [novo volume]",
-                "volumeLimit": "Não posso por o volume acima de **`{maxVol}`**"
+                "volumeLimit": "Não posso por o volume acima de {maxVol}"
             },
             "requestChannel": {
                 "description": "Configurar um canal de solicitação para música",
@@ -219,7 +219,7 @@
             "message1": "Desculpe, mas essa interação é somente para <@{user}> e a moderação do servidor.",
             "message2": "Desculpe, mas essa interação é somente para <@{user}>"
         },
-        "createMessage": "Olá {author}, meu prefixo é **`{prefix}`**",
+        "createMessage": "Olá {author}, meu prefixo é {prefix}",
         "cmdLoading": "Carregando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Conexão re-configurada com sucesso.",

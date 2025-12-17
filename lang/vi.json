@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Bộ lọc có sẵn",
                 "currentlyUsedFilters": "Bộ lọc đang sử dụng",
-                "currentState": "`{filter}` đang được `{state}`",
+                "currentState": "{filter} đang được {state}",
                 "description": "Định cấu hình bộ lọc bài hát",
                 "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}",
-                "filterSet": " Bộ lọc `{filter}` đang `{state}`",
+                "filterSet": " Bộ lọc {filter} đang {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} bộ lọc bài hát",
                 "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {bật} other {tắt}}",
                 "slashStatusDescription": "Kiểm tra trạng thái hiện tại của bộ lọc bài hát",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <vị trí>"
             },
             "repeat": {
-                "actualMode": "Chế độ lặp lại hiện tại là **`{mode}`**",
+                "actualMode": "Chế độ lặp lại hiện tại là {mode}",
                 "description": "Lặp lại bài nhạc hiện tại hoặc trong hàng đợi",
                 "footer": "Để thay đổi chế độ, nhập {prefix}help repeat",
-                "newMode": "Chế độ lặp lại đã được đặt thành **`{mode}`**",
+                "newMode": "Chế độ lặp lại đã được đặt thành {mode}",
                 "slashDisable": "Tắt chế độ lặp lại",
                 "slashQueue": "Đặt chế độ lặp lại trong **`HÀNG ĐỢI`**",
                 "slashSong": "Đặt chế độ lặp lại tới **`BÀI HÁT`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <query> [nguồn]"
             },
             "shuffle": {
-                "actualState": "Chế độ phát ngẫu nhiên hiện tại là **`{state}`**",
+                "actualState": "Chế độ phát ngẫu nhiên hiện tại là {state}",
                 "description": "Đặt chế độ cho tính năng phát ngẫu nhiên",
-                "newState": "Chế độ phát ngẫu nhiên được đặt thành **`{state}`**"
+                "newState": "Chế độ phát ngẫu nhiên được đặt thành {state}"
             },
             "skip": {
                 "description": "Bỏ qua bài nhạc",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Trình phát nhạc đã dừng. Để thay đổi âm lượng, hãy cung cấp số âm lượng khi sử dụng lệnh này.",
-                "currentVolume": "Âm lượng hiện tại là **`{volume}`**",
+                "currentVolume": "Âm lượng hiện tại là {volume}",
                 "description": "Thay đổi âm lượng trình phát đa phương tiện",
-                "newVolume": "Âm lượng đã được thiết lập thành **`{volume}`**",
-                "plsPause": "Vui lòng tạm dừng nhạc để đặt âm lượng thành **`{volume}`**",
+                "newVolume": "Âm lượng đã được thiết lập thành {volume}",
+                "plsPause": "Vui lòng tạm dừng nhạc để đặt âm lượng thành {volume}",
                 "slashDescription": "Âm lượng mới",
                 "usage": "{prefix}volume [âm lượng mới]",
-                "volumeLimit": "Tôi không thể đặt âm lượng trên **`{maxVol}`**"
+                "volumeLimit": "Tôi không thể đặt âm lượng trên {maxVol}"
             },
             "requestChannel": {
                 "description": "Thiết lập kênh yêu cầu nhạc",
@@ -219,7 +219,7 @@
             "message1": "Xin lỗi, tương tác chỉ dành cho <@{user}> và quản lý máy chủ.",
             "message2": "Xin lỗi, tương tác chỉ dành cho <@{user}>"
         },
-        "createMessage": "Chào {author}, tiền tố của tôi là **`{prefix}`**",
+        "createMessage": "Chào {author}, tiền tố của tôi là {prefix}",
         "cmdLoading": "Đang tải...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Kết nối lại cấu hình thành công.",

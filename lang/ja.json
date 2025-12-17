@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "利用可能なフィルター",
                 "currentlyUsedFilters": "現在使われているフィルター",
-                "currentState": "`{filter}`は現在`{state}`です",
+                "currentState": "{filter}は現在{state}です",
                 "description": "フィルターを設定",
                 "embedFooter": "そのフィルターを{opstate}するには、 {prefix}filter {opstate} {filter}を使用してください。",
-                "filterSet": "`{filter}`フィルターは現在`{state}`です。",
+                "filterSet": "{filter}フィルターは現在{state}です。",
                 "slashStateDescription": "{state, select, enable {有効化} other {無効化}} フィルター",
                 "slashStateFilterDescription": "フィルターは{state, select, enable {有効化} other {無効化}}になります。",
                 "slashStatusDescription": "現在のフィルターの状態を確認",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <ポジション>"
             },
             "repeat": {
-                "actualMode": "現在のリピートモードは**`{mode}`**です。",
+                "actualMode": "現在のリピートモードは{mode}です。",
                 "description": "現在の曲もしくはキューをリピート",
                 "footer": "モードを変更するには、{prefix}help repeatを見てください。",
-                "newMode": "リピートモードは**`{mode}`**にセットされました。",
+                "newMode": "リピートモードは{mode}にセットされました。",
                 "slashDisable": "リピートモードを無効化",
                 "slashQueue": "**`キュー`**リピートモードを設定しました。",
                 "slashSong": "**`曲`**リピートモードを設定しました。",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <キーワード> [プラットフォーム]"
             },
             "shuffle": {
-                "actualState": "現在のシャッフルモードは**`{state}`**です。",
+                "actualState": "現在のシャッフルモードは{state}です。",
                 "description": "シャッフルモードを設定",
-                "newState": "シャッフルモードは**`{state}`**にセットされました。"
+                "newState": "シャッフルモードは{state}にセットされました。"
             },
             "skip": {
                 "description": "曲をスキップ",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "ボリュームを変えるには、有効な数値を引数として提供してください。",
-                "currentVolume": "現在のボリュームは**`{volume}`**です。",
+                "currentVolume": "現在のボリュームは{volume}です。",
                 "description": "メディアプレイヤーのボリュームを変更",
-                "newVolume": "ボリュームは**`{volume}`**にセットされました。",
-                "plsPause": "**`{volume}`**にボリュームをセットするのではなくプレイヤーを一時停止してください。",
+                "newVolume": "ボリュームは{volume}にセットされました。",
+                "plsPause": "{volume}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]",
-                "volumeLimit": "**`{maxVol}`**以上にボリュームをセットできません。"
+                "volumeLimit": "{maxVol}以上にボリュームをセットできません。"
             },
             "requestChannel": {
                 "description": "音楽リクエストチャンネルを設定する",
@@ -219,7 +219,7 @@
             "message1": "そのインタラクションは<@{user}>とサーバースタッフのためのものです。",
             "message2": "そのインタラクションは<@{user}>のためのものです。"
         },
-        "createMessage": "こんにちは、{author}、私のプレフィックスは**`{prefix}`**です。",
+        "createMessage": "こんにちは、{author}、私のプレフィックスは{prefix}です。",
         "cmdLoading": "起動中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "接続は正常に再構成されました。",

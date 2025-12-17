@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Mevcut Filtreler",
                 "currentlyUsedFilters": "Şu Anda Kullanılan Filtreler",
-                "currentState": "`{filter}` şu anda `{state}`",
+                "currentState": "{filter} şu anda {state}",
                 "description": "Şarkı filtresini yapılandır",
                 "embedFooter": "Filtreyi {opstate} yapmak için {prefix}filter {opstate} {filter} kullanın.",
-                "filterSet": "`{filter}` filtresi artık `{state}` oldu",
+                "filterSet": "{filter} filtresi artık {state} oldu",
                 "slashStateDescription": "Şarkı filtresi {state, select, enable {Enable} other {Disable}} olacaktır.",
                 "slashStateFilterDescription": "",
                 "slashStatusDescription": "Şarkı filtrelerinin mevcut durumunu kontrol edin",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <pozisyon>"
             },
             "repeat": {
-                "actualMode": "Geçerli tekrar modu **`{mode}`**",
+                "actualMode": "Geçerli tekrar modu {mode}",
                 "description": "Mevcut müziği veya kuyruğu tekrarla",
                 "footer": "Modu değiştirmek için bkz. {prefix}help repeat",
-                "newMode": "Tekrar modu **`{mode}`** olarak ayarlanmıştır",
+                "newMode": "Tekrar modu {mode} olarak ayarlanmıştır",
                 "slashDisable": "Tekrar modunu devre dışı bırak",
                 "slashQueue": "Tekrar modunu **`ŞARKI KUYRUĞU`** olarak ayarlayın",
                 "slashSong": "Tekrar modunu **`ŞARKI`** olarak ayarlayın",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <sorgu> [kaynak]"
             },
             "shuffle": {
-                "actualState": "Geçerli karıştırma modu **`{state}`**",
+                "actualState": "Geçerli karıştırma modu {state}",
                 "description": "Karıştırma özelliği için modu ayarlama",
-                "newState": "Karıştırma modu şimdi **`{state}`** olarak ayarlandı"
+                "newState": "Karıştırma modu şimdi {state} olarak ayarlandı"
             },
             "skip": {
                 "description": "Müziği atlayın",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Ses düzeyini değiştirmek için, bu komutu kullanırken ses düzeyini girin.",
-                "currentVolume": "Mevcut ses düzeyi **`{volume}`**",
+                "currentVolume": "Mevcut ses düzeyi {volume}",
                 "description": "Medya oynatıcının ses düzeyini değiştir",
-                "newVolume": "Ses seviyesi **`{volume}`** olarak ayarlandı",
-                "plsPause": "Lütfen ses seviyesini **`{volume}`** olarak ayarlamak yerine müziği duraklatın",
+                "newVolume": "Ses seviyesi {volume} olarak ayarlandı",
+                "plsPause": "Lütfen ses seviyesini {volume} olarak ayarlamak yerine müziği duraklatın",
                 "slashDescription": "Yeni ses seviyesi",
                 "usage": "{prefix}volume [yeni değer]",
-                "volumeLimit": "Ses seviyesini **`{maxVol}`** değerinin üzerine ayarlayamıyorum."
+                "volumeLimit": "Ses seviyesini {maxVol} değerinin üzerine ayarlayamıyorum."
             },
             "requestChannel": {
                 "description": "Müzik için bir istek kanalı ayarla",

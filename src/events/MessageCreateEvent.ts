@@ -101,7 +101,7 @@ export class MessageCreateEvent extends BaseEvent {
                             "info",
                             `👋 **|** ${i18n.__mf("events.createMessage", {
                                 author: message.author.toString(),
-                                prefix: `\`${this.client.config.mainPrefix}\``,
+                                prefix: `**\`${this.client.config.mainPrefix}\`**`,
                             })}`,
                         ),
                     ],

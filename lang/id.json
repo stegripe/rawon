@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Filter yang tersedia",
                 "currentlyUsedFilters": "Filter yang sedang digunakan",
-                "currentState": "Filter `{filter}` dalam status `{state}`",
+                "currentState": "Filter {filter} dalam status {state}",
                 "description": "Menyetel filter lagu",
                 "embedFooter": "Untuk {opstate, select, enable {menyalakan} other {mematikan}} filter tersebut, gunakan {prefix}filter {opstate} {filter}",
-                "filterSet": "filter `{filter}` sekarang `{state}`",
+                "filterSet": "filter {filter} sekarang {state}",
                 "slashStateDescription": "{state, select, enable {Menyalakan} other {Mematikan}} filter lagu",
                 "slashStateFilterDescription": "Filter lagu yang akan di{state, select, enable {nyalakan} other {matikan}}",
                 "slashStatusDescription": "Cek status filter lagu",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <posisi>"
             },
             "repeat": {
-                "actualMode": "Mode pengulangan: **`{mode}`**",
+                "actualMode": "Mode pengulangan: {mode}",
                 "description": "Mengulang lagu yang sedang dimainkan atau setelahnya",
                 "footer": "Untuk mengubah mode, lihat {prefix}help repeat",
-                "newMode": "Mode pengulangan telah diatur ke **`{mode}`**",
+                "newMode": "Mode pengulangan telah diatur ke {mode}",
                 "slashDisable": "Mematikan mode pengulangan",
                 "slashQueue": "Mengatur mode pengulangan ke **`QUEUE`**",
                 "slashSong": "Mengatur mode pengulangan ke **`SONG`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <kata pencarian> [sumber]"
             },
             "shuffle": {
-                "actualState": "Mode acak saat ini adalah **`{state}`**",
+                "actualState": "Mode acak saat ini adalah {state}",
                 "description": "Acak antrian",
-                "newState": "Mode acak telah diatur ke **`{state}`**"
+                "newState": "Mode acak telah diatur ke {state}"
             },
             "skip": {
                 "description": "Lewatkan lagu",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Untuk mengganti volume, berikan angka volume baru saat menggunakan perintah ini.",
-                "currentVolume": "Volume saat ini adalah **`{volume}`**",
+                "currentVolume": "Volume saat ini adalah {volume}",
                 "description": "Mengganti volume media player",
-                "newVolume": "Volume diatur ke **`{volume}`**",
-                "plsPause": "Mohon menjeda media player nya saja daripada mengatur volume ke **`{volume}`**",
+                "newVolume": "Volume diatur ke {volume}",
+                "plsPause": "Mohon menjeda media player nya saja daripada mengatur volume ke {volume}",
                 "slashDescription": "Volume baru",
                 "usage": "{prefix}volume [volume baru]",
-                "volumeLimit": "Saya tidak dapat mengatur volume di atas **`{maxVol}`**"
+                "volumeLimit": "Saya tidak dapat mengatur volume di atas {maxVol}"
             },
             "requestChannel": {
                 "description": "Atur channel request untuk musik",
@@ -219,7 +219,7 @@
             "message1": "Mohon maaf, tetapi interaction tersebut hanya untuk <@{user}> dan staff server.",
             "message2": "Mohon maaf, tetapi interaction tersebut hanya untuk <@{user}>"
         },
-        "createMessage": "Hai {author}, prefix-ku adalah **`{prefix}`**",
+        "createMessage": "Hai {author}, prefix-ku adalah {prefix}",
         "cmdLoading": "Memuat...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Koneksi berhasil ter-konfigurasi.",

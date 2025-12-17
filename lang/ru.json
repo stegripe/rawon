@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Доступные фильтры",
                 "currentlyUsedFilters": "Используемые в настоящее время фильтры",
-                "currentState": "`Состояние фильтра '`{filter}`': `{state}`",
+                "currentState": "`Состояние фильтра '{filter}': {state}",
                 "description": "Найстройка фильтра песни",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
-                "filterSet": "Новое состояние фильтра `{filter}`: `{state}`",
+                "filterSet": "Новое состояние фильтра {filter}: {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Проверьте текущий статус фильтров песен",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <позиции>"
             },
             "repeat": {
-                "actualMode": "Текущий повторный режим: **`{mode}`**",
+                "actualMode": "Текущий повторный режим: {mode}",
                 "description": "Повторить текущую песню или очередь",
                 "footer": "Чтобы поменять режим, смотрите {prefix}help repeat",
-                "newMode": "Режим повтора был установлен на: **`{mode}`**",
+                "newMode": "Режим повтора был установлен на: {mode}",
                 "slashDisable": "Отключить режим повтора",
                 "slashQueue": "Указать режим повтора для **`ОЧЕРЕДИ`**",
                 "slashSong": "Указать режим повтора для **`ПЕСНИ`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <запрос> [источник]"
             },
             "shuffle": {
-                "actualState": "Текущий режим перемешивания: **`{state}`**",
+                "actualState": "Текущий режим перемешивания: {state}",
                 "description": "Установка режима для функции перемешивания",
-                "newState": "Режим перемешивания теперь установлен на: **`{state}`**"
+                "newState": "Режим перемешивания теперь установлен на: {state}"
             },
             "skip": {
                 "description": "Пропустить песню",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Чтобы изменить громкость, укажите номер громкости при использовании этой команды.",
-                "currentVolume": "Текущая громкость: **`{volume}`**",
+                "currentVolume": "Текущая громкость: {volume}",
                 "description": "Поменять громкость музыкального проигрывателя",
-                "newVolume": "Громкость была установлена на: **`{volume}`**",
-                "plsPause": "Пожалуйста поставьте музыку на паузу вместо того чтобы устанавливать громкость на **`{volume}`**",
+                "newVolume": "Громкость была установлена на: {volume}",
+                "plsPause": "Пожалуйста поставьте музыку на паузу вместо того чтобы устанавливать громкость на {volume}",
                 "slashDescription": "Новая громкость",
                 "usage": "{prefix}volume [новая громкость]",
-                "volumeLimit": "Я не могу установить громкость выше **`{maxVol}`**"
+                "volumeLimit": "Я не могу установить громкость выше {maxVol}"
             },
             "requestChannel": {
                 "description": "Настройка канала запросов для музыки",
@@ -219,7 +219,7 @@
             "message1": "Извините, но это взаимодействие предназначено только для <@{user}> и персонала сервера.",
             "message2": "Извините, но это взаимодействие предназначено только для <@{user}>"
         },
-        "createMessage": "Привет {author}, мой префикс **`{prefix}`**",
+        "createMessage": "Привет {author}, мой префикс {prefix}",
         "cmdLoading": "Загрузка...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Соединение успешно перенастроено.",

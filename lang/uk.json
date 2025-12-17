@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Доступні фільтри",
                 "currentlyUsedFilters": "Фільтри що наразі використовуються",
-                "currentState": "Стан фільтра '`{filter}`': `{state}`",
+                "currentState": "Стан фільтра '{filter}': {state}",
                 "description": "Налаштувати фільтр пісень",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
-                "filterSet": "Новий стан фільтра '`{filter}`': `{state}`",
+                "filterSet": "Новий стан фільтра '{filter}': {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Перевірте поточний стан фільтрів пісень",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <позиції>"
             },
             "repeat": {
-                "actualMode": "Поточний режим повтору: **`{mode}`**",
+                "actualMode": "Поточний режим повтору: {mode}",
                 "description": "Повторювати поточну пісню або всю чергу",
                 "footer": "Щоб змінити режим, перегляньте {prefix}help repeat",
-                "newMode": "Режим повтору був встановлений на: **`{mode}`**",
+                "newMode": "Режим повтору був встановлений на: {mode}",
                 "slashDisable": "Вимкнути режим повтору",
                 "slashQueue": "Встановити режим повтору для **`ЧЕРГИ`**",
                 "slashSong": "Встановити режим повтору для **`ПІСНІ`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <запит> [джерело]"
             },
             "shuffle": {
-                "actualState": "Поточний режим перемішування: **`{state}`**",
+                "actualState": "Поточний режим перемішування: {state}",
                 "description": "Встановити режим для функції перемішування",
-                "newState": "Режим перемішування тепер встановлено: **`{state}`**"
+                "newState": "Режим перемішування тепер встановлено: {state}"
             },
             "skip": {
                 "description": "Пропустити пісню",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Щоб змінити гучність, введіть номер гучності під час використання цієї команди.",
-                "currentVolume": "Поточна гучність: **`{volume}`**",
+                "currentVolume": "Поточна гучність: {volume}",
                 "description": "Змінити гучність медіаплеєра",
-                "newVolume": "Гучність встановлено на: **`{volume}`**",
-                "plsPause": "Будь ласка, призупиніть музику, а не встановлюйте гучність на **`{volume}`**",
+                "newVolume": "Гучність встановлено на: {volume}",
+                "plsPause": "Будь ласка, призупиніть музику, а не встановлюйте гучність на {volume}",
                 "slashDescription": "Нова гучність:",
                 "usage": "{префікс}volume [нова гучність]",
-                "volumeLimit": "Я не можу встановити гучність вище **`{maxVol}`**"
+                "volumeLimit": "Я не можу встановити гучність вище {maxVol}"
             },
             "requestChannel": {
                 "description": "Налаштувати канал запитів для музики",
@@ -219,7 +219,7 @@
             "message1": "Вибачте, але ця взаємодія лише для <@{user}> та персоналу сервера.",
             "message2": "Вибачте, але ця взаємодія лише для <@{user}>"
         },
-        "createMessage": "Привіт {author}, мій префікс **`{prefix}`**",
+        "createMessage": "Привіт {author}, мій префікс {prefix}",
         "cmdLoading": "Завантаження...",
         "voiceStateUpdate": {
             "connectionReconfigured": "З'єднання успішно повторно налаштовано.",
