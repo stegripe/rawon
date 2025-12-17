@@ -66,7 +66,7 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
                     createEmbed(
                         "error",
                         i18n.__mf("utils.commonUtil.botMissingChannelPerms", {
-                            permissions: permNames.join(", "),
+                            permissions: `**${permNames.join(", ")}**`,
                             channel: `<#${channel.id}>`,
                         }),
                         true,

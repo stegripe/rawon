@@ -101,7 +101,7 @@ export class MessageCreateEvent extends BaseEvent {
                             "info",
                             `👋 **|** ${i18n.__mf("events.createMessage", {
                                 author: message.author.toString(),
-                                prefix: `\`${this.client.config.mainPrefix}\``,
+                                prefix: `**\`${this.client.config.mainPrefix}\`**`,
                             })}`,
                         ),
                     ],
@@ -195,9 +195,10 @@ export class MessageCreateEvent extends BaseEvent {
             void play(guild);
         }
 
+        const songLink = `[${songs.items[0].title}](${songs.items[0].url})`;
         const confirmEmbed = createEmbed(
             "success",
-            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`,
+            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songLink })}`,
         );
         if (songs.items[0].thumbnail) {
             confirmEmbed.setThumbnail(songs.items[0].thumbnail);

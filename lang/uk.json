@@ -46,7 +46,7 @@
                 "usageString": "Приклад використання"
             },
             "invite": {
-                "clickURL": "**[Натисніть тут]({url})** щоб запросити бота на свій сервер.",
+                "clickURL": "[Натисніть тут]({url}) щоб запросити бота на свій сервер.",
                 "description": "Отримати посилання для додавання бота на свій сервер",
                 "inviteTitle": "{bot} - Запрошувальне посилання"
             },
@@ -60,16 +60,16 @@
             "dj": {
                 "description": "Змінити налаштування функції DJ",
                 "disable": "Вимкнено",
-                "disableText": "Функція DJ була **`ВИМКНЕНА`**",
+                "disableText": "Функція DJ {state}",
                 "embedTitle": "Функція DJ",
                 "enable": "Увімкнено",
-                "enableText": "Функція DJ була **`УВІМКНЕНА`**",
+                "enableText": "Функція DJ {state}",
                 "newRoleText": "нова роль",
-                "noPermission": "У вас немає дозволу **Керувати сервером** для використання цієї команди.",
+                "noPermission": "У вас немає дозволу Керувати сервером для використання цієї команди.",
                 "role": {
                     "current": "Поточна роль DJ: <@&{role}>",
                     "invalid": "Недійсна роль.",
-                    "noRole": "Роль DJ не була встановлена, будь ласка встановіть її через `{prefix}dj role`",
+                    "noRole": "Роль DJ не була встановлена, будь ласка встановіть її через {prefix}",
                     "success": "Роль DJ була встановлена: <@&{role}>"
                 },
                 "slashDisableDescription": "Вимкнути функцію DJ",
@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Доступні фільтри",
                 "currentlyUsedFilters": "Фільтри що наразі використовуються",
-                "currentState": "Стан фільтра '`{filter}`': `{state}`",
+                "currentState": "Стан фільтра '{filter}': {state}",
                 "description": "Налаштувати фільтр пісень",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
-                "filterSet": "Новий стан фільтра '`{filter}`': `{state}`",
+                "filterSet": "Новий стан фільтра '{filter}': {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Перевірте поточний стан фільтрів пісень",
@@ -91,12 +91,12 @@
                 "specifyFilter": "Будь ласка, вкажіть назву фільтра"
             },
             "lyrics": {
-                "apiError": "API не змогло найти пісню **{song}**, тому що: `{message}`",
+                "apiError": "API не змогло найти пісню {song}, тому що: {message}",
                 "description": "Показати слова пісні",
                 "noQuery": "Зараз нічого не програється або не було аргументи.",
                 "slashDescription": "Пісня для пошуку",
                 "usage": "{prefix}lyrics [пісня]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "No lyrics found for {song}."
             },
             "nowplaying": {
                 "description": "Показати статус медіа програвача",
@@ -109,7 +109,7 @@
                 "pauseMessage": "Медіа програвач поставлений на паузу."
             },
             "play": {
-                "alreadyPlaying": "Медіа програвач вже активний в каналі **`{voiceChannel}`**.",
+                "alreadyPlaying": "Медіа програвач вже активний в каналі {formatted}.",
                 "description": "Зіграти музику",
                 "noSongData": "Цей URL не має даних про пісню.",
                 "slashQueryDescription": "Запит для пошуку",
@@ -128,13 +128,13 @@
                 "usage": "{prefix}remove <позиції>"
             },
             "repeat": {
-                "actualMode": "Поточний режим повтору: **`{mode}`**",
+                "actualMode": "Поточний режим повтору: {formatted}",
                 "description": "Повторювати поточну пісню або всю чергу",
                 "footer": "Щоб змінити режим, перегляньте {prefix}help repeat",
-                "newMode": "Режим повтору був встановлений на: **`{mode}`**",
+                "newMode": "Режим повтору був встановлений на: {formatted}",
                 "slashDisable": "Вимкнути режим повтору",
-                "slashQueue": "Встановити режим повтору для **`ЧЕРГИ`**",
-                "slashSong": "Встановити режим повтору для **`ПІСНІ`**",
+                "slashQueue": "Встановити режим повтору для ЧЕРГИ",
+                "slashSong": "Встановити режим повтору для ПІСНІ",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -143,7 +143,7 @@
                 "resumeMessage": "Програвання продовжено."
             },
             "search": {
-                "cancelMessage": "Напишіть {cancel} або `c` щоб скасувати вибір пісні.",
+                "cancelMessage": "Напишіть {cancel} або c щоб скасувати вибір пісні.",
                 "canceledMessage": "Виріб пісні скасовано.",
                 "description": "Відтворіть музику за наданим запитом",
                 "interactionContent": "Будь ласка, оберіть музику",
@@ -159,13 +159,13 @@
                 "usage": "{prefix}search <запит> [джерело]"
             },
             "shuffle": {
-                "actualState": "Поточний режим перемішування: **`{state}`**",
+                "actualState": "Поточний режим перемішування: {formatted}",
                 "description": "Встановити режим для функції перемішування",
-                "newState": "Режим перемішування тепер встановлено: **`{state}`**"
+                "newState": "Режим перемішування тепер встановлено: {formatted}"
             },
             "skip": {
                 "description": "Пропустити пісню",
-                "skipMessage": "Пісню пропущено: **{song}**",
+                "skipMessage": "Пісню пропущено: {song}",
                 "voteResultMessage": "{length}/{required} проголосували за пропуск поточної пісні"
             },
             "skipTo": {
@@ -173,7 +173,7 @@
                 "description": "Перейти до певної позиції в черзі",
                 "noPermission": "У вас немає дозволу на використання цієї команди.",
                 "noSongPosition": "Неможливо знайти пісню в цій позиції.",
-                "skipMessage": "Пропущено до **{song}**",
+                "skipMessage": "Пропущено до {song}",
                 "slashFirstDescription": "Перемотати до першої пісні в черзі",
                 "slashLastDescription": "Перейти до останньої пісні в черзі",
                 "slashPositionDescription": "Позиція пісні в черзі",
@@ -186,20 +186,20 @@
             },
             "volume": {
                 "changeVolume": "Щоб змінити гучність, введіть номер гучності під час використання цієї команди.",
-                "currentVolume": "Поточна гучність: **`{volume}`**",
+                "currentVolume": "Поточна гучність: {formatted}",
                 "description": "Змінити гучність медіаплеєра",
-                "newVolume": "Гучність встановлено на: **`{volume}`**",
-                "plsPause": "Будь ласка, призупиніть музику, а не встановлюйте гучність на **`{volume}`**",
+                "newVolume": "Гучність встановлено на: {formatted}",
+                "plsPause": "Будь ласка, призупиніть музику, а не встановлюйте гучність на {formatted}",
                 "slashDescription": "Нова гучність:",
                 "usage": "{префікс}volume [нова гучність]",
-                "volumeLimit": "Я не можу встановити гучність вище **`{maxVol}`**"
+                "volumeLimit": "Я не можу встановити гучність вище {formatted}"
             },
             "requestChannel": {
                 "description": "Налаштувати канал запитів для музики",
-                "noPermission": "Вам потрібен дозвіл **Керувати сервером** для використання цієї команди.",
+                "noPermission": "Вам потрібен дозвіл Керувати сервером для використання цієї команди.",
                 "invalidChannel": "Будь ласка, вкажіть дійсний текстовий канал.",
                 "noBotPermissions": "Не вдалося перевірити мої дозволи для цього каналу.",
-                "missingBotPermissions": "Мені бракує таких дозволів у цьому каналі: **{permissions}**",
+                "missingBotPermissions": "Мені бракує таких дозволів у цьому каналі: {permissions}",
                 "failedToSetup": "Не вдалося налаштувати канал запитів. Будь ласка, перевірте мої дозволи.",
                 "slashSetDescription": "Встановити канал як канал запитів",
                 "slashRemoveDescription": "Видалити канал запитів",
@@ -219,48 +219,48 @@
             "message1": "Вибачте, але ця взаємодія лише для <@{user}> та персоналу сервера.",
             "message2": "Вибачте, але ця взаємодія лише для <@{user}>"
         },
-        "createMessage": "Привіт {author}, мій префікс **`{prefix}`**",
+        "createMessage": "Привіт {author}, мій префікс {formatted}",
         "cmdLoading": "Завантаження...",
         "voiceStateUpdate": {
             "connectionReconfigured": "З'єднання успішно повторно налаштовано.",
-            "deleteQueue": "**`{duration}`** минуло, і ніхто не приєднався до голосового каналу, чергу видалено.",
+            "deleteQueue": "{formatted} минуло, і ніхто не приєднався до голосового каналу, чергу видалено.",
             "deleteQueueFooter": "Чергу видалено",
             "disconnectFromVCMessage": "Відключено від голосового каналу, чергу видалено.",
             "joinStageMessage": "Успішно приєднався до сцени як спікер.",
             "joiningAsSpeaker": "Перейшов на канал сцени, намагаючись приєднатися як спікер...",
-            "pauseQueue": "Усі покинули голосовий канал. Для економії ресурсів чергу призупинено.\nЯкщо ніхто не приєднається до голосового каналу протягом наступних **`{duration}`**, чергу буде видалено.",
+            "pauseQueue": "Усі покинули голосовий канал. Для економії ресурсів чергу призупинено.\nЯкщо ніхто не приєднається до голосового каналу протягом наступних {formatted}, чергу буде видалено.",
             "pauseQueueFooter": "Чергу призупинено",
             "reconfigureConnection": "Переміщено на голосовий канал з іншим регіоном, переналаштування з'єднання...",
-            "resumeQueue": "Хтось приєднався до голосового каналу.\nПродовжуємо: **{song}**",
+            "resumeQueue": "Хтось приєднався до голосового каналу.\nПродовжуємо: {song}",
             "resumeQueueFooter": "Чергу продовжено",
             "unableJoinStageMessage": "Неможливо приєднатися як спікер, чергу видалено.",
             "unableReconfigureConnection": "Неможливо повторно налаштувати з'єднання, чергу видалено."
         }
     },
     "reusable": {
-        "invalidUsage": "Некоректне використання, будь ласка, скористайтесь **`{prefix} {name}`** для отримання інформації.",
+        "invalidUsage": "Некоректне використання, будь ласка, скористайтесь {prefix} {name} для отримання інформації.",
         "pageFooter": "Page {actual} of {total}"
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористатись цією командою.",
+        "cooldownMessage": "{author}, будь ласка, зачекайте {formatted} щоб скористатись цією командою.",
         "generalHandler": {
-            "errorJoining": "Помилка при спробі приєднатись до каналу: `{message}`",
-            "errorPlaying": "Помилка при спробі почати програвання музики: `{message}`",
+            "errorJoining": "Помилка при спробі приєднатись до каналу: {message}",
+            "errorPlaying": "Помилка при спробі почати програвання музики: {message}",
             "handleVideoInitial": "Додано {length} пісень до черги",
             "leftVC": "Я покинув канал через неактивність.",
-            "queueEnded": "Черга скінчилась, використовуйте **`{usage}`** щоб почати програвання.",
-            "startPlaying": "Програвання почато: **{song}**",
-            "stopPlaying": "Програвання зупинено: **{song}**"
+            "queueEnded": "Черга скінчилась, використовуйте {formatted} щоб почати програвання.",
+            "startPlaying": "Програвання почато: {song}",
+            "stopPlaying": "Програвання зупинено: {song}"
         },
         "musicDecorator": {
             "noInVC": "Вибачте, але Ви повинні бути в каналі для використання цієї команди.",
             "noQueue": "Наразі нічого не лунає.",
             "sameVC": "Ви повинні бути в тому ж каналі що і я.",
-            "validVCJoinable": "Пробачте, але я не можу **`ПРИЄДНАТИСЬ`** до Вашого каналу, перевірте чи я маю на це право.",
-            "validVCPermission": "Пробачте, але я не можу **`РОЗМОВЛЯТИ`** у Вашому каналі, перевірте чи я маю на це право.",
+            "validVCJoinable": "Пробачте, але я не можу {permission} до Вашого каналу, перевірте чи я маю на це право.",
+            "validVCPermission": "Пробачте, але я не можу {permission} у Вашому каналі, перевірте чи я маю на це право.",
             "useRequestChannel": "Будь ласка, використовуйте канал запитів {channel} для музичних команд.",
             "useRequestChannelDirect": "Просто введіть назву пісні або посилання безпосередньо в цьому каналі, щоб відтворити музику."
         }
@@ -272,23 +272,23 @@
         "shuffle": "Перемішати",
         "volume": "Гучність",
         "queueLength": "Черга",
-        "queueFooter": "This feature may causing delay or lagging. Всього пісень у черзі: {count}",
+        "queueFooter": "• This feature may cause delay or desynced. Всього пісень у черзі: {count}",
         "idle": "Очікування",
         "live": "НАЖИВО",
         "requestedBy": "Запитав",
         "unknown": "Невідомо",
         "notInVoice": "Ви повинні бути в голосовому каналі щоб запросити музику.",
         "noResults": "За вашим запитом нічого не знайдено.",
-        "addedToQueue": "Додано **{song}** до черги.",
-        "startedPlaying": "Зараз грає **{song}**",
+        "addedToQueue": "Додано {song} до черги.",
+        "startedPlaying": "Зараз грає {song}",
         "paused": "Музику призупинено.",
         "resumed": "Музику відновлено.",
-        "skipped": "Пропущено **{song}**.",
-        "removed": "Видалено **{song}** з черги та пропущено.",
+        "skipped": "Пропущено {song}.",
+        "removed": "Видалено {song} з черги та пропущено.",
         "stopped": "Музику зупинено та чергу очищено.",
-        "loopChanged": "Режим повтору змінено на **{mode}**.",
-        "shuffleChanged": "Режим перемішування тепер **{state}**.",
-        "volumeChanged": "Гучність змінено на **{volume}%**.",
+        "loopChanged": "Режим повтору змінено на {mode}.",
+        "shuffleChanged": "Режим перемішування тепер {state}.",
+        "volumeChanged": "Гучність змінено на {volume}%.",
         "queueCleared": "Чергу очищено.",
         "queueListTitle": "Список черги",
         "emptyQueue": "Черга порожня.",

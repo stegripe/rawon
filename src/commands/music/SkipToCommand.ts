@@ -100,7 +100,7 @@ export class SkipToCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         i18n.__mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
+                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
                             name: this.meta.name,
                         }),
                     ),

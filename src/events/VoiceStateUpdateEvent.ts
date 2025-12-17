@@ -313,7 +313,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         createEmbed(
                             "error",
                             `⏹️ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
-                                duration: `\`${duration}\``,
+                                duration: `**\`${duration}\`**`,
                             })}`,
                         ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") }),
                     ],
@@ -334,7 +334,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         createEmbed(
                             "warn",
                             `⏸️ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
-                                duration: `\`${duration}\``,
+                                duration: `**\`${duration}\`**`,
                             })}`,
                         ).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") }),
                     ],
@@ -377,7 +377,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         createEmbed(
                             "info",
                             `▶️ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
-                                song: `[${song.title}](${song.url})`,
+                                song: `**[${song.title}](${song.url})**`,
                             })}`,
                         )
                             .setThumbnail(song.thumbnail)

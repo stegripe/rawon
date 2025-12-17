@@ -39,7 +39,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
                     createEmbed(
                         "info",
                         `⏹️ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
-                            usage: `\`${guild.client.config.mainPrefix}play\``,
+                            usage: `**\`${guild.client.config.mainPrefix}play\`**`,
                         })}`,
                     ),
                 ],

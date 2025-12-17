@@ -247,7 +247,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         createEmbed(
                             "success",
                             `⏭️ **|** ${i18n.__mf("requestChannel.skipped", { song: skipSongLink })}`,
-                        ),
+                        ).setThumbnail(skipSong.song.thumbnail),
                     ],
                 });
                 break;
@@ -390,6 +390,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 }
 
                 const songTitleWithLink = `[${currentSong.song.title}](${currentSong.song.url})`;
+                const removedThumbnail = currentSong.song.thumbnail;
 
                 queue.songs.delete(currentSong.key);
 
@@ -404,7 +405,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         createEmbed(
                             "success",
                             `🗑️ **|** ${i18n.__mf("requestChannel.removed", { song: songTitleWithLink })}`,
-                        ),
+                        ).setThumbnail(removedThumbnail),
                     ],
                 });
                 break;
