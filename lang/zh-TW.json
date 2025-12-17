@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "可用過濾器",
                 "currentlyUsedFilters": "目前已使用的過濾器",
-                "currentState": "`{filter}` 目前是 `{state}`",
+                "currentState": "{filter} 目前是 {state}",
                 "description": "配置歌曲過濾器",
                 "embedFooter": "如 {opstate} 過濾器，請使用 {prefix}filter {opstate} {filter}",
-                "filterSet": "`{filter}` 過濾器現已 `{state}`",
+                "filterSet": "{filter} 過濾器現已 {state}",
                 "slashStateDescription": "{state, select, enable {啟用} other {停用}}歌曲過濾器",
                 "slashStateFilterDescription": "歌曲過濾器將會 {state, select, enable {啟用} other {停用}}",
                 "slashStatusDescription": "檢查歌曲過濾器的當前狀態",
@@ -96,7 +96,7 @@
                 "noQuery": "目前没有播放任何内容，或者沒有提供任何參數。",
                 "slashDescription": "要搜索的歌曲",
                 "usage": "{prefix}lyrics [歌曲]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "找不到 **{song}** 的歌詞。"
             },
             "nowplaying": {
                 "description": "顯示媒體播放器狀態",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <位置>"
             },
             "repeat": {
-                "actualMode": "目前的重复模式是 **`{mode}`**",
+                "actualMode": "目前的重复模式是 {mode}",
                 "description": "重複當前的音樂或隊列",
                 "footer": "如改變模式，請查看 {prefix}help repeat",
-                "newMode": "重複模式已設置為 **`{mode}`**",
+                "newMode": "重複模式已設置為 {mode}",
                 "slashDisable": "停用重複模式",
                 "slashQueue": "重複模式為 **`隊列`**",
                 "slashSong": "重複模式為 **`音樂`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <查詢> [來源]"
             },
             "shuffle": {
-                "actualState": "當前隨機播放模式是 **`{state}`**",
+                "actualState": "當前隨機播放模式是 {state}",
                 "description": "設置隨機播放模式的功能",
-                "newState": "隨機播放模式已設置為**`{state}`**"
+                "newState": "隨機播放模式已設置為{state}"
             },
             "skip": {
                 "description": "略過音樂",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "如更改音量，請在使用此指令時提供音量數字。",
-                "currentVolume": "目前音量是 **`{volume}`**",
+                "currentVolume": "目前音量是 {volume}",
                 "description": "更改音樂播放器音量",
-                "newVolume": "音量已設置為 **`{volume}`**",
-                "plsPause": "請暫停音樂而不是將音量調到 **`{volume}`**",
+                "newVolume": "音量已設置為 {volume}",
+                "plsPause": "請暫停音樂而不是將音量調到 {volume}",
                 "slashDescription": "新音量",
                 "usage": "{prefix}volume [新音量]",
-                "volumeLimit": "我無法設置音量高於 **`{maxVol}`**"
+                "volumeLimit": "我無法設置音量高於 {maxVol}"
             },
             "requestChannel": {
                 "description": "設定音樂點播頻道",
@@ -219,7 +219,7 @@
             "message1": "抱歉，該互動僅限於 <@{user}> 和伺服器權限者。",
             "message2": "抱歉，該互動僅限於 <@{user}>"
         },
-        "createMessage": "你好 {author}, 我的前綴是 **`{prefix}`**",
+        "createMessage": "你好 {author}, 我的前綴是 {prefix}",
         "cmdLoading": "加載中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "已成功重新配置連接。",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "我在 {channel} 中缺少以下權限：**{permissions}**"
         },
         "cooldownMessage": "{author}，請稍等 **`{timeleft}`**的冷卻時間。",
         "generalHandler": {
@@ -262,7 +262,7 @@
             "validVCJoinable": "對不起，我不能**`連接`**到你的語音頻道，請確保我有正確的權限。",
             "validVCPermission": "對不起，我不能在這個語音頻道**`說話`**;請確保我有正確的權限。",
             "useRequestChannel": "請使用點歌頻道 {channel} 來執行音樂指令。",
-            "useRequestChannelDirect": "只需在此頻道直接輸入歌曲名稱或連結即可播放音樂。"
+            "useRequestChannelDirect": "此命令在請求頻道中已禁用。請使用播放器按鈕或直接輸入歌曲名稱/連結。"
         }
     },
     "requestChannel": {
@@ -272,7 +272,7 @@
         "shuffle": "隨機播放",
         "volume": "音量",
         "queueLength": "佇列",
-        "queueFooter": "• 佇列中的歌曲總數：{count}",
+        "queueFooter": "• 此功能可能導致延遲或不同步。佇列中的歌曲總數：{count}",
         "idle": "閒置",
         "live": "直播",
         "requestedBy": "點播者",
@@ -283,7 +283,7 @@
         "startedPlaying": "正在播放 **{song}**",
         "paused": "音樂已暫停。",
         "resumed": "音樂已恢復。",
-        "skipped": "已跳過當前歌曲。",
+        "skipped": "已跳過 **{song}**",
         "removed": "已從佇列中移除 **{song}** 並跳過。",
         "stopped": "音樂已停止，佇列已清空。",
         "loopChanged": "循環模式已更改為 **{mode}**。",

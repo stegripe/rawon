@@ -101,7 +101,7 @@ export class MessageCreateEvent extends BaseEvent {
                             "info",
                             `👋 **|** ${i18n.__mf("events.createMessage", {
                                 author: message.author.toString(),
-                                prefix: `\`${this.client.config.mainPrefix}\``,
+                                prefix: `**\`${this.client.config.mainPrefix}\`**`,
                             })}`,
                         ),
                     ],
@@ -124,6 +124,13 @@ export class MessageCreateEvent extends BaseEvent {
 
         const query = message.content.trim();
         if (query.length === 0) {
+            return;
+        }
+
+        const isSearchSelection =
+            /^(?:[1-9]|10)(?:\s*,\s*(?:[1-9]|10))*$/u.test(query) ||
+            ["c", "cancel"].includes(query.toLowerCase());
+        if (isSearchSelection) {
             return;
         }
 
@@ -195,9 +202,11 @@ export class MessageCreateEvent extends BaseEvent {
             void play(guild);
         }
 
+        const songTitle = songs.items[0].title;
+        const songUrl = songs.items[0].url;
         const confirmEmbed = createEmbed(
             "success",
-            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: songs.items[0].title })}`,
+            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: `[${songTitle}](${songUrl})` })}`,
         );
         if (songs.items[0].thumbnail) {
             confirmEmbed.setThumbnail(songs.items[0].thumbnail);
@@ -219,7 +228,7 @@ export class MessageCreateEvent extends BaseEvent {
                         // Ignore errors
                     }
                 })();
-            }, 5_000);
+            }, 60_000);
         })();
     }
 

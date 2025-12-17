@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "利用可能なフィルター",
                 "currentlyUsedFilters": "現在使われているフィルター",
-                "currentState": "`{filter}`は現在`{state}`です",
+                "currentState": "{filter}は現在{state}です",
                 "description": "フィルターを設定",
                 "embedFooter": "そのフィルターを{opstate}するには、 {prefix}filter {opstate} {filter}を使用してください。",
-                "filterSet": "`{filter}`フィルターは現在`{state}`です。",
+                "filterSet": "{filter}フィルターは現在{state}です。",
                 "slashStateDescription": "{state, select, enable {有効化} other {無効化}} フィルター",
                 "slashStateFilterDescription": "フィルターは{state, select, enable {有効化} other {無効化}}になります。",
                 "slashStatusDescription": "現在のフィルターの状態を確認",
@@ -96,7 +96,7 @@
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "slashDescription": "検索する曲",
                 "usage": "{prefix}lyrics [曲]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "**{song}** の歌詞が見つかりませんでした。"
             },
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <ポジション>"
             },
             "repeat": {
-                "actualMode": "現在のリピートモードは**`{mode}`**です。",
+                "actualMode": "現在のリピートモードは{mode}です。",
                 "description": "現在の曲もしくはキューをリピート",
                 "footer": "モードを変更するには、{prefix}help repeatを見てください。",
-                "newMode": "リピートモードは**`{mode}`**にセットされました。",
+                "newMode": "リピートモードは{mode}にセットされました。",
                 "slashDisable": "リピートモードを無効化",
                 "slashQueue": "**`キュー`**リピートモードを設定しました。",
                 "slashSong": "**`曲`**リピートモードを設定しました。",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <キーワード> [プラットフォーム]"
             },
             "shuffle": {
-                "actualState": "現在のシャッフルモードは**`{state}`**です。",
+                "actualState": "現在のシャッフルモードは{state}です。",
                 "description": "シャッフルモードを設定",
-                "newState": "シャッフルモードは**`{state}`**にセットされました。"
+                "newState": "シャッフルモードは{state}にセットされました。"
             },
             "skip": {
                 "description": "曲をスキップ",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "ボリュームを変えるには、有効な数値を引数として提供してください。",
-                "currentVolume": "現在のボリュームは**`{volume}`**です。",
+                "currentVolume": "現在のボリュームは{volume}です。",
                 "description": "メディアプレイヤーのボリュームを変更",
-                "newVolume": "ボリュームは**`{volume}`**にセットされました。",
-                "plsPause": "**`{volume}`**にボリュームをセットするのではなくプレイヤーを一時停止してください。",
+                "newVolume": "ボリュームは{volume}にセットされました。",
+                "plsPause": "{volume}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]",
-                "volumeLimit": "**`{maxVol}`**以上にボリュームをセットできません。"
+                "volumeLimit": "{maxVol}以上にボリュームをセットできません。"
             },
             "requestChannel": {
                 "description": "音楽リクエストチャンネルを設定する",
@@ -219,7 +219,7 @@
             "message1": "そのインタラクションは<@{user}>とサーバースタッフのためのものです。",
             "message2": "そのインタラクションは<@{user}>のためのものです。"
         },
-        "createMessage": "こんにちは、{author}、私のプレフィックスは**`{prefix}`**です。",
+        "createMessage": "こんにちは、{author}、私のプレフィックスは{prefix}です。",
         "cmdLoading": "起動中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "接続は正常に再構成されました。",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "そのチャンネルで次の権限が不足しています {channel}: **{permissions}**"
         },
         "cooldownMessage": "{author}、クールダウンタイムは残り**`{timeleft}`**です。お待ち下さい。",
         "generalHandler": {
@@ -262,7 +262,7 @@
             "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
             "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。",
             "useRequestChannel": "音楽コマンドにはリクエストチャンネル {channel} を使用してください。",
-            "useRequestChannelDirect": "このチャンネルで曲名またはリンクを直接入力するだけで音楽を再生できます。"
+            "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。プレイヤーのボタンを使用するか、曲名/リンクを直接入力してください。"
         }
     },
     "requestChannel": {
@@ -272,7 +272,7 @@
         "shuffle": "シャッフル",
         "volume": "音量",
         "queueLength": "キュー",
-        "queueFooter": "• キュー内の曲数: {count}",
+        "queueFooter": "• この機能は遅延やデシンクを引き起こす可能性があります。キュー内の曲数: {count}",
         "idle": "待機中",
         "live": "ライブ",
         "requestedBy": "リクエスト者",
@@ -283,7 +283,7 @@
         "startedPlaying": "**{song}** を再生中",
         "paused": "音楽を一時停止しました。",
         "resumed": "音楽を再開しました。",
-        "skipped": "現在の曲をスキップしました。",
+        "skipped": "**{song}** をスキップしました",
         "removed": "**{song}** をキューから削除してスキップしました。",
         "stopped": "音楽を停止し、キューをクリアしました。",
         "loopChanged": "ループモードを **{mode}** に変更しました。",

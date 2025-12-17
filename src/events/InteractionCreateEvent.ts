@@ -116,6 +116,11 @@ export class InteractionCreateEvent extends BaseEvent {
                 .filter((x) => x.meta.slash !== undefined)
                 .find((x) => x.meta.slash?.name === interaction.commandName);
             if (cmd) {
+                this.client.logger.info(
+                    `${interaction.user.tag} [${interaction.user.id}] used /${interaction.commandName} ` +
+                        `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
+                        `in guild: ${interaction.guild?.name} [${interaction.guildId}]`,
+                );
                 void cmd.execute(context);
             }
         }
@@ -157,6 +162,11 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!guild) {
             return;
         }
+
+        this.client.logger.info(
+            `${interaction.user.tag} [${interaction.user.id}] clicked ${interaction.customId} button ` +
+                `in guild: ${guild.name} [${guild.id}]`,
+        );
 
         const member = guild.members.cache.get(interaction.user.id);
         const voiceChannel = member?.voice.channel;
@@ -204,7 +214,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         } catch {
                             // Ignore errors
                         }
-                    }, 30_000);
+                    }, 60_000);
                 } else {
                     queue.playing = true;
                     await interaction.reply({
@@ -219,7 +229,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         } catch {
                             // Ignore errors
                         }
-                    }, 30_000);
+                    }, 60_000);
                 }
                 break;
             }
@@ -233,16 +243,36 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
+                const skipSong = (
+                    queue.player.state as
+                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
+                        | undefined
+                )?.resource?.metadata;
+
                 if (!queue.playing) {
                     queue.playing = true;
                 }
                 queue.player.stop(true);
+
+                const skipEmbed = createEmbed(
+                    "success",
+                    `⏭️ **|** ${i18n.__mf("requestChannel.skipped", { song: skipSong ? `[${skipSong.song.title}](${skipSong.song.url})` : "" })}`,
+                );
+                if (skipSong?.song.thumbnail) {
+                    skipEmbed.setThumbnail(skipSong.song.thumbnail);
+                }
+
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed("success", `⏭️ **|** ${i18n.__("requestChannel.skipped")}`),
-                    ],
+                    embeds: [skipEmbed],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {
+                        // Ignore errors
+                    }
+                }, 60_000);
                 break;
             }
 
@@ -262,6 +292,13 @@ export class InteractionCreateEvent extends BaseEvent {
                         createEmbed("success", `⏹️ **|** ${i18n.__("requestChannel.stopped")}`),
                     ],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {
+                        // Ignore errors
+                    }
+                }, 60_000);
                 break;
             }
 
@@ -288,6 +325,13 @@ export class InteractionCreateEvent extends BaseEvent {
                         ),
                     ],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {
+                        // Ignore errors
+                    }
+                }, 60_000);
                 break;
             }
 
@@ -310,6 +354,13 @@ export class InteractionCreateEvent extends BaseEvent {
                         ),
                     ],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {
+                        // Ignore errors
+                    }
+                }, 60_000);
                 break;
             }
 
@@ -333,6 +384,13 @@ export class InteractionCreateEvent extends BaseEvent {
                         ),
                     ],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {
+                        // Ignore errors
+                    }
+                }, 60_000);
                 break;
             }
 
@@ -356,6 +414,13 @@ export class InteractionCreateEvent extends BaseEvent {
                         ),
                     ],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {
+                        // Ignore errors
+                    }
+                }, 60_000);
                 break;
             }
 
@@ -383,6 +448,8 @@ export class InteractionCreateEvent extends BaseEvent {
                 }
 
                 const songTitle = currentSong.song.title;
+                const songUrl = currentSong.song.url;
+                const songThumbnail = currentSong.song.thumbnail;
 
                 queue.songs.delete(currentSong.key);
 
@@ -391,15 +458,25 @@ export class InteractionCreateEvent extends BaseEvent {
                 }
                 queue.player.stop(true);
 
+                const removeEmbed = createEmbed(
+                    "success",
+                    `🗑️ **|** ${i18n.__mf("requestChannel.removed", { song: `[${songTitle}](${songUrl})` })}`,
+                );
+                if (songThumbnail) {
+                    removeEmbed.setThumbnail(songThumbnail);
+                }
+
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            `🗑️ **|** ${i18n.__mf("requestChannel.removed", { song: songTitle })}`,
-                        ),
-                    ],
+                    embeds: [removeEmbed],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {
+                        // Ignore errors
+                    }
+                }, 60_000);
                 break;
             }
 

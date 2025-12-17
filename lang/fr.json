@@ -80,10 +80,10 @@
             "filter": {
                 "availableFilters": "Filtres disponibles",
                 "currentlyUsedFilters": "Filtres actuellement utilisés",
-                "currentState": "`{filter}` est actuellement `{state}`",
+                "currentState": "{filter} est actuellement {state}",
                 "description": "Configurer le filtre de musique",
                 "embedFooter": "Pour {opstate} le filtre, utilisez {prefix}filter {opstate} {filter}",
-                "filterSet": "Le filtre `{filter}` est désormais `{state}`",
+                "filterSet": "Le filtre {filter} est désormais {state}",
                 "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de musique",
                 "slashStateFilterDescription": "Le filtre de musique qui sera {state, select, enable {activé} other {désactivé}}",
                 "slashStatusDescription": "Vérifier l'état actuel des filtres de musique",
@@ -96,7 +96,7 @@
                 "noQuery": "Il n'y a rien à jouer, ou aucun argument n'est fourni.",
                 "slashDescription": "Musique à rechercher",
                 "usage": "{prefix}lyrics [musique]",
-                "noLyrics": "No lyrics found for **{song}**."
+                "noLyrics": "Aucune parole trouvée pour **{song}**."
             },
             "nowplaying": {
                 "description": "Afficher l'état du lecteur multimédia",
@@ -128,10 +128,10 @@
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
-                "actualMode": "Le mode de répétition actuel est **`{mode}`**",
+                "actualMode": "Le mode de répétition actuel est {mode}",
                 "description": "Répéter la musique en cours ou la file d'attente",
                 "footer": "Pour changer de mode, consultez {prefix}help repeat",
-                "newMode": "Le mode de répétition a été défini sur **`{mode}`**",
+                "newMode": "Le mode de répétition a été défini sur {mode}",
                 "slashDisable": "Désactiver le mode répétition",
                 "slashQueue": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
                 "slashSong": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
@@ -159,9 +159,9 @@
                 "usage": "{prefix}search <requête> [source]"
             },
             "shuffle": {
-                "actualState": "Le mode Shuffle est **`{state}`**",
+                "actualState": "Le mode Shuffle est {state}",
                 "description": "Définir le mode de la fonction de lecture aléatoire",
-                "newState": "Le mode aléatoire est maintenant réglé sur **`{state}`**"
+                "newState": "Le mode aléatoire est maintenant réglé sur {state}"
             },
             "skip": {
                 "description": "Sauter la musique",
@@ -186,13 +186,13 @@
             },
             "volume": {
                 "changeVolume": "Pour modifier le volume, veuillez donner  le numéro de volume lorsque vous utilisez cette commande.",
-                "currentVolume": "Le volume actuel est **`{volume}`**",
+                "currentVolume": "Le volume actuel est {volume}",
                 "description": "Modifier le volume du lecteur multimédia",
-                "newVolume": "Le volume a été réglé sur **`{volume}`**",
-                "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur **`{volume}`**",
+                "newVolume": "Le volume a été réglé sur {volume}",
+                "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur {volume}",
                 "slashDescription": "Nouveau volume",
                 "usage": "{prefix}volume [nouveau volume]",
-                "volumeLimit": "Je ne peux pas régler le volume au-dessus de **`{maxVol}`**"
+                "volumeLimit": "Je ne peux pas régler le volume au-dessus de {maxVol}"
             },
             "requestChannel": {
                 "description": "Configurer un canal de requête pour la musique",
@@ -219,7 +219,7 @@
             "message1": "Désolé, mais cette interaction est uniquement pour <@{user}> et le staff du serveur.",
             "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>"
         },
-        "createMessage": "Salut {author}, mon préfixe est **`{prefix}`**",
+        "createMessage": "Salut {author}, mon préfixe est {prefix}",
         "cmdLoading": "Chargement en cours...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La connexion a été reconfigurée avec succès.",
@@ -243,7 +243,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Il me manque les permissions suivantes dans {channel}: **{permissions}**"
         },
         "cooldownMessage": "{author}, veuillez attendre **`{timeleft}`** de cooldown.",
         "generalHandler": {
@@ -262,7 +262,7 @@
             "validVCJoinable": "Désolé, mais je ne peux pas **`ME CONNECTER`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
             "validVCPermission": "Désolé, mais je ne peux pas **`PARLER`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
             "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
-            "useRequestChannelDirect": "Tapez simplement le titre de la chanson ou le lien directement dans ce salon pour jouer de la musique."
+            "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les boutons du lecteur ou taper directement le titre/lien de la chanson."
         }
     },
     "requestChannel": {
@@ -272,7 +272,7 @@
         "shuffle": "Aléatoire",
         "volume": "Volume",
         "queueLength": "File d'attente",
-        "queueFooter": "• Total de chanson(s) en file d'attente : {count}",
+        "queueFooter": "• Cette fonctionnalité peut causer des retards ou désynchronisations. Total de chanson(s) en file d'attente : {count}",
         "idle": "Inactif",
         "live": "EN DIRECT",
         "requestedBy": "Demandé par",
@@ -283,7 +283,7 @@
         "startedPlaying": "Lecture de **{song}**",
         "paused": "Musique en pause.",
         "resumed": "Musique reprise.",
-        "skipped": "Chanson actuelle passée.",
+        "skipped": "**{song}** passée",
         "removed": "Supprimé **{song}** de la file d'attente et passée.",
         "stopped": "Musique arrêtée et file d'attente vidée.",
         "loopChanged": "Mode boucle changé en **{mode}**.",

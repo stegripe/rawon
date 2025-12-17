@@ -71,6 +71,10 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         return true;
     }
 
+    if (ctx.additionalArgs.get("fromSearch") !== undefined) {
+        return true;
+    }
+
     const requestChannel = ctx.guild.client.requestChannelManager.getRequestChannel(ctx.guild);
     if (requestChannel === null) {
         return true;
