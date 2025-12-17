@@ -96,7 +96,7 @@ export class LyricsCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         i18n.__mf("commands.music.lyrics.noLyrics", {
-                            song: `\`${song}\``,
+                            song: `**${song}**`,
                         }),
                     ),
                 ],
@@ -110,7 +110,7 @@ export class LyricsCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         i18n.__mf("commands.music.lyrics.noLyrics", {
-                            song: `\`${song}\``,
+                            song: `**${song}**`,
                         }),
                     ),
                 ],
