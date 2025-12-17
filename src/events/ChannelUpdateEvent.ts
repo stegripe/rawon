@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { ChannelType, type GuildChannel, type VoiceChannel } from "discord.js";
 import i18n from "i18n";
@@ -26,6 +27,10 @@ export class ChannelUpdateEvent extends BaseEvent {
 
         if ((oldChannel as VoiceChannel).rtcRegion !== (newChannel as VoiceChannel).rtcRegion) {
             const queue = newChannel.guild.queue;
+            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                newChannel.guild,
+                queue.textChannel.id,
+            );
 
             const msg = await queue.textChannel.send({
                 embeds: [
@@ -49,6 +54,12 @@ export class ChannelUpdateEvent extends BaseEvent {
                             ),
                         ],
                     });
+                    // Auto-delete message in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
                     return 0;
                 })
                 .catch(() => {
@@ -69,6 +80,12 @@ export class ChannelUpdateEvent extends BaseEvent {
                             ),
                         ],
                     });
+                    // Auto-delete message in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
                 });
         }
     }

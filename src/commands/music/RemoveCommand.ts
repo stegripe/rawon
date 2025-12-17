@@ -1,5 +1,5 @@
 import { type AudioPlayerState, type AudioResource } from "@discordjs/voice";
-import { ApplicationCommandOptionType, escapeMarkdown, type VoiceChannel } from "discord.js";
+import { ApplicationCommandOptionType, type VoiceChannel } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
@@ -90,13 +90,13 @@ export class RemoveCommand extends BaseCommand {
                 (song, index) =>
                     `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${
                         ind * 10 + (index + 1)
-                    }.) ${escapeMarkdown(parseHTMLElements(song.song.title))}`,
+                    }.) **[${parseHTMLElements(song.song.title)}](${song.song.url})**`,
             );
 
             return texts.join("\n");
         });
 
-        const embed = createEmbed("info", `\`\`\`\n${pages[0]}\`\`\``)
+        const embed = createEmbed("info", pages[0])
             .setAuthor({
                 name: opening,
             })
@@ -114,7 +114,7 @@ export class RemoveCommand extends BaseCommand {
         void new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, emb, page) => {
-                emb.setDescription(`\`\`\`\n${page}\`\`\``).setFooter({
+                emb.setDescription(page).setFooter({
                     text: `• ${i18n.__mf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,

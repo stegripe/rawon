@@ -86,6 +86,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
             const isIdle = queue.idle;
+            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                newState.guild,
+                queue.textChannel.id,
+            );
 
             queue.destroy();
             if (!isIdle) {
@@ -95,7 +99,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     } Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`,
                 );
                 (async () => {
-                    await queue.textChannel
+                    const msg = await queue.textChannel
                         .send({
                             embeds: [
                                 createEmbed(
@@ -104,9 +108,17 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                                 ),
                             ],
                         })
-                        .catch((error: unknown) =>
-                            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error),
-                        );
+                        .catch((error: unknown) => {
+                            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
+                            return null;
+                        });
+
+                    // Auto-delete message in request-channel after 1 minute
+                    if (msg && isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
                 })();
             }
         }
@@ -125,6 +137,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 return;
             }
             queue.skipVoters = [];
+            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                newState.guild,
+                queue.textChannel.id,
+            );
             if (oldVc?.rtcRegion !== newVc?.rtcRegion) {
                 const msg = await queue.textChannel.send({
                     embeds: [
@@ -151,6 +167,12 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             ),
                         ],
                     });
+                    // Auto-delete message in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
                 } catch {
                     queue.destroy();
                     this.client.logger.info(
@@ -169,11 +191,17 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             ),
                         ],
                     });
+                    // Auto-delete message in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
                     return;
                 }
             }
             if (newVc?.type === ChannelType.GuildStageVoice && newState.suppress === true) {
-                const msg = await queue.textChannel.send({
+                const stageMsg = await queue.textChannel.send({
                     embeds: [
                         createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpeaker")),
                     ],
@@ -189,7 +217,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
                         } Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`,
                     );
-                    await queue.textChannel
+                    const errorMsg = await queue.textChannel
                         .send({
                             embeds: [
                                 createEmbed(
@@ -201,11 +229,23 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         })
                         .catch((error: unknown) => {
                             this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
+                            return null;
                         });
+                    // Auto-delete messages in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void stageMsg.delete().catch(() => null);
+                        }, 60_000);
+                        if (errorMsg) {
+                            setTimeout(() => {
+                                void errorMsg.delete().catch(() => null);
+                            }, 60_000);
+                        }
+                    }
                     return;
                 }
 
-                await msg.edit({
+                await stageMsg.edit({
                     embeds: [
                         createEmbed(
                             "success",
@@ -214,6 +254,12 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         ),
                     ],
                 });
+                // Auto-delete message in request-channel after 1 minute
+                if (isRequestChannel) {
+                    setTimeout(() => {
+                        void stageMsg.delete().catch(() => null);
+                    }, 60_000);
+                }
             }
             if (newVcMembers.size === 0 && queue.timeout === null && !queue.idle) {
                 this.timeout(newVcMembers, queue, newState);
@@ -253,20 +299,33 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const timeout = 60_000;
         const duration = formatMS(timeout);
+        const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+            state.guild,
+            queue.textChannel.id,
+        );
 
         queue.lastVSUpdateMsg = null;
         (state.guild.queue as unknown as ServerQueue).timeout = setTimeout(() => {
             queue.destroy();
-            void queue.textChannel.send({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        `⏹️ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
-                            duration: `\`${duration}\``,
-                        })}`,
-                    ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") }),
-                ],
-            });
+            void queue.textChannel
+                .send({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            `⏹️ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
+                                duration: `\`${duration}\``,
+                            })}`,
+                        ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") }),
+                    ],
+                })
+                .then((msg) => {
+                    // Auto-delete message in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
+                });
         }, timeout);
         (async () => {
             await queue.textChannel
@@ -280,7 +339,15 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         ).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") }),
                     ],
                 })
-                .then((msg) => (queue.lastVSUpdateMsg = msg.id));
+                .then((msg) => {
+                    queue.lastVSUpdateMsg = msg.id;
+                    // Auto-delete message in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
+                });
         })();
     }
 
@@ -298,6 +365,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const song = ((queue.player.state as AudioPlayerPausedState).resource.metadata as QueueSong)
             .song;
+        const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+            state.guild,
+            queue.textChannel.id,
+        );
 
         (async () => {
             await queue.textChannel
@@ -315,7 +386,15 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             }),
                     ],
                 })
-                .then((msg) => (queue.lastVSUpdateMsg = msg.id));
+                .then((msg) => {
+                    queue.lastVSUpdateMsg = msg.id;
+                    // Auto-delete message in request-channel after 1 minute
+                    if (isRequestChannel) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 60_000);
+                    }
+                });
         })();
         state.guild.queue?.player.unpause();
     }

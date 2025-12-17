@@ -15,6 +15,9 @@ RUN pnpm install --offline --frozen-lockfile
 # Copy Project files
 COPY . .
 
+# Save commit hash to file for runtime access (before git is unavailable in production)
+RUN git rev-parse --short HEAD > COMMIT_HASH 2>/dev/null || echo "unknown" > COMMIT_HASH
+
 # Build TypeScript Project
 RUN pnpm run build
 
@@ -37,6 +40,7 @@ COPY --from=build-stage /tmp/build/dist ./dist
 COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
+COPY --from=build-stage /tmp/build/COMMIT_HASH ./COMMIT_HASH
 
 # Create empty data.json for persistence volume mount
 RUN echo '{}' > /app/data.json

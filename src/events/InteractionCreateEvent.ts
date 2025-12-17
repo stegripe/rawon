@@ -204,7 +204,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         } catch {
                             // Ignore errors
                         }
-                    }, 30_000);
+                    }, 60_000);
                 } else {
                     queue.playing = true;
                     await interaction.reply({
@@ -219,7 +219,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         } catch {
                             // Ignore errors
                         }
-                    }, 30_000);
+                    }, 60_000);
                 }
                 break;
             }
@@ -233,6 +233,10 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
+                const skipSong = (queue.player.state as AudioPlayerPlayingState).resource
+                    .metadata as QueueSong;
+                const skipSongLink = `[${skipSong.song.title}](${skipSong.song.url})`;
+
                 if (!queue.playing) {
                     queue.playing = true;
                 }
@@ -240,7 +244,10 @@ export class InteractionCreateEvent extends BaseEvent {
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
                     embeds: [
-                        createEmbed("success", `⏭️ **|** ${i18n.__("requestChannel.skipped")}`),
+                        createEmbed(
+                            "success",
+                            `⏭️ **|** ${i18n.__mf("requestChannel.skipped", { song: skipSongLink })}`,
+                        ),
                     ],
                 });
                 break;
@@ -382,7 +389,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
-                const songTitle = currentSong.song.title;
+                const songTitleWithLink = `[${currentSong.song.title}](${currentSong.song.url})`;
 
                 queue.songs.delete(currentSong.key);
 
@@ -396,7 +403,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🗑️ **|** ${i18n.__mf("requestChannel.removed", { song: songTitle })}`,
+                            `🗑️ **|** ${i18n.__mf("requestChannel.removed", { song: songTitleWithLink })}`,
                         ),
                     ],
                 });

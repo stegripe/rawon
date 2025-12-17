@@ -161,7 +161,7 @@ export class RequestChannelManager {
             .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
             .setImage(imageUrl ?? requestChannelThumbnail);
 
-        const guildIcon = guild.iconURL({ size: 128 });
+        const guildIcon = guild.iconURL({ size: 2048 });
         if (guildIcon !== null && guildIcon.length > 0) {
             embed.setThumbnail(guildIcon);
         }

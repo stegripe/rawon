@@ -1,6 +1,8 @@
 import { Buffer } from "node:buffer";
 import { execSync } from "node:child_process";
+import { existsSync, readFileSync } from "node:fs";
 import nodePath from "node:path";
+import process from "node:process";
 import { ChannelType, type Guild, type Role } from "discord.js";
 import prism from "prism-media";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -148,6 +150,18 @@ export class ClientUtils {
             const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
             return res.toString().trim();
         } catch {
+            // Fallback: read from COMMIT_HASH file (created during Docker build)
+            try {
+                const commitHashFile = nodePath.join(process.cwd(), "COMMIT_HASH");
+                if (existsSync(commitHashFile)) {
+                    const hash = readFileSync(commitHashFile, "utf8").trim();
+                    if (hash.length > 0 && hash !== "unknown") {
+                        return hash;
+                    }
+                }
+            } catch {
+                // Ignore file read errors
+            }
             return "???";
         }
     }
