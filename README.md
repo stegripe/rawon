@@ -71,7 +71,7 @@ docker run -d \
 ```
 
 #### Volume Explanations
-`/app/cache` - Required if you use `yt-dlp` stream strategy (stores yt-dlp binary), stores persistent data like request channels and player settings (data.json), and audio caching feature.
+`/app/cache` - Required for `yt-dlp` stream strategy (stores yt-dlp binary), stores persistent data like request channels and player settings (data.json), and audio caching feature (opus file).
 
 ### Railway Deployment
 Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
