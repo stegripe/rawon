@@ -116,6 +116,11 @@ export class InteractionCreateEvent extends BaseEvent {
                 .filter((x) => x.meta.slash !== undefined)
                 .find((x) => x.meta.slash?.name === interaction.commandName);
             if (cmd) {
+                this.client.logger.info(
+                    `${interaction.user.tag} [${interaction.user.id}] used /${interaction.commandName} ` +
+                        `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
+                        `in guild: ${interaction.guild?.name} [${interaction.guildId}]`,
+                );
                 void cmd.execute(context);
             }
         }
@@ -157,6 +162,11 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!guild) {
             return;
         }
+
+        this.client.logger.info(
+            `${interaction.user.tag} [${interaction.user.id}] clicked ${interaction.customId} button ` +
+                `in guild: ${guild.name} [${guild.id}]`,
+        );
 
         const member = guild.members.cache.get(interaction.user.id);
         const voiceChannel = member?.voice.channel;
