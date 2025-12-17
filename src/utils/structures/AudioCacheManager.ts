@@ -16,6 +16,8 @@ import { type Rawon } from "../../structures/Rawon.js";
 export class AudioCacheManager {
     public readonly cacheDir: string;
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
+    // Track files that are currently being written to prevent serving incomplete files
+    private readonly inProgressFiles = new Set<string>();
 
     public constructor(public readonly client: Rawon) {
         this.cacheDir = path.resolve(process.cwd(), "cache", "audio");
@@ -57,23 +59,19 @@ export class AudioCacheManager {
     }
 
     /**
-     * Check if an audio file is cached
+     * Check if an audio file is cached and fully written (not in-progress)
      */
     public isCached(url: string): boolean {
+        const key = this.getCacheKey(url);
         const cachePath = this.getCachePath(url);
-        const inMemory = this.cachedFiles.has(this.getCacheKey(url));
 
-        if (inMemory) {
-            return existsSync(cachePath);
+        // Don't serve files that are still being written
+        if (this.inProgressFiles.has(key)) {
+            return false;
         }
 
-        // Check file system
-        if (existsSync(cachePath)) {
-            // Add to in-memory tracking
-            this.cachedFiles.set(this.getCacheKey(url), {
-                path: cachePath,
-                lastAccess: Date.now(),
-            });
+        // Check if we have it tracked as complete
+        if (this.cachedFiles.has(key) && existsSync(cachePath)) {
             return true;
         }
 
@@ -109,6 +107,9 @@ export class AudioCacheManager {
         const cachePath = this.getCachePath(url);
         const key = this.getCacheKey(url);
 
+        // Mark file as in-progress
+        this.inProgressFiles.add(key);
+
         // Create two separate passthrough streams from the source
         const playbackStream = new PassThrough();
         const cacheStream = new PassThrough();
@@ -123,7 +124,8 @@ export class AudioCacheManager {
 
         writeStream.on("error", (error) => {
             this.client.logger.error("[AudioCacheManager] Error writing cache file:", error);
-            // Remove failed cache entry
+            // Remove failed cache entry and mark as no longer in-progress
+            this.inProgressFiles.delete(key);
             this.cachedFiles.delete(key);
             try {
                 rmSync(cachePath, { force: true });
@@ -133,7 +135,8 @@ export class AudioCacheManager {
         });
 
         writeStream.on("finish", () => {
-            // Only add to cache after successful write
+            // Mark file as complete (no longer in-progress) and add to cache
+            this.inProgressFiles.delete(key);
             this.cachedFiles.set(key, {
                 path: cachePath,
                 lastAccess: Date.now(),
@@ -147,7 +150,8 @@ export class AudioCacheManager {
             this.client.logger.error("[AudioCacheManager] Source stream error:", error);
             // Forward error to playback stream so consumers can handle it
             playbackStream.destroy(error);
-            // Clean up partial cache file
+            // Clean up partial cache file and mark as no longer in-progress
+            this.inProgressFiles.delete(key);
             this.cachedFiles.delete(key);
             try {
                 rmSync(cachePath, { force: true });
@@ -164,6 +168,7 @@ export class AudioCacheManager {
      */
     public clearCache(): void {
         this.cachedFiles.clear();
+        this.inProgressFiles.clear();
 
         if (existsSync(this.cacheDir)) {
             rmSync(this.cacheDir, { recursive: true, force: true });
@@ -175,7 +180,7 @@ export class AudioCacheManager {
     /**
      * Get cache statistics
      */
-    public getStats(): { files: number; totalSize: number } {
+    public getStats(): { files: number; totalSize: number; inProgress: number } {
         let totalSize = 0;
         let files = 0;
 
@@ -190,6 +195,6 @@ export class AudioCacheManager {
             }
         }
 
-        return { files, totalSize };
+        return { files, totalSize, inProgress: this.inProgressFiles.size };
     }
 }

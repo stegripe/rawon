@@ -1,4 +1,5 @@
 import { type Readable } from "node:stream";
+import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
 import ytdl, { exec } from "../yt-dlp/index.js";
@@ -10,8 +11,8 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         return client.soundcloud.util.streamTrack(url) as unknown as Readable;
     }
 
-    // Skip caching for live streams - they can't be cached and need real-time streaming
-    if (!isLive && client.audioCache.isCached(url)) {
+    // Skip caching for live streams or if caching is disabled
+    if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
         const cachedStream = client.audioCache.getFromCache(url);
         if (cachedStream !== null) {
             return cachedStream;
@@ -63,8 +64,8 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         }
 
         void proc.once("spawn", () => {
-            // Don't cache live streams - they're endless and can't be cached properly
-            if (isLive) {
+            // Don't cache live streams or if caching is disabled
+            if (isLive || !enableAudioCache) {
                 resolve(proc.stdout as unknown as Readable);
                 return;
             }
