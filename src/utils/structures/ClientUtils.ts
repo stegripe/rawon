@@ -1,7 +1,6 @@
 import { Buffer } from "node:buffer";
 import { execSync } from "node:child_process";
 import nodePath from "node:path";
-import process from "node:process";
 import { ChannelType, type Guild, type Role } from "discord.js";
 import prism from "prism-media";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -145,11 +144,6 @@ export class ClientUtils {
     }
 
     public getCommitHash(ref: string, short = true): string {
-        const envCommit = process.env.GIT_COMMIT_HASH;
-        if ((envCommit?.length ?? 0) > 0) {
-            return short ? envCommit!.slice(0, 7) : envCommit!;
-        }
-
         try {
             const res = execSync(`git rev-parse${short ? " --short" : ""} ${ref}`);
             return res.toString().trim();
