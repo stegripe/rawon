@@ -127,6 +127,14 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
+        // Skip messages that look like search selection inputs (numbers like "1", "1, 2, 3", or "c"/"cancel")
+        // These are handled by the search command's awaitMessages
+        const isSearchSelection =
+            /^[\d\s,]+$/u.test(query) || ["c", "cancel"].includes(query.toLowerCase());
+        if (isSearchSelection) {
+            return;
+        }
+
         const member = message.member;
         if (!member) {
             return;

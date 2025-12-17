@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers";
 import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import {
     escapeMarkdown,
@@ -17,6 +18,20 @@ import { parseHTMLElements } from "../../functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
 import { play } from "./play.js";
 
+function isRequestChannel(client: Rawon, ctx: CommandContext): boolean {
+    if (!ctx.guild) {
+        return false;
+    }
+    const requestChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
+    return requestChannel !== null && ctx.channel?.id === requestChannel.id;
+}
+
+function autoDeleteMessage(msg: Message, delay = 60_000): void {
+    setTimeout(() => {
+        msg.delete().catch(() => null);
+    }, delay);
+}
+
 export async function handleVideos(
     client: Rawon,
     ctx: CommandContext,
@@ -24,6 +39,7 @@ export async function handleVideos(
     voiceChannel: StageChannel | VoiceChannel,
 ): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
+    const inRequestChannel = isRequestChannel(client, ctx);
 
     async function sendPagination(): Promise<void> {
         for (const song of toQueue) {
@@ -46,6 +62,11 @@ export async function handleVideos(
         });
         const embed = createEmbed("info", opening);
         const msg = await ctx.reply({ embeds: [embed] }, true);
+
+        // Auto-delete in request channel
+        if (inRequestChannel && msg) {
+            autoDeleteMessage(msg);
+        }
 
         return new ButtonPagination(msg, {
             author: ctx.author.id,
@@ -119,7 +140,7 @@ export async function handleVideos(
         const channel = ctx.channel;
         if (channel !== null && "send" in channel) {
             try {
-                await channel.send({
+                const errorMsg = await channel.send({
                     embeds: [
                         createEmbed(
                             "error",
@@ -130,6 +151,9 @@ export async function handleVideos(
                         ),
                     ],
                 });
+                if (inRequestChannel && errorMsg) {
+                    autoDeleteMessage(errorMsg);
+                }
             } catch (error_: unknown) {
                 client.logger.error("PLAY_CMD_ERR:", error_);
             }
