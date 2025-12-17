@@ -19,17 +19,25 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
     }
 
     return new Promise<Readable>((resolve, reject) => {
-        const proc = exec(
-            url,
-            {
-                output: "-",
-                quiet: true,
-                format: "bestaudio",
-                // Don't limit rate for live streams to avoid buffering issues
-                ...(isLive ? {} : { limitRate: "300K" }),
-            },
-            { stdio: ["ignore", "pipe", "ignore"] },
-        );
+        // Use different options for live streams vs regular videos
+        const options = isLive
+            ? {
+                  output: "-",
+                  quiet: true,
+                  // For live streams, use best available format (not just audio)
+                  // because live streams often don't have separate audio formats
+                  format: "best[acodec!=none]/bestaudio/best",
+                  // Don't try to start from the beginning of the live stream
+                  liveFromStart: false,
+              }
+            : {
+                  output: "-",
+                  quiet: true,
+                  format: "bestaudio",
+                  limitRate: "300K",
+              };
+
+        const proc = exec(url, options, { stdio: ["ignore", "pipe", "ignore"] });
 
         if (!proc.stdout) {
             reject(new Error("Error obtaining stdout from process."));
@@ -46,9 +54,13 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
             reject(err);
         });
 
-        proc.stdout.once("end", () => {
-            proc.kill("SIGKILL");
-        });
+        // Only kill process on stream end for non-live content
+        // Live streams are continuous and shouldn't be killed on 'end'
+        if (!isLive) {
+            proc.stdout.once("end", () => {
+                proc.kill("SIGKILL");
+            });
+        }
 
         void proc.once("spawn", () => {
             // Don't cache live streams - they're endless and can't be cached properly
