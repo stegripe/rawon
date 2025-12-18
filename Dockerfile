@@ -4,7 +4,9 @@ RUN corepack enable && corepack prepare pnpm@latest
 
 WORKDIR /tmp/build
 
-COPY package.json pnpm-lock.yaml *.npmrc  ./
+COPY package.json pnpm-lock.yaml *.npmrc ./
+
+COPY .git .git
 
 RUN pnpm fetch
 
