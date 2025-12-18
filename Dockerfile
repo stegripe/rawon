@@ -16,8 +16,7 @@ COPY . .
 
 RUN pnpm run build
 
-RUN mkdir -p cache && \
-    git rev-parse --short HEAD > cache/commit-hash.txt 2>/dev/null || echo "???" > cache/commit-hash.txt
+RUN git rev-parse --short HEAD > commit-hash.txt 2>/dev/null || echo "???" > commit-hash.txt
 
 RUN pnpm prune --production
 
@@ -38,7 +37,7 @@ COPY --from=build-stage /tmp/build/dist ./dist
 COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
-COPY --from=build-stage /tmp/build/cache/commit-hash.txt /app/cache/commit-hash.txt
+COPY --from=build-stage /tmp/build/commit-hash.txt /app/commit-hash.txt
 
 ENV NODE_ENV production
 
