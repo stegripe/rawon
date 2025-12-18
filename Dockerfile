@@ -7,7 +7,10 @@ RUN corepack enable && corepack prepare pnpm@latest
 WORKDIR /tmp/build
 
 # Copy package.json, lockfile and npm config files
-COPY package.json pnpm-lock.yaml *.npmrc  ./
+COPY package.json pnpm-lock.yaml *.npmrc ./
+
+# Copy .git directory for accessing commit hash
+COPY .git .git
 
 # Fetch dependencies to virtual store
 RUN pnpm fetch
