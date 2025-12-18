@@ -149,7 +149,7 @@ export class ClientUtils {
 
     public getCommitHash(ref: string, short = true): string {
         try {
-            const commitHashPath = nodePath.join(process.cwd(), "cache", "commit-hash.txt");
+            const commitHashPath = nodePath.join(process.cwd(), "commit-hash.txt");
             try {
                 const hash = readFileSync(commitHashPath, "utf-8").trim();
                 if (hash && hash !== UNKNOWN_COMMIT_HASH) {
