@@ -27,3 +27,7 @@ dev.env
 # Rawon cache directories
 dist
 cache
+
+# YouTube cookies (sensitive authentication data)
+cookies.txt
+*.cookies.txt
