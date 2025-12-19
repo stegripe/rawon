@@ -90,20 +90,38 @@ And set in your `.env`:
 YOUTUBE_COOKIES="/app/cache/cookies.txt"
 ```
 
+### How Long Do Cookies Last?
+
+**Good news**: YouTube cookies do NOT expire on a regular schedule like other websites. They will remain valid as long as:
+- ✅ You don't log out from YouTube in your browser
+- ✅ You don't change your Google account password
+- ✅ You don't revoke the session from Google Account settings
+- ✅ Google doesn't detect suspicious activity on the account
+
+**Tips to keep cookies valid longer:**
+1. Use a dedicated browser profile just for this account
+2. Don't use the throwaway account for anything else
+3. Don't log out from YouTube in that browser
+4. Keep the browser profile intact (don't clear cookies)
+
+In practice, cookies can last **months or even years** if you follow these tips.
+
 ### Troubleshooting
 
-**Cookies expired?**
-- Cookies may expire after some time
-- Re-export the cookies following the same steps above
-
-**Still getting errors?**
+**Still getting "Sign in to confirm you're not a bot" errors?**
 - Make sure the cookies file path is correct
-- Check that the Google account is not suspended
-- Try logging out and back in on YouTube, then re-export cookies
+- Verify the cookies.txt file is not empty
+- Re-export cookies while logged in to YouTube
 
-**Bot works but stops after a while?**
-- YouTube may invalidate old sessions
-- Re-export cookies periodically (every few weeks)
+**Cookies suddenly stopped working?**
+This usually happens if:
+- You logged out from YouTube in your browser → Re-export cookies
+- You changed your Google password → Re-export cookies
+- Google detected suspicious activity → Check your email for security alerts, then re-export cookies
+
+**Account got suspended?**
+- Create a new throwaway Google account
+- Follow the setup steps again
 
 ### Security Notes
 
@@ -201,20 +219,38 @@ Dan set di `.env` kamu:
 YOUTUBE_COOKIES="/app/cache/cookies.txt"
 ```
 
+### Berapa Lama Cookies Bertahan?
+
+**Kabar baik**: Cookies YouTube TIDAK kadaluarsa secara berkala seperti website lain. Mereka akan tetap valid selama:
+- ✅ Kamu tidak logout dari YouTube di browser
+- ✅ Kamu tidak ganti password akun Google
+- ✅ Kamu tidak revoke session dari pengaturan Akun Google
+- ✅ Google tidak mendeteksi aktivitas mencurigakan di akun
+
+**Tips agar cookies awet lebih lama:**
+1. Gunakan profile browser khusus hanya untuk akun ini
+2. Jangan gunakan akun tumbal untuk hal lain
+3. Jangan logout dari YouTube di browser tersebut
+4. Jaga profile browser tetap utuh (jangan hapus cookies)
+
+Dalam praktiknya, cookies bisa bertahan **berbulan-bulan bahkan bertahun-tahun** jika kamu mengikuti tips ini.
+
 ### Troubleshooting / Pemecahan Masalah
 
-**Cookies kadaluarsa?**
-- Cookies mungkin kadaluarsa setelah beberapa waktu
-- Export ulang cookies dengan mengikuti langkah yang sama di atas
-
-**Masih dapat error?**
+**Masih dapat error "Sign in to confirm you're not a bot"?**
 - Pastikan path file cookies benar
-- Cek apakah akun Google tidak di-suspend
-- Coba logout dan login lagi di YouTube, lalu export ulang cookies
+- Verifikasi file cookies.txt tidak kosong
+- Export ulang cookies saat dalam kondisi login di YouTube
 
-**Bot jalan tapi berhenti setelah beberapa waktu?**
-- YouTube mungkin membatalkan sesi lama
-- Export ulang cookies secara berkala (setiap beberapa minggu)
+**Cookies tiba-tiba berhenti bekerja?**
+Ini biasanya terjadi jika:
+- Kamu logout dari YouTube di browser → Export ulang cookies
+- Kamu ganti password Google → Export ulang cookies
+- Google mendeteksi aktivitas mencurigakan → Cek email untuk security alert, lalu export ulang cookies
+
+**Akun di-suspend?**
+- Buat akun Google tumbal baru
+- Ikuti langkah setup dari awal
 
 ### Catatan Keamanan
 
