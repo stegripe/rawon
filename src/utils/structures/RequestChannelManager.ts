@@ -9,7 +9,7 @@ import {
     type Message,
     type TextChannel,
 } from "discord.js";
-import i18n, { requestChannelThumbnail } from "../../config/index.js";
+import i18n, { requestChannelSplash } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
@@ -103,11 +103,11 @@ export class RequestChannelManager {
         if (!queue || queue.songs.size === 0) {
             const savedLoopMode = savedState?.loopMode ?? "OFF";
             const savedShuffle = savedState?.shuffle ?? false;
-            const savedVolume = savedState?.volume ?? this.client.config.defaultVolume;
+            const savedVolume = savedState?.volume ?? 100;
 
             return createEmbed("info", i18n.__("requestChannel.standby"))
                 .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
-                .setImage(requestChannelThumbnail)
+                .setImage(requestChannelSplash)
                 .addFields([
                     {
                         name: i18n.__("requestChannel.status"),
@@ -152,11 +152,11 @@ export class RequestChannelManager {
         const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶️";
 
         const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
-        const imageUrl = hasThumbnail ? song?.thumbnail : requestChannelThumbnail;
+        const imageUrl = hasThumbnail ? song?.thumbnail : requestChannelSplash;
 
         const embed = createEmbed("info")
             .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
-            .setImage(imageUrl ?? requestChannelThumbnail);
+            .setImage(imageUrl ?? requestChannelSplash);
 
         const guildIcon = guild.iconURL({ size: 2_048 });
         if (guildIcon !== null && guildIcon.length > 0) {
