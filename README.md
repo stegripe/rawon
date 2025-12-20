@@ -108,6 +108,7 @@ For help and questions, join our official [Discord Server](https://stegripe.org/
 ## Contributors
 
 ### Developers
+- [Stegripe Developers](https://github.com/orgs/stegripe/teams/developer)
 - [@PixlGalaxy](https://github.com/PixlGalaxy)
 
 ### Translators
