@@ -22,6 +22,7 @@ import { type LoopMode, type QueueSong } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import { filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { type SongManager } from "../utils/structures/SongManager.js";
 
 @Event("interactionCreate")
@@ -609,6 +610,37 @@ export class InteractionCreateEvent extends BaseEvent {
                         }
                     });
                 }
+                break;
+            }
+
+            case "RC_FILTER": {
+                const keys = Object.keys(filterArgs) as (keyof typeof filterArgs)[];
+                const availableFilters = keys
+                    .filter((x) => queue?.filters[x] !== true)
+                    .map((x) => `\`${x}\``)
+                    .join("\n");
+                const enabledFilters = keys
+                    .filter((x) => queue?.filters[x] === true)
+                    .map((x) => `\`${x}\``)
+                    .join("\n");
+
+                const embed = createEmbed("info").addFields(
+                    {
+                        name: i18n.__("commands.music.filter.availableFilters"),
+                        value: availableFilters || "-",
+                        inline: true,
+                    },
+                    {
+                        name: i18n.__("commands.music.filter.currentlyUsedFilters"),
+                        value: enabledFilters || "-",
+                        inline: true,
+                    },
+                );
+
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [embed],
+                });
                 break;
             }
 

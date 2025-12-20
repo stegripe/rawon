@@ -1,4 +1,4 @@
-import { clearInterval, clearTimeout, setInterval, setTimeout } from "node:timers";
+import { clearTimeout, setTimeout } from "node:timers";
 import {
     type AudioPlayer,
     type AudioPlayerPlayingState,
@@ -26,7 +26,6 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
-    public playerUpdateInterval: NodeJS.Timeout | null = null;
 
     private _volume = 100;
     private _lastVSUpdateMsg: Snowflake | null = null;
@@ -53,10 +52,9 @@ export class ServerQueue {
                 ) {
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
-                    const newSong = (
-                        (this.player.state as AudioPlayerPlayingState).resource
-                            .metadata as QueueSong
-                    ).song;
+                    const currentSong = (this.player.state as AudioPlayerPlayingState).resource
+                        .metadata as QueueSong;
+                    const newSong = currentSong.song;
 
                     const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
                         this.textChannel.guild,
@@ -76,13 +74,7 @@ export class ServerQueue {
 
                     void this.saveQueueState();
 
-                    this.playerUpdateInterval ??= setInterval(() => {
-                        if (this.playing) {
-                            void this.client.requestChannelManager.updatePlayerMessage(
-                                this.textChannel.guild,
-                            );
-                        }
-                    }, 15_000);
+                    this.preCacheNextSong(currentSong);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;
@@ -322,10 +314,6 @@ export class ServerQueue {
         this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
-        if (this.playerUpdateInterval !== null) {
-            clearInterval(this.playerUpdateInterval);
-            this.playerUpdateInterval = null;
-        }
         void this.clearQueueState();
         delete this.textChannel.guild.queue;
     }
@@ -439,5 +427,30 @@ export class ServerQueue {
                 .then((ms) => (this.lastMusicMsg = ms.id))
                 .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
         })();
+    }
+
+    private preCacheNextSong(currentSong: QueueSong): void {
+        let nextSong: QueueSong | undefined;
+
+        if (this.loopMode === "SONG") {
+            return;
+        }
+
+        if (this.shuffle) {
+            const availableSongs = this.songs.filter((s) => s.key !== currentSong.key);
+            nextSong = availableSongs.random();
+        } else {
+            const sortedSongs = this.songs.sortByIndex();
+            const nextInOrder = sortedSongs.filter((s) => s.index > currentSong.index).first();
+            if (nextInOrder) {
+                nextSong = nextInOrder;
+            } else if (this.loopMode === "QUEUE") {
+                nextSong = sortedSongs.first();
+            }
+        }
+
+        if (nextSong && !nextSong.song.isLive) {
+            void this.client.audioCache.preCacheUrl(nextSong.song.url);
+        }
     }
 }
