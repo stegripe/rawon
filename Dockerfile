@@ -36,8 +36,8 @@ FROM ghcr.io/hazmi35/node:24-alpine
 LABEL name="rawon"
 LABEL maintainer="Stegripe Development <support@stegripe.org>"
 
-# Install ffmpeg and python3
-RUN apk add --no-cache ffmpeg python3 && ln -sf python3 /usr/bin/python
+# Install ffmpeg, python3, and deno (JavaScript runtime for yt-dlp signature solving)
+RUN apk add --no-cache ffmpeg python3 deno && ln -sf python3 /usr/bin/python
 
 # Create necessary directory for caching
 RUN mkdir -p /app/cache
