@@ -36,17 +36,16 @@ export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
 export const lang = formatLocale(process.env.LOCALE) || "en";
-export const mainGuild = parseEnvValue(process.env.MAIN_GUILD ?? "");
+export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
-export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() === "yes";
+export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
 export const musicSelectionType =
     (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
-export const defaultVolume = Number(process.env.DEFAULT_VOLUME ?? 100) || 100;
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
 export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
-export const requestChannelThumbnail =
-    (process.env.REQUEST_CHANNEL_THUMBNAIL ?? "") ||
+export const requestChannelSplash =
+    (process.env.REQUEST_CHANNEL_SPLASH ?? "") ||
     "https://cdn.stegripe.org/images/rawon_splash.png";
 
 export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");

@@ -331,7 +331,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
         options?: RegisterCmdOptions,
     ): Promise<void> {
         if (options && this.client.config.isDev) {
-            for (const id of this.client.config.mainGuild) {
+            for (const id of this.client.config.mainServer) {
                 let guild: Guild | null = null;
 
                 try {

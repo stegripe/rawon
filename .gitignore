@@ -15,7 +15,9 @@ package-lock.json
 .yarn-integrity
 
 .env
-dev.env
+*.env
 
 dist
 cache
+cookies.txt
+*.cookies.txt
