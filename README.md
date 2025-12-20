@@ -11,40 +11,23 @@
 > A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
 
 ## Features
-- Interaction support (slash commands and buttons).
-- Request channel feature for a seamless music experience.
-- A production-ready project, set up the bot without coding.
-- Configurable, and easy to use.
-- Basic music commands.
+- Interaction support (slash commands and buttons)
+- Request channel feature for seamless music experience
+- Production-ready, no coding required
+- Configurable and easy to use
 
-## General Setup (Installation)
-1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
-2. Clone or download this repository
-3. Rename `.env.example` to `.env` and fill in the required values
-4. Install dependencies (or with `npm`):
+## Quick Start
+
+### Standard Setup
+1. Install [Node.js](https://nodejs.org) v22.12.0+
+2. Clone this repository
+3. Copy `.env_example` to `.env` and fill in values
+4. Run:
 ```sh
-pnpm install
+pnpm install && pnpm run build && pnpm start
 ```
-5. Build the project:
-```sh
-pnpm run build
-```
-6. (Optional) Prune dev dependencies to save disk space:
-```sh
-pnpm prune --production
-```
-7. Start the bot:
-```sh
-pnpm start
-```
-8. (Optional) After the bot online, you can setup the special/dedicated channel:
-`<prefix>requestchannel <#channel>` (Example: `xrequestchannel #request-music`)
 
 ### Docker Setup
-
-#### Using Docker Compose (Recommended)
-1. Create a `.env` file with your configuration (copy from `.env.example`)
-2. Start the bot:
 ```sh
 docker compose up -d
 ```
@@ -64,52 +47,22 @@ volumes:
   rawon:
 ```
 
-#### Using Docker Run
-```sh
-docker run -d \
-  --name rawon-bot \
-  --env-file .env \
-  -v rawon:/app/cache \
-  --restart unless-stopped \
-  ghcr.io/stegripe/rawon:latest
-```
+## Documentation
+- [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
+- [Cookies Setup](./docs/COOKIES_SETUP.md) - For hosting providers with bot detection
 
-#### Volume Explanations
-`/app/cache` - Required for `yt-dlp` stream strategy (stores yt-dlp binary), stores persistent data like request channels and player settings (data.json), and audio caching feature (opus file).
-
-### Railway Deployment
-Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
-
-**IMPORTANT:** Read [Disclaimers](./DISCLAIMERS.md) before deploying to Railway.
+## Railway Deployment
+Read [Disclaimers](./docs/DISCLAIMERS.md) before deploying.
 
 <a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway" /></a>
 
-## Disclaimers
-Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
+## Support
+[Discord Server](https://stegripe.org/discord)
 
-## Authentication (For Hosting Providers)
-If you're hosting on cloud providers (OVHcloud, AWS, GCP, etc.) and getting "Sign in to confirm you're not a bot" errors, see the [Cookies Setup Guide](./docs/COOKIES_SETUP.md) for a solution.
+## Contributors
 
-## Support & Questions
-Only available on our official [Discord server](https://stegripe.org/discord).
+**Developers:** [@PixlGalaxy](https://github.com/PixlGalaxy)
 
-## Project Contributors
-
-### Developers
-- [Developers](#developers)
-- [@PixlGalaxy](https://github.com/PixlGalaxy)
-
-### Translators
-- [Developers](#developers) (en, id)
-- [@21Z](https://github.com/21Z) (en)
-- [@lxndr-rl](https://github.com/lxndr-rl) (es)
-- [@MoustacheOff](https://github.com/MoustacheOff) (fr)
-- [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
-- [@RomaDevWorld](https://github.com/RomaDevWorld) (uk)
-- [@hmz121](https://github.com/hmz121) (vi)
-- [@melloirl](https://github.com/melloirl) (pt-BR)
-- [@Ronner231](https://github.com/Ronner231) (ru)
-- [@Fyphen1223](https://github.com/Fyphen1223) (ja)
-- [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
+**Translators:** [@21Z](https://github.com/21Z) (en) • [@lxndr-rl](https://github.com/lxndr-rl) (es) • [@MoustacheOff](https://github.com/MoustacheOff) (fr) • [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW) • [@RomaDevWorld](https://github.com/RomaDevWorld) (uk) • [@hmz121](https://github.com/hmz121) (vi) • [@melloirl](https://github.com/melloirl) (pt-BR) • [@Ronner231](https://github.com/Ronner231) (ru) • [@Fyphen1223](https://github.com/Fyphen1223) (ja) • [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
 
 > © 2026 Stegripe Development
