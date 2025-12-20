@@ -1,4 +1,4 @@
-import { clearInterval, clearTimeout, setInterval, setTimeout } from "node:timers";
+import { clearTimeout, setTimeout } from "node:timers";
 import {
     type AudioPlayer,
     type AudioPlayerPlayingState,
@@ -26,7 +26,6 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
-    public playerUpdateInterval: NodeJS.Timeout | null = null;
 
     private _volume = 100;
     private _lastVSUpdateMsg: Snowflake | null = null;
@@ -75,14 +74,6 @@ export class ServerQueue {
                     );
 
                     void this.saveQueueState();
-
-                    this.playerUpdateInterval ??= setInterval(() => {
-                        if (this.playing && this.songs.size > 0) {
-                            void this.client.requestChannelManager.updatePlayerMessage(
-                                this.textChannel.guild,
-                            );
-                        }
-                    }, 5_000);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;
@@ -322,10 +313,6 @@ export class ServerQueue {
         this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
-        if (this.playerUpdateInterval !== null) {
-            clearInterval(this.playerUpdateInterval);
-            this.playerUpdateInterval = null;
-        }
         void this.clearQueueState();
         delete this.textChannel.guild.queue;
     }

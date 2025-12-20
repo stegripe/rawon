@@ -14,7 +14,6 @@ import i18n, { requestChannelSplash } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
-import { createProgressBar } from "../functions/createProgressBar.js";
 import { normalizeTime } from "../functions/normalizeTime.js";
 
 export class RequestChannelManager {
@@ -142,7 +141,6 @@ export class RequestChannelManager {
         const queueSong = res?.metadata as QueueSong | undefined;
         const song = queueSong?.song;
 
-        const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
         const duration = song?.duration ?? 0;
         const isLive = song?.isLive === true;
 
@@ -167,19 +165,25 @@ export class RequestChannelManager {
             embed.setThumbnail(guildIcon);
         }
 
+        // Calculate total queue duration
+        const totalQueueDuration = queue.songs
+            .map((s) => s.song.duration)
+            .reduce((acc, dur) => acc + dur, 0);
+
         if (song) {
-            let progressLine: string;
+            let durationLine: string;
             if (isLive) {
-                progressLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
-            } else if (duration === 0) {
-                progressLine = `${normalizeTime(curr)} ${createProgressBar(0, 1)} --:--`;
+                durationLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
             } else {
-                progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, duration)} ${normalizeTime(duration)}`;
+                const songDurationStr = duration > 0 ? normalizeTime(duration) : "--:--";
+                const queueDurationStr =
+                    totalQueueDuration > 0 ? normalizeTime(totalQueueDuration) : "--:--";
+                durationLine = `⏱️ ${i18n.__("requestChannel.songDuration")}: **${songDurationStr}** | ${i18n.__("requestChannel.queueDuration")}: **${queueDurationStr}**`;
             }
 
             embed.setDescription(
                 `${statusEmoji} **[${song.title}](${song.url})**\n\n` +
-                    `${progressLine}\n\n` +
+                    `${durationLine}\n\n` +
                     `${i18n.__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? i18n.__("requestChannel.unknown")}`,
             );
         } else {
