@@ -14,7 +14,7 @@ import i18n, { requestChannelSplash } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
-import { normalizeTime } from "../functions/normalizeTime.js";
+import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
 
 export class RequestChannelManager {
     private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
@@ -128,7 +128,9 @@ export class RequestChannelManager {
                         inline: true,
                     },
                 ])
-                .setFooter({ text: i18n.__mf("requestChannel.queueFooter", { count: 0 }) });
+                .setFooter({
+                    text: i18n.__mf("requestChannel.queueFooter", { count: 0, duration: "0:00" }),
+                });
         }
 
         const res = (
@@ -176,13 +178,11 @@ export class RequestChannelManager {
                 durationLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
             } else {
                 const songDurationStr = duration > 0 ? normalizeTime(duration) : "--:--";
-                const queueDurationStr =
-                    totalQueueDuration > 0 ? normalizeTime(totalQueueDuration) : "--:--";
-                durationLine = `${statusEmoji} ${i18n.__("requestChannel.songDuration")}: **\`${songDurationStr}\`** • ${i18n.__("requestChannel.queueDuration")}: **\`${queueDurationStr}\`**`;
+                durationLine = `⏱️ ${i18n.__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
             }
 
             embed.setDescription(
-                `### **[${song.title}](${song.url})**\n\n` +
+                `${statusEmoji} **[${song.title}](${song.url})**\n\n` +
                     `${durationLine}\n\n` +
                     `${i18n.__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? i18n.__("requestChannel.unknown")}`,
             );
@@ -200,8 +200,14 @@ export class RequestChannelManager {
             { name: i18n.__("requestChannel.shuffle"), value: `🔀 ${shuffleState}`, inline: true },
             { name: i18n.__("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true },
         ]);
+
+        const queueDurationStr =
+            totalQueueDuration > 0 ? formatDuration(totalQueueDuration) : "0:00";
         embed.setFooter({
-            text: i18n.__mf("requestChannel.queueFooter", { count: queue.songs.size.toString() }),
+            text: i18n.__mf("requestChannel.queueFooter", {
+                count: queue.songs.size.toString(),
+                duration: queueDurationStr,
+            }),
         });
 
         return embed;
