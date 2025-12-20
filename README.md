@@ -87,8 +87,8 @@ Railway provides $5 each month for you to use in the free plan, it will stay onl
 ## Disclaimers
 Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
 
-## YouTube Authentication (For Hosting Providers)
-If you're hosting on cloud providers (OVHcloud, AWS, GCP, etc.) and getting "Sign in to confirm you're not a bot" errors, see the [YouTube Cookies Setup Guide](./docs/YOUTUBE_COOKIES_SETUP.md) for a solution.
+## Authentication (For Hosting Providers)
+If you're hosting on cloud providers (OVHcloud, AWS, GCP, etc.) and getting "Sign in to confirm you're not a bot" errors, see the [Cookies Setup Guide](./docs/COOKIES_SETUP.md) for a solution.
 
 ## Support & Questions
 Only available on our official [Discord server](https://stegripe.org/discord).
