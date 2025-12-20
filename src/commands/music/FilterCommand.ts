@@ -106,13 +106,19 @@ export class FilterCommand extends BaseCommand {
             }
 
             const queue = ctx.guild?.queue;
-            if (!queue || queue.player.state.status !== AudioPlayerStatus.Playing) {
+            if (!queue) {
+                return ctx.reply({
+                    embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noQueue"))],
+                });
+            }
+
+            if (queue.player.state.status !== AudioPlayerStatus.Playing) {
                 return ctx.reply({
                     embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.notPlaying"))],
                 });
             }
 
-            ctx.guild?.queue?.setFilter(filter, subcmd === "enable");
+            queue.setFilter(filter, subcmd === "enable");
             return ctx.reply({
                 embeds: [
                     createEmbed(
