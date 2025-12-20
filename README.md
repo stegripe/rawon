@@ -15,24 +15,37 @@
 - Request channel feature for seamless music experience
 - Production-ready, no coding required
 - Configurable and easy to use
+- Basic music commands (play, pause, skip, queue, etc.)
 
-## Quick Start
+## Installation
 
-### Standard Setup
-1. Install [Node.js](https://nodejs.org) v22.12.0+
-2. Clone this repository
-3. Copy `.env_example` to `.env` and fill in values
-4. Run:
+### Standard Setup (Node.js)
+1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
+2. Clone or download this repository
+3. Copy `.env_example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)
+4. Install dependencies:
 ```sh
-pnpm install && pnpm run build && pnpm start
+pnpm install
 ```
-
-### Docker Setup
+5. Build the project:
 ```sh
-docker compose up -d
+pnpm run build
 ```
+6. Start the bot:
+```sh
+pnpm start
+```
+7. (Optional) After the bot is online, set up a dedicated music channel:
+```
+<prefix>requestchannel <#channel>
+```
+Example: `!requestchannel #music-requests`
 
-Example `docker-compose.yaml`:
+### Docker Setup (Recommended)
+
+#### Using Docker Compose
+1. Create a `.env` file with your configuration (copy from `.env_example`)
+2. Create a `docker-compose.yaml` file:
 ```yaml
 services:
   rawon:
@@ -46,23 +59,67 @@ services:
 volumes:
   rawon:
 ```
+3. Start the bot:
+```sh
+docker compose up -d
+```
+4. View logs:
+```sh
+docker logs -f rawon-bot
+```
 
-## Documentation
-- [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
-- [Cookies Setup](./docs/COOKIES_SETUP.md) - For hosting providers with bot detection
+#### Using Docker Run
+```sh
+docker run -d \
+  --name rawon-bot \
+  --env-file .env \
+  -v rawon:/app/cache \
+  --restart unless-stopped \
+  ghcr.io/stegripe/rawon:latest
+```
 
-## Railway Deployment
-Read [Disclaimers](./docs/DISCLAIMERS.md) before deploying.
+#### Volume Information
+The `/app/cache` volume stores:
+- `yt-dlp` binary for audio streaming
+- `data.json` for persistent settings (request channels, player states)
+- Cached audio files (if audio caching is enabled)
+
+### Railway Deployment
+Railway provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.
+
+**⚠️ IMPORTANT:** Read [Disclaimers](./docs/DISCLAIMERS.md) before deploying to Railway.
 
 <a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway" /></a>
 
-## Support
-[Discord Server](https://stegripe.org/discord)
+## Configuration Files
+- `.env_example` - Essential settings (Discord token, prefix, Spotify, etc.)
+- `optional.env_example` - Optional customization (colors, emojis, activities)
+- `dev.env_example` - Developer settings (debug mode, dev IDs)
+
+Copy the ones you need to `.env` and fill in the values.
+
+## Documentation
+- [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
+- [Cookies Setup](./docs/COOKIES_SETUP.md) - Fix "Sign in to confirm you're not a bot" errors on hosting providers
+
+## Support & Questions
+For help and questions, join our official [Discord Server](https://stegripe.org/discord).
 
 ## Contributors
 
-**Developers:** [@PixlGalaxy](https://github.com/PixlGalaxy)
+### Developers
+- [@PixlGalaxy](https://github.com/PixlGalaxy)
 
-**Translators:** [@21Z](https://github.com/21Z) (en) • [@lxndr-rl](https://github.com/lxndr-rl) (es) • [@MoustacheOff](https://github.com/MoustacheOff) (fr) • [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW) • [@RomaDevWorld](https://github.com/RomaDevWorld) (uk) • [@hmz121](https://github.com/hmz121) (vi) • [@melloirl](https://github.com/melloirl) (pt-BR) • [@Ronner231](https://github.com/Ronner231) (ru) • [@Fyphen1223](https://github.com/Fyphen1223) (ja) • [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
+### Translators
+- [@21Z](https://github.com/21Z) (en)
+- [@lxndr-rl](https://github.com/lxndr-rl) (es)
+- [@MoustacheOff](https://github.com/MoustacheOff) (fr)
+- [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
+- [@RomaDevWorld](https://github.com/RomaDevWorld) (uk)
+- [@hmz121](https://github.com/hmz121) (vi)
+- [@melloirl](https://github.com/melloirl) (pt-BR)
+- [@Ronner231](https://github.com/Ronner231) (ru)
+- [@Fyphen1223](https://github.com/Fyphen1223) (ja)
+- [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
 
 > © 2026 Stegripe Development
