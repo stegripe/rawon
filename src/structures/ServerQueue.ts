@@ -52,10 +52,9 @@ export class ServerQueue {
                 ) {
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
-                    const newSong = (
-                        (this.player.state as AudioPlayerPlayingState).resource
-                            .metadata as QueueSong
-                    ).song;
+                    const currentSong = (this.player.state as AudioPlayerPlayingState).resource
+                        .metadata as QueueSong;
+                    const newSong = currentSong.song;
 
                     const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
                         this.textChannel.guild,
@@ -74,6 +73,9 @@ export class ServerQueue {
                     );
 
                     void this.saveQueueState();
+
+                    // Pre-cache next song for smoother transitions
+                    this.preCacheNextSong(currentSong);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;
@@ -426,5 +428,35 @@ export class ServerQueue {
                 .then((ms) => (this.lastMusicMsg = ms.id))
                 .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
         })();
+    }
+
+    private preCacheNextSong(currentSong: QueueSong): void {
+        // Determine the next song based on loop mode and shuffle
+        let nextSong: QueueSong | undefined;
+
+        if (this.loopMode === "SONG") {
+            // In SONG loop mode, the same song will play next, already cached
+            return;
+        }
+
+        if (this.shuffle) {
+            // In shuffle mode, pick a random song (excluding current)
+            const availableSongs = this.songs.filter((s) => s.key !== currentSong.key);
+            nextSong = availableSongs.random();
+        } else {
+            // Get the next song in order
+            const sortedSongs = this.songs.sortByIndex();
+            const nextInOrder = sortedSongs.filter((s) => s.index > currentSong.index).first();
+            if (nextInOrder) {
+                nextSong = nextInOrder;
+            } else if (this.loopMode === "QUEUE") {
+                // If queue loop is on and we're at the end, pre-cache the first song
+                nextSong = sortedSongs.first();
+            }
+        }
+
+        if (nextSong && !nextSong.song.isLive) {
+            void this.client.audioCache.preCacheUrl(nextSong.song.url);
+        }
     }
 }

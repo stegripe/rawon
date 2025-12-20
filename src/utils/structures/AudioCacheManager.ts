@@ -131,6 +131,77 @@ export class AudioCacheManager {
         return playbackStream;
     }
 
+    public async preCacheUrl(url: string): Promise<void> {
+        if (this.isCached(url)) {
+            return;
+        }
+
+        const key = this.getCacheKey(url);
+        if (this.inProgressFiles.has(key)) {
+            return;
+        }
+
+        try {
+            const { exec } = await import("../yt-dlp/index.js");
+            const cachePath = this.getCachePath(url);
+
+            this.inProgressFiles.add(key);
+
+            const proc = exec(
+                url,
+                {
+                    output: "-",
+                    quiet: true,
+                    format: "bestaudio",
+                    limitRate: "300K",
+                },
+                { stdio: ["ignore", "pipe", "ignore"] },
+            );
+
+            if (!proc.stdout) {
+                this.inProgressFiles.delete(key);
+                return;
+            }
+
+            const writeStream = createWriteStream(cachePath);
+            proc.stdout.pipe(writeStream);
+
+            writeStream.on("finish", () => {
+                this.inProgressFiles.delete(key);
+                this.cachedFiles.set(key, {
+                    path: cachePath,
+                    lastAccess: Date.now(),
+                });
+                this.client.logger.info(
+                    `[AudioCacheManager] Pre-cached audio for: ${url.substring(0, 50)}...`,
+                );
+            });
+
+            writeStream.on("error", () => {
+                this.inProgressFiles.delete(key);
+                try {
+                    rmSync(cachePath, { force: true });
+                } catch {
+                    // Ignore cleanup errors
+                }
+            });
+
+            proc.on("error", () => {
+                this.inProgressFiles.delete(key);
+                try {
+                    rmSync(cachePath, { force: true });
+                } catch {
+                    // Ignore cleanup errors
+                }
+            });
+        } catch (error) {
+            this.inProgressFiles.delete(key);
+            this.client.logger.debug(
+                `[AudioCacheManager] Failed to pre-cache: ${(error as Error).message}`,
+            );
+        }
+    }
+
     public clearCache(): void {
         this.cachedFiles.clear();
         this.inProgressFiles.clear();

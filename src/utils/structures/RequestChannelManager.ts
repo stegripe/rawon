@@ -268,12 +268,13 @@ export class RequestChannelManager {
 
         const performUpdate = async (): Promise<void> => {
             this.pendingUpdates.delete(guild.id);
-            const message = await this.getPlayerMessage(guild).catch(() => null);
-            if (!message) {
-                return;
-            }
 
             try {
+                const message = await this.getPlayerMessage(guild).catch(() => null);
+                if (!message) {
+                    return;
+                }
+
                 const embed = this.createPlayerEmbed(guild);
                 const components = this.createPlayerButtons(guild);
                 await message
