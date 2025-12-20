@@ -178,11 +178,11 @@ export class RequestChannelManager {
                 durationLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
             } else {
                 const songDurationStr = duration > 0 ? normalizeTime(duration) : "--:--";
-                durationLine = `⏱️ ${i18n.__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
+                durationLine = `${statusEmoji} ${i18n.__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
             }
 
             embed.setDescription(
-                `${statusEmoji} **[${song.title}](${song.url})**\n\n` +
+                `**[${song.title}](${song.url})**\n\n` +
                     `${durationLine}\n\n` +
                     `${i18n.__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? i18n.__("requestChannel.unknown")}`,
             );

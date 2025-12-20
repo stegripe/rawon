@@ -245,7 +245,7 @@
         "shuffle": "Shuffle",
         "volume": "Volume",
         "queueLength": "Queue",
-        "queueFooter": "Total remaining track(s) in queue: {count} ({duration} of duration)",
+        "queueFooter": "• Total remaining tracks in queue: {count} ({duration} of duration)",
         "idle": "Idle",
         "live": "LIVE",
         "songDuration": "Duration",
