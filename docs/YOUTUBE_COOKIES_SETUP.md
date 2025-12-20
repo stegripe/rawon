@@ -91,15 +91,15 @@ services:
     env_file: .env
     volumes:
       - rawon:/app/cache
-      - ./cookies.txt:/app/cookies.txt:ro
+      - ./cookies.txt:/app/cache/cookies.txt:ro
 ```
 
 And set in your `.env`:
 ```env
-YOUTUBE_COOKIES="/app/cookies.txt"
+YOUTUBE_COOKIES="./cache/cookies.txt"
 ```
 
-> **Note**: The cookies file is mounted to `/app/cookies.txt` (not inside `/app/cache`) to keep it separate from the cache volume.
+> **Note**: The cookies file is mounted into `/app/cache/cookies.txt` inside the container, so the path in `.env` is the same as non-Docker setup (`./cache/cookies.txt`).
 
 ### How Long Do Cookies Last?
 
@@ -231,15 +231,15 @@ services:
     env_file: .env
     volumes:
       - rawon:/app/cache
-      - ./cookies.txt:/app/cookies.txt:ro
+      - ./cookies.txt:/app/cache/cookies.txt:ro
 ```
 
 Dan set di `.env` kamu:
 ```env
-YOUTUBE_COOKIES="/app/cookies.txt"
+YOUTUBE_COOKIES="./cache/cookies.txt"
 ```
 
-> **Catatan**: File cookies di-mount ke `/app/cookies.txt` (bukan di dalam `/app/cache`) agar terpisah dari volume cache.
+> **Catatan**: File cookies di-mount ke `/app/cache/cookies.txt` di dalam container, jadi path di `.env` sama seperti setup non-Docker (`./cache/cookies.txt`).
 
 ### Berapa Lama Cookies Bertahan?
 
