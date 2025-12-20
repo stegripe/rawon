@@ -99,7 +99,7 @@ And set in your `.env`:
 YOUTUBE_COOKIES="./cache/cookies.txt"
 ```
 
-> **Note**: The cookies file is mounted into `/app/cache/cookies.txt` inside the container, so the path in `.env` is the same as non-Docker setup (`./cache/cookies.txt`).
+> **Note**: The cookies file is mounted into `/app/cache/cookies.txt` inside the container, so the path in `.env` is the same as non-Docker setup (`./cache/cookies.txt`). Make sure the `cookies.txt` file exists before running `docker compose up`, otherwise Docker will create an empty directory instead.
 
 ### How Long Do Cookies Last?
 
@@ -239,7 +239,7 @@ Dan set di `.env` kamu:
 YOUTUBE_COOKIES="./cache/cookies.txt"
 ```
 
-> **Catatan**: File cookies di-mount ke `/app/cache/cookies.txt` di dalam container, jadi path di `.env` sama seperti setup non-Docker (`./cache/cookies.txt`).
+> **Catatan**: File cookies di-mount ke `/app/cache/cookies.txt` di dalam container, jadi path di `.env` sama seperti setup non-Docker (`./cache/cookies.txt`). Pastikan file `cookies.txt` sudah ada sebelum menjalankan `docker compose up`, kalau tidak Docker akan membuat folder kosong.
 
 ### Berapa Lama Cookies Bertahan?
 
