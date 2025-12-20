@@ -82,7 +82,7 @@ export class ServerQueue {
                                 this.textChannel.guild,
                             );
                         }
-                    }, 10_000);
+                    }, 5_000);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;
