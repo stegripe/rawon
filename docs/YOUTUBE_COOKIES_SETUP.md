@@ -71,7 +71,16 @@ Restart your bot to apply the changes.
 
 ### Docker Setup
 
-If you're using Docker, mount the cookies file:
+If you're using Docker, simply place your `cookies.txt` file next to your `docker-compose.yaml` file:
+
+```
+your-rawon-folder/
+├── docker-compose.yaml
+├── .env
+└── cookies.txt          <-- Place cookies here
+```
+
+Then add this volume mount to your `docker-compose.yaml`:
 
 ```yaml
 services:
@@ -82,13 +91,15 @@ services:
     env_file: .env
     volumes:
       - rawon:/app/cache
-      - ./cookies.txt:/app/cache/cookies.txt:ro
+      - ./cookies.txt:/app/cookies.txt:ro
 ```
 
 And set in your `.env`:
 ```env
-YOUTUBE_COOKIES="/app/cache/cookies.txt"
+YOUTUBE_COOKIES="/app/cookies.txt"
 ```
+
+> **Note**: The cookies file is mounted to `/app/cookies.txt` (not inside `/app/cache`) to keep it separate from the cache volume.
 
 ### How Long Do Cookies Last?
 
@@ -200,7 +211,16 @@ Restart bot kamu untuk menerapkan perubahan.
 
 ### Setup Docker
 
-Jika kamu menggunakan Docker, mount file cookies:
+Jika kamu menggunakan Docker, cukup letakkan file `cookies.txt` di samping file `docker-compose.yaml`:
+
+```
+folder-rawon-kamu/
+├── docker-compose.yaml
+├── .env
+└── cookies.txt          <-- Letakkan cookies di sini
+```
+
+Lalu tambahkan volume mount ini ke `docker-compose.yaml` kamu:
 
 ```yaml
 services:
@@ -211,13 +231,15 @@ services:
     env_file: .env
     volumes:
       - rawon:/app/cache
-      - ./cookies.txt:/app/cache/cookies.txt:ro
+      - ./cookies.txt:/app/cookies.txt:ro
 ```
 
 Dan set di `.env` kamu:
 ```env
-YOUTUBE_COOKIES="/app/cache/cookies.txt"
+YOUTUBE_COOKIES="/app/cookies.txt"
 ```
+
+> **Catatan**: File cookies di-mount ke `/app/cookies.txt` (bukan di dalam `/app/cache`) agar terpisah dari volume cache.
 
 ### Berapa Lama Cookies Bertahan?
 
