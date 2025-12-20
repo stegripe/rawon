@@ -77,12 +77,12 @@ export class ServerQueue {
                     void this.saveQueueState();
 
                     this.playerUpdateInterval ??= setInterval(() => {
-                        if (this.playing) {
+                        if (this.playing && this.songs.size > 0) {
                             void this.client.requestChannelManager.updatePlayerMessage(
                                 this.textChannel.guild,
                             );
                         }
-                    }, 15_000);
+                    }, 10_000);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;

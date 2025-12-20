@@ -1,3 +1,4 @@
+import { AudioPlayerStatus } from "@discordjs/voice";
 import { ApplicationCommandOptionType, type Message } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
@@ -78,7 +79,7 @@ export class FilterCommand extends BaseCommand {
     @inVC
     @validVC
     @sameVC
-    public async execute(ctx: CommandContext): Promise<Message> {
+    public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const mode: Record<string, FilterSubCmd> = {
             on: "enable",
             off: "disable",
@@ -101,6 +102,13 @@ export class FilterCommand extends BaseCommand {
                     embeds: [
                         createEmbed("error", i18n.__("commands.music.filter.specifyFilter"), true),
                     ],
+                });
+            }
+
+            const queue = ctx.guild?.queue;
+            if (!queue || queue.player.state.status !== AudioPlayerStatus.Playing) {
+                return ctx.reply({
+                    embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.notPlaying"))],
                 });
             }
 

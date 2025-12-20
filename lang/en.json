@@ -295,6 +295,7 @@
         "musicDecorator": {
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
             "noQueue": "Nothing is being played.",
+            "notPlaying": "There is no music currently playing. Please play a song first.",
             "sameVC": "You need to be in the same voice channel as mine.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
             "useRequestChannelDirect": "This command is disabled in the request channel. Please use the player buttons or type the song title/link directly.",

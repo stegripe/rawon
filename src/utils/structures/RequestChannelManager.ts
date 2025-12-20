@@ -1,3 +1,4 @@
+import { clearTimeout, setTimeout } from "node:timers";
 import { type AudioPlayerPlayingState, type AudioResource } from "@discordjs/voice";
 import {
     ActionRowBuilder,
@@ -17,6 +18,9 @@ import { createProgressBar } from "../functions/createProgressBar.js";
 import { normalizeTime } from "../functions/normalizeTime.js";
 
 export class RequestChannelManager {
+    private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
+    private readonly updateDebounceMs = 500;
+
     public constructor(public readonly client: Rawon) {}
 
     private isValidId(id: string | null | undefined): id is string {
@@ -241,27 +245,47 @@ export class RequestChannelManager {
         return [row1, row2];
     }
 
-    public async updatePlayerMessage(guild: Guild): Promise<void> {
-        const message = await this.getPlayerMessage(guild).catch(() => null);
-        if (!message) {
-            return;
+    public async updatePlayerMessage(guild: Guild, immediate = false): Promise<void> {
+        const existingTimeout = this.pendingUpdates.get(guild.id);
+        if (existingTimeout) {
+            clearTimeout(existingTimeout);
+            this.pendingUpdates.delete(guild.id);
         }
 
-        try {
-            const embed = this.createPlayerEmbed(guild);
-            const components = this.createPlayerButtons(guild);
-            await message
-                .edit({
-                    embeds: [embed],
-                    components,
-                })
-                .catch((error: unknown) => {
-                    this.client.logger.debug(
-                        `Failed to update player message: ${(error as Error).message}`,
-                    );
-                });
-        } catch (error) {
-            this.client.logger.debug(`Error in updatePlayerMessage: ${(error as Error).message}`);
+        const performUpdate = async (): Promise<void> => {
+            this.pendingUpdates.delete(guild.id);
+            const message = await this.getPlayerMessage(guild).catch(() => null);
+            if (!message) {
+                return;
+            }
+
+            try {
+                const embed = this.createPlayerEmbed(guild);
+                const components = this.createPlayerButtons(guild);
+                await message
+                    .edit({
+                        embeds: [embed],
+                        components,
+                    })
+                    .catch((error: unknown) => {
+                        this.client.logger.debug(
+                            `Failed to update player message: ${(error as Error).message}`,
+                        );
+                    });
+            } catch (error) {
+                this.client.logger.debug(
+                    `Error in updatePlayerMessage: ${(error as Error).message}`,
+                );
+            }
+        };
+
+        if (immediate) {
+            await performUpdate();
+        } else {
+            const timeout = setTimeout(() => {
+                void performUpdate();
+            }, this.updateDebounceMs);
+            this.pendingUpdates.set(guild.id, timeout);
         }
     }
 
