@@ -22,7 +22,7 @@ package-lock.json
 
 # dotenv environment variables file
 .env
-dev.env
+*.env
 
 # Cache directories and files
 dist
