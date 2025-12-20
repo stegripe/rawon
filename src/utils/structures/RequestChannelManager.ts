@@ -167,7 +167,6 @@ export class RequestChannelManager {
             embed.setThumbnail(guildIcon);
         }
 
-        // Calculate total queue duration
         const totalQueueDuration = queue.songs
             .map((s) => s.song.duration)
             .reduce((acc, dur) => acc + dur, 0);

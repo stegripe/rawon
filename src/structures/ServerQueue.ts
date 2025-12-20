@@ -74,7 +74,6 @@ export class ServerQueue {
 
                     void this.saveQueueState();
 
-                    // Pre-cache next song for smoother transitions
                     this.preCacheNextSong(currentSong);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
                     const song = (oldState as AudioPlayerPlayingState).resource
@@ -431,26 +430,21 @@ export class ServerQueue {
     }
 
     private preCacheNextSong(currentSong: QueueSong): void {
-        // Determine the next song based on loop mode and shuffle
         let nextSong: QueueSong | undefined;
 
         if (this.loopMode === "SONG") {
-            // In SONG loop mode, the same song will play next, already cached
             return;
         }
 
         if (this.shuffle) {
-            // In shuffle mode, pick a random song (excluding current)
             const availableSongs = this.songs.filter((s) => s.key !== currentSong.key);
             nextSong = availableSongs.random();
         } else {
-            // Get the next song in order
             const sortedSongs = this.songs.sortByIndex();
             const nextInOrder = sortedSongs.filter((s) => s.index > currentSong.index).first();
             if (nextInOrder) {
                 nextSong = nextInOrder;
             } else if (this.loopMode === "QUEUE") {
-                // If queue loop is on and we're at the end, pre-cache the first song
                 nextSong = sortedSongs.first();
             }
         }
