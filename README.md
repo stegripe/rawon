@@ -11,17 +11,19 @@
 > A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
 
 ## Features
-- Interaction support (slash commands and buttons).
-- Request channel feature for a seamless music experience.
-- A production-ready project, set up the bot without coding.
-- Configurable, and easy to use.
-- Basic music commands.
+- Interaction support (slash commands and buttons)
+- Request channel feature for seamless music experience
+- Production-ready, no coding required
+- Configurable and easy to use
+- Basic music commands (play, pause, skip, queue, etc.)
 
-## General Setup (Installation)
+## Installation
+
+### Standard Setup (Node.js)
 1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
 2. Clone or download this repository
-3. Rename `.env.example` to `.env` and fill in the required values
-4. Install dependencies (or with `npm`):
+3. Copy `.env_example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)
+4. Install dependencies:
 ```sh
 pnpm install
 ```
@@ -29,27 +31,21 @@ pnpm install
 ```sh
 pnpm run build
 ```
-6. (Optional) Prune dev dependencies to save disk space:
-```sh
-pnpm prune --production
-```
-7. Start the bot:
+6. Start the bot:
 ```sh
 pnpm start
 ```
-8. (Optional) After the bot online, you can setup the special/dedicated channel:
-`<prefix>requestchannel <#channel>` (Example: `xrequestchannel #request-music`)
-
-### Docker Setup
-
-#### Using Docker Compose (Recommended)
-1. Create a `.env` file with your configuration (copy from `.env.example`)
-2. Start the bot:
-```sh
-docker compose up -d
+7. (Optional) After the bot is online, set up a dedicated music channel:
 ```
+<prefix>requestchannel <#channel>
+```
+Example: `!requestchannel #music-requests`
 
-Example `docker-compose.yaml`:
+### Docker Setup (Recommended)
+
+#### Using Docker Compose
+1. Create a `.env` file with your configuration (copy from `.env_example`)
+2. Create a `docker-compose.yaml` file:
 ```yaml
 services:
   rawon:
@@ -63,6 +59,14 @@ services:
 volumes:
   rawon:
 ```
+3. Start the bot:
+```sh
+docker compose up -d
+```
+4. View logs:
+```sh
+docker logs -f rawon-bot
+```
 
 #### Using Docker Run
 ```sh
@@ -74,30 +78,39 @@ docker run -d \
   ghcr.io/stegripe/rawon:latest
 ```
 
-#### Volume Explanations
-`/app/cache` - Required for `yt-dlp` stream strategy (stores yt-dlp binary), stores persistent data like request channels and player settings (data.json), and audio caching feature (opus file).
+#### Volume Information
+The `/app/cache` volume stores:
+- `yt-dlp` binary for audio streaming
+- `data.json` for persistent settings (request channels, player states)
+- Cached audio files (if audio caching is enabled)
 
 ### Railway Deployment
-Railway provides $5 each month for you to use in the free plan, it will stay online 24/7 as long as your usage does not exceed $5.
+Railway provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.
 
-**IMPORTANT:** Read [Disclaimers](./DISCLAIMERS.md) before deploying to Railway.
+**⚠️ IMPORTANT:** Read [Disclaimers](./docs/DISCLAIMERS.md) before deploying to Railway.
 
 <a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway" /></a>
 
-## Disclaimers
-Disclaimers are listed on the [DISCLAIMERS.md](./DISCLAIMERS.md) file.
+## Configuration Files
+- `.env_example` - Essential settings (Discord token, prefix, Spotify, etc.)
+- `optional.env_example` - Optional customization (colors, emojis, activities)
+- `dev.env_example` - Developer settings (debug mode, dev IDs)
+
+Copy the ones you need to `.env` and fill in the values.
+
+## Documentation
+- [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
+- [Cookies Setup](./docs/COOKIES_SETUP.md) - Fix "Sign in to confirm you're not a bot" errors on hosting providers
 
 ## Support & Questions
-Only available on our official [Discord server](https://stegripe.org/discord).
+For help and questions, join our official [Discord Server](https://stegripe.org/discord).
 
-## Project Contributors
+## Contributors
 
 ### Developers
-- [Developers](#developers)
 - [@PixlGalaxy](https://github.com/PixlGalaxy)
 
 ### Translators
-- [Developers](#developers) (en, id)
 - [@21Z](https://github.com/21Z) (en)
 - [@lxndr-rl](https://github.com/lxndr-rl) (es)
 - [@MoustacheOff](https://github.com/MoustacheOff) (fr)

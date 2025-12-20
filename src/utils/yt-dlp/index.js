@@ -11,6 +11,8 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
+const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
+
 function args(url, options) {
     const optArgs = Object.entries(options)
         .flatMap(([key, val]) => {
@@ -21,6 +23,10 @@ function args(url, options) {
             ]
         })
         .filter(Boolean);
+
+    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+        optArgs.push("--cookies", youtubeCookiesPath);
+    }
 
     return [url, ...optArgs];
 }
