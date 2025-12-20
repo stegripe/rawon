@@ -28,7 +28,7 @@ export class ServerQueue {
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
     public playerUpdateInterval: NodeJS.Timeout | null = null;
 
-    private _volume = this.client.config.defaultVolume;
+    private _volume = 100;
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
     private _skipVoters: Snowflake[] = [];
@@ -203,7 +203,7 @@ export class ServerQueue {
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
-            this._volume = savedState.volume ?? this.client.config.defaultVolume;
+            this._volume = savedState.volume ?? 100;
             this.filters = (savedState.filters ?? {}) as Partial<
                 Record<keyof typeof filterArgs, boolean>
             >;

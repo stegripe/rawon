@@ -22,8 +22,10 @@ package-lock.json
 
 # dotenv environment variables file
 .env
-dev.env
+*.env
 
-# Rawon cache directories
+# Cache directories and files
 dist
 cache
+cookies.txt
+*.cookies.txt
