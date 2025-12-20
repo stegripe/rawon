@@ -2,7 +2,13 @@ import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
+import {
+    haveQueue,
+    inVC,
+    sameVC,
+    useRequestChannel,
+    validVC,
+} from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 
 @Command({
@@ -18,6 +24,7 @@ export class StopCommand extends BaseCommand {
     @useRequestChannel
     @inVC
     @validVC
+    @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
         ctx.guild?.queue?.stop();

@@ -10,7 +10,7 @@ import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
+import { haveQueue, inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 
@@ -33,6 +33,7 @@ import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 export class VolumeCommand extends BaseCommand {
     @inVC
     @validVC
+    @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const volume = Number(ctx.args[0] ?? ctx.options?.get("volume", false)?.value);

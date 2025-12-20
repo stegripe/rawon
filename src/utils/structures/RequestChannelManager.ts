@@ -1,3 +1,4 @@
+import { clearTimeout, setTimeout } from "node:timers";
 import { type AudioPlayerPlayingState, type AudioResource } from "@discordjs/voice";
 import {
     ActionRowBuilder,
@@ -13,10 +14,12 @@ import i18n, { requestChannelSplash } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
-import { createProgressBar } from "../functions/createProgressBar.js";
-import { normalizeTime } from "../functions/normalizeTime.js";
+import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
 
 export class RequestChannelManager {
+    private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
+    private readonly updateDebounceMs = 500;
+
     public constructor(public readonly client: Rawon) {}
 
     private isValidId(id: string | null | undefined): id is string {
@@ -125,7 +128,9 @@ export class RequestChannelManager {
                         inline: true,
                     },
                 ])
-                .setFooter({ text: i18n.__mf("requestChannel.queueFooter", { count: 0 }) });
+                .setFooter({
+                    text: i18n.__mf("requestChannel.queueFooter", { count: 0, duration: "0:00" }),
+                });
         }
 
         const res = (
@@ -138,7 +143,6 @@ export class RequestChannelManager {
         const queueSong = res?.metadata as QueueSong | undefined;
         const song = queueSong?.song;
 
-        const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
         const duration = song?.duration ?? 0;
         const isLive = song?.isLive === true;
 
@@ -163,19 +167,22 @@ export class RequestChannelManager {
             embed.setThumbnail(guildIcon);
         }
 
+        const totalQueueDuration = queue.songs
+            .map((s) => s.song.duration)
+            .reduce((acc, dur) => acc + dur, 0);
+
         if (song) {
-            let progressLine: string;
+            let durationLine: string;
             if (isLive) {
-                progressLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
-            } else if (duration === 0) {
-                progressLine = `${normalizeTime(curr)} ${createProgressBar(0, 1)} --:--`;
+                durationLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
             } else {
-                progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, duration)} ${normalizeTime(duration)}`;
+                const songDurationStr = duration > 0 ? normalizeTime(duration) : "--:--";
+                durationLine = `${statusEmoji} ${i18n.__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
             }
 
             embed.setDescription(
-                `${statusEmoji} **[${song.title}](${song.url})**\n\n` +
-                    `${progressLine}\n\n` +
+                `### [${song.title}](${song.url})\n\n` +
+                    `${durationLine}\n\n` +
                     `${i18n.__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? i18n.__("requestChannel.unknown")}`,
             );
         } else {
@@ -192,8 +199,14 @@ export class RequestChannelManager {
             { name: i18n.__("requestChannel.shuffle"), value: `🔀 ${shuffleState}`, inline: true },
             { name: i18n.__("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true },
         ]);
+
+        const queueDurationStr =
+            totalQueueDuration > 0 ? formatDuration(totalQueueDuration) : "0:00";
         embed.setFooter({
-            text: i18n.__mf("requestChannel.queueFooter", { count: queue.songs.size.toString() }),
+            text: i18n.__mf("requestChannel.queueFooter", {
+                count: queue.songs.size.toString(),
+                duration: queueDurationStr,
+            }),
         });
 
         return embed;
@@ -236,32 +249,57 @@ export class RequestChannelManager {
                 .setCustomId("RC_QUEUE_LIST")
                 .setEmoji("📋")
                 .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId("RC_FILTER")
+                .setEmoji("🎛️")
+                .setStyle(ButtonStyle.Secondary),
         );
 
         return [row1, row2];
     }
 
-    public async updatePlayerMessage(guild: Guild): Promise<void> {
-        const message = await this.getPlayerMessage(guild).catch(() => null);
-        if (!message) {
-            return;
+    public async updatePlayerMessage(guild: Guild, immediate = false): Promise<void> {
+        const existingTimeout = this.pendingUpdates.get(guild.id);
+        if (existingTimeout) {
+            clearTimeout(existingTimeout);
+            this.pendingUpdates.delete(guild.id);
         }
 
-        try {
-            const embed = this.createPlayerEmbed(guild);
-            const components = this.createPlayerButtons(guild);
-            await message
-                .edit({
-                    embeds: [embed],
-                    components,
-                })
-                .catch((error: unknown) => {
-                    this.client.logger.debug(
-                        `Failed to update player message: ${(error as Error).message}`,
-                    );
-                });
-        } catch (error) {
-            this.client.logger.debug(`Error in updatePlayerMessage: ${(error as Error).message}`);
+        const performUpdate = async (): Promise<void> => {
+            this.pendingUpdates.delete(guild.id);
+
+            try {
+                const message = await this.getPlayerMessage(guild).catch(() => null);
+                if (!message) {
+                    return;
+                }
+
+                const embed = this.createPlayerEmbed(guild);
+                const components = this.createPlayerButtons(guild);
+                await message
+                    .edit({
+                        embeds: [embed],
+                        components,
+                    })
+                    .catch((error: unknown) => {
+                        this.client.logger.debug(
+                            `Failed to update player message: ${(error as Error).message}`,
+                        );
+                    });
+            } catch (error) {
+                this.client.logger.debug(
+                    `Error in updatePlayerMessage: ${(error as Error).message}`,
+                );
+            }
+        };
+
+        if (immediate) {
+            await performUpdate();
+        } else {
+            const timeout = setTimeout(() => {
+                void performUpdate();
+            }, this.updateDebounceMs);
+            this.pendingUpdates.set(guild.id, timeout);
         }
     }
 
