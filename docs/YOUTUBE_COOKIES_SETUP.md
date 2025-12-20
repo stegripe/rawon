@@ -19,6 +19,28 @@ This happens because YouTube blocks requests from data center IP addresses. By u
 - A **secondary/throwaway Google account** (DO NOT use your main account for security reasons)
 - A web browser (Chrome, Firefox, or Edge)
 - A cookies export extension
+- **For non-Docker users**: [Deno](https://deno.land/) JavaScript runtime (required for yt-dlp signature solving)
+
+### Installing Deno (Non-Docker Users Only)
+
+If you're NOT using Docker, you need to install Deno for yt-dlp to solve YouTube's signature challenge:
+
+**Linux/macOS:**
+```bash
+curl -fsSL https://deno.land/install.sh | sh
+```
+
+**Windows (PowerShell):**
+```powershell
+irm https://deno.land/install.ps1 | iex
+```
+
+After installation, make sure `deno` is in your PATH. You can verify by running:
+```bash
+deno --version
+```
+
+> **Note**: Docker users don't need to install Deno manually - it's already included in the Docker image.
 
 ### Step-by-Step Guide
 
@@ -159,6 +181,28 @@ Ini terjadi karena YouTube memblokir request dari alamat IP data center. Dengan 
 - Akun Google **cadangan/tumbal** (JANGAN gunakan akun utama demi keamanan)
 - Browser web (Chrome, Firefox, atau Edge)
 - Extension untuk export cookies
+- **Untuk pengguna non-Docker**: [Deno](https://deno.land/) JavaScript runtime (diperlukan untuk yt-dlp signature solving)
+
+### Menginstall Deno (Hanya untuk Pengguna Non-Docker)
+
+Jika kamu TIDAK menggunakan Docker, kamu perlu install Deno agar yt-dlp bisa solve YouTube's signature challenge:
+
+**Linux/macOS:**
+```bash
+curl -fsSL https://deno.land/install.sh | sh
+```
+
+**Windows (PowerShell):**
+```powershell
+irm https://deno.land/install.ps1 | iex
+```
+
+Setelah instalasi, pastikan `deno` ada di PATH kamu. Verifikasi dengan menjalankan:
+```bash
+deno --version
+```
+
+> **Catatan**: Pengguna Docker tidak perlu install Deno manual - sudah termasuk di Docker image.
 
 ### Panduan Langkah demi Langkah
 
