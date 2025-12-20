@@ -624,20 +624,18 @@ export class InteractionCreateEvent extends BaseEvent {
                     .map((x) => `\`${x}\``)
                     .join("\n");
 
-                const embed = createEmbed("info")
-                    .setTitle(`🎛️ ${i18n.__("commands.music.filter.description")}`)
-                    .addFields(
-                        {
-                            name: i18n.__("commands.music.filter.availableFilters"),
-                            value: availableFilters || "-",
-                            inline: true,
-                        },
-                        {
-                            name: i18n.__("commands.music.filter.currentlyUsedFilters"),
-                            value: enabledFilters || "-",
-                            inline: true,
-                        },
-                    );
+                const embed = createEmbed("info").addFields(
+                    {
+                        name: i18n.__("commands.music.filter.availableFilters"),
+                        value: availableFilters || "-",
+                        inline: true,
+                    },
+                    {
+                        name: i18n.__("commands.music.filter.currentlyUsedFilters"),
+                        value: enabledFilters || "-",
+                        inline: true,
+                    },
+                );
 
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
