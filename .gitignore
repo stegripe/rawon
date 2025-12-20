@@ -24,10 +24,8 @@ package-lock.json
 .env
 dev.env
 
-# Rawon cache directories
+# Cache directories and files
 dist
 cache
-
-# YouTube cookies (sensitive authentication data)
 cookies.txt
 *.cookies.txt
