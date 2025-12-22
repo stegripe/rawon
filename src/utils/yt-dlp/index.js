@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import nodePath from "node:path";
 import process from "node:process";
 import got from "got";
+import { oauthManager } from "../handlers/OAuthManager.js";
 
 const suffix = process.platform === "win32" ? ".exe" : (
     process.platform === "darwin" ? "_macos" : ""
@@ -13,7 +14,14 @@ const exePath = nodePath.resolve(scriptsPath, filename);
 
 const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
 
-function args(url, options) {
+/**
+ * Build arguments for yt-dlp command
+ * @param {string} url - The URL to process
+ * @param {object} options - yt-dlp options
+ * @param {string|null} accessToken - OAuth access token (optional)
+ * @returns {string[]} Command arguments
+ */
+function args(url, options, accessToken = null) {
     const optArgs = Object.entries(options)
         .flatMap(([key, val]) => {
             const flag = key.replaceAll(/[A-Z]/gu, ms => `-${ms.toLowerCase()}`);
@@ -24,7 +32,10 @@ function args(url, options) {
         })
         .filter(Boolean);
 
-    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+    // Use OAuth token if available, otherwise fall back to cookies
+    if (accessToken) {
+        optArgs.push("--username", "oauth2", "--password", accessToken);
+    } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
         optArgs.push("--cookies", youtubeCookiesPath);
     }
 
@@ -61,8 +72,28 @@ export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, arg
     ...spawnOptions
 });
 
+/**
+ * Execute yt-dlp with OAuth support
+ * This version gets the OAuth access token if available
+ * @param {string} url - The URL to process
+ * @param {object} options - yt-dlp options
+ * @param {object} spawnOptions - Node spawn options
+ * @returns {import("node:child_process").ChildProcess}
+ */
+export const execWithOAuth = async (url, options = {}, spawnOptions = {}) => {
+    const accessToken = await oauthManager.getAccessToken();
+    return spawn(exePath, args(url, options, accessToken), {
+        windowsHide: true,
+        ...spawnOptions
+    });
+};
+
 export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    const proc = exec(url, options, spawnOptions);
+    const accessToken = await oauthManager.getAccessToken();
+    const proc = spawn(exePath, args(url, options, accessToken), {
+        windowsHide: true,
+        ...spawnOptions
+    });
     let data = "";
 
     await new Promise((resolve, reject) => {

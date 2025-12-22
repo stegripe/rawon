@@ -100,7 +100,8 @@ Copy the ones you need to `.env` and fill in the values.
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
-- [Cookies Setup](./docs/COOKIES_SETUP.md) - Fix "Sign in to confirm you're not a bot" errors on hosting providers
+- [OAuth Setup](./docs/OAUTH_SETUP.md) - **Recommended**: Auto-renewing authentication for cloud hosting
+- [Cookies Setup](./docs/COOKIES_SETUP.md) - Alternative: Manual cookie-based authentication
 
 ## Support & Questions
 For help and questions, join our official [Discord Server](https://stegripe.org/discord).
