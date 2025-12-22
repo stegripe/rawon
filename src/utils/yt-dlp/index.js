@@ -78,7 +78,7 @@ export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, arg
  * @param {string} url - The URL to process
  * @param {object} options - yt-dlp options
  * @param {object} spawnOptions - Node spawn options
- * @returns {import("node:child_process").ChildProcess}
+ * @returns {Promise<import("node:child_process").ChildProcess>}
  */
 export const execWithOAuth = async (url, options = {}, spawnOptions = {}) => {
     const accessToken = await oauthManager.getAccessToken();
@@ -89,11 +89,7 @@ export const execWithOAuth = async (url, options = {}, spawnOptions = {}) => {
 };
 
 export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    const accessToken = await oauthManager.getAccessToken();
-    const proc = spawn(exePath, args(url, options, accessToken), {
-        windowsHide: true,
-        ...spawnOptions
-    });
+    const proc = await execWithOAuth(url, options, spawnOptions);
     let data = "";
 
     await new Promise((resolve, reject) => {
