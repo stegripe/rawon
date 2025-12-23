@@ -6,15 +6,31 @@
 
 ## English
 
-### Why do I need this?
+### Do I Need Cookies?
 
-If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, or other hosting services, you might encounter the error:
+**Short answer: Probably not!**
+
+Rawon now works **without cookies** for most YouTube videos. The bot uses a cookie-less player client (`android_sdkless`) that doesn't require authentication for most content.
+
+**You only need cookies if:**
+- You frequently encounter "Sign in to confirm you're not a bot" errors
+- You need to access age-restricted content
+- You're on a hosting provider with heavily restricted IPs
+- The cookie-less mode doesn't work consistently for your use case
+
+If the bot works fine without cookies, you don't need to set them up!
+
+### Why Cookies Were Previously Required
+
+In the past, hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, or other hosting services would result in:
 
 > "Sign in to confirm you're not a bot"
 
-This happens because the platform blocks requests from data center IP addresses. By using cookies from a logged-in account, you can bypass this restriction.
+This happened because the platform blocked requests from data center IP addresses. Cookies from a logged-in account were needed to bypass this restriction.
 
-### Prerequisites
+**Now**, the bot uses a different player client that doesn't require authentication for most videos, eliminating the need for cookies in most cases.
+
+### Prerequisites (Only if you need cookies)
 
 - A **secondary/throwaway account** (DO NOT use your main account for security reasons)
 - A web browser (Chrome, Firefox, or Edge)
@@ -168,15 +184,31 @@ This usually happens if:
 
 ## Bahasa Indonesia
 
-### Mengapa saya butuh ini?
+### Apakah Saya Butuh Cookies?
 
-Jika kamu hosting Rawon di cloud provider seperti OVHcloud, AWS, GCP, Azure, atau layanan hosting lainnya, kamu mungkin mengalami error:
+**Jawaban singkat: Kemungkinan tidak!**
+
+Rawon sekarang bisa berjalan **tanpa cookies** untuk kebanyakan video YouTube. Bot menggunakan player client tanpa cookies (`android_sdkless`) yang tidak memerlukan autentikasi untuk kebanyakan konten.
+
+**Kamu hanya perlu cookies jika:**
+- Sering mengalami error "Sign in to confirm you're not a bot"
+- Perlu mengakses konten yang dibatasi usia (age-restricted)
+- Hosting di provider dengan IP yang sangat dibatasi
+- Mode tanpa cookies tidak bekerja konsisten untuk kasus penggunaan kamu
+
+Jika bot bekerja dengan baik tanpa cookies, kamu tidak perlu setup cookies!
+
+### Mengapa Cookies Dulu Diperlukan
+
+Sebelumnya, hosting Rawon di cloud provider seperti OVHcloud, AWS, GCP, Azure, atau layanan hosting lainnya akan menghasilkan error:
 
 > "Sign in to confirm you're not a bot" (Masuk untuk memastikan kamu bukan bot)
 
-Ini terjadi karena platform memblokir request dari alamat IP data center. Dengan menggunakan cookies dari akun yang sudah login, kamu bisa melewati pembatasan ini.
+Ini terjadi karena platform memblokir request dari alamat IP data center. Cookies dari akun yang sudah login diperlukan untuk melewati pembatasan ini.
 
-### Prasyarat
+**Sekarang**, bot menggunakan player client yang berbeda yang tidak memerlukan autentikasi untuk kebanyakan video, menghilangkan kebutuhan cookies di kebanyakan kasus.
+
+### Prasyarat (Hanya jika kamu butuh cookies)
 
 - Akun **cadangan/tumbal** (JANGAN gunakan akun utama demi keamanan)
 - Browser web (Chrome, Firefox, atau Edge)
