@@ -12,12 +12,13 @@ const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
 const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
+const YOUTUBE_HOSTNAME_PATTERN = /(?:youtube\.com|youtu\.be|music\.youtube\.com)/i;
 
 // Check if URL is a YouTube URL
 function isYouTubeUrl(url) {
     try {
         const urlObj = new URL(url);
-        return /(?:youtube\.com|youtu\.be|music\.youtube\.com)/i.test(urlObj.hostname);
+        return YOUTUBE_HOSTNAME_PATTERN.test(urlObj.hostname);
     } catch {
         return false;
     }
