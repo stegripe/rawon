@@ -13,50 +13,6 @@ const exePath = nodePath.resolve(scriptsPath, filename);
 
 const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
 
-// OAuth token getter function - will be set by the bot when OAuth is configured
-let oauthTokenGetter = null;
-// Cached OAuth token to avoid async calls in sync exec function
-let cachedOAuthToken = null;
-
-/**
- * Set the OAuth token getter function. This allows the bot to provide
- * OAuth tokens dynamically for auto-renewal.
- * @param {function(): Promise<string|null>} getter - Async function that returns the current OAuth access token
- */
-export function setOAuthTokenGetter(getter) {
-    oauthTokenGetter = getter;
-    // Immediately try to get the token and cache it
-    refreshOAuthToken();
-}
-
-/**
- * Clear the OAuth token getter (used when logging out)
- */
-export function clearOAuthTokenGetter() {
-    oauthTokenGetter = null;
-    cachedOAuthToken = null;
-}
-
-/**
- * Refresh the cached OAuth token. Call this periodically or before making requests.
- * @returns {Promise<string|null>}
- */
-export async function refreshOAuthToken() {
-    if (oauthTokenGetter) {
-        try {
-            cachedOAuthToken = await oauthTokenGetter();
-            return cachedOAuthToken;
-        } catch {
-            // OAuth token retrieval failed, fall back to cookies
-            // This is expected when OAuth is not configured or token refresh fails
-            cachedOAuthToken = null;
-            return null;
-        }
-    }
-    cachedOAuthToken = null;
-    return null;
-}
-
 function args(url, options) {
     const optArgs = Object.entries(options)
         .flatMap(([key, val]) => {
@@ -68,10 +24,7 @@ function args(url, options) {
         })
         .filter(Boolean);
 
-    // Try cached OAuth token first (auto-renewing), fall back to cookies
-    if (cachedOAuthToken) {
-        optArgs.push("--add-headers", `Authorization:Bearer ${cachedOAuthToken}`);
-    } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
         optArgs.push("--cookies", youtubeCookiesPath);
     }
 
@@ -109,9 +62,6 @@ export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, arg
 });
 
 export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    // Refresh OAuth token before making request
-    await refreshOAuthToken();
-    
     const proc = exec(url, options, spawnOptions);
     let data = "";
 

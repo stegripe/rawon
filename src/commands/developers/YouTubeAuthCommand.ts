@@ -3,7 +3,6 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { clearOAuthTokenGetter, setOAuthTokenGetter } from "../../utils/yt-dlp/index.js";
 
 @Command<typeof YouTubeAuthCommand>({
     aliases: ["ytauth", "youtube-auth", "oauth"],
@@ -97,9 +96,6 @@ export class YouTubeAuthCommand extends BaseCommand {
             );
 
             if (success) {
-                // Set up the OAuth token getter for yt-dlp
-                setOAuthTokenGetter(() => this.client.youtubeOAuth.getAccessToken());
-
                 await waitingMsg.edit({
                     embeds: [
                         createEmbed(
@@ -188,7 +184,6 @@ export class YouTubeAuthCommand extends BaseCommand {
         }
 
         await this.client.youtubeOAuth.clear();
-        clearOAuthTokenGetter();
 
         await ctx.send({
             embeds: [

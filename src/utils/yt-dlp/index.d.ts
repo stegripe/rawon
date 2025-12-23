@@ -242,22 +242,6 @@ interface YTFlags {
     convertSubs?: string
 }
 
-/**
- * Set the OAuth token getter function for auto-renewal.
- * @param getter - Async function that returns the current OAuth access token
- */
-export function setOAuthTokenGetter(getter: () => Promise<string | null>): void;
-
-/**
- * Clear the OAuth token getter (used when logging out)
- */
-export function clearOAuthTokenGetter(): void;
-
-/**
- * Refresh the cached OAuth token. Call this periodically or before making requests.
- */
-export function refreshOAuthToken(): Promise<string | null>;
-
 export function downloadExecutable(): Promise<void>;
 export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions): ChildProcess;
 export default function ytdl(...args: Parameters<typeof exec>): Promise<YTResponse>;

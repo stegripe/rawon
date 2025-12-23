@@ -2,7 +2,7 @@ import { type Readable } from "node:stream";
 import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
-import ytdl, { exec, refreshOAuthToken } from "../yt-dlp/index.js";
+import ytdl, { exec } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
 export async function getStream(client: Rawon, url: string, isLive = false): Promise<Readable> {
@@ -17,9 +17,6 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
             return cachedStream;
         }
     }
-
-    // Refresh OAuth token before streaming
-    await refreshOAuthToken();
 
     return new Promise<Readable>((resolve, reject) => {
         const options = isLive

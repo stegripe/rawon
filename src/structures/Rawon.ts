@@ -16,7 +16,6 @@ import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 import { YouTubeOAuthManager } from "../utils/structures/YouTubeOAuthManager.js";
-import { setOAuthTokenGetter } from "../utils/yt-dlp/index.js";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -70,12 +69,10 @@ export class Rawon extends Client {
         this.startTimestamp = Date.now();
         this.events.load();
 
-        // Initialize YouTube OAuth
+        // Initialize YouTube OAuth (for future use when yt-dlp OAuth integration is ready)
         const oauthLoaded = await this.youtubeOAuth.load();
         if (oauthLoaded && this.youtubeOAuth.isConfigured()) {
-            // Set up the OAuth token getter for yt-dlp
-            setOAuthTokenGetter(() => this.youtubeOAuth.getAccessToken());
-            this.logger.info("YouTube OAuth loaded successfully - auto-renewal enabled");
+            this.logger.info("YouTube OAuth loaded successfully");
         }
 
         await this.login();
