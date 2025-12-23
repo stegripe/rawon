@@ -92,116 +92,17 @@ If you were previously using cookies, you can remove the `YOUTUBE_COOKIES` line 
 
 Restart your bot to apply the changes.
 
-### Docker Setup (Complete Tutorial for VPS)
+### Docker Setup
 
-This section provides a complete step-by-step guide for setting up OAuth on your VPS using Docker.
+If you're using Docker, simply add the environment variable to your `.env` file:
 
-#### Step 1: Generate Refresh Token (On Your Local Machine)
-
-Since VPS servers are often blocked by YouTube, you need to generate the refresh token on your **local machine** (laptop/home WiFi) first:
-
-```bash
-# On your local machine (not VPS)
-npx youtubei oauth
-```
-
-Follow the prompts, sign in with your throwaway account, and copy the `refreshToken` value.
-
-#### Step 2: Prepare Your VPS
-
-SSH into your VPS and navigate to your rawon directory:
-
-```bash
-ssh user@your-vps-ip
-cd /path/to/rawon
-```
-
-#### Step 3: Update Your .env File
-
-Edit your `.env` file and add the refresh token:
-
-```bash
-nano .env
-```
-
-Add this line (replace with your actual token):
 ```env
-YOUTUBE_OAUTH_REFRESH_TOKEN="1//0xxx-your-refresh-token-here..."
+YOUTUBE_OAUTH_REFRESH_TOKEN="1//xxx..."
 ```
 
-Save and exit (Ctrl+X, Y, Enter for nano).
-
-#### Step 4: Update to Latest Image (Optional but Recommended)
-
-Pull the latest Docker image that includes OAuth support:
-
+And run:
 ```bash
-docker compose pull
-```
-
-#### Step 5: Restart the Container
-
-Stop and restart the container to apply changes:
-
-```bash
-docker compose down
-docker compose up -d
-```
-
-#### Step 6: Verify OAuth is Working
-
-Check the logs to confirm OAuth is being used:
-
-```bash
-docker logs -f rawon-bot
-```
-
-Look for these messages:
-- `[OAuthManager] Refreshing YouTube OAuth token...`
-- `[OAuthManager] YouTube OAuth token refreshed successfully`
-
-If you see these messages, OAuth is working correctly!
-
-#### Quick Commands Reference
-
-```bash
-# View real-time logs
-docker logs -f rawon-bot
-
-# Restart container
-docker compose restart
-
-# Stop container
-docker compose down
-
-# Start container
-docker compose up -d
-
-# Update to latest image and restart
-docker compose pull && docker compose down && docker compose up -d
-```
-
-#### Example docker-compose.yaml with OAuth
-
-```yaml
-services:
-  rawon:
-    image: ghcr.io/stegripe/rawon:latest
-    container_name: rawon-bot
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - rawon:/app/cache
-
-volumes:
-  rawon:
-```
-
-Your `.env` file should contain:
-```env
-DISCORD_TOKEN="your-discord-bot-token"
-YOUTUBE_OAUTH_REFRESH_TOKEN="1//0xxx-your-refresh-token..."
-# ... other config
+docker compose down && docker compose up -d
 ```
 
 ### How It Works
@@ -335,116 +236,17 @@ Jika sebelumnya kamu menggunakan cookies, kamu bisa menghapus baris `YOUTUBE_COO
 
 Restart bot kamu untuk menerapkan perubahan.
 
-### Setup Docker (Tutorial Lengkap untuk VPS)
+### Setup Docker
 
-Bagian ini menyediakan panduan langkah demi langkah lengkap untuk setup OAuth di VPS menggunakan Docker.
+Jika kamu menggunakan Docker, cukup tambahkan environment variable ke file `.env`:
 
-#### Langkah 1: Generate Refresh Token (Di Komputer Lokal)
-
-Karena server VPS sering diblokir oleh YouTube, kamu perlu generate refresh token di **komputer lokal** (laptop/WiFi rumah) terlebih dahulu:
-
-```bash
-# Di komputer lokal (bukan VPS)
-npx youtubei oauth
-```
-
-Ikuti petunjuknya, login dengan akun tumbal, dan salin nilai `refreshToken`.
-
-#### Langkah 2: Siapkan VPS
-
-SSH ke VPS dan navigasi ke direktori rawon:
-
-```bash
-ssh user@ip-vps-kamu
-cd /path/to/rawon
-```
-
-#### Langkah 3: Update File .env
-
-Edit file `.env` dan tambahkan refresh token:
-
-```bash
-nano .env
-```
-
-Tambahkan baris ini (ganti dengan token asli kamu):
 ```env
-YOUTUBE_OAUTH_REFRESH_TOKEN="1//0xxx-refresh-token-kamu-disini..."
+YOUTUBE_OAUTH_REFRESH_TOKEN="1//xxx..."
 ```
 
-Simpan dan keluar (Ctrl+X, Y, Enter untuk nano).
-
-#### Langkah 4: Update ke Image Terbaru (Opsional tapi Direkomendasikan)
-
-Pull Docker image terbaru yang sudah termasuk dukungan OAuth:
-
+Dan jalankan:
 ```bash
-docker compose pull
-```
-
-#### Langkah 5: Restart Container
-
-Stop dan restart container untuk menerapkan perubahan:
-
-```bash
-docker compose down
-docker compose up -d
-```
-
-#### Langkah 6: Verifikasi OAuth Bekerja
-
-Cek log untuk memastikan OAuth digunakan:
-
-```bash
-docker logs -f rawon-bot
-```
-
-Cari pesan-pesan ini:
-- `[OAuthManager] Refreshing YouTube OAuth token...`
-- `[OAuthManager] YouTube OAuth token refreshed successfully`
-
-Jika kamu melihat pesan-pesan ini, OAuth sudah bekerja dengan benar!
-
-#### Referensi Perintah Cepat
-
-```bash
-# Lihat log real-time
-docker logs -f rawon-bot
-
-# Restart container
-docker compose restart
-
-# Stop container
-docker compose down
-
-# Start container
-docker compose up -d
-
-# Update ke image terbaru dan restart
-docker compose pull && docker compose down && docker compose up -d
-```
-
-#### Contoh docker-compose.yaml dengan OAuth
-
-```yaml
-services:
-  rawon:
-    image: ghcr.io/stegripe/rawon:latest
-    container_name: rawon-bot
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - rawon:/app/cache
-
-volumes:
-  rawon:
-```
-
-File `.env` kamu harus berisi:
-```env
-DISCORD_TOKEN="token-discord-bot-kamu"
-YOUTUBE_OAUTH_REFRESH_TOKEN="1//0xxx-refresh-token-kamu..."
-# ... config lainnya
+docker compose down && docker compose up -d
 ```
 
 ### Cara Kerjanya
