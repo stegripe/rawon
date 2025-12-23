@@ -60,22 +60,15 @@ export class YouTubeAuthCommand extends BaseCommand {
                 embeds: [
                     createEmbed("info")
                         .setTitle(i18n.__("commands.developers.youtubeauth.authTitle"))
-                        .setDescription(
-                            i18n.__mf("commands.developers.youtubeauth.authInstructions", {
-                                url: deviceFlow.verificationUrl,
-                                code: deviceFlow.userCode,
-                            }),
-                        )
+                        .setDescription(i18n.__("commands.developers.youtubeauth.authInstructions"))
                         .addFields([
                             {
-                                name: i18n.__(
-                                    "commands.developers.youtubeauth.verificationUrlField",
-                                ),
+                                name: `🔗 ${i18n.__("commands.developers.youtubeauth.verificationUrlField")}`,
                                 value: deviceFlow.verificationUrl,
                                 inline: true,
                             },
                             {
-                                name: i18n.__("commands.developers.youtubeauth.codeField"),
+                                name: `🔑 ${i18n.__("commands.developers.youtubeauth.codeField")}`,
                                 value: `\`${deviceFlow.userCode}\``,
                                 inline: true,
                             },
@@ -91,7 +84,10 @@ export class YouTubeAuthCommand extends BaseCommand {
             // Wait for user to complete authorization
             const waitingMsg = await ctx.send({
                 embeds: [
-                    createEmbed("info", i18n.__("commands.developers.youtubeauth.waitingForAuth")),
+                    createEmbed(
+                        "info",
+                        `⏳ **|** ${i18n.__("commands.developers.youtubeauth.waitingForAuth")}`,
+                    ),
                 ],
             });
 
@@ -109,6 +105,7 @@ export class YouTubeAuthCommand extends BaseCommand {
                         createEmbed(
                             "success",
                             i18n.__("commands.developers.youtubeauth.setupComplete"),
+                            true,
                         ),
                     ],
                 });
@@ -118,6 +115,7 @@ export class YouTubeAuthCommand extends BaseCommand {
                         createEmbed(
                             "error",
                             i18n.__("commands.developers.youtubeauth.setupFailed"),
+                            true,
                         ),
                     ],
                 });
@@ -131,6 +129,7 @@ export class YouTubeAuthCommand extends BaseCommand {
                         i18n.__mf("commands.developers.youtubeauth.setupError", {
                             error: (error as Error).message,
                         }),
+                        true,
                     ),
                 ],
             });
@@ -156,14 +155,14 @@ export class YouTubeAuthCommand extends BaseCommand {
                     .addFields([
                         {
                             name: i18n.__("commands.developers.youtubeauth.statusField"),
-                            value: i18n.__("commands.developers.youtubeauth.statusConfigured"),
+                            value: `✅ ${i18n.__("commands.developers.youtubeauth.statusConfigured")}`,
                             inline: true,
                         },
                         {
                             name: i18n.__("commands.developers.youtubeauth.tokenStatusField"),
                             value: expiryInfo?.isExpired
-                                ? i18n.__("commands.developers.youtubeauth.tokenExpired")
-                                : i18n.__("commands.developers.youtubeauth.tokenValid"),
+                                ? `⚠️ ${i18n.__("commands.developers.youtubeauth.tokenExpired")}`
+                                : `✅ ${i18n.__("commands.developers.youtubeauth.tokenValid")}`,
                             inline: true,
                         },
                         {
@@ -192,7 +191,9 @@ export class YouTubeAuthCommand extends BaseCommand {
         clearOAuthTokenGetter();
 
         await ctx.send({
-            embeds: [createEmbed("success", i18n.__("commands.developers.youtubeauth.loggedOut"))],
+            embeds: [
+                createEmbed("success", i18n.__("commands.developers.youtubeauth.loggedOut"), true),
+            ],
         });
     }
 
