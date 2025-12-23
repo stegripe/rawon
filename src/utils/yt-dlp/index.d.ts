@@ -242,6 +242,12 @@ interface YTFlags {
     convertSubs?: string
 }
 
+/**
+ * Set the OAuth token getter function for auto-renewal.
+ * @param getter - Async function that returns the current OAuth access token
+ */
+export function setOAuthTokenGetter(getter: () => Promise<string | null>): void;
+
 export function downloadExecutable(): Promise<void>;
-export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions): ChildProcess;
+export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions): Promise<ChildProcess>;
 export default function ytdl(...args: Parameters<typeof exec>): Promise<YTResponse>;

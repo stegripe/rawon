@@ -13,7 +13,34 @@ const exePath = nodePath.resolve(scriptsPath, filename);
 
 const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
 
-function args(url, options) {
+// OAuth token getter function - will be set by the bot when OAuth is configured
+let oauthTokenGetter = null;
+
+/**
+ * Set the OAuth token getter function. This allows the bot to provide
+ * OAuth tokens dynamically for auto-renewal.
+ * @param {function(): Promise<string|null>} getter - Async function that returns the current OAuth access token
+ */
+export function setOAuthTokenGetter(getter) {
+    oauthTokenGetter = getter;
+}
+
+/**
+ * Get the current OAuth token if available
+ * @returns {Promise<string|null>}
+ */
+async function getOAuthToken() {
+    if (oauthTokenGetter) {
+        try {
+            return await oauthTokenGetter();
+        } catch {
+            return null;
+        }
+    }
+    return null;
+}
+
+async function args(url, options) {
     const optArgs = Object.entries(options)
         .flatMap(([key, val]) => {
             const flag = key.replaceAll(/[A-Z]/gu, ms => `-${ms.toLowerCase()}`);
@@ -24,7 +51,11 @@ function args(url, options) {
         })
         .filter(Boolean);
 
-    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+    // Try OAuth token first (auto-renewing), fall back to cookies
+    const oauthToken = await getOAuthToken();
+    if (oauthToken) {
+        optArgs.push("--add-headers", `Authorization:Bearer ${oauthToken}`);
+    } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
         optArgs.push("--cookies", youtubeCookiesPath);
     }
 
@@ -56,13 +87,16 @@ export async function downloadExecutable() {
     }
 }
 
-export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, args(url, options), {
-    windowsHide: true,
-    ...spawnOptions
-});
+export const exec = async (url, options = {}, spawnOptions = {}) => {
+    const resolvedArgs = await args(url, options);
+    return spawn(exePath, resolvedArgs, {
+        windowsHide: true,
+        ...spawnOptions
+    });
+};
 
 export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    const proc = exec(url, options, spawnOptions);
+    const proc = await exec(url, options, spawnOptions);
     let data = "";
 
     await new Promise((resolve, reject) => {

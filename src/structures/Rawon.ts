@@ -15,6 +15,8 @@ import { EventsLoader } from "../utils/structures/EventsLoader.js";
 import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
+import { YouTubeOAuthManager } from "../utils/structures/YouTubeOAuthManager.js";
+import { setOAuthTokenGetter } from "../utils/yt-dlp/index.js";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -37,6 +39,7 @@ export class Rawon extends Client {
     public readonly soundcloud = new Soundcloud();
     public readonly requestChannelManager = new RequestChannelManager(this);
     public readonly audioCache = new AudioCacheManager(this);
+    public readonly youtubeOAuth = new YouTubeOAuthManager();
     public readonly request = got.extend({
         hooks: {
             beforeError: [
@@ -66,6 +69,15 @@ export class Rawon extends Client {
     public build: () => Promise<this> = async () => {
         this.startTimestamp = Date.now();
         this.events.load();
+
+        // Initialize YouTube OAuth
+        const oauthLoaded = await this.youtubeOAuth.load();
+        if (oauthLoaded && this.youtubeOAuth.isConfigured()) {
+            // Set up the OAuth token getter for yt-dlp
+            setOAuthTokenGetter(() => this.youtubeOAuth.getAccessToken());
+            this.logger.info("YouTube OAuth loaded successfully - auto-renewal enabled");
+        }
+
         await this.login();
         return this;
     };

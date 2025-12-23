@@ -6,7 +6,40 @@
 
 ## English
 
-### Why do I need this?
+### Authentication Options
+
+Rawon supports two methods for authenticating with YouTube:
+
+1. **OAuth Authentication (Recommended)** - Auto-renewing, no manual cookie management
+2. **Cookie-based Authentication** - Traditional method, requires manual updates
+
+### Option 1: OAuth Authentication (Recommended)
+
+OAuth authentication is the recommended method as it:
+- ✅ Auto-renews tokens automatically
+- ✅ No manual cookie management required
+- ✅ More reliable and secure
+- ✅ One-time setup
+
+#### Setup Steps:
+
+1. Start the bot and run the command: `!youtubeauth setup` (or your prefix)
+2. The bot will provide a URL and a code
+3. Open the URL in your browser
+4. Sign in with your YouTube/Google account (use a **throwaway account**, not your main account)
+5. Enter the code shown by the bot
+6. Done! The bot will automatically manage token renewal
+
+#### Commands:
+- `!youtubeauth setup` - Start the OAuth setup process
+- `!youtubeauth status` - Check current OAuth status
+- `!youtubeauth logout` - Remove OAuth credentials
+
+### Option 2: Cookie-based Authentication
+
+If OAuth doesn't work for your use case, you can use the traditional cookie-based method.
+
+#### Why do I need this?
 
 If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, or other hosting services, you might encounter the error:
 
@@ -168,7 +201,40 @@ This usually happens if:
 
 ## Bahasa Indonesia
 
-### Mengapa saya butuh ini?
+### Opsi Autentikasi
+
+Rawon mendukung dua metode untuk autentikasi dengan YouTube:
+
+1. **Autentikasi OAuth (Direkomendasikan)** - Auto-renew, tanpa perlu kelola cookies manual
+2. **Autentikasi berbasis Cookies** - Metode tradisional, perlu update manual
+
+### Opsi 1: Autentikasi OAuth (Direkomendasikan)
+
+Autentikasi OAuth direkomendasikan karena:
+- ✅ Token otomatis diperbaharui
+- ✅ Tidak perlu kelola cookies manual
+- ✅ Lebih andal dan aman
+- ✅ Setup sekali saja
+
+#### Langkah Setup:
+
+1. Jalankan bot dan ketik perintah: `!youtubeauth setup` (atau prefix kamu)
+2. Bot akan memberikan URL dan kode
+3. Buka URL tersebut di browser
+4. Login dengan akun YouTube/Google (gunakan **akun tumbal**, bukan akun utama)
+5. Masukkan kode yang ditampilkan bot
+6. Selesai! Bot akan otomatis mengurus pembaruan token
+
+#### Perintah:
+- `!youtubeauth setup` - Mulai proses setup OAuth
+- `!youtubeauth status` - Cek status OAuth saat ini
+- `!youtubeauth logout` - Hapus kredensial OAuth
+
+### Opsi 2: Autentikasi berbasis Cookies
+
+Jika OAuth tidak cocok untuk kebutuhan kamu, kamu bisa gunakan metode cookies tradisional.
+
+#### Mengapa saya butuh ini?
 
 Jika kamu hosting Rawon di cloud provider seperti OVHcloud, AWS, GCP, Azure, atau layanan hosting lainnya, kamu mungkin mengalami error:
 
