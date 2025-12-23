@@ -58,6 +58,8 @@ export class YouTubeOAuthManager {
             }
             return false;
         } catch {
+            // Failed to load OAuth data - file might be corrupted or have invalid JSON
+            // Return false to indicate OAuth is not configured, bot will use cookie fallback
             return false;
         }
     }
@@ -188,7 +190,8 @@ export class YouTubeOAuthManager {
                 await unlink(YouTubeOAuthManager.OAUTH_FILE_PATH);
             }
         } catch {
-            // Ignore errors when deleting file
+            // Ignore file deletion errors (file not found, permission denied, etc.)
+            // The in-memory state is already cleared, which is the important part
         }
     }
 

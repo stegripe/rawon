@@ -248,6 +248,11 @@ interface YTFlags {
  */
 export function setOAuthTokenGetter(getter: () => Promise<string | null>): void;
 
+/**
+ * Clear the OAuth token getter (used when logging out)
+ */
+export function clearOAuthTokenGetter(): void;
+
 export function downloadExecutable(): Promise<void>;
 export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions): Promise<ChildProcess>;
 export default function ytdl(...args: Parameters<typeof exec>): Promise<YTResponse>;

@@ -26,6 +26,13 @@ export function setOAuthTokenGetter(getter) {
 }
 
 /**
+ * Clear the OAuth token getter (used when logging out)
+ */
+export function clearOAuthTokenGetter() {
+    oauthTokenGetter = null;
+}
+
+/**
  * Get the current OAuth token if available
  * @returns {Promise<string|null>}
  */
@@ -34,6 +41,8 @@ async function getOAuthToken() {
         try {
             return await oauthTokenGetter();
         } catch {
+            // OAuth token retrieval failed, fall back to cookies
+            // This is expected when OAuth is not configured or token refresh fails
             return null;
         }
     }
