@@ -15,6 +15,8 @@ const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
 
 // OAuth token getter function - will be set by the bot when OAuth is configured
 let oauthTokenGetter = null;
+// Cached OAuth token to avoid async calls in sync exec function
+let cachedOAuthToken = null;
 
 /**
  * Set the OAuth token getter function. This allows the bot to provide
@@ -23,6 +25,8 @@ let oauthTokenGetter = null;
  */
 export function setOAuthTokenGetter(getter) {
     oauthTokenGetter = getter;
+    // Immediately try to get the token and cache it
+    refreshOAuthToken();
 }
 
 /**
@@ -30,26 +34,30 @@ export function setOAuthTokenGetter(getter) {
  */
 export function clearOAuthTokenGetter() {
     oauthTokenGetter = null;
+    cachedOAuthToken = null;
 }
 
 /**
- * Get the current OAuth token if available
+ * Refresh the cached OAuth token. Call this periodically or before making requests.
  * @returns {Promise<string|null>}
  */
-async function getOAuthToken() {
+export async function refreshOAuthToken() {
     if (oauthTokenGetter) {
         try {
-            return await oauthTokenGetter();
+            cachedOAuthToken = await oauthTokenGetter();
+            return cachedOAuthToken;
         } catch {
             // OAuth token retrieval failed, fall back to cookies
             // This is expected when OAuth is not configured or token refresh fails
+            cachedOAuthToken = null;
             return null;
         }
     }
+    cachedOAuthToken = null;
     return null;
 }
 
-async function args(url, options) {
+function args(url, options) {
     const optArgs = Object.entries(options)
         .flatMap(([key, val]) => {
             const flag = key.replaceAll(/[A-Z]/gu, ms => `-${ms.toLowerCase()}`);
@@ -60,10 +68,9 @@ async function args(url, options) {
         })
         .filter(Boolean);
 
-    // Try OAuth token first (auto-renewing), fall back to cookies
-    const oauthToken = await getOAuthToken();
-    if (oauthToken) {
-        optArgs.push("--add-headers", `Authorization:Bearer ${oauthToken}`);
+    // Try cached OAuth token first (auto-renewing), fall back to cookies
+    if (cachedOAuthToken) {
+        optArgs.push("--add-headers", `Authorization:Bearer ${cachedOAuthToken}`);
     } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
         optArgs.push("--cookies", youtubeCookiesPath);
     }
@@ -96,16 +103,16 @@ export async function downloadExecutable() {
     }
 }
 
-export const exec = async (url, options = {}, spawnOptions = {}) => {
-    const resolvedArgs = await args(url, options);
-    return spawn(exePath, resolvedArgs, {
-        windowsHide: true,
-        ...spawnOptions
-    });
-};
+export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, args(url, options), {
+    windowsHide: true,
+    ...spawnOptions
+});
 
 export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    const proc = await exec(url, options, spawnOptions);
+    // Refresh OAuth token before making request
+    await refreshOAuthToken();
+    
+    const proc = exec(url, options, spawnOptions);
     let data = "";
 
     await new Promise((resolve, reject) => {

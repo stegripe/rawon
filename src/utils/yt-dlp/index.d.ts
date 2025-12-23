@@ -253,6 +253,11 @@ export function setOAuthTokenGetter(getter: () => Promise<string | null>): void;
  */
 export function clearOAuthTokenGetter(): void;
 
+/**
+ * Refresh the cached OAuth token. Call this periodically or before making requests.
+ */
+export function refreshOAuthToken(): Promise<string | null>;
+
 export function downloadExecutable(): Promise<void>;
-export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions): Promise<ChildProcess>;
+export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions): ChildProcess;
 export default function ytdl(...args: Parameters<typeof exec>): Promise<YTResponse>;
