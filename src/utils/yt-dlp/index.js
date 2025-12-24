@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import nodePath from "node:path";
 import process from "node:process";
 import got from "got";
-import { youtubeOAuth } from "../handlers/YouTubeOAuthManager.js";
+import { youtubeOAuth } from "../../../dist/utils/handlers/YouTubeOAuthManager.js";
 
 const suffix = process.platform === "win32" ? ".exe" : (
     process.platform === "darwin" ? "_macos" : ""
