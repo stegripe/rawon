@@ -261,9 +261,7 @@ export class SearchCommand extends BaseCommand {
                     this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
             const canceledMsg = await ctx.reply({
-                embeds: [
-                    createEmbed("info", i18n.__("commands.music.search.canceledMessage")),
-                ],
+                embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))],
             });
             if (this.isRequestChannel(ctx) && canceledMsg) {
                 this.autoDeleteMessage(canceledMsg);
