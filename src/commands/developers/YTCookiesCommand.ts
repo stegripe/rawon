@@ -25,7 +25,7 @@ export class YTCookiesCommand extends BaseCommand {
                     createEmbed(
                         "error",
                         "Browser login feature is disabled.\n\n" +
-                            "To enable it, set `ENABLE_BROWSER_LOGIN=yes` in your environment file (`.env` or `dev.env`) and restart the bot.\n\n" +
+                            "To enable it, set `ENABLE_BROWSER_LOGIN=yes` in your environment file (`.env`, `dev.env`, or `optional.env`) and restart the bot.\n\n" +
                             "**Required env variables for browser login:**\n" +
                             "```\n" +
                             "ENABLE_BROWSER_LOGIN=yes\n" +
