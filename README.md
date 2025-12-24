@@ -96,7 +96,7 @@ Railway provides $5 free credits monthly. Your bot will stay online 24/7 as long
 - `optional.env_example` - Optional customization (colors, emojis, activities)
 - `dev.env_example` - Developer settings (debug mode, dev IDs)
 
-Copy the ones you need to `.env` and fill in the values.
+Use the ones you need/should and fill in the values.
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
