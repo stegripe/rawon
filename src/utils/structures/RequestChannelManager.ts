@@ -250,8 +250,8 @@ export class RequestChannelManager {
                 .setEmoji("📋")
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-                .setCustomId("RC_FILTER")
-                .setEmoji("🎛️")
+                .setCustomId("RC_LYRICS")
+                .setEmoji("🎵")
                 .setStyle(ButtonStyle.Secondary),
         );
 
