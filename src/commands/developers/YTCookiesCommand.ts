@@ -133,7 +133,21 @@ export class YTCookiesCommand extends BaseCommand {
 
         const msg = await ctx.send({ embeds: [loadingEmbed] });
 
-        const port = Number.parseInt(process.env.BROWSER_DEBUG_PORT ?? "9222", 10);
+        const portStr = process.env.BROWSER_DEBUG_PORT ?? "9222";
+        const port = Number.parseInt(portStr, 10);
+
+        // Validate port is within valid range
+        if (Number.isNaN(port) || port < 1 || port > 65535) {
+            const errorEmbed = createEmbed("error")
+                .setTitle("❌ Invalid Port Configuration")
+                .setDescription(
+                    `The configured BROWSER_DEBUG_PORT (${portStr}) is invalid.\n` +
+                        "Please set a valid port number between 1 and 65535.",
+                );
+            await msg.edit({ embeds: [errorEmbed] });
+            return;
+        }
+
         const result = await youtubeCookieManager.startLoginSession(port);
 
         if (!result.success) {

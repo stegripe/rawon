@@ -9,6 +9,42 @@ const COOKIES_FILE = path.resolve(COOKIES_DIR, "cookies.txt");
 const SESSION_FILE = path.resolve(COOKIES_DIR, "youtube-session.json");
 const BROWSER_DATA_DIR = path.resolve(COOKIES_DIR, "browser-data");
 
+// Safe URL hostname checking to avoid substring attacks
+function isYouTubeUrl(urlString: string): boolean {
+    try {
+        const url = new URL(urlString);
+        return (
+            url.hostname === "youtube.com" ||
+            url.hostname === "www.youtube.com" ||
+            url.hostname === "music.youtube.com" ||
+            url.hostname.endsWith(".youtube.com")
+        );
+    } catch {
+        return false;
+    }
+}
+
+function isGoogleLoginUrl(urlString: string): boolean {
+    try {
+        const url = new URL(urlString);
+        return (
+            url.hostname === "accounts.google.com" || url.hostname.endsWith(".accounts.google.com")
+        );
+    } catch {
+        return false;
+    }
+}
+
+function isYouTubeOrGoogleDomain(domain: string): boolean {
+    const normalizedDomain = domain.startsWith(".") ? domain.slice(1) : domain;
+    return (
+        normalizedDomain === "youtube.com" ||
+        normalizedDomain.endsWith(".youtube.com") ||
+        normalizedDomain === "google.com" ||
+        normalizedDomain.endsWith(".google.com")
+    );
+}
+
 export interface YouTubeSession {
     cookies: string;
     lastUpdated: number;
@@ -258,8 +294,8 @@ export class YouTubeCookieManager {
             try {
                 const url = this.loginSession.page.url();
 
-                // Check if we're on YouTube (login successful)
-                if (url.includes("youtube.com") && !url.includes("accounts.google.com")) {
+                // Check if we're on YouTube (login successful) using proper hostname check
+                if (isYouTubeUrl(url) && !isGoogleLoginUrl(url)) {
                     console.info("[YouTubeCookieManager] Login detected! Ready to save cookies.");
                     // Don't auto-save, let user trigger it
                 }
@@ -288,7 +324,8 @@ export class YouTubeCookieManager {
         try {
             const url = this.loginSession.page.url();
 
-            if (!url.includes("youtube.com") || url.includes("accounts.google.com")) {
+            // Use proper hostname check to avoid URL substring attacks
+            if (!isYouTubeUrl(url) || isGoogleLoginUrl(url)) {
                 return {
                     success: false,
                     error: "Please complete the Google login first. The browser should be on youtube.com",
@@ -327,8 +364,9 @@ export class YouTubeCookieManager {
         if (this.loginSession.browser) {
             try {
                 await this.loginSession.browser.close();
-            } catch {
-                // Ignore close errors
+            } catch (error) {
+                // Log but don't throw - browser may already be closed
+                console.warn("[YouTubeCookieManager] Failed to close browser:", error);
             }
         }
 
@@ -368,8 +406,8 @@ export class YouTubeCookieManager {
         ];
 
         for (const cookie of cookies) {
-            // Filter only YouTube/Google related cookies
-            if (!cookie.domain.includes("youtube.com") && !cookie.domain.includes("google.com")) {
+            // Filter only YouTube/Google related cookies using proper domain check
+            if (!isYouTubeOrGoogleDomain(cookie.domain)) {
                 continue;
             }
 
