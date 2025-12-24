@@ -6,8 +6,6 @@ import { parse } from "dotenv";
 import { type EnvActivityTypes, type PresenceData } from "../typings/index.js";
 import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 
-// Load env files in order of priority (lowest to highest): dev.env < optional.env < .env
-// Higher priority files will overwrite values from lower priority files
 const envFiles = ["dev.env", "optional.env", ".env"];
 for (const envFile of envFiles) {
     const envPath = path.resolve(process.cwd(), envFile);
