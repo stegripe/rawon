@@ -53,7 +53,7 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
                     errorMessage.includes("please sign in")
                 ) {
                     client.logger.error(
-                        `[YTDLUtil] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+                        `[YTDLUtil] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
                     );
                 }
             });
@@ -105,7 +105,7 @@ export async function getInfo(url: string, client?: Rawon): Promise<BasicYoutube
             client
         ) {
             client.logger.error(
-                `[YTDLUtil] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+                `[YTDLUtil] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
             );
         }
         throw error;
