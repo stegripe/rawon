@@ -12,17 +12,6 @@ const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
 const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
-const YOUTUBE_HOSTNAME_PATTERN = /(?:youtube\.com|youtu\.be|music\.youtube\.com)/i;
-
-// Check if URL is a YouTube URL
-function isYouTubeUrl(url) {
-    try {
-        const urlObj = new URL(url);
-        return YOUTUBE_HOSTNAME_PATTERN.test(urlObj.hostname);
-    } catch {
-        return false;
-    }
-}
 
 function args(url, options) {
     const optArgs = Object.entries(options)
@@ -35,17 +24,8 @@ function args(url, options) {
         })
         .filter(Boolean);
 
-    // For YouTube URLs, use android_sdkless client which doesn't require PO Token/cookies
-    // This allows cookie-less operation for most videos
-    if (isYouTubeUrl(url)) {
-        // Only use cookies if explicitly provided and file exists
-        if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
-            optArgs.push("--cookies", youtubeCookiesPath);
-        } else {
-            // Use android_sdkless client which works without cookies
-            // This client doesn't require PO Token for format downloads
-            optArgs.push("--extractor-args", "youtube:player_client=android_sdkless,web");
-        }
+    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+        optArgs.push("--cookies", youtubeCookiesPath);
     }
 
     return [url, ...optArgs];
