@@ -134,10 +134,12 @@ export class YTCookiesCommand extends BaseCommand {
         const msg = await ctx.send({ embeds: [loadingEmbed] });
 
         const portStr = process.env.BROWSER_DEBUG_PORT ?? "9222";
-        const port = Number.parseInt(portStr, 10);
+        const instructionsPortStr = process.env.BROWSER_INSTRUCTIONS_PORT ?? "9223";
+        const debugPort = Number.parseInt(portStr, 10);
+        const instructionsPort = Number.parseInt(instructionsPortStr, 10);
 
         // Validate port is within valid range
-        if (Number.isNaN(port) || port < 1 || port > 65535) {
+        if (Number.isNaN(debugPort) || debugPort < 1 || debugPort > 65535) {
             const errorEmbed = createEmbed("error")
                 .setTitle("❌ Invalid Port Configuration")
                 .setDescription(
@@ -148,7 +150,18 @@ export class YTCookiesCommand extends BaseCommand {
             return;
         }
 
-        const result = await youtubeCookieManager.startLoginSession(port);
+        if (Number.isNaN(instructionsPort) || instructionsPort < 1 || instructionsPort > 65535) {
+            const errorEmbed = createEmbed("error")
+                .setTitle("❌ Invalid Port Configuration")
+                .setDescription(
+                    `The configured BROWSER_INSTRUCTIONS_PORT (${instructionsPortStr}) is invalid.\n` +
+                        "Please set a valid port number between 1 and 65535.",
+                );
+            await msg.edit({ embeds: [errorEmbed] });
+            return;
+        }
+
+        const result = await youtubeCookieManager.startLoginSession(debugPort, instructionsPort);
 
         if (!result.success) {
             const errorEmbed = createEmbed("error")
@@ -165,7 +178,7 @@ export class YTCookiesCommand extends BaseCommand {
                 "**Follow these steps to complete login:**\n\n" +
                     "1. Open Chrome/Chromium on your computer\n" +
                     "2. Go to `chrome://inspect`\n" +
-                    `3. Click "Configure" and add: \`${process.env.PUBLIC_HOST || "your-server-ip"}:${port}\`\n` +
+                    `3. Click "Configure" and add: \`${process.env.PUBLIC_HOST || "your-server-ip"}:${debugPort}\`\n` +
                     '4. Click "inspect" under the Remote Target\n' +
                     "5. Complete the Google login in the opened window\n" +
                     "6. Once on YouTube homepage, run `ytcookies save`\n\n" +

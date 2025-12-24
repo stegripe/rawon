@@ -136,7 +136,10 @@ export class YouTubeCookieManager {
      * Start a browser login session with remote debugging
      * User can connect to the debug URL to complete login
      */
-    public async startLoginSession(port = 9222): Promise<{
+    public async startLoginSession(
+        debugPort = 9222,
+        instructionsPort = 9223,
+    ): Promise<{
         success: boolean;
         debugUrl?: string;
         error?: string;
@@ -174,7 +177,7 @@ export class YouTubeCookieManager {
                     "--no-sandbox",
                     "--disable-setuid-sandbox",
                     "--disable-dev-shm-usage",
-                    `--remote-debugging-port=${port}`,
+                    `--remote-debugging-port=${debugPort}`,
                     "--remote-debugging-address=0.0.0.0",
                     "--disable-gpu",
                     "--window-size=1280,720",
@@ -227,7 +230,7 @@ export class YouTubeCookieManager {
                             <ol>
                                 <li>Open Chrome/Chromium browser on your computer</li>
                                 <li>Go to: <code>chrome://inspect</code></li>
-                                <li>Click "Configure" and add: <code>${process.env.PUBLIC_HOST || "your-server-ip"}:${port}</code></li>
+                                <li>Click "Configure" and add: <code>${process.env.PUBLIC_HOST || "your-server-ip"}:${debugPort}</code></li>
                                 <li>Click "inspect" under the Remote Target</li>
                                 <li>Complete the Google login in the opened window</li>
                                 <li>Once you see YouTube homepage, run <code>!ytcookies save</code> in Discord</li>
@@ -241,12 +244,12 @@ export class YouTubeCookieManager {
                 `);
             });
 
-            server.listen(port + 1);
+            server.listen(instructionsPort);
 
             this.loginSession = {
                 browser,
                 page,
-                debugUrl: `http://${process.env.PUBLIC_HOST || "localhost"}:${port + 1}`,
+                debugUrl: `http://${process.env.PUBLIC_HOST || "localhost"}:${instructionsPort}`,
                 server,
                 startTime: Date.now(),
                 isActive: true,

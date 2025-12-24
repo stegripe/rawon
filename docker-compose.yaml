@@ -16,9 +16,11 @@ services:
     volumes:
       - rawon:/app/cache
     # Uncomment below if using browser-based cookie extraction (ENABLE_BROWSER_LOGIN=yes)
+    # Make sure to set BROWSER_DEBUG_PORT and BROWSER_INSTRUCTIONS_PORT in your .env file
+    # or use the default values: 9222 and 9223
     # ports:
-    #   - "9222:9222"  # Chrome DevTools remote debugging
-    #   - "9223:9223"  # Instructions page
+    #   - "${BROWSER_DEBUG_PORT:-9222}:${BROWSER_DEBUG_PORT:-9222}"  # Chrome DevTools remote debugging
+    #   - "${BROWSER_INSTRUCTIONS_PORT:-9223}:${BROWSER_INSTRUCTIONS_PORT:-9223}"  # Instructions page
 
 networks:
   net:
