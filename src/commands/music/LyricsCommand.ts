@@ -68,12 +68,12 @@ export class LyricsCommand extends BaseCommand {
 
             if (Array.isArray(searchResponse) && searchResponse.length > 0) {
                 let selectedTrack = searchResponse[0];
-                
+
                 if (artist && title) {
                     const betterMatch = searchResponse.find(
                         (track) =>
                             track.trackName.toLowerCase().includes(title.toLowerCase()) &&
-                            track.artistName.toLowerCase().includes(artist.toLowerCase())
+                            track.artistName.toLowerCase().includes(artist.toLowerCase()),
                     );
                     if (betterMatch) {
                         selectedTrack = betterMatch;
@@ -99,7 +99,9 @@ export class LyricsCommand extends BaseCommand {
                         lyricsText = lyricsResponse.syncedLyrics;
                     }
                     if (lyricsText) {
-                        lyricsText = lyricsText.replace(/\[(\d{1,2}:\d{2}\.\d{2,3})\]/g, "`[$1]`").trim();
+                        lyricsText = lyricsText
+                            .replace(/\[(\d{1,2}:\d{2}\.\d{2,3})\]/g, "`[$1]`")
+                            .trim();
                     }
 
                     if (lyricsText) {
@@ -125,8 +127,9 @@ export class LyricsCommand extends BaseCommand {
     public async getLyrics(ctx: CommandContext, song: string): Promise<void> {
         const loadingMsg = await ctx.reply({
             embeds: [
-                createEmbed("info", "🔍 Searching for lyrics...", true)
-                    .setAuthor({ name: "Loading..." })
+                createEmbed("info", "🔍 Searching for lyrics...", true).setAuthor({
+                    name: "Loading...",
+                }),
             ],
         });
 

@@ -73,20 +73,27 @@ export class AudioCacheManager {
 
         try {
             if (!existsSync(cachePath)) {
-                this.client.logger.warn(`[AudioCacheManager] Cached file missing for ${url.substring(0, 50)}..., removing from cache`);
+                this.client.logger.warn(
+                    `[AudioCacheManager] Cached file missing for ${url.substring(0, 50)}..., removing from cache`,
+                );
                 this.cachedFiles.delete(key);
                 return null;
             }
 
             const stats = statSync(cachePath);
             if (stats.size < 1024) {
-                this.client.logger.warn(`[AudioCacheManager] Cached file too small (${stats.size} bytes) for ${url.substring(0, 50)}..., removing invalid cache`);
+                this.client.logger.warn(
+                    `[AudioCacheManager] Cached file too small (${stats.size} bytes) for ${url.substring(0, 50)}..., removing invalid cache`,
+                );
                 this.cachedFiles.delete(key);
                 rmSync(cachePath, { force: true });
                 return null;
             }
         } catch (error) {
-            this.client.logger.error(`[AudioCacheManager] Error validating cache for ${url.substring(0, 50)}...:`, error);
+            this.client.logger.error(
+                `[AudioCacheManager] Error validating cache for ${url.substring(0, 50)}...:`,
+                error,
+            );
             this.cachedFiles.delete(key);
             return null;
         }

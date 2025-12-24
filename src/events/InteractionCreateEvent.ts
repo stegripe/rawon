@@ -634,15 +634,25 @@ export class InteractionCreateEvent extends BaseEvent {
                     });
                     return;
                 }
-                    
+
                 await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
                 const lyricsCommand = this.client.commands.get("lyrics");
                 if (lyricsCommand && "fetchLyricsData" in lyricsCommand) {
                     try {
-                        const data = await (lyricsCommand as { fetchLyricsData: (song: string) => Promise<LyricsAPIResult<false> | null> }).fetchLyricsData(currentSong.song.title);
-                        
-                        if (data === null || (data as { error: boolean }).error || (data.lyrics?.length ?? 0) === 0) {
+                        const data = await (
+                            lyricsCommand as {
+                                fetchLyricsData: (
+                                    song: string,
+                                ) => Promise<LyricsAPIResult<false> | null>;
+                            }
+                        ).fetchLyricsData(currentSong.song.title);
+
+                        if (
+                            data === null ||
+                            (data as { error: boolean }).error ||
+                            (data.lyrics?.length ?? 0) === 0
+                        ) {
                             await interaction.editReply({
                                 embeds: [
                                     createEmbed(
@@ -656,7 +666,8 @@ export class InteractionCreateEvent extends BaseEvent {
                             return;
                         }
 
-                        const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+                        const albumArt =
+                            data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
                         const pages: string[] = chunk(data.lyrics ?? "", 2_048);
                         let currentPage = 0;
                         const embed = createEmbed("info", pages[0])
@@ -717,7 +728,8 @@ export class InteractionCreateEvent extends BaseEvent {
                             const collector = message.createMessageComponentCollector({
                                 componentType: ComponentType.Button,
                                 filter: (i) =>
-                                    i.user.id === interaction.user.id && i.customId.startsWith("LYRICS_"),
+                                    i.user.id === interaction.user.id &&
+                                    i.customId.startsWith("LYRICS_"),
                                 time: 120_000,
                             });
 
