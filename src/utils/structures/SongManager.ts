@@ -67,9 +67,12 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
     }
 
     private async saveQueueState(): Promise<void> {
-        const queue = this.guild.queue;
-        if (queue) {
-            await queue.saveQueueState();
+        try {
+            const queue = this.guild.queue;
+            if (queue?.songs && queue.connection) {
+                await queue.saveQueueState();
+            }
+        } catch {
         }
     }
 }
