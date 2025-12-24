@@ -126,9 +126,7 @@ export class LyricsCommand extends BaseCommand {
     public async getLyrics(ctx: CommandContext, song: string): Promise<void> {
         const loadingMsg = await ctx.reply({
             embeds: [
-                createEmbed("info", "🔍 Searching for lyrics...", true).setAuthor({
-                    name: "Loading...",
-                }),
+                createEmbed("info", "🔍 **|** Searching for lyrics..."),
             ],
         });
 

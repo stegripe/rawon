@@ -262,7 +262,7 @@ export class SearchCommand extends BaseCommand {
                 );
             const canceledMsg = await ctx.reply({
                 embeds: [
-                    createEmbed("info", i18n.__("commands.music.search.canceledMessage"), true),
+                    createEmbed("info", i18n.__("commands.music.search.canceledMessage")),
                 ],
             });
             if (this.isRequestChannel(ctx) && canceledMsg) {
