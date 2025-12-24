@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import nodePath from "node:path";
 import process from "node:process";
 import got from "got";
+import { youtubeOAuth } from "../handlers/YouTubeOAuthManager.js";
 
 const suffix = process.platform === "win32" ? ".exe" : (
     process.platform === "darwin" ? "_macos" : ""
@@ -12,8 +13,19 @@ const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
 const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
+const YOUTUBE_HOSTNAME_PATTERN = /(?:youtube\.com|youtu\.be|music\.youtube\.com)/i;
 
-function args(url, options) {
+// Check if URL is a YouTube URL
+function isYouTubeUrl(url) {
+    try {
+        const urlObj = new URL(url);
+        return YOUTUBE_HOSTNAME_PATTERN.test(urlObj.hostname);
+    } catch {
+        return false;
+    }
+}
+
+async function args(url, options) {
     const optArgs = Object.entries(options)
         .flatMap(([key, val]) => {
             const flag = key.replaceAll(/[A-Z]/gu, ms => `-${ms.toLowerCase()}`);
@@ -24,7 +36,20 @@ function args(url, options) {
         })
         .filter(Boolean);
 
-    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+    // For YouTube URLs, try OAuth first, then fall back to cookies
+    if (isYouTubeUrl(url)) {
+        // Get access token from OAuth manager (handles caching and refresh internally)
+        const accessToken = await youtubeOAuth.getAccessToken();
+        if (accessToken) {
+            // Use TV client with OAuth token for better compatibility
+            optArgs.push("--extractor-args", "youtube:player_client=tv");
+            optArgs.push("--add-headers", `Authorization:Bearer ${accessToken}`);
+        } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+            // Fall back to cookies if no OAuth
+            optArgs.push("--cookies", youtubeCookiesPath);
+        }
+    } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+        // Non-YouTube URLs with cookies
         optArgs.push("--cookies", youtubeCookiesPath);
     }
 
@@ -56,13 +81,16 @@ export async function downloadExecutable() {
     }
 }
 
-export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, args(url, options), {
-    windowsHide: true,
-    ...spawnOptions
-});
+export const exec = async (url, options = {}, spawnOptions = {}) => {
+    const resolvedArgs = await args(url, options);
+    return spawn(exePath, resolvedArgs, {
+        windowsHide: true,
+        ...spawnOptions
+    });
+};
 
 export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    const proc = exec(url, options, spawnOptions);
+    const proc = await exec(url, options, spawnOptions);
     let data = "";
 
     await new Promise((resolve, reject) => {

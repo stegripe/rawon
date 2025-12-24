@@ -147,7 +147,7 @@ export class AudioCacheManager {
 
             this.inProgressFiles.add(key);
 
-            const proc = exec(
+            const proc = await exec(
                 url,
                 {
                     output: "-",

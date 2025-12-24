@@ -18,23 +18,24 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         }
     }
 
+    const options = isLive
+        ? {
+              output: "-",
+              quiet: true,
+              format: "best[acodec!=none]/bestaudio/best",
+              liveFromStart: false,
+          }
+        : {
+              output: "-",
+              quiet: true,
+              format: "bestaudio",
+              limitRate: "300K",
+          };
+
+    // exec is now async, so we need to await it
+    const proc = await exec(url, options, { stdio: ["ignore", "pipe", "ignore"] });
+
     return new Promise<Readable>((resolve, reject) => {
-        const options = isLive
-            ? {
-                  output: "-",
-                  quiet: true,
-                  format: "best[acodec!=none]/bestaudio/best",
-                  liveFromStart: false,
-              }
-            : {
-                  output: "-",
-                  quiet: true,
-                  format: "bestaudio",
-                  limitRate: "300K",
-              };
-
-        const proc = exec(url, options, { stdio: ["ignore", "pipe", "ignore"] });
-
         if (!proc.stdout) {
             reject(new Error("Error obtaining stdout from process."));
             return;
