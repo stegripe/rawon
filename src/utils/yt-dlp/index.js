@@ -62,12 +62,43 @@ export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, arg
 });
 
 export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    const proc = exec(url, options, spawnOptions);
+    const proc = exec(url, options, { ...spawnOptions, stdio: ["ignore", "pipe", "pipe"] });
     let data = "";
+    let stderrData = "";
 
     await new Promise((resolve, reject) => {
+        if (proc.stderr) {
+            proc.stderr.on("data", (chunk) => {
+                stderrData += chunk.toString();
+                const errorMessage = stderrData.toLowerCase();
+                if (
+                    errorMessage.includes("sign in to confirm you're not a bot") ||
+                    errorMessage.includes("sign in to confirm") ||
+                    errorMessage.includes("please sign in")
+                ) {
+                    console.error(
+                        `[yt-dlp] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+                    );
+                }
+            });
+        }
+
         proc.on("error", reject)
-            .on("close", resolve)
+            .on("close", (code) => {
+                if (code !== 0 && stderrData) {
+                    const errorMessage = stderrData.toLowerCase();
+                    if (
+                        errorMessage.includes("sign in to confirm you're not a bot") ||
+                        errorMessage.includes("sign in to confirm") ||
+                        errorMessage.includes("please sign in")
+                    ) {
+                        console.error(
+                            `[yt-dlp] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+                        );
+                    }
+                }
+                resolve(code);
+            })
             .stdout.on("data", (chunk) => (data += chunk));
     });
     return json(data);

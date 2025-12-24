@@ -1,3 +1,4 @@
+import { type Buffer } from "node:buffer";
 import { type Readable } from "node:stream";
 import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -33,11 +34,29 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
                   limitRate: "300K",
               };
 
-        const proc = exec(url, options, { stdio: ["ignore", "pipe", "ignore"] });
+        const proc = exec(url, options, { stdio: ["ignore", "pipe", "pipe"] });
 
         if (!proc.stdout) {
             reject(new Error("Error obtaining stdout from process."));
             return;
+        }
+
+        let stderrData = "";
+
+        if (proc.stderr) {
+            proc.stderr.on("data", (chunk: Buffer) => {
+                stderrData += chunk.toString();
+                const errorMessage = stderrData.toLowerCase();
+                if (
+                    errorMessage.includes("sign in to confirm you're not a bot") ||
+                    errorMessage.includes("sign in to confirm") ||
+                    errorMessage.includes("please sign in")
+                ) {
+                    client.logger.error(
+                        `[YTDLUtil] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+                    );
+                }
+            });
         }
 
         proc.once("error", (err) => {
@@ -71,8 +90,24 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
     });
 }
 
-export async function getInfo(url: string): Promise<BasicYoutubeVideoInfo> {
-    return ytdl(url, {
-        dumpJson: true,
-    });
+export async function getInfo(url: string, client?: Rawon): Promise<BasicYoutubeVideoInfo> {
+    try {
+        const result = await ytdl(url, {
+            dumpJson: true,
+        });
+        return result;
+    } catch (error) {
+        const errorMessage = ((error as Error)?.message ?? String(error ?? "")).toLowerCase();
+        if (
+            (errorMessage.includes("sign in to confirm you're not a bot") ||
+                errorMessage.includes("sign in to confirm") ||
+                errorMessage.includes("please sign in")) &&
+            client
+        ) {
+            client.logger.error(
+                `[YTDLUtil] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+            );
+        }
+        throw error;
+    }
 }
