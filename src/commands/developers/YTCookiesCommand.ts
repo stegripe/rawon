@@ -25,7 +25,14 @@ export class YTCookiesCommand extends BaseCommand {
                     createEmbed(
                         "error",
                         "Browser login feature is disabled.\n\n" +
-                            "To enable it, set `ENABLE_BROWSER_LOGIN=yes` in your .env file and restart the bot.\n\n" +
+                            "To enable it, set `ENABLE_BROWSER_LOGIN=yes` in your environment file (`.env` or `dev.env`) and restart the bot.\n\n" +
+                            "**Required env variables for browser login:**\n" +
+                            "```\n" +
+                            "ENABLE_BROWSER_LOGIN=yes\n" +
+                            "BROWSER_DEBUG_PORT=9222\n" +
+                            "BROWSER_INSTRUCTIONS_PORT=9223\n" +
+                            "PUBLIC_HOST=your-server-ip\n" +
+                            "```\n\n" +
                             "**Note:** This feature requires Chromium to be installed in the Docker container.",
                         true,
                     ),
