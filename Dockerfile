@@ -1,4 +1,4 @@
-FROM ghcr.io/hazmi35/node:24-dev-alpine as build-stage
+FROM ghcr.io/hazmi35/node:24-dev-alpine AS build-stage
 
 # Prepare pnpm with corepack (experimental feature)
 RUN corepack enable && corepack prepare pnpm@latest

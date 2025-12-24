@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+cache
+*.log
+
+# Environment files (should not be in image)
+.env
+*.env.local
+
+# Documentation
+docs
+*.md
+!README.md
+
+# Test files
+__tests__
+*.test.*
+*.spec.*
+coverage
+
+# Git (keep .git for commit hash generation)
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose*.yaml
+docker-compose*.yml
