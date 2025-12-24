@@ -170,8 +170,9 @@ export class YouTubeCookieManager {
             const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
 
             // Launch browser with remote debugging
+            // Using headless: false to avoid Google's headless browser detection
             const browser = await puppeteerModule.default.launch({
-                headless: "shell", // Use headless shell mode for server environments
+                headless: false, // Must be false to bypass Google's "This browser or app may not be secure" error
                 executablePath: executablePath || undefined,
                 args: [
                     "--no-sandbox",
@@ -181,16 +182,45 @@ export class YouTubeCookieManager {
                     "--remote-debugging-address=0.0.0.0",
                     "--disable-gpu",
                     "--window-size=1280,720",
+                    // Anti-detection flags
+                    "--disable-blink-features=AutomationControlled",
+                    "--disable-infobars",
+                    "--start-maximized",
+                    "--no-first-run",
+                    "--no-default-browser-check",
+                    "--disable-popup-blocking",
+                    // Make browser appear more like a regular browser
+                    "--lang=en-US,en",
                 ],
                 userDataDir: BROWSER_DATA_DIR,
+                ignoreDefaultArgs: ["--enable-automation"], // Remove automation flag
             });
 
             const page = await browser.newPage();
+
+            // Set viewport size
+            await page.setViewport({ width: 1280, height: 720 });
 
             // Set user agent to look like a real browser
             await page.setUserAgent(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             );
+
+            // Remove webdriver property to avoid detection
+            await page.evaluateOnNewDocument(() => {
+                // Remove webdriver property
+                Object.defineProperty(navigator, "webdriver", {
+                    get: () => undefined,
+                });
+                // Fake plugins
+                Object.defineProperty(navigator, "plugins", {
+                    get: () => [1, 2, 3, 4, 5],
+                });
+                // Fake languages
+                Object.defineProperty(navigator, "languages", {
+                    get: () => ["en-US", "en"],
+                });
+            });
 
             // Navigate to Google login for YouTube
             await page.goto(
