@@ -40,6 +40,7 @@ export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
+export const enableBrowserLogin = process.env.ENABLE_BROWSER_LOGIN?.toLowerCase() === "yes";
 export const musicSelectionType =
     (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";

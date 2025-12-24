@@ -36,8 +36,23 @@ FROM ghcr.io/hazmi35/node:24-alpine
 LABEL name="rawon"
 LABEL maintainer="Stegripe Development <support@stegripe.org>"
 
-# Install ffmpeg, python3, and deno (JavaScript runtime for yt-dlp signature solving)
-RUN apk add --no-cache ffmpeg python3 deno && ln -sf python3 /usr/bin/python
+# Install ffmpeg, python3, deno, and chromium for browser-based cookie extraction
+# Note: chromium and its dependencies add ~200MB to the image
+RUN apk add --no-cache \
+    ffmpeg \
+    python3 \
+    deno \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    && ln -sf python3 /usr/bin/python
+
+# Tell Puppeteer to use the installed chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # Create necessary directory for caching
 RUN mkdir -p /app/cache
