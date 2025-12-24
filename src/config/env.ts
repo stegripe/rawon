@@ -6,11 +6,14 @@ import { parse } from "dotenv";
 import { type EnvActivityTypes, type PresenceData } from "../typings/index.js";
 import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 
-const devEnvPath = path.resolve(process.cwd(), "dev.env");
-if (existsSync(devEnvPath)) {
-    const parsed = parse(readFileSync(devEnvPath));
-    for (const [key, val] of Object.entries(parsed)) {
-        process.env[key] = val;
+const envFiles = ["dev.env", "optional.env", ".env"];
+for (const envFile of envFiles) {
+    const envPath = path.resolve(process.cwd(), envFile);
+    if (existsSync(envPath)) {
+        const parsed = parse(readFileSync(envPath));
+        for (const [key, val] of Object.entries(parsed)) {
+            process.env[key] = val;
+        }
     }
 }
 
