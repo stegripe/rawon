@@ -368,8 +368,24 @@ export class YouTubeCookieManager {
                 };
             }
 
-            // Extract cookies
-            const cookies = await this.loginSession.page.cookies();
+            // Extract cookies from ALL relevant domains
+            // We need cookies from both youtube.com and google.com for authentication
+            const client = await this.loginSession.page.createCDPSession();
+            const { cookies: allCookies } = await client.send("Network.getAllCookies");
+            await client.detach();
+
+            // Also get page cookies as fallback
+            const pageCookies = await this.loginSession.page.cookies();
+
+            // Combine and deduplicate
+            const cookieMap = new Map<string, typeof allCookies[0]>();
+            for (const cookie of [...allCookies, ...pageCookies]) {
+                const key = `${cookie.domain}:${cookie.name}`;
+                cookieMap.set(key, cookie);
+            }
+            const cookies = Array.from(cookieMap.values());
+
+            console.info(`[YouTubeCookieManager] Extracted ${cookies.length} cookies total`);
             const cookiesStr = this.convertToNetscapeFormat(cookies);
 
             if (!cookiesStr || cookiesStr.split("\n").length < 5) {
