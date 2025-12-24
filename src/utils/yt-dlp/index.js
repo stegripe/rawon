@@ -11,18 +11,12 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
-// Check for cookies in this order:
-// 1. YOUTUBE_COOKIES env var (user-provided path)
-// 2. cache/cookies.txt (saved by YouTubeCookieManager via browser login)
-const envCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
+// Cookie path - only use the browser-based cookie implementation
+// Cookies are saved by YouTubeCookieManager to cache/cookies.txt
 const browserCookiesPath = nodePath.resolve(process.cwd(), "cache", "cookies.txt");
 
 function getYoutubeCookiesPath() {
-    // First check env var path
-    if (envCookiesPath && existsSync(envCookiesPath)) {
-        return envCookiesPath;
-    }
-    // Then check browser-saved cookies
+    // Only use cookies saved by the browser login feature
     if (existsSync(browserCookiesPath)) {
         return browserCookiesPath;
     }

@@ -17,8 +17,7 @@ This happens because the platform blocks requests from data center IP addresses.
 ### Prerequisites
 
 - A **secondary/throwaway account** (DO NOT use your main account for security reasons)
-- A web browser (Chrome, Firefox, or Edge)
-- A cookies export extension
+- Chrome or Chromium browser on your computer
 - **For non-Docker users**: [Deno](https://deno.land/) JavaScript runtime (required for yt-dlp signature solving)
 
 ### Installing Deno (Non-Docker Users Only)
@@ -42,7 +41,9 @@ deno --version
 
 > **Note**: Docker users don't need to install Deno manually - it's already included in the Docker image.
 
-### Step-by-Step Guide
+### Step-by-Step Guide (Browser Login)
+
+Rawon includes a built-in browser login feature that extracts cookies automatically.
 
 #### Step 1: Create a Throwaway Account
 
@@ -50,107 +51,102 @@ deno --version
 2. Create a new account specifically for this bot
 3. **Important**: Do NOT use your personal/main account
 
-#### Step 2: Log in to the Platform
+#### Step 2: Enable Browser Login Feature
 
-1. Open your browser
-2. Go to [the platform](https://www.youtube.com)
-3. Sign in with your throwaway account
-4. Accept any terms if prompted
-
-#### Step 3: Install Cookies Export Extension
-
-**For Chrome/Edge:**
-- Install [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (Recommended)
-- Or [cookies.txt](https://chromewebstore.google.com/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg)
-
-**For Firefox:**
-- Install [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)
-
-#### Step 4: Export Cookies
-
-1. Make sure you're on the platform website
-2. Click the cookies extension icon in your browser toolbar
-3. Choose "Export" or "Export cookies for this site"
-4. Save the file as `cookies.txt`
-
-#### Step 5: Upload to Your Server
-
-1. Create a `cache` folder in your Rawon directory if it doesn't exist
-2. Upload the `cookies.txt` file to the `cache` folder
-3. The path should be: `./cache/cookies.txt`
-
-#### Step 6: Configure Environment Variable
-
-Add this to your `.env` file:
+Add these to your `.env`, `dev.env`, or `optional.env` file:
 
 ```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
+ENABLE_BROWSER_LOGIN=yes
+BROWSER_DEBUG_PORT=9222
+BROWSER_INSTRUCTIONS_PORT=9223
+PUBLIC_HOST=your-server-ip-or-localhost
 ```
 
-#### Step 7: Restart Rawon
+#### Step 3: Configure Docker Ports (Docker only)
 
-Restart your bot to apply the changes.
-
-### Docker Setup
-
-If you're using Docker, simply place your `cookies.txt` file next to your `docker-compose.yaml` file:
-
-```
-your-rawon-folder/
-├── docker-compose.yaml
-├── .env
-└── cookies.txt          <-- Place cookies here
-```
-
-Then add this volume mount to your `docker-compose.yaml`:
+If using Docker, uncomment these ports in your `docker-compose.yaml`:
 
 ```yaml
-services:
-  rawon:
-    image: ghcr.io/stegripe/rawon:latest
-    container_name: rawon-bot
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - rawon:/app/cache
-      - ./cookies.txt:/app/cache/cookies.txt:ro
+ports:
+  - "${BROWSER_DEBUG_PORT:-9222}:${BROWSER_DEBUG_PORT:-9222}"
+  - "${BROWSER_INSTRUCTIONS_PORT:-9223}:${BROWSER_INSTRUCTIONS_PORT:-9223}"
 ```
 
-And set in your `.env`:
-```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
+#### Step 4: Start the Bot
+
+Start or restart your bot to apply the changes.
+
+#### Step 5: Start Browser Login Session
+
+In Discord, run the command:
+```
+ytcookies login
 ```
 
-> **Note**: The cookies file is mounted into `/app/cache/cookies.txt` inside the container, so the path in `.env` is the same as non-Docker setup (`./cache/cookies.txt`). Make sure the `cookies.txt` file exists before running `docker compose up`, otherwise Docker will create an empty directory instead.
+This will start a browser session on your server.
+
+#### Step 6: Connect to Remote Browser
+
+1. Open Chrome/Chromium on your computer
+2. Go to `chrome://inspect`
+3. Click "Configure..." and add:
+   - For local: `localhost:9222`
+   - For remote server: `your-server-ip:9222`
+4. Click "Done"
+5. Under "Remote Target", click "inspect" on the page that appears
+
+#### Step 7: Complete Google Login
+
+1. In the opened DevTools window, you'll see the Google login page
+2. Log in with your throwaway account
+3. Complete any verification if prompted
+4. Wait until you're redirected to YouTube
+
+#### Step 8: Save Cookies
+
+Once you're on YouTube, run in Discord:
+```
+ytcookies save
+```
+
+The cookies will be automatically extracted and saved. You can verify with:
+```
+ytcookies status
+```
+
+### Available Commands
+
+- `ytcookies status` - Check current cookie status
+- `ytcookies login` - Start a browser login session
+- `ytcookies save` - Save cookies from active session
+- `ytcookies cancel` - Cancel active login session
+- `ytcookies clear` - Clear all stored cookies
 
 ### How Long Do Cookies Last?
 
 **Good news**: Platform cookies do NOT expire on a regular schedule like other websites. They will remain valid as long as:
-- ✅ You don't log out from the platform in your browser
 - ✅ You don't change your account password
 - ✅ You don't revoke the session from account settings
 - ✅ The platform doesn't detect suspicious activity on the account
-
-**Tips to keep cookies valid longer:**
-1. Use a dedicated browser profile just for this account
-2. Don't use the throwaway account for anything else
-3. Don't log out from the platform in that browser
-4. Keep the browser profile intact (don't clear cookies)
 
 In practice, cookies can last **months or even years** if you follow these tips.
 
 ### Troubleshooting
 
 **Still getting "Sign in to confirm you're not a bot" errors?**
-- Make sure the cookies file path is correct
-- Verify the cookies.txt file is not empty
-- Re-export cookies while logged in to the platform
+- Run `ytcookies status` to verify cookies exist
+- Try clearing cookies with `ytcookies clear` and login again
+- Make sure you completed the login process fully (reached youtube.com)
 
-**Cookies suddenly stopped working?**
-This usually happens if:
-- You logged out from the platform in your browser → Re-export cookies
-- You changed your password → Re-export cookies
-- The platform detected suspicious activity → Check your email for security alerts, then re-export cookies
+**Can't connect to chrome://inspect?**
+- Make sure the ports are exposed in docker-compose.yaml
+- Check firewall settings on your server
+- Verify the PUBLIC_HOST is set correctly
+
+**Browser login shows "browser not secure" error?**
+- This is Google's anti-bot detection
+- Try using a different throwaway account
+- Wait a few hours before trying again
 
 **Account got suspended?**
 - Create a new throwaway account
@@ -162,7 +158,8 @@ This usually happens if:
 - Never share your cookies file with anyone
 - Use a throwaway account, NOT your main account
 - The cookies file contains sensitive authentication data
-- Add `cookies.txt` to your `.gitignore` to prevent accidental commits
+- The browser session stores data in `cache/browser-data/`
+- Login sessions auto-expire after 10 minutes
 
 ---
 
@@ -179,8 +176,7 @@ Ini terjadi karena platform memblokir request dari alamat IP data center. Dengan
 ### Prasyarat
 
 - Akun **cadangan/tumbal** (JANGAN gunakan akun utama demi keamanan)
-- Browser web (Chrome, Firefox, atau Edge)
-- Extension untuk export cookies
+- Browser Chrome atau Chromium di komputer kamu
 - **Untuk pengguna non-Docker**: [Deno](https://deno.land/) JavaScript runtime (diperlukan untuk yt-dlp signature solving)
 
 ### Menginstall Deno (Hanya untuk Pengguna Non-Docker)
@@ -204,7 +200,9 @@ deno --version
 
 > **Catatan**: Pengguna Docker tidak perlu install Deno manual - sudah termasuk di Docker image.
 
-### Panduan Langkah demi Langkah
+### Panduan Langkah demi Langkah (Browser Login)
+
+Rawon menyertakan fitur browser login bawaan yang mengekstrak cookies secara otomatis.
 
 #### Langkah 1: Buat Akun Tumbal
 
@@ -212,107 +210,102 @@ deno --version
 2. Buat akun baru khusus untuk bot ini
 3. **Penting**: JANGAN gunakan akun pribadi/utama kamu
 
-#### Langkah 2: Login ke Platform
+#### Langkah 2: Aktifkan Fitur Browser Login
 
-1. Buka browser kamu
-2. Buka [platform](https://www.youtube.com)
-3. Login dengan akun tumbal kamu
-4. Terima syarat & ketentuan jika diminta
-
-#### Langkah 3: Install Extension Export Cookies
-
-**Untuk Chrome/Edge:**
-- Install [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (Direkomendasikan)
-- Atau [cookies.txt](https://chromewebstore.google.com/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg)
-
-**Untuk Firefox:**
-- Install [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)
-
-#### Langkah 4: Export Cookies
-
-1. Pastikan kamu sedang di website platform
-2. Klik ikon extension cookies di toolbar browser kamu
-3. Pilih "Export" atau "Export cookies for this site"
-4. Simpan file sebagai `cookies.txt`
-
-#### Langkah 5: Upload ke Server
-
-1. Buat folder `cache` di direktori Rawon kamu jika belum ada
-2. Upload file `cookies.txt` ke folder `cache`
-3. Path-nya harus: `./cache/cookies.txt`
-
-#### Langkah 6: Konfigurasi Environment Variable
-
-Tambahkan ini ke file `.env` kamu:
+Tambahkan ini ke file `.env`, `dev.env`, atau `optional.env` kamu:
 
 ```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
+ENABLE_BROWSER_LOGIN=yes
+BROWSER_DEBUG_PORT=9222
+BROWSER_INSTRUCTIONS_PORT=9223
+PUBLIC_HOST=ip-server-kamu-atau-localhost
 ```
 
-#### Langkah 7: Restart Rawon
+#### Langkah 3: Konfigurasi Port Docker (Docker saja)
 
-Restart bot kamu untuk menerapkan perubahan.
-
-### Setup Docker
-
-Jika kamu menggunakan Docker, cukup letakkan file `cookies.txt` di samping file `docker-compose.yaml`:
-
-```
-folder-rawon-kamu/
-├── docker-compose.yaml
-├── .env
-└── cookies.txt          <-- Letakkan cookies di sini
-```
-
-Lalu tambahkan volume mount ini ke `docker-compose.yaml` kamu:
+Jika menggunakan Docker, uncomment port ini di `docker-compose.yaml`:
 
 ```yaml
-services:
-  rawon:
-    image: ghcr.io/stegripe/rawon:latest
-    container_name: rawon-bot
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - rawon:/app/cache
-      - ./cookies.txt:/app/cache/cookies.txt:ro
+ports:
+  - "${BROWSER_DEBUG_PORT:-9222}:${BROWSER_DEBUG_PORT:-9222}"
+  - "${BROWSER_INSTRUCTIONS_PORT:-9223}:${BROWSER_INSTRUCTIONS_PORT:-9223}"
 ```
 
-Dan set di `.env` kamu:
-```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
+#### Langkah 4: Jalankan Bot
+
+Jalankan atau restart bot kamu untuk menerapkan perubahan.
+
+#### Langkah 5: Mulai Sesi Browser Login
+
+Di Discord, jalankan command:
+```
+ytcookies login
 ```
 
-> **Catatan**: File cookies di-mount ke `/app/cache/cookies.txt` di dalam container, jadi path di `.env` sama seperti setup non-Docker (`./cache/cookies.txt`). Pastikan file `cookies.txt` sudah ada sebelum menjalankan `docker compose up`, kalau tidak Docker akan membuat folder kosong.
+Ini akan memulai sesi browser di server kamu.
+
+#### Langkah 6: Hubungkan ke Remote Browser
+
+1. Buka Chrome/Chromium di komputer kamu
+2. Buka `chrome://inspect`
+3. Klik "Configure..." dan tambahkan:
+   - Untuk lokal: `localhost:9222`
+   - Untuk server remote: `ip-server-kamu:9222`
+4. Klik "Done"
+5. Di bawah "Remote Target", klik "inspect" pada halaman yang muncul
+
+#### Langkah 7: Selesaikan Login Google
+
+1. Di jendela DevTools yang terbuka, kamu akan melihat halaman login Google
+2. Login dengan akun tumbal kamu
+3. Selesaikan verifikasi jika diminta
+4. Tunggu sampai diredirect ke YouTube
+
+#### Langkah 8: Simpan Cookies
+
+Setelah kamu di YouTube, jalankan di Discord:
+```
+ytcookies save
+```
+
+Cookies akan otomatis diekstrak dan disimpan. Kamu bisa verifikasi dengan:
+```
+ytcookies status
+```
+
+### Command yang Tersedia
+
+- `ytcookies status` - Cek status cookies saat ini
+- `ytcookies login` - Mulai sesi browser login
+- `ytcookies save` - Simpan cookies dari sesi aktif
+- `ytcookies cancel` - Batalkan sesi login aktif
+- `ytcookies clear` - Hapus semua cookies tersimpan
 
 ### Berapa Lama Cookies Bertahan?
 
 **Kabar baik**: Cookies platform TIDAK kadaluarsa secara berkala seperti website lain. Mereka akan tetap valid selama:
-- ✅ Kamu tidak logout dari platform di browser
 - ✅ Kamu tidak ganti password akun
 - ✅ Kamu tidak revoke session dari pengaturan akun
 - ✅ Platform tidak mendeteksi aktivitas mencurigakan di akun
-
-**Tips agar cookies awet lebih lama:**
-1. Gunakan profile browser khusus hanya untuk akun ini
-2. Jangan gunakan akun tumbal untuk hal lain
-3. Jangan logout dari platform di browser tersebut
-4. Jaga profile browser tetap utuh (jangan hapus cookies)
 
 Dalam praktiknya, cookies bisa bertahan **berbulan-bulan bahkan bertahun-tahun** jika kamu mengikuti tips ini.
 
 ### Troubleshooting / Pemecahan Masalah
 
 **Masih dapat error "Sign in to confirm you're not a bot"?**
-- Pastikan path file cookies benar
-- Verifikasi file cookies.txt tidak kosong
-- Export ulang cookies saat dalam kondisi login di platform
+- Jalankan `ytcookies status` untuk verifikasi cookies ada
+- Coba hapus cookies dengan `ytcookies clear` dan login ulang
+- Pastikan kamu menyelesaikan proses login sepenuhnya (sampai youtube.com)
 
-**Cookies tiba-tiba berhenti bekerja?**
-Ini biasanya terjadi jika:
-- Kamu logout dari platform di browser → Export ulang cookies
-- Kamu ganti password → Export ulang cookies
-- Platform mendeteksi aktivitas mencurigakan → Cek email untuk security alert, lalu export ulang cookies
+**Tidak bisa connect ke chrome://inspect?**
+- Pastikan port sudah di-expose di docker-compose.yaml
+- Cek pengaturan firewall di server kamu
+- Verifikasi PUBLIC_HOST sudah diset dengan benar
+
+**Browser login menampilkan error "browser not secure"?**
+- Ini adalah deteksi anti-bot Google
+- Coba gunakan akun tumbal yang berbeda
+- Tunggu beberapa jam sebelum mencoba lagi
 
 **Akun di-suspend?**
 - Buat akun tumbal baru
@@ -324,4 +317,5 @@ Ini biasanya terjadi jika:
 - Jangan pernah bagikan file cookies kamu ke siapapun
 - Gunakan akun tumbal, BUKAN akun utama kamu
 - File cookies berisi data autentikasi sensitif
-- Tambahkan `cookies.txt` ke `.gitignore` kamu untuk mencegah commit tidak sengaja
+- Sesi browser menyimpan data di `cache/browser-data/`
+- Sesi login otomatis kadaluarsa setelah 10 menit
