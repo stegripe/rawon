@@ -15,6 +15,10 @@ services:
       - net
     volumes:
       - rawon:/app/cache
+    # Uncomment below if using browser-based cookie extraction (ENABLE_BROWSER_LOGIN=yes)
+    # ports:
+    #   - "9222:9222"  # Chrome DevTools remote debugging
+    #   - "9223:9223"  # Instructions page
 
 networks:
   net:
