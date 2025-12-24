@@ -77,7 +77,7 @@ export default async function ytdl(url, options = {}, spawnOptions = {}) {
                     errorMessage.includes("please sign in")
                 ) {
                     console.error(
-                        `[yt-dlp] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+                        `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
                     );
                 }
             });
@@ -93,7 +93,7 @@ export default async function ytdl(url, options = {}, spawnOptions = {}) {
                         errorMessage.includes("please sign in")
                     ) {
                         console.error(
-                            `[yt-dlp] Bot is banned from YouTube - Sign-in prompt detected. URL: ${url}`,
+                            `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
                         );
                     }
                 }
