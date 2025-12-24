@@ -71,10 +71,11 @@ export class SpotifyUtil {
         try {
             const renewInterval = await this.fetchTokenWithRetries();
             this.client.logger.info(`[SpotifyUtil] Token fetched successfully.`);
+            const safeInterval = Math.max(renewInterval, 60_000);
             this.client.logger.info(
-                `[SpotifyUtil] Renewing token in ${(renewInterval / 1_000 / 60).toFixed(2)} minutes.`,
+                `[SpotifyUtil] Renewing token in ${(safeInterval / 1_000 / 60).toFixed(2)} minutes.`,
             );
-            setTimeout(async () => this.renew(), renewInterval);
+            setTimeout(async () => this.renew(), safeInterval);
         } catch (error) {
             this.client.logger.error("[SpotifyUtil] Failed to renew Spotify token: ", error);
         }
