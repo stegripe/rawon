@@ -33,8 +33,7 @@ __tests__
 *.spec.*
 coverage
 
-# Git (keep .git for commit hash generation)
-.gitignore
+# Git (keep .gitignore for Biome linter)
 
 # Docker
 Dockerfile
