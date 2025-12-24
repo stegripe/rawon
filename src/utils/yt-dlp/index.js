@@ -11,7 +11,23 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
-const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
+// Check for cookies in this order:
+// 1. YOUTUBE_COOKIES env var (user-provided path)
+// 2. cache/cookies.txt (saved by YouTubeCookieManager via browser login)
+const envCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
+const browserCookiesPath = nodePath.resolve(process.cwd(), "cache", "cookies.txt");
+
+function getYoutubeCookiesPath() {
+    // First check env var path
+    if (envCookiesPath && existsSync(envCookiesPath)) {
+        return envCookiesPath;
+    }
+    // Then check browser-saved cookies
+    if (existsSync(browserCookiesPath)) {
+        return browserCookiesPath;
+    }
+    return "";
+}
 
 function args(url, options) {
     const optArgs = Object.entries(options)
@@ -24,7 +40,9 @@ function args(url, options) {
         })
         .filter(Boolean);
 
-    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
+    const youtubeCookiesPath = getYoutubeCookiesPath();
+    if (youtubeCookiesPath) {
+        console.info(`[yt-dlp] Using cookies from: ${youtubeCookiesPath}`);
         optArgs.push("--cookies", youtubeCookiesPath);
     }
 
