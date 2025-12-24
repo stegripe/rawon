@@ -29,3 +29,6 @@ dist
 cache
 cookies.txt
 *.cookies.txt
+
+# TypeScript build info
+*.tsbuildinfo
