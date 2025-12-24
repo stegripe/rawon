@@ -247,11 +247,11 @@ export class RequestChannelManager {
             new ButtonBuilder().setCustomId("RC_REMOVE").setEmoji("🗑️").setStyle(ButtonStyle.Danger),
             new ButtonBuilder()
                 .setCustomId("RC_QUEUE_LIST")
-                .setEmoji("📋")
+                .setEmoji("⌛")
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
                 .setCustomId("RC_LYRICS")
-                .setEmoji("🎵")
+                .setEmoji("📜")
                 .setStyle(ButtonStyle.Secondary),
         );
 
