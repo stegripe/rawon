@@ -169,19 +169,13 @@ export class YouTubeCookieManager {
             // Check for chromium executable path from env
             const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
 
-            // Launch browser with remote debugging
-            // In server/Docker environment, use "new" headless mode with anti-detection
-            // On local machine with display, use headless: false for better compatibility
-            const isServerEnvironment =
-                !process.env.DISPLAY && process.env.NODE_ENV === "production";
-            const headlessMode = isServerEnvironment ? "new" : false;
-
-            console.info(
-                `[YouTubeCookieManager] Launching browser in ${isServerEnvironment ? "server (headless)" : "desktop (GUI)"} mode`,
-            );
+            // Launch browser with remote debugging enabled
+            // Always use headless: "new" for consistent behavior across all environments
+            // Users will connect via chrome://inspect to interact with the browser
+            console.info("[YouTubeCookieManager] Launching browser with remote debugging...");
 
             const browser = await puppeteerModule.default.launch({
-                headless: headlessMode, // "new" for server, false for local with GUI
+                headless: "new", // Always use new headless mode with anti-detection
                 executablePath: executablePath || undefined,
                 args: [
                     "--no-sandbox",
@@ -255,7 +249,6 @@ export class YouTubeCookieManager {
                             body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
                             .warning { background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 5px; margin: 20px 0; }
                             .info { background: #d1ecf1; border: 1px solid #17a2b8; padding: 15px; border-radius: 5px; margin: 20px 0; }
-                            .mode { background: #e7f3ff; border: 1px solid #0d6efd; padding: 15px; border-radius: 5px; margin: 20px 0; }
                             code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
                             h1 { color: #333; }
                         </style>
@@ -265,29 +258,15 @@ export class YouTubeCookieManager {
                         <div class="warning">
                             <strong>⚠️ Security Warning:</strong> Use a throwaway/secondary Google account, NOT your main account!
                         </div>
-                        <div class="mode">
-                            <strong>Current Mode:</strong> ${isServerEnvironment ? "🖥️ Server/Docker (headless)" : "🖱️ Desktop (GUI window)"}
-                            <br><small>${isServerEnvironment ? "Use chrome://inspect to connect remotely" : "A browser window should have opened on your machine"}</small>
-                        </div>
                         <div class="info">
-                            <h3>Instructions ${isServerEnvironment ? "(Server/Docker)" : "(Desktop)"}:</h3>
+                            <h3>Instructions:</h3>
                             <ol>
-                                ${
-                                    isServerEnvironment
-                                        ? `
                                 <li>Open Chrome/Chromium browser on your computer</li>
                                 <li>Go to: <code>chrome://inspect</code></li>
-                                <li>Click "Configure" and add: <code>${process.env.PUBLIC_HOST || "your-server-ip"}:${debugPort}</code></li>
+                                <li>Click "Configure" and add: <code>${process.env.PUBLIC_HOST || "localhost"}:${debugPort}</code></li>
                                 <li>Click "inspect" under the Remote Target</li>
                                 <li>Complete the Google login in the opened window</li>
                                 <li>Once you see YouTube homepage, run <code>!ytcookies save</code> in Discord</li>
-                                `
-                                        : `
-                                <li>A Chromium browser window should have opened automatically</li>
-                                <li>Complete the Google login in that window</li>
-                                <li>Once you see YouTube homepage, run <code>!ytcookies save</code> in Discord</li>
-                                `
-                                }
                             </ol>
                         </div>
                         <div class="info">
