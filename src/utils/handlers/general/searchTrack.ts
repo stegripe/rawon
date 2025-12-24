@@ -110,7 +110,7 @@ export async function searchTrack(
                         } catch {
                             try {
                                 const videoUrl = `https://youtube.com/watch?v=${videoId}`;
-                                const videoInfo = await getInfo(videoUrl);
+                                const videoInfo = await getInfo(videoUrl, client);
 
                                 if (videoInfo?.id) {
                                     result.items = [
@@ -315,7 +315,7 @@ export async function searchTrack(
             }
 
             default: {
-                const info = await getInfo(url.toString()).catch(() => void 0);
+                const info = await getInfo(url.toString(), client).catch(() => void 0);
 
                 result.items = [
                     {
