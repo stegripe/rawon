@@ -42,11 +42,16 @@ async function args(url, options) {
         const accessToken = await youtubeOAuth.getAccessToken();
         if (accessToken) {
             // Use TV client with OAuth token for better compatibility
+            console.info("[YouTubeOAuth] Using OAuth token for YouTube request");
             optArgs.push("--extractor-args", "youtube:player_client=tv");
             optArgs.push("--add-headers", `Authorization:Bearer ${accessToken}`);
         } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
             // Fall back to cookies if no OAuth
+            console.info("[YouTubeOAuth] Using cookies file for YouTube request");
             optArgs.push("--cookies", youtubeCookiesPath);
+        } else {
+            // No authentication available - warn the user
+            console.warn("[YouTubeOAuth] No authentication configured! Run 'ytauth setup' command or set YOUTUBE_COOKIES env var. YouTube may block requests.");
         }
     } else if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
         // Non-YouTube URLs with cookies
