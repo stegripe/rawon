@@ -14,6 +14,39 @@ If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, or ot
 
 This happens because the platform blocks requests from data center IP addresses. By using cookies from a logged-in account, you can bypass this restriction.
 
+### 🆕 Recommended Method: Using the Cookies Command
+
+The easiest way to manage cookies is using the built-in `!cookies` command. This method:
+- ✅ Works without restart
+- ✅ Supports multiple cookies with automatic rotation
+- ✅ Automatically switches to next cookie when one fails
+- ✅ Persists across bot restarts (Docker volume or cache folder)
+
+#### Command Usage
+
+```
+!cookies add <number>    - Add a cookie (attach cookies.txt file)
+!cookies remove <number> - Remove a specific cookie
+!cookies remove all      - Remove all cookies
+!cookies list            - Show all cookies and their status
+!cookies reset           - Reset failed status to retry all cookies
+```
+
+#### Quick Start with Command
+
+1. Export cookies from your browser (see [How to Export Cookies](#how-to-export-cookies))
+2. In Discord, use `!cookies add 1` and attach your `cookies.txt` file
+3. Done! The cookie takes effect immediately
+
+You can add multiple cookies for redundancy:
+```
+!cookies add 1  (attach first cookies.txt)
+!cookies add 2  (attach second cookies.txt from another account)
+!cookies add 3  (attach third cookies.txt)
+```
+
+When one cookie gets rate-limited, Rawon automatically switches to the next available cookie.
+
 ### Prerequisites
 
 - A **secondary/throwaway account** (DO NOT use your main account for security reasons)
@@ -42,7 +75,7 @@ deno --version
 
 > **Note**: Docker users don't need to install Deno manually - it's already included in the Docker image.
 
-### Step-by-Step Guide
+### How to Export Cookies
 
 #### Step 1: Create a Throwaway Account
 
@@ -73,55 +106,30 @@ deno --version
 3. Choose "Export" or "Export cookies for this site"
 4. Save the file as `cookies.txt`
 
-#### Step 5: Upload to Your Server
+#### Step 5: Add to Rawon
 
-1. Create a `cache` folder in your Rawon directory if it doesn't exist
-2. Upload the `cookies.txt` file to the `cache` folder
-3. The path should be: `./cache/cookies.txt`
+**Recommended**: Use the `!cookies add <number>` command in Discord with the file attached.
 
-#### Step 6: Configure Environment Variable
+### Legacy Method: Environment Variable
 
-Add this to your `.env` file:
+> ⚠️ **Note**: This method is deprecated. Use the `!cookies` command instead for better flexibility.
 
-```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
-```
+If you prefer the old method, you can still use the environment variable:
 
-#### Step 7: Restart Rawon
+1. Place `cookies.txt` in the `cache` folder: `./cache/cookies.txt`
+2. Add to `.env`: `YOUTUBE_COOKIES="./cache/cookies.txt"`
+3. Restart the bot
 
-Restart your bot to apply the changes.
+**Limitations of this method:**
+- Requires bot restart when cookies change
+- Only supports single cookie file
+- No automatic rotation
 
 ### Docker Setup
 
-If you're using Docker, simply place your `cookies.txt` file next to your `docker-compose.yaml` file:
+Docker users have automatic cookie persistence through the named volume `rawon:/app/cache`. Cookies added via the `!cookies` command are stored in this volume and persist across container restarts.
 
-```
-your-rawon-folder/
-├── docker-compose.yaml
-├── .env
-└── cookies.txt          <-- Place cookies here
-```
-
-Then add this volume mount to your `docker-compose.yaml`:
-
-```yaml
-services:
-  rawon:
-    image: ghcr.io/stegripe/rawon:latest
-    container_name: rawon-bot
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - rawon:/app/cache
-      - ./cookies.txt:/app/cache/cookies.txt:ro
-```
-
-And set in your `.env`:
-```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
-```
-
-> **Note**: The cookies file is mounted into `/app/cache/cookies.txt` inside the container, so the path in `.env` is the same as non-Docker setup (`./cache/cookies.txt`). Make sure the `cookies.txt` file exists before running `docker compose up`, otherwise Docker will create an empty directory instead.
+No additional configuration needed - just use the `!cookies` command!
 
 ### How Long Do Cookies Last?
 
@@ -142,19 +150,19 @@ In practice, cookies can last **months or even years** if you follow these tips.
 ### Troubleshooting
 
 **Still getting "Sign in to confirm you're not a bot" errors?**
-- Make sure the cookies file path is correct
-- Verify the cookies.txt file is not empty
-- Re-export cookies while logged in to the platform
+- Use `!cookies list` to check cookie status
+- If a cookie shows as "Failed", try `!cookies reset` to retry
+- Add more cookies from different accounts for redundancy
 
-**Cookies suddenly stopped working?**
-This usually happens if:
-- You logged out from the platform in your browser → Re-export cookies
-- You changed your password → Re-export cookies
-- The platform detected suspicious activity → Check your email for security alerts, then re-export cookies
+**All cookies failed?**
+- Create new throwaway accounts
+- Export fresh cookies
+- Add them with `!cookies add <number>`
 
 **Account got suspended?**
 - Create a new throwaway account
-- Follow the setup steps again
+- Export new cookies
+- Add with `!cookies add <number>`
 
 ### Security Notes
 
@@ -175,6 +183,39 @@ Jika kamu hosting Rawon di cloud provider seperti OVHcloud, AWS, GCP, Azure, ata
 > "Sign in to confirm you're not a bot" (Masuk untuk memastikan kamu bukan bot)
 
 Ini terjadi karena platform memblokir request dari alamat IP data center. Dengan menggunakan cookies dari akun yang sudah login, kamu bisa melewati pembatasan ini.
+
+### 🆕 Metode yang Direkomendasikan: Menggunakan Command Cookies
+
+Cara termudah untuk mengelola cookies adalah menggunakan command `!cookies` bawaan. Metode ini:
+- ✅ Bekerja tanpa restart
+- ✅ Mendukung banyak cookies dengan rotasi otomatis
+- ✅ Otomatis beralih ke cookie berikutnya saat satu gagal
+- ✅ Tetap tersimpan setelah restart bot (Docker volume atau folder cache)
+
+#### Penggunaan Command
+
+```
+!cookies add <nomor>    - Tambah cookie (lampirkan file cookies.txt)
+!cookies remove <nomor> - Hapus cookie tertentu
+!cookies remove all     - Hapus semua cookies
+!cookies list           - Tampilkan semua cookies dan statusnya
+!cookies reset          - Reset status gagal untuk mencoba ulang semua cookies
+```
+
+#### Quick Start dengan Command
+
+1. Export cookies dari browser kamu (lihat [Cara Export Cookies](#cara-export-cookies))
+2. Di Discord, gunakan `!cookies add 1` dan lampirkan file `cookies.txt`
+3. Selesai! Cookie langsung aktif
+
+Kamu bisa menambah banyak cookies untuk cadangan:
+```
+!cookies add 1  (lampirkan cookies.txt pertama)
+!cookies add 2  (lampirkan cookies.txt kedua dari akun lain)
+!cookies add 3  (lampirkan cookies.txt ketiga)
+```
+
+Saat satu cookie kena rate-limit, Rawon otomatis beralih ke cookie yang tersedia berikutnya.
 
 ### Prasyarat
 
@@ -204,7 +245,7 @@ deno --version
 
 > **Catatan**: Pengguna Docker tidak perlu install Deno manual - sudah termasuk di Docker image.
 
-### Panduan Langkah demi Langkah
+### Cara Export Cookies
 
 #### Langkah 1: Buat Akun Tumbal
 
@@ -235,55 +276,30 @@ deno --version
 3. Pilih "Export" atau "Export cookies for this site"
 4. Simpan file sebagai `cookies.txt`
 
-#### Langkah 5: Upload ke Server
+#### Langkah 5: Tambahkan ke Rawon
 
-1. Buat folder `cache` di direktori Rawon kamu jika belum ada
-2. Upload file `cookies.txt` ke folder `cache`
-3. Path-nya harus: `./cache/cookies.txt`
+**Direkomendasikan**: Gunakan command `!cookies add <nomor>` di Discord dengan file terlampir.
 
-#### Langkah 6: Konfigurasi Environment Variable
+### Metode Legacy: Environment Variable
 
-Tambahkan ini ke file `.env` kamu:
+> ⚠️ **Catatan**: Metode ini deprecated. Gunakan command `!cookies` untuk fleksibilitas lebih baik.
 
-```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
-```
+Jika kamu prefer metode lama, kamu masih bisa menggunakan environment variable:
 
-#### Langkah 7: Restart Rawon
+1. Letakkan `cookies.txt` di folder `cache`: `./cache/cookies.txt`
+2. Tambahkan ke `.env`: `YOUTUBE_COOKIES="./cache/cookies.txt"`
+3. Restart bot
 
-Restart bot kamu untuk menerapkan perubahan.
+**Keterbatasan metode ini:**
+- Butuh restart bot saat cookies berubah
+- Hanya mendukung satu file cookie
+- Tidak ada rotasi otomatis
 
 ### Setup Docker
 
-Jika kamu menggunakan Docker, cukup letakkan file `cookies.txt` di samping file `docker-compose.yaml`:
+Pengguna Docker memiliki persistence cookie otomatis melalui named volume `rawon:/app/cache`. Cookies yang ditambah via command `!cookies` tersimpan di volume ini dan tetap ada setelah container restart.
 
-```
-folder-rawon-kamu/
-├── docker-compose.yaml
-├── .env
-└── cookies.txt          <-- Letakkan cookies di sini
-```
-
-Lalu tambahkan volume mount ini ke `docker-compose.yaml` kamu:
-
-```yaml
-services:
-  rawon:
-    image: ghcr.io/stegripe/rawon:latest
-    container_name: rawon-bot
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - rawon:/app/cache
-      - ./cookies.txt:/app/cache/cookies.txt:ro
-```
-
-Dan set di `.env` kamu:
-```env
-YOUTUBE_COOKIES="./cache/cookies.txt"
-```
-
-> **Catatan**: File cookies di-mount ke `/app/cache/cookies.txt` di dalam container, jadi path di `.env` sama seperti setup non-Docker (`./cache/cookies.txt`). Pastikan file `cookies.txt` sudah ada sebelum menjalankan `docker compose up`, kalau tidak Docker akan membuat folder kosong.
+Tidak perlu konfigurasi tambahan - langsung pakai command `!cookies`!
 
 ### Berapa Lama Cookies Bertahan?
 
@@ -304,19 +320,19 @@ Dalam praktiknya, cookies bisa bertahan **berbulan-bulan bahkan bertahun-tahun**
 ### Troubleshooting / Pemecahan Masalah
 
 **Masih dapat error "Sign in to confirm you're not a bot"?**
-- Pastikan path file cookies benar
-- Verifikasi file cookies.txt tidak kosong
-- Export ulang cookies saat dalam kondisi login di platform
+- Gunakan `!cookies list` untuk cek status cookie
+- Jika cookie menunjukkan "Failed", coba `!cookies reset` untuk mencoba ulang
+- Tambah lebih banyak cookies dari akun berbeda untuk cadangan
 
-**Cookies tiba-tiba berhenti bekerja?**
-Ini biasanya terjadi jika:
-- Kamu logout dari platform di browser → Export ulang cookies
-- Kamu ganti password → Export ulang cookies
-- Platform mendeteksi aktivitas mencurigakan → Cek email untuk security alert, lalu export ulang cookies
+**Semua cookies gagal?**
+- Buat akun tumbal baru
+- Export cookies baru
+- Tambahkan dengan `!cookies add <nomor>`
 
 **Akun di-suspend?**
 - Buat akun tumbal baru
-- Ikuti langkah setup dari awal
+- Export cookies baru
+- Tambahkan dengan `!cookies add <nomor>`
 
 ### Catatan Keamanan
 
