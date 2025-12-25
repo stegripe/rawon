@@ -38,7 +38,7 @@ function args(url, options, cookiesPath) {
 
     // Use provided cookiesPath, or get from manager, or fallback to env
     const effectiveCookiesPath = cookiesPath ?? 
-        (cookiesManagerRef?.getCurrentCookiePath?.()) ?? 
+        cookiesManagerRef?.getCurrentCookiePath() ?? 
         fallbackCookiesPath;
     
     if (effectiveCookiesPath && existsSync(effectiveCookiesPath)) {

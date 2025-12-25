@@ -9,6 +9,38 @@
                 "inputString": "インプット",
                 "outputString": "アウトプット",
                 "usage": "{prefix}eval <何かのコード>"
+            },
+            "cookies": {
+                "description": "Manage YouTube cookies for bot detection bypass",
+                "usage": "{prefix}cookies <add|remove|list|reset> [number|all]",
+                "slashAddDescription": "Add a new cookie file",
+                "slashRemoveDescription": "Remove a cookie file",
+                "slashListDescription": "List all cookie files",
+                "slashResetDescription": "Reset failed cookie status",
+                "slashNumberDescription": "Cookie number (starting from 1)",
+                "slashRemoveTargetDescription": "Cookie number to remove or 'all'",
+                "invalidNumber": "Please provide a valid cookie number (starting from 1).",
+                "noAttachment": "Please attach a cookies.txt file to your message.",
+                "invalidFileType": "Please attach a .txt file.",
+                "invalidCookiesFile": "The file doesn't appear to be a valid cookies file.",
+                "addSuccess": "Cookie {number} has been added successfully! It will take effect immediately.",
+                "addFailed": "Failed to add the cookie file.",
+                "addError": "Error adding cookie: {error}",
+                "noRemoveTarget": "Please specify which cookie to remove (number or 'all').",
+                "invalidRemoveTarget": "Please provide a valid cookie number or 'all'.",
+                "removeSuccess": "Cookie {number} has been removed successfully.",
+                "removeAllSuccess": "Removed {count} cookie(s) successfully.",
+                "removeNotFound": "Cookie {number} was not found.",
+                "noCookies": "No cookies have been added yet. Use `cookies add <number>` with a cookies.txt attachment.",
+                "listTitle": "🍪 Cookies Manager",
+                "statusActive": "Active (in use)",
+                "statusFailed": "Failed (rate limited)",
+                "statusAvailable": "Available",
+                "statsTitle": "Statistics",
+                "statsValue": "Total: {total} | Failed: {failed} | Current: Cookie {current}",
+                "warningTitle": "Warning",
+                "allCookiesFailed": "All cookies have failed! Please add new cookies or use `cookies reset` to retry.",
+                "resetSuccess": "Cookie failed status has been reset. All cookies will be retried."
             }
         },
         "general": {
@@ -255,7 +287,8 @@
             "leftVC": "非アクティブが続いたためVCから切断しました。",
             "queueEnded": "キューが終了しました。**`{usage}`**を使用して曲を再生してください。",
             "startPlaying": "**{song}**の再生が開始",
-            "stopPlaying": "**{song}**の再生が終了"
+            "stopPlaying": "**{song}**の再生が終了",
+            "allCookiesFailed": "⚠️ All cookies have failed due to bot detection! Please add new cookies using `{prefix}cookies add <number>` command with a cookies.txt attachment, or use `{prefix}cookies reset` to retry existing cookies."
         },
         "musicDecorator": {
             "noInVC": "それを行うにはVCに参加している必要があります。",

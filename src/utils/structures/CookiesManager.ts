@@ -152,10 +152,14 @@ export class CookiesManager {
             const cookiePath = this.getCookiePath(index);
             writeFileSync(cookiePath, content, "utf8");
 
-            // Reset failed status since we have new cookies
+            // Remove the failed status for this specific cookie
             this.failedCookies.delete(index);
+
+            // Reset the allCookiesFailed flag if it was set, but don't reset other failed cookies
             if (this.allCookiesFailed) {
-                this.resetFailedStatus();
+                this.allCookiesFailed = false;
+                // Set this new cookie as the current one
+                this.currentCookieIndex = index;
             }
 
             this.client.logger.info(`[CookiesManager] Added cookie ${index}`);
