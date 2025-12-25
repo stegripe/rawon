@@ -22,6 +22,27 @@ function isValidLocale(value: string): value is Locale {
     return availableLocales.includes(value as Locale);
 }
 
+function detectBrowserLocale(): Locale {
+    const browserLang = navigator.language.toLowerCase();
+
+    // Direct matches
+    if (browserLang.startsWith("id")) return "id";
+    if (browserLang.startsWith("es")) return "es";
+    if (browserLang.startsWith("fr")) return "fr";
+    if (browserLang.startsWith("ja")) return "ja";
+    if (browserLang.startsWith("pt")) return "pt";
+    if (browserLang.startsWith("ru")) return "ru";
+    if (browserLang.startsWith("tr")) return "tr";
+    if (browserLang.startsWith("uk")) return "uk";
+    if (browserLang.startsWith("vi")) return "vi";
+
+    // Chinese variants
+    if (browserLang === "zh-tw" || browserLang === "zh-hant") return "zh-TW";
+    if (browserLang.startsWith("zh")) return "zh-CN";
+
+    return "en";
+}
+
 export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setLocaleState] = useState<Locale>("en");
 
@@ -32,10 +53,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
             setLocaleState(stored);
         } else {
             // Detect browser language
-            const browserLang = navigator.language.toLowerCase();
-            if (browserLang.startsWith("id")) {
-                setLocaleState("id");
-            }
+            setLocaleState(detectBrowserLocale());
         }
     }, []);
 

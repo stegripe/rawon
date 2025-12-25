@@ -18,7 +18,7 @@ export const id = {
             "Bot musik Discord yang simpel tapi powerful, dibuat untuk memenuhi kebutuhan produksi Anda.",
         invite: "Undang",
         support: "Dukungan",
-        viewDocs: "Lihat Dokumentasi"
+        viewDocs: "Dokumentasi"
     },
 
     // Getting Started page
