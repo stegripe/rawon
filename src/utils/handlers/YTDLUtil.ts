@@ -1,5 +1,6 @@
 import { type Buffer } from "node:buffer";
 import { type Readable } from "node:stream";
+import { clearTimeout, setTimeout } from "node:timers";
 import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
@@ -40,6 +41,7 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
 }
 
 const MAX_COOKIE_RETRIES = 10;
+const STREAM_VALIDATION_DELAY_MS = 500;
 
 async function attemptStreamWithRetry(
     client: Rawon,
@@ -72,49 +74,68 @@ async function attemptStreamWithRetry(
         let stderrData = "";
         let hasDetectedBotError = false;
         let hasHandledError = false;
+        let hasResolved = false;
+        let validationTimeout: NodeJS.Timeout | null = null;
+
+        const handleBotDetectionError = (): void => {
+            if (hasHandledError) {
+                return;
+            }
+            hasDetectedBotError = true;
+            hasHandledError = true;
+
+            if (validationTimeout) {
+                clearTimeout(validationTimeout);
+                validationTimeout = null;
+            }
+
+            client.logger.error(
+                `[YTDLUtil] Bot detection error detected, attempting cookie rotation. URL: ${url}`,
+            );
+
+            // Kill the current process and try to rotate cookies
+            proc.kill("SIGKILL");
+
+            // Check retry limit
+            if (retryCount >= MAX_COOKIE_RETRIES) {
+                client.logger.error(
+                    `[YTDLUtil] Maximum retry limit (${MAX_COOKIE_RETRIES}) reached`,
+                );
+                reject(new AllCookiesFailedError());
+                return;
+            }
+
+            // Attempt to rotate to next cookie
+            const rotated = client.cookies.rotateOnFailure();
+            if (rotated) {
+                // Retry with new cookie
+                client.logger.info(
+                    `[YTDLUtil] Retrying with cookie ${client.cookies.getCurrentCookieIndex()} (attempt ${retryCount + 1})`,
+                );
+                attemptStreamWithRetry(client, url, isLive, retryCount + 1)
+                    .then(resolve)
+                    .catch(reject);
+            } else {
+                // All cookies have failed
+                reject(new AllCookiesFailedError());
+            }
+        };
 
         if (proc.stderr) {
             proc.stderr.on("data", (chunk: Buffer) => {
                 stderrData += chunk.toString();
                 if (isBotDetectionError(stderrData) && !hasDetectedBotError) {
-                    hasDetectedBotError = true;
-                    hasHandledError = true;
-                    client.logger.error(
-                        `[YTDLUtil] Bot detection error detected, attempting cookie rotation. URL: ${url}`,
-                    );
-
-                    // Kill the current process and try to rotate cookies
-                    proc.kill("SIGKILL");
-
-                    // Check retry limit
-                    if (retryCount >= MAX_COOKIE_RETRIES) {
-                        client.logger.error(
-                            `[YTDLUtil] Maximum retry limit (${MAX_COOKIE_RETRIES}) reached`,
-                        );
-                        reject(new AllCookiesFailedError());
-                        return;
-                    }
-
-                    // Attempt to rotate to next cookie
-                    const rotated = client.cookies.rotateOnFailure();
-                    if (rotated) {
-                        // Retry with new cookie
-                        client.logger.info(
-                            `[YTDLUtil] Retrying with cookie ${client.cookies.getCurrentCookieIndex()} (attempt ${retryCount + 1})`,
-                        );
-                        attemptStreamWithRetry(client, url, isLive, retryCount + 1)
-                            .then(resolve)
-                            .catch(reject);
-                    } else {
-                        // All cookies have failed
-                        reject(new AllCookiesFailedError());
-                    }
+                    handleBotDetectionError();
                 }
             });
         }
 
         proc.once("error", (err) => {
             proc.kill("SIGKILL");
+            if (validationTimeout) {
+                clearTimeout(validationTimeout);
+                validationTimeout = null;
+            }
             if (!hasHandledError) {
                 hasHandledError = true;
                 reject(err);
@@ -123,9 +144,31 @@ async function attemptStreamWithRetry(
 
         proc.stdout.once("error", (err) => {
             proc.kill("SIGKILL");
+            if (validationTimeout) {
+                clearTimeout(validationTimeout);
+                validationTimeout = null;
+            }
             if (!hasHandledError) {
                 hasHandledError = true;
                 reject(err);
+            }
+        });
+
+        // Handle process close - if it closes before we resolve with a non-zero code, it's an error
+        proc.once("close", (code) => {
+            if (!hasResolved && !hasHandledError) {
+                if (validationTimeout) {
+                    clearTimeout(validationTimeout);
+                    validationTimeout = null;
+                }
+
+                // Check if it was a bot detection error
+                if (isBotDetectionError(stderrData)) {
+                    handleBotDetectionError();
+                } else if (code !== 0) {
+                    hasHandledError = true;
+                    reject(new Error(`yt-dlp process exited with code ${code}: ${stderrData}`));
+                }
             }
         });
 
@@ -140,16 +183,35 @@ async function attemptStreamWithRetry(
                 return;
             }
 
-            if (isLive || !enableAudioCache) {
-                resolve(proc.stdout as unknown as Readable);
-                return;
-            }
+            // Wait a short time to check for bot detection errors before resolving
+            // This prevents resolving the stream only for it to fail immediately
+            validationTimeout = setTimeout(() => {
+                validationTimeout = null;
 
-            const passthroughStream = client.audioCache.cacheStream(
-                url,
-                proc.stdout as unknown as Readable,
-            );
-            resolve(passthroughStream);
+                // Double-check for bot detection errors
+                if (hasHandledError || hasDetectedBotError) {
+                    return;
+                }
+
+                // Also check stderr one more time
+                if (isBotDetectionError(stderrData)) {
+                    handleBotDetectionError();
+                    return;
+                }
+
+                hasResolved = true;
+
+                if (isLive || !enableAudioCache) {
+                    resolve(proc.stdout as unknown as Readable);
+                    return;
+                }
+
+                const passthroughStream = client.audioCache.cacheStream(
+                    url,
+                    proc.stdout as unknown as Readable,
+                );
+                resolve(passthroughStream);
+            }, STREAM_VALIDATION_DELAY_MS);
         });
     });
 }

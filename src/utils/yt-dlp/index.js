@@ -96,7 +96,7 @@ export default async function ytdl(url, options = {}, spawnOptions = {}, cookies
                 stderrData += chunk.toString();
                 if (isBotDetectionError(stderrData)) {
                     console.error(
-                        `[yt-dlp] It seems you're blocked from the platform (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
+                        `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
                     );
                 }
             });
@@ -106,7 +106,7 @@ export default async function ytdl(url, options = {}, spawnOptions = {}, cookies
             .on("close", (code) => {
                 if (code !== 0 && stderrData && isBotDetectionError(stderrData)) {
                     console.error(
-                        `[yt-dlp] It seems you're blocked from the platform (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
+                        `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
                     );
                 }
                 resolve(code);
