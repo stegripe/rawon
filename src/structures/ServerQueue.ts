@@ -441,44 +441,33 @@ export class ServerQueue {
             const availableSongs = this.songs.filter(
                 (s) => s.key !== currentSong.key && !s.song.isLive,
             );
-            const shuffledSongs = availableSongs.random(
-                Math.min(PRE_CACHE_AHEAD, availableSongs.size),
-            );
-            if (Array.isArray(shuffledSongs)) {
-                for (const song of shuffledSongs) {
-                    if (song) {
-                        songsToCache.push(song.song.url);
-                    }
-                }
-            } else if (shuffledSongs) {
-                songsToCache.push(shuffledSongs.song.url);
+            const songsArray = Array.from(availableSongs.values());
+            const shuffled = songsArray.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, Math.min(PRE_CACHE_AHEAD, songsArray.length));
+
+            for (const song of selected) {
+                songsToCache.push(song.song.url);
             }
         } else {
             const sortedSongs = this.songs.sortByIndex();
-            const nextSongs = sortedSongs
-                .filter((s) => s.index > currentSong.index && !s.song.isLive)
-                .first(PRE_CACHE_AHEAD);
+            const nextSongsArray = Array.from(
+                sortedSongs.filter((s) => s.index > currentSong.index && !s.song.isLive).values(),
+            ).slice(0, PRE_CACHE_AHEAD);
 
-            if (Array.isArray(nextSongs)) {
-                for (const song of nextSongs) {
-                    songsToCache.push(song.song.url);
-                }
-            } else if (nextSongs) {
-                songsToCache.push(nextSongs.song.url);
+            for (const song of nextSongsArray) {
+                songsToCache.push(song.song.url);
             }
 
             if (songsToCache.length < PRE_CACHE_AHEAD && this.loopMode === "QUEUE") {
                 const remaining = PRE_CACHE_AHEAD - songsToCache.length;
-                const fromStart = sortedSongs
-                    .filter((s) => !s.song.isLive && !songsToCache.includes(s.song.url))
-                    .first(remaining);
+                const fromStartArray = Array.from(
+                    sortedSongs
+                        .filter((s) => !s.song.isLive && !songsToCache.includes(s.song.url))
+                        .values(),
+                ).slice(0, remaining);
 
-                if (Array.isArray(fromStart)) {
-                    for (const song of fromStart) {
-                        songsToCache.push(song.song.url);
-                    }
-                } else if (fromStart) {
-                    songsToCache.push(fromStart.song.url);
+                for (const song of fromStartArray) {
+                    songsToCache.push(song.song.url);
                 }
             }
         }

@@ -20,6 +20,7 @@ const PRE_CACHE_AHEAD_COUNT = 3;
 const MAX_CACHE_SIZE_MB = 500;
 const MAX_CACHE_FILES = 50;
 const PRE_CACHE_RETRY_COUNT = 2;
+const QUEUE_PROCESSING_DELAY_MS = 100;
 
 export class AudioCacheManager {
     public readonly cacheDir: string;
@@ -237,7 +238,7 @@ export class AudioCacheManager {
             }
 
             await this.doPreCache(url);
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            await new Promise((resolve) => setTimeout(resolve, QUEUE_PROCESSING_DELAY_MS));
         }
 
         this.isProcessingQueue = false;

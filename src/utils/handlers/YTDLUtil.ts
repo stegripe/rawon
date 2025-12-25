@@ -47,6 +47,7 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
 }
 
 const MAX_COOKIE_RETRIES = 10;
+const MAX_TRANSIENT_RETRIES = 3;
 const STREAM_VALIDATION_DELAY_MS = 500;
 
 async function attemptStreamWithRetry(
@@ -138,9 +139,9 @@ async function attemptStreamWithRetry(
                 }
                 proc.kill("SIGKILL");
 
-                if (retryCount < 3) {
+                if (retryCount < MAX_TRANSIENT_RETRIES) {
                     client.logger.warn(
-                        `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/3). URL: ${url.substring(0, 50)}...`,
+                        `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
                     );
                     setTimeout(
                         () => {
@@ -203,7 +204,7 @@ async function attemptStreamWithRetry(
                 } else if (code !== 0) {
                     hasHandledError = true;
                     const errorMsg = stderrData.trim() || `Process exited with code ${code}`;
-                    if (isTransientError(errorMsg) && retryCount < 3) {
+                    if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
                         setTimeout(
                             () => {
                                 attemptStreamWithRetry(client, url, isLive, retryCount + 1)
@@ -319,9 +320,9 @@ async function attemptGetInfoWithRetry(
             throw new AllCookiesFailedError();
         }
 
-        if (isTransientError(errorMessage) && retryCount < 3) {
+        if (isTransientError(errorMessage) && retryCount < MAX_TRANSIENT_RETRIES) {
             client?.logger.warn(
-                `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/3). URL: ${url.substring(0, 50)}...`,
+                `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
             await new Promise((resolve) => setTimeout(resolve, 1000 * (retryCount + 1)));
             return attemptGetInfoWithRetry(url, client, retryCount + 1);
