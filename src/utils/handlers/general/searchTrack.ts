@@ -140,6 +140,22 @@ export async function searchTrack(
                         let temp = null;
 
                         if (playlist) {
+                            if (playlist instanceof Playlist && playlist.videos.continuation) {
+                                client.logger.info(
+                                    `[searchTrack] Loading all videos from YouTube playlist "${playlist.title}" (${playlist.videoCount} videos)...`,
+                                );
+                                try {
+                                    await playlist.videos.next(0);
+                                    client.logger.info(
+                                        `[searchTrack] Loaded ${playlist.videos.items.length} videos from playlist "${playlist.title}"`,
+                                    );
+                                } catch (error) {
+                                    client.logger.warn(
+                                        `[searchTrack] Failed to load all playlist videos: ${(error as Error).message}`,
+                                    );
+                                }
+                            }
+
                             const tracks = (
                                 playlist instanceof Playlist
                                     ? playlist.videos.items
@@ -155,13 +171,10 @@ export async function searchTrack(
                             );
 
                             if ((songIndex?.length ?? 0) > 0) {
-                                temp =
-                                    Number.parseInt(songIndex ?? "", 10) < 101
-                                        ? tracks.splice(
-                                              Number.parseInt(songIndex ?? "", 10) - 1,
-                                              1,
-                                          )[0]
-                                        : null;
+                                const parsedIndex = Number.parseInt(songIndex ?? "", 10);
+                                if (parsedIndex > 0 && parsedIndex <= tracks.length) {
+                                    temp = tracks.splice(parsedIndex - 1, 1)[0];
+                                }
                             }
                             if (temp) {
                                 tracks.unshift(temp);

@@ -430,27 +430,61 @@ export class ServerQueue {
     }
 
     private preCacheNextSong(currentSong: QueueSong): void {
-        let nextSong: QueueSong | undefined;
-
         if (this.loopMode === "SONG") {
             return;
         }
 
+        const songsToCache: string[] = [];
+        const PRE_CACHE_AHEAD = 3;
+
         if (this.shuffle) {
-            const availableSongs = this.songs.filter((s) => s.key !== currentSong.key);
-            nextSong = availableSongs.random();
+            const availableSongs = this.songs.filter(
+                (s) => s.key !== currentSong.key && !s.song.isLive,
+            );
+            const shuffledSongs = availableSongs.random(
+                Math.min(PRE_CACHE_AHEAD, availableSongs.size),
+            );
+            if (Array.isArray(shuffledSongs)) {
+                for (const song of shuffledSongs) {
+                    if (song) {
+                        songsToCache.push(song.song.url);
+                    }
+                }
+            } else if (shuffledSongs) {
+                songsToCache.push(shuffledSongs.song.url);
+            }
         } else {
             const sortedSongs = this.songs.sortByIndex();
-            const nextInOrder = sortedSongs.filter((s) => s.index > currentSong.index).first();
-            if (nextInOrder) {
-                nextSong = nextInOrder;
-            } else if (this.loopMode === "QUEUE") {
-                nextSong = sortedSongs.first();
+            const nextSongs = sortedSongs
+                .filter((s) => s.index > currentSong.index && !s.song.isLive)
+                .first(PRE_CACHE_AHEAD);
+
+            if (Array.isArray(nextSongs)) {
+                for (const song of nextSongs) {
+                    songsToCache.push(song.song.url);
+                }
+            } else if (nextSongs) {
+                songsToCache.push(nextSongs.song.url);
+            }
+
+            if (songsToCache.length < PRE_CACHE_AHEAD && this.loopMode === "QUEUE") {
+                const remaining = PRE_CACHE_AHEAD - songsToCache.length;
+                const fromStart = sortedSongs
+                    .filter((s) => !s.song.isLive && !songsToCache.includes(s.song.url))
+                    .first(remaining);
+
+                if (Array.isArray(fromStart)) {
+                    for (const song of fromStart) {
+                        songsToCache.push(song.song.url);
+                    }
+                } else if (fromStart) {
+                    songsToCache.push(fromStart.song.url);
+                }
             }
         }
 
-        if (nextSong && !nextSong.song.isLive) {
-            void this.client.audioCache.preCacheUrl(nextSong.song.url);
+        if (songsToCache.length > 0) {
+            void this.client.audioCache.preCacheMultiple(songsToCache);
         }
     }
 }

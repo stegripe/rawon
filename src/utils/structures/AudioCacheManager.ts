@@ -12,12 +12,22 @@ import {
 import path from "node:path";
 import process from "node:process";
 import { PassThrough, type Readable } from "node:stream";
+import { setTimeout } from "node:timers";
 import { type Rawon } from "../../structures/Rawon.js";
+import { isBotDetectionError } from "../yt-dlp/index.js";
+
+const PRE_CACHE_AHEAD_COUNT = 3;
+const MAX_CACHE_SIZE_MB = 500;
+const MAX_CACHE_FILES = 50;
+const PRE_CACHE_RETRY_COUNT = 2;
 
 export class AudioCacheManager {
     public readonly cacheDir: string;
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
     private readonly inProgressFiles = new Set<string>();
+    private readonly failedUrls = new Map<string, { count: number; lastAttempt: number }>();
+    private readonly preCacheQueue: string[] = [];
+    private isProcessingQueue = false;
 
     public constructor(public readonly client: Rawon) {
         this.cacheDir = path.resolve(process.cwd(), "cache", "audio");
@@ -61,6 +71,11 @@ export class AudioCacheManager {
         }
 
         return false;
+    }
+
+    public isInProgress(url: string): boolean {
+        const key = this.getCacheKey(url);
+        return this.inProgressFiles.has(key);
     }
 
     public getFromCache(url: string): ReadStream | null {
@@ -142,6 +157,8 @@ export class AudioCacheManager {
             this.client.logger.info(
                 `[AudioCacheManager] Cached audio for: ${url.substring(0, 50)}...`,
             );
+            this.failedUrls.delete(key);
+            void this.cleanupOldCache();
         });
 
         sourceStream.on("error", (error) => {
@@ -159,15 +176,75 @@ export class AudioCacheManager {
         return playbackStream;
     }
 
-    public async preCacheUrl(url: string): Promise<void> {
+    public async preCacheUrl(url: string, priority = false): Promise<boolean> {
         if (this.isCached(url)) {
-            return;
+            return true;
         }
 
         const key = this.getCacheKey(url);
         if (this.inProgressFiles.has(key)) {
+            return true;
+        }
+
+        const failedInfo = this.failedUrls.get(key);
+        if (failedInfo && failedInfo.count >= PRE_CACHE_RETRY_COUNT) {
+            const timeSinceLastAttempt = Date.now() - failedInfo.lastAttempt;
+            if (timeSinceLastAttempt < 60000) {
+                return false;
+            }
+            this.failedUrls.delete(key);
+        }
+
+        if (priority) {
+            const index = this.preCacheQueue.indexOf(url);
+            if (index > 0) {
+                this.preCacheQueue.splice(index, 1);
+            }
+            if (index !== 0) {
+                this.preCacheQueue.unshift(url);
+            }
+        } else if (!this.preCacheQueue.includes(url)) {
+            this.preCacheQueue.push(url);
+        }
+
+        void this.processQueue();
+        return true;
+    }
+
+    public async preCacheMultiple(urls: string[]): Promise<void> {
+        for (const url of urls.slice(0, PRE_CACHE_AHEAD_COUNT)) {
+            if (url && !this.isCached(url) && !this.isInProgress(url)) {
+                await this.preCacheUrl(url);
+            }
+        }
+    }
+
+    private async processQueue(): Promise<void> {
+        if (this.isProcessingQueue || this.preCacheQueue.length === 0) {
             return;
         }
+
+        this.isProcessingQueue = true;
+
+        while (this.preCacheQueue.length > 0) {
+            const url = this.preCacheQueue.shift();
+            if (!url) {
+                continue;
+            }
+
+            if (this.isCached(url) || this.isInProgress(url)) {
+                continue;
+            }
+
+            await this.doPreCache(url);
+            await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+
+        this.isProcessingQueue = false;
+    }
+
+    private async doPreCache(url: string): Promise<void> {
+        const key = this.getCacheKey(url);
 
         try {
             const { exec } = await import("../yt-dlp/index.js");
@@ -188,23 +265,27 @@ export class AudioCacheManager {
 
             if (!proc.stdout) {
                 this.inProgressFiles.delete(key);
+                this.markFailed(key);
                 return;
             }
 
             let stderrData = "";
+            let hasBotDetectionError = false;
 
             if (proc.stderr) {
                 proc.stderr.on("data", (chunk: Buffer) => {
                     stderrData += chunk.toString();
-                    const errorMessage = stderrData.toLowerCase();
-                    if (
-                        errorMessage.includes("sign in to confirm you're not a bot") ||
-                        errorMessage.includes("sign in to confirm") ||
-                        errorMessage.includes("please sign in")
-                    ) {
-                        this.client.logger.error(
-                            `[AudioCacheManager] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
+                    if (isBotDetectionError(stderrData) && !hasBotDetectionError) {
+                        hasBotDetectionError = true;
+                        this.client.logger.warn(
+                            `[AudioCacheManager] Bot detection during pre-cache, rotating cookie. URL: ${url.substring(0, 50)}...`,
                         );
+                        const rotated = this.client.cookies.rotateOnFailure();
+                        if (rotated) {
+                            this.client.logger.info(
+                                `[AudioCacheManager] Rotated to cookie ${this.client.cookies.getCurrentCookieIndex()}`,
+                            );
+                        }
                     }
                 });
             }
@@ -212,38 +293,114 @@ export class AudioCacheManager {
             const writeStream = createWriteStream(cachePath);
             proc.stdout.pipe(writeStream);
 
-            writeStream.on("finish", () => {
-                this.inProgressFiles.delete(key);
-                this.cachedFiles.set(key, {
-                    path: cachePath,
-                    lastAccess: Date.now(),
+            await new Promise<void>((resolve) => {
+                writeStream.on("finish", () => {
+                    this.inProgressFiles.delete(key);
+                    if (hasBotDetectionError) {
+                        try {
+                            rmSync(cachePath, { force: true });
+                        } catch {
+                            // Ignore
+                        }
+                        this.markFailed(key);
+                    } else {
+                        try {
+                            const stats = statSync(cachePath);
+                            if (stats.size >= 1024) {
+                                this.cachedFiles.set(key, {
+                                    path: cachePath,
+                                    lastAccess: Date.now(),
+                                });
+                                this.failedUrls.delete(key);
+                                this.client.logger.info(
+                                    `[AudioCacheManager] Pre-cached audio for: ${url.substring(0, 50)}...`,
+                                );
+                            } else {
+                                rmSync(cachePath, { force: true });
+                                this.markFailed(key);
+                            }
+                        } catch {
+                            this.markFailed(key);
+                        }
+                    }
+                    resolve();
                 });
-                this.client.logger.info(
-                    `[AudioCacheManager] Pre-cached audio for: ${url.substring(0, 50)}...`,
-                );
+
+                writeStream.on("error", () => {
+                    this.inProgressFiles.delete(key);
+                    this.markFailed(key);
+                    try {
+                        rmSync(cachePath, { force: true });
+                    } catch {
+                        // Ignore cleanup errors
+                    }
+                    resolve();
+                });
+
+                proc.on("error", () => {
+                    this.inProgressFiles.delete(key);
+                    this.markFailed(key);
+                    try {
+                        rmSync(cachePath, { force: true });
+                    } catch {
+                        // Ignore cleanup errors
+                    }
+                    resolve();
+                });
             });
 
-            writeStream.on("error", () => {
-                this.inProgressFiles.delete(key);
-                try {
-                    rmSync(cachePath, { force: true });
-                } catch {
-                    // Ignore cleanup errors
-                }
-            });
-
-            proc.on("error", () => {
-                this.inProgressFiles.delete(key);
-                try {
-                    rmSync(cachePath, { force: true });
-                } catch {
-                    // Ignore cleanup errors
-                }
-            });
+            void this.cleanupOldCache();
         } catch (error) {
             this.inProgressFiles.delete(key);
+            this.markFailed(key);
             this.client.logger.debug(
                 `[AudioCacheManager] Failed to pre-cache: ${(error as Error).message}`,
+            );
+        }
+    }
+
+    private markFailed(key: string): void {
+        const existing = this.failedUrls.get(key);
+        this.failedUrls.set(key, {
+            count: (existing?.count ?? 0) + 1,
+            lastAttempt: Date.now(),
+        });
+    }
+
+    private async cleanupOldCache(): Promise<void> {
+        const stats = this.getStats();
+
+        if (stats.files > MAX_CACHE_FILES || stats.totalSize > MAX_CACHE_SIZE_MB * 1024 * 1024) {
+            const sortedEntries = [...this.cachedFiles.entries()].sort(
+                (a, b) => a[1].lastAccess - b[1].lastAccess,
+            );
+
+            let currentSize = stats.totalSize;
+            let currentFiles = stats.files;
+
+            for (const [key, entry] of sortedEntries) {
+                if (
+                    currentFiles <= MAX_CACHE_FILES / 2 &&
+                    currentSize <= (MAX_CACHE_SIZE_MB / 2) * 1024 * 1024
+                ) {
+                    break;
+                }
+
+                try {
+                    if (existsSync(entry.path)) {
+                        const fileStats = statSync(entry.path);
+                        rmSync(entry.path, { force: true });
+                        currentSize -= fileStats.size;
+                        currentFiles--;
+                    }
+                    this.cachedFiles.delete(key);
+                } catch {
+                    // Ignore cleanup errors
+                }
+            }
+
+            this.client.logger.info(
+                `[AudioCacheManager] Cleaned up cache: ${stats.files - currentFiles} files removed`,
             );
         }
     }
@@ -251,6 +408,8 @@ export class AudioCacheManager {
     public clearCache(): void {
         this.cachedFiles.clear();
         this.inProgressFiles.clear();
+        this.failedUrls.clear();
+        this.preCacheQueue.length = 0;
 
         if (existsSync(this.cacheDir)) {
             rmSync(this.cacheDir, { recursive: true, force: true });
@@ -259,7 +418,18 @@ export class AudioCacheManager {
         }
     }
 
-    public getStats(): { files: number; totalSize: number; inProgress: number } {
+    public clearFailedUrls(): void {
+        this.failedUrls.clear();
+        this.client.logger.info("[AudioCacheManager] Failed URL cache cleared.");
+    }
+
+    public getStats(): {
+        files: number;
+        totalSize: number;
+        inProgress: number;
+        failed: number;
+        queued: number;
+    } {
         let totalSize = 0;
         let files = 0;
 
@@ -273,6 +443,12 @@ export class AudioCacheManager {
             }
         }
 
-        return { files, totalSize, inProgress: this.inProgressFiles.size };
+        return {
+            files,
+            totalSize,
+            inProgress: this.inProgressFiles.size,
+            failed: this.failedUrls.size,
+            queued: this.preCacheQueue.length,
+        };
     }
 }
