@@ -12,7 +12,12 @@ import prism from "prism-media";
 import i18n from "../../../config/index.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
-import { AllCookiesFailedError, getStream } from "../YTDLUtil.js";
+import {
+    AllCookiesFailedError,
+    CookieRotationNeededError,
+    getStream,
+    shouldRequeueOnError,
+} from "../YTDLUtil.js";
 
 export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
@@ -83,14 +88,14 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
             x.pipe(stream as unknown as NodeJS.WritableStream),
         );
     } catch (error) {
-        if (error instanceof AllCookiesFailedError) {
-            const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
-                guild,
-                queue.textChannel.id,
-            );
+        const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
+            guild,
+            queue.textChannel.id,
+        );
 
+        if (error instanceof AllCookiesFailedError) {
             queue.client.logger.error(
-                `[PLAY_HANDLER] All cookies failed for guild ${guild.name}(${guild.id}), stopping queue`,
+                `[PLAY_HANDLER] ❌ All cookies failed for guild ${guild.name}(${guild.id}), stopping queue`,
             );
 
             if (!isRequestChannel) {
@@ -98,7 +103,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
                     embeds: [
                         createEmbed(
                             "error",
-                            `⚠️ ${i18n.__mf("utils.generalHandler.allCookiesFailed", {
+                            `⚠️ **|** ${i18n.__mf("utils.generalHandler.allCookiesFailed", {
                                 prefix: guild.client.config.mainPrefix,
                             })}`,
                             true,
@@ -110,7 +115,81 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
             queue.destroy();
             return;
         }
-        throw error;
+
+        if (error instanceof CookieRotationNeededError || shouldRequeueOnError(error as Error)) {
+            queue.client.logger.warn(
+                `[PLAY_HANDLER] ⚠️ Error playing song "${song.song.title}", re-queuing for retry. Error: ${(error as Error).message}`,
+            );
+
+            const currentSongKey = song.key;
+            queue.songs.delete(currentSongKey);
+
+            const newKey = queue.songs.addSong(song.song, song.requester);
+
+            if (!isRequestChannel) {
+                const errorMsg = await queue.textChannel.send({
+                    embeds: [
+                        createEmbed(
+                            "warn",
+                            `🔄 **|** ${i18n.__mf("utils.generalHandler.songRequeued", {
+                                song: `[${song.song.title}](${song.song.url})`,
+                            })}`,
+                        ).setThumbnail(song.song.thumbnail),
+                    ],
+                });
+                setTimeout(() => {
+                    errorMsg.delete().catch(() => null);
+                }, 10_000);
+            }
+
+            const nextS =
+                queue.shuffle && queue.loopMode !== "SONG"
+                    ? queue.songs.filter((s) => s.key !== newKey).random()?.key
+                    : queue.loopMode === "SONG"
+                      ? newKey
+                      : (queue.songs
+                            .sortByIndex()
+                            .filter((x) => x.key !== newKey)
+                            .first()?.key ?? "");
+
+            if (nextS && nextS.length > 0) {
+                void play(guild, nextS, wasIdle);
+            } else {
+                void play(guild, newKey, wasIdle);
+            }
+            return;
+        }
+
+        queue.client.logger.error(
+            `[PLAY_HANDLER] ❌ Unrecoverable error playing song "${song.song.title}": ${(error as Error).message}`,
+        );
+
+        if (!isRequestChannel) {
+            await queue.textChannel.send({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        `❌ **|** ${i18n.__mf("utils.generalHandler.errorPlaying", {
+                            message: `\`${(error as Error).message.substring(0, 200)}\``,
+                        })}`,
+                        true,
+                    ),
+                ],
+            });
+        }
+
+        queue.songs.delete(song.key);
+        const nextS =
+            queue.shuffle && queue.loopMode !== "SONG"
+                ? queue.songs.random()?.key
+                : queue.loopMode === "SONG"
+                  ? song.key
+                  : (queue.songs.sortByIndex().first()?.key ?? "");
+
+        if (nextS && nextS.length > 0) {
+            void play(guild, nextS, wasIdle);
+        }
+        return;
     }
 
     const resource = createAudioResource(stream, {

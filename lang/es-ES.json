@@ -296,6 +296,7 @@
             "queueEnded": "La cola ha terminado, usa **`{usage}`** para reproducir más música.",
             "startPlaying": "Se empezó a reproducir **{song}**",
             "stopPlaying": "Se detuvo la reproducción **{song}**",
+            "songRequeued": "Hubo un problema al reproducir **{song}**, se ha vuelto a agregar a la cola para otro intento.",
             "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Por favor, agrega nuevas cookies usando el comando `{prefix}cookies add <número>` con un archivo cookies.txt adjunto, o usa `{prefix}cookies reset` para reintentar las cookies existentes."
         },
         "musicDecorator": {

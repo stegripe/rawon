@@ -296,6 +296,7 @@
             "queueEnded": "Antrian sudah berakhir, gunakan **{usage}** untuk memainkan lagu lagi.",
             "startPlaying": "Mulai memainkan **{song}**",
             "stopPlaying": "Selesai memainkan **{song}**",
+            "songRequeued": "Terjadi masalah saat memutar **{song}**, ditambahkan ulang ke antrian untuk percobaan lain.",
             "allCookiesFailed": "Semua cookies gagal karena deteksi bot! Silakan tambah cookies baru menggunakan perintah `{prefix}cookies add <nomor>` dengan lampiran cookies.txt, atau gunakan `{prefix}cookies reset` untuk mencoba ulang cookies yang ada."
         },
         "musicDecorator": {

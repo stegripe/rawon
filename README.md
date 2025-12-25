@@ -16,6 +16,10 @@
 - Production-ready, no coding required
 - Configurable and easy to use
 - Basic music commands (play, pause, skip, queue, etc.)
+- Multi-cookie rotation for uninterrupted playback
+- Smart audio pre-caching for smoother playback
+- Support for YouTube, Spotify, and SoundCloud
+- Full playlist support (including large YouTube playlists with 100+ songs)
 
 ## Installation
 
@@ -83,6 +87,7 @@ The `/app/cache` volume stores:
 - `yt-dlp` binary for audio streaming
 - `data.json` for persistent settings (request channels, player states)
 - Cached audio files (if audio caching is enabled)
+- Cookie files for YouTube authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
 ### Railway Deployment
 Railway provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.
@@ -101,6 +106,19 @@ Use the ones you need/should and fill in the values.
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
 - [Cookies Setup](./docs/COOKIES_SETUP.md) - Fix "Sign in to confirm you're not a bot" errors on hosting providers
+
+### Common Issues
+
+**"Sign in to confirm you're not a bot" errors?**
+
+If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may encounter bot detection errors. See [Cookies Setup](./docs/COOKIES_SETUP.md) for the solution.
+
+**Quick fix using the cookies command:**
+```
+!cookies add 1    # Attach your cookies.txt file
+!cookies list     # Check cookie status
+!cookies reset    # Reset failed status
+```
 
 ## Support & Questions
 For help and questions, join our official [Discord Server](https://stegripe.org/discord).
