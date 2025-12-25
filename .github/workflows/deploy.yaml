@@ -10,21 +10,25 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
-            - name: Install Node v16
-              uses: actions/setup-node@v2
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
               with:
-                  node-version: 16
+                  node-version-file: ".node-version"
+                  cache: pnpm
 
             - name: Install dependencies
-              run: npm ci
+              run: pnpm install --frozen-lockfile
 
             - name: Build site
-              run: npm run build
+              run: pnpm run build
 
             - name: Deploy site
-              uses: JamesIves/github-pages-deploy-action@4.1.4
+              uses: JamesIves/github-pages-deploy-action@v4
               with:
                   branch: gh-pages
                   folder: out
