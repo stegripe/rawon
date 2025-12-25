@@ -301,7 +301,7 @@ export class AudioCacheManager {
                         try {
                             rmSync(cachePath, { force: true });
                         } catch {
-                            // Ignore
+                            // Ignore cleanup errors
                         }
                         this.markFailed(key);
                     } else {
