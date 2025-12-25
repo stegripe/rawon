@@ -241,7 +241,7 @@
     },
     "reusable": {
         "invalidUsage": "Некоректне використання, будь ласка, скористайтесь **`{prefix} {name}`** для отримання інформації.",
-        "pageFooter": "Page {actual} of {total}"
+        "pageFooter": "Сторінка {actual} з {total}"
     },
     "utils": {
         "commonUtil": {

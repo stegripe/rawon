@@ -513,10 +513,10 @@ export class InteractionCreateEvent extends BaseEvent {
                     .setTitle(`📋 ${i18n.__("requestChannel.queueListTitle")}`)
                     .setThumbnail(guild.iconURL({ extension: "png", size: 1_024 }) ?? null)
                     .setFooter({
-                        text: i18n.__mf("reusable.pageFooter", {
+                        text: `• ${i18n.__mf("reusable.pageFooter", {
                             actual: 1,
                             total: pages.length || 1,
-                        }),
+                        })}`,
                     });
 
                 const createPaginationButtons = (
@@ -586,10 +586,10 @@ export class InteractionCreateEvent extends BaseEvent {
                         }
 
                         embed.setDescription(pages[currentPage]).setFooter({
-                            text: i18n.__mf("reusable.pageFooter", {
+                            text: `• ${i18n.__mf("reusable.pageFooter", {
                                 actual: currentPage + 1,
                                 total: pages.length,
-                            }),
+                            })}`,
                         });
 
                         await i.update({
@@ -711,10 +711,10 @@ export class InteractionCreateEvent extends BaseEvent {
 
                         if (pages.length > 1) {
                             embed.setFooter({
-                                text: i18n.__mf("reusable.pageFooter", {
+                                text: `• ${i18n.__mf("reusable.pageFooter", {
                                     actual: 1,
                                     total: pages.length,
-                                }),
+                                })}`,
                             });
                         }
 
@@ -752,10 +752,10 @@ export class InteractionCreateEvent extends BaseEvent {
                                 }
 
                                 embed.setDescription(pages[currentPage]).setFooter({
-                                    text: i18n.__mf("reusable.pageFooter", {
+                                    text: `• ${i18n.__mf("reusable.pageFooter", {
                                         actual: currentPage + 1,
                                         total: pages.length,
-                                    }),
+                                    })}`,
                                 });
 
                                 await i.update({
