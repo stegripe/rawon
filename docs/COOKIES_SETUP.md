@@ -129,7 +129,39 @@ If you prefer the old method, you can still use the environment variable:
 
 Docker users have automatic cookie persistence through the named volume `rawon:/app/cache`. Cookies added via the `!cookies` command are stored in this volume and persist across container restarts.
 
-No additional configuration needed - just use the `!cookies` command!
+**Recommended**: Just use the `!cookies` command - no additional configuration needed!
+
+#### Alternative: Manual Cookie Mount (Legacy)
+
+If you prefer to manually mount a cookies file, place your `cookies.txt` file next to your `docker-compose.yaml` file:
+
+```
+your-rawon-folder/
+├── docker-compose.yaml
+├── .env
+└── cookies.txt          <-- Place cookies here
+```
+
+Then add this volume mount to your `docker-compose.yaml`:
+
+```yaml
+services:
+  rawon:
+    image: ghcr.io/stegripe/rawon:latest
+    container_name: rawon-bot
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - rawon:/app/cache
+      - ./cookies.txt:/app/cache/cookies.txt:ro
+```
+
+And set in your `.env`:
+```env
+YOUTUBE_COOKIES="./cache/cookies.txt"
+```
+
+> **Note**: The cookies file is mounted into `/app/cache/cookies.txt` inside the container, so the path in `.env` is the same as non-Docker setup (`./cache/cookies.txt`). Make sure the `cookies.txt` file exists before running `docker compose up`, otherwise Docker will create an empty directory instead.
 
 ### How Long Do Cookies Last?
 
@@ -299,7 +331,39 @@ Jika kamu prefer metode lama, kamu masih bisa menggunakan environment variable:
 
 Pengguna Docker memiliki persistence cookie otomatis melalui named volume `rawon:/app/cache`. Cookies yang ditambah via command `!cookies` tersimpan di volume ini dan tetap ada setelah container restart.
 
-Tidak perlu konfigurasi tambahan - langsung pakai command `!cookies`!
+**Direkomendasikan**: Langsung pakai command `!cookies` - tidak perlu konfigurasi tambahan!
+
+#### Alternatif: Mount Cookie Manual (Legacy)
+
+Jika kamu prefer mount file cookies secara manual, letakkan file `cookies.txt` di samping file `docker-compose.yaml`:
+
+```
+folder-rawon-kamu/
+├── docker-compose.yaml
+├── .env
+└── cookies.txt          <-- Letakkan cookies di sini
+```
+
+Lalu tambahkan volume mount ini ke `docker-compose.yaml` kamu:
+
+```yaml
+services:
+  rawon:
+    image: ghcr.io/stegripe/rawon:latest
+    container_name: rawon-bot
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - rawon:/app/cache
+      - ./cookies.txt:/app/cache/cookies.txt:ro
+```
+
+Dan set di `.env` kamu:
+```env
+YOUTUBE_COOKIES="./cache/cookies.txt"
+```
+
+> **Catatan**: File cookies di-mount ke `/app/cache/cookies.txt` di dalam container, jadi path di `.env` sama seperti setup non-Docker (`./cache/cookies.txt`). Pastikan file `cookies.txt` sudah ada sebelum menjalankan `docker compose up`, kalau tidak Docker akan membuat folder kosong.
 
 ### Berapa Lama Cookies Bertahan?
 
