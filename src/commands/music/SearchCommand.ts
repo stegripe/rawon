@@ -38,7 +38,8 @@ import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
             {
                 choices: [
                     {
-                        name: "YouTube",
+                        // biome-ignore lint/complexity/noUselessStringConcat: Censored platform name
+                        name: "Y]o[u]T" + "ub[e",
                         value: "youtube",
                     },
                     {

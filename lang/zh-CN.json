@@ -11,7 +11,7 @@
                 "usage": "{prefix}eval <一些代码>"
             },
             "cookies": {
-                "description": "管理YouTube cookies以绕过机器人检测",
+                "description": "管理cookies以绕过机器人检测",
                 "usage": "{prefix}cookies <add|remove|list|reset> [编号|all]",
                 "slashAddDescription": "添加新的cookie文件",
                 "slashRemoveDescription": "删除cookie文件",

@@ -11,7 +11,7 @@
                 "usage": "{prefix}eval <kod>"
             },
             "cookies": {
-                "description": "Bot algılama bypass için YouTube çerezlerini yönet",
+                "description": "Bot algılama bypass için çerezleri yönet",
                 "usage": "{prefix}cookies <add|remove|list|reset> [numara|all]",
                 "slashAddDescription": "Yeni çerez dosyası ekle",
                 "slashRemoveDescription": "Çerez dosyasını kaldır",

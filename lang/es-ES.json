@@ -11,7 +11,7 @@
                 "usage": "{prefix}eval <código>"
             },
             "cookies": {
-                "description": "Administrar cookies de YouTube para bypass de detección de bot",
+                "description": "Administrar cookies para bypass de detección de bot",
                 "usage": "{prefix}cookies <add|remove|list|reset> [número|all]",
                 "slashAddDescription": "Agregar un nuevo archivo de cookies",
                 "slashRemoveDescription": "Eliminar un archivo de cookies",

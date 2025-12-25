@@ -11,7 +11,7 @@
                 "usage": "{prefix}eval <何かのコード>"
             },
             "cookies": {
-                "description": "YouTubeのBot検出を回避するためのCookieを管理",
+                "description": "Bot検出を回避するためのCookieを管理",
                 "usage": "{prefix}cookies <add|remove|list|reset> [番号|all]",
                 "slashAddDescription": "新しいCookieファイルを追加",
                 "slashRemoveDescription": "Cookieファイルを削除",

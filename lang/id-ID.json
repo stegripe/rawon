@@ -11,7 +11,7 @@
                 "usage": "{prefix}eval <kode>"
             },
             "cookies": {
-                "description": "Kelola cookies YouTube untuk bypass deteksi bot",
+                "description": "Kelola cookies untuk bypass deteksi bot",
                 "usage": "{prefix}cookies <add|remove|list|reset> [nomor|all]",
                 "slashAddDescription": "Tambah file cookie baru",
                 "slashRemoveDescription": "Hapus file cookie",

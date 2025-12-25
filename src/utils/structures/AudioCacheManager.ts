@@ -203,7 +203,7 @@ export class AudioCacheManager {
                         errorMessage.includes("please sign in")
                     ) {
                         this.client.logger.error(
-                            `[AudioCacheManager] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
+                            `[AudioCacheManager] It seems you're blocked from the platform (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
                         );
                     }
                 });

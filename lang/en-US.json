@@ -11,7 +11,7 @@
                 "usage": "{prefix}eval <some code>"
             },
             "cookies": {
-                "description": "Manage YouTube cookies for bot detection bypass",
+                "description": "Manage cookies for bot detection bypass",
                 "usage": "{prefix}cookies <add|remove|list|reset> [number|all]",
                 "slashAddDescription": "Add a new cookie file",
                 "slashRemoveDescription": "Remove a cookie file",

@@ -172,7 +172,7 @@ export class CookiesCommand extends BaseCommand {
             // Netscape cookie format: domain, flag, path, secure, expiration, name, value
             const lines = content.split("\n");
             let hasValidCookieLine = false;
-            let hasYoutubeDomain = false;
+            let hasPlatformDomain = false;
 
             for (const line of lines) {
                 const trimmedLine = line.trim();
@@ -191,11 +191,10 @@ export class CookiesCommand extends BaseCommand {
                 if (fields.length >= 7) {
                     hasValidCookieLine = true;
                     const domain = fields[0];
-                    // Check if it's a YouTube related domain
+                    // Check if it's a platform related domain
                     // Domain in cookie files starts with . or is the exact domain
-                    // e.g. ".youtube.com", "youtube.com", ".google.com"
-                    if (this.isYouTubeRelatedDomain(domain)) {
-                        hasYoutubeDomain = true;
+                    if (this.isPlatformRelatedDomain(domain)) {
+                        hasPlatformDomain = true;
                     }
                 }
             }
@@ -212,10 +211,10 @@ export class CookiesCommand extends BaseCommand {
                 });
             }
 
-            // Warn if no YouTube domain found but still allow
-            if (!hasYoutubeDomain) {
+            // Warn if no platform domain found but still allow
+            if (!hasPlatformDomain) {
                 this.client.logger.warn(
-                    `[CookiesCommand] Cookie file for index ${number} does not contain YouTube domains`,
+                    `[CookiesCommand] Cookie file for index ${number} does not contain platform domains`,
                 );
             }
 
@@ -491,14 +490,14 @@ export class CookiesCommand extends BaseCommand {
     }
 
     /**
-     * Check if a domain string is a valid YouTube/Google related domain
+     * Check if a domain string is a valid platform related domain
      * Used for validating cookie file contents
      */
-    private isYouTubeRelatedDomain(domain: string): boolean {
+    private isPlatformRelatedDomain(domain: string): boolean {
         // Normalize the domain (remove leading dot if present)
         const normalizedDomain = domain.startsWith(".") ? domain.slice(1) : domain;
 
-        // List of valid YouTube/Google domains for cookies
+        // List of valid platform domains for cookies
         const validDomains = [
             "youtube.com",
             "www.youtube.com",

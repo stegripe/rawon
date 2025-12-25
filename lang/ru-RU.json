@@ -11,7 +11,7 @@
                 "usage": "{prefix}eval <код>"
             },
             "cookies": {
-                "description": "Управление cookies YouTube для обхода обнаружения бота",
+                "description": "Управление cookies для обхода обнаружения бота",
                 "usage": "{prefix}cookies <add|remove|list|reset> [номер|all]",
                 "slashAddDescription": "Добавить новый файл cookies",
                 "slashRemoveDescription": "Удалить файл cookies",
