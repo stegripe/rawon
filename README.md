@@ -112,15 +112,15 @@ For help and questions, join our official [Discord Server](https://stegripe.org/
 - [@PixlGalaxy](https://github.com/PixlGalaxy)
 
 ### Translators
-- [@21Z](https://github.com/21Z) (en)
-- [@lxndr-rl](https://github.com/lxndr-rl) (es)
-- [@MoustacheOff](https://github.com/MoustacheOff) (fr)
+- [@21Z](https://github.com/21Z) (en-US)
+- [@lxndr-rl](https://github.com/lxndr-rl) (es-ES)
+- [@MoustacheOff](https://github.com/MoustacheOff) (fr-FR)
 - [@RabbitYuKu](https://github.com/RabbitYuKu) (zh-CN, zh-TW)
-- [@RomaDevWorld](https://github.com/RomaDevWorld) (uk)
-- [@hmz121](https://github.com/hmz121) (vi)
+- [@RomaDevWorld](https://github.com/RomaDevWorld) (uk-UA)
+- [@hmz121](https://github.com/hmz121) (vi-VN)
 - [@melloirl](https://github.com/melloirl) (pt-BR)
-- [@Ronner231](https://github.com/Ronner231) (ru)
-- [@Fyphen1223](https://github.com/Fyphen1223) (ja)
-- [@OsmanTunahan](https://github.com/OsmanTunahan) (tr)
+- [@Ronner231](https://github.com/Ronner231) (ru-RU)
+- [@Fyphen1223](https://github.com/Fyphen1223) (ja-JP)
+- [@OsmanTunahan](https://github.com/OsmanTunahan) (tr-TR)
 
 > © 2026 Stegripe Development

@@ -94,6 +94,7 @@
                 "apiError": "L'API n'a pas pu trouver la chanson **{song}**, parce que : `{message}`",
                 "description": "Montrez les paroles de la chanson",
                 "noQuery": "Il n'y a rien à jouer, ou aucun argument n'est fourni.",
+                "searchingLyrics": "Recherche de paroles...",
                 "slashDescription": "Musique à rechercher",
                 "usage": "{prefix}lyrics [musique]",
                 "noLyrics": "Aucune parole trouvée pour **{song}**."

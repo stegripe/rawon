@@ -94,6 +94,7 @@
                 "apiError": "API не смог найти песню **{song}**, потому-что: `{message}`",
                 "description": "Показать слова из песни",
                 "noQuery": "Ничего не проигрывается, или аргументы не были предоставлены.",
+                "searchingLyrics": "Поиск текста песни...",
                 "slashDescription": "Песня для поиска",
                 "usage": "{prefix}lyrics [песня]",
                 "noLyrics": "Текст для **{song}** не найден."
@@ -240,7 +241,7 @@
     },
     "reusable": {
         "invalidUsage": "Неверное использование, пожалуйста используйте **`{prefix} {name}`** для большей информации.",
-        "pageFooter": "Page {actual} of {total}"
+        "pageFooter": "Страница {actual} из {total}"
     },
     "utils": {
         "commonUtil": {

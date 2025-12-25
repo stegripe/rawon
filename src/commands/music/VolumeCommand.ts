@@ -58,7 +58,7 @@ export class VolumeCommand extends BaseCommand {
                         `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
                             volume: `**\`${current}\`**`,
                         })}\n${current}% ${createProgressBar(current, 100)} 100%`,
-                    ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") }),
+                    ).setFooter({ text: `• ${i18n.__("commands.music.volume.changeVolume")}` }),
                 ],
                 components: [buttons],
             });
@@ -82,7 +82,9 @@ export class VolumeCommand extends BaseCommand {
                                 `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
                                     volume: `**\`${newVolume}\`**`,
                                 })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`,
-                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") }),
+                            ).setFooter({
+                                text: `• ${i18n.__("commands.music.volume.changeVolume")}`,
+                            }),
                         ],
                         components: [buttons],
                     });
@@ -96,7 +98,9 @@ export class VolumeCommand extends BaseCommand {
                                 `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
                                     volume: `**\`${cur}\`**`,
                                 })}\n${cur}% ${createProgressBar(cur, 100)} 100%`,
-                            ).setFooter({ text: i18n.__("commands.music.volume.changeVolume") }),
+                            ).setFooter({
+                                text: `• ${i18n.__("commands.music.volume.changeVolume")}`,
+                            }),
                         ],
                         components: [],
                     });

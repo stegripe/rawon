@@ -73,9 +73,9 @@ export class RepeatCommand extends BaseCommand {
                             },
                         )}`,
                     ).setFooter({
-                        text: i18n.__mf("commands.music.repeat.footer", {
+                        text: `• ${i18n.__mf("commands.music.repeat.footer", {
                             prefix: this.client.config.mainPrefix,
-                        }),
+                        })}`,
                     }),
                 ],
             });

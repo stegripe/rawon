@@ -94,6 +94,7 @@
                 "apiError": "Tidak dapat menemukan lagu **{song}**, dikarenakan: `{message}`",
                 "description": "Menampilkan lirik lagu",
                 "noQuery": "Tidak ada yang sedang dimainkan atau tidak ada argumen yang diberikan.",
+                "searchingLyrics": "Mencari lirik...",
                 "slashDescription": "Judul lagu untuk dicari",
                 "usage": "{prefix}lyrics [song]",
                 "noLyrics": "Tidak menemukan lirik untuk **{song}**."

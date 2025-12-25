@@ -48,10 +48,10 @@ export class QueueCommand extends BaseCommand {
             author: ctx.author.id,
             edit: (i, emb, page) =>
                 emb.setDescription(page).setFooter({
-                    text: i18n.__mf("reusable.pageFooter", {
+                    text: `• ${i18n.__mf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,
-                    }),
+                    })}`,
                 }),
             embed,
             pages,

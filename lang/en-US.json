@@ -95,6 +95,7 @@
                 "description": "Show the lyrics from the song",
                 "noLyrics": "No lyrics found for **{song}**.",
                 "noQuery": "There is nothing playing, or no arguments are provided.",
+                "searchingLyrics": "Searching for lyrics...",
                 "slashDescription": "Song to search",
                 "usage": "{prefix}lyrics [song]"
             },
