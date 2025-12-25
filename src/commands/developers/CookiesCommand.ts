@@ -73,6 +73,27 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     usage: i18n.__("commands.developers.cookies.usage"),
 })
 export class CookiesCommand extends BaseCommand {
+    /**
+     * Format a cookie name for display
+     */
+    private formatCookie(number: number): string {
+        return `**\`Cookie ${number}\`**`;
+    }
+
+    /**
+     * Format the usage command for display
+     */
+    private formatUsage(prefix: string): string {
+        return `\`${prefix}cookies add <number>\``;
+    }
+
+    /**
+     * Format the reset command for display
+     */
+    private formatResetCmd(): string {
+        return `\`cookies reset\``;
+    }
+
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
         const subcommand = ctx.options?.getSubcommand() ?? ctx.args[0]?.toLowerCase();
 
@@ -228,7 +249,7 @@ export class CookiesCommand extends BaseCommand {
                         createEmbed(
                             "success",
                             i18n.__mf("commands.developers.cookies.addSuccess", {
-                                number: number.toString(),
+                                cookie: this.formatCookie(number),
                             }),
                             true,
                         ),
@@ -241,7 +262,7 @@ export class CookiesCommand extends BaseCommand {
                         createEmbed(
                             "success",
                             i18n.__mf("commands.developers.cookies.replaceSuccess", {
-                                number: number.toString(),
+                                cookie: this.formatCookie(number),
                             }),
                             true,
                         ),
@@ -320,7 +341,7 @@ export class CookiesCommand extends BaseCommand {
                     createEmbed(
                         "success",
                         i18n.__mf("commands.developers.cookies.removeSuccess", {
-                            number: number.toString(),
+                            cookie: this.formatCookie(number),
                         }),
                         true,
                     ),
@@ -332,7 +353,7 @@ export class CookiesCommand extends BaseCommand {
                 createEmbed(
                     "error",
                     i18n.__mf("commands.developers.cookies.removeNotFound", {
-                        number: number.toString(),
+                        cookie: this.formatCookie(number),
                     }),
                     true,
                 ),
@@ -349,7 +370,7 @@ export class CookiesCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         i18n.__mf("commands.developers.cookies.noCookies", {
-                            prefix: this.client.config.mainPrefix,
+                            usage: this.formatUsage(this.client.config.mainPrefix),
                         }),
                     ),
                 ],
@@ -376,9 +397,12 @@ export class CookiesCommand extends BaseCommand {
                         statusText = i18n.__("commands.developers.cookies.statusAvailable");
                 }
 
-                return `${emoji} **\`Cookie ${index}\`** - ${statusText}`;
+                return `${emoji} ${this.formatCookie(index)} - ${statusText}`;
             })
             .join("\n");
+
+        const currentCookie = this.client.cookies.getCurrentCookieIndex();
+        const statsValue = `${i18n.__("commands.developers.cookies.statsTotal")}: \`${cookies.length}\` | ${i18n.__("commands.developers.cookies.statsFailed")}: \`${this.client.cookies.getFailedCookieCount()}\` | ${i18n.__("commands.developers.cookies.statsCurrent")}: ${this.formatCookie(currentCookie)}`;
 
         const embed = createEmbed("info")
             .setTitle(`🍪 ${i18n.__("commands.developers.cookies.listTitle")}`)
@@ -386,11 +410,7 @@ export class CookiesCommand extends BaseCommand {
             .addFields([
                 {
                     name: i18n.__("commands.developers.cookies.statsTitle"),
-                    value: i18n.__mf("commands.developers.cookies.statsValue", {
-                        total: cookies.length.toString(),
-                        failed: this.client.cookies.getFailedCookieCount().toString(),
-                        current: this.client.cookies.getCurrentCookieIndex().toString(),
-                    }),
+                    value: statsValue,
                 },
             ]);
 
@@ -398,7 +418,9 @@ export class CookiesCommand extends BaseCommand {
             embed.addFields([
                 {
                     name: `⚠️ ${i18n.__("commands.developers.cookies.warningTitle")}`,
-                    value: i18n.__("commands.developers.cookies.allCookiesFailed"),
+                    value: i18n.__mf("commands.developers.cookies.allCookiesFailed", {
+                        resetCmd: this.formatResetCmd(),
+                    }),
                 },
             ]);
         }
@@ -429,7 +451,7 @@ export class CookiesCommand extends BaseCommand {
                     createEmbed(
                         "error",
                         i18n.__mf("commands.developers.cookies.viewNotFound", {
-                            number: number.toString(),
+                            cookie: this.formatCookie(number),
                         }),
                         true,
                     ),
@@ -463,7 +485,7 @@ export class CookiesCommand extends BaseCommand {
         const embed = createEmbed(
             "info",
             i18n.__mf("commands.developers.cookies.viewSuccess", {
-                number: number.toString(),
+                cookie: this.formatCookie(number),
             }),
         ).addFields([
             {
