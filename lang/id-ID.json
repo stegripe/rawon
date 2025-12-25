@@ -32,7 +32,7 @@
                 "removeAllSuccess": "Berhasil menghapus {count} cookie.",
                 "removeNotFound": "Cookie {number} tidak ditemukan.",
                 "noCookies": "Belum ada cookies yang ditambahkan. Gunakan `cookies add <nomor>` dengan lampiran cookies.txt.",
-                "listTitle": "🍪 Pengelola Cookies",
+                "listTitle": "Pengelola Cookies",
                 "statusActive": "Aktif (sedang digunakan)",
                 "statusFailed": "Gagal (kena rate limit)",
                 "statusAvailable": "Tersedia",
@@ -288,7 +288,7 @@
             "queueEnded": "Antrian sudah berakhir, gunakan **{usage}** untuk memainkan lagu lagi.",
             "startPlaying": "Mulai memainkan **{song}**",
             "stopPlaying": "Selesai memainkan **{song}**",
-            "allCookiesFailed": "⚠️ Semua cookies gagal karena deteksi bot! Silakan tambah cookies baru menggunakan perintah `{prefix}cookies add <nomor>` dengan lampiran cookies.txt, atau gunakan `{prefix}cookies reset` untuk mencoba ulang cookies yang ada."
+            "allCookiesFailed": "Semua cookies gagal karena deteksi bot! Silakan tambah cookies baru menggunakan perintah `{prefix}cookies add <nomor>` dengan lampiran cookies.txt, atau gunakan `{prefix}cookies reset` untuk mencoba ulang cookies yang ada."
         },
         "musicDecorator": {
             "noInVC": "Mohon maaf, tetapi kamu harus berada di sebuah voice channel untuk melakukannya.",

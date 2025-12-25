@@ -32,7 +32,7 @@
                 "removeAllSuccess": "Removed {count} cookie(s) successfully.",
                 "removeNotFound": "Cookie {number} was not found.",
                 "noCookies": "No cookies have been added yet. Use `cookies add <number>` with a cookies.txt attachment.",
-                "listTitle": "🍪 Cookies Manager",
+                "listTitle": "Cookies Manager",
                 "statusActive": "Active (in use)",
                 "statusFailed": "Failed (rate limited)",
                 "statusAvailable": "Available",
@@ -288,7 +288,7 @@
             "queueEnded": "Hàng đợi đã hết, sử dụng **`{usage}`** để phát thêm nhạc.",
             "startPlaying": "Bắt đầu phát **{song}**",
             "stopPlaying": "Dừng phát **{song}**",
-            "allCookiesFailed": "⚠️ All cookies have failed due to bot detection! Please add new cookies using `{prefix}cookies add <number>` command with a cookies.txt attachment, or use `{prefix}cookies reset` to retry existing cookies."
+            "allCookiesFailed": "All cookies have failed due to bot detection! Please add new cookies using `{prefix}cookies add <number>` command with a cookies.txt attachment, or use `{prefix}cookies reset` to retry existing cookies."
         },
         "musicDecorator": {
             "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",

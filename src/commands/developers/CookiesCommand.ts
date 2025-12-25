@@ -341,7 +341,7 @@ export class CookiesCommand extends BaseCommand {
             .join("\n");
 
         const embed = createEmbed("info")
-            .setTitle(i18n.__("commands.developers.cookies.listTitle"))
+            .setTitle(`🍪 ${i18n.__("commands.developers.cookies.listTitle")}`)
             .setDescription(cookieList)
             .addFields([
                 {

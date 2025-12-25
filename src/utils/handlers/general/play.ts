@@ -99,9 +99,9 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__mf("utils.generalHandler.allCookiesFailed", {
+                            `⚠️ ${i18n.__mf("utils.generalHandler.allCookiesFailed", {
                                 prefix: guild.client.config.mainPrefix,
-                            }),
+                            })}`,
                             true,
                         ),
                     ],
