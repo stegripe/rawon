@@ -94,6 +94,7 @@
                 "apiError": "API **{song}** isimli şarkıyı bulamadı, çünkü: `{message}`",
                 "description": "Şarkının sözlerini gösterir",
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
+                "searchingLyrics": "Şarkı sözleri aranıyor...",
                 "slashDescription": "Aranacak şarkı",
                 "usage": "{prefix}lyrics [şarkı]",
                 "noLyrics": "**{song}** için şarkı sözü bulunamadı."

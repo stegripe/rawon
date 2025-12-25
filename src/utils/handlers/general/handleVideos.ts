@@ -75,7 +75,10 @@ export async function handleVideos(
                         name: opening,
                     })
                     .setFooter({
-                        text: `• ${i18n.__mf("reusable.pageFooter", { actual: i + 1, total: pages.length })}`,
+                        text: `• ${i18n.__mf("reusable.pageFooter", {
+                            actual: i + 1,
+                            total: pages.length,
+                        })}`,
                     });
             },
             embed,

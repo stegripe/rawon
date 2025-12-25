@@ -142,12 +142,12 @@ export class FilterCommand extends BaseCommand {
                             state: `\`${ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED"}\``,
                         }),
                     ).setFooter({
-                        text: i18n.__mf("commands.music.filter.embedFooter", {
+                        text: `• ${i18n.__mf("commands.music.filter.embedFooter", {
                             filter,
                             opstate:
                                 ctx.guild?.queue?.filters[filter] === true ? "disable" : "enable",
                             prefix: ctx.isCommand() ? "/" : this.client.config.mainPrefix,
-                        }),
+                        })}`,
                     }),
                 ],
             });

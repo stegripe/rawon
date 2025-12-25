@@ -94,6 +94,7 @@
                 "apiError": "El API no pudo encontrar la letra de la canción **{song}**, razón: {message}",
                 "description": "Muestra la letra de una canción",
                 "noQuery": "No se está reproduciendo nada o no se ingresaró ninguna canción a buscar.",
+                "searchingLyrics": "Buscando letra...",
                 "slashDescription": "Canción a buscar",
                 "usage": "{prefix}lyrics [canción]",
                 "noLyrics": "No se encontraron letras para **{song}**."
