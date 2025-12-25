@@ -296,6 +296,7 @@
             "queueEnded": "队列已经结束，使用**`{usage}`**播放更多音乐。",
             "startPlaying": "开始播放**{song}**",
             "stopPlaying": "停止播放**{song}**",
+            "songRequeued": "播放**{song}**时遇到问题，已重新添加到队列中等待重试。",
             "allCookiesFailed": "由于机器人检测，所有cookie都已失败！请使用 `{prefix}cookies add <编号>` 命令附加cookies.txt文件添加新cookie，或使用 `{prefix}cookies reset` 重试现有cookie。"
         },
         "musicDecorator": {

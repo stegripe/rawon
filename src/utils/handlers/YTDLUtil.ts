@@ -16,6 +16,16 @@ export class AllCookiesFailedError extends Error {
     }
 }
 
+export class CookieRotationNeededError extends Error {
+    public constructor(
+        message: string,
+        public readonly shouldRequeue = true,
+    ) {
+        super(message);
+        this.name = "CookieRotationNeededError";
+    }
+}
+
 export async function getStream(client: Rawon, url: string, isLive = false): Promise<Readable> {
     const isSoundcloudUrl = checkQuery(url);
     if (isSoundcloudUrl.sourceType === "soundcloud") {
@@ -37,6 +47,7 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
 }
 
 const MAX_COOKIE_RETRIES = 10;
+const MAX_TRANSIENT_RETRIES = 3;
 const STREAM_VALIDATION_DELAY_MS = 500;
 
 async function attemptStreamWithRetry(
@@ -85,30 +96,64 @@ async function attemptStreamWithRetry(
                 validationTimeout = null;
             }
 
-            client.logger.error(
-                `[YTDLUtil] Bot detection error detected, attempting cookie rotation. URL: ${url}`,
+            client.logger.warn(
+                `[YTDLUtil] ⚠️ Bot detection error detected, attempting cookie rotation (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
 
             proc.kill("SIGKILL");
 
             if (retryCount >= MAX_COOKIE_RETRIES) {
                 client.logger.error(
-                    `[YTDLUtil] Maximum retry limit (${MAX_COOKIE_RETRIES}) reached`,
+                    `[YTDLUtil] ❌ Maximum retry limit (${MAX_COOKIE_RETRIES}) reached for URL: ${url.substring(0, 50)}...`,
                 );
-                reject(new AllCookiesFailedError());
+                reject(new CookieRotationNeededError("Maximum cookie retries reached", true));
                 return;
             }
 
             const rotated = client.cookies.rotateOnFailure();
             if (rotated) {
                 client.logger.info(
-                    `[YTDLUtil] Retrying with cookie ${client.cookies.getCurrentCookieIndex()} (attempt ${retryCount + 1})`,
+                    `[YTDLUtil] 🔄 Rotated to cookie ${client.cookies.getCurrentCookieIndex()}, retrying...`,
                 );
                 attemptStreamWithRetry(client, url, isLive, retryCount + 1)
                     .then(resolve)
                     .catch(reject);
             } else {
-                reject(new AllCookiesFailedError());
+                client.logger.error(
+                    "[YTDLUtil] ❌ All cookies have failed! Song will be re-queued for retry.",
+                );
+                reject(new CookieRotationNeededError("All cookies failed", true));
+            }
+        };
+
+        const handleTransientError = (errorMessage: string): void => {
+            if (hasHandledError) {
+                return;
+            }
+
+            if (isTransientError(errorMessage)) {
+                hasHandledError = true;
+                if (validationTimeout) {
+                    clearTimeout(validationTimeout);
+                    validationTimeout = null;
+                }
+                proc.kill("SIGKILL");
+
+                if (retryCount < MAX_TRANSIENT_RETRIES) {
+                    client.logger.warn(
+                        `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                    );
+                    setTimeout(
+                        () => {
+                            attemptStreamWithRetry(client, url, isLive, retryCount + 1)
+                                .then(resolve)
+                                .catch(reject);
+                        },
+                        1000 * (retryCount + 1),
+                    );
+                } else {
+                    reject(new Error(`Transient error after retries: ${errorMessage}`));
+                }
             }
         };
 
@@ -117,6 +162,8 @@ async function attemptStreamWithRetry(
                 stderrData += chunk.toString();
                 if (isBotDetectionError(stderrData) && !hasDetectedBotError) {
                     handleBotDetectionError();
+                } else {
+                    handleTransientError(stderrData);
                 }
             });
         }
@@ -156,7 +203,19 @@ async function attemptStreamWithRetry(
                     handleBotDetectionError();
                 } else if (code !== 0) {
                     hasHandledError = true;
-                    reject(new Error(`yt-dlp process exited with code ${code}: ${stderrData}`));
+                    const errorMsg = stderrData.trim() || `Process exited with code ${code}`;
+                    if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
+                        setTimeout(
+                            () => {
+                                attemptStreamWithRetry(client, url, isLive, retryCount + 1)
+                                    .then(resolve)
+                                    .catch(reject);
+                            },
+                            1000 * (retryCount + 1),
+                        );
+                    } else {
+                        reject(new Error(`yt-dlp process exited with code ${code}: ${stderrData}`));
+                    }
                 }
             }
         });
@@ -201,6 +260,23 @@ async function attemptStreamWithRetry(
     });
 }
 
+function isTransientError(errorMessage: string): boolean {
+    const transientPatterns = [
+        "connection reset",
+        "connection timed out",
+        "temporarily unavailable",
+        "network is unreachable",
+        "unable to download",
+        "http error 503",
+        "http error 502",
+        "http error 500",
+        "rate-limit",
+        "too many requests",
+    ];
+    const lowerError = errorMessage.toLowerCase();
+    return transientPatterns.some((pattern) => lowerError.includes(pattern));
+}
+
 export async function getInfo(url: string, client?: Rawon): Promise<BasicYoutubeVideoInfo> {
     if (client?.cookies.areAllCookiesFailed()) {
         throw new AllCookiesFailedError();
@@ -221,14 +297,15 @@ async function attemptGetInfoWithRetry(
         return result;
     } catch (error) {
         const errorMessage = (error as Error)?.message ?? String(error ?? "");
+
         if (isBotDetectionError(errorMessage) && client) {
-            client.logger.error(
-                `[YTDLUtil] Bot detection error in getInfo, attempting cookie rotation. URL: ${url}`,
+            client.logger.warn(
+                `[YTDLUtil] ⚠️ Bot detection in getInfo, rotating cookie (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
 
             if (retryCount >= MAX_COOKIE_RETRIES) {
                 client.logger.error(
-                    `[YTDLUtil] Maximum retry limit (${MAX_COOKIE_RETRIES}) reached in getInfo`,
+                    `[YTDLUtil] ❌ Maximum retry limit (${MAX_COOKIE_RETRIES}) reached in getInfo`,
                 );
                 throw new AllCookiesFailedError();
             }
@@ -236,12 +313,37 @@ async function attemptGetInfoWithRetry(
             const rotated = client.cookies.rotateOnFailure();
             if (rotated) {
                 client.logger.info(
-                    `[YTDLUtil] Retrying getInfo with cookie ${client.cookies.getCurrentCookieIndex()} (attempt ${retryCount + 1})`,
+                    `[YTDLUtil] 🔄 Retrying getInfo with cookie ${client.cookies.getCurrentCookieIndex()}`,
                 );
                 return attemptGetInfoWithRetry(url, client, retryCount + 1);
             }
             throw new AllCookiesFailedError();
         }
+
+        if (isTransientError(errorMessage) && retryCount < MAX_TRANSIENT_RETRIES) {
+            client?.logger.warn(
+                `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
+            );
+            await new Promise((resolve) => setTimeout(resolve, 1000 * (retryCount + 1)));
+            return attemptGetInfoWithRetry(url, client, retryCount + 1);
+        }
+
         throw error;
     }
+}
+
+export function shouldRequeueOnError(error: Error): boolean {
+    if (error instanceof CookieRotationNeededError) {
+        return error.shouldRequeue;
+    }
+    if (error instanceof AllCookiesFailedError) {
+        return false;
+    }
+    const errorMessage = error.message.toLowerCase();
+    return (
+        isBotDetectionError(errorMessage) ||
+        isTransientError(errorMessage) ||
+        errorMessage.includes("socket hang up") ||
+        errorMessage.includes("econnreset")
+    );
 }
