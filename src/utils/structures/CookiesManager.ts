@@ -146,10 +146,12 @@ export class CookiesManager {
 
     /**
      * Add a cookie file with the specified index
+     * Returns "added" for new cookies, "replaced" if cookie already existed, or false on error
      */
-    public addCookie(index: number, content: string): boolean {
+    public addCookie(index: number, content: string): "added" | "replaced" | false {
         try {
             const cookiePath = this.getCookiePath(index);
+            const existed = existsSync(cookiePath);
             writeFileSync(cookiePath, content, "utf8");
 
             // Remove the failed status for this specific cookie
@@ -162,8 +164,10 @@ export class CookiesManager {
                 this.currentCookieIndex = index;
             }
 
-            this.client.logger.info(`[CookiesManager] Added cookie ${index}`);
-            return true;
+            this.client.logger.info(
+                `[CookiesManager] ${existed ? "Replaced" : "Added"} cookie ${index}`,
+            );
+            return existed ? "replaced" : "added";
         } catch (error) {
             this.client.logger.error(`[CookiesManager] Failed to add cookie ${index}:`, error);
             return false;

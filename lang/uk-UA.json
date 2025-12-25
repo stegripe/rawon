@@ -23,14 +23,14 @@
                 "noAttachment": "Будь ласка, прикріпіть файл cookies.txt до вашого повідомлення.",
                 "invalidFileType": "Будь ласка, прикріпіть файл .txt.",
                 "invalidCookiesFile": "Файл не схожий на правильний файл cookies.",
-                "addSuccess": "Cookie {number} успішно додано! Набуде чинності негайно.",
+                "addSuccess": "**`Cookie {number}`** успішно додано! Набуде чинності негайно.",
                 "addFailed": "Не вдалося додати файл cookies.",
                 "addError": "Помилка додавання cookie: {error}",
                 "noRemoveTarget": "Будь ласка, вкажіть який cookie видалити (номер або 'all').",
                 "invalidRemoveTarget": "Будь ласка, вкажіть правильний номер cookie або 'all'.",
-                "removeSuccess": "Cookie {number} успішно видалено.",
+                "removeSuccess": "**`Cookie {number}`** успішно видалено.",
                 "removeAllSuccess": "Успішно видалено {count} cookie(s).",
-                "removeNotFound": "Cookie {number} не знайдено.",
+                "removeNotFound": "**`Cookie {number}`** не знайдено.",
                 "noCookies": "Cookies ще не додано. Використовуйте `cookies add <номер>` з прикріпленим файлом cookies.txt.",
                 "listTitle": "Менеджер Cookies",
                 "statusActive": "Активний (використовується)",
@@ -40,7 +40,8 @@
                 "statsValue": "Всього: {total} | Невдалих: {failed} | Поточний: Cookie {current}",
                 "warningTitle": "Попередження",
                 "allCookiesFailed": "Усі cookies невдалі! Будь ласка, додайте нові cookies або використайте `cookies reset` для повторної спроби.",
-                "resetSuccess": "Статус невдалих cookies скинуто. Усі cookies будуть повторно спробовані."
+                "resetSuccess": "Статус невдалих cookies скинуто. Усі cookies будуть повторно спробовані.",
+                "replaceSuccess": "**`Cookie {number}`** успішно замінено! Набуде чинності негайно."
             }
         },
         "general": {

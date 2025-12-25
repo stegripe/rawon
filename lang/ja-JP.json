@@ -23,14 +23,14 @@
                 "noAttachment": "cookies.txtファイルをメッセージに添付してください。",
                 "invalidFileType": ".txtファイルを添付してください。",
                 "invalidCookiesFile": "ファイルが有効なCookieファイルではないようです。",
-                "addSuccess": "Cookie {number} が正常に追加されました！すぐに有効になります。",
+                "addSuccess": "**`Cookie {number}`** が正常に追加されました！すぐに有効になります。",
                 "addFailed": "Cookieファイルの追加に失敗しました。",
                 "addError": "Cookie追加エラー：{error}",
                 "noRemoveTarget": "削除するCookieを指定してください（番号または'all'）。",
                 "invalidRemoveTarget": "有効なCookie番号または'all'を入力してください。",
-                "removeSuccess": "Cookie {number} が正常に削除されました。",
+                "removeSuccess": "**`Cookie {number}`** が正常に削除されました。",
                 "removeAllSuccess": "{count}個のCookieが正常に削除されました。",
-                "removeNotFound": "Cookie {number} が見つかりませんでした。",
+                "removeNotFound": "**`Cookie {number}`** が見つかりませんでした。",
                 "noCookies": "まだCookieが追加されていません。cookies.txtファイルを添付して `cookies add <番号>` を使用してください。",
                 "listTitle": "Cookie マネージャー",
                 "statusActive": "アクティブ（使用中）",
@@ -40,7 +40,8 @@
                 "statsValue": "合計: {total} | 失敗: {failed} | 現在: Cookie {current}",
                 "warningTitle": "警告",
                 "allCookiesFailed": "すべてのCookieが失敗しました！新しいCookieを追加するか、`cookies reset` を使用して再試行してください。",
-                "resetSuccess": "失敗したCookieのステータスがリセットされました。すべてのCookieが再試行されます。"
+                "resetSuccess": "失敗したCookieのステータスがリセットされました。すべてのCookieが再試行されます。",
+                "replaceSuccess": "**`Cookie {number}`** が正常に置き換えられました！すぐに有効になります。"
             }
         },
         "general": {

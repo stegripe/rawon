@@ -23,14 +23,14 @@
                 "noAttachment": "請在訊息中附加cookies.txt檔案。",
                 "invalidFileType": "請附加.txt檔案。",
                 "invalidCookiesFile": "該檔案似乎不是有效的cookies檔案。",
-                "addSuccess": "Cookie {number} 已成功新增！將立即生效。",
+                "addSuccess": "**`Cookie {number}`** 已成功新增！將立即生效。",
                 "addFailed": "新增cookie檔案失敗。",
                 "addError": "新增cookie錯誤：{error}",
                 "noRemoveTarget": "請指定要刪除的cookie（編號或'all'）。",
                 "invalidRemoveTarget": "請提供有效的cookie編號或'all'。",
-                "removeSuccess": "Cookie {number} 已成功刪除。",
+                "removeSuccess": "**`Cookie {number}`** 已成功刪除。",
                 "removeAllSuccess": "成功刪除了 {count} 個cookie。",
-                "removeNotFound": "未找到Cookie {number}。",
+                "removeNotFound": "未找到**`Cookie {number}`**。",
                 "noCookies": "尚未新增任何cookie。使用 `cookies add <編號>` 並附加cookies.txt檔案。",
                 "listTitle": "Cookie管理器",
                 "statusActive": "活躍（使用中）",
@@ -40,7 +40,8 @@
                 "statsValue": "總計: {total} | 失敗: {failed} | 目前: Cookie {current}",
                 "warningTitle": "警告",
                 "allCookiesFailed": "所有cookie都已失敗！請新增新的cookie或使用 `cookies reset` 重試。",
-                "resetSuccess": "失敗cookie的狀態已重設。所有cookie將被重試。"
+                "resetSuccess": "失敗cookie的狀態已重設。所有cookie將被重試。",
+                "replaceSuccess": "**`Cookie {number}`** 已成功替換！將立即生效。"
             }
         },
         "general": {

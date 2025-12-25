@@ -39,9 +39,9 @@ export class QueueCommand extends BaseCommand {
 
             return names.join("\n");
         });
-        const embed = createEmbed("info", pages[0]).setThumbnail(
-            ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null,
-        );
+        const embed = createEmbed("info", pages[0])
+            .setTitle(`📋 ${i18n.__("requestChannel.queueListTitle")}`)
+            .setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null);
         const msg = await ctx.reply({ embeds: [embed] });
 
         return new ButtonPagination(msg, {

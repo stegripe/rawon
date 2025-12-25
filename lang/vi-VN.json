@@ -23,14 +23,14 @@
                 "noAttachment": "Vui lòng đính kèm file cookies.txt vào tin nhắn của bạn.",
                 "invalidFileType": "Vui lòng đính kèm file .txt.",
                 "invalidCookiesFile": "File này không giống file cookies hợp lệ.",
-                "addSuccess": "Cookie {number} đã được thêm thành công! Sẽ có hiệu lực ngay lập tức.",
+                "addSuccess": "**`Cookie {number}`** đã được thêm thành công! Sẽ có hiệu lực ngay lập tức.",
                 "addFailed": "Thêm file cookies thất bại.",
                 "addError": "Lỗi khi thêm cookie: {error}",
                 "noRemoveTarget": "Vui lòng chỉ định cookies nào để xóa (số hoặc 'all').",
                 "invalidRemoveTarget": "Vui lòng cung cấp số cookies hợp lệ hoặc 'all'.",
-                "removeSuccess": "Cookie {number} đã được xóa thành công.",
+                "removeSuccess": "**`Cookie {number}`** đã được xóa thành công.",
                 "removeAllSuccess": "Đã xóa {count} cookie(s) thành công.",
-                "removeNotFound": "Cookie {number} không được tìm thấy.",
+                "removeNotFound": "**`Cookie {number}`** không được tìm thấy.",
                 "noCookies": "Chưa có cookies nào được thêm. Sử dụng `cookies add <số>` với file cookies.txt đính kèm.",
                 "listTitle": "Trình Quản Lý Cookies",
                 "statusActive": "Đang hoạt động (đang sử dụng)",
@@ -40,7 +40,8 @@
                 "statsValue": "Tổng: {total} | Thất bại: {failed} | Hiện tại: Cookie {current}",
                 "warningTitle": "Cảnh Báo",
                 "allCookiesFailed": "Tất cả cookies đã thất bại! Vui lòng thêm cookies mới hoặc sử dụng `cookies reset` để thử lại.",
-                "resetSuccess": "Trạng thái cookies thất bại đã được đặt lại. Tất cả cookies sẽ được thử lại."
+                "resetSuccess": "Trạng thái cookies thất bại đã được đặt lại. Tất cả cookies sẽ được thử lại.",
+                "replaceSuccess": "**`Cookie {number}`** đã được thay thế thành công! Sẽ có hiệu lực ngay lập tức."
             }
         },
         "general": {

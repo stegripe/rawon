@@ -203,14 +203,27 @@ export class CookiesCommand extends BaseCommand {
             }
 
             // Save the cookie
-            const success = this.client.cookies.addCookie(number, content);
+            const result = this.client.cookies.addCookie(number, content);
 
-            if (success) {
+            if (result === "added") {
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "success",
                             i18n.__mf("commands.developers.cookies.addSuccess", {
+                                number: number.toString(),
+                            }),
+                            true,
+                        ),
+                    ],
+                });
+            }
+            if (result === "replaced") {
+                return ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "success",
+                            i18n.__mf("commands.developers.cookies.replaceSuccess", {
                                 number: number.toString(),
                             }),
                             true,
@@ -339,7 +352,7 @@ export class CookiesCommand extends BaseCommand {
                         statusText = i18n.__("commands.developers.cookies.statusAvailable");
                 }
 
-                return `${emoji} **Cookie ${index}** - ${statusText}`;
+                return `${emoji} **\`Cookie ${index}\`** - ${statusText}`;
             })
             .join("\n");
 
