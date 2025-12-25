@@ -18,6 +18,7 @@ import {
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
+import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 import { chunk } from "../utils/functions/chunk.js";
@@ -170,11 +171,17 @@ export class InteractionCreateEvent extends BaseEvent {
 
         const member = guild.members.cache.get(interaction.user.id);
         const voiceChannel = member?.voice.channel;
+        const queue = guild.queue;
+
+        if (interaction.customId === "RC_LYRICS") {
+            await this.handleLyricsButton(interaction, queue);
+            return;
+        }
 
         if (!voiceChannel) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", `**|** ${i18n.__("requestChannel.notInVoice")}`)],
+                embeds: [createEmbed("warn", i18n.__("requestChannel.notInVoice"))],
             });
             return;
         }
@@ -187,8 +194,6 @@ export class InteractionCreateEvent extends BaseEvent {
             });
             return;
         }
-
-        const queue = guild.queue;
 
         switch (interaction.customId) {
             case "RC_PAUSE_RESUME": {
@@ -612,194 +617,192 @@ export class InteractionCreateEvent extends BaseEvent {
                 break;
             }
 
-            case "RC_LYRICS": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                const currentSong = (
-                    queue.player.state as
-                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
-                        | undefined
-                )?.resource?.metadata;
-
-                if (!currentSong) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-
-                const lyricsCommand = this.client.commands.get("lyrics");
-                if (lyricsCommand && "fetchLyricsData" in lyricsCommand) {
-                    try {
-                        const data = await (
-                            lyricsCommand as {
-                                fetchLyricsData: (
-                                    song: string,
-                                ) => Promise<LyricsAPIResult<false> | null>;
-                            }
-                        ).fetchLyricsData(currentSong.song.title);
-
-                        if (
-                            data === null ||
-                            (data as { error: boolean }).error ||
-                            (data.lyrics?.length ?? 0) === 0
-                        ) {
-                            await interaction.editReply({
-                                embeds: [
-                                    createEmbed(
-                                        "warn",
-                                        i18n.__mf("commands.music.lyrics.noLyrics", {
-                                            song: `**${currentSong.song.title}**`,
-                                        }),
-                                    ),
-                                ],
-                            });
-                            return;
-                        }
-
-                        const albumArt =
-                            data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
-                        const pages: string[] = chunk(data.lyrics ?? "", 2_048);
-                        let currentPage = 0;
-                        const embed = createEmbed("info", pages[0])
-                            .setAuthor({
-                                name:
-                                    (data.song?.length ?? 0) > 0 && (data.artist?.length ?? 0) > 0
-                                        ? `${data.song} - ${data.artist}`
-                                        : currentSong.song.title.toUpperCase(),
-                            })
-                            .setThumbnail(albumArt);
-
-                        const createPaginationButtons = (page: number, totalPages: number) => {
-                            if (totalPages < 2) {
-                                return [];
-                            }
-
-                            const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-                                new ButtonBuilder()
-                                    .setCustomId("LYRICS_PREV10")
-                                    .setEmoji("⏪")
-                                    .setStyle(ButtonStyle.Secondary)
-                                    .setDisabled(page < 10),
-                                new ButtonBuilder()
-                                    .setCustomId("LYRICS_PREV")
-                                    .setEmoji("⬅️")
-                                    .setStyle(ButtonStyle.Primary)
-                                    .setDisabled(page === 0),
-                                new ButtonBuilder()
-                                    .setCustomId("LYRICS_NEXT")
-                                    .setEmoji("➡️")
-                                    .setStyle(ButtonStyle.Primary)
-                                    .setDisabled(page >= totalPages - 1),
-                                new ButtonBuilder()
-                                    .setCustomId("LYRICS_NEXT10")
-                                    .setEmoji("⏩")
-                                    .setStyle(ButtonStyle.Secondary)
-                                    .setDisabled(page >= totalPages - 10),
-                            );
-                            return [row];
-                        };
-
-                        if (pages.length > 1) {
-                            embed.setFooter({
-                                text: `• ${i18n.__mf("reusable.pageFooter", {
-                                    actual: 1,
-                                    total: pages.length,
-                                })}`,
-                            });
-                        }
-
-                        await interaction.editReply({
-                            embeds: [embed],
-                            components: createPaginationButtons(currentPage, pages.length),
-                        });
-
-                        if (pages.length > 1) {
-                            const message = await interaction.fetchReply();
-                            const collector = message.createMessageComponentCollector({
-                                componentType: ComponentType.Button,
-                                filter: (i) =>
-                                    i.user.id === interaction.user.id &&
-                                    i.customId.startsWith("LYRICS_"),
-                                time: 120_000,
-                            });
-
-                            collector.on("collect", async (i) => {
-                                switch (i.customId) {
-                                    case "LYRICS_PREV10":
-                                        currentPage = Math.max(0, currentPage - 10);
-                                        break;
-                                    case "LYRICS_PREV":
-                                        currentPage = Math.max(0, currentPage - 1);
-                                        break;
-                                    case "LYRICS_NEXT":
-                                        currentPage = Math.min(pages.length - 1, currentPage + 1);
-                                        break;
-                                    case "LYRICS_NEXT10":
-                                        currentPage = Math.min(pages.length - 1, currentPage + 10);
-                                        break;
-                                    default:
-                                        return;
-                                }
-
-                                embed.setDescription(pages[currentPage]).setFooter({
-                                    text: `• ${i18n.__mf("reusable.pageFooter", {
-                                        actual: currentPage + 1,
-                                        total: pages.length,
-                                    })}`,
-                                });
-
-                                await i.update({
-                                    embeds: [embed],
-                                    components: createPaginationButtons(currentPage, pages.length),
-                                });
-                            });
-
-                            collector.on("end", async () => {
-                                try {
-                                    await interaction.editReply({
-                                        embeds: [embed],
-                                        components: [],
-                                    });
-                                } catch {
-                                    // Ignore errors
-                                }
-                            });
-                        }
-                    } catch {
-                        await interaction.editReply({
-                            embeds: [
-                                createEmbed(
-                                    "error",
-                                    i18n.__mf("commands.music.lyrics.noLyrics", {
-                                        song: `**${currentSong.song.title}**`,
-                                    }),
-                                    true,
-                                ),
-                            ],
-                        });
-                    }
-                } else {
-                    await interaction.editReply({
-                        embeds: [createEmbed("error", "Lyrics command not found.", true)],
-                    });
-                }
-                break;
-            }
-
             default:
                 break;
         }
 
         await this.client.requestChannelManager.updatePlayerMessage(guild);
+    }
+
+    private async handleLyricsButton(
+        interaction: ButtonInteraction,
+        queue: ServerQueue | undefined,
+    ): Promise<void> {
+        if (!queue || queue.songs.size === 0) {
+            await interaction.reply({
+                flags: MessageFlags.Ephemeral,
+                embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+            });
+            return;
+        }
+
+        const currentSong = (
+            queue.player.state as
+                | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
+                | undefined
+        )?.resource?.metadata;
+
+        if (!currentSong) {
+            await interaction.reply({
+                flags: MessageFlags.Ephemeral,
+                embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+            });
+            return;
+        }
+
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+        const lyricsCommand = this.client.commands.get("lyrics");
+        if (lyricsCommand && "fetchLyricsData" in lyricsCommand) {
+            try {
+                const data = await (
+                    lyricsCommand as {
+                        fetchLyricsData: (song: string) => Promise<LyricsAPIResult<false> | null>;
+                    }
+                ).fetchLyricsData(currentSong.song.title);
+
+                if (
+                    data === null ||
+                    (data as { error: boolean }).error ||
+                    (data.lyrics?.length ?? 0) === 0
+                ) {
+                    await interaction.editReply({
+                        embeds: [
+                            createEmbed(
+                                "warn",
+                                i18n.__mf("commands.music.lyrics.noLyrics", {
+                                    song: `**${currentSong.song.title}**`,
+                                }),
+                            ),
+                        ],
+                    });
+                    return;
+                }
+
+                const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+                const pages: string[] = chunk(data.lyrics ?? "", 2_048);
+                let currentPage = 0;
+                const embed = createEmbed("info", pages[0])
+                    .setAuthor({
+                        name:
+                            (data.song?.length ?? 0) > 0 && (data.artist?.length ?? 0) > 0
+                                ? `${data.song} - ${data.artist}`
+                                : currentSong.song.title.toUpperCase(),
+                    })
+                    .setThumbnail(albumArt);
+
+                const createPaginationButtons = (page: number, totalPages: number) => {
+                    if (totalPages < 2) {
+                        return [];
+                    }
+
+                    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+                        new ButtonBuilder()
+                            .setCustomId("LYRICS_PREV10")
+                            .setEmoji("⏪")
+                            .setStyle(ButtonStyle.Secondary)
+                            .setDisabled(page < 10),
+                        new ButtonBuilder()
+                            .setCustomId("LYRICS_PREV")
+                            .setEmoji("⬅️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page === 0),
+                        new ButtonBuilder()
+                            .setCustomId("LYRICS_NEXT")
+                            .setEmoji("➡️")
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page >= totalPages - 1),
+                        new ButtonBuilder()
+                            .setCustomId("LYRICS_NEXT10")
+                            .setEmoji("⏩")
+                            .setStyle(ButtonStyle.Secondary)
+                            .setDisabled(page >= totalPages - 10),
+                    );
+                    return [row];
+                };
+
+                if (pages.length > 1) {
+                    embed.setFooter({
+                        text: `• ${i18n.__mf("reusable.pageFooter", {
+                            actual: 1,
+                            total: pages.length,
+                        })}`,
+                    });
+                }
+
+                await interaction.editReply({
+                    embeds: [embed],
+                    components: createPaginationButtons(currentPage, pages.length),
+                });
+
+                if (pages.length > 1) {
+                    const message = await interaction.fetchReply();
+                    const collector = message.createMessageComponentCollector({
+                        componentType: ComponentType.Button,
+                        filter: (i) =>
+                            i.user.id === interaction.user.id && i.customId.startsWith("LYRICS_"),
+                        time: 120_000,
+                    });
+
+                    collector.on("collect", async (i) => {
+                        switch (i.customId) {
+                            case "LYRICS_PREV10":
+                                currentPage = Math.max(0, currentPage - 10);
+                                break;
+                            case "LYRICS_PREV":
+                                currentPage = Math.max(0, currentPage - 1);
+                                break;
+                            case "LYRICS_NEXT":
+                                currentPage = Math.min(pages.length - 1, currentPage + 1);
+                                break;
+                            case "LYRICS_NEXT10":
+                                currentPage = Math.min(pages.length - 1, currentPage + 10);
+                                break;
+                            default:
+                                return;
+                        }
+
+                        embed.setDescription(pages[currentPage]).setFooter({
+                            text: `• ${i18n.__mf("reusable.pageFooter", {
+                                actual: currentPage + 1,
+                                total: pages.length,
+                            })}`,
+                        });
+
+                        await i.update({
+                            embeds: [embed],
+                            components: createPaginationButtons(currentPage, pages.length),
+                        });
+                    });
+
+                    collector.on("end", async () => {
+                        try {
+                            await interaction.editReply({
+                                embeds: [embed],
+                                components: [],
+                            });
+                        } catch {
+                            // Ignore errors
+                        }
+                    });
+                }
+            } catch {
+                await interaction.editReply({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            i18n.__mf("commands.music.lyrics.noLyrics", {
+                                song: `**${currentSong.song.title}**`,
+                            }),
+                            true,
+                        ),
+                    ],
+                });
+            }
+        } else {
+            await interaction.editReply({
+                embeds: [createEmbed("error", "Lyrics command not found.", true)],
+            });
+        }
     }
 }

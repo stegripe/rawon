@@ -11,9 +11,17 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
-const youtubeCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
+let cookiesManagerRef = null;
 
-function args(url, options) {
+export function setCookiesManager(manager) {
+    cookiesManagerRef = manager;
+}
+
+export function getCookiesManager() {
+    return cookiesManagerRef;
+}
+
+function args(url, options, cookiesPath) {
     const optArgs = Object.entries(options)
         .flatMap(([key, val]) => {
             const flag = key.replaceAll(/[A-Z]/gu, ms => `-${ms.toLowerCase()}`);
@@ -24,8 +32,10 @@ function args(url, options) {
         })
         .filter(Boolean);
 
-    if (youtubeCookiesPath && existsSync(youtubeCookiesPath)) {
-        optArgs.push("--cookies", youtubeCookiesPath);
+    const effectiveCookiesPath = cookiesPath ?? cookiesManagerRef?.getCurrentCookiePath();
+    
+    if (effectiveCookiesPath && existsSync(effectiveCookiesPath)) {
+        optArgs.push("--cookies", effectiveCookiesPath);
     }
 
     return [url, ...optArgs];
@@ -37,6 +47,15 @@ function json(str) {
     } catch {
         return str;
     }
+}
+
+export function isBotDetectionError(errorMessage) {
+    const lowerError = (errorMessage ?? "").toLowerCase();
+    return (
+        lowerError.includes("sign in to confirm you're not a bot") ||
+        lowerError.includes("sign in to confirm") ||
+        lowerError.includes("please sign in")
+    );
 }
 
 export async function downloadExecutable() {
@@ -56,13 +75,13 @@ export async function downloadExecutable() {
     }
 }
 
-export const exec = (url, options = {}, spawnOptions = {}) => spawn(exePath, args(url, options), {
+export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) => spawn(exePath, args(url, options, cookiesPath), {
     windowsHide: true,
     ...spawnOptions
 });
 
-export default async function ytdl(url, options = {}, spawnOptions = {}) {
-    const proc = exec(url, options, { ...spawnOptions, stdio: ["ignore", "pipe", "pipe"] });
+export default async function ytdl(url, options = {}, spawnOptions = {}, cookiesPath = null) {
+    const proc = exec(url, options, { ...spawnOptions, stdio: ["ignore", "pipe", "pipe"] }, cookiesPath);
     let data = "";
     let stderrData = "";
 
@@ -70,12 +89,7 @@ export default async function ytdl(url, options = {}, spawnOptions = {}) {
         if (proc.stderr) {
             proc.stderr.on("data", (chunk) => {
                 stderrData += chunk.toString();
-                const errorMessage = stderrData.toLowerCase();
-                if (
-                    errorMessage.includes("sign in to confirm you're not a bot") ||
-                    errorMessage.includes("sign in to confirm") ||
-                    errorMessage.includes("please sign in")
-                ) {
+                if (isBotDetectionError(stderrData)) {
                     console.error(
                         `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
                     );
@@ -85,17 +99,10 @@ export default async function ytdl(url, options = {}, spawnOptions = {}) {
 
         proc.on("error", reject)
             .on("close", (code) => {
-                if (code !== 0 && stderrData) {
-                    const errorMessage = stderrData.toLowerCase();
-                    if (
-                        errorMessage.includes("sign in to confirm you're not a bot") ||
-                        errorMessage.includes("sign in to confirm") ||
-                        errorMessage.includes("please sign in")
-                    ) {
-                        console.error(
-                            `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
-                        );
-                    }
+                if (code !== 0 && stderrData && isBotDetectionError(stderrData)) {
+                    console.error(
+                        `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
+                    );
                 }
                 resolve(code);
             })
