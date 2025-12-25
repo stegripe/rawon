@@ -17,6 +17,9 @@
         "baseUrl": ".",
         "paths": {
             "@/components/*": ["src/components/*"],
+            "@/contexts/*": ["src/contexts/*"],
+            "@/locales": ["src/locales/index.ts"],
+            "@/locales/*": ["src/locales/*"],
             "@/styles/*": ["src/styles/*"],
             "@/public/*": ["public/*"],
             "@/types": ["src/types/index.d.ts"]
