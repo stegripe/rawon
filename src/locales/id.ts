@@ -272,6 +272,7 @@ export const id = {
     disclaimers: {
         title: "Disclaimer",
         subtitle: "Harap baca dengan seksama sebelum menggunakan bot ini.",
+        warningBanner: "Informasi hukum penting",
         copyright: {
             title: "Hak Cipta, DMCA, dan Kekayaan Intelektual",
             items: [
@@ -315,6 +316,7 @@ export const id = {
         optional: "Opsional",
         example: "Contoh",
         learnMore: "Pelajari Lebih Lanjut",
-        deployOnRailway: "Deploy ke Railway"
+        deployOnRailway: "Deploy ke Railway",
+        language: "Bahasa"
     }
 };

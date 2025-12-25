@@ -34,7 +34,7 @@ export default function DisclaimersPage() {
                     <div className="flex items-center gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
                         <WarningAmber className="text-3xl text-secondary" />
                         <Typography className="font-sans text-lg font-medium text-secondary">
-                            {t.disclaimers.subtitle}
+                            {t.disclaimers.warningBanner}
                         </Typography>
                     </div>
 

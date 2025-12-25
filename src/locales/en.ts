@@ -270,6 +270,7 @@ export const en = {
     disclaimers: {
         title: "Disclaimers",
         subtitle: "Please read carefully before using this bot.",
+        warningBanner: "Important legal information",
         copyright: {
             title: "Copyright, DMCA, and Intellectual Properties",
             items: [
@@ -313,6 +314,7 @@ export const en = {
         optional: "Optional",
         example: "Example",
         learnMore: "Learn More",
-        deployOnRailway: "Deploy on Railway"
+        deployOnRailway: "Deploy on Railway",
+        language: "Language"
     }
 };

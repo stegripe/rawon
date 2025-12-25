@@ -456,7 +456,7 @@ export const NavigationBar = () => {
                         <div className="flex items-center gap-2">
                             <LanguageRounded className="text-xl text-third" />
                             <Typography className="font-sans text-lg font-medium">
-                                Language
+                                {t.common.language}
                             </Typography>
                         </div>
                         <div className="flex flex-col gap-1 pl-2">

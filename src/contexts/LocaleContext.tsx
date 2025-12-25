@@ -16,14 +16,19 @@ interface LocaleContextType {
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
 const STORAGE_KEY = "rawon-locale";
+const availableLocales = Object.keys(localeNames) as Locale[];
+
+function isValidLocale(value: string): value is Locale {
+    return availableLocales.includes(value as Locale);
+}
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setLocaleState] = useState<Locale>("en");
 
     useEffect(() => {
         // Get initial locale from localStorage or browser
-        const stored = localStorage.getItem(STORAGE_KEY) as Locale | null;
-        if (stored && (stored === "en" || stored === "id")) {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored && isValidLocale(stored)) {
             setLocaleState(stored);
         } else {
             // Detect browser language
