@@ -11,9 +11,6 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
-// Fallback to env variable for legacy support
-const fallbackCookiesPath = process.env.YOUTUBE_COOKIES ?? "";
-
 // Global reference to cookies manager (set by Rawon client)
 let cookiesManagerRef = null;
 
@@ -36,10 +33,8 @@ function args(url, options, cookiesPath) {
         })
         .filter(Boolean);
 
-    // Use provided cookiesPath, or get from manager, or fallback to env
-    const effectiveCookiesPath = cookiesPath ?? 
-        cookiesManagerRef?.getCurrentCookiePath() ?? 
-        fallbackCookiesPath;
+    // Use provided cookiesPath or get from cookies manager
+    const effectiveCookiesPath = cookiesPath ?? cookiesManagerRef?.getCurrentCookiePath();
     
     if (effectiveCookiesPath && existsSync(effectiveCookiesPath)) {
         optArgs.push("--cookies", effectiveCookiesPath);
