@@ -3,8 +3,20 @@ import { type Readable } from "node:stream";
 import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
-import ytdl, { exec } from "../yt-dlp/index.js";
+import ytdl, { exec, isBotDetectionError } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
+
+/**
+ * Custom error class for when all cookies have failed
+ */
+export class AllCookiesFailedError extends Error {
+    public constructor() {
+        super(
+            "All cookies have failed due to bot detection. Please add new cookies using the cookies command.",
+        );
+        this.name = "AllCookiesFailedError";
+    }
+}
 
 export async function getStream(client: Rawon, url: string, isLive = false): Promise<Readable> {
     const isSoundcloudUrl = checkQuery(url);
@@ -19,6 +31,19 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         }
     }
 
+    // Check if all cookies have already failed
+    if (client.cookies.areAllCookiesFailed()) {
+        throw new AllCookiesFailedError();
+    }
+
+    return attemptStreamWithRetry(client, url, isLive);
+}
+
+async function attemptStreamWithRetry(
+    client: Rawon,
+    url: string,
+    isLive: boolean,
+): Promise<Readable> {
     return new Promise<Readable>((resolve, reject) => {
         const options = isLive
             ? {
@@ -42,31 +67,48 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         }
 
         let stderrData = "";
+        let hasDetectedBotError = false;
 
         if (proc.stderr) {
             proc.stderr.on("data", (chunk: Buffer) => {
                 stderrData += chunk.toString();
-                const errorMessage = stderrData.toLowerCase();
-                if (
-                    errorMessage.includes("sign in to confirm you're not a bot") ||
-                    errorMessage.includes("sign in to confirm") ||
-                    errorMessage.includes("please sign in")
-                ) {
+                if (isBotDetectionError(stderrData) && !hasDetectedBotError) {
+                    hasDetectedBotError = true;
                     client.logger.error(
-                        `[YTDLUtil] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
+                        `[YTDLUtil] Bot detection error detected, attempting cookie rotation. URL: ${url}`,
                     );
+
+                    // Kill the current process and try to rotate cookies
+                    proc.kill("SIGKILL");
+
+                    // Attempt to rotate to next cookie
+                    const rotated = client.cookies.rotateOnFailure();
+                    if (rotated) {
+                        // Retry with new cookie
+                        client.logger.info(
+                            `[YTDLUtil] Retrying with cookie ${client.cookies.getCurrentCookieIndex()}`,
+                        );
+                        attemptStreamWithRetry(client, url, isLive).then(resolve).catch(reject);
+                    } else {
+                        // All cookies have failed
+                        reject(new AllCookiesFailedError());
+                    }
                 }
             });
         }
 
         proc.once("error", (err) => {
             proc.kill("SIGKILL");
-            reject(err);
+            if (!hasDetectedBotError) {
+                reject(err);
+            }
         });
 
         proc.stdout.once("error", (err) => {
             proc.kill("SIGKILL");
-            reject(err);
+            if (!hasDetectedBotError) {
+                reject(err);
+            }
         });
 
         if (!isLive) {
@@ -76,6 +118,10 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         }
 
         void proc.once("spawn", () => {
+            if (hasDetectedBotError) {
+                return;
+            }
+
             if (isLive || !enableAudioCache) {
                 resolve(proc.stdout as unknown as Readable);
                 return;
@@ -91,22 +137,41 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
 }
 
 export async function getInfo(url: string, client?: Rawon): Promise<BasicYoutubeVideoInfo> {
+    // Check if all cookies have already failed
+    if (client?.cookies.areAllCookiesFailed()) {
+        throw new AllCookiesFailedError();
+    }
+
+    return attemptGetInfoWithRetry(url, client);
+}
+
+async function attemptGetInfoWithRetry(
+    url: string,
+    client?: Rawon,
+): Promise<BasicYoutubeVideoInfo> {
     try {
         const result = await ytdl(url, {
             dumpJson: true,
         });
         return result;
     } catch (error) {
-        const errorMessage = ((error as Error)?.message ?? String(error ?? "")).toLowerCase();
-        if (
-            (errorMessage.includes("sign in to confirm you're not a bot") ||
-                errorMessage.includes("sign in to confirm") ||
-                errorMessage.includes("please sign in")) &&
-            client
-        ) {
+        const errorMessage = (error as Error)?.message ?? String(error ?? "");
+        if (isBotDetectionError(errorMessage) && client) {
             client.logger.error(
-                `[YTDLUtil] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
+                `[YTDLUtil] Bot detection error in getInfo, attempting cookie rotation. URL: ${url}`,
             );
+
+            // Attempt to rotate to next cookie
+            const rotated = client.cookies.rotateOnFailure();
+            if (rotated) {
+                // Retry with new cookie
+                client.logger.info(
+                    `[YTDLUtil] Retrying getInfo with cookie ${client.cookies.getCurrentCookieIndex()}`,
+                );
+                return attemptGetInfoWithRetry(url, client);
+            }
+            // All cookies have failed
+            throw new AllCookiesFailedError();
         }
         throw error;
     }

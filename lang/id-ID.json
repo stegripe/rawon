@@ -9,6 +9,38 @@
                 "inputString": "Input",
                 "outputString": "Output",
                 "usage": "{prefix}eval <kode>"
+            },
+            "cookies": {
+                "description": "Kelola cookies YouTube untuk bypass deteksi bot",
+                "usage": "{prefix}cookies <add|remove|list|reset> [nomor|all]",
+                "slashAddDescription": "Tambah file cookie baru",
+                "slashRemoveDescription": "Hapus file cookie",
+                "slashListDescription": "Daftar semua file cookie",
+                "slashResetDescription": "Reset status cookie yang gagal",
+                "slashNumberDescription": "Nomor cookie (mulai dari 1)",
+                "slashRemoveTargetDescription": "Nomor cookie yang akan dihapus atau 'all'",
+                "invalidNumber": "Mohon berikan nomor cookie yang valid (mulai dari 1).",
+                "noAttachment": "Mohon lampirkan file cookies.txt ke pesan kamu.",
+                "invalidFileType": "Mohon lampirkan file .txt.",
+                "invalidCookiesFile": "File tersebut tidak terlihat seperti file cookies yang valid.",
+                "addSuccess": "Cookie {number} berhasil ditambahkan! Akan langsung efektif tanpa restart.",
+                "addFailed": "Gagal menambahkan file cookie.",
+                "addError": "Error menambahkan cookie: {error}",
+                "noRemoveTarget": "Mohon tentukan cookie mana yang akan dihapus (nomor atau 'all').",
+                "invalidRemoveTarget": "Mohon berikan nomor cookie yang valid atau 'all'.",
+                "removeSuccess": "Cookie {number} berhasil dihapus.",
+                "removeAllSuccess": "Berhasil menghapus {count} cookie.",
+                "removeNotFound": "Cookie {number} tidak ditemukan.",
+                "noCookies": "Belum ada cookies yang ditambahkan. Gunakan `cookies add <nomor>` dengan lampiran cookies.txt.",
+                "listTitle": "🍪 Pengelola Cookies",
+                "statusActive": "Aktif (sedang digunakan)",
+                "statusFailed": "Gagal (kena rate limit)",
+                "statusAvailable": "Tersedia",
+                "statsTitle": "Statistik",
+                "statsValue": "Total: {total} | Gagal: {failed} | Sekarang: Cookie {current}",
+                "warningTitle": "Peringatan",
+                "allCookiesFailed": "Semua cookies gagal! Silakan tambah cookies baru atau gunakan `cookies reset` untuk mencoba ulang.",
+                "resetSuccess": "Status cookie yang gagal telah direset. Semua cookies akan dicoba ulang."
             }
         },
         "general": {
@@ -255,7 +287,8 @@
             "leftVC": "Keluar dari voice channel karena tidak ada lagi aktivitas.",
             "queueEnded": "Antrian sudah berakhir, gunakan **{usage}** untuk memainkan lagu lagi.",
             "startPlaying": "Mulai memainkan **{song}**",
-            "stopPlaying": "Selesai memainkan **{song}**"
+            "stopPlaying": "Selesai memainkan **{song}**",
+            "allCookiesFailed": "⚠️ Semua cookies gagal karena deteksi bot! Silakan tambah cookies baru menggunakan perintah `{prefix}cookies add <nomor>` dengan lampiran cookies.txt, atau gunakan `{prefix}cookies reset` untuk mencoba ulang cookies yang ada."
         },
         "musicDecorator": {
             "noInVC": "Mohon maaf, tetapi kamu harus berada di sebuah voice channel untuk melakukannya.",

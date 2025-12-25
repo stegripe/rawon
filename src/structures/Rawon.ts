@@ -10,11 +10,13 @@ import { SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
 import { AudioCacheManager } from "../utils/structures/AudioCacheManager.js";
 import { ClientUtils } from "../utils/structures/ClientUtils.js";
 import { CommandManager } from "../utils/structures/CommandManager.js";
+import { CookiesManager } from "../utils/structures/CookiesManager.js";
 import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
 import { EventsLoader } from "../utils/structures/EventsLoader.js";
 import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
+import { setCookiesManager } from "../utils/yt-dlp/index.js";
 
 export class Rawon extends Client {
     public startTimestamp = 0;
@@ -37,6 +39,7 @@ export class Rawon extends Client {
     public readonly soundcloud = new Soundcloud();
     public readonly requestChannelManager = new RequestChannelManager(this);
     public readonly audioCache = new AudioCacheManager(this);
+    public readonly cookies = new CookiesManager(this);
     public readonly request = got.extend({
         hooks: {
             beforeError: [
@@ -65,6 +68,8 @@ export class Rawon extends Client {
 
     public build: () => Promise<this> = async () => {
         this.startTimestamp = Date.now();
+        // Set the cookies manager reference for yt-dlp
+        setCookiesManager(this.cookies);
         this.events.load();
         await this.login();
         return this;
