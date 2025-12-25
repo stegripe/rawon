@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** berhasil dihapus.",
                 "removeAllSuccess": "Berhasil menghapus {count} cookie.",
                 "removeNotFound": "**`Cookie {number}`** tidak ditemukan.",
-                "noCookies": "Belum ada cookies yang ditambahkan. Gunakan `cookies add <nomor>` dengan lampiran cookies.txt.",
+                "noCookies": "Belum ada cookies yang ditambahkan. Gunakan `{prefix}cookies add <nomor>` dengan lampiran cookies.txt.",
                 "listTitle": "Pengelola Cookies",
                 "statusActive": "Aktif (sedang digunakan)",
                 "statusFailed": "Gagal (kena rate limit)",

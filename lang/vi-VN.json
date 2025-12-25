@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** đã được xóa thành công.",
                 "removeAllSuccess": "Đã xóa {count} cookie(s) thành công.",
                 "removeNotFound": "**`Cookie {number}`** không được tìm thấy.",
-                "noCookies": "Chưa có cookies nào được thêm. Sử dụng `cookies add <số>` với file cookies.txt đính kèm.",
+                "noCookies": "Chưa có cookies nào được thêm. Sử dụng `{prefix}cookies add <số>` với file cookies.txt đính kèm.",
                 "listTitle": "Trình Quản Lý Cookies",
                 "statusActive": "Đang hoạt động (đang sử dụng)",
                 "statusFailed": "Thất bại (giới hạn tốc độ)",

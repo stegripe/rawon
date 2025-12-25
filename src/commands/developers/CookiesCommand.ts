@@ -345,7 +345,14 @@ export class CookiesCommand extends BaseCommand {
 
         if (cookies.length === 0) {
             return ctx.reply({
-                embeds: [createEmbed("info", i18n.__("commands.developers.cookies.noCookies"))],
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        i18n.__mf("commands.developers.cookies.noCookies", {
+                            prefix: this.client.config.mainPrefix,
+                        }),
+                    ),
+                ],
             });
         }
 
@@ -454,11 +461,10 @@ export class CookiesCommand extends BaseCommand {
         }
 
         const embed = createEmbed(
-            "success",
+            "info",
             i18n.__mf("commands.developers.cookies.viewSuccess", {
                 number: number.toString(),
             }),
-            true,
         ).addFields([
             {
                 name: i18n.__("commands.developers.cookies.viewStatusTitle"),

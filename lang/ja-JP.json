@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** が正常に削除されました。",
                 "removeAllSuccess": "{count}個のCookieが正常に削除されました。",
                 "removeNotFound": "**`Cookie {number}`** が見つかりませんでした。",
-                "noCookies": "まだCookieが追加されていません。cookies.txtファイルを添付して `cookies add <番号>` を使用してください。",
+                "noCookies": "まだCookieが追加されていません。cookies.txtファイルを添付して `{prefix}cookies add <番号>` を使用してください。",
                 "listTitle": "Cookie マネージャー",
                 "statusActive": "アクティブ（使用中）",
                 "statusFailed": "失敗（レート制限）",

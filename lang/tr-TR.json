@@ -31,7 +31,7 @@
                 "removeSuccess": "Çerez {number} başarıyla kaldırıldı.",
                 "removeAllSuccess": "{count} çerez başarıyla kaldırıldı.",
                 "removeNotFound": "Çerez {number} bulunamadı.",
-                "noCookies": "Henüz çerez eklenmedi. Ekli cookies.txt dosyası ile `cookies add <numara>` kullanın.",
+                "noCookies": "Henüz çerez eklenmedi. Ekli cookies.txt dosyası ile `{prefix}cookies add <numara>` kullanın.",
                 "listTitle": "Çerez Yöneticisi",
                 "statusActive": "Aktif (kullanımda)",
                 "statusFailed": "Başarısız (hız sınırı)",

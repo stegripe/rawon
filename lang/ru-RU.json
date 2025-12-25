@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** успешно удалён.",
                 "removeAllSuccess": "Успешно удалено {count} cookie(s).",
                 "removeNotFound": "**`Cookie {number}`** не найден.",
-                "noCookies": "Cookies ещё не добавлены. Используйте `cookies add <номер>` с прикреплённым файлом cookies.txt.",
+                "noCookies": "Cookies ещё не добавлены. Используйте `{prefix}cookies add <номер>` с прикреплённым файлом cookies.txt.",
                 "listTitle": "Менеджер Cookies",
                 "statusActive": "Активен (используется)",
                 "statusFailed": "Неудача (ограничение скорости)",

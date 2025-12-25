@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** foi removido com sucesso.",
                 "removeAllSuccess": "{count} cookie(s) removido(s) com sucesso.",
                 "removeNotFound": "**`Cookie {number}`** não foi encontrado.",
-                "noCookies": "Nenhum cookie foi adicionado ainda. Use `cookies add <número>` com um arquivo cookies.txt anexado.",
+                "noCookies": "Nenhum cookie foi adicionado ainda. Use `{prefix}cookies add <número>` com um arquivo cookies.txt anexado.",
                 "listTitle": "Gerenciador de Cookies",
                 "statusActive": "Ativo (em uso)",
                 "statusFailed": "Falhou (limite de taxa)",

@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** has been removed successfully.",
                 "removeAllSuccess": "Removed {count} cookie(s) successfully.",
                 "removeNotFound": "**`Cookie {number}`** was not found.",
-                "noCookies": "No cookies have been added yet. Use `cookies add <number>` with a cookies.txt attachment.",
+                "noCookies": "No cookies have been added yet. Use `{prefix}cookies add <number>` with a cookies.txt attachment.",
                 "listTitle": "Cookies Manager",
                 "statusActive": "Active (in use)",
                 "statusFailed": "Failed (rate limited)",

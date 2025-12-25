@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** 已成功刪除。",
                 "removeAllSuccess": "成功刪除了 {count} 個cookie。",
                 "removeNotFound": "未找到**`Cookie {number}`**。",
-                "noCookies": "尚未新增任何cookie。使用 `cookies add <編號>` 並附加cookies.txt檔案。",
+                "noCookies": "尚未新增任何cookie。使用 `{prefix}cookies add <編號>` 並附加cookies.txt檔案。",
                 "listTitle": "Cookie管理器",
                 "statusActive": "活躍（使用中）",
                 "statusFailed": "失敗（速率限制）",

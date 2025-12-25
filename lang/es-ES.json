@@ -31,7 +31,7 @@
                 "removeSuccess": "**`Cookie {number}`** ha sido eliminada exitosamente.",
                 "removeAllSuccess": "Se eliminaron {count} cookie(s) exitosamente.",
                 "removeNotFound": "**`Cookie {number}`** no fue encontrada.",
-                "noCookies": "Aún no se han agregado cookies. Usa `cookies add <número>` con un archivo cookies.txt adjunto.",
+                "noCookies": "Aún no se han agregado cookies. Usa `{prefix}cookies add <número>` con un archivo cookies.txt adjunto.",
                 "listTitle": "Administrador de Cookies",
                 "statusActive": "Activa (en uso)",
                 "statusFailed": "Fallida (límite de tasa)",
