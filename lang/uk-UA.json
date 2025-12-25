@@ -41,7 +41,12 @@
                 "warningTitle": "Попередження",
                 "allCookiesFailed": "Усі cookies невдалі! Будь ласка, додайте нові cookies або використайте `cookies reset` для повторної спроби.",
                 "resetSuccess": "Статус невдалих cookies скинуто. Усі cookies будуть повторно спробовані.",
-                "replaceSuccess": "**`Cookie {number}`** успішно замінено! Набуде чинності негайно."
+                "replaceSuccess": "**`Cookie {number}`** успішно замінено! Набуде чинності негайно.",
+                "slashViewDescription": "Переглянути/завантажити файл cookie",
+                "viewSuccess": "Ось **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** не знайдено.",
+                "viewStatusTitle": "Статус",
+                "viewSizeTitle": "Розмір"
             }
         },
         "general": {

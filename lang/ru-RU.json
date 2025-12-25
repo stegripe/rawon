@@ -41,7 +41,12 @@
                 "warningTitle": "Предупреждение",
                 "allCookiesFailed": "Все cookies неудачны! Пожалуйста, добавьте новые cookies или используйте `cookies reset` для повторной попытки.",
                 "resetSuccess": "Статус неудачных cookies сброшен. Все cookies будут повторно попробованы.",
-                "replaceSuccess": "**`Cookie {number}`** успешно заменён! Вступит в силу немедленно."
+                "replaceSuccess": "**`Cookie {number}`** успешно заменён! Вступит в силу немедленно.",
+                "slashViewDescription": "Просмотреть/скачать файл cookie",
+                "viewSuccess": "Вот **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** не найден.",
+                "viewStatusTitle": "Статус",
+                "viewSizeTitle": "Размер"
             }
         },
         "general": {

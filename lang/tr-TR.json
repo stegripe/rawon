@@ -41,7 +41,12 @@
                 "warningTitle": "Uyarı",
                 "allCookiesFailed": "Tüm çerezler başarısız oldu! Lütfen yeni çerezler ekleyin veya yeniden denemek için `cookies reset` kullanın.",
                 "resetSuccess": "Başarısız çerez durumu sıfırlandı. Tüm çerezler yeniden denenecek.",
-                "replaceSuccess": "**`Cookie {number}`** başarıyla değiştirildi! Hemen geçerli olacak."
+                "replaceSuccess": "**`Cookie {number}`** başarıyla değiştirildi! Hemen geçerli olacak.",
+                "slashViewDescription": "Çerez dosyasını görüntüle/indir",
+                "viewSuccess": "İşte **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** bulunamadı.",
+                "viewStatusTitle": "Durum",
+                "viewSizeTitle": "Boyut"
             }
         },
         "general": {

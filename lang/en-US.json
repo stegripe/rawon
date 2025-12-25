@@ -41,7 +41,12 @@
                 "warningTitle": "Warning",
                 "allCookiesFailed": "All cookies have failed! Please add new cookies or use `cookies reset` to retry.",
                 "resetSuccess": "**`Cookie`** failed status has been reset. All cookies will be retried.",
-                "replaceSuccess": "**`Cookie {number}`** has been replaced successfully! It will take effect immediately."
+                "replaceSuccess": "**`Cookie {number}`** has been replaced successfully! It will take effect immediately.",
+                "slashViewDescription": "View/download a cookie file",
+                "viewSuccess": "Here is **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** was not found.",
+                "viewStatusTitle": "Status",
+                "viewSizeTitle": "Size"
             }
         },
         "general": {

@@ -41,7 +41,12 @@
                 "warningTitle": "警告",
                 "allCookiesFailed": "すべてのCookieが失敗しました！新しいCookieを追加するか、`cookies reset` を使用して再試行してください。",
                 "resetSuccess": "失敗したCookieのステータスがリセットされました。すべてのCookieが再試行されます。",
-                "replaceSuccess": "**`Cookie {number}`** が正常に置き換えられました！すぐに有効になります。"
+                "replaceSuccess": "**`Cookie {number}`** が正常に置き換えられました！すぐに有効になります。",
+                "slashViewDescription": "Cookieファイルを表示/ダウンロード",
+                "viewSuccess": "**`Cookie {number}`** はこちらです:",
+                "viewNotFound": "**`Cookie {number}`** が見つかりませんでした。",
+                "viewStatusTitle": "ステータス",
+                "viewSizeTitle": "サイズ"
             }
         },
         "general": {

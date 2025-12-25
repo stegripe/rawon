@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -252,5 +252,21 @@ export class CookiesManager {
      */
     public getFailedCookieCount(): number {
         return this.failedCookies.size;
+    }
+
+    /**
+     * Get cookie file content by index
+     * Returns the content as string or null if not found
+     */
+    public getCookieContent(index: number): string | null {
+        try {
+            const cookiePath = this.getCookiePath(index);
+            if (existsSync(cookiePath)) {
+                return readFileSync(cookiePath, "utf8");
+            }
+            return null;
+        } catch {
+            return null;
+        }
     }
 }

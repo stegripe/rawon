@@ -41,7 +41,12 @@
                 "warningTitle": "Cảnh Báo",
                 "allCookiesFailed": "Tất cả cookies đã thất bại! Vui lòng thêm cookies mới hoặc sử dụng `cookies reset` để thử lại.",
                 "resetSuccess": "Trạng thái cookies thất bại đã được đặt lại. Tất cả cookies sẽ được thử lại.",
-                "replaceSuccess": "**`Cookie {number}`** đã được thay thế thành công! Sẽ có hiệu lực ngay lập tức."
+                "replaceSuccess": "**`Cookie {number}`** đã được thay thế thành công! Sẽ có hiệu lực ngay lập tức.",
+                "slashViewDescription": "Xem/tải file cookie",
+                "viewSuccess": "Đây là **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** không được tìm thấy.",
+                "viewStatusTitle": "Trạng thái",
+                "viewSizeTitle": "Kích thước"
             }
         },
         "general": {

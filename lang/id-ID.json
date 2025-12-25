@@ -41,7 +41,12 @@
                 "warningTitle": "Peringatan",
                 "allCookiesFailed": "Semua cookies gagal! Silakan tambah cookies baru atau gunakan `cookies reset` untuk mencoba ulang.",
                 "resetSuccess": "Status cookie yang gagal telah direset. Semua cookies akan dicoba ulang.",
-                "replaceSuccess": "**`Cookie {number}`** telah diganti! Akan langsung berlaku."
+                "replaceSuccess": "**`Cookie {number}`** telah diganti! Akan langsung berlaku.",
+                "slashViewDescription": "Lihat/unduh file cookie",
+                "viewSuccess": "Ini **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** tidak ditemukan.",
+                "viewStatusTitle": "Status",
+                "viewSizeTitle": "Ukuran"
             }
         },
         "general": {

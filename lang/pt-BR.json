@@ -41,7 +41,12 @@
                 "warningTitle": "Aviso",
                 "allCookiesFailed": "Todos os cookies falharam! Por favor, adicione novos cookies ou use `cookies reset` para tentar novamente.",
                 "resetSuccess": "O status de cookies com falha foi resetado. Todos os cookies serão tentados novamente.",
-                "replaceSuccess": "**`Cookie {number}`** foi substituído com sucesso! Entrará em vigor imediatamente."
+                "replaceSuccess": "**`Cookie {number}`** foi substituído com sucesso! Entrará em vigor imediatamente.",
+                "slashViewDescription": "Ver/baixar um arquivo de cookie",
+                "viewSuccess": "Aqui está **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** não foi encontrado.",
+                "viewStatusTitle": "Status",
+                "viewSizeTitle": "Tamanho"
             }
         },
         "general": {

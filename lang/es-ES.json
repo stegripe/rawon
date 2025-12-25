@@ -41,7 +41,12 @@
                 "warningTitle": "Advertencia",
                 "allCookiesFailed": "¡Todas las cookies han fallado! Por favor, agrega nuevas cookies o usa `cookies reset` para reintentar.",
                 "resetSuccess": "El estado de cookies fallidas ha sido restablecido. Todas las cookies serán reintentadas.",
-                "replaceSuccess": "**`Cookie {number}`** ha sido reemplazada con éxito. Tomará efecto inmediatamente."
+                "replaceSuccess": "**`Cookie {number}`** ha sido reemplazada con éxito. Tomará efecto inmediatamente.",
+                "slashViewDescription": "Ver/descargar un archivo de cookie",
+                "viewSuccess": "Aquí está **`Cookie {number}`**:",
+                "viewNotFound": "**`Cookie {number}`** no fue encontrada.",
+                "viewStatusTitle": "Estado",
+                "viewSizeTitle": "Tamaño"
             }
         },
         "general": {

@@ -1,4 +1,5 @@
-import { ApplicationCommandOptionType, type Message } from "discord.js";
+import { Buffer } from "node:buffer";
+import { ApplicationCommandOptionType, AttachmentBuilder, type Message } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
@@ -49,6 +50,20 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
                 type: ApplicationCommandOptionType.Subcommand,
             },
             {
+                description: i18n.__("commands.developers.cookies.slashViewDescription"),
+                name: "view",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        description: i18n.__("commands.developers.cookies.slashNumberDescription"),
+                        name: "number",
+                        type: ApplicationCommandOptionType.Integer,
+                        required: true,
+                        minValue: 1,
+                    },
+                ],
+            },
+            {
                 description: i18n.__("commands.developers.cookies.slashResetDescription"),
                 name: "reset",
                 type: ApplicationCommandOptionType.Subcommand,
@@ -82,6 +97,8 @@ export class CookiesCommand extends BaseCommand {
                 return this.handleRemove(ctx);
             case "list":
                 return this.handleList(ctx);
+            case "view":
+                return this.handleView(ctx);
             case "reset":
                 return this.handleReset(ctx);
             default:
@@ -380,6 +397,82 @@ export class CookiesCommand extends BaseCommand {
         }
 
         return ctx.reply({ embeds: [embed] });
+    }
+
+    private async handleView(ctx: CommandContext): Promise<Message | undefined> {
+        const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
+
+        if (Number.isNaN(number) || number < 1) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__("commands.developers.cookies.invalidNumber"),
+                        true,
+                    ),
+                ],
+            });
+        }
+
+        const content = this.client.cookies.getCookieContent(number);
+
+        if (content === null) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.developers.cookies.viewNotFound", {
+                            number: number.toString(),
+                        }),
+                        true,
+                    ),
+                ],
+            });
+        }
+
+        // Create a downloadable attachment
+        const attachment = new AttachmentBuilder(Buffer.from(content, "utf8"), {
+            name: `cookies-${number}.txt`,
+        });
+
+        const status = this.client.cookies.getCookieStatus(number);
+        let emoji: string;
+        let statusText: string;
+
+        switch (status) {
+            case "active":
+                emoji = "🟢";
+                statusText = i18n.__("commands.developers.cookies.statusActive");
+                break;
+            case "failed":
+                emoji = "🔴";
+                statusText = i18n.__("commands.developers.cookies.statusFailed");
+                break;
+            default:
+                emoji = "🟡";
+                statusText = i18n.__("commands.developers.cookies.statusAvailable");
+        }
+
+        const embed = createEmbed(
+            "success",
+            i18n.__mf("commands.developers.cookies.viewSuccess", {
+                number: number.toString(),
+            }),
+            true,
+        ).addFields([
+            {
+                name: i18n.__("commands.developers.cookies.viewStatusTitle"),
+                value: `${emoji} ${statusText}`,
+                inline: true,
+            },
+            {
+                name: i18n.__("commands.developers.cookies.viewSizeTitle"),
+                value: `\`${content.length}\` bytes`,
+                inline: true,
+            },
+        ]);
+
+        return ctx.reply({ embeds: [embed], files: [attachment] });
     }
 
     private async handleReset(ctx: CommandContext): Promise<Message | undefined> {

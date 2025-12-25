@@ -41,7 +41,12 @@
                 "warningTitle": "警告",
                 "allCookiesFailed": "所有cookie都已失敗！請新增新的cookie或使用 `cookies reset` 重試。",
                 "resetSuccess": "失敗cookie的狀態已重設。所有cookie將被重試。",
-                "replaceSuccess": "**`Cookie {number}`** 已成功替換！將立即生效。"
+                "replaceSuccess": "**`Cookie {number}`** 已成功替換！將立即生效。",
+                "slashViewDescription": "查看/下載Cookie檔案",
+                "viewSuccess": "這是 **`Cookie {number}`**:",
+                "viewNotFound": "未找到 **`Cookie {number}`**。",
+                "viewStatusTitle": "狀態",
+                "viewSizeTitle": "大小"
             }
         },
         "general": {
