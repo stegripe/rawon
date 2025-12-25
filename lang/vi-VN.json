@@ -94,6 +94,7 @@
                 "apiError": "Không thể tìm bài hát **{song}**, vì: `{message}`",
                 "description": "Hiển thị lời bài hát",
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
+                "searchingLyrics": "Đang tìm lời bài hát...",
                 "slashDescription": "Tìm bài hát",
                 "usage": "{prefix}lyrics [bài hát]",
                 "noLyrics": "Không tìm thấy lời bài hát cho **{song}**."

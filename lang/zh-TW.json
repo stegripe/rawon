@@ -94,6 +94,7 @@
                 "apiError": "API 無法尋找歌曲 **{song}**， 因為: `{message}`",
                 "description": "顯示歌曲的歌詞",
                 "noQuery": "目前没有播放任何内容，或者沒有提供任何參數。",
+                "searchingLyrics": "正在搜尋歌詞...",
                 "slashDescription": "要搜索的歌曲",
                 "usage": "{prefix}lyrics [歌曲]",
                 "noLyrics": "找不到 **{song}** 的歌詞。"

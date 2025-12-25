@@ -26,7 +26,7 @@ const toCapitalCase = (text: string): string => {
 
 const formatLocale = (locale: string | undefined): string => {
     if ((locale?.length ?? 0) === 0) {
-        return "en";
+        return "en-US";
     }
     const parts = locale?.toLowerCase().split("-") ?? [];
     if (parts.length === 2) {
@@ -38,7 +38,7 @@ export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
-export const lang = formatLocale(process.env.LOCALE) || "en";
+export const lang = formatLocale(process.env.LOCALE) || "en-US";
 export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
