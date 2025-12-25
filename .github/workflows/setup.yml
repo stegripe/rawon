@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [">=16.6.0 <17.x"]
+                node-version: [">=18.17.0 <19.x"]
         steps:
             - name: Checkout repository
               uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
@@ -35,7 +35,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [">=16.6.0 <17.x"]
+                node-version: [">=18.17.0 <19.x"]
         steps:
             - name: Checkout repository
               uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
