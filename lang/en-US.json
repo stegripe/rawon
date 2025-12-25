@@ -333,6 +333,7 @@
             "queueEnded": "Queue has ended, use **`{usage}`** to play more music.",
             "startPlaying": "Started playing **{song}**",
             "stopPlaying": "Stopped playing **{song}**",
+            "songRequeued": "Had trouble playing **{song}**, re-queued for another attempt.",
             "allCookiesFailed": "All cookies have failed due to bot detection! Please add new cookies using `{prefix}cookies add <number>` command with a cookies.txt attachment, or use `{prefix}cookies reset` to retry existing cookies."
         },
         "musicDecorator": {

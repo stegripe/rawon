@@ -430,27 +430,50 @@ export class ServerQueue {
     }
 
     private preCacheNextSong(currentSong: QueueSong): void {
-        let nextSong: QueueSong | undefined;
-
         if (this.loopMode === "SONG") {
             return;
         }
 
+        const songsToCache: string[] = [];
+        const PRE_CACHE_AHEAD = 3;
+
         if (this.shuffle) {
-            const availableSongs = this.songs.filter((s) => s.key !== currentSong.key);
-            nextSong = availableSongs.random();
+            const availableSongs = this.songs.filter(
+                (s) => s.key !== currentSong.key && !s.song.isLive,
+            );
+            const songsArray = Array.from(availableSongs.values());
+            const shuffled = songsArray.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, Math.min(PRE_CACHE_AHEAD, songsArray.length));
+
+            for (const song of selected) {
+                songsToCache.push(song.song.url);
+            }
         } else {
             const sortedSongs = this.songs.sortByIndex();
-            const nextInOrder = sortedSongs.filter((s) => s.index > currentSong.index).first();
-            if (nextInOrder) {
-                nextSong = nextInOrder;
-            } else if (this.loopMode === "QUEUE") {
-                nextSong = sortedSongs.first();
+            const nextSongsArray = Array.from(
+                sortedSongs.filter((s) => s.index > currentSong.index && !s.song.isLive).values(),
+            ).slice(0, PRE_CACHE_AHEAD);
+
+            for (const song of nextSongsArray) {
+                songsToCache.push(song.song.url);
+            }
+
+            if (songsToCache.length < PRE_CACHE_AHEAD && this.loopMode === "QUEUE") {
+                const remaining = PRE_CACHE_AHEAD - songsToCache.length;
+                const fromStartArray = Array.from(
+                    sortedSongs
+                        .filter((s) => !s.song.isLive && !songsToCache.includes(s.song.url))
+                        .values(),
+                ).slice(0, remaining);
+
+                for (const song of fromStartArray) {
+                    songsToCache.push(song.song.url);
+                }
             }
         }
 
-        if (nextSong && !nextSong.song.isLive) {
-            void this.client.audioCache.preCacheUrl(nextSong.song.url);
+        if (songsToCache.length > 0) {
+            void this.client.audioCache.preCacheMultiple(songsToCache);
         }
     }
 }
