@@ -296,6 +296,7 @@
             "queueEnded": "A fila terminou, use **`{usage}`** para adicionar mais músicas.",
             "startPlaying": "Começando a tocar **{song}**",
             "stopPlaying": "Parando de tocar **{song}**",
+            "songRequeued": "Houve um problema ao tocar **{song}**, adicionado de volta à fila para outra tentativa.",
             "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Por favor, adicione novos cookies usando o comando `{prefix}cookies add <número>` com um arquivo cookies.txt anexado, ou use `{prefix}cookies reset` para tentar novamente os cookies existentes."
         },
         "musicDecorator": {
