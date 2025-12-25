@@ -94,6 +94,7 @@
                 "apiError": "`{message}`のためAPIは**{song}**を見つけられませんでした。",
                 "description": "曲の歌詞を表示",
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
+                "searchingLyrics": "歌詞を検索中...",
                 "slashDescription": "検索する曲",
                 "usage": "{prefix}lyrics [曲]",
                 "noLyrics": "**{song}** の歌詞が見つかりませんでした。"

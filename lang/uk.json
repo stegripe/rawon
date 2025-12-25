@@ -94,6 +94,7 @@
                 "apiError": "API не змогло найти пісню **{song}**, тому що: `{message}`",
                 "description": "Показати слова пісні",
                 "noQuery": "Зараз нічого не програється або не було аргументи.",
+                "searchingLyrics": "Пошук тексту пісні...",
                 "slashDescription": "Пісня для пошуку",
                 "usage": "{prefix}lyrics [пісня]",
                 "noLyrics": "Текст для **{song}** не знайдено."
