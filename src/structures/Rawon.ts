@@ -68,7 +68,6 @@ export class Rawon extends Client {
 
     public build: () => Promise<this> = async () => {
         this.startTimestamp = Date.now();
-        // Set the cookies manager reference for yt-dlp
         setCookiesManager(this.cookies);
         this.events.load();
         await this.login();

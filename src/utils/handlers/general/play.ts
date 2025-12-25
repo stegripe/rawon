@@ -84,7 +84,6 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         );
     } catch (error) {
         if (error instanceof AllCookiesFailedError) {
-            // All cookies have failed - show special message and stop the queue
             const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
                 guild,
                 queue.textChannel.id,
@@ -108,7 +107,6 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
                 });
             }
 
-            // Stop the queue to prevent spam skipping
             queue.destroy();
             return;
         }

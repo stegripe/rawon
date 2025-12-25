@@ -28,16 +28,10 @@ export class CookiesManager {
         }
     }
 
-    /**
-     * Get the path for a cookie file by its index
-     */
     public getCookiePath(index: number): string {
         return path.join(this.cookiesDir, `cookies-${index}.txt`);
     }
 
-    /**
-     * Get the current active cookie path, or null if all cookies have failed
-     */
     public getCurrentCookiePath(): string | null {
         if (this.allCookiesFailed) {
             return null;
@@ -48,13 +42,11 @@ export class CookiesManager {
             return null;
         }
 
-        // If current cookie exists and hasn't failed, use it
         const cookiePath = this.getCookiePath(this.currentCookieIndex);
         if (existsSync(cookiePath) && !this.failedCookies.has(this.currentCookieIndex)) {
             return cookiePath;
         }
 
-        // Try to find a working cookie
         for (const index of cookies) {
             if (!this.failedCookies.has(index)) {
                 this.currentCookieIndex = index;
@@ -62,15 +54,10 @@ export class CookiesManager {
             }
         }
 
-        // All cookies have failed
         this.allCookiesFailed = true;
         return null;
     }
 
-    /**
-     * Mark the current cookie as failed and rotate to the next one
-     * Returns true if rotation was successful, false if all cookies have failed
-     */
     public rotateOnFailure(): boolean {
         const cookies = this.listCookies();
         if (cookies.length === 0) {
@@ -78,13 +65,11 @@ export class CookiesManager {
             return false;
         }
 
-        // Mark current cookie as failed
         this.failedCookies.add(this.currentCookieIndex);
         this.client.logger.warn(
             `[CookiesManager] Cookie ${this.currentCookieIndex} marked as failed. Failed cookies: ${Array.from(this.failedCookies).join(", ")}`,
         );
 
-        // Find next working cookie
         for (const index of cookies) {
             if (!this.failedCookies.has(index)) {
                 this.currentCookieIndex = index;
@@ -95,7 +80,6 @@ export class CookiesManager {
             }
         }
 
-        // All cookies have failed
         this.allCookiesFailed = true;
         this.client.logger.error(
             "[CookiesManager] All cookies have failed. Please add new cookies.",
@@ -103,9 +87,6 @@ export class CookiesManager {
         return false;
     }
 
-    /**
-     * Reset all failed cookies status (useful after adding new cookies)
-     */
     public resetFailedStatus(): void {
         this.failedCookies.clear();
         this.allCookiesFailed = false;
@@ -113,16 +94,10 @@ export class CookiesManager {
         this.client.logger.info("[CookiesManager] Reset all failed cookie statuses.");
     }
 
-    /**
-     * Check if all cookies have failed
-     */
     public areAllCookiesFailed(): boolean {
         return this.allCookiesFailed;
     }
 
-    /**
-     * List all available cookie indices
-     */
     public listCookies(): number[] {
         if (!existsSync(this.cookiesDir)) {
             return [];
@@ -144,23 +119,16 @@ export class CookiesManager {
         return cookieIndices.sort((a, b) => a - b);
     }
 
-    /**
-     * Add a cookie file with the specified index
-     * Returns "added" for new cookies, "replaced" if cookie already existed, or false on error
-     */
     public addCookie(index: number, content: string): "added" | "replaced" | false {
         try {
             const cookiePath = this.getCookiePath(index);
             const existed = existsSync(cookiePath);
             writeFileSync(cookiePath, content, "utf8");
 
-            // Remove the failed status for this specific cookie
             this.failedCookies.delete(index);
 
-            // Reset the allCookiesFailed flag if it was set, but don't reset other failed cookies
             if (this.allCookiesFailed) {
                 this.allCookiesFailed = false;
-                // Set this new cookie as the current one
                 this.currentCookieIndex = index;
             }
 
@@ -174,9 +142,6 @@ export class CookiesManager {
         }
     }
 
-    /**
-     * Remove a cookie file by index
-     */
     public removeCookie(index: number): boolean {
         try {
             const cookiePath = this.getCookiePath(index);
@@ -184,7 +149,6 @@ export class CookiesManager {
                 rmSync(cookiePath, { force: true });
                 this.failedCookies.delete(index);
 
-                // If we removed the current cookie, switch to another
                 if (this.currentCookieIndex === index) {
                     this.initializeCurrentCookie();
                 }
@@ -199,9 +163,6 @@ export class CookiesManager {
         }
     }
 
-    /**
-     * Remove all cookie files
-     */
     public removeAllCookies(): number {
         const cookies = this.listCookies();
         let removed = 0;
@@ -220,9 +181,6 @@ export class CookiesManager {
         return removed;
     }
 
-    /**
-     * Get cookie status for display
-     */
     public getCookieStatus(index: number): "active" | "failed" | "available" {
         if (this.currentCookieIndex === index && !this.failedCookies.has(index)) {
             return "active";
@@ -233,31 +191,18 @@ export class CookiesManager {
         return "available";
     }
 
-    /**
-     * Get current cookie index
-     */
     public getCurrentCookieIndex(): number {
         return this.currentCookieIndex;
     }
 
-    /**
-     * Get count of cookies
-     */
     public getCookieCount(): number {
         return this.listCookies().length;
     }
 
-    /**
-     * Get count of failed cookies
-     */
     public getFailedCookieCount(): number {
         return this.failedCookies.size;
     }
 
-    /**
-     * Get cookie file content by index
-     * Returns the content as string or null if not found
-     */
     public getCookieContent(index: number): string | null {
         try {
             const cookiePath = this.getCookiePath(index);

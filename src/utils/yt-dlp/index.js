@@ -11,7 +11,6 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
-// Global reference to cookies manager (set by Rawon client)
 let cookiesManagerRef = null;
 
 export function setCookiesManager(manager) {
@@ -33,7 +32,6 @@ function args(url, options, cookiesPath) {
         })
         .filter(Boolean);
 
-    // Use provided cookiesPath or get from cookies manager
     const effectiveCookiesPath = cookiesPath ?? cookiesManagerRef?.getCurrentCookiePath();
     
     if (effectiveCookiesPath && existsSync(effectiveCookiesPath)) {
@@ -51,9 +49,6 @@ function json(str) {
     }
 }
 
-/**
- * Check if error message indicates a bot detection / sign-in required error
- */
 export function isBotDetectionError(errorMessage) {
     const lowerError = (errorMessage ?? "").toLowerCase();
     return (

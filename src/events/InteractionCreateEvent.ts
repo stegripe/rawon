@@ -173,7 +173,6 @@ export class InteractionCreateEvent extends BaseEvent {
         const voiceChannel = member?.voice.channel;
         const queue = guild.queue;
 
-        // RC_LYRICS doesn't require voice channel - it just shows lyrics of current song
         if (interaction.customId === "RC_LYRICS") {
             await this.handleLyricsButton(interaction, queue);
             return;

@@ -73,23 +73,14 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     usage: i18n.__("commands.developers.cookies.usage"),
 })
 export class CookiesCommand extends BaseCommand {
-    /**
-     * Format a cookie name for display
-     */
     private formatCookie(number: number): string {
         return `**\`Cookie ${number}\`**`;
     }
 
-    /**
-     * Format the usage command for display
-     */
     private formatUsage(prefix: string): string {
         return `\`${prefix}cookies add <number>\``;
     }
 
-    /**
-     * Format the reset command for display
-     */
     private formatResetCmd(): string {
         return `\`cookies reset\``;
     }
@@ -152,7 +143,6 @@ export class CookiesCommand extends BaseCommand {
             });
         }
 
-        // Check for attachment
         const message = ctx.context;
         let attachment: { url: string; name: string } | null = null;
 
@@ -171,7 +161,6 @@ export class CookiesCommand extends BaseCommand {
             });
         }
 
-        // Check if the attachment is a .txt file
         if (!attachment.name.endsWith(".txt")) {
             return ctx.reply({
                 embeds: [
@@ -185,12 +174,9 @@ export class CookiesCommand extends BaseCommand {
         }
 
         try {
-            // Download the attachment content
             const response = await this.client.request.get(attachment.url);
             const content = response.body;
 
-            // Validate it looks like a cookies file (more robust check)
-            // Netscape cookie format: domain, flag, path, secure, expiration, name, value
             const lines = content.split("\n");
             let hasValidCookieLine = false;
             let hasYoutubeDomain = false;
@@ -198,23 +184,17 @@ export class CookiesCommand extends BaseCommand {
             for (const line of lines) {
                 const trimmedLine = line.trim();
 
-                // Skip empty lines and comments
                 if (trimmedLine === "" || trimmedLine.startsWith("#")) {
-                    // Check for Netscape header
                     if (trimmedLine.includes("Netscape HTTP Cookie File")) {
                         hasValidCookieLine = true;
                     }
                     continue;
                 }
 
-                // Cookie lines should have tab-separated fields
                 const fields = trimmedLine.split("\t");
                 if (fields.length >= 7) {
                     hasValidCookieLine = true;
                     const domain = fields[0];
-                    // Check if it's a YouTube related domain
-                    // Domain in cookie files starts with . or is the exact domain
-                    // e.g. ".youtube.com", "youtube.com", ".google.com"
                     if (this.isYouTubeRelatedDomain(domain)) {
                         hasYoutubeDomain = true;
                     }
@@ -233,14 +213,12 @@ export class CookiesCommand extends BaseCommand {
                 });
             }
 
-            // Warn if no YouTube domain found but still allow
             if (!hasYoutubeDomain) {
                 this.client.logger.warn(
                     `[CookiesCommand] Cookie file for index ${number} does not contain YouTube domains`,
                 );
             }
 
-            // Save the cookie
             const result = this.client.cookies.addCookie(number, content);
 
             if (result === "added") {
@@ -459,7 +437,6 @@ export class CookiesCommand extends BaseCommand {
             });
         }
 
-        // Create a downloadable attachment
         const attachment = new AttachmentBuilder(Buffer.from(content, "utf8"), {
             name: `cookies-${number}.txt`,
         });
@@ -512,15 +489,9 @@ export class CookiesCommand extends BaseCommand {
         });
     }
 
-    /**
-     * Check if a domain string is a valid YouTube/Google related domain
-     * Used for validating cookie file contents
-     */
     private isYouTubeRelatedDomain(domain: string): boolean {
-        // Normalize the domain (remove leading dot if present)
         const normalizedDomain = domain.startsWith(".") ? domain.slice(1) : domain;
 
-        // List of valid YouTube/Google domains for cookies
         const validDomains = [
             "youtube.com",
             "www.youtube.com",
@@ -534,7 +505,6 @@ export class CookiesCommand extends BaseCommand {
             "googlevideo.com",
         ];
 
-        // Check if the normalized domain ends with any of the valid domains
         return validDomains.some(
             (validDomain) =>
                 normalizedDomain === validDomain || normalizedDomain.endsWith(`.${validDomain}`),

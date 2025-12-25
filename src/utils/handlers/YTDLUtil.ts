@@ -7,9 +7,6 @@ import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
 import ytdl, { exec, isBotDetectionError } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
-/**
- * Custom error class for when all cookies have failed
- */
 export class AllCookiesFailedError extends Error {
     public constructor() {
         super(
@@ -32,7 +29,6 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         }
     }
 
-    // Check if all cookies have already failed
     if (client.cookies.areAllCookiesFailed()) {
         throw new AllCookiesFailedError();
     }
@@ -93,10 +89,8 @@ async function attemptStreamWithRetry(
                 `[YTDLUtil] Bot detection error detected, attempting cookie rotation. URL: ${url}`,
             );
 
-            // Kill the current process and try to rotate cookies
             proc.kill("SIGKILL");
 
-            // Check retry limit
             if (retryCount >= MAX_COOKIE_RETRIES) {
                 client.logger.error(
                     `[YTDLUtil] Maximum retry limit (${MAX_COOKIE_RETRIES}) reached`,
@@ -105,10 +99,8 @@ async function attemptStreamWithRetry(
                 return;
             }
 
-            // Attempt to rotate to next cookie
             const rotated = client.cookies.rotateOnFailure();
             if (rotated) {
-                // Retry with new cookie
                 client.logger.info(
                     `[YTDLUtil] Retrying with cookie ${client.cookies.getCurrentCookieIndex()} (attempt ${retryCount + 1})`,
                 );
@@ -116,7 +108,6 @@ async function attemptStreamWithRetry(
                     .then(resolve)
                     .catch(reject);
             } else {
-                // All cookies have failed
                 reject(new AllCookiesFailedError());
             }
         };
@@ -154,7 +145,6 @@ async function attemptStreamWithRetry(
             }
         });
 
-        // Handle process close - if it closes before we resolve with a non-zero code, it's an error
         proc.once("close", (code) => {
             if (!hasResolved && !hasHandledError) {
                 if (validationTimeout) {
@@ -162,7 +152,6 @@ async function attemptStreamWithRetry(
                     validationTimeout = null;
                 }
 
-                // Check if it was a bot detection error
                 if (isBotDetectionError(stderrData)) {
                     handleBotDetectionError();
                 } else if (code !== 0) {
@@ -183,17 +172,13 @@ async function attemptStreamWithRetry(
                 return;
             }
 
-            // Wait a short time to check for bot detection errors before resolving
-            // This prevents resolving the stream only for it to fail immediately
             validationTimeout = setTimeout(() => {
                 validationTimeout = null;
 
-                // Double-check for bot detection errors
                 if (hasHandledError || hasDetectedBotError) {
                     return;
                 }
 
-                // Also check stderr one more time
                 if (isBotDetectionError(stderrData)) {
                     handleBotDetectionError();
                     return;
@@ -217,7 +202,6 @@ async function attemptStreamWithRetry(
 }
 
 export async function getInfo(url: string, client?: Rawon): Promise<BasicYoutubeVideoInfo> {
-    // Check if all cookies have already failed
     if (client?.cookies.areAllCookiesFailed()) {
         throw new AllCookiesFailedError();
     }
@@ -242,7 +226,6 @@ async function attemptGetInfoWithRetry(
                 `[YTDLUtil] Bot detection error in getInfo, attempting cookie rotation. URL: ${url}`,
             );
 
-            // Check retry limit
             if (retryCount >= MAX_COOKIE_RETRIES) {
                 client.logger.error(
                     `[YTDLUtil] Maximum retry limit (${MAX_COOKIE_RETRIES}) reached in getInfo`,
@@ -250,16 +233,13 @@ async function attemptGetInfoWithRetry(
                 throw new AllCookiesFailedError();
             }
 
-            // Attempt to rotate to next cookie
             const rotated = client.cookies.rotateOnFailure();
             if (rotated) {
-                // Retry with new cookie
                 client.logger.info(
                     `[YTDLUtil] Retrying getInfo with cookie ${client.cookies.getCurrentCookieIndex()} (attempt ${retryCount + 1})`,
                 );
                 return attemptGetInfoWithRetry(url, client, retryCount + 1);
             }
-            // All cookies have failed
             throw new AllCookiesFailedError();
         }
         throw error;
