@@ -38,7 +38,7 @@ export default function HomePage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className="flex w-full max-w-xs flex-col items-center gap-4"
+                        className="flex w-full max-w-sm flex-col items-center gap-4 px-4 sm:px-0"
                     >
                         <Link
                             href="https://discord.com/api/oauth2/authorize?client_id=999162626036740138&permissions=275183430727&scope=applications.commands%20bot"
