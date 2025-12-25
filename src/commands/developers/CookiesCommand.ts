@@ -213,6 +213,7 @@ export class CookiesCommand extends BaseCommand {
                             i18n.__mf("commands.developers.cookies.addSuccess", {
                                 number: number.toString(),
                             }),
+                            true,
                         ),
                     ],
                 });
@@ -262,6 +263,7 @@ export class CookiesCommand extends BaseCommand {
                         i18n.__mf("commands.developers.cookies.removeAllSuccess", {
                             count: count.toString(),
                         }),
+                        true,
                     ),
                 ],
             });
@@ -290,6 +292,7 @@ export class CookiesCommand extends BaseCommand {
                         i18n.__mf("commands.developers.cookies.removeSuccess", {
                             number: number.toString(),
                         }),
+                        true,
                     ),
                 ],
             });
@@ -369,7 +372,9 @@ export class CookiesCommand extends BaseCommand {
     private async handleReset(ctx: CommandContext): Promise<Message | undefined> {
         this.client.cookies.resetFailedStatus();
         return ctx.reply({
-            embeds: [createEmbed("success", i18n.__("commands.developers.cookies.resetSuccess"))],
+            embeds: [
+                createEmbed("success", i18n.__("commands.developers.cookies.resetSuccess"), true),
+            ],
         });
     }
 
