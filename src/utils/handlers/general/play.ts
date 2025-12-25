@@ -12,7 +12,7 @@ import prism from "prism-media";
 import i18n from "../../../config/index.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
-import { getStream } from "../YTDLUtil.js";
+import { AllCookiesFailedError, getStream } from "../YTDLUtil.js";
 
 export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
     const queue = guild.queue;
@@ -77,9 +77,41 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     const stream = new prism.FFmpeg({
         args: ffmpegArgs(queue.filters),
     });
-    await getStream(queue.client, song.song.url, song.song.isLive).then((x) =>
-        x.pipe(stream as unknown as NodeJS.WritableStream),
-    );
+
+    try {
+        await getStream(queue.client, song.song.url, song.song.isLive).then((x) =>
+            x.pipe(stream as unknown as NodeJS.WritableStream),
+        );
+    } catch (error) {
+        if (error instanceof AllCookiesFailedError) {
+            const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
+                guild,
+                queue.textChannel.id,
+            );
+
+            queue.client.logger.error(
+                `[PLAY_HANDLER] All cookies failed for guild ${guild.name}(${guild.id}), stopping queue`,
+            );
+
+            if (!isRequestChannel) {
+                await queue.textChannel.send({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            `⚠️ ${i18n.__mf("utils.generalHandler.allCookiesFailed", {
+                                prefix: guild.client.config.mainPrefix,
+                            })}`,
+                            true,
+                        ),
+                    ],
+                });
+            }
+
+            queue.destroy();
+            return;
+        }
+        throw error;
+    }
 
     const resource = createAudioResource(stream, {
         inlineVolume: true,

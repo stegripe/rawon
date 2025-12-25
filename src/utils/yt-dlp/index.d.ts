@@ -1,4 +1,5 @@
 import { ChildProcess, SpawnOptions } from "node:child_process";
+import type { CookiesManager } from "../structures/CookiesManager.js";
 
 interface YTFormat {
     asr: number,
@@ -243,5 +244,8 @@ interface YTFlags {
 }
 
 export function downloadExecutable(): Promise<void>;
-export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions): ChildProcess;
-export default function ytdl(...args: Parameters<typeof exec>): Promise<YTResponse>;
+export function exec(url: string, options?: YTFlags, spawnOptions?: SpawnOptions, cookiesPath?: string | null): ChildProcess;
+export function setCookiesManager(manager: CookiesManager): void;
+export function getCookiesManager(): CookiesManager | null;
+export function isBotDetectionError(errorMessage: string): boolean;
+export default function ytdl(url: string, options?: YTFlags, spawnOptions?: SpawnOptions, cookiesPath?: string | null): Promise<YTResponse>;
