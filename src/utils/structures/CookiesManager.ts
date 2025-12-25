@@ -4,20 +4,20 @@ import process from "node:process";
 import { type Rawon } from "../../structures/Rawon.js";
 
 export class CookiesManager {
-    public readonly cacheDir: string;
+    public readonly cookiesDir: string;
     private currentCookieIndex = 1;
     private failedCookies = new Set<number>();
     private allCookiesFailed = false;
 
     public constructor(public readonly client: Rawon) {
-        this.cacheDir = path.resolve(process.cwd(), "cache");
-        this.ensureCacheDir();
+        this.cookiesDir = path.resolve(process.cwd(), "cache", "cookies");
+        this.ensureCookiesDir();
         this.initializeCurrentCookie();
     }
 
-    private ensureCacheDir(): void {
-        if (!existsSync(this.cacheDir)) {
-            mkdirSync(this.cacheDir, { recursive: true });
+    private ensureCookiesDir(): void {
+        if (!existsSync(this.cookiesDir)) {
+            mkdirSync(this.cookiesDir, { recursive: true });
         }
     }
 
@@ -32,7 +32,7 @@ export class CookiesManager {
      * Get the path for a cookie file by its index
      */
     public getCookiePath(index: number): string {
-        return path.join(this.cacheDir, `cookies-${index}.txt`);
+        return path.join(this.cookiesDir, `cookies-${index}.txt`);
     }
 
     /**
@@ -124,11 +124,11 @@ export class CookiesManager {
      * List all available cookie indices
      */
     public listCookies(): number[] {
-        if (!existsSync(this.cacheDir)) {
+        if (!existsSync(this.cookiesDir)) {
             return [];
         }
 
-        const files = readdirSync(this.cacheDir);
+        const files = readdirSync(this.cookiesDir);
         const cookieIndices: number[] = [];
 
         for (const file of files) {
