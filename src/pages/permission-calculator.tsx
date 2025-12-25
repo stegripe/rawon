@@ -1,3 +1,4 @@
+import { useLocale } from "@/contexts/LocaleContext";
 import { IPerm } from "@/types";
 import {
     ArrowBackRounded,
@@ -243,6 +244,7 @@ const TextPermissions: IPerm[] = [
 ];
 
 export default function PermissionCalculatorPage() {
+    const { t } = useLocale();
     const [state, update] = useState<{
         clientId: string;
         scope: string;
@@ -328,14 +330,14 @@ export default function PermissionCalculatorPage() {
                             </IconButton>
                         </Link>
                         <Typography className="font-sans text-xl font-medium">
-                            Permission Calculator
+                            {t.permissionCalculator.title}
                         </Typography>
                     </div>
                     <div className="flex flex-col gap-2">
                         <div className="flex flex-col gap-2 md:flex-row md:gap-5">
                             <div className="flex w-full flex-col gap-1">
                                 <Typography className="font-sans text-lg font-medium">
-                                    Client ID
+                                    {t.permissionCalculator.clientId}
                                 </Typography>
                                 <Input
                                     disableUnderline
@@ -366,7 +368,7 @@ export default function PermissionCalculatorPage() {
                             </div>
                             <div className="flex w-full flex-col gap-1">
                                 <Typography className="font-sans text-lg font-medium">
-                                    Scope
+                                    {t.permissionCalculator.scope}
                                 </Typography>
                                 <Input
                                     disableUnderline
@@ -397,7 +399,7 @@ export default function PermissionCalculatorPage() {
                             </div>
                             <div className="flex w-full flex-col gap-1">
                                 <Typography className="font-sans text-lg font-medium">
-                                    Redirect URI
+                                    {t.permissionCalculator.redirectUri}
                                 </Typography>
                                 <Input
                                     disableUnderline
@@ -429,12 +431,10 @@ export default function PermissionCalculatorPage() {
                         </div>
                         <div className="flex w-full flex-col gap-1">
                             <Typography className="font-sans text-lg font-medium">
-                                Permissions
+                                {t.permissionCalculator.permissions}
                             </Typography>
                             <Typography className="font-sans text-xs font-medium text-fourth">
-                                Colored means that the OAuth user needs to
-                                enable 2FA on their account if the server
-                                requires 2FA
+                                {t.permissionCalculator.permissionsNote}
                             </Typography>
                             <div className="flex w-full flex-col gap-3">
                                 <div className="flex w-full flex-col">
@@ -453,7 +453,7 @@ export default function PermissionCalculatorPage() {
                                         }
                                         className="h-10 w-full justify-between border-b-2 border-solid border-third font-sans text-base font-medium normal-case"
                                     >
-                                        General
+                                        {t.permissionCalculator.general}
                                     </Button>
                                     <Collapse
                                         in={disclosure.general}
@@ -504,7 +504,7 @@ export default function PermissionCalculatorPage() {
                                         onClick={() => updateDisclose("voice")}
                                         className="h-10 w-full justify-between border-b-2 border-solid border-third font-sans text-base font-medium normal-case"
                                     >
-                                        Voice
+                                        {t.permissionCalculator.voice}
                                     </Button>
                                     <Collapse
                                         in={disclosure.voice}
@@ -555,7 +555,7 @@ export default function PermissionCalculatorPage() {
                                         onClick={() => updateDisclose("text")}
                                         className="h-10 w-full justify-between border-b-2 border-solid border-third font-sans text-base font-medium normal-case"
                                     >
-                                        Text
+                                        {t.permissionCalculator.text}
                                     </Button>
                                     <Collapse
                                         in={disclosure.text}
@@ -597,11 +597,10 @@ export default function PermissionCalculatorPage() {
                     </div>
                     <div className="flex w-full flex-col gap-1">
                         <Typography className="font-sans text-lg font-medium">
-                            Result
+                            {t.permissionCalculator.result}
                         </Typography>
                         <Typography className="font-sans text-xs font-medium text-fourth">
-                            This is the link you can use to add the bot to your
-                            server
+                            {t.permissionCalculator.resultNote}
                         </Typography>
                         <Input
                             value={result()}

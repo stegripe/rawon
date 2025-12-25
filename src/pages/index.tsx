@@ -1,8 +1,11 @@
+import { useLocale } from "@/contexts/LocaleContext";
 import { Button, Container, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
+    const { t } = useLocale();
+
     return (
         <>
             <Container fixed className="flex h-screen w-full px-5 py-0 pt-0">
@@ -17,11 +20,10 @@ export default function HomePage() {
                         </div>
                         <div className="flex w-full flex-col gap-4">
                             <Typography className="text-center font-sans text-3xl font-medium uppercase text-third">
-                                rawon
+                                {t.home.title}
                             </Typography>
                             <Typography className="text-center font-sans text-xl font-medium text-third">
-                                A simple powerful Discord music bot built to
-                                fulfill your production desires.
+                                {t.home.description}
                             </Typography>
                         </div>
                     </div>
@@ -37,7 +39,7 @@ export default function HomePage() {
                                     color="inherit"
                                     className="h-9 w-48 rounded-lg bg-secondary font-sans text-lg font-semibold text-white"
                                 >
-                                    invite
+                                    {t.home.invite}
                                 </Button>
                             </a>
                         </Link>
@@ -52,9 +54,18 @@ export default function HomePage() {
                                     color="inherit"
                                     className="h-9 w-48 rounded-lg border-2 border-solid border-secondary font-sans text-lg font-semibold text-secondary"
                                 >
-                                    support
+                                    {t.home.support}
                                 </Button>
                             </a>
+                        </Link>
+                        <Link href="/docs/getting-started">
+                            <Button
+                                id="docsButton"
+                                color="inherit"
+                                className="h-9 w-48 rounded-lg border-2 border-solid border-third font-sans text-lg font-semibold text-third"
+                            >
+                                {t.home.viewDocs}
+                            </Button>
                         </Link>
                     </div>
                 </div>

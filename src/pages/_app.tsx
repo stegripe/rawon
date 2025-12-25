@@ -1,4 +1,5 @@
 import { NavigationBar } from "@/components/NavigationBar";
+import { LocaleProvider } from "@/contexts/LocaleContext";
 import "@/styles/index.scss";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { DefaultSeo } from "next-seo";
@@ -84,8 +85,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             />
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <NavigationBar />
-                <Component {...pageProps} />
+                <LocaleProvider>
+                    <NavigationBar />
+                    <Component {...pageProps} />
+                </LocaleProvider>
             </ThemeProvider>
         </>
     );

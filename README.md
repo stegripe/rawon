@@ -1,3 +1,41 @@
 # Rawon Pages
 
-> **This is a website for Rawon. Build with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and [Material UI](https://mui.com/). Also support PWA**.
+> **Website for Rawon Discord Music Bot. Built with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and [Material UI](https://mui.com/). PWA supported.**
+
+## 🌐 Live Site
+
+Visit [rawon.stegripe.org](https://rawon.stegripe.org) for documentation, guides, and tools.
+
+## 📚 Features
+
+- Multi-language support (English & Bahasa Indonesia)
+- Comprehensive documentation (Getting Started, Configuration, Cookies Setup)
+- Permission Calculator tool
+- PWA support for offline access
+- Mobile-friendly responsive design
+
+## 🚀 Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run linter
+npm run lint
+```
+
+## 🔗 Links
+
+- **Main Bot Repository**: [github.com/stegripe/rawon](https://github.com/stegripe/rawon)
+- **Discord Support**: [stegripe.org/discord](https://stegripe.org/discord)
+- **Organization**: [stegripe.org](https://stegripe.org)
+
+---
+
+> © 2026 Stegripe Development
