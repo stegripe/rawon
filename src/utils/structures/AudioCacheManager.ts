@@ -20,6 +20,7 @@ const MAX_CACHE_SIZE_MB = 500;
 const MAX_CACHE_FILES = 50;
 const PRE_CACHE_RETRY_COUNT = 2;
 const QUEUE_PROCESSING_DELAY_MS = 100;
+const MAX_PRE_CACHE_RETRIES = 3;
 
 export class AudioCacheManager {
     public readonly cacheDir: string;
@@ -245,7 +246,6 @@ export class AudioCacheManager {
 
     private async doPreCache(url: string, retryCount = 0): Promise<void> {
         const key = this.getCacheKey(url);
-        const MAX_PRE_CACHE_RETRIES = 3;
 
         try {
             const { exec, isBotDetectionError } = await import("../yt-dlp/index.js");
