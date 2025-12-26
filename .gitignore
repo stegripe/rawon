@@ -20,6 +20,9 @@ package-lock.json
 # Yarn Integrity file
 .yarn-integrity
 
+# TypeScript build info
+*.tsbuildinfo
+
 # dotenv environment variables file
 .env
 *.env
@@ -29,6 +32,3 @@ dist
 cache
 cookies.txt
 *.cookies.txt
-
-# TypeScript build info
-*.tsbuildinfo
