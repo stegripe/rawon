@@ -236,6 +236,8 @@ export class CommandManager extends Collection<string, CommandComponent> {
         }
 
         // Register slash commands in background (non-blocking)
+        // Using void to intentionally run registration asynchronously without blocking
+        // the bot's ready state - slash commands will become available after registration completes
         if (pendingSlashRegistrations.length > 0) {
             this.client.logger.info(
                 `Registering ${pendingSlashRegistrations.length} slash commands in background...`,
