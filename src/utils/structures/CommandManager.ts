@@ -35,14 +35,12 @@ export class CommandManager extends Collection<string, CommandComponent> {
     }
 
     public async load(): Promise<void> {
-        // Pending slash command registrations to run in background
         const pendingSlashRegistrations: Array<() => Promise<void>> = [];
 
         try {
             const categories = await fs.readdir(nodePath.resolve(this.path));
             this.client.logger.info(`Found ${categories.length} categories, registering...`);
 
-            // Fetch existing commands once at the start
             const allCmd = await (
                 this.client.application as unknown as NonNullable<typeof this.client.application>
             ).commands.fetch();
@@ -92,7 +90,6 @@ export class CommandManager extends Collection<string, CommandComponent> {
                             }
                             this.set(command.meta.name, command);
 
-                            // Queue context menu commands for background registration
                             if ((command.meta.contextChat?.length ?? 0) > 0) {
                                 pendingSlashRegistrations.push(async () => {
                                     await this.registerCmd(
@@ -149,7 +146,6 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                     }
                                 });
                             }
-                            // Queue slash commands for background registration
                             if (
                                 !allCmd.has(command.meta.name) &&
                                 command.meta.slash &&
@@ -231,13 +227,9 @@ export class CommandManager extends Collection<string, CommandComponent> {
             this.client.logger.info(
                 `Current bot language is ${this.client.config.lang.toUpperCase()}`,
             );
-            // Set ready immediately so prefix commands work
             this.isReady = true;
         }
 
-        // Register slash commands in background (non-blocking)
-        // Using void to intentionally run registration asynchronously without blocking
-        // the bot's ready state - slash commands will become available after registration completes
         if (pendingSlashRegistrations.length > 0) {
             this.client.logger.info(
                 `Registering ${pendingSlashRegistrations.length} slash commands in background...`,
