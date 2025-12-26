@@ -25,11 +25,22 @@ export class SkipCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const queue = ctx.guild?.queue;
+        if (!queue) {
+            return;
+        }
+
+        if (!queue.canSkip()) {
+            await ctx.reply({
+                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+            });
+            return;
+        }
+
         const djRole = await this.client.utils
             .fetchDJRole(ctx.guild as unknown as GuildMember["guild"])
             .catch(() => null);
-        const song = (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource
-            .metadata as QueueSong;
+        const song = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
 
         function ableToSkip(member: GuildMember): boolean {
             return (
@@ -44,19 +55,15 @@ export class SkipCommand extends BaseCommand {
                 ctx.guild?.members.me?.voice.channel?.members.size ?? 0,
             );
 
-            if (ctx.guild?.queue?.skipVoters.includes(ctx.author.id) === true) {
+            if (queue.skipVoters.includes(ctx.author.id) === true) {
                 await this.manager.add((): undefined => {
-                    (
-                        ctx.guild?.queue as unknown as NonNullable<
-                            NonNullable<typeof ctx.guild>["queue"]
-                        >
-                    ).skipVoters = ctx.guild?.queue?.skipVoters.filter(
+                    queue.skipVoters = queue.skipVoters.filter(
                         (x) => x !== ctx.author.id,
                     ) as unknown as string[];
                 });
                 await ctx.reply(
                     i18n.__mf("commands.music.skip.voteResultMessage", {
-                        length: ctx.guild.queue.skipVoters.length,
+                        length: queue.skipVoters.length,
                         required,
                     }),
                 );
@@ -65,10 +72,10 @@ export class SkipCommand extends BaseCommand {
             }
 
             await this.manager.add((): undefined => {
-                ctx.guild?.queue?.skipVoters.push(ctx.author.id);
+                queue.skipVoters.push(ctx.author.id);
             });
 
-            const length = ctx.guild?.queue?.skipVoters.length ?? 0;
+            const length = queue.skipVoters.length ?? 0;
             await ctx.reply(
                 i18n.__mf("commands.music.skip.voteResultMessage", { length, required }),
             );
@@ -78,12 +85,17 @@ export class SkipCommand extends BaseCommand {
             }
         }
 
-        if (ctx.guild?.queue?.playing !== true) {
-            (
-                ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
-            ).playing = true;
+        if (!queue.startSkip()) {
+            await ctx.reply({
+                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+            });
+            return;
         }
-        ctx.guild?.queue?.player.stop(true);
+
+        if (!queue.playing) {
+            queue.playing = true;
+        }
+        queue.player.stop(true);
         await ctx
             .reply({
                 embeds: [

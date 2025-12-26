@@ -14,13 +14,13 @@ import process from "node:process";
 import { PassThrough, type Readable } from "node:stream";
 import { setTimeout } from "node:timers";
 import { type Rawon } from "../../structures/Rawon.js";
-import { isBotDetectionError } from "../yt-dlp/index.js";
 
 const PRE_CACHE_AHEAD_COUNT = 3;
 const MAX_CACHE_SIZE_MB = 500;
 const MAX_CACHE_FILES = 50;
 const PRE_CACHE_RETRY_COUNT = 2;
 const QUEUE_PROCESSING_DELAY_MS = 100;
+const MAX_PRE_CACHE_RETRIES = 3;
 
 export class AudioCacheManager {
     public readonly cacheDir: string;
@@ -244,11 +244,11 @@ export class AudioCacheManager {
         this.isProcessingQueue = false;
     }
 
-    private async doPreCache(url: string): Promise<void> {
+    private async doPreCache(url: string, retryCount = 0): Promise<void> {
         const key = this.getCacheKey(url);
 
         try {
-            const { exec } = await import("../yt-dlp/index.js");
+            const { exec, isBotDetectionError } = await import("../yt-dlp/index.js");
             const cachePath = this.getCachePath(url);
 
             this.inProgressFiles.add(key);
@@ -272,14 +272,22 @@ export class AudioCacheManager {
 
             let stderrData = "";
             let hasBotDetectionError = false;
+            let processKilled = false;
 
             if (proc.stderr) {
                 proc.stderr.on("data", (chunk: Buffer) => {
                     stderrData += chunk.toString();
-                    if (isBotDetectionError(stderrData) && !hasBotDetectionError) {
+                    if (
+                        isBotDetectionError(stderrData) &&
+                        !hasBotDetectionError &&
+                        !processKilled
+                    ) {
                         hasBotDetectionError = true;
+                        processKilled = true;
+                        proc.kill("SIGKILL");
+
                         this.client.logger.warn(
-                            `[AudioCacheManager] Bot detection during pre-cache, rotating cookie. URL: ${url.substring(0, 50)}...`,
+                            `[AudioCacheManager] Bot detection during pre-cache, rotating cookie (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.substring(0, 50)}...`,
                         );
                         const rotated = this.client.cookies.rotateOnFailure();
                         if (rotated) {
@@ -303,7 +311,20 @@ export class AudioCacheManager {
                         } catch {
                             // Ignore cleanup errors
                         }
-                        this.markFailed(key);
+
+                        if (
+                            retryCount < MAX_PRE_CACHE_RETRIES &&
+                            !this.client.cookies.areAllCookiesFailed()
+                        ) {
+                            setTimeout(
+                                () => {
+                                    void this.doPreCache(url, retryCount + 1);
+                                },
+                                1000 * (retryCount + 1),
+                            );
+                        } else {
+                            this.markFailed(key);
+                        }
                     } else {
                         try {
                             const stats = statSync(cachePath);

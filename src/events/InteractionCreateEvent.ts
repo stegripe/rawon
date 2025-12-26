@@ -248,6 +248,22 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
+                if (!queue.canSkip()) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                    });
+                    return;
+                }
+
+                if (!queue.startSkip()) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                    });
+                    return;
+                }
+
                 const skipSong = (
                     queue.player.state as
                         | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
@@ -438,6 +454,22 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
+                if (!queue.canSkip()) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                    });
+                    return;
+                }
+
+                if (!queue.startSkip()) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                    });
+                    return;
+                }
+
                 const currentSong = (
                     queue.player.state as
                         | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
@@ -445,6 +477,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 )?.resource?.metadata;
 
                 if (!currentSong) {
+                    queue.endSkip();
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],

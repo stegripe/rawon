@@ -345,6 +345,7 @@
         "setChannel": "点歌频道已设置为 {channel}。",
         "removeChannel": "点歌频道已移除。",
         "noChannel": "当前没有设置点歌频道。",
-        "currentChannel": "当前点歌频道：{channel}"
+        "currentChannel": "当前点歌频道：{channel}",
+        "skipInProgress": "请稍候，跳过操作正在进行中。"
     }
 }
