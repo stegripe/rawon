@@ -345,6 +345,7 @@
         "setChannel": "リクエストチャンネルを {channel} に設定しました。",
         "removeChannel": "リクエストチャンネルを削除しました。",
         "noChannel": "現在リクエストチャンネルは設定されていません。",
-        "currentChannel": "現在のリクエストチャンネル: {channel}"
+        "currentChannel": "現在のリクエストチャンネル: {channel}",
+        "skipInProgress": "お待ちください、スキップ操作が進行中です。"
     }
 }

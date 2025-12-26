@@ -47,6 +47,18 @@ export class SkipToCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const queue = ctx.guild?.queue;
+        if (!queue) {
+            return;
+        }
+
+        if (!queue.canSkip()) {
+            await ctx.reply({
+                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+            });
+            return;
+        }
+
         const djRole = await this.client.utils.fetchDJRole(
             ctx.guild as unknown as NonNullable<typeof ctx.guild>,
         );
@@ -54,7 +66,7 @@ export class SkipToCommand extends BaseCommand {
             this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true &&
             (
                 this.client.channels.cache.get(
-                    ctx.guild?.queue?.connection?.joinConfig.channelId ?? "",
+                    queue.connection?.joinConfig.channelId ?? "",
                 ) as VoiceChannel
             )?.members.size > 2 &&
             ctx.member?.roles.cache.has(djRole?.id ?? "") !== true &&
@@ -109,9 +121,7 @@ export class SkipToCommand extends BaseCommand {
             return;
         }
 
-        const songs = [
-            ...(ctx.guild?.queue?.songs.sortByIndex().values() as unknown as QueueSong[]),
-        ];
+        const songs = [...(queue.songs.sortByIndex().values() as unknown as QueueSong[])];
         if (
             !["first", "last"].includes(String(targetType).toLowerCase()) &&
             !Number.isNaN(Number(targetType)) &&
@@ -159,13 +169,17 @@ export class SkipToCommand extends BaseCommand {
 
         if (
             song.key ===
-            (
-                (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource
-                    .metadata as QueueSong
-            ).key
+            ((queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key
         ) {
             await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)],
+            });
+            return;
+        }
+
+        if (!queue.startSkip()) {
+            await ctx.reply({
+                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
             });
             return;
         }

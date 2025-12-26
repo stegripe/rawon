@@ -345,6 +345,7 @@
         "setChannel": "Channel request telah diatur ke {channel}.",
         "removeChannel": "Channel request telah dihapus.",
         "noChannel": "Tidak ada channel request yang diatur saat ini.",
-        "currentChannel": "Channel request saat ini: {channel}"
+        "currentChannel": "Channel request saat ini: {channel}",
+        "skipInProgress": "Mohon tunggu, operasi skip sedang berlangsung."
     }
 }
