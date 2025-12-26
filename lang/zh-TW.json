@@ -345,6 +345,7 @@
         "setChannel": "點歌頻道已設置為 {channel}。",
         "removeChannel": "點歌頻道已移除。",
         "noChannel": "當前沒有設置點歌頻道。",
-        "currentChannel": "當前點歌頻道：{channel}"
+        "currentChannel": "當前點歌頻道：{channel}",
+        "skipInProgress": "請稍候，跳過操作正在進行中。"
     }
 }

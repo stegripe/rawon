@@ -88,6 +88,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
             x.pipe(stream as unknown as NodeJS.WritableStream),
         );
     } catch (error) {
+        queue.endSkip();
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
             guild,
             queue.textChannel.id,
