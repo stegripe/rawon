@@ -314,7 +314,8 @@
         "setChannel": "Request channel has been set to {channel}.",
         "removeChannel": "Request channel has been removed.",
         "noChannel": "No request channel is currently set.",
-        "currentChannel": "Current request channel: {channel}"
+        "currentChannel": "Current request channel: {channel}",
+        "skipInProgress": "Please wait, a skip operation is already in progress."
     },
     "reusable": {
         "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",

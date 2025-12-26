@@ -345,6 +345,7 @@
         "setChannel": "İstek kanalı {channel} olarak ayarlandı.",
         "removeChannel": "İstek kanalı kaldırıldı.",
         "noChannel": "Şu anda ayarlanmış istek kanalı yok.",
-        "currentChannel": "Mevcut istek kanalı: {channel}"
+        "currentChannel": "Mevcut istek kanalı: {channel}",
+        "skipInProgress": "Lütfen bekleyin, bir atlama işlemi devam ediyor."
     }
 }

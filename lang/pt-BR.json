@@ -345,6 +345,7 @@
         "setChannel": "O canal de pedidos foi definido para {channel}.",
         "removeChannel": "O canal de pedidos foi removido.",
         "noChannel": "Nenhum canal de pedidos está definido atualmente.",
-        "currentChannel": "Canal de pedidos atual: {channel}"
+        "currentChannel": "Canal de pedidos atual: {channel}",
+        "skipInProgress": "Por favor aguarde, uma operação de pular está em andamento."
     }
 }

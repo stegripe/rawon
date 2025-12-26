@@ -31,6 +31,9 @@ export class ServerQueue {
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
     private _skipVoters: Snowflake[] = [];
+    private _skipInProgress = false;
+    private _lastSkipTime = 0;
+    private _skipCooldownMs = 2000;
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -38,6 +41,9 @@ export class ServerQueue {
             _lastMusicMsg: nonEnum,
             _lastVSUpdateMsg: nonEnum,
             _volume: nonEnum,
+            _skipInProgress: nonEnum,
+            _lastSkipTime: nonEnum,
+            _skipCooldownMs: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -50,6 +56,7 @@ export class ServerQueue {
                     newState.status === AudioPlayerStatus.Playing &&
                     oldState.status !== AudioPlayerStatus.Paused
                 ) {
+                    this.endSkip();
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
                     const currentSong = (this.player.state as AudioPlayerPlayingState).resource
@@ -475,5 +482,33 @@ export class ServerQueue {
         if (songsToCache.length > 0) {
             void this.client.audioCache.preCacheMultiple(songsToCache);
         }
+    }
+
+    public get skipInProgress(): boolean {
+        return this._skipInProgress;
+    }
+
+    public canSkip(): boolean {
+        if (this._skipInProgress) {
+            return false;
+        }
+        const now = Date.now();
+        if (now - this._lastSkipTime < this._skipCooldownMs) {
+            return false;
+        }
+        return true;
+    }
+
+    public startSkip(): boolean {
+        if (!this.canSkip()) {
+            return false;
+        }
+        this._skipInProgress = true;
+        this._lastSkipTime = Date.now();
+        return true;
+    }
+
+    public endSkip(): void {
+        this._skipInProgress = false;
     }
 }

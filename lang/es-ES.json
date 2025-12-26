@@ -345,6 +345,7 @@
         "setChannel": "El canal de solicitudes se ha establecido en {channel}.",
         "removeChannel": "El canal de solicitudes ha sido eliminado.",
         "noChannel": "No hay canal de solicitudes establecido actualmente.",
-        "currentChannel": "Canal de solicitudes actual: {channel}"
+        "currentChannel": "Canal de solicitudes actual: {channel}",
+        "skipInProgress": "Por favor espera, una operación de salto está en progreso."
     }
 }

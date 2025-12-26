@@ -345,6 +345,7 @@
         "setChannel": "Kênh yêu cầu đã được đặt thành {channel}.",
         "removeChannel": "Kênh yêu cầu đã được xóa.",
         "noChannel": "Hiện không có kênh yêu cầu nào được đặt.",
-        "currentChannel": "Kênh yêu cầu hiện tại: {channel}"
+        "currentChannel": "Kênh yêu cầu hiện tại: {channel}",
+        "skipInProgress": "Vui lòng đợi, thao tác bỏ qua đang được thực hiện."
     }
 }
