@@ -21,3 +21,5 @@ dist
 cache
 cookies.txt
 *.cookies.txt
+
+*.tsbuildinfo
