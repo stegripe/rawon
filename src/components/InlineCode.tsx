@@ -7,12 +7,11 @@ import { Fragment, ReactNode } from "react";
  * Example: "Use `!cookies list` to check **status**"
  */
 export const renderWithCode = (text: string): ReactNode[] => {
-    // First, split by code blocks (backticks)
     const parts: ReactNode[] = [];
     let currentIndex = 0;
     
-    // Match both `code` and **bold** patterns
-    const regex = /(`[^`]+`|\*\*[^*]+\*\*)/g;
+    // Match both `code` and **bold** patterns (allowing empty content)
+    const regex = /(`[^`]*`|\*\*[^*]*\*\*)/g;
     let match;
     
     while ((match = regex.exec(text)) !== null) {
@@ -50,7 +49,7 @@ export const renderWithCode = (text: string): ReactNode[] => {
         currentIndex = match.index + matched.length;
     }
     
-    // Add remaining text
+    // Add remaining text (or entire text if no matches)
     if (currentIndex < text.length) {
         parts.push(
             <Fragment key={`text-${currentIndex}`}>
@@ -59,5 +58,5 @@ export const renderWithCode = (text: string): ReactNode[] => {
         );
     }
     
-    return parts.length > 0 ? parts : [<Fragment key="empty">{text}</Fragment>];
+    return parts;
 };
