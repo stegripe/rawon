@@ -199,20 +199,18 @@ export const NavigationBar = () => {
                         >
                             <div className="flex flex-col p-2">
                                 {DocsItems.map((item, index) => (
-                                    <Link
+                                    <Button
                                         key={index}
-                                        href={item.path}
-                                        className="text-inherit no-underline"
+                                        id={item.name}
+                                        onClick={() => {
+                                            router.push(item.path);
+                                            handleDocsClose();
+                                        }}
+                                        color="inherit"
+                                        className={`w-full justify-start p-0 px-4 py-1 font-sans capitalize text-third`}
                                     >
-                                        <Button
-                                            id={item.name}
-                                            onClick={handleDocsClose}
-                                            color="inherit"
-                                            className="w-full justify-start p-0 px-4 py-1 font-sans capitalize text-third"
-                                        >
-                                            {item.name}
-                                        </Button>
-                                    </Link>
+                                        {item.name}
+                                    </Button>
                                 ))}
                             </div>
                         </Popover>
@@ -227,7 +225,7 @@ export const NavigationBar = () => {
                             {t.nav.links}
                         </Button>
                         <Popover
-                            id="__next"
+                            id="linksPopover"
                             open={open}
                             anchorEl={anchorEl}
                             onClose={handleClose}
@@ -247,23 +245,18 @@ export const NavigationBar = () => {
                         >
                             <div className="flex flex-col p-2">
                                 {ExternalLinks.map((item, index) => (
-                                    <Link
+                                    <Button
                                         key={index}
-                                        href={item.path}
-                                        passHref
-                                        legacyBehavior
+                                        id={item.name}
+                                        onClick={() => {
+                                            window.open(item.path, "_blank", "noopener,noreferrer");
+                                            handleClose();
+                                        }}
+                                        color="inherit"
+                                        className={`w-full justify-start p-0 px-4 py-1 font-sans capitalize text-third`}
                                     >
-                                        <a target="_blank" rel="noreferrer">
-                                            <Button
-                                                id={item.name}
-                                                onClick={handleClose}
-                                                color="inherit"
-                                                className="w-full justify-start p-0 px-4 py-1 font-sans capitalize text-third"
-                                            >
-                                                {item.name}
-                                            </Button>
-                                        </a>
-                                    </Link>
+                                        {item.name}
+                                    </Button>
                                 ))}
                             </div>
                         </Popover>
