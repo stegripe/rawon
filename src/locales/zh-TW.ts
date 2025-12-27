@@ -1,5 +1,4 @@
 export const zhTW = {
-    // Navigation
     nav: {
         home: "首頁",
         docs: "文檔",
@@ -11,7 +10,6 @@ export const zhTW = {
         links: "連結"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description: "一個簡單而強大的Discord音樂機器人，滿足您的製作需求。",
@@ -20,7 +18,6 @@ export const zhTW = {
         viewDocs: "查看文檔"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "開始使用",
         subtitle: "按照我們的分步指南，幾分鐘內啟動Rawon。",
@@ -38,7 +35,7 @@ export const zhTW = {
         requirements: {
             title: "要求",
             nodeVersion: "Node.js 版本 22.12.0 或更高",
-            discordToken: "Discord Bot Token（從Discord開發者入口網站獲取）",
+            discordToken: "Discord Bot Token（從[Discord開發者入口網站](https://discord.com/developers/applications)獲取）",
             optional: "可選：Spotify API憑據以支援Spotify"
         },
         standardSetup: {
@@ -78,10 +75,21 @@ export const zhTW = {
             description:
                 "Railway每月提供5美元免費額度。只要使用量低於5美元，您的機器人將24/7在線。",
             warning: "重要：部署到Railway之前請閱讀免責聲明。"
+        },
+        cookiesQuickStart: {
+            title: "🍪 快速開始：Cookie設定",
+            description:
+                "如果您在雲端服務提供商（AWS、GCP、Azure、Railway等）上託管，可能會收到\"Sign in to confirm you're not a bot\"錯誤。使用cookies命令輕鬆修復：",
+            steps: [
+                "從瀏覽器匯出cookies（請參閱[Cookie設定指南](/docs/cookies-setup)）",
+                "在Discord中輸入：`!cookies add 1`",
+                "將您的`cookies.txt`檔案附加到訊息中",
+                "完成！Cookie立即生效"
+            ],
+            tip: "💡 您可以新增多個cookies以實現冗餘。當一個失敗時，Rawon會自動切換到下一個！"
         }
     },
 
-    // Configuration page
     configuration: {
         title: "配置",
         subtitle: "使用這些設置根據您的需求配置Rawon。",
@@ -90,7 +98,7 @@ export const zhTW = {
             description: "這些是運行機器人所需的最低設置。",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "來自Discord開發者入口網站的Discord機器人令牌",
+                description: "來自[Discord開發者入口網站](https://discord.com/developers/applications)的Discord機器人令牌",
                 required: true
             },
             mainPrefix: {
@@ -112,7 +120,7 @@ export const zhTW = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "要支援Spotify，請設置SPOTIFY_CLIENT_ID和SPOTIFY_CLIENT_SECRET"
+                description: "要支援Spotify，請從[developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)獲取憑據並設置`SPOTIFY_CLIENT_ID`和`SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {
@@ -153,11 +161,41 @@ export const zhTW = {
                 name: "ENABLE_AUDIO_CACHE",
                 description: "[實驗性] 快取下載的音訊以加快重複播放",
                 default: "no"
+            },
+            requestChannelSplash: {
+                name: "REQUEST_CHANNEL_SPLASH",
+                description: "請求頻道播放器嵌入的自訂圖片URL",
+                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+            }
+        },
+        developer: {
+            title: "🛠️ 開發者設定",
+            description: "機器人開發者的進階設定。只有在您知道自己在做什麼時才使用！",
+            devs: {
+                name: "DEVS",
+                description: "機器人開發者ID（逗號分隔）。開發者可以存取特殊命令"
+            },
+            enablePrefix: {
+                name: "ENABLE_PREFIX",
+                description: "啟用/停用前綴命令（如!play）。如果您只想要斜線命令很有用",
+                default: "yes",
+                options: "yes, no"
+            },
+            enableSlash: {
+                name: "ENABLE_SLASH_COMMAND",
+                description: "啟用/停用斜線命令（如/play）。如果您只想要前綴命令很有用",
+                default: "yes",
+                options: "yes, no"
+            },
+            debugMode: {
+                name: "DEBUG_MODE",
+                description: "啟用除錯日誌以進行故障排除。在主控台顯示詳細日誌",
+                default: "no",
+                options: "yes, no"
             }
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Cookie設置",
         subtitle: "修復託管提供商上的\"Sign in to confirm you're not a bot\"錯誤。",
@@ -169,6 +207,33 @@ export const zhTW = {
             explanation:
                 "這是因為平台阻止來自資料中心IP地址的請求。透過使用已登入帳戶的Cookie，您可以繞過此限制。"
         },
+
+        quickMethod: {
+            title: "🚀 簡便方法：使用Cookies命令（建議）",
+            description: "管理cookies的最簡單方法 - 無需編輯檔案！",
+            benefits: [
+                "✅ 立即生效 - 無需重啟",
+                "✅ 支援多個cookies自動輪換",
+                "✅ 當一個cookie失敗時，機器人自動使用下一個",
+                "✅ 機器人重啟後cookies仍然保留"
+            ],
+            commands: {
+                title: "📝 可用命令",
+
+            },
+            quickStart: {
+                title: "⚡ 快速開始（3個步驟）",
+                steps: [
+                    "從瀏覽器匯出cookies（請參閱下面的指南）",
+                    "在Discord中輸入：!cookies add 1 並附加您的cookies.txt檔案",
+                    "完成！Cookie現在已啟動"
+                ]
+            },
+            multiCookie: {
+                title: "💡 專業提示：新增多個Cookies",
+                description: "從不同帳戶新增cookies以獲得更好的可靠性："
+            }
+        },
         prerequisites: {
             title: "前提條件",
             items: [
@@ -179,59 +244,74 @@ export const zhTW = {
             ]
         },
         steps: {
-            title: "分步指南",
+            title: "📖 如何導出Cookie",
             createAccount: {
                 title: "步驟1：創建一次性帳戶",
                 steps: [
-                    "前往帳戶創建頁面",
+                    "前往[帳戶創建頁面](https://accounts.google.com/signup)",
                     "專門為此機器人創建新帳戶",
-                    "重要：不要使用您的個人/主帳戶"
+                    "⚠️ 重要：絕對不要使用您的個人/主帳戶！"
                 ]
             },
             login: {
-                title: "步驟2：登入平台",
+                title: "步驟2：登入視頻平台",
                 steps: [
                     "打開瀏覽器",
-                    "前往平台（YouTube）",
+                    "前往[視頻平台](https://youtube.com)",
                     "使用一次性帳戶登入",
                     "如有提示，接受條款"
                 ]
             },
             extension: {
                 title: "步驟3：安裝Cookie導出擴充功能",
-                chrome: "Chrome/Edge：安裝\"Get cookies.txt LOCALLY\"或\"cookies.txt\"",
-                firefox: "Firefox：安裝\"cookies.txt\""
+                chrome: "Chrome/Edge：從Chrome Web Store安裝[**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)（推薦）",
+                firefox: "Firefox：從Firefox Add-ons安裝[**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)"
             },
             exportCookies: {
                 title: "步驟4：導出Cookie",
                 steps: [
-                    "確保您在平台網站上",
+                    "確保您在[視頻平台網站](https://youtube.com)上",
                     "點擊瀏覽器工具列中的Cookie擴充功能圖示",
-                    "選擇\"Export\"或\"Export cookies for this site\"",
-                    "將檔案儲存為cookies.txt"
+                    "選擇**Export**或**Export cookies for this site**",
+                    "將檔案儲存為`cookies.txt`"
                 ]
             },
             upload: {
-                title: "步驟5：上傳到伺服器",
+                title: "步驟5：添加到Rawon",
                 steps: [
-                    "如果不存在，在Rawon目錄中創建cache資料夾",
-                    "將cookies.txt檔案上傳到cache資料夾",
-                    "路徑應為：./cache/cookies.txt"
+                    "前往Rawon可以看到您訊息的任何頻道",
+                    "輸入：`!cookies add 1`",
+                    "將cookies.txt檔案附加到訊息並發送",
+                    "Rawon會確認cookie已添加！"
                 ]
-            },
-            configure: {
-                title: "步驟6：配置環境變數",
-                instruction: "將以下內容添加到.env檔案："
-            },
-            restart: {
-                title: "步驟7：重啟Rawon",
-                instruction: "重啟機器人以應用更改。"
             }
         },
-        docker: {
-            title: "Docker設置",
-            description:
-                "如果使用Docker，請將cookies.txt檔案放在docker-compose.yaml檔案旁邊，並添加卷掛載。"
+        troubleshooting: {
+            title: "🔧 故障排除",
+            stillGettingErrors: {
+                title: "仍然收到\"Sign in to confirm you're not a bot\"錯誤？",
+                steps: [
+                    "使用`!cookies list`檢查cookie狀態",
+                    "如果cookie顯示**Failed**，嘗試`!cookies reset`重試",
+                    "從不同帳戶新增更多cookies以實現冗餘"
+                ]
+            },
+            allCookiesFailed: {
+                title: "所有cookies都失敗了？",
+                steps: [
+                    "建立新的一次性帳戶",
+                    "匯出新的cookies",
+                    "使用!cookies add <編號>新增它們"
+                ]
+            },
+            accountSuspended: {
+                title: "帳戶被暫停？",
+                steps: [
+                    "這可能發生在大量使用的情況下",
+                    "只需建立一個新的一次性帳戶",
+                    "匯出新cookies並新增它們"
+                ]
+            }
         },
         duration: {
             title: "Cookie能持續多久？",
@@ -245,17 +325,15 @@ export const zhTW = {
             tips: "實際上，如果遵循最佳實踐，Cookie可以持續數月甚至數年。"
         },
         security: {
-            title: "安全注意事項",
+            title: "🔒 安全注意事項",
             warnings: [
-                "切勿與任何人分享您的Cookie檔案",
-                "使用一次性帳戶，而非主帳戶",
-                "Cookie檔案包含敏感認證資料",
-                "將cookies.txt添加到.gitignore以防止意外提交"
+                "⚠️ 切勿與任何人分享您的Cookie檔案",
+                "⚠️ 使用一次性帳戶，而非主帳戶",
+                "⚠️ Cookie檔案包含敏感認證資料"
             ]
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "免責聲明",
         subtitle: "使用此機器人前請仔細閱讀。",
@@ -278,7 +356,6 @@ export const zhTW = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "權限計算器",
         clientId: "客戶端ID",
@@ -293,7 +370,6 @@ export const zhTW = {
         resultNote: "這是您可以用來將機器人添加到伺服器的連結"
     },
 
-    // Common
     common: {
         back: "返回",
         copy: "複製",
@@ -303,6 +379,9 @@ export const zhTW = {
         example: "示例",
         learnMore: "了解更多",
         deployOnRailway: "部署到Railway",
-        language: "語言"
+        language: "語言",
+        tip: "提示",
+        warning: "警告",
+        note: "注意"
     }
 };

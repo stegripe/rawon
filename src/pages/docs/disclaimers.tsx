@@ -13,7 +13,6 @@ export default function DisclaimersPage() {
                 className="relative flex min-h-[calc(100vh-80px)] w-full px-5 py-3 pb-10 pt-0 text-third"
             >
                 <div className="flex w-full flex-col gap-6">
-                    {/* Header */}
                     <div className="flex w-full items-center gap-3">
                         <Link href="/" className="text-inherit no-underline">
                             <IconButton className="p-0">
@@ -30,7 +29,6 @@ export default function DisclaimersPage() {
                         </div>
                     </div>
 
-                    {/* Warning Banner */}
                     <div className="flex items-center gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
                         <WarningAmber className="text-3xl text-secondary" />
                         <Typography className="font-sans text-lg font-medium text-secondary">
@@ -38,7 +36,6 @@ export default function DisclaimersPage() {
                         </Typography>
                     </div>
 
-                    {/* Copyright Section */}
                     <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.disclaimers.copyright.title}
@@ -60,7 +57,6 @@ export default function DisclaimersPage() {
                         </div>
                     </div>
 
-                    {/* Code Modifications Section */}
                     <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.disclaimers.code.title}
@@ -82,7 +78,6 @@ export default function DisclaimersPage() {
                         </div>
                     </div>
 
-                    {/* License Link */}
                     <div className="flex flex-col gap-2">
                         <Typography className="font-sans text-sm text-fourth">
                             For full license details, see:{" "}

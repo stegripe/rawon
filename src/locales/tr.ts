@@ -1,5 +1,4 @@
 export const tr = {
-    // Navigation
     nav: {
         home: "Ana Sayfa",
         docs: "Belgeler",
@@ -11,7 +10,6 @@ export const tr = {
         links: "Bağlantılar"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const tr = {
         viewDocs: "Belgeleri Gör"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Başlarken",
         subtitle: "Adım adım kılavuzumuzla Rawon'u birkaç dakika içinde çalıştırın.",
@@ -39,7 +36,7 @@ export const tr = {
         requirements: {
             title: "Gereksinimler",
             nodeVersion: "Node.js sürüm 22.12.0 veya üstü",
-            discordToken: "Discord Bot Token (Discord Developer Portal'dan alın)",
+            discordToken: "Discord Bot Token ([Discord Developer Portal](https://discord.com/developers/applications)'dan alın)",
             optional: "İsteğe bağlı: Spotify desteği için Spotify API kimlik bilgileri"
         },
         standardSetup: {
@@ -79,10 +76,21 @@ export const tr = {
             description:
                 "Railway aylık 5$ ücretsiz kredi sağlar. Kullanım 5$'ın altında kaldığı sürece botunuz 7/24 çevrimiçi kalacaktır.",
             warning: "ÖNEMLİ: Railway'e dağıtmadan önce Yasal Uyarıları okuyun."
+        },
+        cookiesQuickStart: {
+            title: "🍪 Hızlı Başlangıç: Çerez Kurulumu",
+            description:
+                "Bulut sağlayıcılarında (AWS, GCP, Azure, Railway vb.) barındırıyorsanız, \"Sign in to confirm you're not a bot\" hataları alabilirsiniz. Çerez komutuyla kolayca düzeltin:",
+            steps: [
+                "Tarayıcınızdan çerezleri dışa aktarın ([Çerez Kurulumu kılavuzuna](/docs/cookies-setup) bakın)",
+                "Discord'da şunu yazın: `!cookies add 1`",
+                "`cookies.txt` dosyanızı mesaja ekleyin",
+                "Tamam! Çerez hemen etkili olur"
+            ],
+            tip: "💡 Yedeklilik için birden fazla çerez ekleyebilirsiniz. Biri başarısız olduğunda, Rawon otomatik olarak bir sonrakine geçer!"
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Yapılandırma",
         subtitle: "Bu ayarlarla Rawon'u ihtiyaçlarınıza göre yapılandırın.",
@@ -91,7 +99,7 @@ export const tr = {
             description: "Bunlar botu çalıştırmak için gereken minimum ayarlardır.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Discord Developer Portal'dan Discord bot tokenınız",
+                description: "[Discord Developer Portal](https://discord.com/developers/applications)'dan Discord bot tokenınız",
                 required: true
             },
             mainPrefix: {
@@ -112,7 +120,7 @@ export const tr = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "Spotify desteği için SPOTIFY_CLIENT_ID ve SPOTIFY_CLIENT_SECRET'ı ayarlayın"
+                description: "Spotify desteği için [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)'dan kimlik bilgilerinizi alın ve `SPOTIFY_CLIENT_ID` ve `SPOTIFY_CLIENT_SECRET`'ı ayarlayın"
             }
         },
         optional: {
@@ -153,14 +161,44 @@ export const tr = {
                 name: "ENABLE_AUDIO_CACHE",
                 description: "[DENEYSEL] Daha hızlı tekrar oynatma için indirilen sesi önbelleğe al",
                 default: "no"
+            },
+            requestChannelSplash: {
+                name: "REQUEST_CHANNEL_SPLASH",
+                description: "İstek kanalı oynatıcı embed'i için özel resim URL'si",
+                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+            }
+        },
+        developer: {
+            title: "🛠️ Geliştirici Ayarları",
+            description: "Bot geliştiricileri için gelişmiş ayarlar. Sadece ne yaptığınızı biliyorsanız kullanın!",
+            devs: {
+                name: "DEVS",
+                description: "Bot geliştirici ID'leri (virgülle ayrılmış). Geliştiriciler özel komutlara erişebilir"
+            },
+            enablePrefix: {
+                name: "ENABLE_PREFIX",
+                description: "Önek komutlarını etkinleştir/devre dışı bırak (!play gibi). Sadece slash komutları istiyorsanız kullanışlı",
+                default: "yes",
+                options: "yes, no"
+            },
+            enableSlash: {
+                name: "ENABLE_SLASH_COMMAND",
+                description: "Slash komutlarını etkinleştir/devre dışı bırak (/play gibi). Sadece önek komutları istiyorsanız kullanışlı",
+                default: "yes",
+                options: "yes, no"
+            },
+            debugMode: {
+                name: "DEBUG_MODE",
+                description: "Sorun giderme için hata ayıklama günlüğünü etkinleştir. Konsolda ayrıntılı günlükler gösterir",
+                default: "no",
+                options: "yes, no"
             }
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Çerez Kurulumu",
-        subtitle: "Barındırma sağlayıcılarındaki 'Sign in to confirm you're not a bot' hatalarını düzeltin.",
+        subtitle: "Barındırma sağlayıcılarındaki \"Sign in to confirm you're not a bot\" hatalarını düzeltin.",
         why: {
             title: "Buna neden ihtiyacım var?",
             description:
@@ -168,6 +206,33 @@ export const tr = {
             error: "Sign in to confirm you're not a bot",
             explanation:
                 "Bu, platformun veri merkezi IP adreslerinden gelen istekleri engellemesi nedeniyle olur. Oturum açmış bir hesaptan çerezler kullanarak bu kısıtlamayı atlayabilirsiniz."
+        },
+
+        quickMethod: {
+            title: "🚀 Kolay Yöntem: Çerez Komutunu Kullanma (Önerilen)",
+            description: "Çerezleri yönetmenin en kolay yolu - dosya düzenleme gerekmez!",
+            benefits: [
+                "✅ Anında çalışır - yeniden başlatma gerekmez",
+                "✅ Otomatik rotasyonlu birden fazla çerezi destekler",
+                "✅ Bir çerez başarısız olduğunda, bot otomatik olarak sonrakini kullanır",
+                "✅ Çerezler bot yeniden başlatmalarından sonra kalıcıdır"
+            ],
+            commands: {
+                title: "📝 Mevcut Komutlar",
+
+            },
+            quickStart: {
+                title: "⚡ Hızlı Başlangıç (3 adım)",
+                steps: [
+                    "Tarayıcınızdan çerezleri dışa aktarın (aşağıdaki kılavuza bakın)",
+                    "Discord'da şunu yazın: `!cookies add 1` ve cookies.txt dosyanızı ekleyin",
+                    "Tamam! Çerez artık aktif"
+                ]
+            },
+            multiCookie: {
+                title: "💡 Profesyonel İpucu: Birden Fazla Çerez Ekleyin",
+                description: "Daha iyi güvenilirlik için farklı hesaplardan çerez ekleyin:"
+            }
         },
         prerequisites: {
             title: "Ön Koşullar",
@@ -179,59 +244,74 @@ export const tr = {
             ]
         },
         steps: {
-            title: "Adım Adım Kılavuz",
+            title: "📖 Çerezleri Nasıl Dışa Aktarılır",
             createAccount: {
                 title: "Adım 1: Tek Kullanımlık Hesap Oluşturun",
                 steps: [
-                    "Hesap Oluşturma sayfasına gidin",
+                    "[Hesap oluşturma sayfasına](https://accounts.google.com/signup) gidin",
                     "Bu bot için özel olarak yeni bir hesap oluşturun",
-                    "Önemli: Kişisel/ana hesabınızı KULLANMAYIN"
+                    "⚠️ Önemli: Kişisel/ana hesabınızı ASLA KULLANMAYIN!"
                 ]
             },
             login: {
-                title: "Adım 2: Platforma Giriş Yapın",
+                title: "Adım 2: Video Platformuna Giriş Yapın",
                 steps: [
                     "Tarayıcınızı açın",
-                    "Platforma gidin (YouTube)",
+                    "[Video platformuna](https://youtube.com) gidin",
                     "Tek kullanımlık hesabınızla oturum açın",
                     "İstenirse şartları kabul edin"
                 ]
             },
             extension: {
                 title: "Adım 3: Çerez Dışa Aktarma Uzantısını Yükleyin",
-                chrome: "Chrome/Edge için: 'Get cookies.txt LOCALLY' veya 'cookies.txt' yükleyin",
-                firefox: "Firefox için: 'cookies.txt' yükleyin"
+                chrome: "Chrome/Edge için: Chrome Web Store'dan [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (önerilen) yükleyin",
+                firefox: "Firefox için: Firefox Add-ons'dan [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) yükleyin"
             },
             exportCookies: {
                 title: "Adım 4: Çerezleri Dışa Aktarın",
                 steps: [
-                    "Platform web sitesinde olduğunuzdan emin olun",
+                    "[Video platformu web sitesinde](https://youtube.com) olduğunuzdan emin olun",
                     "Tarayıcı araç çubuğundaki çerez uzantısı simgesine tıklayın",
-                    "'Export' veya 'Export cookies for this site' seçin",
-                    "Dosyayı cookies.txt olarak kaydedin"
+                    "**Export** veya **Export cookies for this site** seçin",
+                    "Dosyayı `cookies.txt` olarak kaydedin"
                 ]
             },
             upload: {
-                title: "Adım 5: Sunucunuza Yükleyin",
+                title: "Adım 5: Rawon'a Ekleyin",
                 steps: [
-                    "Rawon dizininizde yoksa bir cache klasörü oluşturun",
-                    "cookies.txt dosyasını cache klasörüne yükleyin",
-                    "Yol şu olmalıdır: ./cache/cookies.txt"
+                    "Rawon'un mesajlarınızı görebildiği herhangi bir kanala gidin",
+                    "`!cookies add 1` yazın",
+                    "cookies.txt dosyasını mesajınıza ekleyin ve gönderin",
+                    "Rawon çerezin eklendiğini onaylayacak!"
                 ]
-            },
-            configure: {
-                title: "Adım 6: Ortam Değişkenini Yapılandırın",
-                instruction: "Bunu .env dosyanıza ekleyin:"
-            },
-            restart: {
-                title: "Adım 7: Rawon'u Yeniden Başlatın",
-                instruction: "Değişiklikleri uygulamak için botunuzu yeniden başlatın."
             }
         },
-        docker: {
-            title: "Docker Kurulumu",
-            description:
-                "Docker kullanıyorsanız, cookies.txt dosyanızı docker-compose.yaml dosyanızın yanına koyun ve birim bağlamayı ekleyin."
+        troubleshooting: {
+            title: "🔧 Sorun Giderme",
+            stillGettingErrors: {
+                title: "Hâlâ \"Sign in to confirm you're not a bot\" hataları mı alıyorsunuz?",
+                steps: [
+                    "Çerez durumunu kontrol etmek için `!cookies list` kullanın",
+                    "Bir çerez **Failed** gösteriyorsa, yeniden denemek için `!cookies reset` deneyin",
+                    "Yedeklilik için farklı hesaplardan daha fazla çerez ekleyin"
+                ]
+            },
+            allCookiesFailed: {
+                title: "Tüm çerezler başarısız mı oldu?",
+                steps: [
+                    "Yeni tek kullanımlık hesaplar oluşturun",
+                    "Yeni çerezler dışa aktarın",
+                    "!cookies add <numara> ile ekleyin"
+                ]
+            },
+            accountSuspended: {
+                title: "Hesap askıya mı alındı?",
+                steps: [
+                    "Bu yoğun kullanımla olabilir",
+                    "Sadece yeni bir tek kullanımlık hesap oluşturun",
+                    "Yeni çerezler dışa aktarın ve ekleyin"
+                ]
+            }
         },
         duration: {
             title: "Çerezler Ne Kadar Sürer?",
@@ -246,17 +326,15 @@ export const tr = {
             tips: "Pratikte, en iyi uygulamaları takip ederseniz çerezler aylar hatta yıllar sürebilir."
         },
         security: {
-            title: "Güvenlik Notları",
+            title: "🔒 Güvenlik Notları",
             warnings: [
-                "Çerez dosyanızı asla kimseyle paylaşmayın",
-                "Ana hesabınızı DEĞİL, tek kullanımlık hesap kullanın",
-                "Çerez dosyası hassas kimlik doğrulama verilerini içerir",
-                "Yanlışlıkla commit yapmamak için cookies.txt'yi .gitignore'a ekleyin"
+                "⚠️ Çerez dosyanızı asla kimseyle paylaşmayın",
+                "⚠️ Ana hesabınızı DEĞİL, tek kullanımlık hesap kullanın",
+                "⚠️ Çerez dosyası hassas kimlik doğrulama verilerini içerir"
             ]
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Yasal Uyarılar",
         subtitle: "Bu botu kullanmadan önce lütfen dikkatlice okuyun.",
@@ -279,7 +357,6 @@ export const tr = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "İzin Hesaplayıcı",
         clientId: "İstemci ID",
@@ -295,7 +372,6 @@ export const tr = {
         resultNote: "Bu, botu sunucunuza eklemek için kullanabileceğiniz bağlantıdır"
     },
 
-    // Common
     common: {
         back: "Geri",
         copy: "Kopyala",
@@ -305,6 +381,9 @@ export const tr = {
         example: "Örnek",
         learnMore: "Daha Fazla Bilgi",
         deployOnRailway: "Railway'e Dağıt",
-        language: "Dil"
+        language: "Dil",
+        tip: "İpucu",
+        warning: "Uyarı",
+        note: "Not"
     }
 };

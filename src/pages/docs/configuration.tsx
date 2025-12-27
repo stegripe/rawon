@@ -1,4 +1,5 @@
 import { useLocale } from "@/contexts/LocaleContext";
+import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
@@ -14,7 +15,6 @@ export default function ConfigurationPage() {
                 className="relative flex min-h-[calc(100vh-80px)] w-full px-5 py-3 pb-10 pt-0 text-third"
             >
                 <div className="flex w-full flex-col gap-6">
-                    {/* Header */}
                     <div className="flex w-full items-center gap-3">
                         <Link href="/" className="text-inherit no-underline">
                             <IconButton className="p-0">
@@ -31,7 +31,6 @@ export default function ConfigurationPage() {
                         </div>
                     </div>
 
-                    {/* Essential Settings */}
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
@@ -43,7 +42,6 @@ export default function ConfigurationPage() {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            {/* DISCORD_TOKEN */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -57,14 +55,13 @@ export default function ConfigurationPage() {
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.essential.discordToken
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
-                            {/* MAIN_PREFIX */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -89,7 +86,6 @@ export default function ConfigurationPage() {
                                 </Typography>
                             </div>
 
-                            {/* MAIN_SERVER */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -110,7 +106,6 @@ export default function ConfigurationPage() {
                                 </Typography>
                             </div>
 
-                            {/* LOCALE */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -135,7 +130,6 @@ export default function ConfigurationPage() {
                                 </Typography>
                             </div>
 
-                            {/* Spotify */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -149,41 +143,36 @@ export default function ConfigurationPage() {
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.essential.spotify
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
                         </div>
                     </div>
 
-                    {/* Example .env */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-lg font-medium">
                             {t.common.example} .env
                         </Typography>
                         <CopyBlock
                             language="bash"
-                            text={`# Essential configuration
+                            text={`# Essential configuration (only DISCORD_TOKEN is required!)
 DISCORD_TOKEN="your-discord-bot-token"
 MAIN_PREFIX="!"
 MAIN_SERVER=""
 LOCALE="en-US"
 
-# Spotify (optional)
+# Spotify (optional - for Spotify links support)
 SPOTIFY_CLIENT_ID=""
-SPOTIFY_CLIENT_SECRET=""
-
-# Cookies (for hosting providers)
-YOUTUBE_COOKIES="./cache/cookies.txt"`}
+SPOTIFY_CLIENT_SECRET=""`}
                             theme={dracula}
                             showLineNumbers
                             codeBlock
                         />
                     </div>
 
-                    {/* Optional Settings */}
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
@@ -195,7 +184,6 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            {/* ALT_PREFIX */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -220,7 +208,6 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                 </Typography>
                             </div>
 
-                            {/* ACTIVITIES */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
                                     {t.configuration.optional.activities.name}
@@ -233,7 +220,6 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                 </Typography>
                             </div>
 
-                            {/* ACTIVITY_TYPES */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
                                     {
@@ -255,7 +241,6 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                 </Typography>
                             </div>
 
-                            {/* EMBED_COLOR */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -280,7 +265,6 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                 </Typography>
                             </div>
 
-                            {/* Emojis */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -302,7 +286,6 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                 </Typography>
                             </div>
 
-                            {/* MUSIC_SELECTION_TYPE */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -333,7 +316,6 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                 </Typography>
                             </div>
 
-                            {/* ENABLE_AUDIO_CACHE */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -357,10 +339,31 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                     }
                                 </Typography>
                             </div>
+
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                    {
+                                        t.configuration.optional
+                                            .requestChannelSplash.name
+                                    }
+                                </code>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.optional
+                                            .requestChannelSplash.description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {t.common.default}:{" "}
+                                    {
+                                        t.configuration.optional
+                                            .requestChannelSplash.default
+                                    }
+                                </Typography>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Example optional.env */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-lg font-medium">
                             {t.common.example} optional.env
@@ -378,10 +381,149 @@ ACTIVITY_TYPES="PLAYING, LISTENING"
 EMBED_COLOR="22C9FF"
 YES_EMOJI="✅"
 NO_EMOJI="❌"
+REQUEST_CHANNEL_SPLASH=""
 
 # Other settings
 MUSIC_SELECTION_TYPE="message"
 ENABLE_AUDIO_CACHE="no"`}
+                            theme={dracula}
+                            showLineNumbers
+                            codeBlock
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        <div>
+                            <Typography className="font-sans text-xl font-semibold">
+                                {t.configuration.developer.title}
+                            </Typography>
+                            <Typography className="font-sans text-sm text-fourth">
+                                {t.configuration.developer.description}
+                            </Typography>
+                        </div>
+
+                        <div className="flex flex-col gap-4">
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {t.configuration.developer.devs.name}
+                                    </code>
+                                    <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
+                                        {t.common.optional}
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.devs
+                                            .description
+                                    }
+                                </Typography>
+                            </div>
+
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {
+                                            t.configuration.developer
+                                                .enablePrefix.name
+                                        }
+                                    </code>
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {
+                                            t.configuration.developer
+                                                .enablePrefix.default
+                                        }
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.enablePrefix
+                                            .description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {
+                                        t.configuration.developer.enablePrefix
+                                            .options
+                                    }
+                                </Typography>
+                            </div>
+
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {
+                                            t.configuration.developer.enableSlash
+                                                .name
+                                        }
+                                    </code>
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {
+                                            t.configuration.developer.enableSlash
+                                                .default
+                                        }
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.enableSlash
+                                            .description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {
+                                        t.configuration.developer.enableSlash
+                                            .options
+                                    }
+                                </Typography>
+                            </div>
+
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {
+                                            t.configuration.developer.debugMode
+                                                .name
+                                        }
+                                    </code>
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {
+                                            t.configuration.developer.debugMode
+                                                .default
+                                        }
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.debugMode
+                                            .description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {
+                                        t.configuration.developer.debugMode
+                                            .options
+                                    }
+                                </Typography>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                        <Typography className="font-sans text-lg font-medium">
+                            {t.common.example} dev.env
+                        </Typography>
+                        <CopyBlock
+                            language="bash"
+                            text={`# Developer configuration (for bot developers)
+DEVS=""
+ENABLE_PREFIX="yes"
+ENABLE_SLASH_COMMAND="yes"
+NODE_ENV="production"
+DEBUG_MODE="no"`}
                             theme={dracula}
                             showLineNumbers
                             codeBlock

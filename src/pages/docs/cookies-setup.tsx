@@ -1,4 +1,5 @@
 import { useLocale } from "@/contexts/LocaleContext";
+import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded, WarningAmber } from "@mui/icons-material";
 import { Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
@@ -14,7 +15,6 @@ export default function CookiesSetupPage() {
                 className="relative flex min-h-[calc(100vh-80px)] w-full px-5 py-3 pb-10 pt-0 text-third"
             >
                 <div className="flex w-full flex-col gap-6">
-                    {/* Header */}
                     <div className="flex w-full items-center gap-3">
                         <Link href="/" className="text-inherit no-underline">
                             <IconButton className="p-0">
@@ -26,12 +26,11 @@ export default function CookiesSetupPage() {
                                 {t.cookiesSetup.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.cookiesSetup.subtitle}
+                                {renderWithCode(t.cookiesSetup.subtitle)}
                             </Typography>
                         </div>
                     </div>
 
-                    {/* Why do I need this? */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.why.title}
@@ -49,7 +48,83 @@ export default function CookiesSetupPage() {
                         </Typography>
                     </div>
 
-                    {/* Prerequisites */}
+                    <div className="flex flex-col gap-4 rounded-lg border-2 border-solid border-green-500 bg-green-50 p-4">
+                        <Typography className="font-sans text-xl font-semibold text-green-700">
+                            {t.cookiesSetup.quickMethod.title}
+                        </Typography>
+                        <Typography className="font-sans">
+                            {t.cookiesSetup.quickMethod.description}
+                        </Typography>
+
+                        <div className="flex flex-col gap-1">
+                            {t.cookiesSetup.quickMethod.benefits.map(
+                                (benefit, index) => (
+                                    <Typography
+                                        key={index}
+                                        className="font-sans text-sm"
+                                    >
+                                        {renderWithCode(benefit)}
+                                    </Typography>
+                                )
+                            )}
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Typography className="font-sans font-medium">
+                                {t.cookiesSetup.quickMethod.commands.title}
+                            </Typography>
+                            <CopyBlock
+                                language="bash"
+                                text={`!cookies add <number>    # Add a cookie (attach cookies.txt file)
+!cookies remove <number> # Remove a specific cookie
+!cookies remove all      # Remove all cookies
+!cookies list            # Show all cookies and their status
+!cookies reset           # Reset failed status to retry all cookies`}
+                                theme={dracula}
+                                showLineNumbers={false}
+                                codeBlock
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Typography className="font-sans font-medium">
+                                {t.cookiesSetup.quickMethod.quickStart.title}
+                            </Typography>
+                            <ol className="m-0 list-decimal pl-5">
+                                {t.cookiesSetup.quickMethod.quickStart.steps.map(
+                                    (step, index) => (
+                                        <li key={index}>
+                                            <Typography className="font-sans text-sm">
+                                                {renderWithCode(step)}
+                                            </Typography>
+                                        </li>
+                                    )
+                                )}
+                            </ol>
+                        </div>
+
+                        <div className="rounded-lg bg-green-100 p-3">
+                            <Typography className="font-sans font-medium text-green-800">
+                                {t.cookiesSetup.quickMethod.multiCookie.title}
+                            </Typography>
+                            <Typography className="font-sans text-sm text-green-700">
+                                {renderWithCode(
+                                    t.cookiesSetup.quickMethod.multiCookie
+                                        .description
+                                )}
+                            </Typography>
+                            <CopyBlock
+                                language="bash"
+                                text={`!cookies add 1  # (attach first cookies.txt)
+!cookies add 2  # (attach second cookies.txt from another account)
+!cookies add 3  # (attach third cookies.txt)`}
+                                theme={dracula}
+                                showLineNumbers={false}
+                                codeBlock
+                            />
+                        </div>
+                    </div>
+
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.prerequisites.title}
@@ -59,7 +134,7 @@ export default function CookiesSetupPage() {
                                 (item, index) => (
                                     <li key={index}>
                                         <Typography className="font-sans">
-                                            {item}
+                                            {renderWithCode(item)}
                                         </Typography>
                                     </li>
                                 )
@@ -67,13 +142,11 @@ export default function CookiesSetupPage() {
                         </ul>
                     </div>
 
-                    {/* Step by Step Guide */}
                     <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.steps.title}
                         </Typography>
 
-                        {/* Step 1 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.createAccount.title}
@@ -83,7 +156,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -91,7 +164,6 @@ export default function CookiesSetupPage() {
                             </ol>
                         </div>
 
-                        {/* Step 2 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.login.title}
@@ -101,7 +173,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -109,7 +181,6 @@ export default function CookiesSetupPage() {
                             </ol>
                         </div>
 
-                        {/* Step 3 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.extension.title}
@@ -117,18 +188,17 @@ export default function CookiesSetupPage() {
                             <ul className="m-0 mt-2 list-disc pl-5">
                                 <li>
                                     <Typography className="font-sans text-sm">
-                                        {t.cookiesSetup.steps.extension.chrome}
+                                        {renderWithCode(t.cookiesSetup.steps.extension.chrome)}
                                     </Typography>
                                 </li>
                                 <li>
                                     <Typography className="font-sans text-sm">
-                                        {t.cookiesSetup.steps.extension.firefox}
+                                        {renderWithCode(t.cookiesSetup.steps.extension.firefox)}
                                     </Typography>
                                 </li>
                             </ul>
                         </div>
 
-                        {/* Step 4 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.exportCookies.title}
@@ -138,7 +208,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -146,7 +216,6 @@ export default function CookiesSetupPage() {
                             </ol>
                         </div>
 
-                        {/* Step 5 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.upload.title}
@@ -156,73 +225,81 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
                                 )}
                             </ol>
                         </div>
-
-                        {/* Step 6 */}
-                        <div className="rounded-lg border-1 border-solid border-third p-4">
-                            <Typography className="font-sans text-lg font-medium">
-                                {t.cookiesSetup.steps.configure.title}
-                            </Typography>
-                            <Typography className="mt-2 font-sans text-sm">
-                                {t.cookiesSetup.steps.configure.instruction}
-                            </Typography>
-                            <div className="mt-2">
-                                <CopyBlock
-                                    language="bash"
-                                    text={`YOUTUBE_COOKIES="./cache/cookies.txt"`}
-                                    theme={dracula}
-                                    showLineNumbers={false}
-                                    codeBlock
-                                />
-                            </div>
-                        </div>
-
-                        {/* Step 7 */}
-                        <div className="rounded-lg border-1 border-solid border-third p-4">
-                            <Typography className="font-sans text-lg font-medium">
-                                {t.cookiesSetup.steps.restart.title}
-                            </Typography>
-                            <Typography className="mt-2 font-sans text-sm">
-                                {t.cookiesSetup.steps.restart.instruction}
-                            </Typography>
-                        </div>
                     </div>
 
-                    {/* Docker Setup */}
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.cookiesSetup.docker.title}
+                            {t.cookiesSetup.troubleshooting.title}
                         </Typography>
-                        <Typography className="font-sans">
-                            {t.cookiesSetup.docker.description}
-                        </Typography>
-                        <CopyBlock
-                            language="yaml"
-                            text={`services:
-  rawon:
-    image: ghcr.io/stegripe/rawon:latest
-    container_name: rawon-bot
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - rawon:/app/cache
-      - ./cookies.txt:/app/cache/cookies.txt:ro
 
-volumes:
-  rawon:`}
-                            theme={dracula}
-                            showLineNumbers
-                            codeBlock
-                        />
+                        <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-50 p-4">
+                            <Typography className="font-sans font-medium">
+                                {renderWithCode(
+                                    t.cookiesSetup.troubleshooting
+                                        .stillGettingErrors.title
+                                )}
+                            </Typography>
+                            <ul className="m-0 mt-2 list-disc pl-5">
+                                {t.cookiesSetup.troubleshooting.stillGettingErrors.steps.map(
+                                    (step, index) => (
+                                        <li key={index}>
+                                            <Typography className="font-sans text-sm">
+                                                {renderWithCode(step)}
+                                            </Typography>
+                                        </li>
+                                    )
+                                )}
+                            </ul>
+                        </div>
+
+                        <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-50 p-4">
+                            <Typography className="font-sans font-medium">
+                                {renderWithCode(
+                                    t.cookiesSetup.troubleshooting
+                                        .allCookiesFailed.title
+                                )}
+                            </Typography>
+                            <ul className="m-0 mt-2 list-disc pl-5">
+                                {t.cookiesSetup.troubleshooting.allCookiesFailed.steps.map(
+                                    (step, index) => (
+                                        <li key={index}>
+                                            <Typography className="font-sans text-sm">
+                                                {renderWithCode(step)}
+                                            </Typography>
+                                        </li>
+                                    )
+                                )}
+                            </ul>
+                        </div>
+
+                        <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-50 p-4">
+                            <Typography className="font-sans font-medium">
+                                {renderWithCode(
+                                    t.cookiesSetup.troubleshooting
+                                        .accountSuspended.title
+                                )}
+                            </Typography>
+                            <ul className="m-0 mt-2 list-disc pl-5">
+                                {t.cookiesSetup.troubleshooting.accountSuspended.steps.map(
+                                    (step, index) => (
+                                        <li key={index}>
+                                            <Typography className="font-sans text-sm">
+                                                {renderWithCode(step)}
+                                            </Typography>
+                                        </li>
+                                    )
+                                )}
+                            </ul>
+                        </div>
                     </div>
 
-                    {/* How Long Do Cookies Last? */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.duration.title}
@@ -250,7 +327,6 @@ volumes:
                         </Typography>
                     </div>
 
-                    {/* Security Notes */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.security.title}

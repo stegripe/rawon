@@ -1,5 +1,4 @@
 export const pt = {
-    // Navigation
     nav: {
         home: "Início",
         docs: "Docs",
@@ -11,7 +10,6 @@ export const pt = {
         links: "Links"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const pt = {
         viewDocs: "Ver Docs"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Começar",
         subtitle: "Coloque o Rawon em funcionamento em minutos com nosso guia passo a passo.",
@@ -39,7 +36,7 @@ export const pt = {
         requirements: {
             title: "Requisitos",
             nodeVersion: "Node.js versão 22.12.0 ou superior",
-            discordToken: "Token do Bot Discord (obter no Discord Developer Portal)",
+            discordToken: "Token do Bot Discord (obter no [Discord Developer Portal](https://discord.com/developers/applications))",
             optional: "Opcional: Credenciais da API Spotify para suporte ao Spotify"
         },
         standardSetup: {
@@ -79,10 +76,21 @@ export const pt = {
             description:
                 "O Railway oferece $5 de créditos gratuitos mensais. Seu bot ficará online 24/7 enquanto o uso ficar abaixo de $5.",
             warning: "IMPORTANTE: Leia os Avisos Legais antes de fazer deploy no Railway."
+        },
+        cookiesQuickStart: {
+            title: "🍪 Início Rápido: Configuração de Cookies",
+            description:
+                "Se você está hospedando em provedores de nuvem (AWS, GCP, Azure, Railway, etc.), pode receber erros \"Sign in to confirm you're not a bot\". Corrija facilmente com o comando cookies:",
+            steps: [
+                "Exporte cookies do seu navegador (veja o [guia de Config. Cookies](/docs/cookies-setup))",
+                "No Discord, digite: `!cookies add 1`",
+                "Anexe seu arquivo `cookies.txt` à mensagem",
+                "Pronto! O cookie entra em vigor imediatamente"
+            ],
+            tip: "💡 Você pode adicionar múltiplos cookies para redundância. Quando um falha, Rawon automaticamente muda para o próximo!"
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Configuração",
         subtitle: "Configure o Rawon de acordo com suas necessidades com estas configurações.",
@@ -91,7 +99,7 @@ export const pt = {
             description: "Estas são as configurações mínimas necessárias para executar o bot.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Seu token de bot Discord do Discord Developer Portal",
+                description: "Seu token de bot Discord do [Discord Developer Portal](https://discord.com/developers/applications)",
                 required: true
             },
             mainPrefix: {
@@ -112,7 +120,7 @@ export const pt = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "Para suporte ao Spotify, defina SPOTIFY_CLIENT_ID e SPOTIFY_CLIENT_SECRET"
+                description: "Para suporte ao Spotify, obtenha suas credenciais em [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) e defina `SPOTIFY_CLIENT_ID` e `SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {
@@ -153,14 +161,44 @@ export const pt = {
                 name: "ENABLE_AUDIO_CACHE",
                 description: "[EXPERIMENTAL] Cache de áudio baixado para reprodução repetida mais rápida",
                 default: "no"
+            },
+            requestChannelSplash: {
+                name: "REQUEST_CHANNEL_SPLASH",
+                description: "URL de imagem personalizada para o embed do player do canal de requisição",
+                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+            }
+        },
+        developer: {
+            title: "🛠️ Configurações de Desenvolvedor",
+            description: "Configurações avançadas para desenvolvedores de bots. Use apenas se você sabe o que está fazendo!",
+            devs: {
+                name: "DEVS",
+                description: "IDs de desenvolvedores do bot (separados por vírgula). Desenvolvedores podem acessar comandos especiais"
+            },
+            enablePrefix: {
+                name: "ENABLE_PREFIX",
+                description: "Ativar/desativar comandos com prefixo (como !play). Útil se você quer apenas comandos slash",
+                default: "yes",
+                options: "yes, no"
+            },
+            enableSlash: {
+                name: "ENABLE_SLASH_COMMAND",
+                description: "Ativar/desativar comandos slash (como /play). Útil se você quer apenas comandos com prefixo",
+                default: "yes",
+                options: "yes, no"
+            },
+            debugMode: {
+                name: "DEBUG_MODE",
+                description: "Ativar logs de depuração para solução de problemas. Mostra logs detalhados no console",
+                default: "no",
+                options: "yes, no"
             }
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Configuração de Cookies",
-        subtitle: "Corrija erros 'Sign in to confirm you're not a bot' em provedores de hospedagem.",
+        subtitle: "Corrija erros \"Sign in to confirm you're not a bot\" em provedores de hospedagem.",
         why: {
             title: "Por que preciso disso?",
             description:
@@ -168,6 +206,34 @@ export const pt = {
             error: "Sign in to confirm you're not a bot",
             explanation:
                 "Isso acontece porque a plataforma bloqueia requisições de endereços IP de data centers. Usando cookies de uma conta logada, você pode contornar essa restrição."
+        },
+
+        quickMethod: {
+            title: "🚀 Método Fácil: Usando o Comando Cookies (Recomendado)",
+            description: "A maneira mais fácil de gerenciar cookies - sem edição de arquivos!",
+            benefits: [
+                "✅ Funciona instantaneamente - sem reinício necessário",
+                "✅ Suporta múltiplos cookies com rotação automática",
+                "✅ Quando um cookie falha, o bot automaticamente usa o próximo",
+                "✅ Cookies persistem após reinícios do bot"
+            ],
+            commands: {
+                title: "📝 Comandos Disponíveis",
+                add: "`!cookies add <número>` - Adicionar um cookie (anexe o arquivo cookies.txt à sua mensagem)",
+
+            },
+            quickStart: {
+                title: "⚡ Início Rápido (3 passos)",
+                steps: [
+                    "Exporte cookies do seu navegador (veja o guia abaixo)",
+                    "No Discord, digite: `!cookies add 1` e anexe seu arquivo cookies.txt",
+                    "Pronto! O cookie agora está ativo"
+                ]
+            },
+            multiCookie: {
+                title: "💡 Dica Pro: Adicione Múltiplos Cookies",
+                description: "Adicione cookies de diferentes contas para melhor confiabilidade:"
+            }
         },
         prerequisites: {
             title: "Pré-requisitos",
@@ -179,59 +245,74 @@ export const pt = {
             ]
         },
         steps: {
-            title: "Guia Passo a Passo",
+            title: "📖 Como Exportar Cookies",
             createAccount: {
                 title: "Passo 1: Criar uma Conta Descartável",
                 steps: [
-                    "Vá para Criação de Conta",
+                    "Vá para a [página de criação de conta](https://accounts.google.com/signup)",
                     "Crie uma nova conta especificamente para este bot",
-                    "Importante: NÃO use sua conta pessoal/principal"
+                    "⚠️ Importante: NUNCA use sua conta pessoal/principal!"
                 ]
             },
             login: {
-                title: "Passo 2: Fazer Login na Plataforma",
+                title: "Passo 2: Fazer Login na Plataforma de Vídeo",
                 steps: [
                     "Abra seu navegador",
-                    "Vá para a plataforma (YouTube)",
+                    "Vá para [a plataforma de vídeo](https://youtube.com)",
                     "Faça login com sua conta descartável",
                     "Aceite os termos se solicitado"
                 ]
             },
             extension: {
                 title: "Passo 3: Instalar Extensão de Exportação de Cookies",
-                chrome: "Para Chrome/Edge: Instale 'Get cookies.txt LOCALLY' ou 'cookies.txt'",
-                firefox: "Para Firefox: Instale 'cookies.txt'"
+                chrome: "Para Chrome/Edge: Instale [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (recomendado) da Chrome Web Store",
+                firefox: "Para Firefox: Instale [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) do Firefox Add-ons"
             },
             exportCookies: {
                 title: "Passo 4: Exportar Cookies",
                 steps: [
-                    "Certifique-se de estar no site da plataforma",
+                    "Certifique-se de estar no [site da plataforma de vídeo](https://youtube.com)",
                     "Clique no ícone da extensão de cookies na barra de ferramentas",
-                    "Escolha 'Export' ou 'Export cookies for this site'",
-                    "Salve o arquivo como cookies.txt"
+                    "Escolha **Export** ou **Export cookies for this site**",
+                    "Salve o arquivo como `cookies.txt`"
                 ]
             },
             upload: {
-                title: "Passo 5: Enviar para Seu Servidor",
+                title: "Passo 5: Adicionar ao Rawon",
                 steps: [
-                    "Crie uma pasta cache no diretório do Rawon se não existir",
-                    "Envie o arquivo cookies.txt para a pasta cache",
-                    "O caminho deve ser: ./cache/cookies.txt"
+                    "Vá para qualquer canal onde Rawon pode ver suas mensagens",
+                    "Digite: `!cookies add 1`",
+                    "Anexe o arquivo cookies.txt à sua mensagem e envie",
+                    "Rawon confirmará que o cookie foi adicionado!"
                 ]
-            },
-            configure: {
-                title: "Passo 6: Configurar Variável de Ambiente",
-                instruction: "Adicione isso ao seu arquivo .env:"
-            },
-            restart: {
-                title: "Passo 7: Reiniciar Rawon",
-                instruction: "Reinicie seu bot para aplicar as mudanças."
             }
         },
-        docker: {
-            title: "Configuração Docker",
-            description:
-                "Se estiver usando Docker, coloque seu arquivo cookies.txt ao lado do arquivo docker-compose.yaml e adicione a montagem de volume."
+        troubleshooting: {
+            title: "🔧 Solução de Problemas",
+            stillGettingErrors: {
+                title: "Ainda recebendo erros \"Sign in to confirm you're not a bot\"?",
+                steps: [
+                    "Use `!cookies list` para verificar o status dos cookies",
+                    "Se um cookie mostrar **Failed**, tente `!cookies reset` para tentar novamente",
+                    "Adicione mais cookies de diferentes contas para redundância"
+                ]
+            },
+            allCookiesFailed: {
+                title: "Todos os cookies falharam?",
+                steps: [
+                    "Crie novas contas descartáveis",
+                    "Exporte cookies novos",
+                    "Adicione-os com `!cookies add <número>`"
+                ]
+            },
+            accountSuspended: {
+                title: "Conta foi suspensa?",
+                steps: [
+                    "Isso pode acontecer com uso intenso",
+                    "Simplesmente crie uma nova conta descartável",
+                    "Exporte novos cookies e adicione-os"
+                ]
+            }
         },
         duration: {
             title: "Quanto Tempo os Cookies Duram?",
@@ -246,17 +327,15 @@ export const pt = {
             tips: "Na prática, os cookies podem durar meses ou até anos se você seguir as melhores práticas."
         },
         security: {
-            title: "Notas de Segurança",
+            title: "🔒 Notas de Segurança",
             warnings: [
-                "Nunca compartilhe seu arquivo de cookies com ninguém",
-                "Use uma conta descartável, NÃO sua conta principal",
-                "O arquivo de cookies contém dados de autenticação sensíveis",
-                "Adicione cookies.txt ao seu .gitignore para evitar commits acidentais"
+                "⚠️ Nunca compartilhe seu arquivo de cookies com ninguém",
+                "⚠️ Use uma conta descartável, NÃO sua conta principal",
+                "⚠️ O arquivo de cookies contém dados de autenticação sensíveis"
             ]
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Avisos Legais",
         subtitle: "Por favor, leia com atenção antes de usar este bot.",
@@ -279,7 +358,6 @@ export const pt = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "Calculadora de Permissões",
         clientId: "ID do Cliente",
@@ -295,7 +373,6 @@ export const pt = {
         resultNote: "Este é o link que você pode usar para adicionar o bot ao seu servidor"
     },
 
-    // Common
     common: {
         back: "Voltar",
         copy: "Copiar",
@@ -305,6 +382,9 @@ export const pt = {
         example: "Exemplo",
         learnMore: "Saiba Mais",
         deployOnRailway: "Deploy no Railway",
-        language: "Idioma"
+        language: "Idioma",
+        tip: "Dica",
+        warning: "Aviso",
+        note: "Nota"
     }
 };

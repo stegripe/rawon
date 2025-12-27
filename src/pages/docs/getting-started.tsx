@@ -1,4 +1,5 @@
 import { useLocale } from "@/contexts/LocaleContext";
+import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded, CheckCircleOutline } from "@mui/icons-material";
 import { Button, Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
@@ -14,7 +15,6 @@ export default function GettingStartedPage() {
                 className="relative flex min-h-[calc(100vh-80px)] w-full px-5 py-3 pb-10 pt-0 text-third"
             >
                 <div className="flex w-full flex-col gap-6">
-                    {/* Header */}
                     <div className="flex w-full items-center gap-3">
                         <Link href="/" className="text-inherit no-underline">
                             <IconButton className="p-0">
@@ -31,7 +31,6 @@ export default function GettingStartedPage() {
                         </div>
                     </div>
 
-                    {/* Features */}
                     <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-third p-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.features.title}
@@ -53,7 +52,6 @@ export default function GettingStartedPage() {
                         </div>
                     </div>
 
-                    {/* Requirements */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.requirements.title}
@@ -61,26 +59,25 @@ export default function GettingStartedPage() {
                         <ul className="m-0 flex list-disc flex-col gap-1 pl-5">
                             <li>
                                 <Typography className="font-sans">
-                                    {t.gettingStarted.requirements.nodeVersion}
+                                    {renderWithCode(t.gettingStarted.requirements.nodeVersion)}
                                 </Typography>
                             </li>
                             <li>
                                 <Typography className="font-sans">
-                                    {
+                                    {renderWithCode(
                                         t.gettingStarted.requirements
                                             .discordToken
-                                    }
+                                    )}
                                 </Typography>
                             </li>
                             <li>
                                 <Typography className="font-sans">
-                                    {t.gettingStarted.requirements.optional}
+                                    {renderWithCode(t.gettingStarted.requirements.optional)}
                                 </Typography>
                             </li>
                         </ul>
                     </div>
 
-                    {/* Standard Setup */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.standardSetup.title}
@@ -109,7 +106,6 @@ export default function GettingStartedPage() {
                         />
                     </div>
 
-                    {/* Docker Setup */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.dockerSetup.title}
@@ -187,7 +183,6 @@ volumes:
                         </div>
                     </div>
 
-                    {/* Railway */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.railwaySetup.title}
@@ -216,7 +211,39 @@ volumes:
                         </Link>
                     </div>
 
-                    {/* Next Steps */}
+                    <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
+                        <Typography className="font-sans text-xl font-semibold">
+                            {t.gettingStarted.cookiesQuickStart.title}
+                        </Typography>
+                        <Typography className="font-sans">
+                            {renderWithCode(t.gettingStarted.cookiesQuickStart.description)}
+                        </Typography>
+                        <ol className="m-0 flex list-decimal flex-col gap-2 pl-5">
+                            {t.gettingStarted.cookiesQuickStart.steps.map(
+                                (step, index) => (
+                                    <li key={index}>
+                                        <Typography className="font-sans">
+                                            {renderWithCode(step)}
+                                        </Typography>
+                                    </li>
+                                )
+                            )}
+                        </ol>
+                        <div className="rounded-lg bg-green-100 p-3">
+                            <Typography className="font-sans text-sm">
+                                {renderWithCode(t.gettingStarted.cookiesQuickStart.tip)}
+                            </Typography>
+                        </div>
+                        <Link href="/docs/cookies-setup">
+                            <Button
+                                variant="outlined"
+                                className="w-fit rounded-lg border-secondary font-sans capitalize text-secondary"
+                            >
+                                {t.nav.cookiesSetup}
+                            </Button>
+                        </Link>
+                    </div>
+
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.common.learnMore}

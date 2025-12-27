@@ -1,5 +1,4 @@
 export const ja = {
-    // Navigation
     nav: {
         home: "ホーム",
         docs: "ドキュメント",
@@ -11,7 +10,6 @@ export const ja = {
         links: "リンク"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const ja = {
         viewDocs: "ドキュメント"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "はじめに",
         subtitle:
@@ -41,7 +38,7 @@ export const ja = {
             title: "必要条件",
             nodeVersion: "Node.js バージョン22.12.0以上",
             discordToken:
-                "Discord Bot Token（Discord Developer Portalから取得）",
+                "Discord Bot Token（[Discord Developer Portal](https://discord.com/developers/applications)から取得）",
             optional: "オプション：SpotifyサポートのためのSpotify API認証情報"
         },
         standardSetup: {
@@ -82,10 +79,21 @@ export const ja = {
             description:
                 "Railwayは毎月$5の無料クレジットを提供しています。使用量が$5未満であれば、ボットは24時間365日オンラインを維持します。",
             warning: "重要：Railwayにデプロイする前に免責事項をお読みください。"
+        },
+        cookiesQuickStart: {
+            title: "🍪 クイックスタート：Cookie設定",
+            description:
+                "クラウドプロバイダー（AWS、GCP、Azure、Railway等）でホスティングしている場合、「Sign in to confirm you're not a bot」エラーが発生することがあります。cookiesコマンドで簡単に修正できます：",
+            steps: [
+                "ブラウザからCookieをエクスポート（[Cookie設定ガイド](/docs/cookies-setup)を参照）",
+                "Discordで「`!cookies add 1`」と入力",
+                "`cookies.txt`ファイルをメッセージに添付",
+                "完了！Cookieは即座に有効になります"
+            ],
+            tip: "💡 冗長性のために複数のCookieを追加できます。1つが失敗すると、Rawonは自動的に次に切り替わります！"
         }
     },
 
-    // Configuration page
     configuration: {
         title: "設定",
         subtitle: "これらの設定でRawonをカスタマイズしてください。",
@@ -96,7 +104,7 @@ export const ja = {
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "Discord Developer PortalからのDiscordボットトークン",
+                    "[Discord Developer Portal](https://discord.com/developers/applications)からのDiscordボットトークン",
                 required: true
             },
             mainPrefix: {
@@ -119,7 +127,7 @@ export const ja = {
             spotify: {
                 name: "Spotify API",
                 description:
-                    "SpotifyサポートのためにSPOTIFY_CLIENT_IDとSPOTIFY_CLIENT_SECRETを設定"
+                    "Spotifyサポートのために[developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)から認証情報を取得し、`SPOTIFY_CLIENT_ID`と`SPOTIFY_CLIENT_SECRET`を設定"
             }
         },
         optional: {
@@ -162,11 +170,41 @@ export const ja = {
                 description:
                     "[実験的] ダウンロードしたオーディオをキャッシュして繰り返し再生を高速化",
                 default: "no"
+            },
+            requestChannelSplash: {
+                name: "REQUEST_CHANNEL_SPLASH",
+                description: "リクエストチャンネルプレーヤーの埋め込み用カスタム画像URL",
+                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+            }
+        },
+        developer: {
+            title: "🛠️ 開発者設定",
+            description: "ボット開発者向けの詳細設定。何をしているか分かっている場合のみ使用してください！",
+            devs: {
+                name: "DEVS",
+                description: "ボット開発者ID（カンマ区切り）。開発者は特別なコマンドにアクセスできます"
+            },
+            enablePrefix: {
+                name: "ENABLE_PREFIX",
+                description: "プレフィックスコマンド（!playなど）を有効/無効化。スラッシュコマンドのみ使用したい場合に便利",
+                default: "yes",
+                options: "yes, no"
+            },
+            enableSlash: {
+                name: "ENABLE_SLASH_COMMAND",
+                description: "スラッシュコマンド（/playなど）を有効/無効化。プレフィックスコマンドのみ使用したい場合に便利",
+                default: "yes",
+                options: "yes, no"
+            },
+            debugMode: {
+                name: "DEBUG_MODE",
+                description: "トラブルシューティング用のデバッグログを有効化。コンソールに詳細なログを表示",
+                default: "no",
+                options: "yes, no"
             }
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Cookie設定",
         subtitle:
@@ -179,6 +217,34 @@ export const ja = {
             explanation:
                 "これは、プラットフォームがデータセンターIPアドレスからのリクエストをブロックしているために発生します。ログインしたアカウントのCookieを使用することで、この制限を回避できます。"
         },
+
+        quickMethod: {
+            title: "🚀 簡単な方法：Cookiesコマンドを使用（推奨）",
+            description: "Cookieを管理する最も簡単な方法 - ファイル編集不要！",
+            benefits: [
+                "✅ 即座に動作 - 再起動不要",
+                "✅ 自動ローテーション付きで複数のCookieをサポート",
+                "✅ 1つのCookieが失敗すると、ボットは自動的に次を使用",
+                "✅ ボット再起動後もCookieは保持されます"
+            ],
+            commands: {
+                title: "📝 利用可能なコマンド",
+                add: "`!cookies add <番号>` - Cookieを追加（cookies.txtファイルをメッセージに添付）",
+
+            },
+            quickStart: {
+                title: "⚡ クイックスタート（3ステップ）",
+                steps: [
+                    "ブラウザからCookieをエクスポート（下記ガイドを参照）",
+                    "Discordで「!cookies add 1」と入力し、cookies.txtファイルを添付",
+                    "完了！Cookieは現在アクティブです"
+                ]
+            },
+            multiCookie: {
+                title: "💡 プロのコツ：複数のCookieを追加",
+                description: "信頼性を高めるために異なるアカウントからCookieを追加："
+            }
+        },
         prerequisites: {
             title: "前提条件",
             items: [
@@ -189,59 +255,74 @@ export const ja = {
             ]
         },
         steps: {
-            title: "ステップバイステップガイド",
+            title: "📖 Cookieのエクスポート方法",
             createAccount: {
                 title: "ステップ1：使い捨てアカウントを作成",
                 steps: [
-                    "アカウント作成ページに移動",
+                    "[アカウント作成ページ](https://accounts.google.com/signup)に移動",
                     "このボット専用の新しいアカウントを作成",
-                    "重要：個人/メインアカウントは使用しないでください"
+                    "⚠️ 重要：個人/メインアカウントは絶対に使用しないでください！"
                 ]
             },
             login: {
-                title: "ステップ2：プラットフォームにログイン",
+                title: "ステップ2：動画プラットフォームにログイン",
                 steps: [
                     "ブラウザを開く",
-                    "プラットフォーム（YouTube）に移動",
+                    "[動画プラットフォーム](https://youtube.com)に移動",
                     "使い捨てアカウントでサインイン",
                     "プロンプトが表示されたら条件に同意"
                 ]
             },
             extension: {
                 title: "ステップ3：Cookieエクスポート拡張機能をインストール",
-                chrome: "Chrome/Edge用：「Get cookies.txt LOCALLY」または「cookies.txt」をインストール",
-                firefox: "Firefox用：「cookies.txt」をインストール"
+                chrome: "Chrome/Edge用：Chrome Web Storeから[**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)（推奨）をインストール",
+                firefox: "Firefox用：Firefox Add-onsから[**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)をインストール"
             },
             exportCookies: {
                 title: "ステップ4：Cookieをエクスポート",
                 steps: [
-                    "プラットフォームのウェブサイトにいることを確認",
+                    "[動画プラットフォームのウェブサイト](https://youtube.com)にいることを確認",
                     "ブラウザツールバーのCookie拡張機能アイコンをクリック",
-                    "「Export」または「Export cookies for this site」を選択",
-                    "ファイルをcookies.txtとして保存"
+                    "**Export**または**Export cookies for this site**を選択",
+                    "ファイルを`cookies.txt`として保存"
                 ]
             },
             upload: {
-                title: "ステップ5：サーバーにアップロード",
+                title: "ステップ5：Rawonに追加",
                 steps: [
-                    "Rawonディレクトリにcacheフォルダがなければ作成",
-                    "cookies.txtファイルをcacheフォルダにアップロード",
-                    "パスは./cache/cookies.txtである必要があります"
+                    "Rawonがメッセージを見られるチャンネルに移動",
+                    "`!cookies add 1`と入力",
+                    "cookies.txtファイルをメッセージに添付して送信",
+                    "Rawonがcookieが追加されたことを確認します！"
                 ]
-            },
-            configure: {
-                title: "ステップ6：環境変数を設定",
-                instruction: ".envファイルに以下を追加："
-            },
-            restart: {
-                title: "ステップ7：Rawonを再起動",
-                instruction: "変更を適用するためにボットを再起動してください。"
             }
         },
-        docker: {
-            title: "Dockerセットアップ",
-            description:
-                "Dockerを使用している場合は、cookies.txtファイルをdocker-compose.yamlファイルの横に置き、ボリュームマウントを追加してください。"
+        troubleshooting: {
+            title: "🔧 トラブルシューティング",
+            stillGettingErrors: {
+                title: "まだ「Sign in to confirm you're not a bot」エラーが出ますか？",
+                steps: [
+                    "`!cookies list`でCookieの状態を確認",
+                    "Cookieが「Failed」と表示されている場合、`!cookies reset`で再試行",
+                    "冗長性のために異なるアカウントからCookieを追加"
+                ]
+            },
+            allCookiesFailed: {
+                title: "すべてのCookieが失敗しましたか？",
+                steps: [
+                    "新しい使い捨てアカウントを作成",
+                    "新しいCookieをエクスポート",
+                    "`!cookies add <番号>`で追加"
+                ]
+            },
+            accountSuspended: {
+                title: "アカウントが停止されましたか？",
+                steps: [
+                    "これは頻繁な使用で発生することがあります",
+                    "単に新しい使い捨てアカウントを作成",
+                    "新しいCookieをエクスポートして追加"
+                ]
+            }
         },
         duration: {
             title: "Cookieはどのくらい持続しますか？",
@@ -256,17 +337,15 @@ export const ja = {
             tips: "実際には、ベストプラクティスに従えば、Cookieは数ヶ月または数年持続する可能性があります。"
         },
         security: {
-            title: "セキュリティに関する注意",
+            title: "🔒 セキュリティに関する注意",
             warnings: [
-                "Cookieファイルを誰とも共有しないでください",
-                "メインアカウントではなく使い捨てアカウントを使用してください",
-                "Cookieファイルには機密認証データが含まれています",
-                "誤ってコミットしないようにcookies.txtを.gitignoreに追加してください"
+                "⚠️ Cookieファイルを誰とも共有しないでください",
+                "⚠️ メインアカウントではなく使い捨てアカウントを使用してください",
+                "⚠️ Cookieファイルには機密認証データが含まれています"
             ]
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "免責事項",
         subtitle: "このボットを使用する前に注意深くお読みください。",
@@ -289,7 +368,6 @@ export const ja = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "権限計算機",
         clientId: "クライアントID",
@@ -305,7 +383,6 @@ export const ja = {
         resultNote: "これはボットをサーバーに追加するために使用できるリンクです"
     },
 
-    // Common
     common: {
         back: "戻る",
         copy: "コピー",
@@ -315,6 +392,9 @@ export const ja = {
         example: "例",
         learnMore: "詳細",
         deployOnRailway: "Railwayにデプロイ",
-        language: "言語"
+        language: "言語",
+        tip: "ヒント",
+        warning: "警告",
+        note: "注意"
     }
 };
