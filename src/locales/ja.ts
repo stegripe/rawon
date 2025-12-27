@@ -234,11 +234,8 @@ export const ja = {
             ],
             commands: {
                 title: "📝 利用可能なコマンド",
-                add: "!cookies add <番号> - Cookieを追加（cookies.txtファイルをメッセージに添付）",
-                remove: "!cookies remove <番号> - 特定のCookieを削除",
-                removeAll: "!cookies remove all - すべてのCookieを削除",
-                list: "!cookies list - すべてのCookieとその状態を表示",
-                reset: "!cookies reset - 失敗状態をリセットしてすべてのCookieを再試行"
+                add: "`!cookies add <番号>` - Cookieを追加（cookies.txtファイルをメッセージに添付）",
+
             },
             quickStart: {
                 title: "⚡ クイックスタート（3ステップ）",
@@ -250,8 +247,7 @@ export const ja = {
             },
             multiCookie: {
                 title: "💡 プロのコツ：複数のCookieを追加",
-                description: "信頼性を高めるために異なるアカウントからCookieを追加：",
-                example: "!cookies add 1（最初のcookies.txtを添付）\n!cookies add 2（別のアカウントから2番目のcookies.txtを添付）\n!cookies add 3（3番目のcookies.txtを添付）"
+                description: "信頼性を高めるために異なるアカウントからCookieを追加："
             }
         },
         prerequisites: {
@@ -310,8 +306,8 @@ export const ja = {
             stillGettingErrors: {
                 title: "まだ「Sign in to confirm you're not a bot」エラーが出ますか？",
                 steps: [
-                    "!cookies listでCookieの状態を確認",
-                    "Cookieが「Failed」と表示されている場合、!cookies resetで再試行",
+                    "`!cookies list`でCookieの状態を確認",
+                    "Cookieが「Failed」と表示されている場合、`!cookies reset`で再試行",
                     "冗長性のために異なるアカウントからCookieを追加"
                 ]
             },
@@ -320,7 +316,7 @@ export const ja = {
                 steps: [
                     "新しい使い捨てアカウントを作成",
                     "新しいCookieをエクスポート",
-                    "!cookies add <番号>で追加"
+                    "`!cookies add <番号>`で追加"
                 ]
             },
             accountSuspended: {

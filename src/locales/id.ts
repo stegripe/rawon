@@ -92,10 +92,10 @@ export const id = {
         cookiesQuickStart: {
             title: "🍪 Quick Start: Setup Cookies",
             description:
-                "Jika hosting di cloud provider (AWS, GCP, Azure, Railway, dll.), Anda mungkin dapat error 'Sign in to confirm you're not a bot'. Perbaiki dengan mudah menggunakan command cookies:",
+                "Jika hosting di cloud provider (AWS, GCP, Azure, Railway, dll.), Anda mungkin dapat error \"Sign in to confirm you're not a bot\". Perbaiki dengan mudah menggunakan command cookies:",
             steps: [
                 "Export cookies dari browser (lihat panduan Setup Cookies)",
-                "Di Discord, ketik: !cookies add 1",
+                "Di Discord, ketik: `!cookies add 1`",
                 "Lampirkan file cookies.txt ke pesan Anda",
                 "Selesai! Cookie langsung aktif"
             ],
@@ -220,7 +220,7 @@ export const id = {
     cookiesSetup: {
         title: "Setup Cookies",
         subtitle:
-            "Perbaiki error 'Sign in to confirm you're not a bot' di hosting provider. Lebih mudah dari yang Anda kira!",
+            "Perbaiki error \"Sign in to confirm you're not a bot\" di hosting provider. Lebih mudah dari yang Anda kira!",
         why: {
             title: "🤔 Mengapa saya butuh ini?",
             description:
@@ -239,25 +239,19 @@ export const id = {
                 "✅ Cookies tetap tersimpan setelah restart bot"
             ],
             commands: {
-                title: "📝 Command yang Tersedia",
-                add: "!cookies add <nomor> - Tambah cookie (lampirkan file cookies.txt ke pesan)",
-                remove: "!cookies remove <nomor> - Hapus cookie tertentu",
-                removeAll: "!cookies remove all - Hapus semua cookies",
-                list: "!cookies list - Tampilkan semua cookies dan statusnya",
-                reset: "!cookies reset - Reset status gagal untuk mencoba ulang semua cookies"
+                title: "📝 Command yang Tersedia"
             },
             quickStart: {
                 title: "⚡ Quick Start (3 langkah)",
                 steps: [
                     "Export cookies dari browser (lihat panduan di bawah)",
-                    "Di Discord, ketik: !cookies add 1 dan lampirkan file cookies.txt",
+                    "Di Discord, ketik: `!cookies add 1` dan lampirkan file cookies.txt",
                     "Selesai! Cookie sekarang aktif"
                 ]
             },
             multiCookie: {
                 title: "💡 Tips Pro: Tambah Banyak Cookies",
-                description: "Tambah cookies dari akun berbeda untuk reliabilitas lebih baik:",
-                example: "!cookies add 1 (lampirkan cookies.txt pertama)\n!cookies add 2 (lampirkan cookies.txt kedua dari akun lain)\n!cookies add 3 (lampirkan cookies.txt ketiga)"
+                description: "Tambah cookies dari akun berbeda untuk reliabilitas lebih baik:"
             }
         },
         prerequisites: {
@@ -289,15 +283,15 @@ export const id = {
             },
             extension: {
                 title: "Langkah 3: Install Extension Export Cookies",
-                chrome: "Untuk Chrome/Edge: Install 'Get cookies.txt LOCALLY' (disarankan) dari Chrome Web Store",
-                firefox: "Untuk Firefox: Install 'cookies.txt' dari Firefox Add-ons"
+                chrome: "Untuk Chrome/Edge: Install **Get cookies.txt LOCALLY** (disarankan) dari Chrome Web Store",
+                firefox: "Untuk Firefox: Install **cookies.txt** dari Firefox Add-ons"
             },
             exportCookies: {
                 title: "Langkah 4: Export Cookies",
                 steps: [
                     "Pastikan Anda di youtube.com",
                     "Klik ikon extension cookies di toolbar browser",
-                    "Klik 'Export' atau 'Export cookies for this site'",
+                    "Klik **Export** atau **Export cookies for this site**",
                     "Simpan file sebagai cookies.txt"
                 ]
             },
@@ -305,7 +299,7 @@ export const id = {
                 title: "Langkah 5: Tambahkan ke Rawon",
                 steps: [
                     "Buka channel dimana Rawon bisa melihat pesan Anda",
-                    "Ketik: !cookies add 1",
+                    "Ketik: `!cookies add 1`",
                     "Lampirkan file cookies.txt ke pesan dan kirim",
                     "Rawon akan konfirmasi cookie sudah ditambahkan!"
                 ]
@@ -314,10 +308,10 @@ export const id = {
         troubleshooting: {
             title: "🔧 Troubleshooting",
             stillGettingErrors: {
-                title: "Masih dapat error 'Sign in to confirm you're not a bot'?",
+                title: "Masih dapat error \"Sign in to confirm you're not a bot\"?",
                 steps: [
-                    "Gunakan !cookies list untuk cek status cookie",
-                    "Jika cookie menunjukkan 'Failed', coba !cookies reset untuk mencoba ulang",
+                    "Gunakan `!cookies list` untuk cek status cookie",
+                    "Jika cookie menunjukkan **Failed**, coba `!cookies reset` untuk mencoba ulang",
                     "Tambah lebih banyak cookies dari akun berbeda untuk cadangan"
                 ]
             },
@@ -326,7 +320,7 @@ export const id = {
                 steps: [
                     "Buat akun tumbal baru",
                     "Export cookies baru",
-                    "Tambahkan dengan !cookies add <nomor>"
+                    "Tambahkan dengan `!cookies add <nomor>`"
                 ]
             },
             accountSuspended: {

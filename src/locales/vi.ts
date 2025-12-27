@@ -83,7 +83,7 @@ export const vi = {
         cookiesQuickStart: {
             title: "🍪 Bắt Đầu Nhanh: Thiết Lập Cookie",
             description:
-                "Nếu bạn đang hosting trên các nhà cung cấp cloud (AWS, GCP, Azure, Railway, v.v.), bạn có thể gặp lỗi 'Sign in to confirm you're not a bot'. Sửa dễ dàng với lệnh cookies:",
+                "Nếu bạn đang hosting trên các nhà cung cấp cloud (AWS, GCP, Azure, Railway, v.v.), bạn có thể gặp lỗi \"Sign in to confirm you're not a bot\". Sửa dễ dàng với lệnh cookies:",
             steps: [
                 "Xuất cookies từ trình duyệt (xem hướng dẫn Thiết lập Cookie)",
                 "Trong Discord, gõ: !cookies add 1",
@@ -203,7 +203,7 @@ export const vi = {
     // Cookies Setup page
     cookiesSetup: {
         title: "Thiết lập Cookie",
-        subtitle: "Sửa lỗi 'Sign in to confirm you're not a bot' trên các nhà cung cấp hosting.",
+        subtitle: "Sửa lỗi \"Sign in to confirm you're not a bot\" trên các nhà cung cấp hosting.",
         why: {
             title: "Tại sao tôi cần điều này?",
             description:
@@ -224,24 +224,20 @@ export const vi = {
             ],
             commands: {
                 title: "📝 Các Lệnh Có Sẵn",
-                add: "!cookies add <số> - Thêm cookie (đính kèm file cookies.txt vào tin nhắn)",
-                remove: "!cookies remove <số> - Xóa một cookie cụ thể",
-                removeAll: "!cookies remove all - Xóa tất cả cookies",
-                list: "!cookies list - Hiển thị tất cả cookies và trạng thái của chúng",
-                reset: "!cookies reset - Đặt lại trạng thái thất bại để thử lại tất cả cookies"
+                add: "`!cookies add <số>` - Thêm cookie (đính kèm file cookies.txt vào tin nhắn)",
+
             },
             quickStart: {
                 title: "⚡ Bắt Đầu Nhanh (3 bước)",
                 steps: [
                     "Xuất cookies từ trình duyệt (xem hướng dẫn bên dưới)",
-                    "Trong Discord, gõ: !cookies add 1 và đính kèm file cookies.txt",
+                    "Trong Discord, gõ: `!cookies add 1` và đính kèm file cookies.txt",
                     "Xong! Cookie đã được kích hoạt"
                 ]
             },
             multiCookie: {
                 title: "💡 Mẹo Pro: Thêm Nhiều Cookies",
-                description: "Thêm cookies từ các tài khoản khác nhau để đáng tin cậy hơn:",
-                example: "!cookies add 1 (đính kèm cookies.txt đầu tiên)\n!cookies add 2 (đính kèm cookies.txt thứ hai từ tài khoản khác)\n!cookies add 3 (đính kèm cookies.txt thứ ba)"
+                description: "Thêm cookies từ các tài khoản khác nhau để đáng tin cậy hơn:"
             }
         },
         prerequisites: {
@@ -274,15 +270,15 @@ export const vi = {
             },
             extension: {
                 title: "Bước 3: Cài đặt extension xuất Cookie",
-                chrome: "Cho Chrome/Edge: Cài đặt 'Get cookies.txt LOCALLY' hoặc 'cookies.txt'",
-                firefox: "Cho Firefox: Cài đặt 'cookies.txt'"
+                chrome: "Cho Chrome/Edge: Cài đặt **Get cookies.txt LOCALLY** hoặc **cookies.txt**",
+                firefox: "Cho Firefox: Cài đặt **cookies.txt**"
             },
             exportCookies: {
                 title: "Bước 4: Xuất Cookie",
                 steps: [
                     "Đảm bảo bạn đang ở trang web của nền tảng",
                     "Nhấn vào biểu tượng extension cookie trên thanh công cụ",
-                    "Chọn 'Export' hoặc 'Export cookies for this site'",
+                    "Chọn **Export** hoặc **Export cookies for this site**",
                     "Lưu file dưới tên cookies.txt"
                 ]
             },
@@ -298,10 +294,10 @@ export const vi = {
         troubleshooting: {
             title: "🔧 Khắc Phục Sự Cố",
             stillGettingErrors: {
-                title: "Vẫn gặp lỗi 'Sign in to confirm you're not a bot'?",
+                title: "Vẫn gặp lỗi \"Sign in to confirm you're not a bot\"?",
                 steps: [
-                    "Sử dụng !cookies list để kiểm tra trạng thái cookie",
-                    "Nếu cookie hiển thị 'Failed', thử !cookies reset để thử lại",
+                    "Sử dụng `!cookies list` để kiểm tra trạng thái cookie",
+                    "Nếu cookie hiển thị **Failed**, thử `!cookies reset` để thử lại",
                     "Thêm nhiều cookies từ các tài khoản khác để dự phòng"
                 ]
             },
@@ -310,7 +306,7 @@ export const vi = {
                 steps: [
                     "Tạo tài khoản dùng một lần mới",
                     "Xuất cookies mới",
-                    "Thêm chúng với !cookies add <số>"
+                    "Thêm chúng với `!cookies add <số>`"
                 ]
             },
             accountSuspended: {

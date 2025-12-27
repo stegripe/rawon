@@ -1,4 +1,5 @@
 import { useLocale } from "@/contexts/LocaleContext";
+import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded, CheckCircleOutline } from "@mui/icons-material";
 import { Button, Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
@@ -222,14 +223,14 @@ volumes:
                             {t.gettingStarted.cookiesQuickStart.title}
                         </Typography>
                         <Typography className="font-sans">
-                            {t.gettingStarted.cookiesQuickStart.description}
+                            {renderWithCode(t.gettingStarted.cookiesQuickStart.description)}
                         </Typography>
                         <ol className="m-0 flex list-decimal flex-col gap-2 pl-5">
                             {t.gettingStarted.cookiesQuickStart.steps.map(
                                 (step, index) => (
                                     <li key={index}>
                                         <Typography className="font-sans">
-                                            {step}
+                                            {renderWithCode(step)}
                                         </Typography>
                                     </li>
                                 )
@@ -237,7 +238,7 @@ volumes:
                         </ol>
                         <div className="rounded-lg bg-green-100 p-3">
                             <Typography className="font-sans text-sm">
-                                {t.gettingStarted.cookiesQuickStart.tip}
+                                {renderWithCode(t.gettingStarted.cookiesQuickStart.tip)}
                             </Typography>
                         </div>
                         <Link href="/docs/cookies-setup">

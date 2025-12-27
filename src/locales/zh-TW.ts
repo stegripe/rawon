@@ -82,7 +82,7 @@ export const zhTW = {
         cookiesQuickStart: {
             title: "🍪 快速開始：Cookie設定",
             description:
-                "如果您在雲端服務提供商（AWS、GCP、Azure、Railway等）上託管，可能會收到'Sign in to confirm you're not a bot'錯誤。使用cookies命令輕鬆修復：",
+                "如果您在雲端服務提供商（AWS、GCP、Azure、Railway等）上託管，可能會收到\"Sign in to confirm you're not a bot\"錯誤。使用cookies命令輕鬆修復：",
             steps: [
                 "從瀏覽器匯出cookies（請參閱Cookie設定指南）",
                 "在Discord中輸入：!cookies add 1",
@@ -224,11 +224,7 @@ export const zhTW = {
             ],
             commands: {
                 title: "📝 可用命令",
-                add: "!cookies add <編號> - 新增cookie（將cookies.txt檔案附加到您的訊息）",
-                remove: "!cookies remove <編號> - 刪除特定cookie",
-                removeAll: "!cookies remove all - 刪除所有cookies",
-                list: "!cookies list - 顯示所有cookies及其狀態",
-                reset: "!cookies reset - 重設失敗狀態以重試所有cookies"
+
             },
             quickStart: {
                 title: "⚡ 快速開始（3個步驟）",
@@ -240,8 +236,7 @@ export const zhTW = {
             },
             multiCookie: {
                 title: "💡 專業提示：新增多個Cookies",
-                description: "從不同帳戶新增cookies以獲得更好的可靠性：",
-                example: "!cookies add 1（附加第一個cookies.txt）\n!cookies add 2（從另一個帳戶附加第二個cookies.txt）\n!cookies add 3（附加第三個cookies.txt）"
+                description: "從不同帳戶新增cookies以獲得更好的可靠性："
             }
         },
         prerequisites: {
@@ -298,10 +293,10 @@ export const zhTW = {
         troubleshooting: {
             title: "🔧 故障排除",
             stillGettingErrors: {
-                title: "仍然收到'Sign in to confirm you're not a bot'錯誤？",
+                title: "仍然收到\"Sign in to confirm you're not a bot\"錯誤？",
                 steps: [
-                    "使用!cookies list檢查cookie狀態",
-                    "如果cookie顯示'Failed'，嘗試!cookies reset重試",
+                    "使用`!cookies list`檢查cookie狀態",
+                    "如果cookie顯示**Failed**，嘗試`!cookies reset`重試",
                     "從不同帳戶新增更多cookies以實現冗餘"
                 ]
             },

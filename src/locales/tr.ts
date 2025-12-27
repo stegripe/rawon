@@ -83,7 +83,7 @@ export const tr = {
         cookiesQuickStart: {
             title: "🍪 Hızlı Başlangıç: Çerez Kurulumu",
             description:
-                "Bulut sağlayıcılarında (AWS, GCP, Azure, Railway vb.) barındırıyorsanız, 'Sign in to confirm you're not a bot' hataları alabilirsiniz. Çerez komutuyla kolayca düzeltin:",
+                "Bulut sağlayıcılarında (AWS, GCP, Azure, Railway vb.) barındırıyorsanız, \"Sign in to confirm you're not a bot\" hataları alabilirsiniz. Çerez komutuyla kolayca düzeltin:",
             steps: [
                 "Tarayıcınızdan çerezleri dışa aktarın (Çerez Kurulumu kılavuzuna bakın)",
                 "Discord'da şunu yazın: !cookies add 1",
@@ -203,7 +203,7 @@ export const tr = {
     // Cookies Setup page
     cookiesSetup: {
         title: "Çerez Kurulumu",
-        subtitle: "Barındırma sağlayıcılarındaki 'Sign in to confirm you're not a bot' hatalarını düzeltin.",
+        subtitle: "Barındırma sağlayıcılarındaki \"Sign in to confirm you're not a bot\" hatalarını düzeltin.",
         why: {
             title: "Buna neden ihtiyacım var?",
             description:
@@ -224,24 +224,19 @@ export const tr = {
             ],
             commands: {
                 title: "📝 Mevcut Komutlar",
-                add: "!cookies add <numara> - Çerez ekle (mesajınıza cookies.txt dosyasını ekleyin)",
-                remove: "!cookies remove <numara> - Belirli bir çerezi kaldır",
-                removeAll: "!cookies remove all - Tüm çerezleri kaldır",
-                list: "!cookies list - Tüm çerezleri ve durumlarını göster",
-                reset: "!cookies reset - Tüm çerezleri yeniden denemek için başarısız durumunu sıfırla"
+
             },
             quickStart: {
                 title: "⚡ Hızlı Başlangıç (3 adım)",
                 steps: [
                     "Tarayıcınızdan çerezleri dışa aktarın (aşağıdaki kılavuza bakın)",
-                    "Discord'da şunu yazın: !cookies add 1 ve cookies.txt dosyanızı ekleyin",
+                    "Discord'da şunu yazın: `!cookies add 1` ve cookies.txt dosyanızı ekleyin",
                     "Tamam! Çerez artık aktif"
                 ]
             },
             multiCookie: {
                 title: "💡 Profesyonel İpucu: Birden Fazla Çerez Ekleyin",
-                description: "Daha iyi güvenilirlik için farklı hesaplardan çerez ekleyin:",
-                example: "!cookies add 1 (ilk cookies.txt'yi ekleyin)\n!cookies add 2 (başka bir hesaptan ikinci cookies.txt'yi ekleyin)\n!cookies add 3 (üçüncü cookies.txt'yi ekleyin)"
+                description: "Daha iyi güvenilirlik için farklı hesaplardan çerez ekleyin:"
             }
         },
         prerequisites: {
@@ -274,15 +269,15 @@ export const tr = {
             },
             extension: {
                 title: "Adım 3: Çerez Dışa Aktarma Uzantısını Yükleyin",
-                chrome: "Chrome/Edge için: 'Get cookies.txt LOCALLY' veya 'cookies.txt' yükleyin",
-                firefox: "Firefox için: 'cookies.txt' yükleyin"
+                chrome: "Chrome/Edge için: **Get cookies.txt LOCALLY** veya **cookies.txt** yükleyin",
+                firefox: "Firefox için: **cookies.txt** yükleyin"
             },
             exportCookies: {
                 title: "Adım 4: Çerezleri Dışa Aktarın",
                 steps: [
                     "Platform web sitesinde olduğunuzdan emin olun",
                     "Tarayıcı araç çubuğundaki çerez uzantısı simgesine tıklayın",
-                    "'Export' veya 'Export cookies for this site' seçin",
+                    "**Export** veya **Export cookies for this site** seçin",
                     "Dosyayı cookies.txt olarak kaydedin"
                 ]
             },
@@ -298,10 +293,10 @@ export const tr = {
         troubleshooting: {
             title: "🔧 Sorun Giderme",
             stillGettingErrors: {
-                title: "Hâlâ 'Sign in to confirm you're not a bot' hataları mı alıyorsunuz?",
+                title: "Hâlâ \"Sign in to confirm you're not a bot\" hataları mı alıyorsunuz?",
                 steps: [
-                    "Çerez durumunu kontrol etmek için !cookies list kullanın",
-                    "Bir çerez 'Failed' gösteriyorsa, yeniden denemek için !cookies reset deneyin",
+                    "Çerez durumunu kontrol etmek için `!cookies list` kullanın",
+                    "Bir çerez **Failed** gösteriyorsa, yeniden denemek için `!cookies reset` deneyin",
                     "Yedeklilik için farklı hesaplardan daha fazla çerez ekleyin"
                 ]
             },

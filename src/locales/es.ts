@@ -91,10 +91,10 @@ export const es = {
         cookiesQuickStart: {
             title: "🍪 Inicio Rápido: Configuración de Cookies",
             description:
-                "Si alojas en proveedores de nube (AWS, GCP, Azure, Railway, etc.), puedes obtener errores 'Sign in to confirm you're not a bot'. Corrígelo fácilmente con el comando cookies:",
+                "Si alojas en proveedores de nube (AWS, GCP, Azure, Railway, etc.), puedes obtener errores \"Sign in to confirm you're not a bot\". Corrígelo fácilmente con el comando cookies:",
             steps: [
                 "Exporta cookies desde tu navegador (ver guía de Configuración de Cookies)",
-                "En Discord, escribe: !cookies add 1",
+                "En Discord, escribe: `!cookies add 1`",
                 "Adjunta tu archivo cookies.txt al mensaje",
                 "¡Listo! La cookie tiene efecto inmediato"
             ],
@@ -218,7 +218,7 @@ export const es = {
     cookiesSetup: {
         title: "Configuración de Cookies",
         subtitle:
-            "Corrige errores 'Sign in to confirm you're not a bot' en proveedores de hosting. ¡Es más fácil de lo que piensas!",
+            "Corrige errores \"Sign in to confirm you're not a bot\" en proveedores de hosting. ¡Es más fácil de lo que piensas!",
         why: {
             title: "🤔 ¿Por qué necesito esto?",
             description:
@@ -237,25 +237,19 @@ export const es = {
                 "✅ Las cookies persisten después de reinicios del bot"
             ],
             commands: {
-                title: "📝 Comandos Disponibles",
-                add: "!cookies add <número> - Agregar una cookie (adjunta archivo cookies.txt a tu mensaje)",
-                remove: "!cookies remove <número> - Eliminar una cookie específica",
-                removeAll: "!cookies remove all - Eliminar todas las cookies",
-                list: "!cookies list - Mostrar todas las cookies y su estado",
-                reset: "!cookies reset - Reiniciar estado fallido para reintentar todas las cookies"
+                title: "📝 Comandos Disponibles"
             },
             quickStart: {
                 title: "⚡ Inicio Rápido (3 pasos)",
                 steps: [
                     "Exporta cookies desde tu navegador (ver guía abajo)",
-                    "En Discord, escribe: !cookies add 1 y adjunta tu archivo cookies.txt",
+                    "En Discord, escribe: `!cookies add 1` y adjunta tu archivo cookies.txt",
                     "¡Listo! La cookie ahora está activa"
                 ]
             },
             multiCookie: {
                 title: "💡 Consejo Pro: Agrega Múltiples Cookies",
-                description: "Agrega cookies de diferentes cuentas para mejor confiabilidad:",
-                example: "!cookies add 1 (adjunta primer cookies.txt)\n!cookies add 2 (adjunta segundo cookies.txt de otra cuenta)\n!cookies add 3 (adjunta tercer cookies.txt)"
+                description: "Agrega cookies de diferentes cuentas para mejor confiabilidad:"
             }
         },
         prerequisites: {
@@ -287,15 +281,15 @@ export const es = {
             },
             extension: {
                 title: "Paso 3: Instalar Extensión de Exportación de Cookies",
-                chrome: "Para Chrome/Edge: Instala 'Get cookies.txt LOCALLY' (recomendado) desde Chrome Web Store",
-                firefox: "Para Firefox: Instala 'cookies.txt' desde Firefox Add-ons"
+                chrome: "Para Chrome/Edge: Instala **Get cookies.txt LOCALLY** (recomendado) desde Chrome Web Store",
+                firefox: "Para Firefox: Instala **cookies.txt** desde Firefox Add-ons"
             },
             exportCookies: {
                 title: "Paso 4: Exportar Cookies",
                 steps: [
                     "Asegúrate de estar en youtube.com",
                     "Haz clic en el icono de la extensión de cookies en tu barra de herramientas",
-                    "Haz clic en 'Export' o 'Export cookies for this site'",
+                    "Haz clic en **Export** o **Export cookies for this site**",
                     "Guarda el archivo como cookies.txt"
                 ]
             },
@@ -303,7 +297,7 @@ export const es = {
                 title: "Paso 5: Agregar a Rawon",
                 steps: [
                     "Ve a cualquier canal donde Rawon pueda ver tus mensajes",
-                    "Escribe: !cookies add 1",
+                    "Escribe: `!cookies add 1`",
                     "Adjunta el archivo cookies.txt a tu mensaje y envía",
                     "¡Rawon confirmará que la cookie fue agregada!"
                 ]
@@ -312,10 +306,10 @@ export const es = {
         troubleshooting: {
             title: "🔧 Solución de Problemas",
             stillGettingErrors: {
-                title: "¿Sigues obteniendo errores 'Sign in to confirm you're not a bot'?",
+                title: "¿Sigues obteniendo errores \"Sign in to confirm you're not a bot\"?",
                 steps: [
-                    "Usa !cookies list para verificar el estado de las cookies",
-                    "Si una cookie muestra 'Failed', intenta !cookies reset para reintentar",
+                    "Usa `!cookies list` para verificar el estado de las cookies",
+                    "Si una cookie muestra **Failed**, intenta `!cookies reset` para reintentar",
                     "Agrega más cookies de diferentes cuentas para redundancia"
                 ]
             },
@@ -324,7 +318,7 @@ export const es = {
                 steps: [
                     "Crea nuevas cuentas desechables",
                     "Exporta cookies frescas",
-                    "Agrégalas con !cookies add <número>"
+                    "Agrégalas con `!cookies add <número>`"
                 ]
             },
             accountSuspended: {

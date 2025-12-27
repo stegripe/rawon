@@ -83,7 +83,7 @@ export const pt = {
         cookiesQuickStart: {
             title: "🍪 Início Rápido: Configuração de Cookies",
             description:
-                "Se você está hospedando em provedores de nuvem (AWS, GCP, Azure, Railway, etc.), pode receber erros 'Sign in to confirm you're not a bot'. Corrija facilmente com o comando cookies:",
+                "Se você está hospedando em provedores de nuvem (AWS, GCP, Azure, Railway, etc.), pode receber erros \"Sign in to confirm you're not a bot\". Corrija facilmente com o comando cookies:",
             steps: [
                 "Exporte cookies do seu navegador (veja o guia de Config. Cookies)",
                 "No Discord, digite: !cookies add 1",
@@ -203,7 +203,7 @@ export const pt = {
     // Cookies Setup page
     cookiesSetup: {
         title: "Configuração de Cookies",
-        subtitle: "Corrija erros 'Sign in to confirm you're not a bot' em provedores de hospedagem.",
+        subtitle: "Corrija erros \"Sign in to confirm you're not a bot\" em provedores de hospedagem.",
         why: {
             title: "Por que preciso disso?",
             description:
@@ -224,24 +224,20 @@ export const pt = {
             ],
             commands: {
                 title: "📝 Comandos Disponíveis",
-                add: "!cookies add <número> - Adicionar um cookie (anexe o arquivo cookies.txt à sua mensagem)",
-                remove: "!cookies remove <número> - Remover um cookie específico",
-                removeAll: "!cookies remove all - Remover todos os cookies",
-                list: "!cookies list - Mostrar todos os cookies e seu status",
-                reset: "!cookies reset - Resetar status de falha para tentar novamente todos os cookies"
+                add: "`!cookies add <número>` - Adicionar um cookie (anexe o arquivo cookies.txt à sua mensagem)",
+
             },
             quickStart: {
                 title: "⚡ Início Rápido (3 passos)",
                 steps: [
                     "Exporte cookies do seu navegador (veja o guia abaixo)",
-                    "No Discord, digite: !cookies add 1 e anexe seu arquivo cookies.txt",
+                    "No Discord, digite: `!cookies add 1` e anexe seu arquivo cookies.txt",
                     "Pronto! O cookie agora está ativo"
                 ]
             },
             multiCookie: {
                 title: "💡 Dica Pro: Adicione Múltiplos Cookies",
-                description: "Adicione cookies de diferentes contas para melhor confiabilidade:",
-                example: "!cookies add 1 (anexe o primeiro cookies.txt)\n!cookies add 2 (anexe o segundo cookies.txt de outra conta)\n!cookies add 3 (anexe o terceiro cookies.txt)"
+                description: "Adicione cookies de diferentes contas para melhor confiabilidade:"
             }
         },
         prerequisites: {
@@ -274,15 +270,15 @@ export const pt = {
             },
             extension: {
                 title: "Passo 3: Instalar Extensão de Exportação de Cookies",
-                chrome: "Para Chrome/Edge: Instale 'Get cookies.txt LOCALLY' ou 'cookies.txt'",
-                firefox: "Para Firefox: Instale 'cookies.txt'"
+                chrome: "Para Chrome/Edge: Instale **Get cookies.txt LOCALLY** ou **cookies.txt**",
+                firefox: "Para Firefox: Instale **cookies.txt**"
             },
             exportCookies: {
                 title: "Passo 4: Exportar Cookies",
                 steps: [
                     "Certifique-se de estar no site da plataforma",
                     "Clique no ícone da extensão de cookies na barra de ferramentas",
-                    "Escolha 'Export' ou 'Export cookies for this site'",
+                    "Escolha **Export** ou **Export cookies for this site**",
                     "Salve o arquivo como cookies.txt"
                 ]
             },
@@ -298,10 +294,10 @@ export const pt = {
         troubleshooting: {
             title: "🔧 Solução de Problemas",
             stillGettingErrors: {
-                title: "Ainda recebendo erros 'Sign in to confirm you're not a bot'?",
+                title: "Ainda recebendo erros \"Sign in to confirm you're not a bot\"?",
                 steps: [
-                    "Use !cookies list para verificar o status dos cookies",
-                    "Se um cookie mostrar 'Failed', tente !cookies reset para tentar novamente",
+                    "Use `!cookies list` para verificar o status dos cookies",
+                    "Se um cookie mostrar **Failed**, tente `!cookies reset` para tentar novamente",
                     "Adicione mais cookies de diferentes contas para redundância"
                 ]
             },
@@ -310,7 +306,7 @@ export const pt = {
                 steps: [
                     "Crie novas contas descartáveis",
                     "Exporte cookies novos",
-                    "Adicione-os com !cookies add <número>"
+                    "Adicione-os com `!cookies add <número>`"
                 ]
             },
             accountSuspended: {

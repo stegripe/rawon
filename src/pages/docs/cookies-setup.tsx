@@ -1,4 +1,5 @@
 import { useLocale } from "@/contexts/LocaleContext";
+import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded, WarningAmber } from "@mui/icons-material";
 import { Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
@@ -26,7 +27,7 @@ export default function CookiesSetupPage() {
                                 {t.cookiesSetup.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.cookiesSetup.subtitle}
+                                {renderWithCode(t.cookiesSetup.subtitle)}
                             </Typography>
                         </div>
                     </div>
@@ -66,7 +67,7 @@ export default function CookiesSetupPage() {
                                         key={index}
                                         className="font-sans text-sm"
                                     >
-                                        {benefit}
+                                        {renderWithCode(benefit)}
                                     </Typography>
                                 )
                             )}
@@ -100,7 +101,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -114,10 +115,10 @@ export default function CookiesSetupPage() {
                                 {t.cookiesSetup.quickMethod.multiCookie.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-green-700">
-                                {
+                                {renderWithCode(
                                     t.cookiesSetup.quickMethod.multiCookie
                                         .description
-                                }
+                                )}
                             </Typography>
                             <CopyBlock
                                 language="bash"
@@ -141,7 +142,7 @@ export default function CookiesSetupPage() {
                                 (item, index) => (
                                     <li key={index}>
                                         <Typography className="font-sans">
-                                            {item}
+                                            {renderWithCode(item)}
                                         </Typography>
                                     </li>
                                 )
@@ -165,7 +166,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -183,7 +184,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -199,12 +200,12 @@ export default function CookiesSetupPage() {
                             <ul className="m-0 mt-2 list-disc pl-5">
                                 <li>
                                     <Typography className="font-sans text-sm">
-                                        {t.cookiesSetup.steps.extension.chrome}
+                                        {renderWithCode(t.cookiesSetup.steps.extension.chrome)}
                                     </Typography>
                                 </li>
                                 <li>
                                     <Typography className="font-sans text-sm">
-                                        {t.cookiesSetup.steps.extension.firefox}
+                                        {renderWithCode(t.cookiesSetup.steps.extension.firefox)}
                                     </Typography>
                                 </li>
                             </ul>
@@ -220,7 +221,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -238,7 +239,7 @@ export default function CookiesSetupPage() {
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -255,17 +256,17 @@ export default function CookiesSetupPage() {
 
                         <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-50 p-4">
                             <Typography className="font-sans font-medium">
-                                {
+                                {renderWithCode(
                                     t.cookiesSetup.troubleshooting
                                         .stillGettingErrors.title
-                                }
+                                )}
                             </Typography>
                             <ul className="m-0 mt-2 list-disc pl-5">
                                 {t.cookiesSetup.troubleshooting.stillGettingErrors.steps.map(
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -275,17 +276,17 @@ export default function CookiesSetupPage() {
 
                         <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-50 p-4">
                             <Typography className="font-sans font-medium">
-                                {
+                                {renderWithCode(
                                     t.cookiesSetup.troubleshooting
                                         .allCookiesFailed.title
-                                }
+                                )}
                             </Typography>
                             <ul className="m-0 mt-2 list-disc pl-5">
                                 {t.cookiesSetup.troubleshooting.allCookiesFailed.steps.map(
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )
@@ -295,17 +296,17 @@ export default function CookiesSetupPage() {
 
                         <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-50 p-4">
                             <Typography className="font-sans font-medium">
-                                {
+                                {renderWithCode(
                                     t.cookiesSetup.troubleshooting
                                         .accountSuspended.title
-                                }
+                                )}
                             </Typography>
                             <ul className="m-0 mt-2 list-disc pl-5">
                                 {t.cookiesSetup.troubleshooting.accountSuspended.steps.map(
                                     (step, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {step}
+                                                {renderWithCode(step)}
                                             </Typography>
                                         </li>
                                     )

@@ -91,10 +91,10 @@ export const en = {
         cookiesQuickStart: {
             title: "🍪 Quick Start: Cookies Setup",
             description:
-                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get 'Sign in to confirm you're not a bot' errors. Fix it easily with the cookies command:",
+                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get \"Sign in to confirm you're not a bot\" errors. Fix it easily with the cookies command:",
             steps: [
                 "Export cookies from your browser (see Cookies Setup guide)",
-                "In Discord, type: !cookies add 1",
+                "In Discord, type: `!cookies add 1`",
                 "Attach your cookies.txt file to the message",
                 "Done! The cookie takes effect immediately"
             ],
@@ -218,7 +218,7 @@ export const en = {
     cookiesSetup: {
         title: "Cookies Setup",
         subtitle:
-            "Fix 'Sign in to confirm you're not a bot' errors on hosting providers. It's easier than you think!",
+            "Fix \"Sign in to confirm you're not a bot\" errors on hosting providers. It's easier than you think!",
         why: {
             title: "🤔 Why do I need this?",
             description:
@@ -237,25 +237,19 @@ export const en = {
                 "✅ Cookies persist after bot restarts"
             ],
             commands: {
-                title: "📝 Available Commands",
-                add: "!cookies add <number> - Add a cookie (attach cookies.txt file to your message)",
-                remove: "!cookies remove <number> - Remove a specific cookie",
-                removeAll: "!cookies remove all - Remove all cookies",
-                list: "!cookies list - Show all cookies and their status",
-                reset: "!cookies reset - Reset failed status to retry all cookies"
+                title: "📝 Available Commands"
             },
             quickStart: {
                 title: "⚡ Quick Start (3 steps)",
                 steps: [
                     "Export cookies from your browser (see guide below)",
-                    "In Discord, type: !cookies add 1 and attach your cookies.txt file",
+                    "In Discord, type: `!cookies add 1` and attach your cookies.txt file",
                     "Done! The cookie is now active"
                 ]
             },
             multiCookie: {
                 title: "💡 Pro Tip: Add Multiple Cookies",
-                description: "Add cookies from different accounts for better reliability:",
-                example: "!cookies add 1 (attach first cookies.txt)\n!cookies add 2 (attach second cookies.txt from another account)\n!cookies add 3 (attach third cookies.txt)"
+                description: "Add cookies from different accounts for better reliability:"
             }
         },
         prerequisites: {
@@ -287,15 +281,15 @@ export const en = {
             },
             extension: {
                 title: "Step 3: Install Cookies Export Extension",
-                chrome: "For Chrome/Edge: Install 'Get cookies.txt LOCALLY' (recommended) from Chrome Web Store",
-                firefox: "For Firefox: Install 'cookies.txt' from Firefox Add-ons"
+                chrome: "For Chrome/Edge: Install **Get cookies.txt LOCALLY** (recommended) from Chrome Web Store",
+                firefox: "For Firefox: Install **cookies.txt** from Firefox Add-ons"
             },
             exportCookies: {
                 title: "Step 4: Export Cookies",
                 steps: [
                     "Make sure you're on youtube.com",
                     "Click the cookies extension icon in your browser toolbar",
-                    "Click 'Export' or 'Export cookies for this site'",
+                    "Click **Export** or **Export cookies for this site**",
                     "Save the file as cookies.txt"
                 ]
             },
@@ -303,7 +297,7 @@ export const en = {
                 title: "Step 5: Add to Rawon",
                 steps: [
                     "Go to any channel where Rawon can see your messages",
-                    "Type: !cookies add 1",
+                    "Type: `!cookies add 1`",
                     "Attach the cookies.txt file to your message and send",
                     "Rawon will confirm the cookie was added!"
                 ]
@@ -312,10 +306,10 @@ export const en = {
         troubleshooting: {
             title: "🔧 Troubleshooting",
             stillGettingErrors: {
-                title: "Still getting 'Sign in to confirm you're not a bot' errors?",
+                title: "Still getting \"Sign in to confirm you're not a bot\" errors?",
                 steps: [
-                    "Use !cookies list to check cookie status",
-                    "If a cookie shows 'Failed', try !cookies reset to retry",
+                    "Use `!cookies list` to check cookie status",
+                    "If a cookie shows **Failed**, try `!cookies reset` to retry",
                     "Add more cookies from different accounts for redundancy"
                 ]
             },
@@ -324,7 +318,7 @@ export const en = {
                 steps: [
                     "Create new throwaway accounts",
                     "Export fresh cookies",
-                    "Add them with !cookies add <number>"
+                    "Add them with `!cookies add <number>`"
                 ]
             },
             accountSuspended: {
