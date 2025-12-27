@@ -1,4 +1,5 @@
 import { useLocale } from "@/contexts/LocaleContext";
+import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
@@ -57,10 +58,10 @@ export default function ConfigurationPage() {
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.essential.discordToken
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -149,10 +150,10 @@ export default function ConfigurationPage() {
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.essential.spotify
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
                         </div>

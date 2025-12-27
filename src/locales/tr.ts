@@ -39,7 +39,7 @@ export const tr = {
         requirements: {
             title: "Gereksinimler",
             nodeVersion: "Node.js sürüm 22.12.0 veya üstü",
-            discordToken: "Discord Bot Token (Discord Developer Portal'dan alın)",
+            discordToken: "Discord Bot Token ([Discord Developer Portal](https://discord.com/developers/applications)'dan alın)",
             optional: "İsteğe bağlı: Spotify desteği için Spotify API kimlik bilgileri"
         },
         standardSetup: {
@@ -85,9 +85,9 @@ export const tr = {
             description:
                 "Bulut sağlayıcılarında (AWS, GCP, Azure, Railway vb.) barındırıyorsanız, \"Sign in to confirm you're not a bot\" hataları alabilirsiniz. Çerez komutuyla kolayca düzeltin:",
             steps: [
-                "Tarayıcınızdan çerezleri dışa aktarın (Çerez Kurulumu kılavuzuna bakın)",
-                "Discord'da şunu yazın: !cookies add 1",
-                "cookies.txt dosyanızı mesaja ekleyin",
+                "Tarayıcınızdan çerezleri dışa aktarın ([Çerez Kurulumu kılavuzuna](/docs/cookies-setup) bakın)",
+                "Discord'da şunu yazın: `!cookies add 1`",
+                "`cookies.txt` dosyanızı mesaja ekleyin",
                 "Tamam! Çerez hemen etkili olur"
             ],
             tip: "💡 Yedeklilik için birden fazla çerez ekleyebilirsiniz. Biri başarısız olduğunda, Rawon otomatik olarak bir sonrakine geçer!"
@@ -103,7 +103,7 @@ export const tr = {
             description: "Bunlar botu çalıştırmak için gereken minimum ayarlardır.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Discord Developer Portal'dan Discord bot tokenınız",
+                description: "[Discord Developer Portal](https://discord.com/developers/applications)'dan Discord bot tokenınız",
                 required: true
             },
             mainPrefix: {
@@ -124,7 +124,7 @@ export const tr = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "Spotify desteği için SPOTIFY_CLIENT_ID ve SPOTIFY_CLIENT_SECRET'ı ayarlayın"
+                description: "Spotify desteği için [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)'dan kimlik bilgilerinizi alın ve `SPOTIFY_CLIENT_ID` ve `SPOTIFY_CLIENT_SECRET`'ı ayarlayın"
             }
         },
         optional: {

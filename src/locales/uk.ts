@@ -39,7 +39,7 @@ export const uk = {
         requirements: {
             title: "Вимоги",
             nodeVersion: "Node.js версії 22.12.0 або вище",
-            discordToken: "Токен бота Discord (отримати на Discord Developer Portal)",
+            discordToken: "Токен бота Discord (отримати на [Discord Developer Portal](https://discord.com/developers/applications))",
             optional: "Опціонально: облікові дані Spotify API для підтримки Spotify"
         },
         standardSetup: {
@@ -85,9 +85,9 @@ export const uk = {
             description:
                 "Якщо ви розміщуєте на хмарних провайдерах (AWS, GCP, Azure, Railway тощо), ви можете отримати помилки \"Sign in to confirm you're not a bot\". Виправте це легко за допомогою команди cookies:",
             steps: [
-                "Експортуйте cookies з браузера (див. посібник з налаштування Cookie)",
-                "У Discord введіть: !cookies add 1",
-                "Прикріпіть файл cookies.txt до повідомлення",
+                "Експортуйте cookies з браузера (див. [посібник з налаштування Cookie](/docs/cookies-setup))",
+                "У Discord введіть: `!cookies add 1`",
+                "Прикріпіть файл `cookies.txt` до повідомлення",
                 "Готово! Cookie набуває чинності негайно"
             ],
             tip: "💡 Ви можете додати кілька cookies для резервування. Коли один не працює, Rawon автоматично перемикається на наступний!"
@@ -103,7 +103,7 @@ export const uk = {
             description: "Це мінімальні налаштування, необхідні для запуску бота.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Ваш токен бота Discord з Discord Developer Portal",
+                description: "Ваш токен бота Discord з [Discord Developer Portal](https://discord.com/developers/applications)",
                 required: true
             },
             mainPrefix: {
@@ -124,7 +124,7 @@ export const uk = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "Для підтримки Spotify встановіть SPOTIFY_CLIENT_ID та SPOTIFY_CLIENT_SECRET"
+                description: "Для підтримки Spotify отримайте облікові дані на [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) та встановіть `SPOTIFY_CLIENT_ID` та `SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {

@@ -45,7 +45,7 @@ export const id = {
             title: "📋 Persyaratan",
             nodeVersion: "Node.js versi 22.12.0 atau lebih tinggi",
             discordToken:
-                "Token Bot Discord (dapatkan dari Discord Developer Portal)",
+                "Token Bot Discord (dapatkan dari [Discord Developer Portal](https://discord.com/developers/applications))",
             optional: "Opsional: Kredensial API Spotify untuk dukungan Spotify"
         },
         standardSetup: {
@@ -94,9 +94,9 @@ export const id = {
             description:
                 "Jika hosting di cloud provider (AWS, GCP, Azure, Railway, dll.), Anda mungkin dapat error \"Sign in to confirm you're not a bot\". Perbaiki dengan mudah menggunakan command cookies:",
             steps: [
-                "Export cookies dari browser (lihat panduan Setup Cookies)",
+                "Export cookies dari browser (lihat [panduan Setup Cookies](/docs/cookies-setup))",
                 "Di Discord, ketik: `!cookies add 1`",
-                "Lampirkan file cookies.txt ke pesan Anda",
+                "Lampirkan file `cookies.txt` ke pesan Anda",
                 "Selesai! Cookie langsung aktif"
             ],
             tip: "💡 Anda bisa menambah banyak cookies untuk cadangan. Saat satu gagal, Rawon otomatis beralih ke yang berikutnya!"
@@ -114,7 +114,7 @@ export const id = {
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "Token bot Discord Anda dari Discord Developer Portal. Ini satu-satunya pengaturan WAJIB!",
+                    "Token bot Discord Anda dari [Discord Developer Portal](https://discord.com/developers/applications). Ini satu-satunya pengaturan WAJIB!",
                 required: true
             },
             mainPrefix: {
@@ -137,7 +137,7 @@ export const id = {
             spotify: {
                 name: "API Spotify",
                 description:
-                    "Untuk dukungan Spotify, dapatkan kredensial dari developer.spotify.com/dashboard dan atur SPOTIFY_CLIENT_ID dan SPOTIFY_CLIENT_SECRET"
+                    "Untuk dukungan Spotify, dapatkan kredensial dari [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) dan atur `SPOTIFY_CLIENT_ID` dan `SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {

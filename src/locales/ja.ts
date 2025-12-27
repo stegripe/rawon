@@ -41,7 +41,7 @@ export const ja = {
             title: "必要条件",
             nodeVersion: "Node.js バージョン22.12.0以上",
             discordToken:
-                "Discord Bot Token（Discord Developer Portalから取得）",
+                "Discord Bot Token（[Discord Developer Portal](https://discord.com/developers/applications)から取得）",
             optional: "オプション：SpotifyサポートのためのSpotify API認証情報"
         },
         standardSetup: {
@@ -88,9 +88,9 @@ export const ja = {
             description:
                 "クラウドプロバイダー（AWS、GCP、Azure、Railway等）でホスティングしている場合、「Sign in to confirm you're not a bot」エラーが発生することがあります。cookiesコマンドで簡単に修正できます：",
             steps: [
-                "ブラウザからCookieをエクスポート（Cookie設定ガイドを参照）",
-                "Discordで「!cookies add 1」と入力",
-                "cookies.txtファイルをメッセージに添付",
+                "ブラウザからCookieをエクスポート（[Cookie設定ガイド](/docs/cookies-setup)を参照）",
+                "Discordで「`!cookies add 1`」と入力",
+                "`cookies.txt`ファイルをメッセージに添付",
                 "完了！Cookieは即座に有効になります"
             ],
             tip: "💡 冗長性のために複数のCookieを追加できます。1つが失敗すると、Rawonは自動的に次に切り替わります！"
@@ -108,7 +108,7 @@ export const ja = {
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "Discord Developer PortalからのDiscordボットトークン",
+                    "[Discord Developer Portal](https://discord.com/developers/applications)からのDiscordボットトークン",
                 required: true
             },
             mainPrefix: {
@@ -131,7 +131,7 @@ export const ja = {
             spotify: {
                 name: "Spotify API",
                 description:
-                    "SpotifyサポートのためにSPOTIFY_CLIENT_IDとSPOTIFY_CLIENT_SECRETを設定"
+                    "Spotifyサポートのために[developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)から認証情報を取得し、`SPOTIFY_CLIENT_ID`と`SPOTIFY_CLIENT_SECRET`を設定"
             }
         },
         optional: {

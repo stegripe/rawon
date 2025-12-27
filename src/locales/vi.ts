@@ -39,7 +39,7 @@ export const vi = {
         requirements: {
             title: "Yêu cầu",
             nodeVersion: "Node.js phiên bản 22.12.0 trở lên",
-            discordToken: "Discord Bot Token (lấy từ Discord Developer Portal)",
+            discordToken: "Discord Bot Token (lấy từ [Discord Developer Portal](https://discord.com/developers/applications))",
             optional: "Tùy chọn: Thông tin xác thực Spotify API để hỗ trợ Spotify"
         },
         standardSetup: {
@@ -85,9 +85,9 @@ export const vi = {
             description:
                 "Nếu bạn đang hosting trên các nhà cung cấp cloud (AWS, GCP, Azure, Railway, v.v.), bạn có thể gặp lỗi \"Sign in to confirm you're not a bot\". Sửa dễ dàng với lệnh cookies:",
             steps: [
-                "Xuất cookies từ trình duyệt (xem hướng dẫn Thiết lập Cookie)",
-                "Trong Discord, gõ: !cookies add 1",
-                "Đính kèm file cookies.txt vào tin nhắn",
+                "Xuất cookies từ trình duyệt (xem [hướng dẫn Thiết lập Cookie](/docs/cookies-setup))",
+                "Trong Discord, gõ: `!cookies add 1`",
+                "Đính kèm file `cookies.txt` vào tin nhắn",
                 "Xong! Cookie có hiệu lực ngay lập tức"
             ],
             tip: "💡 Bạn có thể thêm nhiều cookies để dự phòng. Khi một cái thất bại, Rawon tự động chuyển sang cái tiếp theo!"
@@ -103,7 +103,7 @@ export const vi = {
             description: "Đây là các cài đặt tối thiểu cần thiết để chạy bot.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Token bot Discord của bạn từ Discord Developer Portal",
+                description: "Token bot Discord của bạn từ [Discord Developer Portal](https://discord.com/developers/applications)",
                 required: true
             },
             mainPrefix: {
@@ -124,7 +124,7 @@ export const vi = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "Để hỗ trợ Spotify, đặt SPOTIFY_CLIENT_ID và SPOTIFY_CLIENT_SECRET"
+                description: "Để hỗ trợ Spotify, lấy thông tin xác thực từ [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) và đặt `SPOTIFY_CLIENT_ID` và `SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {

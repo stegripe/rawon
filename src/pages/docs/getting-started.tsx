@@ -62,20 +62,20 @@ export default function GettingStartedPage() {
                         <ul className="m-0 flex list-disc flex-col gap-1 pl-5">
                             <li>
                                 <Typography className="font-sans">
-                                    {t.gettingStarted.requirements.nodeVersion}
+                                    {renderWithCode(t.gettingStarted.requirements.nodeVersion)}
                                 </Typography>
                             </li>
                             <li>
                                 <Typography className="font-sans">
-                                    {
+                                    {renderWithCode(
                                         t.gettingStarted.requirements
                                             .discordToken
-                                    }
+                                    )}
                                 </Typography>
                             </li>
                             <li>
                                 <Typography className="font-sans">
-                                    {t.gettingStarted.requirements.optional}
+                                    {renderWithCode(t.gettingStarted.requirements.optional)}
                                 </Typography>
                             </li>
                         </ul>

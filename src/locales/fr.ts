@@ -39,7 +39,7 @@ export const fr = {
         requirements: {
             title: "Prérequis",
             nodeVersion: "Node.js version 22.12.0 ou supérieure",
-            discordToken: "Token Bot Discord (obtenir depuis Discord Developer Portal)",
+            discordToken: "Token Bot Discord (obtenir depuis [Discord Developer Portal](https://discord.com/developers/applications))",
             optional: "Optionnel: Identifiants API Spotify pour le support Spotify"
         },
         standardSetup: {
@@ -85,9 +85,9 @@ export const fr = {
             description:
                 "Si vous hébergez sur des fournisseurs cloud (AWS, GCP, Azure, Railway, etc.), vous pouvez obtenir des erreurs \"Sign in to confirm you're not a bot\". Corrigez-les facilement avec la commande cookies :",
             steps: [
-                "Exportez les cookies depuis votre navigateur (voir le guide Config. Cookies)",
-                "Dans Discord, tapez : !cookies add 1",
-                "Joignez votre fichier cookies.txt au message",
+                "Exportez les cookies depuis votre navigateur (voir le [guide Config. Cookies](/docs/cookies-setup))",
+                "Dans Discord, tapez : `!cookies add 1`",
+                "Joignez votre fichier `cookies.txt` au message",
                 "Terminé ! Le cookie prend effet immédiatement"
             ],
             tip: "💡 Vous pouvez ajouter plusieurs cookies pour la redondance. Quand l'un échoue, Rawon passe automatiquement au suivant !"
@@ -103,7 +103,7 @@ export const fr = {
             description: "Ce sont les paramètres minimum requis pour exécuter le bot.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Votre token de bot Discord depuis Discord Developer Portal",
+                description: "Votre token de bot Discord depuis [Discord Developer Portal](https://discord.com/developers/applications)",
                 required: true
             },
             mainPrefix: {
@@ -124,7 +124,7 @@ export const fr = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "Pour le support Spotify, définissez SPOTIFY_CLIENT_ID et SPOTIFY_CLIENT_SECRET"
+                description: "Pour le support Spotify, obtenez vos identifiants sur [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) et définissez `SPOTIFY_CLIENT_ID` et `SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {

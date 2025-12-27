@@ -38,7 +38,7 @@ export const zhTW = {
         requirements: {
             title: "要求",
             nodeVersion: "Node.js 版本 22.12.0 或更高",
-            discordToken: "Discord Bot Token（從Discord開發者入口網站獲取）",
+            discordToken: "Discord Bot Token（從[Discord開發者入口網站](https://discord.com/developers/applications)獲取）",
             optional: "可選：Spotify API憑據以支援Spotify"
         },
         standardSetup: {
@@ -84,9 +84,9 @@ export const zhTW = {
             description:
                 "如果您在雲端服務提供商（AWS、GCP、Azure、Railway等）上託管，可能會收到\"Sign in to confirm you're not a bot\"錯誤。使用cookies命令輕鬆修復：",
             steps: [
-                "從瀏覽器匯出cookies（請參閱Cookie設定指南）",
-                "在Discord中輸入：!cookies add 1",
-                "將您的cookies.txt檔案附加到訊息中",
+                "從瀏覽器匯出cookies（請參閱[Cookie設定指南](/docs/cookies-setup)）",
+                "在Discord中輸入：`!cookies add 1`",
+                "將您的`cookies.txt`檔案附加到訊息中",
                 "完成！Cookie立即生效"
             ],
             tip: "💡 您可以新增多個cookies以實現冗餘。當一個失敗時，Rawon會自動切換到下一個！"
@@ -102,7 +102,7 @@ export const zhTW = {
             description: "這些是運行機器人所需的最低設置。",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "來自Discord開發者入口網站的Discord機器人令牌",
+                description: "來自[Discord開發者入口網站](https://discord.com/developers/applications)的Discord機器人令牌",
                 required: true
             },
             mainPrefix: {
@@ -124,7 +124,7 @@ export const zhTW = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "要支援Spotify，請設置SPOTIFY_CLIENT_ID和SPOTIFY_CLIENT_SECRET"
+                description: "要支援Spotify，請從[developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)獲取憑據並設置`SPOTIFY_CLIENT_ID`和`SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {

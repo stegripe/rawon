@@ -38,7 +38,7 @@ export const zhCN = {
         requirements: {
             title: "要求",
             nodeVersion: "Node.js 版本 22.12.0 或更高",
-            discordToken: "Discord Bot Token（从Discord开发者门户获取）",
+            discordToken: "Discord Bot Token（从[Discord开发者门户](https://discord.com/developers/applications)获取）",
             optional: "可选：Spotify API凭据以支持Spotify"
         },
         standardSetup: {
@@ -84,9 +84,9 @@ export const zhCN = {
             description:
                 "如果您在云服务提供商（AWS、GCP、Azure、Railway等）上托管，可能会收到\"Sign in to confirm you're not a bot\"错误。使用cookies命令轻松修复：",
             steps: [
-                "从浏览器导出cookies（请参阅Cookie设置指南）",
-                "在Discord中输入：!cookies add 1",
-                "将您的cookies.txt文件附加到消息中",
+                "从浏览器导出cookies（请参阅[Cookie设置指南](/docs/cookies-setup)）",
+                "在Discord中输入：`!cookies add 1`",
+                "将您的`cookies.txt`文件附加到消息中",
                 "完成！Cookie立即生效"
             ],
             tip: "💡 您可以添加多个cookies以实现冗余。当一个失败时，Rawon会自动切换到下一个！"
@@ -102,7 +102,7 @@ export const zhCN = {
             description: "这些是运行机器人所需的最低设置。",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "来自Discord开发者门户的Discord机器人令牌",
+                description: "来自[Discord开发者门户](https://discord.com/developers/applications)的Discord机器人令牌",
                 required: true
             },
             mainPrefix: {
@@ -124,7 +124,7 @@ export const zhCN = {
             },
             spotify: {
                 name: "Spotify API",
-                description: "要支持Spotify，请设置SPOTIFY_CLIENT_ID和SPOTIFY_CLIENT_SECRET"
+                description: "要支持Spotify，请从[developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)获取凭据并设置`SPOTIFY_CLIENT_ID`和`SPOTIFY_CLIENT_SECRET`"
             }
         },
         optional: {
