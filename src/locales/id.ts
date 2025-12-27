@@ -37,7 +37,7 @@ export const id = {
                 "🌍 Dukungan multi-bahasa (12 bahasa)",
                 "🔄 Rotasi multi-cookie untuk pemutaran tanpa gangguan",
                 "⚡ Pre-caching audio pintar untuk pemutaran lebih lancar",
-                "🎶 Dukungan YouTube, Spotify, dan SoundCloud",
+                "🎶 Dukungan berbagai platform musik (situs video, Spotify, SoundCloud)",
                 "📋 Dukungan playlist penuh (termasuk playlist besar 100+ lagu)"
             ]
         },
@@ -78,7 +78,7 @@ export const id = {
                     "Binary yt-dlp untuk streaming audio",
                     "data.json untuk pengaturan persisten (request channels, status player)",
                     "File audio yang di-cache (jika audio caching diaktifkan)",
-                    "File cookie untuk autentikasi YouTube"
+                    "File cookie untuk autentikasi platform video"
                 ]
             }
         },
@@ -227,7 +227,7 @@ export const id = {
                 "Jika Anda hosting Rawon di cloud provider seperti OVHcloud, AWS, GCP, Azure, Railway, atau layanan hosting lainnya, Anda mungkin mengalami error:",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "Ini terjadi karena YouTube memblokir request dari alamat IP data center. Dengan menggunakan cookies dari akun yang sudah login, Anda bisa melewati pembatasan ini. Jangan khawatir - setup-nya mudah!"
+                "Ini terjadi karena platform video memblokir request dari alamat IP data center. Dengan menggunakan cookies dari akun yang sudah login, Anda bisa melewati pembatasan ini. Jangan khawatir - setup-nya mudah!"
         },
         quickMethod: {
             title: "🚀 Metode Mudah: Menggunakan Command Cookies (Disarankan)",
@@ -257,7 +257,7 @@ export const id = {
         prerequisites: {
             title: "📋 Yang Anda Butuhkan",
             items: [
-                "Akun YouTube cadangan/tumbal (JANGAN gunakan akun utama!)",
+                "Akun platform video cadangan/tumbal (JANGAN gunakan akun utama!)",
                 "Browser web (Chrome, Firefox, atau Edge)",
                 "Extension untuk export cookies (gratis dari browser store)"
             ]
@@ -267,16 +267,16 @@ export const id = {
             createAccount: {
                 title: "Langkah 1: Buat Akun Tumbal",
                 steps: [
-                    "Buka accounts.google.com/signup",
-                    "Buat akun Google BARU khusus untuk bot ini",
+                    "Buka halaman pendaftaran akun platform video",
+                    "Buat akun BARU khusus untuk bot ini",
                     "⚠️ PENTING: JANGAN gunakan akun pribadi/utama!"
                 ]
             },
             login: {
-                title: "Langkah 2: Login ke YouTube",
+                title: "Langkah 2: Login ke Platform Video",
                 steps: [
                     "Buka browser Anda",
-                    "Buka youtube.com",
+                    "Buka website platform video",
                     "Login dengan akun tumbal Anda",
                     "Terima syarat & ketentuan jika diminta"
                 ]
@@ -289,7 +289,7 @@ export const id = {
             exportCookies: {
                 title: "Langkah 4: Export Cookies",
                 steps: [
-                    "Pastikan Anda di youtube.com",
+                    "Pastikan Anda di website platform video",
                     "Klik ikon extension cookies di toolbar browser",
                     "Klik **Export** atau **Export cookies for this site**",
                     "Simpan file sebagai cookies.txt"
@@ -335,12 +335,12 @@ export const id = {
         duration: {
             title: "⏰ Berapa Lama Cookies Bertahan?",
             description:
-                "Kabar baik! Cookies YouTube TIDAK kadaluarsa secara berkala. Mereka tetap valid selama:",
+                "Kabar baik! Cookies platform video TIDAK kadaluarsa secara berkala. Mereka tetap valid selama:",
             conditions: [
-                "Anda tidak logout dari YouTube di browser",
+                "Anda tidak logout dari platform video di browser",
                 "Anda tidak ganti password akun",
                 "Anda tidak revoke session dari pengaturan akun",
-                "YouTube tidak mendeteksi aktivitas mencurigakan"
+                "Platform tidak mendeteksi aktivitas mencurigakan"
             ],
             tips: "Dalam praktiknya, cookies bisa bertahan berbulan-bulan bahkan bertahun-tahun! Cukup setup sekali dan lupakan."
         },
@@ -349,8 +349,7 @@ export const id = {
             warnings: [
                 "⚠️ JANGAN pernah bagikan file cookies ke siapapun",
                 "⚠️ Gunakan akun tumbal, BUKAN akun utama",
-                "⚠️ File cookies berisi data login sensitif",
-                "⚠️ Jika self-host, tambahkan cookies.txt ke .gitignore"
+                "⚠️ File cookies berisi data login sensitif"
             ]
         }
     },

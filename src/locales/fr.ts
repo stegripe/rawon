@@ -263,7 +263,7 @@ export const fr = {
                 title: "Étape 2: Se Connecter à la Plateforme",
                 steps: [
                     "Ouvrez votre navigateur",
-                    "Allez sur la plateforme (YouTube)",
+                    "Allez sur la plateforme (video site)",
                     "Connectez-vous avec votre compte jetable",
                     "Acceptez les conditions si demandé"
                 ]
@@ -335,8 +335,7 @@ export const fr = {
             warnings: [
                 "Ne partagez jamais votre fichier de cookies avec qui que ce soit",
                 "Utilisez un compte jetable, PAS votre compte principal",
-                "Le fichier de cookies contient des données d'authentification sensibles",
-                "Ajoutez cookies.txt à votre .gitignore pour éviter les commits accidentels"
+                "Le fichier de cookies contient des données d'authentification sensibles"
             ]
         }
     },

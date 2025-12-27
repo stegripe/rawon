@@ -262,7 +262,7 @@ export const zhCN = {
                 title: "步骤2：登录平台",
                 steps: [
                     "打开浏览器",
-                    "前往平台（YouTube）",
+                    "前往平台（视频平台）",
                     "使用一次性账户登录",
                     "如有提示，接受条款"
                 ]
@@ -333,8 +333,7 @@ export const zhCN = {
             warnings: [
                 "切勿与任何人分享您的Cookie文件",
                 "使用一次性账户，而非主账户",
-                "Cookie文件包含敏感认证数据",
-                "将cookies.txt添加到.gitignore以防止意外提交"
+                "Cookie文件包含敏感认证数据"
             ]
         }
     },

@@ -263,7 +263,7 @@ export const pt = {
                 title: "Passo 2: Fazer Login na Plataforma",
                 steps: [
                     "Abra seu navegador",
-                    "Vá para a plataforma (YouTube)",
+                    "Vá para a plataforma (video platform)",
                     "Faça login com sua conta descartável",
                     "Aceite os termos se solicitado"
                 ]
@@ -335,8 +335,7 @@ export const pt = {
             warnings: [
                 "Nunca compartilhe seu arquivo de cookies com ninguém",
                 "Use uma conta descartável, NÃO sua conta principal",
-                "O arquivo de cookies contém dados de autenticação sensíveis",
-                "Adicione cookies.txt ao seu .gitignore para evitar commits acidentais"
+                "O arquivo de cookies contém dados de autenticação sensíveis"
             ]
         }
     },

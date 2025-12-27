@@ -262,7 +262,7 @@ export const tr = {
                 title: "Adım 2: Platforma Giriş Yapın",
                 steps: [
                     "Tarayıcınızı açın",
-                    "Platforma gidin (YouTube)",
+                    "Platforma gidin (video platformu)",
                     "Tek kullanımlık hesabınızla oturum açın",
                     "İstenirse şartları kabul edin"
                 ]
@@ -334,8 +334,7 @@ export const tr = {
             warnings: [
                 "Çerez dosyanızı asla kimseyle paylaşmayın",
                 "Ana hesabınızı DEĞİL, tek kullanımlık hesap kullanın",
-                "Çerez dosyası hassas kimlik doğrulama verilerini içerir",
-                "Yanlışlıkla commit yapmamak için cookies.txt'yi .gitignore'a ekleyin"
+                "Çerez dosyası hassas kimlik doğrulama verilerini içerir"
             ]
         }
     },

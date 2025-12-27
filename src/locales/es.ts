@@ -37,7 +37,7 @@ export const es = {
                 "🌍 Soporte multilingüe (12 idiomas)",
                 "🔄 Rotación multi-cookie para reproducción ininterrumpida",
                 "⚡ Pre-caché de audio inteligente para reproducción más suave",
-                "🎶 Soporte para YouTube, Spotify y SoundCloud",
+                "🎶 Soporte para múltiples plataformas de música (sitios de video, Spotify, SoundCloud)",
                 "📋 Soporte completo de playlists (incluyendo playlists grandes de 100+ canciones)"
             ]
         },
@@ -78,7 +78,7 @@ export const es = {
                     "Binario yt-dlp para streaming de audio",
                     "data.json para configuraciones persistentes (canales de solicitud, estados del reproductor)",
                     "Archivos de audio en caché (si el caché de audio está habilitado)",
-                    "Archivos de cookies para autenticación de YouTube"
+                    "Archivos de cookies para autenticación de plataforma de video"
                 ]
             }
         },
@@ -225,7 +225,7 @@ export const es = {
                 "Si estás alojando Rawon en proveedores de nube como OVHcloud, AWS, GCP, Azure, Railway, u otros servicios de hosting, podrías encontrar el error:",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "Esto ocurre porque YouTube bloquea solicitudes desde direcciones IP de centros de datos. Usando cookies de una cuenta conectada, puedes evitar esta restricción. ¡No te preocupes - es fácil de configurar!"
+                "Esto ocurre porque la plataforma de video bloquea solicitudes desde direcciones IP de centros de datos. Usando cookies de una cuenta conectada, puedes evitar esta restricción. ¡No te preocupes - es fácil de configurar!"
         },
         quickMethod: {
             title: "🚀 Método Fácil: Usando el Comando Cookies (Recomendado)",
@@ -255,7 +255,7 @@ export const es = {
         prerequisites: {
             title: "📋 Lo Que Necesitas",
             items: [
-                "Una cuenta secundaria/desechable de YouTube (¡NUNCA uses tu cuenta principal!)",
+                "Una cuenta secundaria/desechable de plataforma de video (¡NUNCA uses tu cuenta principal!)",
                 "Un navegador web (Chrome, Firefox o Edge)",
                 "Una extensión de exportación de cookies (gratis en la tienda del navegador)"
             ]
@@ -265,16 +265,16 @@ export const es = {
             createAccount: {
                 title: "Paso 1: Crear una Cuenta Desechable",
                 steps: [
-                    "Ve a accounts.google.com/signup",
-                    "Crea una NUEVA cuenta de Google específicamente para este bot",
+                    "Ve a la página de registro de cuenta de la plataforma de video",
+                    "Crea una cuenta NUEVA específicamente para este bot",
                     "⚠️ IMPORTANTE: ¡NUNCA uses tu cuenta personal/principal!"
                 ]
             },
             login: {
-                title: "Paso 2: Iniciar Sesión en YouTube",
+                title: "Paso 2: Iniciar Sesión en la Plataforma de Video",
                 steps: [
                     "Abre tu navegador",
-                    "Ve a youtube.com",
+                    "Ve al sitio web de la plataforma de video",
                     "Inicia sesión con tu cuenta desechable",
                     "Acepta los términos si se solicita"
                 ]
@@ -287,7 +287,7 @@ export const es = {
             exportCookies: {
                 title: "Paso 4: Exportar Cookies",
                 steps: [
-                    "Asegúrate de estar en youtube.com",
+                    "Asegúrate de estar en el sitio web de la plataforma de video",
                     "Haz clic en el icono de la extensión de cookies en tu barra de herramientas",
                     "Haz clic en **Export** o **Export cookies for this site**",
                     "Guarda el archivo como cookies.txt"
@@ -333,12 +333,12 @@ export const es = {
         duration: {
             title: "⏰ ¿Cuánto Duran las Cookies?",
             description:
-                "¡Buenas noticias! Las cookies de YouTube NO expiran regularmente. Permanecen válidas mientras:",
+                "¡Buenas noticias! Las cookies de plataforma de video NO expiran regularmente. Permanecen válidas mientras:",
             conditions: [
-                "No cierres sesión de YouTube en tu navegador",
+                "No cierres sesión de la plataforma de video en tu navegador",
                 "No cambies la contraseña de tu cuenta",
                 "No revoques la sesión desde configuración de cuenta",
-                "YouTube no detecte actividad sospechosa"
+                "La plataforma no detecte actividad sospechosa"
             ],
             tips: "¡En la práctica, las cookies pueden durar meses o incluso años! Solo configúralo una vez y olvídate."
         },
@@ -347,8 +347,7 @@ export const es = {
             warnings: [
                 "⚠️ NUNCA compartas tu archivo de cookies con nadie",
                 "⚠️ Usa una cuenta desechable, NO tu cuenta principal",
-                "⚠️ El archivo de cookies contiene datos de inicio de sesión sensibles",
-                "⚠️ Si auto-alojas, agrega cookies.txt a tu .gitignore"
+                "⚠️ El archivo de cookies contiene datos de inicio de sesión sensibles"
             ]
         }
     },

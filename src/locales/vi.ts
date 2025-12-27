@@ -263,7 +263,7 @@ export const vi = {
                 title: "Bước 2: Đăng nhập vào nền tảng",
                 steps: [
                     "Mở trình duyệt",
-                    "Truy cập nền tảng (YouTube)",
+                    "Truy cập nền tảng (nền tảng video)",
                     "Đăng nhập bằng tài khoản dùng một lần",
                     "Chấp nhận điều khoản nếu được yêu cầu"
                 ]
@@ -335,8 +335,7 @@ export const vi = {
             warnings: [
                 "Không bao giờ chia sẻ file cookie với bất kỳ ai",
                 "Sử dụng tài khoản dùng một lần, KHÔNG phải tài khoản chính",
-                "File cookie chứa dữ liệu xác thực nhạy cảm",
-                "Thêm cookies.txt vào .gitignore để ngăn commit vô tình"
+                "File cookie chứa dữ liệu xác thực nhạy cảm"
             ]
         }
     },

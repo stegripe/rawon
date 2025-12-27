@@ -37,7 +37,7 @@ export const en = {
                 "🌍 Multi-language support (12 languages)",
                 "🔄 Multi-cookie rotation for uninterrupted playback",
                 "⚡ Smart audio pre-caching for smoother playback",
-                "🎶 Support for YouTube, Spotify, and SoundCloud",
+                "🎶 Support for multiple music platforms (video sites, Spotify, SoundCloud)",
                 "📋 Full playlist support (including large 100+ songs playlists)"
             ]
         },
@@ -78,7 +78,7 @@ export const en = {
                     "yt-dlp binary for audio streaming",
                     "data.json for persistent settings (request channels, player states)",
                     "Cached audio files (if audio caching is enabled)",
-                    "Cookie files for YouTube authentication"
+                    "Cookie files for video platform authentication"
                 ]
             }
         },
@@ -225,7 +225,7 @@ export const en = {
                 "If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, Railway, or other hosting services, you might encounter the error:",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "This happens because YouTube blocks requests from data center IP addresses. By using cookies from a logged-in account, you can bypass this restriction. Don't worry - it's easy to set up!"
+                "This happens because the video platform blocks requests from data center IP addresses. By using cookies from a logged-in account, you can bypass this restriction. Don't worry - it's easy to set up!"
         },
         quickMethod: {
             title: "🚀 Easy Method: Using the Cookies Command (Recommended)",
@@ -255,7 +255,7 @@ export const en = {
         prerequisites: {
             title: "📋 What You Need",
             items: [
-                "A secondary/throwaway YouTube account (NEVER use your main account!)",
+                "A secondary/throwaway video platform account (NEVER use your main account!)",
                 "A web browser (Chrome, Firefox, or Edge)",
                 "A cookies export extension (free from browser store)"
             ]
@@ -265,16 +265,16 @@ export const en = {
             createAccount: {
                 title: "Step 1: Create a Throwaway Account",
                 steps: [
-                    "Go to accounts.google.com/signup",
-                    "Create a NEW Google account specifically for this bot",
+                    "Go to the video platform's account signup page",
+                    "Create a NEW account specifically for this bot",
                     "⚠️ IMPORTANT: NEVER use your personal/main account!"
                 ]
             },
             login: {
-                title: "Step 2: Log in to YouTube",
+                title: "Step 2: Log in to the Video Platform",
                 steps: [
                     "Open your browser",
-                    "Go to youtube.com",
+                    "Go to the video platform website",
                     "Sign in with your throwaway account",
                     "Accept any terms if prompted"
                 ]
@@ -287,7 +287,7 @@ export const en = {
             exportCookies: {
                 title: "Step 4: Export Cookies",
                 steps: [
-                    "Make sure you're on youtube.com",
+                    "Make sure you're on the video platform website",
                     "Click the cookies extension icon in your browser toolbar",
                     "Click **Export** or **Export cookies for this site**",
                     "Save the file as cookies.txt"
@@ -333,12 +333,12 @@ export const en = {
         duration: {
             title: "⏰ How Long Do Cookies Last?",
             description:
-                "Good news! YouTube cookies do NOT expire regularly. They stay valid as long as:",
+                "Good news! Video platform cookies do NOT expire regularly. They stay valid as long as:",
             conditions: [
-                "You don't log out from YouTube in your browser",
+                "You don't log out from the video platform in your browser",
                 "You don't change your account password",
                 "You don't revoke the session from account settings",
-                "YouTube doesn't detect suspicious activity"
+                "The platform doesn't detect suspicious activity"
             ],
             tips: "In practice, cookies can last months or even years! Just set it up once and forget about it."
         },
@@ -347,8 +347,7 @@ export const en = {
             warnings: [
                 "⚠️ NEVER share your cookies file with anyone",
                 "⚠️ Use a throwaway account, NOT your main account",
-                "⚠️ The cookies file contains sensitive login data",
-                "⚠️ If you self-host, add cookies.txt to your .gitignore"
+                "⚠️ The cookies file contains sensitive login data"
             ]
         }
     },
