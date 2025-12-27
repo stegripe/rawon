@@ -155,7 +155,6 @@ In practice, cookies can last **months or even years** if you follow these tips.
 - Never share your cookies file with anyone
 - Use a throwaway account, NOT your main account
 - The cookies file contains sensitive authentication data
-- Add `cookies.txt` to your `.gitignore` to prevent accidental commits
 
 ---
 
@@ -310,4 +309,3 @@ Dalam praktiknya, cookies bisa bertahan **berbulan-bulan bahkan bertahun-tahun**
 - Jangan pernah bagikan file cookies kamu ke siapapun
 - Gunakan akun tumbal, BUKAN akun utama kamu
 - File cookies berisi data autentikasi sensitif
-- Tambahkan `cookies.txt` ke `.gitignore` kamu untuk mencegah commit tidak sengaja
