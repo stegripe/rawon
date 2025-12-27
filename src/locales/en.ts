@@ -15,7 +15,7 @@ export const en = {
     home: {
         title: "Rawon",
         description:
-            "A simple powerful Discord music bot built to fulfill your production desires.",
+            "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
         invite: "Invite",
         support: "Support",
         viewDocs: "View Docs"
@@ -27,25 +27,29 @@ export const en = {
         subtitle:
             "Get Rawon up and running in minutes with our step-by-step guide.",
         features: {
-            title: "Features",
+            title: "✨ Features",
             items: [
-                "Interaction support (slash commands and buttons)",
-                "Request channel feature for seamless music experience",
-                "Production-ready, no coding required",
-                "Configurable and easy to use",
-                "Basic music commands (play, pause, skip, queue, etc.)",
-                "Multi-language support"
+                "🎮 Interaction support (slash commands and buttons)",
+                "📺 Request channel feature for seamless music experience",
+                "🚀 Production-ready, no coding required",
+                "⚙️ Configurable and easy to use",
+                "🎵 Basic music commands (play, pause, skip, queue, etc.)",
+                "🌍 Multi-language support (12 languages)",
+                "🔄 Multi-cookie rotation for uninterrupted playback",
+                "⚡ Smart audio pre-caching for smoother playback",
+                "🎶 Support for YouTube, Spotify, and SoundCloud",
+                "📋 Full playlist support (including large 100+ songs playlists)"
             ]
         },
         requirements: {
-            title: "Requirements",
+            title: "📋 Requirements",
             nodeVersion: "Node.js version 22.12.0 or higher",
             discordToken:
                 "Discord Bot Token (get from Discord Developer Portal)",
             optional: "Optional: Spotify API credentials for Spotify support"
         },
         standardSetup: {
-            title: "Standard Setup (Node.js)",
+            title: "💻 Standard Setup (Node.js)",
             steps: [
                 "Download and install Node.js version 22.12.0 or higher",
                 "Clone or download this repository",
@@ -58,7 +62,7 @@ export const en = {
                 "(Optional) After the bot is online, set up a dedicated music channel:"
         },
         dockerSetup: {
-            title: "Docker Setup (Recommended)",
+            title: "🐳 Docker Setup (Recommended)",
             composeTitle: "Using Docker Compose",
             composeSteps: [
                 "Create a .env file with your configuration (copy from .env_example)",
@@ -68,20 +72,33 @@ export const en = {
             ],
             runTitle: "Using Docker Run",
             volumeInfo: {
-                title: "Volume Information",
+                title: "📁 Volume Information",
                 description: "The /app/cache volume stores:",
                 items: [
                     "yt-dlp binary for audio streaming",
                     "data.json for persistent settings (request channels, player states)",
-                    "Cached audio files (if audio caching is enabled)"
+                    "Cached audio files (if audio caching is enabled)",
+                    "Cookie files for YouTube authentication"
                 ]
             }
         },
         railwaySetup: {
-            title: "Railway Deployment",
+            title: "🚂 Railway Deployment",
             description:
                 "Railway provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.",
             warning: "IMPORTANT: Read Disclaimers before deploying to Railway."
+        },
+        cookiesQuickStart: {
+            title: "🍪 Quick Start: Cookies Setup",
+            description:
+                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get 'Sign in to confirm you're not a bot' errors. Fix it easily with the cookies command:",
+            steps: [
+                "Export cookies from your browser (see Cookies Setup guide)",
+                "In Discord, type: !cookies add 1",
+                "Attach your cookies.txt file to the message",
+                "Done! The cookie takes effect immediately"
+            ],
+            tip: "💡 You can add multiple cookies for redundancy. When one fails, Rawon automatically switches to the next one!"
         }
     },
 
@@ -90,28 +107,28 @@ export const en = {
         title: "Configuration",
         subtitle: "Configure Rawon to fit your needs with these settings.",
         essential: {
-            title: "Essential Settings",
+            title: "⚡ Essential Settings",
             description:
-                "These are the minimum settings required to run the bot.",
+                "These are the minimum settings required to run the bot. Just fill in your Discord token and you're ready to go!",
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "Your Discord bot token from the Discord Developer Portal",
+                    "Your Discord bot token from the Discord Developer Portal. This is the only REQUIRED setting!",
                 required: true
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "Main command prefix",
+                description: "Main command prefix. Example: ! means you type !play to play music",
                 default: "!"
             },
             mainServer: {
                 name: "MAIN_SERVER",
-                description: "Your main server ID for slash command registration",
+                description: "Your main server ID for faster slash command registration. Leave empty for global commands (takes up to 1 hour to update)",
                 required: false
             },
             locale: {
                 name: "LOCALE",
-                description: "Bot language",
+                description: "Bot language - choose your preferred language for bot responses",
                 default: "en-US",
                 options:
                     "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR"
@@ -119,49 +136,80 @@ export const en = {
             spotify: {
                 name: "Spotify API",
                 description:
-                    "For Spotify support, set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET"
+                    "For Spotify support, get your credentials from developer.spotify.com/dashboard and set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET"
             }
         },
         optional: {
-            title: "Optional Settings",
-            description: "Customize Rawon's behavior and appearance.",
+            title: "🎨 Optional Settings",
+            description: "Customize Rawon's behavior and appearance. All these are optional - the bot works fine without them!",
             altPrefix: {
                 name: "ALT_PREFIX",
                 description:
-                    "Alternative prefixes (comma-separated). Use {mention} for @bot mention",
+                    "Alternative prefixes (comma-separated). Use {mention} to allow @bot as a prefix. Example: {mention},r! allows both @Rawon play and r!play",
                 default: "{mention}"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "Bot status activities (comma-separated). Formats: {prefix}, {userCount}, {textChannelCount}, {serverCount}, {playingCount}, {username}"
+                    "Bot status activities shown under the bot name (comma-separated). Available placeholders: {prefix}, {userCount}, {textChannelCount}, {serverCount}, {playingCount}, {username}"
             },
             activityTypes: {
                 name: "ACTIVITY_TYPES",
-                description: "Activity types for each activity (comma-separated)",
+                description: "Activity types for each activity above (comma-separated). Must match the number of ACTIVITIES",
                 options: "PLAYING, WATCHING, LISTENING, COMPETING"
             },
             embedColor: {
                 name: "EMBED_COLOR",
-                description: "Embed color in hex (without #)",
+                description: "Embed color in hex (without #). This color appears on all bot message embeds",
                 default: "22C9FF"
             },
             emojis: {
                 name: "Emojis",
-                description: "Customize success (YES_EMOJI) and failure (NO_EMOJI) emojis",
+                description: "Customize success (YES_EMOJI) and failure (NO_EMOJI) emojis shown in bot responses",
                 defaults: "✅ / ❌"
             },
             musicSelection: {
                 name: "MUSIC_SELECTION_TYPE",
-                description: "Music selection style",
+                description: "How search results are displayed. 'message' shows numbered list, 'selectmenu' shows dropdown menu",
                 options: "message, selectmenu",
                 default: "message"
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "[EXPERIMENTAL] Cache downloaded audio for faster repeated playback",
+                    "[EXPERIMENTAL] Cache downloaded audio for faster repeated playback. Uses more disk space but speeds up frequently played songs",
                 default: "no"
+            },
+            requestChannelSplash: {
+                name: "REQUEST_CHANNEL_SPLASH",
+                description: "Custom image URL for the request channel player embed",
+                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+            }
+        },
+        developer: {
+            title: "🛠️ Developer Settings",
+            description: "Advanced settings for bot developers. Only use if you know what you're doing!",
+            devs: {
+                name: "DEVS",
+                description: "Bot developer IDs (comma-separated). Developers can access special commands"
+            },
+            enablePrefix: {
+                name: "ENABLE_PREFIX",
+                description: "Enable/disable prefix commands (like !play). Useful if you only want slash commands",
+                default: "yes",
+                options: "yes, no"
+            },
+            enableSlash: {
+                name: "ENABLE_SLASH_COMMAND",
+                description: "Enable/disable slash commands (like /play). Useful if you only want prefix commands",
+                default: "yes",
+                options: "yes, no"
+            },
+            debugMode: {
+                name: "DEBUG_MODE",
+                description: "Enable debug logging for troubleshooting. Shows detailed logs in console",
+                default: "no",
+                options: "yes, no"
             }
         }
     },
@@ -170,98 +218,143 @@ export const en = {
     cookiesSetup: {
         title: "Cookies Setup",
         subtitle:
-            "Fix 'Sign in to confirm you're not a bot' errors on hosting providers.",
+            "Fix 'Sign in to confirm you're not a bot' errors on hosting providers. It's easier than you think!",
         why: {
-            title: "Why do I need this?",
+            title: "🤔 Why do I need this?",
             description:
-                "If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, or other hosting services, you might encounter the error:",
+                "If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, Railway, or other hosting services, you might encounter the error:",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "This happens because the platform blocks requests from data center IP addresses. By using cookies from a logged-in account, you can bypass this restriction."
+                "This happens because YouTube blocks requests from data center IP addresses. By using cookies from a logged-in account, you can bypass this restriction. Don't worry - it's easy to set up!"
+        },
+        quickMethod: {
+            title: "🚀 Easy Method: Using the Cookies Command (Recommended)",
+            description: "The easiest way to manage cookies - no file editing needed!",
+            benefits: [
+                "✅ Works instantly - no restart needed",
+                "✅ Supports multiple cookies with automatic rotation",
+                "✅ When one cookie fails, bot automatically uses the next one",
+                "✅ Cookies persist after bot restarts"
+            ],
+            commands: {
+                title: "📝 Available Commands",
+                add: "!cookies add <number> - Add a cookie (attach cookies.txt file to your message)",
+                remove: "!cookies remove <number> - Remove a specific cookie",
+                removeAll: "!cookies remove all - Remove all cookies",
+                list: "!cookies list - Show all cookies and their status",
+                reset: "!cookies reset - Reset failed status to retry all cookies"
+            },
+            quickStart: {
+                title: "⚡ Quick Start (3 steps)",
+                steps: [
+                    "Export cookies from your browser (see guide below)",
+                    "In Discord, type: !cookies add 1 and attach your cookies.txt file",
+                    "Done! The cookie is now active"
+                ]
+            },
+            multiCookie: {
+                title: "💡 Pro Tip: Add Multiple Cookies",
+                description: "Add cookies from different accounts for better reliability:",
+                example: "!cookies add 1 (attach first cookies.txt)\n!cookies add 2 (attach second cookies.txt from another account)\n!cookies add 3 (attach third cookies.txt)"
+            }
         },
         prerequisites: {
-            title: "Prerequisites",
+            title: "📋 What You Need",
             items: [
-                "A secondary/throwaway account (DO NOT use your main account for security reasons)",
+                "A secondary/throwaway YouTube account (NEVER use your main account!)",
                 "A web browser (Chrome, Firefox, or Edge)",
-                "A cookies export extension",
-                "For non-Docker users: Deno JavaScript runtime (required for yt-dlp signature solving)"
+                "A cookies export extension (free from browser store)"
             ]
         },
         steps: {
-            title: "Step-by-Step Guide",
+            title: "📖 How to Export Cookies",
             createAccount: {
                 title: "Step 1: Create a Throwaway Account",
                 steps: [
-                    "Go to Account Creation",
-                    "Create a new account specifically for this bot",
-                    "Important: Do NOT use your personal/main account"
+                    "Go to accounts.google.com/signup",
+                    "Create a NEW Google account specifically for this bot",
+                    "⚠️ IMPORTANT: NEVER use your personal/main account!"
                 ]
             },
             login: {
-                title: "Step 2: Log in to the Platform",
+                title: "Step 2: Log in to YouTube",
                 steps: [
                     "Open your browser",
-                    "Go to the platform (YouTube)",
+                    "Go to youtube.com",
                     "Sign in with your throwaway account",
                     "Accept any terms if prompted"
                 ]
             },
             extension: {
                 title: "Step 3: Install Cookies Export Extension",
-                chrome: "For Chrome/Edge: Install 'Get cookies.txt LOCALLY' or 'cookies.txt'",
-                firefox: "For Firefox: Install 'cookies.txt'"
+                chrome: "For Chrome/Edge: Install 'Get cookies.txt LOCALLY' (recommended) from Chrome Web Store",
+                firefox: "For Firefox: Install 'cookies.txt' from Firefox Add-ons"
             },
             exportCookies: {
                 title: "Step 4: Export Cookies",
                 steps: [
-                    "Make sure you're on the platform website",
+                    "Make sure you're on youtube.com",
                     "Click the cookies extension icon in your browser toolbar",
-                    "Choose 'Export' or 'Export cookies for this site'",
+                    "Click 'Export' or 'Export cookies for this site'",
                     "Save the file as cookies.txt"
                 ]
             },
             upload: {
-                title: "Step 5: Upload to Your Server",
+                title: "Step 5: Add to Rawon",
                 steps: [
-                    "Create a cache folder in your Rawon directory if it doesn't exist",
-                    "Upload the cookies.txt file to the cache folder",
-                    "The path should be: ./cache/cookies.txt"
+                    "Go to any channel where Rawon can see your messages",
+                    "Type: !cookies add 1",
+                    "Attach the cookies.txt file to your message and send",
+                    "Rawon will confirm the cookie was added!"
                 ]
-            },
-            configure: {
-                title: "Step 6: Configure Environment Variable",
-                instruction: "Add this to your .env file:"
-            },
-            restart: {
-                title: "Step 7: Restart Rawon",
-                instruction: "Restart your bot to apply the changes."
             }
         },
-        docker: {
-            title: "Docker Setup",
-            description:
-                "If you're using Docker, place your cookies.txt file next to your docker-compose.yaml file and add the volume mount."
+        troubleshooting: {
+            title: "🔧 Troubleshooting",
+            stillGettingErrors: {
+                title: "Still getting 'Sign in to confirm you're not a bot' errors?",
+                steps: [
+                    "Use !cookies list to check cookie status",
+                    "If a cookie shows 'Failed', try !cookies reset to retry",
+                    "Add more cookies from different accounts for redundancy"
+                ]
+            },
+            allCookiesFailed: {
+                title: "All cookies failed?",
+                steps: [
+                    "Create new throwaway accounts",
+                    "Export fresh cookies",
+                    "Add them with !cookies add <number>"
+                ]
+            },
+            accountSuspended: {
+                title: "Account got suspended?",
+                steps: [
+                    "This can happen with heavy usage",
+                    "Simply create a new throwaway account",
+                    "Export new cookies and add them"
+                ]
+            }
         },
         duration: {
-            title: "How Long Do Cookies Last?",
+            title: "⏰ How Long Do Cookies Last?",
             description:
-                "Good news: Platform cookies do NOT expire on a regular schedule. They will remain valid as long as:",
+                "Good news! YouTube cookies do NOT expire regularly. They stay valid as long as:",
             conditions: [
-                "You don't log out from the platform in your browser",
+                "You don't log out from YouTube in your browser",
                 "You don't change your account password",
                 "You don't revoke the session from account settings",
-                "The platform doesn't detect suspicious activity"
+                "YouTube doesn't detect suspicious activity"
             ],
-            tips: "In practice, cookies can last months or even years if you follow best practices."
+            tips: "In practice, cookies can last months or even years! Just set it up once and forget about it."
         },
         security: {
-            title: "Security Notes",
+            title: "🔒 Security Notes",
             warnings: [
-                "Never share your cookies file with anyone",
-                "Use a throwaway account, NOT your main account",
-                "The cookies file contains sensitive authentication data",
-                "Add cookies.txt to your .gitignore to prevent accidental commits"
+                "⚠️ NEVER share your cookies file with anyone",
+                "⚠️ Use a throwaway account, NOT your main account",
+                "⚠️ The cookies file contains sensitive login data",
+                "⚠️ If you self-host, add cookies.txt to your .gitignore"
             ]
         }
     },
@@ -315,6 +408,9 @@ export const en = {
         example: "Example",
         learnMore: "Learn More",
         deployOnRailway: "Deploy on Railway",
-        language: "Language"
+        language: "Language",
+        tip: "Tip",
+        warning: "Warning",
+        note: "Note"
     }
 };

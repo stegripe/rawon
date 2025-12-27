@@ -216,6 +216,40 @@ volumes:
                         </Link>
                     </div>
 
+                    {/* Cookies Quick Start */}
+                    <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
+                        <Typography className="font-sans text-xl font-semibold">
+                            {t.gettingStarted.cookiesQuickStart.title}
+                        </Typography>
+                        <Typography className="font-sans">
+                            {t.gettingStarted.cookiesQuickStart.description}
+                        </Typography>
+                        <ol className="m-0 flex list-decimal flex-col gap-2 pl-5">
+                            {t.gettingStarted.cookiesQuickStart.steps.map(
+                                (step, index) => (
+                                    <li key={index}>
+                                        <Typography className="font-sans">
+                                            {step}
+                                        </Typography>
+                                    </li>
+                                )
+                            )}
+                        </ol>
+                        <div className="rounded-lg bg-green-100 p-3">
+                            <Typography className="font-sans text-sm">
+                                {t.gettingStarted.cookiesQuickStart.tip}
+                            </Typography>
+                        </div>
+                        <Link href="/docs/cookies-setup">
+                            <Button
+                                variant="outlined"
+                                className="w-fit rounded-lg border-secondary font-sans capitalize text-secondary"
+                            >
+                                {t.nav.cookiesSetup}
+                            </Button>
+                        </Link>
+                    </div>
+
                     {/* Next Steps */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">

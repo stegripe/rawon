@@ -165,18 +165,15 @@ export default function ConfigurationPage() {
                         </Typography>
                         <CopyBlock
                             language="bash"
-                            text={`# Essential configuration
+                            text={`# Essential configuration (only DISCORD_TOKEN is required!)
 DISCORD_TOKEN="your-discord-bot-token"
 MAIN_PREFIX="!"
 MAIN_SERVER=""
 LOCALE="en-US"
 
-# Spotify (optional)
+# Spotify (optional - for Spotify links support)
 SPOTIFY_CLIENT_ID=""
-SPOTIFY_CLIENT_SECRET=""
-
-# Cookies (for hosting providers)
-YOUTUBE_COOKIES="./cache/cookies.txt"`}
+SPOTIFY_CLIENT_SECRET=""`}
                             theme={dracula}
                             showLineNumbers
                             codeBlock
@@ -357,6 +354,29 @@ YOUTUBE_COOKIES="./cache/cookies.txt"`}
                                     }
                                 </Typography>
                             </div>
+
+                            {/* REQUEST_CHANNEL_SPLASH */}
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                    {
+                                        t.configuration.optional
+                                            .requestChannelSplash.name
+                                    }
+                                </code>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.optional
+                                            .requestChannelSplash.description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {t.common.default}:{" "}
+                                    {
+                                        t.configuration.optional
+                                            .requestChannelSplash.default
+                                    }
+                                </Typography>
+                            </div>
                         </div>
                     </div>
 
@@ -378,10 +398,155 @@ ACTIVITY_TYPES="PLAYING, LISTENING"
 EMBED_COLOR="22C9FF"
 YES_EMOJI="✅"
 NO_EMOJI="❌"
+REQUEST_CHANNEL_SPLASH=""
 
 # Other settings
 MUSIC_SELECTION_TYPE="message"
 ENABLE_AUDIO_CACHE="no"`}
+                            theme={dracula}
+                            showLineNumbers
+                            codeBlock
+                        />
+                    </div>
+
+                    {/* Developer Settings */}
+                    <div className="flex flex-col gap-4">
+                        <div>
+                            <Typography className="font-sans text-xl font-semibold">
+                                {t.configuration.developer.title}
+                            </Typography>
+                            <Typography className="font-sans text-sm text-fourth">
+                                {t.configuration.developer.description}
+                            </Typography>
+                        </div>
+
+                        <div className="flex flex-col gap-4">
+                            {/* DEVS */}
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {t.configuration.developer.devs.name}
+                                    </code>
+                                    <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
+                                        {t.common.optional}
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.devs
+                                            .description
+                                    }
+                                </Typography>
+                            </div>
+
+                            {/* ENABLE_PREFIX */}
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {
+                                            t.configuration.developer
+                                                .enablePrefix.name
+                                        }
+                                    </code>
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {
+                                            t.configuration.developer
+                                                .enablePrefix.default
+                                        }
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.enablePrefix
+                                            .description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {
+                                        t.configuration.developer.enablePrefix
+                                            .options
+                                    }
+                                </Typography>
+                            </div>
+
+                            {/* ENABLE_SLASH_COMMAND */}
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {
+                                            t.configuration.developer.enableSlash
+                                                .name
+                                        }
+                                    </code>
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {
+                                            t.configuration.developer.enableSlash
+                                                .default
+                                        }
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.enableSlash
+                                            .description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {
+                                        t.configuration.developer.enableSlash
+                                            .options
+                                    }
+                                </Typography>
+                            </div>
+
+                            {/* DEBUG_MODE */}
+                            <div className="rounded-lg border-1 border-solid border-third p-4">
+                                <div className="flex items-center gap-2">
+                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                                        {
+                                            t.configuration.developer.debugMode
+                                                .name
+                                        }
+                                    </code>
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {
+                                            t.configuration.developer.debugMode
+                                                .default
+                                        }
+                                    </span>
+                                </div>
+                                <Typography className="mt-2 font-sans text-sm">
+                                    {
+                                        t.configuration.developer.debugMode
+                                            .description
+                                    }
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {
+                                        t.configuration.developer.debugMode
+                                            .options
+                                    }
+                                </Typography>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Example dev.env */}
+                    <div className="flex flex-col gap-3">
+                        <Typography className="font-sans text-lg font-medium">
+                            {t.common.example} dev.env
+                        </Typography>
+                        <CopyBlock
+                            language="bash"
+                            text={`# Developer configuration (for bot developers)
+DEVS=""
+ENABLE_PREFIX="yes"
+ENABLE_SLASH_COMMAND="yes"
+NODE_ENV="production"
+DEBUG_MODE="no"`}
                             theme={dracula}
                             showLineNumbers
                             codeBlock

@@ -28,6 +28,7 @@ export const pt = {
         features: {
             title: "Recursos",
             items: [
+                "🎮 ",
                 "Suporte a interações (comandos slash e botões)",
                 "Canal de requisições para experiência musical perfeita",
                 "Pronto para produção, sem necessidade de código",
@@ -79,6 +80,18 @@ export const pt = {
             description:
                 "O Railway oferece $5 de créditos gratuitos mensais. Seu bot ficará online 24/7 enquanto o uso ficar abaixo de $5.",
             warning: "IMPORTANTE: Leia os Avisos Legais antes de fazer deploy no Railway."
+        },
+        cookiesQuickStart: {
+            title: "🍪 Quick Start: Cookies Setup",
+            description:
+                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get 'Sign in to confirm you're not a bot' errors. Fix it easily with the cookies command:",
+            steps: [
+                "Export cookies from your browser (see Cookies Setup guide)",
+                "In Discord, type: !cookies add 1",
+                "Attach your cookies.txt file to the message",
+                "Done! The cookie takes effect immediately"
+            ],
+            tip: "💡 You can add multiple cookies for redundancy. When one fails, Rawon automatically switches to the next one!"
         }
     },
 
@@ -153,6 +166,37 @@ export const pt = {
                 name: "ENABLE_AUDIO_CACHE",
                 description: "[EXPERIMENTAL] Cache de áudio baixado para reprodução repetida mais rápida",
                 default: "no"
+            },
+            requestChannelSplash: {
+                name: "REQUEST_CHANNEL_SPLASH",
+                description: "Custom image URL for the request channel player embed",
+                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+            }
+        },
+        developer: {
+            title: "🛠️ Developer Settings",
+            description: "Advanced settings for bot developers. Only use if you know what you're doing!",
+            devs: {
+                name: "DEVS",
+                description: "Bot developer IDs (comma-separated). Developers can access special commands"
+            },
+            enablePrefix: {
+                name: "ENABLE_PREFIX",
+                description: "Enable/disable prefix commands (like !play). Useful if you only want slash commands",
+                default: "yes",
+                options: "yes, no"
+            },
+            enableSlash: {
+                name: "ENABLE_SLASH_COMMAND",
+                description: "Enable/disable slash commands (like /play). Useful if you only want prefix commands",
+                default: "yes",
+                options: "yes, no"
+            },
+            debugMode: {
+                name: "DEBUG_MODE",
+                description: "Enable debug logging for troubleshooting. Shows detailed logs in console",
+                default: "no",
+                options: "yes, no"
             }
         }
     },
@@ -168,6 +212,38 @@ export const pt = {
             error: "Sign in to confirm you're not a bot",
             explanation:
                 "Isso acontece porque a plataforma bloqueia requisições de endereços IP de data centers. Usando cookies de uma conta logada, você pode contornar essa restrição."
+        },
+
+        quickMethod: {
+            title: "🚀 Easy Method: Using the Cookies Command (Recommended)",
+            description: "The easiest way to manage cookies - no file editing needed!",
+            benefits: [
+                "✅ Works instantly - no restart needed",
+                "✅ Supports multiple cookies with automatic rotation",
+                "✅ When one cookie fails, bot automatically uses the next one",
+                "✅ Cookies persist after bot restarts"
+            ],
+            commands: {
+                title: "📝 Available Commands",
+                add: "!cookies add <number> - Add a cookie (attach cookies.txt file to your message)",
+                remove: "!cookies remove <number> - Remove a specific cookie",
+                removeAll: "!cookies remove all - Remove all cookies",
+                list: "!cookies list - Show all cookies and their status",
+                reset: "!cookies reset - Reset failed status to retry all cookies"
+            },
+            quickStart: {
+                title: "⚡ Quick Start (3 steps)",
+                steps: [
+                    "Export cookies from your browser (see guide below)",
+                    "In Discord, type: !cookies add 1 and attach your cookies.txt file",
+                    "Done! The cookie is now active"
+                ]
+            },
+            multiCookie: {
+                title: "💡 Pro Tip: Add Multiple Cookies",
+                description: "Add cookies from different accounts for better reliability:",
+                example: "!cookies add 1 (attach first cookies.txt)\n!cookies add 2 (attach second cookies.txt from another account)\n!cookies add 3 (attach third cookies.txt)"
+            }
         },
         prerequisites: {
             title: "Pré-requisitos",
@@ -218,20 +294,34 @@ export const pt = {
                     "Envie o arquivo cookies.txt para a pasta cache",
                     "O caminho deve ser: ./cache/cookies.txt"
                 ]
-            },
-            configure: {
-                title: "Passo 6: Configurar Variável de Ambiente",
-                instruction: "Adicione isso ao seu arquivo .env:"
-            },
-            restart: {
-                title: "Passo 7: Reiniciar Rawon",
-                instruction: "Reinicie seu bot para aplicar as mudanças."
             }
         },
-        docker: {
-            title: "Configuração Docker",
-            description:
-                "Se estiver usando Docker, coloque seu arquivo cookies.txt ao lado do arquivo docker-compose.yaml e adicione a montagem de volume."
+        troubleshooting: {
+            title: "🔧 Troubleshooting",
+            stillGettingErrors: {
+                title: "Still getting 'Sign in to confirm you're not a bot' errors?",
+                steps: [
+                    "Use !cookies list to check cookie status",
+                    "If a cookie shows 'Failed', try !cookies reset to retry",
+                    "Add more cookies from different accounts for redundancy"
+                ]
+            },
+            allCookiesFailed: {
+                title: "All cookies failed?",
+                steps: [
+                    "Create new throwaway accounts",
+                    "Export fresh cookies",
+                    "Add them with !cookies add <number>"
+                ]
+            },
+            accountSuspended: {
+                title: "Account got suspended?",
+                steps: [
+                    "This can happen with heavy usage",
+                    "Simply create a new throwaway account",
+                    "Export new cookies and add them"
+                ]
+            }
         },
         duration: {
             title: "Quanto Tempo os Cookies Duram?",
@@ -305,6 +395,9 @@ export const pt = {
         example: "Exemplo",
         learnMore: "Saiba Mais",
         deployOnRailway: "Deploy no Railway",
-        language: "Idioma"
+        language: "Idioma",
+        tip: "Tip",
+        warning: "Warning",
+        note: "Note"
     }
 };
