@@ -81,16 +81,16 @@ export const vi = {
             warning: "QUAN TRỌNG: Đọc Tuyên bố miễn trừ trước khi triển khai lên Railway."
         },
         cookiesQuickStart: {
-            title: "🍪 Quick Start: Cookies Setup",
+            title: "🍪 Bắt Đầu Nhanh: Thiết Lập Cookie",
             description:
-                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get 'Sign in to confirm you're not a bot' errors. Fix it easily with the cookies command:",
+                "Nếu bạn đang hosting trên các nhà cung cấp cloud (AWS, GCP, Azure, Railway, v.v.), bạn có thể gặp lỗi 'Sign in to confirm you're not a bot'. Sửa dễ dàng với lệnh cookies:",
             steps: [
-                "Export cookies from your browser (see Cookies Setup guide)",
-                "In Discord, type: !cookies add 1",
-                "Attach your cookies.txt file to the message",
-                "Done! The cookie takes effect immediately"
+                "Xuất cookies từ trình duyệt (xem hướng dẫn Thiết lập Cookie)",
+                "Trong Discord, gõ: !cookies add 1",
+                "Đính kèm file cookies.txt vào tin nhắn",
+                "Xong! Cookie có hiệu lực ngay lập tức"
             ],
-            tip: "💡 You can add multiple cookies for redundancy. When one fails, Rawon automatically switches to the next one!"
+            tip: "💡 Bạn có thể thêm nhiều cookies để dự phòng. Khi một cái thất bại, Rawon tự động chuyển sang cái tiếp theo!"
         }
     },
 
@@ -168,32 +168,32 @@ export const vi = {
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",
-                description: "Custom image URL for the request channel player embed",
+                description: "URL hình ảnh tùy chỉnh cho embed player kênh yêu cầu",
                 default: "https://cdn.stegripe.org/images/rawon_splash.png"
             }
         },
         developer: {
-            title: "🛠️ Developer Settings",
-            description: "Advanced settings for bot developers. Only use if you know what you're doing!",
+            title: "🛠️ Cài Đặt Nhà Phát Triển",
+            description: "Cài đặt nâng cao cho nhà phát triển bot. Chỉ sử dụng nếu bạn biết mình đang làm gì!",
             devs: {
                 name: "DEVS",
-                description: "Bot developer IDs (comma-separated). Developers can access special commands"
+                description: "ID nhà phát triển bot (phân cách bằng dấu phẩy). Nhà phát triển có thể truy cập các lệnh đặc biệt"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Enable/disable prefix commands (like !play). Useful if you only want slash commands",
+                description: "Bật/tắt lệnh có prefix (như !play). Hữu ích nếu bạn chỉ muốn lệnh slash",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Enable/disable slash commands (like /play). Useful if you only want prefix commands",
+                description: "Bật/tắt lệnh slash (như /play). Hữu ích nếu bạn chỉ muốn lệnh có prefix",
                 default: "yes",
                 options: "yes, no"
             },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "Enable debug logging for troubleshooting. Shows detailed logs in console",
+                description: "Bật ghi log debug để khắc phục sự cố. Hiển thị log chi tiết trong console",
                 default: "no",
                 options: "yes, no"
             }
@@ -214,34 +214,34 @@ export const vi = {
         },
 
         quickMethod: {
-            title: "🚀 Easy Method: Using the Cookies Command (Recommended)",
-            description: "The easiest way to manage cookies - no file editing needed!",
+            title: "🚀 Phương Pháp Dễ: Sử Dụng Lệnh Cookies (Khuyến Nghị)",
+            description: "Cách dễ nhất để quản lý cookies - không cần chỉnh sửa file!",
             benefits: [
-                "✅ Works instantly - no restart needed",
-                "✅ Supports multiple cookies with automatic rotation",
-                "✅ When one cookie fails, bot automatically uses the next one",
-                "✅ Cookies persist after bot restarts"
+                "✅ Hoạt động ngay lập tức - không cần khởi động lại",
+                "✅ Hỗ trợ nhiều cookies với xoay vòng tự động",
+                "✅ Khi một cookie thất bại, bot tự động sử dụng cái tiếp theo",
+                "✅ Cookies được giữ lại sau khi bot khởi động lại"
             ],
             commands: {
-                title: "📝 Available Commands",
-                add: "!cookies add <number> - Add a cookie (attach cookies.txt file to your message)",
-                remove: "!cookies remove <number> - Remove a specific cookie",
-                removeAll: "!cookies remove all - Remove all cookies",
-                list: "!cookies list - Show all cookies and their status",
-                reset: "!cookies reset - Reset failed status to retry all cookies"
+                title: "📝 Các Lệnh Có Sẵn",
+                add: "!cookies add <số> - Thêm cookie (đính kèm file cookies.txt vào tin nhắn)",
+                remove: "!cookies remove <số> - Xóa một cookie cụ thể",
+                removeAll: "!cookies remove all - Xóa tất cả cookies",
+                list: "!cookies list - Hiển thị tất cả cookies và trạng thái của chúng",
+                reset: "!cookies reset - Đặt lại trạng thái thất bại để thử lại tất cả cookies"
             },
             quickStart: {
-                title: "⚡ Quick Start (3 steps)",
+                title: "⚡ Bắt Đầu Nhanh (3 bước)",
                 steps: [
-                    "Export cookies from your browser (see guide below)",
-                    "In Discord, type: !cookies add 1 and attach your cookies.txt file",
-                    "Done! The cookie is now active"
+                    "Xuất cookies từ trình duyệt (xem hướng dẫn bên dưới)",
+                    "Trong Discord, gõ: !cookies add 1 và đính kèm file cookies.txt",
+                    "Xong! Cookie đã được kích hoạt"
                 ]
             },
             multiCookie: {
-                title: "💡 Pro Tip: Add Multiple Cookies",
-                description: "Add cookies from different accounts for better reliability:",
-                example: "!cookies add 1 (attach first cookies.txt)\n!cookies add 2 (attach second cookies.txt from another account)\n!cookies add 3 (attach third cookies.txt)"
+                title: "💡 Mẹo Pro: Thêm Nhiều Cookies",
+                description: "Thêm cookies từ các tài khoản khác nhau để đáng tin cậy hơn:",
+                example: "!cookies add 1 (đính kèm cookies.txt đầu tiên)\n!cookies add 2 (đính kèm cookies.txt thứ hai từ tài khoản khác)\n!cookies add 3 (đính kèm cookies.txt thứ ba)"
             }
         },
         prerequisites: {
@@ -296,29 +296,29 @@ export const vi = {
             }
         },
         troubleshooting: {
-            title: "🔧 Troubleshooting",
+            title: "🔧 Khắc Phục Sự Cố",
             stillGettingErrors: {
-                title: "Still getting 'Sign in to confirm you're not a bot' errors?",
+                title: "Vẫn gặp lỗi 'Sign in to confirm you're not a bot'?",
                 steps: [
-                    "Use !cookies list to check cookie status",
-                    "If a cookie shows 'Failed', try !cookies reset to retry",
-                    "Add more cookies from different accounts for redundancy"
+                    "Sử dụng !cookies list để kiểm tra trạng thái cookie",
+                    "Nếu cookie hiển thị 'Failed', thử !cookies reset để thử lại",
+                    "Thêm nhiều cookies từ các tài khoản khác để dự phòng"
                 ]
             },
             allCookiesFailed: {
-                title: "All cookies failed?",
+                title: "Tất cả cookies đều thất bại?",
                 steps: [
-                    "Create new throwaway accounts",
-                    "Export fresh cookies",
-                    "Add them with !cookies add <number>"
+                    "Tạo tài khoản dùng một lần mới",
+                    "Xuất cookies mới",
+                    "Thêm chúng với !cookies add <số>"
                 ]
             },
             accountSuspended: {
-                title: "Account got suspended?",
+                title: "Tài khoản bị tạm ngưng?",
                 steps: [
-                    "This can happen with heavy usage",
-                    "Simply create a new throwaway account",
-                    "Export new cookies and add them"
+                    "Điều này có thể xảy ra với việc sử dụng nhiều",
+                    "Đơn giản là tạo tài khoản dùng một lần mới",
+                    "Xuất cookies mới và thêm chúng"
                 ]
             }
         },
@@ -395,8 +395,8 @@ export const vi = {
         learnMore: "Tìm hiểu thêm",
         deployOnRailway: "Triển khai trên Railway",
         language: "Ngôn ngữ",
-        tip: "Tip",
-        warning: "Warning",
-        note: "Note"
+        tip: "Mẹo",
+        warning: "Cảnh báo",
+        note: "Ghi chú"
     }
 };

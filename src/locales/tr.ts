@@ -81,16 +81,16 @@ export const tr = {
             warning: "ÖNEMLİ: Railway'e dağıtmadan önce Yasal Uyarıları okuyun."
         },
         cookiesQuickStart: {
-            title: "🍪 Quick Start: Cookies Setup",
+            title: "🍪 Hızlı Başlangıç: Çerez Kurulumu",
             description:
-                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get 'Sign in to confirm you're not a bot' errors. Fix it easily with the cookies command:",
+                "Bulut sağlayıcılarında (AWS, GCP, Azure, Railway vb.) barındırıyorsanız, 'Sign in to confirm you're not a bot' hataları alabilirsiniz. Çerez komutuyla kolayca düzeltin:",
             steps: [
-                "Export cookies from your browser (see Cookies Setup guide)",
-                "In Discord, type: !cookies add 1",
-                "Attach your cookies.txt file to the message",
-                "Done! The cookie takes effect immediately"
+                "Tarayıcınızdan çerezleri dışa aktarın (Çerez Kurulumu kılavuzuna bakın)",
+                "Discord'da şunu yazın: !cookies add 1",
+                "cookies.txt dosyanızı mesaja ekleyin",
+                "Tamam! Çerez hemen etkili olur"
             ],
-            tip: "💡 You can add multiple cookies for redundancy. When one fails, Rawon automatically switches to the next one!"
+            tip: "💡 Yedeklilik için birden fazla çerez ekleyebilirsiniz. Biri başarısız olduğunda, Rawon otomatik olarak bir sonrakine geçer!"
         }
     },
 
@@ -168,32 +168,32 @@ export const tr = {
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",
-                description: "Custom image URL for the request channel player embed",
+                description: "İstek kanalı oynatıcı embed'i için özel resim URL'si",
                 default: "https://cdn.stegripe.org/images/rawon_splash.png"
             }
         },
         developer: {
-            title: "🛠️ Developer Settings",
-            description: "Advanced settings for bot developers. Only use if you know what you're doing!",
+            title: "🛠️ Geliştirici Ayarları",
+            description: "Bot geliştiricileri için gelişmiş ayarlar. Sadece ne yaptığınızı biliyorsanız kullanın!",
             devs: {
                 name: "DEVS",
-                description: "Bot developer IDs (comma-separated). Developers can access special commands"
+                description: "Bot geliştirici ID'leri (virgülle ayrılmış). Geliştiriciler özel komutlara erişebilir"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Enable/disable prefix commands (like !play). Useful if you only want slash commands",
+                description: "Önek komutlarını etkinleştir/devre dışı bırak (!play gibi). Sadece slash komutları istiyorsanız kullanışlı",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Enable/disable slash commands (like /play). Useful if you only want prefix commands",
+                description: "Slash komutlarını etkinleştir/devre dışı bırak (/play gibi). Sadece önek komutları istiyorsanız kullanışlı",
                 default: "yes",
                 options: "yes, no"
             },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "Enable debug logging for troubleshooting. Shows detailed logs in console",
+                description: "Sorun giderme için hata ayıklama günlüğünü etkinleştir. Konsolda ayrıntılı günlükler gösterir",
                 default: "no",
                 options: "yes, no"
             }
@@ -214,34 +214,34 @@ export const tr = {
         },
 
         quickMethod: {
-            title: "🚀 Easy Method: Using the Cookies Command (Recommended)",
-            description: "The easiest way to manage cookies - no file editing needed!",
+            title: "🚀 Kolay Yöntem: Çerez Komutunu Kullanma (Önerilen)",
+            description: "Çerezleri yönetmenin en kolay yolu - dosya düzenleme gerekmez!",
             benefits: [
-                "✅ Works instantly - no restart needed",
-                "✅ Supports multiple cookies with automatic rotation",
-                "✅ When one cookie fails, bot automatically uses the next one",
-                "✅ Cookies persist after bot restarts"
+                "✅ Anında çalışır - yeniden başlatma gerekmez",
+                "✅ Otomatik rotasyonlu birden fazla çerezi destekler",
+                "✅ Bir çerez başarısız olduğunda, bot otomatik olarak sonrakini kullanır",
+                "✅ Çerezler bot yeniden başlatmalarından sonra kalıcıdır"
             ],
             commands: {
-                title: "📝 Available Commands",
-                add: "!cookies add <number> - Add a cookie (attach cookies.txt file to your message)",
-                remove: "!cookies remove <number> - Remove a specific cookie",
-                removeAll: "!cookies remove all - Remove all cookies",
-                list: "!cookies list - Show all cookies and their status",
-                reset: "!cookies reset - Reset failed status to retry all cookies"
+                title: "📝 Mevcut Komutlar",
+                add: "!cookies add <numara> - Çerez ekle (mesajınıza cookies.txt dosyasını ekleyin)",
+                remove: "!cookies remove <numara> - Belirli bir çerezi kaldır",
+                removeAll: "!cookies remove all - Tüm çerezleri kaldır",
+                list: "!cookies list - Tüm çerezleri ve durumlarını göster",
+                reset: "!cookies reset - Tüm çerezleri yeniden denemek için başarısız durumunu sıfırla"
             },
             quickStart: {
-                title: "⚡ Quick Start (3 steps)",
+                title: "⚡ Hızlı Başlangıç (3 adım)",
                 steps: [
-                    "Export cookies from your browser (see guide below)",
-                    "In Discord, type: !cookies add 1 and attach your cookies.txt file",
-                    "Done! The cookie is now active"
+                    "Tarayıcınızdan çerezleri dışa aktarın (aşağıdaki kılavuza bakın)",
+                    "Discord'da şunu yazın: !cookies add 1 ve cookies.txt dosyanızı ekleyin",
+                    "Tamam! Çerez artık aktif"
                 ]
             },
             multiCookie: {
-                title: "💡 Pro Tip: Add Multiple Cookies",
-                description: "Add cookies from different accounts for better reliability:",
-                example: "!cookies add 1 (attach first cookies.txt)\n!cookies add 2 (attach second cookies.txt from another account)\n!cookies add 3 (attach third cookies.txt)"
+                title: "💡 Profesyonel İpucu: Birden Fazla Çerez Ekleyin",
+                description: "Daha iyi güvenilirlik için farklı hesaplardan çerez ekleyin:",
+                example: "!cookies add 1 (ilk cookies.txt'yi ekleyin)\n!cookies add 2 (başka bir hesaptan ikinci cookies.txt'yi ekleyin)\n!cookies add 3 (üçüncü cookies.txt'yi ekleyin)"
             }
         },
         prerequisites: {
@@ -296,29 +296,29 @@ export const tr = {
             }
         },
         troubleshooting: {
-            title: "🔧 Troubleshooting",
+            title: "🔧 Sorun Giderme",
             stillGettingErrors: {
-                title: "Still getting 'Sign in to confirm you're not a bot' errors?",
+                title: "Hâlâ 'Sign in to confirm you're not a bot' hataları mı alıyorsunuz?",
                 steps: [
-                    "Use !cookies list to check cookie status",
-                    "If a cookie shows 'Failed', try !cookies reset to retry",
-                    "Add more cookies from different accounts for redundancy"
+                    "Çerez durumunu kontrol etmek için !cookies list kullanın",
+                    "Bir çerez 'Failed' gösteriyorsa, yeniden denemek için !cookies reset deneyin",
+                    "Yedeklilik için farklı hesaplardan daha fazla çerez ekleyin"
                 ]
             },
             allCookiesFailed: {
-                title: "All cookies failed?",
+                title: "Tüm çerezler başarısız mı oldu?",
                 steps: [
-                    "Create new throwaway accounts",
-                    "Export fresh cookies",
-                    "Add them with !cookies add <number>"
+                    "Yeni tek kullanımlık hesaplar oluşturun",
+                    "Yeni çerezler dışa aktarın",
+                    "!cookies add <numara> ile ekleyin"
                 ]
             },
             accountSuspended: {
-                title: "Account got suspended?",
+                title: "Hesap askıya mı alındı?",
                 steps: [
-                    "This can happen with heavy usage",
-                    "Simply create a new throwaway account",
-                    "Export new cookies and add them"
+                    "Bu yoğun kullanımla olabilir",
+                    "Sadece yeni bir tek kullanımlık hesap oluşturun",
+                    "Yeni çerezler dışa aktarın ve ekleyin"
                 ]
             }
         },
@@ -395,8 +395,8 @@ export const tr = {
         learnMore: "Daha Fazla Bilgi",
         deployOnRailway: "Railway'e Dağıt",
         language: "Dil",
-        tip: "Tip",
-        warning: "Warning",
-        note: "Note"
+        tip: "İpucu",
+        warning: "Uyarı",
+        note: "Not"
     }
 };

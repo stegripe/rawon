@@ -81,16 +81,16 @@ export const ru = {
             warning: "ВАЖНО: Прочитайте Отказ от ответственности перед развертыванием на Railway."
         },
         cookiesQuickStart: {
-            title: "🍪 Quick Start: Cookies Setup",
+            title: "🍪 Быстрый старт: Настройка Cookies",
             description:
-                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get 'Sign in to confirm you're not a bot' errors. Fix it easily with the cookies command:",
+                "Если вы размещаете на облачных провайдерах (AWS, GCP, Azure, Railway и т.д.), вы можете получить ошибки 'Sign in to confirm you're not a bot'. Исправьте это легко с помощью команды cookies:",
             steps: [
-                "Export cookies from your browser (see Cookies Setup guide)",
-                "In Discord, type: !cookies add 1",
-                "Attach your cookies.txt file to the message",
-                "Done! The cookie takes effect immediately"
+                "Экспортируйте cookies из браузера (см. руководство по настройке Cookie)",
+                "В Discord введите: !cookies add 1",
+                "Прикрепите файл cookies.txt к сообщению",
+                "Готово! Cookie вступает в силу немедленно"
             ],
-            tip: "💡 You can add multiple cookies for redundancy. When one fails, Rawon automatically switches to the next one!"
+            tip: "💡 Вы можете добавить несколько cookies для резервирования. Когда один не работает, Rawon автоматически переключается на следующий!"
         }
     },
 
@@ -168,32 +168,32 @@ export const ru = {
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",
-                description: "Custom image URL for the request channel player embed",
+                description: "URL пользовательского изображения для встраивания плеера канала запросов",
                 default: "https://cdn.stegripe.org/images/rawon_splash.png"
             }
         },
         developer: {
-            title: "🛠️ Developer Settings",
-            description: "Advanced settings for bot developers. Only use if you know what you're doing!",
+            title: "🛠️ Настройки разработчика",
+            description: "Расширенные настройки для разработчиков ботов. Используйте только если знаете, что делаете!",
             devs: {
                 name: "DEVS",
-                description: "Bot developer IDs (comma-separated). Developers can access special commands"
+                description: "ID разработчиков бота (через запятую). Разработчики могут получить доступ к специальным командам"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Enable/disable prefix commands (like !play). Useful if you only want slash commands",
+                description: "Включить/отключить команды с префиксом (как !play). Полезно, если хотите только slash-команды",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Enable/disable slash commands (like /play). Useful if you only want prefix commands",
+                description: "Включить/отключить slash-команды (как /play). Полезно, если хотите только команды с префиксом",
                 default: "yes",
                 options: "yes, no"
             },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "Enable debug logging for troubleshooting. Shows detailed logs in console",
+                description: "Включить отладочное логирование для устранения неполадок. Показывает подробные логи в консоли",
                 default: "no",
                 options: "yes, no"
             }
@@ -214,34 +214,34 @@ export const ru = {
         },
 
         quickMethod: {
-            title: "🚀 Easy Method: Using the Cookies Command (Recommended)",
-            description: "The easiest way to manage cookies - no file editing needed!",
+            title: "🚀 Простой метод: Использование команды Cookies (Рекомендуется)",
+            description: "Самый простой способ управления cookies - без редактирования файлов!",
             benefits: [
-                "✅ Works instantly - no restart needed",
-                "✅ Supports multiple cookies with automatic rotation",
-                "✅ When one cookie fails, bot automatically uses the next one",
-                "✅ Cookies persist after bot restarts"
+                "✅ Работает мгновенно - без перезапуска",
+                "✅ Поддерживает несколько cookies с автоматической ротацией",
+                "✅ Когда один cookie не работает, бот автоматически использует следующий",
+                "✅ Cookies сохраняются после перезапуска бота"
             ],
             commands: {
-                title: "📝 Available Commands",
-                add: "!cookies add <number> - Add a cookie (attach cookies.txt file to your message)",
-                remove: "!cookies remove <number> - Remove a specific cookie",
-                removeAll: "!cookies remove all - Remove all cookies",
-                list: "!cookies list - Show all cookies and their status",
-                reset: "!cookies reset - Reset failed status to retry all cookies"
+                title: "📝 Доступные команды",
+                add: "!cookies add <номер> - Добавить cookie (прикрепите файл cookies.txt к сообщению)",
+                remove: "!cookies remove <номер> - Удалить конкретный cookie",
+                removeAll: "!cookies remove all - Удалить все cookies",
+                list: "!cookies list - Показать все cookies и их статус",
+                reset: "!cookies reset - Сбросить статус ошибки для повторной попытки всех cookies"
             },
             quickStart: {
-                title: "⚡ Quick Start (3 steps)",
+                title: "⚡ Быстрый старт (3 шага)",
                 steps: [
-                    "Export cookies from your browser (see guide below)",
-                    "In Discord, type: !cookies add 1 and attach your cookies.txt file",
-                    "Done! The cookie is now active"
+                    "Экспортируйте cookies из браузера (см. руководство ниже)",
+                    "В Discord введите: !cookies add 1 и прикрепите файл cookies.txt",
+                    "Готово! Cookie теперь активен"
                 ]
             },
             multiCookie: {
-                title: "💡 Pro Tip: Add Multiple Cookies",
-                description: "Add cookies from different accounts for better reliability:",
-                example: "!cookies add 1 (attach first cookies.txt)\n!cookies add 2 (attach second cookies.txt from another account)\n!cookies add 3 (attach third cookies.txt)"
+                title: "💡 Совет профи: Добавьте несколько Cookies",
+                description: "Добавьте cookies с разных аккаунтов для лучшей надёжности:",
+                example: "!cookies add 1 (прикрепите первый cookies.txt)\n!cookies add 2 (прикрепите второй cookies.txt с другого аккаунта)\n!cookies add 3 (прикрепите третий cookies.txt)"
             }
         },
         prerequisites: {
@@ -296,29 +296,29 @@ export const ru = {
             }
         },
         troubleshooting: {
-            title: "🔧 Troubleshooting",
+            title: "🔧 Устранение неполадок",
             stillGettingErrors: {
-                title: "Still getting 'Sign in to confirm you're not a bot' errors?",
+                title: "Всё ещё получаете ошибки 'Sign in to confirm you're not a bot'?",
                 steps: [
-                    "Use !cookies list to check cookie status",
-                    "If a cookie shows 'Failed', try !cookies reset to retry",
-                    "Add more cookies from different accounts for redundancy"
+                    "Используйте !cookies list для проверки статуса cookies",
+                    "Если cookie показывает 'Failed', попробуйте !cookies reset для повторной попытки",
+                    "Добавьте больше cookies с разных аккаунтов для резервирования"
                 ]
             },
             allCookiesFailed: {
-                title: "All cookies failed?",
+                title: "Все cookies не работают?",
                 steps: [
-                    "Create new throwaway accounts",
-                    "Export fresh cookies",
-                    "Add them with !cookies add <number>"
+                    "Создайте новые одноразовые аккаунты",
+                    "Экспортируйте свежие cookies",
+                    "Добавьте их с помощью !cookies add <номер>"
                 ]
             },
             accountSuspended: {
-                title: "Account got suspended?",
+                title: "Аккаунт заблокирован?",
                 steps: [
-                    "This can happen with heavy usage",
-                    "Simply create a new throwaway account",
-                    "Export new cookies and add them"
+                    "Это может случиться при интенсивном использовании",
+                    "Просто создайте новый одноразовый аккаунт",
+                    "Экспортируйте новые cookies и добавьте их"
                 ]
             }
         },
@@ -395,8 +395,8 @@ export const ru = {
         learnMore: "Подробнее",
         deployOnRailway: "Развернуть на Railway",
         language: "Язык",
-        tip: "Tip",
-        warning: "Warning",
-        note: "Note"
+        tip: "Совет",
+        warning: "Предупреждение",
+        note: "Примечание"
     }
 };

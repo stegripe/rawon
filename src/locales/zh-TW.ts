@@ -80,16 +80,16 @@ export const zhTW = {
             warning: "重要：部署到Railway之前請閱讀免責聲明。"
         },
         cookiesQuickStart: {
-            title: "🍪 Quick Start: Cookies Setup",
+            title: "🍪 快速開始：Cookie設定",
             description:
-                "If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may get 'Sign in to confirm you're not a bot' errors. Fix it easily with the cookies command:",
+                "如果您在雲端服務提供商（AWS、GCP、Azure、Railway等）上託管，可能會收到'Sign in to confirm you're not a bot'錯誤。使用cookies命令輕鬆修復：",
             steps: [
-                "Export cookies from your browser (see Cookies Setup guide)",
-                "In Discord, type: !cookies add 1",
-                "Attach your cookies.txt file to the message",
-                "Done! The cookie takes effect immediately"
+                "從瀏覽器匯出cookies（請參閱Cookie設定指南）",
+                "在Discord中輸入：!cookies add 1",
+                "將您的cookies.txt檔案附加到訊息中",
+                "完成！Cookie立即生效"
             ],
-            tip: "💡 You can add multiple cookies for redundancy. When one fails, Rawon automatically switches to the next one!"
+            tip: "💡 您可以新增多個cookies以實現冗餘。當一個失敗時，Rawon會自動切換到下一個！"
         }
     },
 
@@ -168,32 +168,32 @@ export const zhTW = {
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",
-                description: "Custom image URL for the request channel player embed",
+                description: "請求頻道播放器嵌入的自訂圖片URL",
                 default: "https://cdn.stegripe.org/images/rawon_splash.png"
             }
         },
         developer: {
-            title: "🛠️ Developer Settings",
-            description: "Advanced settings for bot developers. Only use if you know what you're doing!",
+            title: "🛠️ 開發者設定",
+            description: "機器人開發者的進階設定。只有在您知道自己在做什麼時才使用！",
             devs: {
                 name: "DEVS",
-                description: "Bot developer IDs (comma-separated). Developers can access special commands"
+                description: "機器人開發者ID（逗號分隔）。開發者可以存取特殊命令"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Enable/disable prefix commands (like !play). Useful if you only want slash commands",
+                description: "啟用/停用前綴命令（如!play）。如果您只想要斜線命令很有用",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Enable/disable slash commands (like /play). Useful if you only want prefix commands",
+                description: "啟用/停用斜線命令（如/play）。如果您只想要前綴命令很有用",
                 default: "yes",
                 options: "yes, no"
             },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "Enable debug logging for troubleshooting. Shows detailed logs in console",
+                description: "啟用除錯日誌以進行故障排除。在主控台顯示詳細日誌",
                 default: "no",
                 options: "yes, no"
             }
@@ -214,34 +214,34 @@ export const zhTW = {
         },
 
         quickMethod: {
-            title: "🚀 Easy Method: Using the Cookies Command (Recommended)",
-            description: "The easiest way to manage cookies - no file editing needed!",
+            title: "🚀 簡便方法：使用Cookies命令（建議）",
+            description: "管理cookies的最簡單方法 - 無需編輯檔案！",
             benefits: [
-                "✅ Works instantly - no restart needed",
-                "✅ Supports multiple cookies with automatic rotation",
-                "✅ When one cookie fails, bot automatically uses the next one",
-                "✅ Cookies persist after bot restarts"
+                "✅ 立即生效 - 無需重啟",
+                "✅ 支援多個cookies自動輪換",
+                "✅ 當一個cookie失敗時，機器人自動使用下一個",
+                "✅ 機器人重啟後cookies仍然保留"
             ],
             commands: {
-                title: "📝 Available Commands",
-                add: "!cookies add <number> - Add a cookie (attach cookies.txt file to your message)",
-                remove: "!cookies remove <number> - Remove a specific cookie",
-                removeAll: "!cookies remove all - Remove all cookies",
-                list: "!cookies list - Show all cookies and their status",
-                reset: "!cookies reset - Reset failed status to retry all cookies"
+                title: "📝 可用命令",
+                add: "!cookies add <編號> - 新增cookie（將cookies.txt檔案附加到您的訊息）",
+                remove: "!cookies remove <編號> - 刪除特定cookie",
+                removeAll: "!cookies remove all - 刪除所有cookies",
+                list: "!cookies list - 顯示所有cookies及其狀態",
+                reset: "!cookies reset - 重設失敗狀態以重試所有cookies"
             },
             quickStart: {
-                title: "⚡ Quick Start (3 steps)",
+                title: "⚡ 快速開始（3個步驟）",
                 steps: [
-                    "Export cookies from your browser (see guide below)",
-                    "In Discord, type: !cookies add 1 and attach your cookies.txt file",
-                    "Done! The cookie is now active"
+                    "從瀏覽器匯出cookies（請參閱下面的指南）",
+                    "在Discord中輸入：!cookies add 1 並附加您的cookies.txt檔案",
+                    "完成！Cookie現在已啟動"
                 ]
             },
             multiCookie: {
-                title: "💡 Pro Tip: Add Multiple Cookies",
-                description: "Add cookies from different accounts for better reliability:",
-                example: "!cookies add 1 (attach first cookies.txt)\n!cookies add 2 (attach second cookies.txt from another account)\n!cookies add 3 (attach third cookies.txt)"
+                title: "💡 專業提示：新增多個Cookies",
+                description: "從不同帳戶新增cookies以獲得更好的可靠性：",
+                example: "!cookies add 1（附加第一個cookies.txt）\n!cookies add 2（從另一個帳戶附加第二個cookies.txt）\n!cookies add 3（附加第三個cookies.txt）"
             }
         },
         prerequisites: {
@@ -296,29 +296,29 @@ export const zhTW = {
             }
         },
         troubleshooting: {
-            title: "🔧 Troubleshooting",
+            title: "🔧 故障排除",
             stillGettingErrors: {
-                title: "Still getting 'Sign in to confirm you're not a bot' errors?",
+                title: "仍然收到'Sign in to confirm you're not a bot'錯誤？",
                 steps: [
-                    "Use !cookies list to check cookie status",
-                    "If a cookie shows 'Failed', try !cookies reset to retry",
-                    "Add more cookies from different accounts for redundancy"
+                    "使用!cookies list檢查cookie狀態",
+                    "如果cookie顯示'Failed'，嘗試!cookies reset重試",
+                    "從不同帳戶新增更多cookies以實現冗餘"
                 ]
             },
             allCookiesFailed: {
-                title: "All cookies failed?",
+                title: "所有cookies都失敗了？",
                 steps: [
-                    "Create new throwaway accounts",
-                    "Export fresh cookies",
-                    "Add them with !cookies add <number>"
+                    "建立新的一次性帳戶",
+                    "匯出新的cookies",
+                    "使用!cookies add <編號>新增它們"
                 ]
             },
             accountSuspended: {
-                title: "Account got suspended?",
+                title: "帳戶被暫停？",
                 steps: [
-                    "This can happen with heavy usage",
-                    "Simply create a new throwaway account",
-                    "Export new cookies and add them"
+                    "這可能發生在大量使用的情況下",
+                    "只需建立一個新的一次性帳戶",
+                    "匯出新cookies並新增它們"
                 ]
             }
         },
@@ -393,8 +393,8 @@ export const zhTW = {
         learnMore: "了解更多",
         deployOnRailway: "部署到Railway",
         language: "語言",
-        tip: "Tip",
-        warning: "Warning",
-        note: "Note"
+        tip: "提示",
+        warning: "警告",
+        note: "注意"
     }
 };
