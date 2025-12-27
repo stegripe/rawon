@@ -1,5 +1,4 @@
 export const zhCN = {
-    // Navigation
     nav: {
         home: "首页",
         docs: "文档",
@@ -11,7 +10,6 @@ export const zhCN = {
         links: "链接"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description: "一个简单而强大的Discord音乐机器人，满足您的制作需求。",
@@ -20,7 +18,6 @@ export const zhCN = {
         viewDocs: "查看文档"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "开始使用",
         subtitle: "按照我们的分步指南，几分钟内启动Rawon。",
@@ -93,7 +90,6 @@ export const zhCN = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "配置",
         subtitle: "使用这些设置根据您的需求配置Rawon。",
@@ -200,7 +196,6 @@ export const zhCN = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Cookie设置",
         subtitle: "修复托管提供商上的\"Sign in to confirm you're not a bot\"错误。",
@@ -339,7 +334,6 @@ export const zhCN = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "免责声明",
         subtitle: "使用此机器人前请仔细阅读。",
@@ -362,7 +356,6 @@ export const zhCN = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "权限计算器",
         clientId: "客户端ID",
@@ -377,7 +370,6 @@ export const zhCN = {
         resultNote: "这是您可以用来将机器人添加到服务器的链接"
     },
 
-    // Common
     common: {
         back: "返回",
         copy: "复制",

@@ -25,7 +25,6 @@ function isValidLocale(value: string): value is Locale {
 function detectBrowserLocale(): Locale {
     const browserLang = navigator.language.toLowerCase();
 
-    // Direct matches
     if (browserLang.startsWith("id")) return "id";
     if (browserLang.startsWith("es")) return "es";
     if (browserLang.startsWith("fr")) return "fr";
@@ -36,7 +35,6 @@ function detectBrowserLocale(): Locale {
     if (browserLang.startsWith("uk")) return "uk";
     if (browserLang.startsWith("vi")) return "vi";
 
-    // Chinese variants
     if (browserLang === "zh-tw" || browserLang === "zh-hant") return "zh-TW";
     if (browserLang.startsWith("zh")) return "zh-CN";
 
@@ -47,12 +45,10 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setLocaleState] = useState<Locale>("en");
 
     useEffect(() => {
-        // Get initial locale from localStorage or browser
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored && isValidLocale(stored)) {
             setLocaleState(stored);
         } else {
-            // Detect browser language
             setLocaleState(detectBrowserLocale());
         }
     }, []);

@@ -1,5 +1,4 @@
 export const id = {
-    // Navigation
     nav: {
         home: "Beranda",
         docs: "Dokumentasi",
@@ -11,7 +10,6 @@ export const id = {
         links: "Tautan"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const id = {
         viewDocs: "Dokumentasi"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Memulai",
         subtitle:
@@ -103,7 +100,6 @@ export const id = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Konfigurasi",
         subtitle: "Konfigurasikan Rawon sesuai kebutuhan Anda dengan pengaturan ini.",
@@ -216,7 +212,6 @@ export const id = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Setup Cookies",
         subtitle:
@@ -354,7 +349,6 @@ export const id = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Disclaimer",
         subtitle: "Harap baca dengan seksama sebelum menggunakan bot ini.",
@@ -377,7 +371,6 @@ export const id = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "Kalkulator Izin",
         clientId: "Client ID",
@@ -393,7 +386,6 @@ export const id = {
         resultNote: "Ini adalah link yang bisa digunakan untuk menambahkan bot ke server Anda"
     },
 
-    // Common
     common: {
         back: "Kembali",
         copy: "Salin",

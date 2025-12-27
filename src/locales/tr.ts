@@ -1,5 +1,4 @@
 export const tr = {
-    // Navigation
     nav: {
         home: "Ana Sayfa",
         docs: "Belgeler",
@@ -11,7 +10,6 @@ export const tr = {
         links: "Bağlantılar"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const tr = {
         viewDocs: "Belgeleri Gör"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Başlarken",
         subtitle: "Adım adım kılavuzumuzla Rawon'u birkaç dakika içinde çalıştırın.",
@@ -94,7 +91,6 @@ export const tr = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Yapılandırma",
         subtitle: "Bu ayarlarla Rawon'u ihtiyaçlarınıza göre yapılandırın.",
@@ -200,7 +196,6 @@ export const tr = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Çerez Kurulumu",
         subtitle: "Barındırma sağlayıcılarındaki \"Sign in to confirm you're not a bot\" hatalarını düzeltin.",
@@ -340,7 +335,6 @@ export const tr = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Yasal Uyarılar",
         subtitle: "Bu botu kullanmadan önce lütfen dikkatlice okuyun.",
@@ -363,7 +357,6 @@ export const tr = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "İzin Hesaplayıcı",
         clientId: "İstemci ID",
@@ -379,7 +372,6 @@ export const tr = {
         resultNote: "Bu, botu sunucunuza eklemek için kullanabileceğiniz bağlantıdır"
     },
 
-    // Common
     common: {
         back: "Geri",
         copy: "Kopyala",

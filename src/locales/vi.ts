@@ -1,5 +1,4 @@
 export const vi = {
-    // Navigation
     nav: {
         home: "Trang chủ",
         docs: "Tài liệu",
@@ -11,7 +10,6 @@ export const vi = {
         links: "Liên kết"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const vi = {
         viewDocs: "Xem tài liệu"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Bắt đầu",
         subtitle: "Khởi chạy Rawon trong vài phút với hướng dẫn từng bước của chúng tôi.",
@@ -94,7 +91,6 @@ export const vi = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Cấu hình",
         subtitle: "Cấu hình Rawon theo nhu cầu của bạn với các cài đặt này.",
@@ -200,7 +196,6 @@ export const vi = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Thiết lập Cookie",
         subtitle: "Sửa lỗi \"Sign in to confirm you're not a bot\" trên các nhà cung cấp hosting.",
@@ -341,7 +336,6 @@ export const vi = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Tuyên bố miễn trừ",
         subtitle: "Vui lòng đọc kỹ trước khi sử dụng bot này.",
@@ -364,7 +358,6 @@ export const vi = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "Tính toán quyền",
         clientId: "ID Client",
@@ -380,7 +373,6 @@ export const vi = {
         resultNote: "Đây là liên kết bạn có thể sử dụng để thêm bot vào server của bạn"
     },
 
-    // Common
     common: {
         back: "Quay lại",
         copy: "Sao chép",

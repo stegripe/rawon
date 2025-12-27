@@ -1,5 +1,4 @@
 export const uk = {
-    // Navigation
     nav: {
         home: "Головна",
         docs: "Документація",
@@ -11,7 +10,6 @@ export const uk = {
         links: "Посилання"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const uk = {
         viewDocs: "Документація"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Початок роботи",
         subtitle: "Запустіть Rawon за кілька хвилин з нашим покроковим посібником.",
@@ -94,7 +91,6 @@ export const uk = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Налаштування",
         subtitle: "Налаштуйте Rawon під ваші потреби з цими параметрами.",
@@ -200,7 +196,6 @@ export const uk = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Налаштування Cookie",
         subtitle: "Виправлення помилки \"Sign in to confirm you're not a bot\" на хостинг-провайдерах.",
@@ -341,7 +336,6 @@ export const uk = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Застереження",
         subtitle: "Будь ласка, уважно прочитайте перед використанням цього бота.",
@@ -364,7 +358,6 @@ export const uk = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "Калькулятор дозволів",
         clientId: "ID клієнта",
@@ -380,7 +373,6 @@ export const uk = {
         resultNote: "Це посилання, яке ви можете використати для додавання бота на сервер"
     },
 
-    // Common
     common: {
         back: "Назад",
         copy: "Копіювати",

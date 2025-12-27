@@ -15,7 +15,6 @@ export default function CookiesSetupPage() {
                 className="relative flex min-h-[calc(100vh-80px)] w-full px-5 py-3 pb-10 pt-0 text-third"
             >
                 <div className="flex w-full flex-col gap-6">
-                    {/* Header */}
                     <div className="flex w-full items-center gap-3">
                         <Link href="/" className="text-inherit no-underline">
                             <IconButton className="p-0">
@@ -32,7 +31,6 @@ export default function CookiesSetupPage() {
                         </div>
                     </div>
 
-                    {/* Why do I need this? */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.why.title}
@@ -50,7 +48,6 @@ export default function CookiesSetupPage() {
                         </Typography>
                     </div>
 
-                    {/* Quick Method - Cookies Command */}
                     <div className="flex flex-col gap-4 rounded-lg border-2 border-solid border-green-500 bg-green-50 p-4">
                         <Typography className="font-sans text-xl font-semibold text-green-700">
                             {t.cookiesSetup.quickMethod.title}
@@ -59,7 +56,6 @@ export default function CookiesSetupPage() {
                             {t.cookiesSetup.quickMethod.description}
                         </Typography>
 
-                        {/* Benefits */}
                         <div className="flex flex-col gap-1">
                             {t.cookiesSetup.quickMethod.benefits.map(
                                 (benefit, index) => (
@@ -73,7 +69,6 @@ export default function CookiesSetupPage() {
                             )}
                         </div>
 
-                        {/* Commands */}
                         <div className="flex flex-col gap-2">
                             <Typography className="font-sans font-medium">
                                 {t.cookiesSetup.quickMethod.commands.title}
@@ -91,7 +86,6 @@ export default function CookiesSetupPage() {
                             />
                         </div>
 
-                        {/* Quick Start */}
                         <div className="flex flex-col gap-2">
                             <Typography className="font-sans font-medium">
                                 {t.cookiesSetup.quickMethod.quickStart.title}
@@ -109,7 +103,6 @@ export default function CookiesSetupPage() {
                             </ol>
                         </div>
 
-                        {/* Multi-Cookie Tip */}
                         <div className="rounded-lg bg-green-100 p-3">
                             <Typography className="font-sans font-medium text-green-800">
                                 {t.cookiesSetup.quickMethod.multiCookie.title}
@@ -132,7 +125,6 @@ export default function CookiesSetupPage() {
                         </div>
                     </div>
 
-                    {/* Prerequisites */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.prerequisites.title}
@@ -150,13 +142,11 @@ export default function CookiesSetupPage() {
                         </ul>
                     </div>
 
-                    {/* Step by Step Guide */}
                     <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.steps.title}
                         </Typography>
 
-                        {/* Step 1 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.createAccount.title}
@@ -174,7 +164,6 @@ export default function CookiesSetupPage() {
                             </ol>
                         </div>
 
-                        {/* Step 2 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.login.title}
@@ -192,7 +181,6 @@ export default function CookiesSetupPage() {
                             </ol>
                         </div>
 
-                        {/* Step 3 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.extension.title}
@@ -211,7 +199,6 @@ export default function CookiesSetupPage() {
                             </ul>
                         </div>
 
-                        {/* Step 4 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.exportCookies.title}
@@ -229,7 +216,6 @@ export default function CookiesSetupPage() {
                             </ol>
                         </div>
 
-                        {/* Step 5 */}
                         <div className="rounded-lg border-1 border-solid border-third p-4">
                             <Typography className="font-sans text-lg font-medium">
                                 {t.cookiesSetup.steps.upload.title}
@@ -248,7 +234,6 @@ export default function CookiesSetupPage() {
                         </div>
                     </div>
 
-                    {/* Troubleshooting */}
                     <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.troubleshooting.title}
@@ -315,7 +300,6 @@ export default function CookiesSetupPage() {
                         </div>
                     </div>
 
-                    {/* How Long Do Cookies Last? */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.duration.title}
@@ -343,7 +327,6 @@ export default function CookiesSetupPage() {
                         </Typography>
                     </div>
 
-                    {/* Security Notes */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.cookiesSetup.security.title}

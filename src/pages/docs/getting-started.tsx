@@ -15,7 +15,6 @@ export default function GettingStartedPage() {
                 className="relative flex min-h-[calc(100vh-80px)] w-full px-5 py-3 pb-10 pt-0 text-third"
             >
                 <div className="flex w-full flex-col gap-6">
-                    {/* Header */}
                     <div className="flex w-full items-center gap-3">
                         <Link href="/" className="text-inherit no-underline">
                             <IconButton className="p-0">
@@ -32,7 +31,6 @@ export default function GettingStartedPage() {
                         </div>
                     </div>
 
-                    {/* Features */}
                     <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-third p-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.features.title}
@@ -54,7 +52,6 @@ export default function GettingStartedPage() {
                         </div>
                     </div>
 
-                    {/* Requirements */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.requirements.title}
@@ -81,7 +78,6 @@ export default function GettingStartedPage() {
                         </ul>
                     </div>
 
-                    {/* Standard Setup */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.standardSetup.title}
@@ -110,7 +106,6 @@ export default function GettingStartedPage() {
                         />
                     </div>
 
-                    {/* Docker Setup */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.dockerSetup.title}
@@ -188,7 +183,6 @@ volumes:
                         </div>
                     </div>
 
-                    {/* Railway */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.railwaySetup.title}
@@ -217,7 +211,6 @@ volumes:
                         </Link>
                     </div>
 
-                    {/* Cookies Quick Start */}
                     <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.cookiesQuickStart.title}
@@ -251,7 +244,6 @@ volumes:
                         </Link>
                     </div>
 
-                    {/* Next Steps */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.common.learnMore}

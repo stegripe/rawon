@@ -15,7 +15,6 @@ export default function ConfigurationPage() {
                 className="relative flex min-h-[calc(100vh-80px)] w-full px-5 py-3 pb-10 pt-0 text-third"
             >
                 <div className="flex w-full flex-col gap-6">
-                    {/* Header */}
                     <div className="flex w-full items-center gap-3">
                         <Link href="/" className="text-inherit no-underline">
                             <IconButton className="p-0">
@@ -32,7 +31,6 @@ export default function ConfigurationPage() {
                         </div>
                     </div>
 
-                    {/* Essential Settings */}
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
@@ -44,7 +42,6 @@ export default function ConfigurationPage() {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            {/* DISCORD_TOKEN */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -65,7 +62,6 @@ export default function ConfigurationPage() {
                                 </Typography>
                             </div>
 
-                            {/* MAIN_PREFIX */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -90,7 +86,6 @@ export default function ConfigurationPage() {
                                 </Typography>
                             </div>
 
-                            {/* MAIN_SERVER */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -111,7 +106,6 @@ export default function ConfigurationPage() {
                                 </Typography>
                             </div>
 
-                            {/* LOCALE */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -136,7 +130,6 @@ export default function ConfigurationPage() {
                                 </Typography>
                             </div>
 
-                            {/* Spotify */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -159,7 +152,6 @@ export default function ConfigurationPage() {
                         </div>
                     </div>
 
-                    {/* Example .env */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-lg font-medium">
                             {t.common.example} .env
@@ -181,7 +173,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                         />
                     </div>
 
-                    {/* Optional Settings */}
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
@@ -193,7 +184,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            {/* ALT_PREFIX */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -218,7 +208,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 </Typography>
                             </div>
 
-                            {/* ACTIVITIES */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
                                     {t.configuration.optional.activities.name}
@@ -231,7 +220,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 </Typography>
                             </div>
 
-                            {/* ACTIVITY_TYPES */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
                                     {
@@ -253,7 +241,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 </Typography>
                             </div>
 
-                            {/* EMBED_COLOR */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -278,7 +265,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 </Typography>
                             </div>
 
-                            {/* Emojis */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -300,7 +286,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 </Typography>
                             </div>
 
-                            {/* MUSIC_SELECTION_TYPE */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -331,7 +316,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 </Typography>
                             </div>
 
-                            {/* ENABLE_AUDIO_CACHE */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -356,7 +340,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 </Typography>
                             </div>
 
-                            {/* REQUEST_CHANNEL_SPLASH */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
                                     {
@@ -381,7 +364,6 @@ SPOTIFY_CLIENT_SECRET=""`}
                         </div>
                     </div>
 
-                    {/* Example optional.env */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-lg font-medium">
                             {t.common.example} optional.env
@@ -410,7 +392,6 @@ ENABLE_AUDIO_CACHE="no"`}
                         />
                     </div>
 
-                    {/* Developer Settings */}
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
@@ -422,7 +403,6 @@ ENABLE_AUDIO_CACHE="no"`}
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            {/* DEVS */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -440,7 +420,6 @@ ENABLE_AUDIO_CACHE="no"`}
                                 </Typography>
                             </div>
 
-                            {/* ENABLE_PREFIX */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -471,7 +450,6 @@ ENABLE_AUDIO_CACHE="no"`}
                                 </Typography>
                             </div>
 
-                            {/* ENABLE_SLASH_COMMAND */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -502,7 +480,6 @@ ENABLE_AUDIO_CACHE="no"`}
                                 </Typography>
                             </div>
 
-                            {/* DEBUG_MODE */}
                             <div className="rounded-lg border-1 border-solid border-third p-4">
                                 <div className="flex items-center gap-2">
                                     <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
@@ -535,7 +512,6 @@ ENABLE_AUDIO_CACHE="no"`}
                         </div>
                     </div>
 
-                    {/* Example dev.env */}
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-lg font-medium">
                             {t.common.example} dev.env

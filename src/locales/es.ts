@@ -1,5 +1,4 @@
 export const es = {
-    // Navigation
     nav: {
         home: "Inicio",
         docs: "Docs",
@@ -11,7 +10,6 @@ export const es = {
         links: "Enlaces"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const es = {
         viewDocs: "Ver Docs"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Comenzar",
         subtitle:
@@ -102,7 +99,6 @@ export const es = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Configuración",
         subtitle: "Configura Rawon según tus necesidades con estos ajustes.",
@@ -214,7 +210,6 @@ export const es = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Configuración de Cookies",
         subtitle:
@@ -352,7 +347,6 @@ export const es = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Avisos Legales",
         subtitle: "Por favor lee cuidadosamente antes de usar este bot.",
@@ -375,7 +369,6 @@ export const es = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "Calculadora de Permisos",
         clientId: "ID de Cliente",
@@ -391,7 +384,6 @@ export const es = {
         resultNote: "Este es el enlace que puedes usar para agregar el bot a tu servidor"
     },
 
-    // Common
     common: {
         back: "Atrás",
         copy: "Copiar",

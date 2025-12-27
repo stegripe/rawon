@@ -1,5 +1,4 @@
 export const ja = {
-    // Navigation
     nav: {
         home: "ホーム",
         docs: "ドキュメント",
@@ -11,7 +10,6 @@ export const ja = {
         links: "リンク"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const ja = {
         viewDocs: "ドキュメント"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "はじめに",
         subtitle:
@@ -97,7 +94,6 @@ export const ja = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "設定",
         subtitle: "これらの設定でRawonをカスタマイズしてください。",
@@ -209,7 +205,6 @@ export const ja = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Cookie設定",
         subtitle:
@@ -351,7 +346,6 @@ export const ja = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "免責事項",
         subtitle: "このボットを使用する前に注意深くお読みください。",
@@ -374,7 +368,6 @@ export const ja = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "権限計算機",
         clientId: "クライアントID",
@@ -390,7 +383,6 @@ export const ja = {
         resultNote: "これはボットをサーバーに追加するために使用できるリンクです"
     },
 
-    // Common
     common: {
         back: "戻る",
         copy: "コピー",

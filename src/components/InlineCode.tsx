@@ -1,22 +1,13 @@
 import { Fragment, ReactNode } from "react";
 
-/**
- * Component that renders text with inline code, bold formatting, and links.
- * Text wrapped in backticks (`) will be rendered as code.
- * Text wrapped in double asterisks (**) will be rendered as bold.
- * Links in format [text](url) will be rendered as clickable links.
- * Example: "Use `!cookies list` to check **status** or visit [Chrome Web Store](https://chrome.google.com/webstore)"
- */
 export const renderWithCode = (text: string): ReactNode[] => {
     const parts: ReactNode[] = [];
     let currentIndex = 0;
     
-    // Match `code`, **bold**, and [text](url) link patterns
     const regex = /(`[^`]*`|\*\*[^*]*\*\*|\[[^\]]+\]\([^)]+\))/g;
     let match;
     
     while ((match = regex.exec(text)) !== null) {
-        // Add text before the match
         if (match.index > currentIndex) {
             parts.push(
                 <Fragment key={`text-${currentIndex}`}>
@@ -27,7 +18,6 @@ export const renderWithCode = (text: string): ReactNode[] => {
         
         const matched = match[0];
         if (matched.startsWith("`") && matched.endsWith("`")) {
-            // It's inline code
             const codeContent = matched.slice(1, -1);
             parts.push(
                 <code
@@ -38,7 +28,6 @@ export const renderWithCode = (text: string): ReactNode[] => {
                 </code>
             );
         } else if (matched.startsWith("**") && matched.endsWith("**")) {
-            // It's bold text
             const boldContent = matched.slice(2, -2);
             parts.push(
                 <strong key={`bold-${match.index}`}>
@@ -46,7 +35,6 @@ export const renderWithCode = (text: string): ReactNode[] => {
                 </strong>
             );
         } else if (matched.startsWith("[") && matched.includes("](")) {
-            // It's a link [text](url)
             const linkMatch = matched.match(/\[([^\]]+)\]\(([^)]+)\)/);
             if (linkMatch) {
                 const linkText = linkMatch[1];
@@ -68,7 +56,6 @@ export const renderWithCode = (text: string): ReactNode[] => {
         currentIndex = match.index + matched.length;
     }
     
-    // Add remaining text (or entire text if no matches)
     if (currentIndex < text.length) {
         parts.push(
             <Fragment key={`text-${currentIndex}`}>

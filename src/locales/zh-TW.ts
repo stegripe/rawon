@@ -1,5 +1,4 @@
 export const zhTW = {
-    // Navigation
     nav: {
         home: "首頁",
         docs: "文檔",
@@ -11,7 +10,6 @@ export const zhTW = {
         links: "連結"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description: "一個簡單而強大的Discord音樂機器人，滿足您的製作需求。",
@@ -20,7 +18,6 @@ export const zhTW = {
         viewDocs: "查看文檔"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "開始使用",
         subtitle: "按照我們的分步指南，幾分鐘內啟動Rawon。",
@@ -93,7 +90,6 @@ export const zhTW = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "配置",
         subtitle: "使用這些設置根據您的需求配置Rawon。",
@@ -200,7 +196,6 @@ export const zhTW = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Cookie設置",
         subtitle: "修復託管提供商上的\"Sign in to confirm you're not a bot\"錯誤。",
@@ -339,7 +334,6 @@ export const zhTW = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "免責聲明",
         subtitle: "使用此機器人前請仔細閱讀。",
@@ -362,7 +356,6 @@ export const zhTW = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "權限計算器",
         clientId: "客戶端ID",
@@ -377,7 +370,6 @@ export const zhTW = {
         resultNote: "這是您可以用來將機器人添加到伺服器的連結"
     },
 
-    // Common
     common: {
         back: "返回",
         copy: "複製",

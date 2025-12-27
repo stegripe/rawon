@@ -1,5 +1,4 @@
 export const ru = {
-    // Navigation
     nav: {
         home: "Главная",
         docs: "Документация",
@@ -11,7 +10,6 @@ export const ru = {
         links: "Ссылки"
     },
 
-    // Home page
     home: {
         title: "Rawon",
         description:
@@ -21,7 +19,6 @@ export const ru = {
         viewDocs: "Документация"
     },
 
-    // Getting Started page
     gettingStarted: {
         title: "Начало работы",
         subtitle: "Запустите Rawon за несколько минут с нашим пошаговым руководством.",
@@ -94,7 +91,6 @@ export const ru = {
         }
     },
 
-    // Configuration page
     configuration: {
         title: "Настройки",
         subtitle: "Настройте Rawon под ваши потребности с этими параметрами.",
@@ -200,7 +196,6 @@ export const ru = {
         }
     },
 
-    // Cookies Setup page
     cookiesSetup: {
         title: "Настройка Cookie",
         subtitle: "Исправление ошибки \"Sign in to confirm you're not a bot\" на хостинг-провайдерах.",
@@ -341,7 +336,6 @@ export const ru = {
         }
     },
 
-    // Disclaimers page
     disclaimers: {
         title: "Отказ от ответственности",
         subtitle: "Пожалуйста, внимательно прочитайте перед использованием этого бота.",
@@ -364,7 +358,6 @@ export const ru = {
         }
     },
 
-    // Permission Calculator page
     permissionCalculator: {
         title: "Калькулятор разрешений",
         clientId: "ID клиента",
@@ -380,7 +373,6 @@ export const ru = {
         resultNote: "Это ссылка, которую вы можете использовать для добавления бота на сервер"
     },
 
-    // Common
     common: {
         back: "Назад",
         copy: "Копировать",
