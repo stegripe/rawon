@@ -28,7 +28,6 @@ export const tr = {
         features: {
             title: "Özellikler",
             items: [
-                "🎮 ",
                 "Etkileşim desteği (slash komutları ve butonlar)",
                 "Kesintisiz müzik deneyimi için istek kanalı özelliği",
                 "Üretime hazır, kodlama gerektirmez",

@@ -28,7 +28,6 @@ export const pt = {
         features: {
             title: "Recursos",
             items: [
-                "🎮 ",
                 "Suporte a interações (comandos slash e botões)",
                 "Canal de requisições para experiência musical perfeita",
                 "Pronto para produção, sem necessidade de código",

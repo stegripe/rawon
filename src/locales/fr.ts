@@ -28,7 +28,6 @@ export const fr = {
         features: {
             title: "Fonctionnalités",
             items: [
-                "🎮 ",
                 "Support des interactions (commandes slash et boutons)",
                 "Canal de requêtes pour une expérience musicale fluide",
                 "Prêt pour la production, sans codage requis",

@@ -28,7 +28,6 @@ export const vi = {
         features: {
             title: "Tính năng",
             items: [
-                "🎮 ",
                 "Hỗ trợ tương tác (lệnh slash và nút)",
                 "Tính năng kênh yêu cầu cho trải nghiệm âm nhạc liền mạch",
                 "Sẵn sàng sản xuất, không cần code",

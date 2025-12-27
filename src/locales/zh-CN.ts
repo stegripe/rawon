@@ -27,7 +27,6 @@ export const zhCN = {
         features: {
             title: "功能",
             items: [
-                "🎮 ",
                 "交互支持（斜杠命令和按钮）",
                 "无缝音乐体验的请求频道功能",
                 "生产就绪，无需编码",

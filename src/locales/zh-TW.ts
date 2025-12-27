@@ -27,7 +27,6 @@ export const zhTW = {
         features: {
             title: "功能",
             items: [
-                "🎮 ",
                 "互動支援（斜線命令和按鈕）",
                 "無縫音樂體驗的請求頻道功能",
                 "生產就緒，無需編碼",
