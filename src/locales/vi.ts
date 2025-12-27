@@ -331,11 +331,11 @@ export const vi = {
             tips: "Trên thực tế, cookie có thể tồn tại hàng tháng hoặc thậm chí hàng năm nếu bạn tuân theo các thực hành tốt nhất."
         },
         security: {
-            title: "Lưu ý bảo mật",
+            title: "🔒 Lưu ý bảo mật",
             warnings: [
-                "Không bao giờ chia sẻ file cookie với bất kỳ ai",
-                "Sử dụng tài khoản dùng một lần, KHÔNG phải tài khoản chính",
-                "File cookie chứa dữ liệu xác thực nhạy cảm"
+                "⚠️ Không bao giờ chia sẻ file cookie với bất kỳ ai",
+                "⚠️ Sử dụng tài khoản dùng một lần, KHÔNG phải tài khoản chính",
+                "⚠️ File cookie chứa dữ liệu xác thực nhạy cảm"
             ]
         }
     },

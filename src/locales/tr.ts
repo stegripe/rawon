@@ -330,11 +330,11 @@ export const tr = {
             tips: "Pratikte, en iyi uygulamaları takip ederseniz çerezler aylar hatta yıllar sürebilir."
         },
         security: {
-            title: "Güvenlik Notları",
+            title: "🔒 Güvenlik Notları",
             warnings: [
-                "Çerez dosyanızı asla kimseyle paylaşmayın",
-                "Ana hesabınızı DEĞİL, tek kullanımlık hesap kullanın",
-                "Çerez dosyası hassas kimlik doğrulama verilerini içerir"
+                "⚠️ Çerez dosyanızı asla kimseyle paylaşmayın",
+                "⚠️ Ana hesabınızı DEĞİL, tek kullanımlık hesap kullanın",
+                "⚠️ Çerez dosyası hassas kimlik doğrulama verilerini içerir"
             ]
         }
     },

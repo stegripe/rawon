@@ -331,11 +331,11 @@ export const fr = {
             tips: "En pratique, les cookies peuvent durer des mois voire des années si vous suivez les bonnes pratiques."
         },
         security: {
-            title: "Notes de Sécurité",
+            title: "🔒 Notes de Sécurité",
             warnings: [
-                "Ne partagez jamais votre fichier de cookies avec qui que ce soit",
-                "Utilisez un compte jetable, PAS votre compte principal",
-                "Le fichier de cookies contient des données d'authentification sensibles"
+                "⚠️ Ne partagez jamais votre fichier de cookies avec qui que ce soit",
+                "⚠️ Utilisez un compte jetable, PAS votre compte principal",
+                "⚠️ Le fichier de cookies contient des données d'authentification sensibles"
             ]
         }
     },

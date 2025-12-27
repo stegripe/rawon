@@ -331,11 +331,11 @@ export const pt = {
             tips: "Na prática, os cookies podem durar meses ou até anos se você seguir as melhores práticas."
         },
         security: {
-            title: "Notas de Segurança",
+            title: "🔒 Notas de Segurança",
             warnings: [
-                "Nunca compartilhe seu arquivo de cookies com ninguém",
-                "Use uma conta descartável, NÃO sua conta principal",
-                "O arquivo de cookies contém dados de autenticação sensíveis"
+                "⚠️ Nunca compartilhe seu arquivo de cookies com ninguém",
+                "⚠️ Use uma conta descartável, NÃO sua conta principal",
+                "⚠️ O arquivo de cookies contém dados de autenticação sensíveis"
             ]
         }
     },

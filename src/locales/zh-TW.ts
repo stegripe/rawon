@@ -329,12 +329,11 @@ export const zhTW = {
             tips: "實際上，如果遵循最佳實踐，Cookie可以持續數月甚至數年。"
         },
         security: {
-            title: "安全注意事項",
+            title: "🔒 安全注意事項",
             warnings: [
-                "切勿與任何人分享您的Cookie檔案",
-                "使用一次性帳戶，而非主帳戶",
-                "Cookie檔案包含敏感認證資料",
-                "將cookies.txt添加到.gitignore以防止意外提交"
+                "⚠️ 切勿與任何人分享您的Cookie檔案",
+                "⚠️ 使用一次性帳戶，而非主帳戶",
+                "⚠️ Cookie檔案包含敏感認證資料"
             ]
         }
     },
