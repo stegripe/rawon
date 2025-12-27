@@ -265,7 +265,7 @@ export const es = {
             createAccount: {
                 title: "Paso 1: Crear una Cuenta Desechable",
                 steps: [
-                    "Ve a la página de registro de cuenta de la plataforma de video",
+                    "Ve a la [página de registro de cuenta de la plataforma de video](https://accounts.google.com/signup)",
                     "Crea una cuenta NUEVA específicamente para este bot",
                     "⚠️ IMPORTANTE: ¡NUNCA uses tu cuenta personal/principal!"
                 ]
@@ -274,23 +274,23 @@ export const es = {
                 title: "Paso 2: Iniciar Sesión en la Plataforma de Video",
                 steps: [
                     "Abre tu navegador",
-                    "Ve al sitio web de la plataforma de video",
+                    "Ve al [sitio web de la plataforma de video](https://youtube.com)",
                     "Inicia sesión con tu cuenta desechable",
                     "Acepta los términos si se solicita"
                 ]
             },
             extension: {
                 title: "Paso 3: Instalar Extensión de Exportación de Cookies",
-                chrome: "Para Chrome/Edge: Instala **Get cookies.txt LOCALLY** (recomendado) desde Chrome Web Store",
-                firefox: "Para Firefox: Instala **cookies.txt** desde Firefox Add-ons"
+                chrome: "Para Chrome/Edge: Instala [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (recomendado) desde Chrome Web Store",
+                firefox: "Para Firefox: Instala [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) desde Firefox Add-ons"
             },
             exportCookies: {
                 title: "Paso 4: Exportar Cookies",
                 steps: [
-                    "Asegúrate de estar en el sitio web de la plataforma de video",
+                    "Asegúrate de estar en el [sitio web de la plataforma de video](https://youtube.com)",
                     "Haz clic en el icono de la extensión de cookies en tu barra de herramientas",
                     "Haz clic en **Export** o **Export cookies for this site**",
-                    "Guarda el archivo como cookies.txt"
+                    "Guarda el archivo como `cookies.txt`"
                 ]
             },
             upload: {

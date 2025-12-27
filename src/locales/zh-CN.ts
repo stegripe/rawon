@@ -249,44 +249,45 @@ export const zhCN = {
             ]
         },
         steps: {
-            title: "分步指南",
+            title: "📖 如何导出Cookie",
             createAccount: {
                 title: "步骤1：创建一次性账户",
                 steps: [
-                    "前往账户创建页面",
+                    "前往[账户创建页面](https://accounts.google.com/signup)",
                     "专门为此机器人创建新账户",
-                    "重要：不要使用您的个人/主账户"
+                    "⚠️ 重要：绝对不要使用您的个人/主账户！"
                 ]
             },
             login: {
-                title: "步骤2：登录平台",
+                title: "步骤2：登录视频平台",
                 steps: [
                     "打开浏览器",
-                    "前往平台（视频平台）",
+                    "前往[视频平台](https://youtube.com)",
                     "使用一次性账户登录",
                     "如有提示，接受条款"
                 ]
             },
             extension: {
                 title: "步骤3：安装Cookie导出扩展",
-                chrome: "Chrome/Edge：安装\"Get cookies.txt LOCALLY\"或\"cookies.txt\"",
-                firefox: "Firefox：安装\"cookies.txt\""
+                chrome: "Chrome/Edge：从Chrome Web Store安装[**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)（推荐）",
+                firefox: "Firefox：从Firefox Add-ons安装[**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)"
             },
             exportCookies: {
                 title: "步骤4：导出Cookie",
                 steps: [
-                    "确保您在平台网站上",
+                    "确保您在[视频平台网站](https://youtube.com)上",
                     "点击浏览器工具栏中的Cookie扩展图标",
-                    "选择\"Export\"或\"Export cookies for this site\"",
-                    "将文件保存为cookies.txt"
+                    "选择**Export**或**Export cookies for this site**",
+                    "将文件保存为`cookies.txt`"
                 ]
             },
             upload: {
-                title: "步骤5：上传到服务器",
+                title: "步骤5：添加到Rawon",
                 steps: [
-                    "如果不存在，在Rawon目录中创建cache文件夹",
-                    "将cookies.txt文件上传到cache文件夹",
-                    "路径应为：./cache/cookies.txt"
+                    "前往Rawon可以看到您消息的任何频道",
+                    "输入：`!cookies add 1`",
+                    "将cookies.txt文件附加到消息并发送",
+                    "Rawon会确认cookie已添加！"
                 ]
             }
         },

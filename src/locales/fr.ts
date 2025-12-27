@@ -254,40 +254,41 @@ export const fr = {
             createAccount: {
                 title: "Étape 1: Créer un Compte Jetable",
                 steps: [
-                    "Allez sur la page de création de compte",
+                    "Allez sur la [page de création de compte](https://accounts.google.com/signup)",
                     "Créez un nouveau compte spécifiquement pour ce bot",
-                    "Important: N'utilisez PAS votre compte personnel/principal"
+                    "⚠️ Important: N'utilisez JAMAIS votre compte personnel/principal!"
                 ]
             },
             login: {
-                title: "Étape 2: Se Connecter à la Plateforme",
+                title: "Étape 2: Se Connecter à la Plateforme Vidéo",
                 steps: [
                     "Ouvrez votre navigateur",
-                    "Allez sur la plateforme (video site)",
+                    "Allez sur [la plateforme vidéo](https://youtube.com)",
                     "Connectez-vous avec votre compte jetable",
                     "Acceptez les conditions si demandé"
                 ]
             },
             extension: {
                 title: "Étape 3: Installer l'Extension d'Export de Cookies",
-                chrome: "Pour Chrome/Edge: Installez **Get cookies.txt LOCALLY** ou **cookies.txt**",
-                firefox: "Pour Firefox: Installez **cookies.txt**"
+                chrome: "Pour Chrome/Edge: Installez [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (recommandé) depuis Chrome Web Store",
+                firefox: "Pour Firefox: Installez [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) depuis Firefox Add-ons"
             },
             exportCookies: {
                 title: "Étape 4: Exporter les Cookies",
                 steps: [
-                    "Assurez-vous d'être sur le site web de la plateforme",
+                    "Assurez-vous d'être sur [le site de la plateforme vidéo](https://youtube.com)",
                     "Cliquez sur l'icône de l'extension cookies dans votre barre d'outils",
                     "Choisissez **Export** ou **Export cookies for this site**",
-                    "Enregistrez le fichier sous cookies.txt"
+                    "Enregistrez le fichier sous `cookies.txt`"
                 ]
             },
             upload: {
-                title: "Étape 5: Téléverser sur Votre Serveur",
+                title: "Étape 5: Ajouter à Rawon",
                 steps: [
-                    "Créez un dossier cache dans votre répertoire Rawon s'il n'existe pas",
-                    "Téléversez le fichier cookies.txt dans le dossier cache",
-                    "Le chemin devrait être: ./cache/cookies.txt"
+                    "Allez dans un canal où Rawon peut voir vos messages",
+                    "Tapez: `!cookies add 1`",
+                    "Joignez le fichier cookies.txt à votre message et envoyez",
+                    "Rawon confirmera que le cookie a été ajouté!"
                 ]
             }
         },

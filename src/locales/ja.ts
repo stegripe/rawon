@@ -260,44 +260,45 @@ export const ja = {
             ]
         },
         steps: {
-            title: "ステップバイステップガイド",
+            title: "📖 Cookieのエクスポート方法",
             createAccount: {
                 title: "ステップ1：使い捨てアカウントを作成",
                 steps: [
-                    "アカウント作成ページに移動",
+                    "[アカウント作成ページ](https://accounts.google.com/signup)に移動",
                     "このボット専用の新しいアカウントを作成",
-                    "重要：個人/メインアカウントは使用しないでください"
+                    "⚠️ 重要：個人/メインアカウントは絶対に使用しないでください！"
                 ]
             },
             login: {
-                title: "ステップ2：プラットフォームにログイン",
+                title: "ステップ2：動画プラットフォームにログイン",
                 steps: [
                     "ブラウザを開く",
-                    "プラットフォーム(video site)に移動",
+                    "[動画プラットフォーム](https://youtube.com)に移動",
                     "使い捨てアカウントでサインイン",
                     "プロンプトが表示されたら条件に同意"
                 ]
             },
             extension: {
                 title: "ステップ3：Cookieエクスポート拡張機能をインストール",
-                chrome: "Chrome/Edge用：「Get cookies.txt LOCALLY」または「cookies.txt」をインストール",
-                firefox: "Firefox用：「cookies.txt」をインストール"
+                chrome: "Chrome/Edge用：Chrome Web Storeから[**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)（推奨）をインストール",
+                firefox: "Firefox用：Firefox Add-onsから[**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)をインストール"
             },
             exportCookies: {
                 title: "ステップ4：Cookieをエクスポート",
                 steps: [
-                    "プラットフォームのウェブサイトにいることを確認",
+                    "[動画プラットフォームのウェブサイト](https://youtube.com)にいることを確認",
                     "ブラウザツールバーのCookie拡張機能アイコンをクリック",
-                    "「Export」または「Export cookies for this site」を選択",
-                    "ファイルをcookies.txtとして保存"
+                    "**Export**または**Export cookies for this site**を選択",
+                    "ファイルを`cookies.txt`として保存"
                 ]
             },
             upload: {
-                title: "ステップ5：サーバーにアップロード",
+                title: "ステップ5：Rawonに追加",
                 steps: [
-                    "Rawonディレクトリにcacheフォルダがなければ作成",
-                    "cookies.txtファイルをcacheフォルダにアップロード",
-                    "パスは./cache/cookies.txtである必要があります"
+                    "Rawonがメッセージを見られるチャンネルに移動",
+                    "`!cookies add 1`と入力",
+                    "cookies.txtファイルをメッセージに添付して送信",
+                    "Rawonがcookieが追加されたことを確認します！"
                 ]
             }
         },

@@ -267,7 +267,7 @@ export const id = {
             createAccount: {
                 title: "Langkah 1: Buat Akun Tumbal",
                 steps: [
-                    "Buka halaman pendaftaran akun platform video",
+                    "Buka [halaman pendaftaran akun platform video](https://accounts.google.com/signup)",
                     "Buat akun BARU khusus untuk bot ini",
                     "⚠️ PENTING: JANGAN gunakan akun pribadi/utama!"
                 ]
@@ -276,23 +276,23 @@ export const id = {
                 title: "Langkah 2: Login ke Platform Video",
                 steps: [
                     "Buka browser Anda",
-                    "Buka website platform video",
+                    "Buka [website platform video](https://youtube.com)",
                     "Login dengan akun tumbal Anda",
                     "Terima syarat & ketentuan jika diminta"
                 ]
             },
             extension: {
                 title: "Langkah 3: Install Extension Export Cookies",
-                chrome: "Untuk Chrome/Edge: Install **Get cookies.txt LOCALLY** (disarankan) dari Chrome Web Store",
-                firefox: "Untuk Firefox: Install **cookies.txt** dari Firefox Add-ons"
+                chrome: "Untuk Chrome/Edge: Install [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (disarankan) dari Chrome Web Store",
+                firefox: "Untuk Firefox: Install [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) dari Firefox Add-ons"
             },
             exportCookies: {
                 title: "Langkah 4: Export Cookies",
                 steps: [
-                    "Pastikan Anda di website platform video",
+                    "Pastikan Anda di [website platform video](https://youtube.com)",
                     "Klik ikon extension cookies di toolbar browser",
                     "Klik **Export** atau **Export cookies for this site**",
-                    "Simpan file sebagai cookies.txt"
+                    "Simpan file sebagai `cookies.txt`"
                 ]
             },
             upload: {

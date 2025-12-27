@@ -249,44 +249,45 @@ export const tr = {
             ]
         },
         steps: {
-            title: "Adım Adım Kılavuz",
+            title: "📖 Çerezleri Nasıl Dışa Aktarılır",
             createAccount: {
                 title: "Adım 1: Tek Kullanımlık Hesap Oluşturun",
                 steps: [
-                    "Hesap Oluşturma sayfasına gidin",
+                    "[Hesap oluşturma sayfasına](https://accounts.google.com/signup) gidin",
                     "Bu bot için özel olarak yeni bir hesap oluşturun",
-                    "Önemli: Kişisel/ana hesabınızı KULLANMAYIN"
+                    "⚠️ Önemli: Kişisel/ana hesabınızı ASLA KULLANMAYIN!"
                 ]
             },
             login: {
-                title: "Adım 2: Platforma Giriş Yapın",
+                title: "Adım 2: Video Platformuna Giriş Yapın",
                 steps: [
                     "Tarayıcınızı açın",
-                    "Platforma gidin (video platformu)",
+                    "[Video platformuna](https://youtube.com) gidin",
                     "Tek kullanımlık hesabınızla oturum açın",
                     "İstenirse şartları kabul edin"
                 ]
             },
             extension: {
                 title: "Adım 3: Çerez Dışa Aktarma Uzantısını Yükleyin",
-                chrome: "Chrome/Edge için: **Get cookies.txt LOCALLY** veya **cookies.txt** yükleyin",
-                firefox: "Firefox için: **cookies.txt** yükleyin"
+                chrome: "Chrome/Edge için: Chrome Web Store'dan [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (önerilen) yükleyin",
+                firefox: "Firefox için: Firefox Add-ons'dan [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) yükleyin"
             },
             exportCookies: {
                 title: "Adım 4: Çerezleri Dışa Aktarın",
                 steps: [
-                    "Platform web sitesinde olduğunuzdan emin olun",
+                    "[Video platformu web sitesinde](https://youtube.com) olduğunuzdan emin olun",
                     "Tarayıcı araç çubuğundaki çerez uzantısı simgesine tıklayın",
                     "**Export** veya **Export cookies for this site** seçin",
-                    "Dosyayı cookies.txt olarak kaydedin"
+                    "Dosyayı `cookies.txt` olarak kaydedin"
                 ]
             },
             upload: {
-                title: "Adım 5: Sunucunuza Yükleyin",
+                title: "Adım 5: Rawon'a Ekleyin",
                 steps: [
-                    "Rawon dizininizde yoksa bir cache klasörü oluşturun",
-                    "cookies.txt dosyasını cache klasörüne yükleyin",
-                    "Yol şu olmalıdır: ./cache/cookies.txt"
+                    "Rawon'un mesajlarınızı görebildiği herhangi bir kanala gidin",
+                    "`!cookies add 1` yazın",
+                    "cookies.txt dosyasını mesajınıza ekleyin ve gönderin",
+                    "Rawon çerezin eklendiğini onaylayacak!"
                 ]
             }
         },

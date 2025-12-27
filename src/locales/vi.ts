@@ -250,44 +250,45 @@ export const vi = {
             ]
         },
         steps: {
-            title: "Hướng dẫn từng bước",
+            title: "📖 Cách Xuất Cookie",
             createAccount: {
                 title: "Bước 1: Tạo tài khoản dùng một lần",
                 steps: [
-                    "Truy cập trang tạo tài khoản",
+                    "Truy cập [trang tạo tài khoản](https://accounts.google.com/signup)",
                     "Tạo tài khoản mới dành riêng cho bot này",
-                    "Quan trọng: KHÔNG sử dụng tài khoản cá nhân/chính của bạn"
+                    "⚠️ Quan trọng: KHÔNG BAO GIỜ sử dụng tài khoản cá nhân/chính của bạn!"
                 ]
             },
             login: {
-                title: "Bước 2: Đăng nhập vào nền tảng",
+                title: "Bước 2: Đăng nhập vào nền tảng video",
                 steps: [
                     "Mở trình duyệt",
-                    "Truy cập nền tảng (nền tảng video)",
+                    "Truy cập [nền tảng video](https://youtube.com)",
                     "Đăng nhập bằng tài khoản dùng một lần",
                     "Chấp nhận điều khoản nếu được yêu cầu"
                 ]
             },
             extension: {
                 title: "Bước 3: Cài đặt extension xuất Cookie",
-                chrome: "Cho Chrome/Edge: Cài đặt **Get cookies.txt LOCALLY** hoặc **cookies.txt**",
-                firefox: "Cho Firefox: Cài đặt **cookies.txt**"
+                chrome: "Cho Chrome/Edge: Cài đặt [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (khuyến nghị) từ Chrome Web Store",
+                firefox: "Cho Firefox: Cài đặt [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) từ Firefox Add-ons"
             },
             exportCookies: {
                 title: "Bước 4: Xuất Cookie",
                 steps: [
-                    "Đảm bảo bạn đang ở trang web của nền tảng",
+                    "Đảm bảo bạn đang ở [trang web nền tảng video](https://youtube.com)",
                     "Nhấn vào biểu tượng extension cookie trên thanh công cụ",
                     "Chọn **Export** hoặc **Export cookies for this site**",
-                    "Lưu file dưới tên cookies.txt"
+                    "Lưu file dưới tên `cookies.txt`"
                 ]
             },
             upload: {
-                title: "Bước 5: Tải lên server của bạn",
+                title: "Bước 5: Thêm vào Rawon",
                 steps: [
-                    "Tạo thư mục cache trong thư mục Rawon nếu chưa có",
-                    "Tải file cookies.txt vào thư mục cache",
-                    "Đường dẫn phải là: ./cache/cookies.txt"
+                    "Đi đến kênh mà Rawon có thể xem tin nhắn của bạn",
+                    "Gõ: `!cookies add 1`",
+                    "Đính kèm file cookies.txt vào tin nhắn và gửi",
+                    "Rawon sẽ xác nhận cookie đã được thêm!"
                 ]
             }
         },

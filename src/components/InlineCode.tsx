@@ -1,17 +1,18 @@
 import { Fragment, ReactNode } from "react";
 
 /**
- * Component that renders text with inline code and bold formatting.
+ * Component that renders text with inline code, bold formatting, and links.
  * Text wrapped in backticks (`) will be rendered as code.
  * Text wrapped in double asterisks (**) will be rendered as bold.
- * Example: "Use `!cookies list` to check **status**"
+ * Links in format [text](url) will be rendered as clickable links.
+ * Example: "Use `!cookies list` to check **status** or visit [Chrome Web Store](https://chrome.google.com/webstore)"
  */
 export const renderWithCode = (text: string): ReactNode[] => {
     const parts: ReactNode[] = [];
     let currentIndex = 0;
     
-    // Match both `code` and **bold** patterns (allowing empty content)
-    const regex = /(`[^`]*`|\*\*[^*]*\*\*)/g;
+    // Match `code`, **bold**, and [text](url) link patterns
+    const regex = /(`[^`]*`|\*\*[^*]*\*\*|\[[^\]]+\]\([^)]+\))/g;
     let match;
     
     while ((match = regex.exec(text)) !== null) {
@@ -44,6 +45,24 @@ export const renderWithCode = (text: string): ReactNode[] => {
                     {boldContent}
                 </strong>
             );
+        } else if (matched.startsWith("[") && matched.includes("](")) {
+            // It's a link [text](url)
+            const linkMatch = matched.match(/\[([^\]]+)\]\(([^)]+)\)/);
+            if (linkMatch) {
+                const linkText = linkMatch[1];
+                const linkUrl = linkMatch[2];
+                parts.push(
+                    <a
+                        key={`link-${match.index}`}
+                        href={linkUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline hover:text-primary/80"
+                    >
+                        {linkText}
+                    </a>
+                );
+            }
         }
         
         currentIndex = match.index + matched.length;

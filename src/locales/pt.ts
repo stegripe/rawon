@@ -250,44 +250,45 @@ export const pt = {
             ]
         },
         steps: {
-            title: "Guia Passo a Passo",
+            title: "📖 Como Exportar Cookies",
             createAccount: {
                 title: "Passo 1: Criar uma Conta Descartável",
                 steps: [
-                    "Vá para Criação de Conta",
+                    "Vá para a [página de criação de conta](https://accounts.google.com/signup)",
                     "Crie uma nova conta especificamente para este bot",
-                    "Importante: NÃO use sua conta pessoal/principal"
+                    "⚠️ Importante: NUNCA use sua conta pessoal/principal!"
                 ]
             },
             login: {
-                title: "Passo 2: Fazer Login na Plataforma",
+                title: "Passo 2: Fazer Login na Plataforma de Vídeo",
                 steps: [
                     "Abra seu navegador",
-                    "Vá para a plataforma (video platform)",
+                    "Vá para [a plataforma de vídeo](https://youtube.com)",
                     "Faça login com sua conta descartável",
                     "Aceite os termos se solicitado"
                 ]
             },
             extension: {
                 title: "Passo 3: Instalar Extensão de Exportação de Cookies",
-                chrome: "Para Chrome/Edge: Instale **Get cookies.txt LOCALLY** ou **cookies.txt**",
-                firefox: "Para Firefox: Instale **cookies.txt**"
+                chrome: "Para Chrome/Edge: Instale [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (recomendado) da Chrome Web Store",
+                firefox: "Para Firefox: Instale [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) do Firefox Add-ons"
             },
             exportCookies: {
                 title: "Passo 4: Exportar Cookies",
                 steps: [
-                    "Certifique-se de estar no site da plataforma",
+                    "Certifique-se de estar no [site da plataforma de vídeo](https://youtube.com)",
                     "Clique no ícone da extensão de cookies na barra de ferramentas",
                     "Escolha **Export** ou **Export cookies for this site**",
-                    "Salve o arquivo como cookies.txt"
+                    "Salve o arquivo como `cookies.txt`"
                 ]
             },
             upload: {
-                title: "Passo 5: Enviar para Seu Servidor",
+                title: "Passo 5: Adicionar ao Rawon",
                 steps: [
-                    "Crie uma pasta cache no diretório do Rawon se não existir",
-                    "Envie o arquivo cookies.txt para a pasta cache",
-                    "O caminho deve ser: ./cache/cookies.txt"
+                    "Vá para qualquer canal onde Rawon pode ver suas mensagens",
+                    "Digite: `!cookies add 1`",
+                    "Anexe o arquivo cookies.txt à sua mensagem e envie",
+                    "Rawon confirmará que o cookie foi adicionado!"
                 ]
             }
         },

@@ -265,7 +265,7 @@ export const en = {
             createAccount: {
                 title: "Step 1: Create a Throwaway Account",
                 steps: [
-                    "Go to the video platform's account signup page",
+                    "Go to the [video platform's account signup page](https://accounts.google.com/signup)",
                     "Create a NEW account specifically for this bot",
                     "⚠️ IMPORTANT: NEVER use your personal/main account!"
                 ]
@@ -274,23 +274,23 @@ export const en = {
                 title: "Step 2: Log in to the Video Platform",
                 steps: [
                     "Open your browser",
-                    "Go to the video platform website",
+                    "Go to [the video platform website](https://youtube.com)",
                     "Sign in with your throwaway account",
                     "Accept any terms if prompted"
                 ]
             },
             extension: {
                 title: "Step 3: Install Cookies Export Extension",
-                chrome: "For Chrome/Edge: Install **Get cookies.txt LOCALLY** (recommended) from Chrome Web Store",
-                firefox: "For Firefox: Install **cookies.txt** from Firefox Add-ons"
+                chrome: "For Chrome/Edge: Install [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (recommended) from Chrome Web Store",
+                firefox: "For Firefox: Install [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) from Firefox Add-ons"
             },
             exportCookies: {
                 title: "Step 4: Export Cookies",
                 steps: [
-                    "Make sure you're on the video platform website",
+                    "Make sure you're on [the video platform website](https://youtube.com)",
                     "Click the cookies extension icon in your browser toolbar",
                     "Click **Export** or **Export cookies for this site**",
-                    "Save the file as cookies.txt"
+                    "Save the file as `cookies.txt`"
                 ]
             },
             upload: {
