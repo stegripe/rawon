@@ -9,8 +9,8 @@ export default function HomePage() {
 
     return (
         <>
-            <Container fixed className="flex min-h-screen w-full px-5 py-0 pt-0">
-                <div className="flex h-full w-full flex-col items-center justify-center gap-10 py-8">
+            <Container fixed className="flex min-h-screen w-full flex-col items-center justify-center px-5 py-0 pt-0">
+                <div className="flex w-full flex-col items-center justify-center gap-10 py-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
