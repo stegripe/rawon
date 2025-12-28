@@ -28,8 +28,15 @@ export function ffmpegArgs(
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
     const hasFilters = keys.some((x) => filters[x] === true);
 
-    // Build audio filter chain (only user filters, not seek)
+    // Build audio filter chain
     const audioFilters: string[] = [];
+
+    // Add atrim filter for seeking when we have a non-zero seek position
+    // This works with pipe inputs where -ss before -i doesn't work
+    if (seekSeconds > 0) {
+        audioFilters.push(`atrim=start=${seekSeconds}`);
+        audioFilters.push("asetpts=PTS-STARTPTS"); // Reset timestamps after trim
+    }
 
     // Add user-selected filters
     if (hasFilters) {
@@ -40,14 +47,11 @@ export function ffmpegArgs(
         }
     }
 
-    // Use -ss BEFORE -i for fast input seeking (seeks in the stream without decoding)
-    // prism-media adds "-i -" if we don't include it, so we include it ourselves with -ss before
-    const inputArgs = seekSeconds > 0 ? ["-ss", String(seekSeconds), "-i", "-"] : ["-i", "-"];
-
     return [
         "-loglevel",
         "0",
-        ...inputArgs,
+        "-i",
+        "-",
         "-ar",
         "48000",
         "-ac",
