@@ -205,6 +205,20 @@
                 "description": "設置隨機播放模式的功能",
                 "newState": "隨機播放模式已設置為{state}"
             },
+            "seek": {
+                "cantSeekLive": "無法在直播中跳轉。",
+                "cantSeekSoundcloud": "無法在SoundCloud曲目中跳轉。",
+                "description": "跳轉到當前歌曲的指定時間",
+                "exceedsDuration": "跳轉時間超過歌曲時長 ({duration})。",
+                "invalidTime": "時間格式無效：{time}。請使用 `1:30` 或 `90` 等格式。",
+                "noPlaying": "當前沒有正在播放的歌曲。",
+                "noTime": "請指定要跳轉的時間。",
+                "notCached": "該歌曲暫時無法跳轉。請等待音頻緩衝。",
+                "seeked": "已跳轉到 {time}",
+                "slashTimeDescription": "要跳轉的時間（例如 `1:30` 或 `90`）",
+                "usage": "{prefix}seek <時間>",
+                "waitingForCache": "請稍候，音頻仍在緩衝中..."
+            },
             "skip": {
                 "description": "略過音樂",
                 "skipMessage": "已略過 **{song}**",
@@ -281,7 +295,8 @@
     },
     "reusable": {
         "invalidUsage": "無效的用法，請用 **`{prefix} {name}`**了解更多資訊。",
-        "pageFooter": "{actual}/{total} 頁"
+        "pageFooter": "{actual}/{total} 頁",
+        "lyricsSource": "來源: {source}"
     },
     "utils": {
         "commonUtil": {

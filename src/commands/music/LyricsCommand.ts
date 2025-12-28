@@ -27,18 +27,20 @@ import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 })
 export class LyricsCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
-        const query =
+        const currentSong = (
+            (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as
+                | AudioResource
+                | undefined
+        )?.metadata as QueueSong | undefined;
+
+        const userQuery =
             ctx.args.length > 0
                 ? ctx.args.join(" ")
                 : (ctx.options?.getString("query")?.length ?? 0) > 0
                   ? (ctx.options?.getString("query") ?? "")
-                  : (
-                        (
-                            (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as
-                                | AudioResource
-                                | undefined
-                        )?.metadata as QueueSong | undefined
-                    )?.song.title;
+                  : null;
+
+        const query = userQuery ?? currentSong?.song.title;
         if ((query?.length ?? 0) === 0) {
             await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)],
@@ -47,7 +49,9 @@ export class LyricsCommand extends BaseCommand {
             return;
         }
 
-        await this.getLyrics(ctx, query as unknown as string);
+        const songThumbnail = userQuery === null ? currentSong?.song.thumbnail : undefined;
+
+        await this.getLyrics(ctx, query as unknown as string, songThumbnail);
     }
 
     public async fetchLyricsData(song: string): Promise<LyricsAPIResult<false> | null> {
@@ -123,7 +127,11 @@ export class LyricsCommand extends BaseCommand {
         return data;
     }
 
-    public async getLyrics(ctx: CommandContext, song: string): Promise<void> {
+    public async getLyrics(
+        ctx: CommandContext,
+        song: string,
+        songThumbnail?: string,
+    ): Promise<void> {
         const loadingMsg = await ctx.reply({
             embeds: [
                 createEmbed("info", `🔍 **|** ${i18n.__("commands.music.lyrics.searchingLyrics")}`),
@@ -160,7 +168,8 @@ export class LyricsCommand extends BaseCommand {
             return;
         }
 
-        const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+        const albumArt =
+            songThumbnail ?? data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
         const pages: string[] = chunk(data.lyrics ?? "", 2_048);
         const embed = createEmbed("info", pages[0])
             .setAuthor({
@@ -169,7 +178,13 @@ export class LyricsCommand extends BaseCommand {
                         ? `${data.song} - ${data.artist}`
                         : song.toUpperCase(),
             })
-            .setThumbnail(albumArt);
+            .setThumbnail(albumArt)
+            .setFooter({
+                text: `• ${i18n.__mf("reusable.pageFooter", {
+                    actual: 1,
+                    total: pages.length,
+                })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+            });
         await loadingMsg.edit({ embeds: [embed] });
         const msg = loadingMsg;
 
@@ -180,7 +195,7 @@ export class LyricsCommand extends BaseCommand {
                     text: `• ${i18n.__mf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,
-                    })}`,
+                    })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
                 }),
             embed,
             pages,

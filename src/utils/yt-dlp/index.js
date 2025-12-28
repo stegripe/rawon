@@ -89,20 +89,18 @@ export default async function ytdl(url, options = {}, spawnOptions = {}, cookies
         if (proc.stderr) {
             proc.stderr.on("data", (chunk) => {
                 stderrData += chunk.toString();
-                if (isBotDetectionError(stderrData)) {
-                    console.error(
-                        `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
-                    );
-                }
             });
         }
 
         proc.on("error", reject)
             .on("close", (code) => {
                 if (code !== 0 && stderrData && isBotDetectionError(stderrData)) {
-                    console.error(
-                        `[yt-dlp] It seems you're blocked from YouTube (Sign in to confirm you're not a bot), try to regenerate the cookies.txt file. URL: ${url}`,
-                    );
+                    reject(new Error(`Sign in to confirm you're not a bot. URL: ${url}`));
+                    return;
+                }
+                if (code !== 0) {
+                    reject(new Error(`yt-dlp process exited with code ${code}: ${stderrData}`));
+                    return;
                 }
                 resolve(code);
             })
