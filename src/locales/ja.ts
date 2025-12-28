@@ -36,20 +36,20 @@ export const ja = {
         },
         requirements: {
             title: "必要条件",
-            nodeVersion: "Node.js バージョン22.12.0以上",
+            nodeVersion: "**Node.js** バージョン`22.12.0`以上",
             discordToken:
-                "Discord Bot Token（[Discord Developer Portal](https://discord.com/developers/applications)から取得）",
-            optional: "オプション：SpotifyサポートのためのSpotify API認証情報"
+                "**Discord Bot Token**（[Discord Developer Portal](https://discord.com/developers/applications)から取得）",
+            optional: "**オプション：** SpotifyサポートのためのSpotify API認証情報"
         },
         standardSetup: {
             title: "標準セットアップ（Node.js）",
             steps: [
-                "Node.js バージョン22.12.0以上をダウンロードしてインストール",
+                "**Node.js** バージョン`22.12.0`以上をダウンロードしてインストール",
                 "このリポジトリをクローンまたはダウンロード",
-                ".env_exampleを.envにコピーして必要な値を入力（最低限：DISCORD_TOKEN）",
-                "依存関係をインストール：pnpm install",
-                "プロジェクトをビルド：pnpm run build",
-                "ボットを起動：pnpm start"
+                "`.env_example`を`.env`にコピーして必要な値を入力（最低限：`DISCORD_TOKEN`）",
+                "依存関係をインストール：`pnpm install`",
+                "プロジェクトをビルド：`pnpm run build`",
+                "ボットを起動：`pnpm start`"
             ],
             requestChannel:
                 "（オプション）ボットがオンラインになった後、専用の音楽チャンネルを設定："
@@ -58,18 +58,18 @@ export const ja = {
             title: "Dockerセットアップ（推奨）",
             composeTitle: "Docker Composeを使用",
             composeSteps: [
-                ".env_exampleからコピーして.envファイルを作成",
-                "docker-compose.yamlファイルを作成（下記の例を参照）",
-                "ボットを起動：docker compose up -d",
-                "ログを確認：docker logs -f rawon-bot"
+                "`.env_example`からコピーして`.env`ファイルを作成",
+                "`docker-compose.yaml`ファイルを作成（下記の例を参照）",
+                "ボットを起動：`docker compose up -d`",
+                "ログを確認：`docker logs -f rawon-bot`"
             ],
             runTitle: "Docker Runを使用",
             volumeInfo: {
                 title: "ボリューム情報",
-                description: "/app/cacheボリュームには以下が保存されます：",
+                description: "`/app/cache`ボリュームには以下が保存されます：",
                 items: [
-                    "オーディオストリーミング用のyt-dlpバイナリ",
-                    "永続的な設定のためのdata.json（リクエストチャンネル、プレーヤー状態）",
+                    "オーディオストリーミング用の`yt-dlp`バイナリ",
+                    "永続的な設定のための`data.json`（リクエストチャンネル、プレーヤー状態）",
                     "キャッシュされたオーディオファイル（オーディオキャッシュが有効な場合）"
                 ]
             }
@@ -77,8 +77,8 @@ export const ja = {
         railwaySetup: {
             title: "Railwayデプロイ",
             description:
-                "Railwayは毎月$5の無料クレジットを提供しています。使用量が$5未満であれば、ボットは24時間365日オンラインを維持します。",
-            warning: "重要：Railwayにデプロイする前に免責事項をお読みください。"
+                "**Railway**は毎月$5の無料クレジットを提供しています。使用量が$5未満であれば、ボットは24時間365日オンラインを維持します。",
+            warning: "**重要：** Railwayにデプロイする前に免責事項をお読みください。"
         },
         cookiesQuickStart: {
             title: "🍪 クイックスタート：Cookie設定",
@@ -100,26 +100,26 @@ export const ja = {
         essential: {
             title: "必須設定",
             description:
-                "ボットを実行するために必要な最小限の設定です。",
+                "ボットを実行するために必要な最小限の設定です。**Discordトークン**を入力するだけで準備完了！",
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "[Discord Developer Portal](https://discord.com/developers/applications)からのDiscordボットトークン",
+                    "[Discord Developer Portal](https://discord.com/developers/applications)からのDiscordボットトークン。これが**唯一の必須設定**です！",
                 required: true
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "メインコマンドプレフィックス",
+                description: "メインコマンドプレフィックス。例：`!`は`!play`で音楽を再生することを意味します",
                 default: "!"
             },
             mainServer: {
                 name: "MAIN_SERVER",
-                description: "スラッシュコマンド登録用のメインサーバーID",
+                description: "スラッシュコマンド登録用のメインサーバーID。グローバルコマンドの場合は空欄（更新に最大1時間かかります）",
                 required: false
             },
             locale: {
                 name: "LOCALE",
-                description: "ボットの言語",
+                description: "ボットの言語 - ボットの応答に使用する言語を選択",
                 default: "en-US",
                 options:
                     "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR"
@@ -132,43 +132,43 @@ export const ja = {
         },
         optional: {
             title: "オプション設定",
-            description: "Rawonの動作と外観をカスタマイズします。",
+            description: "Rawonの動作と外観をカスタマイズします。これらすべてオプションです - なくてもボットは正常に動作します！",
             altPrefix: {
                 name: "ALT_PREFIX",
                 description:
-                    "代替プレフィックス（カンマ区切り）。@botメンションには{mention}を使用",
+                    "代替プレフィックス（カンマ区切り）。@botメンションには`{mention}`を使用。例：`{mention},r!`で`@Rawon play`と`r!play`の両方が可能",
                 default: "{mention}"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "ボットステータスアクティビティ（カンマ区切り）。形式：{prefix}、{userCount}、{textChannelCount}、{serverCount}、{playingCount}、{username}"
+                    "ボット名の下に表示されるステータスアクティビティ（カンマ区切り）。利用可能なプレースホルダー：`{prefix}`、`{userCount}`、`{textChannelCount}`、`{serverCount}`、`{playingCount}`、`{username}`"
             },
             activityTypes: {
                 name: "ACTIVITY_TYPES",
-                description: "各アクティビティのアクティビティタイプ（カンマ区切り）",
+                description: "各アクティビティのアクティビティタイプ（カンマ区切り）。`ACTIVITIES`の数と一致する必要があります",
                 options: "PLAYING、WATCHING、LISTENING、COMPETING"
             },
             embedColor: {
                 name: "EMBED_COLOR",
-                description: "埋め込みカラー（16進数、#なし）",
+                description: "埋め込みカラー（16進数、`#`なし）。このカラーはすべてのボットメッセージの埋め込みに表示されます",
                 default: "22C9FF"
             },
             emojis: {
                 name: "絵文字",
-                description: "成功（YES_EMOJI）と失敗（NO_EMOJI）の絵文字をカスタマイズ",
+                description: "成功（`YES_EMOJI`）と失敗（`NO_EMOJI`）の絵文字をカスタマイズ",
                 defaults: "✅ / ❌"
             },
             musicSelection: {
                 name: "MUSIC_SELECTION_TYPE",
-                description: "音楽選択スタイル",
+                description: "検索結果の表示方法。`message`は番号付きリスト、`selectmenu`はドロップダウンメニューを表示",
                 options: "message、selectmenu",
                 default: "message"
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "[実験的] ダウンロードしたオーディオをキャッシュして繰り返し再生を高速化",
+                    "**[実験的]** ダウンロードしたオーディオをキャッシュして繰り返し再生を高速化。ディスク容量を多く使用しますが、頻繁に再生される曲を高速化",
                 default: "no"
             },
             requestChannelSplash: {
@@ -179,20 +179,20 @@ export const ja = {
         },
         developer: {
             title: "🛠️ 開発者設定",
-            description: "ボット開発者向けの詳細設定。何をしているか分かっている場合のみ使用してください！",
+            description: "ボット開発者向けの詳細設定。**何をしているか分かっている場合のみ使用してください！**",
             devs: {
                 name: "DEVS",
                 description: "ボット開発者ID（カンマ区切り）。開発者は特別なコマンドにアクセスできます"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "プレフィックスコマンド（!playなど）を有効/無効化。スラッシュコマンドのみ使用したい場合に便利",
+                description: "プレフィックスコマンド（`!play`など）を有効/無効化。スラッシュコマンドのみ使用したい場合に便利",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "スラッシュコマンド（/playなど）を有効/無効化。プレフィックスコマンドのみ使用したい場合に便利",
+                description: "スラッシュコマンド（`/play`など）を有効/無効化。プレフィックスコマンドのみ使用したい場合に便利",
                 default: "yes",
                 options: "yes, no"
             },
@@ -353,17 +353,17 @@ export const ja = {
         copyright: {
             title: "著作権、DMCA、知的財産",
             items: [
-                "所有権：ボットによって使用、再生、または表示される知的財産は、私たち、メンテナー、または貢献者のいずれも所有していません。これには、ボットのコマンドで使用されるオーディオ、ビデオ、画像ファイルが含まれますが、これらに限定されません。",
-                "ホスティングプロバイダーのポリシー：一部のホスティングプロバイダー（Railwayなど）は、DMCA保護されたコンテンツのホスティングまたは配布を禁止しています。これには、著作権で保護された音楽/ビデオを再生するDiscord音楽ボットが含まれます。このようなプラットフォームへのデプロイは自己責任で行ってください。",
-                "ユーザーの責任：このボットの使用方法と、それを通じて再生されるコンテンツについては、ユーザーの責任です。"
+                "**所有権：** ボットによって使用、再生、または表示される知的財産は、私たち、メンテナー、または貢献者のいずれも所有していません。これには、ボットのコマンドで使用されるオーディオ、ビデオ、画像ファイルが含まれますが、これらに限定されません。",
+                "**ホスティングプロバイダーのポリシー：** 一部のホスティングプロバイダー（**Railway**など）は、DMCA保護されたコンテンツのホスティングまたは配布を禁止しています。これには、著作権で保護された音楽/ビデオを再生するDiscord音楽ボットが含まれます。このようなプラットフォームへのデプロイは自己責任で行ってください。",
+                "**ユーザーの責任：** このボットの使用方法と、それを通じて再生されるコンテンツについては、ユーザーの責任です。"
             ]
         },
         code: {
             title: "コードの修正",
             items: [
-                "ライセンス：このボットはオープンソースであり、AGPL-3.0ライセンスの下で修正および再配布できます。",
-                "保証なし：ライセンスに記載されているように、このコードの修正、再配布、または使用から生じるいかなる損害または損失についても責任を負いません。",
-                "帰属：このプロジェクトを自分のオリジナル作品として主張しないでください。常に元のプロジェクトに適切な帰属を提供してください。"
+                "**ライセンス：** このボットはオープンソースであり、**AGPL-3.0**ライセンスの下で修正および再配布できます。",
+                "**保証なし：** ライセンスに記載されているように、このコードの修正、再配布、または使用から生じるいかなる損害または損失についても責任を負いません。",
+                "**帰属：** このプロジェクトを自分のオリジナル作品として主張しないでください。常に元のプロジェクトに適切な帰属を提供してください。"
             ]
         }
     },
