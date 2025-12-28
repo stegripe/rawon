@@ -206,15 +206,15 @@
                 "newState": "Chế độ phát ngẫu nhiên được đặt thành {state}"
             },
             "seek": {
-                "cantSeekLive": "Cannot seek in live streams.",
-                "description": "Seek to a specific time in the current song",
-                "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
-                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
-                "noPlaying": "No song is currently playing.",
-                "noTime": "Please specify a time to seek to.",
-                "seeked": "Seeked to **{time}**",
-                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
-                "usage": "{prefix}seek <time>"
+                "cantSeekLive": "Không thể tua trong phát trực tiếp.",
+                "description": "Chuyển đến thời điểm cụ thể trong bài hát hiện tại",
+                "exceedsDuration": "Thời gian tua vượt quá thời lượng bài hát ({duration}).",
+                "invalidTime": "Định dạng thời gian không hợp lệ: {time}. Sử dụng định dạng như `1:30` hoặc `90`.",
+                "noPlaying": "Không có bài hát nào đang phát.",
+                "noTime": "Vui lòng chỉ định thời gian để chuyển đến.",
+                "seeked": "Đã chuyển đến {time}",
+                "slashTimeDescription": "Thời gian để chuyển đến (ví dụ, `1:30` hoặc `90`)",
+                "usage": "{prefix}seek <thời gian>"
             },
             "skip": {
                 "description": "Bỏ qua bài nhạc",

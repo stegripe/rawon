@@ -206,15 +206,15 @@
                 "newState": "隨機播放模式已設置為{state}"
             },
             "seek": {
-                "cantSeekLive": "Cannot seek in live streams.",
-                "description": "Seek to a specific time in the current song",
-                "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
-                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
-                "noPlaying": "No song is currently playing.",
-                "noTime": "Please specify a time to seek to.",
-                "seeked": "Seeked to **{time}**",
-                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
-                "usage": "{prefix}seek <time>"
+                "cantSeekLive": "無法在直播中跳轉。",
+                "description": "跳轉到當前歌曲的指定時間",
+                "exceedsDuration": "跳轉時間超過歌曲時長 ({duration})。",
+                "invalidTime": "時間格式無效：{time}。請使用 `1:30` 或 `90` 等格式。",
+                "noPlaying": "當前沒有正在播放的歌曲。",
+                "noTime": "請指定要跳轉的時間。",
+                "seeked": "已跳轉到 {time}",
+                "slashTimeDescription": "要跳轉的時間（例如 `1:30` 或 `90`）",
+                "usage": "{prefix}seek <時間>"
             },
             "skip": {
                 "description": "略過音樂",

@@ -206,15 +206,15 @@
                 "newState": "Modo aleatório agora está {state}"
             },
             "seek": {
-                "cantSeekLive": "Cannot seek in live streams.",
-                "description": "Seek to a specific time in the current song",
-                "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
-                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
-                "noPlaying": "No song is currently playing.",
-                "noTime": "Please specify a time to seek to.",
-                "seeked": "Seeked to **{time}**",
-                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
-                "usage": "{prefix}seek <time>"
+                "cantSeekLive": "Não é possível buscar em transmissões ao vivo.",
+                "description": "Pular para um tempo específico na música atual",
+                "exceedsDuration": "O tempo de busca excede a duração da música ({duration}).",
+                "invalidTime": "Formato de tempo inválido: {time}. Use formatos como `1:30` ou `90`.",
+                "noPlaying": "Nenhuma música está tocando no momento.",
+                "noTime": "Por favor, especifique um tempo para pular.",
+                "seeked": "Pulou para {time}",
+                "slashTimeDescription": "Tempo para pular (ex., `1:30` ou `90`)",
+                "usage": "{prefix}seek <tempo>"
             },
             "skip": {
                 "description": "Pula a música",

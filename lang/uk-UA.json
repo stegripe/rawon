@@ -206,15 +206,15 @@
                 "newState": "Режим перемішування тепер встановлено: {state}"
             },
             "seek": {
-                "cantSeekLive": "Cannot seek in live streams.",
-                "description": "Seek to a specific time in the current song",
-                "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
-                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
-                "noPlaying": "No song is currently playing.",
-                "noTime": "Please specify a time to seek to.",
-                "seeked": "Seeked to **{time}**",
-                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
-                "usage": "{prefix}seek <time>"
+                "cantSeekLive": "Неможливо перемотати в прямих трансляціях.",
+                "description": "Перейти до певного часу в поточній пісні",
+                "exceedsDuration": "Час перемотки перевищує тривалість пісні ({duration}).",
+                "invalidTime": "Невірний формат часу: {time}. Використовуйте формати на кшталт `1:30` або `90`.",
+                "noPlaying": "Зараз не відтворюється жодна пісня.",
+                "noTime": "Будь ласка, вкажіть час для перемотки.",
+                "seeked": "Перемотано до {time}",
+                "slashTimeDescription": "Час для перемотки (напр., `1:30` або `90`)",
+                "usage": "{prefix}seek <час>"
             },
             "skip": {
                 "description": "Пропустити пісню",

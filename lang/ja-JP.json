@@ -206,15 +206,15 @@
                 "newState": "シャッフルモードは{state}にセットされました。"
             },
             "seek": {
-                "cantSeekLive": "Cannot seek in live streams.",
-                "description": "Seek to a specific time in the current song",
-                "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
-                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
-                "noPlaying": "No song is currently playing.",
-                "noTime": "Please specify a time to seek to.",
-                "seeked": "Seeked to **{time}**",
-                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
-                "usage": "{prefix}seek <time>"
+                "cantSeekLive": "ライブストリームではシークできません。",
+                "description": "現在の曲の特定の時間にジャンプ",
+                "exceedsDuration": "シーク時間が曲の長さを超えています ({duration})。",
+                "invalidTime": "時間形式が無効です: {time}。`1:30` や `90` のような形式を使用してください。",
+                "noPlaying": "現在再生中の曲がありません。",
+                "noTime": "シークする時間を指定してください。",
+                "seeked": "{time} にジャンプしました",
+                "slashTimeDescription": "ジャンプする時間 (例: `1:30` または `90`)",
+                "usage": "{prefix}seek <時間>"
             },
             "skip": {
                 "description": "曲をスキップ",
