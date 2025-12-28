@@ -3,15 +3,27 @@ import path from "node:path";
 import process from "node:process";
 import { type Rawon } from "../../structures/Rawon.js";
 
+interface CookieState {
+    failedCookies: number[];
+    currentCookieIndex: number;
+    failureTimestamps: Record<number, number>;
+}
+
+const FAILED_COOKIE_EXPIRY_MS = 30 * 60 * 1000; // 30 minutes
+
 export class CookiesManager {
     public readonly cookiesDir: string;
+    private readonly stateFilePath: string;
     private currentCookieIndex = 1;
     private failedCookies = new Set<number>();
+    private failureTimestamps = new Map<number, number>();
     private allCookiesFailed = false;
 
     public constructor(public readonly client: Rawon) {
         this.cookiesDir = path.resolve(process.cwd(), "cache", "cookies");
+        this.stateFilePath = path.join(this.cookiesDir, ".cookie-state.json");
         this.ensureCookiesDir();
+        this.loadState();
         this.initializeCurrentCookie();
     }
 
@@ -21,10 +33,71 @@ export class CookiesManager {
         }
     }
 
+    private loadState(): void {
+        try {
+            if (existsSync(this.stateFilePath)) {
+                const content = readFileSync(this.stateFilePath, "utf8");
+                const state: CookieState = JSON.parse(content);
+
+                const now = Date.now();
+                // Restore failed cookies, but only if they haven't expired
+                for (const index of state.failedCookies) {
+                    // If timestamp is missing (0), the cookie will not be restored as failed
+                    // since (now - 0) will be > FAILED_COOKIE_EXPIRY_MS, giving it a fresh chance
+                    const failureTime = state.failureTimestamps[index] ?? 0;
+                    if (now - failureTime < FAILED_COOKIE_EXPIRY_MS) {
+                        this.failedCookies.add(index);
+                        this.failureTimestamps.set(index, failureTime);
+                    }
+                }
+
+                // Restore current cookie index if it's still valid
+                if (state.currentCookieIndex > 0) {
+                    this.currentCookieIndex = state.currentCookieIndex;
+                }
+
+                this.client.logger.info(
+                    `[CookiesManager] Loaded state: ${this.failedCookies.size} failed cookies (from previous session)`,
+                );
+            }
+        } catch (error) {
+            this.client.logger.warn("[CookiesManager] Could not load previous state:", error);
+        }
+    }
+
+    private saveState(): void {
+        try {
+            const state: CookieState = {
+                failedCookies: Array.from(this.failedCookies),
+                currentCookieIndex: this.currentCookieIndex,
+                failureTimestamps: Object.fromEntries(this.failureTimestamps),
+            };
+            writeFileSync(this.stateFilePath, JSON.stringify(state, null, 2), "utf8");
+        } catch (error) {
+            this.client.logger.warn("[CookiesManager] Could not save state:", error);
+        }
+    }
+
     private initializeCurrentCookie(): void {
         const cookies = this.listCookies();
-        if (cookies.length > 0) {
-            this.currentCookieIndex = cookies[0];
+        if (cookies.length === 0) {
+            return;
+        }
+
+        // If current cookie is failed or doesn't exist, find the first working one
+        if (
+            this.failedCookies.has(this.currentCookieIndex) ||
+            !existsSync(this.getCookiePath(this.currentCookieIndex))
+        ) {
+            for (const index of cookies) {
+                if (!this.failedCookies.has(index)) {
+                    this.currentCookieIndex = index;
+                    this.saveState();
+                    return;
+                }
+            }
+            // All cookies are failed
+            this.allCookiesFailed = true;
         }
     }
 
@@ -50,6 +123,7 @@ export class CookiesManager {
         for (const index of cookies) {
             if (!this.failedCookies.has(index)) {
                 this.currentCookieIndex = index;
+                this.saveState();
                 return this.getCookiePath(index);
             }
         }
@@ -62,10 +136,12 @@ export class CookiesManager {
         const cookies = this.listCookies();
         if (cookies.length === 0) {
             this.allCookiesFailed = true;
+            this.saveState();
             return false;
         }
 
         this.failedCookies.add(this.currentCookieIndex);
+        this.failureTimestamps.set(this.currentCookieIndex, Date.now());
         this.client.logger.warn(
             `[CookiesManager] Cookie ${this.currentCookieIndex} marked as failed. Failed cookies: ${Array.from(this.failedCookies).join(", ")}`,
         );
@@ -73,6 +149,7 @@ export class CookiesManager {
         for (const index of cookies) {
             if (!this.failedCookies.has(index)) {
                 this.currentCookieIndex = index;
+                this.saveState();
                 this.client.logger.info(
                     `[CookiesManager] Rotated to cookie ${this.currentCookieIndex}`,
                 );
@@ -81,6 +158,7 @@ export class CookiesManager {
         }
 
         this.allCookiesFailed = true;
+        this.saveState();
         this.client.logger.error(
             "[CookiesManager] All cookies have failed. Please add new cookies.",
         );
@@ -89,8 +167,10 @@ export class CookiesManager {
 
     public resetFailedStatus(): void {
         this.failedCookies.clear();
+        this.failureTimestamps.clear();
         this.allCookiesFailed = false;
         this.initializeCurrentCookie();
+        this.saveState();
         this.client.logger.info("[CookiesManager] Reset all failed cookie statuses.");
     }
 
@@ -126,12 +206,14 @@ export class CookiesManager {
             writeFileSync(cookiePath, content, "utf8");
 
             this.failedCookies.delete(index);
+            this.failureTimestamps.delete(index);
 
             if (this.allCookiesFailed) {
                 this.allCookiesFailed = false;
                 this.currentCookieIndex = index;
             }
 
+            this.saveState();
             this.client.logger.info(
                 `[CookiesManager] ${existed ? "Replaced" : "Added"} cookie ${index}`,
             );
@@ -148,11 +230,13 @@ export class CookiesManager {
             if (existsSync(cookiePath)) {
                 rmSync(cookiePath, { force: true });
                 this.failedCookies.delete(index);
+                this.failureTimestamps.delete(index);
 
                 if (this.currentCookieIndex === index) {
                     this.initializeCurrentCookie();
                 }
 
+                this.saveState();
                 this.client.logger.info(`[CookiesManager] Removed cookie ${index}`);
                 return true;
             }
@@ -174,9 +258,11 @@ export class CookiesManager {
         }
 
         this.failedCookies.clear();
+        this.failureTimestamps.clear();
         this.allCookiesFailed = false;
         this.currentCookieIndex = 1;
 
+        this.saveState();
         this.client.logger.info(`[CookiesManager] Removed all ${removed} cookies`);
         return removed;
     }
