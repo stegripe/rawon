@@ -19,7 +19,12 @@ import {
     shouldRequeueOnError,
 } from "../YTDLUtil.js";
 
-export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
+export async function play(
+    guild: Guild,
+    nextSong?: string,
+    wasIdle?: boolean,
+    seekSeconds = 0,
+): Promise<void> {
     const queue = guild.queue;
     if (!queue) {
         return;
@@ -84,7 +89,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
     });
 
     try {
-        await getStream(queue.client, song.song.url, song.song.isLive).then((x) =>
+        await getStream(queue.client, song.song.url, song.song.isLive, seekSeconds).then((x) =>
             x.pipe(stream as unknown as NodeJS.WritableStream),
         );
     } catch (error) {

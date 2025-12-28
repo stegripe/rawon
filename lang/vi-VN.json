@@ -205,6 +205,17 @@
                 "description": "Đặt chế độ cho tính năng phát ngẫu nhiên",
                 "newState": "Chế độ phát ngẫu nhiên được đặt thành {state}"
             },
+            "seek": {
+                "cantSeekLive": "Cannot seek in live streams.",
+                "description": "Seek to a specific time in the current song",
+                "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
+                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
+                "noPlaying": "No song is currently playing.",
+                "noTime": "Please specify a time to seek to.",
+                "seeked": "Seeked to **{time}**",
+                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
+                "usage": "{prefix}seek <time>"
+            },
             "skip": {
                 "description": "Bỏ qua bài nhạc",
                 "skipMessage": "Đã bỏ qua **{song}**",

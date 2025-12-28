@@ -1,0 +1,108 @@
+import { type AudioPlayerPlayingState, AudioPlayerStatus } from "@discordjs/voice";
+import { ApplicationCommandOptionType } from "discord.js";
+import i18n from "../../config/index.js";
+import { BaseCommand } from "../../structures/BaseCommand.js";
+import { type CommandContext } from "../../structures/CommandContext.js";
+import { type QueueSong } from "../../typings/index.js";
+import { Command } from "../../utils/decorators/Command.js";
+import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { normalizeTime } from "../../utils/functions/normalizeTime.js";
+import { parseTime } from "../../utils/functions/parseTime.js";
+import { play } from "../../utils/handlers/GeneralUtil.js";
+
+@Command({
+    aliases: ["sk"],
+    description: i18n.__("commands.music.seek.description"),
+    name: "seek",
+    slash: {
+        options: [
+            {
+                description: i18n.__("commands.music.seek.slashTimeDescription"),
+                name: "time",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ],
+    },
+    usage: i18n.__("commands.music.seek.usage"),
+})
+export class SeekCommand extends BaseCommand {
+    @inVC
+    @haveQueue
+    @sameVC
+    public async execute(ctx: CommandContext): Promise<void> {
+        const queue = ctx.guild?.queue;
+        if (!queue) {
+            return;
+        }
+
+        if (queue.player.state.status !== AudioPlayerStatus.Playing) {
+            await ctx.reply({
+                embeds: [createEmbed("warn", i18n.__("commands.music.seek.noPlaying"))],
+            });
+            return;
+        }
+
+        const song = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
+
+        if (song.song.isLive) {
+            await ctx.reply({
+                embeds: [createEmbed("error", i18n.__("commands.music.seek.cantSeekLive"), true)],
+            });
+            return;
+        }
+
+        const timeArg = ctx.args[0] ?? ctx.options?.getString("time");
+        if (!timeArg) {
+            await ctx.reply({
+                embeds: [createEmbed("error", i18n.__("commands.music.seek.noTime"), true)],
+            });
+            return;
+        }
+
+        const seekSeconds = parseTime(timeArg);
+        if (seekSeconds === null || seekSeconds < 0) {
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.music.seek.invalidTime", { time: timeArg }),
+                        true,
+                    ),
+                ],
+            });
+            return;
+        }
+
+        if (seekSeconds >= song.song.duration) {
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.music.seek.exceedsDuration", {
+                            duration: normalizeTime(song.song.duration),
+                        }),
+                        true,
+                    ),
+                ],
+            });
+            return;
+        }
+
+        // Stop current playback and restart at seek position
+        queue.playing = false;
+        void play(ctx.guild!, song.key, true, seekSeconds);
+
+        await ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    `⏩ **|** ${i18n.__mf("commands.music.seek.seeked", {
+                        time: normalizeTime(seekSeconds),
+                    })}`,
+                ),
+            ],
+        });
+    }
+}
