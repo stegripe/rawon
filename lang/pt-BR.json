@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "Uso inválido, por favor use **`{prefix} {name}`** para mais informações.",
-        "pageFooter": "Página {actual} de {total}"
+        "pageFooter": "Página {actual} de {total}",
+        "lyricsSource": "Fonte: {source}"
     },
     "utils": {
         "commonUtil": {

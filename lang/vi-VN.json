@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập **`{prefix} {name}`** để biết thêm thông tin.",
-        "pageFooter": "Trang {actual} trong {total}"
+        "pageFooter": "Trang {actual} trong {total}",
+        "lyricsSource": "Nguồn: {source}"
     },
     "utils": {
         "commonUtil": {

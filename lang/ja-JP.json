@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "無効な使用方法です。**`{prefix} {name}`**を実行して情報を照会してください。",
-        "pageFooter": "ページ {actual}/{total}"
+        "pageFooter": "ページ {actual}/{total}",
+        "lyricsSource": "ソース: {source}"
     },
     "utils": {
         "commonUtil": {

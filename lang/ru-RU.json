@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "Неверное использование, пожалуйста используйте **`{prefix} {name}`** для большей информации.",
-        "pageFooter": "Страница {actual} из {total}"
+        "pageFooter": "Страница {actual} из {total}",
+        "lyricsSource": "Источник: {source}"
     },
     "utils": {
         "commonUtil": {

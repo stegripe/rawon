@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "无效的用法，请用 **`{prefix} {name}`**了解更多资讯。",
-        "pageFooter": "{actual}/{total} 页"
+        "pageFooter": "{actual}/{total} 页",
+        "lyricsSource": "来源: {source}"
     },
     "utils": {
         "commonUtil": {

@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "Некоректне використання, будь ласка, скористайтесь **`{prefix} {name}`** для отримання інформації.",
-        "pageFooter": "Сторінка {actual} з {total}"
+        "pageFooter": "Сторінка {actual} з {total}",
+        "lyricsSource": "Джерело: {source}"
     },
     "utils": {
         "commonUtil": {

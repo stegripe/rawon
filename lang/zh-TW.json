@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "無效的用法，請用 **`{prefix} {name}`**了解更多資訊。",
-        "pageFooter": "{actual}/{total} 頁"
+        "pageFooter": "{actual}/{total} 頁",
+        "lyricsSource": "來源: {source}"
     },
     "utils": {
         "commonUtil": {

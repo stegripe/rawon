@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix} {name}`** untuk informasi lebih lanjut.",
-        "pageFooter": "Halaman {actual} dari {total}"
+        "pageFooter": "Halaman {actual} dari {total}",
+        "lyricsSource": "Sumber: {source}"
     },
     "utils": {
         "commonUtil": {

@@ -281,7 +281,8 @@
     },
     "reusable": {
         "invalidUsage": "Geçersiz kullanım, lütfen daha fazla bilgi için **`{prefix} {name}`** kullanın.",
-        "pageFooter": "Sayfa {actual}/{total}"
+        "pageFooter": "Sayfa {actual}/{total}",
+        "lyricsSource": "Kaynak: {source}"
     },
     "utils": {
         "commonUtil": {

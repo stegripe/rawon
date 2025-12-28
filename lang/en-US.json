@@ -319,7 +319,8 @@
     },
     "reusable": {
         "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",
-        "pageFooter": "Page {actual} of {total}"
+        "pageFooter": "Page {actual} of {total}",
+        "lyricsSource": "Source: {source}"
     },
     "utils": {
         "commonUtil": {
