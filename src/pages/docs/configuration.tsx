@@ -26,7 +26,7 @@ export default function ConfigurationPage() {
                                 {t.configuration.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.configuration.subtitle}
+                                {renderWithCode(t.configuration.subtitle)}
                             </Typography>
                         </div>
                     </div>
@@ -37,7 +37,7 @@ export default function ConfigurationPage() {
                                 {t.configuration.essential.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.configuration.essential.description}
+                                {renderWithCode(t.configuration.essential.description)}
                             </Typography>
                         </div>
 
@@ -79,10 +79,10 @@ export default function ConfigurationPage() {
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.essential.mainPrefix
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -99,10 +99,10 @@ export default function ConfigurationPage() {
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.essential.mainServer
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -120,10 +120,10 @@ export default function ConfigurationPage() {
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.essential.locale
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {t.configuration.essential.locale.options}
@@ -179,7 +179,7 @@ SPOTIFY_CLIENT_SECRET=""`}
                                 {t.configuration.optional.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.configuration.optional.description}
+                                {renderWithCode(t.configuration.optional.description)}
                             </Typography>
                         </div>
 
@@ -201,10 +201,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.optional.altPrefix
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -213,10 +213,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     {t.configuration.optional.activities.name}
                                 </code>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.optional.activities
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -228,10 +228,8 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     }
                                 </code>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
-                                        t.configuration.optional.activityTypes
-                                            .description
-                                    }
+                                    {renderWithCode(t.configuration.optional.activityTypes
+                                            .description)}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {
@@ -258,10 +256,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.optional.embedColor
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -279,10 +277,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.optional.emojis
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -303,10 +301,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.optional.musicSelection
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {
@@ -333,10 +331,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.optional.audioCache
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -348,10 +346,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     }
                                 </code>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.optional
                                             .requestChannelSplash.description
-                                    }
+                                    )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {t.common.default}:{" "}
@@ -398,7 +396,7 @@ ENABLE_AUDIO_CACHE="no"`}
                                 {t.configuration.developer.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.configuration.developer.description}
+                                {renderWithCode(t.configuration.developer.description)}
                             </Typography>
                         </div>
 
@@ -413,10 +411,10 @@ ENABLE_AUDIO_CACHE="no"`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.developer.devs
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                             </div>
 
@@ -437,10 +435,10 @@ ENABLE_AUDIO_CACHE="no"`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.developer.enablePrefix
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {
@@ -467,10 +465,10 @@ ENABLE_AUDIO_CACHE="no"`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.developer.enableSlash
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {
@@ -497,10 +495,10 @@ ENABLE_AUDIO_CACHE="no"`}
                                     </span>
                                 </div>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {
+                                    {renderWithCode(
                                         t.configuration.developer.debugMode
                                             .description
-                                    }
+                                    )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {
