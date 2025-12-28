@@ -1,4 +1,4 @@
-import { clearTimeout, setTimeout } from "node:timers";
+import { clearInterval, clearTimeout, setInterval, setTimeout } from "node:timers";
 import {
     type AudioPlayer,
     type AudioPlayerPlayingState,
@@ -26,6 +26,7 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
+    public seekOffset = 0;
 
     private _volume = 100;
     private _lastVSUpdateMsg: Snowflake | null = null;
@@ -34,6 +35,7 @@ export class ServerQueue {
     private _skipInProgress = false;
     private _lastSkipTime = 0;
     private _skipCooldownMs = 2000;
+    private _positionSaveInterval: NodeJS.Timeout | null = null;
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -44,6 +46,7 @@ export class ServerQueue {
             _skipInProgress: nonEnum,
             _lastSkipTime: nonEnum,
             _skipCooldownMs: nonEnum,
+            _positionSaveInterval: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -81,8 +84,12 @@ export class ServerQueue {
 
                     void this.saveQueueState();
 
+                    this.startPositionSaveInterval();
+
                     this.preCacheNextSong(currentSong);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
+                    this.stopPositionSaveInterval();
+
                     const song = (oldState as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;
                     this.client.logger.info(
@@ -95,18 +102,24 @@ export class ServerQueue {
                         this.songs.delete(song.key);
                     }
 
-                    const nextS =
-                        this.shuffle && this.loopMode !== "SONG"
-                            ? this.songs.random()?.key
-                            : this.loopMode === "SONG"
-                              ? song.key
-                              : (this.songs
-                                    .sortByIndex()
-                                    .filter((x) => x.index > song.index)
-                                    .first()?.key ??
-                                (this.loopMode === "QUEUE"
-                                    ? (this.songs.sortByIndex().first()?.key ?? "")
-                                    : ""));
+                    let nextS: string | undefined;
+                    if (this.shuffle && this.loopMode !== "SONG") {
+                        nextS = this.songs.random()?.key;
+                    } else if (this.loopMode === "SONG") {
+                        if (this.songs.has(song.key)) {
+                            nextS = song.key;
+                        } else {
+                            const sortedSongs = this.songs.sortByIndex();
+                            nextS =
+                                sortedSongs.filter((x) => x.index > song.index).first()?.key ??
+                                sortedSongs.first()?.key;
+                        }
+                    } else {
+                        const sortedSongs = this.songs.sortByIndex();
+                        nextS =
+                            sortedSongs.filter((x) => x.index > song.index).first()?.key ??
+                            (this.loopMode === "QUEUE" ? (sortedSongs.first()?.key ?? "") : "");
+                    }
 
                     void this.client.requestChannelManager.updatePlayerMessage(
                         this.textChannel.guild,
@@ -234,10 +247,14 @@ export class ServerQueue {
         const guildData = currentData[this.textChannel.guild.id] ?? {};
 
         let currentSongKey: string | null = null;
+        let currentPosition = 0;
         if (this.player.state.status === AudioPlayerStatus.Playing) {
-            const metadata = this.player.state.resource.metadata as QueueSong | undefined;
+            const resource = (this.player.state as AudioPlayerPlayingState).resource;
+            const metadata = resource.metadata as QueueSong | undefined;
             if (metadata !== undefined) {
                 currentSongKey = metadata.key;
+                currentPosition =
+                    Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
             }
         }
 
@@ -262,16 +279,13 @@ export class ServerQueue {
             voiceChannelId,
             songs: savedSongs,
             currentSongKey,
+            currentPosition,
         };
 
         await this.client.data.save(() => ({
             ...currentData,
             [this.textChannel.guild.id]: guildData,
         }));
-
-        this.client.logger.info(
-            `Saved queue state for guild ${this.textChannel.guild.name} with ${savedSongs.length} songs`,
-        );
     }
 
     public async clearQueueState(): Promise<void> {
@@ -293,11 +307,18 @@ export class ServerQueue {
         void this.saveState();
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
+            const resource = (this.player.state as AudioPlayerPlayingState).resource;
+            const currentPosition =
+                Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
+
+            this.seekOffset = currentPosition;
+
             this.playing = false;
             void play(
                 this.textChannel.guild,
-                (this.player.state.resource as AudioResource<QueueSong>).metadata.key,
+                (resource as AudioResource<QueueSong>).metadata.key,
                 true,
+                currentPosition,
             );
         }
     }
@@ -313,6 +334,7 @@ export class ServerQueue {
     }
 
     public stop(): void {
+        this.stopPositionSaveInterval();
         this.songs.clear();
         this.player.stop(true);
     }
@@ -323,6 +345,20 @@ export class ServerQueue {
         clearTimeout(this.timeout ?? undefined);
         void this.clearQueueState();
         delete this.textChannel.guild.queue;
+    }
+
+    private startPositionSaveInterval(): void {
+        this.stopPositionSaveInterval();
+        this._positionSaveInterval = setInterval(() => {
+            void this.saveQueueState();
+        }, 5000);
+    }
+
+    private stopPositionSaveInterval(): void {
+        if (this._positionSaveInterval !== null) {
+            clearInterval(this._positionSaveInterval);
+            this._positionSaveInterval = null;
+        }
     }
 
     public get volume(): number {

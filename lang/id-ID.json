@@ -205,6 +205,20 @@
                 "description": "Acak antrian",
                 "newState": "Mode acak telah diatur ke {state}"
             },
+            "seek": {
+                "cantSeekLive": "Tidak dapat mencari di siaran langsung.",
+                "cantSeekSoundcloud": "Tidak dapat mencari di trek SoundCloud.",
+                "description": "Lompat ke waktu tertentu pada lagu yang sedang diputar",
+                "exceedsDuration": "Waktu pencarian melebihi durasi lagu ({duration}).",
+                "invalidTime": "Format waktu tidak valid: {time}. Gunakan format seperti `1:30` atau `90`.",
+                "noPlaying": "Tidak ada lagu yang sedang diputar.",
+                "noTime": "Silakan tentukan waktu untuk dilompati.",
+                "notCached": "Belum bisa mencari di lagu ini. Silakan tunggu audio dibuffer.",
+                "seeked": "Dilompati ke {time}",
+                "slashTimeDescription": "Waktu untuk dilompati (misal, `1:30` atau `90`)",
+                "usage": "{prefix}seek <waktu>",
+                "waitingForCache": "Silakan tunggu, audio masih dibuffer..."
+            },
             "skip": {
                 "description": "Lewatkan lagu",
                 "skipMessage": "**{song}** dilewatkan",
@@ -281,7 +295,8 @@
     },
     "reusable": {
         "invalidUsage": "Penggunaan tidak valid, gunakan **`{prefix} {name}`** untuk informasi lebih lanjut.",
-        "pageFooter": "Halaman {actual} dari {total}"
+        "pageFooter": "Halaman {actual} dari {total}",
+        "lyricsSource": "Sumber: {source}"
     },
     "utils": {
         "commonUtil": {

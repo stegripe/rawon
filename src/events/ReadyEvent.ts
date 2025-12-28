@@ -122,6 +122,7 @@ export class ReadyEvent extends BaseEvent {
                 guild.queue.connection = connection;
 
                 const currentSongKey = queueState.currentSongKey;
+                const currentPosition = queueState.currentPosition ?? 0;
                 const firstSongKey = guild.queue.songs.sortByIndex().first()?.key;
                 const startSongKey =
                     currentSongKey !== null &&
@@ -131,7 +132,8 @@ export class ReadyEvent extends BaseEvent {
                         : firstSongKey;
 
                 if (startSongKey !== undefined) {
-                    void play(guild, startSongKey);
+                    const seekPosition = startSongKey === currentSongKey ? currentPosition : 0;
+                    void play(guild, startSongKey, false, seekPosition);
                 }
 
                 this.client.logger.info(
