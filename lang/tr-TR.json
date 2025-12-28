@@ -361,6 +361,7 @@
         "removeChannel": "İstek kanalı kaldırıldı.",
         "noChannel": "Şu anda ayarlanmış istek kanalı yok.",
         "currentChannel": "Mevcut istek kanalı: {channel}",
-        "skipInProgress": "Lütfen bekleyin, bir atlama işlemi devam ediyor."
+        "skipInProgress": "Lütfen bekleyin, bir atlama işlemi devam ediyor.",
+        "noPermission": "Bu işlemi gerçekleştirme izniniz yok. Sadece DJ rolü, sunucu yöneticileri veya şarkıyı isteyen kişi bunu yapabilir."
     }
 }

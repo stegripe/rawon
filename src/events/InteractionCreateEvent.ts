@@ -8,6 +8,7 @@ import {
     type ButtonInteraction,
     ButtonStyle,
     ComponentType,
+    type GuildMember,
     type Interaction,
     Message,
     MessageFlags,
@@ -256,6 +257,31 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
+                const skipSong = (
+                    queue.player.state as
+                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
+                        | undefined
+                )?.resource?.metadata;
+
+                // Check permission: DJ role, ManageGuild, or song requester
+                const { hasPermission } = await this.checkMusicPermission(
+                    interaction,
+                    member,
+                    skipSong,
+                );
+
+                if (!hasPermission) {
+                    // Start voting system
+                    const canSkip = await this.handleSkipVoting(
+                        interaction,
+                        queue,
+                        member as GuildMember,
+                    );
+                    if (!canSkip) {
+                        return;
+                    }
+                }
+
                 if (!queue.startSkip()) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
@@ -263,12 +289,6 @@ export class InteractionCreateEvent extends BaseEvent {
                     });
                     return;
                 }
-
-                const skipSong = (
-                    queue.player.state as
-                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
-                        | undefined
-                )?.resource?.metadata;
 
                 if (!queue.playing) {
                     queue.playing = true;
@@ -302,6 +322,29 @@ export class InteractionCreateEvent extends BaseEvent {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                    });
+                    return;
+                }
+
+                // Check permission: DJ role or ManageGuild
+                const stopSong = (
+                    queue.player.state as
+                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
+                        | undefined
+                )?.resource?.metadata;
+
+                const { hasPermission: hasStopPermission } = await this.checkMusicPermission(
+                    interaction,
+                    member,
+                    stopSong,
+                );
+
+                if (!hasStopPermission) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [
+                            createEmbed("error", i18n.__("requestChannel.noPermission"), true),
+                        ],
                     });
                     return;
                 }
@@ -462,14 +505,6 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
-                if (!queue.startSkip()) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
-                    });
-                    return;
-                }
-
                 const currentSong = (
                     queue.player.state as
                         | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
@@ -477,10 +512,38 @@ export class InteractionCreateEvent extends BaseEvent {
                 )?.resource?.metadata;
 
                 if (!currentSong) {
-                    queue.endSkip();
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
                         embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                    });
+                    return;
+                }
+
+                // Check permission: DJ role, ManageGuild, or song requester
+                const { hasPermission: hasRemovePermission } = await this.checkMusicPermission(
+                    interaction,
+                    member,
+                    currentSong,
+                );
+
+                if (!hasRemovePermission) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [
+                            createEmbed(
+                                "error",
+                                i18n.__("commands.music.remove.noPermission"),
+                                true,
+                            ),
+                        ],
+                    });
+                    return;
+                }
+
+                if (!queue.startSkip()) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
                     });
                     return;
                 }
@@ -655,6 +718,78 @@ export class InteractionCreateEvent extends BaseEvent {
         }
 
         await this.client.requestChannelManager.updatePlayerMessage(guild);
+    }
+
+    private async checkMusicPermission(
+        interaction: ButtonInteraction,
+        member: GuildMember | undefined,
+        currentSong: QueueSong | undefined,
+    ): Promise<{ hasPermission: boolean; djRole: { id: string } | null }> {
+        const guild = interaction.guild;
+        if (!guild || !member) {
+            return { hasPermission: false, djRole: null };
+        }
+
+        const djRole = await this.client.utils.fetchDJRole(guild).catch(() => null);
+
+        // Check if user has DJ role, ManageGuild permission, or is the song requester
+        const hasPermission =
+            member.roles.cache.has(djRole?.id ?? "") ||
+            member.permissions.has("ManageGuild") ||
+            currentSong?.requester.id === member.id;
+
+        return { hasPermission, djRole };
+    }
+
+    private async handleSkipVoting(
+        interaction: ButtonInteraction,
+        queue: ServerQueue,
+        member: GuildMember,
+    ): Promise<boolean> {
+        const guild = interaction.guild;
+        if (!guild) {
+            return false;
+        }
+
+        const required = this.client.utils.requiredVoters(
+            guild.members.me?.voice.channel?.members.size ?? 0,
+        );
+
+        // Toggle vote
+        if (queue.skipVoters.includes(member.id)) {
+            queue.skipVoters = queue.skipVoters.filter(
+                (x) => x !== member.id,
+            ) as unknown as string[];
+            await interaction.reply({
+                flags: MessageFlags.Ephemeral,
+                embeds: [
+                    createEmbed(
+                        "info",
+                        i18n.__mf("commands.music.skip.voteResultMessage", {
+                            length: queue.skipVoters.length,
+                            required,
+                        }),
+                    ),
+                ],
+            });
+            return false;
+        }
+
+        queue.skipVoters.push(member.id);
+        const length = queue.skipVoters.length;
+
+        await interaction.reply({
+            flags: MessageFlags.Ephemeral,
+            embeds: [
+                createEmbed(
+                    "info",
+                    i18n.__mf("commands.music.skip.voteResultMessage", { length, required }),
+                ),
+            ],
+        });
+
+        // Check if enough votes to skip
+        return length >= required;
     }
 
     private async handleLyricsButton(

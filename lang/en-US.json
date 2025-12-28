@@ -329,7 +329,8 @@
         "removeChannel": "Request channel has been removed.",
         "noChannel": "No request channel is currently set.",
         "currentChannel": "Current request channel: {channel}",
-        "skipInProgress": "Please wait, a skip operation is already in progress."
+        "skipInProgress": "Please wait, a skip operation is already in progress.",
+        "noPermission": "You don't have permission to perform this action. Only DJ role, server managers, or the song requester can do this."
     },
     "reusable": {
         "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",

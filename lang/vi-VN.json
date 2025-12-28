@@ -361,6 +361,7 @@
         "removeChannel": "Kênh yêu cầu đã được xóa.",
         "noChannel": "Hiện không có kênh yêu cầu nào được đặt.",
         "currentChannel": "Kênh yêu cầu hiện tại: {channel}",
-        "skipInProgress": "Vui lòng đợi, thao tác bỏ qua đang được thực hiện."
+        "skipInProgress": "Vui lòng đợi, thao tác bỏ qua đang được thực hiện.",
+        "noPermission": "Bạn không có quyền thực hiện hành động này. Chỉ có vai trò DJ, quản lý máy chủ hoặc người yêu cầu bài hát mới có thể thực hiện."
     }
 }
