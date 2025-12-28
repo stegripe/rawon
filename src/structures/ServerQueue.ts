@@ -293,10 +293,6 @@ export class ServerQueue {
             ...currentData,
             [this.textChannel.guild.id]: guildData,
         }));
-
-        this.client.logger.info(
-            `Saved queue state for guild ${this.textChannel.guild.name} with ${savedSongs.length} songs`,
-        );
     }
 
     public async clearQueueState(): Promise<void> {

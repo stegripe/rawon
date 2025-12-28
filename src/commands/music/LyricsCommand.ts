@@ -33,12 +33,15 @@ export class LyricsCommand extends BaseCommand {
                 | undefined
         )?.metadata as QueueSong | undefined;
 
-        const query =
+        const userQuery =
             ctx.args.length > 0
                 ? ctx.args.join(" ")
                 : (ctx.options?.getString("query")?.length ?? 0) > 0
                   ? (ctx.options?.getString("query") ?? "")
-                  : currentSong?.song.title;
+                  : null;
+
+        // Use current song title if no query provided
+        const query = userQuery ?? currentSong?.song.title;
         if ((query?.length ?? 0) === 0) {
             await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)],
@@ -47,8 +50,8 @@ export class LyricsCommand extends BaseCommand {
             return;
         }
 
-        // Get thumbnail from currently playing song if available
-        const songThumbnail = currentSong?.song.thumbnail;
+        // Only use currently playing song's thumbnail if no custom query was provided
+        const songThumbnail = userQuery === null ? currentSong?.song.thumbnail : undefined;
 
         await this.getLyrics(ctx, query as unknown as string, songThumbnail);
     }

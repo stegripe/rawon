@@ -93,8 +93,8 @@ export async function play(
     });
 
     try {
-        // Don't pass seekSeconds to getStream - seeking is now handled by FFmpeg
-        await getStream(queue.client, song.song.url, song.song.isLive).then((x) =>
+        // Pass seekSeconds to getStream so it doesn't use cache when seeking
+        await getStream(queue.client, song.song.url, song.song.isLive, seekSeconds).then((x) =>
             x.pipe(stream as unknown as NodeJS.WritableStream),
         );
     } catch (error) {
