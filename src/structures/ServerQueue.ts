@@ -310,11 +310,20 @@ export class ServerQueue {
         void this.saveState();
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
+            // Get current playback position including seek offset
+            const resource = (this.player.state as AudioPlayerPlayingState).resource;
+            const currentPosition =
+                Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
+
+            // Update seek offset to current position so playback continues from here
+            this.seekOffset = currentPosition;
+
             this.playing = false;
             void play(
                 this.textChannel.guild,
-                (this.player.state.resource as AudioResource<QueueSong>).metadata.key,
+                (resource as AudioResource<QueueSong>).metadata.key,
                 true,
+                currentPosition,
             );
         }
     }

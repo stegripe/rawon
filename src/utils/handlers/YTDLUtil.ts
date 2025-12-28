@@ -26,13 +26,19 @@ export class CookieRotationNeededError extends Error {
     }
 }
 
-export async function getStream(client: Rawon, url: string, isLive = false): Promise<Readable> {
+export async function getStream(
+    client: Rawon,
+    url: string,
+    isLive = false,
+    seekSeconds = 0,
+): Promise<Readable> {
     const isSoundcloudUrl = checkQuery(url);
     if (isSoundcloudUrl.sourceType === "soundcloud") {
         return client.soundcloud.util.streamTrack(url) as unknown as Readable;
     }
 
-    if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
+    // Don't use cache when seeking
+    if (enableAudioCache && !isLive && seekSeconds === 0 && client.audioCache.isCached(url)) {
         const cachedStream = client.audioCache.getFromCache(url);
         if (cachedStream !== null) {
             return cachedStream;
@@ -43,7 +49,7 @@ export async function getStream(client: Rawon, url: string, isLive = false): Pro
         throw new AllCookiesFailedError();
     }
 
-    return attemptStreamWithRetry(client, url, isLive);
+    return attemptStreamWithRetry(client, url, isLive, 0, seekSeconds);
 }
 
 const MAX_COOKIE_RETRIES = 10;
@@ -55,8 +61,11 @@ async function attemptStreamWithRetry(
     url: string,
     isLive: boolean,
     retryCount = 0,
+    seekSeconds = 0,
 ): Promise<Readable> {
     return new Promise<Readable>((resolve, reject) => {
+        // Don't use download-sections - it's too slow
+        // Seeking will be handled by FFmpeg instead
         const options = isLive
             ? {
                   output: "-",
@@ -115,7 +124,7 @@ async function attemptStreamWithRetry(
                 client.logger.info(
                     `[YTDLUtil] 🔄 Rotated to cookie ${client.cookies.getCurrentCookieIndex()}, retrying...`,
                 );
-                attemptStreamWithRetry(client, url, isLive, retryCount + 1)
+                attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
                     .then(resolve)
                     .catch(reject);
             } else {
@@ -145,7 +154,7 @@ async function attemptStreamWithRetry(
                     );
                     setTimeout(
                         () => {
-                            attemptStreamWithRetry(client, url, isLive, retryCount + 1)
+                            attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
                                 .then(resolve)
                                 .catch(reject);
                         },
@@ -207,7 +216,13 @@ async function attemptStreamWithRetry(
                     if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
                         setTimeout(
                             () => {
-                                attemptStreamWithRetry(client, url, isLive, retryCount + 1)
+                                attemptStreamWithRetry(
+                                    client,
+                                    url,
+                                    isLive,
+                                    retryCount + 1,
+                                    seekSeconds,
+                                )
                                     .then(resolve)
                                     .catch(reject);
                             },
@@ -245,7 +260,8 @@ async function attemptStreamWithRetry(
 
                 hasResolved = true;
 
-                if (isLive || !enableAudioCache) {
+                // Don't cache when seeking or live streams
+                if (isLive || !enableAudioCache || seekSeconds > 0) {
                     resolve(proc.stdout as unknown as Readable);
                     return;
                 }

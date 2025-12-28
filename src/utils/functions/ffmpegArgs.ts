@@ -27,16 +27,9 @@ export function ffmpegArgs(
 ): string[] {
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
     const hasFilters = keys.some((x) => filters[x] === true);
-    const hasSeek = seekSeconds > 0;
 
-    // Build audio filter chain
+    // Build audio filter chain (only user filters, not seek)
     const audioFilters: string[] = [];
-
-    // Add seek using atrim filter (fast seeking at FFmpeg level)
-    if (hasSeek) {
-        audioFilters.push(`atrim=start=${seekSeconds}`);
-        audioFilters.push("asetpts=PTS-STARTPTS"); // Reset timestamps after trim
-    }
 
     // Add user-selected filters
     if (hasFilters) {
@@ -47,9 +40,14 @@ export function ffmpegArgs(
         }
     }
 
+    // Use -ss for fast seeking (output seeking - decodes but discards until seek point)
+    // This is faster than atrim because it doesn't process audio filters on skipped frames
+    const seekArgs = seekSeconds > 0 ? ["-ss", String(seekSeconds)] : [];
+
     return [
         "-loglevel",
         "0",
+        ...seekArgs,
         "-ar",
         "48000",
         "-ac",
