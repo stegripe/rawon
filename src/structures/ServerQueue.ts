@@ -244,10 +244,14 @@ export class ServerQueue {
         const guildData = currentData[this.textChannel.guild.id] ?? {};
 
         let currentSongKey: string | null = null;
+        let currentPosition = 0;
         if (this.player.state.status === AudioPlayerStatus.Playing) {
-            const metadata = this.player.state.resource.metadata as QueueSong | undefined;
+            const resource = (this.player.state as AudioPlayerPlayingState).resource;
+            const metadata = resource.metadata as QueueSong | undefined;
             if (metadata !== undefined) {
                 currentSongKey = metadata.key;
+                // Get current playback position in seconds
+                currentPosition = Math.floor((resource.playbackDuration ?? 0) / 1000);
             }
         }
 
@@ -272,6 +276,7 @@ export class ServerQueue {
             voiceChannelId,
             songs: savedSongs,
             currentSongKey,
+            currentPosition,
         };
 
         await this.client.data.save(() => ({

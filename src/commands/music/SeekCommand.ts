@@ -90,10 +90,7 @@ export class SeekCommand extends BaseCommand {
             return;
         }
 
-        // Stop current playback and restart at seek position
-        queue.playing = false;
-        void play(ctx.guild!, song.key, true, seekSeconds);
-
+        // Send reply first to make the seek feel more responsive
         await ctx.reply({
             embeds: [
                 createEmbed(
@@ -104,5 +101,9 @@ export class SeekCommand extends BaseCommand {
                 ),
             ],
         });
+
+        // Stop current playback and restart at seek position
+        queue.playing = false;
+        void play(ctx.guild!, song.key, true, seekSeconds);
     }
 }

@@ -216,6 +216,7 @@ export type GuildData = {
         voiceChannelId: string;
         songs: SavedQueueSong[];
         currentSongKey: string | null;
+        currentPosition: number;
     };
 };
 
