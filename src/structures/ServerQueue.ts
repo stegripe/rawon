@@ -1,4 +1,4 @@
-import { clearTimeout, setTimeout } from "node:timers";
+import { clearInterval, clearTimeout, setInterval, setTimeout } from "node:timers";
 import {
     type AudioPlayer,
     type AudioPlayerPlayingState,
@@ -35,6 +35,7 @@ export class ServerQueue {
     private _skipInProgress = false;
     private _lastSkipTime = 0;
     private _skipCooldownMs = 2000;
+    private _positionSaveInterval: NodeJS.Timeout | null = null;
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -45,6 +46,7 @@ export class ServerQueue {
             _skipInProgress: nonEnum,
             _lastSkipTime: nonEnum,
             _skipCooldownMs: nonEnum,
+            _positionSaveInterval: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -82,8 +84,14 @@ export class ServerQueue {
 
                     void this.saveQueueState();
 
+                    // Start periodic position saving (every 5 seconds) for accurate restart resume
+                    this.startPositionSaveInterval();
+
                     this.preCacheNextSong(currentSong);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
+                    // Stop periodic position saving when playback ends
+                    this.stopPositionSaveInterval();
+
                     const song = (oldState as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;
                     this.client.logger.info(
@@ -339,6 +347,7 @@ export class ServerQueue {
     }
 
     public stop(): void {
+        this.stopPositionSaveInterval();
         this.songs.clear();
         this.player.stop(true);
     }
@@ -349,6 +358,22 @@ export class ServerQueue {
         clearTimeout(this.timeout ?? undefined);
         void this.clearQueueState();
         delete this.textChannel.guild.queue;
+    }
+
+    private startPositionSaveInterval(): void {
+        // Clear any existing interval first
+        this.stopPositionSaveInterval();
+        // Save position every 5 seconds for accurate restart resume
+        this._positionSaveInterval = setInterval(() => {
+            void this.saveQueueState();
+        }, 5000);
+    }
+
+    private stopPositionSaveInterval(): void {
+        if (this._positionSaveInterval !== null) {
+            clearInterval(this._positionSaveInterval);
+            this._positionSaveInterval = null;
+        }
     }
 
     public get volume(): number {
