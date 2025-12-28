@@ -361,6 +361,7 @@
         "removeChannel": "Le salon de demandes a été supprimé.",
         "noChannel": "Aucun salon de demandes n'est actuellement défini.",
         "currentChannel": "Salon de demandes actuel : {channel}",
-        "skipInProgress": "Veuillez patienter, une opération de saut est en cours."
+        "skipInProgress": "Veuillez patienter, une opération de saut est en cours.",
+        "noPermission": "Vous n'avez pas la permission d'effectuer cette action. Seuls le rôle DJ, les gestionnaires du serveur ou le demandeur de la chanson peuvent le faire."
     }
 }
