@@ -263,7 +263,6 @@ export class InteractionCreateEvent extends BaseEvent {
                         | undefined
                 )?.resource?.metadata;
 
-                // Check permission: DJ role, ManageGuild, or song requester
                 const { hasPermission } = await this.checkMusicPermission(
                     interaction,
                     member,
@@ -271,7 +270,6 @@ export class InteractionCreateEvent extends BaseEvent {
                 );
 
                 if (!hasPermission) {
-                    // Start voting system
                     const canSkip = await this.handleSkipVoting(
                         interaction,
                         queue,
@@ -326,7 +324,6 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
-                // Check permission: DJ role or ManageGuild
                 const stopSong = (
                     queue.player.state as
                         | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
@@ -519,7 +516,6 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
-                // Check permission: DJ role, ManageGuild, or song requester
                 const { hasPermission: hasRemovePermission } = await this.checkMusicPermission(
                     interaction,
                     member,
@@ -728,7 +724,6 @@ export class InteractionCreateEvent extends BaseEvent {
 
         const djRole = await this.client.utils.fetchDJRole(guild).catch(() => null);
 
-        // Check if user has DJ role, ManageGuild permission, or is the song requester
         const hasPermission =
             member.roles.cache.has(djRole?.id ?? "") ||
             member.permissions.has("ManageGuild") ||
@@ -784,7 +779,6 @@ export class InteractionCreateEvent extends BaseEvent {
             ],
         });
 
-        // Check if enough votes to skip
         return length >= required;
     }
 

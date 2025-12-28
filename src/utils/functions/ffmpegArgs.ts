@@ -17,7 +17,6 @@ export const filterArgs = {
     echo: "aecho=0.8:0.9:1000:0.3",
     spedup: "aresample=48000,asetrate=48000*10/9",
     slowed: "aresample=48000,asetrate=48000*0.9",
-    // Improved reverb: splits audio at 300Hz, applies reverb only to highs (vocals), keeps bass clean
     reverb: "[0:a]asplit=2[bass][highs];[bass]lowpass=f=300[bassclean];[highs]highpass=f=300,aecho=0.8:0.85:40:0.35[highsreverb];[bassclean][highsreverb]amix=inputs=2:duration=first",
 };
 
