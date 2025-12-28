@@ -88,15 +88,29 @@ export async function play(
         return;
     }
 
-    const stream = new prism.FFmpeg({
-        args: ffmpegArgs(queue.filters, seekSeconds),
-    });
-
+    let ffmpegStream: prism.FFmpeg;
+    
     try {
-        // Pass seekSeconds to getStream so it doesn't use cache when seeking
-        await getStream(queue.client, song.song.url, song.song.isLive, seekSeconds).then((x) =>
-            x.pipe(stream as unknown as NodeJS.WritableStream),
-        );
+        const streamResult = await getStream(queue.client, song.song.url, song.song.isLive, seekSeconds);
+        
+        if (streamResult.cachePath) {
+            // Using cached file - can use -ss for fast seeking
+            ffmpegStream = new prism.FFmpeg({
+                args: ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath),
+            });
+        } else if (streamResult.stream) {
+            // Using pipe - no seeking support, reset seek offset
+            // Seeking doesn't work with piped opus streams
+            if (seekSeconds > 0) {
+                queue.seekOffset = 0;
+            }
+            ffmpegStream = new prism.FFmpeg({
+                args: ffmpegArgs(queue.filters, 0),
+            });
+            streamResult.stream.pipe(ffmpegStream as unknown as NodeJS.WritableStream);
+        } else {
+            throw new Error("No stream or cache path available");
+        }
     } catch (error) {
         queue.endSkip();
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
@@ -203,7 +217,7 @@ export async function play(
         return;
     }
 
-    const resource = createAudioResource(stream, {
+    const resource = createAudioResource(ffmpegStream, {
         inlineVolume: true,
         inputType: StreamType.OggOpus,
         metadata: song,

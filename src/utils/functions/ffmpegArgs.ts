@@ -24,19 +24,13 @@ export const filterArgs = {
 export function ffmpegArgs(
     filters: Partial<Record<keyof typeof filterArgs, boolean>>,
     seekSeconds = 0,
+    inputPath?: string,
 ): string[] {
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
     const hasFilters = keys.some((x) => filters[x] === true);
 
     // Build audio filter chain
     const audioFilters: string[] = [];
-
-    // Add atrim filter for seeking when we have a non-zero seek position
-    // This works with pipe inputs where -ss before -i doesn't work
-    if (seekSeconds > 0) {
-        audioFilters.push(`atrim=start=${seekSeconds}`);
-        audioFilters.push("asetpts=PTS-STARTPTS"); // Reset timestamps after trim
-    }
 
     // Add user-selected filters
     if (hasFilters) {
@@ -47,11 +41,24 @@ export function ffmpegArgs(
         }
     }
 
+    // Build input args - if we have a file path, use -ss for seeking
+    // For pipe inputs, seeking is not supported (atrim doesn't work well with opus)
+    const inputArgs: string[] = [];
+    if (inputPath) {
+        // File input - can use -ss for fast seeking
+        if (seekSeconds > 0) {
+            inputArgs.push("-ss", seekSeconds.toString());
+        }
+        inputArgs.push("-i", inputPath);
+    } else {
+        // Pipe input - no seeking support
+        inputArgs.push("-i", "-");
+    }
+
     return [
         "-loglevel",
         "0",
-        "-i",
-        "-",
+        ...inputArgs,
         "-ar",
         "48000",
         "-ac",

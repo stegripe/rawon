@@ -26,30 +26,44 @@ export class CookieRotationNeededError extends Error {
     }
 }
 
+export interface StreamResult {
+    stream: Readable | null;
+    cachePath: string | null;
+}
+
 export async function getStream(
     client: Rawon,
     url: string,
     isLive = false,
     seekSeconds = 0,
-): Promise<Readable> {
+): Promise<StreamResult> {
     const isSoundcloudUrl = checkQuery(url);
     if (isSoundcloudUrl.sourceType === "soundcloud") {
-        return client.soundcloud.util.streamTrack(url) as unknown as Readable;
+        return {
+            stream: client.soundcloud.util.streamTrack(url) as unknown as Readable,
+            cachePath: null,
+        };
     }
 
-    // Don't use cache when seeking
-    if (enableAudioCache && !isLive && seekSeconds === 0 && client.audioCache.isCached(url)) {
-        const cachedStream = client.audioCache.getFromCache(url);
-        if (cachedStream !== null) {
-            return cachedStream;
-        }
+    // Check if we have a cached file
+    if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
+        const cachePath = client.audioCache.getCachePath(url);
+        // Return the cache path so FFmpeg can use -ss for seeking
+        return {
+            stream: null,
+            cachePath,
+        };
     }
 
     if (client.cookies.areAllCookiesFailed()) {
         throw new AllCookiesFailedError();
     }
 
-    return attemptStreamWithRetry(client, url, isLive, 0, seekSeconds);
+    const stream = await attemptStreamWithRetry(client, url, isLive, 0, seekSeconds);
+    return {
+        stream,
+        cachePath: null,
+    };
 }
 
 const MAX_COOKIE_RETRIES = 10;
