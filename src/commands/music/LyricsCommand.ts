@@ -184,7 +184,7 @@ export class LyricsCommand extends BaseCommand {
                 text: `• ${i18n.__mf("reusable.pageFooter", {
                     actual: 1,
                     total: pages.length,
-                })} • ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
             });
         await loadingMsg.edit({ embeds: [embed] });
         const msg = loadingMsg;
@@ -196,7 +196,7 @@ export class LyricsCommand extends BaseCommand {
                     text: `• ${i18n.__mf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,
-                    })} • ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                    })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
                 }),
             embed,
             pages,
