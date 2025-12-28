@@ -30,6 +30,12 @@ export async function play(
         return;
     }
 
+    // Reset seek offset when starting fresh (seekSeconds is only set via seek command)
+    // The SeekCommand sets queue.seekOffset before calling play
+    if (seekSeconds === 0) {
+        queue.seekOffset = 0;
+    }
+
     const song =
         (nextSong?.length ?? 0) > 0
             ? queue.songs.get(nextSong as unknown as string)
@@ -85,11 +91,12 @@ export async function play(
     }
 
     const stream = new prism.FFmpeg({
-        args: ffmpegArgs(queue.filters),
+        args: ffmpegArgs(queue.filters, seekSeconds),
     });
 
     try {
-        await getStream(queue.client, song.song.url, song.song.isLive, seekSeconds).then((x) =>
+        // Don't pass seekSeconds to getStream - seeking is now handled by FFmpeg
+        await getStream(queue.client, song.song.url, song.song.isLive).then((x) =>
             x.pipe(stream as unknown as NodeJS.WritableStream),
         );
     } catch (error) {

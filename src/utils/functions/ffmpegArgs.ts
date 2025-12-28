@@ -17,11 +17,36 @@ export const filterArgs = {
     echo: "aecho=0.8:0.9:1000:0.3",
     spedup: "aresample=48000,asetrate=48000*10/9",
     slowed: "aresample=48000,asetrate=48000*0.9",
-    reverb: "aecho=0.8:0.7:40|60|80:0.4|0.3|0.2",
+    // Room reverb with wet/dry mix - roomsize and damping tuned to reduce echo on beats
+    reverb: "afreeverb=roomsize=0.6:damping=0.7:wetlevel=0.3:drylevel=0.8:width=0.8",
 };
 
-export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, boolean>>): string[] {
+export function ffmpegArgs(
+    filters: Partial<Record<keyof typeof filterArgs, boolean>>,
+    seekSeconds = 0,
+): string[] {
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
+    const hasFilters = keys.some((x) => filters[x] === true);
+    const hasSeek = seekSeconds > 0;
+
+    // Build audio filter chain
+    const audioFilters: string[] = [];
+
+    // Add seek using atrim filter (fast seeking at FFmpeg level)
+    if (hasSeek) {
+        audioFilters.push(`atrim=start=${seekSeconds}`);
+        audioFilters.push("asetpts=PTS-STARTPTS"); // Reset timestamps after trim
+    }
+
+    // Add user-selected filters
+    if (hasFilters) {
+        for (const key of keys) {
+            if (filters[key] === true) {
+                audioFilters.push(filterArgs[key]);
+            }
+        }
+    }
+
     return [
         "-loglevel",
         "0",
@@ -33,18 +58,6 @@ export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, bool
         "opus",
         "-acodec",
         "libopus",
-        ...(keys.some((x) => filters[x] === true)
-            ? [
-                  "-af",
-                  keys
-                      .reduce<string[]>((pr, cu) => {
-                          if (filters[cu] === true) {
-                              pr.push(filterArgs[cu]);
-                          }
-                          return pr;
-                      }, [])
-                      .join(","),
-              ]
-            : []),
+        ...(audioFilters.length > 0 ? ["-af", audioFilters.join(",")] : []),
     ];
 }

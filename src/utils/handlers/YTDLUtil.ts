@@ -26,19 +26,13 @@ export class CookieRotationNeededError extends Error {
     }
 }
 
-export async function getStream(
-    client: Rawon,
-    url: string,
-    isLive = false,
-    seekSeconds = 0,
-): Promise<Readable> {
+export async function getStream(client: Rawon, url: string, isLive = false): Promise<Readable> {
     const isSoundcloudUrl = checkQuery(url);
     if (isSoundcloudUrl.sourceType === "soundcloud") {
         return client.soundcloud.util.streamTrack(url) as unknown as Readable;
     }
 
-    // Don't use cache when seeking
-    if (enableAudioCache && !isLive && seekSeconds === 0 && client.audioCache.isCached(url)) {
+    if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
         const cachedStream = client.audioCache.getFromCache(url);
         if (cachedStream !== null) {
             return cachedStream;
@@ -49,7 +43,7 @@ export async function getStream(
         throw new AllCookiesFailedError();
     }
 
-    return attemptStreamWithRetry(client, url, isLive, 0, seekSeconds);
+    return attemptStreamWithRetry(client, url, isLive);
 }
 
 const MAX_COOKIE_RETRIES = 10;
@@ -61,10 +55,9 @@ async function attemptStreamWithRetry(
     url: string,
     isLive: boolean,
     retryCount = 0,
-    seekSeconds = 0,
 ): Promise<Readable> {
     return new Promise<Readable>((resolve, reject) => {
-        const baseOptions = isLive
+        const options = isLive
             ? {
                   output: "-",
                   quiet: true,
@@ -77,16 +70,6 @@ async function attemptStreamWithRetry(
                   format: "bestaudio",
                   limitRate: "300K",
               };
-
-        // Add download-sections for seeking (only for non-live)
-        // yt-dlp format: "*START-END" where * means all videos, START/END in seconds or "inf"
-        const options =
-            !isLive && seekSeconds > 0
-                ? {
-                      ...baseOptions,
-                      downloadSections: `*${seekSeconds}-inf`,
-                  }
-                : baseOptions;
 
         const proc = exec(url, options, { stdio: ["ignore", "pipe", "pipe"] });
 
@@ -132,7 +115,7 @@ async function attemptStreamWithRetry(
                 client.logger.info(
                     `[YTDLUtil] 🔄 Rotated to cookie ${client.cookies.getCurrentCookieIndex()}, retrying...`,
                 );
-                attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
+                attemptStreamWithRetry(client, url, isLive, retryCount + 1)
                     .then(resolve)
                     .catch(reject);
             } else {
@@ -162,7 +145,7 @@ async function attemptStreamWithRetry(
                     );
                     setTimeout(
                         () => {
-                            attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
+                            attemptStreamWithRetry(client, url, isLive, retryCount + 1)
                                 .then(resolve)
                                 .catch(reject);
                         },
@@ -224,13 +207,7 @@ async function attemptStreamWithRetry(
                     if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
                         setTimeout(
                             () => {
-                                attemptStreamWithRetry(
-                                    client,
-                                    url,
-                                    isLive,
-                                    retryCount + 1,
-                                    seekSeconds,
-                                )
+                                attemptStreamWithRetry(client, url, isLive, retryCount + 1)
                                     .then(resolve)
                                     .catch(reject);
                             },
@@ -268,8 +245,7 @@ async function attemptStreamWithRetry(
 
                 hasResolved = true;
 
-                // Don't cache when seeking or for live streams
-                if (isLive || !enableAudioCache || seekSeconds > 0) {
+                if (isLive || !enableAudioCache) {
                     resolve(proc.stdout as unknown as Readable);
                     return;
                 }

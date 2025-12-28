@@ -26,6 +26,7 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
+    public seekOffset = 0; // Track seek position offset in seconds
 
     private _volume = 100;
     private _lastVSUpdateMsg: Snowflake | null = null;
@@ -250,8 +251,9 @@ export class ServerQueue {
             const metadata = resource.metadata as QueueSong | undefined;
             if (metadata !== undefined) {
                 currentSongKey = metadata.key;
-                // Get current playback position in seconds
-                currentPosition = Math.floor((resource.playbackDuration ?? 0) / 1000);
+                // Get current playback position in seconds, including seek offset
+                currentPosition =
+                    Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
             }
         }
 
