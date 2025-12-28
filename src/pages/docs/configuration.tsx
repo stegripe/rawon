@@ -228,8 +228,10 @@ SPOTIFY_CLIENT_SECRET=""`}
                                     }
                                 </code>
                                 <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(t.configuration.optional.activityTypes
-                                            .description)}
+                                    {renderWithCode(
+                                        t.configuration.optional.activityTypes
+                                            .description
+                                    )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {
