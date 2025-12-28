@@ -530,11 +530,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
                         embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__("commands.music.remove.noPermission"),
-                                true,
-                            ),
+                            createEmbed("error", i18n.__("requestChannel.noPermission"), true),
                         ],
                     });
                     return;
