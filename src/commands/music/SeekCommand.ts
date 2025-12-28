@@ -56,7 +56,9 @@ export class SeekCommand extends BaseCommand {
         const queryCheck = checkQuery(song.song.url);
         if (queryCheck.sourceType === "soundcloud") {
             await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.seek.cantSeekSoundcloud"), true)],
+                embeds: [
+                    createEmbed("error", i18n.__("commands.music.seek.cantSeekSoundcloud"), true),
+                ],
             });
             return;
         }

@@ -87,10 +87,15 @@ export async function play(
     }
 
     let ffmpegStream: prism.FFmpeg;
-    
+
     try {
-        const streamResult = await getStream(queue.client, song.song.url, song.song.isLive, seekSeconds);
-        
+        const streamResult = await getStream(
+            queue.client,
+            song.song.url,
+            song.song.isLive,
+            seekSeconds,
+        );
+
         if (streamResult.cachePath) {
             ffmpegStream = new prism.FFmpeg({
                 args: ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath),
