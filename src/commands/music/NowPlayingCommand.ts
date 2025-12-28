@@ -38,13 +38,14 @@ export class NowPlayingCommand extends BaseCommand {
                     | undefined
             )?.resource;
             const song = (res?.metadata as QueueSong | undefined)?.song;
+            const seekOffset = ctx.guild?.queue?.seekOffset ?? 0;
 
             const embed = createEmbed(
                 "info",
                 `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `,
             ).setThumbnail(song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png");
 
-            const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000);
+            const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000) + seekOffset;
             let progressLine: string;
             if (song?.isLive === true) {
                 progressLine = `🔴 **\`${i18n.__("commands.music.nowplaying.live")}\`**`;

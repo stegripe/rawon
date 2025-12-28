@@ -5,6 +5,28 @@ import { NoStackError } from "./utils/structures/NoStackError.js";
 
 const client = new Rawon(clientOptions);
 
+async function saveAllQueueStates(): Promise<void> {
+    const savePromises: Promise<void>[] = [];
+    for (const [, guild] of client.guilds.cache) {
+        if (guild.queue) {
+            savePromises.push(guild.queue.saveQueueState());
+        }
+    }
+    await Promise.all(savePromises);
+}
+
+process.on("SIGINT", async () => {
+    client.logger.info("Received SIGINT, saving queue states before exit...");
+    await saveAllQueueStates();
+    process.exit(0);
+});
+
+process.on("SIGTERM", async () => {
+    client.logger.info("Received SIGTERM, saving queue states before exit...");
+    await saveAllQueueStates();
+    process.exit(0);
+});
+
 process
     .on("exit", (code) => client.logger.info(`NodeJS process exited with code ${code}`))
     .on("unhandledRejection", (reason) =>

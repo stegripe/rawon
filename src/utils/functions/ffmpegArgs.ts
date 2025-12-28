@@ -15,16 +15,43 @@ export const filterArgs = {
     karaoke: "stereotools=mlev=0.1",
     vibrato: "vibrato=f=6.5",
     echo: "aecho=0.8:0.9:1000:0.3",
-    spedup: "aresample=48000,asetrate=48000*1.15",
+    spedup: "aresample=48000,asetrate=48000*10/9",
     slowed: "aresample=48000,asetrate=48000*0.9",
     reverb: "aecho=0.8:0.88:60:0.4",
 };
 
-export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, boolean>>): string[] {
+export function ffmpegArgs(
+    filters: Partial<Record<keyof typeof filterArgs, boolean>>,
+    seekSeconds = 0,
+    inputPath?: string,
+): string[] {
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
+    const hasFilters = keys.some((x) => filters[x] === true);
+
+    const audioFilters: string[] = [];
+
+    if (hasFilters) {
+        for (const key of keys) {
+            if (filters[key] === true) {
+                audioFilters.push(filterArgs[key]);
+            }
+        }
+    }
+
+    const inputArgs: string[] = [];
+    if (inputPath) {
+        if (seekSeconds > 0) {
+            inputArgs.push("-ss", seekSeconds.toString());
+        }
+        inputArgs.push("-i", inputPath);
+    } else {
+        inputArgs.push("-i", "-");
+    }
+
     return [
         "-loglevel",
         "0",
+        ...inputArgs,
         "-ar",
         "48000",
         "-ac",
@@ -33,18 +60,6 @@ export function ffmpegArgs(filters: Partial<Record<keyof typeof filterArgs, bool
         "opus",
         "-acodec",
         "libopus",
-        ...(keys.some((x) => filters[x] === true)
-            ? [
-                  "-af",
-                  keys
-                      .reduce<string[]>((pr, cu) => {
-                          if (filters[cu] === true) {
-                              pr.push(filterArgs[cu]);
-                          }
-                          return pr;
-                      }, [])
-                      .join(","),
-              ]
-            : []),
+        ...(audioFilters.length > 0 ? ["-af", audioFilters.join(",")] : []),
     ];
 }

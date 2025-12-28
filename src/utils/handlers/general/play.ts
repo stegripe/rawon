@@ -19,11 +19,18 @@ import {
     shouldRequeueOnError,
 } from "../YTDLUtil.js";
 
-export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): Promise<void> {
+export async function play(
+    guild: Guild,
+    nextSong?: string,
+    wasIdle?: boolean,
+    seekSeconds = 0,
+): Promise<void> {
     const queue = guild.queue;
     if (!queue) {
         return;
     }
+
+    queue.seekOffset = seekSeconds;
 
     const song =
         (nextSong?.length ?? 0) > 0
@@ -79,14 +86,28 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         return;
     }
 
-    const stream = new prism.FFmpeg({
-        args: ffmpegArgs(queue.filters),
-    });
+    let ffmpegStream: prism.FFmpeg;
 
     try {
-        await getStream(queue.client, song.song.url, song.song.isLive).then((x) =>
-            x.pipe(stream as unknown as NodeJS.WritableStream),
+        const streamResult = await getStream(
+            queue.client,
+            song.song.url,
+            song.song.isLive,
+            seekSeconds,
         );
+
+        if (streamResult.cachePath) {
+            ffmpegStream = new prism.FFmpeg({
+                args: ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath),
+            });
+        } else if (streamResult.stream) {
+            ffmpegStream = new prism.FFmpeg({
+                args: ffmpegArgs(queue.filters, 0),
+            });
+            streamResult.stream.pipe(ffmpegStream as unknown as NodeJS.WritableStream);
+        } else {
+            throw new Error("No stream or cache path available");
+        }
     } catch (error) {
         queue.endSkip();
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
@@ -193,7 +214,7 @@ export async function play(guild: Guild, nextSong?: string, wasIdle?: boolean): 
         return;
     }
 
-    const resource = createAudioResource(stream, {
+    const resource = createAudioResource(ffmpegStream, {
         inlineVolume: true,
         inputType: StreamType.OggOpus,
         metadata: song,

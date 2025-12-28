@@ -205,6 +205,20 @@
                 "description": "Configura o modo aleatório",
                 "newState": "Modo aleatório agora está {state}"
             },
+            "seek": {
+                "cantSeekLive": "Não é possível buscar em transmissões ao vivo.",
+                "cantSeekSoundcloud": "Não é possível buscar em faixas do SoundCloud.",
+                "description": "Pular para um tempo específico na música atual",
+                "exceedsDuration": "O tempo de busca excede a duração da música ({duration}).",
+                "invalidTime": "Formato de tempo inválido: {time}. Use formatos como `1:30` ou `90`.",
+                "noPlaying": "Nenhuma música está tocando no momento.",
+                "noTime": "Por favor, especifique um tempo para pular.",
+                "notCached": "Ainda não é possível buscar nesta música. Por favor, aguarde o áudio ser armazenado.",
+                "seeked": "Pulou para {time}",
+                "slashTimeDescription": "Tempo para pular (ex., `1:30` ou `90`)",
+                "usage": "{prefix}seek <tempo>",
+                "waitingForCache": "Por favor, aguarde, o áudio ainda está sendo armazenado..."
+            },
             "skip": {
                 "description": "Pula a música",
                 "skipMessage": "Pulei **{song}**",
@@ -281,7 +295,8 @@
     },
     "reusable": {
         "invalidUsage": "Uso inválido, por favor use **`{prefix} {name}`** para mais informações.",
-        "pageFooter": "Página {actual} de {total}"
+        "pageFooter": "Página {actual} de {total}",
+        "lyricsSource": "Fonte: {source}"
     },
     "utils": {
         "commonUtil": {
