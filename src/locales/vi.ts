@@ -343,17 +343,17 @@ export const vi = {
         copyright: {
             title: "Bản quyền, DMCA và Sở hữu trí tuệ",
             items: [
-                "Quyền sở hữu: Bất kỳ tài sản trí tuệ nào được sử dụng, phát hoặc hiển thị bởi bot đều không thuộc sở hữu của chúng tôi, những người duy trì, hoặc bất kỳ người đóng góp nào. Điều này bao gồm, nhưng không giới hạn, các file audio, video và hình ảnh được sử dụng trong các lệnh của bot.",
-                "Chính sách nhà cung cấp hosting: Một số nhà cung cấp hosting (như Railway) cấm hosting hoặc phân phối nội dung được bảo vệ DMCA. Điều này bao gồm các bot nhạc Discord phát nhạc/video có bản quyền. Triển khai lên các nền tảng như vậy tự chịu rủi ro.",
-                "Trách nhiệm người dùng: Bạn chịu trách nhiệm về cách bạn sử dụng bot này và nội dung nào được phát qua nó."
+                "**Quyền sở hữu:** Bất kỳ tài sản trí tuệ nào được sử dụng, phát hoặc hiển thị bởi bot đều không thuộc sở hữu của chúng tôi, những người duy trì, hoặc bất kỳ người đóng góp nào. Điều này bao gồm, nhưng không giới hạn, các file audio, video và hình ảnh được sử dụng trong các lệnh của bot.",
+                "**Chính sách nhà cung cấp hosting:** Một số nhà cung cấp hosting (như **Railway**) cấm hosting hoặc phân phối nội dung được bảo vệ DMCA. Điều này bao gồm các bot nhạc Discord phát nhạc/video có bản quyền. Triển khai lên các nền tảng như vậy tự chịu rủi ro.",
+                "**Trách nhiệm người dùng:** Bạn chịu trách nhiệm về cách bạn sử dụng bot này và nội dung nào được phát qua nó."
             ]
         },
         code: {
             title: "Sửa đổi mã",
             items: [
-                "Giấy phép: Bot này là mã nguồn mở và có thể được sửa đổi và phân phối lại theo giấy phép AGPL-3.0.",
-                "Không bảo hành: Như đã nêu trong giấy phép, chúng tôi không chịu trách nhiệm cho bất kỳ thiệt hại hoặc mất mát nào do sửa đổi, phân phối lại hoặc sử dụng mã này.",
-                "Ghi nhận: Không bao giờ tuyên bố dự án này là công việc gốc của riêng bạn. Luôn cung cấp ghi nhận phù hợp cho dự án gốc."
+                "**Giấy phép:** Bot này là mã nguồn mở và có thể được sửa đổi và phân phối lại theo giấy phép **AGPL-3.0**.",
+                "**Không bảo hành:** Như đã nêu trong giấy phép, chúng tôi không chịu trách nhiệm cho bất kỳ thiệt hại hoặc mất mát nào do sửa đổi, phân phối lại hoặc sử dụng mã này.",
+                "**Ghi nhận:** Không bao giờ tuyên bố dự án này là công việc gốc của riêng bạn. Luôn cung cấp ghi nhận phù hợp cho dự án gốc."
             ]
         }
     },
