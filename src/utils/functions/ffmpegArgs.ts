@@ -17,8 +17,7 @@ export const filterArgs = {
     echo: "aecho=0.8:0.9:1000:0.3",
     spedup: "aresample=48000,asetrate=48000*10/9",
     slowed: "aresample=48000,asetrate=48000*0.9",
-    // Room reverb with wet/dry mix - roomsize and damping tuned to reduce echo on beats
-    reverb: "afreeverb=roomsize=0.6:damping=0.7:wetlevel=0.3:drylevel=0.8:width=0.8",
+    reverb: "aecho=0.8:0.88:60:0.4",
 };
 
 export function ffmpegArgs(

@@ -45,14 +45,20 @@ export async function getStream(
         };
     }
 
-    // Check if we have a cached file
+    // Check if we have a valid cached file (using getFromCache which validates file size)
     if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
-        const cachePath = client.audioCache.getCachePath(url);
-        // Return the cache path so FFmpeg can use -ss for seeking
-        return {
-            stream: null,
-            cachePath,
-        };
+        const cacheStream = client.audioCache.getFromCache(url);
+        if (cacheStream) {
+            // We have a valid cached file, destroy the read stream and return the path
+            // FFmpeg will read directly from the file for seeking support
+            cacheStream.destroy();
+            const cachePath = client.audioCache.getCachePath(url);
+            return {
+                stream: null,
+                cachePath,
+            };
+        }
+        // Cache validation failed, fall through to stream from source
     }
 
     if (client.cookies.areAllCookiesFailed()) {
