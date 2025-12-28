@@ -40,20 +40,20 @@ export const es = {
         },
         requirements: {
             title: "📋 Requisitos",
-            nodeVersion: "Node.js versión 22.12.0 o superior",
+            nodeVersion: "**Node.js** versión `22.12.0` o superior",
             discordToken:
-                "Token de Bot de Discord (obtén desde [Discord Developer Portal](https://discord.com/developers/applications))",
-            optional: "Opcional: Credenciales de API de Spotify para soporte de Spotify"
+                "**Token de Bot de Discord** (obtén desde [Discord Developer Portal](https://discord.com/developers/applications))",
+            optional: "**Opcional:** Credenciales de API de Spotify para soporte de Spotify"
         },
         standardSetup: {
             title: "💻 Configuración Estándar (Node.js)",
             steps: [
-                "Descarga e instala Node.js versión 22.12.0 o superior",
+                "Descarga e instala **Node.js** versión `22.12.0` o superior",
                 "Clona o descarga este repositorio",
-                "Copia .env_example a .env y rellena los valores requeridos (mínimo: DISCORD_TOKEN)",
-                "Instala dependencias: pnpm install",
-                "Compila el proyecto: pnpm run build",
-                "Inicia el bot: pnpm start"
+                "Copia `.env_example` a `.env` y rellena los valores requeridos (mínimo: `DISCORD_TOKEN`)",
+                "Instala dependencias: `pnpm install`",
+                "Compila el proyecto: `pnpm run build`",
+                "Inicia el bot: `pnpm start`"
             ],
             requestChannel:
                 "(Opcional) Después de que el bot esté en línea, configura un canal de música dedicado:"
@@ -62,18 +62,18 @@ export const es = {
             title: "🐳 Configuración Docker (Recomendado)",
             composeTitle: "Usando Docker Compose",
             composeSteps: [
-                "Crea un archivo .env con tu configuración (copia de .env_example)",
-                "Crea un archivo docker-compose.yaml (ver ejemplo abajo)",
-                "Inicia el bot: docker compose up -d",
-                "Ver logs: docker logs -f rawon-bot"
+                "Crea un archivo `.env` con tu configuración (copia de `.env_example`)",
+                "Crea un archivo `docker-compose.yaml` (ver ejemplo abajo)",
+                "Inicia el bot: `docker compose up -d`",
+                "Ver logs: `docker logs -f rawon-bot`"
             ],
             runTitle: "Usando Docker Run",
             volumeInfo: {
                 title: "📁 Información del Volumen",
-                description: "El volumen /app/cache almacena:",
+                description: "El volumen `/app/cache` almacena:",
                 items: [
-                    "Binario yt-dlp para streaming de audio",
-                    "data.json para configuraciones persistentes (canales de solicitud, estados del reproductor)",
+                    "Binario `yt-dlp` para streaming de audio",
+                    "`data.json` para configuraciones persistentes (canales de solicitud, estados del reproductor)",
                     "Archivos de audio en caché (si el caché de audio está habilitado)",
                     "Archivos de cookies para autenticación de plataforma de video"
                 ]
@@ -82,8 +82,8 @@ export const es = {
         railwaySetup: {
             title: "🚂 Despliegue en Railway",
             description:
-                "Railway proporciona $5 de créditos gratuitos mensuales. Tu bot permanecerá en línea 24/7 mientras el uso se mantenga por debajo de $5.",
-            warning: "IMPORTANTE: Lee los Avisos Legales antes de desplegar en Railway."
+                "**Railway** proporciona $5 de créditos gratuitos mensuales. Tu bot permanecerá en línea 24/7 mientras el uso se mantenga por debajo de $5.",
+            warning: "**IMPORTANTE:** Lee los Avisos Legales antes de desplegar en Railway."
         },
         cookiesQuickStart: {
             title: "🍪 Inicio Rápido: Configuración de Cookies",
@@ -105,16 +105,16 @@ export const es = {
         essential: {
             title: "⚡ Configuración Esencial",
             description:
-                "Estas son las configuraciones mínimas para ejecutar el bot. ¡Solo rellena tu token de Discord y listo!",
+                "Estas son las configuraciones mínimas para ejecutar el bot. ¡Solo rellena tu **token de Discord** y listo!",
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "Tu token de bot de Discord desde [Discord Developer Portal](https://discord.com/developers/applications). ¡Esta es la única configuración REQUERIDA!",
+                    "Tu token de bot de Discord desde [Discord Developer Portal](https://discord.com/developers/applications). ¡Esta es la **única configuración REQUERIDA**!",
                 required: true
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "Prefijo de comando principal. Ejemplo: ! significa que escribes !play para reproducir música",
+                description: "Prefijo de comando principal. Ejemplo: `!` significa que escribes `!play` para reproducir música",
                 default: "!"
             },
             mainServer: {
@@ -141,39 +141,39 @@ export const es = {
             altPrefix: {
                 name: "ALT_PREFIX",
                 description:
-                    "Prefijos alternativos (separados por coma). Usa {mention} para permitir @bot como prefijo. Ejemplo: {mention},r! permite tanto @Rawon play como r!play",
+                    "Prefijos alternativos (separados por coma). Usa `{mention}` para permitir @bot como prefijo. Ejemplo: `{mention},r!` permite tanto `@Rawon play` como `r!play`",
                 default: "{mention}"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "Actividades de estado del bot mostradas bajo el nombre del bot (separadas por coma). Placeholders disponibles: {prefix}, {userCount}, {textChannelCount}, {serverCount}, {playingCount}, {username}"
+                    "Actividades de estado del bot mostradas bajo el nombre del bot (separadas por coma). Placeholders disponibles: `{prefix}`, `{userCount}`, `{textChannelCount}`, `{serverCount}`, `{playingCount}`, `{username}`"
             },
             activityTypes: {
                 name: "ACTIVITY_TYPES",
-                description: "Tipos de actividad para cada actividad arriba (separados por coma). Debe coincidir con el número de ACTIVITIES",
+                description: "Tipos de actividad para cada actividad arriba (separados por coma). Debe coincidir con el número de `ACTIVITIES`",
                 options: "PLAYING, WATCHING, LISTENING, COMPETING"
             },
             embedColor: {
                 name: "EMBED_COLOR",
-                description: "Color de embed en hex (sin #). Este color aparece en todos los embeds de mensajes del bot",
+                description: "Color de embed en hex (sin `#`). Este color aparece en todos los embeds de mensajes del bot",
                 default: "22C9FF"
             },
             emojis: {
                 name: "Emojis",
-                description: "Personaliza emojis de éxito (YES_EMOJI) y error (NO_EMOJI) mostrados en respuestas del bot",
+                description: "Personaliza emojis de éxito (`YES_EMOJI`) y error (`NO_EMOJI`) mostrados en respuestas del bot",
                 defaults: "✅ / ❌"
             },
             musicSelection: {
                 name: "MUSIC_SELECTION_TYPE",
-                description: "Cómo se muestran los resultados de búsqueda. 'message' muestra lista numerada, 'selectmenu' muestra menú desplegable",
+                description: "Cómo se muestran los resultados de búsqueda. `message` muestra lista numerada, `selectmenu` muestra menú desplegable",
                 options: "message, selectmenu",
                 default: "message"
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "[EXPERIMENTAL] Cachea audio descargado para reproducción más rápida. Usa más espacio en disco pero acelera canciones frecuentes",
+                    "**[EXPERIMENTAL]** Cachea audio descargado para reproducción más rápida. Usa más espacio en disco pero acelera canciones frecuentes",
                 default: "no"
             },
             requestChannelSplash: {
@@ -184,20 +184,20 @@ export const es = {
         },
         developer: {
             title: "🛠️ Configuración de Desarrollador",
-            description: "Configuraciones avanzadas para desarrolladores de bots. ¡Solo usa si sabes lo que haces!",
+            description: "Configuraciones avanzadas para desarrolladores de bots. **¡Solo usa si sabes lo que haces!**",
             devs: {
                 name: "DEVS",
                 description: "IDs de desarrolladores del bot (separados por coma). Los desarrolladores pueden acceder a comandos especiales"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Habilitar/deshabilitar comandos con prefijo (como !play). Útil si solo quieres comandos slash",
+                description: "Habilitar/deshabilitar comandos con prefijo (como `!play`). Útil si solo quieres comandos slash",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Habilitar/deshabilitar comandos slash (como /play). Útil si solo quieres comandos con prefijo",
+                description: "Habilitar/deshabilitar comandos slash (como `/play`). Útil si solo quieres comandos con prefijo",
                 default: "yes",
                 options: "yes, no"
             },
@@ -354,17 +354,17 @@ export const es = {
         copyright: {
             title: "Derechos de Autor, DMCA y Propiedad Intelectual",
             items: [
-                "Propiedad: Cualquier propiedad intelectual usada, reproducida o mostrada por el bot no es propiedad nuestra, de los mantenedores ni de los contribuidores. Esto incluye, pero no se limita a, archivos de audio, video e imagen usados en los comandos del bot.",
-                "Políticas de Proveedores de Hosting: Algunos proveedores de hosting (como Railway) prohíben alojar o distribuir contenido protegido por DMCA. Esto incluye bots de música de Discord que reproducen música/video con derechos de autor. Despliega en estas plataformas bajo tu propio riesgo.",
-                "Responsabilidad del Usuario: Eres responsable de cómo usas este bot y qué contenido se reproduce a través de él."
+                "**Propiedad:** Cualquier propiedad intelectual usada, reproducida o mostrada por el bot no es propiedad nuestra, de los mantenedores ni de los contribuidores. Esto incluye, pero no se limita a, archivos de audio, video e imagen usados en los comandos del bot.",
+                "**Políticas de Proveedores de Hosting:** Algunos proveedores de hosting (como **Railway**) prohíben alojar o distribuir contenido protegido por DMCA. Esto incluye bots de música de Discord que reproducen música/video con derechos de autor. Despliega en estas plataformas bajo tu propio riesgo.",
+                "**Responsabilidad del Usuario:** Eres responsable de cómo usas este bot y qué contenido se reproduce a través de él."
             ]
         },
         code: {
             title: "Modificaciones de Código",
             items: [
-                "Licencia: Este bot es de código abierto y puede ser modificado y redistribuido bajo la licencia AGPL-3.0.",
-                "Sin Garantía: Como se indica en la licencia, no somos responsables de ningún daño o pérdida resultante de modificar, redistribuir o usar este código.",
-                "Atribución: Nunca reclames este proyecto como tu propio trabajo original. Siempre proporciona la atribución adecuada al proyecto original."
+                "**Licencia:** Este bot es de código abierto y puede ser modificado y redistribuido bajo la licencia **AGPL-3.0**.",
+                "**Sin Garantía:** Como se indica en la licencia, no somos responsables de ningún daño o pérdida resultante de modificar, redistribuir o usar este código.",
+                "**Atribución:** Nunca reclames este proyecto como tu propio trabajo original. Siempre proporciona la atribución adecuada al proyecto original."
             ]
         }
     },

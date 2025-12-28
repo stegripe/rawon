@@ -1,4 +1,5 @@
 import { useLocale } from "@/contexts/LocaleContext";
+import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded, WarningAmber } from "@mui/icons-material";
 import { Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
@@ -24,7 +25,7 @@ export default function DisclaimersPage() {
                                 {t.disclaimers.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.disclaimers.subtitle}
+                                {renderWithCode(t.disclaimers.subtitle)}
                             </Typography>
                         </div>
                     </div>
@@ -50,7 +51,7 @@ export default function DisclaimersPage() {
                                         <span className="font-semibold">
                                             {index + 1}.
                                         </span>{" "}
-                                        {item}
+                                        {renderWithCode(item)}
                                     </Typography>
                                 </div>
                             ))}
@@ -71,7 +72,7 @@ export default function DisclaimersPage() {
                                         <span className="font-semibold">
                                             {index + 1}.
                                         </span>{" "}
-                                        {item}
+                                        {renderWithCode(item)}
                                     </Typography>
                                 </div>
                             ))}

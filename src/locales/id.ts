@@ -40,20 +40,20 @@ export const id = {
         },
         requirements: {
             title: "📋 Persyaratan",
-            nodeVersion: "Node.js versi 22.12.0 atau lebih tinggi",
+            nodeVersion: "**Node.js** versi `22.12.0` atau lebih tinggi",
             discordToken:
-                "Token Bot Discord (dapatkan dari [Discord Developer Portal](https://discord.com/developers/applications))",
-            optional: "Opsional: Kredensial API Spotify untuk dukungan Spotify"
+                "**Token Bot Discord** (dapatkan dari [Discord Developer Portal](https://discord.com/developers/applications))",
+            optional: "**Opsional:** Kredensial API Spotify untuk dukungan Spotify"
         },
         standardSetup: {
             title: "💻 Setup Standar (Node.js)",
             steps: [
-                "Download dan install Node.js versi 22.12.0 atau lebih tinggi",
+                "Download dan install **Node.js** versi `22.12.0` atau lebih tinggi",
                 "Clone atau download repository ini",
-                "Salin .env_example ke .env dan isi nilai yang diperlukan (minimal: DISCORD_TOKEN)",
-                "Install dependencies: pnpm install",
-                "Build project: pnpm run build",
-                "Jalankan bot: pnpm start"
+                "Salin `.env_example` ke `.env` dan isi nilai yang diperlukan (minimal: `DISCORD_TOKEN`)",
+                "Install dependencies: `pnpm install`",
+                "Build project: `pnpm run build`",
+                "Jalankan bot: `pnpm start`"
             ],
             requestChannel:
                 "(Opsional) Setelah bot online, setup channel musik khusus:"
@@ -62,18 +62,18 @@ export const id = {
             title: "🐳 Setup Docker (Disarankan)",
             composeTitle: "Menggunakan Docker Compose",
             composeSteps: [
-                "Buat file .env dengan konfigurasi Anda (salin dari .env_example)",
-                "Buat file docker-compose.yaml (lihat contoh di bawah)",
-                "Jalankan bot: docker compose up -d",
-                "Lihat log: docker logs -f rawon-bot"
+                "Buat file `.env` dengan konfigurasi Anda (salin dari `.env_example`)",
+                "Buat file `docker-compose.yaml` (lihat contoh di bawah)",
+                "Jalankan bot: `docker compose up -d`",
+                "Lihat log: `docker logs -f rawon-bot`"
             ],
             runTitle: "Menggunakan Docker Run",
             volumeInfo: {
                 title: "📁 Informasi Volume",
-                description: "Volume /app/cache menyimpan:",
+                description: "Volume `/app/cache` menyimpan:",
                 items: [
-                    "Binary yt-dlp untuk streaming audio",
-                    "data.json untuk pengaturan persisten (request channels, status player)",
+                    "Binary `yt-dlp` untuk streaming audio",
+                    "`data.json` untuk pengaturan persisten (request channels, status player)",
                     "File audio yang di-cache (jika audio caching diaktifkan)",
                     "File cookie untuk autentikasi platform video"
                 ]
@@ -82,9 +82,9 @@ export const id = {
         railwaySetup: {
             title: "🚂 Deploy ke Railway",
             description:
-                "Railway menyediakan $5 kredit gratis per bulan. Bot Anda akan online 24/7 selama penggunaan di bawah $5.",
+                "**Railway** menyediakan $5 kredit gratis per bulan. Bot Anda akan online 24/7 selama penggunaan di bawah $5.",
             warning:
-                "PENTING: Baca Disclaimer sebelum deploy ke Railway."
+                "**PENTING:** Baca Disclaimer sebelum deploy ke Railway."
         },
         cookiesQuickStart: {
             title: "🍪 Quick Start: Setup Cookies",
@@ -106,16 +106,16 @@ export const id = {
         essential: {
             title: "⚡ Pengaturan Esensial",
             description:
-                "Ini adalah pengaturan minimum untuk menjalankan bot. Cukup isi token Discord dan Anda siap!",
+                "Ini adalah pengaturan minimum untuk menjalankan bot. Cukup isi **token Discord** dan Anda siap!",
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "Token bot Discord Anda dari [Discord Developer Portal](https://discord.com/developers/applications). Ini satu-satunya pengaturan WAJIB!",
+                    "Token bot Discord Anda dari [Discord Developer Portal](https://discord.com/developers/applications). Ini **satu-satunya pengaturan WAJIB**!",
                 required: true
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "Prefix perintah utama. Contoh: ! berarti Anda ketik !play untuk memutar musik",
+                description: "Prefix perintah utama. Contoh: `!` berarti Anda ketik `!play` untuk memutar musik",
                 default: "!"
             },
             mainServer: {
@@ -142,40 +142,40 @@ export const id = {
             altPrefix: {
                 name: "ALT_PREFIX",
                 description:
-                    "Prefix alternatif (pisahkan dengan koma). Gunakan {mention} untuk mengizinkan @bot sebagai prefix. Contoh: {mention},r! mengizinkan @Rawon play dan r!play",
+                    "Prefix alternatif (pisahkan dengan koma). Gunakan `{mention}` untuk mengizinkan @bot sebagai prefix. Contoh: `{mention},r!` mengizinkan `@Rawon play` dan `r!play`",
                 default: "{mention}"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "Aktivitas status bot yang ditampilkan di bawah nama bot (pisahkan dengan koma). Placeholder tersedia: {prefix}, {userCount}, {textChannelCount}, {serverCount}, {playingCount}, {username}"
+                    "Aktivitas status bot yang ditampilkan di bawah nama bot (pisahkan dengan koma). Placeholder tersedia: `{prefix}`, `{userCount}`, `{textChannelCount}`, `{serverCount}`, `{playingCount}`, `{username}`"
             },
             activityTypes: {
                 name: "ACTIVITY_TYPES",
-                description: "Tipe aktivitas untuk setiap aktivitas di atas (pisahkan dengan koma). Harus sesuai jumlah ACTIVITIES",
+                description: "Tipe aktivitas untuk setiap aktivitas di atas (pisahkan dengan koma). Harus sesuai jumlah `ACTIVITIES`",
                 options: "PLAYING, WATCHING, LISTENING, COMPETING"
             },
             embedColor: {
                 name: "EMBED_COLOR",
-                description: "Warna embed dalam hex (tanpa #). Warna ini muncul di semua embed pesan bot",
+                description: "Warna embed dalam hex (tanpa `#`). Warna ini muncul di semua embed pesan bot",
                 default: "22C9FF"
             },
             emojis: {
                 name: "Emoji",
                 description:
-                    "Kustomisasi emoji sukses (YES_EMOJI) dan gagal (NO_EMOJI) yang ditampilkan di respon bot",
+                    "Kustomisasi emoji sukses (`YES_EMOJI`) dan gagal (`NO_EMOJI`) yang ditampilkan di respon bot",
                 defaults: "✅ / ❌"
             },
             musicSelection: {
                 name: "MUSIC_SELECTION_TYPE",
-                description: "Cara hasil pencarian ditampilkan. 'message' menunjukkan daftar bernomor, 'selectmenu' menunjukkan menu dropdown",
+                description: "Cara hasil pencarian ditampilkan. `message` menunjukkan daftar bernomor, `selectmenu` menunjukkan menu dropdown",
                 options: "message, selectmenu",
                 default: "message"
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "[EKSPERIMENTAL] Cache audio yang didownload untuk pemutaran ulang lebih cepat. Menggunakan lebih banyak disk space tapi mempercepat lagu yang sering diputar",
+                    "**[EKSPERIMENTAL]** Cache audio yang didownload untuk pemutaran ulang lebih cepat. Menggunakan lebih banyak disk space tapi mempercepat lagu yang sering diputar",
                 default: "no"
             },
             requestChannelSplash: {
@@ -186,20 +186,20 @@ export const id = {
         },
         developer: {
             title: "🛠️ Pengaturan Developer",
-            description: "Pengaturan lanjutan untuk developer bot. Hanya gunakan jika Anda tahu apa yang Anda lakukan!",
+            description: "Pengaturan lanjutan untuk developer bot. **Hanya gunakan jika Anda tahu apa yang Anda lakukan!**",
             devs: {
                 name: "DEVS",
                 description: "ID developer bot (pisahkan dengan koma). Developer dapat mengakses command khusus"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Aktifkan/nonaktifkan prefix commands (seperti !play). Berguna jika Anda hanya ingin slash commands",
+                description: "Aktifkan/nonaktifkan prefix commands (seperti `!play`). Berguna jika Anda hanya ingin slash commands",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Aktifkan/nonaktifkan slash commands (seperti /play). Berguna jika Anda hanya ingin prefix commands",
+                description: "Aktifkan/nonaktifkan slash commands (seperti `/play`). Berguna jika Anda hanya ingin prefix commands",
                 default: "yes",
                 options: "yes, no"
             },
@@ -356,17 +356,17 @@ export const id = {
         copyright: {
             title: "Hak Cipta, DMCA, dan Kekayaan Intelektual",
             items: [
-                "Kepemilikan: Setiap kekayaan intelektual yang digunakan, diputar, atau ditampilkan oleh bot BUKAN milik kami, pengelola, atau kontributor manapun. Ini termasuk, tetapi tidak terbatas pada, file audio, video, dan gambar yang digunakan dalam perintah bot.",
-                "Kebijakan Hosting Provider: Beberapa hosting provider (seperti Railway) melarang hosting atau distribusi konten yang dilindungi DMCA. Ini termasuk bot musik Discord yang memutar musik/video berhak cipta. Deploy ke platform tersebut dengan risiko Anda sendiri.",
-                "Tanggung Jawab Pengguna: Anda bertanggung jawab atas cara Anda menggunakan bot ini dan konten apa yang diputar melaluinya."
+                "**Kepemilikan:** Setiap kekayaan intelektual yang digunakan, diputar, atau ditampilkan oleh bot BUKAN milik kami, pengelola, atau kontributor manapun. Ini termasuk, tetapi tidak terbatas pada, file audio, video, dan gambar yang digunakan dalam perintah bot.",
+                "**Kebijakan Hosting Provider:** Beberapa hosting provider (seperti **Railway**) melarang hosting atau distribusi konten yang dilindungi DMCA. Ini termasuk bot musik Discord yang memutar musik/video berhak cipta. Deploy ke platform tersebut dengan risiko Anda sendiri.",
+                "**Tanggung Jawab Pengguna:** Anda bertanggung jawab atas cara Anda menggunakan bot ini dan konten apa yang diputar melaluinya."
             ]
         },
         code: {
             title: "Modifikasi Kode",
             items: [
-                "Lisensi: Bot ini open source dan dapat dimodifikasi serta didistribusikan ulang di bawah lisensi AGPL-3.0.",
-                "Tanpa Jaminan: Sebagaimana dinyatakan dalam lisensi, kami TIDAK bertanggung jawab atas kerusakan atau kerugian yang diakibatkan dari memodifikasi, mendistribusikan ulang, atau menggunakan kode ini.",
-                "Atribusi: Jangan pernah mengklaim proyek ini sebagai karya asli Anda sendiri. Selalu berikan atribusi yang tepat ke proyek asli."
+                "**Lisensi:** Bot ini open source dan dapat dimodifikasi serta didistribusikan ulang di bawah lisensi **AGPL-3.0**.",
+                "**Tanpa Jaminan:** Sebagaimana dinyatakan dalam lisensi, kami TIDAK bertanggung jawab atas kerusakan atau kerugian yang diakibatkan dari memodifikasi, mendistribusikan ulang, atau menggunakan kode ini.",
+                "**Atribusi:** Jangan pernah mengklaim proyek ini sebagai karya asli Anda sendiri. Selalu berikan atribusi yang tepat ke proyek asli."
             ]
         }
     },

@@ -26,7 +26,7 @@ export default function GettingStartedPage() {
                                 {t.gettingStarted.title}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {t.gettingStarted.subtitle}
+                                {renderWithCode(t.gettingStarted.subtitle)}
                             </Typography>
                         </div>
                     </div>
@@ -87,14 +87,14 @@ export default function GettingStartedPage() {
                                 (step, index) => (
                                     <li key={index}>
                                         <Typography className="font-sans">
-                                            {step}
+                                            {renderWithCode(step)}
                                         </Typography>
                                     </li>
                                 )
                             )}
                         </ol>
                         <Typography className="font-sans text-sm">
-                            {t.gettingStarted.standardSetup.requestChannel}
+                            {renderWithCode(t.gettingStarted.standardSetup.requestChannel)}
                         </Typography>
                         <CopyBlock
                             language="bash"
@@ -119,7 +119,7 @@ export default function GettingStartedPage() {
                                 (step, index) => (
                                     <li key={index}>
                                         <Typography className="font-sans">
-                                            {step}
+                                            {renderWithCode(step)}
                                         </Typography>
                                     </li>
                                 )
@@ -164,17 +164,17 @@ volumes:
                                 {t.gettingStarted.dockerSetup.volumeInfo.title}
                             </Typography>
                             <Typography className="font-sans text-sm">
-                                {
+                                {renderWithCode(
                                     t.gettingStarted.dockerSetup.volumeInfo
                                         .description
-                                }
+                                )}
                             </Typography>
                             <ul className="m-0 mt-2 list-disc pl-5">
                                 {t.gettingStarted.dockerSetup.volumeInfo.items.map(
                                     (item, index) => (
                                         <li key={index}>
                                             <Typography className="font-sans text-sm">
-                                                {item}
+                                                {renderWithCode(item)}
                                             </Typography>
                                         </li>
                                     )
@@ -188,11 +188,11 @@ volumes:
                             {t.gettingStarted.railwaySetup.title}
                         </Typography>
                         <Typography className="font-sans">
-                            {t.gettingStarted.railwaySetup.description}
+                            {renderWithCode(t.gettingStarted.railwaySetup.description)}
                         </Typography>
                         <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-100 p-3">
                             <Typography className="font-sans text-sm font-medium">
-                                ⚠️ {t.gettingStarted.railwaySetup.warning}
+                                ⚠️ {renderWithCode(t.gettingStarted.railwaySetup.warning)}
                             </Typography>
                         </div>
                         <Link

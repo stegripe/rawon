@@ -40,20 +40,20 @@ export const en = {
         },
         requirements: {
             title: "📋 Requirements",
-            nodeVersion: "Node.js version 22.12.0 or higher",
+            nodeVersion: "**Node.js** version `22.12.0` or higher",
             discordToken:
-                "Discord Bot Token (get from [Discord Developer Portal](https://discord.com/developers/applications))",
-            optional: "Optional: Spotify API credentials for Spotify support"
+                "**Discord Bot Token** (get from [Discord Developer Portal](https://discord.com/developers/applications))",
+            optional: "**Optional:** Spotify API credentials for Spotify support"
         },
         standardSetup: {
             title: "💻 Standard Setup (Node.js)",
             steps: [
-                "Download and install Node.js version 22.12.0 or higher",
+                "Download and install **Node.js** version `22.12.0` or higher",
                 "Clone or download this repository",
-                "Copy .env_example to .env and fill in the required values (at minimum: DISCORD_TOKEN)",
-                "Install dependencies: pnpm install",
-                "Build the project: pnpm run build",
-                "Start the bot: pnpm start"
+                "Copy `.env_example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)",
+                "Install dependencies: `pnpm install`",
+                "Build the project: `pnpm run build`",
+                "Start the bot: `pnpm start`"
             ],
             requestChannel:
                 "(Optional) After the bot is online, set up a dedicated music channel:"
@@ -62,18 +62,18 @@ export const en = {
             title: "🐳 Docker Setup (Recommended)",
             composeTitle: "Using Docker Compose",
             composeSteps: [
-                "Create a .env file with your configuration (copy from .env_example)",
-                "Create a docker-compose.yaml file (see example below)",
-                "Start the bot: docker compose up -d",
-                "View logs: docker logs -f rawon-bot"
+                "Create a `.env` file with your configuration (copy from `.env_example`)",
+                "Create a `docker-compose.yaml` file (see example below)",
+                "Start the bot: `docker compose up -d`",
+                "View logs: `docker logs -f rawon-bot`"
             ],
             runTitle: "Using Docker Run",
             volumeInfo: {
                 title: "📁 Volume Information",
-                description: "The /app/cache volume stores:",
+                description: "The `/app/cache` volume stores:",
                 items: [
-                    "yt-dlp binary for audio streaming",
-                    "data.json for persistent settings (request channels, player states)",
+                    "`yt-dlp` binary for audio streaming",
+                    "`data.json` for persistent settings (request channels, player states)",
                     "Cached audio files (if audio caching is enabled)",
                     "Cookie files for video platform authentication"
                 ]
@@ -82,8 +82,8 @@ export const en = {
         railwaySetup: {
             title: "🚂 Railway Deployment",
             description:
-                "Railway provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.",
-            warning: "IMPORTANT: Read Disclaimers before deploying to Railway."
+                "**Railway** provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.",
+            warning: "**IMPORTANT:** Read Disclaimers before deploying to Railway."
         },
         cookiesQuickStart: {
             title: "🍪 Quick Start: Cookies Setup",
@@ -105,16 +105,16 @@ export const en = {
         essential: {
             title: "⚡ Essential Settings",
             description:
-                "These are the minimum settings required to run the bot. Just fill in your Discord token and you're ready to go!",
+                "These are the minimum settings required to run the bot. Just fill in your **Discord token** and you're ready to go!",
             discordToken: {
                 name: "DISCORD_TOKEN",
                 description:
-                    "Your Discord bot token from the [Discord Developer Portal](https://discord.com/developers/applications). This is the only REQUIRED setting!",
+                    "Your Discord bot token from the [Discord Developer Portal](https://discord.com/developers/applications). This is the **only REQUIRED** setting!",
                 required: true
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "Main command prefix. Example: ! means you type !play to play music",
+                description: "Main command prefix. Example: `!` means you type `!play` to play music",
                 default: "!"
             },
             mainServer: {
@@ -141,39 +141,39 @@ export const en = {
             altPrefix: {
                 name: "ALT_PREFIX",
                 description:
-                    "Alternative prefixes (comma-separated). Use {mention} to allow @bot as a prefix. Example: {mention},r! allows both @Rawon play and r!play",
+                    "Alternative prefixes (comma-separated). Use `{mention}` to allow @bot as a prefix. Example: `{mention},r!` allows both `@Rawon play` and `r!play`",
                 default: "{mention}"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "Bot status activities shown under the bot name (comma-separated). Available placeholders: {prefix}, {userCount}, {textChannelCount}, {serverCount}, {playingCount}, {username}"
+                    "Bot status activities shown under the bot name (comma-separated). Available placeholders: `{prefix}`, `{userCount}`, `{textChannelCount}`, `{serverCount}`, `{playingCount}`, `{username}`"
             },
             activityTypes: {
                 name: "ACTIVITY_TYPES",
-                description: "Activity types for each activity above (comma-separated). Must match the number of ACTIVITIES",
+                description: "Activity types for each activity above (comma-separated). Must match the number of `ACTIVITIES`",
                 options: "PLAYING, WATCHING, LISTENING, COMPETING"
             },
             embedColor: {
                 name: "EMBED_COLOR",
-                description: "Embed color in hex (without #). This color appears on all bot message embeds",
+                description: "Embed color in hex (without `#`). This color appears on all bot message embeds",
                 default: "22C9FF"
             },
             emojis: {
                 name: "Emojis",
-                description: "Customize success (YES_EMOJI) and failure (NO_EMOJI) emojis shown in bot responses",
+                description: "Customize success (`YES_EMOJI`) and failure (`NO_EMOJI`) emojis shown in bot responses",
                 defaults: "✅ / ❌"
             },
             musicSelection: {
                 name: "MUSIC_SELECTION_TYPE",
-                description: "How search results are displayed. 'message' shows numbered list, 'selectmenu' shows dropdown menu",
+                description: "How search results are displayed. `message` shows numbered list, `selectmenu` shows dropdown menu",
                 options: "message, selectmenu",
                 default: "message"
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "[EXPERIMENTAL] Cache downloaded audio for faster repeated playback. Uses more disk space but speeds up frequently played songs",
+                    "**[EXPERIMENTAL]** Cache downloaded audio for faster repeated playback. Uses more disk space but speeds up frequently played songs",
                 default: "no"
             },
             requestChannelSplash: {
@@ -184,20 +184,20 @@ export const en = {
         },
         developer: {
             title: "🛠️ Developer Settings",
-            description: "Advanced settings for bot developers. Only use if you know what you're doing!",
+            description: "Advanced settings for bot developers. **Only use if you know what you're doing!**",
             devs: {
                 name: "DEVS",
                 description: "Bot developer IDs (comma-separated). Developers can access special commands"
             },
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Enable/disable prefix commands (like !play). Useful if you only want slash commands",
+                description: "Enable/disable prefix commands (like `!play`). Useful if you only want slash commands",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Enable/disable slash commands (like /play). Useful if you only want prefix commands",
+                description: "Enable/disable slash commands (like `/play`). Useful if you only want prefix commands",
                 default: "yes",
                 options: "yes, no"
             },
@@ -354,17 +354,17 @@ export const en = {
         copyright: {
             title: "Copyright, DMCA, and Intellectual Properties",
             items: [
-                "Ownership: Any intellectual properties used, played, or displayed by the bot are not owned by us, the maintainers, or any contributors. This includes, but is not limited to, audio, video, and image files used in the bot's commands.",
-                "Hosting Provider Policies: Some hosting providers (like Railway) prohibit hosting or distributing DMCA-protected content. This includes Discord music bots that play copyrighted music/video. Deploy to such platforms at your own risk.",
-                "User Responsibility: You are responsible for how you use this bot and what content is played through it."
+                "**Ownership:** Any intellectual properties used, played, or displayed by the bot are not owned by us, the maintainers, or any contributors. This includes, but is not limited to, audio, video, and image files used in the bot's commands.",
+                "**Hosting Provider Policies:** Some hosting providers (like **Railway**) prohibit hosting or distributing DMCA-protected content. This includes Discord music bots that play copyrighted music/video. Deploy to such platforms at your own risk.",
+                "**User Responsibility:** You are responsible for how you use this bot and what content is played through it."
             ]
         },
         code: {
             title: "Code Modifications",
             items: [
-                "License: This bot is open source and can be modified and redistributed under the AGPL-3.0 license.",
-                "No Warranty: As stated in the license, we are not responsible for any damages or losses resulting from modifying, redistributing, or using this code.",
-                "Attribution: Never claim this project as your own original work. Always provide proper attribution to the original project."
+                "**License:** This bot is open source and can be modified and redistributed under the **AGPL-3.0** license.",
+                "**No Warranty:** As stated in the license, we are not responsible for any damages or losses resulting from modifying, redistributing, or using this code.",
+                "**Attribution:** Never claim this project as your own original work. Always provide proper attribution to the original project."
             ]
         }
     },
