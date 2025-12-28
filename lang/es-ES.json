@@ -361,6 +361,7 @@
         "removeChannel": "El canal de solicitudes ha sido eliminado.",
         "noChannel": "No hay canal de solicitudes establecido actualmente.",
         "currentChannel": "Canal de solicitudes actual: {channel}",
-        "skipInProgress": "Por favor espera, una operación de salto está en progreso."
+        "skipInProgress": "Por favor espera, una operación de salto está en progreso.",
+        "noPermission": "No tienes permiso para realizar esta acción. Solo el rol DJ, administradores del servidor o quien solicitó la canción pueden hacerlo."
     }
 }

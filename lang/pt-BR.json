@@ -361,6 +361,7 @@
         "removeChannel": "O canal de pedidos foi removido.",
         "noChannel": "Nenhum canal de pedidos está definido atualmente.",
         "currentChannel": "Canal de pedidos atual: {channel}",
-        "skipInProgress": "Por favor aguarde, uma operação de pular está em andamento."
+        "skipInProgress": "Por favor aguarde, uma operação de pular está em andamento.",
+        "noPermission": "Você não tem permissão para realizar esta ação. Apenas o cargo DJ, gerentes do servidor ou quem solicitou a música podem fazer isso."
     }
 }

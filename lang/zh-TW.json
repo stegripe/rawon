@@ -361,6 +361,7 @@
         "removeChannel": "點歌頻道已移除。",
         "noChannel": "當前沒有設置點歌頻道。",
         "currentChannel": "當前點歌頻道：{channel}",
-        "skipInProgress": "請稍候，跳過操作正在進行中。"
+        "skipInProgress": "請稍候，跳過操作正在進行中。",
+        "noPermission": "您沒有權限執行此操作。只有DJ身份組、伺服器管理員或點歌者可以執行此操作。"
     }
 }

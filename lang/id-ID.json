@@ -361,6 +361,7 @@
         "removeChannel": "Channel request telah dihapus.",
         "noChannel": "Tidak ada channel request yang diatur saat ini.",
         "currentChannel": "Channel request saat ini: {channel}",
-        "skipInProgress": "Mohon tunggu, operasi skip sedang berlangsung."
+        "skipInProgress": "Mohon tunggu, operasi skip sedang berlangsung.",
+        "noPermission": "Kamu tidak punya izin untuk melakukan ini. Hanya role DJ, pengelola server, atau yang request lagu yang bisa melakukan ini."
     }
 }
