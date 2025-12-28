@@ -207,14 +207,17 @@
             },
             "seek": {
                 "cantSeekLive": "无法在直播中跳转。",
+                "cantSeekSoundcloud": "无法在SoundCloud曲目中跳转。",
                 "description": "跳转到当前歌曲的指定时间",
                 "exceedsDuration": "跳转时间超过歌曲时长 ({duration})。",
                 "invalidTime": "时间格式无效：{time}。请使用 `1:30` 或 `90` 等格式。",
                 "noPlaying": "当前没有正在播放的歌曲。",
                 "noTime": "请指定要跳转的时间。",
+                "notCached": "该歌曲暂时无法跳转。请等待音频缓冲。",
                 "seeked": "已跳转到 {time}",
                 "slashTimeDescription": "要跳转的时间（例如 `1:30` 或 `90`）",
-                "usage": "{prefix}seek <时间>"
+                "usage": "{prefix}seek <时间>",
+                "waitingForCache": "请稍候，音频仍在缓冲中..."
             },
             "skip": {
                 "description": "略过音乐",

@@ -84,9 +84,8 @@ async function attemptStreamWithRetry(
     seekSeconds = 0,
 ): Promise<Readable> {
     return new Promise<Readable>((resolve, reject) => {
-        // Don't use download-sections - it's too slow
-        // Seeking will be handled by FFmpeg instead
-        const options = isLive
+        // Base options
+        const baseOptions: Record<string, unknown> = isLive
             ? {
                   output: "-",
                   quiet: true,
@@ -99,6 +98,16 @@ async function attemptStreamWithRetry(
                   format: "bestaudio",
                   limitRate: "300K",
               };
+
+        // If seeking is requested and not live, use download-sections
+        // This is slower but works for non-cached streams
+        const options = { ...baseOptions };
+        if (seekSeconds > 0 && !isLive) {
+            // Format: *start-end for time ranges
+            // We use start-inf to download from start to end
+            (options as Record<string, unknown>).downloadSections = `*${seekSeconds}-inf`;
+            (options as Record<string, unknown>).forceKeyframesAtCuts = true;
+        }
 
         const proc = exec(url, options, { stdio: ["ignore", "pipe", "pipe"] });
 

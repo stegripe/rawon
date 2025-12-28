@@ -9,7 +9,7 @@ import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 import { parseTime } from "../../utils/functions/parseTime.js";
-import { play } from "../../utils/handlers/GeneralUtil.js";
+import { checkQuery, play } from "../../utils/handlers/GeneralUtil.js";
 
 @Command({
     aliases: ["sk"],
@@ -49,6 +49,15 @@ export class SeekCommand extends BaseCommand {
         if (song.song.isLive) {
             await ctx.reply({
                 embeds: [createEmbed("error", i18n.__("commands.music.seek.cantSeekLive"), true)],
+            });
+            return;
+        }
+
+        // Check if this is a SoundCloud track (seeking not supported)
+        const queryCheck = checkQuery(song.song.url);
+        if (queryCheck.sourceType === "soundcloud") {
+            await ctx.reply({
+                embeds: [createEmbed("error", i18n.__("commands.music.seek.cantSeekSoundcloud"), true)],
             });
             return;
         }

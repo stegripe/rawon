@@ -207,14 +207,17 @@
             },
             "seek": {
                 "cantSeekLive": "No se puede buscar en transmisiones en vivo.",
+                "cantSeekSoundcloud": "No se puede buscar en pistas de SoundCloud.",
                 "description": "Saltar a un tiempo específico en la canción actual",
                 "exceedsDuration": "El tiempo de búsqueda excede la duración de la canción ({duration}).",
                 "invalidTime": "Formato de tiempo inválido: {time}. Use formatos como `1:30` o `90`.",
                 "noPlaying": "No hay ninguna canción reproduciéndose actualmente.",
                 "noTime": "Por favor, especifica un tiempo al cual saltar.",
+                "notCached": "Aún no se puede buscar en esta canción. Por favor espera a que el audio se almacene.",
                 "seeked": "Saltado a {time}",
                 "slashTimeDescription": "Tiempo al cual saltar (ej., `1:30` o `90`)",
-                "usage": "{prefix}seek <tiempo>"
+                "usage": "{prefix}seek <tiempo>",
+                "waitingForCache": "Por favor espera, el audio aún se está almacenando..."
             },
             "skip": {
                 "description": "Salta la canción actual",

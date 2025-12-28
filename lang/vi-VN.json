@@ -207,14 +207,17 @@
             },
             "seek": {
                 "cantSeekLive": "Không thể tua trong phát trực tiếp.",
+                "cantSeekSoundcloud": "Không thể tua trong các bản nhạc SoundCloud.",
                 "description": "Chuyển đến thời điểm cụ thể trong bài hát hiện tại",
                 "exceedsDuration": "Thời gian tua vượt quá thời lượng bài hát ({duration}).",
                 "invalidTime": "Định dạng thời gian không hợp lệ: {time}. Sử dụng định dạng như `1:30` hoặc `90`.",
                 "noPlaying": "Không có bài hát nào đang phát.",
                 "noTime": "Vui lòng chỉ định thời gian để chuyển đến.",
+                "notCached": "Chưa thể tua trong bài hát này. Vui lòng đợi âm thanh được lưu vào bộ đệm.",
                 "seeked": "Đã chuyển đến {time}",
                 "slashTimeDescription": "Thời gian để chuyển đến (ví dụ, `1:30` hoặc `90`)",
-                "usage": "{prefix}seek <thời gian>"
+                "usage": "{prefix}seek <thời gian>",
+                "waitingForCache": "Vui lòng đợi, âm thanh vẫn đang được lưu vào bộ đệm..."
             },
             "skip": {
                 "description": "Bỏ qua bài nhạc",

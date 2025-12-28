@@ -207,14 +207,17 @@
             },
             "seek": {
                 "cantSeekLive": "ライブストリームではシークできません。",
+                "cantSeekSoundcloud": "SoundCloudトラックではシークできません。",
                 "description": "現在の曲の特定の時間にジャンプ",
                 "exceedsDuration": "シーク時間が曲の長さを超えています ({duration})。",
                 "invalidTime": "時間形式が無効です: {time}。`1:30` や `90` のような形式を使用してください。",
                 "noPlaying": "現在再生中の曲がありません。",
                 "noTime": "シークする時間を指定してください。",
+                "notCached": "この曲ではまだシークできません。オーディオがバッファリングされるまでお待ちください。",
                 "seeked": "{time} にジャンプしました",
                 "slashTimeDescription": "ジャンプする時間 (例: `1:30` または `90`)",
-                "usage": "{prefix}seek <時間>"
+                "usage": "{prefix}seek <時間>",
+                "waitingForCache": "お待ちください、オーディオはまだバッファリング中です..."
             },
             "skip": {
                 "description": "曲をスキップ",

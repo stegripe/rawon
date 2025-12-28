@@ -207,14 +207,17 @@
             },
             "seek": {
                 "cantSeekLive": "Canlı yayınlarda arama yapılamaz.",
+                "cantSeekSoundcloud": "SoundCloud parçalarında arama yapılamaz.",
                 "description": "Mevcut şarkıda belirli bir zamana atla",
                 "exceedsDuration": "Arama süresi şarkı süresini aşıyor ({duration}).",
                 "invalidTime": "Geçersiz zaman formatı: {time}. `1:30` veya `90` gibi formatlar kullanın.",
                 "noPlaying": "Şu anda çalan şarkı yok.",
                 "noTime": "Lütfen atlanacak bir zaman belirtin.",
+                "notCached": "Bu şarkıda henüz arama yapılamıyor. Lütfen ses tamponlanana kadar bekleyin.",
                 "seeked": "{time} konumuna atlandı",
                 "slashTimeDescription": "Atlanacak zaman (örn., `1:30` veya `90`)",
-                "usage": "{prefix}seek <zaman>"
+                "usage": "{prefix}seek <zaman>",
+                "waitingForCache": "Lütfen bekleyin, ses hala tamponlanıyor..."
             },
             "skip": {
                 "description": "Müziği atlayın",

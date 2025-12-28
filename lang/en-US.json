@@ -207,14 +207,17 @@
             },
             "seek": {
                 "cantSeekLive": "Cannot seek in live streams.",
+                "cantSeekSoundcloud": "Cannot seek in SoundCloud tracks.",
                 "description": "Seek to a specific time in the current song",
                 "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
                 "invalidTime": "Invalid time format: {time}. Use formats like `1:30` or `90`.",
                 "noPlaying": "No song is currently playing.",
                 "noTime": "Please specify a time to seek to.",
+                "notCached": "Cannot seek in this song yet. Please wait for the audio to buffer.",
                 "seeked": "Seeked to {time}",
                 "slashTimeDescription": "Time to seek to (e.g., `1:30` or `90`)",
-                "usage": "{prefix}seek <time>"
+                "usage": "{prefix}seek <time>",
+                "waitingForCache": "Please wait, the audio is still buffering..."
             },
             "skip": {
                 "description": "Skip the music",

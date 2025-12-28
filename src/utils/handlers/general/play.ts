@@ -99,11 +99,8 @@ export async function play(
                 args: ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath),
             });
         } else if (streamResult.stream) {
-            // Using pipe - no seeking support, reset seek offset
-            // Seeking doesn't work with piped opus streams
-            if (seekSeconds > 0) {
-                queue.seekOffset = 0;
-            }
+            // Using pipe stream - yt-dlp handles seeking via --download-sections
+            // Keep seekOffset as is since yt-dlp already started from the seek position
             ffmpegStream = new prism.FFmpeg({
                 args: ffmpegArgs(queue.filters, 0),
             });
