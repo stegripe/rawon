@@ -30,11 +30,9 @@ export async function play(
         return;
     }
 
-    // Reset seek offset when starting fresh (seekSeconds is only set via seek command)
-    // The SeekCommand sets queue.seekOffset before calling play
-    if (seekSeconds === 0) {
-        queue.seekOffset = 0;
-    }
+    // Set seek offset for position tracking
+    // This is set here (not just in SeekCommand) so that restart restore also works correctly
+    queue.seekOffset = seekSeconds;
 
     const song =
         (nextSong?.length ?? 0) > 0

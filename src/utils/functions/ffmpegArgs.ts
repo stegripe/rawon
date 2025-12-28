@@ -40,14 +40,14 @@ export function ffmpegArgs(
         }
     }
 
-    // Use -ss for fast seeking (output seeking - decodes but discards until seek point)
-    // This is faster than atrim because it doesn't process audio filters on skipped frames
-    const seekArgs = seekSeconds > 0 ? ["-ss", String(seekSeconds)] : [];
+    // Use -ss BEFORE -i for fast input seeking (seeks in the stream without decoding)
+    // prism-media adds "-i -" if we don't include it, so we include it ourselves with -ss before
+    const inputArgs = seekSeconds > 0 ? ["-ss", String(seekSeconds), "-i", "-"] : ["-i", "-"];
 
     return [
         "-loglevel",
         "0",
-        ...seekArgs,
+        ...inputArgs,
         "-ar",
         "48000",
         "-ac",

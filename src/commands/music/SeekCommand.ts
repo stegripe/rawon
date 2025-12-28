@@ -102,9 +102,6 @@ export class SeekCommand extends BaseCommand {
             ],
         });
 
-        // Set seek offset so playback duration calculations are correct
-        queue.seekOffset = seekSeconds;
-
         // Stop current playback and restart at seek position
         queue.playing = false;
         void play(ctx.guild!, song.key, true, seekSeconds);
