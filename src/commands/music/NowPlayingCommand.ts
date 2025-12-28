@@ -45,7 +45,6 @@ export class NowPlayingCommand extends BaseCommand {
                 `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `,
             ).setThumbnail(song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png");
 
-            // Add seek offset to get the real playback position
             const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000) + seekOffset;
             let progressLine: string;
             if (song?.isLive === true) {

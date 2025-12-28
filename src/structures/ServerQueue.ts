@@ -26,7 +26,7 @@ export class ServerQueue {
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
-    public seekOffset = 0; // Track seek position offset in seconds
+    public seekOffset = 0;
 
     private _volume = 100;
     private _lastVSUpdateMsg: Snowflake | null = null;
@@ -84,12 +84,10 @@ export class ServerQueue {
 
                     void this.saveQueueState();
 
-                    // Start periodic position saving (every 5 seconds) for accurate restart resume
                     this.startPositionSaveInterval();
 
                     this.preCacheNextSong(currentSong);
                 } else if (newState.status === AudioPlayerStatus.Idle) {
-                    // Stop periodic position saving when playback ends
                     this.stopPositionSaveInterval();
 
                     const song = (oldState as AudioPlayerPlayingState).resource
@@ -104,17 +102,13 @@ export class ServerQueue {
                         this.songs.delete(song.key);
                     }
 
-                    // Determine next song to play
                     let nextS: string | undefined;
                     if (this.shuffle && this.loopMode !== "SONG") {
                         nextS = this.songs.random()?.key;
                     } else if (this.loopMode === "SONG") {
-                        // For SONG loop mode, try to play the same song
-                        // But if it was removed, fall back to next available song
                         if (this.songs.has(song.key)) {
                             nextS = song.key;
                         } else {
-                            // Song was removed, fall back to next song in queue or first song
                             const sortedSongs = this.songs.sortByIndex();
                             nextS =
                                 sortedSongs.filter((x) => x.index > song.index).first()?.key ??
@@ -259,7 +253,6 @@ export class ServerQueue {
             const metadata = resource.metadata as QueueSong | undefined;
             if (metadata !== undefined) {
                 currentSongKey = metadata.key;
-                // Get current playback position in seconds, including seek offset
                 currentPosition =
                     Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
             }
@@ -314,12 +307,10 @@ export class ServerQueue {
         void this.saveState();
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
-            // Get current playback position including seek offset
             const resource = (this.player.state as AudioPlayerPlayingState).resource;
             const currentPosition =
                 Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
 
-            // Update seek offset to current position so playback continues from here
             this.seekOffset = currentPosition;
 
             this.playing = false;
@@ -357,9 +348,7 @@ export class ServerQueue {
     }
 
     private startPositionSaveInterval(): void {
-        // Clear any existing interval first
         this.stopPositionSaveInterval();
-        // Save position every 5 seconds for accurate restart resume
         this._positionSaveInterval = setInterval(() => {
             void this.saveQueueState();
         }, 5000);

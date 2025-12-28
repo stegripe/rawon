@@ -5,7 +5,6 @@ import { NoStackError } from "./utils/structures/NoStackError.js";
 
 const client = new Rawon(clientOptions);
 
-// Save queue state for all guilds before shutdown
 async function saveAllQueueStates(): Promise<void> {
     const savePromises: Promise<void>[] = [];
     for (const [, guild] of client.guilds.cache) {
@@ -16,7 +15,6 @@ async function saveAllQueueStates(): Promise<void> {
     await Promise.all(savePromises);
 }
 
-// Handle graceful shutdown - save queue states before exit
 process.on("SIGINT", async () => {
     client.logger.info("Received SIGINT, saving queue states before exit...");
     await saveAllQueueStates();

@@ -132,7 +132,6 @@ export class ReadyEvent extends BaseEvent {
                         : firstSongKey;
 
                 if (startSongKey !== undefined) {
-                    // If we have a saved position and the song hasn't changed, seek to that position
                     const seekPosition = startSongKey === currentSongKey ? currentPosition : 0;
                     void play(guild, startSongKey, false, seekPosition);
                 }

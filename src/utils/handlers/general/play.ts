@@ -30,8 +30,6 @@ export async function play(
         return;
     }
 
-    // Set seek offset for position tracking
-    // This is set here (not just in SeekCommand) so that restart restore also works correctly
     queue.seekOffset = seekSeconds;
 
     const song =
@@ -94,13 +92,10 @@ export async function play(
         const streamResult = await getStream(queue.client, song.song.url, song.song.isLive, seekSeconds);
         
         if (streamResult.cachePath) {
-            // Using cached file - can use -ss for fast seeking
             ffmpegStream = new prism.FFmpeg({
                 args: ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath),
             });
         } else if (streamResult.stream) {
-            // Using pipe stream - yt-dlp handles seeking via --download-sections
-            // Keep seekOffset as is since yt-dlp already started from the seek position
             ffmpegStream = new prism.FFmpeg({
                 args: ffmpegArgs(queue.filters, 0),
             });

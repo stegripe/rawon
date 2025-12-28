@@ -40,7 +40,6 @@ export class LyricsCommand extends BaseCommand {
                   ? (ctx.options?.getString("query") ?? "")
                   : null;
 
-        // Use current song title if no query provided
         const query = userQuery ?? currentSong?.song.title;
         if ((query?.length ?? 0) === 0) {
             await ctx.reply({
@@ -50,7 +49,6 @@ export class LyricsCommand extends BaseCommand {
             return;
         }
 
-        // Only use currently playing song's thumbnail if no custom query was provided
         const songThumbnail = userQuery === null ? currentSong?.song.thumbnail : undefined;
 
         await this.getLyrics(ctx, query as unknown as string, songThumbnail);
@@ -171,7 +169,6 @@ export class LyricsCommand extends BaseCommand {
             return;
         }
 
-        // Use song thumbnail if available, otherwise fallback to default
         const albumArt =
             songThumbnail ?? data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
         const pages: string[] = chunk(data.lyrics ?? "", 2_048);

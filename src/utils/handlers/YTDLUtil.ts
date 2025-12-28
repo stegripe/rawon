@@ -45,12 +45,9 @@ export async function getStream(
         };
     }
 
-    // Check if we have a valid cached file (using getFromCache which validates file size)
     if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
         const cacheStream = client.audioCache.getFromCache(url);
         if (cacheStream) {
-            // We have a valid cached file, destroy the read stream and return the path
-            // FFmpeg will read directly from the file for seeking support
             cacheStream.destroy();
             const cachePath = client.audioCache.getCachePath(url);
             return {
@@ -58,7 +55,6 @@ export async function getStream(
                 cachePath,
             };
         }
-        // Cache validation failed, fall through to stream from source
     }
 
     if (client.cookies.areAllCookiesFailed()) {
@@ -84,7 +80,6 @@ async function attemptStreamWithRetry(
     seekSeconds = 0,
 ): Promise<Readable> {
     return new Promise<Readable>((resolve, reject) => {
-        // Base options
         const baseOptions: Record<string, unknown> = isLive
             ? {
                   output: "-",
@@ -99,12 +94,8 @@ async function attemptStreamWithRetry(
                   limitRate: "300K",
               };
 
-        // If seeking is requested and not live, use download-sections
-        // This is slower but works for non-cached streams
         const options = { ...baseOptions };
         if (seekSeconds > 0 && !isLive) {
-            // Format: *start-end for time ranges
-            // We use start-inf to download from start to end
             (options as Record<string, unknown>).downloadSections = `*${seekSeconds}-inf`;
             (options as Record<string, unknown>).forceKeyframesAtCuts = true;
         }
@@ -289,7 +280,6 @@ async function attemptStreamWithRetry(
 
                 hasResolved = true;
 
-                // Don't cache when seeking or live streams
                 if (isLive || !enableAudioCache || seekSeconds > 0) {
                     resolve(proc.stdout as unknown as Readable);
                     return;

@@ -28,10 +28,8 @@ export function ffmpegArgs(
     const keys = Object.keys(filters) as (keyof typeof filterArgs)[];
     const hasFilters = keys.some((x) => filters[x] === true);
 
-    // Build audio filter chain
     const audioFilters: string[] = [];
 
-    // Add user-selected filters
     if (hasFilters) {
         for (const key of keys) {
             if (filters[key] === true) {
@@ -40,17 +38,13 @@ export function ffmpegArgs(
         }
     }
 
-    // Build input args - if we have a file path, use -ss for seeking
-    // For pipe inputs, seeking is not supported (atrim doesn't work well with opus)
     const inputArgs: string[] = [];
     if (inputPath) {
-        // File input - can use -ss for fast seeking
         if (seekSeconds > 0) {
             inputArgs.push("-ss", seekSeconds.toString());
         }
         inputArgs.push("-i", inputPath);
     } else {
-        // Pipe input - no seeking support
         inputArgs.push("-i", "-");
     }
 

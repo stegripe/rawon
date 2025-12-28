@@ -9,7 +9,7 @@ interface CookieState {
     failureTimestamps: Record<number, number>;
 }
 
-const FAILED_COOKIE_EXPIRY_MS = 30 * 60 * 1000; // 30 minutes
+const FAILED_COOKIE_EXPIRY_MS = 30 * 60 * 1000;
 
 export class CookiesManager {
     public readonly cookiesDir: string;
@@ -40,10 +40,7 @@ export class CookiesManager {
                 const state: CookieState = JSON.parse(content);
 
                 const now = Date.now();
-                // Restore failed cookies, but only if they haven't expired
                 for (const index of state.failedCookies) {
-                    // If timestamp is missing (0), the cookie will not be restored as failed
-                    // since (now - 0) will be > FAILED_COOKIE_EXPIRY_MS, giving it a fresh chance
                     const failureTime = state.failureTimestamps[index] ?? 0;
                     if (now - failureTime < FAILED_COOKIE_EXPIRY_MS) {
                         this.failedCookies.add(index);
@@ -51,7 +48,6 @@ export class CookiesManager {
                     }
                 }
 
-                // Restore current cookie index if it's still valid
                 if (state.currentCookieIndex > 0) {
                     this.currentCookieIndex = state.currentCookieIndex;
                 }
@@ -84,7 +80,6 @@ export class CookiesManager {
             return;
         }
 
-        // If current cookie is failed or doesn't exist, find the first working one
         if (
             this.failedCookies.has(this.currentCookieIndex) ||
             !existsSync(this.getCookiePath(this.currentCookieIndex))
@@ -96,7 +91,6 @@ export class CookiesManager {
                     return;
                 }
             }
-            // All cookies are failed
             this.allCookiesFailed = true;
         }
     }

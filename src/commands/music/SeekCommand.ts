@@ -53,7 +53,6 @@ export class SeekCommand extends BaseCommand {
             return;
         }
 
-        // Check if this is a SoundCloud track (seeking not supported)
         const queryCheck = checkQuery(song.song.url);
         if (queryCheck.sourceType === "soundcloud") {
             await ctx.reply({
@@ -99,7 +98,6 @@ export class SeekCommand extends BaseCommand {
             return;
         }
 
-        // Send reply first to make the seek feel more responsive
         await ctx.reply({
             embeds: [
                 createEmbed(
@@ -111,7 +109,6 @@ export class SeekCommand extends BaseCommand {
             ],
         });
 
-        // Stop current playback and restart at seek position
         queue.playing = false;
         void play(ctx.guild!, song.key, true, seekSeconds);
     }
