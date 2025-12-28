@@ -15,7 +15,7 @@ export const filterArgs = {
     karaoke: "stereotools=mlev=0.1",
     vibrato: "vibrato=f=6.5",
     echo: "aecho=0.8:0.9:1000:0.3",
-    spedup: "aresample=48000,asetrate=48000*10/9",
+    spedup: "aresample=48000,asetrate=48000*10/9,atempo=1.02",
     slowed: "aresample=48000,asetrate=48000*0.9",
     reverb: "aecho=0.8:0.7:40|60|80:0.4|0.3|0.2",
 };

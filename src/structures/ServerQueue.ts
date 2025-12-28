@@ -95,18 +95,28 @@ export class ServerQueue {
                         this.songs.delete(song.key);
                     }
 
-                    const nextS =
-                        this.shuffle && this.loopMode !== "SONG"
-                            ? this.songs.random()?.key
-                            : this.loopMode === "SONG"
-                              ? song.key
-                              : (this.songs
-                                    .sortByIndex()
-                                    .filter((x) => x.index > song.index)
-                                    .first()?.key ??
-                                (this.loopMode === "QUEUE"
-                                    ? (this.songs.sortByIndex().first()?.key ?? "")
-                                    : ""));
+                    // Determine next song to play
+                    let nextS: string | undefined;
+                    if (this.shuffle && this.loopMode !== "SONG") {
+                        nextS = this.songs.random()?.key;
+                    } else if (this.loopMode === "SONG") {
+                        // For SONG loop mode, try to play the same song
+                        // But if it was removed, fall back to next available song
+                        if (this.songs.has(song.key)) {
+                            nextS = song.key;
+                        } else {
+                            // Song was removed, fall back to next song in queue or first song
+                            const sortedSongs = this.songs.sortByIndex();
+                            nextS =
+                                sortedSongs.filter((x) => x.index > song.index).first()?.key ??
+                                sortedSongs.first()?.key;
+                        }
+                    } else {
+                        const sortedSongs = this.songs.sortByIndex();
+                        nextS =
+                            sortedSongs.filter((x) => x.index > song.index).first()?.key ??
+                            (this.loopMode === "QUEUE" ? (sortedSongs.first()?.key ?? "") : "");
+                    }
 
                     void this.client.requestChannelManager.updatePlayerMessage(
                         this.textChannel.guild,
