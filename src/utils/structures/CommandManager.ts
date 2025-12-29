@@ -5,7 +5,6 @@ import {
     type ApplicationCommandData,
     ApplicationCommandType,
     Collection,
-    type Guild,
     type Message,
     type Snowflake,
     type TextChannel,
@@ -13,11 +12,7 @@ import {
 import i18n from "../../config/index.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
-import {
-    type CategoryMeta,
-    type CommandComponent,
-    type RegisterCmdOptions,
-} from "../../typings/index.js";
+import { type CategoryMeta, type CommandComponent } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { pathStringToURLString } from "../functions/pathStringToURLString.js";
 
@@ -35,7 +30,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
     }
 
     public async load(): Promise<void> {
-        const pendingSlashRegistrations: Array<() => Promise<void>> = [];
+        const pendingCommands: ApplicationCommandData[] = [];
 
         try {
             const categories = await fs.readdir(nodePath.resolve(this.path));
@@ -91,59 +86,15 @@ export class CommandManager extends Collection<string, CommandComponent> {
                             this.set(command.meta.name, command);
 
                             if ((command.meta.contextChat?.length ?? 0) > 0) {
-                                pendingSlashRegistrations.push(async () => {
-                                    await this.registerCmd(
-                                        {
-                                            name: command.meta.contextChat ?? "",
-                                            type: ApplicationCommandType.Message,
-                                        },
-                                        {
-                                            onError: (gld, err) =>
-                                                this.client.logger.error(
-                                                    `Unable to register ${
-                                                        command.meta.name
-                                                    } to message context for ${gld?.id ?? "???"}, reason: ${
-                                                        err.message
-                                                    }`,
-                                                ),
-                                            onRegistered: (gld) =>
-                                                this.client.logger.info(
-                                                    `Registered ${command.meta.name} to message context for ${gld.id}`,
-                                                ),
-                                        },
-                                    );
-                                    if (!this.client.config.isDev) {
-                                        this.client.logger.info(
-                                            `Registered ${command.meta.name} to message context for global.`,
-                                        );
-                                    }
+                                pendingCommands.push({
+                                    name: command.meta.contextChat ?? "",
+                                    type: ApplicationCommandType.Message,
                                 });
                             }
                             if ((command.meta.contextUser?.length ?? 0) > 0) {
-                                pendingSlashRegistrations.push(async () => {
-                                    await this.registerCmd(
-                                        {
-                                            name: command.meta.contextUser ?? "",
-                                            type: ApplicationCommandType.User,
-                                        },
-                                        {
-                                            onError: (gld, err) =>
-                                                this.client.logger.error(
-                                                    `Unable to register ${command.meta.name} to user context for ${
-                                                        gld?.id ?? "???"
-                                                    }, reason: ${err.message}`,
-                                                ),
-                                            onRegistered: (gld) =>
-                                                this.client.logger.info(
-                                                    `Registered ${command.meta.name} to user context for ${gld.id}`,
-                                                ),
-                                        },
-                                    );
-                                    if (!this.client.config.isDev) {
-                                        this.client.logger.info(
-                                            `Registered ${command.meta.name} to user context for global.`,
-                                        );
-                                    }
+                                pendingCommands.push({
+                                    name: command.meta.contextUser ?? "",
+                                    type: ApplicationCommandType.User,
                                 });
                             }
                             if (
@@ -162,28 +113,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                     });
                                 }
 
-                                pendingSlashRegistrations.push(async () => {
-                                    await this.registerCmd(
-                                        command.meta.slash as ApplicationCommandData,
-                                        {
-                                            onError: (gld, err) =>
-                                                this.client.logger.error(
-                                                    `Unable to register ${command.meta.name} to slash command for ${
-                                                        gld?.id ?? "???"
-                                                    }, reason: ${err.message}`,
-                                                ),
-                                            onRegistered: (gld) =>
-                                                this.client.logger.info(
-                                                    `Registered ${command.meta.name} to slash command for ${gld.id}`,
-                                                ),
-                                        },
-                                    );
-                                    if (!this.client.config.isDev) {
-                                        this.client.logger.info(
-                                            `Registered ${command.meta.name} to slash command for global.`,
-                                        );
-                                    }
-                                });
+                                pendingCommands.push(command.meta.slash as ApplicationCommandData);
                             }
                             this.client.logger.info(
                                 `Command ${command.meta.name} from ${category} category is now loaded.`,
@@ -230,25 +160,44 @@ export class CommandManager extends Collection<string, CommandComponent> {
             this.isReady = true;
         }
 
-        if (pendingSlashRegistrations.length > 0) {
+        if (pendingCommands.length > 0) {
             this.client.logger.info(
-                `Registering ${pendingSlashRegistrations.length} slash commands in background...`,
+                `Registering ${pendingCommands.length} slash commands in background...`,
             );
-            void this.registerSlashCommandsInBackground(pendingSlashRegistrations);
+            void this.registerCommandsBulk(pendingCommands);
         }
     }
 
-    private async registerSlashCommandsInBackground(
-        registrations: Array<() => Promise<void>>,
-    ): Promise<void> {
-        for (const register of registrations) {
-            try {
-                await register();
-            } catch (error) {
-                this.client.logger.error("SLASH_CMD_REGISTER_ERR:", error);
+    private async registerCommandsBulk(commands: ApplicationCommandData[]): Promise<void> {
+        const startTime = Date.now();
+        try {
+            if (this.client.config.isDev) {
+                for (const id of this.client.config.mainServer) {
+                    try {
+                        const guild = await this.client.guilds.fetch(id).catch(() => null);
+                        if (!guild) {
+                            this.client.logger.error(`Unable to fetch guild ${id}`);
+                            continue;
+                        }
+                        await guild.commands.set(commands);
+                        this.client.logger.info(
+                            `Registered ${commands.length} commands to guild ${guild.name} [${guild.id}].`,
+                        );
+                    } catch (error) {
+                        this.client.logger.error(`SLASH_CMD_REGISTER_ERR for guild ${id}:`, error);
+                    }
+                }
+            } else {
+                await this.client.application?.commands.set(commands);
+                this.client.logger.info(`Registered ${commands.length} commands globally.`);
             }
+        } catch (error) {
+            this.client.logger.error("SLASH_CMD_REGISTER_ERR:", error);
         }
-        this.client.logger.info("All slash commands have been registered in background.");
+        const elapsed = Date.now() - startTime;
+        this.client.logger.info(
+            `All slash commands have been registered in background. (took ${elapsed}ms)`,
+        );
     }
 
     public handle(message: Message, pref: string): void {
@@ -350,31 +299,6 @@ export class CommandManager extends Collection<string, CommandComponent> {
                         message.guild?.name
                     } [${message.guild?.id}]`,
             );
-        }
-    }
-
-    private async registerCmd(
-        data: ApplicationCommandData,
-        options?: RegisterCmdOptions,
-    ): Promise<void> {
-        if (options && this.client.config.isDev) {
-            for (const id of this.client.config.mainServer) {
-                let guild: Guild | null = null;
-
-                try {
-                    guild = await this.client.guilds.fetch(id).catch(() => null);
-                    if (!guild) {
-                        throw new Error("Invalid Guild.");
-                    }
-
-                    await guild.commands.create(data);
-                    void options.onRegistered(guild);
-                } catch (error) {
-                    void options.onError(guild, error as Error);
-                }
-            }
-        } else {
-            await this.client.application?.commands.create(data);
         }
     }
 }
