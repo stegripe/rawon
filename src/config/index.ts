@@ -66,6 +66,7 @@ i18n.configure({
         "ru-RU",
         "ja-JP",
         "tr-TR",
+        "ko-KR",
     ],
     objectNotation: true,
 });
