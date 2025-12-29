@@ -241,6 +241,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
     private async registerSlashCommandsInBackground(
         registrations: Array<() => Promise<void>>,
     ): Promise<void> {
+        const startTime = Date.now();
         for (const register of registrations) {
             try {
                 await register();
@@ -248,7 +249,10 @@ export class CommandManager extends Collection<string, CommandComponent> {
                 this.client.logger.error("SLASH_CMD_REGISTER_ERR:", error);
             }
         }
-        this.client.logger.info("All slash commands have been registered in background.");
+        const elapsed = Date.now() - startTime;
+        this.client.logger.info(
+            `All slash commands have been registered in background. (took ${elapsed}ms)`,
+        );
     }
 
     public handle(message: Message, pref: string): void {
