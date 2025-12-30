@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Kelola cookies buat bypass deteksi bot",
-                "usage": "{prefix}cookies <add|remove|list|reset> [nomor|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [nomor|all]",
                 "slashAddDescription": "Tambahin file cookie baru",
                 "slashRemoveDescription": "Hapus file cookie",
                 "slashListDescription": "Lihat semua file cookie",
@@ -48,7 +48,11 @@
                 "viewSuccess": "Nih {cookie}:",
                 "viewNotFound": "{cookie} gak ketemu nih.",
                 "viewStatusTitle": "Status",
-                "viewSizeTitle": "Ukuran"
+                "viewSizeTitle": "Ukuran",
+                "slashUseDescription": "Pake cookie tertentu secara manual",
+                "useSuccess": "Berhasil pindah ke {cookie}. Bakal dipake buat request selanjutnya.",
+                "useNotFound": "{cookie} gak ketemu nih.",
+                "useFailed": "{cookie} lagi dalam status gagal. Pake `cookies reset` dulu buat coba lagi cookie yang gagal."
             }
         },
         "general": {

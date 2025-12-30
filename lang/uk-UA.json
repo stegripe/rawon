@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Керування cookies для обходу виявлення бота",
-                "usage": "{prefix}cookies <add|remove|list|reset> [номер|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [номер|all]",
                 "slashAddDescription": "Додати новий файл cookies",
                 "slashRemoveDescription": "Видалити файл cookies",
                 "slashListDescription": "Показати всі файли cookies",
@@ -48,7 +48,11 @@
                 "viewSuccess": "Ось {cookie}:",
                 "viewNotFound": "{cookie} не знайдено.",
                 "viewStatusTitle": "Статус",
-                "viewSizeTitle": "Розмір"
+                "viewSizeTitle": "Розмір",
+                "slashUseDescription": "Вручну переключитися на певний cookie",
+                "useSuccess": "Успішно переключено на {cookie}. Буде використовуватися для наступного запиту.",
+                "useNotFound": "{cookie} не знайдено.",
+                "useFailed": "{cookie} зараз позначений як невдалий. Спочатку використайте `cookies reset` для повторної спроби."
             }
         },
         "general": {

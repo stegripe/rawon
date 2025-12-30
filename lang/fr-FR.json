@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Gérer les cookies pour contourner la détection de bot",
-                "usage": "{prefix}cookies <add|remove|list|reset> [numéro|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [numéro|all]",
                 "slashAddDescription": "Ajouter un nouveau fichier de cookies",
                 "slashRemoveDescription": "Supprimer un fichier de cookies",
                 "slashListDescription": "Lister tous les fichiers de cookies",
@@ -48,7 +48,11 @@
                 "viewSuccess": "Voici {cookie} :",
                 "viewNotFound": "{cookie} n'a pas été trouvé.",
                 "viewStatusTitle": "Statut",
-                "viewSizeTitle": "Taille"
+                "viewSizeTitle": "Taille",
+                "slashUseDescription": "Basculer manuellement vers un cookie spécifique",
+                "useSuccess": "Basculé avec succès vers {cookie}. Il sera utilisé pour la prochaine requête.",
+                "useNotFound": "{cookie} n'a pas été trouvé.",
+                "useFailed": "{cookie} est actuellement marqué comme échoué. Utilisez d'abord `cookies reset` pour réessayer les cookies échoués."
             }
         },
         "general": {
