@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "管理cookies以绕过机器人检测",
-                "usage": "{prefix}cookies <add|remove|list|reset> [编号|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [编号|all]",
                 "slashAddDescription": "添加新的cookie文件",
                 "slashRemoveDescription": "删除cookie文件",
                 "slashListDescription": "列出所有cookie文件",
@@ -48,7 +48,11 @@
                 "viewSuccess": "这是 {cookie}:",
                 "viewNotFound": "未找到 {cookie}。",
                 "viewStatusTitle": "状态",
-                "viewSizeTitle": "大小"
+                "viewSizeTitle": "大小",
+                "slashUseDescription": "手动切换到指定的cookie",
+                "useSuccess": "已成功切换到 {cookie}。将在下次请求时使用。",
+                "useNotFound": "未找到 {cookie}。",
+                "useFailed": "{cookie} 当前被标记为失败。请先使用 `cookies reset` 重试失败的cookie。"
             }
         },
         "general": {

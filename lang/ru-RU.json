@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Управление cookies для обхода обнаружения бота",
-                "usage": "{prefix}cookies <add|remove|list|reset> [номер|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [номер|all]",
                 "slashAddDescription": "Добавить новый файл cookies",
                 "slashRemoveDescription": "Удалить файл cookies",
                 "slashListDescription": "Показать все файлы cookies",
@@ -48,7 +48,11 @@
                 "viewSuccess": "Вот {cookie}:",
                 "viewNotFound": "{cookie} не найден.",
                 "viewStatusTitle": "Статус",
-                "viewSizeTitle": "Размер"
+                "viewSizeTitle": "Размер",
+                "slashUseDescription": "Вручную переключиться на определённый cookie",
+                "useSuccess": "Успешно переключено на {cookie}. Будет использоваться для следующего запроса.",
+                "useNotFound": "{cookie} не найден.",
+                "useFailed": "{cookie} сейчас отмечен как неудачный. Сначала используйте `cookies reset` для повторной попытки."
             }
         },
         "general": {

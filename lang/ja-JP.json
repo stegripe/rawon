@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Bot検出を回避するためのCookieを管理",
-                "usage": "{prefix}cookies <add|remove|list|reset> [番号|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [番号|all]",
                 "slashAddDescription": "新しいCookieファイルを追加",
                 "slashRemoveDescription": "Cookieファイルを削除",
                 "slashListDescription": "すべてのCookieファイルを一覧表示",
@@ -48,7 +48,11 @@
                 "viewSuccess": "{cookie} はこちらです:",
                 "viewNotFound": "{cookie} が見つかりませんでした。",
                 "viewStatusTitle": "ステータス",
-                "viewSizeTitle": "サイズ"
+                "viewSizeTitle": "サイズ",
+                "slashUseDescription": "特定のCookieに手動で切り替え",
+                "useSuccess": "{cookie} に正常に切り替えました。次のリクエストで使用されます。",
+                "useNotFound": "{cookie} が見つかりませんでした。",
+                "useFailed": "{cookie} は現在失敗とマークされています。失敗したCookieを再試行するには、まず `cookies reset` を使用してください。"
             }
         },
         "general": {

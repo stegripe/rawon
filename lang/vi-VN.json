@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Quản lý cookies để vượt qua phát hiện bot",
-                "usage": "{prefix}cookies <add|remove|list|reset> [số|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [số|all]",
                 "slashAddDescription": "Thêm file cookies mới",
                 "slashRemoveDescription": "Xóa file cookies",
                 "slashListDescription": "Liệt kê tất cả file cookies",
@@ -48,7 +48,11 @@
                 "viewSuccess": "Đây là {cookie}:",
                 "viewNotFound": "{cookie} không được tìm thấy.",
                 "viewStatusTitle": "Trạng thái",
-                "viewSizeTitle": "Kích thước"
+                "viewSizeTitle": "Kích thước",
+                "slashUseDescription": "Chuyển thủ công sang một cookie cụ thể",
+                "useSuccess": "Đã chuyển thành công sang {cookie}. Sẽ được sử dụng cho yêu cầu tiếp theo.",
+                "useNotFound": "{cookie} không được tìm thấy.",
+                "useFailed": "{cookie} hiện đang được đánh dấu là thất bại. Sử dụng `cookies reset` trước để thử lại các cookie thất bại."
             }
         },
         "general": {

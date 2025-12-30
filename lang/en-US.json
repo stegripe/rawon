@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Manage cookies for bot detection bypass",
-                "usage": "{prefix}cookies <add|remove|list|reset> [number|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [number|all]",
                 "slashAddDescription": "Add a new cookie file",
                 "slashRemoveDescription": "Remove a cookie file",
                 "slashListDescription": "List all cookie files",
@@ -48,7 +48,11 @@
                 "viewSuccess": "Here is {cookie}:",
                 "viewNotFound": "{cookie} was not found.",
                 "viewStatusTitle": "Status",
-                "viewSizeTitle": "Size"
+                "viewSizeTitle": "Size",
+                "slashUseDescription": "Manually switch to a specific cookie",
+                "useSuccess": "Successfully switched to {cookie}. It will be used for the next request.",
+                "useNotFound": "{cookie} was not found.",
+                "useFailed": "{cookie} is currently marked as failed. Use `cookies reset` first to retry failed cookies."
             }
         },
         "general": {

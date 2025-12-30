@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "봇 감지 우회를 위한 쿠키 관리",
-                "usage": "{prefix}cookies <add|remove|list|reset> [번호|all]",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [번호|all]",
                 "slashAddDescription": "새 쿠키 파일 추가",
                 "slashRemoveDescription": "쿠키 파일 삭제",
                 "slashListDescription": "모든 쿠키 파일 목록 보기",
@@ -48,7 +48,11 @@
                 "viewSuccess": "여기 {cookie}이(가) 있어요:",
                 "viewNotFound": "{cookie}을(를) 찾을 수 없어요.",
                 "viewStatusTitle": "상태",
-                "viewSizeTitle": "크기"
+                "viewSizeTitle": "크기",
+                "slashUseDescription": "특정 쿠키로 수동 전환",
+                "useSuccess": "{cookie}(으)로 성공적으로 전환했어요. 다음 요청에 사용됩니다.",
+                "useNotFound": "{cookie}을(를) 찾을 수 없어요.",
+                "useFailed": "{cookie}이(가) 현재 실패로 표시되어 있어요. 실패한 쿠키를 재시도하려면 먼저 `cookies reset`을 사용해주세요."
             }
         },
         "general": {
