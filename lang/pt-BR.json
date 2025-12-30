@@ -345,6 +345,7 @@
         "notInVoice": "Você precisa estar em um canal de voz para pedir música.",
         "noResults": "Nenhum resultado encontrado para sua busca.",
         "addedToQueue": "Adicionado **{song}** à fila.",
+        "addedPlaylistToQueue": "Adicionadas {count} músicas de {playlist} à fila.",
         "startedPlaying": "Tocando **{song}**",
         "paused": "Música pausada.",
         "resumed": "Música retomada.",

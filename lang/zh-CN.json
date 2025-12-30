@@ -345,6 +345,7 @@
         "notInVoice": "您需要在语音频道中才能点歌。",
         "noResults": "没有找到您搜索的结果。",
         "addedToQueue": "已将 **{song}** 添加到队列。",
+        "addedPlaylistToQueue": "已将 {playlist} 中的 {count} 首歌曲添加到队列。",
         "startedPlaying": "正在播放 **{song}**",
         "paused": "音乐已暂停。",
         "resumed": "音乐已恢复。",

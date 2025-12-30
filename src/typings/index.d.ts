@@ -30,9 +30,17 @@ export type BasicYoutubeVideoInfo = {
     is_live?: boolean;
 };
 
+export type PlaylistMetadata = {
+    title: string;
+    url: string;
+    thumbnail?: string;
+    author?: string;
+};
+
 export type SearchTrackResult = {
     type?: "results" | "selection";
     items: Song[];
+    playlist?: PlaylistMetadata;
 };
 
 export type PaginationPayload = {
@@ -179,9 +187,23 @@ type SpotifyData<T> = {
     };
 };
 
-export type SpotifyAlbum = SpotifyData<SpotifyTrack>;
+export type SpotifyAlbum = SpotifyData<SpotifyTrack> & {
+    external_urls: {
+        spotify: string;
+    };
+    images?: { url: string; height: number; width: number }[];
+    artists?: ArtistsEntity[];
+};
 
-export type SpotifyPlaylist = SpotifyData<{ track: SpotifyTrack }>;
+export type SpotifyPlaylist = SpotifyData<{ track: SpotifyTrack }> & {
+    external_urls: {
+        spotify: string;
+    };
+    images?: { url: string; height: number; width: number }[];
+    owner?: {
+        display_name: string;
+    };
+};
 
 export type SpotifyTrack = {
     artists: ArtistsEntity[];
@@ -194,6 +216,11 @@ export type SpotifyTrack = {
     };
     name: string;
     id: string;
+};
+
+export type SpotifyResolveResult = {
+    tracks: { track: SpotifyTrack }[];
+    metadata?: PlaylistMetadata;
 };
 
 export type GuildData = {
