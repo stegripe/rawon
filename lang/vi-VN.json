@@ -345,7 +345,7 @@
         "notInVoice": "Bạn cần ở trong kênh thoại để yêu cầu nhạc.",
         "noResults": "Không tìm thấy kết quả cho tìm kiếm của bạn.",
         "addedToQueue": "Đã thêm **{song}** vào hàng đợi.",
-        "addedPlaylistToQueue": "Đã thêm **{count}** bài hát từ **{playlist}** vào hàng đợi.",
+        "addedPlaylistToQueue": "Đã thêm {count} bài hát từ {playlist} vào hàng đợi.",
         "startedPlaying": "Đang phát **{song}**",
         "paused": "Đã tạm dừng nhạc.",
         "resumed": "Đã tiếp tục phát nhạc.",

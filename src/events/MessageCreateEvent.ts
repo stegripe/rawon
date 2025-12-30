@@ -221,8 +221,8 @@ export class MessageCreateEvent extends BaseEvent {
             confirmEmbed = createEmbed(
                 "success",
                 `🎶 **|** ${i18n.__mf("requestChannel.addedPlaylistToQueue", {
-                    playlist: `[${playlistTitle}](${playlistUrl})`,
-                    count: songs.items.length.toString(),
+                    playlist: `**[${playlistTitle}](${playlistUrl})**`,
+                    count: `**${songs.items.length.toString()}**`,
                 })}`,
             );
             if (songs.playlist.thumbnail) {
@@ -237,7 +237,7 @@ export class MessageCreateEvent extends BaseEvent {
             const songUrl = songs.items[0].url;
             confirmEmbed = createEmbed(
                 "success",
-                `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: `[${songTitle}](${songUrl})` })}`,
+                `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: `**[${songTitle}](${songUrl})**` })}`,
             );
             if (songs.items[0].thumbnail) {
                 confirmEmbed.setThumbnail(songs.items[0].thumbnail);

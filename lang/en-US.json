@@ -313,7 +313,7 @@
         "notInVoice": "You need to be in a voice channel to request music.",
         "noResults": "No results found for your query.",
         "addedToQueue": "Added **{song}** to the queue.",
-        "addedPlaylistToQueue": "Added **{count}** songs from **{playlist}** to the queue.",
+        "addedPlaylistToQueue": "Added {count} songs from {playlist} to the queue.",
         "startedPlaying": "Now playing **{song}**",
         "paused": "Paused the music.",
         "resumed": "Resumed the music.",

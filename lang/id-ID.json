@@ -345,7 +345,7 @@
         "notInVoice": "Kamu harus ada di voice channel buat request musik.",
         "noResults": "Gak nemu hasil buat pencarianmu.",
         "addedToQueue": "Nambahin **{song}** ke antrian.",
-        "addedPlaylistToQueue": "Nambahin **{count}** lagu dari **{playlist}** ke antrian.",
+        "addedPlaylistToQueue": "Nambahin {count} lagu dari {playlist} ke antrian.",
         "startedPlaying": "Sekarang lagi muter **{song}**",
         "paused": "Musik dijeda.",
         "resumed": "Musik dilanjutin.",
