@@ -550,7 +550,6 @@ export class CookiesCommand extends BaseCommand {
             });
         }
 
-        // result === "failed"
         return ctx.reply({
             embeds: [
                 createEmbed(

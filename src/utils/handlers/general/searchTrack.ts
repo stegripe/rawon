@@ -194,7 +194,6 @@ export async function searchTrack(
 
                             result.items = tracks;
 
-                            // Extract playlist metadata
                             const playlistMeta: PlaylistMetadata = {
                                 title: playlist.title,
                                 url: `https://youtube.com/playlist?list=${list}`,

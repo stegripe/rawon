@@ -121,7 +121,6 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
-        // Delete user message after 60 seconds instead of immediately
         setTimeout(() => {
             void (async (): Promise<void> => {
                 try {
@@ -212,10 +211,8 @@ export class MessageCreateEvent extends BaseEvent {
             void play(guild);
         }
 
-        // Build confirmation embed - show playlist metadata if it's a playlist
         let confirmEmbed: EmbedBuilder;
         if (songs.playlist) {
-            // It's a playlist - show playlist metadata
             const playlistTitle = songs.playlist.title;
             const playlistUrl = songs.playlist.url;
             confirmEmbed = createEmbed(
@@ -232,7 +229,6 @@ export class MessageCreateEvent extends BaseEvent {
                 confirmEmbed.setFooter({ text: `📁 ${songs.playlist.author}` });
             }
         } else {
-            // It's a single song
             const songTitle = songs.items[0].title;
             const songUrl = songs.items[0].url;
             confirmEmbed = createEmbed(
