@@ -2,7 +2,13 @@ import { Buffer } from "node:buffer";
 import { setTimeout } from "node:timers";
 import { clientId, clientSecret } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
-import { type SpotifyAlbum, type SpotifyPlaylist, type SpotifyTrack } from "../../typings/index.js";
+import {
+    type PlaylistMetadata,
+    type SpotifyAlbum,
+    type SpotifyPlaylist,
+    type SpotifyResolveResult,
+    type SpotifyTrack,
+} from "../../typings/index.js";
 
 export class SpotifyUtil {
     public spotifyRegex =
@@ -99,6 +105,24 @@ export class SpotifyUtil {
         return undefined;
     }
 
+    public async resolveTracksWithMetadata(
+        url: string,
+    ): Promise<SpotifyResolveResult | SpotifyTrack | undefined> {
+        const [, type, id] = this.spotifyRegex.exec(url) ?? [];
+
+        switch (type) {
+            case "track":
+                return this.getTrack(id);
+            case "playlist":
+                return this.getPlaylistWithMetadata(id);
+            case "album":
+                return this.getAlbumWithMetadata(id);
+            default:
+                break;
+        }
+        return undefined;
+    }
+
     public async getAlbum(id: string): Promise<{ track: SpotifyTrack }[]> {
         const albumResponse = await this.client.request
             .get(`${this.baseURI}/albums/${id}`, {
@@ -124,6 +148,42 @@ export class SpotifyUtil {
         return albumResponse.tracks.items.filter(Boolean).map((track) => ({ track }));
     }
 
+    public async getAlbumWithMetadata(id: string): Promise<SpotifyResolveResult> {
+        const albumResponse = await this.client.request
+            .get(`${this.baseURI}/albums/${id}`, {
+                headers: {
+                    Authorization: this.token,
+                },
+            })
+            .json<SpotifyAlbum>();
+
+        let next = albumResponse.tracks.next;
+
+        while (next !== null && next !== undefined) {
+            const nextPlaylistResponse = await this.client.request
+                .get(next, {
+                    headers: {
+                        Authorization: this.token,
+                    },
+                })
+                .json<SpotifyAlbum["tracks"]>();
+            next = nextPlaylistResponse.next;
+            albumResponse.tracks.items.push(...nextPlaylistResponse.items);
+        }
+
+        const metadata: PlaylistMetadata = {
+            title: albumResponse.name,
+            url: albumResponse.external_urls?.spotify ?? `https://open.spotify.com/album/${id}`,
+            thumbnail: albumResponse.images?.[0]?.url,
+            author: albumResponse.artists?.map((a) => a.name).join(", "),
+        };
+
+        return {
+            tracks: albumResponse.tracks.items.filter(Boolean).map((track) => ({ track })),
+            metadata,
+        };
+    }
+
     public async getPlaylist(id: string): Promise<{ track: SpotifyTrack }[]> {
         const playlistResponse = await this.client.request
             .get(`${this.baseURI}/playlists/${id}`, {
@@ -146,6 +206,42 @@ export class SpotifyUtil {
         }
 
         return allItems.map((item) => ({ track: item.track }));
+    }
+
+    public async getPlaylistWithMetadata(id: string): Promise<SpotifyResolveResult> {
+        const playlistResponse = await this.client.request
+            .get(`${this.baseURI}/playlists/${id}`, {
+                headers: { Authorization: this.token },
+            })
+            .json<SpotifyPlaylist>();
+
+        let allItems = playlistResponse.tracks.items;
+        let next = playlistResponse.tracks.next;
+
+        while (next !== null && next !== undefined) {
+            const nextPlaylistResponse = await this.client.request
+                .get(next, {
+                    headers: { Authorization: this.token },
+                })
+                .json<SpotifyPlaylist["tracks"]>();
+
+            allItems = [...allItems, ...nextPlaylistResponse.items];
+            next = nextPlaylistResponse.next;
+        }
+
+        const metadata: PlaylistMetadata = {
+            title: playlistResponse.name,
+            url:
+                playlistResponse.external_urls?.spotify ??
+                `https://open.spotify.com/playlist/${id}`,
+            thumbnail: playlistResponse.images?.[0]?.url,
+            author: playlistResponse.owner?.display_name,
+        };
+
+        return {
+            tracks: allItems.map((item) => ({ track: item.track })),
+            metadata,
+        };
     }
 
     public async getTrack(id: string): Promise<SpotifyTrack> {
