@@ -345,6 +345,7 @@
         "notInVoice": "Müzik istemek için bir ses kanalında olmanız gerekiyor.",
         "noResults": "Aramanız için sonuç bulunamadı.",
         "addedToQueue": "**{song}** kuyruğa eklendi.",
+        "addedPlaylistToQueue": "{playlist} çalma listesinden {count} şarkı kuyruğa eklendi.",
         "startedPlaying": "Şimdi çalıyor **{song}**",
         "paused": "Müzik duraklatıldı.",
         "resumed": "Müzik devam ettiriliyor.",
