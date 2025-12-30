@@ -294,4 +294,21 @@ export class CookiesManager {
             return null;
         }
     }
+
+    public useCookie(index: number): "success" | "not_found" | "failed" {
+        const cookiePath = this.getCookiePath(index);
+        if (!existsSync(cookiePath)) {
+            return "not_found";
+        }
+
+        if (this.failedCookies.has(index)) {
+            return "failed";
+        }
+
+        this.currentCookieIndex = index;
+        this.allCookiesFailed = false;
+        this.saveState();
+        this.client.logger.info(`[CookiesManager] Manually switched to cookie ${index}`);
+        return "success";
+    }
 }
