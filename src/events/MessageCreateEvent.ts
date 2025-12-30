@@ -214,7 +214,7 @@ export class MessageCreateEvent extends BaseEvent {
 
         // Build confirmation embed - show playlist metadata if it's a playlist
         let confirmEmbed: EmbedBuilder;
-        if (songs.playlist && songs.items.length > 1) {
+        if (songs.playlist) {
             // It's a playlist - show playlist metadata
             const playlistTitle = songs.playlist.title;
             const playlistUrl = songs.playlist.url;
