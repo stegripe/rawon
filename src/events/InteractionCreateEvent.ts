@@ -613,7 +613,6 @@ export class InteractionCreateEvent extends BaseEvent {
                     });
 
                 const createPaginationButtons = (
-                    page: number,
                     totalPages: number,
                 ): ActionRowBuilder<ButtonBuilder>[] => {
                     if (totalPages <= 1) {
@@ -624,23 +623,19 @@ export class InteractionCreateEvent extends BaseEvent {
                         new ButtonBuilder()
                             .setCustomId("RCQ_PREV10")
                             .setEmoji("⏪")
-                            .setStyle(ButtonStyle.Secondary)
-                            .setDisabled(page < 10),
+                            .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
                             .setCustomId("RCQ_PREV")
                             .setEmoji("⬅️")
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page === 0),
+                            .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
                             .setCustomId("RCQ_NEXT")
                             .setEmoji("➡️")
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page >= totalPages - 1),
+                            .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
                             .setCustomId("RCQ_NEXT10")
                             .setEmoji("⏩")
-                            .setStyle(ButtonStyle.Secondary)
-                            .setDisabled(page >= totalPages - 10),
+                            .setStyle(ButtonStyle.Secondary),
                     );
                     return [row];
                 };
@@ -648,7 +643,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
                     embeds: [embed],
-                    components: createPaginationButtons(currentPage, pages.length),
+                    components: createPaginationButtons(pages.length),
                 });
 
                 if (pages.length > 1) {
@@ -663,20 +658,22 @@ export class InteractionCreateEvent extends BaseEvent {
                     collector.on("collect", async (i) => {
                         switch (i.customId) {
                             case "RCQ_PREV10":
-                                currentPage = Math.max(0, currentPage - 10);
+                                currentPage -= 10;
                                 break;
                             case "RCQ_PREV":
-                                currentPage = Math.max(0, currentPage - 1);
+                                currentPage--;
                                 break;
                             case "RCQ_NEXT":
-                                currentPage = Math.min(pages.length - 1, currentPage + 1);
+                                currentPage++;
                                 break;
                             case "RCQ_NEXT10":
-                                currentPage = Math.min(pages.length - 1, currentPage + 10);
+                                currentPage += 10;
                                 break;
                             default:
                                 return;
                         }
+
+                        currentPage = ((currentPage % pages.length) + pages.length) % pages.length;
 
                         embed.setDescription(pages[currentPage]).setFooter({
                             text: `• ${i18n.__mf("reusable.pageFooter", {
@@ -687,7 +684,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                         await i.update({
                             embeds: [embed],
-                            components: createPaginationButtons(currentPage, pages.length),
+                            components: createPaginationButtons(pages.length),
                         });
                     });
 
@@ -849,7 +846,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     })
                     .setThumbnail(albumArt);
 
-                const createPaginationButtons = (page: number, totalPages: number) => {
+                const createPaginationButtons = (totalPages: number) => {
                     if (totalPages < 2) {
                         return [];
                     }
@@ -858,23 +855,19 @@ export class InteractionCreateEvent extends BaseEvent {
                         new ButtonBuilder()
                             .setCustomId("LYRICS_PREV10")
                             .setEmoji("⏪")
-                            .setStyle(ButtonStyle.Secondary)
-                            .setDisabled(page < 10),
+                            .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
                             .setCustomId("LYRICS_PREV")
                             .setEmoji("⬅️")
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page === 0),
+                            .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
                             .setCustomId("LYRICS_NEXT")
                             .setEmoji("➡️")
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page >= totalPages - 1),
+                            .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
                             .setCustomId("LYRICS_NEXT10")
                             .setEmoji("⏩")
-                            .setStyle(ButtonStyle.Secondary)
-                            .setDisabled(page >= totalPages - 10),
+                            .setStyle(ButtonStyle.Secondary),
                     );
                     return [row];
                 };
@@ -890,7 +883,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 await interaction.editReply({
                     embeds: [embed],
-                    components: createPaginationButtons(currentPage, pages.length),
+                    components: createPaginationButtons(pages.length),
                 });
 
                 if (pages.length > 1) {
@@ -905,20 +898,22 @@ export class InteractionCreateEvent extends BaseEvent {
                     collector.on("collect", async (i) => {
                         switch (i.customId) {
                             case "LYRICS_PREV10":
-                                currentPage = Math.max(0, currentPage - 10);
+                                currentPage -= 10;
                                 break;
                             case "LYRICS_PREV":
-                                currentPage = Math.max(0, currentPage - 1);
+                                currentPage--;
                                 break;
                             case "LYRICS_NEXT":
-                                currentPage = Math.min(pages.length - 1, currentPage + 1);
+                                currentPage++;
                                 break;
                             case "LYRICS_NEXT10":
-                                currentPage = Math.min(pages.length - 1, currentPage + 10);
+                                currentPage += 10;
                                 break;
                             default:
                                 return;
                         }
+
+                        currentPage = ((currentPage % pages.length) + pages.length) % pages.length;
 
                         embed.setDescription(pages[currentPage]).setFooter({
                             text: `• ${i18n.__mf("reusable.pageFooter", {
@@ -929,7 +924,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                         await i.update({
                             embeds: [embed],
-                            components: createPaginationButtons(currentPage, pages.length),
+                            components: createPaginationButtons(pages.length),
                         });
                     });
 
