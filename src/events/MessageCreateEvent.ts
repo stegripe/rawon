@@ -2,6 +2,7 @@ import { setTimeout } from "node:timers";
 import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import {
     ChannelType,
+    type EmbedBuilder,
     type Message,
     type MessageCollector,
     type TextChannel,
@@ -120,7 +121,16 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
-        await message.delete().catch(() => null);
+        // Delete user message after 60 seconds instead of immediately
+        setTimeout(() => {
+            void (async (): Promise<void> => {
+                try {
+                    await message.delete();
+                } catch {
+                    // Ignore errors
+                }
+            })();
+        }, 60_000);
 
         const query = message.content.trim();
         if (query.length === 0) {
@@ -141,8 +151,8 @@ export class MessageCreateEvent extends BaseEvent {
 
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
-            this.sendTemporaryMessage(
-                message.channel as TextChannel,
+            this.sendTemporaryReply(
+                message,
                 createEmbed("warn", i18n.__("requestChannel.notInVoice")),
             );
             return;
@@ -150,8 +160,8 @@ export class MessageCreateEvent extends BaseEvent {
 
         const songs = await searchTrack(this.client, query).catch(() => null);
         if (!songs || songs.items.length === 0) {
-            this.sendTemporaryMessage(
-                message.channel as TextChannel,
+            this.sendTemporaryReply(
+                message,
                 createEmbed("error", i18n.__("requestChannel.noResults"), true),
             );
             return;
@@ -178,8 +188,8 @@ export class MessageCreateEvent extends BaseEvent {
                 guild.queue?.songs.clear();
                 delete guild.queue;
 
-                this.sendTemporaryMessage(
-                    message.channel as TextChannel,
+                this.sendTemporaryReply(
+                    message,
                     createEmbed(
                         "error",
                         i18n.__mf("utils.generalHandler.errorJoining", {
@@ -202,33 +212,54 @@ export class MessageCreateEvent extends BaseEvent {
             void play(guild);
         }
 
-        const songTitle = songs.items[0].title;
-        const songUrl = songs.items[0].url;
-        const confirmEmbed = createEmbed(
-            "success",
-            `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: `[${songTitle}](${songUrl})` })}`,
-        );
-        if (songs.items[0].thumbnail) {
-            confirmEmbed.setThumbnail(songs.items[0].thumbnail);
+        // Build confirmation embed - show playlist metadata if it's a playlist
+        let confirmEmbed: EmbedBuilder;
+        if (songs.playlist && songs.items.length > 1) {
+            // It's a playlist - show playlist metadata
+            const playlistTitle = songs.playlist.title;
+            const playlistUrl = songs.playlist.url;
+            confirmEmbed = createEmbed(
+                "success",
+                `🎶 **|** ${i18n.__mf("requestChannel.addedPlaylistToQueue", {
+                    playlist: `[${playlistTitle}](${playlistUrl})`,
+                    count: songs.items.length.toString(),
+                })}`,
+            );
+            if (songs.playlist.thumbnail) {
+                confirmEmbed.setThumbnail(songs.playlist.thumbnail);
+            }
+            if (songs.playlist.author) {
+                confirmEmbed.setFooter({ text: `📁 ${songs.playlist.author}` });
+            }
+        } else {
+            // It's a single song
+            const songTitle = songs.items[0].title;
+            const songUrl = songs.items[0].url;
+            confirmEmbed = createEmbed(
+                "success",
+                `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", { song: `[${songTitle}](${songUrl})` })}`,
+            );
+            if (songs.items[0].thumbnail) {
+                confirmEmbed.setThumbnail(songs.items[0].thumbnail);
+            }
         }
-        this.sendTemporaryMessage(message.channel as TextChannel, confirmEmbed);
+        this.sendTemporaryReply(message, confirmEmbed);
     }
 
-    private sendTemporaryMessage(
-        channel: TextChannel,
-        embed: ReturnType<typeof createEmbed>,
-    ): void {
+    private sendTemporaryReply(message: Message, embed: ReturnType<typeof createEmbed>): void {
         void (async () => {
-            const msg = await channel.send({ embeds: [embed] });
-            setTimeout(() => {
-                void (async () => {
-                    try {
-                        await msg.delete();
-                    } catch {
-                        // Ignore errors
-                    }
-                })();
-            }, 60_000);
+            const msg = await message.reply({ embeds: [embed] }).catch(() => null);
+            if (msg) {
+                setTimeout(() => {
+                    void (async () => {
+                        try {
+                            await msg.delete();
+                        } catch {
+                            // Ignore errors
+                        }
+                    })();
+                }, 60_000);
+            }
         })();
     }
 

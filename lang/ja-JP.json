@@ -345,6 +345,7 @@
         "notInVoice": "音楽をリクエストするにはボイスチャンネルに参加する必要があります。",
         "noResults": "検索結果が見つかりませんでした。",
         "addedToQueue": "**{song}** をキューに追加しました。",
+        "addedPlaylistToQueue": "**{playlist}** から **{count}** 曲をキューに追加しました。",
         "startedPlaying": "**{song}** を再生中",
         "paused": "音楽を一時停止しました。",
         "resumed": "音楽を再開しました。",

@@ -1,7 +1,13 @@
 import { URL } from "node:url";
 import { Playlist, type SearchResult, type Video, type VideoCompact } from "youtubei";
 import { type Rawon } from "../../../structures/Rawon.js";
-import { type SearchTrackResult, type Song, type SpotifyTrack } from "../../../typings/index.js";
+import {
+    type PlaylistMetadata,
+    type SearchTrackResult,
+    type Song,
+    type SpotifyResolveResult,
+    type SpotifyTrack,
+} from "../../../typings/index.js";
 import { getMaxResThumbnail, getYouTubeThumbnail } from "../../functions/getMaxResThumbnail.js";
 import { youtube, youtubeMusic } from "../YouTubeUtil.js";
 import { getInfo } from "../YTDLUtil.js";
@@ -73,6 +79,12 @@ export async function searchTrack(
                         );
 
                         result.items = tracks;
+                        result.playlist = {
+                            title: playlist.title,
+                            url: playlist.permalink_url,
+                            thumbnail: playlist.artwork_url ?? undefined,
+                            author: playlist.user?.username,
+                        };
                         break;
                     }
 
@@ -181,6 +193,17 @@ export async function searchTrack(
                             }
 
                             result.items = tracks;
+
+                            // Extract playlist metadata
+                            const playlistMeta: PlaylistMetadata = {
+                                title: playlist.title,
+                                url: `https://youtube.com/playlist?list=${list}`,
+                            };
+                            if (playlist instanceof Playlist) {
+                                playlistMeta.thumbnail = playlist.thumbnails?.[0]?.url;
+                                playlistMeta.author = playlist.channel?.name;
+                            }
+                            result.playlist = playlistMeta;
                         }
                         break;
                     }
@@ -287,11 +310,10 @@ export async function searchTrack(
                     }
 
                     case "playlist": {
-                        const songs = (await client.spotify.resolveTracks(
+                        const spotifyResult = (await client.spotify.resolveTracksWithMetadata(
                             url.toString(),
-                        )) as unknown as {
-                            track: SpotifyTrack;
-                        }[];
+                        )) as SpotifyResolveResult;
+                        const songs = spotifyResult.tracks;
                         await Promise.all(
                             songs.map(async (x): Promise<void> => {
                                 let response = await youtube.search(
@@ -317,6 +339,9 @@ export async function searchTrack(
                                 }
                             }),
                         );
+                        if (spotifyResult.metadata) {
+                            result.playlist = spotifyResult.metadata;
+                        }
                         break;
                     }
 
