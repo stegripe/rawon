@@ -68,6 +68,20 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
                 name: "reset",
                 type: ApplicationCommandOptionType.Subcommand,
             },
+            {
+                description: i18n.__("commands.developers.cookies.slashUseDescription"),
+                name: "use",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        description: i18n.__("commands.developers.cookies.slashNumberDescription"),
+                        name: "number",
+                        type: ApplicationCommandOptionType.Integer,
+                        required: true,
+                        minValue: 1,
+                    },
+                ],
+            },
         ],
     },
     usage: i18n.__("commands.developers.cookies.usage"),
@@ -113,6 +127,8 @@ export class CookiesCommand extends BaseCommand {
                 return this.handleView(ctx);
             case "reset":
                 return this.handleReset(ctx);
+            case "use":
+                return this.handleUse(ctx);
             default:
                 return ctx.reply({
                     embeds: [
@@ -485,6 +501,65 @@ export class CookiesCommand extends BaseCommand {
         return ctx.reply({
             embeds: [
                 createEmbed("success", i18n.__("commands.developers.cookies.resetSuccess"), true),
+            ],
+        });
+    }
+
+    private async handleUse(ctx: CommandContext): Promise<Message | undefined> {
+        const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
+
+        if (Number.isNaN(number) || number < 1) {
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__("commands.developers.cookies.invalidNumber"),
+                        true,
+                    ),
+                ],
+            });
+        }
+
+        const result = this.client.cookies.useCookie(number);
+
+        if (result === "success") {
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "success",
+                        i18n.__mf("commands.developers.cookies.useSuccess", {
+                            cookie: this.formatCookie(number),
+                        }),
+                        true,
+                    ),
+                ],
+            });
+        }
+
+        if (result === "not_found") {
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        i18n.__mf("commands.developers.cookies.useNotFound", {
+                            cookie: this.formatCookie(number),
+                        }),
+                        true,
+                    ),
+                ],
+            });
+        }
+
+        // result === "failed"
+        return ctx.reply({
+            embeds: [
+                createEmbed(
+                    "error",
+                    i18n.__mf("commands.developers.cookies.useFailed", {
+                        cookie: this.formatCookie(number),
+                    }),
+                    true,
+                ),
             ],
         });
     }
