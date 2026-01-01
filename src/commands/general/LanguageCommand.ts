@@ -50,7 +50,6 @@ export class LanguageCommand extends BaseCommand {
         const subCommand = ctx.options?.getSubcommand(false);
         const localeArg = ctx.options?.getString("locale") ?? ctx.args[0];
 
-        // View current language
         if (subCommand === "view" || !localeArg) {
             const currentLocale =
                 this.client.data.data?.[guildId]?.locale ?? this.client.config.lang;
@@ -73,7 +72,6 @@ export class LanguageCommand extends BaseCommand {
             return;
         }
 
-        // Set new language
         if (!isSupportedLocale(localeArg)) {
             await ctx.reply({
                 embeds: [
@@ -100,7 +98,6 @@ export class LanguageCommand extends BaseCommand {
             };
         });
 
-        // Use the new locale directly for the response message
         const newLocale__ = (phrase: string): string => i18n.__({ phrase, locale: localeArg });
 
         await ctx.reply({
