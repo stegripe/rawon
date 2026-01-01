@@ -97,6 +97,19 @@
             "ping": {
                 "description": "Hiển thị ping hiện tại",
                 "footerString": "Độ trễ của: {user}"
+            },
+            "language": {
+                "description": "Thay đổi ngôn ngữ bot cho máy chủ này",
+                "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
+                "slashSetDescription": "Đặt ngôn ngữ máy chủ",
+                "slashViewDescription": "Xem ngôn ngữ máy chủ hiện tại",
+                "slashLocaleOption": "Ngôn ngữ để đặt",
+                "usage": "{prefix}language [ngôn ngữ]",
+                "embedTitle": "Cài đặt ngôn ngữ",
+                "currentLanguage": "Ngôn ngữ hiện tại: **{locale}**",
+                "languageSet": "Ngôn ngữ máy chủ đã được thay đổi thành **{locale}**",
+                "invalidLocale": "Ngôn ngữ không hợp lệ. Các ngôn ngữ có sẵn: {locales}",
+                "availableLocales": "Các ngôn ngữ có sẵn"
             }
         },
         "music": {

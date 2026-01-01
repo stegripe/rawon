@@ -97,6 +97,19 @@
             "ping": {
                 "description": "顯示當前機器人的ping",
                 "footerString": "延遲時間: {user}"
+            },
+            "language": {
+                "description": "更改此伺服器的機器人語言",
+                "noPermission": "您需要 **管理伺服器** 權限才能使用此命令。",
+                "slashSetDescription": "設定伺服器語言",
+                "slashViewDescription": "查看當前伺服器語言",
+                "slashLocaleOption": "要設定的語言",
+                "usage": "{prefix}language [語言]",
+                "embedTitle": "語言設定",
+                "currentLanguage": "當前語言：**{locale}**",
+                "languageSet": "伺服器語言已更改為 **{locale}**",
+                "invalidLocale": "無效語言。可用語言：{locales}",
+                "availableLocales": "可用語言"
             }
         },
         "music": {

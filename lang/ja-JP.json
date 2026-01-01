@@ -97,6 +97,19 @@
             "ping": {
                 "description": "現在のBotのping値を表示",
                 "footerString": "{user}のレイテンシ"
+            },
+            "language": {
+                "description": "このサーバーのBot言語を変更",
+                "noPermission": "このコマンドを使用するには **サーバー管理** 権限が必要です。",
+                "slashSetDescription": "サーバーの言語を設定",
+                "slashViewDescription": "現在のサーバー言語を表示",
+                "slashLocaleOption": "設定する言語",
+                "usage": "{prefix}language [言語]",
+                "embedTitle": "言語設定",
+                "currentLanguage": "現在の言語：**{locale}**",
+                "languageSet": "サーバーの言語が **{locale}** に変更されました",
+                "invalidLocale": "無効な言語です。利用可能な言語：{locales}",
+                "availableLocales": "利用可能な言語"
             }
         },
         "music": {

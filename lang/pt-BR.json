@@ -97,6 +97,19 @@
             "ping": {
                 "description": "Mostra o ping atual do bot",
                 "footerString": "Latência de: {user}"
+            },
+            "language": {
+                "description": "Altera o idioma do bot para este servidor",
+                "noPermission": "Você precisa da permissão **Gerenciar servidor** para usar este comando.",
+                "slashSetDescription": "Definir o idioma do servidor",
+                "slashViewDescription": "Ver o idioma atual do servidor",
+                "slashLocaleOption": "O idioma a definir",
+                "usage": "{prefix}language [idioma]",
+                "embedTitle": "Configurações de idioma",
+                "currentLanguage": "Idioma atual: **{locale}**",
+                "languageSet": "O idioma do servidor foi alterado para **{locale}**",
+                "invalidLocale": "Idioma inválido. Idiomas disponíveis: {locales}",
+                "availableLocales": "Idiomas disponíveis"
             }
         },
         "music": {

@@ -245,6 +245,7 @@ export type GuildData = {
         currentSongKey: string | null;
         currentPosition: number;
     };
+    locale?: string;
 };
 
 export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;

@@ -97,6 +97,19 @@
             "ping": {
                 "description": "Cek ping bot",
                 "footerString": "Latensi dari: {user}"
+            },
+            "language": {
+                "description": "Ubah bahasa bot untuk server ini",
+                "noPermission": "Kamu butuh izin **Manage Server** untuk menggunakan perintah ini.",
+                "slashSetDescription": "Atur bahasa server",
+                "slashViewDescription": "Lihat bahasa server saat ini",
+                "slashLocaleOption": "Bahasa yang mau diatur",
+                "usage": "{prefix}language [bahasa]",
+                "embedTitle": "Pengaturan Bahasa",
+                "currentLanguage": "Bahasa saat ini: **{locale}**",
+                "languageSet": "Bahasa server udah diubah ke **{locale}**",
+                "invalidLocale": "Bahasa gak valid. Bahasa yang tersedia: {locales}",
+                "availableLocales": "Bahasa yang tersedia"
             }
         },
         "music": {

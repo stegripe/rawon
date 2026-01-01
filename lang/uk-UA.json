@@ -97,6 +97,19 @@
             "ping": {
                 "description": "Показує поточну затримку бота",
                 "footerString": "Затримка: {user}"
+            },
+            "language": {
+                "description": "Змінити мову бота для цього сервера",
+                "noPermission": "Для використання цієї команди потрібен дозвіл **Керування сервером**.",
+                "slashSetDescription": "Встановити мову сервера",
+                "slashViewDescription": "Переглянути поточну мову сервера",
+                "slashLocaleOption": "Мова для встановлення",
+                "usage": "{prefix}language [мова]",
+                "embedTitle": "Налаштування мови",
+                "currentLanguage": "Поточна мова: **{locale}**",
+                "languageSet": "Мову сервера змінено на **{locale}**",
+                "invalidLocale": "Невірна мова. Доступні мови: {locales}",
+                "availableLocales": "Доступні мови"
             }
         },
         "music": {

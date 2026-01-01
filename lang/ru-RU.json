@@ -97,6 +97,19 @@
             "ping": {
                 "description": "Показывает текущий пинг бота",
                 "footerString": "Задержка: {user}"
+            },
+            "language": {
+                "description": "Изменить язык бота для этого сервера",
+                "noPermission": "Для использования этой команды нужно разрешение **Управление сервером**.",
+                "slashSetDescription": "Установить язык сервера",
+                "slashViewDescription": "Посмотреть текущий язык сервера",
+                "slashLocaleOption": "Язык для установки",
+                "usage": "{prefix}language [язык]",
+                "embedTitle": "Настройки языка",
+                "currentLanguage": "Текущий язык: **{locale}**",
+                "languageSet": "Язык сервера изменён на **{locale}**",
+                "invalidLocale": "Неверный язык. Доступные языки: {locales}",
+                "availableLocales": "Доступные языки"
             }
         },
         "music": {

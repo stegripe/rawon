@@ -97,6 +97,19 @@
             "ping": {
                 "description": "Botun mevcut gecikme süresini gösterir",
                 "footerString": "Gecikme Süresi: {user}"
+            },
+            "language": {
+                "description": "Bu sunucu için bot dilini değiştir",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
+                "slashSetDescription": "Sunucu dilini ayarla",
+                "slashViewDescription": "Mevcut sunucu dilini görüntüle",
+                "slashLocaleOption": "Ayarlanacak dil",
+                "usage": "{prefix}language [dil]",
+                "embedTitle": "Dil Ayarları",
+                "currentLanguage": "Mevcut dil: **{locale}**",
+                "languageSet": "Sunucu dili **{locale}** olarak değiştirildi",
+                "invalidLocale": "Geçersiz dil. Kullanılabilir diller: {locales}",
+                "availableLocales": "Kullanılabilir diller"
             }
         },
         "music": {
