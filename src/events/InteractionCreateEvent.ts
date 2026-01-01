@@ -861,14 +861,12 @@ export class InteractionCreateEvent extends BaseEvent {
                     return [row];
                 };
 
-                if (pages.length > 1) {
-                    embed.setFooter({
-                        text: `• ${i18n.__mf("reusable.pageFooter", {
-                            actual: 1,
-                            total: pages.length,
-                        })}`,
-                    });
-                }
+                embed.setFooter({
+                    text: `• ${i18n.__mf("reusable.pageFooter", {
+                        actual: 1,
+                        total: pages.length,
+                    })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                });
 
                 await interaction.editReply({
                     embeds: [embed],
@@ -908,7 +906,7 @@ export class InteractionCreateEvent extends BaseEvent {
                             text: `• ${i18n.__mf("reusable.pageFooter", {
                                 actual: currentPage + 1,
                                 total: pages.length,
-                            })}`,
+                            })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
                         });
 
                         await i.update({
