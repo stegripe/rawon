@@ -305,8 +305,6 @@ function isTransientError(errorMessage: string): boolean {
         "http error 503",
         "http error 502",
         "http error 500",
-        "rate-limit",
-        "too many requests",
     ];
     const lowerError = errorMessage.toLowerCase();
     return transientPatterns.some((pattern) => lowerError.includes(pattern));
