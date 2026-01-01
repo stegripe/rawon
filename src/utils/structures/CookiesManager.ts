@@ -1,4 +1,12 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+    existsSync,
+    mkdirSync,
+    readdirSync,
+    readFileSync,
+    rmSync,
+    statSync,
+    writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -82,10 +90,10 @@ export class CookiesManager {
 
         if (
             this.failedCookies.has(this.currentCookieIndex) ||
-            !existsSync(this.getCookiePath(this.currentCookieIndex))
+            !this.isCookieValid(this.currentCookieIndex)
         ) {
             for (const index of cookies) {
-                if (!this.failedCookies.has(index)) {
+                if (!this.failedCookies.has(index) && this.isCookieValid(index)) {
                     this.currentCookieIndex = index;
                     this.saveState();
                     return;
@@ -99,6 +107,19 @@ export class CookiesManager {
         return path.join(this.cookiesDir, `cookies-${index}.txt`);
     }
 
+    public isCookieValid(index: number): boolean {
+        const cookiePath = this.getCookiePath(index);
+        if (!existsSync(cookiePath)) {
+            return false;
+        }
+        try {
+            const stats = statSync(cookiePath);
+            return stats.size > 0;
+        } catch {
+            return false;
+        }
+    }
+
     public getCurrentCookiePath(): string | null {
         if (this.allCookiesFailed) {
             return null;
@@ -110,14 +131,29 @@ export class CookiesManager {
         }
 
         const cookiePath = this.getCookiePath(this.currentCookieIndex);
-        if (existsSync(cookiePath) && !this.failedCookies.has(this.currentCookieIndex)) {
+        if (
+            this.isCookieValid(this.currentCookieIndex) &&
+            !this.failedCookies.has(this.currentCookieIndex)
+        ) {
             return cookiePath;
         }
 
+        // Current cookie is invalid (empty/missing) or failed, auto-rotate
+        if (!this.isCookieValid(this.currentCookieIndex)) {
+            this.client.logger.warn(
+                `[CookiesManager] Cookie ${this.currentCookieIndex} is invalid (empty or missing), auto-rotating...`,
+            );
+            this.failedCookies.add(this.currentCookieIndex);
+            this.failureTimestamps.set(this.currentCookieIndex, Date.now());
+        }
+
         for (const index of cookies) {
-            if (!this.failedCookies.has(index)) {
+            if (!this.failedCookies.has(index) && this.isCookieValid(index)) {
                 this.currentCookieIndex = index;
                 this.saveState();
+                this.client.logger.info(
+                    `[CookiesManager] Auto-rotated to cookie ${this.currentCookieIndex}`,
+                );
                 return this.getCookiePath(index);
             }
         }
@@ -141,7 +177,7 @@ export class CookiesManager {
         );
 
         for (const index of cookies) {
-            if (!this.failedCookies.has(index)) {
+            if (!this.failedCookies.has(index) && this.isCookieValid(index)) {
                 this.currentCookieIndex = index;
                 this.saveState();
                 this.client.logger.info(
