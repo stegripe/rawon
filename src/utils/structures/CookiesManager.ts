@@ -138,7 +138,6 @@ export class CookiesManager {
             return cookiePath;
         }
 
-        // Current cookie is invalid (empty/missing) or failed, auto-rotate
         if (!this.isCookieValid(this.currentCookieIndex)) {
             this.client.logger.warn(
                 `[CookiesManager] Cookie ${this.currentCookieIndex} is invalid (empty or missing), auto-rotating...`,

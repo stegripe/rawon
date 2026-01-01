@@ -11,7 +11,7 @@ export function createTable(values: string[][]): string {
 
                     return `${y}${spacing}`;
                 })
-                .join("   ::   "),
+                .join(" :: "),
         )
         .join("\n");
 
