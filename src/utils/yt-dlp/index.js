@@ -54,7 +54,13 @@ export function isBotDetectionError(errorMessage) {
     return (
         lowerError.includes("sign in to confirm you're not a bot") ||
         lowerError.includes("sign in to confirm") ||
-        lowerError.includes("please sign in")
+        lowerError.includes("please sign in") ||
+        lowerError.includes("http error 429") ||
+        lowerError.includes("error 429") ||
+        lowerError.includes("too many requests") ||
+        (lowerError.includes("this video is unavailable") && lowerError.includes("429")) ||
+        lowerError.includes("login required") ||
+        (lowerError.includes("age-restricted") && lowerError.includes("sign in"))
     );
 }
 
