@@ -7,13 +7,13 @@ import {
     type VoiceChannel,
     type VoiceState,
 } from "discord.js";
-import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type QueueSong } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { formatMS } from "../utils/functions/formatMS.js";
+import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 
 @Event<typeof VoiceStateUpdateEvent>("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
@@ -71,6 +71,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
+        const __ = i18n__(this.client, newState.guild);
+        const __mf = i18n__mf(this.client, newState.guild);
+
         const newVc = newState.channel;
         const oldVc = oldState.channel;
         const newId = newVc?.id;
@@ -104,7 +107,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             embeds: [
                                 createEmbed(
                                     "error",
-                                    `⏹️ **|** ${i18n.__("events.voiceStateUpdate.disconnectFromVCMessage")}`,
+                                    `⏹️ **|** ${__("events.voiceStateUpdate.disconnectFromVCMessage")}`,
                                 ),
                             ],
                         })
@@ -142,10 +145,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             if (oldVc?.rtcRegion !== newVc?.rtcRegion) {
                 const msg = await queue.textChannel.send({
                     embeds: [
-                        createEmbed(
-                            "info",
-                            i18n.__("events.voiceStateUpdate.reconfigureConnection"),
-                        ),
+                        createEmbed("info", __("events.voiceStateUpdate.reconfigureConnection")),
                     ],
                 });
 
@@ -161,7 +161,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         embeds: [
                             createEmbed(
                                 "success",
-                                i18n.__("events.voiceStateUpdate.connectionReconfigured"),
+                                __("events.voiceStateUpdate.connectionReconfigured"),
                                 true,
                             ),
                         ],
@@ -184,7 +184,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         embeds: [
                             createEmbed(
                                 "error",
-                                i18n.__("events.voiceStateUpdate.unableReconfigureConnection"),
+                                __("events.voiceStateUpdate.unableReconfigureConnection"),
                                 true,
                             ),
                         ],
@@ -199,9 +199,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             }
             if (newVc?.type === ChannelType.GuildStageVoice && newState.suppress === true) {
                 const msg = await queue.textChannel.send({
-                    embeds: [
-                        createEmbed("info", i18n.__("events.voiceStateUpdate.joiningAsSpeaker")),
-                    ],
+                    embeds: [createEmbed("info", __("events.voiceStateUpdate.joiningAsSpeaker"))],
                 });
                 const suppress = await newState
                     .setSuppressed(false)
@@ -219,7 +217,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             embeds: [
                                 createEmbed(
                                     "error",
-                                    i18n.__("events.voiceStateUpdate.unableJoinStageMessage"),
+                                    __("events.voiceStateUpdate.unableJoinStageMessage"),
                                     true,
                                 ),
                             ],
@@ -243,7 +241,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            i18n.__("events.voiceStateUpdate.joinStageMessage"),
+                            __("events.voiceStateUpdate.joinStageMessage"),
                             true,
                         ),
                     ],
@@ -286,6 +284,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
+        const __ = i18n__(this.client, state.guild);
+        const __mf = i18n__mf(this.client, state.guild);
+
         clearTimeout(queue.timeout ?? undefined);
         (state.guild.queue as unknown as ServerQueue).timeout = null;
         queue.player.pause();
@@ -305,10 +306,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "error",
-                            `⏹️ **|** ${i18n.__mf("events.voiceStateUpdate.deleteQueue", {
+                            `⏹️ **|** ${__mf("events.voiceStateUpdate.deleteQueue", {
                                 duration: `\`${duration}\``,
                             })}`,
-                        ).setAuthor({ name: i18n.__("events.voiceStateUpdate.deleteQueueFooter") }),
+                        ).setAuthor({ name: __("events.voiceStateUpdate.deleteQueueFooter") }),
                     ],
                 });
                 if (isRequestChannel) {
@@ -323,10 +324,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 embeds: [
                     createEmbed(
                         "warn",
-                        `⏸️ **|** ${i18n.__mf("events.voiceStateUpdate.pauseQueue", {
+                        `⏸️ **|** ${__mf("events.voiceStateUpdate.pauseQueue", {
                             duration: `\`${duration}\``,
                         })}`,
-                    ).setAuthor({ name: i18n.__("events.voiceStateUpdate.pauseQueueFooter") }),
+                    ).setAuthor({ name: __("events.voiceStateUpdate.pauseQueueFooter") }),
                 ],
             });
             queue.lastVSUpdateMsg = msg.id;
@@ -347,6 +348,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
+        const __ = i18n__(this.client, state.guild);
+        const __mf = i18n__mf(this.client, state.guild);
+
         clearTimeout(queue.timeout ?? undefined);
         (state.guild.queue as unknown as ServerQueue).timeout = null;
 
@@ -362,13 +366,13 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 embeds: [
                     createEmbed(
                         "info",
-                        `▶️ **|** ${i18n.__mf("events.voiceStateUpdate.resumeQueue", {
+                        `▶️ **|** ${__mf("events.voiceStateUpdate.resumeQueue", {
                             song: `[${song.title}](${song.url})`,
                         })}`,
                     )
                         .setThumbnail(song.thumbnail)
                         .setAuthor({
-                            name: i18n.__("events.voiceStateUpdate.resumeQueueFooter"),
+                            name: __("events.voiceStateUpdate.resumeQueueFooter"),
                         }),
                 ],
             });

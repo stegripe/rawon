@@ -9,9 +9,9 @@ import {
 } from "@discordjs/voice";
 import { ChannelType, type Guild } from "discord.js";
 import prism from "prism-media";
-import i18n from "../../../config/index.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
+import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import {
     AllCookiesFailedError,
     CookieRotationNeededError,
@@ -29,6 +29,9 @@ export async function play(
     if (!queue) {
         return;
     }
+
+    const __ = i18n__(queue.client, guild);
+    const __mf = i18n__mf(queue.client, guild);
 
     queue.seekOffset = seekSeconds;
 
@@ -50,7 +53,7 @@ export async function play(
                 embeds: [
                     createEmbed(
                         "info",
-                        `⏹️ **|** ${i18n.__mf("utils.generalHandler.queueEnded", {
+                        `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
                             usage: `\`${guild.client.config.mainPrefix}play\``,
                         })}`,
                     ),
@@ -66,10 +69,7 @@ export async function play(
                 if (!isRequestChannel) {
                     const msg = await queue.textChannel.send({
                         embeds: [
-                            createEmbed(
-                                "info",
-                                `👋 **|** ${i18n.__("utils.generalHandler.leftVC")}`,
-                            ),
+                            createEmbed("info", `👋 **|** ${__("utils.generalHandler.leftVC")}`),
                         ],
                     });
                     setTimeout(() => {
@@ -125,7 +125,7 @@ export async function play(
                     embeds: [
                         createEmbed(
                             "error",
-                            `⚠️ **|** ${i18n.__mf("utils.generalHandler.allCookiesFailed", {
+                            `⚠️ **|** ${__mf("utils.generalHandler.allCookiesFailed", {
                                 prefix: guild.client.config.mainPrefix,
                             })}`,
                             true,
@@ -153,7 +153,7 @@ export async function play(
                     embeds: [
                         createEmbed(
                             "warn",
-                            `🔄 **|** ${i18n.__mf("utils.generalHandler.songRequeued", {
+                            `🔄 **|** ${__mf("utils.generalHandler.songRequeued", {
                                 song: `[${song.song.title}](${song.song.url})`,
                             })}`,
                         ).setThumbnail(song.song.thumbnail),
@@ -191,7 +191,7 @@ export async function play(
                 embeds: [
                     createEmbed(
                         "error",
-                        `❌ **|** ${i18n.__mf("utils.generalHandler.errorPlaying", {
+                        `❌ **|** ${__mf("utils.generalHandler.errorPlaying", {
                             message: `\`${(error as Error).message.substring(0, 200)}\``,
                         })}`,
                         true,

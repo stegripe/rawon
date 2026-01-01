@@ -5,6 +5,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command<typeof CookiesCommand>({
     aliases: ["cookie", "ck"],
@@ -100,6 +101,7 @@ export class CookiesCommand extends BaseCommand {
     }
 
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        const __mf = i18n__mf(this.client, ctx.guild);
         const subcommand = ctx.options?.getSubcommand() ?? ctx.args[0]?.toLowerCase();
 
         if (!subcommand) {
@@ -107,7 +109,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("reusable.invalidUsage", {
+                        __mf("reusable.invalidUsage", {
                             prefix: `${this.client.config.mainPrefix}help`,
                             name: this.meta.name,
                         }),
@@ -134,7 +136,7 @@ export class CookiesCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "warn",
-                            i18n.__mf("reusable.invalidUsage", {
+                            __mf("reusable.invalidUsage", {
                                 prefix: `${this.client.config.mainPrefix}help`,
                                 name: this.meta.name,
                             }),
@@ -145,16 +147,14 @@ export class CookiesCommand extends BaseCommand {
     }
 
     private async handleAdd(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
         const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__("commands.developers.cookies.invalidNumber"),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.developers.cookies.invalidNumber"), true),
                 ],
             });
         }
@@ -172,7 +172,7 @@ export class CookiesCommand extends BaseCommand {
         if (!attachment) {
             return ctx.reply({
                 embeds: [
-                    createEmbed("error", i18n.__("commands.developers.cookies.noAttachment"), true),
+                    createEmbed("error", __("commands.developers.cookies.noAttachment"), true),
                 ],
             });
         }
@@ -180,11 +180,7 @@ export class CookiesCommand extends BaseCommand {
         if (!attachment.name.endsWith(".txt")) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__("commands.developers.cookies.invalidFileType"),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.developers.cookies.invalidFileType"), true),
                 ],
             });
         }
@@ -222,7 +218,7 @@ export class CookiesCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__("commands.developers.cookies.invalidCookiesFile"),
+                            __("commands.developers.cookies.invalidCookiesFile"),
                             true,
                         ),
                     ],
@@ -242,7 +238,7 @@ export class CookiesCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "success",
-                            i18n.__mf("commands.developers.cookies.addSuccess", {
+                            __mf("commands.developers.cookies.addSuccess", {
                                 cookie: this.formatCookie(number),
                             }),
                             true,
@@ -255,7 +251,7 @@ export class CookiesCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "success",
-                            i18n.__mf("commands.developers.cookies.replaceSuccess", {
+                            __mf("commands.developers.cookies.replaceSuccess", {
                                 cookie: this.formatCookie(number),
                             }),
                             true,
@@ -264,9 +260,7 @@ export class CookiesCommand extends BaseCommand {
                 });
             }
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.developers.cookies.addFailed"), true),
-                ],
+                embeds: [createEmbed("error", __("commands.developers.cookies.addFailed"), true)],
             });
         } catch (error) {
             this.client.logger.error("COOKIES_ADD_ERR:", error);
@@ -274,7 +268,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        i18n.__mf("commands.developers.cookies.addError", {
+                        __mf("commands.developers.cookies.addError", {
                             error: (error as Error).message,
                         }),
                         true,
@@ -285,16 +279,14 @@ export class CookiesCommand extends BaseCommand {
     }
 
     private async handleRemove(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
         const target = ctx.options?.getString("target") ?? ctx.args[1]?.toLowerCase();
 
         if (!target) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__("commands.developers.cookies.noRemoveTarget"),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.developers.cookies.noRemoveTarget"), true),
                 ],
             });
         }
@@ -305,7 +297,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "success",
-                        i18n.__mf("commands.developers.cookies.removeAllSuccess", {
+                        __mf("commands.developers.cookies.removeAllSuccess", {
                             count: count.toString(),
                         }),
                         true,
@@ -320,7 +312,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        i18n.__("commands.developers.cookies.invalidRemoveTarget"),
+                        __("commands.developers.cookies.invalidRemoveTarget"),
                         true,
                     ),
                 ],
@@ -334,7 +326,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "success",
-                        i18n.__mf("commands.developers.cookies.removeSuccess", {
+                        __mf("commands.developers.cookies.removeSuccess", {
                             cookie: this.formatCookie(number),
                         }),
                         true,
@@ -346,7 +338,7 @@ export class CookiesCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "error",
-                    i18n.__mf("commands.developers.cookies.removeNotFound", {
+                    __mf("commands.developers.cookies.removeNotFound", {
                         cookie: this.formatCookie(number),
                     }),
                     true,
@@ -356,6 +348,8 @@ export class CookiesCommand extends BaseCommand {
     }
 
     private async handleList(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
         const cookies = this.client.cookies.listCookies();
 
         if (cookies.length === 0) {
@@ -363,7 +357,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("commands.developers.cookies.noCookies", {
+                        __mf("commands.developers.cookies.noCookies", {
                             usage: this.formatUsage(this.client.config.mainPrefix),
                         }),
                     ),
@@ -380,15 +374,15 @@ export class CookiesCommand extends BaseCommand {
                 switch (status) {
                     case "active":
                         emoji = "🟢";
-                        statusText = i18n.__("commands.developers.cookies.statusActive");
+                        statusText = __("commands.developers.cookies.statusActive");
                         break;
                     case "failed":
                         emoji = "🔴";
-                        statusText = i18n.__("commands.developers.cookies.statusFailed");
+                        statusText = __("commands.developers.cookies.statusFailed");
                         break;
                     default:
                         emoji = "🟡";
-                        statusText = i18n.__("commands.developers.cookies.statusAvailable");
+                        statusText = __("commands.developers.cookies.statusAvailable");
                 }
 
                 return `${emoji} ${this.formatCookie(index)} - ${statusText}`;
@@ -396,14 +390,14 @@ export class CookiesCommand extends BaseCommand {
             .join("\n");
 
         const currentCookie = this.client.cookies.getCurrentCookieIndex();
-        const statsValue = `${i18n.__("commands.developers.cookies.statsTotal")}: \`${cookies.length}\` | ${i18n.__("commands.developers.cookies.statsFailed")}: \`${this.client.cookies.getFailedCookieCount()}\` | ${i18n.__("commands.developers.cookies.statsCurrent")}: ${this.formatCookie(currentCookie)}`;
+        const statsValue = `${__("commands.developers.cookies.statsTotal")}: \`${cookies.length}\` | ${__("commands.developers.cookies.statsFailed")}: \`${this.client.cookies.getFailedCookieCount()}\` | ${__("commands.developers.cookies.statsCurrent")}: ${this.formatCookie(currentCookie)}`;
 
         const embed = createEmbed("info")
-            .setTitle(`🍪 ${i18n.__("commands.developers.cookies.listTitle")}`)
+            .setTitle(`🍪 ${__("commands.developers.cookies.listTitle")}`)
             .setDescription(cookieList)
             .addFields([
                 {
-                    name: i18n.__("commands.developers.cookies.statsTitle"),
+                    name: __("commands.developers.cookies.statsTitle"),
                     value: statsValue,
                 },
             ]);
@@ -411,8 +405,8 @@ export class CookiesCommand extends BaseCommand {
         if (this.client.cookies.areAllCookiesFailed()) {
             embed.addFields([
                 {
-                    name: `⚠️ ${i18n.__("commands.developers.cookies.warningTitle")}`,
-                    value: i18n.__mf("commands.developers.cookies.allCookiesFailed", {
+                    name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
+                    value: __mf("commands.developers.cookies.allCookiesFailed", {
                         resetCmd: this.formatResetCmd(),
                     }),
                 },
@@ -423,16 +417,14 @@ export class CookiesCommand extends BaseCommand {
     }
 
     private async handleView(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
         const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__("commands.developers.cookies.invalidNumber"),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.developers.cookies.invalidNumber"), true),
                 ],
             });
         }
@@ -444,7 +436,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        i18n.__mf("commands.developers.cookies.viewNotFound", {
+                        __mf("commands.developers.cookies.viewNotFound", {
                             cookie: this.formatCookie(number),
                         }),
                         true,
@@ -464,30 +456,30 @@ export class CookiesCommand extends BaseCommand {
         switch (status) {
             case "active":
                 emoji = "🟢";
-                statusText = i18n.__("commands.developers.cookies.statusActive");
+                statusText = __("commands.developers.cookies.statusActive");
                 break;
             case "failed":
                 emoji = "🔴";
-                statusText = i18n.__("commands.developers.cookies.statusFailed");
+                statusText = __("commands.developers.cookies.statusFailed");
                 break;
             default:
                 emoji = "🟡";
-                statusText = i18n.__("commands.developers.cookies.statusAvailable");
+                statusText = __("commands.developers.cookies.statusAvailable");
         }
 
         const embed = createEmbed(
             "info",
-            i18n.__mf("commands.developers.cookies.viewSuccess", {
+            __mf("commands.developers.cookies.viewSuccess", {
                 cookie: this.formatCookie(number),
             }),
         ).addFields([
             {
-                name: i18n.__("commands.developers.cookies.viewStatusTitle"),
+                name: __("commands.developers.cookies.viewStatusTitle"),
                 value: `${emoji} ${statusText}`,
                 inline: true,
             },
             {
-                name: i18n.__("commands.developers.cookies.viewSizeTitle"),
+                name: __("commands.developers.cookies.viewSizeTitle"),
                 value: `\`${content.length}\` bytes`,
                 inline: true,
             },
@@ -497,25 +489,22 @@ export class CookiesCommand extends BaseCommand {
     }
 
     private async handleReset(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
         this.client.cookies.resetFailedStatus();
         return ctx.reply({
-            embeds: [
-                createEmbed("success", i18n.__("commands.developers.cookies.resetSuccess"), true),
-            ],
+            embeds: [createEmbed("success", __("commands.developers.cookies.resetSuccess"), true)],
         });
     }
 
     private async handleUse(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
         const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__("commands.developers.cookies.invalidNumber"),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.developers.cookies.invalidNumber"), true),
                 ],
             });
         }
@@ -527,7 +516,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "success",
-                        i18n.__mf("commands.developers.cookies.useSuccess", {
+                        __mf("commands.developers.cookies.useSuccess", {
                             cookie: this.formatCookie(number),
                         }),
                         true,
@@ -541,7 +530,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        i18n.__mf("commands.developers.cookies.useNotFound", {
+                        __mf("commands.developers.cookies.useNotFound", {
                             cookie: this.formatCookie(number),
                         }),
                         true,
@@ -554,7 +543,7 @@ export class CookiesCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "error",
-                    i18n.__mf("commands.developers.cookies.useFailed", {
+                    __mf("commands.developers.cookies.useFailed", {
                         cookie: this.formatCookie(number),
                     }),
                     true,

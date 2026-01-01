@@ -40,11 +40,14 @@ export function getGuildLocale(client: Rawon, guildId: string | null | undefined
  * Creates a localized i18n function for a specific guild.
  * This allows per-guild language settings.
  */
-export function i18n__(client: Rawon, guild: Guild | string | null | undefined): typeof i18n.__ {
+export function i18n__(
+    client: Rawon,
+    guild: Guild | string | null | undefined,
+): (phrase: string, ...replace: string[]) => string {
     const guildId = typeof guild === "string" ? guild : guild?.id;
     const locale = getGuildLocale(client, guildId);
-    return (phrase: string | i18n.TranslateOptions, ...replace: string[]): string => {
-        return i18n.__({ phrase: phrase as string, locale }, ...replace);
+    return (phrase: string, ...replace: string[]): string => {
+        return i18n.__({ phrase, locale }, ...replace);
     };
 }
 
@@ -55,7 +58,7 @@ export function i18n__(client: Rawon, guild: Guild | string | null | undefined):
 export function i18n__mf(
     client: Rawon,
     guild: Guild | string | null | undefined,
-): typeof i18n.__mf {
+): (phrase: string, replacements?: Record<string, unknown>) => string {
     const guildId = typeof guild === "string" ? guild : guild?.id;
     const locale = getGuildLocale(client, guildId);
     return (phrase: string, replacements?: Record<string, unknown>): string => {

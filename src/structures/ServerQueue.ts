@@ -8,10 +8,10 @@ import {
     type VoiceConnection,
 } from "@discordjs/voice";
 import { type Snowflake, type TextChannel } from "discord.js";
-import i18n from "../config/index.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
+import { i18n__mf } from "../utils/functions/i18n.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { type Rawon } from "./Rawon.js";
@@ -55,6 +55,7 @@ export class ServerQueue {
 
         this.player
             .on("stateChange", async (oldState, newState) => {
+                const __mf = i18n__mf(this.client, this.textChannel.guild);
                 if (
                     newState.status === AudioPlayerStatus.Playing &&
                     oldState.status !== AudioPlayerStatus.Paused
@@ -135,7 +136,7 @@ export class ServerQueue {
                                 embeds: [
                                     createEmbed(
                                         "info",
-                                        `⏹️ **|** ${i18n.__mf("utils.generalHandler.stopPlaying", {
+                                        `⏹️ **|** ${__mf("utils.generalHandler.stopPlaying", {
                                             song: `[${song.song.title}](${song.song.url})`,
                                         })}`,
                                     ).setThumbnail(song.song.thumbnail),
@@ -156,7 +157,7 @@ export class ServerQueue {
                                     embeds: [
                                         createEmbed(
                                             "error",
-                                            i18n.__mf("utils.generalHandler.errorPlaying", {
+                                            __mf("utils.generalHandler.errorPlaying", {
                                                 message: `\`${error as string}\``,
                                             }),
                                             true,
@@ -173,6 +174,7 @@ export class ServerQueue {
                 }
             })
             .on("error", (err) => {
+                const __mf = i18n__mf(this.client, this.textChannel.guild);
                 (async () => {
                     const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
                         this.textChannel.guild,
@@ -184,7 +186,7 @@ export class ServerQueue {
                             embeds: [
                                 createEmbed(
                                     "error",
-                                    i18n.__mf("utils.generalHandler.errorPlaying", {
+                                    __mf("utils.generalHandler.errorPlaying", {
                                         message: `\`${err.message}\``,
                                     }),
                                     true,
@@ -450,6 +452,7 @@ export class ServerQueue {
     }
 
     private sendStartPlayingMsg(newSong: QueueSong["song"]): void {
+        const __mf = i18n__mf(this.client, this.textChannel.guild);
         this.client.logger.info(
             `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${
                 this.textChannel.guild.name
@@ -461,7 +464,7 @@ export class ServerQueue {
                     embeds: [
                         createEmbed(
                             "info",
-                            `▶️ **|** ${i18n.__mf("utils.generalHandler.startPlaying", {
+                            `▶️ **|** ${__mf("utils.generalHandler.startPlaying", {
                                 song: `[${newSong.title}](${newSong.url})`,
                             })}`,
                         ).setThumbnail(newSong.thumbnail),
