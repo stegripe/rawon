@@ -63,8 +63,8 @@ export class PlayCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
-                            name: this.meta.name,
+                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            name: `**\`${this.meta.name}\`**`,
                         }),
                     ),
                 ],
@@ -80,14 +80,15 @@ export class PlayCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         __mf("commands.music.play.alreadyPlaying", {
-                            voiceChannel:
+                            voiceChannel: `**\`${
                                 ctx.guild.channels.cache.get(
                                     (
                                         ctx.guild.queue.connection?.joinConfig as {
                                             channelId: string;
                                         }
                                     ).channelId,
-                                )?.name ?? "#unknown-channel",
+                                )?.name ?? "#unknown-channel"
+                            }\`**`,
                         }),
                     ),
                 ],

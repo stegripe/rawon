@@ -150,13 +150,13 @@
                 "specifyFilter": "Kasih tau filter lagunya dong"
             },
             "lyrics": {
-                "apiError": "Gak bisa nemuin lagu **{song}** nih, soalnya: `{message}`",
+                "apiError": "Gak bisa nemuin lagu {song} nih, soalnya: {message}",
                 "description": "Tampilin lirik lagu",
                 "noQuery": "Gak ada yang lagi diputar atau argumennya gak dikasih.",
                 "searchingLyrics": "Lagi nyari lirik...",
                 "slashDescription": "Judul lagu yang mau dicari",
                 "usage": "{prefix}lyrics [lagu]",
-                "noLyrics": "Gak nemu lirik buat **{song}**."
+                "noLyrics": "Gak nemu lirik buat {song}."
             },
             "nowplaying": {
                 "description": "Lihat status media player",
@@ -170,7 +170,7 @@
                 "pauseMessage": "Media player udah dijeda."
             },
             "play": {
-                "alreadyPlaying": "Media player lagi muter lagu di channel **`{voiceChannel}`**.",
+                "alreadyPlaying": "Media player lagi muter lagu di channel {voiceChannel}.",
                 "description": "Muter lagu",
                 "noSongData": "Link itu gak punya data lagunya.",
                 "slashQueryDescription": "Kata pencarian",
@@ -240,7 +240,7 @@
             },
             "skip": {
                 "description": "Skip lagu",
-                "skipMessage": "**{song}** udah di-skip",
+                "skipMessage": "{song} udah di-skip",
                 "voteResultMessage": "{length}/{required} udah vote buat skip lagu yang lagi diputar"
             },
             "skipTo": {
@@ -248,7 +248,7 @@
                 "description": "Loncat ke posisi tertentu di antrian",
                 "noPermission": "Kamu gak bisa pake perintah ini.",
                 "noSongPosition": "Gak bisa nemuin lagu di posisi itu.",
-                "skipMessage": "Loncat ke lagu **{song}**",
+                "skipMessage": "Loncat ke lagu {song}",
                 "slashFirstDescription": "Mundur ke lagu pertama di antrian",
                 "slashLastDescription": "Loncat ke lagu terakhir di antrian",
                 "slashPositionDescription": "Posisi lagu di antrian",
@@ -274,7 +274,7 @@
                 "noPermission": "Kamu butuh izin **Manage Server** buat pake perintah ini.",
                 "invalidChannel": "Kasih channel teks yang valid dong.",
                 "noBotPermissions": "Gak bisa cek izinku di channel itu.",
-                "missingBotPermissions": "Aku kurang izin ini di channel itu: **{permissions}**",
+                "missingBotPermissions": "Aku kurang izin ini di channel itu: {permissions}",
                 "failedToSetup": "Gagal atur channel request. Coba cek izinku ya.",
                 "slashSetDescription": "Atur channel jadi channel request",
                 "slashRemoveDescription": "Hapus channel request",
@@ -298,40 +298,40 @@
         "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Koneksi berhasil dikonfigurasi ulang.",
-            "deleteQueue": "Udah **`{duration}`** lewat dan gak ada yang masuk voice channel, antriannya udah dihapus.",
+            "deleteQueue": "Udah {duration} lewat dan gak ada yang masuk voice channel, antriannya udah dihapus.",
             "deleteQueueFooter": "Antrian Dihapus",
             "disconnectFromVCMessage": "Keputus dari voice channel, antriannya udah dihapus.",
             "joinStageMessage": "Berhasil gabung ke stage channel sebagai Speaker.",
             "joiningAsSpeaker": "Dipindahin ke stage channel, lagi coba gabung sebagai Speaker...",
-            "pauseQueue": "Semua orang udah keluar dari voice channel. Buat ngirit resource, antriannya udah dijeda.\nKalo dalam **`{duration}`** masih gak ada yang masuk voice channel, antriannya bakal dihapus.",
+            "pauseQueue": "Semua orang udah keluar dari voice channel. Buat ngirit resource, antriannya udah dijeda.\nKalo dalam {duration} masih gak ada yang masuk voice channel, antriannya bakal dihapus.",
             "pauseQueueFooter": "Antrian Dijeda",
             "reconfigureConnection": "Dipindahin ke voice channel dengan region yang beda, lagi konfigurasi ulang koneksi...",
-            "resumeQueue": "Ada yang masuk voice channel.\nLanjutin **{song}**",
+            "resumeQueue": "Ada yang masuk voice channel.\nLanjutin {song}",
             "resumeQueueFooter": "Antrian Dilanjutin",
             "unableJoinStageMessage": "Gak bisa gabung sebagai Speaker, antriannya udah dihapus.",
             "unableReconfigureConnection": "Gak bisa konfigurasi ulang koneksi, antriannya udah dihapus."
         }
     },
     "reusable": {
-        "invalidUsage": "Cara pakenya salah, coba pake **`{prefix} {name}`** buat info lebih lanjut.",
+        "invalidUsage": "Cara pakenya salah, coba pake {prefix} {name} buat info lebih lanjut.",
         "pageFooter": "Halaman {actual} dari {total}",
         "lyricsSource": "Sumber: {source}"
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Aku kurang izin ini di {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Aku kurang izin ini di {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, tunggu **`{timeleft}`** detik dulu ya.",
+        "cooldownMessage": "{author}, tunggu {timeleft} detik dulu ya.",
         "generalHandler": {
-            "errorJoining": "Error pas masuk voice channel nih, soalnya: `{message}`",
-            "errorPlaying": "Ada error pas mau muter lagu, soalnya: `{message}`",
+            "errorJoining": "Error pas masuk voice channel nih, soalnya: {message}",
+            "errorPlaying": "Ada error pas mau muter lagu, soalnya: {message}",
             "handleVideoInitial": "{length} lagu udah ditambahin ke antrian\n\n",
             "leftVC": "Keluar dari voice channel soalnya udah lama gak ada aktivitas.",
-            "queueEnded": "Antriannya udah abis, pake **{usage}** buat muter lagu lagi.",
-            "startPlaying": "Mulai muter **{song}**",
-            "stopPlaying": "Selesai muter **{song}**",
-            "songRequeued": "Ada masalah pas muter **{song}**, udah ditambahin ulang ke antrian buat dicoba lagi.",
-            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Tambahin cookies baru pake perintah `{prefix}cookies add <nomor>` dengan lampiran cookies.txt, atau pake `{prefix}cookies reset` buat coba ulang cookies yang ada."
+            "queueEnded": "Antriannya udah abis, pake {usage} buat muter lagu lagi.",
+            "startPlaying": "Mulai muter {song}",
+            "stopPlaying": "Selesai muter {song}",
+            "songRequeued": "Ada masalah pas muter {song}, udah ditambahin ulang ke antrian buat dicoba lagi.",
+            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Tambahin cookies baru pake perintah {prefix}cookies add <nomor> dengan lampiran cookies.txt, atau pake {prefix}cookies reset buat coba ulang cookies yang ada."
         },
         "musicDecorator": {
             "noInVC": "Sori, tapi kamu harus ada di voice channel dulu buat ngelakuin itu.",
@@ -359,17 +359,17 @@
         "unknown": "Gak diketahui",
         "notInVoice": "Kamu harus ada di voice channel buat request musik.",
         "noResults": "Gak nemu hasil buat pencarianmu.",
-        "addedToQueue": "Nambahin **{song}** ke antrian.",
+        "addedToQueue": "Nambahin {song} ke antrian.",
         "addedPlaylistToQueue": "Nambahin {count} lagu dari {playlist} ke antrian.",
-        "startedPlaying": "Sekarang lagi muter **{song}**",
+        "startedPlaying": "Sekarang lagi muter {song}",
         "paused": "Musik dijeda.",
         "resumed": "Musik dilanjutin.",
-        "skipped": "Skip **{song}**",
-        "removed": "Hapus **{song}** dari antrian dan di-skip.",
+        "skipped": "Skip {song}",
+        "removed": "Hapus {song} dari antrian dan di-skip.",
         "stopped": "Musik distop dan antrian dikosongkan.",
-        "loopChanged": "Mode repeat diubah ke **{mode}**.",
-        "shuffleChanged": "Mode acak sekarang **{state}**.",
-        "volumeChanged": "Volume diubah ke **{volume}%**.",
+        "loopChanged": "Mode repeat diubah ke {mode}.",
+        "shuffleChanged": "Mode acak sekarang {state}.",
+        "volumeChanged": "Volume diubah ke {volume}%.",
         "queueCleared": "Antrian udah dikosongkan.",
         "queueListTitle": "Daftar Antrian",
         "emptyQueue": "Antriannya kosong.",

@@ -110,8 +110,8 @@ export class CookiesCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
-                            name: this.meta.name,
+                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            name: `**\`${this.meta.name}\`**`,
                         }),
                     ),
                 ],
@@ -137,8 +137,8 @@ export class CookiesCommand extends BaseCommand {
                         createEmbed(
                             "warn",
                             __mf("reusable.invalidUsage", {
-                                prefix: `${this.client.config.mainPrefix}help`,
-                                name: this.meta.name,
+                                prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                                name: `**\`${this.meta.name}\`**`,
                             }),
                         ),
                     ],

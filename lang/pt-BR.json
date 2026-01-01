@@ -150,13 +150,13 @@
                 "specifyFilter": "Por favor especifique um filtro."
             },
             "lyrics": {
-                "apiError": "A API não conseguiu encontrar **{song}**, motivo: `{message}`",
+                "apiError": "A API não conseguiu encontrar {song}, motivo: {message}",
                 "description": "Mostra a letra da música",
                 "noQuery": "Nenhuma música está tocando, ou nenhum argumento foi fornecido.",
                 "searchingLyrics": "Procurando letra...",
                 "slashDescription": "Música a buscar",
                 "usage": "{prefix}lyrics [música]",
-                "noLyrics": "Não foram encontradas letras para **{song}**."
+                "noLyrics": "Não foram encontradas letras para {song}."
             },
             "nowplaying": {
                 "description": "Mostra o status do player de mídia",
@@ -170,7 +170,7 @@
                 "pauseMessage": "O player de música foi pausado."
             },
             "play": {
-                "alreadyPlaying": "O player de música já está tocando no canal **`{voiceChannel}`**.",
+                "alreadyPlaying": "O player de música já está tocando no canal {voiceChannel}.",
                 "description": "Toca uma música",
                 "noSongData": "Essa URL não tem nenhuma música.",
                 "slashQueryDescription": "Busca",
@@ -240,7 +240,7 @@
             },
             "skip": {
                 "description": "Pula a música",
-                "skipMessage": "Pulei **{song}**",
+                "skipMessage": "Pulei {song}",
                 "voteResultMessage": "{length}/{required} votaram para pular a música atual"
             },
             "skipTo": {
@@ -248,7 +248,7 @@
                 "description": "Pula para uma posição específica na fila",
                 "noPermission": "Você não possui permissão para usar esse comando.",
                 "noSongPosition": "Não foi possível encontrar uma música nessa posição.",
-                "skipMessage": "Pulei para **{song}**",
+                "skipMessage": "Pulei para {song}",
                 "slashFirstDescription": "Rebobina para a primeira música da fila",
                 "slashLastDescription": "Pula para a última música da fila",
                 "slashPositionDescription": "Posição da música na fila",
@@ -274,7 +274,7 @@
                 "noPermission": "Você precisa da permissão **Gerenciar Servidor** para usar este comando.",
                 "invalidChannel": "Por favor, forneça um canal de texto válido.",
                 "noBotPermissions": "Não foi possível verificar minhas permissões para esse canal.",
-                "missingBotPermissions": "Estou faltando as seguintes permissões nesse canal: **{permissions}**",
+                "missingBotPermissions": "Estou faltando as seguintes permissões nesse canal: {permissions}",
                 "failedToSetup": "Falha ao configurar o canal de solicitação. Por favor, verifique minhas permissões.",
                 "slashSetDescription": "Definir um canal como canal de solicitação",
                 "slashRemoveDescription": "Remover o canal de solicitação",
@@ -298,40 +298,40 @@
         "cmdLoading": "Carregando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Conexão re-configurada com sucesso.",
-            "deleteQueue": "**`{duration}`** se passaram e ninguém entrou no canal de voz, a fila foi deletada.",
+            "deleteQueue": "{duration} se passaram e ninguém entrou no canal de voz, a fila foi deletada.",
             "deleteQueueFooter": "Fila deletada",
             "disconnectFromVCMessage": "Desconectado do canal de voz, a fila foi deletada.",
             "joinStageMessage": "Entrei com sucesso no canal de palco com permissão de fala.",
             "joiningAsSpeaker": "Movido para o canal de palco, tentando entrar com permissão de fala...",
-            "pauseQueue": "Todos deixaram o canal de voz. Para poupar recursos, a fila foi pausada.\nSe ninguém entrar no canal de voz nos próximos **`{duration}`**, a fila será deletada.",
+            "pauseQueue": "Todos deixaram o canal de voz. Para poupar recursos, a fila foi pausada.\nSe ninguém entrar no canal de voz nos próximos {duration}, a fila será deletada.",
             "pauseQueueFooter": "Fila pausada",
             "reconfigureConnection": "Movido para um canal com região diferente, re-configurando conexão...",
-            "resumeQueue": "Alguém entrou no canal de voz.\nRetomando **{song}**",
+            "resumeQueue": "Alguém entrou no canal de voz.\nRetomando {song}",
             "resumeQueueFooter": "Fila retomada",
             "unableJoinStageMessage": "Não foi possível entrar com permissão de fala, a fila foi deletada.",
             "unableReconfigureConnection": "Não foi possível re-configurar a conexão, a fila foi deletada."
         }
     },
     "reusable": {
-        "invalidUsage": "Uso inválido, por favor use **`{prefix} {name}`** para mais informações.",
+        "invalidUsage": "Uso inválido, por favor use {prefix} {name} para mais informações.",
         "pageFooter": "Página {actual} de {total}",
         "lyricsSource": "Fonte: {source}"
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Estou faltando as seguintes permissões em {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Estou faltando as seguintes permissões em {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, por favor espere **`{timeleft}`** para fazer isso.",
+        "cooldownMessage": "{author}, por favor espere {timeleft} para fazer isso.",
         "generalHandler": {
-            "errorJoining": "Erro ao entrar no canal de voz, motivo: `{message}`",
-            "errorPlaying": "Um erro ocorreu ao tentar tocar música, motivo: `{message}`",
+            "errorJoining": "Erro ao entrar no canal de voz, motivo: {message}",
+            "errorPlaying": "Um erro ocorreu ao tentar tocar música, motivo: {message}",
             "handleVideoInitial": "{length} músicas adicionadas à fila",
             "leftVC": "Saindo do canal porque estive inativo por muito tempo.",
-            "queueEnded": "A fila terminou, use **`{usage}`** para adicionar mais músicas.",
-            "startPlaying": "Começando a tocar **{song}**",
-            "stopPlaying": "Parando de tocar **{song}**",
-            "songRequeued": "Houve um problema ao tocar **{song}**, adicionado de volta à fila para outra tentativa.",
-            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Por favor, adicione novos cookies usando o comando `{prefix}cookies add <número>` com um arquivo cookies.txt anexado, ou use `{prefix}cookies reset` para tentar novamente os cookies existentes."
+            "queueEnded": "A fila terminou, use {usage} para adicionar mais músicas.",
+            "startPlaying": "Começando a tocar {song}",
+            "stopPlaying": "Parando de tocar {song}",
+            "songRequeued": "Houve um problema ao tocar {song}, adicionado de volta à fila para outra tentativa.",
+            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Por favor, adicione novos cookies usando o comando `{prefix}cookies add <número>` com um arquivo cookies.txt anexado, ou use {prefix}cookies reset para tentar novamente os cookies existentes."
         },
         "musicDecorator": {
             "noInVC": "Desculpe, mas você precisa estar em um canal de voz para fazer isso.",
@@ -359,17 +359,17 @@
         "unknown": "Desconhecido",
         "notInVoice": "Você precisa estar em um canal de voz para pedir música.",
         "noResults": "Nenhum resultado encontrado para sua busca.",
-        "addedToQueue": "Adicionado **{song}** à fila.",
+        "addedToQueue": "Adicionado {song} à fila.",
         "addedPlaylistToQueue": "Adicionadas {count} músicas de {playlist} à fila.",
-        "startedPlaying": "Tocando **{song}**",
+        "startedPlaying": "Tocando {song}",
         "paused": "Música pausada.",
         "resumed": "Música retomada.",
-        "skipped": "Pulou **{song}**",
-        "removed": "Removido **{song}** da fila e pulado.",
+        "skipped": "Pulou {song}",
+        "removed": "Removido {song} da fila e pulado.",
         "stopped": "Música parada e fila limpa.",
-        "loopChanged": "Modo loop alterado para **{mode}**.",
-        "shuffleChanged": "Modo aleatório agora está **{state}**.",
-        "volumeChanged": "Volume alterado para **{volume}%**.",
+        "loopChanged": "Modo loop alterado para {mode}.",
+        "shuffleChanged": "Modo aleatório agora está {state}.",
+        "volumeChanged": "Volume alterado para {volume}%.",
         "queueCleared": "A fila foi limpa.",
         "queueListTitle": "Lista da Fila",
         "emptyQueue": "A fila está vazia.",

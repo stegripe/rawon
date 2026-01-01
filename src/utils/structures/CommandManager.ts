@@ -241,7 +241,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                         "warn",
                                         `⚠️ **|** ${__mf("utils.cooldownMessage", {
                                             author: message.author.toString(),
-                                            timeleft: timeLeft.toFixed(1),
+                                            timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
                                         })}`,
                                         true,
                                     ),

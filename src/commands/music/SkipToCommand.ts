@@ -112,8 +112,8 @@ export class SkipToCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
-                            name: this.meta.name,
+                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            name: `**\`${this.meta.name}\`**`,
                         }),
                     ),
                 ],
@@ -185,7 +185,7 @@ export class SkipToCommand extends BaseCommand {
                 createEmbed(
                     "success",
                     `⏭️ **|** ${__mf("commands.music.skipTo.skipMessage", {
-                        song: `[${song.song.title}](${song.song.url})`,
+                        song: `**[${song.song.title}](${song.song.url})**`,
                     })}`,
                 ).setThumbnail(song.song.thumbnail),
             ],

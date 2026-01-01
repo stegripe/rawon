@@ -54,7 +54,7 @@ export async function play(
                     createEmbed(
                         "info",
                         `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
-                            usage: `\`${guild.client.config.mainPrefix}play\``,
+                            usage: `**\`${guild.client.config.mainPrefix}play\`**`,
                         })}`,
                     ),
                 ],
@@ -154,7 +154,7 @@ export async function play(
                         createEmbed(
                             "warn",
                             `🔄 **|** ${__mf("utils.generalHandler.songRequeued", {
-                                song: `[${song.song.title}](${song.song.url})`,
+                                song: `**[${song.song.title}](${song.song.url})**`,
                             })}`,
                         ).setThumbnail(song.song.thumbnail),
                     ],

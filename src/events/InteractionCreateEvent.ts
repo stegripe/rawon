@@ -296,7 +296,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 const skipEmbed = createEmbed(
                     "success",
-                    `⏭️ **|** ${__mf("requestChannel.skipped", { song: skipSong ? `[${skipSong.song.title}](${skipSong.song.url})` : "" })}`,
+                    `⏭️ **|** ${__mf("requestChannel.skipped", { song: skipSong ? `**[${skipSong.song.title}](${skipSong.song.url})**` : "" })}`,
                 );
                 if (skipSong?.song.thumbnail) {
                     skipEmbed.setThumbnail(skipSong.song.thumbnail);
@@ -548,7 +548,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 const removeEmbed = createEmbed(
                     "success",
-                    `🗑️ **|** ${__mf("requestChannel.removed", { song: `[${songTitle}](${songUrl})` })}`,
+                    `🗑️ **|** ${__mf("requestChannel.removed", { song: `**[${songTitle}](${songUrl})**` })}`,
                 );
                 if (songThumbnail) {
                     removeEmbed.setThumbnail(songThumbnail);

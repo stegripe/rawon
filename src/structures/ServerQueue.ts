@@ -137,7 +137,7 @@ export class ServerQueue {
                                     createEmbed(
                                         "info",
                                         `⏹️ **|** ${__mf("utils.generalHandler.stopPlaying", {
-                                            song: `[${song.song.title}](${song.song.url})`,
+                                            song: `**[${song.song.title}](${song.song.url})**`,
                                         })}`,
                                     ).setThumbnail(song.song.thumbnail),
                                 ],
@@ -465,7 +465,7 @@ export class ServerQueue {
                         createEmbed(
                             "info",
                             `▶️ **|** ${__mf("utils.generalHandler.startPlaying", {
-                                song: `[${newSong.title}](${newSong.url})`,
+                                song: `**[${newSong.title}](${newSong.url})**`,
                             })}`,
                         ).setThumbnail(newSong.thumbnail),
                     ],
