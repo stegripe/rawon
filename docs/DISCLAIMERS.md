@@ -6,11 +6,7 @@ Please read carefully before using this bot.
 
 1. **Ownership**: Any intellectual properties used, played, or displayed by the bot are **not owned by us**, the maintainers, or any contributors. This includes, but is not limited to, audio, video, and image files used in the bot's commands.
 
-2. **Hosting Provider Policies**: Some hosting providers (like Railway) prohibit hosting or distributing DMCA-protected content. This includes Discord music bots that play copyrighted music/video.
-   - Refer to [Railway's Fair Use Policy](https://railway.app/legal/fair-use) for details
-   - **Deploy to such platforms at your own risk**
-
-3. **User Responsibility**: You are responsible for how you use this bot and what content is played through it.
+2. **User Responsibility**: You are responsible for how you use this bot and what content is played through it.
 
 ## Code Modifications
 

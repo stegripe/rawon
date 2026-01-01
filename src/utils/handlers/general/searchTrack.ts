@@ -313,8 +313,8 @@ export async function searchTrack(
                             url.toString(),
                         )) as SpotifyResolveResult;
                         const songs = spotifyResult.tracks;
-                        await Promise.all(
-                            songs.map(async (x): Promise<void> => {
+                        const trackResults = await Promise.all(
+                            songs.map(async (x): Promise<Song | null> => {
                                 let response = await youtube.search(
                                     x.track.external_ids?.isrc ??
                                         `${x.track.artists.map((y) => y.name).join(", ")}${x.track.name}`,
@@ -328,16 +328,18 @@ export async function searchTrack(
                                 }
                                 const track = sortVideos(x.track, response);
                                 if (track.length > 0) {
-                                    result.items.push({
+                                    return {
                                         duration: track[0].duration ?? 0,
                                         id: track[0].id,
                                         thumbnail: getYouTubeThumbnail(track[0].id),
                                         title: track[0].title,
                                         url: `https://youtube.com/watch?v=${track[0].id}`,
-                                    });
+                                    };
                                 }
+                                return null;
                             }),
                         );
+                        result.items = trackResults.filter((x): x is Song => x !== null);
                         if (spotifyResult.metadata) {
                             result.playlist = spotifyResult.metadata;
                         }

@@ -14,12 +14,10 @@
 - Interaction support (slash commands and buttons)
 - Request channel feature for seamless music experience
 - Production-ready, no coding required
-- Configurable and easy to use
 - Basic music commands (play, pause, skip, queue, etc.)
 - Multi-cookie rotation for uninterrupted playback
 - Smart audio pre-caching for smoother playback
 - Support for YouTube, Spotify, and SoundCloud
-- Full playlist support (including large YouTube playlists with 100+ songs)
 
 ## Installation
 
@@ -88,13 +86,6 @@ The `/app/cache` volume stores:
 - `data.json` for persistent settings (request channels, player states)
 - Cached audio files (if audio caching is enabled)
 - Cookie files for YouTube authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
-
-### Railway Deployment
-Railway provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.
-
-**⚠️ IMPORTANT:** Read [Disclaimers](./docs/DISCLAIMERS.md) before deploying to Railway.
-
-<a href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"><img src="https://railway.app/button.svg" alt="Deploy on Railway" /></a>
 
 ## Configuration Files
 - `.env_example` - Essential settings (Discord token, prefix, Spotify, etc.)
