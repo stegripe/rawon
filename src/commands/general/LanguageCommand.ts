@@ -59,13 +59,13 @@ export class LanguageCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        `${__("commands.general.language.currentLanguage")} **${currentLocale}**`,
+                        `${__("commands.general.language.currentLanguage")} \`${currentLocale}\``,
                     )
                         .setAuthor({ name: __("commands.general.language.embedTitle") })
                         .addFields([
                             {
                                 name: __("commands.general.language.availableLocales"),
-                                value: supportedLocales.join(", "),
+                                value: supportedLocales.map((loc) => `\`${loc}\``).join(", "),
                             },
                         ]),
                 ],
@@ -79,7 +79,7 @@ export class LanguageCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        `${__("commands.general.language.invalidLocale")} ${supportedLocales.join(", ")}`,
+                        `${__("commands.general.language.invalidLocale")} ${supportedLocales.map((loc) => `\`${loc}\``).join(", ")}`,
                         true,
                     ),
                 ],
@@ -107,7 +107,7 @@ export class LanguageCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `${newLocale__("commands.general.language.languageSet")} **${localeArg}**`,
+                    `${newLocale__("commands.general.language.languageSet")} \`${localeArg}\``,
                     true,
                 ),
             ],
