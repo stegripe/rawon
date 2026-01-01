@@ -194,7 +194,7 @@
                 "slashDisable": "Отключить режим повтора",
                 "slashQueue": "Указать режим повтора для **`ОЧЕРЕДИ`**",
                 "slashSong": "Указать режим повтора для **`ПЕСНИ`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Музыкальный проигрыватель не стоит на паузе.",
@@ -251,7 +251,7 @@
                 "slashLastDescription": "Пропустить к последней песне в очереди",
                 "slashPositionDescription": "Позиция песни в очереди",
                 "slashSpecificDescription": "Пропустить до указанной позиции в очереди",
-                "usage": "'{prefix}'skipto <{options} | number>"
+                "usage": "{prefix}skipto <{options} | number>"
             },
             "stop": {
                 "description": "Остановить музыкальный проигрыватель",

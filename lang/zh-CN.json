@@ -194,7 +194,7 @@
                 "slashDisable": "停用重复模式",
                 "slashQueue": "重复模式为 **`队列`**",
                 "slashSong": "重复模式为 **`音乐`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "音乐播放器没有被暂停。",
@@ -251,7 +251,7 @@
                 "slashLastDescription": "跳到队列中的最后一首歌曲",
                 "slashPositionDescription": "歌曲在队列中的位置",
                 "slashSpecificDescription": "跳到队列中的特定位置",
-                "usage": "'{prefix}'skipto <{options} | 数字>"
+                "usage": "{prefix}skipto <{options} | 数字>"
             },
             "stop": {
                 "description": "停止音乐播放器",

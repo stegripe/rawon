@@ -194,7 +194,7 @@
                 "slashDisable": "Tắt chế độ lặp lại",
                 "slashQueue": "Đặt chế độ lặp lại trong **`HÀNG ĐỢI`**",
                 "slashSong": "Đặt chế độ lặp lại tới **`BÀI HÁT`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Trình phát nhạc không bị tạm dừng.",
@@ -251,7 +251,7 @@
                 "slashLastDescription": "Chuyển đến bài hát cuối cùng trong hàng đợi",
                 "slashPositionDescription": "Vị trí bài hát trong hàng đợi",
                 "slashSpecificDescription": "Chuyển đến một vị trí cụ thể trong hàng đợi",
-                "usage": "'{prefix}'skipto <{options} | số thứ tự>"
+                "usage": "{prefix}skipto <{options} | số thứ tự>"
             },
             "stop": {
                 "description": "Dừng phát nhạc",

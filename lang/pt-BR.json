@@ -194,7 +194,7 @@
                 "slashDisable": "Desativa o modo de repetição",
                 "slashQueue": "Altera o modo de repetição para **`FILA`**",
                 "slashSong": "Altera o modo de repetição para **`MÚSICA`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "O player de música não está pausado.",
@@ -251,7 +251,7 @@
                 "slashLastDescription": "Pula para a última música da fila",
                 "slashPositionDescription": "Posição da música na fila",
                 "slashSpecificDescription": "Pula para uma posição específica na fila",
-                "usage": "'{prefix}'skipto <{options} | número>"
+                "usage": "{prefix}skipto <{options} | número>"
             },
             "stop": {
                 "description": "Para o player de música",

@@ -194,7 +194,7 @@
                 "slashDisable": "Matiin mode repeat",
                 "slashQueue": "Atur mode repeat ke **`QUEUE`**",
                 "slashSong": "Atur mode repeat ke **`SONG`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Media player-nya gak lagi dijeda kok.",

@@ -194,7 +194,7 @@
                 "slashDisable": "반복 모드 비활성화",
                 "slashQueue": "반복 모드를 **`대기열`**로 설정",
                 "slashSong": "반복 모드를 **`노래`**로 설정",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "음악 플레이어가 일시 정지되지 않았어요.",
@@ -251,7 +251,7 @@
                 "slashLastDescription": "대기열의 마지막 노래로 건너뛰기",
                 "slashPositionDescription": "대기열에서의 노래 위치",
                 "slashSpecificDescription": "대기열의 특정 위치로 건너뛰기",
-                "usage": "'{prefix}'skipto <{options} | 번호>"
+                "usage": "{prefix}skipto <{options} | 번호>"
             },
             "stop": {
                 "description": "음악 플레이어 정지",
