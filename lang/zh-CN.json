@@ -52,7 +52,7 @@
                 "slashUseDescription": "手动切换到指定的cookie",
                 "useSuccess": "已成功切换到 {cookie}。将在下次请求时使用。",
                 "useNotFound": "未找到 {cookie}。",
-                "useFailed": "{cookie} 当前被标记为失败。请先使用 cookies reset 重试失败的cookie。"
+                "useFailed": "{cookie} 当前被标记为失败。请先使用 `cookies reset` 重试失败的cookie。"
             }
         },
         "general": {
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "更改 DJ 功能设置",
                 "disable": "停用",
-                "disableText": "DJ 功能已**停用**",
+                "disableText": "DJ 功能已**`停用`**",
                 "embedTitle": "DJ 功能",
                 "enable": "启用",
-                "enableText": "DJ 功能已**启用**",
+                "enableText": "DJ 功能已**`启用`**",
                 "newRoleText": "新身分组",
                 "noPermission": "您没有**管理服务器**权限来使用此命令。",
                 "role": {
                     "current": "目前 DJ 身分组: <@&{role}>",
                     "invalid": "无效的身分组。",
-                    "noRole": "DJ 身分组尚未设定，请使用{prefix}dj role设置",
+                    "noRole": "DJ 身分组尚未设定，请使用`{prefix}dj role`设置",
                     "success": "DJ 身分组已设置为 <@&{role}>"
                 },
                 "slashDisableDescription": "停用 DJ 功能",
@@ -192,8 +192,8 @@
                 "footer": "如改变模式，请查看 {prefix}help repeat",
                 "newMode": "重复模式已设置为 {mode}",
                 "slashDisable": "停用重复模式",
-                "slashQueue": "重复模式为 **队列**",
-                "slashSong": "重复模式为 **音乐**",
+                "slashQueue": "重复模式为 **`队列`**",
+                "slashSong": "重复模式为 **`音乐`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -227,12 +227,12 @@
                 "cantSeekSoundcloud": "无法在SoundCloud曲目中跳转。",
                 "description": "跳转到当前歌曲的指定时间",
                 "exceedsDuration": "跳转时间超过歌曲时长 ({duration})。",
-                "invalidTime": "时间格式无效：{time}。请使用 1:30 或 90 等格式。",
+                "invalidTime": "时间格式无效：{time}。请使用 `1:30` 或 `90` 等格式。",
                 "noPlaying": "当前没有正在播放的歌曲。",
                 "noTime": "请指定要跳转的时间。",
                 "notCached": "该歌曲暂时无法跳转。请等待音频缓冲。",
                 "seeked": "已跳转到 {time}",
-                "slashTimeDescription": "要跳转的时间（例如 1:30 或 90）",
+                "slashTimeDescription": "要跳转的时间（例如 `1:30` 或 `90`）",
                 "usage": "{prefix}seek <时间>",
                 "waitingForCache": "请稍候，音频仍在缓冲中..."
             },
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "无效的用法，请用 {prefix} {name}了解更多资讯。",
+        "invalidUsage": "无效的用法，请用 **`{prefix} {name}`**了解更多资讯。",
         "pageFooter": "{actual}/{total} 页",
         "lyricsSource": "来源: {source}"
     },
@@ -329,15 +329,15 @@
             "startPlaying": "开始播放{song}",
             "stopPlaying": "停止播放{song}",
             "songRequeued": "播放{song}时遇到问题，已重新添加到队列中等待重试。",
-            "allCookiesFailed": "由于机器人检测，所有cookie都已失败！请使用 {prefix}cookies add <编号> 命令附加cookies.txt文件添加新cookie，或使用 {prefix}cookies reset 重试现有cookie。"
+            "allCookiesFailed": "由于机器人检测，所有cookie都已失败！请使用 `{prefix}cookies add <编号>` 命令附加cookies.txt文件添加新cookie，或使用 `{prefix}cookies reset` 重试现有cookie。"
         },
         "musicDecorator": {
             "noInVC": "抱歉，您需要在语音频道中才能执行此操作。",
             "noQueue": "没有播放任何内容。",
             "notPlaying": "当前没有音乐在播放。请先播放一首歌曲。",
             "sameVC": "你需要和我在同一个语音频道。",
-            "validVCJoinable": "对不起，我不能**连接**到你的语音频道，请确保我有正确的权限。",
-            "validVCPermission": "对不起，我不能在这个语音频道**说话**;请确保我有正确的权限。",
+            "validVCJoinable": "对不起，我不能**`连接`**到你的语音频道，请确保我有正确的权限。",
+            "validVCPermission": "对不起，我不能在这个语音频道**`说话`**;请确保我有正确的权限。",
             "useRequestChannel": "请使用点歌频道 {channel} 来执行音乐命令。",
             "useRequestChannelDirect": "此命令在请求频道中已禁用。请使用播放器按钮或直接输入歌曲名称/链接。"
         }
@@ -367,7 +367,7 @@
         "stopped": "音乐已停止，队列已清空。",
         "loopChanged": "循环模式已更改为 {mode}。",
         "shuffleChanged": "随机播放模式现在是 {state}。",
-        "volumeChanged": "音量已更改为 **{volume}%**。",
+        "volumeChanged": "音量已更改为 {volume}%。",
         "queueCleared": "队列已清空。",
         "queueListTitle": "队列列表",
         "emptyQueue": "队列是空的。",

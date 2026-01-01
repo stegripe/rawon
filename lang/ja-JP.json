@@ -52,7 +52,7 @@
                 "slashUseDescription": "特定のCookieに手動で切り替え",
                 "useSuccess": "{cookie} に正常に切り替えました。次のリクエストで使用されます。",
                 "useNotFound": "{cookie} が見つかりませんでした。",
-                "useFailed": "{cookie} は現在失敗とマークされています。失敗したCookieを再試行するには、まず cookies reset を使用してください。"
+                "useFailed": "{cookie} は現在失敗とマークされています。失敗したCookieを再試行するには、まず `cookies reset` を使用してください。"
             }
         },
         "general": {
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "DJ機能の設定",
                 "disable": "無効",
-                "disableText": "DJ機能は**無効化**されました。",
+                "disableText": "DJ機能は**`無効化`**されました。",
                 "embedTitle": "DJ機能",
                 "enable": "有効",
-                "enableText": "DJは**有効化**されました。",
+                "enableText": "DJは**`有効化`**されました。",
                 "newRoleText": "新しいロール",
                 "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
                 "role": {
                     "current": "現在のDJロール:<@&{role}>",
                     "invalid": "無効なロールです。",
-                    "noRole": "DJロールは設定されていません。 {prefix}dj ロールで設定してください。",
+                    "noRole": "DJロールは設定されていません。 `{prefix}dj ロール`で設定してください。",
                     "success": "DJロールは<@&{role}に>にセットされました。"
                 },
                 "slashDisableDescription": "DJ機能を無効化",
@@ -192,8 +192,8 @@
                 "footer": "モードを変更するには、{prefix}help repeatを見てください。",
                 "newMode": "リピートモードは{mode}にセットされました。",
                 "slashDisable": "リピートモードを無効化",
-                "slashQueue": "**キュー**リピートモードを設定しました。",
-                "slashSong": "**曲**リピートモードを設定しました。",
+                "slashQueue": "**`キュー`**リピートモードを設定しました。",
+                "slashSong": "**`曲`**リピートモードを設定しました。",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -227,12 +227,12 @@
                 "cantSeekSoundcloud": "SoundCloudトラックではシークできません。",
                 "description": "現在の曲の特定の時間にジャンプ",
                 "exceedsDuration": "シーク時間が曲の長さを超えています ({duration})。",
-                "invalidTime": "時間形式が無効です: {time}。1:30 や 90 のような形式を使用してください。",
+                "invalidTime": "時間形式が無効です: {time}。`1:30` や `90` のような形式を使用してください。",
                 "noPlaying": "現在再生中の曲がありません。",
                 "noTime": "シークする時間を指定してください。",
                 "notCached": "この曲ではまだシークできません。オーディオがバッファリングされるまでお待ちください。",
                 "seeked": "{time} にジャンプしました",
-                "slashTimeDescription": "ジャンプする時間 (例: 1:30 または 90)",
+                "slashTimeDescription": "ジャンプする時間 (例: `1:30` または `90`)",
                 "usage": "{prefix}seek <時間>",
                 "waitingForCache": "お待ちください、オーディオはまだバッファリング中です..."
             },
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "無効な使用方法です。{prefix} {name}を実行して情報を照会してください。",
+        "invalidUsage": "無効な使用方法です。**`{prefix} {name}`**を実行して情報を照会してください。",
         "pageFooter": "ページ {actual}/{total}",
         "lyricsSource": "ソース: {source}"
     },
@@ -329,15 +329,15 @@
             "startPlaying": "{song}の再生が開始",
             "stopPlaying": "{song}の再生が終了",
             "songRequeued": "{song}の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
-            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！{prefix}cookies add <番号> コマンドでcookies.txtファイルを添付して新しいCookieを追加するか、{prefix}cookies reset で既存のCookieを再試行してください。"
+            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}cookies add <番号>` コマンドでcookies.txtファイルを添付して新しいCookieを追加するか、`{prefix}cookies reset` で既存のCookieを再試行してください。"
         },
         "musicDecorator": {
             "noInVC": "それを行うにはVCに参加している必要があります。",
             "noQueue": "何も再生されていません。",
             "notPlaying": "現在音楽が再生されていません。まず曲を再生してください。",
             "sameVC": "あなたは私と同じVCに参加する必要があります。",
-            "validVCJoinable": "**接続**できませんでした、適切な権限をもっていることを確認してください。",
-            "validVCPermission": "**再生**できませんでした、適切な権限をもっていることを確認してください。",
+            "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
+            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。",
             "useRequestChannel": "音楽コマンドにはリクエストチャンネル {channel} を使用してください。",
             "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。プレイヤーのボタンを使用するか、曲名/リンクを直接入力してください。"
         }
@@ -367,7 +367,7 @@
         "stopped": "音楽を停止し、キューをクリアしました。",
         "loopChanged": "ループモードを {mode} に変更しました。",
         "shuffleChanged": "シャッフルモードは現在 {state} です。",
-        "volumeChanged": "音量を **{volume}%** に変更しました。",
+        "volumeChanged": "音量を {volume}% に変更しました。",
         "queueCleared": "キューがクリアされました。",
         "queueListTitle": "キューリスト",
         "emptyQueue": "キューは空です。",

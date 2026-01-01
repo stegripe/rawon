@@ -52,7 +52,7 @@
                 "slashUseDescription": "Basculer manuellement vers un cookie spécifique",
                 "useSuccess": "Basculé avec succès vers {cookie}. Il sera utilisé pour la prochaine requête.",
                 "useNotFound": "{cookie} n'a pas été trouvé.",
-                "useFailed": "{cookie} est actuellement marqué comme échoué. Utilisez d'abord cookies reset pour réessayer les cookies échoués."
+                "useFailed": "{cookie} est actuellement marqué comme échoué. Utilisez d'abord `cookies reset` pour réessayer les cookies échoués."
             }
         },
         "general": {
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "Modifier les paramètres de la fonctionnalité DJ",
                 "disable": "Désactivé",
-                "disableText": "La fonctionnalité DJ a été **DÉSACTIVÉE**",
+                "disableText": "La fonctionnalité DJ a été **`DÉSACTIVÉE`**",
                 "embedTitle": "Fonctionnalité DJ",
                 "enable": "Activé",
-                "enableText": "La fonctionnalité DJ a été **ACTIVÉ**",
+                "enableText": "La fonctionnalité DJ a été **`ACTIVÉ`**",
                 "newRoleText": "nouveau rôle",
                 "noPermission": "Vous n'avez pas la permission **Gérer le serveur** pour utiliser cette commande.",
                 "role": {
                     "current": "Rôle actuel de DJ : <@&{role}>",
                     "invalid": "Rôle invalide.",
-                    "noRole": "Le rôle de DJ n'a pas été défini, veuillez le définir avec {prefix}dj role",
+                    "noRole": "Le rôle de DJ n'a pas été défini, veuillez le définir avec `{prefix}dj role`",
                     "success": "Le rôle de DJ a été défini à <@&{role}>"
                 },
                 "slashDisableDescription": "Désactiver la fonctionnalité DJe",
@@ -192,8 +192,8 @@
                 "footer": "Pour changer de mode, consultez {prefix}help repeat",
                 "newMode": "Le mode de répétition a été défini sur {mode}",
                 "slashDisable": "Désactiver le mode répétition",
-                "slashQueue": "Régler le mode de répétition sur **LISTE D'ATTENTE**",
-                "slashSong": "Régler le mode de répétition sur **LISTE D'ATTENTE**",
+                "slashQueue": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
+                "slashSong": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -227,12 +227,12 @@
                 "cantSeekSoundcloud": "Impossible de chercher dans les pistes SoundCloud.",
                 "description": "Aller à un moment précis de la chanson en cours",
                 "exceedsDuration": "Le temps de recherche dépasse la durée de la chanson ({duration}).",
-                "invalidTime": "Format de temps invalide : {time}. Utilisez des formats comme 1:30 ou 90.",
+                "invalidTime": "Format de temps invalide : {time}. Utilisez des formats comme `1:30` ou `90`.",
                 "noPlaying": "Aucune chanson n'est en cours de lecture.",
                 "noTime": "Veuillez spécifier un temps vers lequel aller.",
                 "notCached": "Impossible de chercher dans cette chanson pour le moment. Veuillez attendre que l'audio soit mis en tampon.",
                 "seeked": "Avancé à {time}",
-                "slashTimeDescription": "Temps vers lequel aller (ex., 1:30 ou 90)",
+                "slashTimeDescription": "Temps vers lequel aller (ex., `1:30` ou `90`)",
                 "usage": "{prefix}seek <temps>",
                 "waitingForCache": "Veuillez patienter, l'audio est toujours en cours de mise en tampon..."
             },
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",
+        "invalidUsage": "Usage invalide, veuillez utiliser **`{prefix} {name}`** pour plus d'informations.",
         "pageFooter": "Page {actual} sur {total}",
         "lyricsSource": "Source: {source}"
     },
@@ -329,15 +329,15 @@
             "startPlaying": "Lancement de la lecture de {song}",
             "stopPlaying": "Arrêt de la lecture de {song}",
             "songRequeued": "Problème lors de la lecture de {song}, remis en file d'attente pour une nouvelle tentative.",
-            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Veuillez ajouter de nouveaux cookies en utilisant la commande {prefix}cookies add <numéro> avec un fichier cookies.txt en pièce jointe, ou utilisez {prefix}cookies reset pour réessayer les cookies existants."
+            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Veuillez ajouter de nouveaux cookies en utilisant la commande `{prefix}cookies add <numéro>` avec un fichier cookies.txt en pièce jointe, ou utilisez `{prefix}cookies reset` pour réessayer les cookies existants."
         },
         "musicDecorator": {
             "noInVC": "Désolé, mais vous devez être dans un salon vocal pour faire cela.",
             "noQueue": "Il n'y a rien à jouer.",
             "notPlaying": "Aucune musique n'est en cours de lecture. Veuillez d'abord lancer une chanson.",
             "sameVC": "Vous devez être dans le même salon vocal que le mien.",
-            "validVCJoinable": "Désolé, mais je ne peux pas **ME CONNECTER** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
-            "validVCPermission": "Désolé, mais je ne peux pas **PARLER** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCJoinable": "Désolé, mais je ne peux pas **`ME CONNECTER`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCPermission": "Désolé, mais je ne peux pas **`PARLER`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
             "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
             "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les boutons du lecteur ou taper directement le titre/lien de la chanson."
         }
@@ -367,7 +367,7 @@
         "stopped": "Musique arrêtée et file d'attente vidée.",
         "loopChanged": "Mode boucle changé en {mode}.",
         "shuffleChanged": "Mode aléatoire maintenant {state}.",
-        "volumeChanged": "Volume changé à **{volume}%**.",
+        "volumeChanged": "Volume changé à {volume}%.",
         "queueCleared": "La file d'attente a été vidée.",
         "queueListTitle": "Liste de File d'attente",
         "emptyQueue": "La file d'attente est vide.",

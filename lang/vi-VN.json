@@ -52,7 +52,7 @@
                 "slashUseDescription": "Chuyển thủ công sang một cookie cụ thể",
                 "useSuccess": "Đã chuyển thành công sang {cookie}. Sẽ được sử dụng cho yêu cầu tiếp theo.",
                 "useNotFound": "{cookie} không được tìm thấy.",
-                "useFailed": "{cookie} hiện đang được đánh dấu là thất bại. Sử dụng cookies reset trước để thử lại các cookie thất bại."
+                "useFailed": "{cookie} hiện đang được đánh dấu là thất bại. Sử dụng `cookies reset` trước để thử lại các cookie thất bại."
             }
         },
         "general": {
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "Thay đổi cài đặt tính năng DJ",
                 "disable": "Đã tắt",
-                "disableText": "Tính năng DJ đã bị **TẮT**",
+                "disableText": "Tính năng DJ đã bị **`TẮT`**",
                 "embedTitle": "tính năng DJ",
                 "enable": "Đã bật",
-                "enableText": "Tính năng DJ đã được **BẬT**",
+                "enableText": "Tính năng DJ đã được **`BẬT`**",
                 "newRoleText": "vai trò mới",
                 "noPermission": "Bạn không có quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "role": {
                     "current": "Vai trò DJ hiện tại: <@&{role}>",
                     "invalid": "Vai trò không hợp lệ.",
-                    "noRole": "Vai trò DJ chưa được thiết lập, vui lòng dùng lệnh {prefix}dj role để thiết lập",
+                    "noRole": "Vai trò DJ chưa được thiết lập, vui lòng dùng lệnh `{prefix}dj role` để thiết lập",
                     "success": "<@&{role}> đã được thiết lập thành vai trò DJ"
                 },
                 "slashDisableDescription": "Tắt tính năng DJ",
@@ -192,8 +192,8 @@
                 "footer": "Để thay đổi chế độ, nhập {prefix}help repeat",
                 "newMode": "Chế độ lặp lại đã được đặt thành {mode}",
                 "slashDisable": "Tắt chế độ lặp lại",
-                "slashQueue": "Đặt chế độ lặp lại trong **HÀNG ĐỢI**",
-                "slashSong": "Đặt chế độ lặp lại tới **BÀI HÁT**",
+                "slashQueue": "Đặt chế độ lặp lại trong **`HÀNG ĐỢI`**",
+                "slashSong": "Đặt chế độ lặp lại tới **`BÀI HÁT`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -227,12 +227,12 @@
                 "cantSeekSoundcloud": "Không thể tua trong các bản nhạc SoundCloud.",
                 "description": "Chuyển đến thời điểm cụ thể trong bài hát hiện tại",
                 "exceedsDuration": "Thời gian tua vượt quá thời lượng bài hát ({duration}).",
-                "invalidTime": "Định dạng thời gian không hợp lệ: {time}. Sử dụng định dạng như 1:30 hoặc 90.",
+                "invalidTime": "Định dạng thời gian không hợp lệ: {time}. Sử dụng định dạng như `1:30` hoặc `90`.",
                 "noPlaying": "Không có bài hát nào đang phát.",
                 "noTime": "Vui lòng chỉ định thời gian để chuyển đến.",
                 "notCached": "Chưa thể tua trong bài hát này. Vui lòng đợi âm thanh được lưu vào bộ đệm.",
                 "seeked": "Đã chuyển đến {time}",
-                "slashTimeDescription": "Thời gian để chuyển đến (ví dụ, 1:30 hoặc 90)",
+                "slashTimeDescription": "Thời gian để chuyển đến (ví dụ, `1:30` hoặc `90`)",
                 "usage": "{prefix}seek <thời gian>",
                 "waitingForCache": "Vui lòng đợi, âm thanh vẫn đang được lưu vào bộ đệm..."
             },
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập {prefix} {name} để biết thêm thông tin.",
+        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập **`{prefix} {name}`** để biết thêm thông tin.",
         "pageFooter": "Trang {actual} trong {total}",
         "lyricsSource": "Nguồn: {source}"
     },
@@ -329,15 +329,15 @@
             "startPlaying": "Bắt đầu phát {song}",
             "stopPlaying": "Dừng phát {song}",
             "songRequeued": "Gặp sự cố khi phát {song}, đã thêm lại vào hàng đợi để thử lại.",
-            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Vui lòng thêm cookies mới bằng lệnh {prefix}cookies add <số> với file cookies.txt đính kèm, hoặc sử dụng {prefix}cookies reset để thử lại cookies hiện có."
+            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Vui lòng thêm cookies mới bằng lệnh `{prefix}cookies add <số>` với file cookies.txt đính kèm, hoặc sử dụng `{prefix}cookies reset` để thử lại cookies hiện có."
         },
         "musicDecorator": {
             "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
             "noQueue": "Đang rảnh rỗi.",
             "notPlaying": "Hiện không có nhạc đang phát. Vui lòng phát một bài hát trước.",
             "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
-            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **KẾT NỐI** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "validVCPermission": "Xin lỗi, nhưng tôi không thể **NÓI** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
             "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc.",
             "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp."
         }
@@ -367,7 +367,7 @@
         "stopped": "Đã dừng nhạc và xóa hàng đợi.",
         "loopChanged": "Chế độ lặp đã thay đổi thành {mode}.",
         "shuffleChanged": "Chế độ trộn bây giờ là {state}.",
-        "volumeChanged": "Âm lượng đã thay đổi thành **{volume}%**.",
+        "volumeChanged": "Âm lượng đã thay đổi thành {volume}%.",
         "queueCleared": "Hàng đợi đã được xóa.",
         "queueListTitle": "Danh sách hàng đợi",
         "emptyQueue": "Hàng đợi trống.",

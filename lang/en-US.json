@@ -52,7 +52,7 @@
                 "slashUseDescription": "Manually switch to a specific cookie",
                 "useSuccess": "Successfully switched to {cookie}. It will be used for the next request.",
                 "useNotFound": "{cookie} was not found.",
-                "useFailed": "{cookie} is currently marked as failed. Use cookies reset first to retry failed cookies."
+                "useFailed": "{cookie} is currently marked as failed. Use `cookies reset` first to retry failed cookies."
             }
         },
         "general": {
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "Change DJ feature settings",
                 "disable": "Disabled",
-                "disableText": "DJ feature has been **DISABLED**",
+                "disableText": "DJ feature has been **`DISABLED`**",
                 "embedTitle": "DJ feature",
                 "enable": "Enabled",
-                "enableText": "DJ feature has been **ENABLED**",
+                "enableText": "DJ feature has been **`ENABLED`**",
                 "newRoleText": "new role",
                 "noPermission": "You don't have the **Manage Server** permission to use this command.",
                 "role": {
                     "current": "Current DJ role: <@&{role}>",
                     "invalid": "Invalid role.",
-                    "noRole": "DJ role hasn't been set, please set it with {prefix}dj role",
+                    "noRole": "DJ role hasn't been set, please set it with `{prefix}dj role`",
                     "success": "DJ role has been set to <@&{role}>"
                 },
                 "slashDisableDescription": "Disable the DJ feature",
@@ -192,9 +192,9 @@
                 "footer": "To change mode, see {prefix}help repeat",
                 "newMode": "The repeat mode has been set to {mode}",
                 "slashDisable": "Disable repeat mode",
-                "slashQueue": "Set repeat mode to QUEUE",
-                "slashSong": "Set repeat mode to SONG",
-                "usage": "{prefix}repeat <{options}>"
+                "slashQueue": "Set repeat mode to **`QUEUE`**",
+                "slashSong": "Set repeat mode to **`SONG`**",
+                "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "The music player is not paused.",
@@ -227,12 +227,12 @@
                 "cantSeekSoundcloud": "Cannot seek in SoundCloud tracks.",
                 "description": "Seek to a specific time in the current song",
                 "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
-                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
+                "invalidTime": "Invalid time format: {time}. Use formats like `1:30` or `90`.",
                 "noPlaying": "No song is currently playing.",
                 "noTime": "Please specify a time to seek to.",
                 "notCached": "Cannot seek in this song yet. Please wait for the audio to buffer.",
                 "seeked": "Seeked to {time}",
-                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
+                "slashTimeDescription": "Time to seek to (e.g., `1:30` or `90`)",
                 "usage": "{prefix}seek <time>",
                 "waitingForCache": "Please wait, the audio is still buffering..."
             },
@@ -251,7 +251,7 @@
                 "slashLastDescription": "Skip to the last song in the queue",
                 "slashPositionDescription": "Song position in the queue",
                 "slashSpecificDescription": "Skip to a specific position in the queue",
-                "usage": "{prefix}skipto <{options} | number>"
+                "usage": "'{prefix}'skipto <{options} | number>"
             },
             "stop": {
                 "description": "Stop the music player",
@@ -351,7 +351,7 @@
         "noPermission": "You don't have permission to perform this action. Only DJ role, server managers, or the song requester can do this."
     },
     "reusable": {
-        "invalidUsage": "Invalid usage, please use {prefix} {name} for more information.",
+        "invalidUsage": "Invalid usage, please use **`{prefix} {name}`** for more information.",
         "pageFooter": "Page {actual} of {total}",
         "lyricsSource": "Source: {source}"
     },
@@ -369,7 +369,7 @@
             "startPlaying": "Started playing {song}",
             "stopPlaying": "Stopped playing {song}",
             "songRequeued": "Had trouble playing {song}, re-queued for another attempt.",
-            "allCookiesFailed": "All cookies have failed due to bot detection! Please add new cookies using {prefix}cookies add <number> command with a cookies.txt attachment, or use {prefix}cookies reset to retry existing cookies."
+            "allCookiesFailed": "All cookies have failed due to bot detection! Please add new cookies using `{prefix}cookies add <number>` command with a cookies.txt attachment, or use `{prefix}cookies reset` to retry existing cookies."
         },
         "musicDecorator": {
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
@@ -378,8 +378,8 @@
             "sameVC": "You need to be in the same voice channel as mine.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
             "useRequestChannelDirect": "This command is disabled in the request channel. Please use the player buttons or type the song title/link directly.",
-            "validVCJoinable": "Sorry, but I can't CONNECT to your voice channel, make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't SPEAK in this voice channel; make sure I have the proper permissions."
+            "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
+            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
         }
     }
 }

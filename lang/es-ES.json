@@ -52,7 +52,7 @@
                 "slashUseDescription": "Cambiar manualmente a una cookie específica",
                 "useSuccess": "Se cambió exitosamente a {cookie}. Se usará en la próxima solicitud.",
                 "useNotFound": "{cookie} no fue encontrada.",
-                "useFailed": "{cookie} está marcada como fallida. Usa cookies reset primero para reintentar las cookies fallidas."
+                "useFailed": "{cookie} está marcada como fallida. Usa `cookies reset` primero para reintentar las cookies fallidas."
             }
         },
         "general": {
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "Cambia la configuración del DJ",
                 "disable": "Desactivado",
-                "disableText": "La función DJ ha sido **DESACTIVADA**",
+                "disableText": "La función DJ ha sido **`DESACTIVADA`**",
                 "embedTitle": "DJ",
                 "enable": "Activado",
-                "enableText": "La función DJ ha sido **ACTIVADA**",
+                "enableText": "La función DJ ha sido **`ACTIVADA`**",
                 "newRoleText": "Nuevo rol",
                 "noPermission": "No tienes el permiso **Gestionar Servidor** para usar este comando.",
                 "role": {
                     "current": "<@&{role}> es el rol DJ actualmente.",
                     "invalid": "Rol no válido.",
-                    "noRole": "No hay rol DJ establecido actualmente, por favor usa {prefix}dj role para establecerlo.",
+                    "noRole": "No hay rol DJ establecido actualmente, por favor usa `{prefix}dj role` para establecerlo.",
                     "success": "<@&{role}> ha sido establecido como rol DJ."
                 },
                 "slashDisableDescription": "Desactiva la función DJ",
@@ -140,7 +140,7 @@
                 "currentState": "{filter} es actualmente {state}",
                 "description": "Configurar el filtro de canción",
                 "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
-                "filterSet": "El filtro {filter} ya está {state}",
+                "filterSet": "`El filtro {filter}` ya está {state}",
                 "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
                 "slashStatusDescription": "Comprobar el estado actual de los filtros de canción",
@@ -192,8 +192,8 @@
                 "footer": "Para cambiar el modo, revisa '{prefix}help repeat'",
                 "newMode": "El modo de reproducción ha sido establecido a {mode}",
                 "slashDisable": "Desactiva el modo repetición",
-                "slashQueue": "Establece el mode repetición a **COLA**",
-                "slashSong": "Establece el mode repetición a **UNA**",
+                "slashQueue": "Establece el mode repetición a **`COLA`**",
+                "slashSong": "Establece el mode repetición a **`UNA`**",
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
@@ -227,12 +227,12 @@
                 "cantSeekSoundcloud": "No se puede buscar en pistas de SoundCloud.",
                 "description": "Saltar a un tiempo específico en la canción actual",
                 "exceedsDuration": "El tiempo de búsqueda excede la duración de la canción ({duration}).",
-                "invalidTime": "Formato de tiempo inválido: {time}. Use formatos como 1:30 o 90.",
+                "invalidTime": "Formato de tiempo inválido: {time}. Use formatos como `1:30` o `90`.",
                 "noPlaying": "No hay ninguna canción reproduciéndose actualmente.",
                 "noTime": "Por favor, especifica un tiempo al cual saltar.",
                 "notCached": "Aún no se puede buscar en esta canción. Por favor espera a que el audio se almacene.",
                 "seeked": "Saltado a {time}",
-                "slashTimeDescription": "Tiempo al cual saltar (ej., 1:30 o 90)",
+                "slashTimeDescription": "Tiempo al cual saltar (ej., `1:30` o `90`)",
                 "usage": "{prefix}seek <tiempo>",
                 "waitingForCache": "Por favor espera, el audio aún se está almacenando..."
             },
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Uso inválido, por favor usa {prefix} {name} para más información.",
+        "invalidUsage": "Uso inválido, por favor usa **`{prefix} {name}`** para más información.",
         "pageFooter": "Página {actual} de {total}",
         "lyricsSource": "Fuente: {source}"
     },
@@ -329,15 +329,15 @@
             "startPlaying": "Se empezó a reproducir {song}",
             "stopPlaying": "Se detuvo la reproducción {song}",
             "songRequeued": "Hubo un problema al reproducir {song}, se ha vuelto a agregar a la cola para otro intento.",
-            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Por favor, agrega nuevas cookies usando el comando {prefix}cookies add <número> con un archivo cookies.txt adjunto, o usa {prefix}cookies reset para reintentar las cookies existentes."
+            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Por favor, agrega nuevas cookies usando el comando `{prefix}cookies add <número>` con un archivo cookies.txt adjunto, o usa `{prefix}cookies reset` para reintentar las cookies existentes."
         },
         "musicDecorator": {
             "noInVC": "Lo siento, pero debes estar en un canal de voz para hacer eso.",
             "noQueue": "No se está reproduciendo nada.",
             "notPlaying": "No hay música reproduciéndose actualmente. Por favor, reproduce una canción primero.",
             "sameVC": "Necesitas estar en el mismo canal de voz que yo.",
-            "validVCJoinable": "Lo siento, pero no tengo el permiso **CONECTAR** en tu servidor.",
-            "validVCPermission": "Lo siento, pero no tengo el permiso **HABLAR** en tu servidor.",
+            "validVCJoinable": "Lo siento, pero no tengo el permiso **`CONECTAR`** en tu servidor.",
+            "validVCPermission": "Lo siento, pero no tengo el permiso **`HABLAR`** en tu servidor.",
             "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música.",
             "useRequestChannelDirect": "Este comando está deshabilitado en el canal de solicitudes. Por favor, usa los botones del reproductor o escribe el título/enlace de la canción directamente."
         }
@@ -367,7 +367,7 @@
         "stopped": "Se detuvo la música y se vació la cola.",
         "loopChanged": "Modo de bucle cambiado a {mode}.",
         "shuffleChanged": "Modo aleatorio ahora está {state}.",
-        "volumeChanged": "Volumen cambiado a **{volume}%**.",
+        "volumeChanged": "Volumen cambiado a {volume}%.",
         "queueCleared": "La cola ha sido vaciada.",
         "queueListTitle": "Lista de Cola",
         "emptyQueue": "La cola está vacía.",
