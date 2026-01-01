@@ -52,7 +52,7 @@
                 "slashUseDescription": "Chuyển thủ công sang một cookie cụ thể",
                 "useSuccess": "Đã chuyển thành công sang {cookie}. Sẽ được sử dụng cho yêu cầu tiếp theo.",
                 "useNotFound": "{cookie} không được tìm thấy.",
-                "useFailed": "{cookie} hiện đang được đánh dấu là thất bại. Sử dụng `cookies reset` trước để thử lại các cookie thất bại."
+                "useFailed": "{cookie} hiện đang được đánh dấu là thất bại. Sử dụng cookies reset trước để thử lại các cookie thất bại."
             }
         },
         "general": {
@@ -78,10 +78,10 @@
                 "authorString": "{username} - Danh sách lệnh",
                 "commandDetailTitle": "{username} - Thông tin về lệnh {command}",
                 "commandSelectionString": "Vui lòng chọn lệnh",
-                "commandUsageFooter": "`<>` = yêu cầu | `[]` = lựa chọn {devOnly}",
+                "commandUsageFooter": "<> = yêu cầu | [] = lựa chọn {devOnly}",
                 "description": "Hiển thị danh sách lệnh hoặc thông tin lệnh",
                 "descriptionString": "Mô tả",
-                "footerString": "`{prefix}help <lệnh> để có thêm thông tin về lệnh",
+                "footerString": "{prefix}help <lệnh> để có thêm thông tin về lệnh",
                 "nameString": "Tên",
                 "noCommanSuggest": "Không thể tìm thấy tên lệnh phù hợp. Ý bạn là?",
                 "noCommand": "Không thể tìm thấy bất kỳ lệnh nào.",
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "Thay đổi cài đặt tính năng DJ",
                 "disable": "Đã tắt",
-                "disableText": "Tính năng DJ đã bị **`TẮT`**",
+                "disableText": "Tính năng DJ đã bị **TẮT**",
                 "embedTitle": "tính năng DJ",
                 "enable": "Đã bật",
-                "enableText": "Tính năng DJ đã được **`BẬT`**",
+                "enableText": "Tính năng DJ đã được **BẬT**",
                 "newRoleText": "vai trò mới",
                 "noPermission": "Bạn không có quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "role": {
                     "current": "Vai trò DJ hiện tại: <@&{role}>",
                     "invalid": "Vai trò không hợp lệ.",
-                    "noRole": "Vai trò DJ chưa được thiết lập, vui lòng dùng lệnh `{prefix}dj role` để thiết lập",
+                    "noRole": "Vai trò DJ chưa được thiết lập, vui lòng dùng lệnh {prefix}dj role để thiết lập",
                     "success": "<@&{role}> đã được thiết lập thành vai trò DJ"
                 },
                 "slashDisableDescription": "Tắt tính năng DJ",
@@ -139,7 +139,7 @@
                 "currentlyUsedFilters": "Bộ lọc đang sử dụng",
                 "currentState": "{filter} đang được {state}",
                 "description": "Định cấu hình bộ lọc bài hát",
-                "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}`",
+                "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}",
                 "filterSet": " Bộ lọc {filter} đang {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} bộ lọc bài hát",
                 "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {bật} other {tắt}}",
@@ -148,13 +148,13 @@
                 "specifyFilter": "Vui lòng chỉ định bộ lọc bài hát"
             },
             "lyrics": {
-                "apiError": "Không thể tìm bài hát **{song}**, vì: `{message}`",
+                "apiError": "Không thể tìm bài hát {song}, vì: {message}",
                 "description": "Hiển thị lời bài hát",
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
                 "searchingLyrics": "Đang tìm lời bài hát...",
                 "slashDescription": "Tìm bài hát",
                 "usage": "{prefix}lyrics [bài hát]",
-                "noLyrics": "Không tìm thấy lời bài hát cho **{song}**."
+                "noLyrics": "Không tìm thấy lời bài hát cho {song}."
             },
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
@@ -168,7 +168,7 @@
                 "pauseMessage": "Trình phát nhạc đã bị tạm dừng."
             },
             "play": {
-                "alreadyPlaying": "Đã phát trong kênh thoại `{voiceChannel}`.",
+                "alreadyPlaying": "Đã phát trong kênh thoại {voiceChannel}.",
                 "description": "Phát nhạc",
                 "noSongData": "URL không có dữ liệu bài hát.",
                 "slashQueryDescription": "Tìm kiếm truy vấn",
@@ -192,8 +192,8 @@
                 "footer": "Để thay đổi chế độ, nhập {prefix}help repeat",
                 "newMode": "Chế độ lặp lại đã được đặt thành {mode}",
                 "slashDisable": "Tắt chế độ lặp lại",
-                "slashQueue": "Đặt chế độ lặp lại trong **`HÀNG ĐỢI`**",
-                "slashSong": "Đặt chế độ lặp lại tới **`BÀI HÁT`**",
+                "slashQueue": "Đặt chế độ lặp lại trong **HÀNG ĐỢI**",
+                "slashSong": "Đặt chế độ lặp lại tới **BÀI HÁT**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -227,18 +227,18 @@
                 "cantSeekSoundcloud": "Không thể tua trong các bản nhạc SoundCloud.",
                 "description": "Chuyển đến thời điểm cụ thể trong bài hát hiện tại",
                 "exceedsDuration": "Thời gian tua vượt quá thời lượng bài hát ({duration}).",
-                "invalidTime": "Định dạng thời gian không hợp lệ: {time}. Sử dụng định dạng như `1:30` hoặc `90`.",
+                "invalidTime": "Định dạng thời gian không hợp lệ: {time}. Sử dụng định dạng như 1:30 hoặc 90.",
                 "noPlaying": "Không có bài hát nào đang phát.",
                 "noTime": "Vui lòng chỉ định thời gian để chuyển đến.",
                 "notCached": "Chưa thể tua trong bài hát này. Vui lòng đợi âm thanh được lưu vào bộ đệm.",
                 "seeked": "Đã chuyển đến {time}",
-                "slashTimeDescription": "Thời gian để chuyển đến (ví dụ, `1:30` hoặc `90`)",
+                "slashTimeDescription": "Thời gian để chuyển đến (ví dụ, 1:30 hoặc 90)",
                 "usage": "{prefix}seek <thời gian>",
                 "waitingForCache": "Vui lòng đợi, âm thanh vẫn đang được lưu vào bộ đệm..."
             },
             "skip": {
                 "description": "Bỏ qua bài nhạc",
-                "skipMessage": "Đã bỏ qua **{song}**",
+                "skipMessage": "Đã bỏ qua {song}",
                 "voteResultMessage": "{length}/{required} đã bình chọn để bỏ qua bài hát hiện tại"
             },
             "skipTo": {
@@ -246,7 +246,7 @@
                 "description": "Bỏ qua tới một vị trí cụ thể trong hàng đợi",
                 "noPermission": "Bạn không có quyền sử dụng lệnh này.",
                 "noSongPosition": "Không thể tìm thấy một bài hát ở vị trí đó.",
-                "skipMessage": "Bỏ qua tới **{song}**",
+                "skipMessage": "Bỏ qua tới {song}",
                 "slashFirstDescription": "Tua lại bài hát đầu tiên trong hàng đợi",
                 "slashLastDescription": "Chuyển đến bài hát cuối cùng trong hàng đợi",
                 "slashPositionDescription": "Vị trí bài hát trong hàng đợi",
@@ -272,7 +272,7 @@
                 "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "invalidChannel": "Vui lòng cung cấp một kênh văn bản hợp lệ.",
                 "noBotPermissions": "Tôi không thể kiểm tra quyền của mình trong kênh đó.",
-                "missingBotPermissions": "Tôi đang thiếu các quyền sau trong kênh đó: **{permissions}**",
+                "missingBotPermissions": "Tôi đang thiếu các quyền sau trong kênh đó: {permissions}",
                 "failedToSetup": "Không thể thiết lập kênh yêu cầu. Vui lòng kiểm tra quyền của tôi.",
                 "slashSetDescription": "Đặt kênh làm kênh yêu cầu",
                 "slashRemoveDescription": "Xóa kênh yêu cầu",
@@ -296,48 +296,48 @@
         "cmdLoading": "Đang tải...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Kết nối lại cấu hình thành công.",
-            "deleteQueue": "`{duration}` đã qua qua và không có ai tham gia kênh thoại, hàng đợi đã bị xóa.",
+            "deleteQueue": "{duration} đã qua qua và không có ai tham gia kênh thoại, hàng đợi đã bị xóa.",
             "deleteQueueFooter": "Đã xóa hàng đợi",
             "disconnectFromVCMessage": "Đã ngắt kết nối khỏi kênh thoại, hàng đợi đã bị xóa.",
             "joinStageMessage": "Gia nhập thành công kênh sân khấu với vai trò Diễn giả.",
             "joiningAsSpeaker": "Đã chuyển sang kênh sân khấu, đang cố gắng tham gia với tư cách Diễn giả...",
-            "pauseQueue": "Mọi người đã rời khỏi kênh thoại. Để tiết kiệm tài nguyên, hàng đợi đã bị tạm dừng.\nNếu không có ai tham gia kênh thoại trong `{duration}`, hàng đợi sẽ bị xóa.",
+            "pauseQueue": "Mọi người đã rời khỏi kênh thoại. Để tiết kiệm tài nguyên, hàng đợi đã bị tạm dừng.\nNếu không có ai tham gia kênh thoại trong {duration}, hàng đợi sẽ bị xóa.",
             "pauseQueueFooter": "Đã tạm dừng hàng đợi",
             "reconfigureConnection": "Đã chuyển sang kênh thoại tại vùng khác, đang định cấu hình lại kết nối...",
-            "resumeQueue": "Ai đó đã tham gia kênh thoại.\nĐang phát **{song}**",
+            "resumeQueue": "Ai đó đã tham gia kênh thoại.\nĐang phát {song}",
             "resumeQueueFooter": "Tiếp tục phát hàng đợi",
             "unableJoinStageMessage": "Không thể tham gia với tư cách Diễn giả, hàng đợi đã bị xóa.",
             "unableReconfigureConnection": "Không thể định cấu hình lại kết nối, hàng đợi đã bị xóa."
         }
     },
     "reusable": {
-        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập `{prefix} {name}` để biết thêm thông tin.",
+        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập {prefix} {name} để biết thêm thông tin.",
         "pageFooter": "Trang {actual} trong {total}",
         "lyricsSource": "Nguồn: {source}"
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Tôi đang thiếu các quyền sau trong {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Tôi đang thiếu các quyền sau trong {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, vui lòng đợi `{timeleft}`.",
+        "cooldownMessage": "{author}, vui lòng đợi {timeleft}.",
         "generalHandler": {
-            "errorJoining": "Lỗi khi tham gia kênh thoại, vì: `{message}`",
-            "errorPlaying": "Đã xảy ra lỗi khi cố gắng phát nhạc, vì: `{message}`",
+            "errorJoining": "Lỗi khi tham gia kênh thoại, vì: {message}",
+            "errorPlaying": "Đã xảy ra lỗi khi cố gắng phát nhạc, vì: {message}",
             "handleVideoInitial": "Đã thêm {length} bài hát vào hàng đợi",
             "leftVC": "Rời khỏi kênh thoại do không hoạt động quá lâu.",
-            "queueEnded": "Hàng đợi đã hết, sử dụng `{usage}` để phát thêm nhạc.",
-            "startPlaying": "Bắt đầu phát **{song}**",
-            "stopPlaying": "Dừng phát **{song}**",
-            "songRequeued": "Gặp sự cố khi phát **{song}**, đã thêm lại vào hàng đợi để thử lại.",
-            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Vui lòng thêm cookies mới bằng lệnh `{prefix}cookies add <số>` với file cookies.txt đính kèm, hoặc sử dụng `{prefix}cookies reset` để thử lại cookies hiện có."
+            "queueEnded": "Hàng đợi đã hết, sử dụng {usage} để phát thêm nhạc.",
+            "startPlaying": "Bắt đầu phát {song}",
+            "stopPlaying": "Dừng phát {song}",
+            "songRequeued": "Gặp sự cố khi phát {song}, đã thêm lại vào hàng đợi để thử lại.",
+            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Vui lòng thêm cookies mới bằng lệnh {prefix}cookies add <số> với file cookies.txt đính kèm, hoặc sử dụng {prefix}cookies reset để thử lại cookies hiện có."
         },
         "musicDecorator": {
             "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
             "noQueue": "Đang rảnh rỗi.",
             "notPlaying": "Hiện không có nhạc đang phát. Vui lòng phát một bài hát trước.",
             "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
-            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **KẾT NỐI** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCPermission": "Xin lỗi, nhưng tôi không thể **NÓI** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
             "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc.",
             "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp."
         }
@@ -357,16 +357,16 @@
         "unknown": "Không rõ",
         "notInVoice": "Bạn cần ở trong kênh thoại để yêu cầu nhạc.",
         "noResults": "Không tìm thấy kết quả cho tìm kiếm của bạn.",
-        "addedToQueue": "Đã thêm **{song}** vào hàng đợi.",
+        "addedToQueue": "Đã thêm {song} vào hàng đợi.",
         "addedPlaylistToQueue": "Đã thêm {count} bài hát từ {playlist} vào hàng đợi.",
-        "startedPlaying": "Đang phát **{song}**",
+        "startedPlaying": "Đang phát {song}",
         "paused": "Đã tạm dừng nhạc.",
         "resumed": "Đã tiếp tục phát nhạc.",
-        "skipped": "Đã bỏ qua **{song}**",
-        "removed": "Đã xóa **{song}** khỏi hàng đợi và bỏ qua.",
+        "skipped": "Đã bỏ qua {song}",
+        "removed": "Đã xóa {song} khỏi hàng đợi và bỏ qua.",
         "stopped": "Đã dừng nhạc và xóa hàng đợi.",
-        "loopChanged": "Chế độ lặp đã thay đổi thành **{mode}**.",
-        "shuffleChanged": "Chế độ trộn bây giờ là **{state}**.",
+        "loopChanged": "Chế độ lặp đã thay đổi thành {mode}.",
+        "shuffleChanged": "Chế độ trộn bây giờ là {state}.",
         "volumeChanged": "Âm lượng đã thay đổi thành **{volume}%**.",
         "queueCleared": "Hàng đợi đã được xóa.",
         "queueListTitle": "Danh sách hàng đợi",

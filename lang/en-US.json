@@ -52,7 +52,7 @@
                 "slashUseDescription": "Manually switch to a specific cookie",
                 "useSuccess": "Successfully switched to {cookie}. It will be used for the next request.",
                 "useNotFound": "{cookie} was not found.",
-                "useFailed": "{cookie} is currently marked as failed. Use `cookies reset` first to retry failed cookies."
+                "useFailed": "{cookie} is currently marked as failed. Use cookies reset first to retry failed cookies."
             }
         },
         "general": {
@@ -76,12 +76,12 @@
             "help": {
                 "aliasesString": "Aliases",
                 "authorString": "{username} - Command List",
-                "commandDetailTitle": "{username} - Information about `{command}` command",
+                "commandDetailTitle": "{username} - Information about {command} command",
                 "commandSelectionString": "Please select the command",
-                "commandUsageFooter": "`<>` = required | `[]` = optional {devOnly}",
+                "commandUsageFooter": "<> = required | [] = optional {devOnly}",
                 "description": "Shows the command list or information for a specific command",
                 "descriptionString": "Description",
-                "footerString": "`{prefix}help <command>` to get more information on a specific command",
+                "footerString": "{prefix}help <command> to get more information on a specific command",
                 "nameString": "Name",
                 "noCommanSuggest": "Couldn't find matching command name. Did you mean this?",
                 "noCommand": "Couldn't find any matching command name.",
@@ -117,16 +117,16 @@
             "dj": {
                 "description": "Change DJ feature settings",
                 "disable": "Disabled",
-                "disableText": "DJ feature has been **`DISABLED`**",
+                "disableText": "DJ feature has been **DISABLED**",
                 "embedTitle": "DJ feature",
                 "enable": "Enabled",
-                "enableText": "DJ feature has been **`ENABLED`**",
+                "enableText": "DJ feature has been **ENABLED**",
                 "newRoleText": "new role",
                 "noPermission": "You don't have the **Manage Server** permission to use this command.",
                 "role": {
                     "current": "Current DJ role: <@&{role}>",
                     "invalid": "Invalid role.",
-                    "noRole": "DJ role hasn't been set, please set it with `{prefix}dj role`",
+                    "noRole": "DJ role hasn't been set, please set it with {prefix}dj role",
                     "success": "DJ role has been set to <@&{role}>"
                 },
                 "slashDisableDescription": "Disable the DJ feature",
@@ -137,10 +137,10 @@
             "filter": {
                 "availableFilters": "Available Filters",
                 "currentlyUsedFilters": "Currently Used Filters",
-                "currentState": "`{filter}` is currently `{state}`",
+                "currentState": "{filter} is currently {state}",
                 "description": "Configure song filter",
-                "embedFooter": "To {opstate} the filter, use `{prefix}filter {opstate} {filter}`",
-                "filterSet": "`{filter}` filter is now `{state}`",
+                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
+                "filterSet": "{filter} filter is now {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Check the current status of song filters",
@@ -148,9 +148,9 @@
                 "specifyFilter": "Please specify the song filter"
             },
             "lyrics": {
-                "apiError": "The API could not find the song **{song}**, because: `{message}`",
+                "apiError": "The API could not find the song {song}, because: {message}",
                 "description": "Show the lyrics from the song",
-                "noLyrics": "No lyrics found for **{song}**.",
+                "noLyrics": "No lyrics found for {song}.",
                 "noQuery": "There is nothing playing, or no arguments are provided.",
                 "searchingLyrics": "Searching for lyrics...",
                 "slashDescription": "Song to search",
@@ -168,7 +168,7 @@
                 "pauseMessage": "The music player has been paused."
             },
             "play": {
-                "alreadyPlaying": "The music player is already playing to `{voiceChannel}` voice channel.",
+                "alreadyPlaying": "The music player is already playing to {voiceChannel} voice channel.",
                 "description": "Play some music",
                 "noSongData": "That URL doesn't have any song data.",
                 "slashQueryDescription": "Query to search",
@@ -187,13 +187,13 @@
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
-                "actualMode": "Current repeat mode is `{mode}`",
+                "actualMode": "Current repeat mode is {mode}",
                 "description": "Repeat current music or the queue",
-                "footer": "To change mode, see `{prefix}help repeat`",
-                "newMode": "The repeat mode has been set to `{mode}`",
+                "footer": "To change mode, see {prefix}help repeat",
+                "newMode": "The repeat mode has been set to {mode}",
                 "slashDisable": "Disable repeat mode",
-                "slashQueue": "Set repeat mode to `QUEUE`",
-                "slashSong": "Set repeat mode to `SONG`",
+                "slashQueue": "Set repeat mode to QUEUE",
+                "slashSong": "Set repeat mode to SONG",
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
@@ -218,35 +218,35 @@
                 "usage": "{prefix}search <query> [source]"
             },
             "shuffle": {
-                "actualState": "Current shuffle mode is `{state}`",
+                "actualState": "Current shuffle mode is {state}",
                 "description": "Set mode for shuffle feature",
-                "newState": "Shuffle mode is now set to `{state}`"
+                "newState": "Shuffle mode is now set to {state}"
             },
             "seek": {
                 "cantSeekLive": "Cannot seek in live streams.",
                 "cantSeekSoundcloud": "Cannot seek in SoundCloud tracks.",
                 "description": "Seek to a specific time in the current song",
-                "exceedsDuration": "The seek time exceeds the song duration (`{duration}`).",
-                "invalidTime": "Invalid time format: `{time}`. Use formats like `1:30` or `90`.",
+                "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
+                "invalidTime": "Invalid time format: {time}. Use formats like 1:30 or 90.",
                 "noPlaying": "No song is currently playing.",
                 "noTime": "Please specify a time to seek to.",
                 "notCached": "Cannot seek in this song yet. Please wait for the audio to buffer.",
-                "seeked": "Seeked to `{time}`",
-                "slashTimeDescription": "Time to seek to (e.g., `1:30` or `90`)",
+                "seeked": "Seeked to {time}",
+                "slashTimeDescription": "Time to seek to (e.g., 1:30 or 90)",
                 "usage": "{prefix}seek <time>",
                 "waitingForCache": "Please wait, the audio is still buffering..."
             },
             "skip": {
                 "description": "Skip the music",
-                "skipMessage": "Skipped **{song}**",
-                "voteResultMessage": "`{length}/{required}` voted to skip the current song"
+                "skipMessage": "Skipped {song}",
+                "voteResultMessage": "{length}/{required} voted to skip the current song"
             },
             "skipTo": {
                 "cantPlay": "You can't skip to current music.",
                 "description": "Skip to a specific position in the queue",
                 "noPermission": "You don't have permission to use this command.",
                 "noSongPosition": "Unable to find a song in that position.",
-                "skipMessage": "Skipped to **{song}**",
+                "skipMessage": "Skipped to {song}",
                 "slashFirstDescription": "Rewind to the first song in the queue",
                 "slashLastDescription": "Skip to the last song in the queue",
                 "slashPositionDescription": "Song position in the queue",
@@ -259,20 +259,20 @@
             },
             "volume": {
                 "changeVolume": "To change the volume, provide the volume number when using this command.",
-                "currentVolume": "The current volume is `{volume}`",
+                "currentVolume": "The current volume is {volume}",
                 "description": "Change the media player volume",
-                "newVolume": "Volume has been set to `{volume}`",
-                "plsPause": "Please pause the music instead of setting the volume to `{volume}`",
+                "newVolume": "Volume has been set to {volume}",
+                "plsPause": "Please pause the music instead of setting the volume to {volume}",
                 "slashDescription": "New volume",
                 "usage": "{prefix}volume [new volume]",
-                "volumeLimit": "I can't set the volume above `{maxVol}`"
+                "volumeLimit": "I can't set the volume above {maxVol}"
             },
             "requestChannel": {
                 "description": "Set up a request channel for music",
                 "noPermission": "You need the **Manage Server** permission to use this command.",
                 "invalidChannel": "Please provide a valid text channel.",
                 "noBotPermissions": "I couldn't check my permissions for that channel.",
-                "missingBotPermissions": "I'm missing the following permissions in that channel: **{permissions}**",
+                "missingBotPermissions": "I'm missing the following permissions in that channel: {permissions}",
                 "failedToSetup": "Failed to set up the request channel. Please check my permissions.",
                 "slashSetDescription": "Set a channel as the request channel",
                 "slashRemoveDescription": "Remove the request channel",
@@ -292,19 +292,19 @@
             "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
             "message2": "Sorry, but that interaction is only for <@{user}>"
         },
-        "createMessage": "Hi {author}, my prefix is `{prefix}`",
+        "createMessage": "Hi {author}, my prefix is {prefix}",
         "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Connection successfully re-configured.",
-            "deleteQueue": "`{duration}` has been passed and there's no one who joined the voice channel, the queue has been deleted.",
+            "deleteQueue": "{duration} has been passed and there's no one who joined the voice channel, the queue has been deleted.",
             "deleteQueueFooter": "Queue Deleted",
             "disconnectFromVCMessage": "Disconnected from the voice channel, the queue has been deleted.",
             "joinStageMessage": "Successfully joined the stage channel as Speaker.",
             "joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
-            "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next `{duration}`, the queue will be deleted.",
+            "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next {duration}, the queue will be deleted.",
             "pauseQueueFooter": "Queue Paused",
             "reconfigureConnection": "Moved to a voice channel with a different region, re-configuring connection...",
-            "resumeQueue": "Someone has joined the voice channel.\nResuming **{song}**",
+            "resumeQueue": "Someone has joined the voice channel.\nResuming {song}",
             "resumeQueueFooter": "Queue Resumed",
             "unableJoinStageMessage": "Unable to join as Speaker, the queue has been deleted.",
             "unableReconfigureConnection": "Unable to re-configure connection, the queue has been deleted."
@@ -325,17 +325,17 @@
         "unknown": "Unknown",
         "notInVoice": "You need to be in a voice channel to request music.",
         "noResults": "No results found for your query.",
-        "addedToQueue": "Added **{song}** to the queue.",
+        "addedToQueue": "Added {song} to the queue.",
         "addedPlaylistToQueue": "Added {count} songs from {playlist} to the queue.",
-        "startedPlaying": "Now playing **{song}**",
+        "startedPlaying": "Now playing {song}",
         "paused": "Paused the music.",
         "resumed": "Resumed the music.",
-        "skipped": "Skipped **{song}**",
-        "removed": "Removed **{song}** from the queue and skipped.",
+        "skipped": "Skipped {song}",
+        "removed": "Removed {song} from the queue and skipped.",
         "stopped": "Stopped the music and cleared the queue.",
-        "loopChanged": "Loop mode changed to `{mode}`.",
-        "shuffleChanged": "Shuffle mode is now `{state}`.",
-        "volumeChanged": "Volume changed to `{volume}%`.",
+        "loopChanged": "Loop mode changed to {mode}.",
+        "shuffleChanged": "Shuffle mode is now {state}.",
+        "volumeChanged": "Volume changed to {volume}%.",
         "queueCleared": "Queue has been cleared.",
         "queueListTitle": "Queue List",
         "emptyQueue": "The queue is empty.",
@@ -351,25 +351,25 @@
         "noPermission": "You don't have permission to perform this action. Only DJ role, server managers, or the song requester can do this."
     },
     "reusable": {
-        "invalidUsage": "Invalid usage, please use `{prefix} {name}` for more information.",
+        "invalidUsage": "Invalid usage, please use {prefix} {name} for more information.",
         "pageFooter": "Page {actual} of {total}",
         "lyricsSource": "Source: {source}"
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: **{permissions}**"
+            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, please wait `{timeleft}` of cooldown time.",
+        "cooldownMessage": "{author}, please wait {timeleft} of cooldown time.",
         "generalHandler": {
-            "errorJoining": "Error while joining the voice channel, because: `{message}`",
-            "errorPlaying": "An error occurred while trying to play music, because: `{message}`",
+            "errorJoining": "Error while joining the voice channel, because: {message}",
+            "errorPlaying": "An error occurred while trying to play music, because: {message}",
             "handleVideoInitial": "Added {length} songs to the queue",
             "leftVC": "Left from the voice channel because I've been inactive for too long.",
-            "queueEnded": "Queue has ended, use `{usage}` to play more music.",
-            "startPlaying": "Started playing **{song}**",
-            "stopPlaying": "Stopped playing **{song}**",
-            "songRequeued": "Had trouble playing **{song}**, re-queued for another attempt.",
-            "allCookiesFailed": "All cookies have failed due to bot detection! Please add new cookies using `{prefix}cookies add <number>` command with a cookies.txt attachment, or use `{prefix}cookies reset` to retry existing cookies."
+            "queueEnded": "Queue has ended, use {usage} to play more music.",
+            "startPlaying": "Started playing {song}",
+            "stopPlaying": "Stopped playing {song}",
+            "songRequeued": "Had trouble playing {song}, re-queued for another attempt.",
+            "allCookiesFailed": "All cookies have failed due to bot detection! Please add new cookies using {prefix}cookies add <number> command with a cookies.txt attachment, or use {prefix}cookies reset to retry existing cookies."
         },
         "musicDecorator": {
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
@@ -378,8 +378,8 @@
             "sameVC": "You need to be in the same voice channel as mine.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
             "useRequestChannelDirect": "This command is disabled in the request channel. Please use the player buttons or type the song title/link directly.",
-            "validVCJoinable": "Sorry, but I can't `CONNECT` to your voice channel, make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't `SPEAK` in this voice channel; make sure I have the proper permissions."
+            "validVCJoinable": "Sorry, but I can't CONNECT to your voice channel, make sure I have the proper permissions.",
+            "validVCPermission": "Sorry, but I can't SPEAK in this voice channel; make sure I have the proper permissions."
         }
     }
 }
