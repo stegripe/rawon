@@ -7,6 +7,7 @@ import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 import { type SongManager } from "../../utils/structures/SongManager.js";
 
@@ -22,6 +23,9 @@ import { type SongManager } from "../../utils/structures/SongManager.js";
 export class QueueCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const np = (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource
             .metadata as QueueSong;
         const full = ctx.guild?.queue?.songs.sortByIndex() as unknown as SongManager;
@@ -40,7 +44,7 @@ export class QueueCommand extends BaseCommand {
             return names.join("\n");
         });
         const embed = createEmbed("info", pages[0])
-            .setTitle(`📋 ${i18n.__("requestChannel.queueListTitle")}`)
+            .setTitle(`📋 ${__("requestChannel.queueListTitle")}`)
             .setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null);
         const msg = await ctx.reply({ embeds: [embed] });
 
@@ -48,7 +52,7 @@ export class QueueCommand extends BaseCommand {
             author: ctx.author.id,
             edit: (i, emb, page) =>
                 emb.setDescription(page).setFooter({
-                    text: `• ${i18n.__mf("reusable.pageFooter", {
+                    text: `• ${__mf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,
                     })}`,

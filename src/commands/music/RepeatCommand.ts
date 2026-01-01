@@ -6,6 +6,7 @@ import { type LoopMode } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command({
     aliases: ["loop", "music-repeat", "music-loop"],
@@ -38,6 +39,8 @@ export class RepeatCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public execute(ctx: CommandContext): Promise<Message> | undefined {
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {
             OFF: {
                 aliases: ["disable", "off", "0"],
@@ -66,14 +69,14 @@ export class RepeatCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf(
+                        `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${__mf(
                             "commands.music.repeat.actualMode",
                             {
                                 mode: `**\`${ctx.guild?.queue?.loopMode}\`**`,
                             },
                         )}`,
                     ).setFooter({
-                        text: `• ${i18n.__mf("commands.music.repeat.footer", {
+                        text: `• ${__mf("commands.music.repeat.footer", {
                             prefix: this.client.config.mainPrefix,
                         })}`,
                     }),
@@ -86,7 +89,7 @@ export class RepeatCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${i18n.__mf(
+                    `${mode[ctx.guild?.queue?.loopMode ?? "OFF"].emoji} **|** ${__mf(
                         "commands.music.repeat.newMode",
                         {
                             mode: `**\`${ctx.guild?.queue?.loopMode}\`**`,

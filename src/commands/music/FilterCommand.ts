@@ -7,6 +7,7 @@ import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 type FilterSubCmd = "disable" | "enable" | "status";
 
@@ -80,6 +81,9 @@ export class FilterCommand extends BaseCommand {
     @validVC
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const mode: Record<string, FilterSubCmd> = {
             on: "enable",
             off: "disable",
@@ -99,22 +103,20 @@ export class FilterCommand extends BaseCommand {
         if (subcmd === "enable" || subcmd === "disable") {
             if (!filterArgs[filter]) {
                 return ctx.reply({
-                    embeds: [
-                        createEmbed("error", i18n.__("commands.music.filter.specifyFilter"), true),
-                    ],
+                    embeds: [createEmbed("error", __("commands.music.filter.specifyFilter"), true)],
                 });
             }
 
             const queue = ctx.guild?.queue;
             if (!queue) {
                 return ctx.reply({
-                    embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noQueue"))],
+                    embeds: [createEmbed("warn", __("utils.musicDecorator.noQueue"))],
                 });
             }
 
             if (queue.player.state.status !== AudioPlayerStatus.Playing) {
                 return ctx.reply({
-                    embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.notPlaying"))],
+                    embeds: [createEmbed("warn", __("utils.musicDecorator.notPlaying"))],
                 });
             }
 
@@ -123,7 +125,7 @@ export class FilterCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        i18n.__mf("commands.music.filter.filterSet", {
+                        __mf("commands.music.filter.filterSet", {
                             filter: `\`${filter}\``,
                             state: `\`${subcmd === "enable" ? "ENABLED" : "DISABLED"}\``,
                         }),
@@ -137,12 +139,12 @@ export class FilterCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        i18n.__mf("commands.music.filter.currentState", {
+                        __mf("commands.music.filter.currentState", {
                             filter: `\`${filter}\``,
                             state: `\`${ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED"}\``,
                         }),
                     ).setFooter({
-                        text: `• ${i18n.__mf("commands.music.filter.embedFooter", {
+                        text: `• ${__mf("commands.music.filter.embedFooter", {
                             filter,
                             opstate:
                                 ctx.guild?.queue?.filters[filter] === true ? "disable" : "enable",
@@ -158,7 +160,7 @@ export class FilterCommand extends BaseCommand {
             embeds: [
                 createEmbed("info").addFields(
                     {
-                        name: i18n.__("commands.music.filter.availableFilters"),
+                        name: __("commands.music.filter.availableFilters"),
                         value:
                             keys
                                 .filter((x) => ctx.guild?.queue?.filters[x] !== true)
@@ -167,7 +169,7 @@ export class FilterCommand extends BaseCommand {
                         inline: true,
                     },
                     {
-                        name: i18n.__("commands.music.filter.currentlyUsedFilters"),
+                        name: __("commands.music.filter.currentlyUsedFilters"),
                         value:
                             keys
                                 .filter((x) => ctx.guild?.queue?.filters[x] === true)

@@ -7,6 +7,7 @@ import { type QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { OperationManager } from "../../utils/structures/OperationManager.js";
 
 @Command<typeof SkipCommand>({
@@ -25,6 +26,9 @@ export class SkipCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const queue = ctx.guild?.queue;
         if (!queue) {
             return;
@@ -32,7 +36,7 @@ export class SkipCommand extends BaseCommand {
 
         if (!queue.canSkip()) {
             await ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
             });
             return;
         }
@@ -62,7 +66,7 @@ export class SkipCommand extends BaseCommand {
                     ) as unknown as string[];
                 });
                 await ctx.reply(
-                    i18n.__mf("commands.music.skip.voteResultMessage", {
+                    __mf("commands.music.skip.voteResultMessage", {
                         length: queue.skipVoters.length,
                         required,
                     }),
@@ -76,9 +80,7 @@ export class SkipCommand extends BaseCommand {
             });
 
             const length = queue.skipVoters.length ?? 0;
-            await ctx.reply(
-                i18n.__mf("commands.music.skip.voteResultMessage", { length, required }),
-            );
+            await ctx.reply(__mf("commands.music.skip.voteResultMessage", { length, required }));
 
             if (length < required) {
                 return;
@@ -87,7 +89,7 @@ export class SkipCommand extends BaseCommand {
 
         if (!queue.startSkip()) {
             await ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
             });
             return;
         }
@@ -101,7 +103,7 @@ export class SkipCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "success",
-                        `⏭️ **|** ${i18n.__mf("commands.music.skip.skipMessage", {
+                        `⏭️ **|** ${__mf("commands.music.skip.skipMessage", {
                             song: `[${song.song.title}](${song.song.url})`,
                         })}`,
                     ).setThumbnail(song.song.thumbnail),

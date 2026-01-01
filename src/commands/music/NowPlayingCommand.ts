@@ -15,6 +15,7 @@ import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
+import { i18n__ } from "../../utils/functions/i18n.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 
 @Command<typeof NowPlayingCommand>({
@@ -29,6 +30,8 @@ import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 export class NowPlayingCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+
         function getEmbed(): EmbedBuilder {
             const res = (
                 ctx.guild?.queue?.player.state as
@@ -48,7 +51,7 @@ export class NowPlayingCommand extends BaseCommand {
             const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000) + seekOffset;
             let progressLine: string;
             if (song?.isLive === true) {
-                progressLine = `🔴 **\`${i18n.__("commands.music.nowplaying.live")}\`**`;
+                progressLine = `🔴 **\`${__("commands.music.nowplaying.live")}\`**`;
             } else if (song) {
                 progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`;
             } else {
@@ -57,7 +60,7 @@ export class NowPlayingCommand extends BaseCommand {
 
             embed.data.description += song
                 ? `**[${song.title}](${song.url})**\n${progressLine}`
-                : i18n.__("commands.music.nowplaying.emptyQueue");
+                : __("commands.music.nowplaying.emptyQueue");
 
             return embed;
         }
@@ -140,7 +143,7 @@ export class NowPlayingCommand extends BaseCommand {
             })
             .on("end", async () => {
                 const embed = getEmbed().setFooter({
-                    text: i18n.__("commands.music.nowplaying.disableButton"),
+                    text: __("commands.music.nowplaying.disableButton"),
                 });
 
                 await msg

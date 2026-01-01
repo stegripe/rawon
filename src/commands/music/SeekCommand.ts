@@ -7,6 +7,7 @@ import { type QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 import { parseTime } from "../../utils/functions/parseTime.js";
 import { checkQuery, play } from "../../utils/handlers/GeneralUtil.js";
@@ -32,6 +33,9 @@ export class SeekCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const queue = ctx.guild?.queue;
         if (!queue) {
             return;
@@ -39,7 +43,7 @@ export class SeekCommand extends BaseCommand {
 
         if (queue.player.state.status !== AudioPlayerStatus.Playing) {
             await ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.music.seek.noPlaying"))],
+                embeds: [createEmbed("warn", __("commands.music.seek.noPlaying"))],
             });
             return;
         }
@@ -48,7 +52,7 @@ export class SeekCommand extends BaseCommand {
 
         if (song.song.isLive) {
             await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.seek.cantSeekLive"), true)],
+                embeds: [createEmbed("error", __("commands.music.seek.cantSeekLive"), true)],
             });
             return;
         }
@@ -56,9 +60,7 @@ export class SeekCommand extends BaseCommand {
         const queryCheck = checkQuery(song.song.url);
         if (queryCheck.sourceType === "soundcloud") {
             await ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.seek.cantSeekSoundcloud"), true),
-                ],
+                embeds: [createEmbed("error", __("commands.music.seek.cantSeekSoundcloud"), true)],
             });
             return;
         }
@@ -66,7 +68,7 @@ export class SeekCommand extends BaseCommand {
         const timeArg = ctx.args[0] ?? ctx.options?.getString("time");
         if (!timeArg) {
             await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.seek.noTime"), true)],
+                embeds: [createEmbed("error", __("commands.music.seek.noTime"), true)],
             });
             return;
         }
@@ -77,7 +79,7 @@ export class SeekCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        i18n.__mf("commands.music.seek.invalidTime", { time: `\`${timeArg}\`` }),
+                        __mf("commands.music.seek.invalidTime", { time: `\`${timeArg}\`` }),
                         true,
                     ),
                 ],
@@ -90,7 +92,7 @@ export class SeekCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        i18n.__mf("commands.music.seek.exceedsDuration", {
+                        __mf("commands.music.seek.exceedsDuration", {
                             duration: `\`${normalizeTime(song.song.duration)}\``,
                         }),
                         true,
@@ -104,7 +106,7 @@ export class SeekCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `⏩ **|** ${i18n.__mf("commands.music.seek.seeked", {
+                    `⏩ **|** ${__mf("commands.music.seek.seeked", {
                         time: `\`${normalizeTime(seekSeconds)}\``,
                     })}`,
                 ),
