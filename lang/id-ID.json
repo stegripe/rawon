@@ -99,15 +99,17 @@
                 "footerString": "Latensi dari: {user}"
             },
             "language": {
-                "description": "Ubah bahasa bot untuk server ini",
-                "noPermission": "Kamu butuh izin **Manage Server** untuk menggunakan perintah ini.",
+                "description": "Ganti bahasa bot buat server ini",
+                "noPermission": "Kamu butuh izin **MANAGE SERVER** buat pake perintah ini.",
                 "slashSetDescription": "Atur bahasa server",
-                "slashViewDescription": "Lihat bahasa server saat ini",
+                "slashViewDescription": "Lihat bahasa server sekarang",
+                "slashResetDescription": "Reset ke bahasa default",
                 "slashLocaleOption": "Bahasa yang mau diatur",
-                "usage": "{prefix}language [bahasa]",
+                "usage": "{prefix}language [bahasa|reset]",
                 "embedTitle": "Pengaturan Bahasa",
-                "currentLanguage": "Bahasa saat ini:",
+                "currentLanguage": "Bahasa sekarang:",
                 "languageSet": "Bahasa server udah diubah ke",
+                "languageReset": "Bahasa server udah direset ke default:",
                 "invalidLocale": "Bahasa gak valid. Bahasa yang tersedia:",
                 "availableLocales": "Bahasa yang tersedia"
             }
@@ -122,7 +124,7 @@
                 "enable": "Aktif",
                 "enableText": "Fitur DJ udah di **`NYALAKAN`**",
                 "newRoleText": "role baru",
-                "noPermission": "Kamu butuh izin **Kelola Server** buat pake perintah ini.",
+                "noPermission": "Kamu butuh izin **MANAGE SERVER** buat pake perintah ini.",
                 "role": {
                     "current": "Role DJ sekarang: <@&{role}>",
                     "invalid": "Role-nya gak valid tuh.",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "Atur channel request buat musik",
-                "noPermission": "Kamu butuh izin **Kelola Server** buat pake perintah ini.",
+                "noPermission": "Kamu butuh izin **MANAGE SERVER** buat pake perintah ini.",
                 "invalidChannel": "Kasih channel teks yang valid dong.",
                 "noBotPermissions": "Gak bisa cek izinku di channel itu.",
                 "missingBotPermissions": "Aku kurang izin ini di channel itu: {permissions}",

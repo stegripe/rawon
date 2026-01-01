@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "Thay đổi ngôn ngữ bot cho máy chủ này",
-                "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
+                "noPermission": "Bạn cần quyền **MANAGE SERVER** để sử dụng lệnh này.",
                 "slashSetDescription": "Đặt ngôn ngữ máy chủ",
                 "slashViewDescription": "Xem ngôn ngữ máy chủ hiện tại",
+                "slashResetDescription": "Đặt lại về ngôn ngữ mặc định",
                 "slashLocaleOption": "Ngôn ngữ để đặt",
-                "usage": "{prefix}language [ngôn ngữ]",
+                "usage": "{prefix}language [ngôn ngữ|reset]",
                 "embedTitle": "Cài đặt ngôn ngữ",
                 "currentLanguage": "Ngôn ngữ hiện tại:",
                 "languageSet": "Ngôn ngữ máy chủ đã được thay đổi thành",
+                "languageReset": "Ngôn ngữ máy chủ đã được đặt lại về:",
                 "invalidLocale": "Ngôn ngữ không hợp lệ. Các ngôn ngữ có sẵn:",
                 "availableLocales": "Các ngôn ngữ có sẵn"
             }
@@ -122,7 +124,7 @@
                 "enable": "Đã bật",
                 "enableText": "Tính năng DJ đã được **`BẬT`**",
                 "newRoleText": "vai trò mới",
-                "noPermission": "Bạn không có quyền **Quản lý máy chủ** để sử dụng lệnh này.",
+                "noPermission": "Bạn không có quyền **MANAGE SERVER** để sử dụng lệnh này.",
                 "role": {
                     "current": "Vai trò DJ hiện tại: <@&{role}>",
                     "invalid": "Vai trò không hợp lệ.",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "Thiết lập kênh yêu cầu nhạc",
-                "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
+                "noPermission": "Bạn cần quyền **MANAGE SERVER** để sử dụng lệnh này.",
                 "invalidChannel": "Vui lòng cung cấp một kênh văn bản hợp lệ.",
                 "noBotPermissions": "Tôi không thể kiểm tra quyền của mình trong kênh đó.",
                 "missingBotPermissions": "Tôi đang thiếu các quyền sau trong kênh đó: {permissions}",

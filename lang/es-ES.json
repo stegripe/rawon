@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "Cambia el idioma del bot para este servidor",
-                "noPermission": "Necesitas el permiso **Gestionar servidor** para usar este comando.",
+                "noPermission": "Necesitas el permiso **MANAGE SERVER** para usar este comando.",
                 "slashSetDescription": "Establecer el idioma del servidor",
                 "slashViewDescription": "Ver el idioma actual del servidor",
+                "slashResetDescription": "Restablecer al idioma predeterminado",
                 "slashLocaleOption": "El idioma a establecer",
-                "usage": "{prefix}language [idioma]",
+                "usage": "{prefix}language [idioma|reset]",
                 "embedTitle": "Configuración de idioma",
                 "currentLanguage": "Idioma actual:",
                 "languageSet": "El idioma del servidor se ha cambiado a",
+                "languageReset": "El idioma del servidor ha sido restablecido a:",
                 "invalidLocale": "Idioma no válido. Idiomas disponibles:",
                 "availableLocales": "Idiomas disponibles"
             }
@@ -122,7 +124,7 @@
                 "enable": "Activado",
                 "enableText": "La función DJ ha sido **`ACTIVADA`**",
                 "newRoleText": "Nuevo rol",
-                "noPermission": "No tienes el permiso **Gestionar Servidor** para usar este comando.",
+                "noPermission": "No tienes el permiso **MANAGE SERVER** para usar este comando.",
                 "role": {
                     "current": "<@&{role}> es el rol DJ actualmente.",
                     "invalid": "Rol no válido.",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "Configurar un canal de solicitudes para música",
-                "noPermission": "Necesitas el permiso **Gestionar Servidor** para usar este comando.",
+                "noPermission": "Necesitas el permiso **MANAGE SERVER** para usar este comando.",
                 "invalidChannel": "Por favor proporciona un canal de texto válido.",
                 "noBotPermissions": "No pude verificar mis permisos para ese canal.",
                 "missingBotPermissions": "Me faltan los siguientes permisos en ese canal: {permissions}",

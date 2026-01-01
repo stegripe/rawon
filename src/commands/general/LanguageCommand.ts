@@ -6,7 +6,16 @@ import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { i18n__, isSupportedLocale, supportedLocales } from "../../utils/functions/i18n.js";
+import { i18n__, supportedLocales } from "../../utils/functions/i18n.js";
+
+/**
+ * Case-insensitive locale matching.
+ * Returns the matched locale or null if not found.
+ */
+function findLocale(input: string): string | null {
+    const lowerInput = input.toLowerCase();
+    return supportedLocales.find((loc) => loc.toLowerCase() === lowerInput) ?? null;
+}
 
 @Command<typeof LanguageCommand>({
     aliases: ["lang", "locale"],
@@ -33,6 +42,11 @@ import { i18n__, isSupportedLocale, supportedLocales } from "../../utils/functio
                 name: "view",
                 type: ApplicationCommandOptionType.Subcommand,
             },
+            {
+                description: i18nConfig.__("commands.general.language.slashResetDescription"),
+                name: "reset",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
         ],
     },
     usage: i18nConfig.__("commands.general.language.usage"),
@@ -50,6 +64,40 @@ export class LanguageCommand extends BaseCommand {
         const subCommand = ctx.options?.getSubcommand(false);
         const localeArg = ctx.options?.getString("locale") ?? ctx.args[0];
 
+        // Handle "reset" subcommand
+        if (subCommand === "reset" || localeArg?.toLowerCase() === "reset") {
+            await this.client.data.save(() => {
+                const data = this.client.data.data;
+                const guildData = data?.[guildId];
+
+                if (guildData) {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    const { locale, ...rest } = guildData;
+                    return {
+                        ...data,
+                        [guildId]: rest,
+                    };
+                }
+                return data ?? {};
+            });
+
+            const defaultLocale = this.client.config.lang;
+            const defaultLocale__ = (phrase: string): string =>
+                i18n.__({ phrase, locale: defaultLocale });
+
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "success",
+                        `${defaultLocale__("commands.general.language.languageReset")} \`${defaultLocale}\``,
+                        true,
+                    ),
+                ],
+            });
+            return;
+        }
+
+        // Handle "view" subcommand or no argument
         if (subCommand === "view" || !localeArg) {
             const currentLocale =
                 this.client.data.data?.[guildId]?.locale ?? this.client.config.lang;
@@ -72,7 +120,9 @@ export class LanguageCommand extends BaseCommand {
             return;
         }
 
-        if (!isSupportedLocale(localeArg)) {
+        // Case-insensitive locale matching
+        const matchedLocale = findLocale(localeArg);
+        if (!matchedLocale) {
             await ctx.reply({
                 embeds: [
                     createEmbed(
@@ -93,18 +143,18 @@ export class LanguageCommand extends BaseCommand {
                 ...data,
                 [guildId]: {
                     ...guildData,
-                    locale: localeArg,
+                    locale: matchedLocale,
                 },
             };
         });
 
-        const newLocale__ = (phrase: string): string => i18n.__({ phrase, locale: localeArg });
+        const newLocale__ = (phrase: string): string => i18n.__({ phrase, locale: matchedLocale });
 
         await ctx.reply({
             embeds: [
                 createEmbed(
                     "success",
-                    `${newLocale__("commands.general.language.languageSet")} \`${localeArg}\``,
+                    `${newLocale__("commands.general.language.languageSet")} \`${matchedLocale}\``,
                     true,
                 ),
             ],

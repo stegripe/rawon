@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "このサーバーのBot言語を変更",
-                "noPermission": "このコマンドを使用するには **サーバー管理** 権限が必要です。",
+                "noPermission": "このコマンドを使用するには **MANAGE SERVER** 権限が必要です。",
                 "slashSetDescription": "サーバーの言語を設定",
                 "slashViewDescription": "現在のサーバー言語を表示",
+                "slashResetDescription": "デフォルト言語にリセット",
                 "slashLocaleOption": "設定する言語",
-                "usage": "{prefix}language [言語]",
+                "usage": "{prefix}language [言語|reset]",
                 "embedTitle": "言語設定",
                 "currentLanguage": "現在の言語：",
                 "languageSet": "サーバーの言語が変更されました：",
+                "languageReset": "サーバーの言語がデフォルトにリセットされました：",
                 "invalidLocale": "無効な言語です。利用可能な言語：",
                 "availableLocales": "利用可能な言語"
             }
@@ -122,7 +124,7 @@
                 "enable": "有効",
                 "enableText": "DJは**`有効化`**されました。",
                 "newRoleText": "新しいロール",
-                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
+                "noPermission": "このコマンドを使用するには **MANAGE SERVER** 権限が必要です。",
                 "role": {
                     "current": "現在のDJロール:<@&{role}>",
                     "invalid": "無効なロールです。",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "音楽リクエストチャンネルを設定する",
-                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
+                "noPermission": "このコマンドを使用するには **MANAGE SERVER** 権限が必要です。",
                 "invalidChannel": "有効なテキストチャンネルを指定してください。",
                 "noBotPermissions": "そのチャンネルの権限を確認できませんでした。",
                 "missingBotPermissions": "そのチャンネルで次の権限が不足しています: {permissions}",

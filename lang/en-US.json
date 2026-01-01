@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "Change the bot's language for this server",
-                "noPermission": "You need the **Manage Server** permission to use this command.",
+                "noPermission": "You need the **MANAGE SERVER** permission to use this command.",
                 "slashSetDescription": "Set the server language",
                 "slashViewDescription": "View the current server language",
+                "slashResetDescription": "Reset to default language",
                 "slashLocaleOption": "The language to set",
-                "usage": "{prefix}language [locale]",
+                "usage": "{prefix}language [locale|reset]",
                 "embedTitle": "Language Settings",
                 "currentLanguage": "Current language:",
                 "languageSet": "Server language has been set to",
+                "languageReset": "Server language has been reset to default:",
                 "invalidLocale": "Invalid language. Available languages:",
                 "availableLocales": "Available languages"
             }
@@ -122,7 +124,7 @@
                 "enable": "Enabled",
                 "enableText": "DJ feature has been **`ENABLED`**",
                 "newRoleText": "new role",
-                "noPermission": "You don't have the **Manage Server** permission to use this command.",
+                "noPermission": "You don't have the **MANAGE SERVER** permission to use this command.",
                 "role": {
                     "current": "Current DJ role: <@&{role}>",
                     "invalid": "Invalid role.",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "Set up a request channel for music",
-                "noPermission": "You need the **Manage Server** permission to use this command.",
+                "noPermission": "You need the **MANAGE SERVER** permission to use this command.",
                 "invalidChannel": "Please provide a valid text channel.",
                 "noBotPermissions": "I couldn't check my permissions for that channel.",
                 "missingBotPermissions": "I'm missing the following permissions in that channel: {permissions}",

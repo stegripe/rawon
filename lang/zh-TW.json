@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "更改此伺服器的機器人語言",
-                "noPermission": "您需要 **管理伺服器** 權限才能使用此命令。",
+                "noPermission": "您需要 **MANAGE SERVER** 權限才能使用此命令。",
                 "slashSetDescription": "設定伺服器語言",
                 "slashViewDescription": "查看當前伺服器語言",
+                "slashResetDescription": "重置為預設語言",
                 "slashLocaleOption": "要設定的語言",
-                "usage": "{prefix}language [語言]",
+                "usage": "{prefix}language [語言|reset]",
                 "embedTitle": "語言設定",
                 "currentLanguage": "當前語言：",
                 "languageSet": "伺服器語言已更改為",
+                "languageReset": "伺服器語言已重置為：",
                 "invalidLocale": "無效語言。可用語言：",
                 "availableLocales": "可用語言"
             }
@@ -122,7 +124,7 @@
                 "enable": "啟用",
                 "enableText": "DJ 功能已**`啟用`**",
                 "newRoleText": "新身分組",
-                "noPermission": "您沒有**管理伺服器**權限來使用此指令。",
+                "noPermission": "您沒有 **MANAGE SERVER** 權限來使用此指令。",
                 "role": {
                     "current": "目前 DJ 身分組: <@&{role}>",
                     "invalid": "無效的身分組。",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "設定音樂點播頻道",
-                "noPermission": "您需要**管理伺服器**權限才能使用此指令。",
+                "noPermission": "您需要 **MANAGE SERVER** 權限才能使用此指令。",
                 "invalidChannel": "請提供有效的文字頻道。",
                 "noBotPermissions": "我無法檢查該頻道的權限。",
                 "missingBotPermissions": "我在該頻道缺少以下權限: {permissions}",

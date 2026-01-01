@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "Bu sunucu için bot dilini değiştir",
-                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
+                "noPermission": "Bu komutu kullanmak için **MANAGE SERVER** iznine ihtiyacınız var.",
                 "slashSetDescription": "Sunucu dilini ayarla",
                 "slashViewDescription": "Mevcut sunucu dilini görüntüle",
+                "slashResetDescription": "Varsayılan dile sıfırla",
                 "slashLocaleOption": "Ayarlanacak dil",
-                "usage": "{prefix}language [dil]",
+                "usage": "{prefix}language [dil|reset]",
                 "embedTitle": "Dil Ayarları",
                 "currentLanguage": "Mevcut dil:",
                 "languageSet": "Sunucu dili değiştirildi:",
+                "languageReset": "Sunucu dili varsayılana sıfırlandı:",
                 "invalidLocale": "Geçersiz dil. Kullanılabilir diller:",
                 "availableLocales": "Kullanılabilir diller"
             }
@@ -122,7 +124,7 @@
                 "enable": "Etkin",
                 "enableText": "DJ özelliği **`ETKİN`**",
                 "newRoleText": "yeni rol",
-                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine sahip değilsiniz.",
+                "noPermission": "Bu komutu kullanmak için **MANAGE SERVER** iznine sahip değilsiniz.",
                 "role": {
                     "current": "Mevcut DJ Rolü: <@&{role}>",
                     "invalid": "Geçersiz rol.",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "Müzik için bir istek kanalı ayarla",
-                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
+                "noPermission": "Bu komutu kullanmak için **MANAGE SERVER** iznine ihtiyacınız var.",
                 "invalidChannel": "Lütfen geçerli bir metin kanalı belirtin.",
                 "noBotPermissions": "Bu kanal için izinlerimi kontrol edemedim.",
                 "missingBotPermissions": "Bu kanalda şu izinlerim eksik: {permissions}",

@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "Изменить язык бота для этого сервера",
-                "noPermission": "Для использования этой команды нужно разрешение **Управление сервером**.",
+                "noPermission": "Для использования этой команды нужно разрешение **MANAGE SERVER**.",
                 "slashSetDescription": "Установить язык сервера",
                 "slashViewDescription": "Посмотреть текущий язык сервера",
+                "slashResetDescription": "Сбросить на язык по умолчанию",
                 "slashLocaleOption": "Язык для установки",
-                "usage": "{prefix}language [язык]",
+                "usage": "{prefix}language [язык|reset]",
                 "embedTitle": "Настройки языка",
                 "currentLanguage": "Текущий язык:",
                 "languageSet": "Язык сервера изменён на",
+                "languageReset": "Язык сервера сброшен на:",
                 "invalidLocale": "Неверный язык. Доступные языки:",
                 "availableLocales": "Доступные языки"
             }
@@ -122,7 +124,7 @@
                 "enable": "Включено",
                 "enableText": "Функция DJ была **`ВКЛЮЧЕНА`**",
                 "newRoleText": "новая роль",
-                "noPermission": "У вас нет разрешения **Управление сервером** для использования этой команды.",
+                "noPermission": "У вас нет разрешения **MANAGE SERVER** для использования этой команды.",
                 "role": {
                     "current": "Текущая роль DJ: <@&{role}>",
                     "invalid": "Неверная роль.",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "Настройка канала запросов для музыки",
-                "noPermission": "Вам нужно разрешение **Управление сервером** для использования этой команды.",
+                "noPermission": "Вам нужно разрешение **MANAGE SERVER** для использования этой команды.",
                 "invalidChannel": "Пожалуйста, укажите действительный текстовый канал.",
                 "noBotPermissions": "Не удалось проверить мои права для этого канала.",
                 "missingBotPermissions": "Мне не хватает следующих прав в этом канале: {permissions}",

@@ -100,14 +100,16 @@
             },
             "language": {
                 "description": "Змінити мову бота для цього сервера",
-                "noPermission": "Для використання цієї команди потрібен дозвіл **Керування сервером**.",
+                "noPermission": "Для використання цієї команди потрібен дозвіл **MANAGE SERVER**.",
                 "slashSetDescription": "Встановити мову сервера",
                 "slashViewDescription": "Переглянути поточну мову сервера",
+                "slashResetDescription": "Скинути до мови за замовчуванням",
                 "slashLocaleOption": "Мова для встановлення",
-                "usage": "{prefix}language [мова]",
+                "usage": "{prefix}language [мова|reset]",
                 "embedTitle": "Налаштування мови",
                 "currentLanguage": "Поточна мова:",
                 "languageSet": "Мову сервера змінено на",
+                "languageReset": "Мову сервера скинуто до:",
                 "invalidLocale": "Невірна мова. Доступні мови:",
                 "availableLocales": "Доступні мови"
             }
@@ -122,7 +124,7 @@
                 "enable": "Увімкнено",
                 "enableText": "Функція DJ була **`УВІМКНЕНА`**",
                 "newRoleText": "нова роль",
-                "noPermission": "У вас немає дозволу **Керувати сервером** для використання цієї команди.",
+                "noPermission": "У вас немає дозволу **MANAGE SERVER** для використання цієї команди.",
                 "role": {
                     "current": "Поточна роль DJ: <@&{role}>",
                     "invalid": "Недійсна роль.",
@@ -269,7 +271,7 @@
             },
             "requestChannel": {
                 "description": "Налаштувати канал запитів для музики",
-                "noPermission": "Вам потрібен дозвіл **Керувати сервером** для використання цієї команди.",
+                "noPermission": "Вам потрібен дозвіл **MANAGE SERVER** для використання цієї команди.",
                 "invalidChannel": "Будь ласка, вкажіть дійсний текстовий канал.",
                 "noBotPermissions": "Не вдалося перевірити мої дозволи для цього каналу.",
                 "missingBotPermissions": "Мені бракує таких дозволів у цьому каналі: {permissions}",
