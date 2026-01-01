@@ -76,12 +76,12 @@
             "help": {
                 "aliasesString": "Alias",
                 "authorString": "Lista de comandos de {username}",
-                "commandDetailTitle": "{username} - Información del comando {command}",
+                "commandDetailTitle": "{username} - Información del comando `{command}`",
                 "commandSelectionString": "Por favor selecciona un comando",
-                "commandUsageFooter": "<> = requerido | [] = opcional {devOnly}",
+                "commandUsageFooter": "`<>` = requerido | `[]` = opcional {devOnly}",
                 "description": "Muestra la lista de comandos o la información de un comando específico",
                 "descriptionString": "Descripción",
-                "footerString": "{prefix}help <comando> para obtener más información de un comando específico",
+                "footerString": "`{prefix}help <comando> para obtener más información de un comando específico",
                 "nameString": "Nombre",
                 "noCommanSuggest": "No se puede encontrar el comando. Quisiste decir este?",
                 "noCommand": "No se puede encontrar el comando.",
@@ -139,7 +139,7 @@
                 "currentlyUsedFilters": "Filtros utilizados actualmente",
                 "currentState": "{filter} es actualmente {state}",
                 "description": "Configurar el filtro de canción",
-                "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
+                "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}`",
                 "filterSet": "`El filtro {filter}` ya está {state}",
                 "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
@@ -168,7 +168,7 @@
                 "pauseMessage": "Se ha pausado el reproductor de música."
             },
             "play": {
-                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz **`{voiceChannel}`**.",
+                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz `{voiceChannel}`.",
                 "description": "Reproduce algo de música",
                 "noSongData": "Este URL no tiene datos de canciones.",
                 "slashQueryDescription": "Canción a reproducir",
@@ -296,12 +296,12 @@
         "cmdLoading": "Cargando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La conexión se ha reconfigurado con éxito.",
-            "deleteQueue": "Ha pasado **`{duration}`** y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
+            "deleteQueue": "Ha pasado `{duration}` y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
             "deleteQueueFooter": "Cola eliminada",
             "disconnectFromVCMessage": "Desconectado del canal de voz, la cola ha sido eliminada.",
             "joinStageMessage": "Me uní al canal escenario con éxito como orador.",
             "joiningAsSpeaker": "Movido a un canal de escenario, intentando unirse como Orador...",
-            "pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en **`{duration}`**, la cola se eliminará.",
+            "pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en `{duration}`, la cola se eliminará.",
             "pauseQueueFooter": "Cola pausada",
             "reconfigureConnection": "He sido movido a un canal de voz en una región diferente, reconfigurando conexión...",
             "resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando **{song}**",
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Uso inválido, por favor usa **`{prefix} {name}`** para más información.",
+        "invalidUsage": "Uso inválido, por favor usa `{prefix} {name}` para más información.",
         "pageFooter": "Página {actual} de {total}",
         "lyricsSource": "Fuente: {source}"
     },
@@ -319,13 +319,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "Me faltan los siguientes permisos en {channel}: **{permissions}**"
         },
-        "cooldownMessage": "{author}, por favor espera **`{timeleft}`** para poder hacer eso.",
+        "cooldownMessage": "{author}, por favor espera `{timeleft}` para poder hacer eso.",
         "generalHandler": {
             "errorJoining": "Error al unirse al canal de voz, razón: {message}",
             "errorPlaying": "Ocurrió un error al tratar de reproducir música, razón: ${message}",
             "handleVideoInitial": "Se han añadido {length} canciones a la cola\n\n",
             "leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
-            "queueEnded": "La cola ha terminado, usa **`{usage}`** para reproducir más música.",
+            "queueEnded": "La cola ha terminado, usa `{usage}` para reproducir más música.",
             "startPlaying": "Se empezó a reproducir **{song}**",
             "stopPlaying": "Se detuvo la reproducción **{song}**",
             "songRequeued": "Hubo un problema al reproducir **{song}**, se ha vuelto a agregar a la cola para otro intento.",

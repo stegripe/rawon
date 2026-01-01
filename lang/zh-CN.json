@@ -78,10 +78,10 @@
                 "authorString": "{username} - 指令列表",
                 "commandDetailTitle": "{username} - 关于 {command} 指令资讯",
                 "commandSelectionString": "请选择指令",
-                "commandUsageFooter": "<> = 必需 | [] = 可选 {devOnly}",
+                "commandUsageFooter": "`<>` = 必需 | `[]` = 可选 {devOnly}",
                 "description": "显示特定指令的指令列表或资讯",
                 "descriptionString": "描述",
-                "footerString": "{prefix}help <指令> 获取更多有关特定指令的资讯",
+                "footerString": "`{prefix}help <指令> 获取更多有关特定指令的资讯",
                 "nameString": "名称",
                 "noCommanSuggest": "找不到匹配的指令名称。 您是这个意思吗？",
                 "noCommand": "找不到匹配的指令名称。",
@@ -139,7 +139,7 @@
                 "currentlyUsedFilters": "目前已使用的过滤器",
                 "currentState": "{filter} 目前是 {state}",
                 "description": "配置歌曲过滤器",
-                "embedFooter": "如 {opstate} 过滤器，请使用 {prefix}filter {opstate} {filter}",
+                "embedFooter": "如 {opstate} 过滤器，请使用 {prefix}filter {opstate} {filter}`",
                 "filterSet": "{filter} 过滤器现已 {state}",
                 "slashStateDescription": "{state, select, enable {启用} other {停用}}歌曲过滤器",
                 "slashStateFilterDescription": "歌曲过滤器将会 {state, select, enable {启用} other {停用}}",
@@ -168,7 +168,7 @@
                 "pauseMessage": "音乐播放器已暂停。"
             },
             "play": {
-                "alreadyPlaying": "音乐播放器已经在 **`{voiceChannel}`** 语音通讯通道播放。",
+                "alreadyPlaying": "音乐播放器已经在 `{voiceChannel}` 语音通讯通道播放。",
                 "description": "播放一些音乐",
                 "noSongData": "该 URL 没有任何歌曲数据。",
                 "slashQueryDescription": "查询搜索",
@@ -296,12 +296,12 @@
         "cmdLoading": "加载中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "已成功重新配置连接。",
-            "deleteQueue": "**`{duration}`** 已过，没有人加入语音频道，队列已被删除。",
+            "deleteQueue": "`{duration}` 已过，没有人加入语音频道，队列已被删除。",
             "deleteQueueFooter": "队列已被删除",
             "disconnectFromVCMessage": "与语音通道断开连接，队列已被删除。",
             "joinStageMessage": "成功以演讲者身份加入舞台频道。",
             "joiningAsSpeaker": "已移至舞台频道，正在尝试以演讲者身份加入...",
-            "pauseQueue": "所有人都离开了语音频道。为了节省资源，队列已暂停。\n如果在**`{duration}`**期内没有人加入语音频道，队列将被删除。",
+            "pauseQueue": "所有人都离开了语音频道。为了节省资源，队列已暂停。\n如果在`{duration}`期内没有人加入语音频道，队列将被删除。",
             "pauseQueueFooter": "队列已暂停",
             "reconfigureConnection": "移动到不同地区的语音通道，重新配置连接...",
             "resumeQueue": "有人加入了语音频道。\n恢复中 **{song}**",
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "无效的用法，请用 **`{prefix} {name}`**了解更多资讯。",
+        "invalidUsage": "无效的用法，请用 `{prefix} {name}`了解更多资讯。",
         "pageFooter": "{actual}/{total} 页",
         "lyricsSource": "来源: {source}"
     },
@@ -319,13 +319,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "我在 {channel} 中缺少以下权限：**{permissions}**"
         },
-        "cooldownMessage": "{author}，请稍等 **`{timeleft}`**的冷却时间。",
+        "cooldownMessage": "{author}，请稍等 `{timeleft}`的冷却时间。",
         "generalHandler": {
             "errorJoining": "加入语音通道时出错，因为: `{message}`",
             "errorPlaying": "尝试播放音乐时出错，因为: `{message}`",
             "handleVideoInitial": "已将 {length} 首歌曲添加到队列中",
             "leftVC": "离开了语音频道是因为我待用太久了。",
-            "queueEnded": "队列已经结束，使用**`{usage}`**播放更多音乐。",
+            "queueEnded": "队列已经结束，使用`{usage}`播放更多音乐。",
             "startPlaying": "开始播放**{song}**",
             "stopPlaying": "停止播放**{song}**",
             "songRequeued": "播放**{song}**时遇到问题，已重新添加到队列中等待重试。",

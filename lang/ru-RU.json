@@ -78,7 +78,7 @@
                 "authorString": "{username} - Список Команд",
                 "commandDetailTitle": "{username} - Информация о команде {command}",
                 "commandSelectionString": "Пожалуйста выберите команду",
-                "commandUsageFooter": "<> = обязательно | [] = необязательно {devOnly}",
+                "commandUsageFooter": "`<>` = обязательно | `[]` = необязательно {devOnly}",
                 "description": "Показывает список команд или информацию об отдельной команде",
                 "descriptionString": "Описание",
                 "footerString": "{prefix}помощь <command> чтобы получить дополнительную информацию о конкретной команде",
@@ -139,7 +139,7 @@
                 "currentlyUsedFilters": "Используемые в настоящее время фильтры",
                 "currentState": "`Состояние фильтра '{filter}': {state}",
                 "description": "Найстройка фильтра песни",
-                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
+                "embedFooter": "To {opstate} the filter, use `{prefix}filter {opstate} {filter}`",
                 "filterSet": "Новое состояние фильтра {filter}: {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
@@ -168,7 +168,7 @@
                 "pauseMessage": "Музыкальный проигрыватель был поставлен на паузу."
             },
             "play": {
-                "alreadyPlaying": "Музыкальный проигрыватель уже активный в канале **`{voiceChannel}`**.",
+                "alreadyPlaying": "Музыкальный проигрыватель уже активный в канале `{voiceChannel}`.",
                 "description": "Сыграйте музыку",
                 "noSongData": "У этого URL нету данных о песне.",
                 "slashQueryDescription": "Запрос для поиска",
@@ -296,12 +296,12 @@
         "cmdLoading": "Загрузка...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Соединение успешно перенастроено.",
-            "deleteQueue": "**`{duration}`** пройдена и никто не присоединился к голосовому каналу, очередь была удалена.",
+            "deleteQueue": "`{duration}` пройдена и никто не присоединился к голосовому каналу, очередь была удалена.",
             "deleteQueueFooter": "Очередь удалена",
             "disconnectFromVCMessage": "Отключен от голосового канала, очередь была удалена.",
             "joinStageMessage": "Успешно присоединился к сцене в качестве спикера.",
             "joiningAsSpeaker": "Перешел на канал сцены, пытаясь присоединиться в качестве спикера...",
-            "pauseQueue": "Все покинули голосовой канал. Для экономии ресурсов очередь была приостановлена.\nесли никто не подключится к голосовому каналу в течение следующего **`{duration}`**, очередь будет удалена.",
+            "pauseQueue": "Все покинули голосовой канал. Для экономии ресурсов очередь была приостановлена.\nесли никто не подключится к голосовому каналу в течение следующего `{duration}`, очередь будет удалена.",
             "pauseQueueFooter": "Очередь на паузе",
             "reconfigureConnection": "Переход в голосовой канал с другим регионом, повторная настройка соединения...",
             "resumeQueue": "Кто-то присоединился к голосовому каналу.\nВозобновление **{song}**",
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Неверное использование, пожалуйста используйте **`{prefix} {name}`** для большей информации.",
+        "invalidUsage": "Неверное использование, пожалуйста используйте `{prefix} {name}` для большей информации.",
         "pageFooter": "Страница {actual} из {total}",
         "lyricsSource": "Источник: {source}"
     },
@@ -319,13 +319,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "Мне не хватает следующих разрешений в {channel}: **{permissions}**"
         },
-        "cooldownMessage": "{author}, пожалуйста подождите **`{timeleft}`** чтобы использовать эту команду.",
+        "cooldownMessage": "{author}, пожалуйста подождите `{timeleft}` чтобы использовать эту команду.",
         "generalHandler": {
             "errorJoining": "Ошибка при подключении к голосовому каналу, потому-что: `{message}`",
             "errorPlaying": "При попытке воспроизвести музыку произошла ошибка, потому-что: `{message}`",
             "handleVideoInitial": "Добавлено {length} песен в очередь",
             "leftVC": "Вышел из голосового канала потому что я слишком долго был неактивен.",
-            "queueEnded": "Очередь закончилась, используйте **`{usage}`** чтобы воспроизвести больше музыки.",
+            "queueEnded": "Очередь закончилась, используйте `{usage}` чтобы воспроизвести больше музыки.",
             "startPlaying": "Играет: **{song}**",
             "stopPlaying": "Остановлено проигрывание: **{song}**",
             "songRequeued": "Возникла проблема с воспроизведением **{song}**, добавлено обратно в очередь для повторной попытки.",

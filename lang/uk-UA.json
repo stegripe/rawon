@@ -78,10 +78,10 @@
                 "authorString": "{username} - список команд",
                 "commandDetailTitle": "{username} - Інформація про команду {command}",
                 "commandSelectionString": "Будь ласка, оберіть команду",
-                "commandUsageFooter": "<> = обов'язково | [] = опціонально {devOnly}",
+                "commandUsageFooter": "`<>` = обов'язково | `[]` = опціонально {devOnly}",
                 "description": "Показує список команд або інформацію про окрему команду",
                 "descriptionString": "Опис",
-                "footerString": "{prefix}help <command> щоб отримати більше інформації про окрему команду",
+                "footerString": "`{prefix}help <command> щоб отримати більше інформації про окрему команду",
                 "nameString": "Назва",
                 "noCommanSuggest": "Не вдалось знайти команду з такою назвою. Чи це ви мали на увазі?",
                 "noCommand": "Не вдалось знайти команду з такою назвою.",
@@ -139,7 +139,7 @@
                 "currentlyUsedFilters": "Фільтри що наразі використовуються",
                 "currentState": "Стан фільтра '{filter}': {state}",
                 "description": "Налаштувати фільтр пісень",
-                "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
+                "embedFooter": "To {opstate} the filter, use `{prefix}filter {opstate} {filter}`",
                 "filterSet": "Новий стан фільтра '{filter}': {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
@@ -168,7 +168,7 @@
                 "pauseMessage": "Медіа програвач поставлений на паузу."
             },
             "play": {
-                "alreadyPlaying": "Медіа програвач вже активний в каналі **`{voiceChannel}`**.",
+                "alreadyPlaying": "Медіа програвач вже активний в каналі `{voiceChannel}`.",
                 "description": "Зіграти музику",
                 "noSongData": "Цей URL не має даних про пісню.",
                 "slashQueryDescription": "Запит для пошуку",
@@ -296,12 +296,12 @@
         "cmdLoading": "Завантаження...",
         "voiceStateUpdate": {
             "connectionReconfigured": "З'єднання успішно повторно налаштовано.",
-            "deleteQueue": "**`{duration}`** минуло, і ніхто не приєднався до голосового каналу, чергу видалено.",
+            "deleteQueue": "`{duration}` минуло, і ніхто не приєднався до голосового каналу, чергу видалено.",
             "deleteQueueFooter": "Чергу видалено",
             "disconnectFromVCMessage": "Відключено від голосового каналу, чергу видалено.",
             "joinStageMessage": "Успішно приєднався до сцени як спікер.",
             "joiningAsSpeaker": "Перейшов на канал сцени, намагаючись приєднатися як спікер...",
-            "pauseQueue": "Усі покинули голосовий канал. Для економії ресурсів чергу призупинено.\nЯкщо ніхто не приєднається до голосового каналу протягом наступних **`{duration}`**, чергу буде видалено.",
+            "pauseQueue": "Усі покинули голосовий канал. Для економії ресурсів чергу призупинено.\nЯкщо ніхто не приєднається до голосового каналу протягом наступних `{duration}`, чергу буде видалено.",
             "pauseQueueFooter": "Чергу призупинено",
             "reconfigureConnection": "Переміщено на голосовий канал з іншим регіоном, переналаштування з'єднання...",
             "resumeQueue": "Хтось приєднався до голосового каналу.\nПродовжуємо: **{song}**",
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Некоректне використання, будь ласка, скористайтесь **`{prefix} {name}`** для отримання інформації.",
+        "invalidUsage": "Некоректне використання, будь ласка, скористайтесь `{prefix} {name}` для отримання інформації.",
         "pageFooter": "Сторінка {actual} з {total}",
         "lyricsSource": "Джерело: {source}"
     },
@@ -319,13 +319,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "Мені бракує наступних дозволів у {channel}: **{permissions}**"
         },
-        "cooldownMessage": "{author}, будь ласка, зачекайте **`{timeleft}`** щоб скористатись цією командою.",
+        "cooldownMessage": "{author}, будь ласка, зачекайте `{timeleft}` щоб скористатись цією командою.",
         "generalHandler": {
             "errorJoining": "Помилка при спробі приєднатись до каналу: `{message}`",
             "errorPlaying": "Помилка при спробі почати програвання музики: `{message}`",
             "handleVideoInitial": "Додано {length} пісень до черги",
             "leftVC": "Я покинув канал через неактивність.",
-            "queueEnded": "Черга скінчилась, використовуйте **`{usage}`** щоб почати програвання.",
+            "queueEnded": "Черга скінчилась, використовуйте `{usage}` щоб почати програвання.",
             "startPlaying": "Програвання почато: **{song}**",
             "stopPlaying": "Програвання зупинено: **{song}**",
             "songRequeued": "Виникла проблема з відтворенням **{song}**, додано назад до черги для повторної спроби.",

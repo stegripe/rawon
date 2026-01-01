@@ -78,10 +78,10 @@
                 "authorString": "{username} - Danh sách lệnh",
                 "commandDetailTitle": "{username} - Thông tin về lệnh {command}",
                 "commandSelectionString": "Vui lòng chọn lệnh",
-                "commandUsageFooter": "<> = yêu cầu | [] = lựa chọn {devOnly}",
+                "commandUsageFooter": "`<>` = yêu cầu | `[]` = lựa chọn {devOnly}",
                 "description": "Hiển thị danh sách lệnh hoặc thông tin lệnh",
                 "descriptionString": "Mô tả",
-                "footerString": "{prefix}help <lệnh> để có thêm thông tin về lệnh",
+                "footerString": "`{prefix}help <lệnh> để có thêm thông tin về lệnh",
                 "nameString": "Tên",
                 "noCommanSuggest": "Không thể tìm thấy tên lệnh phù hợp. Ý bạn là?",
                 "noCommand": "Không thể tìm thấy bất kỳ lệnh nào.",
@@ -139,7 +139,7 @@
                 "currentlyUsedFilters": "Bộ lọc đang sử dụng",
                 "currentState": "{filter} đang được {state}",
                 "description": "Định cấu hình bộ lọc bài hát",
-                "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}",
+                "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}`",
                 "filterSet": " Bộ lọc {filter} đang {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} bộ lọc bài hát",
                 "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {bật} other {tắt}}",
@@ -168,7 +168,7 @@
                 "pauseMessage": "Trình phát nhạc đã bị tạm dừng."
             },
             "play": {
-                "alreadyPlaying": "Đã phát trong kênh thoại **`{voiceChannel}`**.",
+                "alreadyPlaying": "Đã phát trong kênh thoại `{voiceChannel}`.",
                 "description": "Phát nhạc",
                 "noSongData": "URL không có dữ liệu bài hát.",
                 "slashQueryDescription": "Tìm kiếm truy vấn",
@@ -296,12 +296,12 @@
         "cmdLoading": "Đang tải...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Kết nối lại cấu hình thành công.",
-            "deleteQueue": "**`{duration}`** đã qua qua và không có ai tham gia kênh thoại, hàng đợi đã bị xóa.",
+            "deleteQueue": "`{duration}` đã qua qua và không có ai tham gia kênh thoại, hàng đợi đã bị xóa.",
             "deleteQueueFooter": "Đã xóa hàng đợi",
             "disconnectFromVCMessage": "Đã ngắt kết nối khỏi kênh thoại, hàng đợi đã bị xóa.",
             "joinStageMessage": "Gia nhập thành công kênh sân khấu với vai trò Diễn giả.",
             "joiningAsSpeaker": "Đã chuyển sang kênh sân khấu, đang cố gắng tham gia với tư cách Diễn giả...",
-            "pauseQueue": "Mọi người đã rời khỏi kênh thoại. Để tiết kiệm tài nguyên, hàng đợi đã bị tạm dừng.\nNếu không có ai tham gia kênh thoại trong **`{duration}`**, hàng đợi sẽ bị xóa.",
+            "pauseQueue": "Mọi người đã rời khỏi kênh thoại. Để tiết kiệm tài nguyên, hàng đợi đã bị tạm dừng.\nNếu không có ai tham gia kênh thoại trong `{duration}`, hàng đợi sẽ bị xóa.",
             "pauseQueueFooter": "Đã tạm dừng hàng đợi",
             "reconfigureConnection": "Đã chuyển sang kênh thoại tại vùng khác, đang định cấu hình lại kết nối...",
             "resumeQueue": "Ai đó đã tham gia kênh thoại.\nĐang phát **{song}**",
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập **`{prefix} {name}`** để biết thêm thông tin.",
+        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập `{prefix} {name}` để biết thêm thông tin.",
         "pageFooter": "Trang {actual} trong {total}",
         "lyricsSource": "Nguồn: {source}"
     },
@@ -319,13 +319,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "Tôi đang thiếu các quyền sau trong {channel}: **{permissions}**"
         },
-        "cooldownMessage": "{author}, vui lòng đợi **`{timeleft}`**.",
+        "cooldownMessage": "{author}, vui lòng đợi `{timeleft}`.",
         "generalHandler": {
             "errorJoining": "Lỗi khi tham gia kênh thoại, vì: `{message}`",
             "errorPlaying": "Đã xảy ra lỗi khi cố gắng phát nhạc, vì: `{message}`",
             "handleVideoInitial": "Đã thêm {length} bài hát vào hàng đợi",
             "leftVC": "Rời khỏi kênh thoại do không hoạt động quá lâu.",
-            "queueEnded": "Hàng đợi đã hết, sử dụng **`{usage}`** để phát thêm nhạc.",
+            "queueEnded": "Hàng đợi đã hết, sử dụng `{usage}` để phát thêm nhạc.",
             "startPlaying": "Bắt đầu phát **{song}**",
             "stopPlaying": "Dừng phát **{song}**",
             "songRequeued": "Gặp sự cố khi phát **{song}**, đã thêm lại vào hàng đợi để thử lại.",

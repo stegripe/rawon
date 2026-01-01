@@ -76,12 +76,12 @@
             "help": {
                 "aliasesString": "Alias",
                 "authorString": "{username} - Liste des commandes",
-                "commandDetailTitle": "{username} - Informations à propos de la commande {command}",
+                "commandDetailTitle": "{username} - Informations à propos de la commande `{command}`",
                 "commandSelectionString": "Veuillez sélectionner la commande",
-                "commandUsageFooter": "<> = requis | [] = facultatif {devOnly}",
+                "commandUsageFooter": "`<>` = requis | `[]` = facultatif {devOnly}",
                 "description": "Affiche la liste des commandes ou les informations relatives à une commande spécifique",
                 "descriptionString": "Description",
-                "footerString": "{prefix}help <commande> pour obtenir plus d'informations sur une commande spécifique",
+                "footerString": "`{prefix}help <commande> pour obtenir plus d'informations sur une commande spécifique",
                 "nameString": "Nom",
                 "noCommanSuggest": "Impossible de trouver le nom de commande correspondant. Vouliez-vous dire ceci ?",
                 "noCommand": "Impossible de trouver un nom de commande correspondant.",
@@ -139,7 +139,7 @@
                 "currentlyUsedFilters": "Filtres actuellement utilisés",
                 "currentState": "{filter} est actuellement {state}",
                 "description": "Configurer le filtre de musique",
-                "embedFooter": "Pour {opstate} le filtre, utilisez {prefix}filter {opstate} {filter}",
+                "embedFooter": "Pour {opstate} le filtre, utilisez {prefix}filter {opstate} {filter}`",
                 "filterSet": "Le filtre {filter} est désormais {state}",
                 "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de musique",
                 "slashStateFilterDescription": "Le filtre de musique qui sera {state, select, enable {activé} other {désactivé}}",
@@ -168,7 +168,7 @@
                 "pauseMessage": "Le lecteur de musique a été mis en pause."
             },
             "play": {
-                "alreadyPlaying": "Le lecteur de musique est déjà en train de jouer sur le salon vocal **`{voiceChannel}`**.",
+                "alreadyPlaying": "Le lecteur de musique est déjà en train de jouer sur le salon vocal `{voiceChannel}`.",
                 "description": "Jouer de la musique",
                 "noSongData": "Cette URL ne contient pas de données sur les musiques.",
                 "slashQueryDescription": "Requête à rechercher",
@@ -292,16 +292,16 @@
             "message1": "Désolé, mais cette interaction est uniquement pour <@{user}> et le staff du serveur.",
             "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>"
         },
-        "createMessage": "Salut {author}, mon préfixe est {prefix}",
+        "createMessage": "Salut {author}, mon préfixe est `{prefix}`",
         "cmdLoading": "Chargement en cours...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La connexion a été reconfigurée avec succès.",
-            "deleteQueue": "**`{duration}`** s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
+            "deleteQueue": "`{duration}` s'est écoulée et personne n'a rejoint le salon vocal, la file d'attente a été supprimée.",
             "deleteQueueFooter": "File d'attente supprimée",
             "disconnectFromVCMessage": "Déconnecté du salon vocal, la file d'attente a été supprimée.",
             "joinStageMessage": "A rejoint avec succès le salon Stage en tant que haut-parleur.",
             "joiningAsSpeaker": "Déplacé sur le salon Stage, j'essaie de me joindre en tant que haut-parleur...",
-            "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici **`{duration}`**, la file d'attente sera supprimée.",
+            "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici `{duration}`, la file d'attente sera supprimée.",
             "pauseQueueFooter": "File d'attente mise en pause",
             "reconfigureConnection": "Déplacement vers un salon vocal avec une région différente, re-configuration de la connexion...",
             "resumeQueue": "Quelqu'un a rejoint le salon vocal.\nReprise de **{song}**",
@@ -311,7 +311,7 @@
         }
     },
     "reusable": {
-        "invalidUsage": "Usage invalide, veuillez utiliser **`{prefix} {name}`** pour plus d'informations.",
+        "invalidUsage": "Usage invalide, veuillez utiliser `{prefix} {name}` pour plus d'informations.",
         "pageFooter": "Page {actual} sur {total}",
         "lyricsSource": "Source: {source}"
     },
@@ -319,13 +319,13 @@
         "commonUtil": {
             "botMissingChannelPerms": "Il me manque les permissions suivantes dans {channel}: **{permissions}**"
         },
-        "cooldownMessage": "{author}, veuillez attendre **`{timeleft}`** de cooldown.",
+        "cooldownMessage": "{author}, veuillez attendre `{timeleft}` de cooldown.",
         "generalHandler": {
             "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : `{message}`",
             "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : `{message}`",
             "handleVideoInitial": "Ajout de {length} chanson(s) à la file d'attente",
             "leftVC": "Je me suis déconnecté du salon vocal parce que j'ai été inactif pendant trop longtemps.",
-            "queueEnded": "La lecture est terminée, utilisez **`{usage}`** pour jouer plus de musique.",
+            "queueEnded": "La lecture est terminée, utilisez `{usage}` pour jouer plus de musique.",
             "startPlaying": "Lancement de la lecture de **{song}**",
             "stopPlaying": "Arrêt de la lecture de **{song}**",
             "songRequeued": "Problème lors de la lecture de **{song}**, remis en file d'attente pour une nouvelle tentative.",
