@@ -7,6 +7,7 @@ import { type LyricsAPIResult, type QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 
 @Command<typeof LyricsCommand>({
@@ -27,6 +28,9 @@ import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 })
 export class LyricsCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const currentSong = (
             (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as
                 | AudioResource
@@ -43,7 +47,7 @@ export class LyricsCommand extends BaseCommand {
         const query = userQuery ?? currentSong?.song.title;
         if ((query?.length ?? 0) === 0) {
             await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.lyrics.noQuery"), true)],
+                embeds: [createEmbed("error", __("commands.music.lyrics.noQuery"), true)],
             });
 
             return;
@@ -51,7 +55,7 @@ export class LyricsCommand extends BaseCommand {
 
         const songThumbnail = userQuery === null ? currentSong?.song.thumbnail : undefined;
 
-        await this.getLyrics(ctx, query as unknown as string, songThumbnail);
+        await this.getLyrics(ctx, query as unknown as string, songThumbnail, __, __mf);
     }
 
     public async fetchLyricsData(song: string): Promise<LyricsAPIResult<false> | null> {
@@ -132,10 +136,18 @@ export class LyricsCommand extends BaseCommand {
         ctx: CommandContext,
         song: string,
         songThumbnail?: string,
+        __?: ReturnType<typeof i18n__>,
+        __mf?: ReturnType<typeof i18n__mf>,
     ): Promise<void> {
+        const localizedI18n = __ ?? i18n__(this.client, ctx.guild);
+        const localizedI18nMf = __mf ?? i18n__mf(this.client, ctx.guild);
+
         const loadingMsg = await ctx.reply({
             embeds: [
-                createEmbed("info", `🔍 **|** ${i18n.__("commands.music.lyrics.searchingLyrics")}`),
+                createEmbed(
+                    "info",
+                    `🔍 **|** ${localizedI18n("commands.music.lyrics.searchingLyrics")}`,
+                ),
             ],
         });
 
@@ -146,7 +158,7 @@ export class LyricsCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("commands.music.lyrics.noLyrics", {
+                        localizedI18nMf("commands.music.lyrics.noLyrics", {
                             song: `**${song}**`,
                         }),
                     ),
@@ -160,7 +172,7 @@ export class LyricsCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("commands.music.lyrics.noLyrics", {
+                        localizedI18nMf("commands.music.lyrics.noLyrics", {
                             song: `**${song}**`,
                         }),
                     ),
@@ -181,10 +193,10 @@ export class LyricsCommand extends BaseCommand {
             })
             .setThumbnail(albumArt)
             .setFooter({
-                text: `• ${i18n.__mf("reusable.pageFooter", {
+                text: `• ${localizedI18nMf("reusable.pageFooter", {
                     actual: 1,
                     total: pages.length,
-                })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                })}. ${localizedI18nMf("reusable.lyricsSource", { source: "lrclib" })}`,
             });
         await loadingMsg.edit({ embeds: [embed] });
         const msg = loadingMsg;
@@ -193,10 +205,10 @@ export class LyricsCommand extends BaseCommand {
             author: ctx.author.id,
             edit: (i, emb, page) =>
                 emb.setDescription(page).setFooter({
-                    text: `• ${i18n.__mf("reusable.pageFooter", {
+                    text: `• ${localizedI18nMf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,
-                    })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                    })}. ${localizedI18nMf("reusable.lyricsSource", { source: "lrclib" })}`,
                 }),
             embed,
             pages,
