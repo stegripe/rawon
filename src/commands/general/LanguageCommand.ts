@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import i18n from "../../config/index.js";
+import i18n from "i18n";
+import i18nConfig from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
@@ -14,16 +15,16 @@ import {
 
 @Command<typeof LanguageCommand>({
     aliases: ["lang", "locale"],
-    description: i18n.__("commands.general.language.description"),
+    description: i18nConfig.__("commands.general.language.description"),
     name: "language",
     slash: {
         options: [
             {
-                description: i18n.__("commands.general.language.slashSetDescription"),
+                description: i18nConfig.__("commands.general.language.slashSetDescription"),
                 name: "set",
                 options: [
                     {
-                        description: i18n.__("commands.general.language.slashLocaleOption"),
+                        description: i18nConfig.__("commands.general.language.slashLocaleOption"),
                         name: "locale",
                         required: true,
                         type: ApplicationCommandOptionType.String,
@@ -33,17 +34,22 @@ import {
                 type: ApplicationCommandOptionType.Subcommand,
             },
             {
-                description: i18n.__("commands.general.language.slashViewDescription"),
+                description: i18nConfig.__("commands.general.language.slashViewDescription"),
                 name: "view",
                 type: ApplicationCommandOptionType.Subcommand,
             },
         ],
     },
-    usage: i18n.__("commands.general.language.usage"),
+    usage: i18nConfig.__("commands.general.language.usage"),
 })
 export class LanguageCommand extends BaseCommand {
-    @memberReqPerms(["ManageGuild"], i18n.__("commands.general.language.noPermission"))
+    @memberReqPerms(["ManageGuild"], i18nConfig.__("commands.general.language.noPermission"))
     public async execute(ctx: CommandContext): Promise<void> {
+        const guildId = ctx.guild?.id;
+        if (!guildId) {
+            return;
+        }
+
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 
@@ -53,7 +59,7 @@ export class LanguageCommand extends BaseCommand {
         // View current language
         if (subCommand === "view" || !localeArg) {
             const currentLocale =
-                this.client.data.data?.[ctx.guild?.id ?? ""]?.locale ?? this.client.config.lang;
+                this.client.data.data?.[guildId]?.locale ?? this.client.config.lang;
 
             await ctx.reply({
                 embeds: [
@@ -93,25 +99,26 @@ export class LanguageCommand extends BaseCommand {
 
         await this.client.data.save(() => {
             const data = this.client.data.data;
-            const guildData = data?.[ctx.guild?.id ?? ""];
+            const guildData = data?.[guildId];
 
             return {
                 ...data,
-                [ctx.guild?.id ?? "..."]: {
+                [guildId]: {
                     ...guildData,
                     locale: localeArg,
                 },
             };
         });
 
-        // Use the new locale for the response
-        const newLocale__mf = i18n__mf(this.client, ctx.guild);
-
+        // Use the new locale directly for the response message
         await ctx.reply({
             embeds: [
                 createEmbed(
                     "success",
-                    newLocale__mf("commands.general.language.languageSet", { locale: localeArg }),
+                    i18n.__mf(
+                        { phrase: "commands.general.language.languageSet", locale: localeArg },
+                        { locale: localeArg },
+                    ),
                     true,
                 ),
             ],
