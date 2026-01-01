@@ -100,12 +100,12 @@
             },
             "language": {
                 "description": "Bu sunucu için bot dilini değiştir",
-                "noPermission": "Bu komutu kullanmak için **MANAGE SERVER** iznine ihtiyacınız var.",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
                 "slashSetDescription": "Sunucu dilini ayarla",
                 "slashViewDescription": "Mevcut sunucu dilini görüntüle",
                 "slashResetDescription": "Varsayılan dile sıfırla",
                 "slashLocaleOption": "Ayarlanacak dil",
-                "usage": "{prefix}language [dil|reset]",
+                "usage": "{prefix}language set <dil>",
                 "embedTitle": "Dil Ayarları",
                 "currentLanguage": "Mevcut dil:",
                 "languageSet": "Sunucu dili değiştirildi:",
@@ -124,7 +124,7 @@
                 "enable": "Etkin",
                 "enableText": "DJ özelliği **`ETKİN`**",
                 "newRoleText": "yeni rol",
-                "noPermission": "Bu komutu kullanmak için **MANAGE SERVER** iznine sahip değilsiniz.",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine sahip değilsiniz.",
                 "role": {
                     "current": "Mevcut DJ Rolü: <@&{role}>",
                     "invalid": "Geçersiz rol.",
@@ -150,13 +150,13 @@
                 "specifyFilter": "Lütfen şarkı filtresini belirtin"
             },
             "lyrics": {
-                "apiError": "API {song} isimli şarkıyı bulamadı, çünkü: {message}",
+                "apiError": "API **{song}** isimli şarkıyı bulamadı, çünkü: `{message}`",
                 "description": "Şarkının sözlerini gösterir",
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
                 "searchingLyrics": "Şarkı sözleri aranıyor...",
                 "slashDescription": "Aranacak şarkı",
                 "usage": "{prefix}lyrics [şarkı]",
-                "noLyrics": "{song} için şarkı sözü bulunamadı."
+                "noLyrics": "**{song}** için şarkı sözü bulunamadı."
             },
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu göster",
@@ -170,7 +170,7 @@
                 "pauseMessage": "Müzik duraklatıldı."
             },
             "play": {
-                "alreadyPlaying": "Müzik zaten {voiceChannel} ses kanalında çalıyor.",
+                "alreadyPlaying": "Müzik zaten **`{voiceChannel}`** ses kanalında çalıyor.",
                 "description": "Biraz müzik çalın",
                 "noSongData": "Bu URL'de herhangi bir şarkı verisi yok.",
                 "slashQueryDescription": "Aranacak sorgu",
@@ -196,7 +196,7 @@
                 "slashDisable": "Tekrar modunu devre dışı bırak",
                 "slashQueue": "Tekrar modunu **`ŞARKI KUYRUĞU`** olarak ayarlayın",
                 "slashSong": "Tekrar modunu **`ŞARKI`** olarak ayarlayın",
-                "usage": "{prefix}repeat <{seçenekler}>"
+                "usage": "'{prefix}'repeat <{seçenekler}>"
             },
             "resume": {
                 "alreadyResume": "Müzik çalar duraklatılmamış.",
@@ -240,7 +240,7 @@
             },
             "skip": {
                 "description": "Müziği atlayın",
-                "skipMessage": "Atlanan {şarkı}",
+                "skipMessage": "Atlanan **{şarkı}**",
                 "voteResultMessage": "{length}/{required} kişi geçerli şarkıyı atlamak için oy kullandı"
             },
             "skipTo": {
@@ -248,12 +248,12 @@
                 "description": "Kuyrukta belirli bir konuma atlama",
                 "noPermission": "Bu komutu kullanmak için izniniz yok.",
                 "noSongPosition": "Bu pozisyonda bir şarkı bulamadım.",
-                "skipMessage": "{song}'a atlandı",
+                "skipMessage": "**{song}**'a atlandı",
                 "slashFirstDescription": "Kuyruktaki ilk şarkıya geri sar",
                 "slashLastDescription": "Kuyruktaki son şarkıya atla",
                 "slashPositionDescription": "Kuyruktaki şarkı konumu",
                 "slashSpecificDescription": "Kuyrukta belirli bir konuma atlama",
-                "usage": "{prefix}skipto <{tercihler} | numara>"
+                "usage": "'{prefix}'skipto <{tercihler} | numara>"
             },
             "stop": {
                 "description": "Müzik çaları durdurur",
@@ -271,10 +271,10 @@
             },
             "requestChannel": {
                 "description": "Müzik için bir istek kanalı ayarla",
-                "noPermission": "Bu komutu kullanmak için **MANAGE SERVER** iznine ihtiyacınız var.",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
                 "invalidChannel": "Lütfen geçerli bir metin kanalı belirtin.",
                 "noBotPermissions": "Bu kanal için izinlerimi kontrol edemedim.",
-                "missingBotPermissions": "Bu kanalda şu izinlerim eksik: {permissions}",
+                "missingBotPermissions": "Bu kanalda şu izinlerim eksik: **{permissions}**",
                 "failedToSetup": "İstek kanalı ayarlanamadı. Lütfen izinlerimi kontrol edin.",
                 "slashSetDescription": "Bir kanalı istek kanalı olarak ayarla",
                 "slashRemoveDescription": "İstek kanalını kaldır",
@@ -294,19 +294,19 @@
             "message1": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> ve sunucu moderatörleri için kullanılabilir.",
             "message2": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> için kullanılabilir."
         },
-        "createMessage": "Merhaba {author}, benim ön ekim: *{prefix}**",
+        "createMessage": "Merhaba {author}, benim ön ekim: *`{prefix}`**",
         "cmdLoading": "Yükleniyor...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Bağlantı başarıyla yeniden yapılandırıldı.",
-            "deleteQueue": "{duration} geçti ve ses kanalına katılan kimse yok, sıra silindi.",
+            "deleteQueue": "**`{duration}`** geçti ve ses kanalına katılan kimse yok, sıra silindi.",
             "deleteQueueFooter": "Şarkı Sırası Silindi",
             "disconnectFromVCMessage": "Ses kanalıyla bağlantı kesildi, sıra silindi.",
             "joinStageMessage": "Konuşmacı olarak sahne kanalına başarıyla katıldım.",
             "joiningAsSpeaker": "Sahne kanalına taşındı, Konuşmacı olarak katılmaya çalışıyorum...",
-            "pauseQueue": "Herkes ses kanalından ayrıldı. Kaynakları korumak için sıra duraklatıldı.\nBir sonraki {duration} içinde ses kanalına kimse katılmazsa, sıra silinecektir.",
+            "pauseQueue": "Herkes ses kanalından ayrıldı. Kaynakları korumak için sıra duraklatıldı.\nBir sonraki **`{duration}`** içinde ses kanalına kimse katılmazsa, sıra silinecektir.",
             "pauseQueueFooter": "Şarkı Sırası Durduruldu",
             "reconfigureConnection": "Farklı bir bölgeye sahip bir ses kanalına taşındı, bağlantı yeniden yapılandırılıyor...",
-            "resumeQueue": "Birisi ses kanalına katıldı.\n{song} devam ediyor",
+            "resumeQueue": "Birisi ses kanalına katıldı.\n**{song}** devam ediyor",
             "resumeQueueFooter": "Şarkı Sırası Devam Ediyor",
             "unableJoinStageMessage": "Konuşmacı olarak katılamıyorum, sıra silindi.",
             "unableReconfigureConnection": "Bağlantı yeniden yapılandırılamıyor, sıra silindi."
@@ -319,18 +319,18 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "{channel} kanalında şu izinlerim eksik: {permissions}"
+            "botMissingChannelPerms": "{channel} kanalında şu izinlerim eksik: **{permissions}**"
         },
         "cooldownMessage": "{author}, lütfen **{timeleft}`** kadar bekleyin.",
         "generalHandler": {
-            "errorJoining": "Ses kanalına katılırken hata oluştu, çünkü: {message}",
-            "errorPlaying": "Müzik çalmaya çalışırken bir hata oluştu, çünkü: {message}",
+            "errorJoining": "Ses kanalına katılırken hata oluştu, çünkü: `{message}`",
+            "errorPlaying": "Müzik çalmaya çalışırken bir hata oluştu, çünkü: `{message}`",
             "handleVideoInitial": "Kuyruğa {length} adet yeni şarkı eklendi",
             "leftVC": "Çok uzun süredir aktif olmadığım için ses kanalından ayrıldım.",
-            "queueEnded": "Çalma kuyruğu sona erdi, daha fazla müzik çalmak için {usage} kullanın.",
-            "startPlaying": "{song} çalınmaya başladı.",
-            "stopPlaying": "{song} durduruldu.",
-            "songRequeued": "{song} çalınırken sorun oluştu, başka bir deneme için kuyruğa yeniden eklendi.",
+            "queueEnded": "Çalma kuyruğu sona erdi, daha fazla müzik çalmak için **`{usage}`** kullanın.",
+            "startPlaying": "**{song}** çalınmaya başladı.",
+            "stopPlaying": "**{song}** durduruldu.",
+            "songRequeued": "**{song}** çalınırken sorun oluştu, başka bir deneme için kuyruğa yeniden eklendi.",
             "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! Lütfen `{prefix}cookies add <numara>` komutu ile cookies.txt dosyası ekleyerek yeni çerezler ekleyin veya mevcut çerezleri yeniden denemek için `{prefix}cookies reset` kullanın."
         },
         "musicDecorator": {
@@ -359,17 +359,17 @@
         "unknown": "Bilinmiyor",
         "notInVoice": "Müzik istemek için bir ses kanalında olmanız gerekiyor.",
         "noResults": "Aramanız için sonuç bulunamadı.",
-        "addedToQueue": "{song} kuyruğa eklendi.",
+        "addedToQueue": "**{song}** kuyruğa eklendi.",
         "addedPlaylistToQueue": "{playlist} çalma listesinden {count} şarkı kuyruğa eklendi.",
-        "startedPlaying": "Şimdi çalıyor {song}",
+        "startedPlaying": "Şimdi çalıyor **{song}**",
         "paused": "Müzik duraklatıldı.",
         "resumed": "Müzik devam ettiriliyor.",
-        "skipped": "{song} atlandı",
-        "removed": "{song} kuyruktan kaldırıldı ve atlandı.",
+        "skipped": "**{song}** atlandı",
+        "removed": "**{song}** kuyruktan kaldırıldı ve atlandı.",
         "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
-        "loopChanged": "Döngü modu {mode} olarak değiştirildi.",
-        "shuffleChanged": "Karıştırma modu şimdi {state}.",
-        "volumeChanged": "Ses seviyesi {volume}% olarak değiştirildi.",
+        "loopChanged": "Döngü modu **{mode}** olarak değiştirildi.",
+        "shuffleChanged": "Karıştırma modu şimdi **{state}**.",
+        "volumeChanged": "Ses seviyesi **{volume}%** olarak değiştirildi.",
         "queueCleared": "Kuyruk temizlendi.",
         "queueListTitle": "Kuyruk Listesi",
         "emptyQueue": "Kuyruk boş.",

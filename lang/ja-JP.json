@@ -100,12 +100,12 @@
             },
             "language": {
                 "description": "このサーバーのBot言語を変更",
-                "noPermission": "このコマンドを使用するには **MANAGE SERVER** 権限が必要です。",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
                 "slashSetDescription": "サーバーの言語を設定",
                 "slashViewDescription": "現在のサーバー言語を表示",
                 "slashResetDescription": "デフォルト言語にリセット",
                 "slashLocaleOption": "設定する言語",
-                "usage": "{prefix}language [言語|reset]",
+                "usage": "{prefix}language set <言語>",
                 "embedTitle": "言語設定",
                 "currentLanguage": "現在の言語：",
                 "languageSet": "サーバーの言語が変更されました：",
@@ -124,7 +124,7 @@
                 "enable": "有効",
                 "enableText": "DJは**`有効化`**されました。",
                 "newRoleText": "新しいロール",
-                "noPermission": "このコマンドを使用するには **MANAGE SERVER** 権限が必要です。",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
                 "role": {
                     "current": "現在のDJロール:<@&{role}>",
                     "invalid": "無効なロールです。",
@@ -150,13 +150,13 @@
                 "specifyFilter": "フィルターを指定してください。"
             },
             "lyrics": {
-                "apiError": "{message}のためAPIは{song}を見つけられませんでした。",
+                "apiError": "`{message}`のためAPIは**{song}**を見つけられませんでした。",
                 "description": "曲の歌詞を表示",
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "searchingLyrics": "歌詞を検索中...",
                 "slashDescription": "検索する曲",
                 "usage": "{prefix}lyrics [曲]",
-                "noLyrics": "{song} の歌詞が見つかりませんでした。"
+                "noLyrics": "**{song}** の歌詞が見つかりませんでした。"
             },
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",
@@ -170,7 +170,7 @@
                 "pauseMessage": "プレイヤーは一時停止されました。"
             },
             "play": {
-                "alreadyPlaying": "そのプレイヤーは{voiceChannel}ですでに再生しています。",
+                "alreadyPlaying": "そのプレイヤーは**`{voiceChannel}`**ですでに再生しています。",
                 "description": "音楽を再生",
                 "noSongData": "そのURLは曲データを含んでいません。",
                 "slashQueryDescription": "検索キーワード",
@@ -196,7 +196,7 @@
                 "slashDisable": "リピートモードを無効化",
                 "slashQueue": "**`キュー`**リピートモードを設定しました。",
                 "slashSong": "**`曲`**リピートモードを設定しました。",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "プレイヤーは一時停止されていません。",
@@ -240,7 +240,7 @@
             },
             "skip": {
                 "description": "曲をスキップ",
-                "skipMessage": "{song}をスキップしました。",
+                "skipMessage": "**{song}**をスキップしました。",
                 "voteResultMessage": "曲をスキップするには{length}/{required}の投票が必要です。"
             },
             "skipTo": {
@@ -248,12 +248,12 @@
                 "description": "キューの特定のポジションまでスキップ",
                 "noPermission": "あなたに権限がありません。",
                 "noSongPosition": "そのポジションに曲がありません。",
-                "skipMessage": "{song}にスキップ",
+                "skipMessage": "**{song}**にスキップ",
                 "slashFirstDescription": "キューの一番最初まで戻る",
                 "slashLastDescription": "キューの一番最後までスキップ",
                 "slashPositionDescription": "キュー内の曲のポジション",
                 "slashSpecificDescription": "キュー内の特定のポジションにスキップ",
-                "usage": "{prefix}skipto <{options} | 数>"
+                "usage": "'{prefix}'skipto <{options} | 数>"
             },
             "stop": {
                 "description": "プレイヤーをストップ",
@@ -271,10 +271,10 @@
             },
             "requestChannel": {
                 "description": "音楽リクエストチャンネルを設定する",
-                "noPermission": "このコマンドを使用するには **MANAGE SERVER** 権限が必要です。",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
                 "invalidChannel": "有効なテキストチャンネルを指定してください。",
                 "noBotPermissions": "そのチャンネルの権限を確認できませんでした。",
-                "missingBotPermissions": "そのチャンネルで次の権限が不足しています: {permissions}",
+                "missingBotPermissions": "そのチャンネルで次の権限が不足しています: **{permissions}**",
                 "failedToSetup": "リクエストチャンネルの設定に失敗しました。権限を確認してください。",
                 "slashSetDescription": "チャンネルをリクエストチャンネルとして設定",
                 "slashRemoveDescription": "リクエストチャンネルを削除",
@@ -298,15 +298,15 @@
         "cmdLoading": "起動中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "接続は正常に再構成されました。",
-            "deleteQueue": "{duration}が経過しても誰もVCに参加していないため、キューを削除します。",
+            "deleteQueue": "**`{duration}`**が経過しても誰もVCに参加していないため、キューを削除します。",
             "deleteQueueFooter": "キューを削除",
             "disconnectFromVCMessage": "VCから切断します。キューは削除されます。",
             "joinStageMessage": "ステージチャンネルにスピーカーとして接続しました。",
             "joiningAsSpeaker": "ステージチャンネルに移動しています、スピーカーとして接続しています…",
-            "pauseQueue": "VCに誰もいません。リソースを削減するため、キューは一時停止されています。\nもし{duration}以内に誰もVCをに参加しない場合、キューは削除されます。",
+            "pauseQueue": "VCに誰もいません。リソースを削減するため、キューは一時停止されています。\nもし**`{duration}`**以内に誰もVCをに参加しない場合、キューは削除されます。",
             "pauseQueueFooter": "キューの一時停止",
             "reconfigureConnection": "異なる地域のVCに接続しました、接続を再構成しています…",
-            "resumeQueue": "VCにユーザーが接続しました。\n{song}を再開します。",
+            "resumeQueue": "VCにユーザーが接続しました。\n**{song}**を再開します。",
             "resumeQueueFooter": "キューの再開",
             "unableJoinStageMessage": "スピーカーとして参加できませんでした、キューは削除されます。",
             "unableReconfigureConnection": "接続を再構成できませんでした、キューは削除されます。"
@@ -319,18 +319,18 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "そのチャンネルで次の権限が不足しています {channel}: {permissions}"
+            "botMissingChannelPerms": "そのチャンネルで次の権限が不足しています {channel}: **{permissions}**"
         },
-        "cooldownMessage": "{author}、クールダウンタイムは残り{timeleft}です。お待ち下さい。",
+        "cooldownMessage": "{author}、クールダウンタイムは残り**`{timeleft}`**です。お待ち下さい。",
         "generalHandler": {
-            "errorJoining": "ボイスチャンネルに接続中にエラーが発生しました。エラー:{message}",
-            "errorPlaying": "音楽を再生している間にエラーが発生しました。エラー:{message}",
+            "errorJoining": "ボイスチャンネルに接続中にエラーが発生しました。エラー:`{message}`",
+            "errorPlaying": "音楽を再生している間にエラーが発生しました。エラー:`{message}`",
             "handleVideoInitial": "キューに{length}曲を追加しました。",
             "leftVC": "非アクティブが続いたためVCから切断しました。",
-            "queueEnded": "キューが終了しました。{usage}を使用して曲を再生してください。",
-            "startPlaying": "{song}の再生が開始",
-            "stopPlaying": "{song}の再生が終了",
-            "songRequeued": "{song}の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
+            "queueEnded": "キューが終了しました。**`{usage}`**を使用して曲を再生してください。",
+            "startPlaying": "**{song}**の再生が開始",
+            "stopPlaying": "**{song}**の再生が終了",
+            "songRequeued": "**{song}**の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
             "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}cookies add <番号>` コマンドでcookies.txtファイルを添付して新しいCookieを追加するか、`{prefix}cookies reset` で既存のCookieを再試行してください。"
         },
         "musicDecorator": {
@@ -359,17 +359,17 @@
         "unknown": "不明",
         "notInVoice": "音楽をリクエストするにはボイスチャンネルに参加する必要があります。",
         "noResults": "検索結果が見つかりませんでした。",
-        "addedToQueue": "{song} をキューに追加しました。",
+        "addedToQueue": "**{song}** をキューに追加しました。",
         "addedPlaylistToQueue": "{playlist} から {count} 曲をキューに追加しました。",
-        "startedPlaying": "{song} を再生中",
+        "startedPlaying": "**{song}** を再生中",
         "paused": "音楽を一時停止しました。",
         "resumed": "音楽を再開しました。",
-        "skipped": "{song} をスキップしました",
-        "removed": "{song} をキューから削除してスキップしました。",
+        "skipped": "**{song}** をスキップしました",
+        "removed": "**{song}** をキューから削除してスキップしました。",
         "stopped": "音楽を停止し、キューをクリアしました。",
-        "loopChanged": "ループモードを {mode} に変更しました。",
-        "shuffleChanged": "シャッフルモードは現在 {state} です。",
-        "volumeChanged": "音量を {volume}% に変更しました。",
+        "loopChanged": "ループモードを **{mode}** に変更しました。",
+        "shuffleChanged": "シャッフルモードは現在 **{state}** です。",
+        "volumeChanged": "音量を **{volume}%** に変更しました。",
         "queueCleared": "キューがクリアされました。",
         "queueListTitle": "キューリスト",
         "emptyQueue": "キューは空です。",

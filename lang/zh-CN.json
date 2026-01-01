@@ -100,12 +100,12 @@
             },
             "language": {
                 "description": "更改此服务器的机器人语言",
-                "noPermission": "您需要 **MANAGE SERVER** 权限才能使用此命令。",
+                "noPermission": "您需要**管理服务器**权限才能使用此命令。",
                 "slashSetDescription": "设置服务器语言",
                 "slashViewDescription": "查看当前服务器语言",
                 "slashResetDescription": "重置为默认语言",
                 "slashLocaleOption": "要设置的语言",
-                "usage": "{prefix}language [语言|reset]",
+                "usage": "{prefix}language set <语言>",
                 "embedTitle": "语言设置",
                 "currentLanguage": "当前语言：",
                 "languageSet": "服务器语言已更改为",
@@ -124,7 +124,7 @@
                 "enable": "启用",
                 "enableText": "DJ 功能已**`启用`**",
                 "newRoleText": "新身分组",
-                "noPermission": "您没有 **MANAGE SERVER** 权限来使用此命令。",
+                "noPermission": "您没有**管理服务器**权限来使用此命令。",
                 "role": {
                     "current": "目前 DJ 身分组: <@&{role}>",
                     "invalid": "无效的身分组。",
@@ -150,13 +150,13 @@
                 "specifyFilter": "请指定歌曲过滤器"
             },
             "lyrics": {
-                "apiError": "API 无法寻找歌曲 {song}， 因为: {message}",
+                "apiError": "API 无法寻找歌曲 **{song}**， 因为: `{message}`",
                 "description": "显示歌曲的歌词",
                 "noQuery": "目前没有播放任何内容，或者没有提供任何参数。",
                 "searchingLyrics": "正在搜索歌词...",
                 "slashDescription": "要搜索的歌曲",
                 "usage": "{prefix}lyrics [歌曲]",
-                "noLyrics": "找不到 {song} 的歌词。"
+                "noLyrics": "找不到 **{song}** 的歌词。"
             },
             "nowplaying": {
                 "description": "显示媒体播放器状态",
@@ -170,7 +170,7 @@
                 "pauseMessage": "音乐播放器已暂停。"
             },
             "play": {
-                "alreadyPlaying": "音乐播放器已经在 {voiceChannel} 语音通讯通道播放。",
+                "alreadyPlaying": "音乐播放器已经在 **`{voiceChannel}`** 语音通讯通道播放。",
                 "description": "播放一些音乐",
                 "noSongData": "该 URL 没有任何歌曲数据。",
                 "slashQueryDescription": "查询搜索",
@@ -196,7 +196,7 @@
                 "slashDisable": "停用重复模式",
                 "slashQueue": "重复模式为 **`队列`**",
                 "slashSong": "重复模式为 **`音乐`**",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "音乐播放器没有被暂停。",
@@ -240,7 +240,7 @@
             },
             "skip": {
                 "description": "略过音乐",
-                "skipMessage": "已略过 {song}",
+                "skipMessage": "已略过 **{song}**",
                 "voteResultMessage": "{length}/{required} 已投票跳过当前歌曲"
             },
             "skipTo": {
@@ -248,12 +248,12 @@
                 "description": "跳到队列中的特定位置",
                 "noPermission": "你无权使用此指令。",
                 "noSongPosition": "无法在该位置找到歌曲。",
-                "skipMessage": "已略过到 {song}",
+                "skipMessage": "已略过到 **{song}**",
                 "slashFirstDescription": "倒回到队列中的第一首歌曲",
                 "slashLastDescription": "跳到队列中的最后一首歌曲",
                 "slashPositionDescription": "歌曲在队列中的位置",
                 "slashSpecificDescription": "跳到队列中的特定位置",
-                "usage": "{prefix}skipto <{options} | 数字>"
+                "usage": "'{prefix}'skipto <{options} | 数字>"
             },
             "stop": {
                 "description": "停止音乐播放器",
@@ -271,10 +271,10 @@
             },
             "requestChannel": {
                 "description": "设置音乐点播频道",
-                "noPermission": "您需要 **MANAGE SERVER** 权限才能使用此命令。",
+                "noPermission": "您需要**管理服务器**权限才能使用此命令。",
                 "invalidChannel": "请提供有效的文字频道。",
                 "noBotPermissions": "我无法检查该频道的权限。",
-                "missingBotPermissions": "我在该频道缺少以下权限: {permissions}",
+                "missingBotPermissions": "我在该频道缺少以下权限: **{permissions}**",
                 "failedToSetup": "设置点播频道失败。请检查我的权限。",
                 "slashSetDescription": "设置频道为点播频道",
                 "slashRemoveDescription": "移除点播频道",
@@ -298,15 +298,15 @@
         "cmdLoading": "加载中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "已成功重新配置连接。",
-            "deleteQueue": "{duration} 已过，没有人加入语音频道，队列已被删除。",
+            "deleteQueue": "**`{duration}`** 已过，没有人加入语音频道，队列已被删除。",
             "deleteQueueFooter": "队列已被删除",
             "disconnectFromVCMessage": "与语音通道断开连接，队列已被删除。",
             "joinStageMessage": "成功以演讲者身份加入舞台频道。",
             "joiningAsSpeaker": "已移至舞台频道，正在尝试以演讲者身份加入...",
-            "pauseQueue": "所有人都离开了语音频道。为了节省资源，队列已暂停。\n如果在{duration}期内没有人加入语音频道，队列将被删除。",
+            "pauseQueue": "所有人都离开了语音频道。为了节省资源，队列已暂停。\n如果在**`{duration}`**期内没有人加入语音频道，队列将被删除。",
             "pauseQueueFooter": "队列已暂停",
             "reconfigureConnection": "移动到不同地区的语音通道，重新配置连接...",
-            "resumeQueue": "有人加入了语音频道。\n恢复中 {song}",
+            "resumeQueue": "有人加入了语音频道。\n恢复中 **{song}**",
             "resumeQueueFooter": "队列已恢复",
             "unableJoinStageMessage": "无法以演讲者身份加入，队列已被删除。",
             "unableReconfigureConnection": "无法重新配置连接，队列已被删除。"
@@ -319,18 +319,18 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "我在 {channel} 中缺少以下权限：{permissions}"
+            "botMissingChannelPerms": "我在 {channel} 中缺少以下权限：**{permissions}**"
         },
-        "cooldownMessage": "{author}，请稍等 {timeleft}的冷却时间。",
+        "cooldownMessage": "{author}，请稍等 **`{timeleft}`**的冷却时间。",
         "generalHandler": {
-            "errorJoining": "加入语音通道时出错，因为: {message}",
-            "errorPlaying": "尝试播放音乐时出错，因为: {message}",
+            "errorJoining": "加入语音通道时出错，因为: `{message}`",
+            "errorPlaying": "尝试播放音乐时出错，因为: `{message}`",
             "handleVideoInitial": "已将 {length} 首歌曲添加到队列中",
             "leftVC": "离开了语音频道是因为我待用太久了。",
-            "queueEnded": "队列已经结束，使用{usage}播放更多音乐。",
-            "startPlaying": "开始播放{song}",
-            "stopPlaying": "停止播放{song}",
-            "songRequeued": "播放{song}时遇到问题，已重新添加到队列中等待重试。",
+            "queueEnded": "队列已经结束，使用**`{usage}`**播放更多音乐。",
+            "startPlaying": "开始播放**{song}**",
+            "stopPlaying": "停止播放**{song}**",
+            "songRequeued": "播放**{song}**时遇到问题，已重新添加到队列中等待重试。",
             "allCookiesFailed": "由于机器人检测，所有cookie都已失败！请使用 `{prefix}cookies add <编号>` 命令附加cookies.txt文件添加新cookie，或使用 `{prefix}cookies reset` 重试现有cookie。"
         },
         "musicDecorator": {
@@ -359,17 +359,17 @@
         "unknown": "未知",
         "notInVoice": "您需要在语音频道中才能点歌。",
         "noResults": "没有找到您搜索的结果。",
-        "addedToQueue": "已将 {song} 添加到队列。",
+        "addedToQueue": "已将 **{song}** 添加到队列。",
         "addedPlaylistToQueue": "已将 {playlist} 中的 {count} 首歌曲添加到队列。",
-        "startedPlaying": "正在播放 {song}",
+        "startedPlaying": "正在播放 **{song}**",
         "paused": "音乐已暂停。",
         "resumed": "音乐已恢复。",
-        "skipped": "已跳过 {song}",
-        "removed": "已从队列中移除 {song} 并跳过。",
+        "skipped": "已跳过 **{song}**",
+        "removed": "已从队列中移除 **{song}** 并跳过。",
         "stopped": "音乐已停止，队列已清空。",
-        "loopChanged": "循环模式已更改为 {mode}。",
-        "shuffleChanged": "随机播放模式现在是 {state}。",
-        "volumeChanged": "音量已更改为 {volume}%。",
+        "loopChanged": "循环模式已更改为 **{mode}**。",
+        "shuffleChanged": "随机播放模式现在是 **{state}**。",
+        "volumeChanged": "音量已更改为 **{volume}%**。",
         "queueCleared": "队列已清空。",
         "queueListTitle": "队列列表",
         "emptyQueue": "队列是空的。",

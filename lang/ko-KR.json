@@ -99,18 +99,18 @@
                 "footerString": "{user}의 지연 시간"
             },
             "language": {
-                "description": "이 서버의 봇 언어 변경",
-                "noPermission": "이 명령을 사용하려면 **MANAGE SERVER** 권한이 필요합니다.",
+                "description": "이 서버의 봇 언어를 변경",
+                "noPermission": "이 명령어를 사용하려면 **서버 관리** 권한이 필요해요.",
                 "slashSetDescription": "서버 언어 설정",
                 "slashViewDescription": "현재 서버 언어 보기",
                 "slashResetDescription": "기본 언어로 재설정",
                 "slashLocaleOption": "설정할 언어",
-                "usage": "{prefix}language [언어|reset]",
+                "usage": "{prefix}language set <언어>",
                 "embedTitle": "언어 설정",
                 "currentLanguage": "현재 언어:",
-                "languageSet": "서버 언어가 변경되었습니다:",
-                "languageReset": "서버 언어가 기본값으로 재설정되었습니다:",
-                "invalidLocale": "잘못된 언어입니다. 사용 가능한 언어:",
+                "languageSet": "서버 언어가 변경되었어요:",
+                "languageReset": "서버 언어가 기본값으로 재설정되었어요:",
+                "invalidLocale": "잘못된 언어예요. 사용 가능한 언어:",
                 "availableLocales": "사용 가능한 언어"
             }
         },
@@ -124,7 +124,7 @@
                 "enable": "활성화됨",
                 "enableText": "DJ 기능이 **`활성화`**되었어요",
                 "newRoleText": "새 역할",
-                "noPermission": "이 명령어를 사용하려면 **MANAGE SERVER** 권한이 필요해요.",
+                "noPermission": "이 명령어를 사용하려면 **서버 관리** 권한이 필요해요.",
                 "role": {
                     "current": "현재 DJ 역할: <@&{role}>",
                     "invalid": "유효하지 않은 역할이에요.",
@@ -150,9 +150,9 @@
                 "specifyFilter": "노래 필터를 지정해주세요"
             },
             "lyrics": {
-                "apiError": "API에서 {song}을(를) 찾을 수 없어요. 이유: {message}",
+                "apiError": "API에서 **{song}**을(를) 찾을 수 없어요. 이유: `{message}`",
                 "description": "노래의 가사 보기",
-                "noLyrics": "{song}의 가사를 찾을 수 없어요.",
+                "noLyrics": "**{song}**의 가사를 찾을 수 없어요.",
                 "noQuery": "재생 중인 곡이 없거나 인수가 제공되지 않았어요.",
                 "searchingLyrics": "가사 검색 중...",
                 "slashDescription": "검색할 노래",
@@ -170,7 +170,7 @@
                 "pauseMessage": "음악 플레이어가 일시 정지되었어요."
             },
             "play": {
-                "alreadyPlaying": "음악 플레이어가 이미 {voiceChannel} 음성 채널에서 재생 중이에요.",
+                "alreadyPlaying": "음악 플레이어가 이미 **`{voiceChannel}`** 음성 채널에서 재생 중이에요.",
                 "description": "음악 재생",
                 "noSongData": "해당 URL에는 노래 데이터가 없어요.",
                 "slashQueryDescription": "검색어",
@@ -196,7 +196,7 @@
                 "slashDisable": "반복 모드 비활성화",
                 "slashQueue": "반복 모드를 **`대기열`**로 설정",
                 "slashSong": "반복 모드를 **`노래`**로 설정",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "음악 플레이어가 일시 정지되지 않았어요.",
@@ -240,7 +240,7 @@
             },
             "skip": {
                 "description": "음악 건너뛰기",
-                "skipMessage": "{song}을(를) 건너뛰었어요",
+                "skipMessage": "**{song}**을(를) 건너뛰었어요",
                 "voteResultMessage": "{length}/{required}명이 현재 노래 건너뛰기에 투표했어요"
             },
             "skipTo": {
@@ -248,12 +248,12 @@
                 "description": "대기열의 특정 위치로 건너뛰기",
                 "noPermission": "이 명령어를 사용할 권한이 없어요.",
                 "noSongPosition": "해당 위치에서 노래를 찾을 수 없어요.",
-                "skipMessage": "{song}(으)로 건너뛰었어요",
+                "skipMessage": "**{song}**(으)로 건너뛰었어요",
                 "slashFirstDescription": "대기열의 첫 번째 노래로 되돌리기",
                 "slashLastDescription": "대기열의 마지막 노래로 건너뛰기",
                 "slashPositionDescription": "대기열에서의 노래 위치",
                 "slashSpecificDescription": "대기열의 특정 위치로 건너뛰기",
-                "usage": "{prefix}skipto <{options} | 번호>"
+                "usage": "'{prefix}'skipto <{options} | 번호>"
             },
             "stop": {
                 "description": "음악 플레이어 정지",
@@ -271,10 +271,10 @@
             },
             "requestChannel": {
                 "description": "음악 요청 채널 설정",
-                "noPermission": "이 명령어를 사용하려면 **MANAGE SERVER** 권한이 필요해요.",
+                "noPermission": "이 명령어를 사용하려면 **서버 관리** 권한이 필요해요.",
                 "invalidChannel": "유효한 텍스트 채널을 입력해주세요.",
                 "noBotPermissions": "해당 채널의 권한을 확인할 수 없었어요.",
-                "missingBotPermissions": "해당 채널에서 다음 권한이 부족해요: {permissions}",
+                "missingBotPermissions": "해당 채널에서 다음 권한이 부족해요: **{permissions}**",
                 "failedToSetup": "요청 채널 설정에 실패했어요. 권한을 확인해주세요.",
                 "slashSetDescription": "채널을 요청 채널로 설정",
                 "slashRemoveDescription": "요청 채널 삭제",
@@ -298,15 +298,15 @@
         "cmdLoading": "로딩 중...",
         "voiceStateUpdate": {
             "connectionReconfigured": "연결이 성공적으로 재구성되었어요.",
-            "deleteQueue": "{duration}이 지났지만 아무도 음성 채널에 입장하지 않아서 대기열이 삭제되었어요.",
+            "deleteQueue": "**`{duration}`**이 지났지만 아무도 음성 채널에 입장하지 않아서 대기열이 삭제되었어요.",
             "deleteQueueFooter": "대기열 삭제됨",
             "disconnectFromVCMessage": "음성 채널에서 연결이 끊어져서 대기열이 삭제되었어요.",
             "joinStageMessage": "스피커로 스테이지 채널에 성공적으로 입장했어요.",
             "joiningAsSpeaker": "스테이지 채널로 이동했어요. 스피커로 입장 시도 중...",
-            "pauseQueue": "모두가 음성 채널을 떠났어요. 리소스를 절약하기 위해 대기열이 일시 정지되었어요.\n{duration} 내에 아무도 음성 채널에 입장하지 않으면 대기열이 삭제돼요.",
+            "pauseQueue": "모두가 음성 채널을 떠났어요. 리소스를 절약하기 위해 대기열이 일시 정지되었어요.\n**`{duration}`** 내에 아무도 음성 채널에 입장하지 않으면 대기열이 삭제돼요.",
             "pauseQueueFooter": "대기열 일시 정지됨",
             "reconfigureConnection": "다른 지역의 음성 채널로 이동했어요. 연결을 재구성하고 있어요...",
-            "resumeQueue": "누군가 음성 채널에 입장했어요.\n{song} 재개 중",
+            "resumeQueue": "누군가 음성 채널에 입장했어요.\n**{song}** 재개 중",
             "resumeQueueFooter": "대기열 재개됨",
             "unableJoinStageMessage": "스피커로 입장할 수 없어서 대기열이 삭제되었어요.",
             "unableReconfigureConnection": "연결을 재구성할 수 없어서 대기열이 삭제되었어요."
@@ -327,17 +327,17 @@
         "unknown": "알 수 없음",
         "notInVoice": "음악을 요청하려면 음성 채널에 있어야 해요.",
         "noResults": "검색 결과를 찾을 수 없어요.",
-        "addedToQueue": "{song}을(를) 대기열에 추가했어요.",
+        "addedToQueue": "**{song}**을(를) 대기열에 추가했어요.",
         "addedPlaylistToQueue": "{playlist}에서 {count}곡을 대기열에 추가했어요.",
-        "startedPlaying": "지금 {song} 재생 중",
+        "startedPlaying": "지금 **{song}** 재생 중",
         "paused": "음악을 일시 정지했어요.",
         "resumed": "음악을 재개했어요.",
-        "skipped": "{song}을(를) 건너뛰었어요",
-        "removed": "{song}을(를) 대기열에서 삭제하고 건너뛰었어요.",
+        "skipped": "**{song}**을(를) 건너뛰었어요",
+        "removed": "**{song}**을(를) 대기열에서 삭제하고 건너뛰었어요.",
         "stopped": "음악을 정지하고 대기열을 비웠어요.",
-        "loopChanged": "반복 모드가 {mode}로 변경되었어요.",
-        "shuffleChanged": "셔플 모드가 이제 {state}예요.",
-        "volumeChanged": "볼륨이 {volume}%로 변경되었어요.",
+        "loopChanged": "반복 모드가 **{mode}**로 변경되었어요.",
+        "shuffleChanged": "셔플 모드가 이제 **{state}**예요.",
+        "volumeChanged": "볼륨이 **{volume}%**로 변경되었어요.",
         "queueCleared": "대기열이 비워졌어요.",
         "queueListTitle": "대기열 목록",
         "emptyQueue": "대기열이 비어 있어요.",
@@ -359,18 +359,18 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "{channel}에서 다음 권한이 부족해요: {permissions}"
+            "botMissingChannelPerms": "{channel}에서 다음 권한이 부족해요: **{permissions}**"
         },
-        "cooldownMessage": "{author}님, 쿨다운 시간 {timeleft}초를 기다려주세요.",
+        "cooldownMessage": "{author}님, 쿨다운 시간 **`{timeleft}`**초를 기다려주세요.",
         "generalHandler": {
-            "errorJoining": "음성 채널에 입장하는 중 오류가 발생했어요. 이유: {message}",
-            "errorPlaying": "음악을 재생하는 중 오류가 발생했어요. 이유: {message}",
+            "errorJoining": "음성 채널에 입장하는 중 오류가 발생했어요. 이유: `{message}`",
+            "errorPlaying": "음악을 재생하는 중 오류가 발생했어요. 이유: `{message}`",
             "handleVideoInitial": "대기열에 {length}곡을 추가했어요",
             "leftVC": "너무 오래 비활성 상태라서 음성 채널에서 나갔어요.",
-            "queueEnded": "대기열이 끝났어요. {usage}로 더 많은 음악을 재생하세요.",
-            "startPlaying": "{song} 재생 시작",
-            "stopPlaying": "{song} 재생 종료",
-            "songRequeued": "{song} 재생에 문제가 있어서 다시 시도하기 위해 대기열에 다시 추가했어요.",
+            "queueEnded": "대기열이 끝났어요. **`{usage}`**로 더 많은 음악을 재생하세요.",
+            "startPlaying": "**{song}** 재생 시작",
+            "stopPlaying": "**{song}** 재생 종료",
+            "songRequeued": "**{song}** 재생에 문제가 있어서 다시 시도하기 위해 대기열에 다시 추가했어요.",
             "allCookiesFailed": "봇 감지로 인해 모든 쿠키가 실패했어요! `{prefix}cookies add <번호>` 명령어로 cookies.txt 파일을 첨부하여 새 쿠키를 추가하거나, `{prefix}cookies reset`으로 기존 쿠키를 다시 시도해주세요."
         },
         "musicDecorator": {
