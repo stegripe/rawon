@@ -106,9 +106,9 @@
                 "slashLocaleOption": "Мова для встановлення",
                 "usage": "{prefix}language [мова]",
                 "embedTitle": "Налаштування мови",
-                "currentLanguage": "Поточна мова: **{locale}**",
-                "languageSet": "Мову сервера змінено на **{locale}**",
-                "invalidLocale": "Невірна мова. Доступні мови: {locales}",
+                "currentLanguage": "Поточна мова:",
+                "languageSet": "Мову сервера змінено на",
+                "invalidLocale": "Невірна мова. Доступні мови:",
                 "availableLocales": "Доступні мови"
             }
         },

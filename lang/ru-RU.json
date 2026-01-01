@@ -106,9 +106,9 @@
                 "slashLocaleOption": "Язык для установки",
                 "usage": "{prefix}language [язык]",
                 "embedTitle": "Настройки языка",
-                "currentLanguage": "Текущий язык: **{locale}**",
-                "languageSet": "Язык сервера изменён на **{locale}**",
-                "invalidLocale": "Неверный язык. Доступные языки: {locales}",
+                "currentLanguage": "Текущий язык:",
+                "languageSet": "Язык сервера изменён на",
+                "invalidLocale": "Неверный язык. Доступные языки:",
                 "availableLocales": "Доступные языки"
             }
         },

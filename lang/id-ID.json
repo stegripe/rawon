@@ -106,9 +106,9 @@
                 "slashLocaleOption": "Bahasa yang mau diatur",
                 "usage": "{prefix}language [bahasa]",
                 "embedTitle": "Pengaturan Bahasa",
-                "currentLanguage": "Bahasa saat ini: **{locale}**",
-                "languageSet": "Bahasa server udah diubah ke **{locale}**",
-                "invalidLocale": "Bahasa gak valid. Bahasa yang tersedia: {locales}",
+                "currentLanguage": "Bahasa saat ini:",
+                "languageSet": "Bahasa server udah diubah ke",
+                "invalidLocale": "Bahasa gak valid. Bahasa yang tersedia:",
                 "availableLocales": "Bahasa yang tersedia"
             }
         },

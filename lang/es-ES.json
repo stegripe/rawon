@@ -106,9 +106,9 @@
                 "slashLocaleOption": "El idioma a establecer",
                 "usage": "{prefix}language [idioma]",
                 "embedTitle": "Configuración de idioma",
-                "currentLanguage": "Idioma actual: **{locale}**",
-                "languageSet": "El idioma del servidor se ha cambiado a **{locale}**",
-                "invalidLocale": "Idioma no válido. Idiomas disponibles: {locales}",
+                "currentLanguage": "Idioma actual:",
+                "languageSet": "El idioma del servidor se ha cambiado a",
+                "invalidLocale": "Idioma no válido. Idiomas disponibles:",
                 "availableLocales": "Idiomas disponibles"
             }
         },

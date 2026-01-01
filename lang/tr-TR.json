@@ -106,9 +106,9 @@
                 "slashLocaleOption": "Ayarlanacak dil",
                 "usage": "{prefix}language [dil]",
                 "embedTitle": "Dil Ayarları",
-                "currentLanguage": "Mevcut dil: **{locale}**",
-                "languageSet": "Sunucu dili **{locale}** olarak değiştirildi",
-                "invalidLocale": "Geçersiz dil. Kullanılabilir diller: {locales}",
+                "currentLanguage": "Mevcut dil:",
+                "languageSet": "Sunucu dili değiştirildi:",
+                "invalidLocale": "Geçersiz dil. Kullanılabilir diller:",
                 "availableLocales": "Kullanılabilir diller"
             }
         },

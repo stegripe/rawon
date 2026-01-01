@@ -106,9 +106,9 @@
                 "slashLocaleOption": "要设置的语言",
                 "usage": "{prefix}language [语言]",
                 "embedTitle": "语言设置",
-                "currentLanguage": "当前语言：**{locale}**",
-                "languageSet": "服务器语言已更改为 **{locale}**",
-                "invalidLocale": "无效语言。可用语言：{locales}",
+                "currentLanguage": "当前语言：",
+                "languageSet": "服务器语言已更改为",
+                "invalidLocale": "无效语言。可用语言：",
                 "availableLocales": "可用语言"
             }
         },

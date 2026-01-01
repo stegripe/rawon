@@ -6,12 +6,7 @@ import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
-import {
-    i18n__,
-    i18n__mf,
-    isSupportedLocale,
-    supportedLocales,
-} from "../../utils/functions/i18n.js";
+import { i18n__, isSupportedLocale, supportedLocales } from "../../utils/functions/i18n.js";
 
 @Command<typeof LanguageCommand>({
     aliases: ["lang", "locale"],
@@ -51,7 +46,6 @@ export class LanguageCommand extends BaseCommand {
         }
 
         const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
 
         const subCommand = ctx.options?.getSubcommand(false);
         const localeArg = ctx.options?.getString("locale") ?? ctx.args[0];
@@ -65,9 +59,7 @@ export class LanguageCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        __mf("commands.general.language.currentLanguage", {
-                            locale: currentLocale,
-                        }),
+                        `${__("commands.general.language.currentLanguage")} **${currentLocale}**`,
                     )
                         .setAuthor({ name: __("commands.general.language.embedTitle") })
                         .addFields([
@@ -87,9 +79,7 @@ export class LanguageCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        __mf("commands.general.language.invalidLocale", {
-                            locales: supportedLocales.join(", "),
-                        }),
+                        `${__("commands.general.language.invalidLocale")} ${supportedLocales.join(", ")}`,
                         true,
                     ),
                 ],
@@ -111,14 +101,13 @@ export class LanguageCommand extends BaseCommand {
         });
 
         // Use the new locale directly for the response message
+        const newLocale__ = (phrase: string): string => i18n.__({ phrase, locale: localeArg });
+
         await ctx.reply({
             embeds: [
                 createEmbed(
                     "success",
-                    i18n.__mf(
-                        { phrase: "commands.general.language.languageSet", locale: localeArg },
-                        { locale: localeArg },
-                    ),
+                    `${newLocale__("commands.general.language.languageSet")} **${localeArg}**`,
                     true,
                 ),
             ],
