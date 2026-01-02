@@ -15,6 +15,8 @@ export class MultiBotManager {
     private static instance: MultiBotManager | null = null;
     private readonly clients: Map<number, Rawon> = new Map();
     private readonly tokens: string[] = [];
+    // Track which bot is handling which voice channel (guildId:voiceChannelId -> botId)
+    private readonly voiceChannelHandlers: Map<string, Snowflake> = new Map();
 
     private constructor() {
         // Singleton pattern
@@ -25,6 +27,49 @@ export class MultiBotManager {
             MultiBotManager.instance = new MultiBotManager();
         }
         return MultiBotManager.instance;
+    }
+
+    /**
+     * Mark a bot as handling a specific voice channel in a guild
+     */
+    public setVoiceChannelHandler(
+        guildId: Snowflake,
+        voiceChannelId: Snowflake,
+        botId: Snowflake,
+    ): void {
+        const key = `${guildId}:${voiceChannelId}`;
+        this.voiceChannelHandlers.set(key, botId);
+    }
+
+    /**
+     * Clear the voice channel handler when bot leaves
+     */
+    public clearVoiceChannelHandler(guildId: Snowflake, voiceChannelId: Snowflake): void {
+        const key = `${guildId}:${voiceChannelId}`;
+        this.voiceChannelHandlers.delete(key);
+    }
+
+    /**
+     * Get the bot ID that is handling a specific voice channel
+     */
+    public getVoiceChannelHandlerBotId(
+        guildId: Snowflake,
+        voiceChannelId: Snowflake,
+    ): Snowflake | undefined {
+        const key = `${guildId}:${voiceChannelId}`;
+        return this.voiceChannelHandlers.get(key);
+    }
+
+    /**
+     * Check if a specific bot is handling any voice channel in the guild
+     */
+    public isBotHandlingAnyVoiceChannel(guildId: Snowflake, botId: Snowflake): boolean {
+        for (const [key, handlerId] of this.voiceChannelHandlers.entries()) {
+            if (key.startsWith(`${guildId}:`) && handlerId === botId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -178,7 +223,20 @@ export class MultiBotManager {
     ): Rawon | null {
         const sortedClients = this.getClientsSortedByPriority();
 
-        // First, check if any bot is already in the target voice channel
+        // First, check if any bot is already registered as handling this voice channel
+        const registeredHandlerId = this.getVoiceChannelHandlerBotId(
+            guild.id,
+            targetVoiceChannel.id,
+        );
+        if (registeredHandlerId) {
+            for (const [, client] of sortedClients) {
+                if (client.user?.id === registeredHandlerId) {
+                    return client;
+                }
+            }
+        }
+
+        // Check if any bot is already physically in the target voice channel
         for (const [, client] of sortedClients) {
             const guildFromClient = client.guilds.cache.get(guild.id);
             if (guildFromClient) {
@@ -190,12 +248,17 @@ export class MultiBotManager {
         }
 
         // No bot is in the target voice channel, find an available one
+        // (not in any voice channel AND not registered as handling any other channel)
         for (const [, client] of sortedClients) {
             const guildFromClient = client.guilds.cache.get(guild.id);
             if (guildFromClient) {
                 const botVoiceChannel = guildFromClient.members.me?.voice.channel;
-                // Bot is available (not in any voice channel in this guild)
-                if (!botVoiceChannel) {
+                const isHandlingOtherChannel = this.isBotHandlingAnyVoiceChannel(
+                    guild.id,
+                    client.user?.id ?? "",
+                );
+                // Bot is available (not in any voice channel AND not handling any channel)
+                if (!botVoiceChannel && !isHandlingOtherChannel) {
                     return client;
                 }
             }

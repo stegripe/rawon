@@ -271,6 +271,38 @@ export class MessageCreateEvent extends BaseEvent {
                 return;
             }
 
+            // Check if another bot is already registered as handling this voice channel
+            const registeredHandlerId = this.client.multiBotManager.getVoiceChannelHandlerBotId(
+                guild.id,
+                voiceChannel.id,
+            );
+            if (registeredHandlerId && registeredHandlerId !== this.client.user?.id) {
+                this.client.logger.debug(
+                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - another bot (${registeredHandlerId}) is registered for this channel`,
+                );
+                return;
+            }
+
+            // Check if THIS bot is already registered as handling a DIFFERENT voice channel
+            const isThisBotHandlingOther = this.client.multiBotManager.isBotHandlingAnyVoiceChannel(
+                guild.id,
+                this.client.user?.id ?? "",
+            );
+            if (isThisBotHandlingOther) {
+                // Check if it's for the same channel
+                const thisBotsRegisteredChannel =
+                    this.client.multiBotManager.getVoiceChannelHandlerBotId(
+                        guild.id,
+                        voiceChannel.id,
+                    );
+                if (thisBotsRegisteredChannel !== this.client.user?.id) {
+                    this.client.logger.debug(
+                        `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - already handling a different voice channel`,
+                    );
+                    return;
+                }
+            }
+
             // Check if THIS bot is already in a voice channel in this guild
             const thisBotVoiceChannel = thisBotsGuild.members.me?.voice.channel;
 
@@ -349,6 +381,16 @@ export class MessageCreateEvent extends BaseEvent {
             this.client.logger.debug(
                 `[MULTI-BOT] Bot ${this.client.user?.tag} will handle this request`,
             );
+
+            // Register this bot as handling this voice channel BEFORE any async operations
+            // This prevents race conditions where another request comes in before we join
+            if (this.client.user?.id) {
+                this.client.multiBotManager.setVoiceChannelHandler(
+                    guild.id,
+                    voiceChannel.id,
+                    this.client.user.id,
+                );
+            }
         }
 
         const songs = await searchTrack(this.client, query).catch(() => null);

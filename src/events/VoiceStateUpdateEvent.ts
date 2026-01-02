@@ -104,6 +104,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 queue.textChannel.id,
             );
 
+            // Clear the voice channel handler registration when bot disconnects
+            if (this.client.multiBotManager.isMultiBotActive() && oldId) {
+                this.client.multiBotManager.clearVoiceChannelHandler(newState.guild.id, oldId);
+            }
+
             queue.destroy();
             if (!isIdle) {
                 this.client.logger.info(
