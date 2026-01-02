@@ -12,6 +12,14 @@ import { play } from "../utils/handlers/GeneralUtil.js";
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
     public async execute(): Promise<void> {
+        // Only primary client should handle full initialization
+        if (!this.client.isPrimaryClient()) {
+            this.client.logger.info(
+                `Secondary client ${this.client.user?.tag} is ready (voice-only mode)`,
+            );
+            return;
+        }
+
         if (this.client.application?.owner) {
             this.client.config.devs.push(this.client.application.owner.id);
         }

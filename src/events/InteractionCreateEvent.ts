@@ -50,6 +50,11 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
+        // In multi-client mode, only the primary client for this guild should handle events
+        if (interaction.guildId && !this.client.shouldHandleGuildEvent(interaction.guildId)) {
+            return;
+        }
+
         const __mf = i18n__mf(this.client, interaction.guild);
 
         if (interaction.isButton()) {

@@ -18,6 +18,11 @@ import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 @Event<typeof VoiceStateUpdateEvent>("voiceStateUpdate")
 export class VoiceStateUpdateEvent extends BaseEvent {
     public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message | undefined> {
+        // In multi-client mode, only the primary client for this guild should handle voice state updates
+        if (!this.client.shouldHandleGuildEvent(newState.guild.id)) {
+            return;
+        }
+
         if (this.client.config.debugMode) {
             const oldCh = oldState.channel
                 ? `${oldState.channel.name}(${oldState.channel.id})`

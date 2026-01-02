@@ -39,6 +39,11 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
+        // In multi-client mode, only the primary client for this guild should handle events
+        if (message.guild && !this.client.shouldHandleGuildEvent(message.guild.id)) {
+            return;
+        }
+
         const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
             (pr) => {
                 if (pr === "{mention}") {

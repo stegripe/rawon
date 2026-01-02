@@ -14,6 +14,7 @@ import { CookiesManager } from "../utils/structures/CookiesManager.js";
 import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
 import { EventsLoader } from "../utils/structures/EventsLoader.js";
 import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
+import { MultiClientManager } from "../utils/structures/MultiClientManager.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 import { setCookiesManager } from "../utils/yt-dlp/index.js";
@@ -40,6 +41,9 @@ export class Rawon extends Client {
     public readonly requestChannelManager = new RequestChannelManager(this);
     public readonly audioCache = new AudioCacheManager(this);
     public readonly cookies = new CookiesManager(this);
+    public readonly multiClientManager = MultiClientManager.getInstance();
+    public clientPriority = 0; // 0 = primary, 1+ = secondary
+
     public readonly request = got.extend({
         hooks: {
             beforeError: [
@@ -66,11 +70,46 @@ export class Rawon extends Client {
         },
     });
 
-    public build: () => Promise<this> = async () => {
+    /**
+     * Check if this client should handle events for a specific guild.
+     * In multi-client mode, only the primary client for the guild should handle events.
+     */
+    public shouldHandleGuildEvent(guildId: string): boolean {
+        return this.multiClientManager.shouldHandleEvent(this, guildId);
+    }
+
+    /**
+     * Check if this is the primary client (priority 0)
+     */
+    public isPrimaryClient(): boolean {
+        return this.clientPriority === 0;
+    }
+
+    public build: (token?: string, priority?: number) => Promise<this> = async (
+        token?: string,
+        priority = 0,
+    ) => {
         this.startTimestamp = Date.now();
-        setCookiesManager(this.cookies);
+        this.clientPriority = priority;
+
+        // Only primary client manages cookies
+        if (priority === 0) {
+            setCookiesManager(this.cookies);
+        }
+
+        // Register with multi-client manager
+        this.multiClientManager.registerClient(this, priority);
+
+        // Only primary client manages cookies
+        if (priority === 0) {
+            setCookiesManager(this.cookies);
+        }
+
+        // Load events for all clients - they will check shouldHandleGuildEvent()
+        // to determine if they should process events for a specific guild
         this.events.load();
-        await this.login();
+
+        await this.login(token);
         return this;
     };
 }

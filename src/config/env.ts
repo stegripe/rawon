@@ -69,3 +69,22 @@ export const presenceData: PresenceData = {
     status: ["online"] as ClientPresenceStatus[],
     interval: 60_000,
 };
+
+/**
+ * Parse DISCORD_TOKEN as comma-separated values for multi-bot support.
+ * Single token: DISCORD_TOKEN="token1" → 1 bot
+ * Multiple tokens: DISCORD_TOKEN="token1, token2, token3" → 3 bots
+ * Auto-detect: if 1 token = single mode, if >1 = multi-bot mode
+ */
+export function getDiscordTokens(): string[] {
+    const rawToken = process.env.DISCORD_TOKEN ?? "";
+
+    // Split by comma, trim whitespace, and filter empty values
+    const tokens = rawToken
+        .split(",")
+        .map((token) => token.trim())
+        .filter((token) => token.length > 0);
+
+    // Use Set to deduplicate tokens
+    return [...new Set(tokens)];
+}

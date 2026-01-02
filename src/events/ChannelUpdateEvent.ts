@@ -9,6 +9,11 @@ import { i18n__ } from "../utils/functions/i18n.js";
 @Event("channelUpdate")
 export class ChannelUpdateEvent extends BaseEvent {
     public async execute(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
+        // In multi-client mode, only the primary client for this guild should handle channel updates
+        if (!this.client.shouldHandleGuildEvent(newChannel.guild.id)) {
+            return;
+        }
+
         this.client.debugLog.logData("info", "CHANNEL_UPDATE_EVENT", [
             ["Channel", `${newChannel.name}(${newChannel.id})`],
             ["Type", newChannel.type.toString()],
