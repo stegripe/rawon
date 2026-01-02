@@ -131,6 +131,7 @@ export class MultiClientManager {
 
             // No bot is in user's voice channel yet
             // Find the first available bot (not in any voice channel in this guild)
+            let selectedClientId: string | null = null;
             for (const c of this.clients) {
                 if (!c?.user) {
                     continue;
@@ -143,9 +144,14 @@ export class MultiClientManager {
                 const cVoiceState = cGuild.members.me?.voice;
                 if (!cVoiceState?.channelId) {
                     // This bot is available (not in voice)
-                    // Return true only if this is that bot
-                    return c.user.id === client.user.id;
+                    selectedClientId = c.user.id;
+                    break;
                 }
+            }
+
+            if (selectedClientId) {
+                // An available bot was found - only that bot should handle
+                return client.user.id === selectedClientId;
             }
 
             // All bots are in voice channels, fall back to primary
@@ -191,8 +197,9 @@ export class MultiClientManager {
             }
 
             // Check if this client is already in a voice channel in this guild
-            const voiceState = guild.members.cache.get(client.user.id)?.voice;
-            if (!voiceState?.channel) {
+            // Use guild.members.me for reliable bot member data
+            const voiceState = guild.members.me?.voice;
+            if (!voiceState?.channelId) {
                 return client;
             }
         }
