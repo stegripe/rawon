@@ -191,7 +191,7 @@ export async function play(
                 embeds: [
                     createEmbed(
                         "error",
-                        `❌ **|** ${__mf("utils.generalHandler.errorPlaying", {
+                        `${__mf("utils.generalHandler.errorPlaying", {
                             message: `\`${(error as Error).message.substring(0, 200)}\``,
                         })}`,
                         true,
