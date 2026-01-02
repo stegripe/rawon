@@ -191,7 +191,7 @@
             "repeat": {
                 "actualMode": "El modo de repetición actual es {mode}",
                 "description": "Repite la canción actual o la cola completa",
-                "footer": "Para cambiar el modo, revisa '{prefix}help repeat'",
+                "footer": "Para cambiar el modo, revisa {prefix}help repeat",
                 "newMode": "El modo de reproducción ha sido establecido a {mode}",
                 "slashDisable": "Desactiva el modo repetición",
                 "slashQueue": "Establece el mode repetición a **`Cola`**",

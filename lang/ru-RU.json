@@ -139,7 +139,7 @@
             "filter": {
                 "availableFilters": "Доступные фильтры",
                 "currentlyUsedFilters": "Используемые в настоящее время фильтры",
-                "currentState": "`Состояние фильтра '{filter}': {state}",
+                "currentState": "`Состояние фильтра {filter}: {state}",
                 "description": "Найстройка фильтра песни",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
                 "filterSet": "Новое состояние фильтра {filter}: {state}",

@@ -139,10 +139,10 @@
             "filter": {
                 "availableFilters": "Доступні фільтри",
                 "currentlyUsedFilters": "Фільтри що наразі використовуються",
-                "currentState": "Стан фільтра '{filter}': {state}",
+                "currentState": "Стан фільтра {filter}: {state}",
                 "description": "Налаштувати фільтр пісень",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
-                "filterSet": "Новий стан фільтра '{filter}': {state}",
+                "filterSet": "Новий стан фільтра {filter}: {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Перевірте поточний стан фільтрів пісень",
