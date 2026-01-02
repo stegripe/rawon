@@ -86,6 +86,21 @@ export class MultiClientManager {
     }
 
     /**
+     * Get the voice channel ID a bot is connected to in a guild.
+     * Uses guild.queue?.connection which is more reliable than member voice state.
+     */
+    private getBotVoiceChannelId(guild: Guild): string | undefined {
+        // Primary method: Check the queue connection (most reliable)
+        const queueVoiceChannelId = guild.queue?.connection?.joinConfig.channelId;
+        if (queueVoiceChannelId) {
+            return queueVoiceChannelId;
+        }
+        
+        // Fallback: Check member voice state
+        return guild.members.me?.voice?.channelId ?? undefined;
+    }
+
+    /**
      * Check if this client should handle events (messages, interactions, etc.)
      *
      * Logic:
@@ -114,9 +129,8 @@ export class MultiClientManager {
         // If user is in a voice channel, use voice-aware logic
         if (userVoiceChannelId) {
             // Check if THIS client is in the user's voice channel
-            // Use guild.members.me for reliable bot member data
-            const botVoiceState = guild.members.me?.voice;
-            if (botVoiceState?.channelId === userVoiceChannelId) {
+            const botVoiceChannelId = this.getBotVoiceChannelId(guild);
+            if (botVoiceChannelId === userVoiceChannelId) {
                 // This bot is in the same voice channel as user - it should handle
                 return true;
             }
@@ -127,9 +141,11 @@ export class MultiClientManager {
                     continue;
                 }
                 const otherGuild = c.guilds.cache.get(guildId);
-                // Use guild.members.me for reliable bot member data
-                const otherVoiceState = otherGuild?.members.me?.voice;
-                if (otherVoiceState?.channelId === userVoiceChannelId) {
+                if (!otherGuild) {
+                    continue;
+                }
+                const otherVoiceChannelId = this.getBotVoiceChannelId(otherGuild);
+                if (otherVoiceChannelId === userVoiceChannelId) {
                     // Another bot is in user's voice channel - this client should NOT handle
                     return false;
                 }
@@ -149,9 +165,8 @@ export class MultiClientManager {
                     debugInfo.push(`${c.user.tag}: not in guild`);
                     continue;
                 }
-                // Use guild.members.me for reliable bot member data
-                const cVoiceState = cGuild.members.me?.voice;
-                const voiceChannelId = cVoiceState?.channelId;
+                // Use queue connection as primary, member voice state as fallback
+                const voiceChannelId = this.getBotVoiceChannelId(cGuild);
                 debugInfo.push(`${c.user.tag}: voice=${voiceChannelId ?? "none"}`);
                 if (!voiceChannelId && !selectedClientId) {
                     // This bot is available (not in voice) - select first available
@@ -216,9 +231,9 @@ export class MultiClientManager {
             }
 
             // Check if this client is already in a voice channel in this guild
-            // Use guild.members.me for reliable bot member data
-            const voiceState = guild.members.me?.voice;
-            if (!voiceState?.channelId) {
+            // Use queue connection as primary, member voice state as fallback
+            const voiceChannelId = this.getBotVoiceChannelId(guild);
+            if (!voiceChannelId) {
                 return client;
             }
         }
