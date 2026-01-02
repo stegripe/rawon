@@ -119,10 +119,10 @@
             "dj": {
                 "description": "Ubah pengaturan fitur DJ",
                 "disable": "Nonaktif",
-                "disableText": "Fitur DJ udah di **`MATIKAN`**",
+                "disableText": "Fitur DJ udah di **`Disabled`**",
                 "embedTitle": "Fitur DJ",
                 "enable": "Aktif",
-                "enableText": "Fitur DJ udah di **`NYALAKAN`**",
+                "enableText": "Fitur DJ udah di **`Enabled`**",
                 "newRoleText": "role baru",
                 "noPermission": "Kamu gak punya izin **Manage Server** buat pake perintah ini.",
                 "role": {
@@ -194,8 +194,8 @@
                 "footer": "Buat ganti mode, cek {prefix}help repeat",
                 "newMode": "Mode repeat udah diatur ke {mode}",
                 "slashDisable": "Matiin mode repeat",
-                "slashQueue": "Atur mode repeat ke **`QUEUE`**",
-                "slashSong": "Atur mode repeat ke **`SONG`**",
+                "slashQueue": "Atur mode repeat ke **`Queue`**",
+                "slashSong": "Atur mode repeat ke **`Song`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -338,8 +338,8 @@
             "noQueue": "Antrian media player-nya lagi kosong.",
             "notPlaying": "Gak ada musik yang lagi diputar. Muter lagu dulu dong.",
             "sameVC": "Kamu harus ada di voice channel yang sama sama aku.",
-            "validVCJoinable": "Sori, tapi aku gak bisa **`CONNECT`** ke voice channel-mu, pastiin aku punya izin yang bener ya.",
-            "validVCPermission": "Sori, tapi aku gak bisa **`SPEAK`** di voice channel, pastiin aku punya izin yang bener ya.",
+            "validVCJoinable": "Sori, tapi aku gak bisa **`Connect`** ke voice channel-mu, pastiin aku punya izin yang bener ya.",
+            "validVCPermission": "Sori, tapi aku gak bisa **`Speak`** di voice channel, pastiin aku punya izin yang bener ya.",
             "useRequestChannel": "Pake channel request {channel} buat perintah musik ya.",
             "useRequestChannelDirect": "Perintah ini dinonaktifin di channel request. Pake tombol pemutar atau ketik judul/link lagu langsung aja."
         }

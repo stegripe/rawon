@@ -119,10 +119,10 @@
             "dj": {
                 "description": "Thay đổi cài đặt tính năng DJ",
                 "disable": "Đã tắt",
-                "disableText": "Tính năng DJ đã bị **`TẮT`**",
+                "disableText": "Tính năng DJ đã bị **`Tắt`**",
                 "embedTitle": "tính năng DJ",
                 "enable": "Đã bật",
-                "enableText": "Tính năng DJ đã được **`BẬT`**",
+                "enableText": "Tính năng DJ đã được **`Bật`**",
                 "newRoleText": "vai trò mới",
                 "noPermission": "Bạn không có quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "role": {
@@ -194,8 +194,8 @@
                 "footer": "Để thay đổi chế độ, nhập {prefix}help repeat",
                 "newMode": "Chế độ lặp lại đã được đặt thành {mode}",
                 "slashDisable": "Tắt chế độ lặp lại",
-                "slashQueue": "Đặt chế độ lặp lại trong **`HÀNG ĐỢI`**",
-                "slashSong": "Đặt chế độ lặp lại tới **`BÀI HÁT`**",
+                "slashQueue": "Đặt chế độ lặp lại trong **`Hàng đợi`**",
+                "slashSong": "Đặt chế độ lặp lại tới **`Bài hát`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -338,8 +338,8 @@
             "noQueue": "Đang rảnh rỗi.",
             "notPlaying": "Hiện không có nhạc đang phát. Vui lòng phát một bài hát trước.",
             "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
-            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`KẾT NỐI`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`NÓI`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`Kết nối`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`Nói`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
             "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc.",
             "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp."
         }

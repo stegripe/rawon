@@ -119,10 +119,10 @@
             "dj": {
                 "description": "DJ özelliği ayarlarını değiştir",
                 "disable": "Devre dışı",
-                "disableText": "DJ özelliği **`DEVRE DIŞI BIRAKILDI`**",
+                "disableText": "DJ özelliği **`Devre dışı bırakıldı`**",
                 "embedTitle": "DJ özelliği",
                 "enable": "Etkin",
-                "enableText": "DJ özelliği **`ETKİN`**",
+                "enableText": "DJ özelliği **`Etkin`**",
                 "newRoleText": "yeni rol",
                 "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine sahip değilsiniz.",
                 "role": {
@@ -194,8 +194,8 @@
                 "footer": "Modu değiştirmek için bkz. {prefix}help repeat",
                 "newMode": "Tekrar modu {mode} olarak ayarlanmıştır",
                 "slashDisable": "Tekrar modunu devre dışı bırak",
-                "slashQueue": "Tekrar modunu **`ŞARKI KUYRUĞU`** olarak ayarlayın",
-                "slashSong": "Tekrar modunu **`ŞARKI`** olarak ayarlayın",
+                "slashQueue": "Tekrar modunu **`Şarkı kuyruğu`** olarak ayarlayın",
+                "slashSong": "Tekrar modunu **`Şarkı`** olarak ayarlayın",
                 "usage": "'{prefix}'repeat <{seçenekler}>"
             },
             "resume": {
@@ -338,8 +338,8 @@
             "noQueue": "Hiçbir şey çalınmıyor.",
             "notPlaying": "Şu anda müzik çalmıyor. Lütfen önce bir şarkı çalın.",
             "sameVC": "Benimle aynı ses kanalında olmanız gerekiyor.",
-            "validVCJoinable": "Üzgünüm ama ses kanalınıza **`BAĞLANAMIYORUM`**, uygun izinlere sahip olduğumdan emin olun.",
-            "validVCPermission": "Üzgünüm ama bu ses kanalında **`KONUŞMA`** yetkim yok; uygun izinlere sahip olduğumdan emin olun.",
+            "validVCJoinable": "Üzgünüm ama ses kanalınıza **`Bağlanamıyorum`**, uygun izinlere sahip olduğumdan emin olun.",
+            "validVCPermission": "Üzgünüm ama bu ses kanalında **`Konuşma`** yetkim yok; uygun izinlere sahip olduğumdan emin olun.",
             "useRequestChannel": "Müzik komutları için lütfen istek kanalını {channel} kullanın.",
             "useRequestChannelDirect": "Bu komut istek kanalında devre dışı bırakılmıştır. Lütfen oynatıcı düğmelerini kullanın veya şarkı adını/bağlantısını doğrudan yazın."
         }

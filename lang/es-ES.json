@@ -119,10 +119,10 @@
             "dj": {
                 "description": "Cambia la configuración del DJ",
                 "disable": "Desactivado",
-                "disableText": "La función DJ ha sido **`DESACTIVADA`**",
+                "disableText": "La función DJ ha sido **`Desactivada`**",
                 "embedTitle": "DJ",
                 "enable": "Activado",
-                "enableText": "La función DJ ha sido **`ACTIVADA`**",
+                "enableText": "La función DJ ha sido **`Activada`**",
                 "newRoleText": "Nuevo rol",
                 "noPermission": "No tienes el permiso **Gestionar Servidor** para usar este comando.",
                 "role": {
@@ -194,8 +194,8 @@
                 "footer": "Para cambiar el modo, revisa '{prefix}help repeat'",
                 "newMode": "El modo de reproducción ha sido establecido a {mode}",
                 "slashDisable": "Desactiva el modo repetición",
-                "slashQueue": "Establece el mode repetición a **`COLA`**",
-                "slashSong": "Establece el mode repetición a **`UNA`**",
+                "slashQueue": "Establece el mode repetición a **`Cola`**",
+                "slashSong": "Establece el mode repetición a **`Una`**",
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
@@ -338,8 +338,8 @@
             "noQueue": "No se está reproduciendo nada.",
             "notPlaying": "No hay música reproduciéndose actualmente. Por favor, reproduce una canción primero.",
             "sameVC": "Necesitas estar en el mismo canal de voz que yo.",
-            "validVCJoinable": "Lo siento, pero no tengo el permiso **`CONECTAR`** en tu servidor.",
-            "validVCPermission": "Lo siento, pero no tengo el permiso **`HABLAR`** en tu servidor.",
+            "validVCJoinable": "Lo siento, pero no tengo el permiso **`Conectar`** en tu servidor.",
+            "validVCPermission": "Lo siento, pero no tengo el permiso **`Hablar`** en tu servidor.",
             "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música.",
             "useRequestChannelDirect": "Este comando está deshabilitado en el canal de solicitudes. Por favor, usa los botones del reproductor o escribe el título/enlace de la canción directamente."
         }

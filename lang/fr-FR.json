@@ -119,10 +119,10 @@
             "dj": {
                 "description": "Modifier les paramètres de la fonctionnalité DJ",
                 "disable": "Désactivé",
-                "disableText": "La fonctionnalité DJ a été **`DÉSACTIVÉE`**",
+                "disableText": "La fonctionnalité DJ a été **`Désactivée`**",
                 "embedTitle": "Fonctionnalité DJ",
                 "enable": "Activé",
-                "enableText": "La fonctionnalité DJ a été **`ACTIVÉ`**",
+                "enableText": "La fonctionnalité DJ a été **`Activée`**",
                 "newRoleText": "nouveau rôle",
                 "noPermission": "Vous n'avez pas la permission **Gérer le serveur** pour utiliser cette commande.",
                 "role": {
@@ -194,8 +194,8 @@
                 "footer": "Pour changer de mode, consultez {prefix}help repeat",
                 "newMode": "Le mode de répétition a été défini sur {mode}",
                 "slashDisable": "Désactiver le mode répétition",
-                "slashQueue": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
-                "slashSong": "Régler le mode de répétition sur **`LISTE D'ATTENTE`**",
+                "slashQueue": "Régler le mode de répétition sur **`Liste d'attente`**",
+                "slashSong": "Régler le mode de répétition sur **`Chanson`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -338,8 +338,8 @@
             "noQueue": "Il n'y a rien à jouer.",
             "notPlaying": "Aucune musique n'est en cours de lecture. Veuillez d'abord lancer une chanson.",
             "sameVC": "Vous devez être dans le même salon vocal que le mien.",
-            "validVCJoinable": "Désolé, mais je ne peux pas **`ME CONNECTER`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
-            "validVCPermission": "Désolé, mais je ne peux pas **`PARLER`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCJoinable": "Désolé, mais je ne peux pas **`Me connecter`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCPermission": "Désolé, mais je ne peux pas **`Parler`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
             "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
             "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les boutons du lecteur ou taper directement le titre/lien de la chanson."
         }

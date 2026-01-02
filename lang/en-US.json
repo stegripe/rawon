@@ -119,10 +119,10 @@
             "dj": {
                 "description": "Change DJ feature settings",
                 "disable": "Disabled",
-                "disableText": "DJ feature has been **`DISABLED`**",
+                "disableText": "DJ feature has been **`Disabled`**",
                 "embedTitle": "DJ feature",
                 "enable": "Enabled",
-                "enableText": "DJ feature has been **`ENABLED`**",
+                "enableText": "DJ feature has been **`Enabled`**",
                 "newRoleText": "new role",
                 "noPermission": "You don't have the **Manage Server** permission to use this command.",
                 "role": {
@@ -194,8 +194,8 @@
                 "footer": "To change mode, see {prefix}help repeat",
                 "newMode": "The repeat mode has been set to {mode}",
                 "slashDisable": "Disable repeat mode",
-                "slashQueue": "Set repeat mode to **`QUEUE`**",
-                "slashSong": "Set repeat mode to **`SONG`**",
+                "slashQueue": "Set repeat mode to **`Queue`**",
+                "slashSong": "Set repeat mode to **`Song`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -380,8 +380,8 @@
             "sameVC": "You need to be in the same voice channel as mine.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
             "useRequestChannelDirect": "This command is disabled in the request channel. Please use the player buttons or type the song title/link directly.",
-            "validVCJoinable": "Sorry, but I can't **`CONNECT`** to your voice channel, make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't **`SPEAK`** in this voice channel; make sure I have the proper permissions."
+            "validVCJoinable": "Sorry, but I can't **`Connect`** to your voice channel, make sure I have the proper permissions.",
+            "validVCPermission": "Sorry, but I can't **`Speak`** in this voice channel; make sure I have the proper permissions."
         }
     }
 }

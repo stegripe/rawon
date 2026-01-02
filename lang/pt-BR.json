@@ -119,10 +119,10 @@
             "dj": {
                 "description": "Muda a configuração do DJ",
                 "disable": "Desativado",
-                "disableText": "A função DJ foi **`DESATIVADA`**",
+                "disableText": "A função DJ foi **`Desativada`**",
                 "embedTitle": "DJ",
                 "enable": "Ativado",
-                "enableText": "A função DJ foi **`ATIVADA`**",
+                "enableText": "A função DJ foi **`Ativada`**",
                 "newRoleText": "novo Cargo",
                 "noPermission": "Você não tem a permissão **Gerenciar Servidor** para usar este comando.",
                 "role": {
@@ -194,8 +194,8 @@
                 "footer": "Para mudar o modo, veja {prefix}help repeat",
                 "newMode": "O modo de repetição agora está {mode}",
                 "slashDisable": "Desativa o modo de repetição",
-                "slashQueue": "Altera o modo de repetição para **`FILA`**",
-                "slashSong": "Altera o modo de repetição para **`MÚSICA`**",
+                "slashQueue": "Altera o modo de repetição para **`Fila`**",
+                "slashSong": "Altera o modo de repetição para **`Música`**",
                 "usage": "'{prefix}'repeat <{options}>"
             },
             "resume": {
@@ -338,8 +338,8 @@
             "noQueue": "Nada está tocando.",
             "notPlaying": "Não há música tocando no momento. Por favor, toque uma música primeiro.",
             "sameVC": "Você precisa estar no mesmo canal de voz que o meu.",
-            "validVCJoinable": "Desculpe, mas não posso me **`CONECTAR`** ao seu canal de voz, certifique-se de que eu tenho as permissões necessárias.",
-            "validVCPermission": "Desculpe, mas eu não posso **`FALAR`** nesse canal de voz; certifique-se de que eu tenho as permissões necessárias.",
+            "validVCJoinable": "Desculpe, mas não posso me **`Conectar`** ao seu canal de voz, certifique-se de que eu tenho as permissões necessárias.",
+            "validVCPermission": "Desculpe, mas eu não posso **`Falar`** nesse canal de voz; certifique-se de que eu tenho as permissões necessárias.",
             "useRequestChannel": "Por favor, use o canal de pedidos {channel} para comandos de música.",
             "useRequestChannelDirect": "Este comando está desativado no canal de solicitações. Por favor, use os botões do player ou digite o título/link da música diretamente."
         }
