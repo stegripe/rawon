@@ -271,34 +271,36 @@ export class MessageCreateEvent extends BaseEvent {
                 return;
             }
 
-            // Check if another bot is already registered as handling this voice channel
-            const registeredHandlerId = this.client.multiBotManager.getVoiceChannelHandlerBotId(
-                guild.id,
-                voiceChannel.id,
+            const thisBotId = this.client.user?.id ?? "";
+            const thisBotVoiceChannel = thisBotsGuild.members.me?.voice.channel;
+
+            // Debug logging
+            this.client.logger.debug(
+                `[MULTI-BOT] Bot ${this.client.user?.tag} checking. ` +
+                    `thisBotVoiceChannel: ${thisBotVoiceChannel?.name ?? "null"}, ` +
+                    `userVoiceChannel: ${voiceChannel.name}(${voiceChannel.id})`,
             );
-            if (registeredHandlerId && registeredHandlerId !== this.client.user?.id) {
+
+            // Rule 1: If this bot is in a DIFFERENT voice channel, skip
+            if (thisBotVoiceChannel && thisBotVoiceChannel.id !== voiceChannel.id) {
                 this.client.logger.debug(
-                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - another bot (${registeredHandlerId}) is registered for channel ${voiceChannel.name}(${voiceChannel.id})`,
+                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - already in different voice channel ${thisBotVoiceChannel.name}`,
                 );
                 return;
             }
 
-            // Check if THIS bot is already registered as handling a DIFFERENT voice channel
+            // Rule 2: If this bot is registered for a DIFFERENT voice channel, skip
             const isThisBotHandlingOther = this.client.multiBotManager.isBotHandlingAnyVoiceChannel(
                 guild.id,
-                this.client.user?.id ?? "",
+                thisBotId,
             );
             if (isThisBotHandlingOther) {
-                // Check if it's for the same channel
-                const thisBotsRegisteredChannel =
+                const registeredForThisChannel =
                     this.client.multiBotManager.getVoiceChannelHandlerBotId(
                         guild.id,
                         voiceChannel.id,
                     );
-                this.client.logger.debug(
-                    `[MULTI-BOT] Bot ${this.client.user?.tag} is handling another channel. Checking if registered for ${voiceChannel.name}(${voiceChannel.id}): ${thisBotsRegisteredChannel ?? "not registered"}`,
-                );
-                if (thisBotsRegisteredChannel !== this.client.user?.id) {
+                if (registeredForThisChannel !== thisBotId) {
                     this.client.logger.debug(
                         `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - already handling a different voice channel`,
                     );
@@ -306,94 +308,24 @@ export class MessageCreateEvent extends BaseEvent {
                 }
             }
 
-            // Check if THIS bot is already in a voice channel in this guild
-            const thisBotVoiceChannel = thisBotsGuild.members.me?.voice.channel;
-
-            // Debug logging
-            this.client.logger.debug(
-                `[MULTI-BOT] Bot ${this.client.user?.tag} checking voice channel. ` +
-                    `thisBotVoiceChannel: ${thisBotVoiceChannel?.name ?? "null"}, ` +
-                    `userVoiceChannel: ${voiceChannel.name}`,
+            // Rule 3: Try to atomically claim this voice channel
+            // This is the key fix for race conditions - claim BEFORE any other checks
+            const claimed = this.client.multiBotManager.tryClaimVoiceChannel(
+                guild.id,
+                voiceChannel.id,
+                thisBotId,
             );
 
-            if (thisBotVoiceChannel && thisBotVoiceChannel.id !== voiceChannel.id) {
-                // This bot is already in a different voice channel
-                // Don't move it - let another bot handle this user's voice channel
+            if (!claimed) {
                 this.client.logger.debug(
-                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - already in different voice channel`,
+                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - failed to claim voice channel (another bot got it first)`,
                 );
                 return;
             }
 
-            // Check if there's an existing queue connected to a DIFFERENT voice channel
-            // The queue is shared, so we need to check if the existing connection is for a different channel
-            const existingQueueVoiceChannelId = guild.queue?.connection?.joinConfig.channelId;
-
             this.client.logger.debug(
-                `[MULTI-BOT] Bot ${this.client.user?.tag} existingQueueVoiceChannelId: ${existingQueueVoiceChannelId ?? "null"}`,
+                `[MULTI-BOT] Bot ${this.client.user?.tag} claimed and will handle this request`,
             );
-
-            if (existingQueueVoiceChannelId && existingQueueVoiceChannelId !== voiceChannel.id) {
-                // There's already a queue for a different voice channel
-                // This bot should NOT add to that queue - let another bot handle this user
-                this.client.logger.debug(
-                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - queue exists for different channel`,
-                );
-                return;
-            }
-
-            // Check if ANY other bot in our system is already in a voice channel in this guild
-            // If so, and it's not the user's voice channel, we should let them handle their channel
-            for (const [, otherClient] of this.client.multiBotManager.getAllClients()) {
-                if (otherClient.user?.id === this.client.user?.id) {
-                    continue;
-                }
-
-                const otherBotsGuild = otherClient.guilds.cache.get(guild.id);
-                const otherBotVoiceChannel = otherBotsGuild?.members.me?.voice.channel;
-
-                this.client.logger.debug(
-                    `[MULTI-BOT] Checking other bot ${otherClient.user?.tag}: ` +
-                        `voiceChannel: ${otherBotVoiceChannel?.name ?? "null"}`,
-                );
-
-                // If another bot is in the user's voice channel, let that bot handle it
-                if (otherBotVoiceChannel?.id === voiceChannel.id) {
-                    this.client.logger.debug(
-                        `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - other bot ${otherClient.user?.tag} is in user's channel`,
-                    );
-                    return;
-                }
-            }
-
-            // If this bot is not in any voice channel, check if this bot is the appropriate handler
-            if (!thisBotVoiceChannel) {
-                const appropriateHandler = this.client.multiBotManager.getVoiceChannelHandler(
-                    guild,
-                    voiceChannel,
-                );
-                if (appropriateHandler && appropriateHandler.user?.id !== this.client.user?.id) {
-                    // Another bot should handle this voice channel
-                    this.client.logger.debug(
-                        `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - ${appropriateHandler.user?.tag} is appropriate handler`,
-                    );
-                    return;
-                }
-            }
-
-            this.client.logger.debug(
-                `[MULTI-BOT] Bot ${this.client.user?.tag} will handle this request`,
-            );
-
-            // Register this bot as handling this voice channel BEFORE any async operations
-            // This prevents race conditions where another request comes in before we join
-            if (this.client.user?.id) {
-                this.client.multiBotManager.setVoiceChannelHandler(
-                    guild.id,
-                    voiceChannel.id,
-                    this.client.user.id,
-                );
-            }
         }
 
         const songs = await searchTrack(this.client, query).catch(() => null);

@@ -47,6 +47,42 @@ export class MultiBotManager {
     }
 
     /**
+     * Try to claim a voice channel for a bot. Returns true if successful (no one else has it).
+     * This is atomic - checks and sets in one operation to prevent race conditions.
+     */
+    public tryClaimVoiceChannel(
+        guildId: Snowflake,
+        voiceChannelId: Snowflake,
+        botId: Snowflake,
+    ): boolean {
+        const key = `${guildId}:${voiceChannelId}`;
+        const existingHandler = this.voiceChannelHandlers.get(key);
+
+        // If already claimed by this bot, success
+        if (existingHandler === botId) {
+            return true;
+        }
+
+        // If claimed by another bot, fail
+        if (existingHandler) {
+            console.log(
+                `[MULTI-BOT-CLAIM] Bot ${botId} failed to claim channel ${voiceChannelId} - already claimed by ${existingHandler}`,
+            );
+            return false;
+        }
+
+        // Not claimed, claim it now
+        this.voiceChannelHandlers.set(key, botId);
+        const handlersStr = Array.from(this.voiceChannelHandlers.entries())
+            .map(([k, v]) => `${k}=${v}`)
+            .join(", ");
+        console.log(
+            `[MULTI-BOT-CLAIM] Bot ${botId} claimed channel ${voiceChannelId}. Handlers: ${handlersStr}`,
+        );
+        return true;
+    }
+
+    /**
      * Clear the voice channel handler when bot leaves
      */
     public clearVoiceChannelHandler(guildId: Snowflake, voiceChannelId: Snowflake): void {
@@ -267,15 +303,21 @@ export class MultiBotManager {
                     guild.id,
                     client.user?.id ?? "",
                 );
+                console.log(
+                    `[MULTI-BOT-HANDLER] Checking ${client.user?.tag}: botVoiceChannel=${botVoiceChannel?.name ?? "null"}, isHandlingOther=${isHandlingOtherChannel}`,
+                );
                 // Bot is available (not in any voice channel AND not handling any channel)
                 if (!botVoiceChannel && !isHandlingOtherChannel) {
+                    console.log(`[MULTI-BOT-HANDLER] Returning ${client.user?.tag} as available`);
                     return client;
                 }
             }
         }
 
-        // All bots are busy, return the primary bot in the guild if available
-        return this.getResponsibleClient(guild);
+        // All bots are busy, return null instead of primary bot
+        // This forces the calling code to handle the case where no bot is truly available
+        console.log(`[MULTI-BOT-HANDLER] All bots busy, returning null`);
+        return null;
     }
 
     /**
