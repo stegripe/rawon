@@ -14,41 +14,47 @@ if (tokens.length === 0) {
     process.exit(1);
 }
 
-// For multi-client mode, we use the first token for the ShardingManager
-// The bot.ts will handle logging into all tokens within the same process
-const primaryToken = tokens[0];
-
+// Multi-client mode: spawn bot.ts directly without ShardingManager
+// This allows all clients to run in ONE process with proper coordination
 if (tokens.length > 1) {
     log.info(
         `[MultiClient] Detected ${tokens.length} tokens. Starting unified multi-client mode...`,
     );
+    // Import and run bot.ts directly (no sharding for multi-client)
+    try {
+        await import("./bot.js");
+    } catch (error: unknown) {
+        log.error("[MultiClient] Failed to start multi-client mode:", error);
+        process.exit(1);
+    }
+} else {
+    // Single-client mode: use ShardingManager as before
+    const manager = new ShardingManager(
+        nodePath.resolve(importURLToString(import.meta.url), "bot.js"),
+        {
+            totalShards: shardsCount,
+            respawn: true,
+            token: tokens[0],
+            mode: shardingMode,
+        },
+    );
+
+    await manager
+        .on("shardCreate", (shard) => {
+            log.info(`[ShardManager] Shard #${shard.id} has spawned.`);
+            shard
+                .on("disconnect", () =>
+                    log.warn("SHARD_DISCONNECTED: ", {
+                        stack: `[ShardManager] Shard #${shard.id} has disconnected.`,
+                    }),
+                )
+                .on("reconnecting", () =>
+                    log.info(`[ShardManager] Shard #${shard.id} has reconnected.`),
+                );
+            if (manager.shards.size === manager.totalShards) {
+                log.info("[ShardManager] All shards are spawned successfully.");
+            }
+        })
+        .spawn()
+        .catch((error: unknown) => log.error("SHARD_SPAWN_ERR: ", error));
 }
-
-const manager = new ShardingManager(
-    nodePath.resolve(importURLToString(import.meta.url), "bot.js"),
-    {
-        totalShards: shardsCount,
-        respawn: true,
-        token: primaryToken,
-        mode: shardingMode,
-    },
-);
-
-await manager
-    .on("shardCreate", (shard) => {
-        log.info(`[ShardManager] Shard #${shard.id} has spawned.`);
-        shard
-            .on("disconnect", () =>
-                log.warn("SHARD_DISCONNECTED: ", {
-                    stack: `[ShardManager] Shard #${shard.id} has disconnected.`,
-                }),
-            )
-            .on("reconnecting", () =>
-                log.info(`[ShardManager] Shard #${shard.id} has reconnected.`),
-            );
-        if (manager.shards.size === manager.totalShards) {
-            log.info("[ShardManager] All shards are spawned successfully.");
-        }
-    })
-    .spawn()
-    .catch((error: unknown) => log.error("SHARD_SPAWN_ERR: ", error));
