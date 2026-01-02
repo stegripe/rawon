@@ -16,13 +16,15 @@ if (tokens.length === 0) {
     process.exit(1);
 }
 
+const getBotLabel = (index: number): string => (tokens.length > 1 ? `[Bot ${index + 1}]` : "");
+
 log.info(`[MultiBot] Starting ${tokens.length} bot instance(s)...`);
 
 const managers: ShardingManager[] = [];
 
 for (let botIndex = 0; botIndex < tokens.length; botIndex++) {
     const token = tokens[botIndex];
-    const botLabel = tokens.length > 1 ? `[Bot ${botIndex + 1}]` : "";
+    const botLabel = getBotLabel(botIndex);
 
     const manager = new ShardingManager(
         nodePath.resolve(importURLToString(import.meta.url), "bot.js"),
@@ -55,7 +57,7 @@ for (let botIndex = 0; botIndex < tokens.length; botIndex++) {
 
 await Promise.all(
     managers.map((manager, index) => {
-        const botLabel = managers.length > 1 ? `[Bot ${index + 1}]` : "";
+        const botLabel = getBotLabel(index);
         return manager.spawn().catch((error: unknown) => {
             log.error(`${botLabel}SHARD_SPAWN_ERR: `, error);
         });
