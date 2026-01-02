@@ -5,6 +5,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__ } from "../../utils/functions/i18n.js";
 
 @Command<typeof EvalCommand>({
     aliases: ["evaluate", "ev", "js-exec"],
@@ -16,6 +17,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 })
 export class EvalCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
         const _msg = ctx;
         const _client = this.client;
 
@@ -24,7 +26,7 @@ export class EvalCommand extends BaseCommand {
             .replaceAll(/```(?:\S+\n)?(.*?)\n?```/gsu, (_, a: string) => a);
         const embed = createEmbed("info").addFields([
             {
-                name: i18n.__("commands.developers.eval.inputString"),
+                name: __("commands.developers.eval.inputString"),
                 value: `\`\`\`js\n${code}\`\`\``,
             },
         ]);
@@ -32,9 +34,7 @@ export class EvalCommand extends BaseCommand {
         try {
             if (!code) {
                 await ctx.send({
-                    embeds: [
-                        createEmbed("error", i18n.__("commands.developers.eval.noCode"), true),
-                    ],
+                    embeds: [createEmbed("error", __("commands.developers.eval.noCode"), true)],
                 });
                 return;
             }
@@ -62,9 +62,7 @@ export class EvalCommand extends BaseCommand {
                     ? `${await this.hastebin(cleaned)}.js`
                     : `\`\`\`js\n${cleaned}\`\`\``;
 
-            embed.addFields([
-                { name: i18n.__("commands.developers.eval.outputString"), value: output },
-            ]);
+            embed.addFields([{ name: __("commands.developers.eval.outputString"), value: output }]);
             await ctx
                 .send({
                     askDeletion: {
@@ -82,9 +80,7 @@ export class EvalCommand extends BaseCommand {
 
             embed
                 .setColor("Red")
-                .addFields([
-                    { name: i18n.__("commands.developers.eval.errorString"), value: error },
-                ]);
+                .addFields([{ name: __("commands.developers.eval.errorString"), value: error }]);
             await ctx
                 .send({
                     askDeletion: {

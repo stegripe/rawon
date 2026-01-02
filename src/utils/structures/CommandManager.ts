@@ -9,11 +9,11 @@ import {
     type Snowflake,
     type TextChannel,
 } from "discord.js";
-import i18n from "../../config/index.js";
 import { CommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type CategoryMeta, type CommandComponent } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
+import { i18n__mf } from "../functions/i18n.js";
 import { pathStringToURLString } from "../functions/pathStringToURLString.js";
 
 export class CommandManager extends Collection<string, CommandComponent> {
@@ -232,15 +232,16 @@ export class CommandManager extends Collection<string, CommandComponent> {
                 const timeLeft = (expirationTime - now) / 1_000;
                 const msgChannel = message.channel;
                 if ("send" in msgChannel) {
+                    const __mf = i18n__mf(this.client, message.guild);
                     void (async () => {
                         try {
                             const sentMsg = await msgChannel.send({
                                 embeds: [
                                     createEmbed(
                                         "warn",
-                                        `⚠️ **|** ${i18n.__mf("utils.cooldownMessage", {
+                                        `⚠️ **|** ${__mf("utils.cooldownMessage", {
                                             author: message.author.toString(),
-                                            timeleft: timeLeft.toFixed(1),
+                                            timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
                                         })}`,
                                         true,
                                     ),

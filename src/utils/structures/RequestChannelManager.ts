@@ -10,10 +10,11 @@ import {
     type Message,
     type TextChannel,
 } from "discord.js";
-import i18n, { requestChannelSplash } from "../../config/index.js";
+import { requestChannelSplash } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
 
 export class RequestChannelManager {
@@ -103,33 +104,36 @@ export class RequestChannelManager {
         const queue = guild.queue;
         const savedState = this.client.data.data?.[guild.id]?.playerState;
 
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
+
         if (!queue || queue.songs.size === 0) {
             const savedLoopMode = savedState?.loopMode ?? "OFF";
             const savedShuffle = savedState?.shuffle ?? false;
             const savedVolume = savedState?.volume ?? 100;
 
-            return createEmbed("info", i18n.__("requestChannel.standby"))
-                .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
+            return createEmbed("info", __("requestChannel.standby"))
+                .setTitle(`🎵  ${__("requestChannel.title")}`)
                 .setImage(requestChannelSplash)
                 .addFields([
                     {
-                        name: i18n.__("requestChannel.status"),
+                        name: __("requestChannel.status"),
                         value: `▶️ ${savedLoopMode}`,
                         inline: true,
                     },
                     {
-                        name: i18n.__("requestChannel.shuffle"),
+                        name: __("requestChannel.shuffle"),
                         value: `🔀 ${savedShuffle ? "ON" : "OFF"}`,
                         inline: true,
                     },
                     {
-                        name: i18n.__("requestChannel.volume"),
+                        name: __("requestChannel.volume"),
                         value: `🔊 ${savedVolume}%`,
                         inline: true,
                     },
                 ])
                 .setFooter({
-                    text: i18n.__mf("requestChannel.queueFooter", { count: 0, duration: "0:00" }),
+                    text: __mf("requestChannel.queueFooter", { count: 0, duration: "0:00" }),
                 });
         }
 
@@ -159,7 +163,7 @@ export class RequestChannelManager {
         const imageUrl = hasThumbnail ? song?.thumbnail : requestChannelSplash;
 
         const embed = createEmbed("info")
-            .setTitle(`🎵  ${i18n.__("requestChannel.title")}`)
+            .setTitle(`🎵  ${__("requestChannel.title")}`)
             .setImage(imageUrl ?? requestChannelSplash);
 
         const guildIcon = guild.iconURL({ size: 2_048 });
@@ -174,36 +178,36 @@ export class RequestChannelManager {
         if (song) {
             let durationLine: string;
             if (isLive) {
-                durationLine = `🔴 **\`${i18n.__("requestChannel.live")}\`**`;
+                durationLine = `🔴 **\`${__("requestChannel.live")}\`**`;
             } else {
                 const songDurationStr = duration > 0 ? normalizeTime(duration) : "--:--";
-                durationLine = `${statusEmoji} ${i18n.__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
+                durationLine = `${statusEmoji} ${__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
             }
 
             embed.setDescription(
                 `### [${song.title}](${song.url})\n\n` +
                     `${durationLine}\n\n` +
-                    `${i18n.__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? i18n.__("requestChannel.unknown")}`,
+                    `${__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? __("requestChannel.unknown")}`,
             );
         } else {
-            embed.setDescription(`${statusEmoji} ${i18n.__("requestChannel.standby")}`);
+            embed.setDescription(`${statusEmoji} ${__("requestChannel.standby")}`);
         }
 
         const shuffleState = queue.shuffle ? "ON" : "OFF";
         embed.addFields([
             {
-                name: i18n.__("requestChannel.status"),
+                name: __("requestChannel.status"),
                 value: `${loopEmoji} ${queue.loopMode}`,
                 inline: true,
             },
-            { name: i18n.__("requestChannel.shuffle"), value: `🔀 ${shuffleState}`, inline: true },
-            { name: i18n.__("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true },
+            { name: __("requestChannel.shuffle"), value: `🔀 ${shuffleState}`, inline: true },
+            { name: __("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true },
         ]);
 
         const queueDurationStr =
             totalQueueDuration > 0 ? formatDuration(totalQueueDuration) : "0:00";
         embed.setFooter({
-            text: i18n.__mf("requestChannel.queueFooter", {
+            text: __mf("requestChannel.queueFooter", {
                 count: queue.songs.size.toString(),
                 duration: queueDurationStr,
             }),

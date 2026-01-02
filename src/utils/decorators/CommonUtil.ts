@@ -1,6 +1,7 @@
 import { PermissionFlagsBits, type PermissionsString, type TextChannel } from "discord.js";
-import i18n from "../../config/index.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
+import { i18n__mf } from "../functions/i18n.js";
 import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
 
 export function memberReqPerms(
@@ -50,6 +51,7 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
     const missingPerms = requiredPerms.filter((perm) => !botPermissions.has(perm));
 
     if (missingPerms.length > 0) {
+        const __mf = i18n__mf(ctx.guild?.client as Rawon, ctx.guild);
         const permNames = missingPerms.map((perm) => {
             if (perm === PermissionFlagsBits.SendMessages) {
                 return "SendMessages";
@@ -65,7 +67,7 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
                 embeds: [
                     createEmbed(
                         "error",
-                        i18n.__mf("utils.commonUtil.botMissingChannelPerms", {
+                        __mf("utils.commonUtil.botMissingChannelPerms", {
                             permissions: permNames.join(", "),
                             channel: `<#${channel.id}>`,
                         }),

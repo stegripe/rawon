@@ -8,6 +8,7 @@ import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 import { type SongManager } from "../../utils/structures/SongManager.js";
@@ -32,6 +33,9 @@ export class RemoveCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const djRole = await this.client.utils.fetchDJRole(
             ctx.guild as unknown as NonNullable<typeof ctx.guild>,
         );
@@ -46,7 +50,7 @@ export class RemoveCommand extends BaseCommand {
             !(ctx.member?.permissions.has("ManageGuild") === true)
         ) {
             void ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.remove.noPermission"), true)],
+                embeds: [createEmbed("error", __("commands.music.remove.noPermission"), true)],
             });
             return;
         }
@@ -56,7 +60,7 @@ export class RemoveCommand extends BaseCommand {
             .filter(Boolean);
         if (positions.length === 0) {
             void ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.remove.noPositions"), true)],
+                embeds: [createEmbed("error", __("commands.music.remove.noPositions"), true)],
             });
             return;
         }
@@ -82,13 +86,13 @@ export class RemoveCommand extends BaseCommand {
             ctx.guild.queue.player.stop(true);
         }
 
-        const opening = i18n.__mf("commands.music.remove.songsRemoved", {
+        const opening = __mf("commands.music.remove.songsRemoved", {
             removed: songs.length,
         });
         const pages = chunk(songs, 10).map((vals, ind) => {
             const texts = vals.map(
                 (song, index) =>
-                    `${isSkip ? i18n.__("commands.music.remove.songSkip") : ""}${
+                    `${isSkip ? __("commands.music.remove.songSkip") : ""}${
                         ind * 10 + (index + 1)
                     }.) **[${escapeMarkdown(parseHTMLElements(song.song.title))}](${song.song.url})**`,
             );
@@ -102,7 +106,7 @@ export class RemoveCommand extends BaseCommand {
                 name: opening,
             })
             .setFooter({
-                text: `• ${i18n.__mf("reusable.pageFooter", {
+                text: `• ${__mf("reusable.pageFooter", {
                     actual: 1,
                     total: pages.length,
                 })}`,
@@ -119,7 +123,7 @@ export class RemoveCommand extends BaseCommand {
             author: ctx.author.id,
             edit: (i, emb, page) => {
                 emb.setDescription(page).setFooter({
-                    text: `• ${i18n.__mf("reusable.pageFooter", {
+                    text: `• ${__mf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,
                     })}`,

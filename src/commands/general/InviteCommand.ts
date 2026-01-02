@@ -4,6 +4,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command({
     aliases: ["inv"],
@@ -16,6 +17,8 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 })
 export class InviteCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const invite = this.client.generateInvite({
             permissions: [
                 PermissionFlagsBits.ViewChannel,
@@ -40,11 +43,11 @@ export class InviteCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        i18n.__mf("commands.general.invite.clickURL", {
+                        __mf("commands.general.invite.clickURL", {
                             url: invite,
                         }),
                     ).setAuthor({
-                        name: i18n.__mf("commands.general.invite.inviteTitle", {
+                        name: __mf("commands.general.invite.inviteTitle", {
                             bot: this.client.user?.username,
                         }),
                         iconURL: this.client.user?.displayAvatarURL(),

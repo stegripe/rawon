@@ -19,6 +19,7 @@ import { type Song } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
@@ -74,6 +75,9 @@ export class SearchCommand extends BaseCommand {
     @validVC
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         if (ctx.isInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
@@ -135,7 +139,7 @@ export class SearchCommand extends BaseCommand {
 
         if ((query?.length ?? 0) === 0) {
             const noQueryMsg = await ctx.send({
-                embeds: [createEmbed("warn", i18n.__("commands.music.search.noQuery"))],
+                embeds: [createEmbed("warn", __("commands.music.search.noQuery"))],
             });
             if (this.isRequestChannel(ctx) && noQueryMsg) {
                 this.autoDeleteMessage(noQueryMsg);
@@ -158,7 +162,7 @@ export class SearchCommand extends BaseCommand {
             .catch(() => void 0);
         if (!tracks || tracks.items.length <= 0) {
             const noTracksMsg = await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.search.noTracks"), true)],
+                embeds: [createEmbed("error", __("commands.music.search.noTracks"), true)],
             });
             if (this.isRequestChannel(ctx) && noTracksMsg) {
                 this.autoDeleteMessage(noTracksMsg);
@@ -167,7 +171,7 @@ export class SearchCommand extends BaseCommand {
         }
         if (this.client.config.musicSelectionType === "selectmenu") {
             const selectMenuMsg = await ctx.send({
-                content: i18n.__("commands.music.search.interactionContent"),
+                content: __("commands.music.search.interactionContent"),
                 components: [
                     new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
                         new StringSelectMenuBuilder()
@@ -179,9 +183,7 @@ export class SearchCommand extends BaseCommand {
                                 ),
                             )
                             .addOptions(this.generateSelectMenu(tracks.items))
-                            .setPlaceholder(
-                                i18n.__("commands.music.search.interactionPlaceholder"),
-                            ),
+                            .setPlaceholder(__("commands.music.search.interactionPlaceholder")),
                     ),
                 ],
             });
@@ -195,7 +197,7 @@ export class SearchCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "info",
-                    `${i18n.__mf("commands.music.search.queueEmbed", {
+                    `${__mf("commands.music.search.queueEmbed", {
                         separator: "`,`",
                         example: "`1, 2, 3`",
                     })}\`\`\`\n${tracks.items
@@ -203,11 +205,11 @@ export class SearchCommand extends BaseCommand {
                         .join("\n")}\`\`\``,
                 )
                     .setAuthor({
-                        name: i18n.__("commands.music.search.trackSelectionMessage"),
+                        name: __("commands.music.search.trackSelectionMessage"),
                         iconURL: this.client.user?.displayAvatarURL(),
                     })
                     .setFooter({
-                        text: i18n.__mf("commands.music.search.cancelMessage", {
+                        text: __mf("commands.music.search.cancelMessage", {
                             cancel: "cancel",
                             c: "c",
                         }),
@@ -247,7 +249,7 @@ export class SearchCommand extends BaseCommand {
                     this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
             const noSelectionMsg = await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.search.noSelection"), true)],
+                embeds: [createEmbed("error", __("commands.music.search.noSelection"), true)],
             });
             if (this.isRequestChannel(ctx) && noSelectionMsg) {
                 this.autoDeleteMessage(noSelectionMsg);
@@ -261,7 +263,7 @@ export class SearchCommand extends BaseCommand {
                     this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
             const canceledMsg = await ctx.reply({
-                embeds: [createEmbed("info", i18n.__("commands.music.search.canceledMessage"))],
+                embeds: [createEmbed("info", __("commands.music.search.canceledMessage"))],
             });
             if (this.isRequestChannel(ctx) && canceledMsg) {
                 this.autoDeleteMessage(canceledMsg);

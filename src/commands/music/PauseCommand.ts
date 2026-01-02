@@ -4,6 +4,7 @@ import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__ } from "../../utils/functions/i18n.js";
 
 @Command({
     description: i18n.__("commands.music.pause.description"),
@@ -19,9 +20,11 @@ export class PauseCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+
         if (ctx.guild?.queue?.playing !== true) {
             await ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("commands.music.pause.alreadyPause"))],
+                embeds: [createEmbed("warn", __("commands.music.pause.alreadyPause"))],
             });
 
             return;
@@ -30,9 +33,7 @@ export class PauseCommand extends BaseCommand {
         ctx.guild.queue.playing = false;
 
         await ctx.reply({
-            embeds: [
-                createEmbed("success", `⏸️ **|** ${i18n.__("commands.music.pause.pauseMessage")}`),
-            ],
+            embeds: [createEmbed("success", `⏸️ **|** ${__("commands.music.pause.pauseMessage")}`)],
         });
     }
 }

@@ -10,6 +10,7 @@ import {
     validVC,
 } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__ } from "../../utils/functions/i18n.js";
 
 @Command({
     aliases: ["disconnect", "dc"],
@@ -27,6 +28,8 @@ export class StopCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+
         ctx.guild?.queue?.stop();
         (
             ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
@@ -35,10 +38,7 @@ export class StopCommand extends BaseCommand {
         await ctx
             .reply({
                 embeds: [
-                    createEmbed(
-                        "success",
-                        `⏹️ **|** ${i18n.__("commands.music.stop.stoppedMessage")}`,
-                    ),
+                    createEmbed("success", `⏹️ **|** ${__("commands.music.stop.stoppedMessage")}`),
                 ],
             })
             .catch((error: unknown) => this.client.logger.error("STOP_CMD_ERR:", error));
