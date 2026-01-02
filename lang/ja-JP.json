@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Bot検出を回避するためのCookieを管理",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [番号|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [番号 | all]",
                 "slashAddDescription": "新しいCookieファイルを追加",
                 "slashRemoveDescription": "Cookieファイルを削除",
                 "slashListDescription": "すべてのCookieファイルを一覧表示",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "現在のサーバー言語を表示",
                 "slashResetDescription": "デフォルト言語にリセット",
                 "slashLocaleOption": "設定する言語",
-                "usage": "{prefix}language set <言語>",
+                "usage": "{prefix}language <view | set | reset> [言語]",
                 "embedTitle": "言語設定",
                 "currentLanguage": "現在の言語：",
                 "languageSet": "サーバーの言語が変更されました：",
@@ -118,6 +118,7 @@
             "categoryName": "音楽",
             "dj": {
                 "description": "DJ機能の設定",
+                "usage": "{prefix}dj <enable | disable | role> [ロール]",
                 "disable": "無効",
                 "disableText": "DJ機能は**`無効化`**されました。",
                 "embedTitle": "DJ機能",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "現在使われているフィルター",
                 "currentState": "{filter}は現在{state}です",
                 "description": "フィルターを設定",
+                "usage": "{prefix}filter <enable | disable | status> [フィルター]",
                 "embedFooter": "そのフィルターを{opstate}するには、 {prefix}filter {opstate} {filter}を使用してください。",
                 "filterSet": "{filter}フィルターは現在{state}です。",
                 "slashStateDescription": "{state, select, enable {有効化} other {無効化}} フィルター",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "リクエストチャンネルを削除",
                 "slashStatusDescription": "現在のリクエストチャンネルを表示",
                 "slashChannelDescription": "リクエストチャンネルとして設定するチャンネル",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

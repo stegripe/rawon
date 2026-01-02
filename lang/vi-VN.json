@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Quản lý cookies để vượt qua phát hiện bot",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [số|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [số | all]",
                 "slashAddDescription": "Thêm file cookies mới",
                 "slashRemoveDescription": "Xóa file cookies",
                 "slashListDescription": "Liệt kê tất cả file cookies",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Xem ngôn ngữ máy chủ hiện tại",
                 "slashResetDescription": "Đặt lại về ngôn ngữ mặc định",
                 "slashLocaleOption": "Ngôn ngữ cần đặt",
-                "usage": "{prefix}language set <ngôn ngữ>",
+                "usage": "{prefix}language <view | set | reset> [ngôn ngữ]",
                 "embedTitle": "Cài đặt ngôn ngữ",
                 "currentLanguage": "Ngôn ngữ hiện tại:",
                 "languageSet": "Ngôn ngữ máy chủ đã được thay đổi thành",
@@ -118,6 +118,7 @@
             "categoryName": "NHẠC",
             "dj": {
                 "description": "Thay đổi cài đặt tính năng DJ",
+                "usage": "{prefix}dj <enable | disable | role> [vai trò]",
                 "disable": "Đã tắt",
                 "disableText": "Tính năng DJ đã bị **`Tắt`**",
                 "embedTitle": "tính năng DJ",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Bộ lọc đang sử dụng",
                 "currentState": "{filter} đang được {state}",
                 "description": "Định cấu hình bộ lọc bài hát",
+                "usage": "{prefix}filter <enable | disable | status> [bộ lọc]",
                 "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}",
                 "filterSet": " Bộ lọc {filter} đang {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} bộ lọc bài hát",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "Xóa kênh yêu cầu",
                 "slashStatusDescription": "Hiển thị kênh yêu cầu hiện tại",
                 "slashChannelDescription": "Kênh để đặt làm kênh yêu cầu",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

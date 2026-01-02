@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "管理cookies以繞過機器人偵測",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [編號|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [編號 | all]",
                 "slashAddDescription": "新增cookie檔案",
                 "slashRemoveDescription": "刪除cookie檔案",
                 "slashListDescription": "列出所有cookie檔案",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "查看當前伺服器語言",
                 "slashResetDescription": "重置為預設語言",
                 "slashLocaleOption": "要設置的語言",
-                "usage": "{prefix}language set <語言>",
+                "usage": "{prefix}language <view | set | reset> [語言]",
                 "embedTitle": "語言設置",
                 "currentLanguage": "當前語言：",
                 "languageSet": "伺服器語言已更改為",
@@ -118,6 +118,7 @@
             "categoryName": "音樂",
             "dj": {
                 "description": "更改 DJ 功能設置",
+                "usage": "{prefix}dj <enable | disable | role> [身分組]",
                 "disable": "停用",
                 "disableText": "DJ 功能已**`停用`**",
                 "embedTitle": "DJ 功能",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "目前已使用的過濾器",
                 "currentState": "{filter} 目前是 {state}",
                 "description": "配置歌曲過濾器",
+                "usage": "{prefix}filter <enable | disable | status> [過濾器]",
                 "embedFooter": "如 {opstate} 過濾器，請使用 {prefix}filter {opstate} {filter}",
                 "filterSet": "{filter} 過濾器現已 {state}",
                 "slashStateDescription": "{state, select, enable {啟用} other {停用}}歌曲過濾器",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "移除點播頻道",
                 "slashStatusDescription": "顯示目前點播頻道",
                 "slashChannelDescription": "要設定為點播頻道的頻道",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "봇 감지 우회를 위한 쿠키 관리",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [번호|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [번호 | all]",
                 "slashAddDescription": "새 쿠키 파일 추가",
                 "slashRemoveDescription": "쿠키 파일 삭제",
                 "slashListDescription": "모든 쿠키 파일 목록 보기",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "현재 서버 언어 보기",
                 "slashResetDescription": "기본 언어로 재설정",
                 "slashLocaleOption": "설정할 언어",
-                "usage": "{prefix}language set <언어>",
+                "usage": "{prefix}language <view | set | reset> [언어]",
                 "embedTitle": "언어 설정",
                 "currentLanguage": "현재 언어:",
                 "languageSet": "서버 언어가 변경되었어요:",
@@ -118,6 +118,7 @@
             "categoryName": "음악",
             "dj": {
                 "description": "DJ 기능 설정 변경",
+                "usage": "{prefix}dj <enable | disable | role> [역할]",
                 "disable": "비활성화됨",
                 "disableText": "DJ 기능이 **`비활성화`**되었어요",
                 "embedTitle": "DJ 기능",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "현재 사용 중인 필터",
                 "currentState": "{filter}의 현재 상태는 {state}이에요",
                 "description": "노래 필터 설정",
+                "usage": "{prefix}filter <enable | disable | status> [필터]",
                 "embedFooter": "필터를 {opstate}하려면 {prefix}filter {opstate} {filter}를 사용하세요",
                 "filterSet": "{filter} 필터가 이제 {state}예요",
                 "slashStateDescription": "노래 필터 {state, select, enable {활성화} other {비활성화}}",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "요청 채널 삭제",
                 "slashStatusDescription": "현재 요청 채널 보기",
                 "slashChannelDescription": "요청 채널로 설정할 채널",
-                "usage": "{prefix}requestchannel <set|remove|status> [채널]"
+                "usage": "{prefix}requestchannel <set | remove | status> [채널]"
             }
         }
     },

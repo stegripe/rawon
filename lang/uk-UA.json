@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Керування cookies для обходу виявлення бота",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [номер|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [номер | all]",
                 "slashAddDescription": "Додати новий файл cookies",
                 "slashRemoveDescription": "Видалити файл cookies",
                 "slashListDescription": "Показати всі файли cookies",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Переглянути поточну мову сервера",
                 "slashResetDescription": "Скинути до мови за замовчуванням",
                 "slashLocaleOption": "Мова для встановлення",
-                "usage": "{prefix}language set <мова>",
+                "usage": "{prefix}language <view | set | reset> [мова]",
                 "embedTitle": "Налаштування мови",
                 "currentLanguage": "Поточна мова:",
                 "languageSet": "Мову сервера змінено на",
@@ -118,6 +118,7 @@
             "categoryName": "МУЗИКА",
             "dj": {
                 "description": "Змінити налаштування функції DJ",
+                "usage": "{prefix}dj <enable | disable | role> [роль]",
                 "disable": "Вимкнено",
                 "disableText": "Функція DJ була **`Вимкнена`**",
                 "embedTitle": "Функція DJ",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Фільтри що наразі використовуються",
                 "currentState": "Стан фільтра {filter}: {state}",
                 "description": "Налаштувати фільтр пісень",
+                "usage": "{prefix}filter <enable | disable | status> [фільтр]",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
                 "filterSet": "Новий стан фільтра {filter}: {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "Видалити канал запитів",
                 "slashStatusDescription": "Показати поточний канал запитів",
                 "slashChannelDescription": "Канал для встановлення як канал запитів",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

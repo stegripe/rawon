@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Gérer les cookies pour contourner la détection de bot",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [numéro|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [numéro | all]",
                 "slashAddDescription": "Ajouter un nouveau fichier de cookies",
                 "slashRemoveDescription": "Supprimer un fichier de cookies",
                 "slashListDescription": "Lister tous les fichiers de cookies",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Voir la langue actuelle du serveur",
                 "slashResetDescription": "Réinitialiser à la langue par défaut",
                 "slashLocaleOption": "La langue à définir",
-                "usage": "{prefix}language set <langue>",
+                "usage": "{prefix}language <view | set | reset> [langue]",
                 "embedTitle": "Paramètres de langue",
                 "currentLanguage": "Langue actuelle :",
                 "languageSet": "La langue du serveur a été changée en",
@@ -118,6 +118,7 @@
             "categoryName": "MUSIQUE",
             "dj": {
                 "description": "Modifier les paramètres de la fonctionnalité DJ",
+                "usage": "{prefix}dj <enable | disable | role> [rôle]",
                 "disable": "Désactivé",
                 "disableText": "La fonctionnalité DJ a été **`Désactivée`**",
                 "embedTitle": "Fonctionnalité DJ",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Filtres actuellement utilisés",
                 "currentState": "{filter} est actuellement {state}",
                 "description": "Configurer le filtre de musique",
+                "usage": "{prefix}filter <enable | disable | status> [filtre]",
                 "embedFooter": "Pour {opstate} le filtre, utilisez {prefix}filter {opstate} {filter}",
                 "filterSet": "Le filtre {filter} est désormais {state}",
                 "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de musique",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "Supprimer le canal de requête",
                 "slashStatusDescription": "Afficher le canal de requête actuel",
                 "slashChannelDescription": "Le canal à définir comme canal de requête",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

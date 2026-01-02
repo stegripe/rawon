@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Manage cookies for bot detection bypass",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [number|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [number | all]",
                 "slashAddDescription": "Add a new cookie file",
                 "slashRemoveDescription": "Remove a cookie file",
                 "slashListDescription": "List all cookie files",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "View the current server language",
                 "slashResetDescription": "Reset to default language",
                 "slashLocaleOption": "The language to set",
-                "usage": "{prefix}language set <locale>",
+                "usage": "{prefix}language <view | set | reset> [locale]",
                 "embedTitle": "Language Settings",
                 "currentLanguage": "Current language:",
                 "languageSet": "Server language has been set to",
@@ -118,6 +118,7 @@
             "categoryName": "MUSIC",
             "dj": {
                 "description": "Change DJ feature settings",
+                "usage": "{prefix}dj <enable | disable | role> [role]",
                 "disable": "Disabled",
                 "disableText": "DJ feature has been **`Disabled`**",
                 "embedTitle": "DJ feature",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Currently Used Filters",
                 "currentState": "{filter} is currently {state}",
                 "description": "Configure song filter",
+                "usage": "{prefix}filter <enable | disable | status> [filter]",
                 "embedFooter": "To {opstate} the filter, use {prefix}filter {opstate} {filter}",
                 "filterSet": "{filter} filter is now {state}",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} a song filter",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "Remove the request channel",
                 "slashStatusDescription": "Show the current request channel",
                 "slashChannelDescription": "The channel to set as request channel",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

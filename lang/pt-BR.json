@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Gerenciar cookies para bypass de detecção de bot",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [número|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [número | all]",
                 "slashAddDescription": "Adicionar um novo arquivo de cookies",
                 "slashRemoveDescription": "Remover um arquivo de cookies",
                 "slashListDescription": "Listar todos os arquivos de cookies",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Ver o idioma atual do servidor",
                 "slashResetDescription": "Redefinir para o idioma padrão",
                 "slashLocaleOption": "O idioma a definir",
-                "usage": "{prefix}language set <idioma>",
+                "usage": "{prefix}language <view | set | reset> [idioma]",
                 "embedTitle": "Configurações de idioma",
                 "currentLanguage": "Idioma atual:",
                 "languageSet": "O idioma do servidor foi alterado para",
@@ -118,6 +118,7 @@
             "categoryName": "MÚSICA",
             "dj": {
                 "description": "Muda a configuração do DJ",
+                "usage": "{prefix}dj <enable | disable | role> [cargo]",
                 "disable": "Desativado",
                 "disableText": "A função DJ foi **`Desativada`**",
                 "embedTitle": "DJ",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Filtros em uso",
                 "currentState": "{filter} está {state}",
                 "description": "Configura o filtro da música",
+                "usage": "{prefix}filter <enable | disable | status> [filtro]",
                 "embedFooter": "Para {opstate} o filtro, use {prefix}filter {opstate} {filter}",
                 "filterSet": "O filtro {filter} está {state}",
                 "slashStateDescription": "{state, select, enable {Ativar} other {Desativar}} um filtro de música",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "Remover o canal de solicitação",
                 "slashStatusDescription": "Mostrar o canal de solicitação atual",
                 "slashChannelDescription": "O canal a ser definido como canal de solicitação",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

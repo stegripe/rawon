@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Bot algılama bypass için çerezleri yönet",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [numara|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [numara | all]",
                 "slashAddDescription": "Yeni çerez dosyası ekle",
                 "slashRemoveDescription": "Çerez dosyasını kaldır",
                 "slashListDescription": "Tüm çerez dosyalarını listele",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Mevcut sunucu dilini görüntüle",
                 "slashResetDescription": "Varsayılan dile sıfırla",
                 "slashLocaleOption": "Ayarlanacak dil",
-                "usage": "{prefix}language set <dil>",
+                "usage": "{prefix}language <view | set | reset> [dil]",
                 "embedTitle": "Dil Ayarları",
                 "currentLanguage": "Mevcut dil:",
                 "languageSet": "Sunucu dili değiştirildi:",
@@ -118,6 +118,7 @@
             "categoryName": "MÜZİK",
             "dj": {
                 "description": "DJ özelliği ayarlarını değiştir",
+                "usage": "{prefix}dj <enable | disable | role> [rol]",
                 "disable": "Devre dışı",
                 "disableText": "DJ özelliği **`Devre dışı bırakıldı`**",
                 "embedTitle": "DJ özelliği",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Şu Anda Kullanılan Filtreler",
                 "currentState": "{filter} şu anda {state}",
                 "description": "Şarkı filtresini yapılandır",
+                "usage": "{prefix}filter <enable | disable | status> [filtre]",
                 "embedFooter": "Filtreyi {opstate} yapmak için {prefix}filter {opstate} {filter} kullanın.",
                 "filterSet": "{filter} filtresi artık {state} oldu",
                 "slashStateDescription": "Şarkı filtresi {state, select, enable {Enable} other {Disable}} olacaktır.",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "İstek kanalını kaldır",
                 "slashStatusDescription": "Mevcut istek kanalını göster",
                 "slashChannelDescription": "İstek kanalı olarak ayarlanacak kanal",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

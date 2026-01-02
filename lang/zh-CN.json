@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "管理cookies以绕过机器人检测",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [编号|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [编号 | all]",
                 "slashAddDescription": "添加新的cookie文件",
                 "slashRemoveDescription": "删除cookie文件",
                 "slashListDescription": "列出所有cookie文件",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "查看当前服务器语言",
                 "slashResetDescription": "重置为默认语言",
                 "slashLocaleOption": "要设置的语言",
-                "usage": "{prefix}language set <语言>",
+                "usage": "{prefix}language <view | set | reset> [语言]",
                 "embedTitle": "语言设置",
                 "currentLanguage": "当前语言：",
                 "languageSet": "服务器语言已更改为",
@@ -118,6 +118,7 @@
             "categoryName": "音乐",
             "dj": {
                 "description": "更改 DJ 功能设置",
+                "usage": "{prefix}dj <enable | disable | role> [身分组]",
                 "disable": "停用",
                 "disableText": "DJ 功能已**`停用`**",
                 "embedTitle": "DJ 功能",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "目前已使用的过滤器",
                 "currentState": "{filter} 目前是 {state}",
                 "description": "配置歌曲过滤器",
+                "usage": "{prefix}filter <enable | disable | status> [过滤器]",
                 "embedFooter": "如 {opstate} 过滤器，请使用 {prefix}filter {opstate} {filter}",
                 "filterSet": "{filter} 过滤器现已 {state}",
                 "slashStateDescription": "{state, select, enable {启用} other {停用}}歌曲过滤器",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "移除点播频道",
                 "slashStatusDescription": "显示当前点播频道",
                 "slashChannelDescription": "要设置为点播频道的频道",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

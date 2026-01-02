@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Administrar cookies para bypass de detección de bot",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [número|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [número | all]",
                 "slashAddDescription": "Agregar un nuevo archivo de cookies",
                 "slashRemoveDescription": "Eliminar un archivo de cookies",
                 "slashListDescription": "Listar todos los archivos de cookies",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Ver el idioma actual del servidor",
                 "slashResetDescription": "Restablecer al idioma predeterminado",
                 "slashLocaleOption": "El idioma a establecer",
-                "usage": "{prefix}language set <idioma>",
+                "usage": "{prefix}language <view | set | reset> [idioma]",
                 "embedTitle": "Configuración de idioma",
                 "currentLanguage": "Idioma actual:",
                 "languageSet": "El idioma del servidor se ha cambiado a",
@@ -118,6 +118,7 @@
             "categoryName": "MÚSICA",
             "dj": {
                 "description": "Cambia la configuración del DJ",
+                "usage": "{prefix}dj <enable | disable | role> [rol]",
                 "disable": "Desactivado",
                 "disableText": "La función DJ ha sido **`Desactivada`**",
                 "embedTitle": "DJ",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Filtros utilizados actualmente",
                 "currentState": "{filter} es actualmente {state}",
                 "description": "Configurar el filtro de canción",
+                "usage": "{prefix}filter <enable | disable | status> [filtro]",
                 "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
                 "filterSet": "El filtro {filter} ya está {state}",
                 "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "Eliminar el canal de solicitudes",
                 "slashStatusDescription": "Mostrar el canal de solicitudes actual",
                 "slashChannelDescription": "El canal a establecer como canal de solicitudes",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },

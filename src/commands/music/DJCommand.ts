@@ -37,7 +37,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
             },
         ],
     },
-    usage: "{prefix}dj",
+    usage: i18n.__("commands.music.dj.usage"),
 })
 export class DJCommand extends BaseCommand {
     @memberReqPerms(["ManageGuild"], i18n.__("commands.music.dj.noPermission"))

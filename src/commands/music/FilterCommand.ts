@@ -74,7 +74,7 @@ const slashFilterChoices = Object.keys(filterArgs).map((x) => ({ name: x, value:
             },
         ],
     },
-    usage: "{prefix}filter",
+    usage: i18n.__("commands.music.filter.usage"),
 })
 export class FilterCommand extends BaseCommand {
     @inVC

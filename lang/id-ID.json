@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Kelola cookies buat bypass deteksi bot",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [nomor|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [nomor | all]",
                 "slashAddDescription": "Tambahin file cookie baru",
                 "slashRemoveDescription": "Hapus file cookie",
                 "slashListDescription": "Lihat semua file cookie",
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Lihat bahasa server sekarang",
                 "slashResetDescription": "Reset ke bahasa default",
                 "slashLocaleOption": "Bahasa yang mau diatur",
-                "usage": "{prefix}language set <bahasa>",
+                "usage": "{prefix}language <view | set | reset> [bahasa]",
                 "embedTitle": "Pengaturan Bahasa",
                 "currentLanguage": "Bahasa sekarang:",
                 "languageSet": "Bahasa server udah diubah ke",
@@ -118,6 +118,7 @@
             "categoryName": "MUSIK",
             "dj": {
                 "description": "Ubah pengaturan fitur DJ",
+                "usage": "{prefix}dj <enable | disable | role> [role]",
                 "disable": "Nonaktif",
                 "disableText": "Fitur DJ udah di **`Disabled`**",
                 "embedTitle": "Fitur DJ",
@@ -141,6 +142,7 @@
                 "currentlyUsedFilters": "Filter yang lagi dipake",
                 "currentState": "Filter {filter} lagi {state}",
                 "description": "Atur filter lagu",
+                "usage": "{prefix}filter <enable | disable | status> [filter]",
                 "embedFooter": "Buat {opstate, select, enable {nyalain} other {matiin}} filter ini, pake {prefix}filter {opstate} {filter}",
                 "filterSet": "Filter {filter} sekarang {state}",
                 "slashStateDescription": "{state, select, enable {Nyalain} other {Matiin}} filter lagu",
@@ -280,7 +282,7 @@
                 "slashRemoveDescription": "Hapus channel request",
                 "slashStatusDescription": "Lihat channel request sekarang",
                 "slashChannelDescription": "Channel yang mau diatur jadi channel request",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },
