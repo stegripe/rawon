@@ -8,11 +8,11 @@
                 "noCode": "No code was provided.",
                 "inputString": "Input",
                 "outputString": "Output",
-                "usage": "{prefix}eval <code>\nExample: {prefix}eval this.client.users.cache.size"
+                "usage": "{prefix}eval <some code>"
             },
             "cookies": {
                 "description": "Manage cookies for bot detection bypass",
-                "usage": "{prefix}cookies <subcommand>\n\nSubcommands:\n• add <number> - Add a cookie file (attach .txt file)\n• remove <number|all> - Remove a cookie file\n• list - View all cookies\n• view <number> - Download a cookie file\n• reset - Reset failed cookie status\n• use <number> - Manually switch to a specific cookie\n\nExample: {prefix}cookies add 1",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [number|all]",
                 "slashAddDescription": "Add a new cookie file",
                 "slashRemoveDescription": "Remove a cookie file",
                 "slashListDescription": "List all cookie files",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "Couldn't find matching command name. Did you mean this?",
                 "noCommand": "Couldn't find any matching command name.",
                 "slashDescription": "Command name to view specific information about the command",
-                "usage": "{prefix}help [command]\nExample: {prefix}help play",
+                "usage": "{prefix}help [command]",
                 "usageString": "Usage"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "View the current server language",
                 "slashResetDescription": "Reset to default language",
                 "slashLocaleOption": "The language to set",
-                "usage": "{prefix}language <subcommand>\n\nSubcommands:\n• view - Show current language and available options\n• set <locale> - Set the server language\n• reset - Reset to default language\n\nExample: {prefix}language set id-ID",
+                "usage": "{prefix}language set <locale>",
                 "embedTitle": "Language Settings",
                 "currentLanguage": "Current language:",
                 "languageSet": "Server language has been set to",
@@ -156,7 +156,7 @@
                 "noQuery": "There is nothing playing, or no arguments are provided.",
                 "searchingLyrics": "Searching for lyrics...",
                 "slashDescription": "Song to search",
-                "usage": "{prefix}lyrics [song]\nExample: {prefix}lyrics Never Gonna Give You Up"
+                "usage": "{prefix}lyrics [song]"
             },
             "nowplaying": {
                 "description": "Show the media player status",
@@ -174,7 +174,7 @@
                 "description": "Play some music",
                 "noSongData": "That URL doesn't have any song data.",
                 "slashQueryDescription": "Query to search",
-                "usage": "{prefix}play <query|url>\nExample: {prefix}play Never Gonna Give You Up\nExample: {prefix}play https://youtube.com/watch?v=..."
+                "usage": "{prefix}play <query | url>"
             },
             "queue": {
                 "description": "Show the queue list"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "Position of the songs to remove separated by comma or space",
                 "songSkip": "The current song was removed, song skipped.\n\n",
                 "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
-                "usage": "{prefix}remove <positions>\nPositions separated by space or comma.\nExample: {prefix}remove 2\nExample: {prefix}remove 1 3 5\nExample: {prefix}remove 2, 4, 6"
+                "usage": "{prefix}remove <positions>"
             },
             "repeat": {
                 "actualMode": "Current repeat mode is {mode}",
@@ -196,7 +196,7 @@
                 "slashDisable": "Disable repeat mode",
                 "slashQueue": "Set repeat mode to **`Queue`**",
                 "slashSong": "Set repeat mode to **`Song`**",
-                "usage": "{prefix}repeat <mode>\n\nModes:\n• queue (or all) - Repeat the entire queue\n• song (or one) - Repeat the current song\n• disable (or off) - Turn off repeat\n\nExample: {prefix}repeat queue"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "The music player is not paused.",
@@ -217,7 +217,7 @@
                 "slashQueryDescription": "Query to search",
                 "slashSourceDescription": "Where the music should be taken?",
                 "trackSelectionMessage": "Music Selection",
-                "usage": "{prefix}search <query> [source]\n\nSources: youtube, soundcloud (default: youtube)\n\nExample: {prefix}search Never Gonna Give You Up\nExample: {prefix}search lofi beats soundcloud"
+                "usage": "{prefix}search <query> [source]"
             },
             "shuffle": {
                 "actualState": "Current shuffle mode is {state}",
@@ -235,7 +235,7 @@
                 "notCached": "Cannot seek in this song yet. Please wait for the audio to buffer.",
                 "seeked": "Seeked to {time}",
                 "slashTimeDescription": "Time to seek to (e.g., `1:30` or `90`)",
-                "usage": "{prefix}seek <time>\n\nTime formats: 1:30, 90, 1:30:00\n\nExample: {prefix}seek 1:30\nExample: {prefix}seek 90",
+                "usage": "{prefix}seek <time>",
                 "waitingForCache": "Please wait, the audio is still buffering..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Skip to the last song in the queue",
                 "slashPositionDescription": "Song position in the queue",
                 "slashSpecificDescription": "Skip to a specific position in the queue",
-                "usage": "{prefix}skipto <first|last|position>\n\nExample: {prefix}skipto first\nExample: {prefix}skipto last\nExample: {prefix}skipto 5"
+                "usage": "{prefix}skipto <{options} | number>"
             },
             "stop": {
                 "description": "Stop the music player",
@@ -266,7 +266,7 @@
                 "newVolume": "Volume has been set to {volume}",
                 "plsPause": "Please pause the music instead of setting the volume to {volume}",
                 "slashDescription": "New volume",
-                "usage": "{prefix}volume [1-100]\nExample: {prefix}volume 50",
+                "usage": "{prefix}volume [new volume]",
                 "volumeLimit": "I can't set the volume above {maxVol}"
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "Remove the request channel",
                 "slashStatusDescription": "Show the current request channel",
                 "slashChannelDescription": "The channel to set as request channel",
-                "usage": "{prefix}requestchannel <subcommand>\n\nSubcommands:\n• set <#channel> - Set the request channel\n• remove - Remove the request channel\n• status - Show current request channel\n\nExample: {prefix}requestchannel set #music"
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },

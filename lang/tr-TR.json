@@ -8,11 +8,11 @@
                 "noCode": "Herhangi bir kod girişi sağlanmadı",
                 "inputString": "Giriş",
                 "outputString": "Çıkış",
-                "usage": "{prefix}eval <kod>\nÖrnek: {prefix}eval this.client.users.cache.size"
+                "usage": "{prefix}eval <kod>"
             },
             "cookies": {
                 "description": "Bot algılama bypass için çerezleri yönet",
-                "usage": "{prefix}cookies <subcommand>\n\nAlt komutlar:\n• add <number> - Add cookie\n• remove <number|all> - Remove cookie\n• list - List all\n• view <number> - View cookie\n• reset - Reset failed status\n• use <number> - Switch to cookie\n\nÖrnek: {prefix}cookies add 1",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [numara|all]",
                 "slashAddDescription": "Yeni çerez dosyası ekle",
                 "slashRemoveDescription": "Çerez dosyasını kaldır",
                 "slashListDescription": "Tüm çerez dosyalarını listele",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "Eşleşen komut adı bulunamadı. Bunu mu demek istediniz?",
                 "noCommand": "Eşleşen bir komut adı bulunamadı",
                 "slashDescription": "Komut hakkında belirli bilgileri görüntülemek için komut ismi",
-                "usage": "{prefix}help [komut ismi]\nÖrnek: {prefix}help play",
+                "usage": "{prefix}help [komut ismi]",
                 "usageString": "Kullanım"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Mevcut sunucu dilini görüntüle",
                 "slashResetDescription": "Varsayılan dile sıfırla",
                 "slashLocaleOption": "Ayarlanacak dil",
-                "usage": "{prefix}language <subcommand>\n\nAlt komutlar:\n• view - View current language\n• set <locale> - Set language\n• reset - Reset to default\n\nÖrnek: {prefix}language set id-ID",
+                "usage": "{prefix}language set <dil>",
                 "embedTitle": "Dil Ayarları",
                 "currentLanguage": "Mevcut dil:",
                 "languageSet": "Sunucu dili değiştirildi:",
@@ -155,7 +155,7 @@
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
                 "searchingLyrics": "Şarkı sözleri aranıyor...",
                 "slashDescription": "Aranacak şarkı",
-                "usage": "{prefix}lyrics [şarkı]\nÖrnek: {prefix}lyrics Never Gonna Give You Up",
+                "usage": "{prefix}lyrics [şarkı]",
                 "noLyrics": "{song} için şarkı sözü bulunamadı."
             },
             "nowplaying": {
@@ -174,7 +174,7 @@
                 "description": "Biraz müzik çalın",
                 "noSongData": "Bu URL'de herhangi bir şarkı verisi yok.",
                 "slashQueryDescription": "Aranacak sorgu",
-                "usage": "{prefix}play <query|url>\nÖrnek: {prefix}play Never Gonna Give You Up\nÖrnek: {prefix}play https://youtube.com/watch?v=..."
+                "usage": "{prefix}play <sorgu | url>"
             },
             "queue": {
                 "description": "Kuyruk listesini göster"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "Virgül veya boşluk ile ayrılmış kaldırılacak şarkıların konumu",
                 "songSkip": "Geçerli şarkı kaldırıldı, şarkı atlandı.\n\n",
                 "songsRemoved": "Kuyruktan {removed, plural, one {1 song} diğer {# songs}} kaldırıldı",
-                "usage": "{prefix}remove <positions>\nPozisyonlar boşluk veya virgülle ayrılır.\nÖrnek: {prefix}remove 2\nÖrnek: {prefix}remove 1 3 5\nÖrnek: {prefix}remove 2, 4, 6"
+                "usage": "{prefix}remove <pozisyon>"
             },
             "repeat": {
                 "actualMode": "Geçerli tekrar modu {mode}",
@@ -196,7 +196,7 @@
                 "slashDisable": "Tekrar modunu devre dışı bırak",
                 "slashQueue": "Tekrar modunu **`Şarkı kuyruğu`** olarak ayarlayın",
                 "slashSong": "Tekrar modunu **`Şarkı`** olarak ayarlayın",
-                "usage": "{prefix}repeat <mode>\n\nModlar:\n• queue (all) - Repeat queue\n• song (one) - Repeat current\n• disable (off) - Turn off\n\nÖrnek: {prefix}repeat queue"
+                "usage": "{prefix}repeat <{seçenekler}>"
             },
             "resume": {
                 "alreadyResume": "Müzik çalar duraklatılmamış.",
@@ -217,7 +217,7 @@
                 "slashQueryDescription": "Aranacak sorgu",
                 "slashSourceDescription": "Müzik nereye götürülmeli?",
                 "trackSelectionMessage": "Müzik Seçimi",
-                "usage": "{prefix}search <query> [source]\n\nKaynaklar: youtube, soundcloud (varsayılan: youtube)\n\nÖrnek: {prefix}search Never Gonna Give You Up\nÖrnek: {prefix}search lofi beats soundcloud"
+                "usage": "{prefix}search <sorgu> [kaynak]"
             },
             "shuffle": {
                 "actualState": "Geçerli karıştırma modu {state}",
@@ -235,7 +235,7 @@
                 "notCached": "Bu şarkıda henüz arama yapılamıyor. Lütfen ses tamponlanana kadar bekleyin.",
                 "seeked": "{time} konumuna atlandı",
                 "slashTimeDescription": "Atlanacak zaman (örn., `1:30` veya `90`)",
-                "usage": "{prefix}seek <time>\n\nZaman formatları: 1:30, 90, 1:30:00\n\nÖrnek: {prefix}seek 1:30\nÖrnek: {prefix}seek 90",
+                "usage": "{prefix}seek <zaman>",
                 "waitingForCache": "Lütfen bekleyin, ses hala tamponlanıyor..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Kuyruktaki son şarkıya atla",
                 "slashPositionDescription": "Kuyruktaki şarkı konumu",
                 "slashSpecificDescription": "Kuyrukta belirli bir konuma atlama",
-                "usage": "{prefix}skipto <first|last|position>\n\nÖrnek: {prefix}skipto first\nÖrnek: {prefix}skipto last\nÖrnek: {prefix}skipto 5"
+                "usage": "{prefix}skipto <{tercihler} | numara>"
             },
             "stop": {
                 "description": "Müzik çaları durdurur",
@@ -266,7 +266,7 @@
                 "newVolume": "Ses seviyesi {volume} olarak ayarlandı",
                 "plsPause": "Lütfen ses seviyesini {volume} olarak ayarlamak yerine müziği duraklatın",
                 "slashDescription": "Yeni ses seviyesi",
-                "usage": "{prefix}volume [1-100]\nÖrnek: {prefix}volume 50",
+                "usage": "{prefix}volume [yeni değer]",
                 "volumeLimit": "Ses seviyesini {maxVol} değerinin üzerine ayarlayamıyorum."
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "İstek kanalını kaldır",
                 "slashStatusDescription": "Mevcut istek kanalını göster",
                 "slashChannelDescription": "İstek kanalı olarak ayarlanacak kanal",
-                "usage": "{prefix}requestchannel <subcommand>\n\nAlt komutlar:\n• set <#channel> - Set channel\n• remove - Remove channel\n• status - Show current\n\nÖrnek: {prefix}requestchannel set #music"
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },

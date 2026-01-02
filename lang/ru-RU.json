@@ -8,11 +8,11 @@
                 "noCode": "Код не был предоставлен.",
                 "inputString": "Ввод",
                 "outputString": "Выход",
-                "usage": "{prefix}eval <код>\nПример: {prefix}eval this.client.users.cache.size"
+                "usage": "{prefix}eval <код>"
             },
             "cookies": {
                 "description": "Управление cookies для обхода обнаружения бота",
-                "usage": "{prefix}cookies <subcommand>\n\nПодкоманды:\n• add <number> - Add cookie\n• remove <number|all> - Remove cookie\n• list - List all\n• view <number> - View cookie\n• reset - Reset failed status\n• use <number> - Switch to cookie\n\nПример: {prefix}cookies add 1",
+                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [номер|all]",
                 "slashAddDescription": "Добавить новый файл cookies",
                 "slashRemoveDescription": "Удалить файл cookies",
                 "slashListDescription": "Показать все файлы cookies",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "Не удалось найти команду с таким названием. Вы имели ввиду это?",
                 "noCommand": "Не удалось найти команду с таким названием.",
                 "slashDescription": "Название команды для просмотра конкретной информации о команде",
-                "usage": "{prefix}help [команда]\nПример: {prefix}help play",
+                "usage": "{prefix}help [команда]",
                 "usageString": "Использование"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Посмотреть текущий язык сервера",
                 "slashResetDescription": "Сбросить на язык по умолчанию",
                 "slashLocaleOption": "Язык для установки",
-                "usage": "{prefix}language <subcommand>\n\nПодкоманды:\n• view - View current language\n• set <locale> - Set language\n• reset - Reset to default\n\nПример: {prefix}language set id-ID",
+                "usage": "{prefix}language set <язык>",
                 "embedTitle": "Настройки языка",
                 "currentLanguage": "Текущий язык:",
                 "languageSet": "Язык сервера изменён на",
@@ -155,7 +155,7 @@
                 "noQuery": "Ничего не проигрывается, или аргументы не были предоставлены.",
                 "searchingLyrics": "Поиск текста песни...",
                 "slashDescription": "Песня для поиска",
-                "usage": "{prefix}lyrics [песня]\nПример: {prefix}lyrics Never Gonna Give You Up",
+                "usage": "{prefix}lyrics [песня]",
                 "noLyrics": "Текст для {song} не найден."
             },
             "nowplaying": {
@@ -174,7 +174,7 @@
                 "description": "Сыграйте музыку",
                 "noSongData": "У этого URL нету данных о песне.",
                 "slashQueryDescription": "Запрос для поиска",
-                "usage": "{prefix}play <query|url>\nПример: {prefix}play Never Gonna Give You Up\nПример: {prefix}play https://youtube.com/watch?v=..."
+                "usage": "{prefix}play <запрос | url>"
             },
             "queue": {
                 "description": "Показать очередь"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "Расположение удаляемых песен разделенных запятой или пробелом",
                 "songSkip": "Текущая песня была удалена, пропуск.\n\n",
                 "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
-                "usage": "{prefix}remove <positions>\nПозиции, разделённые пробелом или запятой.\nПример: {prefix}remove 2\nПример: {prefix}remove 1 3 5\nПример: {prefix}remove 2, 4, 6"
+                "usage": "{prefix}remove <позиции>"
             },
             "repeat": {
                 "actualMode": "Текущий повторный режим: {mode}",
@@ -196,7 +196,7 @@
                 "slashDisable": "Отключить режим повтора",
                 "slashQueue": "Указать режим повтора для **`Очереди`**",
                 "slashSong": "Указать режим повтора для **`Песни`**",
-                "usage": "{prefix}repeat <mode>\n\nРежимы:\n• queue (all) - Repeat queue\n• song (one) - Repeat current\n• disable (off) - Turn off\n\nПример: {prefix}repeat queue"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Музыкальный проигрыватель не стоит на паузе.",
@@ -217,7 +217,7 @@
                 "slashQueryDescription": "Запрос для поиска",
                 "slashSourceDescription": "Откуда следует брать музыку?",
                 "trackSelectionMessage": "Выбор Музыки",
-                "usage": "{prefix}search <query> [source]\n\nИсточники: youtube, soundcloud (по умолчанию: youtube)\n\nПример: {prefix}search Never Gonna Give You Up\nПример: {prefix}search lofi beats soundcloud"
+                "usage": "{prefix}search <запрос> [источник]"
             },
             "shuffle": {
                 "actualState": "Текущий режим перемешивания: {state}",
@@ -235,7 +235,7 @@
                 "notCached": "Пока невозможно перемотать эту песню. Подождите, пока аудио буферизируется.",
                 "seeked": "Перемотано к {time}",
                 "slashTimeDescription": "Время для перемотки (напр., `1:30` или `90`)",
-                "usage": "{prefix}seek <time>\n\nФорматы времени: 1:30, 90, 1:30:00\n\nПример: {prefix}seek 1:30\nПример: {prefix}seek 90",
+                "usage": "{prefix}seek <время>",
                 "waitingForCache": "Подождите, аудио всё ещё буферизируется..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Пропустить к последней песне в очереди",
                 "slashPositionDescription": "Позиция песни в очереди",
                 "slashSpecificDescription": "Пропустить до указанной позиции в очереди",
-                "usage": "{prefix}skipto <first|last|position>\n\nПример: {prefix}skipto first\nПример: {prefix}skipto last\nПример: {prefix}skipto 5"
+                "usage": "{prefix}skipto <{options} | number>"
             },
             "stop": {
                 "description": "Остановить музыкальный проигрыватель",
@@ -266,7 +266,7 @@
                 "newVolume": "Громкость была установлена на: {volume}",
                 "plsPause": "Пожалуйста поставьте музыку на паузу вместо того чтобы устанавливать громкость на {volume}",
                 "slashDescription": "Новая громкость",
-                "usage": "{prefix}volume [1-100]\nПример: {prefix}volume 50",
+                "usage": "{prefix}volume [новая громкость]",
                 "volumeLimit": "Я не могу установить громкость выше {maxVol}"
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "Удалить канал запросов",
                 "slashStatusDescription": "Показать текущий канал запросов",
                 "slashChannelDescription": "Канал для установки как канал запросов",
-                "usage": "{prefix}requestchannel <subcommand>\n\nПодкоманды:\n• set <#channel> - Set channel\n• remove - Remove channel\n• status - Show current\n\nПример: {prefix}requestchannel set #music"
+                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
             }
         }
     },
