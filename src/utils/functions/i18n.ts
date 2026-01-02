@@ -24,10 +24,6 @@ export function isSupportedLocale(locale: string): locale is SupportedLocale {
     return supportedLocales.includes(locale as SupportedLocale);
 }
 
-/**
- * Gets the locale for a guild from the stored data.
- * Falls back to the default locale from config if not set.
- */
 export function getGuildLocale(client: Rawon, guildId: string | null | undefined): string {
     if (!guildId) {
         return client.config.lang;
@@ -36,10 +32,6 @@ export function getGuildLocale(client: Rawon, guildId: string | null | undefined
     return guildData?.locale ?? client.config.lang;
 }
 
-/**
- * Creates a localized i18n function for a specific guild.
- * This allows per-guild language settings.
- */
 export function i18n__(
     client: Rawon,
     guild: Guild | string | null | undefined,
@@ -51,10 +43,6 @@ export function i18n__(
     };
 }
 
-/**
- * Creates a localized i18n.__mf function for a specific guild.
- * This allows per-guild language settings with message formatting.
- */
 export function i18n__mf(
     client: Rawon,
     guild: Guild | string | null | undefined,

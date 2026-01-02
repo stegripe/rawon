@@ -8,10 +8,6 @@ import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, supportedLocales } from "../../utils/functions/i18n.js";
 
-/**
- * Case-insensitive locale matching.
- * Returns the matched locale or null if not found.
- */
 function findLocale(input: string): string | null {
     const lowerInput = input.toLowerCase();
     return supportedLocales.find((loc) => loc.toLowerCase() === lowerInput) ?? null;
@@ -64,14 +60,12 @@ export class LanguageCommand extends BaseCommand {
         const subCommand = ctx.options?.getSubcommand(false);
         const localeArg = ctx.options?.getString("locale") ?? ctx.args[0];
 
-        // Handle "reset" subcommand
         if (subCommand === "reset" || localeArg?.toLowerCase() === "reset") {
             await this.client.data.save(() => {
                 const data = this.client.data.data;
                 const guildData = data?.[guildId];
 
                 if (guildData) {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const { locale, ...rest } = guildData;
                     return {
                         ...data,
@@ -97,7 +91,6 @@ export class LanguageCommand extends BaseCommand {
             return;
         }
 
-        // Handle "view" subcommand or no argument
         if (subCommand === "view" || !localeArg) {
             const currentLocale =
                 this.client.data.data?.[guildId]?.locale ?? this.client.config.lang;
@@ -120,7 +113,6 @@ export class LanguageCommand extends BaseCommand {
             return;
         }
 
-        // Case-insensitive locale matching
         const matchedLocale = findLocale(localeArg);
         if (!matchedLocale) {
             await ctx.reply({
