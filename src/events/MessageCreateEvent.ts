@@ -279,14 +279,26 @@ export class MessageCreateEvent extends BaseEvent {
                 return;
             }
 
-            // Check if this bot is the appropriate handler for this voice channel
-            const appropriateHandler = this.client.multiBotManager.getVoiceChannelHandler(
-                guild,
-                voiceChannel,
-            );
-            if (appropriateHandler && appropriateHandler.user?.id !== this.client.user?.id) {
-                // Another bot should handle this voice channel
+            // Check if there's an existing queue connected to a DIFFERENT voice channel
+            // The queue is shared, so we need to check if the existing connection is for a different channel
+            const existingQueueVoiceChannelId = guild.queue?.connection?.joinConfig.channelId;
+            if (existingQueueVoiceChannelId && existingQueueVoiceChannelId !== voiceChannel.id) {
+                // There's already a queue for a different voice channel
+                // This bot should NOT add to that queue - let another bot handle this user
                 return;
+            }
+
+            // If this bot is not in any voice channel and there's no queue for user's channel,
+            // check if this bot is the appropriate handler
+            if (!thisBotVoiceChannel && !existingQueueVoiceChannelId) {
+                const appropriateHandler = this.client.multiBotManager.getVoiceChannelHandler(
+                    guild,
+                    voiceChannel,
+                );
+                if (appropriateHandler && appropriateHandler.user?.id !== this.client.user?.id) {
+                    // Another bot should handle this voice channel
+                    return;
+                }
             }
         }
 
