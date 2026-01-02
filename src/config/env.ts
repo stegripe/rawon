@@ -12,6 +12,10 @@ for (const envFile of envFiles) {
     if (existsSync(envPath)) {
         const parsed = parse(readFileSync(envPath));
         for (const [key, val] of Object.entries(parsed)) {
+            // Don't overwrite DISCORD_TOKEN if already set (ShardingManager sets it for spawned shards)
+            if (key === "DISCORD_TOKEN" && process.env.DISCORD_TOKEN) {
+                continue;
+            }
             process.env[key] = val;
         }
     }
