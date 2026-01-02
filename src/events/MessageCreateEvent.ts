@@ -150,6 +150,72 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         if ((prefixMatch?.length ?? 0) > 0) {
+            // In multi-bot mode, check if this bot should handle music commands
+            if (this.client.multiBotManager.isMultiBotActive() && message.guild) {
+                const args = message.content
+                    .slice(
+                        prefixMatch === "{mention}"
+                            ? (/<@(!)?\d*?>/u.exec(message.content) as string[])[0].length
+                            : (prefixMatch as string).length,
+                    )
+                    .trim()
+                    .split(/ +/u);
+                const cmd = args[0]?.toLowerCase();
+
+                // Check if this is a music command that requires queue/voice channel context
+                const musicCommands = [
+                    "queue",
+                    "q",
+                    "nowplaying",
+                    "np",
+                    "pause",
+                    "resume",
+                    "skip",
+                    "stop",
+                    "volume",
+                    "vol",
+                    "shuffle",
+                    "repeat",
+                    "loop",
+                    "remove",
+                    "skipto",
+                    "seek",
+                    "filter",
+                    "lyrics",
+                ];
+
+                if (musicCommands.includes(cmd ?? "")) {
+                    // Get the user's voice channel
+                    const userVoiceChannel = message.member?.voice.channel;
+
+                    if (userVoiceChannel) {
+                        // Get this bot's guild object
+                        const thisBotsGuild = this.client.guilds.cache.get(message.guild.id);
+                        const thisBotVoiceChannel = thisBotsGuild?.members.me?.voice.channel;
+
+                        // If this bot is not in the user's voice channel, skip
+                        if (thisBotVoiceChannel && thisBotVoiceChannel.id !== userVoiceChannel.id) {
+                            return;
+                        }
+
+                        // If this bot is not in any voice channel but another bot is in the user's channel, skip
+                        if (!thisBotVoiceChannel) {
+                            const appropriateHandler =
+                                this.client.multiBotManager.getVoiceChannelHandler(
+                                    message.guild,
+                                    userVoiceChannel,
+                                );
+                            if (
+                                appropriateHandler &&
+                                appropriateHandler.user?.id !== this.client.user?.id
+                            ) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             this.client.commands.handle(message, prefixMatch as unknown as string);
         }
     }

@@ -134,6 +134,41 @@ export class InteractionCreateEvent extends BaseEvent {
                 .filter((x) => x.meta.slash !== undefined)
                 .find((x) => x.meta.slash?.name === interaction.commandName);
             if (cmd) {
+                // In multi-bot mode, check if this bot should handle music commands
+                if (
+                    this.client.multiBotManager.isMultiBotActive() &&
+                    interaction.guild &&
+                    cmd.meta.category === "music"
+                ) {
+                    const member = interaction.guild.members.cache.get(interaction.user.id);
+                    const userVoiceChannel = member?.voice.channel;
+
+                    if (userVoiceChannel) {
+                        const thisBotsGuild = this.client.guilds.cache.get(interaction.guild.id);
+                        const thisBotVoiceChannel = thisBotsGuild?.members.me?.voice.channel;
+
+                        // If this bot is not in the user's voice channel, skip
+                        if (thisBotVoiceChannel && thisBotVoiceChannel.id !== userVoiceChannel.id) {
+                            return;
+                        }
+
+                        // If this bot is not in any voice channel but another bot is in the user's channel, skip
+                        if (!thisBotVoiceChannel) {
+                            const appropriateHandler =
+                                this.client.multiBotManager.getVoiceChannelHandler(
+                                    interaction.guild,
+                                    userVoiceChannel,
+                                );
+                            if (
+                                appropriateHandler &&
+                                appropriateHandler.user?.id !== this.client.user?.id
+                            ) {
+                                return;
+                            }
+                        }
+                    }
+                }
+
                 this.client.logger.info(
                     `${interaction.user.tag} [${interaction.user.id}] used /${interaction.commandName} ` +
                         `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
