@@ -108,7 +108,8 @@ export class MultiClientManager {
         // If user is in a voice channel, use voice-aware logic
         if (userVoiceChannelId) {
             // Check if THIS client is in the user's voice channel
-            const botVoiceState = guild.members.cache.get(client.user.id)?.voice;
+            // Use guild.members.me for reliable bot member data
+            const botVoiceState = guild.members.me?.voice;
             if (botVoiceState?.channelId === userVoiceChannelId) {
                 // This bot is in the same voice channel as user - it should handle
                 return true;
@@ -120,7 +121,8 @@ export class MultiClientManager {
                     continue;
                 }
                 const otherGuild = c.guilds.cache.get(guildId);
-                const otherVoiceState = otherGuild?.members.cache.get(c.user.id)?.voice;
+                // Use guild.members.me for reliable bot member data
+                const otherVoiceState = otherGuild?.members.me?.voice;
                 if (otherVoiceState?.channelId === userVoiceChannelId) {
                     // Another bot is in user's voice channel - this client should NOT handle
                     return false;
@@ -137,7 +139,8 @@ export class MultiClientManager {
                 if (!cGuild) {
                     continue;
                 }
-                const cVoiceState = cGuild.members.cache.get(c.user.id)?.voice;
+                // Use guild.members.me for reliable bot member data
+                const cVoiceState = cGuild.members.me?.voice;
                 if (!cVoiceState?.channelId) {
                     // This bot is available (not in voice)
                     // Return true only if this is that bot

@@ -19,18 +19,6 @@ import { play } from "../utils/handlers/general/play.js";
 @Event<typeof MessageCreateEvent>("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
     public async execute(message: Message): Promise<void> {
-        this.client.debugLog.logData("info", "MESSAGE_CREATE", [
-            ["ID", message.id],
-            ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
-            [
-                "Channel",
-                message.channel.type === ChannelType.DM
-                    ? "DM"
-                    : `${message.channel.name}(${message.channel.id})`,
-            ],
-            ["Author", `${message.author.tag}(${message.author.id})`],
-        ]);
-
         if (
             message.author.bot ||
             message.channel.type === ChannelType.DM ||
@@ -49,6 +37,14 @@ export class MessageCreateEvent extends BaseEvent {
         ) {
             return;
         }
+
+        // Log AFTER the multi-client check to avoid duplicate logs
+        this.client.debugLog.logData("info", "MESSAGE_CREATE", [
+            ["ID", message.id],
+            ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
+            ["Channel", `${message.channel.name}(${message.channel.id})`],
+            ["Author", `${message.author.tag}(${message.author.id})`],
+        ]);
 
         const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
             (pr) => {

@@ -29,6 +29,23 @@ import { type SongManager } from "../utils/structures/SongManager.js";
 @Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
     public async execute(interaction: Interaction): Promise<void> {
+        if (!interaction.inGuild() || !this.client.commands.isReady) {
+            return;
+        }
+
+        // Get user's voice channel for multi-client voice-aware handling
+        const member = interaction.member as GuildMember | null;
+        const userVoiceChannelId = member?.voice.channelId ?? undefined;
+
+        // In multi-client mode, determine which client should handle based on voice channel
+        if (
+            interaction.guildId &&
+            !this.client.shouldHandleGuildEvent(interaction.guildId, userVoiceChannelId)
+        ) {
+            return;
+        }
+
+        // Log AFTER the multi-client check to avoid duplicate logs
         this.client.debugLog.logData("info", "INTERACTION_CREATE", [
             ["Type", interaction.type.toString()],
             [
@@ -45,22 +62,6 @@ export class InteractionCreateEvent extends BaseEvent {
             ],
             ["User", `${interaction.user.tag}(${interaction.user.id})`],
         ]);
-
-        if (!interaction.inGuild() || !this.client.commands.isReady) {
-            return;
-        }
-
-        // Get user's voice channel for multi-client voice-aware handling
-        const member = interaction.member as GuildMember | null;
-        const userVoiceChannelId = member?.voice.channelId ?? undefined;
-
-        // In multi-client mode, determine which client should handle based on voice channel
-        if (
-            interaction.guildId &&
-            !this.client.shouldHandleGuildEvent(interaction.guildId, userVoiceChannelId)
-        ) {
-            return;
-        }
 
         const __mf = i18n__mf(this.client, interaction.guild);
 
