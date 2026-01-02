@@ -78,7 +78,13 @@ export function getDiscordTokens(): string[] {
     // Parse DISCORD_TOKEN as comma-separated values for multi-bot support
     // Single token: DISCORD_TOKEN="token1" → 1 bot
     // Multiple tokens: DISCORD_TOKEN="token1, token2, token3" → 3 bots (auto-enabled)
-    const tokens = parseEnvValue(process.env.DISCORD_TOKEN ?? "");
+    const rawToken = process.env.DISCORD_TOKEN ?? "";
+
+    // Split by comma, trim whitespace, and filter empty values
+    const tokens = rawToken
+        .split(",")
+        .map((token) => token.trim())
+        .filter((token) => token.length > 0);
 
     // Use Set to deduplicate tokens
     return [...new Set(tokens)];
