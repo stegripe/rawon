@@ -40,16 +40,27 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         // Multi-bot check: Skip if this is not the responsible bot for this guild
+        // Exception: Request channel messages are handled differently based on voice channel
+        const isRequestChannel =
+            message.guild &&
+            this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id);
+
         if (message.guild && !this.client.shouldRespondInGuild(message.guild.id)) {
-            // Exception: Allow mention check for any bot in the system
-            const mentionedBotId = this.getMentionedBotId(message.content);
-            if (mentionedBotId && this.client.multiBotManager.isBotInSystem(mentionedBotId)) {
-                // If mentioning any bot in the system, only the primary bot should respond
-                if (!this.client.isPrimaryBot()) {
+            // Exception 1: Request channel messages - let handleRequestChannelMessage decide
+            // based on which voice channel the user is in
+            if (isRequestChannel && this.client.multiBotManager.isMultiBotActive()) {
+                // Don't early return - let the request channel handler decide
+            } else {
+                // Exception 2: Allow mention check for any bot in the system
+                const mentionedBotId = this.getMentionedBotId(message.content);
+                if (mentionedBotId && this.client.multiBotManager.isBotInSystem(mentionedBotId)) {
+                    // If mentioning any bot in the system, only the primary bot should respond
+                    if (!this.client.isPrimaryBot()) {
+                        return;
+                    }
+                } else {
                     return;
                 }
-            } else {
-                return;
             }
         }
 
@@ -73,11 +84,12 @@ export class MessageCreateEvent extends BaseEvent {
             },
         );
 
-        if (
-            message.guild &&
-            this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)
-        ) {
+        if (isRequestChannel) {
             if ((prefixMatch?.length ?? 0) > 0) {
+                // For commands in request channel, only responsible bot should handle
+                if (!this.client.shouldRespondInGuild(message.guild?.id ?? "")) {
+                    return;
+                }
                 this.client.commands.handle(message, prefixMatch as unknown as string);
 
                 setTimeout(() => {
@@ -182,6 +194,27 @@ export class MessageCreateEvent extends BaseEvent {
         if (!voiceChannel) {
             this.sendTemporaryReply(message, createEmbed("warn", __("requestChannel.notInVoice")));
             return;
+        }
+
+        // Multi-bot mode: Check if this bot should handle this voice channel
+        if (this.client.multiBotManager.isMultiBotActive()) {
+            // Check if there's an existing queue for a DIFFERENT voice channel
+            const existingQueueVoiceChannelId = guild.queue?.connection?.joinConfig.channelId;
+            if (existingQueueVoiceChannelId && existingQueueVoiceChannelId !== voiceChannel.id) {
+                // User is in a different voice channel than the existing queue
+                // This bot should NOT handle this request - let another bot handle it
+                return;
+            }
+
+            // Check if this bot is the appropriate handler for this voice channel
+            const appropriateHandler = this.client.multiBotManager.getVoiceChannelHandler(
+                guild,
+                voiceChannel,
+            );
+            if (appropriateHandler && appropriateHandler.user?.id !== this.client.user?.id) {
+                // Another bot should handle this voice channel
+                return;
+            }
         }
 
         const songs = await searchTrack(this.client, query).catch(() => null);
