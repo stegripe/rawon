@@ -8,11 +8,11 @@ import {
     type TextChannel,
     type User,
 } from "discord.js";
-import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
 import { Event } from "../utils/decorators/Event.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
 
@@ -94,13 +94,15 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
+        const __mf = i18n__mf(this.client, message.guild);
+
         if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
             await message
                 .reply({
                     embeds: [
                         createEmbed(
                             "info",
-                            `👋 **|** ${i18n.__mf("events.createMessage", {
+                            `👋 **|** ${__mf("events.createMessage", {
                                 author: message.author.toString(),
                                 prefix: `**\`${this.client.config.mainPrefix}\`**`,
                             })}`,
@@ -120,6 +122,9 @@ export class MessageCreateEvent extends BaseEvent {
         if (!guild) {
             return;
         }
+
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
 
         setTimeout(() => {
             void (async (): Promise<void> => {
@@ -150,10 +155,7 @@ export class MessageCreateEvent extends BaseEvent {
 
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
-            this.sendTemporaryReply(
-                message,
-                createEmbed("warn", i18n.__("requestChannel.notInVoice")),
-            );
+            this.sendTemporaryReply(message, createEmbed("warn", __("requestChannel.notInVoice")));
             return;
         }
 
@@ -161,7 +163,7 @@ export class MessageCreateEvent extends BaseEvent {
         if (!songs || songs.items.length === 0) {
             this.sendTemporaryReply(
                 message,
-                createEmbed("error", i18n.__("requestChannel.noResults"), true),
+                createEmbed("error", __("requestChannel.noResults"), true),
             );
             return;
         }
@@ -191,7 +193,7 @@ export class MessageCreateEvent extends BaseEvent {
                     message,
                     createEmbed(
                         "error",
-                        i18n.__mf("utils.generalHandler.errorJoining", {
+                        __mf("utils.generalHandler.errorJoining", {
                             message: `\`${(error as Error).message}\``,
                         }),
                         true,
@@ -217,7 +219,7 @@ export class MessageCreateEvent extends BaseEvent {
             const playlistUrl = songs.playlist.url;
             confirmEmbed = createEmbed(
                 "success",
-                `🎶 **|** ${i18n.__mf("requestChannel.addedPlaylistToQueue", {
+                `🎶 **|** ${__mf("requestChannel.addedPlaylistToQueue", {
                     playlist: `**[${playlistTitle}](${playlistUrl})**`,
                     count: `**${songs.items.length.toString()}**`,
                 })}`,
@@ -233,7 +235,7 @@ export class MessageCreateEvent extends BaseEvent {
             const songUrl = songs.items[0].url;
             confirmEmbed = createEmbed(
                 "success",
-                `🎶 **|** ${i18n.__mf("requestChannel.addedToQueue", {
+                `🎶 **|** ${__mf("requestChannel.addedToQueue", {
                     song: `**[${songTitle}](${songUrl})**`,
                 })}`,
             );

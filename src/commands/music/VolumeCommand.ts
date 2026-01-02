@@ -13,6 +13,7 @@ import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command({
     aliases: ["vol"],
@@ -36,6 +37,9 @@ export class VolumeCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const volume = Number(ctx.args[0] ?? ctx.options?.get("volume", false)?.value);
         const current = ctx.guild?.queue?.volume ?? Number.NaN;
 
@@ -55,10 +59,10 @@ export class VolumeCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
+                        `🔊 **|** ${__mf("commands.music.volume.currentVolume", {
                             volume: `**\`${current}\`**`,
                         })}\n${current}% ${createProgressBar(current, 100)} 100%`,
-                    ).setFooter({ text: `• ${i18n.__("commands.music.volume.changeVolume")}` }),
+                    ).setFooter({ text: `• ${__("commands.music.volume.changeVolume")}` }),
                 ],
                 components: [buttons],
             });
@@ -79,11 +83,11 @@ export class VolumeCommand extends BaseCommand {
                         embeds: [
                             createEmbed(
                                 "info",
-                                `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
+                                `🔊 **|** ${__mf("commands.music.volume.currentVolume", {
                                     volume: `**\`${newVolume}\`**`,
                                 })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`,
                             ).setFooter({
-                                text: `• ${i18n.__("commands.music.volume.changeVolume")}`,
+                                text: `• ${__("commands.music.volume.changeVolume")}`,
                             }),
                         ],
                         components: [buttons],
@@ -95,11 +99,11 @@ export class VolumeCommand extends BaseCommand {
                         embeds: [
                             createEmbed(
                                 "info",
-                                `🔊 **|** ${i18n.__mf("commands.music.volume.currentVolume", {
+                                `🔊 **|** ${__mf("commands.music.volume.currentVolume", {
                                     volume: `**\`${cur}\`**`,
                                 })}\n${cur}% ${createProgressBar(cur, 100)} 100%`,
                             ).setFooter({
-                                text: `• ${i18n.__("commands.music.volume.changeVolume")}`,
+                                text: `• ${__("commands.music.volume.changeVolume")}`,
                             }),
                         ],
                         components: [],
@@ -112,7 +116,7 @@ export class VolumeCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("commands.music.volume.plsPause", {
+                        __mf("commands.music.volume.plsPause", {
                             volume: `**\`${volume}\`**`,
                         }),
                     ),
@@ -128,7 +132,7 @@ export class VolumeCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `🔊 **|** ${i18n.__mf("commands.music.volume.newVolume", {
+                    `🔊 **|** ${__mf("commands.music.volume.newVolume", {
                         volume: `**\`${volume}\`**`,
                     })}`,
                 ),

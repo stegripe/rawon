@@ -5,6 +5,7 @@ import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
 @Command({
@@ -30,6 +31,9 @@ export class PlayCommand extends BaseCommand {
     @validVC
     @sameVC
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         if (ctx.isInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
@@ -58,9 +62,9 @@ export class PlayCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
-                            name: this.meta.name,
+                        __mf("reusable.invalidUsage", {
+                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            name: `**\`${this.meta.name}\`**`,
                         }),
                     ),
                 ],
@@ -75,15 +79,16 @@ export class PlayCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("commands.music.play.alreadyPlaying", {
-                            voiceChannel:
+                        __mf("commands.music.play.alreadyPlaying", {
+                            voiceChannel: `**\`${
                                 ctx.guild.channels.cache.get(
                                     (
                                         ctx.guild.queue.connection?.joinConfig as {
                                             channelId: string;
                                         }
                                     ).channelId,
-                                )?.name ?? "#unknown-channel",
+                                )?.name ?? "#unknown-channel"
+                            }\`**`,
                         }),
                     ),
                 ],
@@ -95,7 +100,7 @@ export class PlayCommand extends BaseCommand {
 
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.play.noSongData"), true)],
+                embeds: [createEmbed("error", __("commands.music.play.noSongData"), true)],
             });
         }
 

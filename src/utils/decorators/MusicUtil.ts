@@ -1,12 +1,14 @@
 import { PermissionFlagsBits } from "discord.js";
-import i18n from "../../config/index.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
 
 export const haveQueue = createCmdExecuteDecorator((ctx) => {
+    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
     if (!ctx.guild?.queue) {
         void ctx.reply({
-            embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noQueue"))],
+            embeds: [createEmbed("warn", __("utils.musicDecorator.noQueue"))],
         });
         return false;
     }
@@ -14,9 +16,10 @@ export const haveQueue = createCmdExecuteDecorator((ctx) => {
 });
 
 export const inVC = createCmdExecuteDecorator((ctx) => {
+    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
     if (!ctx.member?.voice.channel) {
         void ctx.reply({
-            embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.noInVC"))],
+            embeds: [createEmbed("warn", __("utils.musicDecorator.noInVC"))],
         });
         return false;
     }
@@ -24,6 +27,7 @@ export const inVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const validVC = createCmdExecuteDecorator((ctx) => {
+    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
     const voiceChannel = ctx.member?.voice.channel;
 
     if (!ctx.guild?.members.me) {
@@ -34,14 +38,14 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
     }
     if (voiceChannel?.joinable !== true) {
         void ctx.reply({
-            embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCJoinable"), true)],
+            embeds: [createEmbed("error", __("utils.musicDecorator.validVCJoinable"), true)],
         });
 
         return false;
     }
     if (!voiceChannel.permissionsFor(ctx.guild.members.me).has(PermissionFlagsBits.Speak)) {
         void ctx.reply({
-            embeds: [createEmbed("error", i18n.__("utils.musicDecorator.validVCPermission"), true)],
+            embeds: [createEmbed("error", __("utils.musicDecorator.validVCPermission"), true)],
         });
         return false;
     }
@@ -50,6 +54,7 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const sameVC = createCmdExecuteDecorator((ctx) => {
+    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
     if (!ctx.guild?.members.me?.voice.channel) {
         return true;
     }
@@ -58,7 +63,7 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
         ctx.guild.queue?.connection?.joinConfig.channelId ?? ctx.guild.members.me.voice.channel.id;
     if (ctx.member?.voice.channel?.id !== botVc) {
         void ctx.reply({
-            embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.sameVC"))],
+            embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
         });
         return false;
     }
@@ -67,6 +72,8 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
+    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
+    const __mf = i18n__mf(ctx.guild?.client as Rawon, ctx.guild);
     if (!ctx.guild) {
         return true;
     }
@@ -86,7 +93,7 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
 
     if (ctx.channel?.id === requestChannel.id && !ctx.isInteraction()) {
         void ctx.reply({
-            embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.useRequestChannelDirect"))],
+            embeds: [createEmbed("warn", __("utils.musicDecorator.useRequestChannelDirect"))],
         });
         return false;
     }
@@ -95,7 +102,7 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         embeds: [
             createEmbed(
                 "warn",
-                i18n.__mf("utils.musicDecorator.useRequestChannel", {
+                __mf("utils.musicDecorator.useRequestChannel", {
                     channel: `<#${requestChannel.id}>`,
                 }),
             ),

@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Administrar cookies para bypass de detección de bot",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [número|all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [número | all]",
                 "slashAddDescription": "Agregar un nuevo archivo de cookies",
                 "slashRemoveDescription": "Eliminar un archivo de cookies",
                 "slashListDescription": "Listar todos los archivos de cookies",
@@ -97,17 +97,33 @@
             "ping": {
                 "description": "Muestra el ping actual del bot",
                 "footerString": "Latencia de: {user}"
+            },
+            "language": {
+                "description": "Cambia el idioma del bot para este servidor",
+                "noPermission": "Necesitas el permiso **Gestionar Servidor** para usar este comando.",
+                "slashSetDescription": "Establecer el idioma del servidor",
+                "slashViewDescription": "Ver el idioma actual del servidor",
+                "slashResetDescription": "Restablecer al idioma predeterminado",
+                "slashLocaleOption": "El idioma a establecer",
+                "usage": "{prefix}language <view | set | reset> [idioma]",
+                "embedTitle": "Configuración de idioma",
+                "currentLanguage": "Idioma actual:",
+                "languageSet": "El idioma del servidor se ha cambiado a",
+                "languageReset": "El idioma del servidor ha sido restablecido a:",
+                "invalidLocale": "Idioma no válido. Idiomas disponibles:",
+                "availableLocales": "Idiomas disponibles"
             }
         },
         "music": {
             "categoryName": "MÚSICA",
             "dj": {
                 "description": "Cambia la configuración del DJ",
+                "usage": "{prefix}dj <enable | disable | role> [rol]",
                 "disable": "Desactivado",
-                "disableText": "La función DJ ha sido **`DESACTIVADA`**",
+                "disableText": "La función DJ ha sido **`Desactivada`**",
                 "embedTitle": "DJ",
                 "enable": "Activado",
-                "enableText": "La función DJ ha sido **`ACTIVADA`**",
+                "enableText": "La función DJ ha sido **`Activada`**",
                 "newRoleText": "Nuevo rol",
                 "noPermission": "No tienes el permiso **Gestionar Servidor** para usar este comando.",
                 "role": {
@@ -126,8 +142,9 @@
                 "currentlyUsedFilters": "Filtros utilizados actualmente",
                 "currentState": "{filter} es actualmente {state}",
                 "description": "Configurar el filtro de canción",
+                "usage": "{prefix}filter <enable | disable | status> [filtro]",
                 "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
-                "filterSet": "`El filtro {filter}` ya está {state}",
+                "filterSet": "El filtro {filter} ya está {state}",
                 "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
                 "slashStatusDescription": "Comprobar el estado actual de los filtros de canción",
@@ -135,13 +152,13 @@
                 "specifyFilter": "Por favor, especifique el filtro de canción"
             },
             "lyrics": {
-                "apiError": "El API no pudo encontrar la letra de la canción **{song}**, razón: {message}",
+                "apiError": "El API no pudo encontrar la letra de la canción {song}, razón: {message}",
                 "description": "Muestra la letra de una canción",
                 "noQuery": "No se está reproduciendo nada o no se ingresaró ninguna canción a buscar.",
                 "searchingLyrics": "Buscando letra...",
                 "slashDescription": "Canción a buscar",
                 "usage": "{prefix}lyrics [canción]",
-                "noLyrics": "No se encontraron letras para **{song}**."
+                "noLyrics": "No se encontraron letras para {song}."
             },
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
@@ -155,7 +172,7 @@
                 "pauseMessage": "Se ha pausado el reproductor de música."
             },
             "play": {
-                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz **`{voiceChannel}`**.",
+                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz {voiceChannel}.",
                 "description": "Reproduce algo de música",
                 "noSongData": "Este URL no tiene datos de canciones.",
                 "slashQueryDescription": "Canción a reproducir",
@@ -176,11 +193,11 @@
             "repeat": {
                 "actualMode": "El modo de repetición actual es {mode}",
                 "description": "Repite la canción actual o la cola completa",
-                "footer": "Para cambiar el modo, revisa '{prefix}help repeat'",
+                "footer": "Para cambiar el modo, revisa {prefix}help repeat",
                 "newMode": "El modo de reproducción ha sido establecido a {mode}",
                 "slashDisable": "Desactiva el modo repetición",
-                "slashQueue": "Establece el mode repetición a **`COLA`**",
-                "slashSong": "Establece el mode repetición a **`UNA`**",
+                "slashQueue": "Establece el mode repetición a **`Cola`**",
+                "slashSong": "Establece el mode repetición a **`Una`**",
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
@@ -225,7 +242,7 @@
             },
             "skip": {
                 "description": "Salta la canción actual",
-                "skipMessage": "Se ha saltado **{song}**",
+                "skipMessage": "Se ha saltado {song}",
                 "voteResultMessage": "{length}/{required} han votado para saltar la canción"
             },
             "skipTo": {
@@ -233,7 +250,7 @@
                 "description": "Salta a una posición específica de la cola",
                 "noPermission": "No tienes permiso para usar este comando.",
                 "noSongPosition": "No se pudo encontrar la canción en esta posición.",
-                "skipMessage": "Se ha saltado a **{song}**",
+                "skipMessage": "Se ha saltado a {song}",
                 "slashFirstDescription": "Regresa a la primera canción de la cola",
                 "slashLastDescription": "Salta a la última canción de la cola",
                 "slashPositionDescription": "Posición de la canción en la cola",
@@ -259,13 +276,13 @@
                 "noPermission": "Necesitas el permiso **Gestionar Servidor** para usar este comando.",
                 "invalidChannel": "Por favor proporciona un canal de texto válido.",
                 "noBotPermissions": "No pude verificar mis permisos para ese canal.",
-                "missingBotPermissions": "Me faltan los siguientes permisos en ese canal: **{permissions}**",
+                "missingBotPermissions": "Me faltan los siguientes permisos en ese canal: {permissions}",
                 "failedToSetup": "No se pudo configurar el canal de solicitudes. Por favor verifica mis permisos.",
                 "slashSetDescription": "Establecer un canal como canal de solicitudes",
                 "slashRemoveDescription": "Eliminar el canal de solicitudes",
                 "slashStatusDescription": "Mostrar el canal de solicitudes actual",
                 "slashChannelDescription": "El canal a establecer como canal de solicitudes",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
     },
@@ -283,48 +300,48 @@
         "cmdLoading": "Cargando...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La conexión se ha reconfigurado con éxito.",
-            "deleteQueue": "Ha pasado **`{duration}`** y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
+            "deleteQueue": "Ha pasado {duration} y nadie se ha unido al canal de voz, la cola ha sido eliminada.",
             "deleteQueueFooter": "Cola eliminada",
             "disconnectFromVCMessage": "Desconectado del canal de voz, la cola ha sido eliminada.",
             "joinStageMessage": "Me uní al canal escenario con éxito como orador.",
             "joiningAsSpeaker": "Movido a un canal de escenario, intentando unirse como Orador...",
-            "pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en **`{duration}`**, la cola se eliminará.",
+            "pauseQueue": "Todos han dejado el canal de voz. Para ahorrar recursos, se ha pausado la cola.\nSi nadie se une al canal de voz en {duration}, la cola se eliminará.",
             "pauseQueueFooter": "Cola pausada",
             "reconfigureConnection": "He sido movido a un canal de voz en una región diferente, reconfigurando conexión...",
-            "resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando **{song}**",
+            "resumeQueue": "Alguien se ha unido al canal de voz.\nReanudando {song}",
             "resumeQueueFooter": "Cola reanudada",
             "unableJoinStageMessage": "No se pudo unir como orador, la cola ha sido eliminada.",
             "unableReconfigureConnection": "No se pudo reconfigurar la conexión, la cola ha sido eliminada."
         }
     },
     "reusable": {
-        "invalidUsage": "Uso inválido, por favor usa **`{prefix} {name}`** para más información.",
+        "invalidUsage": "Uso inválido, por favor usa {prefix} {name} para más información.",
         "pageFooter": "Página {actual} de {total}",
         "lyricsSource": "Fuente: {source}"
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Me faltan los siguientes permisos en {channel}: **{permissions}**"
+            "botMissingChannelPerms": "Me faltan los siguientes permisos en {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, por favor espera **`{timeleft}`** para poder hacer eso.",
+        "cooldownMessage": "{author}, por favor espera {timeleft} para poder hacer eso.",
         "generalHandler": {
             "errorJoining": "Error al unirse al canal de voz, razón: {message}",
             "errorPlaying": "Ocurrió un error al tratar de reproducir música, razón: ${message}",
             "handleVideoInitial": "Se han añadido {length} canciones a la cola\n\n",
             "leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
-            "queueEnded": "La cola ha terminado, usa **`{usage}`** para reproducir más música.",
-            "startPlaying": "Se empezó a reproducir **{song}**",
-            "stopPlaying": "Se detuvo la reproducción **{song}**",
-            "songRequeued": "Hubo un problema al reproducir **{song}**, se ha vuelto a agregar a la cola para otro intento.",
-            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Por favor, agrega nuevas cookies usando el comando `{prefix}cookies add <número>` con un archivo cookies.txt adjunto, o usa `{prefix}cookies reset` para reintentar las cookies existentes."
+            "queueEnded": "La cola ha terminado, usa {usage} para reproducir más música.",
+            "startPlaying": "Se empezó a reproducir {song}",
+            "stopPlaying": "Se detuvo la reproducción {song}",
+            "songRequeued": "Hubo un problema al reproducir {song}, se ha vuelto a agregar a la cola para otro intento.",
+            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Por favor, agrega nuevas cookies usando el comando `{prefix}cookies add <number>` con un archivo cookies.txt adjunto, o usa `{prefix}cookies reset` para reintentar las cookies existentes."
         },
         "musicDecorator": {
             "noInVC": "Lo siento, pero debes estar en un canal de voz para hacer eso.",
             "noQueue": "No se está reproduciendo nada.",
             "notPlaying": "No hay música reproduciéndose actualmente. Por favor, reproduce una canción primero.",
             "sameVC": "Necesitas estar en el mismo canal de voz que yo.",
-            "validVCJoinable": "Lo siento, pero no tengo el permiso **`CONECTAR`** en tu servidor.",
-            "validVCPermission": "Lo siento, pero no tengo el permiso **`HABLAR`** en tu servidor.",
+            "validVCJoinable": "Lo siento, pero no tengo el permiso **`Conectar`** en tu servidor.",
+            "validVCPermission": "Lo siento, pero no tengo el permiso **`Hablar`** en tu servidor.",
             "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música.",
             "useRequestChannelDirect": "Este comando está deshabilitado en el canal de solicitudes. Por favor, usa los botones del reproductor o escribe el título/enlace de la canción directamente."
         }
@@ -344,17 +361,17 @@
         "unknown": "Desconocido",
         "notInVoice": "Necesitas estar en un canal de voz para solicitar música.",
         "noResults": "No se encontraron resultados para tu búsqueda.",
-        "addedToQueue": "Se añadió **{song}** a la cola.",
+        "addedToQueue": "Se añadió {song} a la cola.",
         "addedPlaylistToQueue": "Se añadieron {count} canciones de {playlist} a la cola.",
-        "startedPlaying": "Reproduciendo **{song}**",
+        "startedPlaying": "Reproduciendo {song}",
         "paused": "Música pausada.",
         "resumed": "Música reanudada.",
-        "skipped": "Se saltó **{song}**",
-        "removed": "Eliminado **{song}** de la cola y saltado.",
+        "skipped": "Se saltó {song}",
+        "removed": "Eliminado {song} de la cola y saltado.",
         "stopped": "Se detuvo la música y se vació la cola.",
-        "loopChanged": "Modo de bucle cambiado a **{mode}**.",
-        "shuffleChanged": "Modo aleatorio ahora está **{state}**.",
-        "volumeChanged": "Volumen cambiado a **{volume}%**.",
+        "loopChanged": "Modo de bucle cambiado a {mode}.",
+        "shuffleChanged": "Modo aleatorio ahora está {state}.",
+        "volumeChanged": "Volumen cambiado a {volume}%.",
         "queueCleared": "La cola ha sido vaciada.",
         "queueListTitle": "Lista de Cola",
         "emptyQueue": "La cola está vacía.",

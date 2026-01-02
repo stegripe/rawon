@@ -10,6 +10,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command({
     aliases: ["rc", "reqchannel", "musicchannel"],
@@ -49,16 +50,15 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 })
 export class RequestChannelCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const hasPermission =
             ctx.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) ?? false;
         if (!hasPermission) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__("commands.music.requestChannel.noPermission"),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.music.requestChannel.noPermission"), true),
                 ],
             });
         }
@@ -66,11 +66,7 @@ export class RequestChannelCommand extends BaseCommand {
         if (!ctx.guild) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        i18n.__("commands.music.requestChannel.noPermission"),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.music.requestChannel.noPermission"), true),
                 ],
             });
         }
@@ -89,7 +85,7 @@ export class RequestChannelCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__("commands.music.requestChannel.invalidChannel"),
+                            __("commands.music.requestChannel.invalidChannel"),
                             true,
                         ),
                     ],
@@ -104,7 +100,7 @@ export class RequestChannelCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__("commands.music.requestChannel.noBotPermissions"),
+                            __("commands.music.requestChannel.noBotPermissions"),
                             true,
                         ),
                     ],
@@ -136,7 +132,7 @@ export class RequestChannelCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__mf("commands.music.requestChannel.missingBotPermissions", {
+                            __mf("commands.music.requestChannel.missingBotPermissions", {
                                 permissions: permissionNames.join(", "),
                             }),
                             true,
@@ -156,7 +152,7 @@ export class RequestChannelCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__("commands.music.requestChannel.failedToSetup"),
+                            __("commands.music.requestChannel.failedToSetup"),
                             true,
                         ),
                     ],
@@ -167,7 +163,7 @@ export class RequestChannelCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "success",
-                        i18n.__mf("requestChannel.setChannel", { channel: `<#${channel.id}>` }),
+                        __mf("requestChannel.setChannel", { channel: `<#${channel.id}>` }),
                         true,
                     ),
                 ],
@@ -178,7 +174,7 @@ export class RequestChannelCommand extends BaseCommand {
             await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
 
             return ctx.reply({
-                embeds: [createEmbed("success", i18n.__("requestChannel.removeChannel"), true)],
+                embeds: [createEmbed("success", __("requestChannel.removeChannel"), true)],
             });
         }
 
@@ -189,7 +185,7 @@ export class RequestChannelCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        i18n.__mf("requestChannel.currentChannel", {
+                        __mf("requestChannel.currentChannel", {
                             channel: `<#${currentChannel.id}>`,
                         }),
                     ),
@@ -198,7 +194,7 @@ export class RequestChannelCommand extends BaseCommand {
         }
 
         return ctx.reply({
-            embeds: [createEmbed("warn", i18n.__("requestChannel.noChannel"))],
+            embeds: [createEmbed("warn", __("requestChannel.noChannel"))],
         });
     }
 }

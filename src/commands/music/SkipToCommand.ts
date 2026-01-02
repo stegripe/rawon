@@ -7,6 +7,7 @@ import { type QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { play } from "../../utils/handlers/GeneralUtil.js";
 
 @Command({
@@ -47,6 +48,9 @@ export class SkipToCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const queue = ctx.guild?.queue;
         if (!queue) {
             return;
@@ -54,7 +58,7 @@ export class SkipToCommand extends BaseCommand {
 
         if (!queue.canSkip()) {
             await ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
             });
             return;
         }
@@ -73,7 +77,7 @@ export class SkipToCommand extends BaseCommand {
             ctx.member?.permissions.has("ManageGuild") !== true
         ) {
             await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.skipTo.noPermission"), true)],
+                embeds: [createEmbed("error", __("commands.music.skipTo.noPermission"), true)],
             });
             return;
         }
@@ -86,11 +90,7 @@ export class SkipToCommand extends BaseCommand {
             if (typeof position !== "number" || Number.isNaN(position)) {
                 await ctx.reply({
                     embeds: [
-                        createEmbed(
-                            "error",
-                            i18n.__("commands.music.skipTo.invalidPosition"),
-                            true,
-                        ),
+                        createEmbed("error", __("commands.music.skipTo.invalidPosition"), true),
                     ],
                 });
                 return;
@@ -111,9 +111,9 @@ export class SkipToCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "warn",
-                        i18n.__mf("reusable.invalidUsage", {
-                            prefix: `${this.client.config.mainPrefix}help`,
-                            name: this.meta.name,
+                        __mf("reusable.invalidUsage", {
+                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            name: `**\`${this.meta.name}\`**`,
                         }),
                     ),
                 ],
@@ -128,9 +128,7 @@ export class SkipToCommand extends BaseCommand {
             songs[Number(targetType) - 1] === undefined
         ) {
             await ctx.reply({
-                embeds: [
-                    createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true),
-                ],
+                embeds: [createEmbed("error", __("commands.music.skipTo.noSongPosition"), true)],
             });
             return;
         }
@@ -145,11 +143,7 @@ export class SkipToCommand extends BaseCommand {
                 if (!lastSong) {
                     await ctx.reply({
                         embeds: [
-                            createEmbed(
-                                "error",
-                                i18n.__("commands.music.skipTo.noSongPosition"),
-                                true,
-                            ),
+                            createEmbed("error", __("commands.music.skipTo.noSongPosition"), true),
                         ],
                     });
                     return;
@@ -158,7 +152,7 @@ export class SkipToCommand extends BaseCommand {
             } else {
                 await ctx.reply({
                     embeds: [
-                        createEmbed("error", i18n.__("commands.music.skipTo.noSongPosition"), true),
+                        createEmbed("error", __("commands.music.skipTo.noSongPosition"), true),
                     ],
                 });
                 return;
@@ -172,14 +166,14 @@ export class SkipToCommand extends BaseCommand {
             ((queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key
         ) {
             await ctx.reply({
-                embeds: [createEmbed("error", i18n.__("commands.music.skipTo.cantPlay"), true)],
+                embeds: [createEmbed("error", __("commands.music.skipTo.cantPlay"), true)],
             });
             return;
         }
 
         if (!queue.startSkip()) {
             await ctx.reply({
-                embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
             });
             return;
         }
@@ -190,8 +184,8 @@ export class SkipToCommand extends BaseCommand {
             embeds: [
                 createEmbed(
                     "success",
-                    `⏭️ **|** ${i18n.__mf("commands.music.skipTo.skipMessage", {
-                        song: `[${song.song.title}](${song.song.url})`,
+                    `⏭️ **|** ${__mf("commands.music.skipTo.skipMessage", {
+                        song: `**[${song.song.title}](${song.song.url})**`,
                     })}`,
                 ).setThumbnail(song.song.thumbnail),
             ],

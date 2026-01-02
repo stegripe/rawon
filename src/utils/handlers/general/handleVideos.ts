@@ -7,13 +7,13 @@ import {
     type TextChannel,
     type VoiceChannel,
 } from "discord.js";
-import i18n from "../../../config/index.js";
 import { type CommandContext } from "../../../structures/CommandContext.js";
 import { type Rawon } from "../../../structures/Rawon.js";
 import { ServerQueue } from "../../../structures/ServerQueue.js";
 import { type Song } from "../../../typings/index.js";
 import { chunk } from "../../functions/chunk.js";
 import { createEmbed } from "../../functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import { parseHTMLElements } from "../../functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
 import { play } from "./play.js";
@@ -41,6 +41,9 @@ export async function handleVideos(
     const wasIdle = ctx.guild?.queue?.idle;
     const inRequestChannel = isRequestChannel(client, ctx);
 
+    const __ = i18n__(client, ctx.guild);
+    const __mf = i18n__mf(client, ctx.guild);
+
     async function sendPagination(): Promise<void> {
         for (const song of toQueue) {
             ctx.guild?.queue?.songs.addSong(
@@ -49,7 +52,7 @@ export async function handleVideos(
             );
         }
 
-        const opening = i18n.__mf("utils.generalHandler.handleVideoInitial", {
+        const opening = __mf("utils.generalHandler.handleVideoInitial", {
             length: toQueue.length,
         });
         const pages = chunk(toQueue, 10).map((vals, i) => {
@@ -75,7 +78,7 @@ export async function handleVideos(
                         name: opening,
                     })
                     .setFooter({
-                        text: `• ${i18n.__mf("reusable.pageFooter", {
+                        text: `• ${__mf("reusable.pageFooter", {
                             actual: i + 1,
                             total: pages.length,
                         })}`,
@@ -146,7 +149,7 @@ export async function handleVideos(
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__mf("utils.generalHandler.errorJoining", {
+                            __mf("utils.generalHandler.errorJoining", {
                                 message: `\`${(error as Error).message}\``,
                             }),
                             true,
