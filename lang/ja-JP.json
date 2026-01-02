@@ -196,7 +196,7 @@
                 "slashDisable": "リピートモードを無効化",
                 "slashQueue": "**`キュー`**リピートモードを設定しました。",
                 "slashSong": "**`曲`**リピートモードを設定しました。",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "プレイヤーは一時停止されていません。",
@@ -253,7 +253,7 @@
                 "slashLastDescription": "キューの一番最後までスキップ",
                 "slashPositionDescription": "キュー内の曲のポジション",
                 "slashSpecificDescription": "キュー内の特定のポジションにスキップ",
-                "usage": "'{prefix}'skipto <{options} | 数>"
+                "usage": "{prefix}skipto <{options}|数>"
             },
             "stop": {
                 "description": "プレイヤーをストップ",

@@ -196,7 +196,7 @@
                 "slashDisable": "Désactiver le mode répétition",
                 "slashQueue": "Régler le mode de répétition sur **`Liste d'attente`**",
                 "slashSong": "Régler le mode de répétition sur **`Chanson`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Le lecteur de musique n'est pas en pause.",
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Passer à la dernière chanson de la file d'attente",
                 "slashPositionDescription": "Position du morceau dans la file d'attente",
                 "slashSpecificDescription": "Sauter à une position spécifique dans la file d'attente",
-                "usage": "'{prefix}'skipto <{options} | numéro>"
+                "usage": "{prefix}skipto <{options}|numéro>"
             },
             "stop": {
                 "description": "Arrêter le lecteur de musique",

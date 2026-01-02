@@ -196,7 +196,7 @@
                 "slashDisable": "Disable repeat mode",
                 "slashQueue": "Set repeat mode to **`Queue`**",
                 "slashSong": "Set repeat mode to **`Song`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "The music player is not paused.",
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Skip to the last song in the queue",
                 "slashPositionDescription": "Song position in the queue",
                 "slashSpecificDescription": "Skip to a specific position in the queue",
-                "usage": "'{prefix}'skipto <{options} | number>"
+                "usage": "{prefix}skipto <{options}|position>"
             },
             "stop": {
                 "description": "Stop the music player",

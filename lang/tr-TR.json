@@ -196,7 +196,7 @@
                 "slashDisable": "Tekrar modunu devre dışı bırak",
                 "slashQueue": "Tekrar modunu **`Şarkı kuyruğu`** olarak ayarlayın",
                 "slashSong": "Tekrar modunu **`Şarkı`** olarak ayarlayın",
-                "usage": "'{prefix}'repeat <{seçenekler}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Müzik çalar duraklatılmamış.",
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Kuyruktaki son şarkıya atla",
                 "slashPositionDescription": "Kuyruktaki şarkı konumu",
                 "slashSpecificDescription": "Kuyrukta belirli bir konuma atlama",
-                "usage": "'{prefix}'skipto <{tercihler} | numara>"
+                "usage": "{prefix}skipto <{options}|numara>"
             },
             "stop": {
                 "description": "Müzik çaları durdurur",

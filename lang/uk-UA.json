@@ -196,7 +196,7 @@
                 "slashDisable": "Вимкнути режим повтору",
                 "slashQueue": "Встановити режим повтору для **`Черги`**",
                 "slashSong": "Встановити режим повтору для **`Пісні`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Медіа програвач не стоїть на паузі.",
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Перейти до останньої пісні в черзі",
                 "slashPositionDescription": "Позиція пісні в черзі",
                 "slashSpecificDescription": "Перейти до певної позиції в черзі",
-                "usage": "'{prefix}'skipto <{options} | number>"
+                "usage": "{prefix}skipto <{options}|number>"
             },
             "stop": {
                 "description": "Зупинити музичний плеєр",
@@ -266,7 +266,7 @@
                 "newVolume": "Гучність встановлено на: {volume}",
                 "plsPause": "Будь ласка, призупиніть музику, а не встановлюйте гучність на {volume}",
                 "slashDescription": "Нова гучність:",
-                "usage": "{префікс}volume [нова гучність]",
+                "usage": "{prefix}volume [нова гучність]",
                 "volumeLimit": "Я не можу встановити гучність вище {maxVol}"
             },
             "requestChannel": {

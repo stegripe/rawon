@@ -253,7 +253,7 @@
                 "slashLastDescription": "Salta a la última canción de la cola",
                 "slashPositionDescription": "Posición de la canción en la cola",
                 "slashSpecificDescription": "Salta a una posición específica en la cola",
-                "usage": "{prefix}skipto <{options} | número>"
+                "usage": "{prefix}skipto <{options}|número>"
             },
             "stop": {
                 "description": "Para el reproductor de música",

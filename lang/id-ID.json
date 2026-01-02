@@ -196,7 +196,7 @@
                 "slashDisable": "Matiin mode repeat",
                 "slashQueue": "Atur mode repeat ke **`Queue`**",
                 "slashSong": "Atur mode repeat ke **`Song`**",
-                "usage": "'{prefix}'repeat <{options}>"
+                "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
                 "alreadyResume": "Media player-nya gak lagi dijeda kok.",
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Loncat ke lagu terakhir di antrian",
                 "slashPositionDescription": "Posisi lagu di antrian",
                 "slashSpecificDescription": "Loncat ke posisi tertentu di antrian",
-                "usage": "{prefix}skipto <{options} | angka>"
+                "usage": "{prefix}skipto <{options}|angka>"
             },
             "stop": {
                 "description": "Stop media player",
