@@ -61,7 +61,7 @@ export class MultiClientManager {
      * Check if a client is the primary responder for a guild.
      * The primary responder is the client with the lowest priority that is in the guild.
      */
-    public isPrimaryForGuild(client: Client, guild: Guild): boolean {
+    public isPrimaryForGuildObj(client: Client, guild: Guild): boolean {
         if (!client.user) {
             return false;
         }
@@ -84,22 +84,85 @@ export class MultiClientManager {
 
     /**
      * Check if this client should handle events (messages, interactions, etc.)
-     * Only the primary client for the guild should handle events.
+     *
+     * Logic:
+     * 1. If user is in a voice channel, check if any bot is already in that voice channel
+     *    - If yes, only that bot should handle
+     *    - If no, find an available bot (not in any voice channel in this guild)
+     * 2. If user is not in voice, the primary client for the guild handles
      */
-    public shouldHandleEvent(client: Client, guildId: string): boolean {
+    public shouldHandleEvent(
+        client: Client,
+        guildId: string,
+        userVoiceChannelId?: string,
+    ): boolean {
         if (!client.user) {
             return false;
         }
 
-        const clientPriority = this.clientPriorities.get(client.user.id);
-        if (clientPriority === undefined) {
+        const guild = client.guilds.cache.get(guildId);
+        if (!guild) {
             return false;
         }
 
-        // Find the lowest priority client that is in this guild
+        // If user is in a voice channel, use voice-aware logic
+        if (userVoiceChannelId) {
+            // Check if THIS client is in the user's voice channel
+            const botVoiceState = guild.members.cache.get(client.user.id)?.voice;
+            if (botVoiceState?.channelId === userVoiceChannelId) {
+                // This bot is in the same voice channel as user - it should handle
+                return true;
+            }
+
+            // Check if ANY other bot is in the user's voice channel
+            for (const c of this.clients) {
+                if (!c?.user || c.user.id === client.user.id) {
+                    continue;
+                }
+                const otherGuild = c.guilds.cache.get(guildId);
+                const otherVoiceState = otherGuild?.members.cache.get(c.user.id)?.voice;
+                if (otherVoiceState?.channelId === userVoiceChannelId) {
+                    // Another bot is in user's voice channel - this client should NOT handle
+                    return false;
+                }
+            }
+
+            // No bot is in user's voice channel yet
+            // Find the first available bot (not in any voice channel in this guild)
+            for (const c of this.clients) {
+                if (!c?.user) {
+                    continue;
+                }
+                const cGuild = c.guilds.cache.get(guildId);
+                if (!cGuild) {
+                    continue;
+                }
+                const cVoiceState = cGuild.members.cache.get(c.user.id)?.voice;
+                if (!cVoiceState?.channelId) {
+                    // This bot is available (not in voice)
+                    // Return true only if this is that bot
+                    return c.user.id === client.user.id;
+                }
+            }
+
+            // All bots are in voice channels, fall back to primary
+            return this.isPrimaryForGuild(client, guildId);
+        }
+
+        // User is not in voice channel - use standard priority logic
+        return this.isPrimaryForGuild(client, guildId);
+    }
+
+    /**
+     * Check if this client is the primary for a guild (lowest priority client in the guild)
+     */
+    private isPrimaryForGuild(client: Client, guildId: string): boolean {
+        if (!client.user) {
+            return false;
+        }
+
         for (const c of this.clients) {
             if (c?.user && c.guilds.cache.has(guildId)) {
-                // This is the primary for this guild
                 return c.user.id === client.user.id;
             }
         }

@@ -72,10 +72,12 @@ export class Rawon extends Client {
 
     /**
      * Check if this client should handle events for a specific guild.
-     * In multi-client mode, only the primary client for the guild should handle events.
+     * In multi-client mode, considers voice channel to determine which bot should handle.
+     * @param guildId The guild ID
+     * @param userVoiceChannelId Optional - the voice channel ID of the user making the request
      */
-    public shouldHandleGuildEvent(guildId: string): boolean {
-        return this.multiClientManager.shouldHandleEvent(this, guildId);
+    public shouldHandleGuildEvent(guildId: string, userVoiceChannelId?: string): boolean {
+        return this.multiClientManager.shouldHandleEvent(this, guildId, userVoiceChannelId);
     }
 
     /**

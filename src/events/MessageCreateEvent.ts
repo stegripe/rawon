@@ -39,8 +39,14 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
-        // In multi-client mode, only the primary client for this guild should handle events
-        if (message.guild && !this.client.shouldHandleGuildEvent(message.guild.id)) {
+        // Get user's voice channel for multi-client voice-aware handling
+        const userVoiceChannelId = message.member?.voice.channelId ?? undefined;
+
+        // In multi-client mode, determine which client should handle based on voice channel
+        if (
+            message.guild &&
+            !this.client.shouldHandleGuildEvent(message.guild.id, userVoiceChannelId)
+        ) {
             return;
         }
 
