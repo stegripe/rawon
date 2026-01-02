@@ -198,11 +198,18 @@ export class MessageCreateEvent extends BaseEvent {
 
         // Multi-bot mode: Check if this bot should handle this voice channel
         if (this.client.multiBotManager.isMultiBotActive()) {
-            // Check if there's an existing queue for a DIFFERENT voice channel
-            const existingQueueVoiceChannelId = guild.queue?.connection?.joinConfig.channelId;
-            if (existingQueueVoiceChannelId && existingQueueVoiceChannelId !== voiceChannel.id) {
-                // User is in a different voice channel than the existing queue
-                // This bot should NOT handle this request - let another bot handle it
+            // Get this bot's own guild object (important for voice adapter)
+            const thisBotsGuild = this.client.guilds.cache.get(guild.id);
+            if (!thisBotsGuild) {
+                // This bot is not in the guild
+                return;
+            }
+
+            // Check if THIS bot is already in a voice channel in this guild
+            const thisBotVoiceChannel = thisBotsGuild.members.me?.voice.channel;
+            if (thisBotVoiceChannel && thisBotVoiceChannel.id !== voiceChannel.id) {
+                // This bot is already in a different voice channel
+                // Don't move it - let another bot handle this user's voice channel
                 return;
             }
 
@@ -226,26 +233,31 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
-        const wasIdle = guild.queue?.idle ?? false;
-        const isNewQueue = !guild.queue;
+        // In multi-bot mode, use THIS bot's guild object to ensure proper voice adapter
+        const targetGuild = this.client.multiBotManager.isMultiBotActive()
+            ? (this.client.guilds.cache.get(guild.id) ?? guild)
+            : guild;
 
-        if (!guild.queue) {
-            guild.queue = new ServerQueue(message.channel as TextChannel);
+        const wasIdle = targetGuild.queue?.idle ?? false;
+        const isNewQueue = !targetGuild.queue;
+
+        if (!targetGuild.queue) {
+            targetGuild.queue = new ServerQueue(message.channel as TextChannel);
 
             try {
                 const connection = joinVoiceChannel({
-                    adapterCreator: guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
+                    adapterCreator: targetGuild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
                     channelId: voiceChannel.id,
-                    guildId: guild.id,
+                    guildId: targetGuild.id,
                     selfDeaf: true,
                 }).on("debug", (debugMessage) => {
                     this.client.logger.debug(debugMessage);
                 });
 
-                guild.queue.connection = connection;
+                targetGuild.queue.connection = connection;
             } catch (error) {
-                guild.queue?.songs.clear();
-                delete guild.queue;
+                targetGuild.queue?.songs.clear();
+                delete targetGuild.queue;
 
                 this.sendTemporaryReply(
                     message,
@@ -262,13 +274,13 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         for (const song of songs.type === "results" ? songs.items : [songs.items[0]]) {
-            guild.queue.songs.addSong(song, member);
+            targetGuild.queue.songs.addSong(song, member);
         }
 
-        await this.client.requestChannelManager.updatePlayerMessage(guild);
+        await this.client.requestChannelManager.updatePlayerMessage(targetGuild);
 
         if (isNewQueue || wasIdle) {
-            void play(guild);
+            void play(targetGuild);
         }
 
         let confirmEmbed: EmbedBuilder;
