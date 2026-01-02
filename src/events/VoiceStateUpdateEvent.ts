@@ -71,6 +71,16 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
+        // In multi-bot mode, only handle events for this bot's queue
+        // The queue's client reference should match this client
+        if (this.client.multiBotManager.isMultiBotActive()) {
+            const queueClientId = queue.client.user?.id;
+            const thisClientId = this.client.user?.id;
+            if (!queueClientId || !thisClientId || queueClientId !== thisClientId) {
+                return;
+            }
+        }
+
         const __ = i18n__(this.client, newState.guild);
         const __mf = i18n__mf(this.client, newState.guild);
 

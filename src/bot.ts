@@ -22,12 +22,19 @@ if (isMultiBot) {
 }
 
 // Create clients for each token
-for (let i = 0; i < Math.max(1, tokens.length); i++) {
-    const token = tokens[i] || process.env.DISCORD_TOKEN;
+// If no tokens are parsed, use the original DISCORD_TOKEN env variable
+const effectiveTokens = tokens.length > 0 ? tokens : [process.env.DISCORD_TOKEN ?? ""];
+
+if (!effectiveTokens[0] || effectiveTokens[0].length === 0) {
+    sharedLogger.error("[MultiBotManager] No valid Discord token found. Please set DISCORD_TOKEN.");
+    process.exit(1);
+}
+
+for (let i = 0; i < effectiveTokens.length; i++) {
     const client = new Rawon({
         clientOptions,
         botIndex: i,
-        token,
+        token: effectiveTokens[i],
     });
     clients.push(client);
 }

@@ -160,6 +160,14 @@ export class MultiBotManager {
     }
 
     /**
+     * Get clients sorted by index (priority order)
+     * Clients with lower index have higher priority
+     */
+    private getClientsSortedByPriority(): [number, Rawon][] {
+        return Array.from(this.clients.entries()).sort((a, b) => a[0] - b[0]);
+    }
+
+    /**
      * For music/voice features: Get the client that should handle a specific voice channel.
      * If a bot is already in a voice channel, it should continue handling it.
      * Otherwise, assign the highest priority available bot.
@@ -168,8 +176,10 @@ export class MultiBotManager {
         guild: Guild,
         targetVoiceChannel: VoiceBasedChannel,
     ): Rawon | null {
+        const sortedClients = this.getClientsSortedByPriority();
+
         // First, check if any bot is already in the target voice channel
-        for (const [, client] of Array.from(this.clients.entries()).sort((a, b) => a[0] - b[0])) {
+        for (const [, client] of sortedClients) {
             const guildFromClient = client.guilds.cache.get(guild.id);
             if (guildFromClient) {
                 const botVoiceChannel = guildFromClient.members.me?.voice.channel;
@@ -180,7 +190,7 @@ export class MultiBotManager {
         }
 
         // No bot is in the target voice channel, find an available one
-        for (const [, client] of Array.from(this.clients.entries()).sort((a, b) => a[0] - b[0])) {
+        for (const [, client] of sortedClients) {
             const guildFromClient = client.guilds.cache.get(guild.id);
             if (guildFromClient) {
                 const botVoiceChannel = guildFromClient.members.me?.voice.channel;
@@ -200,7 +210,7 @@ export class MultiBotManager {
      */
     public getBotsInGuild(guild: Guild): Rawon[] {
         const bots: Rawon[] = [];
-        for (const [, client] of Array.from(this.clients.entries()).sort((a, b) => a[0] - b[0])) {
+        for (const [, client] of this.getClientsSortedByPriority()) {
             if (client.guilds.cache.has(guild.id)) {
                 bots.push(client);
             }
