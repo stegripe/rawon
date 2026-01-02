@@ -39,6 +39,11 @@ export class MultiBotManager {
     ): void {
         const key = `${guildId}:${voiceChannelId}`;
         this.voiceChannelHandlers.set(key, botId);
+        // Log all current handlers
+        const handlersStr = Array.from(this.voiceChannelHandlers.entries())
+            .map(([k, v]) => `${k}=${v}`)
+            .join(", ");
+        console.log(`[MULTI-BOT-HANDLERS] After set: ${handlersStr}`);
     }
 
     /**
@@ -47,6 +52,11 @@ export class MultiBotManager {
     public clearVoiceChannelHandler(guildId: Snowflake, voiceChannelId: Snowflake): void {
         const key = `${guildId}:${voiceChannelId}`;
         this.voiceChannelHandlers.delete(key);
+        // Log all current handlers
+        const handlersStr = Array.from(this.voiceChannelHandlers.entries())
+            .map(([k, v]) => `${k}=${v}`)
+            .join(", ");
+        console.log(`[MULTI-BOT-HANDLERS] After clear: ${handlersStr || "(empty)"}`);
     }
 
     /**

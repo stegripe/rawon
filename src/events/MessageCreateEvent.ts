@@ -278,7 +278,7 @@ export class MessageCreateEvent extends BaseEvent {
             );
             if (registeredHandlerId && registeredHandlerId !== this.client.user?.id) {
                 this.client.logger.debug(
-                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - another bot (${registeredHandlerId}) is registered for this channel`,
+                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - another bot (${registeredHandlerId}) is registered for channel ${voiceChannel.name}(${voiceChannel.id})`,
                 );
                 return;
             }
@@ -295,6 +295,9 @@ export class MessageCreateEvent extends BaseEvent {
                         guild.id,
                         voiceChannel.id,
                     );
+                this.client.logger.debug(
+                    `[MULTI-BOT] Bot ${this.client.user?.tag} is handling another channel. Checking if registered for ${voiceChannel.name}(${voiceChannel.id}): ${thisBotsRegisteredChannel ?? "not registered"}`,
+                );
                 if (thisBotsRegisteredChannel !== this.client.user?.id) {
                     this.client.logger.debug(
                         `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - already handling a different voice channel`,
