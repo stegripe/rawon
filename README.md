@@ -18,6 +18,7 @@
 - Multi-cookie rotation for uninterrupted playback
 - Smart audio pre-caching for smoother playback
 - Support for YouTube, Spotify, and SoundCloud
+- Multi-bot support for running multiple bot instances simultaneously
 
 ## Installation
 
@@ -93,6 +94,20 @@ The `/app/cache` volume stores:
 - `dev.env_example` - Developer settings (debug mode, dev IDs)
 
 Use the ones you need/should and fill in the values.
+
+## Multi-Bot Support
+
+Run multiple bot instances from a single deployment - useful when you want multiple bots in the same Discord server using different voice channels.
+
+### Setup
+Add numbered tokens to your `.env` file:
+```
+DISCORD_TOKEN_1="your_first_bot_token"
+DISCORD_TOKEN_2="your_second_bot_token"
+DISCORD_TOKEN_3="your_third_bot_token"
+```
+
+Each bot operates independently with its own voice connections, queues, and commands. You can also use `DISCORD_TOKEN` alongside numbered tokens - it will be included as the first bot.
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information

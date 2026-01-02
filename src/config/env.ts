@@ -69,3 +69,24 @@ export const presenceData: PresenceData = {
     status: ["online"] as ClientPresenceStatus[],
     interval: 60_000,
 };
+
+export function getDiscordTokens(): string[] {
+    const tokens: string[] = [];
+
+    // Support single token (DISCORD_TOKEN) for backward compatibility
+    if (process.env.DISCORD_TOKEN) {
+        tokens.push(process.env.DISCORD_TOKEN);
+    }
+
+    // Support multiple indexed tokens (DISCORD_TOKEN_1, DISCORD_TOKEN_2, etc.)
+    let index = 1;
+    while (process.env[`DISCORD_TOKEN_${index}`]) {
+        const token = process.env[`DISCORD_TOKEN_${index}`];
+        if (token && !tokens.includes(token)) {
+            tokens.push(token);
+        }
+        index++;
+    }
+
+    return tokens;
+}
