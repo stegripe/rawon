@@ -39,6 +39,20 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
+        // Multi-bot check: Skip if this is not the responsible bot for this guild
+        if (message.guild && !this.client.shouldRespondInGuild(message.guild.id)) {
+            // Exception: Allow mention check for any bot in the system
+            const mentionedBotId = this.getMentionedBotId(message.content);
+            if (mentionedBotId && this.client.multiBotManager.isBotInSystem(mentionedBotId)) {
+                // If mentioning any bot in the system, only the primary bot should respond
+                if (!this.client.isPrimaryBot()) {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+
         const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
             (pr) => {
                 if (pr === "{mention}") {
@@ -47,6 +61,12 @@ export class MessageCreateEvent extends BaseEvent {
                         return false;
                     }
                     const user = this.getUserFromMention(userMention[0]);
+                    // In multi-bot mode, accept mentions to any bot in the system
+                    if (this.client.multiBotManager.isMultiBotActive()) {
+                        return (
+                            user !== undefined && this.client.multiBotManager.isBotInSystem(user.id)
+                        );
+                    }
                     return user?.id === this.client.user?.id;
                 }
                 return message.content.startsWith(pr);
@@ -96,7 +116,12 @@ export class MessageCreateEvent extends BaseEvent {
 
         const __mf = i18n__mf(this.client, message.guild);
 
-        if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
+        // Handle bot mention - in multi-bot mode, show primary bot's prefix
+        const mentionedUser = this.getUserFromMention(message.content);
+        const isMentioningBotInSystem =
+            mentionedUser !== undefined &&
+            this.client.multiBotManager.isBotInSystem(mentionedUser.id);
+        if (mentionedUser?.id === this.client.user?.id || isMentioningBotInSystem) {
             await message
                 .reply({
                     embeds: [
@@ -271,5 +296,13 @@ export class MessageCreateEvent extends BaseEvent {
 
         const id = matches[1];
         return this.client.users.cache.get(id);
+    }
+
+    private getMentionedBotId(content: string): string | undefined {
+        const matches = /^<@!?(\d+)>$/u.exec(content);
+        if (!matches) {
+            return undefined;
+        }
+        return matches[1];
     }
 }

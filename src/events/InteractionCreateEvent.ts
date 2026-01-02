@@ -50,6 +50,20 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
+        // Multi-bot check: Skip if this is not the responsible bot for this guild
+        // Exception: Allow interactions from buttons that belong to this bot instance
+        if (interaction.guildId && !this.client.shouldRespondInGuild(interaction.guildId)) {
+            // Allow button interactions for this specific bot's messages
+            if (interaction.isButton() || interaction.isStringSelectMenu()) {
+                // Check if the message belongs to this bot
+                if (interaction.message.author.id !== this.client.user?.id) {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+
         const __mf = i18n__mf(this.client, interaction.guild);
 
         if (interaction.isButton()) {

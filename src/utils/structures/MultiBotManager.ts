@@ -1,0 +1,231 @@
+import process from "node:process";
+import { type Guild, type Snowflake, type VoiceBasedChannel } from "discord.js";
+import { type Rawon } from "../../structures/Rawon.js";
+
+/**
+ * MultiBotManager handles coordination between multiple bot instances
+ * to prevent conflicts when multiple bots are invited to the same server.
+ *
+ * Priority system:
+ * - Bot with index 0 (primary bot) has highest priority
+ * - When multiple bots are in a server, only the one with highest priority responds
+ * - For music/voice features, secondary bots can handle separate voice channels
+ */
+export class MultiBotManager {
+    private static instance: MultiBotManager | null = null;
+    private readonly clients: Map<number, Rawon> = new Map();
+    private readonly tokens: string[] = [];
+
+    private constructor() {
+        // Singleton pattern
+    }
+
+    public static getInstance(): MultiBotManager {
+        if (!MultiBotManager.instance) {
+            MultiBotManager.instance = new MultiBotManager();
+        }
+        return MultiBotManager.instance;
+    }
+
+    /**
+     * Parse tokens from environment variable
+     * Supports comma-separated tokens
+     */
+    public static parseTokens(tokenString: string | undefined): string[] {
+        if (!tokenString || tokenString.trim().length === 0) {
+            return [];
+        }
+
+        return tokenString
+            .split(",")
+            .map((t) => t.trim())
+            .filter((t) => t.length > 0);
+    }
+
+    /**
+     * Check if multi-bot mode is enabled
+     */
+    public static isMultiBotEnabled(): boolean {
+        const tokens = MultiBotManager.parseTokens(process.env.DISCORD_TOKEN);
+        return tokens.length > 1;
+    }
+
+    /**
+     * Get the primary token (first token)
+     */
+    public static getPrimaryToken(): string | undefined {
+        const tokens = MultiBotManager.parseTokens(process.env.DISCORD_TOKEN);
+        return tokens[0];
+    }
+
+    /**
+     * Get all tokens
+     */
+    public getTokens(): string[] {
+        return [...this.tokens];
+    }
+
+    /**
+     * Set the tokens
+     */
+    public setTokens(tokens: string[]): void {
+        this.tokens.length = 0;
+        this.tokens.push(...tokens);
+    }
+
+    /**
+     * Register a client with its index
+     */
+    public registerClient(index: number, client: Rawon): void {
+        this.clients.set(index, client);
+    }
+
+    /**
+     * Get a client by index
+     */
+    public getClient(index: number): Rawon | undefined {
+        return this.clients.get(index);
+    }
+
+    /**
+     * Get the primary client (index 0)
+     */
+    public getPrimaryClient(): Rawon | undefined {
+        return this.clients.get(0);
+    }
+
+    /**
+     * Get all registered clients
+     */
+    public getAllClients(): Map<number, Rawon> {
+        return new Map(this.clients);
+    }
+
+    /**
+     * Get the index of a client by its user ID
+     */
+    public getClientIndex(clientId: Snowflake): number {
+        for (const [index, client] of this.clients.entries()) {
+            if (client.user?.id === clientId) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Get all bot IDs registered in this multi-bot system
+     */
+    public getAllBotIds(): Snowflake[] {
+        const ids: Snowflake[] = [];
+        for (const client of this.clients.values()) {
+            if (client.user?.id) {
+                ids.push(client.user.id);
+            }
+        }
+        return ids;
+    }
+
+    /**
+     * Check if a bot ID belongs to this multi-bot system
+     */
+    public isBotInSystem(botId: Snowflake): boolean {
+        return this.getAllBotIds().includes(botId);
+    }
+
+    /**
+     * Get the client that should respond for a given guild.
+     * Returns the highest priority (lowest index) bot that is in the guild.
+     */
+    public getResponsibleClient(guild: Guild): Rawon | null {
+        let responsibleClient: Rawon | null = null;
+        let lowestIndex = Number.POSITIVE_INFINITY;
+
+        for (const [index, client] of this.clients.entries()) {
+            if (client.guilds.cache.has(guild.id) && index < lowestIndex) {
+                responsibleClient = client;
+                lowestIndex = index;
+            }
+        }
+
+        return responsibleClient;
+    }
+
+    /**
+     * Check if a specific client is the responsible one for a guild
+     */
+    public isResponsibleClient(client: Rawon, guild: Guild): boolean {
+        const responsibleClient = this.getResponsibleClient(guild);
+        return responsibleClient?.user?.id === client.user?.id;
+    }
+
+    /**
+     * For music/voice features: Get the client that should handle a specific voice channel.
+     * If a bot is already in a voice channel, it should continue handling it.
+     * Otherwise, assign the highest priority available bot.
+     */
+    public getVoiceChannelHandler(
+        guild: Guild,
+        targetVoiceChannel: VoiceBasedChannel,
+    ): Rawon | null {
+        // First, check if any bot is already in the target voice channel
+        for (const [, client] of Array.from(this.clients.entries()).sort((a, b) => a[0] - b[0])) {
+            const guildFromClient = client.guilds.cache.get(guild.id);
+            if (guildFromClient) {
+                const botVoiceChannel = guildFromClient.members.me?.voice.channel;
+                if (botVoiceChannel?.id === targetVoiceChannel.id) {
+                    return client;
+                }
+            }
+        }
+
+        // No bot is in the target voice channel, find an available one
+        for (const [, client] of Array.from(this.clients.entries()).sort((a, b) => a[0] - b[0])) {
+            const guildFromClient = client.guilds.cache.get(guild.id);
+            if (guildFromClient) {
+                const botVoiceChannel = guildFromClient.members.me?.voice.channel;
+                // Bot is available (not in any voice channel in this guild)
+                if (!botVoiceChannel) {
+                    return client;
+                }
+            }
+        }
+
+        // All bots are busy, return the primary bot in the guild if available
+        return this.getResponsibleClient(guild);
+    }
+
+    /**
+     * Get all bots that are in a specific guild
+     */
+    public getBotsInGuild(guild: Guild): Rawon[] {
+        const bots: Rawon[] = [];
+        for (const [, client] of Array.from(this.clients.entries()).sort((a, b) => a[0] - b[0])) {
+            if (client.guilds.cache.has(guild.id)) {
+                bots.push(client);
+            }
+        }
+        return bots;
+    }
+
+    /**
+     * Check if multi-bot mode is active (more than one client registered)
+     */
+    public isMultiBotActive(): boolean {
+        return this.clients.size > 1;
+    }
+
+    /**
+     * Get the number of registered clients
+     */
+    public getClientCount(): number {
+        return this.clients.size;
+    }
+
+    /**
+     * Clear all clients (for cleanup)
+     */
+    public clear(): void {
+        this.clients.clear();
+    }
+}

@@ -28,18 +28,29 @@ export class ReadyEvent extends BaseEvent {
             status: "dnd",
         });
         await this.client.commands.load();
-        this.client.logger.info(`Ready took ${formatMS(Date.now() - this.client.startTimestamp)}`);
+
+        const botIndexInfo = this.client.multiBotManager.isMultiBotActive()
+            ? ` [Bot ${this.client.botIndex + 1}]`
+            : "";
+
+        this.client.logger.info(
+            `${botIndexInfo} Ready took ${formatMS(Date.now() - this.client.startTimestamp)}`,
+        );
 
         await this.doPresence();
         this.client.logger.info(
             await this.formatString(
-                "{username} is ready to serve {userCount} users on {serverCount} guilds in " +
+                `{username}${botIndexInfo} is ready to serve {userCount} users on {serverCount} guilds in ` +
                     "{textChannelCount} text channels and {voiceChannelCount} voice channels.",
             ),
         );
 
-        await this.restoreRequestChannelMessages();
-        await this.restoreQueueStates();
+        // Only primary bot should restore request channel messages and queue states
+        // to avoid duplicate operations in multi-bot mode
+        if (this.client.isPrimaryBot()) {
+            await this.restoreRequestChannelMessages();
+            await this.restoreQueueStates();
+        }
     }
 
     private async restoreQueueStates(): Promise<void> {
