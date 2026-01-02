@@ -132,21 +132,31 @@ export class MultiClientManager {
             // No bot is in user's voice channel yet
             // Find the first available bot (not in any voice channel in this guild)
             let selectedClientId: string | null = null;
+            const debugInfo: string[] = [];
             for (const c of this.clients) {
                 if (!c?.user) {
                     continue;
                 }
                 const cGuild = c.guilds.cache.get(guildId);
                 if (!cGuild) {
+                    debugInfo.push(`${c.user.tag}: not in guild`);
                     continue;
                 }
                 // Use guild.members.me for reliable bot member data
                 const cVoiceState = cGuild.members.me?.voice;
-                if (!cVoiceState?.channelId) {
+                const voiceChannelId = cVoiceState?.channelId;
+                debugInfo.push(`${c.user.tag}: voice=${voiceChannelId ?? "none"}`);
+                if (!voiceChannelId) {
                     // This bot is available (not in voice)
                     selectedClientId = c.user.id;
                     break;
                 }
+            }
+
+            // Log debug info for troubleshooting multi-client voice selection
+            if (this.clients.length > 1) {
+                console.log(`[MultiClient] User in voice ${userVoiceChannelId}, checking bots: ${debugInfo.join(", ")}`);
+                console.log(`[MultiClient] Selected bot: ${selectedClientId ? this.clients.find(c => c?.user?.id === selectedClientId)?.user?.tag : "none (fallback to primary)"}`);
             }
 
             if (selectedClientId) {
