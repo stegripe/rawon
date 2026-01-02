@@ -10,9 +10,7 @@ const log = new RawonLogger({ prod: isProd });
 const tokens = getDiscordTokens();
 
 if (tokens.length === 0) {
-    log.error(
-        "No Discord token(s) found. Please set DISCORD_TOKEN or DISCORD_TOKEN_1, DISCORD_TOKEN_2, etc. in your .env file.",
-    );
+    log.error("No Discord token(s) found. Please set DISCORD_TOKEN in your .env file.");
     process.exit(1);
 }
 

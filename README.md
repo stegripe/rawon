@@ -100,14 +100,12 @@ Use the ones you need/should and fill in the values.
 Run multiple bot instances from a single deployment - useful when you want multiple bots in the same Discord server using different voice channels.
 
 ### Setup
-Add numbered tokens to your `.env` file:
+Add comma-separated tokens to your `.env` file:
 ```
-DISCORD_TOKEN_1="your_first_bot_token"
-DISCORD_TOKEN_2="your_second_bot_token"
-DISCORD_TOKEN_3="your_third_bot_token"
+DISCORD_TOKEN="first_bot_token, second_bot_token, third_bot_token"
 ```
 
-Each bot operates independently with its own voice connections, queues, and commands. You can also use `DISCORD_TOKEN` alongside numbered tokens - it will be included as the first bot.
+Multi-bot mode auto-enables when more than 1 token is detected. Each bot operates independently with its own voice connections, queues, and commands. No limit on the number of bots.
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information

@@ -71,22 +71,11 @@ export const presenceData: PresenceData = {
 };
 
 export function getDiscordTokens(): string[] {
-    const tokenSet = new Set<string>();
+    // Parse DISCORD_TOKEN as comma-separated values for multi-bot support
+    // Single token: DISCORD_TOKEN="token1" → 1 bot
+    // Multiple tokens: DISCORD_TOKEN="token1, token2, token3" → 3 bots (auto-enabled)
+    const tokens = parseEnvValue(process.env.DISCORD_TOKEN ?? "");
 
-    // Support single token (DISCORD_TOKEN) for backward compatibility
-    if (process.env.DISCORD_TOKEN) {
-        tokenSet.add(process.env.DISCORD_TOKEN);
-    }
-
-    // Support multiple indexed tokens (DISCORD_TOKEN_1, DISCORD_TOKEN_2, etc.)
-    let index = 1;
-    while (process.env[`DISCORD_TOKEN_${index}`]) {
-        const token = process.env[`DISCORD_TOKEN_${index}`];
-        if (token) {
-            tokenSet.add(token);
-        }
-        index++;
-    }
-
-    return [...tokenSet];
+    // Use Set to deduplicate tokens
+    return [...new Set(tokens)];
 }
