@@ -16,6 +16,10 @@ if (tokens.length === 0) {
 
 const getBotLabel = (index: number): string => (tokens.length > 1 ? `[Bot ${index + 1}]` : "");
 
+// Multi-bot requires "process" mode because "worker" mode shares environment variables
+// This would cause all bots to use the same token (the last one set)
+const effectiveShardingMode = tokens.length > 1 ? "process" : shardingMode;
+
 log.info(`[MultiBot] Starting ${tokens.length} bot instance(s)...`);
 
 const managers: ShardingManager[] = [];
@@ -30,7 +34,7 @@ for (let botIndex = 0; botIndex < tokens.length; botIndex++) {
             totalShards: shardsCount,
             respawn: true,
             token,
-            mode: shardingMode,
+            mode: effectiveShardingMode,
         },
     );
 
