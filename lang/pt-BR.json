@@ -142,7 +142,7 @@
                 "currentState": "{filter} está {state}",
                 "description": "Configura o filtro da música",
                 "embedFooter": "Para {opstate} o filtro, use {prefix}filter {opstate} {filter}",
-                "filterSet": "`O filtro {filter}` está {state}",
+                "filterSet": "O filtro {filter} está {state}",
                 "slashStateDescription": "{state, select, enable {Ativar} other {Desativar}} um filtro de música",
                 "slashStateFilterDescription": "O filtro de música a ser {state, select, enable {ativado} other {desativado}}",
                 "slashStatusDescription": "Verifica o status dos filtros de música",
@@ -331,7 +331,7 @@
             "startPlaying": "Começando a tocar {song}",
             "stopPlaying": "Parando de tocar {song}",
             "songRequeued": "Houve um problema ao tocar {song}, adicionado de volta à fila para outra tentativa.",
-            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Por favor, adicione novos cookies usando o comando `{prefix}cookies add <número>` com um arquivo cookies.txt anexado, ou use {prefix}cookies reset para tentar novamente os cookies existentes."
+            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Por favor, adicione novos cookies usando o comando `{prefix}cookies add <number>` com um arquivo cookies.txt anexado, ou use `{prefix}cookies reset` para tentar novamente os cookies existentes."
         },
         "musicDecorator": {
             "noInVC": "Desculpe, mas você precisa estar em um canal de voz para fazer isso.",

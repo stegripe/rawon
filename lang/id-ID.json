@@ -331,7 +331,7 @@
             "startPlaying": "Mulai muter {song}",
             "stopPlaying": "Selesai muter {song}",
             "songRequeued": "Ada masalah pas muter {song}, udah ditambahin ulang ke antrian buat dicoba lagi.",
-            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Tambahin cookies baru pake perintah {prefix}cookies add <nomor> dengan lampiran cookies.txt, atau pake {prefix}cookies reset buat coba ulang cookies yang ada."
+            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Tambahin cookies baru pake perintah {prefix}cookies add <nomor> dengan lampiran cookies.txt, atau pake `{prefix}cookies reset` buat coba ulang cookies yang ada."
         },
         "musicDecorator": {
             "noInVC": "Sori, tapi kamu harus ada di voice channel dulu buat ngelakuin itu.",
