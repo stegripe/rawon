@@ -8,11 +8,11 @@
                 "noCode": "코드가 제공되지 않았어요.",
                 "inputString": "입력",
                 "outputString": "출력",
-                "usage": "{prefix}eval <코드>"
+                "usage": "{prefix}eval <코드>\n예시: {prefix}eval this.client.users.cache.size"
             },
             "cookies": {
                 "description": "봇 감지 우회를 위한 쿠키 관리",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [번호|all]",
+                "usage": "{prefix}cookies <subcommand>\n\n하위 명령어:\n• add <number> - Add cookie\n• remove <number|all> - Remove cookie\n• list - List all\n• view <number> - View cookie\n• reset - Reset failed status\n• use <number> - Switch to cookie\n\n예시: {prefix}cookies add 1",
                 "slashAddDescription": "새 쿠키 파일 추가",
                 "slashRemoveDescription": "쿠키 파일 삭제",
                 "slashListDescription": "모든 쿠키 파일 목록 보기",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "일치하는 명령어를 찾을 수 없어요. 혹시 이거 아니에요?",
                 "noCommand": "일치하는 명령어를 찾을 수 없어요.",
                 "slashDescription": "자세한 정보를 볼 명령어 이름",
-                "usage": "{prefix}help [명령어]",
+                "usage": "{prefix}help [명령어]\n예시: {prefix}help play",
                 "usageString": "사용법"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "현재 서버 언어 보기",
                 "slashResetDescription": "기본 언어로 재설정",
                 "slashLocaleOption": "설정할 언어",
-                "usage": "{prefix}language set <언어>",
+                "usage": "{prefix}language <subcommand>\n\n하위 명령어:\n• view - View current language\n• set <locale> - Set language\n• reset - Reset to default\n\n예시: {prefix}language set id-ID",
                 "embedTitle": "언어 설정",
                 "currentLanguage": "현재 언어:",
                 "languageSet": "서버 언어가 변경되었어요:",
@@ -156,7 +156,7 @@
                 "noQuery": "재생 중인 곡이 없거나 인수가 제공되지 않았어요.",
                 "searchingLyrics": "가사 검색 중...",
                 "slashDescription": "검색할 노래",
-                "usage": "{prefix}lyrics [노래]"
+                "usage": "{prefix}lyrics [노래]\n예시: {prefix}lyrics Never Gonna Give You Up"
             },
             "nowplaying": {
                 "description": "미디어 플레이어 상태 보기",
@@ -174,7 +174,7 @@
                 "description": "음악 재생",
                 "noSongData": "해당 URL에는 노래 데이터가 없어요.",
                 "slashQueryDescription": "검색어",
-                "usage": "{prefix}play <검색어 | URL>"
+                "usage": "{prefix}play <query|url>\n예시: {prefix}play Never Gonna Give You Up\n예시: {prefix}play https://youtube.com/watch?v=..."
             },
             "queue": {
                 "description": "대기열 목록 보기"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "삭제할 노래의 위치 (쉼표 또는 공백으로 구분)",
                 "songSkip": "현재 노래가 삭제되었어요. 건너뜁니다.\n\n",
                 "songsRemoved": "대기열에서 {removed}곡이 삭제되었어요",
-                "usage": "{prefix}remove <위치>"
+                "usage": "{prefix}remove <positions>\n위치는 공백이나 쉼표로 구분합니다.\n예시: {prefix}remove 2\n예시: {prefix}remove 1 3 5\n예시: {prefix}remove 2, 4, 6"
             },
             "repeat": {
                 "actualMode": "현재 반복 모드는 {mode}이에요",
@@ -196,7 +196,7 @@
                 "slashDisable": "반복 모드 비활성화",
                 "slashQueue": "반복 모드를 **`대기열`**로 설정",
                 "slashSong": "반복 모드를 **`노래`**로 설정",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "{prefix}repeat <mode>\n\n모드:\n• queue (all) - Repeat queue\n• song (one) - Repeat current\n• disable (off) - Turn off\n\n예시: {prefix}repeat queue"
             },
             "resume": {
                 "alreadyResume": "음악 플레이어가 일시 정지되지 않았어요.",
@@ -235,7 +235,7 @@
                 "notCached": "아직 이 노래에서 탐색할 수 없어요. 오디오가 버퍼링될 때까지 기다려주세요.",
                 "seeked": "{time}(으)로 이동했어요",
                 "slashTimeDescription": "이동할 시간 (예: `1:30` 또는 `90`)",
-                "usage": "{prefix}seek <시간>",
+                "usage": "{prefix}seek <time>\n\n시간 형식: 1:30, 90, 1:30:00\n\n예시: {prefix}seek 1:30\n예시: {prefix}seek 90",
                 "waitingForCache": "잠시만요, 오디오가 아직 버퍼링 중이에요..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "대기열의 마지막 노래로 건너뛰기",
                 "slashPositionDescription": "대기열에서의 노래 위치",
                 "slashSpecificDescription": "대기열의 특정 위치로 건너뛰기",
-                "usage": "{prefix}skipto <{options}|번호>"
+                "usage": "{prefix}skipto <first|last|position>\n\n예시: {prefix}skipto first\n예시: {prefix}skipto last\n예시: {prefix}skipto 5"
             },
             "stop": {
                 "description": "음악 플레이어 정지",
@@ -266,7 +266,7 @@
                 "newVolume": "볼륨이 {volume}로 설정되었어요",
                 "plsPause": "볼륨을 {volume}로 설정하는 대신 음악을 일시 정지해주세요",
                 "slashDescription": "새 볼륨",
-                "usage": "{prefix}volume [새 볼륨]",
+                "usage": "{prefix}volume [1-100]\n예시: {prefix}volume 50",
                 "volumeLimit": "볼륨을 {maxVol} 이상으로 설정할 수 없어요"
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "요청 채널 삭제",
                 "slashStatusDescription": "현재 요청 채널 보기",
                 "slashChannelDescription": "요청 채널로 설정할 채널",
-                "usage": "{prefix}requestchannel <set|remove|status> [채널]"
+                "usage": "{prefix}requestchannel <subcommand>\n\n하위 명령어:\n• set <#channel> - Set channel\n• remove - Remove channel\n• status - Show current\n\n예시: {prefix}requestchannel set #music"
             }
         }
     },

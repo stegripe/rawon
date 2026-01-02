@@ -8,11 +8,11 @@
                 "noCode": "コードが渡されませんでした。",
                 "inputString": "インプット",
                 "outputString": "アウトプット",
-                "usage": "{prefix}eval <何かのコード>"
+                "usage": "{prefix}eval <何かのコード>\n例: {prefix}eval this.client.users.cache.size"
             },
             "cookies": {
                 "description": "Bot検出を回避するためのCookieを管理",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [番号|all]",
+                "usage": "{prefix}cookies <subcommand>\n\nサブコマンド:\n• add <number> - Add cookie\n• remove <number|all> - Remove cookie\n• list - List all\n• view <number> - View cookie\n• reset - Reset failed status\n• use <number> - Switch to cookie\n\n例: {prefix}cookies add 1",
                 "slashAddDescription": "新しいCookieファイルを追加",
                 "slashRemoveDescription": "Cookieファイルを削除",
                 "slashListDescription": "すべてのCookieファイルを一覧表示",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "一致したコマンドがありません。こちらのコマンドのことですか？",
                 "noCommand": "一致したコマンドがありません。",
                 "slashDescription": "詳細な情報を紹介するコマンドの名前",
-                "usage": "{prefix}help [コマンド]",
+                "usage": "{prefix}help [コマンド]\n例: {prefix}help play",
                 "usageString": "使い方"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "現在のサーバー言語を表示",
                 "slashResetDescription": "デフォルト言語にリセット",
                 "slashLocaleOption": "設定する言語",
-                "usage": "{prefix}language set <言語>",
+                "usage": "{prefix}language <subcommand>\n\nサブコマンド:\n• view - View current language\n• set <locale> - Set language\n• reset - Reset to default\n\n例: {prefix}language set id-ID",
                 "embedTitle": "言語設定",
                 "currentLanguage": "現在の言語：",
                 "languageSet": "サーバーの言語が変更されました：",
@@ -155,7 +155,7 @@
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "searchingLyrics": "歌詞を検索中...",
                 "slashDescription": "検索する曲",
-                "usage": "{prefix}lyrics [曲]",
+                "usage": "{prefix}lyrics [曲]\n例: {prefix}lyrics Never Gonna Give You Up",
                 "noLyrics": "{song} の歌詞が見つかりませんでした。"
             },
             "nowplaying": {
@@ -174,7 +174,7 @@
                 "description": "音楽を再生",
                 "noSongData": "そのURLは曲データを含んでいません。",
                 "slashQueryDescription": "検索キーワード",
-                "usage": "{prefix}play <キーワード | URL>"
+                "usage": "{prefix}play <query|url>\n例: {prefix}play Never Gonna Give You Up\n例: {prefix}play https://youtube.com/watch?v=..."
             },
             "queue": {
                 "description": "キューリストを表示"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "コンマもしくはスペースで区切られた削除したい曲のポジション",
                 "songSkip": "現在の曲が削除されたため、スキップされます。\n\n",
                 "songsRemoved": "{removed, plural, one {1曲} other {# 曲}}をキューから削除しました。",
-                "usage": "{prefix}remove <ポジション>"
+                "usage": "{prefix}remove <positions>\n位置はスペースまたはカンマで区切ります。\n例: {prefix}remove 2\n例: {prefix}remove 1 3 5\n例: {prefix}remove 2, 4, 6"
             },
             "repeat": {
                 "actualMode": "現在のリピートモードは{mode}です。",
@@ -196,7 +196,7 @@
                 "slashDisable": "リピートモードを無効化",
                 "slashQueue": "**`キュー`**リピートモードを設定しました。",
                 "slashSong": "**`曲`**リピートモードを設定しました。",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "{prefix}repeat <mode>\n\nモード:\n• queue (all) - Repeat queue\n• song (one) - Repeat current\n• disable (off) - Turn off\n\n例: {prefix}repeat queue"
             },
             "resume": {
                 "alreadyResume": "プレイヤーは一時停止されていません。",
@@ -217,7 +217,7 @@
                 "slashQueryDescription": "検索キーワード",
                 "slashSourceDescription": "何を使用して曲を再生しますか？",
                 "trackSelectionMessage": "曲選択",
-                "usage": "{prefix}search <キーワード> [プラットフォーム]"
+                "usage": "{prefix}search <query> [source]\n\nソース: youtube, soundcloud (デフォルト: youtube)\n\n例: {prefix}search Never Gonna Give You Up\n例: {prefix}search lofi beats soundcloud"
             },
             "shuffle": {
                 "actualState": "現在のシャッフルモードは{state}です。",
@@ -235,7 +235,7 @@
                 "notCached": "この曲ではまだシークできません。オーディオがバッファリングされるまでお待ちください。",
                 "seeked": "{time} にジャンプしました",
                 "slashTimeDescription": "ジャンプする時間 (例: `1:30` または `90`)",
-                "usage": "{prefix}seek <時間>",
+                "usage": "{prefix}seek <time>\n\n時間形式: 1:30, 90, 1:30:00\n\n例: {prefix}seek 1:30\n例: {prefix}seek 90",
                 "waitingForCache": "お待ちください、オーディオはまだバッファリング中です..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "キューの一番最後までスキップ",
                 "slashPositionDescription": "キュー内の曲のポジション",
                 "slashSpecificDescription": "キュー内の特定のポジションにスキップ",
-                "usage": "{prefix}skipto <{options}|数>"
+                "usage": "{prefix}skipto <first|last|position>\n\n例: {prefix}skipto first\n例: {prefix}skipto last\n例: {prefix}skipto 5"
             },
             "stop": {
                 "description": "プレイヤーをストップ",
@@ -266,7 +266,7 @@
                 "newVolume": "ボリュームは{volume}にセットされました。",
                 "plsPause": "{volume}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
                 "slashDescription": "新しいボリューム",
-                "usage": "{prefix}volume [ボリューム]",
+                "usage": "{prefix}volume [1-100]\n例: {prefix}volume 50",
                 "volumeLimit": "{maxVol}以上にボリュームをセットできません。"
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "リクエストチャンネルを削除",
                 "slashStatusDescription": "現在のリクエストチャンネルを表示",
                 "slashChannelDescription": "リクエストチャンネルとして設定するチャンネル",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <subcommand>\n\nサブコマンド:\n• set <#channel> - Set channel\n• remove - Remove channel\n• status - Show current\n\n例: {prefix}requestchannel set #music"
             }
         }
     },

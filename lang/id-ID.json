@@ -8,11 +8,11 @@
                 "noCode": "Kodenya mana nih?",
                 "inputString": "Input",
                 "outputString": "Output",
-                "usage": "{prefix}eval <kode>"
+                "usage": "{prefix}eval <kode>\nContoh: {prefix}eval this.client.users.cache.size"
             },
             "cookies": {
                 "description": "Kelola cookies buat bypass deteksi bot",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [nomor|all]",
+                "usage": "{prefix}cookies <subcommand>\n\nSubcommand:\n• add <nomor> - Tambahin file cookie (lampirin file .txt)\n• remove <nomor|all> - Hapus file cookie\n• list - Lihat semua cookies\n• view <nomor> - Download file cookie\n• reset - Reset status cookie yang gagal\n• use <nomor> - Pake cookie tertentu secara manual\n\nContoh: {prefix}cookies add 1",
                 "slashAddDescription": "Tambahin file cookie baru",
                 "slashRemoveDescription": "Hapus file cookie",
                 "slashListDescription": "Lihat semua file cookie",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "Gak nemu perintah dengan nama itu. Maksudnya ini kali?",
                 "noCommand": "Gak nemu perintah dengan nama itu.",
                 "slashDescription": "Nama perintah buat lihat info lebih lanjut",
-                "usage": "{prefix}help [nama perintah]",
+                "usage": "{prefix}help [nama perintah]\nContoh: {prefix}help play",
                 "usageString": "Cara pake"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Lihat bahasa server sekarang",
                 "slashResetDescription": "Reset ke bahasa default",
                 "slashLocaleOption": "Bahasa yang mau diatur",
-                "usage": "{prefix}language set <bahasa>",
+                "usage": "{prefix}language <subcommand>\n\nSubcommand:\n• view - Lihat bahasa sekarang dan pilihan yang tersedia\n• set <bahasa> - Atur bahasa server\n• reset - Reset ke bahasa default\n\nContoh: {prefix}language set id-ID",
                 "embedTitle": "Pengaturan Bahasa",
                 "currentLanguage": "Bahasa sekarang:",
                 "languageSet": "Bahasa server udah diubah ke",
@@ -155,7 +155,7 @@
                 "noQuery": "Gak ada yang lagi diputar atau argumennya gak dikasih.",
                 "searchingLyrics": "Lagi nyari lirik...",
                 "slashDescription": "Judul lagu yang mau dicari",
-                "usage": "{prefix}lyrics [lagu]",
+                "usage": "{prefix}lyrics [lagu]\nContoh: {prefix}lyrics Never Gonna Give You Up",
                 "noLyrics": "Gak nemu lirik buat {song}."
             },
             "nowplaying": {
@@ -174,7 +174,7 @@
                 "description": "Muter lagu",
                 "noSongData": "Link itu gak punya data lagunya.",
                 "slashQueryDescription": "Kata pencarian",
-                "usage": "{prefix}play <kata pencarian / link>"
+                "usage": "{prefix}play <kata pencarian|link>\nContoh: {prefix}play Never Gonna Give You Up\nContoh: {prefix}play https://youtube.com/watch?v=..."
             },
             "queue": {
                 "description": "Lihat daftar antrian"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "Posisi lagu yang mau dihapus (pisahin pake koma atau spasi)",
                 "songSkip": "Lagu yang lagi diputar ikut kehapus, skip lagu deh.",
                 "songsRemoved": "{removed} lagu udah dihapus dari antrian\n\n",
-                "usage": "{prefix}remove <posisi>"
+                "usage": "{prefix}remove <posisi>\nPosisi dipisahin pake spasi atau koma.\nContoh: {prefix}remove 2\nContoh: {prefix}remove 1 3 5\nContoh: {prefix}remove 2, 4, 6"
             },
             "repeat": {
                 "actualMode": "Mode repeat sekarang: {mode}",
@@ -196,7 +196,7 @@
                 "slashDisable": "Matiin mode repeat",
                 "slashQueue": "Atur mode repeat ke **`Queue`**",
                 "slashSong": "Atur mode repeat ke **`Song`**",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "{prefix}repeat <mode>\n\nMode:\n• queue (atau all) - Ulangi seluruh antrian\n• song (atau one) - Ulangi lagu yang lagi diputar\n• disable (atau off) - Matiin repeat\n\nContoh: {prefix}repeat queue"
             },
             "resume": {
                 "alreadyResume": "Media player-nya gak lagi dijeda kok.",
@@ -217,7 +217,7 @@
                 "slashQueryDescription": "Kata pencarian",
                 "slashSourceDescription": "Mau ambil lagu dari mana?",
                 "trackSelectionMessage": "Pilihan Lagu",
-                "usage": "{prefix}search <kata pencarian> [sumber]"
+                "usage": "{prefix}search <kata pencarian> [sumber]\n\nSumber: youtube, soundcloud (default: youtube)\n\nContoh: {prefix}search Never Gonna Give You Up\nContoh: {prefix}search lofi beats soundcloud"
             },
             "shuffle": {
                 "actualState": "Mode acak sekarang {state}",
@@ -235,7 +235,7 @@
                 "notCached": "Belum bisa seek di lagu ini. Tunggu audionya di-buffer dulu ya.",
                 "seeked": "Udah loncat ke {time}",
                 "slashTimeDescription": "Waktu buat diloncatin (contoh: `1:30` atau `90`)",
-                "usage": "{prefix}seek <waktu>",
+                "usage": "{prefix}seek <waktu>\n\nFormat waktu: 1:30, 90, 1:30:00\n\nContoh: {prefix}seek 1:30\nContoh: {prefix}seek 90",
                 "waitingForCache": "Bentar ya, audionya masih di-buffer..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Loncat ke lagu terakhir di antrian",
                 "slashPositionDescription": "Posisi lagu di antrian",
                 "slashSpecificDescription": "Loncat ke posisi tertentu di antrian",
-                "usage": "{prefix}skipto <{options}|angka>"
+                "usage": "{prefix}skipto <first|last|posisi>\n\nContoh: {prefix}skipto first\nContoh: {prefix}skipto last\nContoh: {prefix}skipto 5"
             },
             "stop": {
                 "description": "Stop media player",
@@ -266,7 +266,7 @@
                 "newVolume": "Volume udah diatur ke {volume}",
                 "plsPause": "Mending jeda media player-nya aja daripada atur volume ke {volume}",
                 "slashDescription": "Volume baru",
-                "usage": "{prefix}volume [volume baru]",
+                "usage": "{prefix}volume [1-100]\nContoh: {prefix}volume 50",
                 "volumeLimit": "Gak bisa atur volume di atas {maxVol}"
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "Hapus channel request",
                 "slashStatusDescription": "Lihat channel request sekarang",
                 "slashChannelDescription": "Channel yang mau diatur jadi channel request",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <subcommand>\n\nSubcommand:\n• set <#channel> - Atur channel request\n• remove - Hapus channel request\n• status - Lihat channel request sekarang\n\nContoh: {prefix}requestchannel set #musik"
             }
         }
     },

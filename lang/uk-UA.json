@@ -8,11 +8,11 @@
                 "noCode": "Код не був вказаний.",
                 "inputString": "Ввід",
                 "outputString": "Вивід",
-                "usage": "{prefix}eval <код>"
+                "usage": "{prefix}eval <код>\nПриклад: {prefix}eval this.client.users.cache.size"
             },
             "cookies": {
                 "description": "Керування cookies для обходу виявлення бота",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [номер|all]",
+                "usage": "{prefix}cookies <subcommand>\n\nПідкоманди:\n• add <number> - Add cookie\n• remove <number|all> - Remove cookie\n• list - List all\n• view <number> - View cookie\n• reset - Reset failed status\n• use <number> - Switch to cookie\n\nПриклад: {prefix}cookies add 1",
                 "slashAddDescription": "Додати новий файл cookies",
                 "slashRemoveDescription": "Видалити файл cookies",
                 "slashListDescription": "Показати всі файли cookies",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "Не вдалось знайти команду з такою назвою. Чи це ви мали на увазі?",
                 "noCommand": "Не вдалось знайти команду з такою назвою.",
                 "slashDescription": "Назва команди щоб відобразити інформацію про окрему команду",
-                "usage": "{prefix}help [команда]",
+                "usage": "{prefix}help [команда]\nПриклад: {prefix}help play",
                 "usageString": "Приклад використання"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "Переглянути поточну мову сервера",
                 "slashResetDescription": "Скинути до мови за замовчуванням",
                 "slashLocaleOption": "Мова для встановлення",
-                "usage": "{prefix}language set <мова>",
+                "usage": "{prefix}language <subcommand>\n\nПідкоманди:\n• view - View current language\n• set <locale> - Set language\n• reset - Reset to default\n\nПриклад: {prefix}language set id-ID",
                 "embedTitle": "Налаштування мови",
                 "currentLanguage": "Поточна мова:",
                 "languageSet": "Мову сервера змінено на",
@@ -155,7 +155,7 @@
                 "noQuery": "Зараз нічого не програється або не було аргументи.",
                 "searchingLyrics": "Пошук тексту пісні...",
                 "slashDescription": "Пісня для пошуку",
-                "usage": "{prefix}lyrics [пісня]",
+                "usage": "{prefix}lyrics [пісня]\nПриклад: {prefix}lyrics Never Gonna Give You Up",
                 "noLyrics": "Текст для {song} не знайдено."
             },
             "nowplaying": {
@@ -174,7 +174,7 @@
                 "description": "Зіграти музику",
                 "noSongData": "Цей URL не має даних про пісню.",
                 "slashQueryDescription": "Запит для пошуку",
-                "usage": "{prefix}play <запит | url>"
+                "usage": "{prefix}play <query|url>\nПриклад: {prefix}play Never Gonna Give You Up\nПриклад: {prefix}play https://youtube.com/watch?v=..."
             },
             "queue": {
                 "description": "Показати чергу"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "Позиції пісень, розділені комою або пробілом",
                 "songSkip": "Поточна пісня була вилучена, пропускаємо.\n\n",
                 "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
-                "usage": "{prefix}remove <позиції>"
+                "usage": "{prefix}remove <positions>\nПозиції розділені пробілом або комою.\nПриклад: {prefix}remove 2\nПриклад: {prefix}remove 1 3 5\nПриклад: {prefix}remove 2, 4, 6"
             },
             "repeat": {
                 "actualMode": "Поточний режим повтору: {mode}",
@@ -196,7 +196,7 @@
                 "slashDisable": "Вимкнути режим повтору",
                 "slashQueue": "Встановити режим повтору для **`Черги`**",
                 "slashSong": "Встановити режим повтору для **`Пісні`**",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "{prefix}repeat <mode>\n\nРежими:\n• queue (all) - Repeat queue\n• song (one) - Repeat current\n• disable (off) - Turn off\n\nПриклад: {prefix}repeat queue"
             },
             "resume": {
                 "alreadyResume": "Медіа програвач не стоїть на паузі.",
@@ -217,7 +217,7 @@
                 "slashQueryDescription": "Запит для пошуку",
                 "slashSourceDescription": "Звідки музика повинна бути взята?",
                 "trackSelectionMessage": "Вибір Музики",
-                "usage": "{prefix}search <запит> [джерело]"
+                "usage": "{prefix}search <query> [source]\n\nДжерела: youtube, soundcloud (за замовчуванням: youtube)\n\nПриклад: {prefix}search Never Gonna Give You Up\nПриклад: {prefix}search lofi beats soundcloud"
             },
             "shuffle": {
                 "actualState": "Поточний режим перемішування: {state}",
@@ -235,7 +235,7 @@
                 "notCached": "Поки неможливо перемотати цю пісню. Зачекайте, поки аудіо буферизується.",
                 "seeked": "Перемотано до {time}",
                 "slashTimeDescription": "Час для перемотки (напр., `1:30` або `90`)",
-                "usage": "{prefix}seek <час>",
+                "usage": "{prefix}seek <time>\n\nФормати часу: 1:30, 90, 1:30:00\n\nПриклад: {prefix}seek 1:30\nПриклад: {prefix}seek 90",
                 "waitingForCache": "Зачекайте, аудіо все ще буферизується..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "Перейти до останньої пісні в черзі",
                 "slashPositionDescription": "Позиція пісні в черзі",
                 "slashSpecificDescription": "Перейти до певної позиції в черзі",
-                "usage": "{prefix}skipto <{options}|number>"
+                "usage": "{prefix}skipto <first|last|position>\n\nПриклад: {prefix}skipto first\nПриклад: {prefix}skipto last\nПриклад: {prefix}skipto 5"
             },
             "stop": {
                 "description": "Зупинити музичний плеєр",
@@ -266,7 +266,7 @@
                 "newVolume": "Гучність встановлено на: {volume}",
                 "plsPause": "Будь ласка, призупиніть музику, а не встановлюйте гучність на {volume}",
                 "slashDescription": "Нова гучність:",
-                "usage": "{prefix}volume [нова гучність]",
+                "usage": "{prefix}volume [1-100]\nПриклад: {prefix}volume 50",
                 "volumeLimit": "Я не можу встановити гучність вище {maxVol}"
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "Видалити канал запитів",
                 "slashStatusDescription": "Показати поточний канал запитів",
                 "slashChannelDescription": "Канал для встановлення як канал запитів",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <subcommand>\n\nПідкоманди:\n• set <#channel> - Set channel\n• remove - Remove channel\n• status - Show current\n\nПриклад: {prefix}requestchannel set #music"
             }
         }
     },

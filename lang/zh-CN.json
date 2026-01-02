@@ -8,11 +8,11 @@
                 "noCode": "未提供任何代码。",
                 "inputString": "输入",
                 "outputString": "输出",
-                "usage": "{prefix}eval <一些代码>"
+                "usage": "{prefix}eval <一些代码>\n示例: {prefix}eval this.client.users.cache.size"
             },
             "cookies": {
                 "description": "管理cookies以绕过机器人检测",
-                "usage": "{prefix}cookies <add|remove|list|view|reset|use> [编号|all]",
+                "usage": "{prefix}cookies <subcommand>\n\n子命令:\n• add <number> - Add cookie\n• remove <number|all> - Remove cookie\n• list - List all\n• view <number> - View cookie\n• reset - Reset failed status\n• use <number> - Switch to cookie\n\n示例: {prefix}cookies add 1",
                 "slashAddDescription": "添加新的cookie文件",
                 "slashRemoveDescription": "删除cookie文件",
                 "slashListDescription": "列出所有cookie文件",
@@ -86,7 +86,7 @@
                 "noCommanSuggest": "找不到匹配的指令名称。 您是这个意思吗？",
                 "noCommand": "找不到匹配的指令名称。",
                 "slashDescription": "使用指令名称查看有关指令的特定信息",
-                "usage": "{prefix}help [指令]",
+                "usage": "{prefix}help [指令]\n示例: {prefix}help play",
                 "usageString": "用法"
             },
             "invite": {
@@ -105,7 +105,7 @@
                 "slashViewDescription": "查看当前服务器语言",
                 "slashResetDescription": "重置为默认语言",
                 "slashLocaleOption": "要设置的语言",
-                "usage": "{prefix}language set <语言>",
+                "usage": "{prefix}language <subcommand>\n\n子命令:\n• view - View current language\n• set <locale> - Set language\n• reset - Reset to default\n\n示例: {prefix}language set id-ID",
                 "embedTitle": "语言设置",
                 "currentLanguage": "当前语言：",
                 "languageSet": "服务器语言已更改为",
@@ -155,7 +155,7 @@
                 "noQuery": "目前没有播放任何内容，或者没有提供任何参数。",
                 "searchingLyrics": "正在搜索歌词...",
                 "slashDescription": "要搜索的歌曲",
-                "usage": "{prefix}lyrics [歌曲]",
+                "usage": "{prefix}lyrics [歌曲]\n示例: {prefix}lyrics Never Gonna Give You Up",
                 "noLyrics": "找不到 {song} 的歌词。"
             },
             "nowplaying": {
@@ -174,7 +174,7 @@
                 "description": "播放一些音乐",
                 "noSongData": "该 URL 没有任何歌曲数据。",
                 "slashQueryDescription": "查询搜索",
-                "usage": "{prefix}play <查询 | url>"
+                "usage": "{prefix}play <query|url>\n示例: {prefix}play Never Gonna Give You Up\n示例: {prefix}play https://youtube.com/watch?v=..."
             },
             "queue": {
                 "description": "显示队列列表"
@@ -186,7 +186,7 @@
                 "slashPositionsDescription": "以逗号或空格分隔指定要移除的歌曲位置",
                 "songSkip": "当前歌曲已移除，歌曲被跳过。\n\n",
                 "songsRemoved": "已在队列中移除 {removed, plural, one {1 首歌曲} other {# 首歌曲}}",
-                "usage": "{prefix}remove <位置>"
+                "usage": "{prefix}remove <positions>\n位置用空格或逗号分隔。\n示例: {prefix}remove 2\n示例: {prefix}remove 1 3 5\n示例: {prefix}remove 2, 4, 6"
             },
             "repeat": {
                 "actualMode": "目前的重复模式是 {mode}",
@@ -196,7 +196,7 @@
                 "slashDisable": "停用重复模式",
                 "slashQueue": "重复模式为 **`队列`**",
                 "slashSong": "重复模式为 **`音乐`**",
-                "usage": "{prefix}repeat <{options}>"
+                "usage": "{prefix}repeat <mode>\n\n模式:\n• queue (all) - Repeat queue\n• song (one) - Repeat current\n• disable (off) - Turn off\n\n示例: {prefix}repeat queue"
             },
             "resume": {
                 "alreadyResume": "音乐播放器没有被暂停。",
@@ -235,7 +235,7 @@
                 "notCached": "该歌曲暂时无法跳转。请等待音频缓冲。",
                 "seeked": "已跳转到 {time}",
                 "slashTimeDescription": "要跳转的时间（例如 `1:30` 或 `90`）",
-                "usage": "{prefix}seek <时间>",
+                "usage": "{prefix}seek <time>\n\n时间格式: 1:30, 90, 1:30:00\n\n示例: {prefix}seek 1:30\n示例: {prefix}seek 90",
                 "waitingForCache": "请稍候，音频仍在缓冲中..."
             },
             "skip": {
@@ -253,7 +253,7 @@
                 "slashLastDescription": "跳到队列中的最后一首歌曲",
                 "slashPositionDescription": "歌曲在队列中的位置",
                 "slashSpecificDescription": "跳到队列中的特定位置",
-                "usage": "{prefix}skipto <{options}|数字>"
+                "usage": "{prefix}skipto <first|last|position>\n\n示例: {prefix}skipto first\n示例: {prefix}skipto last\n示例: {prefix}skipto 5"
             },
             "stop": {
                 "description": "停止音乐播放器",
@@ -266,7 +266,7 @@
                 "newVolume": "音量已设置为 {volume}",
                 "plsPause": "请暂停音乐而不是将音量调到 {volume}",
                 "slashDescription": "新音量",
-                "usage": "{prefix}volume [新音量]",
+                "usage": "{prefix}volume [1-100]\n示例: {prefix}volume 50",
                 "volumeLimit": "我无法设置音量高于 {maxVol}"
             },
             "requestChannel": {
@@ -280,7 +280,7 @@
                 "slashRemoveDescription": "移除点播频道",
                 "slashStatusDescription": "显示当前点播频道",
                 "slashChannelDescription": "要设置为点播频道的频道",
-                "usage": "{prefix}requestchannel <set|remove|status> [channel]"
+                "usage": "{prefix}requestchannel <subcommand>\n\n子命令:\n• set <#channel> - Set channel\n• remove - Remove channel\n• status - Show current\n\n示例: {prefix}requestchannel set #music"
             }
         }
     },
