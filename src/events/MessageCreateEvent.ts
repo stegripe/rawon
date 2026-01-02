@@ -273,33 +273,82 @@ export class MessageCreateEvent extends BaseEvent {
 
             // Check if THIS bot is already in a voice channel in this guild
             const thisBotVoiceChannel = thisBotsGuild.members.me?.voice.channel;
+
+            // Debug logging
+            this.client.logger.debug(
+                `[MULTI-BOT] Bot ${this.client.user?.tag} checking voice channel. ` +
+                    `thisBotVoiceChannel: ${thisBotVoiceChannel?.name ?? "null"}, ` +
+                    `userVoiceChannel: ${voiceChannel.name}`,
+            );
+
             if (thisBotVoiceChannel && thisBotVoiceChannel.id !== voiceChannel.id) {
                 // This bot is already in a different voice channel
                 // Don't move it - let another bot handle this user's voice channel
+                this.client.logger.debug(
+                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - already in different voice channel`,
+                );
                 return;
             }
 
             // Check if there's an existing queue connected to a DIFFERENT voice channel
             // The queue is shared, so we need to check if the existing connection is for a different channel
             const existingQueueVoiceChannelId = guild.queue?.connection?.joinConfig.channelId;
+
+            this.client.logger.debug(
+                `[MULTI-BOT] Bot ${this.client.user?.tag} existingQueueVoiceChannelId: ${existingQueueVoiceChannelId ?? "null"}`,
+            );
+
             if (existingQueueVoiceChannelId && existingQueueVoiceChannelId !== voiceChannel.id) {
                 // There's already a queue for a different voice channel
                 // This bot should NOT add to that queue - let another bot handle this user
+                this.client.logger.debug(
+                    `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - queue exists for different channel`,
+                );
                 return;
             }
 
-            // If this bot is not in any voice channel and there's no queue for user's channel,
-            // check if this bot is the appropriate handler
-            if (!thisBotVoiceChannel && !existingQueueVoiceChannelId) {
+            // Check if ANY other bot in our system is already in a voice channel in this guild
+            // If so, and it's not the user's voice channel, we should let them handle their channel
+            for (const [, otherClient] of this.client.multiBotManager.getAllClients()) {
+                if (otherClient.user?.id === this.client.user?.id) {
+                    continue;
+                }
+
+                const otherBotsGuild = otherClient.guilds.cache.get(guild.id);
+                const otherBotVoiceChannel = otherBotsGuild?.members.me?.voice.channel;
+
+                this.client.logger.debug(
+                    `[MULTI-BOT] Checking other bot ${otherClient.user?.tag}: ` +
+                        `voiceChannel: ${otherBotVoiceChannel?.name ?? "null"}`,
+                );
+
+                // If another bot is in the user's voice channel, let that bot handle it
+                if (otherBotVoiceChannel?.id === voiceChannel.id) {
+                    this.client.logger.debug(
+                        `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - other bot ${otherClient.user?.tag} is in user's channel`,
+                    );
+                    return;
+                }
+            }
+
+            // If this bot is not in any voice channel, check if this bot is the appropriate handler
+            if (!thisBotVoiceChannel) {
                 const appropriateHandler = this.client.multiBotManager.getVoiceChannelHandler(
                     guild,
                     voiceChannel,
                 );
                 if (appropriateHandler && appropriateHandler.user?.id !== this.client.user?.id) {
                     // Another bot should handle this voice channel
+                    this.client.logger.debug(
+                        `[MULTI-BOT] Bot ${this.client.user?.tag} skipping - ${appropriateHandler.user?.tag} is appropriate handler`,
+                    );
                     return;
                 }
             }
+
+            this.client.logger.debug(
+                `[MULTI-BOT] Bot ${this.client.user?.tag} will handle this request`,
+            );
         }
 
         const songs = await searchTrack(this.client, query).catch(() => null);
