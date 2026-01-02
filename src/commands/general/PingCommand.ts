@@ -4,6 +4,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command<typeof PingCommand>({
     aliases: ["pang", "pung", "peng", "pong"],
@@ -19,6 +20,9 @@ export class PingCommand extends BaseCommand {
         if (ctx.isInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
+
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const before = Date.now();
         const msg = await ctx.reply({ content: "🏓" });
         const latency = Date.now() - before;
@@ -32,22 +36,22 @@ export class PingCommand extends BaseCommand {
             .addFields(
                 {
                     name: "📶 **|** API",
-                    value: `**\`${latency}\`** ms`,
+                    value: `\`${latency}\` ms`,
                     inline: true,
                 },
                 {
                     name: "🌐 **|** WebSocket",
-                    value: `**\`${wsLatency}\`** ms`,
+                    value: `\`${wsLatency}\` ms`,
                     inline: true,
                 },
                 {
                     name: "🔊 **|** Voice",
-                    value: `**\`${vcLatency}\`** ms`,
+                    value: `\`${vcLatency}\` ms`,
                     inline: true,
                 },
             )
             .setFooter({
-                text: i18n.__mf("commands.general.ping.footerString", {
+                text: __mf("commands.general.ping.footerString", {
                     user: this.client.user?.tag,
                 }),
                 iconURL: this.client.user?.displayAvatarURL(),

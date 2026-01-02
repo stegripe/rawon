@@ -12,6 +12,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command<typeof HelpCommand>({
     aliases: ["h", "command", "commands", "cmd", "cmds"],
@@ -29,29 +30,14 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
     usage: i18n.__("commands.general.help.usage"),
 })
 export class HelpCommand extends BaseCommand {
-    private readonly listEmbed = createEmbed("info")
-        .setAuthor({
-            name: i18n.__mf("commands.general.help.authorString", {
-                username: this.client.user?.username,
-            }),
-            iconURL: this.client.user?.displayAvatarURL(),
-        })
-        .setFooter({
-            text: i18n.__mf("commands.general.help.footerString", {
-                prefix: this.client.config.mainPrefix,
-            }),
-            iconURL: "https://cdn.stegripe.org/images/information.png",
-        });
-
-    private readonly infoEmbed = createEmbed("info").setThumbnail(
-        "https://cdn.stegripe.org/images/question_mark.png",
-    );
-
     public async execute(ctx: CommandContext): Promise<void> {
         if (ctx.isInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
-        this.infoEmbed.data.fields = [];
+
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const val =
             ctx.args[0] ??
             ctx.options?.getString("command") ??
@@ -61,12 +47,23 @@ export class HelpCommand extends BaseCommand {
         const command =
             this.client.commands.get(val) ??
             this.client.commands.get(this.client.commands.aliases.get(val) ?? "");
-        if (!val) {
-            const embed = this.listEmbed.setThumbnail(
-                ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null,
-            );
 
-            this.listEmbed.data.fields = [];
+        if (!val) {
+            const listEmbed = createEmbed("info")
+                .setAuthor({
+                    name: __mf("commands.general.help.authorString", {
+                        username: this.client.user?.username,
+                    }),
+                    iconURL: this.client.user?.displayAvatarURL(),
+                })
+                .setFooter({
+                    text: __mf("commands.general.help.footerString", {
+                        prefix: this.client.config.mainPrefix,
+                    }),
+                    iconURL: "https://cdn.stegripe.org/images/information.png",
+                })
+                .setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null);
+
             for (const category of this.client.commands.categories.values()) {
                 const isDev = this.client.config.devs.includes(ctx.author.id);
                 const cmds = category.cmds
@@ -78,7 +75,7 @@ export class HelpCommand extends BaseCommand {
                 if (category.hide && !isDev) {
                     continue;
                 }
-                embed.addFields([
+                listEmbed.addFields([
                     {
                         name: `**${category.name}**`,
                         value: cmds.join(", "),
@@ -87,18 +84,17 @@ export class HelpCommand extends BaseCommand {
             }
 
             await ctx
-                .send({ embeds: [embed] }, "editReply")
+                .send({ embeds: [listEmbed] }, "editReply")
                 .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
             return;
         }
+
         if (!command) {
             const matching = this.generateSelectMenu(val, ctx.author.id);
             if (matching.length === 0) {
                 await ctx.send(
                     {
-                        embeds: [
-                            createEmbed("error", i18n.__("commands.general.help.noCommand"), true),
-                        ],
+                        embeds: [createEmbed("error", __("commands.general.help.noCommand"), true)],
                     },
                     "editReply",
                 );
@@ -118,17 +114,11 @@ export class HelpCommand extends BaseCommand {
                                     ),
                                 )
                                 .addOptions(matching)
-                                .setPlaceholder(
-                                    i18n.__("commands.general.help.commandSelectionString"),
-                                ),
+                                .setPlaceholder(__("commands.general.help.commandSelectionString")),
                         ),
                     ],
                     embeds: [
-                        createEmbed(
-                            "error",
-                            i18n.__("commands.general.help.noCommanSuggest"),
-                            true,
-                        ),
+                        createEmbed("error", __("commands.general.help.noCommanSuggest"), true),
                     ],
                 },
                 "editReply",
@@ -167,60 +157,48 @@ export class HelpCommand extends BaseCommand {
             }
         }
 
-        await ctx.send(
-            {
-                embeds: [
-                    this.infoEmbed
-                        .setAuthor({
-                            name: i18n.__mf("commands.general.help.commandDetailTitle", {
-                                username: this.client.user?.username,
-                                command: command?.meta.name,
-                            }),
-                            iconURL: this.client.user?.displayAvatarURL(),
-                        })
-                        .addFields([
-                            {
-                                name: i18n.__("commands.general.help.nameString"),
-                                value: `**\`${command?.meta.name}\`**`,
-                                inline: false,
-                            },
-                            {
-                                name: i18n.__("commands.general.help.descriptionString"),
-                                value: `${command?.meta.description}`,
-                                inline: true,
-                            },
-                            {
-                                name: i18n.__("commands.general.help.aliasesString"),
-                                value:
-                                    Number(command?.meta.aliases?.length) > 0
-                                        ? (command?.meta.aliases
-                                              ?.map((c) => `**\`${c}\`**`)
-                                              .join(", ") ?? "None.")
-                                        : "None.",
-                                inline: false,
-                            },
-                            {
-                                name: i18n.__("commands.general.help.usageString"),
-                                value: `**\`${command?.meta.usage?.replaceAll(
-                                    "{prefix}",
-                                    this.client.config.mainPrefix,
-                                )}\`**`,
-                                inline: true,
-                            },
-                        ])
-                        .setFooter({
-                            text: i18n.__mf("commands.general.help.commandUsageFooter", {
-                                devOnly:
-                                    command?.meta.devOnly === true
-                                        ? "(developer-only command)"
-                                        : "",
-                            }),
-                            iconURL: "https://cdn.stegripe.org/images/information.png",
-                        }),
-                ],
-            },
-            "editReply",
-        );
+        const infoEmbed = createEmbed("info")
+            .setThumbnail("https://cdn.stegripe.org/images/question_mark.png")
+            .setAuthor({
+                name: __mf("commands.general.help.commandDetailTitle", {
+                    username: this.client.user?.username,
+                    command: command?.meta.name,
+                }),
+                iconURL: this.client.user?.displayAvatarURL(),
+            })
+            .addFields([
+                {
+                    name: __("commands.general.help.nameString"),
+                    value: `\`${command?.meta.name}\``,
+                    inline: false,
+                },
+                {
+                    name: __("commands.general.help.descriptionString"),
+                    value: `${command?.meta.description}`,
+                    inline: true,
+                },
+                {
+                    name: __("commands.general.help.aliasesString"),
+                    value:
+                        Number(command?.meta.aliases?.length) > 0
+                            ? (command?.meta.aliases?.map((c) => `\`${c}\``).join(", ") ?? "None.")
+                            : "None.",
+                    inline: false,
+                },
+                {
+                    name: __("commands.general.help.usageString"),
+                    value: `\`${command?.meta.usage?.replaceAll("{prefix}", this.client.config.mainPrefix)}\``,
+                    inline: true,
+                },
+            ])
+            .setFooter({
+                text: __mf("commands.general.help.commandUsageFooter", {
+                    devOnly: command?.meta.devOnly === true ? "(developer-only command)" : "",
+                }),
+                iconURL: "https://cdn.stegripe.org/images/information.png",
+            });
+
+        await ctx.send({ embeds: [infoEmbed] }, "editReply");
     }
 
     private generateSelectMenu(cmd: string, author: string): SelectMenuComponentOptionData[] {

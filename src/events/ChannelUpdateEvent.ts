@@ -1,10 +1,10 @@
 import { setTimeout } from "node:timers";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { ChannelType, type GuildChannel, type VoiceChannel } from "discord.js";
-import i18n from "i18n";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { Event } from "../utils/decorators/Event.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import { i18n__ } from "../utils/functions/i18n.js";
 
 @Event("channelUpdate")
 export class ChannelUpdateEvent extends BaseEvent {
@@ -32,10 +32,10 @@ export class ChannelUpdateEvent extends BaseEvent {
                 queue.textChannel.id,
             );
 
+            const __ = i18n__(this.client, newChannel.guild);
+
             const msg = await queue.textChannel.send({
-                embeds: [
-                    createEmbed("info", i18n.__("events.channelUpdate.reconfigureConnection")),
-                ],
+                embeds: [createEmbed("info", __("events.channelUpdate.reconfigureConnection"))],
             });
             queue.connection?.configureNetworking();
 
@@ -49,7 +49,7 @@ export class ChannelUpdateEvent extends BaseEvent {
                         embeds: [
                             createEmbed(
                                 "success",
-                                i18n.__("events.channelUpdate.connectionReconfigured"),
+                                __("events.channelUpdate.connectionReconfigured"),
                                 true,
                             ),
                         ],
@@ -74,7 +74,7 @@ export class ChannelUpdateEvent extends BaseEvent {
                         embeds: [
                             createEmbed(
                                 "error",
-                                i18n.__("events.channelUpdate.unableReconfigureConnection"),
+                                __("events.channelUpdate.unableReconfigureConnection"),
                                 true,
                             ),
                         ],

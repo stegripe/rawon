@@ -16,7 +16,6 @@ import {
     type PermissionsString,
     type TextChannel,
 } from "discord.js";
-import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
@@ -24,6 +23,7 @@ import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/
 import { Event } from "../utils/decorators/Event.js";
 import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { type SongManager } from "../utils/structures/SongManager.js";
 
 @Event("interactionCreate")
@@ -50,6 +50,8 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
+        const __mf = i18n__mf(this.client, interaction.guild);
+
         if (interaction.isButton()) {
             if (interaction.customId.startsWith("RC_")) {
                 await this.handleRequestChannelButton(interaction);
@@ -74,7 +76,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         embeds: [
                             createEmbed(
                                 "error",
-                                i18n.__mf("events.createInteraction.message1", {
+                                __mf("events.createInteraction.message1", {
                                     user: user.toString(),
                                 }),
                                 true,
@@ -139,7 +141,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__mf("events.createInteraction.message1", {
+                            __mf("events.createInteraction.message1", {
                                 user: user.toString(),
                             }),
                             true,
@@ -165,6 +167,9 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
+
         this.client.logger.info(
             `${interaction.user.tag} [${interaction.user.id}] clicked ${interaction.customId} button ` +
                 `in guild: ${guild.name} [${guild.id}]`,
@@ -182,7 +187,7 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!voiceChannel) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", i18n.__("requestChannel.notInVoice"))],
+                embeds: [createEmbed("warn", __("requestChannel.notInVoice"))],
             });
             return;
         }
@@ -191,7 +196,7 @@ export class InteractionCreateEvent extends BaseEvent {
         if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", i18n.__("utils.musicDecorator.sameVC"))],
+                embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
             });
             return;
         }
@@ -201,7 +206,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -210,9 +215,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     queue.playing = false;
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [
-                            createEmbed("success", `⏸️ **|** ${i18n.__("requestChannel.paused")}`),
-                        ],
+                        embeds: [createEmbed("success", `⏸️ **|** ${__("requestChannel.paused")}`)],
                     });
                     setTimeout(async () => {
                         try {
@@ -224,9 +227,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     queue.playing = true;
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [
-                            createEmbed("success", `▶️ **|** ${i18n.__("requestChannel.resumed")}`),
-                        ],
+                        embeds: [createEmbed("success", `▶️ **|** ${__("requestChannel.resumed")}`)],
                     });
                     setTimeout(async () => {
                         try {
@@ -242,7 +243,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -250,7 +251,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue.canSkip()) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
                     });
                     return;
                 }
@@ -281,7 +282,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue.startSkip()) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
                     });
                     return;
                 }
@@ -293,7 +294,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 const skipEmbed = createEmbed(
                     "success",
-                    `⏭️ **|** ${i18n.__mf("requestChannel.skipped", { song: skipSong ? `[${skipSong.song.title}](${skipSong.song.url})` : "" })}`,
+                    `⏭️ **|** ${__mf("requestChannel.skipped", { song: skipSong ? `**[${skipSong.song.title}](${skipSong.song.url})**` : "" })}`,
                 );
                 if (skipSong?.song.thumbnail) {
                     skipEmbed.setThumbnail(skipSong.song.thumbnail);
@@ -316,7 +317,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -336,9 +337,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!hasStopPermission) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [
-                            createEmbed("error", i18n.__("requestChannel.noPermission"), true),
-                        ],
+                        embeds: [createEmbed("error", __("requestChannel.noPermission"), true)],
                     });
                     return;
                 }
@@ -346,9 +345,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 queue.destroy();
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed("success", `⏹️ **|** ${i18n.__("requestChannel.stopped")}`),
-                    ],
+                    embeds: [createEmbed("success", `⏹️ **|** ${__("requestChannel.stopped")}`)],
                 });
                 setTimeout(async () => {
                     try {
@@ -363,7 +360,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -378,7 +375,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔁 **|** ${i18n.__mf("requestChannel.loopChanged", { mode: nextMode })}`,
+                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: nextMode })}`,
                         ),
                     ],
                 });
@@ -395,7 +392,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -406,7 +403,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔀 **|** ${i18n.__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" })}`,
+                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" })}`,
                         ),
                     ],
                 });
@@ -423,7 +420,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -435,7 +432,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${i18n.__mf("requestChannel.volumeChanged", { volume: newVolDown })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: newVolDown })}`,
                         ),
                     ],
                 });
@@ -452,7 +449,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -464,7 +461,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${i18n.__mf("requestChannel.volumeChanged", { volume: newVolUp })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: newVolUp })}`,
                         ),
                     ],
                 });
@@ -481,7 +478,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -489,7 +486,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue.canSkip()) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
                     });
                     return;
                 }
@@ -503,7 +500,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!currentSong) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -517,9 +514,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!hasRemovePermission) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [
-                            createEmbed("error", i18n.__("requestChannel.noPermission"), true),
-                        ],
+                        embeds: [createEmbed("error", __("requestChannel.noPermission"), true)],
                     });
                     return;
                 }
@@ -527,7 +522,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue.startSkip()) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.skipInProgress"))],
+                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
                     });
                     return;
                 }
@@ -545,7 +540,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 const removeEmbed = createEmbed(
                     "success",
-                    `🗑️ **|** ${i18n.__mf("requestChannel.removed", { song: `[${songTitle}](${songUrl})` })}`,
+                    `🗑️ **|** ${__mf("requestChannel.removed", { song: `**[${songTitle}](${songUrl})**` })}`,
                 );
                 if (songThumbnail) {
                     removeEmbed.setThumbnail(songThumbnail);
@@ -568,7 +563,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
                     });
                     return;
                 }
@@ -592,12 +587,12 @@ export class InteractionCreateEvent extends BaseEvent {
                 let currentPage = 0;
                 const embed = createEmbed(
                     "info",
-                    pages[0] ?? `📋 **|** ${i18n.__("requestChannel.emptyQueue")}`,
+                    pages[0] ?? `📋 **|** ${__("requestChannel.emptyQueue")}`,
                 )
-                    .setTitle(`📋 ${i18n.__("requestChannel.queueListTitle")}`)
+                    .setTitle(`📋 ${__("requestChannel.queueListTitle")}`)
                     .setThumbnail(guild.iconURL({ extension: "png", size: 1_024 }) ?? null)
                     .setFooter({
-                        text: `• ${i18n.__mf("reusable.pageFooter", {
+                        text: `• ${__mf("reusable.pageFooter", {
                             actual: 1,
                             total: pages.length || 1,
                         })}`,
@@ -667,7 +662,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         currentPage = ((currentPage % pages.length) + pages.length) % pages.length;
 
                         embed.setDescription(pages[currentPage]).setFooter({
-                            text: `• ${i18n.__mf("reusable.pageFooter", {
+                            text: `• ${__mf("reusable.pageFooter", {
                                 actual: currentPage + 1,
                                 total: pages.length,
                             })}`,
@@ -729,6 +724,8 @@ export class InteractionCreateEvent extends BaseEvent {
             return false;
         }
 
+        const __mf = i18n__mf(this.client, guild);
+
         const required = this.client.utils.requiredVoters(
             guild.members.me?.voice.channel?.members.size ?? 0,
         );
@@ -742,7 +739,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 embeds: [
                     createEmbed(
                         "info",
-                        i18n.__mf("commands.music.skip.voteResultMessage", {
+                        __mf("commands.music.skip.voteResultMessage", {
                             length: queue.skipVoters.length,
                             required,
                         }),
@@ -760,7 +757,7 @@ export class InteractionCreateEvent extends BaseEvent {
             embeds: [
                 createEmbed(
                     "info",
-                    i18n.__mf("commands.music.skip.voteResultMessage", { length, required }),
+                    __mf("commands.music.skip.voteResultMessage", { length, required }),
                 ),
             ],
         });
@@ -772,10 +769,14 @@ export class InteractionCreateEvent extends BaseEvent {
         interaction: ButtonInteraction,
         queue: ServerQueue | undefined,
     ): Promise<void> {
+        const guild = interaction.guild;
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
+
         if (!queue || queue.songs.size === 0) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
             });
             return;
         }
@@ -789,7 +790,7 @@ export class InteractionCreateEvent extends BaseEvent {
         if (!currentSong) {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", i18n.__("requestChannel.nothingPlaying"))],
+                embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
             });
             return;
         }
@@ -814,7 +815,7 @@ export class InteractionCreateEvent extends BaseEvent {
                         embeds: [
                             createEmbed(
                                 "warn",
-                                i18n.__mf("commands.music.lyrics.noLyrics", {
+                                __mf("commands.music.lyrics.noLyrics", {
                                     song: `**${currentSong.song.title}**`,
                                 }),
                             ),
@@ -862,10 +863,10 @@ export class InteractionCreateEvent extends BaseEvent {
                 };
 
                 embed.setFooter({
-                    text: `• ${i18n.__mf("reusable.pageFooter", {
+                    text: `• ${__mf("reusable.pageFooter", {
                         actual: 1,
                         total: pages.length,
-                    })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                    })}. ${__mf("reusable.lyricsSource", { source: "lrclib" })}`,
                 });
 
                 await interaction.editReply({
@@ -903,10 +904,10 @@ export class InteractionCreateEvent extends BaseEvent {
                         currentPage = ((currentPage % pages.length) + pages.length) % pages.length;
 
                         embed.setDescription(pages[currentPage]).setFooter({
-                            text: `• ${i18n.__mf("reusable.pageFooter", {
+                            text: `• ${__mf("reusable.pageFooter", {
                                 actual: currentPage + 1,
                                 total: pages.length,
-                            })}. ${i18n.__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                            })}. ${__mf("reusable.lyricsSource", { source: "lrclib" })}`,
                         });
 
                         await i.update({
@@ -930,7 +931,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "error",
-                            i18n.__mf("commands.music.lyrics.noLyrics", {
+                            __mf("commands.music.lyrics.noLyrics", {
                                 song: `**${currentSong.song.title}**`,
                             }),
                             true,

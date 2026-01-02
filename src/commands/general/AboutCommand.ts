@@ -10,6 +10,7 @@ import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createTable } from "../../utils/functions/createTable.js";
 import { formatMS } from "../../utils/functions/formatMS.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 const pkg = JSON.parse(
     readFileSync(new URL("../../../package.json", import.meta.url)).toString(),
@@ -26,43 +27,37 @@ const pkg = JSON.parse(
 })
 export class AboutCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
+        const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+
         const values = [
-            [i18n.__("commands.general.about.osUptimeString"), formatMS(uptime() * 1_000)],
-            [
-                i18n.__("commands.general.about.processUptimeString"),
-                formatMS(process.uptime() * 1_000),
-            ],
-            [i18n.__("commands.general.about.botUptimeString"), formatMS(process.uptime() * 1_000)],
+            [__("commands.general.about.osUptimeString"), formatMS(uptime() * 1_000)],
+            [__("commands.general.about.processUptimeString"), formatMS(process.uptime() * 1_000)],
+            [__("commands.general.about.botUptimeString"), formatMS(process.uptime() * 1_000)],
             [""],
             [
-                i18n.__("commands.general.about.cachedUsersString"),
+                __("commands.general.about.cachedUsersString"),
                 `${await this.client.utils.getUserCount()}`,
             ],
             [
-                i18n.__("commands.general.about.channelsString"),
+                __("commands.general.about.channelsString"),
                 `${await this.client.utils.getChannelCount()}`,
             ],
             [
-                i18n.__("commands.general.about.serversString"),
+                __("commands.general.about.serversString"),
                 `${await this.client.utils.getGuildCount()}`,
             ],
             [""],
-            [i18n.__("commands.general.about.nodeVersionString"), process.versions.node],
-            [i18n.__("commands.general.about.discordJSVersionString"), DjsVersion],
+            [__("commands.general.about.nodeVersionString"), process.versions.node],
+            [__("commands.general.about.discordJSVersionString"), DjsVersion],
             [
-                i18n.__("commands.general.about.ffmpegVersionString"),
+                __("commands.general.about.ffmpegVersionString"),
                 this.client.utils.getFFmpegVersion(),
             ],
-            [i18n.__("commands.general.about.botVersionString"), pkg.version],
-            [
-                i18n.__("commands.general.about.commitString"),
-                this.client.utils.getCommitHash("HEAD"),
-            ],
+            [__("commands.general.about.botVersionString"), pkg.version],
+            [__("commands.general.about.commitString"), this.client.utils.getCommitHash("HEAD")],
             [""],
-            [
-                i18n.__("commands.general.about.sourceCodeString"),
-                "https://github.com/stegripe/rawon",
-            ],
+            [__("commands.general.about.sourceCodeString"), "https://github.com/stegripe/rawon"],
         ];
         const value = createTable(values);
 
@@ -70,7 +65,7 @@ export class AboutCommand extends BaseCommand {
             .reply({
                 embeds: [
                     createEmbed("info", `\`\`\`asciidoc\n${value}\n\`\`\``).setAuthor({
-                        name: i18n.__mf("commands.general.about.aboutFooter", {
+                        name: __mf("commands.general.about.aboutFooter", {
                             botname: this.client.user?.username ?? "Unknown",
                         }),
                     }),
