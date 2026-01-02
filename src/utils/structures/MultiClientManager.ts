@@ -9,6 +9,8 @@ export class MultiClientManager {
     private static instance: MultiClientManager | null = null;
     private clients: Client[] = [];
     private clientPriorities: Map<string, number> = new Map(); // clientId -> priority (0 = highest)
+    // Track voice channel connections manually: guildId -> Map<clientId, voiceChannelId>
+    private voiceConnections: Map<string, Map<string, string>> = new Map();
 
     private constructor() {}
 
@@ -86,11 +88,41 @@ export class MultiClientManager {
     }
 
     /**
-     * Get the voice channel ID a bot is connected to in a guild.
-     * Uses guild.queue?.connection which is more reliable than member voice state.
+     * Track a bot joining a voice channel.
+     * Call this when a bot successfully joins a voice channel.
      */
-    private getBotVoiceChannelId(guild: Guild): string | undefined {
-        // Primary method: Check the queue connection (most reliable)
+    public trackVoiceJoin(clientId: string, guildId: string, voiceChannelId: string): void {
+        if (!this.voiceConnections.has(guildId)) {
+            this.voiceConnections.set(guildId, new Map());
+        }
+        this.voiceConnections.get(guildId)!.set(clientId, voiceChannelId);
+        console.log(`[MultiClient] Tracked voice join: ${clientId} -> ${voiceChannelId} in guild ${guildId}`);
+    }
+
+    /**
+     * Track a bot leaving a voice channel.
+     * Call this when a bot leaves a voice channel.
+     */
+    public trackVoiceLeave(clientId: string, guildId: string): void {
+        const guildConnections = this.voiceConnections.get(guildId);
+        if (guildConnections) {
+            guildConnections.delete(clientId);
+            console.log(`[MultiClient] Tracked voice leave: ${clientId} from guild ${guildId}`);
+        }
+    }
+
+    /**
+     * Get the voice channel ID a bot is connected to in a guild.
+     * Uses manual tracking as primary source since guild.queue is per-client.
+     */
+    private getBotVoiceChannelIdForClient(clientId: string, guildId: string, guild: Guild): string | undefined {
+        // Primary method: Check manual tracking (most reliable across clients)
+        const guildConnections = this.voiceConnections.get(guildId);
+        if (guildConnections?.has(clientId)) {
+            return guildConnections.get(clientId);
+        }
+        
+        // Fallback: Check the queue connection (only works for same client's guild)
         const queueVoiceChannelId = guild.queue?.connection?.joinConfig.channelId;
         if (queueVoiceChannelId) {
             return queueVoiceChannelId;
@@ -129,7 +161,7 @@ export class MultiClientManager {
         // If user is in a voice channel, use voice-aware logic
         if (userVoiceChannelId) {
             // Check if THIS client is in the user's voice channel
-            const botVoiceChannelId = this.getBotVoiceChannelId(guild);
+            const botVoiceChannelId = this.getBotVoiceChannelIdForClient(client.user.id, guildId, guild);
             if (botVoiceChannelId === userVoiceChannelId) {
                 // This bot is in the same voice channel as user - it should handle
                 return true;
@@ -144,7 +176,7 @@ export class MultiClientManager {
                 if (!otherGuild) {
                     continue;
                 }
-                const otherVoiceChannelId = this.getBotVoiceChannelId(otherGuild);
+                const otherVoiceChannelId = this.getBotVoiceChannelIdForClient(c.user.id, guildId, otherGuild);
                 if (otherVoiceChannelId === userVoiceChannelId) {
                     // Another bot is in user's voice channel - this client should NOT handle
                     return false;
@@ -165,8 +197,8 @@ export class MultiClientManager {
                     debugInfo.push(`${c.user.tag}: not in guild`);
                     continue;
                 }
-                // Use queue connection as primary, member voice state as fallback
-                const voiceChannelId = this.getBotVoiceChannelId(cGuild);
+                // Use manual tracking as primary, queue connection and member voice state as fallbacks
+                const voiceChannelId = this.getBotVoiceChannelIdForClient(c.user.id, guildId, cGuild);
                 debugInfo.push(`${c.user.tag}: voice=${voiceChannelId ?? "none"}`);
                 if (!voiceChannelId && !selectedClientId) {
                     // This bot is available (not in voice) - select first available
@@ -231,8 +263,8 @@ export class MultiClientManager {
             }
 
             // Check if this client is already in a voice channel in this guild
-            // Use queue connection as primary, member voice state as fallback
-            const voiceChannelId = this.getBotVoiceChannelId(guild);
+            // Use manual tracking as primary, queue connection and member voice state as fallbacks
+            const voiceChannelId = this.getBotVoiceChannelIdForClient(client.user.id, guildId, guild);
             if (!voiceChannelId) {
                 return client;
             }

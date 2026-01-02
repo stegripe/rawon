@@ -128,6 +128,9 @@ export class ReadyEvent extends BaseEvent {
                 });
 
                 guild.queue.connection = connection;
+                
+                // Track voice join for multi-client coordination
+                this.client.trackVoiceJoin(guild.id, voiceChannel.id);
 
                 const currentSongKey = queueState.currentSongKey;
                 const currentPosition = queueState.currentPosition ?? 0;

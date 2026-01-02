@@ -192,6 +192,9 @@ export class MessageCreateEvent extends BaseEvent {
                 });
 
                 guild.queue.connection = connection;
+                
+                // Track voice join for multi-client coordination
+                this.client.trackVoiceJoin(guild.id, voiceChannel.id);
             } catch (error) {
                 guild.queue?.songs.clear();
                 delete guild.queue;

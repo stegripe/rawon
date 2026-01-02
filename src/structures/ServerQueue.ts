@@ -342,6 +342,10 @@ export class ServerQueue {
     }
 
     public destroy(): void {
+        // Track voice leave for multi-client coordination before disconnecting
+        const guildId = this.textChannel.guild.id;
+        this.client.trackVoiceLeave(guildId);
+        
         this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);

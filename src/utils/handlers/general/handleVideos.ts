@@ -124,6 +124,11 @@ export async function handleVideos(
             ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
         ).connection = connection;
 
+        // Track voice join for multi-client coordination
+        if (ctx.guild) {
+            client.trackVoiceJoin(ctx.guild.id, voiceChannel.id);
+        }
+
         client.debugLog.logData(
             "info",
             "HANDLE_VIDEOS",

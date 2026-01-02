@@ -87,6 +87,26 @@ export class Rawon extends Client {
         return this.clientPriority === 0;
     }
 
+    /**
+     * Track this client joining a voice channel.
+     * Call this after successfully joining a voice channel.
+     */
+    public trackVoiceJoin(guildId: string, voiceChannelId: string): void {
+        if (this.user) {
+            this.multiClientManager.trackVoiceJoin(this.user.id, guildId, voiceChannelId);
+        }
+    }
+
+    /**
+     * Track this client leaving a voice channel.
+     * Call this after leaving a voice channel.
+     */
+    public trackVoiceLeave(guildId: string): void {
+        if (this.user) {
+            this.multiClientManager.trackVoiceLeave(this.user.id, guildId);
+        }
+    }
+
     public build: (token?: string, priority?: number) => Promise<this> = async (
         token?: string,
         priority = 0,
