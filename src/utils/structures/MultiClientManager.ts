@@ -26,12 +26,14 @@ export class MultiClientManager {
         this.clients[priority] = client;
         if (client.user) {
             this.clientPriorities.set(client.user.id, priority);
+            console.log(`[MultiClient] Registered client ${client.user.tag} with priority ${priority}`);
         }
 
         // Update priority when client becomes ready
         client.once("ready", () => {
             if (client.user) {
                 this.clientPriorities.set(client.user.id, priority);
+                console.log(`[MultiClient] Client ${client.user.tag} ready, confirmed priority ${priority}`);
             }
         });
     }
@@ -72,8 +74,9 @@ export class MultiClientManager {
         }
 
         // Find the lowest priority client that is in this guild
-        for (const c of this.clients) {
-            if (c?.user && c.guilds.cache.has(guild.id)) {
+        const allClients = this.getClients();
+        for (const c of allClients) {
+            if (c.user && c.guilds.cache.has(guild.id)) {
                 // This is the primary for this guild
                 return c.user.id === client.user.id;
             }
@@ -105,6 +108,9 @@ export class MultiClientManager {
             return false;
         }
 
+        // Get all registered clients (filter out undefined/null)
+        const allClients = this.getClients();
+
         // If user is in a voice channel, use voice-aware logic
         if (userVoiceChannelId) {
             // Check if THIS client is in the user's voice channel
@@ -116,8 +122,8 @@ export class MultiClientManager {
             }
 
             // Check if ANY other bot is in the user's voice channel
-            for (const c of this.clients) {
-                if (!c?.user || c.user.id === client.user.id) {
+            for (const c of allClients) {
+                if (!c.user || c.user.id === client.user.id) {
                     continue;
                 }
                 const otherGuild = c.guilds.cache.get(guildId);
@@ -133,8 +139,9 @@ export class MultiClientManager {
             // Find the first available bot (not in any voice channel in this guild)
             let selectedClientId: string | null = null;
             const debugInfo: string[] = [];
-            for (const c of this.clients) {
-                if (!c?.user) {
+            for (const c of allClients) {
+                if (!c.user) {
+                    debugInfo.push("(no user)");
                     continue;
                 }
                 const cGuild = c.guilds.cache.get(guildId);
@@ -146,17 +153,17 @@ export class MultiClientManager {
                 const cVoiceState = cGuild.members.me?.voice;
                 const voiceChannelId = cVoiceState?.channelId;
                 debugInfo.push(`${c.user.tag}: voice=${voiceChannelId ?? "none"}`);
-                if (!voiceChannelId) {
-                    // This bot is available (not in voice)
+                if (!voiceChannelId && !selectedClientId) {
+                    // This bot is available (not in voice) - select first available
                     selectedClientId = c.user.id;
-                    break;
                 }
             }
 
             // Log debug info for troubleshooting multi-client voice selection
-            if (this.clients.length > 1) {
-                console.log(`[MultiClient] User in voice ${userVoiceChannelId}, checking bots: ${debugInfo.join(", ")}`);
-                console.log(`[MultiClient] Selected bot: ${selectedClientId ? this.clients.find(c => c?.user?.id === selectedClientId)?.user?.tag : "none (fallback to primary)"}`);
+            if (allClients.length > 1) {
+                console.log(`[MultiClient] Total clients: ${allClients.length}, User in voice ${userVoiceChannelId}`);
+                console.log(`[MultiClient] Checking bots: ${debugInfo.join(", ")}`);
+                console.log(`[MultiClient] Selected bot: ${selectedClientId ? allClients.find(c => c.user?.id === selectedClientId)?.user?.tag : "none (fallback to primary)"}`);
             }
 
             if (selectedClientId) {
@@ -180,8 +187,9 @@ export class MultiClientManager {
             return false;
         }
 
-        for (const c of this.clients) {
-            if (c?.user && c.guilds.cache.has(guildId)) {
+        const allClients = this.getClients();
+        for (const c of allClients) {
+            if (c.user && c.guilds.cache.has(guildId)) {
                 return c.user.id === client.user.id;
             }
         }
@@ -195,9 +203,10 @@ export class MultiClientManager {
      * Falls back to the primary client if all are busy.
      */
     public getAvailableClientForVoice(guildId: string): Client | undefined {
+        const allClients = this.getClients();
         // First, find clients that are in this guild but not in a voice channel
-        for (const client of this.clients) {
-            if (!client?.user) {
+        for (const client of allClients) {
+            if (!client.user) {
                 continue;
             }
 
@@ -222,8 +231,9 @@ export class MultiClientManager {
      * Get the primary client for a specific guild (lowest priority client that is in the guild)
      */
     public getPrimaryClientForGuild(guildId: string): Client | undefined {
-        for (const client of this.clients) {
-            if (client?.user && client.guilds.cache.has(guildId)) {
+        const allClients = this.getClients();
+        for (const client of allClients) {
+            if (client.user && client.guilds.cache.has(guildId)) {
                 return client;
             }
         }
@@ -234,7 +244,7 @@ export class MultiClientManager {
      * Get all clients that are in a specific guild
      */
     public getClientsInGuild(guildId: string): Client[] {
-        return this.clients.filter((c) => c?.user && c.guilds.cache.has(guildId));
+        return this.getClients().filter((c) => c.user && c.guilds.cache.has(guildId));
     }
 
     /**
