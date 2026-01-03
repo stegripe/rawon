@@ -12,7 +12,7 @@ import {
 import path from "node:path";
 import process from "node:process";
 import { PassThrough, type Readable } from "node:stream";
-import { setTimeout } from "node:timers";
+import { clearInterval, setInterval, setTimeout } from "node:timers";
 import { type Rawon } from "../../structures/Rawon.js";
 
 const PRE_CACHE_AHEAD_COUNT = 3;
@@ -145,7 +145,7 @@ export class AudioCacheManager {
             try {
                 rmSync(cachePath, { force: true });
             } catch {
-                // Ignore cleanup errors
+                // Ignore errors
             }
         });
 
@@ -170,7 +170,7 @@ export class AudioCacheManager {
             try {
                 rmSync(cachePath, { force: true });
             } catch {
-                // Ignore cleanup errors
+                // Ignore errors
             }
         });
 
@@ -218,6 +218,56 @@ export class AudioCacheManager {
                 await this.preCacheUrl(url);
             }
         }
+    }
+
+    public async waitForCache(url: string, timeoutMs = 300_000): Promise<boolean> {
+        const key = this.getCacheKey(url);
+
+        if (this.isCached(url) && !this.isInProgress(url)) {
+            return true;
+        }
+
+        if (!this.isInProgress(url) && !this.isCached(url)) {
+            this.client.logger.info(
+                `[AudioCacheManager] Cache not found for ${url.substring(0, 50)}..., starting high-priority cache`,
+            );
+            await this.preCacheUrl(url, true);
+        }
+
+        const startTime = Date.now();
+        const pollInterval = 500;
+
+        return new Promise<boolean>((resolve) => {
+            const checkCache = setInterval(() => {
+                if (this.isCached(url) && !this.inProgressFiles.has(key)) {
+                    clearInterval(checkCache);
+                    this.client.logger.info(
+                        `[AudioCacheManager] Cache completed for ${url.substring(0, 50)}... after ${Date.now() - startTime}ms`,
+                    );
+                    resolve(true);
+                    return;
+                }
+
+                if (Date.now() - startTime >= timeoutMs) {
+                    clearInterval(checkCache);
+                    this.client.logger.warn(
+                        `[AudioCacheManager] Timeout waiting for cache ${url.substring(0, 50)}... after ${timeoutMs}ms`,
+                    );
+                    resolve(false);
+                    return;
+                }
+
+                const failedInfo = this.failedUrls.get(key);
+                if (failedInfo && failedInfo.count >= PRE_CACHE_RETRY_COUNT) {
+                    clearInterval(checkCache);
+                    this.client.logger.warn(
+                        `[AudioCacheManager] Cache failed for ${url.substring(0, 50)}... after ${failedInfo.count} attempts`,
+                    );
+                    resolve(false);
+                    return;
+                }
+            }, pollInterval);
+        });
     }
 
     private async processQueue(): Promise<void> {
@@ -309,7 +359,7 @@ export class AudioCacheManager {
                         try {
                             rmSync(cachePath, { force: true });
                         } catch {
-                            // Ignore cleanup errors
+                            // Ignore errors
                         }
 
                         if (
@@ -354,7 +404,7 @@ export class AudioCacheManager {
                     try {
                         rmSync(cachePath, { force: true });
                     } catch {
-                        // Ignore cleanup errors
+                        // Ignore errors
                     }
                     resolve();
                 });
@@ -365,7 +415,7 @@ export class AudioCacheManager {
                     try {
                         rmSync(cachePath, { force: true });
                     } catch {
-                        // Ignore cleanup errors
+                        // Ignore errors
                     }
                     resolve();
                 });
@@ -417,7 +467,7 @@ export class AudioCacheManager {
                     }
                     this.cachedFiles.delete(key);
                 } catch {
-                    // Ignore cleanup errors
+                    // Ignore errors
                 }
             }
 

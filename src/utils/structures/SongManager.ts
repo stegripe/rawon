@@ -73,7 +73,7 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
                 await queue.saveQueueState();
             }
         } catch {
-            // Ignore save errors during queue initialization
+            // Ignore errors
         }
     }
 }

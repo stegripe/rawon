@@ -3,6 +3,13 @@ import { clientOptions } from "./config/index.js";
 import { Rawon } from "./structures/Rawon.js";
 import { NoStackError } from "./utils/structures/NoStackError.js";
 
+const token = process.env.DISCORD_TOKEN;
+
+if (!token) {
+    console.error("[FATAL] DISCORD_TOKEN is not set in environment variables!");
+    process.exit(1);
+}
+
 const client = new Rawon(clientOptions);
 
 async function saveAllQueueStates(): Promise<void> {
@@ -42,4 +49,4 @@ process
         process.exit(1);
     });
 
-await client.build().catch((error: unknown) => client.logger.error("PROMISE_ERR:", error));
+await client.build(token).catch((error: unknown) => client.logger.error("PROMISE_ERR:", error));

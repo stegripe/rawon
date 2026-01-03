@@ -31,6 +31,8 @@
         "@discordjs/voice": "^0.19.0",
         "@swc/cli": "0.7.9",
         "@swc/core": "1.15.8",
+        "@types/better-sqlite3": "^7.6.13",
+        "better-sqlite3": "^12.5.0",
         "date-fns": "4.1.0",
         "discord.js": "14.25.1",
         "dotenv": "17.2.3",
