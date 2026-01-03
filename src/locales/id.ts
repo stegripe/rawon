@@ -29,13 +29,11 @@ export const id = {
                 "🎮 Dukungan interaksi (slash commands dan tombol)",
                 "📺 Fitur request channel untuk pengalaman musik yang mulus",
                 "🚀 Siap produksi, tanpa perlu coding",
-                "⚙️ Mudah dikonfigurasi dan digunakan",
                 "🎵 Perintah musik dasar (play, pause, skip, queue, dll.)",
                 "🌍 Dukungan multi-bahasa (12 bahasa)",
                 "🔄 Rotasi multi-cookie untuk pemutaran tanpa gangguan",
                 "⚡ Pre-caching audio pintar untuk pemutaran lebih lancar",
-                "🎶 Dukungan berbagai platform musik (situs video, Spotify, SoundCloud)",
-                "📋 Dukungan playlist penuh (termasuk playlist besar 100+ lagu)"
+                "🎶 Dukungan berbagai platform musik (situs video, Spotify, SoundCloud)"
             ]
         },
         requirements: {
@@ -79,13 +77,7 @@ export const id = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "🚂 Deploy ke Railway",
-            description:
-                "**Railway** menyediakan $5 kredit gratis per bulan. Bot Anda akan online 24/7 selama penggunaan di bawah $5.",
-            warning:
-                "**PENTING:** Baca Disclaimer sebelum deploy ke Railway."
-        },
+
         cookiesQuickStart: {
             title: "🍪 Quick Start: Setup Cookies",
             description:
@@ -357,7 +349,7 @@ export const id = {
             title: "Hak Cipta, DMCA, dan Kekayaan Intelektual",
             items: [
                 "**Kepemilikan:** Setiap kekayaan intelektual yang digunakan, diputar, atau ditampilkan oleh bot BUKAN milik kami, pengelola, atau kontributor manapun. Ini termasuk, tetapi tidak terbatas pada, file audio, video, dan gambar yang digunakan dalam perintah bot.",
-                "**Kebijakan Hosting Provider:** Beberapa hosting provider (seperti **Railway**) melarang hosting atau distribusi konten yang dilindungi DMCA. Ini termasuk bot musik Discord yang memutar musik/video berhak cipta. Deploy ke platform tersebut dengan risiko Anda sendiri.",
+                "**Kebijakan Hosting Provider:** Beberapa hosting provider melarang hosting atau distribusi konten yang dilindungi DMCA. Ini termasuk bot musik Discord yang memutar musik/video berhak cipta. Deploy ke platform tersebut dengan risiko Anda sendiri.",
                 "**Tanggung Jawab Pengguna:** Anda bertanggung jawab atas cara Anda menggunakan bot ini dan konten apa yang diputar melaluinya."
             ]
         },
@@ -394,7 +386,7 @@ export const id = {
         optional: "Opsional",
         example: "Contoh",
         learnMore: "Pelajari Lebih Lanjut",
-        deployOnRailway: "Deploy ke Railway",
+
         language: "Bahasa",
         tip: "Tips",
         warning: "Peringatan",

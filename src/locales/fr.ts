@@ -28,7 +28,6 @@ export const fr = {
                 "Support des interactions (commandes slash et boutons)",
                 "Canal de requêtes pour une expérience musicale fluide",
                 "Prêt pour la production, sans codage requis",
-                "Configurable et facile à utiliser",
                 "Commandes musicales de base (play, pause, skip, queue, etc.)",
                 "Support multilingue"
             ]
@@ -71,12 +70,7 @@ export const fr = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "Déploiement Railway",
-            description:
-                "**Railway** offre 5$ de crédits gratuits mensuels. Votre bot restera en ligne 24/7 tant que l'utilisation reste sous 5$.",
-            warning: "**IMPORTANT:** Lisez les Mentions Légales avant de déployer sur Railway."
-        },
+
         cookiesQuickStart: {
             title: "🍪 Démarrage Rapide : Configuration des Cookies",
             description:
@@ -344,7 +338,7 @@ export const fr = {
             title: "Droits d'Auteur, DMCA et Propriété Intellectuelle",
             items: [
                 "**Propriété:** Toute propriété intellectuelle utilisée, jouée ou affichée par le bot n'est pas notre propriété, ni celle des mainteneurs ou des contributeurs. Cela inclut, mais ne se limite pas aux fichiers audio, vidéo et image utilisés dans les commandes du bot.",
-                "**Politiques des Hébergeurs:** Certains hébergeurs (comme **Railway**) interdisent l'hébergement ou la distribution de contenu protégé par DMCA. Cela inclut les bots musicaux Discord qui jouent de la musique/vidéo protégée par le droit d'auteur. Déployez sur de telles plateformes à vos propres risques.",
+                "**Politiques des Hébergeurs:** Certains hébergeurs interdisent l'hébergement ou la distribution de contenu protégé par DMCA. Cela inclut les bots musicaux Discord qui jouent de la musique/vidéo protégée par le droit d'auteur. Déployez sur de telles plateformes à vos propres risques.",
                 "**Responsabilité de l'Utilisateur:** Vous êtes responsable de la façon dont vous utilisez ce bot et du contenu qui est joué à travers lui."
             ]
         },
@@ -381,7 +375,7 @@ export const fr = {
         optional: "Optionnel",
         example: "Exemple",
         learnMore: "En savoir plus",
-        deployOnRailway: "Déployer sur Railway",
+
         language: "Langue",
         tip: "Astuce",
         warning: "Avertissement",

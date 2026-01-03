@@ -29,13 +29,11 @@ export const es = {
                 "🎮 Soporte de interacción (comandos slash y botones)",
                 "📺 Canal de solicitud para una experiencia musical perfecta",
                 "🚀 Listo para producción, sin necesidad de código",
-                "⚙️ Configurable y fácil de usar",
                 "🎵 Comandos básicos de música (play, pause, skip, queue, etc.)",
                 "🌍 Soporte multilingüe (12 idiomas)",
                 "🔄 Rotación multi-cookie para reproducción ininterrumpida",
                 "⚡ Pre-caché de audio inteligente para reproducción más suave",
-                "🎶 Soporte para múltiples plataformas de música (sitios de video, Spotify, SoundCloud)",
-                "📋 Soporte completo de playlists (incluyendo playlists grandes de 100+ canciones)"
+                "🎶 Soporte para múltiples plataformas de música (sitios de video, Spotify, SoundCloud)"
             ]
         },
         requirements: {
@@ -79,12 +77,7 @@ export const es = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "🚂 Despliegue en Railway",
-            description:
-                "**Railway** proporciona $5 de créditos gratuitos mensuales. Tu bot permanecerá en línea 24/7 mientras el uso se mantenga por debajo de $5.",
-            warning: "**IMPORTANTE:** Lee los Avisos Legales antes de desplegar en Railway."
-        },
+
         cookiesQuickStart: {
             title: "🍪 Inicio Rápido: Configuración de Cookies",
             description:
@@ -355,7 +348,7 @@ export const es = {
             title: "Derechos de Autor, DMCA y Propiedad Intelectual",
             items: [
                 "**Propiedad:** Cualquier propiedad intelectual usada, reproducida o mostrada por el bot no es propiedad nuestra, de los mantenedores ni de los contribuidores. Esto incluye, pero no se limita a, archivos de audio, video e imagen usados en los comandos del bot.",
-                "**Políticas de Proveedores de Hosting:** Algunos proveedores de hosting (como **Railway**) prohíben alojar o distribuir contenido protegido por DMCA. Esto incluye bots de música de Discord que reproducen música/video con derechos de autor. Despliega en estas plataformas bajo tu propio riesgo.",
+                "**Políticas de Proveedores de Hosting:** Algunos proveedores de hosting prohíben alojar o distribuir contenido protegido por DMCA. Esto incluye bots de música de Discord que reproducen música/video con derechos de autor. Despliega en estas plataformas bajo tu propio riesgo.",
                 "**Responsabilidad del Usuario:** Eres responsable de cómo usas este bot y qué contenido se reproduce a través de él."
             ]
         },
@@ -392,7 +385,7 @@ export const es = {
         optional: "Opcional",
         example: "Ejemplo",
         learnMore: "Saber Más",
-        deployOnRailway: "Desplegar en Railway",
+
         language: "Idioma",
         tip: "Consejo",
         warning: "Advertencia",

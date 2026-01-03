@@ -29,13 +29,11 @@ export const en = {
                 "🎮 Interaction support (slash commands and buttons)",
                 "📺 Request channel feature for seamless music experience",
                 "🚀 Production-ready, no coding required",
-                "⚙️ Configurable and easy to use",
                 "🎵 Basic music commands (play, pause, skip, queue, etc.)",
                 "🌍 Multi-language support (12 languages)",
                 "🔄 Multi-cookie rotation for uninterrupted playback",
                 "⚡ Smart audio pre-caching for smoother playback",
-                "🎶 Support for multiple music platforms (video sites, Spotify, SoundCloud)",
-                "📋 Full playlist support (including large 100+ songs playlists)"
+                "🎶 Support for multiple music platforms (video sites, Spotify, SoundCloud)"
             ]
         },
         requirements: {
@@ -79,12 +77,7 @@ export const en = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "🚂 Railway Deployment",
-            description:
-                "**Railway** provides $5 free credits monthly. Your bot will stay online 24/7 as long as usage stays under $5.",
-            warning: "**IMPORTANT:** Read Disclaimers before deploying to Railway."
-        },
+
         cookiesQuickStart: {
             title: "🍪 Quick Start: Cookies Setup",
             description:
@@ -355,7 +348,7 @@ export const en = {
             title: "Copyright, DMCA, and Intellectual Properties",
             items: [
                 "**Ownership:** Any intellectual properties used, played, or displayed by the bot are not owned by us, the maintainers, or any contributors. This includes, but is not limited to, audio, video, and image files used in the bot's commands.",
-                "**Hosting Provider Policies:** Some hosting providers (like **Railway**) prohibit hosting or distributing DMCA-protected content. This includes Discord music bots that play copyrighted music/video. Deploy to such platforms at your own risk.",
+                "**Hosting Provider Policies:** Some hosting providers prohibit hosting or distributing DMCA-protected content. This includes Discord music bots that play copyrighted music/video. Deploy to such platforms at your own risk.",
                 "**User Responsibility:** You are responsible for how you use this bot and what content is played through it."
             ]
         },
@@ -392,7 +385,7 @@ export const en = {
         optional: "Optional",
         example: "Example",
         learnMore: "Learn More",
-        deployOnRailway: "Deploy on Railway",
+
         language: "Language",
         tip: "Tip",
         warning: "Warning",

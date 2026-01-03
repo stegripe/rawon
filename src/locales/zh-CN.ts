@@ -27,7 +27,6 @@ export const zhCN = {
                 "交互支持（斜杠命令和按钮）",
                 "无缝音乐体验的请求频道功能",
                 "生产就绪，无需编码",
-                "可配置且易于使用",
                 "基本音乐命令（play、pause、skip、queue等）",
                 "多语言支持"
             ]
@@ -70,12 +69,7 @@ export const zhCN = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "Railway部署",
-            description:
-                "Railway每月提供5美元免费额度。只要使用量低于5美元，您的机器人将24/7在线。",
-            warning: "重要：部署到Railway之前请阅读免责声明。"
-        },
+
         cookiesQuickStart: {
             title: "🍪 快速开始：Cookie设置",
             description:
@@ -342,7 +336,7 @@ export const zhCN = {
             title: "版权、DMCA和知识产权",
             items: [
                 "**所有权：** 机器人使用、播放或显示的任何知识产权均非我们、维护者或任何贡献者所有。这包括但不限于机器人命令中使用的音频、视频和图像文件。",
-                "**托管提供商政策：** 某些托管提供商（如**Railway**）禁止托管或分发受DMCA保护的内容。这包括播放受版权保护的音乐/视频的Discord音乐机器人。在此类平台上部署需自行承担风险。",
+                "**托管提供商政策：** 某些托管提供商禁止托管或分发受DMCA保护的内容。这包括播放受版权保护的音乐/视频的Discord音乐机器人。在此类平台上部署需自行承担风险。",
                 "**用户责任：** 您对如何使用此机器人以及通过它播放的内容负责。"
             ]
         },
@@ -378,7 +372,7 @@ export const zhCN = {
         optional: "可选",
         example: "示例",
         learnMore: "了解更多",
-        deployOnRailway: "部署到Railway",
+
         language: "语言",
         tip: "提示",
         warning: "警告",
