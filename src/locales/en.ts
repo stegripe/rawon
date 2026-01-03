@@ -5,6 +5,7 @@ export const en = {
         gettingStarted: "Getting Started",
         configuration: "Configuration",
         cookiesSetup: "Cookies Setup",
+        disclaimers: "Disclaimers",
         permissionCalculator: "Permission Calculator",
         links: "Links"
     },
@@ -339,7 +340,27 @@ export const en = {
         }
     },
 
-
+    disclaimers: {
+        title: "Disclaimers",
+        subtitle: "Please read carefully before using this bot.",
+        warningBanner: "Important legal information",
+        copyright: {
+            title: "Copyright, DMCA, and Intellectual Properties",
+            items: [
+                "**Ownership:** Any intellectual properties used, played, or displayed by the bot are not owned by us, the maintainers, or any contributors. This includes, but is not limited to, audio, video, and image files used in the bot's commands.",
+                "**Hosting Provider Policies:** Some hosting providers prohibit hosting or distributing DMCA-protected content. This includes Discord music bots that play copyrighted music/video. Deploy to such platforms at your own risk.",
+                "**User Responsibility:** You are responsible for how you use this bot and what content is played through it."
+            ]
+        },
+        code: {
+            title: "Code Modifications",
+            items: [
+                "**License:** This bot is open source and can be modified and redistributed under the **AGPL-3.0** license.",
+                "**No Warranty:** As stated in the license, we are not responsible for any damages or losses resulting from modifying, redistributing, or using this code.",
+                "**Attribution:** Never claim this project as your own original work. Always provide proper attribution to the original project."
+            ]
+        }
+    },
 
     permissionCalculator: {
         title: "Permission Calculator",

@@ -5,6 +5,7 @@ export const id = {
         gettingStarted: "Memulai",
         configuration: "Konfigurasi",
         cookiesSetup: "Setup Cookies",
+        disclaimers: "Disclaimer",
         permissionCalculator: "Kalkulator Izin",
         links: "Tautan"
     },
@@ -340,7 +341,27 @@ export const id = {
         }
     },
 
-
+    disclaimers: {
+        title: "Disclaimer",
+        subtitle: "Harap baca dengan seksama sebelum menggunakan bot ini.",
+        warningBanner: "Informasi hukum penting",
+        copyright: {
+            title: "Hak Cipta, DMCA, dan Kekayaan Intelektual",
+            items: [
+                "**Kepemilikan:** Setiap kekayaan intelektual yang digunakan, diputar, atau ditampilkan oleh bot BUKAN milik kami, pengelola, atau kontributor manapun. Ini termasuk, tetapi tidak terbatas pada, file audio, video, dan gambar yang digunakan dalam perintah bot.",
+                "**Kebijakan Hosting Provider:** Beberapa hosting provider melarang hosting atau distribusi konten yang dilindungi DMCA. Ini termasuk bot musik Discord yang memutar musik/video berhak cipta. Deploy ke platform tersebut dengan risiko Anda sendiri.",
+                "**Tanggung Jawab Pengguna:** Anda bertanggung jawab atas cara Anda menggunakan bot ini dan konten apa yang diputar melaluinya."
+            ]
+        },
+        code: {
+            title: "Modifikasi Kode",
+            items: [
+                "**Lisensi:** Bot ini open source dan dapat dimodifikasi serta didistribusikan ulang di bawah lisensi **AGPL-3.0**.",
+                "**Tanpa Jaminan:** Sebagaimana dinyatakan dalam lisensi, kami TIDAK bertanggung jawab atas kerusakan atau kerugian yang diakibatkan dari memodifikasi, mendistribusikan ulang, atau menggunakan kode ini.",
+                "**Atribusi:** Jangan pernah mengklaim proyek ini sebagai karya asli Anda sendiri. Selalu berikan atribusi yang tepat ke proyek asli."
+            ]
+        }
+    },
 
     permissionCalculator: {
         title: "Kalkulator Izin",

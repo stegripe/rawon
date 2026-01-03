@@ -237,6 +237,14 @@ volumes:
                                     {t.nav.cookiesSetup}
                                 </Button>
                             </Link>
+                            <Link href="/docs/disclaimers">
+                                <Button
+                                    variant="outlined"
+                                    className="rounded-lg border-third font-sans capitalize text-third"
+                                >
+                                    {t.nav.disclaimers}
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ export const fr = {
         gettingStarted: "Démarrer",
         configuration: "Configuration",
         cookiesSetup: "Config. Cookies",
+        disclaimers: "Mentions Légales",
         permissionCalculator: "Calculateur Permissions",
         links: "Liens"
     },
@@ -329,7 +330,27 @@ export const fr = {
         }
     },
 
-
+    disclaimers: {
+        title: "Mentions Légales",
+        subtitle: "Veuillez lire attentivement avant d'utiliser ce bot.",
+        warningBanner: "Informations légales importantes",
+        copyright: {
+            title: "Droits d'Auteur, DMCA et Propriété Intellectuelle",
+            items: [
+                "**Propriété:** Toute propriété intellectuelle utilisée, jouée ou affichée par le bot n'est pas notre propriété, ni celle des mainteneurs ou des contributeurs. Cela inclut, mais ne se limite pas aux fichiers audio, vidéo et image utilisés dans les commandes du bot.",
+                "**Politiques des Hébergeurs:** Certains hébergeurs interdisent l'hébergement ou la distribution de contenu protégé par DMCA. Cela inclut les bots musicaux Discord qui jouent de la musique/vidéo protégée par le droit d'auteur. Déployez sur de telles plateformes à vos propres risques.",
+                "**Responsabilité de l'Utilisateur:** Vous êtes responsable de la façon dont vous utilisez ce bot et du contenu qui est joué à travers lui."
+            ]
+        },
+        code: {
+            title: "Modifications du Code",
+            items: [
+                "**Licence:** Ce bot est open source et peut être modifié et redistribué sous la licence **AGPL-3.0**.",
+                "**Aucune Garantie:** Comme indiqué dans la licence, nous ne sommes pas responsables des dommages ou pertes résultant de la modification, redistribution ou utilisation de ce code.",
+                "**Attribution:** Ne prétendez jamais que ce projet est votre propre travail original. Fournissez toujours une attribution appropriée au projet original."
+            ]
+        }
+    },
 
     permissionCalculator: {
         title: "Calculateur de Permissions",
