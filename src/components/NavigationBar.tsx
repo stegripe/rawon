@@ -73,10 +73,6 @@ export const NavigationBar = () => {
         {
             name: t.nav.cookiesSetup,
             path: "/docs/cookies-setup"
-        },
-        {
-            name: t.nav.disclaimers,
-            path: "/docs/disclaimers"
         }
     ];
 

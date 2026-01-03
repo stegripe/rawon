@@ -5,7 +5,7 @@ export const vi = {
         gettingStarted: "Bắt đầu",
         configuration: "Cấu hình",
         cookiesSetup: "Thiết lập Cookie",
-        disclaimers: "Tuyên bố miễn trừ",
+
         permissionCalculator: "Tính toán quyền",
         links: "Liên kết"
     },
@@ -28,7 +28,6 @@ export const vi = {
                 "Hỗ trợ tương tác (lệnh slash và nút)",
                 "Tính năng kênh yêu cầu cho trải nghiệm âm nhạc liền mạch",
                 "Sẵn sàng sản xuất, không cần code",
-                "Có thể cấu hình và dễ sử dụng",
                 "Các lệnh nhạc cơ bản (play, pause, skip, queue, v.v.)",
                 "Hỗ trợ đa ngôn ngữ"
             ]
@@ -71,12 +70,7 @@ export const vi = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "Triển khai trên Railway",
-            description:
-                "Railway cung cấp $5 tín dụng miễn phí hàng tháng. Bot của bạn sẽ online 24/7 miễn là sử dụng dưới $5.",
-            warning: "QUAN TRỌNG: Đọc Tuyên bố miễn trừ trước khi triển khai lên Railway."
-        },
+
         cookiesQuickStart: {
             title: "🍪 Bắt Đầu Nhanh: Thiết Lập Cookie",
             description:
@@ -336,27 +330,7 @@ export const vi = {
         }
     },
 
-    disclaimers: {
-        title: "Tuyên bố miễn trừ",
-        subtitle: "Vui lòng đọc kỹ trước khi sử dụng bot này.",
-        warningBanner: "Thông tin pháp lý quan trọng",
-        copyright: {
-            title: "Bản quyền, DMCA và Sở hữu trí tuệ",
-            items: [
-                "**Quyền sở hữu:** Bất kỳ tài sản trí tuệ nào được sử dụng, phát hoặc hiển thị bởi bot đều không thuộc sở hữu của chúng tôi, những người duy trì, hoặc bất kỳ người đóng góp nào. Điều này bao gồm, nhưng không giới hạn, các file audio, video và hình ảnh được sử dụng trong các lệnh của bot.",
-                "**Chính sách nhà cung cấp hosting:** Một số nhà cung cấp hosting (như **Railway**) cấm hosting hoặc phân phối nội dung được bảo vệ DMCA. Điều này bao gồm các bot nhạc Discord phát nhạc/video có bản quyền. Triển khai lên các nền tảng như vậy tự chịu rủi ro.",
-                "**Trách nhiệm người dùng:** Bạn chịu trách nhiệm về cách bạn sử dụng bot này và nội dung nào được phát qua nó."
-            ]
-        },
-        code: {
-            title: "Sửa đổi mã",
-            items: [
-                "**Giấy phép:** Bot này là mã nguồn mở và có thể được sửa đổi và phân phối lại theo giấy phép **AGPL-3.0**.",
-                "**Không bảo hành:** Như đã nêu trong giấy phép, chúng tôi không chịu trách nhiệm cho bất kỳ thiệt hại hoặc mất mát nào do sửa đổi, phân phối lại hoặc sử dụng mã này.",
-                "**Ghi nhận:** Không bao giờ tuyên bố dự án này là công việc gốc của riêng bạn. Luôn cung cấp ghi nhận phù hợp cho dự án gốc."
-            ]
-        }
-    },
+
 
     permissionCalculator: {
         title: "Tính toán quyền",
@@ -381,7 +355,7 @@ export const vi = {
         optional: "Tùy chọn",
         example: "Ví dụ",
         learnMore: "Tìm hiểu thêm",
-        deployOnRailway: "Triển khai trên Railway",
+
         language: "Ngôn ngữ",
         tip: "Mẹo",
         warning: "Cảnh báo",

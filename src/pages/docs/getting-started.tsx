@@ -183,34 +183,6 @@ volumes:
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3">
-                        <Typography className="font-sans text-xl font-semibold">
-                            {t.gettingStarted.railwaySetup.title}
-                        </Typography>
-                        <Typography className="font-sans">
-                            {renderWithCode(t.gettingStarted.railwaySetup.description)}
-                        </Typography>
-                        <div className="rounded-lg border-1 border-solid border-fourth bg-yellow-100 p-3">
-                            <Typography className="font-sans text-sm font-medium">
-                                ⚠️ {renderWithCode(t.gettingStarted.railwaySetup.warning)}
-                            </Typography>
-                        </div>
-                        <Link
-                            href="https://railway.app/new/template/PVZDzd?referralCode=TiaraR"
-                            passHref
-                            legacyBehavior
-                        >
-                            <a target="_blank" rel="noreferrer">
-                                <Button
-                                    variant="contained"
-                                    className="w-fit rounded-lg bg-secondary font-sans capitalize text-white"
-                                >
-                                    {t.common.deployOnRailway}
-                                </Button>
-                            </a>
-                        </Link>
-                    </div>
-
                     <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
                         <Typography className="font-sans text-xl font-semibold">
                             {t.gettingStarted.cookiesQuickStart.title}
@@ -263,14 +235,6 @@ volumes:
                                     className="rounded-lg border-third font-sans capitalize text-third"
                                 >
                                     {t.nav.cookiesSetup}
-                                </Button>
-                            </Link>
-                            <Link href="/docs/disclaimers">
-                                <Button
-                                    variant="outlined"
-                                    className="rounded-lg border-third font-sans capitalize text-third"
-                                >
-                                    {t.nav.disclaimers}
                                 </Button>
                             </Link>
                         </div>

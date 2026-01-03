@@ -5,7 +5,7 @@ export const zhTW = {
         gettingStarted: "開始使用",
         configuration: "配置",
         cookiesSetup: "Cookie設置",
-        disclaimers: "免責聲明",
+
         permissionCalculator: "權限計算器",
         links: "連結"
     },
@@ -27,7 +27,6 @@ export const zhTW = {
                 "互動支援（斜線命令和按鈕）",
                 "無縫音樂體驗的請求頻道功能",
                 "生產就緒，無需編碼",
-                "可配置且易於使用",
                 "基本音樂命令（play、pause、skip、queue等）",
                 "多語言支援"
             ]
@@ -70,12 +69,7 @@ export const zhTW = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "Railway部署",
-            description:
-                "Railway每月提供5美元免費額度。只要使用量低於5美元，您的機器人將24/7在線。",
-            warning: "重要：部署到Railway之前請閱讀免責聲明。"
-        },
+
         cookiesQuickStart: {
             title: "🍪 快速開始：Cookie設定",
             description:
@@ -334,27 +328,7 @@ export const zhTW = {
         }
     },
 
-    disclaimers: {
-        title: "免責聲明",
-        subtitle: "使用此機器人前請仔細閱讀。",
-        warningBanner: "重要法律資訊",
-        copyright: {
-            title: "版權、DMCA和智慧財產權",
-            items: [
-                "**所有權：** 機器人使用、播放或顯示的任何智慧財產權均非我們、維護者或任何貢獻者所有。這包括但不限於機器人命令中使用的音訊、視訊和圖像檔案。",
-                "**託管提供商政策：** 某些託管提供商（如**Railway**）禁止託管或分發受DMCA保護的內容。這包括播放受版權保護的音樂/視訊的Discord音樂機器人。在此類平台上部署需自行承擔風險。",
-                "**用戶責任：** 您對如何使用此機器人以及透過它播放的內容負責。"
-            ]
-        },
-        code: {
-            title: "程式碼修改",
-            items: [
-                "**授權：** 此機器人是開源的，可以在**AGPL-3.0**授權下修改和重新分發。",
-                "**無保證：** 如授權所述，我們對因修改、重新分發或使用此程式碼而造成的任何損害或損失不承擔責任。",
-                "**歸屬：** 切勿聲稱此專案是您的原創作品。請始終對原始專案給予適當歸屬。"
-            ]
-        }
-    },
+
 
     permissionCalculator: {
         title: "權限計算器",
@@ -378,7 +352,7 @@ export const zhTW = {
         optional: "可選",
         example: "示例",
         learnMore: "了解更多",
-        deployOnRailway: "部署到Railway",
+
         language: "語言",
         tip: "提示",
         warning: "警告",

@@ -5,7 +5,7 @@ export const pt = {
         gettingStarted: "Começar",
         configuration: "Configuração",
         cookiesSetup: "Config. Cookies",
-        disclaimers: "Avisos Legais",
+
         permissionCalculator: "Calculadora Permissões",
         links: "Links"
     },
@@ -28,7 +28,6 @@ export const pt = {
                 "Suporte a interações (comandos slash e botões)",
                 "Canal de requisições para experiência musical perfeita",
                 "Pronto para produção, sem necessidade de código",
-                "Configurável e fácil de usar",
                 "Comandos básicos de música (play, pause, skip, queue, etc.)",
                 "Suporte multilíngue"
             ]
@@ -71,12 +70,7 @@ export const pt = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "Deploy no Railway",
-            description:
-                "**Railway** oferece $5 de créditos gratuitos mensais. Seu bot ficará online 24/7 enquanto o uso ficar abaixo de $5.",
-            warning: "**IMPORTANTE:** Leia os Avisos Legais antes de fazer deploy no Railway."
-        },
+
         cookiesQuickStart: {
             title: "🍪 Início Rápido: Configuração de Cookies",
             description:
@@ -336,27 +330,7 @@ export const pt = {
         }
     },
 
-    disclaimers: {
-        title: "Avisos Legais",
-        subtitle: "Por favor, leia com atenção antes de usar este bot.",
-        warningBanner: "Informações legais importantes",
-        copyright: {
-            title: "Direitos Autorais, DMCA e Propriedade Intelectual",
-            items: [
-                "**Propriedade:** Qualquer propriedade intelectual usada, reproduzida ou exibida pelo bot não é de nossa propriedade, dos mantenedores ou de quaisquer contribuidores. Isso inclui, mas não se limita a, arquivos de áudio, vídeo e imagem usados nos comandos do bot.",
-                "**Políticas de Provedores de Hospedagem:** Alguns provedores de hospedagem (como **Railway**) proíbem hospedar ou distribuir conteúdo protegido por DMCA. Isso inclui bots de música Discord que reproduzem música/vídeo protegido por direitos autorais. Faça deploy em tais plataformas por sua conta e risco.",
-                "**Responsabilidade do Usuário:** Você é responsável por como usa este bot e qual conteúdo é reproduzido através dele."
-            ]
-        },
-        code: {
-            title: "Modificações de Código",
-            items: [
-                "**Licença:** Este bot é open source e pode ser modificado e redistribuído sob a licença **AGPL-3.0**.",
-                "**Sem Garantia:** Conforme declarado na licença, não somos responsáveis por quaisquer danos ou perdas resultantes de modificar, redistribuir ou usar este código.",
-                "**Atribuição:** Nunca alegue que este projeto é seu próprio trabalho original. Sempre forneça a atribuição adequada ao projeto original."
-            ]
-        }
-    },
+
 
     permissionCalculator: {
         title: "Calculadora de Permissões",
@@ -381,7 +355,7 @@ export const pt = {
         optional: "Opcional",
         example: "Exemplo",
         learnMore: "Saiba Mais",
-        deployOnRailway: "Deploy no Railway",
+
         language: "Idioma",
         tip: "Dica",
         warning: "Aviso",

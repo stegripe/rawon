@@ -5,7 +5,7 @@ export const tr = {
         gettingStarted: "Başlarken",
         configuration: "Yapılandırma",
         cookiesSetup: "Çerez Kurulumu",
-        disclaimers: "Yasal Uyarılar",
+
         permissionCalculator: "İzin Hesaplayıcı",
         links: "Bağlantılar"
     },
@@ -28,7 +28,6 @@ export const tr = {
                 "Etkileşim desteği (slash komutları ve butonlar)",
                 "Kesintisiz müzik deneyimi için istek kanalı özelliği",
                 "Üretime hazır, kodlama gerektirmez",
-                "Yapılandırılabilir ve kullanımı kolay",
                 "Temel müzik komutları (play, pause, skip, queue vb.)",
                 "Çoklu dil desteği"
             ]
@@ -71,12 +70,7 @@ export const tr = {
                 ]
             }
         },
-        railwaySetup: {
-            title: "Railway Dağıtımı",
-            description:
-                "Railway aylık 5$ ücretsiz kredi sağlar. Kullanım 5$'ın altında kaldığı sürece botunuz 7/24 çevrimiçi kalacaktır.",
-            warning: "ÖNEMLİ: Railway'e dağıtmadan önce Yasal Uyarıları okuyun."
-        },
+
         cookiesQuickStart: {
             title: "🍪 Hızlı Başlangıç: Çerez Kurulumu",
             description:
@@ -335,27 +329,7 @@ export const tr = {
         }
     },
 
-    disclaimers: {
-        title: "Yasal Uyarılar",
-        subtitle: "Bu botu kullanmadan önce lütfen dikkatlice okuyun.",
-        warningBanner: "Önemli yasal bilgiler",
-        copyright: {
-            title: "Telif Hakkı, DMCA ve Fikri Mülkiyet",
-            items: [
-                "**Mülkiyet:** Bot tarafından kullanılan, çalınan veya görüntülenen herhangi bir fikri mülkiyet bize, bakımcılara veya katkıda bulunanlara ait değildir. Bu, botun komutlarında kullanılan ses, video ve görüntü dosyalarını içerir ancak bunlarla sınırlı değildir.",
-                "**Barındırma Sağlayıcı Politikaları:** Bazı barındırma sağlayıcıları (**Railway** gibi) DMCA korumalı içeriği barındırmayı veya dağıtmayı yasaklar. Bu, telif hakkıyla korunan müzik/video çalan Discord müzik botlarını içerir. Bu tür platformlara dağıtım kendi sorumluluğunuzdadır.",
-                "**Kullanıcı Sorumluluğu:** Bu botu nasıl kullandığınızdan ve onun aracılığıyla hangi içeriğin çalındığından siz sorumlusunuz."
-            ]
-        },
-        code: {
-            title: "Kod Değişiklikleri",
-            items: [
-                "**Lisans:** Bu bot açık kaynaklıdır ve **AGPL-3.0** lisansı altında değiştirilebilir ve yeniden dağıtılabilir.",
-                "**Garanti Yok:** Lisansta belirtildiği gibi, bu kodu değiştirmekten, yeniden dağıtmaktan veya kullanmaktan kaynaklanan herhangi bir hasar veya kayıptan sorumlu değiliz.",
-                "**Atıf:** Bu projeyi asla kendi özgün çalışmanız olarak iddia etmeyin. Her zaman orijinal projeye uygun atıf sağlayın."
-            ]
-        }
-    },
+
 
     permissionCalculator: {
         title: "İzin Hesaplayıcı",
@@ -380,7 +354,7 @@ export const tr = {
         optional: "İsteğe Bağlı",
         example: "Örnek",
         learnMore: "Daha Fazla Bilgi",
-        deployOnRailway: "Railway'e Dağıt",
+
         language: "Dil",
         tip: "İpucu",
         warning: "Uyarı",
