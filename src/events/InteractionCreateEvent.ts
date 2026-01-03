@@ -316,28 +316,65 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
-        // Multi-bot: Primary bot always responds to interactions
-        // But data changes will use queue from bot that's actually in the voice channel
+        // Multi-bot: Bot that owns the request channel should respond to interactions
+        // Check if this bot owns the request channel for this guild
         if (this.client.config.isMultiBot) {
-            const primaryBot = this.client.multiBotManager.getPrimaryBot();
-            const isPrimaryBot = primaryBot?.user?.id === this.client.user?.id;
+            const botId = this.client.user?.id ?? "unknown";
+            let ownsRequestChannel = false;
             
-            if (!isPrimaryBot) {
-                // Only primary bot responds to interactions
-                this.client.logger.debug(
-                    `[MultiBot] ${this.client.user?.tag} skipping button "${interaction.customId}" - not primary bot`,
-                );
-                try {
-                    await interaction.deferUpdate();
-                } catch {
-                    // Ignore errors
-                }
-                return;
+            // Check if this bot has this channel as request channel
+            if ("getRequestChannel" in this.client.data && typeof this.client.data.getRequestChannel === "function") {
+                const requestChannelData = (this.client.data as any).getRequestChannel(thisBotGuild.id, botId);
+                ownsRequestChannel = requestChannelData?.channelId === interaction.channelId;
+            } else {
+                // Fallback to checking memory data
+                const data = this.client.data.data?.[thisBotGuild.id]?.requestChannel;
+                ownsRequestChannel = data?.channelId === interaction.channelId;
             }
             
-            this.client.logger.info(
-                `[MultiBot] ${this.client.user?.tag} ✅ PRIMARY BOT responding to button "${interaction.customId}" from ${interaction.user.tag}`,
-            );
+            if (!ownsRequestChannel) {
+                // This bot doesn't own the request channel, check if primary bot does
+                const primaryBot = this.client.multiBotManager.getPrimaryBot();
+                if (primaryBot) {
+                    const primaryBotGuild = primaryBot.guilds.cache.get(thisBotGuild.id);
+                    if (primaryBotGuild) {
+                        // Primary bot is in guild, let it handle
+                        const primaryBotId = primaryBot.user?.id ?? "unknown";
+                        let primaryOwnsRequestChannel = false;
+                        
+                        if ("getRequestChannel" in primaryBot.data && typeof primaryBot.data.getRequestChannel === "function") {
+                            const requestChannelData = (primaryBot.data as any).getRequestChannel(thisBotGuild.id, primaryBotId);
+                            primaryOwnsRequestChannel = requestChannelData?.channelId === interaction.channelId;
+                        } else {
+                            const data = primaryBot.data.data?.[thisBotGuild.id]?.requestChannel;
+                            primaryOwnsRequestChannel = data?.channelId === interaction.channelId;
+                        }
+                        
+                        if (primaryOwnsRequestChannel && primaryBot !== this.client) {
+                            // Primary bot owns it and is not this bot, skip
+                            this.client.logger.debug(
+                                `[MultiBot] ${this.client.user?.tag} skipping button "${interaction.customId}" - primary bot owns request channel`,
+                            );
+                            try {
+                                await interaction.deferUpdate();
+                            } catch {
+                                // Ignore errors
+                            }
+                            return;
+                        }
+                    }
+                }
+                
+                // If no bot in guild owns it, or this bot owns it, proceed
+                // If primary bot doesn't own it either, allow this bot to handle if it's in the guild
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel or no other bot owns it)`,
+                );
+            } else {
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
+                );
+            }
         }
 
         const __ = i18n__(this.client, thisBotGuild);

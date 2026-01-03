@@ -9,6 +9,7 @@ import { Event } from "../utils/decorators/Event.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
+import { filterArgs } from "../utils/functions/ffmpegArgs.js";
 
 @Event<typeof ReadyEvent>("ready")
 export class ReadyEvent extends BaseEvent {
@@ -81,16 +82,31 @@ export class ReadyEvent extends BaseEvent {
         const botId = this.client.user?.id ?? "unknown";
         
         // Use SQLite-specific method if available, otherwise fallback to JSON method
-        let queueStates: Array<{ guildId: string; queueState: NonNullable<GuildData["queueState"]> }> = [];
+        let queueStates: Array<{ guildId: string; queueState: NonNullable<GuildData["queueState"]>; botId?: string }> = [];
         
         if ("getQueueState" in this.client.data && typeof this.client.data.getQueueState === "function") {
-            // Load queue states from SQLite for this bot instance
+            // Load queue states from SQLite for ALL bot instances, not just this bot
+            // This ensures we restore queues even if they were saved by a different bot
             const data = this.client.data.data;
             if (data) {
+                // Get all bots in multi-bot mode to check their queue states
+                const botsToCheck = this.client.config.isMultiBot 
+                    ? this.client.multiBotManager.getBots().map(b => b.botId)
+                    : [botId];
+                
+                // Check each guild for queue states from any bot
                 for (const guildId of Object.keys(data)) {
-                    const queueState = (this.client.data as any).getQueueState(guildId, botId);
-                    if (queueState && queueState.songs.length > 0) {
-                        queueStates.push({ guildId, queueState });
+                    // Check queue state from all bots, not just this bot
+                    for (const checkBotId of botsToCheck) {
+                        const queueState = (this.client.data as any).getQueueState(guildId, checkBotId);
+                        if (queueState && queueState.songs.length > 0) {
+                            // Store botId that owns this queue state so we can load player state from the same bot
+                            queueStates.push({ guildId, queueState, botId: checkBotId });
+                            this.client.logger.info(
+                                `[Restore] Found queue state for guild ${guildId} from bot ${checkBotId}`,
+                            );
+                            break; // Only restore one queue per guild (the first found)
+                        }
                     }
                 }
             }
@@ -104,7 +120,8 @@ export class ReadyEvent extends BaseEvent {
             for (const [guildId, guildData] of Object.entries(data)) {
                 const queueState = guildData?.queueState;
                 if (queueState && queueState.songs.length > 0) {
-                    queueStates.push({ guildId, queueState });
+                    // For JSON mode, use current botId
+                    queueStates.push({ guildId, queueState, botId });
                 }
             }
         }
@@ -113,7 +130,7 @@ export class ReadyEvent extends BaseEvent {
             return;
         }
 
-        const restorePromises = queueStates.map(async ({ guildId, queueState }) => {
+        const restorePromises = queueStates.map(async ({ guildId, queueState, botId: queueOwnerBotId }) => {
 
             const guild = this.client.guilds.cache.get(guildId);
             if (!guild) {
@@ -144,7 +161,110 @@ export class ReadyEvent extends BaseEvent {
             }
 
             try {
+                this.client.logger.info(
+                    `[Restore] Restoring queue for guild ${guild.name} (${guildId}): ` +
+                    `restoringBotId=${botId}, queueOwnerBotId=${queueOwnerBotId ?? "none"}, isMultiBot=${this.client.config.isMultiBot}`,
+                );
+                
+                // Create ServerQueue - this will call loadSavedState() in constructor
+                // BUT: loadSavedState() uses this.client.user?.id, which might be different from queueOwnerBotId
+                // So we need to load player state from the bot that owns the queue state, not the bot restoring it
                 guild.queue = new ServerQueue(textChannel);
+                
+                // ALWAYS try to load player state from the bot that owns the queue state
+                // Note: We don't check isMultiBot because in multi-bot mode, each bot instance
+                // sees isMultiBot=false (token already split). Instead, we check if queueOwnerBotId exists,
+                // which indicates we're restoring a queue that was saved by a specific bot.
+                // Even if restoringBotId === queueOwnerBotId, we should still explicitly load it
+                // because loadSavedState() in constructor might have failed (e.g., client.user not available yet)
+                if (queueOwnerBotId) {
+                    this.client.logger.info(
+                        `[Restore] ✅ Queue owner bot ID provided (${queueOwnerBotId}). Attempting to load player state from queue owner bot for guild ${guild.name} (restoringBotId=${botId})`,
+                    );
+                    
+                    if ("getPlayerState" in this.client.data && typeof this.client.data.getPlayerState === "function") {
+                        this.client.logger.info(
+                            `[Restore] Calling getPlayerState(guildId=${guildId}, botId=${queueOwnerBotId})`,
+                        );
+                        const savedState = (this.client.data as any).getPlayerState(guildId, queueOwnerBotId);
+                        
+                        this.client.logger.info(
+                            `[Restore] getPlayerState result for guild ${guildId}, botId ${queueOwnerBotId}: ${savedState ? "✅ FOUND" : "❌ NOT FOUND"}`,
+                        );
+                        
+                        if (savedState && typeof savedState === "object") {
+                            this.client.logger.info(
+                                `[Restore] Player state data received: loop=${String(savedState?.loopMode)}, shuffle=${String(savedState?.shuffle)}, volume=${String(savedState?.volume)}, hasFilters=${!!savedState?.filters}`,
+                            );
+                            
+                            // Ensure guild.queue exists before accessing its properties
+                            if (!guild.queue) {
+                                this.client.logger.error(
+                                    `[Restore] ❌ guild.queue is undefined when trying to set player state!`,
+                                );
+                                throw new Error("guild.queue is undefined");
+                            }
+                            
+                            try {
+                                // Safely extract values with defaults
+                                const loopMode = savedState.loopMode ?? "OFF";
+                                const shuffle = savedState.shuffle ?? false;
+                                const volume = savedState.volume ?? 100;
+                                const filters = savedState.filters ?? {};
+                                
+                                this.client.logger.info(
+                                    `[Restore] Setting player state: loop=${loopMode}, shuffle=${shuffle}, volume=${volume}, filters=${JSON.stringify(filters)}`,
+                                );
+                                
+                                guild.queue.loopMode = loopMode;
+                                guild.queue.shuffle = shuffle;
+                                // IMPORTANT: Don't use setter for volume during restore, as the player might not be initialized yet
+                                // Use direct assignment to _volume instead to avoid accessing undefined resource
+                                (guild.queue as any)._volume = volume;
+                                guild.queue.filters = filters as Partial<
+                                    Record<keyof typeof filterArgs, boolean>
+                                >;
+                                
+                                this.client.logger.info(
+                                    `[Restore] ✅ Loaded player state from queue owner bot ${queueOwnerBotId} for guild ${guild.name}: ` +
+                                    `loop=${guild.queue.loopMode}, shuffle=${guild.queue.shuffle}, volume=${guild.queue.volume}, filters=${JSON.stringify(guild.queue.filters)}`,
+                                );
+                                // Save this player state to this bot's record so it persists for future restarts
+                                void guild.queue.saveState();
+                            } catch (setError) {
+                                this.client.logger.error(
+                                    `[Restore] ❌ Error setting player state: ${setError}`,
+                                );
+                                throw setError;
+                            }
+                        } else {
+                            this.client.logger.warn(
+                                `[Restore] ⚠️ Queue restored from bot ${queueOwnerBotId}, but no player state found for that bot in guild ${guildId}. ` +
+                                `This might mean player state was never saved, or botId mismatch. Using defaults from ServerQueue constructor.`,
+                            );
+                        }
+                    } else {
+                        this.client.logger.warn(
+                            `[Restore] ❌ getPlayerState method not available in SQLiteDataManager`,
+                        );
+                    }
+                } else {
+                    this.client.logger.warn(
+                        `[Restore] ⚠️ No queueOwnerBotId provided for guild ${guild.name}, player state loaded from ServerQueue constructor may be incorrect`,
+                    );
+                }
+                
+                // After ServerQueue is created, verify player state was loaded correctly
+                if (guild.queue) {
+                    this.client.logger.info(
+                        `[Restore] Queue created for guild ${guild.name}, player state: ` +
+                        `loop=${guild.queue.loopMode}, shuffle=${guild.queue.shuffle}, volume=${guild.queue.volume}, filters=${JSON.stringify(guild.queue.filters)}`,
+                    );
+                } else {
+                    this.client.logger.error(
+                        `[Restore] ❌ guild.queue is undefined after creation!`,
+                    );
+                }
 
                 const memberFetches = queueState.songs.map(async (savedSong) => {
                     const member = await guild.members

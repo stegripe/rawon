@@ -28,6 +28,24 @@ export class RequestChannelManager {
     }
 
     public getRequestChannel(guild: Guild): TextChannel | null {
+        const botId = this.client.user?.id ?? "unknown";
+        
+        // Use SQLite-specific method if available
+        if ("getRequestChannel" in this.client.data && typeof this.client.data.getRequestChannel === "function") {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            if (!this.isValidId(data?.channelId)) {
+                return null;
+            }
+
+            const channel = guild.channels.cache.get(data.channelId);
+            if (!channel || channel.type !== ChannelType.GuildText) {
+                return null;
+            }
+
+            return channel;
+        }
+        
+        // Fallback to JSON method
         const data = this.client.data.data?.[guild.id]?.requestChannel;
         if (!this.isValidId(data?.channelId)) {
             return null;
@@ -42,6 +60,31 @@ export class RequestChannelManager {
     }
 
     public async getPlayerMessage(guild: Guild): Promise<Message | null> {
+        const botId = this.client.user?.id ?? "unknown";
+        
+        // Use SQLite-specific method if available
+        if ("getRequestChannel" in this.client.data && typeof this.client.data.getRequestChannel === "function") {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            if (!this.isValidId(data?.channelId)) {
+                return null;
+            }
+            if (!this.isValidId(data?.messageId)) {
+                return null;
+            }
+
+            const channel = this.getRequestChannel(guild);
+            if (!channel) {
+                return null;
+            }
+
+            try {
+                return await channel.messages.fetch(data.messageId);
+            } catch {
+                return null;
+            }
+        }
+        
+        // Fallback to JSON method
         const data = this.client.data.data?.[guild.id]?.requestChannel;
         if (!this.isValidId(data?.channelId)) {
             return null;
@@ -63,41 +106,84 @@ export class RequestChannelManager {
     }
 
     public hasRequestChannel(guild: Guild): boolean {
+        const botId = this.client.user?.id ?? "unknown";
+        
+        // Use SQLite-specific method if available
+        if ("getRequestChannel" in this.client.data && typeof this.client.data.getRequestChannel === "function") {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            return this.isValidId(data?.channelId);
+        }
+        
+        // Fallback to JSON method
         const data = this.client.data.data?.[guild.id]?.requestChannel;
         return this.isValidId(data?.channelId);
     }
 
     public async setRequestChannel(guild: Guild, channelId: string | null): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[guild.id] ?? {};
-
-        if (channelId === null) {
-            const existingMessage = await this.getPlayerMessage(guild);
-            if (existingMessage) {
-                await existingMessage.delete().catch(() => null);
+        const botId = this.client.user?.id ?? "unknown";
+        
+        // Use SQLite-specific method if available
+        if ("saveRequestChannel" in this.client.data && typeof this.client.data.saveRequestChannel === "function") {
+            if (channelId === null) {
+                const existingMessage = await this.getPlayerMessage(guild);
+                if (existingMessage) {
+                    await existingMessage.delete().catch(() => null);
+                }
+                await (this.client.data as any).saveRequestChannel(guild.id, botId, null, null);
+            } else {
+                await (this.client.data as any).saveRequestChannel(guild.id, botId, channelId, null);
             }
-            guildData.requestChannel = { channelId: null, messageId: null };
+            // Reload data to sync memory
+            if (typeof this.client.data.load === "function") {
+                await this.client.data.load();
+            }
         } else {
-            guildData.requestChannel = { channelId, messageId: null };
-        }
+            // Fallback to JSON method
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[guild.id] ?? {};
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [guild.id]: guildData,
-        }));
+            if (channelId === null) {
+                const existingMessage = await this.getPlayerMessage(guild);
+                if (existingMessage) {
+                    await existingMessage.delete().catch(() => null);
+                }
+                guildData.requestChannel = { channelId: null, messageId: null };
+            } else {
+                guildData.requestChannel = { channelId, messageId: null };
+            }
+
+            await this.client.data.save(() => ({
+                ...currentData,
+                [guild.id]: guildData,
+            }));
+        }
     }
 
     public async setPlayerMessageId(guild: Guild, messageId: string | null): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[guild.id] ?? {};
+        const botId = this.client.user?.id ?? "unknown";
+        
+        // Use SQLite-specific method if available
+        if ("getRequestChannel" in this.client.data && typeof this.client.data.getRequestChannel === "function") {
+            const current = (this.client.data as any).getRequestChannel(guild.id, botId);
+            const channelId = current?.channelId ?? null;
+            await (this.client.data as any).saveRequestChannel(guild.id, botId, channelId, messageId);
+            // Reload data to sync memory
+            if (typeof this.client.data.load === "function") {
+                await this.client.data.load();
+            }
+        } else {
+            // Fallback to JSON method
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[guild.id] ?? {};
 
-        guildData.requestChannel ??= { channelId: null, messageId: null };
-        guildData.requestChannel.messageId = messageId;
+            guildData.requestChannel ??= { channelId: null, messageId: null };
+            guildData.requestChannel.messageId = messageId;
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [guild.id]: guildData,
-        }));
+            await this.client.data.save(() => ({
+                ...currentData,
+                [guild.id]: guildData,
+            }));
+        }
     }
 
     public createPlayerEmbed(guild: Guild): EmbedBuilder {
@@ -405,23 +491,56 @@ export class RequestChannelManager {
     }
 
     public isRequestChannel(guild: Guild, channelId: string): boolean {
-        // Multi-bot: All bots should check the same data source
-        // Use primary bot's data if available to ensure consistency
-        // This is critical because data is saved by primary bot but all bots need to read it
+        // Multi-bot: Check all bots in this guild to see if any bot has this channel as request channel
         if (this.client.config.isMultiBot) {
-            const primaryBot = this.client.multiBotManager.getPrimaryBot();
-            if (primaryBot) {
-                // Always use primary bot's data for consistency across all bot instances
-                const data = primaryBot.data.data?.[guild.id]?.requestChannel;
-                const isRequest = data?.channelId === channelId;
-                this.client.logger.debug(
-                    `[MultiBot] ${this.client.user?.tag} checking request channel using primary bot data: channelId=${channelId}, isRequest=${isRequest}`,
-                );
-                return isRequest;
+            const bots = this.client.multiBotManager.getBotsInGuild(guild);
+            
+            // Check each bot's request channel
+            for (const bot of bots) {
+                const botId = bot.botId;
+                if ("getRequestChannel" in bot.client.data && typeof bot.client.data.getRequestChannel === "function") {
+                    const data = (bot.client.data as any).getRequestChannel(guild.id, botId);
+                    if (data?.channelId === channelId) {
+                        this.client.logger.debug(
+                            `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=true (owned by bot ${botId})`,
+                        );
+                        return true;
+                    }
+                } else {
+                    // Fallback to JSON method
+                    const data = bot.client.data.data?.[guild.id]?.requestChannel;
+                    if (data?.channelId === channelId) {
+                        this.client.logger.debug(
+                            `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=true (owned by bot ${botId})`,
+                        );
+                        return true;
+                    }
+                }
             }
+            
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=false (no bot has this channel)`,
+            );
+            return false;
         }
         
+        // Single-bot mode: use this bot's own data
+        const botId = this.client.user?.id ?? "unknown";
+        if ("getRequestChannel" in this.client.data && typeof this.client.data.getRequestChannel === "function") {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            const isRequest = data?.channelId === channelId;
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} checking request channel using own data: channelId=${channelId}, isRequest=${isRequest}`,
+            );
+            return isRequest;
+        }
+        
+        // Fallback to JSON method
         const data = this.client.data.data?.[guild.id]?.requestChannel;
-        return data?.channelId === channelId;
+        const isRequest = data?.channelId === channelId;
+        this.client.logger.debug(
+            `[MultiBot] ${this.client.user?.tag} checking request channel using own data (JSON): channelId=${channelId}, isRequest=${isRequest}`,
+        );
+        return isRequest;
     }
 }
