@@ -5,7 +5,6 @@ export const zhCN = {
         gettingStarted: "开始使用",
         configuration: "配置",
         cookiesSetup: "Cookie设置",
-
         permissionCalculator: "权限计算器",
         links: "链接"
     },

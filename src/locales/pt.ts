@@ -5,7 +5,6 @@ export const pt = {
         gettingStarted: "Começar",
         configuration: "Configuração",
         cookiesSetup: "Config. Cookies",
-
         permissionCalculator: "Calculadora Permissões",
         links: "Links"
     },

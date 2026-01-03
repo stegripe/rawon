@@ -5,7 +5,6 @@ export const vi = {
         gettingStarted: "Bắt đầu",
         configuration: "Cấu hình",
         cookiesSetup: "Thiết lập Cookie",
-
         permissionCalculator: "Tính toán quyền",
         links: "Liên kết"
     },

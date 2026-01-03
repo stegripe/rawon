@@ -5,7 +5,6 @@ export const id = {
         gettingStarted: "Memulai",
         configuration: "Konfigurasi",
         cookiesSetup: "Setup Cookies",
-
         permissionCalculator: "Kalkulator Izin",
         links: "Tautan"
     },

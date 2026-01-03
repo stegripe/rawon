@@ -5,7 +5,6 @@ export const zhTW = {
         gettingStarted: "開始使用",
         configuration: "配置",
         cookiesSetup: "Cookie設置",
-
         permissionCalculator: "權限計算器",
         links: "連結"
     },

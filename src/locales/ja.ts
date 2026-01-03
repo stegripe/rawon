@@ -5,7 +5,6 @@ export const ja = {
         gettingStarted: "はじめに",
         configuration: "設定",
         cookiesSetup: "Cookie設定",
-
         permissionCalculator: "権限計算機",
         links: "リンク"
     },

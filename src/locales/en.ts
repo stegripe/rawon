@@ -5,7 +5,6 @@ export const en = {
         gettingStarted: "Getting Started",
         configuration: "Configuration",
         cookiesSetup: "Cookies Setup",
-
         permissionCalculator: "Permission Calculator",
         links: "Links"
     },

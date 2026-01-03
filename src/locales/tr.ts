@@ -5,7 +5,6 @@ export const tr = {
         gettingStarted: "Başlarken",
         configuration: "Yapılandırma",
         cookiesSetup: "Çerez Kurulumu",
-
         permissionCalculator: "İzin Hesaplayıcı",
         links: "Bağlantılar"
     },

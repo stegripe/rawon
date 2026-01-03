@@ -5,7 +5,6 @@ export const uk = {
         gettingStarted: "Початок роботи",
         configuration: "Налаштування",
         cookiesSetup: "Налаштування Cookie",
-
         permissionCalculator: "Калькулятор дозволів",
         links: "Посилання"
     },

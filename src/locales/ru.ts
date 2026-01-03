@@ -5,7 +5,6 @@ export const ru = {
         gettingStarted: "Начало работы",
         configuration: "Настройки",
         cookiesSetup: "Настройка Cookie",
-
         permissionCalculator: "Калькулятор разрешений",
         links: "Ссылки"
     },
