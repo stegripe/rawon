@@ -40,10 +40,12 @@ export function ffmpegArgs(
 
     const inputArgs: string[] = [];
     if (inputPath) {
+        inputArgs.push("-i", inputPath);
+        // Use output seeking (-ss after -i) for more accurate duration calculation
+        // This ensures the audio resource has correct duration after seeking
         if (seekSeconds > 0) {
             inputArgs.push("-ss", seekSeconds.toString());
         }
-        inputArgs.push("-i", inputPath);
     } else {
         inputArgs.push("-i", "-");
     }

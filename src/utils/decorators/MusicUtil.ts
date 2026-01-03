@@ -55,12 +55,51 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
 
 export const sameVC = createCmdExecuteDecorator((ctx) => {
     const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
-    if (!ctx.guild?.members.me?.voice.channel) {
+    const client = ctx.guild?.client as Rawon;
+    
+    if (!client || !ctx.guild) {
         return true;
     }
 
+    // CRITICAL: Always use THIS bot's guild object, not ctx.guild
+    // ctx.guild might be from a different bot instance in multi-bot scenarios
+    const thisBotGuild = client.guilds.cache.get(ctx.guild.id);
+    if (!thisBotGuild) {
+        // This bot doesn't have this guild, block command
+        return false;
+    }
+
+    // Multi-bot: Check if this bot should respond based on voice channel
+    if (client.config.isMultiBot) {
+        const userVoiceChannelId = ctx.member?.voice.channel?.id ?? null;
+        
+        if (userVoiceChannelId) {
+            // Check if this bot should respond to music command in user's voice channel
+            const shouldRespond = client.multiBotManager.shouldRespondToMusicCommand(
+                client,
+                thisBotGuild,
+                userVoiceChannelId,
+            );
+
+            if (!shouldRespond) {
+                // Another bot is responsible for this voice channel, block command
+                void ctx.reply({
+                    embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
+                });
+                return false;
+            }
+        }
+    }
+
+    // Normal sameVC check - use thisBotGuild, not ctx.guild
+    // CRITICAL: Use thisBotGuild.members.me to get THIS bot's voice channel, not ctx.guild.members.me
+    if (!thisBotGuild.members.me?.voice.channel) {
+        return true;
+    }
+
+    // Use thisBotGuild.queue to get THIS bot's queue, not ctx.guild.queue
     const botVc =
-        ctx.guild.queue?.connection?.joinConfig.channelId ?? ctx.guild.members.me.voice.channel.id;
+        thisBotGuild.queue?.connection?.joinConfig.channelId ?? thisBotGuild.members.me.voice.channel.id;
     if (ctx.member?.voice.channel?.id !== botVc) {
         void ctx.reply({
             embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],

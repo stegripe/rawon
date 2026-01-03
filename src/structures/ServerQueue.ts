@@ -213,6 +213,39 @@ export class ServerQueue {
     }
 
     private loadSavedState(): void {
+        // Multi-bot: Load player state per bot instance from SQLite
+        if (this.client.config.isMultiBot) {
+            if ("getPlayerState" in this.client.data && typeof this.client.data.getPlayerState === "function") {
+                const botId = this.client.user?.id ?? "unknown";
+                const savedState = (this.client.data as any).getPlayerState(
+                    this.textChannel.guild.id,
+                    botId,
+                );
+                if (savedState) {
+                    this.loopMode = savedState.loopMode ?? "OFF";
+                    this.shuffle = savedState.shuffle ?? false;
+                    this._volume = savedState.volume ?? 100;
+                    this.filters = (savedState.filters ?? {}) as Partial<
+                        Record<keyof typeof filterArgs, boolean>
+                    >;
+                    this.client.logger.info(
+                        `[MultiBot] ${this.client.user?.tag} loaded saved player state for guild ${this.textChannel.guild.name}: ` +
+                        `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}`,
+                    );
+                } else {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} no saved player state found, using defaults`,
+                    );
+                }
+            } else {
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} SQLite getPlayerState not available, using default values`,
+                );
+            }
+            return;
+        }
+
+        // Single bot mode: Load from JSON data
         const savedState = this.client.data.data?.[this.textChannel.guild.id]?.playerState;
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
@@ -228,15 +261,39 @@ export class ServerQueue {
     }
 
     public async saveState(): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? {};
-
-        guildData.playerState = {
+        const playerState = {
             loopMode: this.loopMode,
             shuffle: this.shuffle,
             volume: this._volume,
             filters: this.filters as Record<string, boolean>,
         };
+
+        // Multi-bot: Save player state per bot instance to SQLite
+        if (this.client.config.isMultiBot) {
+            if ("savePlayerState" in this.client.data && typeof this.client.data.savePlayerState === "function") {
+                const botId = this.client.user?.id ?? "unknown";
+                await (this.client.data as any).savePlayerState(
+                    this.textChannel.guild.id,
+                    botId,
+                    playerState,
+                );
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} saved player state to SQLite: ` +
+                    `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}`,
+                );
+            } else {
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} SQLite savePlayerState not available`,
+                );
+            }
+            return;
+        }
+
+        // Single bot mode: Save to JSON data
+        const currentData = this.client.data.data ?? {};
+        const guildData = currentData[this.textChannel.guild.id] ?? {};
+
+        guildData.playerState = playerState;
 
         await this.client.data.save(() => ({
             ...currentData,
@@ -244,10 +301,21 @@ export class ServerQueue {
         }));
     }
 
-    public async saveQueueState(): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? {};
+    /**
+     * Copy player state (settings) from another ServerQueue instance.
+     * Used for multi-bot feature when secondary bots inherit settings from primary bot.
+     */
+    public copyStateFrom(sourceQueue: ServerQueue): void {
+        this.loopMode = sourceQueue.loopMode;
+        this.shuffle = sourceQueue.shuffle;
+        this._volume = sourceQueue.volume;
+        this.filters = { ...sourceQueue.filters };
+        this.client.logger.info(
+            `[MultiBot] Copied player state from primary bot: loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}`,
+        );
+    }
 
+    public async saveQueueState(): Promise<void> {
         let currentSongKey: string | null = null;
         let currentPosition = 0;
         if (this.player.state.status === AudioPlayerStatus.Playing) {
@@ -276,7 +344,7 @@ export class ServerQueue {
             return;
         }
 
-        guildData.queueState = {
+        const queueState = {
             textChannelId: this.textChannel.id,
             voiceChannelId,
             songs: savedSongs,
@@ -284,22 +352,44 @@ export class ServerQueue {
             currentPosition,
         };
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [this.textChannel.guild.id]: guildData,
-        }));
+        // Use SQLite-specific method if available, otherwise fallback to JSON method
+        if ("saveQueueState" in this.client.data && typeof this.client.data.saveQueueState === "function") {
+            const botId = this.client.user?.id ?? "unknown";
+            await (this.client.data as any).saveQueueState(
+                this.textChannel.guild.id,
+                botId,
+                queueState,
+            );
+        } else {
+            // Fallback to JSON method for backward compatibility
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[this.textChannel.guild.id] ?? {};
+            guildData.queueState = queueState;
+
+            await this.client.data.save(() => ({
+                ...currentData,
+                [this.textChannel.guild.id]: guildData,
+            }));
+        }
     }
 
     public async clearQueueState(): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? {};
+        // Use SQLite-specific method if available, otherwise fallback to JSON method
+        if ("deleteQueueState" in this.client.data && typeof this.client.data.deleteQueueState === "function") {
+            const botId = this.client.user?.id ?? "unknown";
+            await (this.client.data as any).deleteQueueState(this.textChannel.guild.id, botId);
+        } else {
+            // Fallback to JSON method for backward compatibility
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[this.textChannel.guild.id] ?? {};
 
-        delete guildData.queueState;
+            delete guildData.queueState;
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [this.textChannel.guild.id]: guildData,
-        }));
+            await this.client.data.save(() => ({
+                ...currentData,
+                [this.textChannel.guild.id]: guildData,
+            }));
+        }
     }
 
     public setFilter(filter: keyof typeof filterArgs, state: boolean): void {

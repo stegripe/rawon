@@ -101,7 +101,20 @@ export class RequestChannelManager {
     }
 
     public createPlayerEmbed(guild: Guild): EmbedBuilder {
-        const queue = guild.queue;
+        // Multi-bot: Find queue from any bot that has an active queue for this guild
+        let queue = guild.queue;
+        if (!queue && this.client.config.isMultiBot) {
+            // Try to find queue from other bots
+            const bots = this.client.multiBotManager.getBots();
+            for (const bot of bots) {
+                const botGuild = bot.client.guilds.cache.get(guild.id);
+                if (botGuild?.queue) {
+                    queue = botGuild.queue;
+                    break; // Use first queue found
+                }
+            }
+        }
+        
         const savedState = this.client.data.data?.[guild.id]?.playerState;
 
         const __ = i18n__(this.client, guild);
@@ -217,7 +230,20 @@ export class RequestChannelManager {
     }
 
     public createPlayerButtons(guild: Guild): ActionRowBuilder<ButtonBuilder>[] {
-        const queue = guild.queue;
+        // Multi-bot: Find queue from any bot that has an active queue for this guild
+        let queue = guild.queue;
+        if (!queue && this.client.config.isMultiBot) {
+            // Try to find queue from other bots
+            const bots = this.client.multiBotManager.getBots();
+            for (const bot of bots) {
+                const botGuild = bot.client.guilds.cache.get(guild.id);
+                if (botGuild?.queue) {
+                    queue = botGuild.queue;
+                    break; // Use first queue found
+                }
+            }
+        }
+        
         const isPlaying = queue?.playing ?? false;
 
         const pauseResumeEmoji = isPlaying ? "⏸️" : "▶️";
@@ -263,6 +289,25 @@ export class RequestChannelManager {
     }
 
     public async updatePlayerMessage(guild: Guild, immediate = false): Promise<void> {
+        // Multi-bot: Only primary bot can edit messages
+        if (this.client.config.isMultiBot) {
+            const primaryBot = this.client.multiBotManager.getPrimaryBot();
+            if (primaryBot && primaryBot !== this.client) {
+                // Not primary bot, delegate to primary bot
+                // But we need to use primary bot's guild object to access the correct queue
+                const primaryGuild = primaryBot.guilds.cache.get(guild.id);
+                if (primaryGuild) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} delegating updatePlayerMessage to primary bot ${primaryBot.user?.tag}`,
+                    );
+                    // Use primary bot's RequestChannelManager with primary bot's guild object
+                    // But we need to find which bot has the active queue for this guild
+                    // For now, use primary bot's guild - it should work if all bots sync their queue states
+                    return primaryBot.requestChannelManager.updatePlayerMessage(primaryGuild, immediate);
+                }
+            }
+        }
+
         const existingTimeout = this.pendingUpdates.get(guild.id);
         if (existingTimeout) {
             clearTimeout(existingTimeout);
@@ -275,6 +320,15 @@ export class RequestChannelManager {
             try {
                 const message = await this.getPlayerMessage(guild).catch(() => null);
                 if (!message) {
+                    return;
+                }
+
+                // Check if this bot can edit the message (must be the author)
+                if (message.author.id !== this.client.user?.id) {
+                    // Message was created by another bot, can't edit it
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} cannot edit message ${message.id} - created by ${message.author.tag}`,
+                    );
                     return;
                 }
 
@@ -308,6 +362,22 @@ export class RequestChannelManager {
     }
 
     public async createOrUpdatePlayerMessage(guild: Guild): Promise<Message | null> {
+        // Multi-bot: Only primary bot can create/edit player messages
+        if (this.client.config.isMultiBot) {
+            const primaryBot = this.client.multiBotManager.getPrimaryBot();
+            if (primaryBot && primaryBot !== this.client) {
+                // Not primary bot, delegate to primary bot
+                const primaryGuild = primaryBot.guilds.cache.get(guild.id);
+                if (primaryGuild) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} delegating createOrUpdatePlayerMessage to primary bot ${primaryBot.user?.tag}`,
+                    );
+                    // Use primary bot's RequestChannelManager with primary bot's guild object
+                    return primaryBot.requestChannelManager.createOrUpdatePlayerMessage(primaryGuild);
+                }
+            }
+        }
+
         const channel = this.getRequestChannel(guild);
         if (!channel) {
             return null;
@@ -335,6 +405,22 @@ export class RequestChannelManager {
     }
 
     public isRequestChannel(guild: Guild, channelId: string): boolean {
+        // Multi-bot: All bots should check the same data source
+        // Use primary bot's data if available to ensure consistency
+        // This is critical because data is saved by primary bot but all bots need to read it
+        if (this.client.config.isMultiBot) {
+            const primaryBot = this.client.multiBotManager.getPrimaryBot();
+            if (primaryBot) {
+                // Always use primary bot's data for consistency across all bot instances
+                const data = primaryBot.data.data?.[guild.id]?.requestChannel;
+                const isRequest = data?.channelId === channelId;
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} checking request channel using primary bot data: channelId=${channelId}, isRequest=${isRequest}`,
+                );
+                return isRequest;
+            }
+        }
+        
         const data = this.client.data.data?.[guild.id]?.requestChannel;
         return data?.channelId === channelId;
     }

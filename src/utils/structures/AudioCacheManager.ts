@@ -220,6 +220,68 @@ export class AudioCacheManager {
         }
     }
 
+    /**
+     * Wait for cache to complete. If cache doesn't exist, start caching it with high priority.
+     * @param url The URL to wait for cache
+     * @param timeoutMs Maximum time to wait in milliseconds (default: 300000 = 5 minutes)
+     * @returns true if cache is available and complete, false if timeout or error
+     */
+    public async waitForCache(url: string, timeoutMs = 300_000): Promise<boolean> {
+        const key = this.getCacheKey(url);
+
+        // If already cached and complete, return immediately
+        if (this.isCached(url) && !this.isInProgress(url)) {
+            return true;
+        }
+
+        // If not in progress and not cached, start caching with high priority
+        if (!this.isInProgress(url) && !this.isCached(url)) {
+            this.client.logger.info(
+                `[AudioCacheManager] Cache not found for ${url.substring(0, 50)}..., starting high-priority cache`,
+            );
+            await this.preCacheUrl(url, true); // true = high priority
+        }
+
+        // Wait for cache to complete
+        const startTime = Date.now();
+        const pollInterval = 500; // Check every 500ms
+
+        return new Promise<boolean>((resolve) => {
+            const checkCache = setInterval(() => {
+                // Check if cache is complete
+                if (this.isCached(url) && !this.inProgressFiles.has(key)) {
+                    clearInterval(checkCache);
+                    this.client.logger.info(
+                        `[AudioCacheManager] Cache completed for ${url.substring(0, 50)}... after ${Date.now() - startTime}ms`,
+                    );
+                    resolve(true);
+                    return;
+                }
+
+                // Check timeout
+                if (Date.now() - startTime >= timeoutMs) {
+                    clearInterval(checkCache);
+                    this.client.logger.warn(
+                        `[AudioCacheManager] Timeout waiting for cache ${url.substring(0, 50)}... after ${timeoutMs}ms`,
+                    );
+                    resolve(false);
+                    return;
+                }
+
+                // Check if failed
+                const failedInfo = this.failedUrls.get(key);
+                if (failedInfo && failedInfo.count >= PRE_CACHE_RETRY_COUNT) {
+                    clearInterval(checkCache);
+                    this.client.logger.warn(
+                        `[AudioCacheManager] Cache failed for ${url.substring(0, 50)}... after ${failedInfo.count} attempts`,
+                    );
+                    resolve(false);
+                    return;
+                }
+            }, pollInterval);
+        });
+    }
+
     private async processQueue(): Promise<void> {
         if (this.isProcessingQueue || this.preCacheQueue.length === 0) {
             return;

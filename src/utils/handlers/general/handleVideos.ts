@@ -1,5 +1,5 @@
 import { setTimeout } from "node:timers";
-import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
+import { joinVoiceChannel } from "@discordjs/voice";
 import {
     escapeMarkdown,
     type Message,
@@ -16,6 +16,7 @@ import { createEmbed } from "../../functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import { parseHTMLElements } from "../../functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
+import { createVoiceAdapter } from "../../functions/createVoiceAdapter.js";
 import { play } from "./play.js";
 
 function isRequestChannel(client: Rawon, ctx: CommandContext): boolean {
@@ -111,11 +112,30 @@ export async function handleVideos(
     );
 
     try {
+        if (!ctx.guild) {
+            throw new Error("Guild is null");
+        }
+
+        if (!ctx.guild) {
+            throw new Error("Guild is null");
+        }
+
+        // Use custom voice adapter creator that explicitly uses THIS client
+        // This ensures the connection uses the correct bot instance in multi-bot scenarios
+        const adapterCreator = createVoiceAdapter(client, ctx.guild.id);
+
+        client.logger.debug(
+            `[MultiBot] ${client.user?.tag} creating voice connection using custom adapter for channel ${voiceChannel.id}`,
+        );
+
         const connection = joinVoiceChannel({
-            adapterCreator: ctx.guild?.voiceAdapterCreator as DiscordGatewayAdapterCreator,
+            adapterCreator,
             channelId: voiceChannel.id,
-            guildId: ctx.guild?.id ?? "",
+            guildId: ctx.guild.id,
             selfDeaf: true,
+            // CRITICAL: Use bot's user ID as group to ensure each bot instance has isolated voice connections
+            // This prevents multiple bot instances from interfering with each other's voice connections
+            group: client.user?.id ?? "default",
         }).on("debug", (message) => {
             client.logger.debug(message);
         });

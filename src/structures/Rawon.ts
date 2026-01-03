@@ -13,7 +13,8 @@ import { CommandManager } from "../utils/structures/CommandManager.js";
 import { CookiesManager } from "../utils/structures/CookiesManager.js";
 import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
 import { EventsLoader } from "../utils/structures/EventsLoader.js";
-import { JSONDataManager } from "../utils/structures/JSONDataManager.js";
+import { SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
+import { MultiBotManager } from "../utils/structures/MultiBotManager.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 import { setCookiesManager } from "../utils/yt-dlp/index.js";
@@ -29,8 +30,8 @@ export class Rawon extends Client {
         this,
         path.resolve(importURLToString(import.meta.url), "..", "events"),
     );
-    public readonly data = new JSONDataManager<Record<string, GuildData>>(
-        path.resolve(process.cwd(), "cache", "data.json"),
+    public readonly data = new SQLiteDataManager<Record<string, GuildData>>(
+        path.resolve(process.cwd(), "cache", "data.db"),
     );
     public readonly logger = new RawonLogger({ prod: this.config.isProd });
     public readonly debugLog = new DebugLogManager(this.config.debugMode, this.config.isProd);
@@ -40,6 +41,7 @@ export class Rawon extends Client {
     public readonly requestChannelManager = new RequestChannelManager(this);
     public readonly audioCache = new AudioCacheManager(this);
     public readonly cookies = new CookiesManager(this);
+    public readonly multiBotManager = MultiBotManager.getInstance();
     public readonly request = got.extend({
         hooks: {
             beforeError: [
@@ -66,11 +68,41 @@ export class Rawon extends Client {
         },
     });
 
-    public build: () => Promise<this> = async () => {
+    public build: (token?: string) => Promise<this> = async (token?: string) => {
         this.startTimestamp = Date.now();
         setCookiesManager(this.cookies);
         this.events.load();
-        await this.login();
+        
+        // Use provided token or fallback to environment variable
+        const loginToken = token ?? process.env.DISCORD_TOKEN;
+        if (!loginToken) {
+            throw new Error("No token provided for login");
+        }
+        
+        await this.login(loginToken);
+        
+        // Register this bot instance in MultiBotManager if multi-bot is enabled
+        if (this.config.isMultiBot && this.user) {
+            // Find token index by matching bot ID
+            const botId = this.user.id;
+            const tokenIndex = this.config.discordIds.findIndex((id) => id === botId);
+            if (tokenIndex >= 0) {
+                this.multiBotManager.registerBot(this, tokenIndex, botId);
+                this.logger.info(
+                    `[MultiBot] Registered bot instance ${this.user.tag} (${botId}) at index ${tokenIndex}`,
+                );
+                
+                // Log guilds that this bot is in
+                this.logger.info(
+                    `[MultiBot] Bot ${this.user.tag} is in ${this.guilds.cache.size} guild(s): ${Array.from(this.guilds.cache.keys()).join(", ")}`,
+                );
+            } else {
+                this.logger.warn(
+                    `[MultiBot] Bot ${this.user.tag} (${botId}) not found in DISCORD_ID list, cannot register`,
+                );
+            }
+        }
+        
         return this;
     };
 }

@@ -97,12 +97,18 @@ export async function play(
         );
 
         if (streamResult.cachePath) {
+            // When using cache path, ffmpeg will handle seeking via -ss after -i
             ffmpegStream = new prism.FFmpeg({
                 args: ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath),
             });
         } else if (streamResult.stream) {
+            // When using direct stream, we need to pass seekSeconds to ffmpeg
+            // However, ffmpeg seeking only works with file inputs, not stdin
+            // So for streams, we can't use -ss. We rely on yt-dlp or just play from start
+            // But since we removed downloadSections, we'll play from start and let it buffer
+            // TODO: Consider buffering and seeking, or using downloadSections more carefully
             ffmpegStream = new prism.FFmpeg({
-                args: ffmpegArgs(queue.filters, 0),
+                args: ffmpegArgs(queue.filters, 0), // Streams don't support seeking via ffmpeg -ss
             });
             streamResult.stream.pipe(ffmpegStream as unknown as NodeJS.WritableStream);
         } else {

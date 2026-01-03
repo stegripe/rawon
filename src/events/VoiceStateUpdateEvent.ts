@@ -66,31 +66,61 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             ]);
         }
 
-        const queue = newState.guild.queue;
+        const botId = this.client.user?.id;
+        const memberUserId = newState.member?.user.id;
+        
+        // Multi-bot: CRITICAL - Only process voice state updates for this bot instance
+        // In multi-bot mode, all bots receive events for ALL bots in the guild
+        // We must check FIRST before accessing queue to prevent cross-bot interference
+        if (this.client.config.isMultiBot) {
+            // Only process if this is voice state update for THIS bot instance
+            if (memberUserId !== botId) {
+                // This is voice state update for another bot, completely ignore
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} ignoring voice state update for ${memberUserId} (not this bot)`,
+                );
+                return;
+            }
+        }
+
+        // CRITICAL: Use THIS bot's guild object, not the parameter guild
+        // The newState.guild might be from a different bot instance
+        const thisBotGuild = this.client.guilds.cache.get(newState.guild.id);
+        if (!thisBotGuild) {
+            // This bot doesn't have this guild, ignore
+            return;
+        }
+
+        const queue = thisBotGuild.queue;
         if (!queue) {
             return;
         }
 
-        const __ = i18n__(this.client, newState.guild);
-        const __mf = i18n__mf(this.client, newState.guild);
+        const __ = i18n__(this.client, thisBotGuild);
+        const __mf = i18n__mf(this.client, thisBotGuild);
 
         const newVc = newState.channel;
         const oldVc = oldState.channel;
         const newId = newVc?.id;
         const oldId = oldVc?.id;
-        const queueVc = newState.guild.channels.cache.get(
+        const queueVc = thisBotGuild.channels.cache.get(
             queue.connection?.joinConfig.channelId ?? "",
-        ) as StageChannel | VoiceChannel;
+        ) as StageChannel | VoiceChannel | undefined;
+        
+        if (!queueVc) {
+            // Queue channel not found, ignore
+            return;
+        }
+        
         const member = newState.member;
         const oldMember = oldState.member;
         const newVcMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
         const queueVcMembers = queueVc.members.filter((mbr) => !mbr.user.bot);
-        const botId = this.client.user?.id;
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
             const isIdle = queue.idle;
             const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
-                newState.guild,
+                thisBotGuild,
                 queue.textChannel.id,
             );
 
@@ -128,18 +158,48 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
+        // Multi-bot: Extra safety check - ensure member ID matches bot ID
+        // This prevents cross-bot interference
+        if (this.client.config.isMultiBot && member?.id !== botId) {
+            // This should never happen if check above worked, but double-check anyway
+            this.client.logger.warn(
+                `[MultiBot] ${this.client.user?.tag} received voice state update for wrong bot: ${member?.id} (expected ${botId})`,
+            );
+            return;
+        }
+
         if (
             member?.id === botId &&
             oldId === queueVc.id &&
             newId !== queueVc.id &&
             newId !== undefined
         ) {
+            // Multi-bot: CRITICAL - Prevent bots from being moved when they're playing
+            // If bot is actively playing, do NOT allow reconnection to different channel
+            if (this.client.config.isMultiBot) {
+                const isPlaying = queue.playing;
+                const hasActiveQueue = queue.songs.size > 0;
+                
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} voice state change detected: ${oldId} -> ${newId}, isPlaying=${isPlaying}, hasActiveQueue=${hasActiveQueue}`,
+                );
+                
+                if (isPlaying || hasActiveQueue) {
+                    this.client.logger.warn(
+                        `[MultiBot] ${this.client.user?.tag} BLOCKED voice state change from ${oldId} (${queueVc.name}) to ${newId} - bot is playing/has active queue. IGNORING reconnect attempt.`,
+                    );
+                    // DO NOT process this voice state update - ignore the move attempt
+                    // This prevents bot from being moved when it's actively playing music
+                    return;
+                }
+            }
+
             if (!newVcMembers) {
                 return;
             }
             queue.skipVoters = [];
             const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
-                newState.guild,
+                thisBotGuild,
                 queue.textChannel.id,
             );
             if (oldVc?.rtcRegion !== newVc?.rtcRegion) {
@@ -253,9 +313,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 }
             }
             if (newVcMembers.size === 0 && queue.timeout === null && !queue.idle) {
-                this.timeout(newVcMembers, queue, newState);
+                this.timeout(newVcMembers, queue, newState, thisBotGuild);
             } else if (newVcMembers.size > 0 && queue.timeout !== null) {
-                this.resume(newVcMembers, queue, newState);
+                this.resume(newVcMembers, queue, newState, thisBotGuild);
             }
         }
 
@@ -267,11 +327,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             !queue.idle
         ) {
             queue.skipVoters = queue.skipVoters.filter((x) => x !== member?.id);
-            this.timeout(queueVcMembers, queue, newState);
+            this.timeout(queueVcMembers, queue, newState, thisBotGuild);
         }
 
         if (newId === queueVc.id && member?.user.bot !== true && queue.timeout) {
-            this.resume(queueVcMembers, queue, newState);
+            this.resume(queueVcMembers, queue, newState, thisBotGuild);
         }
     }
 
@@ -279,27 +339,28 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         vcMembers: VoiceChannel["members"],
         queue: ServerQueue,
         state: VoiceState,
+        guild: typeof state.guild,
     ): void {
         if (vcMembers.size > 0) {
             return;
         }
 
-        const __ = i18n__(this.client, state.guild);
-        const __mf = i18n__mf(this.client, state.guild);
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
-        (state.guild.queue as unknown as ServerQueue).timeout = null;
+        (guild.queue as unknown as ServerQueue).timeout = null;
         queue.player.pause();
 
         const timeout = 60_000;
         const duration = formatMS(timeout);
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
-            state.guild,
+            guild,
             queue.textChannel.id,
         );
 
         queue.lastVSUpdateMsg = null;
-        (state.guild.queue as unknown as ServerQueue).timeout = setTimeout(() => {
+        (guild.queue as unknown as ServerQueue).timeout = setTimeout(() => {
             queue.destroy();
             void (async () => {
                 const msg = await queue.textChannel.send({
@@ -343,21 +404,22 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         vcMembers: VoiceChannel["members"],
         queue: ServerQueue,
         state: VoiceState,
+        guild: typeof state.guild,
     ): void {
         if (vcMembers.size <= 0) {
             return;
         }
 
-        const __ = i18n__(this.client, state.guild);
-        const __mf = i18n__mf(this.client, state.guild);
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
-        (state.guild.queue as unknown as ServerQueue).timeout = null;
+        (guild.queue as unknown as ServerQueue).timeout = null;
 
         const song = ((queue.player.state as AudioPlayerPausedState).resource.metadata as QueueSong)
             .song;
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
-            state.guild,
+            guild,
             queue.textChannel.id,
         );
 
@@ -383,6 +445,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 }, 60_000);
             }
         })();
-        state.guild.queue?.player.unpause();
+        guild.queue?.player.unpause();
     }
 }

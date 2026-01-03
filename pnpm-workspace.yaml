@@ -1,5 +1,6 @@
 onlyBuiltDependencies:
   - '@swc/core'
+  - better-sqlite3
   - ffmpeg-static
   - protobufjs
   - unrs-resolver

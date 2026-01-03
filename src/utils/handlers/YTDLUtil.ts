@@ -45,15 +45,55 @@ export async function getStream(
         };
     }
 
-    if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
-        const cacheStream = client.audioCache.getFromCache(url);
-        if (cacheStream) {
-            cacheStream.destroy();
-            const cachePath = client.audioCache.getCachePath(url);
-            return {
-                stream: null,
-                cachePath,
-            };
+    // When seeking (seekSeconds > 0), we MUST use cache because ffmpeg seeking
+    // only works with file inputs, not stdin streams.
+    // Strategy: Wait for cache to complete before playing with seek position.
+    if (enableAudioCache && !isLive && seekSeconds > 0) {
+        client.logger.info(
+            `[YTDLUtil] Seek position ${seekSeconds}s requested for ${url.substring(0, 50)}..., waiting for cache to complete`,
+        );
+
+        // Wait for cache to complete (or start caching if not exists)
+        const cacheReady = await client.audioCache.waitForCache(url, 300_000); // 5 minute timeout
+
+        if (cacheReady) {
+            // Cache is ready, use it
+            const cacheStream = client.audioCache.getFromCache(url);
+            if (cacheStream) {
+                cacheStream.destroy();
+                const cachePath = client.audioCache.getCachePath(url);
+                client.logger.info(
+                    `[YTDLUtil] ✅ Using cached file for ${url.substring(0, 50)}... with seek position ${seekSeconds}s`,
+                );
+                return {
+                    stream: null,
+                    cachePath,
+                };
+            }
+        } else {
+            client.logger.warn(
+                `[YTDLUtil] ⚠️ Cache not ready after timeout for ${url.substring(0, 50)}..., falling back to stream (will play from beginning)`,
+            );
+            // Fall through to use stream (but seek won't work, will play from beginning)
+        }
+    }
+
+    // For seekSeconds === 0 or when cache is not available for seeking
+    if (enableAudioCache && !isLive && seekSeconds === 0 && client.audioCache.isCached(url)) {
+        // Double-check that cache is not in progress to avoid incomplete files
+        if (!client.audioCache.isInProgress(url)) {
+            const cacheStream = client.audioCache.getFromCache(url);
+            if (cacheStream) {
+                cacheStream.destroy();
+                const cachePath = client.audioCache.getCachePath(url);
+                client.logger.info(
+                    `[YTDLUtil] Using cached file for ${url.substring(0, 50)}... (seekSeconds=0)`,
+                );
+                return {
+                    stream: null,
+                    cachePath,
+                };
+            }
         }
     }
 
@@ -95,10 +135,15 @@ async function attemptStreamWithRetry(
               };
 
         const options = { ...baseOptions };
-        if (seekSeconds > 0 && !isLive) {
-            (options as Record<string, unknown>).downloadSections = `*${seekSeconds}-inf`;
-            (options as Record<string, unknown>).forceKeyframesAtCuts = true;
-        }
+        // NOTE: Removed downloadSections for seeking
+        // downloadSections can cause incomplete streams that end immediately
+        // Instead, we'll download the full stream and let ffmpeg handle seeking
+        // This is more reliable even if it uses more bandwidth
+        // ffmpeg will handle seeking via -ss after -i (output seeking)
+        // if (seekSeconds > 0 && !isLive) {
+        //     (options as Record<string, unknown>).downloadSections = `*${seekSeconds}-inf`;
+        //     (options as Record<string, unknown>).forceKeyframesAtCuts = true;
+        // }
 
         const proc = exec(url, options, { stdio: ["ignore", "pipe", "pipe"] });
 
