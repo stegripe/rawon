@@ -13,10 +13,10 @@ import { ServerQueue } from "../../../structures/ServerQueue.js";
 import { type Song } from "../../../typings/index.js";
 import { chunk } from "../../functions/chunk.js";
 import { createEmbed } from "../../functions/createEmbed.js";
+import { createVoiceAdapter } from "../../functions/createVoiceAdapter.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import { parseHTMLElements } from "../../functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
-import { createVoiceAdapter } from "../../functions/createVoiceAdapter.js";
 import { play } from "./play.js";
 
 function isRequestChannel(client: Rawon, ctx: CommandContext): boolean {
@@ -120,8 +120,6 @@ export async function handleVideos(
             throw new Error("Guild is null");
         }
 
-        // Use custom voice adapter creator that explicitly uses THIS client
-        // This ensures the connection uses the correct bot instance in multi-bot scenarios
         const adapterCreator = createVoiceAdapter(client, ctx.guild.id);
 
         client.logger.debug(
@@ -133,8 +131,6 @@ export async function handleVideos(
             channelId: voiceChannel.id,
             guildId: ctx.guild.id,
             selfDeaf: true,
-            // CRITICAL: Use bot's user ID as group to ensure each bot instance has isolated voice connections
-            // This prevents multiple bot instances from interfering with each other's voice connections
             group: client.user?.id ?? "default",
         }).on("debug", (message) => {
             client.logger.debug(message);

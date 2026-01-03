@@ -13,10 +13,10 @@ import { CommandManager } from "../utils/structures/CommandManager.js";
 import { CookiesManager } from "../utils/structures/CookiesManager.js";
 import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
 import { EventsLoader } from "../utils/structures/EventsLoader.js";
-import { SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
 import { MultiBotManager } from "../utils/structures/MultiBotManager.js";
 import { RawonLogger } from "../utils/structures/RawonLogger.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
+import { SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
 import { setCookiesManager } from "../utils/yt-dlp/index.js";
 
 export class Rawon extends Client {
@@ -72,27 +72,23 @@ export class Rawon extends Client {
         this.startTimestamp = Date.now();
         setCookiesManager(this.cookies);
         this.events.load();
-        
-        // Use provided token or fallback to environment variable
+
         const loginToken = token ?? process.env.DISCORD_TOKEN;
         if (!loginToken) {
             throw new Error("No token provided for login");
         }
-        
+
         await this.login(loginToken);
-        
-        // Register this bot instance in MultiBotManager if multi-bot is enabled
+
         if (this.config.isMultiBot && this.user) {
-            // Find token index by matching bot ID
             const botId = this.user.id;
-            const tokenIndex = this.config.discordIds.findIndex((id) => id === botId);
+            const tokenIndex = this.config.discordIds.indexOf(botId);
             if (tokenIndex >= 0) {
                 this.multiBotManager.registerBot(this, tokenIndex, botId);
                 this.logger.info(
                     `[MultiBot] Registered bot instance ${this.user.tag} (${botId}) at index ${tokenIndex}`,
                 );
-                
-                // Log guilds that this bot is in
+
                 this.logger.info(
                     `[MultiBot] Bot ${this.user.tag} is in ${this.guilds.cache.size} guild(s): ${Array.from(this.guilds.cache.keys()).join(", ")}`,
                 );
@@ -102,7 +98,7 @@ export class Rawon extends Client {
                 );
             }
         }
-        
+
         return this;
     };
 }

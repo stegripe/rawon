@@ -12,7 +12,7 @@ import {
 import path from "node:path";
 import process from "node:process";
 import { PassThrough, type Readable } from "node:stream";
-import { setTimeout } from "node:timers";
+import { clearInterval, setInterval, setTimeout } from "node:timers";
 import { type Rawon } from "../../structures/Rawon.js";
 
 const PRE_CACHE_AHEAD_COUNT = 3;
@@ -145,7 +145,7 @@ export class AudioCacheManager {
             try {
                 rmSync(cachePath, { force: true });
             } catch {
-                // Ignore cleanup errors
+                // Ignore errors
             }
         });
 
@@ -170,7 +170,7 @@ export class AudioCacheManager {
             try {
                 rmSync(cachePath, { force: true });
             } catch {
-                // Ignore cleanup errors
+                // Ignore errors
             }
         });
 
@@ -220,35 +220,25 @@ export class AudioCacheManager {
         }
     }
 
-    /**
-     * Wait for cache to complete. If cache doesn't exist, start caching it with high priority.
-     * @param url The URL to wait for cache
-     * @param timeoutMs Maximum time to wait in milliseconds (default: 300000 = 5 minutes)
-     * @returns true if cache is available and complete, false if timeout or error
-     */
     public async waitForCache(url: string, timeoutMs = 300_000): Promise<boolean> {
         const key = this.getCacheKey(url);
 
-        // If already cached and complete, return immediately
         if (this.isCached(url) && !this.isInProgress(url)) {
             return true;
         }
 
-        // If not in progress and not cached, start caching with high priority
         if (!this.isInProgress(url) && !this.isCached(url)) {
             this.client.logger.info(
                 `[AudioCacheManager] Cache not found for ${url.substring(0, 50)}..., starting high-priority cache`,
             );
-            await this.preCacheUrl(url, true); // true = high priority
+            await this.preCacheUrl(url, true);
         }
 
-        // Wait for cache to complete
         const startTime = Date.now();
-        const pollInterval = 500; // Check every 500ms
+        const pollInterval = 500;
 
         return new Promise<boolean>((resolve) => {
             const checkCache = setInterval(() => {
-                // Check if cache is complete
                 if (this.isCached(url) && !this.inProgressFiles.has(key)) {
                     clearInterval(checkCache);
                     this.client.logger.info(
@@ -258,7 +248,6 @@ export class AudioCacheManager {
                     return;
                 }
 
-                // Check timeout
                 if (Date.now() - startTime >= timeoutMs) {
                     clearInterval(checkCache);
                     this.client.logger.warn(
@@ -268,7 +257,6 @@ export class AudioCacheManager {
                     return;
                 }
 
-                // Check if failed
                 const failedInfo = this.failedUrls.get(key);
                 if (failedInfo && failedInfo.count >= PRE_CACHE_RETRY_COUNT) {
                     clearInterval(checkCache);
@@ -371,7 +359,7 @@ export class AudioCacheManager {
                         try {
                             rmSync(cachePath, { force: true });
                         } catch {
-                            // Ignore cleanup errors
+                            // Ignore errors
                         }
 
                         if (
@@ -416,7 +404,7 @@ export class AudioCacheManager {
                     try {
                         rmSync(cachePath, { force: true });
                     } catch {
-                        // Ignore cleanup errors
+                        // Ignore errors
                     }
                     resolve();
                 });
@@ -427,7 +415,7 @@ export class AudioCacheManager {
                     try {
                         rmSync(cachePath, { force: true });
                     } catch {
-                        // Ignore cleanup errors
+                        // Ignore errors
                     }
                     resolve();
                 });
@@ -479,7 +467,7 @@ export class AudioCacheManager {
                     }
                     this.cachedFiles.delete(key);
                 } catch {
-                    // Ignore cleanup errors
+                    // Ignore errors
                 }
             }
 

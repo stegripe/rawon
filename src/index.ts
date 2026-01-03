@@ -1,30 +1,24 @@
+import nodePath from "node:path";
 import process from "node:process";
 import { ShardingManager } from "discord.js";
-import {
-    discordTokens,
-    isMultiBot,
-    isProd,
-    shardingMode,
-    shardsCount,
-} from "./config/index.js";
-import nodePath from "node:path";
+import { discordTokens, isMultiBot, isProd, shardingMode, shardsCount } from "./config/index.js";
 import { importURLToString } from "./utils/functions/importURLToString.js";
-import { RawonLogger } from "./utils/structures/RawonLogger.js";
 import { MultiBotLauncher } from "./utils/structures/MultiBotLauncher.js";
+import { RawonLogger } from "./utils/structures/RawonLogger.js";
 
 const log = new RawonLogger({ prod: isProd });
 
-// Use custom multi-bot launcher if multi-bot mode is enabled
 if (isMultiBot && discordTokens.length > 1) {
-    log.info(`[MultiBot] Using custom multi-bot launcher for ${discordTokens.length} bot instances.`);
-    
+    log.info(
+        `[MultiBot] Using custom multi-bot launcher for ${discordTokens.length} bot instances.`,
+    );
+
     const launcher = new MultiBotLauncher();
     await launcher.start().catch((error: unknown) => {
         log.error("MULTIBOT_LAUNCHER_ERR: ", error);
         process.exit(1);
     });
 } else {
-    // Single bot mode - use ShardingManager for sharding support
     const manager = new ShardingManager(
         nodePath.resolve(importURLToString(import.meta.url), "bot.js"),
         {

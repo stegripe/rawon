@@ -7,14 +7,13 @@ import { type EnvActivityTypes, type PresenceData } from "../typings/index.js";
 import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 
 const envFiles = ["dev.env", "optional.env", ".env"];
-// Store DISCORD_TOKEN if already set (by ShardingManager for worker processes)
+
 const existingToken = process.env.DISCORD_TOKEN;
 for (const envFile of envFiles) {
     const envPath = path.resolve(process.cwd(), envFile);
     if (existsSync(envPath)) {
         const parsed = parse(readFileSync(envPath));
         for (const [key, val] of Object.entries(parsed)) {
-            // Don't overwrite DISCORD_TOKEN if it was already set (worker process)
             if (key === "DISCORD_TOKEN" && existingToken && !existingToken.includes(",")) {
                 continue;
             }
@@ -22,7 +21,7 @@ for (const envFile of envFiles) {
         }
     }
 }
-// Restore existing token if it was set before reading .env files
+
 if (existingToken && !process.env.DISCORD_TOKEN?.includes(",")) {
     process.env.DISCORD_TOKEN = existingToken;
 }
@@ -46,15 +45,9 @@ const formatLocale = (locale: string | undefined): string => {
 };
 export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
-
-// Parse multiple bot tokens and IDs
-// If process.env.DISCORD_TOKEN contains comma, it's multi-bot mode
-// Otherwise, it's a single token (possibly set by ShardingManager for worker processes)
 const rawTokens = process.env.DISCORD_TOKEN ?? "";
 const rawIds = process.env.DISCORD_ID ?? "";
 
-// Check if token contains comma (multi-bot mode in main process)
-// If no comma, it's a single token (worker process with token from ShardingManager)
 const hasComma = rawTokens.includes(",");
 const tokenArray = hasComma
     ? rawTokens
@@ -72,8 +65,8 @@ const idArray = rawIds
 
 export const discordTokens: string[] = tokenArray;
 export const discordIds: string[] = idArray;
-export const discordToken = tokenArray[0] ?? ""; // Primary token for backward compatibility
-export const isMultiBot = tokenArray.length > 1 && hasComma; // Only multi-bot if comma present (main process)
+export const discordToken = tokenArray[0] ?? "";
+export const isMultiBot = tokenArray.length > 1 && hasComma;
 
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
 export const lang = formatLocale(process.env.LOCALE) || "en-US";

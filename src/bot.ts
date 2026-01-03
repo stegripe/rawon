@@ -3,7 +3,6 @@ import { clientOptions } from "./config/index.js";
 import { Rawon } from "./structures/Rawon.js";
 import { NoStackError } from "./utils/structures/NoStackError.js";
 
-// Get token from environment (ShardingManager sets this for each shard process)
 const token = process.env.DISCORD_TOKEN;
 
 if (!token) {

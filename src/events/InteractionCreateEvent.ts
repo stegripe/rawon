@@ -18,6 +18,7 @@ import {
 } from "discord.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
+import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
@@ -50,74 +51,88 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
-        // Multi-bot: Check if this bot should respond
         if (interaction.guild) {
-            // CRITICAL: Use THIS bot's guild object, not interaction.guild
-            // interaction.guild might be from a different bot instance
             const thisBotGuild = this.client.guilds.cache.get(interaction.guild.id);
             if (!thisBotGuild) {
-                // This bot doesn't have this guild, skip
                 return;
             }
 
-            // Check if this is likely a music command (commands that need voice channel)
-            // Only check for ChatInputCommandInteraction which has commandName
             let isMusicCommand = false;
             let commandName = "";
-            
+
             if (interaction.isChatInputCommand()) {
                 commandName = interaction.commandName;
                 const cmd = this.client.commands
                     .filter((x) => x.meta.slash !== undefined)
                     .find((x) => x.meta.slash?.name === commandName);
-                
-                // Music command names that require same voice channel
+
                 const musicCommands = [
-                    "volume", "vol", "loop", "repeat", "shuffle", "filter", "skip", "skipto",
-                    "pause", "resume", "stop", "disconnect", "dc", "remove", "seek",
+                    "volume",
+                    "vol",
+                    "loop",
+                    "repeat",
+                    "shuffle",
+                    "filter",
+                    "skip",
+                    "skipto",
+                    "pause",
+                    "resume",
+                    "stop",
+                    "disconnect",
+                    "dc",
+                    "remove",
+                    "seek",
                 ];
-                isMusicCommand = cmd !== undefined && (
-                    musicCommands.includes(commandName) || 
-                    (cmd.meta.aliases !== undefined && musicCommands.some(name => cmd.meta.aliases?.includes(name)))
-                );
+                isMusicCommand =
+                    cmd !== undefined &&
+                    (musicCommands.includes(commandName) ||
+                        (cmd.meta.aliases !== undefined &&
+                            musicCommands.some((name) => cmd.meta.aliases?.includes(name))));
             }
 
             if (isMusicCommand) {
-                // CRITICAL: Get member from THIS bot's guild object for accurate voice state
                 let member = thisBotGuild.members.cache.get(interaction.user.id);
                 if (!member) {
                     try {
-                        const fetchedMember = await thisBotGuild.members.fetch(interaction.user.id).catch(() => null);
+                        const fetchedMember = await thisBotGuild.members
+                            .fetch(interaction.user.id)
+                            .catch(() => null);
                         if (fetchedMember) {
                             member = fetchedMember;
                         }
                     } catch {
-                        // If fetch fails, try using interaction.member as fallback
-                        if (interaction.member && interaction.member instanceof GuildMember && interaction.member.guild.id === thisBotGuild.id) {
+                        if (
+                            interaction.member &&
+                            interaction.member instanceof GuildMember &&
+                            interaction.member.guild.id === thisBotGuild.id
+                        ) {
                             member = interaction.member;
                         }
                     }
                 }
-                // Final fallback to interaction.member if still no member
-                if (!member && interaction.member && interaction.member instanceof GuildMember && interaction.member.guild.id === thisBotGuild.id) {
+                if (
+                    !member &&
+                    interaction.member &&
+                    interaction.member instanceof GuildMember &&
+                    interaction.member.guild.id === thisBotGuild.id
+                ) {
                     member = interaction.member;
                 }
-                
+
                 const userVoiceChannelId = member?.voice.channelId ?? null;
 
                 this.client.logger.info(
                     `[MultiBot] ${this.client.user?.tag} PRE-CHECK music interaction "${commandName}" from ${interaction.user.tag}: ` +
-                    `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
+                        `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
                 );
 
                 if (userVoiceChannelId) {
-                    // For music commands, check if bot is in same voice channel
                     const shouldRespond = this.client.multiBotManager.shouldRespondToMusicCommand(
                         this.client,
                         thisBotGuild,
                         userVoiceChannelId,
                     );
-                    
+
                     this.client.logger.info(
                         `[MultiBot] ${this.client.user?.tag} PRE-CHECK result for music interaction "${commandName}": shouldRespond=${shouldRespond}`,
                     );
@@ -125,46 +140,38 @@ export class InteractionCreateEvent extends BaseEvent {
                     if (!shouldRespond) {
                         this.client.logger.warn(
                             `[MultiBot] ${this.client.user?.tag} ❌❌❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
-                            `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - INTERACTION WILL NOT BE EXECUTED!`,
-                        );
-                        return; // Another bot in that voice channel should handle this
-                    }
-                    
-                    this.client.logger.info(
-                        `[MultiBot] ${this.client.user?.tag} ✅ ALLOWING music interaction "${commandName}" - will proceed to command handler`,
-                    );
-                } else {
-                    // User not in voice channel, but it's a music command - still need to check priority
-                    if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
-                        this.client.logger.debug(
-                            `[MultiBot] ${this.client.user?.tag} skipping music interaction "${commandName}" - user not in voice and not responsible bot`,
+                                `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - INTERACTION WILL NOT BE EXECUTED!`,
                         );
                         return;
                     }
+
+                    this.client.logger.info(
+                        `[MultiBot] ${this.client.user?.tag} ✅ ALLOWING music interaction "${commandName}" - will proceed to command handler`,
+                    );
+                } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} skipping music interaction "${commandName}" - user not in voice and not responsible bot`,
+                    );
+                    return;
                 }
             } else if (interaction.isChatInputCommand()) {
-                // For non-music commands, use normal priority check
                 commandName = interaction.commandName;
                 if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
                     this.client.logger.debug(
                         `[MultiBot] ${this.client.user?.tag} skipping interaction "${commandName}" - not responsible bot`,
                     );
-                    return; // Another bot should handle this
+                    return;
                 }
-            } else {
-                // For non-chat commands, use normal priority check
-                if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
-                    this.client.logger.debug(
-                        `[MultiBot] ${this.client.user?.tag} skipping interaction - not responsible bot`,
-                    );
-                    return; // Another bot should handle this
-                }
+            } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} skipping interaction - not responsible bot`,
+                );
+                return;
             }
         }
 
-        // Get thisBotGuild if available (for use in context and commands)
-        const thisBotGuildForContext = interaction.guild 
-            ? this.client.guilds.cache.get(interaction.guild.id) ?? interaction.guild
+        const thisBotGuildForContext = interaction.guild
+            ? (this.client.guilds.cache.get(interaction.guild.id) ?? interaction.guild)
             : interaction.guild;
 
         const __mf = i18n__mf(this.client, thisBotGuildForContext);
@@ -211,18 +218,18 @@ export class InteractionCreateEvent extends BaseEvent {
             }
         }
 
-        // Create context after all checks pass - this ensures we use the correct guild
         const context = new CommandContext(interaction);
-        
-        // CRITICAL: Override context.guild with thisBotGuild to ensure commands use correct guild object
-        // This is necessary because interaction.guild might be from a different bot instance
-        if (interaction.guild && thisBotGuildForContext && thisBotGuildForContext !== interaction.guild) {
-            // Use Object.defineProperty to override readonly property
-            Object.defineProperty(context, 'guild', {
+
+        if (
+            interaction.guild &&
+            thisBotGuildForContext &&
+            thisBotGuildForContext !== interaction.guild
+        ) {
+            Object.defineProperty(context, "guild", {
                 value: thisBotGuildForContext,
                 writable: false,
                 enumerable: true,
-                configurable: true
+                configurable: true,
             });
             this.client.logger.debug(
                 `[MultiBot] ${this.client.user?.tag} overrode context.guild with thisBotGuild for interaction`,
@@ -308,50 +315,57 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
-        // CRITICAL: Use THIS bot's guild object, not interaction.guild
-        // interaction.guild might be from a different bot instance
         const thisBotGuild = this.client.guilds.cache.get(guild.id);
         if (!thisBotGuild) {
-            // This bot doesn't have this guild, skip
             return;
         }
 
-        // Multi-bot: Bot that owns the request channel should respond to interactions
-        // Check if this bot owns the request channel for this guild
         if (this.client.config.isMultiBot) {
             const botId = this.client.user?.id ?? "unknown";
             let ownsRequestChannel = false;
-            
-            // Check if this bot has this channel as request channel
-            if ("getRequestChannel" in this.client.data && typeof this.client.data.getRequestChannel === "function") {
-                const requestChannelData = (this.client.data as any).getRequestChannel(thisBotGuild.id, botId);
+
+            if (
+                "getRequestChannel" in this.client.data &&
+                typeof this.client.data.getRequestChannel === "function"
+            ) {
+                const requestChannelData = (this.client.data as any).getRequestChannel(
+                    thisBotGuild.id,
+                    botId,
+                );
                 ownsRequestChannel = requestChannelData?.channelId === interaction.channelId;
             } else {
-                // Fallback to checking memory data
                 const data = this.client.data.data?.[thisBotGuild.id]?.requestChannel;
                 ownsRequestChannel = data?.channelId === interaction.channelId;
             }
-            
-            if (!ownsRequestChannel) {
-                // This bot doesn't own the request channel, check if primary bot does
+
+            if (ownsRequestChannel) {
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
+                );
+            } else {
                 const primaryBot = this.client.multiBotManager.getPrimaryBot();
                 if (primaryBot) {
                     const primaryBotGuild = primaryBot.guilds.cache.get(thisBotGuild.id);
                     if (primaryBotGuild) {
-                        // Primary bot is in guild, let it handle
                         const primaryBotId = primaryBot.user?.id ?? "unknown";
                         let primaryOwnsRequestChannel = false;
-                        
-                        if ("getRequestChannel" in primaryBot.data && typeof primaryBot.data.getRequestChannel === "function") {
-                            const requestChannelData = (primaryBot.data as any).getRequestChannel(thisBotGuild.id, primaryBotId);
-                            primaryOwnsRequestChannel = requestChannelData?.channelId === interaction.channelId;
+
+                        if (
+                            "getRequestChannel" in primaryBot.data &&
+                            typeof primaryBot.data.getRequestChannel === "function"
+                        ) {
+                            const requestChannelData = (primaryBot.data as any).getRequestChannel(
+                                thisBotGuild.id,
+                                primaryBotId,
+                            );
+                            primaryOwnsRequestChannel =
+                                requestChannelData?.channelId === interaction.channelId;
                         } else {
                             const data = primaryBot.data.data?.[thisBotGuild.id]?.requestChannel;
                             primaryOwnsRequestChannel = data?.channelId === interaction.channelId;
                         }
-                        
+
                         if (primaryOwnsRequestChannel && primaryBot !== this.client) {
-                            // Primary bot owns it and is not this bot, skip
                             this.client.logger.debug(
                                 `[MultiBot] ${this.client.user?.tag} skipping button "${interaction.customId}" - primary bot owns request channel`,
                             );
@@ -364,15 +378,9 @@ export class InteractionCreateEvent extends BaseEvent {
                         }
                     }
                 }
-                
-                // If no bot in guild owns it, or this bot owns it, proceed
-                // If primary bot doesn't own it either, allow this bot to handle if it's in the guild
+
                 this.client.logger.info(
                     `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel or no other bot owns it)`,
-                );
-            } else {
-                this.client.logger.info(
-                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
                 );
             }
         }
@@ -384,41 +392,47 @@ export class InteractionCreateEvent extends BaseEvent {
             `${interaction.user.tag} [${interaction.user.id}] clicked ${interaction.customId} button ` +
                 `in guild: ${thisBotGuild.name} [${thisBotGuild.id}]`,
         );
-
-        // Get member and voice channel
         let member = thisBotGuild.members.cache.get(interaction.user.id);
         if (!member) {
             try {
-                const fetchedMember = await thisBotGuild.members.fetch(interaction.user.id).catch(() => null);
+                const fetchedMember = await thisBotGuild.members
+                    .fetch(interaction.user.id)
+                    .catch(() => null);
                 if (fetchedMember) {
                     member = fetchedMember;
                 }
             } catch {
-                if (interaction.member && interaction.member instanceof GuildMember && interaction.member.guild.id === thisBotGuild.id) {
+                if (
+                    interaction.member &&
+                    interaction.member instanceof GuildMember &&
+                    interaction.member.guild.id === thisBotGuild.id
+                ) {
                     member = interaction.member;
                 }
             }
         }
-        if (!member && interaction.member && interaction.member instanceof GuildMember && interaction.member.guild.id === thisBotGuild.id) {
+        if (
+            !member &&
+            interaction.member &&
+            interaction.member instanceof GuildMember &&
+            interaction.member.guild.id === thisBotGuild.id
+        ) {
             member = interaction.member;
         }
-        
+
         const voiceChannel = member?.voice.channel;
-        
-        // CRITICAL: For multi-bot, use queue from bot that's actually in the voice channel
-        // Primary bot responds, but data changes use the correct bot's queue
+
         let queue = thisBotGuild.queue;
-        let queueGuild = thisBotGuild; // Track which guild's queue we're using
-        
+        let queueGuild = thisBotGuild;
+
         if (this.client.config.isMultiBot && voiceChannel) {
             const responsibleBot = this.client.multiBotManager.getBotForVoiceChannel(
                 thisBotGuild,
                 voiceChannel.id,
             );
             if (responsibleBot && responsibleBot !== this.client) {
-                // Use queue from bot that's actually in the voice channel
                 const responsibleGuild = responsibleBot.guilds.cache.get(thisBotGuild.id);
-                if (responsibleGuild && responsibleGuild.queue) {
+                if (responsibleGuild?.queue) {
                     queue = responsibleGuild.queue;
                     queueGuild = responsibleGuild;
                     this.client.logger.info(
@@ -440,10 +454,6 @@ export class InteractionCreateEvent extends BaseEvent {
             });
             return;
         }
-
-        // Multi-bot: Primary bot responds, but we use queue from bot actually in voice channel
-        // So we don't need to check if primary bot is in the same voice channel
-        // The queue variable already points to the correct bot's queue
 
         switch (interaction.customId) {
             case "RC_PAUSE_RESUME": {
@@ -945,11 +955,8 @@ export class InteractionCreateEvent extends BaseEvent {
                 break;
         }
 
-        // Update player message using the guild that owns the queue
-        // If queue is from another bot, update that bot's player message
         if (this.client.config.isMultiBot && queue && queueGuild !== thisBotGuild) {
-            // Queue is from another bot, use that bot's RequestChannelManager
-            const responsibleBot = queueGuild.client as typeof this.client;
+            const responsibleBot = queueGuild.client as Rawon;
             await responsibleBot.requestChannelManager.updatePlayerMessage(queueGuild);
         } else {
             await this.client.requestChannelManager.updatePlayerMessage(thisBotGuild);
@@ -966,7 +973,6 @@ export class InteractionCreateEvent extends BaseEvent {
             return { hasPermission: false, djRole: null };
         }
 
-        // CRITICAL: Use THIS bot's guild object
         const thisBotGuild = this.client.guilds.cache.get(guild.id) ?? guild;
         const djRole = await this.client.utils.fetchDJRole(thisBotGuild).catch(() => null);
 
@@ -988,7 +994,6 @@ export class InteractionCreateEvent extends BaseEvent {
             return false;
         }
 
-        // CRITICAL: Use THIS bot's guild object
         const thisBotGuild = this.client.guilds.cache.get(guild.id) ?? guild;
         const __mf = i18n__mf(this.client, thisBotGuild);
 
@@ -996,7 +1001,6 @@ export class InteractionCreateEvent extends BaseEvent {
             thisBotGuild.members.me?.voice.channel?.members.size ?? 0,
         );
 
-        // Toggle vote
         if (queue.skipVoters.includes(member.id)) {
             queue.skipVoters = queue.skipVoters.filter(
                 (x) => x !== member.id,

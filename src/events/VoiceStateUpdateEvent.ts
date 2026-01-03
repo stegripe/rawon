@@ -68,26 +68,16 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const botId = this.client.user?.id;
         const memberUserId = newState.member?.user.id;
-        
-        // Multi-bot: CRITICAL - Only process voice state updates for this bot instance
-        // In multi-bot mode, all bots receive events for ALL bots in the guild
-        // We must check FIRST before accessing queue to prevent cross-bot interference
-        if (this.client.config.isMultiBot) {
-            // Only process if this is voice state update for THIS bot instance
-            if (memberUserId !== botId) {
-                // This is voice state update for another bot, completely ignore
-                this.client.logger.debug(
-                    `[MultiBot] ${this.client.user?.tag} ignoring voice state update for ${memberUserId} (not this bot)`,
-                );
-                return;
-            }
+
+        if (this.client.config.isMultiBot && memberUserId !== botId) {
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} ignoring voice state update for ${memberUserId} (not this bot)`,
+            );
+            return;
         }
 
-        // CRITICAL: Use THIS bot's guild object, not the parameter guild
-        // The newState.guild might be from a different bot instance
         const thisBotGuild = this.client.guilds.cache.get(newState.guild.id);
         if (!thisBotGuild) {
-            // This bot doesn't have this guild, ignore
             return;
         }
 
@@ -106,12 +96,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const queueVc = thisBotGuild.channels.cache.get(
             queue.connection?.joinConfig.channelId ?? "",
         ) as StageChannel | VoiceChannel | undefined;
-        
+
         if (!queueVc) {
-            // Queue channel not found, ignore
             return;
         }
-        
+
         const member = newState.member;
         const oldMember = oldState.member;
         const newVcMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
@@ -158,10 +147,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        // Multi-bot: Extra safety check - ensure member ID matches bot ID
-        // This prevents cross-bot interference
         if (this.client.config.isMultiBot && member?.id !== botId) {
-            // This should never happen if check above worked, but double-check anyway
             this.client.logger.warn(
                 `[MultiBot] ${this.client.user?.tag} received voice state update for wrong bot: ${member?.id} (expected ${botId})`,
             );
@@ -174,22 +160,18 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             newId !== queueVc.id &&
             newId !== undefined
         ) {
-            // Multi-bot: CRITICAL - Prevent bots from being moved when they're playing
-            // If bot is actively playing, do NOT allow reconnection to different channel
             if (this.client.config.isMultiBot) {
                 const isPlaying = queue.playing;
                 const hasActiveQueue = queue.songs.size > 0;
-                
+
                 this.client.logger.debug(
                     `[MultiBot] ${this.client.user?.tag} voice state change detected: ${oldId} -> ${newId}, isPlaying=${isPlaying}, hasActiveQueue=${hasActiveQueue}`,
                 );
-                
+
                 if (isPlaying || hasActiveQueue) {
                     this.client.logger.warn(
                         `[MultiBot] ${this.client.user?.tag} BLOCKED voice state change from ${oldId} (${queueVc.name}) to ${newId} - bot is playing/has active queue. IGNORING reconnect attempt.`,
                     );
-                    // DO NOT process this voice state update - ignore the move attempt
-                    // This prevents bot from being moved when it's actively playing music
                     return;
                 }
             }
@@ -338,8 +320,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
     private timeout(
         vcMembers: VoiceChannel["members"],
         queue: ServerQueue,
-        state: VoiceState,
-        guild: typeof state.guild,
+        _state: VoiceState,
+        guild: typeof _state.guild,
     ): void {
         if (vcMembers.size > 0) {
             return;
@@ -403,8 +385,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
     private resume(
         vcMembers: VoiceChannel["members"],
         queue: ServerQueue,
-        state: VoiceState,
-        guild: typeof state.guild,
+        _state: VoiceState,
+        guild: typeof _state.guild,
     ): void {
         if (vcMembers.size <= 0) {
             return;

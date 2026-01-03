@@ -1,15 +1,9 @@
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
-import { OperationManager } from "./OperationManager.js";
 import { type GuildData } from "../../typings/index.js";
+import { OperationManager } from "./OperationManager.js";
 
-/**
- * SQLite Data Manager for multi-bot support.
- * Provides same interface as JSONDataManager but uses SQLite database for better concurrency and scalability.
- * 
- * @template T - Type of data being managed (should be Record<string, GuildData>)
- */
 export class SQLiteDataManager<T extends Record<string, any> = Record<string, GuildData>> {
     private readonly db: Database.Database;
     private readonly manager = new OperationManager();
@@ -18,10 +12,9 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
     public constructor(public readonly dbPath: string) {
         this.ensureDirectory();
         this.db = new Database(this.dbPath, {
-            verbose: undefined, // Disable SQL query logging
+            verbose: undefined,
         });
 
-        // Enable WAL mode for better concurrency
         this.db.pragma("journal_mode = WAL");
         this.db.pragma("foreign_keys = ON");
 
@@ -37,7 +30,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
     }
 
     private initSchema(): void {
-        // Guilds table - stores basic guild settings
         this.db.exec(`
             CREATE TABLE IF NOT EXISTS guilds (
                 guild_id TEXT PRIMARY KEY,
@@ -47,8 +39,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
             )
         `);
 
-        // Request channels table - stores request channel configuration per bot
-        // bot_id is used to separate request channels between bot instances in multi-bot mode
         this.db.exec(`
             CREATE TABLE IF NOT EXISTS request_channels (
                 guild_id TEXT NOT NULL,
@@ -60,8 +50,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
             )
         `);
 
-        // Player states table - stores player settings (volume, loop, shuffle, filters) per guild and bot
-        // bot_id is used to separate player states between bot instances in multi-bot mode
         this.db.exec(`
             CREATE TABLE IF NOT EXISTS player_states (
                 guild_id TEXT NOT NULL,
@@ -75,8 +63,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
             )
         `);
 
-        // Queue states table - stores queue state per guild (per bot instance in multi-bot)
-        // bot_id is used to separate queue states between bot instances in multi-bot mode
         this.db.exec(`
             CREATE TABLE IF NOT EXISTS queue_states (
                 guild_id TEXT NOT NULL,
@@ -91,7 +77,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
             )
         `);
 
-        // Create indexes for better query performance
         this.db.exec(`
             CREATE INDEX IF NOT EXISTS idx_queue_states_guild ON queue_states(guild_id);
             CREATE INDEX IF NOT EXISTS idx_queue_states_bot ON queue_states(bot_id);
@@ -106,9 +91,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         return this._data;
     }
 
-    /**
-     * Load all guild data from database into memory cache
-     */
     public async load(): Promise<T | null> {
         try {
             await this.manager.add(async () => {
@@ -129,7 +111,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
 
                 const data: Record<string, GuildData> = {};
 
-                // Load guilds
                 for (const guild of guilds) {
                     data[guild.guild_id] = {
                         locale: guild.locale ?? undefined,
@@ -143,9 +124,10 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                     };
                 }
 
-                // Load request channels - for backward compatibility, load the first one found per guild
-                // In multi-bot mode, each bot should use getRequestChannel() method with bot_id instead
-                const requestChannelsByGuild = new Map<string, { channel_id: string | null; message_id: string | null }>();
+                const requestChannelsByGuild = new Map<
+                    string,
+                    { channel_id: string | null; message_id: string | null }
+                >();
                 for (const rc of requestChannels) {
                     if (!requestChannelsByGuild.has(rc.guild_id)) {
                         requestChannelsByGuild.set(rc.guild_id, {
@@ -154,7 +136,7 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                         });
                     }
                 }
-                
+
                 for (const [guildId, rc] of requestChannelsByGuild.entries()) {
                     if (!data[guildId]) {
                         data[guildId] = {};
@@ -175,20 +157,12 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         }
     }
 
-    /**
-     * Save data to database. Accepts a function that returns the data to save.
-     * The function approach allows for atomic updates.
-     * Compatible with JSONDataManager interface.
-     */
     public async save(data: () => T): Promise<T | null> {
         await this.manager.add(async () => {
             const dat = data();
 
-            // Start transaction
             const transaction = this.db.transaction(() => {
-                // Update guilds
-                for (const [guildId, guildData] of Object.entries(dat) as Array<[string, GuildData]>) {
-                    // Upsert guild
+                for (const [guildId, guildData] of Object.entries(dat) as [string, GuildData][]) {
                     const guildStmt = this.db.prepare(`
                         INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
                         VALUES (?, ?, ?, ?)
@@ -204,13 +178,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                         guildData.dj?.enable ? 1 : 0,
                         guildData.dj?.role ?? null,
                     );
-
-                    // Note: Request channel is now saved via saveRequestChannel() method with bot_id
-                    // This section is kept for backward compatibility but may not work correctly in multi-bot
-                    // For multi-bot, use saveRequestChannel() instead
-                    // if (guildData.requestChannel !== undefined) {
-                    //     // Skip - use saveRequestChannel() method instead
-                    // }
                 }
             });
 
@@ -220,14 +187,9 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         return this.load() as Promise<T | null>;
     }
 
-    /**
-     * Get queue state for a specific guild and bot (for multi-bot support)
-     */
     public getQueueState(guildId: string, botId: string): GuildData["queueState"] | null {
         const result = this.db
-            .prepare(
-                "SELECT * FROM queue_states WHERE guild_id = ? AND bot_id = ?",
-            )
+            .prepare("SELECT * FROM queue_states WHERE guild_id = ? AND bot_id = ?")
             .get(guildId, botId) as
             | {
                   text_channel_id: string;
@@ -251,9 +213,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         };
     }
 
-    /**
-     * Save queue state for a specific guild and bot (for multi-bot support)
-     */
     public async saveQueueState(
         guildId: string,
         botId: string,
@@ -264,15 +223,13 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         }
 
         await this.manager.add(async () => {
-            // Ensure guild exists in guilds table first (required for FOREIGN KEY constraint)
             const guildStmt = this.db.prepare(`
                 INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
                 VALUES (?, ?, ?, ?)
                 ON CONFLICT(guild_id) DO NOTHING
             `);
             guildStmt.run(guildId, null, 0, null);
-            
-            // Now insert/update queue state
+
             const stmt = this.db.prepare(`
                 INSERT INTO queue_states (guild_id, bot_id, text_channel_id, voice_channel_id, songs_json, current_song_key, current_position)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -296,23 +253,17 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         });
     }
 
-    /**
-     * Delete queue state for a specific guild and bot
-     */
     public async deleteQueueState(guildId: string, botId: string): Promise<void> {
         await this.manager.add(async () => {
-            this.db.prepare("DELETE FROM queue_states WHERE guild_id = ? AND bot_id = ?").run(guildId, botId);
+            this.db
+                .prepare("DELETE FROM queue_states WHERE guild_id = ? AND bot_id = ?")
+                .run(guildId, botId);
         });
     }
 
-    /**
-     * Get player state for a specific guild and bot (for multi-bot support)
-     */
     public getPlayerState(guildId: string, botId: string): GuildData["playerState"] | null {
         const result = this.db
-            .prepare(
-                "SELECT * FROM player_states WHERE guild_id = ? AND bot_id = ?",
-            )
+            .prepare("SELECT * FROM player_states WHERE guild_id = ? AND bot_id = ?")
             .get(guildId, botId) as
             | {
                   loop_mode: string;
@@ -326,13 +277,11 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
             return null;
         }
 
-        // Handle null or empty filters_json
         let filters: Record<string, boolean> = {};
         if (result.filters_json) {
             try {
                 filters = JSON.parse(result.filters_json) as Record<string, boolean>;
-            } catch (error) {
-                // If JSON parsing fails, use empty object
+            } catch {
                 filters = {};
             }
         }
@@ -345,9 +294,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         };
     }
 
-    /**
-     * Save player state for a specific guild and bot (for multi-bot support)
-     */
     public async savePlayerState(
         guildId: string,
         botId: string,
@@ -358,15 +304,13 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         }
 
         await this.manager.add(async () => {
-            // Ensure guild exists in guilds table first (required for FOREIGN KEY constraint)
             const guildStmt = this.db.prepare(`
                 INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
                 VALUES (?, ?, ?, ?)
                 ON CONFLICT(guild_id) DO NOTHING
             `);
             guildStmt.run(guildId, null, 0, null);
-            
-            // Now insert/update player state
+
             const stmt = this.db.prepare(`
                 INSERT INTO player_states (guild_id, bot_id, loop_mode, shuffle, volume, filters_json)
                 VALUES (?, ?, ?, ?, ?, ?)
@@ -388,19 +332,18 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         });
     }
 
-    /**
-     * Delete player state for a specific guild and bot
-     */
     public async deletePlayerState(guildId: string, botId: string): Promise<void> {
         await this.manager.add(async () => {
-            this.db.prepare("DELETE FROM player_states WHERE guild_id = ? AND bot_id = ?").run(guildId, botId);
+            this.db
+                .prepare("DELETE FROM player_states WHERE guild_id = ? AND bot_id = ?")
+                .run(guildId, botId);
         });
     }
 
-    /**
-     * Get request channel for a specific guild and bot
-     */
-    public getRequestChannel(guildId: string, botId: string): { channelId: string | null; messageId: string | null } | null {
+    public getRequestChannel(
+        guildId: string,
+        botId: string,
+    ): { channelId: string | null; messageId: string | null } | null {
         const stmt = this.db.prepare(
             "SELECT * FROM request_channels WHERE guild_id = ? AND bot_id = ?",
         );
@@ -421,9 +364,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         };
     }
 
-    /**
-     * Save request channel for a specific guild and bot
-     */
     public async saveRequestChannel(
         guildId: string,
         botId: string,
@@ -431,15 +371,13 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         messageId: string | null,
     ): Promise<void> {
         await this.manager.add(async () => {
-            // Ensure guild exists in guilds table first (required for FOREIGN KEY constraint)
             const guildStmt = this.db.prepare(`
                 INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
                 VALUES (?, ?, ?, ?)
                 ON CONFLICT(guild_id) DO NOTHING
             `);
             guildStmt.run(guildId, null, 0, null);
-            
-            // Now insert/update request channel
+
             const stmt = this.db.prepare(`
                 INSERT INTO request_channels (guild_id, bot_id, channel_id, message_id)
                 VALUES (?, ?, ?, ?)
@@ -451,36 +389,26 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         });
     }
 
-    /**
-     * Delete request channel for a specific guild and bot
-     */
     public async deleteRequestChannel(guildId: string, botId: string): Promise<void> {
         await this.manager.add(async () => {
-            this.db.prepare("DELETE FROM request_channels WHERE guild_id = ? AND bot_id = ?").run(guildId, botId);
+            this.db
+                .prepare("DELETE FROM request_channels WHERE guild_id = ? AND bot_id = ?")
+                .run(guildId, botId);
         });
     }
 
-    /**
-     * Get all bots that have request channels in a guild
-     */
     public getBotsWithRequestChannel(guildId: string): string[] {
         const stmt = this.db.prepare("SELECT bot_id FROM request_channels WHERE guild_id = ?");
         const rows = stmt.all(guildId) as { bot_id: string }[];
         return rows.map((row) => row.bot_id);
     }
 
-    /**
-     * Get all bots that have player states in a guild
-     */
     public getBotsWithPlayerState(guildId: string): string[] {
         const stmt = this.db.prepare("SELECT bot_id FROM player_states WHERE guild_id = ?");
         const rows = stmt.all(guildId) as { bot_id: string }[];
         return rows.map((row) => row.bot_id);
     }
 
-    /**
-     * Close database connection
-     */
     public close(): void {
         this.db.close();
     }
