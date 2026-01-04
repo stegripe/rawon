@@ -11,7 +11,7 @@ import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 
-@Event<typeof ReadyEvent>("ready")
+@Event<typeof ReadyEvent>("clientReady")
 export class ReadyEvent extends BaseEvent {
     public async execute(): Promise<void> {
         if (this.client.application?.owner) {

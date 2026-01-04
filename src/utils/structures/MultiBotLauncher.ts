@@ -68,7 +68,7 @@ export class MultiBotLauncher {
         options: ClientOptions,
     ): Promise<Rawon> {
         const client = new Rawon(options);
-        client.on("ready", () => {
+        client.on("clientReady", () => {
             log.info(
                 `[MultiBot] Bot #${tokenIndex} (${client.user?.tag}) is ready! (${client.guilds.cache.size} guilds)`,
             );
