@@ -156,6 +156,18 @@ export class ReadyEvent extends BaseEvent {
                     return;
                 }
 
+                const membersInChannel = voiceChannel.members.size;
+                if (membersInChannel === 0) {
+                    this.client.logger.warn(
+                        `[Restore] ❌ Cancelling restore for guild ${guild.name} (${guildId}): Voice channel ${voiceChannel.name} (${voiceChannel.id}) is empty`,
+                    );
+                    return;
+                }
+
+                this.client.logger.info(
+                    `[Restore] ✅ Voice channel validation passed: channel="${voiceChannel.name}" (${voiceChannel.id}), members=${membersInChannel}`,
+                );
+
                 try {
                     this.client.logger.info(
                         `[Restore] Restoring queue for guild ${guild.name} (${guildId}): ` +
