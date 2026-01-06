@@ -441,13 +441,6 @@ export class ServerQueue {
         }
     }
 
-    /**
-     * Sets a filter state. If a song is playing:
-     * - For fully cached songs: restart with seek to current position (smooth transition)
-     * - For live streams, non-cached, or still caching songs: restart from beginning
-     *
-     * Returns whether the filter was applied with seek (true) or restarted from beginning (false)
-     */
     public setFilter(filter: keyof typeof filterArgs, state: boolean): boolean {
         const before = this.filters[filter];
         this.filters[filter] = state;
@@ -460,7 +453,6 @@ export class ServerQueue {
             const songUrl = currentSong.song.url;
             const isLive = currentSong.song.isLive ?? false;
 
-            // For live streams or when audio cache is disabled, restart from beginning
             if (isLive || !enableAudioCache) {
                 this.seekOffset = 0;
                 this.playing = false;
@@ -468,12 +460,10 @@ export class ServerQueue {
                 return false;
             }
 
-            // Check if the song is fully cached
             const isCached = this.client.audioCache.isCached(songUrl);
             const isInProgress = this.client.audioCache.isInProgress(songUrl);
 
             if (isCached && !isInProgress) {
-                // Song is fully cached - seek to current position for smooth transition
                 const currentPosition =
                     Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
 
@@ -483,7 +473,6 @@ export class ServerQueue {
                 return true;
             }
 
-            // Song is not fully cached - restart from beginning (acceptable per user request)
             this.client.logger.info(
                 `[ServerQueue] Filter "${filter}" set to ${state}, restarting song from beginning (not fully cached).`,
             );

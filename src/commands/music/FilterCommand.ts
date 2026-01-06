@@ -111,11 +111,9 @@ export class FilterCommand extends BaseCommand {
             const newState = subcmd === "enable";
 
             if (queue) {
-                // Queue exists - use the queue's setFilter method
                 const appliedWithSeek = queue.setFilter(filter, newState);
 
                 if (appliedWithSeek) {
-                    // Filter applied with smooth seek transition (fully cached song)
                     return ctx.reply({
                         embeds: [
                             createEmbed(
@@ -128,7 +126,6 @@ export class FilterCommand extends BaseCommand {
                         ],
                     });
                 }
-                // Filter applied but song restarted from beginning (not fully cached)
                 return ctx.reply({
                     embeds: [
                         createEmbed(
@@ -143,7 +140,6 @@ export class FilterCommand extends BaseCommand {
                     ],
                 });
             }
-            // No queue exists - save filter state directly to guild player state
             await this.saveFilterWithoutQueue(ctx, filter, newState);
             return ctx.reply({
                 embeds: [
@@ -160,7 +156,6 @@ export class FilterCommand extends BaseCommand {
             });
         }
 
-        // Get current filters (from queue if exists, otherwise from saved state)
         const currentFilters = await this.getCurrentFilters(ctx);
 
         if (filterArgs[filter]) {
@@ -211,9 +206,6 @@ export class FilterCommand extends BaseCommand {
         });
     }
 
-    /**
-     * Save filter state when no queue exists
-     */
     private async saveFilterWithoutQueue(
         ctx: CommandContext,
         filter: keyof typeof filterArgs,
@@ -226,7 +218,6 @@ export class FilterCommand extends BaseCommand {
 
         const botId = this.client.user?.id ?? "unknown";
 
-        // Get existing player state or create new one
         let playerState: NonNullable<GuildData["playerState"]>;
 
         if (this.client.config.isMultiBot) {
@@ -244,10 +235,8 @@ export class FilterCommand extends BaseCommand {
             playerState = existingState ?? this.getDefaultPlayerState();
         }
 
-        // Update the filter
         playerState.filters[filter] = state;
 
-        // Save the updated state
         if (this.client.config.isMultiBot) {
             if (
                 "savePlayerState" in this.client.data &&
@@ -267,18 +256,13 @@ export class FilterCommand extends BaseCommand {
         }
     }
 
-    /**
-     * Get current filter state from queue or saved player state
-     */
     private async getCurrentFilters(
         ctx: CommandContext,
     ): Promise<Partial<Record<keyof typeof filterArgs, boolean>>> {
-        // If queue exists, use queue filters
         if (ctx.guild?.queue) {
             return ctx.guild.queue.filters;
         }
 
-        // Otherwise, get from saved state
         const guildId = ctx.guild?.id;
         if (!guildId) {
             return {};
@@ -302,9 +286,6 @@ export class FilterCommand extends BaseCommand {
         return {};
     }
 
-    /**
-     * Get default player state
-     */
     private getDefaultPlayerState(): NonNullable<GuildData["playerState"]> {
         return {
             loopMode: "OFF",
