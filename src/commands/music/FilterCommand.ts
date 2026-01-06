@@ -120,7 +120,7 @@ export class FilterCommand extends BaseCommand {
                                 "info",
                                 __mf("commands.music.filter.filterSet", {
                                     filter: `\`${filter}\``,
-                                    state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
+                                    state: `\`${newState ? "Enabled" : "Disabled"}\``,
                                 }),
                             ),
                         ],
@@ -132,7 +132,7 @@ export class FilterCommand extends BaseCommand {
                             "info",
                             __mf("commands.music.filter.filterSet", {
                                 filter: `\`${filter}\``,
-                                state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
+                                state: `\`${newState ? "Enabled" : "Disabled"}\``,
                             }),
                         ).setFooter({
                             text: __("commands.music.filter.filterRestartedFooter"),
@@ -147,7 +147,7 @@ export class FilterCommand extends BaseCommand {
                         "info",
                         __mf("commands.music.filter.filterSet", {
                             filter: `\`${filter}\``,
-                            state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
+                            state: `\`${newState ? "Enabled" : "Disabled"}\``,
                         }),
                     ).setFooter({
                         text: __("commands.music.filter.filterNoQueueFooter"),
