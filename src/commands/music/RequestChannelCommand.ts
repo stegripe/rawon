@@ -211,6 +211,20 @@ export class RequestChannelCommand extends BaseCommand {
         }
 
         if (subcommand === "remove") {
+            // Check if there's a request channel to remove
+            const existingChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+            if (!existingChannel) {
+                return ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "warn",
+                            __("commands.music.requestChannel.noChannelToRemove"),
+                            true,
+                        ),
+                    ],
+                });
+            }
+
             await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
 
             return ctx.reply({

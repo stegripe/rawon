@@ -282,6 +282,7 @@
                 "failedToSetup": "Gagal atur channel request. Coba cek izinku ya.",
                 "alreadyHasChannel": "Server ini udah punya channel request di {channel}. Hapus dulu sebelum atur yang baru.",
                 "channelAlreadyInUse": "Channel ini udah dipake sebagai channel request.",
+                "noChannelToRemove": "Gak ada channel request yang diatur buat dihapus.",
                 "slashSetDescription": "Atur channel jadi channel request",
                 "slashRemoveDescription": "Hapus channel request",
                 "slashStatusDescription": "Lihat channel request sekarang",
