@@ -138,8 +138,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        // Only consider it a "move" if the bot was actually in a channel before (oldId is defined)
-        // If oldId is undefined, the bot just joined a new channel, not moved
         const isBotMoved =
             member?.id === botId && oldId !== undefined && oldId !== newId && newId !== undefined;
 

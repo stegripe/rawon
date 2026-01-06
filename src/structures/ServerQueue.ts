@@ -536,8 +536,6 @@ export class ServerQueue {
         clearTimeout(this.timeout ?? undefined);
         void this.clearQueueState();
 
-        // For multi-bot mode, only non-primary bots should reset player state
-        // Primary bot (or single bot mode) preserves player state
         if (this.client.config.isMultiBot) {
             const botInstance = this.client.multiBotManager.getBotByClient(this.client);
             if (botInstance && !botInstance.isPrimary) {

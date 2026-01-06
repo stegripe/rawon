@@ -265,7 +265,6 @@ export class InteractionCreateEvent extends BaseEvent {
                 .filter((x) => x.meta.slash !== undefined)
                 .find((x) => x.meta.slash?.name === interaction.commandName);
             if (cmd) {
-                // Cooldown handling for slash commands
                 if (!this.cooldowns.has(cmd.meta.name)) {
                     this.cooldowns.set(cmd.meta.name, new Collection());
                 }
@@ -275,7 +274,6 @@ export class InteractionCreateEvent extends BaseEvent {
                 const cooldownAmount = (cmd.meta.cooldown ?? 3) * 1_000;
                 const isDeveloper = this.client.config.devs.includes(interaction.user.id);
 
-                // Skip cooldown handling entirely for developers
                 if (!isDeveloper) {
                     if (timestamps?.has(interaction.user.id) === true) {
                         const expirationTime =
