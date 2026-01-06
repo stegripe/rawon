@@ -145,6 +145,8 @@
                 "usage": "{prefix}filter <enable | disable | status> [bộ lọc]",
                 "embedFooter": "Để {opstate} bộ lọc, dùng {prefix}filter {opstate} {filter}",
                 "filterSet": " Bộ lọc {filter} đang {state}",
+                "filterRestartedFooter": "Bài hát đã được khởi động lại từ đầu (âm thanh vẫn đang tải).",
+                "filterNoQueueFooter": "Bộ lọc sẽ được áp dụng khi bạn bắt đầu phát nhạc.",
                 "slashStateDescription": "{state, select, enable {Enable} other {Disable}} bộ lọc bài hát",
                 "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {bật} other {tắt}}",
                 "slashStatusDescription": "Kiểm tra trạng thái hiện tại của bộ lọc bài hát",
