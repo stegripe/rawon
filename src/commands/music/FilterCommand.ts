@@ -122,7 +122,7 @@ export class FilterCommand extends BaseCommand {
                                 "info",
                                 __mf("commands.music.filter.filterSet", {
                                     filter: `\`${filter}\``,
-                                    state: `\`${newState ? "Enabled" : "Disabled"}\``,
+                                    state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
                                 }),
                             ),
                         ],
@@ -133,11 +133,13 @@ export class FilterCommand extends BaseCommand {
                     embeds: [
                         createEmbed(
                             "info",
-                            __mf("commands.music.filter.filterSetRestarted", {
+                            __mf("commands.music.filter.filterSet", {
                                 filter: `\`${filter}\``,
-                                state: `\`${newState ? "Enabled" : "Disabled"}\``,
+                                state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
                             }),
-                        ),
+                        ).setFooter({
+                            text: __("commands.music.filter.filterRestartedFooter"),
+                        }),
                     ],
                 });
             }
@@ -147,11 +149,13 @@ export class FilterCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "info",
-                        __mf("commands.music.filter.filterSetNoQueue", {
+                        __mf("commands.music.filter.filterSet", {
                             filter: `\`${filter}\``,
-                            state: `\`${newState ? "Enabled" : "Disabled"}\``,
+                            state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
                         }),
-                    ),
+                    ).setFooter({
+                        text: __("commands.music.filter.filterNoQueueFooter"),
+                    }),
                 ],
             });
         }
