@@ -45,7 +45,7 @@ export async function handleVideos(
     const __ = i18n__(client, ctx.guild);
     const __mf = i18n__mf(client, ctx.guild);
 
-    async function sendPagination(): Promise<void> {
+    async function sendConfirmation(): Promise<Message | undefined> {
         for (const song of toQueue) {
             ctx.guild?.queue?.songs.addSong(
                 song,
@@ -53,6 +53,29 @@ export async function handleVideos(
             );
         }
 
+        // For single songs, show the song title in the message (consistent with request-channel)
+        if (toQueue.length === 1) {
+            const song = toQueue[0];
+            const songTitle = escapeMarkdown(parseHTMLElements(song.title));
+            const songUrl = song.url;
+            const confirmEmbed = createEmbed(
+                "success",
+                `🎶 **|** ${__mf("requestChannel.addedToQueue", {
+                    song: `**[${songTitle}](${songUrl})**`,
+                })}`,
+            );
+            if (song.thumbnail) {
+                confirmEmbed.setThumbnail(song.thumbnail);
+            }
+            const msg = await ctx.reply({ embeds: [confirmEmbed] }, true);
+
+            if (inRequestChannel && msg) {
+                autoDeleteMessage(msg);
+            }
+            return msg;
+        }
+
+        // For multiple songs, show pagination
         const opening = __mf("utils.generalHandler.handleVideoInitial", {
             length: toQueue.length,
         });
@@ -91,7 +114,7 @@ export async function handleVideos(
     }
 
     if (ctx.guild?.queue) {
-        await sendPagination();
+        await sendConfirmation();
 
         if (wasIdle === true) {
             void play(ctx.guild, undefined, wasIdle);
@@ -103,7 +126,7 @@ export async function handleVideos(
     (ctx.guild as unknown as NonNullable<typeof ctx.guild>).queue = new ServerQueue(
         ctx.channel as TextChannel,
     );
-    await sendPagination();
+    await sendConfirmation();
 
     client.debugLog.logData(
         "info",

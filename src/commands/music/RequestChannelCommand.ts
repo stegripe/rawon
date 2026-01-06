@@ -92,6 +92,41 @@ export class RequestChannelCommand extends BaseCommand {
                 });
             }
 
+            // Check if this guild already has a request channel set to a different channel
+            const currentChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+            if (currentChannel && currentChannel.id !== channel.id) {
+                return ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            __mf("commands.music.requestChannel.alreadyHasChannel", {
+                                channel: `<#${currentChannel.id}>`,
+                            }),
+                            true,
+                        ),
+                    ],
+                });
+            }
+
+            // Check if this channel is already used as a request channel (for multi-bot duplication prevention)
+            if (this.client.requestChannelManager.isRequestChannel(ctx.guild, channel.id)) {
+                const existingChannel = this.client.requestChannelManager.getRequestChannel(
+                    ctx.guild,
+                );
+                if (existingChannel?.id !== channel.id) {
+                    // Another bot already has this channel as a request channel
+                    return ctx.reply({
+                        embeds: [
+                            createEmbed(
+                                "error",
+                                __("commands.music.requestChannel.channelAlreadyInUse"),
+                                true,
+                            ),
+                        ],
+                    });
+                }
+            }
+
             const textChannel = channel as TextChannel;
             const botMember = ctx.guild.members.me;
 

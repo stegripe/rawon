@@ -46,7 +46,6 @@ const formatLocale = (locale: string | undefined): string => {
 export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 const rawTokens = process.env.DISCORD_TOKEN ?? "";
-const rawIds = process.env.DISCORD_ID ?? "";
 
 const hasComma = rawTokens.includes(",");
 const tokenArray = hasComma
@@ -58,13 +57,7 @@ const tokenArray = hasComma
       ? [rawTokens.trim()]
       : [];
 
-const idArray = rawIds
-    .split(",")
-    .map((id) => id.trim())
-    .filter((id) => id.length > 0);
-
 export const discordTokens: string[] = tokenArray;
-export const discordIds: string[] = idArray;
 export const discordToken = tokenArray[0] ?? "";
 export const isMultiBot = tokenArray.length > 1 && hasComma;
 

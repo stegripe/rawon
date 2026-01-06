@@ -77,8 +77,180 @@ export class ReadyEvent extends BaseEvent {
             ),
         );
 
+        await this.cleanupOrphanedGuildData();
+        await this.validateRequestChannels();
         await this.restoreRequestChannelMessages();
         await this.restoreQueueStates();
+    }
+
+    private async cleanupOrphanedGuildData(): Promise<void> {
+        const botId = this.client.user?.id ?? "unknown";
+
+        // Only primary bot or single bot should do cleanup to avoid race conditions
+        const isPrimaryOrSingle =
+            !this.client.config.isMultiBot ||
+            this.client.multiBotManager.getPrimaryBot() === this.client;
+        if (!isPrimaryOrSingle) {
+            return;
+        }
+
+        if (
+            !("getAllGuildIds" in this.client.data) ||
+            typeof this.client.data.getAllGuildIds !== "function"
+        ) {
+            return;
+        }
+
+        const dbGuildIds = (this.client.data as any).getAllGuildIds() as string[];
+        const botGuildIds = new Set(this.client.guilds.cache.keys());
+
+        // In multi-bot mode, collect guild IDs from all bots
+        if (this.client.config.isMultiBot) {
+            const bots = this.client.multiBotManager.getBots();
+            for (const bot of bots) {
+                for (const guildId of bot.client.guilds.cache.keys()) {
+                    botGuildIds.add(guildId);
+                }
+            }
+        }
+
+        let cleanedCount = 0;
+        for (const dbGuildId of dbGuildIds) {
+            // IMPORTANT: Double-check that the bot is truly not in this guild
+            // before deleting. This ensures we don't accidentally delete data
+            // for guilds we're still a member of.
+            if (!botGuildIds.has(dbGuildId)) {
+                // Do an additional verification by trying to fetch the guild
+                const guild = this.client.guilds.cache.get(dbGuildId);
+                if (guild) {
+                    // Guild exists in cache, don't delete
+                    this.client.logger.debug(
+                        `[Cleanup] Guild ${dbGuildId} found in cache after all, skipping cleanup`,
+                    );
+                    continue;
+                }
+
+                // For multi-bot mode, check all bots
+                if (this.client.config.isMultiBot) {
+                    let foundInAnyBot = false;
+                    const bots = this.client.multiBotManager.getBots();
+                    for (const bot of bots) {
+                        if (bot.client.guilds.cache.has(dbGuildId)) {
+                            foundInAnyBot = true;
+                            break;
+                        }
+                    }
+                    if (foundInAnyBot) {
+                        this.client.logger.debug(
+                            `[Cleanup] Guild ${dbGuildId} found in another bot's cache, skipping cleanup`,
+                        );
+                        continue;
+                    }
+                }
+
+                // Safe to delete - bot is confirmed not in this guild
+                this.client.logger.info(
+                    `[Cleanup] Removing orphaned data for guild ${dbGuildId} - bot is no longer a member`,
+                );
+
+                try {
+                    // Delete bot-specific data
+                    if (
+                        "deleteRequestChannel" in this.client.data &&
+                        typeof this.client.data.deleteRequestChannel === "function"
+                    ) {
+                        await (this.client.data as any).deleteRequestChannel(dbGuildId, botId);
+                    }
+                    if (
+                        "deletePlayerState" in this.client.data &&
+                        typeof this.client.data.deletePlayerState === "function"
+                    ) {
+                        await (this.client.data as any).deletePlayerState(dbGuildId, botId);
+                    }
+                    if (
+                        "deleteQueueState" in this.client.data &&
+                        typeof this.client.data.deleteQueueState === "function"
+                    ) {
+                        await (this.client.data as any).deleteQueueState(dbGuildId, botId);
+                    }
+
+                    // For single bot mode, also delete the guild entry itself
+                    if (
+                        !this.client.config.isMultiBot &&
+                        "deleteGuildData" in this.client.data &&
+                        typeof this.client.data.deleteGuildData === "function"
+                    ) {
+                        await (this.client.data as any).deleteGuildData(dbGuildId);
+                    }
+
+                    cleanedCount++;
+                } catch (error) {
+                    this.client.logger.error(
+                        `[Cleanup] Failed to clean up data for guild ${dbGuildId}:`,
+                        error,
+                    );
+                }
+            }
+        }
+
+        if (cleanedCount > 0) {
+            this.client.logger.info(
+                `[Cleanup] Cleaned up orphaned data for ${cleanedCount} guild(s)`,
+            );
+        }
+    }
+
+    private async validateRequestChannels(): Promise<void> {
+        const botId = this.client.user?.id ?? "unknown";
+        const data = this.client.data.data;
+        if (!data) {
+            return;
+        }
+
+        for (const guildId of Object.keys(data)) {
+            const guild = this.client.guilds.cache.get(guildId);
+            if (!guild) {
+                continue;
+            }
+
+            // Get request channel data for this bot
+            let requestChannelData: { channelId: string | null; messageId: string | null } | null =
+                null;
+
+            if (
+                "getRequestChannel" in this.client.data &&
+                typeof this.client.data.getRequestChannel === "function"
+            ) {
+                requestChannelData = (this.client.data as any).getRequestChannel(guildId, botId);
+            } else {
+                requestChannelData = data[guildId]?.requestChannel ?? null;
+            }
+
+            if (!requestChannelData?.channelId) {
+                continue;
+            }
+
+            const channel = guild.channels.cache.get(requestChannelData.channelId);
+
+            // Check if channel is invalid (deleted or inaccessible)
+            if (!channel || channel.type !== ChannelType.GuildText) {
+                this.client.logger.warn(
+                    `[Validation] Request channel ${requestChannelData.channelId} for guild ${guild.name} (${guildId}) is invalid. Cleaning up...`,
+                );
+
+                try {
+                    await this.client.requestChannelManager.setRequestChannel(guild, null);
+                    this.client.logger.info(
+                        `[Validation] Cleaned up invalid request channel for guild ${guild.name} (${guildId})`,
+                    );
+                } catch (error) {
+                    this.client.logger.error(
+                        `[Validation] Failed to clean up invalid request channel for guild ${guildId}:`,
+                        error,
+                    );
+                }
+            }
+        }
     }
 
     private async restoreQueueStates(): Promise<void> {

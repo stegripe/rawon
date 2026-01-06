@@ -1,12 +1,6 @@
 import process from "node:process";
 import { type ClientOptions } from "discord.js";
-import {
-    clientOptions,
-    discordIds,
-    discordTokens,
-    isMultiBot,
-    isProd,
-} from "../../config/index.js";
+import { clientOptions, discordTokens, isMultiBot, isProd } from "../../config/index.js";
 import { Rawon } from "../../structures/Rawon.js";
 import { MultiBotManager } from "./MultiBotManager.js";
 import { NoStackError } from "./NoStackError.js";
@@ -64,7 +58,6 @@ export class MultiBotLauncher {
     private async createBotInstance(
         token: string,
         tokenIndex: number,
-        _botId: string,
         options: ClientOptions,
     ): Promise<Rawon> {
         const client = new Rawon(options);
@@ -109,12 +102,7 @@ export class MultiBotLauncher {
                 process.exit(1);
             }
 
-            const client = await this.createBotInstance(
-                token,
-                0,
-                discordIds[0] ?? "",
-                clientOptions,
-            );
+            const client = await this.createBotInstance(token, 0, clientOptions);
             this.clients.push(client);
             log.info("[MultiBot] Single bot mode - Started 1 bot instance.");
             return;
@@ -125,13 +113,12 @@ export class MultiBotLauncher {
 
         for (let i = 0; i < discordTokens.length; i++) {
             const token = discordTokens[i];
-            const botId = discordIds[i] ?? "";
 
             if (!token) {
                 log.warn(`[MultiBot] Token #${i} is empty, skipping...`);
                 continue;
             }
-            startPromises.push(this.createBotInstance(token, i, botId, clientOptions));
+            startPromises.push(this.createBotInstance(token, i, clientOptions));
         }
         try {
             const clients = await Promise.all(startPromises);

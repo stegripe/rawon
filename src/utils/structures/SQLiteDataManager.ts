@@ -409,6 +409,20 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         return rows.map((row) => row.bot_id);
     }
 
+    public getAllGuildIds(): string[] {
+        const stmt = this.db.prepare("SELECT guild_id FROM guilds");
+        const rows = stmt.all() as { guild_id: string }[];
+        return rows.map((row) => row.guild_id);
+    }
+
+    public async deleteGuildData(guildId: string): Promise<void> {
+        await this.manager.add(async () => {
+            // With CASCADE enabled, deleting from guilds will automatically
+            // delete related records from request_channels, player_states, and queue_states
+            this.db.prepare("DELETE FROM guilds WHERE guild_id = ?").run(guildId);
+        });
+    }
+
     public close(): void {
         this.db.close();
     }

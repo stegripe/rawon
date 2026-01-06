@@ -280,6 +280,8 @@
                 "noBotPermissions": "Gak bisa cek izinku di channel itu.",
                 "missingBotPermissions": "Aku kurang izin ini di channel itu: {permissions}",
                 "failedToSetup": "Gagal atur channel request. Coba cek izinku ya.",
+                "alreadyHasChannel": "Server ini udah punya channel request di {channel}. Hapus dulu sebelum atur yang baru.",
+                "channelAlreadyInUse": "Channel ini udah dipake sebagai channel request.",
                 "slashSetDescription": "Atur channel jadi channel request",
                 "slashRemoveDescription": "Hapus channel request",
                 "slashStatusDescription": "Lihat channel request sekarang",

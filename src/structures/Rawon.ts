@@ -81,22 +81,9 @@ export class Rawon extends Client {
         await this.login(loginToken);
 
         if (this.config.isMultiBot && this.user) {
-            const botId = this.user.id;
-            const tokenIndex = this.config.discordIds.indexOf(botId);
-            if (tokenIndex >= 0) {
-                this.multiBotManager.registerBot(this, tokenIndex, botId);
-                this.logger.info(
-                    `[MultiBot] Registered bot instance ${this.user.tag} (${botId}) at index ${tokenIndex}`,
-                );
-
-                this.logger.info(
-                    `[MultiBot] Bot ${this.user.tag} is in ${this.guilds.cache.size} guild(s): ${Array.from(this.guilds.cache.keys()).join(", ")}`,
-                );
-            } else {
-                this.logger.warn(
-                    `[MultiBot] Bot ${this.user.tag} (${botId}) not found in DISCORD_ID list, cannot register`,
-                );
-            }
+            this.logger.info(
+                `[MultiBot] Bot ${this.user.tag} is in ${this.guilds.cache.size} guild(s): ${Array.from(this.guilds.cache.keys()).join(", ")}`,
+            );
         }
 
         return this;
