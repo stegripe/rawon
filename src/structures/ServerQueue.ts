@@ -441,6 +441,34 @@ export class ServerQueue {
         }
     }
 
+    public async clearPlayerState(): Promise<void> {
+        if (this.client.config.isMultiBot) {
+            if (
+                "deletePlayerState" in this.client.data &&
+                typeof this.client.data.deletePlayerState === "function"
+            ) {
+                const botId = this.client.user?.id ?? "unknown";
+                await (this.client.data as any).deletePlayerState(this.textChannel.guild.id, botId);
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ cleared player state for guild ${this.textChannel.guild.name}`,
+                );
+            }
+        } else {
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[this.textChannel.guild.id] ?? {};
+
+            delete guildData.playerState;
+
+            await this.client.data.save(() => ({
+                ...currentData,
+                [this.textChannel.guild.id]: guildData,
+            }));
+            this.client.logger.info(
+                `✅ Cleared player state for guild ${this.textChannel.guild.name}`,
+            );
+        }
+    }
+
     public setFilter(filter: keyof typeof filterArgs, state: boolean): boolean {
         const before = this.filters[filter];
         this.filters[filter] = state;
@@ -507,6 +535,21 @@ export class ServerQueue {
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
         void this.clearQueueState();
+
+        if (this.client.config.isMultiBot) {
+            const botInstance = this.client.multiBotManager.getBotByClient(this.client);
+            if (botInstance && !botInstance.isPrimary) {
+                void this.clearPlayerState();
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} (non-primary) cleared player state on destroy`,
+                );
+            } else {
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} (primary) preserving player state on destroy`,
+                );
+            }
+        }
+
         delete this.textChannel.guild.queue;
         if (songUrls.length > 0) {
             this.client.audioCache.clearCacheForUrls(songUrls);

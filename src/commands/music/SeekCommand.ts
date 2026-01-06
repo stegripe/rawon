@@ -79,7 +79,7 @@ export class SeekCommand extends BaseCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        __mf("commands.music.seek.invalidTime", { time: `\`${timeArg}\`` }),
+                        __mf("commands.music.seek.invalidTime", { time: `**\`${timeArg}\`**` }),
                         true,
                     ),
                 ],
@@ -93,7 +93,7 @@ export class SeekCommand extends BaseCommand {
                     createEmbed(
                         "error",
                         __mf("commands.music.seek.exceedsDuration", {
-                            duration: `\`${normalizeTime(song.song.duration)}\``,
+                            duration: `**\`${normalizeTime(song.song.duration)}\`**`,
                         }),
                         true,
                     ),
@@ -107,7 +107,7 @@ export class SeekCommand extends BaseCommand {
                 createEmbed(
                     "success",
                     `⏩ **|** ${__mf("commands.music.seek.seeked", {
-                        time: `\`${normalizeTime(seekSeconds)}\``,
+                        time: `**\`${normalizeTime(seekSeconds)}\`**`,
                     })}`,
                 ),
             ],
