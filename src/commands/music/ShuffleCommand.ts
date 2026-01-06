@@ -47,7 +47,7 @@ export class ShuffleCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         `🔀 **|** ${__mf("commands.music.shuffle.actualState", {
-                            state: `**\`${ctx.guild?.queue?.shuffle === true ? "ENABLED" : "DISABLED"}\`**`,
+                            state: `**\`${ctx.guild?.queue?.shuffle === true ? "Enabled" : "Disabled"}\`**`,
                         })}`,
                     ),
                 ],
@@ -65,7 +65,7 @@ export class ShuffleCommand extends BaseCommand {
                     `${isShuffle === true ? "🔀" : "▶️"} **|** ${__mf(
                         "commands.music.shuffle.newState",
                         {
-                            state: `**\`${isShuffle === true ? "ENABLED" : "DISABLED"}\`**`,
+                            state: `**\`${isShuffle === true ? "Enabled" : "Disabled"}\`**`,
                         },
                     )}`,
                 ),
