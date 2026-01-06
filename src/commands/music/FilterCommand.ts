@@ -112,9 +112,10 @@ export class FilterCommand extends BaseCommand {
 
             if (queue) {
                 // Queue exists - use the queue's setFilter method
-                const appliedImmediately = queue.setFilter(filter, newState);
+                const appliedWithSeek = queue.setFilter(filter, newState);
 
-                if (appliedImmediately) {
+                if (appliedWithSeek) {
+                    // Filter applied with smooth seek transition (fully cached song)
                     return ctx.reply({
                         embeds: [
                             createEmbed(
@@ -127,12 +128,12 @@ export class FilterCommand extends BaseCommand {
                         ],
                     });
                 }
-                // Filter was saved but couldn't apply immediately (song not cached)
+                // Filter applied but song restarted from beginning (not fully cached)
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "info",
-                            __mf("commands.music.filter.filterSetPending", {
+                            __mf("commands.music.filter.filterSetRestarted", {
                                 filter: `\`${filter}\``,
                                 state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
                             }),

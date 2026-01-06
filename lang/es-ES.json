@@ -145,6 +145,8 @@
                 "usage": "{prefix}filter <enable | disable | status> [filtro]",
                 "embedFooter": "Para {opstate} el filtro, utilice {prefix}filter {opstate} {filter}",
                 "filterSet": "El filtro {filter} ya está {state}",
+                "filterSetRestarted": "El filtro {filter} ya está {state}. La canción se reinició desde el principio (el audio aún se estaba cargando).",
+                "filterSetNoQueue": "El filtro {filter} ya está {state}. El filtro se aplicará cuando empieces a reproducir música.",
                 "slashStateDescription": "{state, select, enable {Activar} other {Desactivar}} un filtro de canción",
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
                 "slashStatusDescription": "Comprobar el estado actual de los filtros de canción",
