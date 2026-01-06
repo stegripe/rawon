@@ -78,16 +78,22 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         const oldVc = oldState.channel;
         const newId = newVc?.id;
         const oldId = oldVc?.id;
-        const queueVc = newState.guild.channels.cache.get(
-            queue.connection?.joinConfig.channelId ?? "",
-        ) as StageChannel | VoiceChannel;
+        // Get the actual voice channel where the bot is currently in
+        const botVoiceChannel = newState.guild.members.me?.voice.channel;
+        const queueVcId = queue.connection?.joinConfig.channelId ?? "";
+        // Use bot's actual voice channel if available, otherwise fall back to joinConfig
+        const actualBotChannelId = botVoiceChannel?.id ?? queueVcId;
+        const queueVc = newState.guild.channels.cache.get(actualBotChannelId) as
+            | StageChannel
+            | VoiceChannel;
         const member = newState.member;
         const oldMember = oldState.member;
         const newVcMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
-        const queueVcMembers = queueVc.members.filter((mbr) => !mbr.user.bot);
+        const queueVcMembers = queueVc?.members.filter((mbr) => !mbr.user.bot);
         const botId = this.client.user?.id;
 
-        if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
+        // Bot was disconnected from voice channel
+        if (oldMember?.id === botId && oldId === queueVcId && newId === undefined) {
             const isIdle = queue.idle;
             const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
                 newState.guild,
@@ -128,12 +134,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        if (
-            member?.id === botId &&
-            oldId === queueVc.id &&
-            newId !== queueVc.id &&
-            newId !== undefined
-        ) {
+        // Bot was moved to a different voice channel
+        if (member?.id === botId && oldId !== undefined && newId !== undefined && oldId !== newId) {
             if (!newVcMembers) {
                 return;
             }
@@ -259,9 +261,10 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             }
         }
 
+        // A user left the voice channel where the bot is
         if (
-            oldId === queueVc.id &&
-            newId !== queueVc.id &&
+            oldId === actualBotChannelId &&
+            newId !== actualBotChannelId &&
             member?.user.bot !== true &&
             queue.timeout === null &&
             !queue.idle
@@ -270,17 +273,18 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             this.timeout(queueVcMembers, queue, newState);
         }
 
-        if (newId === queueVc.id && member?.user.bot !== true && queue.timeout) {
+        // A user joined the voice channel where the bot is
+        if (newId === actualBotChannelId && member?.user.bot !== true && queue.timeout) {
             this.resume(queueVcMembers, queue, newState);
         }
     }
 
     private timeout(
-        vcMembers: VoiceChannel["members"],
+        vcMembers: VoiceChannel["members"] | undefined,
         queue: ServerQueue,
         state: VoiceState,
     ): void {
-        if (vcMembers.size > 0) {
+        if ((vcMembers?.size ?? 0) > 0) {
             return;
         }
 
@@ -340,11 +344,11 @@ export class VoiceStateUpdateEvent extends BaseEvent {
     }
 
     private resume(
-        vcMembers: VoiceChannel["members"],
+        vcMembers: VoiceChannel["members"] | undefined,
         queue: ServerQueue,
         state: VoiceState,
     ): void {
-        if (vcMembers.size <= 0) {
+        if ((vcMembers?.size ?? 0) <= 0) {
             return;
         }
 
