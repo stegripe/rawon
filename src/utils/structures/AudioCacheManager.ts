@@ -32,14 +32,6 @@ export class AudioCacheManager {
 
     public constructor(public readonly client: Rawon) {
         this.cacheDir = path.resolve(process.cwd(), "cache", "audio");
-        this.clearCacheOnStartup();
-    }
-
-    private clearCacheOnStartup(): void {
-        if (existsSync(this.cacheDir)) {
-            rmSync(this.cacheDir, { recursive: true, force: true });
-            this.client.logger.info("[AudioCacheManager] Cleared old cache files on startup.");
-        }
         this.ensureCacheDir();
     }
 
@@ -493,6 +485,38 @@ export class AudioCacheManager {
     public clearFailedUrls(): void {
         this.failedUrls.clear();
         this.client.logger.info("[AudioCacheManager] Failed URL cache cleared.");
+    }
+
+    public clearCacheForUrls(urls: string[]): void {
+        let removedCount = 0;
+        for (const url of urls) {
+            const key = this.getCacheKey(url);
+            const entry = this.cachedFiles.get(key);
+            if (entry) {
+                try {
+                    if (existsSync(entry.path)) {
+                        rmSync(entry.path, { force: true });
+                        removedCount++;
+                    }
+                    this.cachedFiles.delete(key);
+                } catch {
+                    // Ignore errors
+                }
+            }
+            // Also remove from in-progress and failed
+            this.inProgressFiles.delete(key);
+            this.failedUrls.delete(key);
+            // Remove from pre-cache queue
+            const queueIndex = this.preCacheQueue.indexOf(url);
+            if (queueIndex !== -1) {
+                this.preCacheQueue.splice(queueIndex, 1);
+            }
+        }
+        if (removedCount > 0) {
+            this.client.logger.info(
+                `[AudioCacheManager] Cleared cache for ${removedCount} songs from destroyed queue.`,
+            );
+        }
     }
 
     public getStats(): {

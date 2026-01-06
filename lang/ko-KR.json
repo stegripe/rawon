@@ -339,7 +339,7 @@
         "stopped": "음악을 정지하고 대기열을 비웠어요.",
         "loopChanged": "반복 모드가 {mode}로 변경되었어요.",
         "shuffleChanged": "셔플 모드가 이제 {state}예요.",
-        "volumeChanged": "볼륨이 {volume}%로 변경되었어요.",
+        "volumeChanged": "볼륨이 {volume}(으)로 변경되었어요.",
         "queueCleared": "대기열이 비워졌어요.",
         "queueListTitle": "대기열 목록",
         "emptyQueue": "대기열이 비어 있어요.",
