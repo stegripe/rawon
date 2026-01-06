@@ -111,6 +111,10 @@ export class MessageCreateEvent extends BaseEvent {
                         "dc",
                         "remove",
                         "seek",
+                        "nowplaying",
+                        "np",
+                        "queue",
+                        "q",
                     ];
                     const isMusicCommand = cmdName && musicCommands.includes(cmdName);
 
@@ -288,6 +292,10 @@ export class MessageCreateEvent extends BaseEvent {
                     "dc",
                     "remove",
                     "seek",
+                    "nowplaying",
+                    "np",
+                    "queue",
+                    "q",
                 ];
                 const isMusicCommand = cmdName && musicCommands.includes(cmdName);
 

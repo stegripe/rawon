@@ -20,6 +20,15 @@ export class ReadyEvent extends BaseEvent {
 
         await this.client.spotify.renew();
 
+        // Clear audio cache on startup (only primary bot or non-multibot)
+        const isPrimaryOrSingle =
+            !this.client.config.isMultiBot ||
+            this.client.multiBotManager.getPrimaryBot() === this.client;
+        if (isPrimaryOrSingle) {
+            this.client.audioCache.clearCache();
+            this.client.logger.info("[Startup] Cleared audio cache on bot restart");
+        }
+
         if (this.client.config.isMultiBot) {
             const primaryBot = this.client.multiBotManager.getPrimaryBot();
             if (primaryBot && primaryBot !== this.client && primaryBot.user) {

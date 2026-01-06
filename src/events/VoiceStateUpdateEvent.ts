@@ -98,7 +98,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const member = newState.member;
         const oldMember = oldState.member;
-        const newVcMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
         const queueVcMembers = queueVc.members.filter((mbr) => !mbr.user.bot);
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
@@ -142,42 +141,46 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        // Bot movement handling - only process if this is about THIS bot
-        if (
-            member?.id === botId &&
-            oldId === queueVc.id &&
-            newId !== queueVc.id &&
-            newId !== undefined
-        ) {
-            // When bot is moved to a new channel, check if that channel is empty
-            // and trigger pause/timeout if needed - regardless of multi-bot mode
-            const newChannelMemberCount = newVcMembers?.size ?? 0;
+        // Bot movement handling - only process if this is about THIS bot being moved
+        const isBotMoved = member?.id === botId && oldId !== newId && newId !== undefined;
 
-            this.client.logger.debug(
-                `[VoiceState] ${this.client.user?.tag} was moved from ${oldId} to ${newId}, newChannelMemberCount=${newChannelMemberCount}`,
+        if (isBotMoved) {
+            // Get the actual members in the NEW channel (excluding bots)
+            const newChannelMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
+            const newChannelMemberCount = newChannelMembers?.size ?? 0;
+
+            this.client.logger.info(
+                `[VoiceState] ${this.client.user?.tag} was MOVED from ${oldId} to ${newId}, ` +
+                    `newChannelMemberCount=${newChannelMemberCount}, queueVcId=${queueVc.id}, idle=${queue.idle}`,
             );
 
             // If the new channel is empty, trigger timeout (pause + 1 min timer)
             if (newChannelMemberCount === 0 && !queue.idle) {
                 this.client.logger.info(
-                    `[VoiceState] ${this.client.user?.tag} moved to empty channel ${newId}, triggering pause and timeout`,
+                    `[VoiceState] ${this.client.user?.tag} moved to EMPTY channel ${newId}, triggering pause and timeout`,
                 );
                 queue.skipVoters = [];
-                if (queue.timeout === null && newVcMembers !== undefined) {
-                    this.timeout(newVcMembers, queue, newState, thisBotGuild);
+                if (queue.timeout === null) {
+                    // Pass empty collection to trigger timeout
+                    const emptyMembers = newChannelMembers ?? queueVc.members.filter(() => false);
+                    this.timeout(emptyMembers, queue, newState, thisBotGuild);
                 }
                 return;
             }
 
             // If new channel has members and we were in timeout, resume
-            if (newChannelMemberCount > 0 && queue.timeout !== null && newVcMembers !== undefined) {
+            if (
+                newChannelMemberCount > 0 &&
+                queue.timeout !== null &&
+                newChannelMembers !== undefined
+            ) {
                 this.client.logger.info(
                     `[VoiceState] ${this.client.user?.tag} moved to channel ${newId} with members, resuming`,
                 );
-                this.resume(newVcMembers, queue, newState, thisBotGuild);
+                this.resume(newChannelMembers, queue, newState, thisBotGuild);
             }
 
-            if (!newVcMembers) {
+            if (!newChannelMembers) {
                 return;
             }
             queue.skipVoters = [];
