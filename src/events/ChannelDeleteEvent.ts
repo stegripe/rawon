@@ -1,6 +1,19 @@
 import { ChannelType, type DMChannel, type GuildChannel } from "discord.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
+import { type ExtendedDataManager } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
+
+// Type guard to check if data manager has getRequestChannel method
+function hasGetRequestChannel(
+    data: unknown,
+): data is Pick<ExtendedDataManager, "getRequestChannel"> {
+    return (
+        typeof data === "object" &&
+        data !== null &&
+        "getRequestChannel" in data &&
+        typeof (data as ExtendedDataManager).getRequestChannel === "function"
+    );
+}
 
 @Event("channelDelete")
 export class ChannelDeleteEvent extends BaseEvent {
@@ -27,11 +40,8 @@ export class ChannelDeleteEvent extends BaseEvent {
         let requestChannelData: { channelId: string | null; messageId: string | null } | null =
             null;
 
-        if (
-            "getRequestChannel" in this.client.data &&
-            typeof this.client.data.getRequestChannel === "function"
-        ) {
-            requestChannelData = (this.client.data as any).getRequestChannel(guild.id, botId);
+        if (hasGetRequestChannel(this.client.data)) {
+            requestChannelData = this.client.data.getRequestChannel(guild.id, botId);
         } else {
             requestChannelData = this.client.data.data?.[guild.id]?.requestChannel ?? null;
         }

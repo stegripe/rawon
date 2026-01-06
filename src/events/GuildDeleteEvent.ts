@@ -1,6 +1,26 @@
 import { type Guild } from "discord.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
+import { type ExtendedDataManager } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
+
+// Type guard to check if data manager has the delete methods
+function hasDeleteMethods(
+    data: unknown,
+): data is Pick<
+    ExtendedDataManager,
+    "deleteRequestChannel" | "deletePlayerState" | "deleteQueueState"
+> {
+    return (
+        typeof data === "object" &&
+        data !== null &&
+        "deleteRequestChannel" in data &&
+        typeof (data as ExtendedDataManager).deleteRequestChannel === "function" &&
+        "deletePlayerState" in data &&
+        typeof (data as ExtendedDataManager).deletePlayerState === "function" &&
+        "deleteQueueState" in data &&
+        typeof (data as ExtendedDataManager).deleteQueueState === "function"
+    );
+}
 
 @Event("guildDelete")
 export class GuildDeleteEvent extends BaseEvent {
@@ -16,34 +36,21 @@ export class GuildDeleteEvent extends BaseEvent {
         const botId = this.client.user?.id ?? "unknown";
 
         try {
-            // Delete request channel data
-            if (
-                "deleteRequestChannel" in this.client.data &&
-                typeof this.client.data.deleteRequestChannel === "function"
-            ) {
-                await (this.client.data as any).deleteRequestChannel(guild.id, botId);
+            // Check if data manager has the delete methods
+            if (hasDeleteMethods(this.client.data)) {
+                const dataManager = this.client.data;
+
+                await dataManager.deleteRequestChannel(guild.id, botId);
                 this.client.logger.info(
                     `Deleted request channel data for guild ${guild.id} (bot ${botId})`,
                 );
-            }
 
-            // Delete player state
-            if (
-                "deletePlayerState" in this.client.data &&
-                typeof this.client.data.deletePlayerState === "function"
-            ) {
-                await (this.client.data as any).deletePlayerState(guild.id, botId);
+                await dataManager.deletePlayerState(guild.id, botId);
                 this.client.logger.info(
                     `Deleted player state for guild ${guild.id} (bot ${botId})`,
                 );
-            }
 
-            // Delete queue state
-            if (
-                "deleteQueueState" in this.client.data &&
-                typeof this.client.data.deleteQueueState === "function"
-            ) {
-                await (this.client.data as any).deleteQueueState(guild.id, botId);
+                await dataManager.deleteQueueState(guild.id, botId);
                 this.client.logger.info(`Deleted queue state for guild ${guild.id} (bot ${botId})`);
             }
 
