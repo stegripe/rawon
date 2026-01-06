@@ -480,14 +480,12 @@ export class ServerQueue {
     }
 
     public destroy(): void {
-        // Collect song URLs before destroying the queue for cache cleanup
         const songUrls = this.songs.map((song) => song.song.url);
         this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
         void this.clearQueueState();
         delete this.textChannel.guild.queue;
-        // Clear cache for songs that were in this queue
         if (songUrls.length > 0) {
             this.client.audioCache.clearCacheForUrls(songUrls);
         }

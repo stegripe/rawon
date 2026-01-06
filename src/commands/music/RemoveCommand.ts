@@ -71,7 +71,6 @@ export class RemoveCommand extends BaseCommand {
                 | undefined
         )?.resource?.metadata as QueueSong | undefined;
         const full = (ctx.guild?.queue?.songs as unknown as SongManager).sortByIndex();
-        // Use the same filtering as QueueCommand to match displayed positions
         const displayedSongs =
             ctx.guild?.queue?.loopMode === "QUEUE"
                 ? full

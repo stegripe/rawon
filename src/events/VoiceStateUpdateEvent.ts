@@ -294,10 +294,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     }, 10_000);
                 }
             }
-            // Handle voice channel change: pause if alone, resume if users present
             const newChannelMemberCount = newVcMembers?.size ?? 0;
             if (newChannelMemberCount === 0 && !queue.idle) {
-                // Bot is alone in the new channel - start timeout if not already in timeout
                 if (queue.timeout === null && newVcMembers !== undefined) {
                     this.timeout(newVcMembers, queue, newState, thisBotGuild);
                 }
@@ -306,7 +304,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 queue.timeout !== null &&
                 newVcMembers !== undefined
             ) {
-                // Users present in new channel and bot was in timeout - resume
                 this.resume(newVcMembers, queue, newState, thisBotGuild);
             }
         }

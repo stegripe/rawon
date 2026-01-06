@@ -503,10 +503,8 @@ export class AudioCacheManager {
                     // Ignore errors
                 }
             }
-            // Also remove from in-progress and failed
             this.inProgressFiles.delete(key);
             this.failedUrls.delete(key);
-            // Remove from pre-cache queue
             const queueIndex = this.preCacheQueue.indexOf(url);
             if (queueIndex !== -1) {
                 this.preCacheQueue.splice(queueIndex, 1);
