@@ -65,19 +65,23 @@ export class RemoveCommand extends BaseCommand {
             return;
         }
 
-        const cloned = [
-            ...(ctx.guild?.queue?.songs as unknown as SongManager).sortByIndex().values(),
-        ];
-        const songs = positions.map((x) => cloned[Number.parseInt(x, 10) - 1]).filter(Boolean);
-        for (const song of songs) {
-            ctx.guild?.queue?.songs.delete(song.key);
-        }
-
         const np = (
             ctx.guild?.queue?.player.state as
                 | (AudioPlayerState & { resource: AudioResource | undefined })
                 | undefined
         )?.resource?.metadata as QueueSong | undefined;
+
+        const full = (ctx.guild?.queue?.songs as unknown as SongManager).sortByIndex();
+        const songsCollection =
+            ctx.guild?.queue?.loopMode === "QUEUE"
+                ? full
+                : full.filter((val) => val.index >= (np?.index ?? 0));
+        const cloned = [...songsCollection.values()];
+        const songs = positions.map((x) => cloned[Number.parseInt(x, 10) - 1]).filter(Boolean);
+        for (const song of songs) {
+            ctx.guild?.queue?.songs.delete(song.key);
+        }
+
         const isSkip = songs.map((x) => x.key).includes(np?.key ?? "");
         if (isSkip && ctx.guild?.queue) {
             if (!ctx.guild.queue.playing) {
