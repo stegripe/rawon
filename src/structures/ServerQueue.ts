@@ -8,6 +8,7 @@ import {
     type VoiceConnection,
 } from "@discordjs/voice";
 import { type Snowflake, type TextChannel } from "discord.js";
+import { enableAudioCache } from "../config/env.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
@@ -440,7 +441,7 @@ export class ServerQueue {
         }
     }
 
-    public setFilter(filter: keyof typeof filterArgs, state: boolean): void {
+    public setFilter(filter: keyof typeof filterArgs, state: boolean): boolean {
         const before = this.filters[filter];
         this.filters[filter] = state;
 
@@ -448,19 +449,40 @@ export class ServerQueue {
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
             const resource = (this.player.state as AudioPlayerPlayingState).resource;
-            const currentPosition =
-                Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
+            const currentSong = (resource as AudioResource<QueueSong>).metadata;
+            const songUrl = currentSong.song.url;
+            const isLive = currentSong.song.isLive ?? false;
 
-            this.seekOffset = currentPosition;
+            if (isLive || !enableAudioCache) {
+                this.seekOffset = 0;
+                this.playing = false;
+                void play(this.textChannel.guild, currentSong.key, true, 0);
+                return false;
+            }
 
-            this.playing = false;
-            void play(
-                this.textChannel.guild,
-                (resource as AudioResource<QueueSong>).metadata.key,
-                true,
-                currentPosition,
+            const isCached = this.client.audioCache.isCached(songUrl);
+            const isInProgress = this.client.audioCache.isInProgress(songUrl);
+
+            if (isCached && !isInProgress) {
+                const currentPosition =
+                    Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
+
+                this.seekOffset = currentPosition;
+                this.playing = false;
+                void play(this.textChannel.guild, currentSong.key, true, currentPosition);
+                return true;
+            }
+
+            this.client.logger.info(
+                `[ServerQueue] Filter "${filter}" set to ${state}, restarting song from beginning (not fully cached).`,
             );
+            this.seekOffset = 0;
+            this.playing = false;
+            void play(this.textChannel.guild, currentSong.key, true, 0);
+            return false;
         }
+
+        return true;
     }
 
     public setLoopMode(mode: LoopMode): void {

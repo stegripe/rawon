@@ -145,6 +145,8 @@
                 "usage": "{prefix}filter <enable | disable | status> [フィルター]",
                 "embedFooter": "そのフィルターを{opstate}するには、 {prefix}filter {opstate} {filter}を使用してください。",
                 "filterSet": "{filter}フィルターは現在{state}です。",
+                "filterRestartedFooter": "曲は最初から再開されました（オーディオはまだバッファリング中でした）。",
+                "filterNoQueueFooter": "音楽の再生を開始するとフィルターが適用されます。",
                 "slashStateDescription": "{state, select, enable {有効化} other {無効化}} フィルター",
                 "slashStateFilterDescription": "フィルターは{state, select, enable {有効化} other {無効化}}になります。",
                 "slashStatusDescription": "現在のフィルターの状態を確認",
