@@ -371,7 +371,7 @@
         "stopped": "Musique arrêtée et file d'attente vidée.",
         "loopChanged": "Mode boucle changé en {mode}.",
         "shuffleChanged": "Mode aléatoire maintenant {state}.",
-        "volumeChanged": "Volume changé à {volume}%.",
+        "volumeChanged": "Volume changé à {volume}.",
         "queueCleared": "La file d'attente a été vidée.",
         "queueListTitle": "Liste de File d'attente",
         "emptyQueue": "La file d'attente est vide.",

@@ -371,7 +371,7 @@
         "stopped": "Музыка остановлена и очередь очищена.",
         "loopChanged": "Режим повтора изменен на {mode}.",
         "shuffleChanged": "Режим перемешивания теперь {state}.",
-        "volumeChanged": "Громкость изменена на {volume}%.",
+        "volumeChanged": "Громкость изменена на {volume}.",
         "queueCleared": "Очередь очищена.",
         "queueListTitle": "Список очереди",
         "emptyQueue": "Очередь пуста.",

@@ -371,7 +371,7 @@
         "stopped": "音乐已停止，队列已清空。",
         "loopChanged": "循环模式已更改为 {mode}。",
         "shuffleChanged": "随机播放模式现在是 {state}。",
-        "volumeChanged": "音量已更改为 {volume}%。",
+        "volumeChanged": "音量已更改为 {volume}。",
         "queueCleared": "队列已清空。",
         "queueListTitle": "队列列表",
         "emptyQueue": "队列是空的。",

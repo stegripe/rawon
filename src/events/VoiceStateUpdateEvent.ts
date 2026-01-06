@@ -303,7 +303,12 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 // Bot is alone in the new channel - start timeout if not already in timeout
                 if (queue.timeout === null) {
                     const emptyMembers = newVcMembers ?? new Collection<Snowflake, GuildMember>();
-                    this.timeout(emptyMembers as VoiceChannel["members"], queue, newState, thisBotGuild);
+                    this.timeout(
+                        emptyMembers as VoiceChannel["members"],
+                        queue,
+                        newState,
+                        thisBotGuild,
+                    );
                 }
             } else if (newChannelMemberCount > 0 && queue.timeout !== null) {
                 // Users present in new channel and bot was in timeout - resume
