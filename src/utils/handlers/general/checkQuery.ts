@@ -23,16 +23,16 @@ export function checkQuery(string: string): QueryData {
     } else if (/youtube|youtu\.be/gu.test(url.hostname)) {
         result.sourceType = "youtube";
 
-        if (
-            (!/youtu\.be/gu.test(url.hostname) && url.pathname.startsWith("/playlist")) ||
-            url.searchParams.has("list")
-        ) {
+        const isYoutubeMain = /youtube/gu.test(url.hostname);
+        const isYoutuBe = /youtu\.be/gu.test(url.hostname);
+
+        if ((!isYoutuBe && url.pathname.startsWith("/playlist")) || url.searchParams.has("list")) {
             result.type = "playlist";
         } else if (
-            (/youtube/gu.test(url.hostname) && url.pathname.startsWith("/watch")) ||
-            (/youtube/gu.test(url.hostname) && url.pathname.startsWith("/shorts/")) ||
-            (/youtube/gu.test(url.hostname) && url.pathname.startsWith("/live/")) ||
-            (/youtu\.be/gu.test(url.hostname) && url.pathname !== "")
+            (isYoutubeMain && url.pathname.startsWith("/watch")) ||
+            (isYoutubeMain && url.pathname.startsWith("/shorts/")) ||
+            (isYoutubeMain && url.pathname.startsWith("/live/")) ||
+            (isYoutuBe && url.pathname !== "")
         ) {
             result.type = "track";
         } else {
