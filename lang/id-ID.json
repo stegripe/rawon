@@ -145,6 +145,8 @@
                 "usage": "{prefix}filter <enable | disable | status> [filter]",
                 "embedFooter": "Buat {opstate, select, enable {nyalain} other {matiin}} filter ini, pake {prefix}filter {opstate} {filter}",
                 "filterSet": "Filter {filter} sekarang {state}",
+                "filterSetPending": "Filter {filter} sekarang {state}. Filter bakal aktif pas lagu sekarang di-restart atau pas lagu selanjutnya (audio masih di-buffer).",
+                "filterSetNoQueue": "Filter {filter} sekarang {state}. Filter bakal aktif pas kamu mulai muter musik.",
                 "slashStateDescription": "{state, select, enable {Nyalain} other {Matiin}} filter lagu",
                 "slashStateFilterDescription": "Filter lagu yang mau di{state, select, enable {nyalain} other {matiin}}",
                 "slashStatusDescription": "Cek status filter lagu",

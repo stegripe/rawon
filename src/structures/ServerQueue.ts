@@ -8,6 +8,7 @@ import {
     type VoiceConnection,
 } from "@discordjs/voice";
 import { type Snowflake, type TextChannel } from "discord.js";
+import { enableAudioCache } from "../config/env.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
@@ -440,7 +441,15 @@ export class ServerQueue {
         }
     }
 
-    public setFilter(filter: keyof typeof filterArgs, state: boolean): void {
+    /**
+     * Sets a filter state. If a song is playing:
+     * - For live streams or when audio cache is disabled: restart immediately
+     * - For cached songs: restart with seek to current position
+     * - For songs still being cached: only save the filter state (will apply on next song or restart)
+     *
+     * Returns whether the filter was applied immediately to the current playback
+     */
+    public setFilter(filter: keyof typeof filterArgs, state: boolean): boolean {
         const before = this.filters[filter];
         this.filters[filter] = state;
 
@@ -448,19 +457,44 @@ export class ServerQueue {
 
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
             const resource = (this.player.state as AudioPlayerPlayingState).resource;
-            const currentPosition =
-                Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
+            const currentSong = (resource as AudioResource<QueueSong>).metadata;
+            const songUrl = currentSong.song.url;
+            const isLive = currentSong.song.isLive ?? false;
 
-            this.seekOffset = currentPosition;
+            // For live streams or when audio cache is disabled, we can restart immediately
+            // because they don't use seek position
+            if (isLive || !enableAudioCache) {
+                this.playing = false;
+                void play(this.textChannel.guild, currentSong.key, true, 0);
+                return true;
+            }
 
-            this.playing = false;
-            void play(
-                this.textChannel.guild,
-                (resource as AudioResource<QueueSong>).metadata.key,
-                true,
-                currentPosition,
+            // Check if the song is cached and not still in progress
+            const isCached = this.client.audioCache.isCached(songUrl);
+            const isInProgress = this.client.audioCache.isInProgress(songUrl);
+
+            if (isCached && !isInProgress) {
+                // Song is fully cached, we can safely seek and restart
+                const currentPosition =
+                    Math.floor((resource.playbackDuration ?? 0) / 1000) + this.seekOffset;
+
+                this.seekOffset = currentPosition;
+                this.playing = false;
+                void play(this.textChannel.guild, currentSong.key, true, currentPosition);
+                return true;
+            }
+
+            // Song is not cached or still being cached - don't try to restart with seek
+            // The filter will apply when the song naturally ends and a new song starts,
+            // or if the user manually skips/restarts
+            this.client.logger.info(
+                `[ServerQueue] Filter "${filter}" set to ${state} but song is not fully cached. ` +
+                    "Filter will apply on next song or manual restart.",
             );
+            return false;
         }
+
+        return true;
     }
 
     public setLoopMode(mode: LoopMode): void {

@@ -1,8 +1,8 @@
-import { AudioPlayerStatus } from "@discordjs/voice";
 import { ApplicationCommandOptionType, type Message } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
+import { type GuildData } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -108,46 +108,70 @@ export class FilterCommand extends BaseCommand {
             }
 
             const queue = ctx.guild?.queue;
-            if (!queue) {
+            const newState = subcmd === "enable";
+
+            if (queue) {
+                // Queue exists - use the queue's setFilter method
+                const appliedImmediately = queue.setFilter(filter, newState);
+
+                if (appliedImmediately) {
+                    return ctx.reply({
+                        embeds: [
+                            createEmbed(
+                                "info",
+                                __mf("commands.music.filter.filterSet", {
+                                    filter: `\`${filter}\``,
+                                    state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
+                                }),
+                            ),
+                        ],
+                    });
+                }
+                // Filter was saved but couldn't apply immediately (song not cached)
                 return ctx.reply({
-                    embeds: [createEmbed("warn", __("utils.musicDecorator.noQueue"))],
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            __mf("commands.music.filter.filterSetPending", {
+                                filter: `\`${filter}\``,
+                                state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
+                            }),
+                        ),
+                    ],
                 });
             }
-
-            if (queue.player.state.status !== AudioPlayerStatus.Playing) {
-                return ctx.reply({
-                    embeds: [createEmbed("warn", __("utils.musicDecorator.notPlaying"))],
-                });
-            }
-
-            queue.setFilter(filter, subcmd === "enable");
+            // No queue exists - save filter state directly to guild player state
+            await this.saveFilterWithoutQueue(ctx, filter, newState);
             return ctx.reply({
                 embeds: [
                     createEmbed(
                         "info",
-                        __mf("commands.music.filter.filterSet", {
+                        __mf("commands.music.filter.filterSetNoQueue", {
                             filter: `\`${filter}\``,
-                            state: `\`${subcmd === "enable" ? "ENABLED" : "DISABLED"}\``,
+                            state: `\`${newState ? "ENABLED" : "DISABLED"}\``,
                         }),
                     ),
                 ],
             });
         }
 
+        // Get current filters (from queue if exists, otherwise from saved state)
+        const currentFilters = await this.getCurrentFilters(ctx);
+
         if (filterArgs[filter]) {
+            const isEnabled = currentFilters[filter] === true;
             return ctx.reply({
                 embeds: [
                     createEmbed(
                         "info",
                         __mf("commands.music.filter.currentState", {
                             filter: `\`${filter}\``,
-                            state: `\`${ctx.guild?.queue?.filters[filter] === true ? "ENABLED" : "DISABLED"}\``,
+                            state: `\`${isEnabled ? "ENABLED" : "DISABLED"}\``,
                         }),
                     ).setFooter({
                         text: `• ${__mf("commands.music.filter.embedFooter", {
                             filter,
-                            opstate:
-                                ctx.guild?.queue?.filters[filter] === true ? "disable" : "enable",
+                            opstate: isEnabled ? "disable" : "enable",
                             prefix: ctx.isCommand() ? "/" : this.client.config.mainPrefix,
                         })}`,
                     }),
@@ -163,7 +187,7 @@ export class FilterCommand extends BaseCommand {
                         name: __("commands.music.filter.availableFilters"),
                         value:
                             keys
-                                .filter((x) => ctx.guild?.queue?.filters[x] !== true)
+                                .filter((x) => currentFilters[x] !== true)
                                 .map((x) => `\`${x}\``)
                                 .join("\n") || "-",
                         inline: true,
@@ -172,7 +196,7 @@ export class FilterCommand extends BaseCommand {
                         name: __("commands.music.filter.currentlyUsedFilters"),
                         value:
                             keys
-                                .filter((x) => ctx.guild?.queue?.filters[x] === true)
+                                .filter((x) => currentFilters[x] === true)
                                 .map((x) => `\`${x}\``)
                                 .join("\n") || "-",
                         inline: true,
@@ -180,5 +204,108 @@ export class FilterCommand extends BaseCommand {
                 ),
             ],
         });
+    }
+
+    /**
+     * Save filter state when no queue exists
+     */
+    private async saveFilterWithoutQueue(
+        ctx: CommandContext,
+        filter: keyof typeof filterArgs,
+        state: boolean,
+    ): Promise<void> {
+        const guildId = ctx.guild?.id;
+        if (!guildId) {
+            return;
+        }
+
+        const botId = this.client.user?.id ?? "unknown";
+
+        // Get existing player state or create new one
+        let playerState: NonNullable<GuildData["playerState"]>;
+
+        if (this.client.config.isMultiBot) {
+            if (
+                "getPlayerState" in this.client.data &&
+                typeof this.client.data.getPlayerState === "function"
+            ) {
+                const existingState = (this.client.data as any).getPlayerState(guildId, botId);
+                playerState = existingState ?? this.getDefaultPlayerState();
+            } else {
+                playerState = this.getDefaultPlayerState();
+            }
+        } else {
+            const existingState = this.client.data.data?.[guildId]?.playerState;
+            playerState = existingState ?? this.getDefaultPlayerState();
+        }
+
+        // Update the filter
+        playerState.filters[filter] = state;
+
+        // Save the updated state
+        if (this.client.config.isMultiBot) {
+            if (
+                "savePlayerState" in this.client.data &&
+                typeof this.client.data.savePlayerState === "function"
+            ) {
+                await (this.client.data as any).savePlayerState(guildId, botId, playerState);
+            }
+        } else {
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[guildId] ?? {};
+            guildData.playerState = playerState;
+
+            await this.client.data.save(() => ({
+                ...currentData,
+                [guildId]: guildData,
+            }));
+        }
+    }
+
+    /**
+     * Get current filter state from queue or saved player state
+     */
+    private async getCurrentFilters(
+        ctx: CommandContext,
+    ): Promise<Partial<Record<keyof typeof filterArgs, boolean>>> {
+        // If queue exists, use queue filters
+        if (ctx.guild?.queue) {
+            return ctx.guild.queue.filters;
+        }
+
+        // Otherwise, get from saved state
+        const guildId = ctx.guild?.id;
+        if (!guildId) {
+            return {};
+        }
+
+        const botId = this.client.user?.id ?? "unknown";
+
+        if (this.client.config.isMultiBot) {
+            if (
+                "getPlayerState" in this.client.data &&
+                typeof this.client.data.getPlayerState === "function"
+            ) {
+                const state = (this.client.data as any).getPlayerState(guildId, botId);
+                return (state?.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
+            }
+        } else {
+            const state = this.client.data.data?.[guildId]?.playerState;
+            return (state?.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
+        }
+
+        return {};
+    }
+
+    /**
+     * Get default player state
+     */
+    private getDefaultPlayerState(): NonNullable<GuildData["playerState"]> {
+        return {
+            loopMode: "OFF",
+            shuffle: false,
+            volume: 100,
+            filters: {},
+        };
     }
 }
