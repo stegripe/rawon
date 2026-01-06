@@ -145,6 +145,8 @@
                 "usage": "{prefix}filter <enable | disable | status> [過濾器]",
                 "embedFooter": "如 {opstate} 過濾器，請使用 {prefix}filter {opstate} {filter}",
                 "filterSet": "{filter} 過濾器現已 {state}",
+                "filterRestartedFooter": "歌曲從頭開始重播（音訊仍在緩衝中）。",
+                "filterNoQueueFooter": "過濾器將在您開始播放音樂時套用。",
                 "slashStateDescription": "{state, select, enable {啟用} other {停用}}歌曲過濾器",
                 "slashStateFilterDescription": "歌曲過濾器將會 {state, select, enable {啟用} other {停用}}",
                 "slashStatusDescription": "檢查歌曲過濾器的當前狀態",
