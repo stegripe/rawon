@@ -67,14 +67,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         }
 
         const botId = this.client.user?.id;
-        const memberUserId = newState.member?.user.id;
 
-        if (this.client.config.isMultiBot && memberUserId !== botId) {
-            this.client.logger.debug(
-                `[MultiBot] ${this.client.user?.tag} ignoring voice state update for ${memberUserId} (not this bot)`,
-            );
-            return;
-        }
+        // In multi-bot mode, we still need to track when users leave/join our voice channel
+        // to properly handle empty channel detection, so we don't return early here anymore
 
         const thisBotGuild = this.client.guilds.cache.get(newState.guild.id);
         if (!thisBotGuild) {
@@ -147,13 +142,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        if (this.client.config.isMultiBot && member?.id !== botId) {
-            this.client.logger.warn(
-                `[MultiBot] ${this.client.user?.tag} received voice state update for wrong bot: ${member?.id} (expected ${botId})`,
-            );
-            return;
-        }
-
+        // Bot movement handling - only process if this is about THIS bot
         if (
             member?.id === botId &&
             oldId === queueVc.id &&

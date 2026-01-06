@@ -88,23 +88,15 @@ export class ReadyEvent extends BaseEvent {
         ) {
             const data = this.client.data.data;
             if (data) {
-                const botsToCheck = this.client.config.isMultiBot
-                    ? this.client.multiBotManager.getBots().map((b) => b.botId)
-                    : [botId];
-
+                // In multi-bot mode, each bot should ONLY restore its OWN queue state
+                // This prevents rawon2 from restoring rawon1's queue after restart
                 for (const guildId of Object.keys(data)) {
-                    for (const checkBotId of botsToCheck) {
-                        const queueState = (this.client.data as any).getQueueState(
-                            guildId,
-                            checkBotId,
+                    const queueState = (this.client.data as any).getQueueState(guildId, botId);
+                    if (queueState && queueState.songs.length > 0) {
+                        queueStates.push({ guildId, queueState, botId });
+                        this.client.logger.info(
+                            `[Restore] Found queue state for guild ${guildId} from this bot ${botId}`,
                         );
-                        if (queueState && queueState.songs.length > 0) {
-                            queueStates.push({ guildId, queueState, botId: checkBotId });
-                            this.client.logger.info(
-                                `[Restore] Found queue state for guild ${guildId} from bot ${checkBotId}`,
-                            );
-                            break;
-                        }
                     }
                 }
             }
