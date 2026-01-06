@@ -273,35 +273,37 @@ export class InteractionCreateEvent extends BaseEvent {
                 const now = Date.now();
                 const timestamps = this.cooldowns.get(cmd.meta.name);
                 const cooldownAmount = (cmd.meta.cooldown ?? 3) * 1_000;
+                const isDeveloper = this.client.config.devs.includes(interaction.user.id);
 
-                if (timestamps?.has(interaction.user.id) === true) {
-                    const expirationTime =
-                        (timestamps.get(interaction.user.id) as unknown as number) + cooldownAmount;
-                    if (now < expirationTime) {
-                        const timeLeft = (expirationTime - now) / 1_000;
-                        await interaction.reply({
-                            flags: MessageFlags.Ephemeral,
-                            embeds: [
-                                createEmbed(
-                                    "warn",
-                                    `⚠️ **|** ${__mf("utils.cooldownMessage", {
-                                        author: interaction.user.toString(),
-                                        timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
-                                    })}`,
-                                    true,
-                                ),
-                            ],
-                        });
-                        return;
-                    }
+                // Skip cooldown handling entirely for developers
+                if (!isDeveloper) {
+                    if (timestamps?.has(interaction.user.id) === true) {
+                        const expirationTime =
+                            (timestamps.get(interaction.user.id) as unknown as number) +
+                            cooldownAmount;
+                        if (now < expirationTime) {
+                            const timeLeft = (expirationTime - now) / 1_000;
+                            await interaction.reply({
+                                flags: MessageFlags.Ephemeral,
+                                embeds: [
+                                    createEmbed(
+                                        "warn",
+                                        `⚠️ **|** ${__mf("utils.cooldownMessage", {
+                                            author: interaction.user.toString(),
+                                            timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
+                                        })}`,
+                                        true,
+                                    ),
+                                ],
+                            });
+                            return;
+                        }
 
-                    timestamps.set(interaction.user.id, now);
-                    setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
-                } else {
-                    timestamps?.set(interaction.user.id, now);
-                    // Developers are exempt from cooldowns
-                    if (this.client.config.devs.includes(interaction.user.id)) {
-                        timestamps?.delete(interaction.user.id);
+                        timestamps.set(interaction.user.id, now);
+                        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+                    } else {
+                        timestamps?.set(interaction.user.id, now);
+                        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
                     }
                 }
 
