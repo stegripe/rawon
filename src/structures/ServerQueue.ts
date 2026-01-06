@@ -539,7 +539,6 @@ export class ServerQueue {
                         return 0;
                     })
                     .catch((error: unknown) => {
-                        // Silently ignore "Unknown Message" error (10008) - message already deleted
                         const discordError = error as { code?: number };
                         if (discordError.code !== 10008) {
                             this.textChannel.client.logger.error(
@@ -567,7 +566,6 @@ export class ServerQueue {
                         return 0;
                     })
                     .catch((error: unknown) => {
-                        // Silently ignore "Unknown Message" error (10008) - message already deleted
                         const discordError = error as { code?: number };
                         if (discordError.code !== 10008) {
                             this.textChannel.client.logger.error(

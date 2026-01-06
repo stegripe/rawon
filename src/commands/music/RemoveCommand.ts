@@ -83,7 +83,6 @@ export class RemoveCommand extends BaseCommand {
 
         const isSkip = songs.map((x) => x.key).includes(np?.key ?? "");
 
-        // Check if we can skip before modifying the queue
         if (isSkip) {
             if (!queue.canSkip()) {
                 void ctx.reply({
@@ -99,12 +98,10 @@ export class RemoveCommand extends BaseCommand {
             }
         }
 
-        // Now delete the songs from the queue
         for (const song of songs) {
             queue.songs.delete(song.key);
         }
 
-        // If we're removing the currently playing song, stop the player to trigger next song
         if (isSkip) {
             if (!queue.playing) {
                 queue.playing = true;

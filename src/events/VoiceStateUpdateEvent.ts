@@ -68,9 +68,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const botId = this.client.user?.id;
 
-        // In multi-bot mode, we still need to track when users leave/join our voice channel
-        // to properly handle empty channel detection, so we don't return early here anymore
-
         const thisBotGuild = this.client.guilds.cache.get(newState.guild.id);
         if (!thisBotGuild) {
             return;
@@ -141,11 +138,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        // Bot movement handling - only process if this is about THIS bot being moved
         const isBotMoved = member?.id === botId && oldId !== newId && newId !== undefined;
 
         if (isBotMoved) {
-            // Get the actual members in the NEW channel (excluding bots)
             const newChannelMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
             const newChannelMemberCount = newChannelMembers?.size ?? 0;
 
@@ -154,21 +149,18 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     `newChannelMemberCount=${newChannelMemberCount}, queueVcId=${queueVc.id}, idle=${queue.idle}`,
             );
 
-            // If the new channel is empty, trigger timeout (pause + 1 min timer)
             if (newChannelMemberCount === 0 && !queue.idle) {
                 this.client.logger.info(
                     `[VoiceState] ${this.client.user?.tag} moved to EMPTY channel ${newId}, triggering pause and timeout`,
                 );
                 queue.skipVoters = [];
                 if (queue.timeout === null) {
-                    // Pass empty collection to trigger timeout
                     const emptyMembers = newChannelMembers ?? queueVc.members.filter(() => false);
                     this.timeout(emptyMembers, queue, newState, thisBotGuild);
                 }
                 return;
             }
 
-            // If new channel has members and we were in timeout, resume
             if (
                 newChannelMemberCount > 0 &&
                 queue.timeout !== null &&

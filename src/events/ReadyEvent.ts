@@ -20,7 +20,6 @@ export class ReadyEvent extends BaseEvent {
 
         await this.client.spotify.renew();
 
-        // Clear audio cache on startup (only primary bot or non-multibot)
         const isPrimaryOrSingle =
             !this.client.config.isMultiBot ||
             this.client.multiBotManager.getPrimaryBot() === this.client;
@@ -97,8 +96,6 @@ export class ReadyEvent extends BaseEvent {
         ) {
             const data = this.client.data.data;
             if (data) {
-                // In multi-bot mode, each bot should ONLY restore its OWN queue state
-                // This prevents rawon2 from restoring rawon1's queue after restart
                 for (const guildId of Object.keys(data)) {
                     const queueState = (this.client.data as any).getQueueState(guildId, botId);
                     if (queueState && queueState.songs.length > 0) {

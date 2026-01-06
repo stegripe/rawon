@@ -121,7 +121,6 @@ export class SkipToCommand extends BaseCommand {
             return;
         }
 
-        // Get the currently playing song to filter the queue the same way as QueueCommand
         if (queue.player.state.status !== AudioPlayerStatus.Playing) {
             await ctx.reply({
                 embeds: [createEmbed("warn", __("utils.musicDecorator.notPlaying"))],
@@ -130,7 +129,6 @@ export class SkipToCommand extends BaseCommand {
         }
         const np = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
         const fullSongs = [...(queue.songs.sortByIndex().values() as unknown as QueueSong[])];
-        // Filter songs the same way as QueueCommand - show only remaining songs unless loop mode is QUEUE
         const songs =
             queue.loopMode === "QUEUE"
                 ? fullSongs
