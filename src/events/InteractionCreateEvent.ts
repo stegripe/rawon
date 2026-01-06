@@ -379,7 +379,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: nextMode })}`,
+                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: `**\`${nextMode}\`**` })}`,
                         ),
                     ],
                 });
@@ -408,7 +408,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" })}`,
+                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: `**\`${queue.shuffle ? "ON" : "OFF"}\`**` })}`,
                         ),
                     ],
                 });
@@ -438,7 +438,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: newVolDown })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `**\`${newVolDown}\`**` })}`,
                         ),
                     ],
                 });
@@ -468,7 +468,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: newVolUp })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `**\`${newVolUp}\`**` })}`,
                         ),
                     ],
                 });
