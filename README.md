@@ -95,22 +95,23 @@ The `/app/cache` volume stores:
 
 Use the ones you need/should and fill in the values.
 
-### Multi-Bot Setup (Optional)
+### Multi-Bot Mode (Automatic)
 
-Run multiple bot instances to handle different voice channels simultaneously:
+Multi-bot mode is **automatic and adaptive** - no extra configuration needed!
 
-1. Set `IS_MULTI_BOT=yes` in your `.env` file
-2. Configure multiple tokens and IDs:
-   ```env
-   IS_MULTI_BOT=yes
-   DISCORD_TOKEN=token1,token2,token3
-   DISCORD_ID=id1,id2,id3
-   ```
-3. The primary bot (first token) handles general commands
-4. Each bot automatically handles music commands for users in its voice channel
-5. Bots are adaptive - if the primary bot is not in a server, the next available bot becomes primary
+- **Single token** = Single bot mode
+- **Multiple tokens (comma-separated)** = Multi-bot mode automatically enabled
 
-**Note:** Each bot requires its own Discord application. The order of tokens determines priority.
+Example for multi-bot:
+```env
+DISCORD_TOKEN=token1,token2,token3
+```
+
+Features:
+- The first token becomes the primary bot for general commands
+- Each bot handles music commands for users in its voice channel
+- Adaptive ordering - if the primary bot is not in a server, the next available bot takes over
+- Each bot requires its own Discord application
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information
