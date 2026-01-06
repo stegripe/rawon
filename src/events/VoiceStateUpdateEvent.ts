@@ -138,7 +138,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        const isBotMoved = member?.id === botId && oldId !== newId && newId !== undefined;
+        const isBotMoved =
+            member?.id === botId && oldId !== undefined && oldId !== newId && newId !== undefined;
 
         if (isBotMoved) {
             const newChannelMembers = newVc?.members.filter((mbr) => !mbr.user.bot);

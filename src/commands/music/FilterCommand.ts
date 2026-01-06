@@ -119,8 +119,8 @@ export class FilterCommand extends BaseCommand {
                             createEmbed(
                                 "info",
                                 __mf("commands.music.filter.filterSet", {
-                                    filter: `\`${filter}\``,
-                                    state: `\`${newState ? "Enabled" : "Disabled"}\``,
+                                    filter: `**\`${filter}\`**`,
+                                    state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
                                 }),
                             ),
                         ],
@@ -131,8 +131,8 @@ export class FilterCommand extends BaseCommand {
                         createEmbed(
                             "info",
                             __mf("commands.music.filter.filterSet", {
-                                filter: `\`${filter}\``,
-                                state: `\`${newState ? "Enabled" : "Disabled"}\``,
+                                filter: `**\`${filter}\`**`,
+                                state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
                             }),
                         ).setFooter({
                             text: __("commands.music.filter.filterRestartedFooter"),
@@ -146,8 +146,8 @@ export class FilterCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         __mf("commands.music.filter.filterSet", {
-                            filter: `\`${filter}\``,
-                            state: `\`${newState ? "Enabled" : "Disabled"}\``,
+                            filter: `**\`${filter}\`**`,
+                            state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
                         }),
                     ).setFooter({
                         text: __("commands.music.filter.filterNoQueueFooter"),
@@ -165,8 +165,8 @@ export class FilterCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         __mf("commands.music.filter.currentState", {
-                            filter: `\`${filter}\``,
-                            state: `\`${isEnabled ? "Enabled" : "Disabled"}\``,
+                            filter: `**\`${filter}\`**`,
+                            state: `**\`${isEnabled ? "Enabled" : "Disabled"}\`**`,
                         }),
                     ).setFooter({
                         text: `• ${__mf("commands.music.filter.embedFooter", {

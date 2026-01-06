@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://cdn.stegripe.org/images/rawon_splash.png" width="512">
 <br>
-<a href="https://discord.com/oauth2/authorize?client_id=999162626036740138&permissions=53857345&scope=bot"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Rawon%232575&plastic&color=5865F2&logo=discord"></a>
+<a href="https://discord.com/oauth2/authorize?client_id=999162626036740138&permissions=4855722558221376&scope=bot%20applications.commands"><img src="https://img.shields.io/static/v1?label=Invite%20Me&message=Rawon%232575&plastic&color=5865F2&logo=discord"></a>
 <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label">
 <a href="https://github.com/stegripe/rawon/actions?query=workflow%3A%22Lint+code+and+compile+setup+script%22"><img src="https://github.com/stegripe/rawon/workflows/Lint%20code%20and%20compile%20setup%20script/badge.svg" alt="CI Status" /></a>
 </div>
