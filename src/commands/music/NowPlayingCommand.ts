@@ -12,7 +12,7 @@ import { CommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { haveQueue } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
@@ -28,9 +28,7 @@ import { normalizeTime } from "../../utils/functions/normalizeTime.js";
     usage: "{prefix}nowplaying",
 })
 export class NowPlayingCommand extends BaseCommand {
-    @inVC
     @haveQueue
-    @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
 

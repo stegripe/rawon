@@ -51,6 +51,7 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
+        let isMentionPrefix = false;
         const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
             (pr) => {
                 if (pr === "{mention}") {
@@ -59,7 +60,11 @@ export class MessageCreateEvent extends BaseEvent {
                         return false;
                     }
                     const user = this.getUserFromMention(userMention[0]);
-                    return user?.id === this.client.user?.id;
+                    if (user?.id === this.client.user?.id) {
+                        isMentionPrefix = true;
+                        return true;
+                    }
+                    return false;
                 }
                 return message.content.startsWith(pr);
             },
@@ -333,6 +338,7 @@ export class MessageCreateEvent extends BaseEvent {
                             `[MultiBot] ${this.client.user?.tag} ALLOWING music command "${cmdName}" from ${message.author.tag} - in same voice channel (${userVoiceChannelId})`,
                         );
                     } else if (
+                        !isMentionPrefix &&
                         !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
                     ) {
                         this.client.logger.debug(
@@ -340,7 +346,10 @@ export class MessageCreateEvent extends BaseEvent {
                         );
                         return;
                     }
-                } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
+                } else if (
+                    !isMentionPrefix &&
+                    !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
+                ) {
                     this.client.logger.debug(
                         `[MultiBot] ${this.client.user?.tag} skipping prefix command "${cmdName}" - not responsible bot`,
                     );
