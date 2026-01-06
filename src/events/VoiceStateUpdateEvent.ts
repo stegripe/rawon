@@ -2,7 +2,10 @@ import { clearTimeout, setTimeout } from "node:timers";
 import { type AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import {
     ChannelType,
+    Collection,
+    type GuildMember,
     type Message,
+    type Snowflake,
     type StageChannel,
     type VoiceChannel,
     type VoiceState,
@@ -294,10 +297,17 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     }, 10_000);
                 }
             }
-            if (newVcMembers.size === 0 && queue.timeout === null && !queue.idle) {
-                this.timeout(newVcMembers, queue, newState, thisBotGuild);
-            } else if (newVcMembers.size > 0 && queue.timeout !== null) {
-                this.resume(newVcMembers, queue, newState, thisBotGuild);
+            // Handle voice channel change: pause if alone, resume if users present
+            const newChannelMemberCount = newVcMembers?.size ?? 0;
+            if (newChannelMemberCount === 0 && !queue.idle) {
+                // Bot is alone in the new channel - start timeout if not already in timeout
+                if (queue.timeout === null) {
+                    const emptyMembers = newVcMembers ?? new Collection<Snowflake, GuildMember>();
+                    this.timeout(emptyMembers as VoiceChannel["members"], queue, newState, thisBotGuild);
+                }
+            } else if (newChannelMemberCount > 0 && queue.timeout !== null) {
+                // Users present in new channel and bot was in timeout - resume
+                this.resume(newVcMembers as VoiceChannel["members"], queue, newState, thisBotGuild);
             }
         }
 
