@@ -346,6 +346,8 @@ export class ServerQueue {
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
         void this.clearQueueState();
+        // Clear audio cache when queue is destroyed
+        this.client.audioCache.clearCache();
         delete this.textChannel.guild.queue;
     }
 
