@@ -29,9 +29,10 @@ export function checkQuery(string: string): QueryData {
         ) {
             result.type = "playlist";
         } else if (
-            (/youtube/gu.exec(url.hostname) && url.pathname.startsWith("/watch")) ??
-            (/youtube/gu.exec(url.hostname) && url.pathname.startsWith("/shorts/")) ??
-            (/youtu\.be/gu.exec(url.hostname) && url.pathname !== "")
+            (/youtube/gu.test(url.hostname) && url.pathname.startsWith("/watch")) ||
+            (/youtube/gu.test(url.hostname) && url.pathname.startsWith("/shorts/")) ||
+            (/youtube/gu.test(url.hostname) && url.pathname.startsWith("/live/")) ||
+            (/youtu\.be/gu.test(url.hostname) && url.pathname !== "")
         ) {
             result.type = "track";
         } else {
