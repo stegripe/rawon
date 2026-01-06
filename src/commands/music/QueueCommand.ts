@@ -4,7 +4,7 @@ import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
 import { type QueueSong } from "../../typings/index.js";
 import { Command } from "../../utils/decorators/Command.js";
-import { haveQueue } from "../../utils/decorators/MusicUtil.js";
+import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -21,7 +21,9 @@ import { type SongManager } from "../../utils/structures/SongManager.js";
     usage: "{prefix}queue",
 })
 export class QueueCommand extends BaseCommand {
+    @inVC
     @haveQueue
+    @sameVC
     public async execute(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);

@@ -228,15 +228,10 @@ export class MessageCreateEvent extends BaseEvent {
 
         const __mf = i18n__mf(this.client, message.guild);
 
+        // Check if the message is just a mention of THIS bot (greeting)
         const mentionedBot = this.getUserFromMention(message.content);
-        const shouldRespondToMention =
-            mentionedBot &&
-            (mentionedBot.id === this.client.user?.id ||
-                (this.client.config.isMultiBot &&
-                    this.client.multiBotManager
-                        .getBots()
-                        .some((bot) => bot.botId === mentionedBot.id) &&
-                    this.client.multiBotManager.shouldRespond(this.client, message.guild!)));
+        // Only respond to greeting if THIS bot was mentioned specifically
+        const shouldRespondToMention = mentionedBot && mentionedBot.id === this.client.user?.id;
 
         if (shouldRespondToMention) {
             let prefixToShow = this.client.config.mainPrefix;

@@ -149,20 +149,32 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             newId !== queueVc.id &&
             newId !== undefined
         ) {
-            if (this.client.config.isMultiBot) {
-                const isPlaying = queue.playing;
-                const hasActiveQueue = queue.songs.size > 0;
+            // When bot is moved to a new channel, check if that channel is empty
+            // and trigger pause/timeout if needed - regardless of multi-bot mode
+            const newChannelMemberCount = newVcMembers?.size ?? 0;
 
-                this.client.logger.debug(
-                    `[MultiBot] ${this.client.user?.tag} voice state change detected: ${oldId} -> ${newId}, isPlaying=${isPlaying}, hasActiveQueue=${hasActiveQueue}`,
+            this.client.logger.debug(
+                `[VoiceState] ${this.client.user?.tag} was moved from ${oldId} to ${newId}, newChannelMemberCount=${newChannelMemberCount}`,
+            );
+
+            // If the new channel is empty, trigger timeout (pause + 1 min timer)
+            if (newChannelMemberCount === 0 && !queue.idle) {
+                this.client.logger.info(
+                    `[VoiceState] ${this.client.user?.tag} moved to empty channel ${newId}, triggering pause and timeout`,
                 );
-
-                if (isPlaying || hasActiveQueue) {
-                    this.client.logger.warn(
-                        `[MultiBot] ${this.client.user?.tag} BLOCKED voice state change from ${oldId} (${queueVc.name}) to ${newId} - bot is playing/has active queue. IGNORING reconnect attempt.`,
-                    );
-                    return;
+                queue.skipVoters = [];
+                if (queue.timeout === null && newVcMembers !== undefined) {
+                    this.timeout(newVcMembers, queue, newState, thisBotGuild);
                 }
+                return;
+            }
+
+            // If new channel has members and we were in timeout, resume
+            if (newChannelMemberCount > 0 && queue.timeout !== null && newVcMembers !== undefined) {
+                this.client.logger.info(
+                    `[VoiceState] ${this.client.user?.tag} moved to channel ${newId} with members, resuming`,
+                );
+                this.resume(newVcMembers, queue, newState, thisBotGuild);
             }
 
             if (!newVcMembers) {
@@ -282,18 +294,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         void msg.delete().catch(() => null);
                     }, 10_000);
                 }
-            }
-            const newChannelMemberCount = newVcMembers?.size ?? 0;
-            if (newChannelMemberCount === 0 && !queue.idle) {
-                if (queue.timeout === null && newVcMembers !== undefined) {
-                    this.timeout(newVcMembers, queue, newState, thisBotGuild);
-                }
-            } else if (
-                newChannelMemberCount > 0 &&
-                queue.timeout !== null &&
-                newVcMembers !== undefined
-            ) {
-                this.resume(newVcMembers, queue, newState, thisBotGuild);
             }
         }
 
