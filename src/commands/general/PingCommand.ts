@@ -36,17 +36,17 @@ export class PingCommand extends BaseCommand {
             .addFields(
                 {
                     name: "📶 **|** API",
-                    value: `\`${latency}\` ms`,
+                    value: `**\`${latency}\`** ms`,
                     inline: true,
                 },
                 {
                     name: "🌐 **|** WebSocket",
-                    value: `\`${wsLatency}\` ms`,
+                    value: `**\`${wsLatency}\`** ms`,
                     inline: true,
                 },
                 {
                     name: "🔊 **|** Voice",
-                    value: `\`${vcLatency}\` ms`,
+                    value: `**\`${vcLatency}\`** ms`,
                     inline: true,
                 },
             )
