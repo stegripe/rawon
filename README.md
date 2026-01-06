@@ -11,14 +11,12 @@
 > A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
 
 ## Features
-- Interaction support (slash commands and buttons)
-- Request channel feature for seamless music experience
 - Production-ready, no coding required
-- Basic music commands (play, pause, skip, queue, etc.)
-- Multi-cookie rotation for uninterrupted playback
+- Request channel feature for seamless music experience
+- Run multiple bot instances for different voice channels
 - Smart audio pre-caching for smoother playback
 - Support for YouTube, Spotify, and SoundCloud
-- **Multi-bot support** - Run multiple bot instances for different voice channels
+- Multi-cookie rotation for uninterrupted playback
 
 ## Installation
 
@@ -84,7 +82,7 @@ docker run -d \
 #### Volume Information
 The `/app/cache` volume stores:
 - `yt-dlp` binary for audio streaming
-- `data.json` for persistent settings (request channels, player states)
+- `data.*` for persistent settings (request channels, player states)
 - Cached audio files (if audio caching is enabled)
 - Cookie files for YouTube authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
@@ -97,14 +95,14 @@ Use the ones you need/should and fill in the values.
 
 ### Multi-Bot Mode (Automatic)
 
-Multi-bot mode is **automatic and adaptive** - no extra configuration needed!
+Multi-bot mode is automatic and adaptive - no extra configuration needed!
 
 - **Single token** = Single bot mode
 - **Multiple tokens (comma-separated)** = Multi-bot mode automatically enabled
 
 Example for multi-bot:
 ```env
-DISCORD_TOKEN=token1,token2,token3
+DISCORD_TOKEN="token1, token2, token3"
 ```
 
 Features:
