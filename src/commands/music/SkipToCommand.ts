@@ -1,4 +1,4 @@
-import { type AudioPlayerPlayingState } from "@discordjs/voice";
+import { type AudioPlayerPlayingState, AudioPlayerStatus } from "@discordjs/voice";
 import { ApplicationCommandOptionType, type VoiceChannel } from "discord.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
@@ -121,7 +121,19 @@ export class SkipToCommand extends BaseCommand {
             return;
         }
 
-        const songs = [...(queue.songs.sortByIndex().values() as unknown as QueueSong[])];
+        if (queue.player.state.status !== AudioPlayerStatus.Playing) {
+            await ctx.reply({
+                embeds: [createEmbed("warn", __("utils.musicDecorator.notPlaying"))],
+            });
+            return;
+        }
+        const np = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
+        const fullSongs = [...(queue.songs.sortByIndex().values() as unknown as QueueSong[])];
+        const songs =
+            queue.loopMode === "QUEUE"
+                ? fullSongs
+                : fullSongs.filter((val) => val.index >= np.index);
+
         if (
             !["first", "last"].includes(String(targetType).toLowerCase()) &&
             !Number.isNaN(Number(targetType)) &&
@@ -161,10 +173,7 @@ export class SkipToCommand extends BaseCommand {
             song = songs[targetType - 1];
         }
 
-        if (
-            song.key ===
-            ((queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong).key
-        ) {
+        if (song.key === np.key) {
             await ctx.reply({
                 embeds: [createEmbed("error", __("commands.music.skipTo.cantPlay"), true)],
             });

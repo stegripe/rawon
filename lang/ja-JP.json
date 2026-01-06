@@ -371,7 +371,7 @@
         "stopped": "音楽を停止し、キューをクリアしました。",
         "loopChanged": "ループモードを {mode} に変更しました。",
         "shuffleChanged": "シャッフルモードは現在 {state} です。",
-        "volumeChanged": "音量を {volume}% に変更しました。",
+        "volumeChanged": "音量を {volume} に変更しました。",
         "queueCleared": "キューがクリアされました。",
         "queueListTitle": "キューリスト",
         "emptyQueue": "キューは空です。",

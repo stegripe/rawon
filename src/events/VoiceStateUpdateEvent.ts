@@ -66,31 +66,41 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             ]);
         }
 
-        const queue = newState.guild.queue;
+        const botId = this.client.user?.id;
+
+        const thisBotGuild = this.client.guilds.cache.get(newState.guild.id);
+        if (!thisBotGuild) {
+            return;
+        }
+
+        const queue = thisBotGuild.queue;
         if (!queue) {
             return;
         }
 
-        const __ = i18n__(this.client, newState.guild);
-        const __mf = i18n__mf(this.client, newState.guild);
+        const __ = i18n__(this.client, thisBotGuild);
+        const __mf = i18n__mf(this.client, thisBotGuild);
 
         const newVc = newState.channel;
         const oldVc = oldState.channel;
         const newId = newVc?.id;
         const oldId = oldVc?.id;
-        const queueVc = newState.guild.channels.cache.get(
+        const queueVc = thisBotGuild.channels.cache.get(
             queue.connection?.joinConfig.channelId ?? "",
-        ) as StageChannel | VoiceChannel;
+        ) as StageChannel | VoiceChannel | undefined;
+
+        if (!queueVc) {
+            return;
+        }
+
         const member = newState.member;
         const oldMember = oldState.member;
-        const newVcMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
         const queueVcMembers = queueVc.members.filter((mbr) => !mbr.user.bot);
-        const botId = this.client.user?.id;
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
             const isIdle = queue.idle;
             const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
-                newState.guild,
+                thisBotGuild,
                 queue.textChannel.id,
             );
 
@@ -128,18 +138,46 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        if (
-            member?.id === botId &&
-            oldId === queueVc.id &&
-            newId !== queueVc.id &&
-            newId !== undefined
-        ) {
-            if (!newVcMembers) {
+        const isBotMoved = member?.id === botId && oldId !== newId && newId !== undefined;
+
+        if (isBotMoved) {
+            const newChannelMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
+            const newChannelMemberCount = newChannelMembers?.size ?? 0;
+
+            this.client.logger.info(
+                `[VoiceState] ${this.client.user?.tag} was MOVED from ${oldId} to ${newId}, ` +
+                    `newChannelMemberCount=${newChannelMemberCount}, queueVcId=${queueVc.id}, idle=${queue.idle}`,
+            );
+
+            if (newChannelMemberCount === 0 && !queue.idle) {
+                this.client.logger.info(
+                    `[VoiceState] ${this.client.user?.tag} moved to EMPTY channel ${newId}, triggering pause and timeout`,
+                );
+                queue.skipVoters = [];
+                if (queue.timeout === null) {
+                    const emptyMembers = newChannelMembers ?? queueVc.members.filter(() => false);
+                    this.timeout(emptyMembers, queue, newState, thisBotGuild);
+                }
+                return;
+            }
+
+            if (
+                newChannelMemberCount > 0 &&
+                queue.timeout !== null &&
+                newChannelMembers !== undefined
+            ) {
+                this.client.logger.info(
+                    `[VoiceState] ${this.client.user?.tag} moved to channel ${newId} with members, resuming`,
+                );
+                this.resume(newChannelMembers, queue, newState, thisBotGuild);
+            }
+
+            if (!newChannelMembers) {
                 return;
             }
             queue.skipVoters = [];
             const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
-                newState.guild,
+                thisBotGuild,
                 queue.textChannel.id,
             );
             if (oldVc?.rtcRegion !== newVc?.rtcRegion) {
@@ -252,11 +290,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     }, 10_000);
                 }
             }
-            if (newVcMembers.size === 0 && queue.timeout === null && !queue.idle) {
-                this.timeout(newVcMembers, queue, newState);
-            } else if (newVcMembers.size > 0 && queue.timeout !== null) {
-                this.resume(newVcMembers, queue, newState);
-            }
         }
 
         if (
@@ -267,39 +300,40 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             !queue.idle
         ) {
             queue.skipVoters = queue.skipVoters.filter((x) => x !== member?.id);
-            this.timeout(queueVcMembers, queue, newState);
+            this.timeout(queueVcMembers, queue, newState, thisBotGuild);
         }
 
         if (newId === queueVc.id && member?.user.bot !== true && queue.timeout) {
-            this.resume(queueVcMembers, queue, newState);
+            this.resume(queueVcMembers, queue, newState, thisBotGuild);
         }
     }
 
     private timeout(
         vcMembers: VoiceChannel["members"],
         queue: ServerQueue,
-        state: VoiceState,
+        _state: VoiceState,
+        guild: typeof _state.guild,
     ): void {
         if (vcMembers.size > 0) {
             return;
         }
 
-        const __ = i18n__(this.client, state.guild);
-        const __mf = i18n__mf(this.client, state.guild);
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
-        (state.guild.queue as unknown as ServerQueue).timeout = null;
+        (guild.queue as unknown as ServerQueue).timeout = null;
         queue.player.pause();
 
         const timeout = 60_000;
         const duration = formatMS(timeout);
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
-            state.guild,
+            guild,
             queue.textChannel.id,
         );
 
         queue.lastVSUpdateMsg = null;
-        (state.guild.queue as unknown as ServerQueue).timeout = setTimeout(() => {
+        (guild.queue as unknown as ServerQueue).timeout = setTimeout(() => {
             queue.destroy();
             void (async () => {
                 const msg = await queue.textChannel.send({
@@ -342,22 +376,23 @@ export class VoiceStateUpdateEvent extends BaseEvent {
     private resume(
         vcMembers: VoiceChannel["members"],
         queue: ServerQueue,
-        state: VoiceState,
+        _state: VoiceState,
+        guild: typeof _state.guild,
     ): void {
         if (vcMembers.size <= 0) {
             return;
         }
 
-        const __ = i18n__(this.client, state.guild);
-        const __mf = i18n__mf(this.client, state.guild);
+        const __ = i18n__(this.client, guild);
+        const __mf = i18n__mf(this.client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
-        (state.guild.queue as unknown as ServerQueue).timeout = null;
+        (guild.queue as unknown as ServerQueue).timeout = null;
 
         const song = ((queue.player.state as AudioPlayerPausedState).resource.metadata as QueueSong)
             .song;
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
-            state.guild,
+            guild,
             queue.textChannel.id,
         );
 
@@ -383,6 +418,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 }, 60_000);
             }
         })();
-        state.guild.queue?.player.unpause();
+        guild.queue?.player.unpause();
     }
 }

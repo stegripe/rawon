@@ -371,7 +371,7 @@
         "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
         "loopChanged": "Döngü modu {mode} olarak değiştirildi.",
         "shuffleChanged": "Karıştırma modu şimdi {state}.",
-        "volumeChanged": "Ses seviyesi {volume}% olarak değiştirildi.",
+        "volumeChanged": "Ses seviyesi {volume} olarak değiştirildi.",
         "queueCleared": "Kuyruk temizlendi.",
         "queueListTitle": "Kuyruk Listesi",
         "emptyQueue": "Kuyruk boş.",
