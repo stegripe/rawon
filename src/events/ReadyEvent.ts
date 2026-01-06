@@ -20,6 +20,14 @@ export class ReadyEvent extends BaseEvent {
 
         await this.client.spotify.renew();
 
+        const isPrimaryOrSingle =
+            !this.client.config.isMultiBot ||
+            this.client.multiBotManager.getPrimaryBot() === this.client;
+        if (isPrimaryOrSingle) {
+            this.client.audioCache.clearCache();
+            this.client.logger.info("[Startup] Cleared audio cache on bot restart");
+        }
+
         if (this.client.config.isMultiBot) {
             const primaryBot = this.client.multiBotManager.getPrimaryBot();
             if (primaryBot && primaryBot !== this.client && primaryBot.user) {
@@ -88,23 +96,13 @@ export class ReadyEvent extends BaseEvent {
         ) {
             const data = this.client.data.data;
             if (data) {
-                const botsToCheck = this.client.config.isMultiBot
-                    ? this.client.multiBotManager.getBots().map((b) => b.botId)
-                    : [botId];
-
                 for (const guildId of Object.keys(data)) {
-                    for (const checkBotId of botsToCheck) {
-                        const queueState = (this.client.data as any).getQueueState(
-                            guildId,
-                            checkBotId,
+                    const queueState = (this.client.data as any).getQueueState(guildId, botId);
+                    if (queueState && queueState.songs.length > 0) {
+                        queueStates.push({ guildId, queueState, botId });
+                        this.client.logger.info(
+                            `[Restore] Found queue state for guild ${guildId} from this bot ${botId}`,
                         );
-                        if (queueState && queueState.songs.length > 0) {
-                            queueStates.push({ guildId, queueState, botId: checkBotId });
-                            this.client.logger.info(
-                                `[Restore] Found queue state for guild ${guildId} from bot ${checkBotId}`,
-                            );
-                            break;
-                        }
                     }
                 }
             }

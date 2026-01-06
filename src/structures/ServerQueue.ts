@@ -538,12 +538,15 @@ export class ServerQueue {
                         void msg.delete();
                         return 0;
                     })
-                    .catch((error: unknown) =>
-                        this.textChannel.client.logger.error(
-                            "DELETE_LAST_MUSIC_MESSAGE_ERR:",
-                            error,
-                        ),
-                    );
+                    .catch((error: unknown) => {
+                        const discordError = error as { code?: number };
+                        if (discordError.code !== 10008) {
+                            this.textChannel.client.logger.error(
+                                "DELETE_LAST_MUSIC_MESSAGE_ERR:",
+                                error,
+                            );
+                        }
+                    });
             })();
         }
         this._lastMusicMsg = value;
@@ -562,12 +565,15 @@ export class ServerQueue {
                         void msg.delete();
                         return 0;
                     })
-                    .catch((error: unknown) =>
-                        this.textChannel.client.logger.error(
-                            "DELETE_LAST_VS_UPDATE_MESSAGE_ERR:",
-                            error,
-                        ),
-                    );
+                    .catch((error: unknown) => {
+                        const discordError = error as { code?: number };
+                        if (discordError.code !== 10008) {
+                            this.textChannel.client.logger.error(
+                                "DELETE_LAST_VS_UPDATE_MESSAGE_ERR:",
+                                error,
+                            );
+                        }
+                    });
             })();
         }
         this._lastVSUpdateMsg = value;

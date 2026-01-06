@@ -55,6 +55,11 @@ export class RemoveCommand extends BaseCommand {
             return;
         }
 
+        const queue = ctx.guild?.queue;
+        if (!queue) {
+            return;
+        }
+
         const positions = (ctx.options?.getString("positions") ?? ctx.args.join(" "))
             .split(/[ ,]/u)
             .filter(Boolean);
@@ -66,27 +71,42 @@ export class RemoveCommand extends BaseCommand {
         }
 
         const np = (
-            ctx.guild?.queue?.player.state as
+            queue.player.state as
                 | (AudioPlayerState & { resource: AudioResource | undefined })
                 | undefined
         )?.resource?.metadata as QueueSong | undefined;
-        const full = (ctx.guild?.queue?.songs as unknown as SongManager).sortByIndex();
+        const full = (queue.songs as unknown as SongManager).sortByIndex();
         const displayedSongs =
-            ctx.guild?.queue?.loopMode === "QUEUE"
-                ? full
-                : full.filter((val) => val.index >= (np?.index ?? 0));
+            queue.loopMode === "QUEUE" ? full : full.filter((val) => val.index >= (np?.index ?? 0));
         const cloned = [...displayedSongs.values()];
         const songs = positions.map((x) => cloned[Number.parseInt(x, 10) - 1]).filter(Boolean);
-        for (const song of songs) {
-            ctx.guild?.queue?.songs.delete(song.key);
-        }
 
         const isSkip = songs.map((x) => x.key).includes(np?.key ?? "");
-        if (isSkip && ctx.guild?.queue) {
-            if (!ctx.guild.queue.playing) {
-                ctx.guild.queue.playing = true;
+
+        if (isSkip) {
+            if (!queue.canSkip()) {
+                void ctx.reply({
+                    embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
+                });
+                return;
             }
-            ctx.guild.queue.player.stop(true);
+            if (!queue.startSkip()) {
+                void ctx.reply({
+                    embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
+                });
+                return;
+            }
+        }
+
+        for (const song of songs) {
+            queue.songs.delete(song.key);
+        }
+
+        if (isSkip) {
+            if (!queue.playing) {
+                queue.playing = true;
+            }
+            queue.player.stop(true);
         }
 
         const opening = __mf("commands.music.remove.songsRemoved", {

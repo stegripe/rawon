@@ -51,6 +51,7 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
+        let isMentionPrefix = false;
         const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
             (pr) => {
                 if (pr === "{mention}") {
@@ -59,7 +60,11 @@ export class MessageCreateEvent extends BaseEvent {
                         return false;
                     }
                     const user = this.getUserFromMention(userMention[0]);
-                    return user?.id === this.client.user?.id;
+                    if (user?.id === this.client.user?.id) {
+                        isMentionPrefix = true;
+                        return true;
+                    }
+                    return false;
                 }
                 return message.content.startsWith(pr);
             },
@@ -106,6 +111,10 @@ export class MessageCreateEvent extends BaseEvent {
                         "dc",
                         "remove",
                         "seek",
+                        "nowplaying",
+                        "np",
+                        "queue",
+                        "q",
                     ];
                     const isMusicCommand = cmdName && musicCommands.includes(cmdName);
 
@@ -229,14 +238,7 @@ export class MessageCreateEvent extends BaseEvent {
         const __mf = i18n__mf(this.client, message.guild);
 
         const mentionedBot = this.getUserFromMention(message.content);
-        const shouldRespondToMention =
-            mentionedBot &&
-            (mentionedBot.id === this.client.user?.id ||
-                (this.client.config.isMultiBot &&
-                    this.client.multiBotManager
-                        .getBots()
-                        .some((bot) => bot.botId === mentionedBot.id) &&
-                    this.client.multiBotManager.shouldRespond(this.client, message.guild!)));
+        const shouldRespondToMention = mentionedBot && mentionedBot.id === this.client.user?.id;
 
         if (shouldRespondToMention) {
             let prefixToShow = this.client.config.mainPrefix;
@@ -288,6 +290,10 @@ export class MessageCreateEvent extends BaseEvent {
                     "dc",
                     "remove",
                     "seek",
+                    "nowplaying",
+                    "np",
+                    "queue",
+                    "q",
                 ];
                 const isMusicCommand = cmdName && musicCommands.includes(cmdName);
 
@@ -338,6 +344,7 @@ export class MessageCreateEvent extends BaseEvent {
                             `[MultiBot] ${this.client.user?.tag} ALLOWING music command "${cmdName}" from ${message.author.tag} - in same voice channel (${userVoiceChannelId})`,
                         );
                     } else if (
+                        !isMentionPrefix &&
                         !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
                     ) {
                         this.client.logger.debug(
@@ -345,7 +352,10 @@ export class MessageCreateEvent extends BaseEvent {
                         );
                         return;
                     }
-                } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
+                } else if (
+                    !isMentionPrefix &&
+                    !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
+                ) {
                     this.client.logger.debug(
                         `[MultiBot] ${this.client.user?.tag} skipping prefix command "${cmdName}" - not responsible bot`,
                     );

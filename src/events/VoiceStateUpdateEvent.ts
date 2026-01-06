@@ -67,14 +67,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         }
 
         const botId = this.client.user?.id;
-        const memberUserId = newState.member?.user.id;
-
-        if (this.client.config.isMultiBot && memberUserId !== botId) {
-            this.client.logger.debug(
-                `[MultiBot] ${this.client.user?.tag} ignoring voice state update for ${memberUserId} (not this bot)`,
-            );
-            return;
-        }
 
         const thisBotGuild = this.client.guilds.cache.get(newState.guild.id);
         if (!thisBotGuild) {
@@ -103,7 +95,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         const member = newState.member;
         const oldMember = oldState.member;
-        const newVcMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
         const queueVcMembers = queueVc.members.filter((mbr) => !mbr.user.bot);
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
@@ -147,36 +138,41 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        if (this.client.config.isMultiBot && member?.id !== botId) {
-            this.client.logger.warn(
-                `[MultiBot] ${this.client.user?.tag} received voice state update for wrong bot: ${member?.id} (expected ${botId})`,
+        const isBotMoved = member?.id === botId && oldId !== newId && newId !== undefined;
+
+        if (isBotMoved) {
+            const newChannelMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
+            const newChannelMemberCount = newChannelMembers?.size ?? 0;
+
+            this.client.logger.info(
+                `[VoiceState] ${this.client.user?.tag} was MOVED from ${oldId} to ${newId}, ` +
+                    `newChannelMemberCount=${newChannelMemberCount}, queueVcId=${queueVc.id}, idle=${queue.idle}`,
             );
-            return;
-        }
 
-        if (
-            member?.id === botId &&
-            oldId === queueVc.id &&
-            newId !== queueVc.id &&
-            newId !== undefined
-        ) {
-            if (this.client.config.isMultiBot) {
-                const isPlaying = queue.playing;
-                const hasActiveQueue = queue.songs.size > 0;
-
-                this.client.logger.debug(
-                    `[MultiBot] ${this.client.user?.tag} voice state change detected: ${oldId} -> ${newId}, isPlaying=${isPlaying}, hasActiveQueue=${hasActiveQueue}`,
+            if (newChannelMemberCount === 0 && !queue.idle) {
+                this.client.logger.info(
+                    `[VoiceState] ${this.client.user?.tag} moved to EMPTY channel ${newId}, triggering pause and timeout`,
                 );
-
-                if (isPlaying || hasActiveQueue) {
-                    this.client.logger.warn(
-                        `[MultiBot] ${this.client.user?.tag} BLOCKED voice state change from ${oldId} (${queueVc.name}) to ${newId} - bot is playing/has active queue. IGNORING reconnect attempt.`,
-                    );
-                    return;
+                queue.skipVoters = [];
+                if (queue.timeout === null) {
+                    const emptyMembers = newChannelMembers ?? queueVc.members.filter(() => false);
+                    this.timeout(emptyMembers, queue, newState, thisBotGuild);
                 }
+                return;
             }
 
-            if (!newVcMembers) {
+            if (
+                newChannelMemberCount > 0 &&
+                queue.timeout !== null &&
+                newChannelMembers !== undefined
+            ) {
+                this.client.logger.info(
+                    `[VoiceState] ${this.client.user?.tag} moved to channel ${newId} with members, resuming`,
+                );
+                this.resume(newChannelMembers, queue, newState, thisBotGuild);
+            }
+
+            if (!newChannelMembers) {
                 return;
             }
             queue.skipVoters = [];
@@ -293,18 +289,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         void msg.delete().catch(() => null);
                     }, 10_000);
                 }
-            }
-            const newChannelMemberCount = newVcMembers?.size ?? 0;
-            if (newChannelMemberCount === 0 && !queue.idle) {
-                if (queue.timeout === null && newVcMembers !== undefined) {
-                    this.timeout(newVcMembers, queue, newState, thisBotGuild);
-                }
-            } else if (
-                newChannelMemberCount > 0 &&
-                queue.timeout !== null &&
-                newVcMembers !== undefined
-            ) {
-                this.resume(newVcMembers, queue, newState, thisBotGuild);
             }
         }
 
