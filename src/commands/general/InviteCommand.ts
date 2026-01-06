@@ -6,6 +6,8 @@ import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__mf } from "../../utils/functions/i18n.js";
 
+const SetVoiceChannelStatus = 281474976710656n;
+
 @Command({
     aliases: ["inv"],
     description: i18n.__("commands.general.invite.description"),
@@ -23,18 +25,20 @@ export class InviteCommand extends BaseCommand {
             permissions: [
                 PermissionFlagsBits.ViewChannel,
                 PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.CreatePublicThreads,
-                PermissionFlagsBits.CreatePrivateThreads,
+                PermissionFlagsBits.ManageMessages,
                 PermissionFlagsBits.EmbedLinks,
                 PermissionFlagsBits.AttachFiles,
+                PermissionFlagsBits.ReadMessageHistory,
                 PermissionFlagsBits.UseExternalEmojis,
-                PermissionFlagsBits.UseExternalStickers,
                 PermissionFlagsBits.AddReactions,
                 PermissionFlagsBits.Connect,
                 PermissionFlagsBits.Speak,
                 PermissionFlagsBits.UseVAD,
-                PermissionFlagsBits.PrioritySpeaker,
-                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.RequestToSpeak,
+                PermissionFlagsBits.SendMessagesInThreads,
+                PermissionFlagsBits.SendVoiceMessages,
+                SetVoiceChannelStatus,
+                PermissionFlagsBits.BypassSlowmode,
             ],
             scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
         });

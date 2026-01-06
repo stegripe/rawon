@@ -7,6 +7,7 @@ import {
     ButtonBuilder,
     type ButtonInteraction,
     ButtonStyle,
+    Collection,
     ComponentType,
     GuildMember,
     type Interaction,
@@ -14,6 +15,7 @@ import {
     MessageFlags,
     PermissionsBitField,
     type PermissionsString,
+    type Snowflake,
     type TextChannel,
 } from "discord.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
@@ -29,6 +31,8 @@ import { type SongManager } from "../utils/structures/SongManager.js";
 
 @Event("interactionCreate")
 export class InteractionCreateEvent extends BaseEvent {
+    private readonly cooldowns = new Collection<string, Collection<Snowflake, number>>();
+
     public async execute(interaction: Interaction): Promise<void> {
         this.client.debugLog.logData("info", "INTERACTION_CREATE", [
             ["Type", interaction.type.toString()],
@@ -261,6 +265,46 @@ export class InteractionCreateEvent extends BaseEvent {
                 .filter((x) => x.meta.slash !== undefined)
                 .find((x) => x.meta.slash?.name === interaction.commandName);
             if (cmd) {
+                if (!this.cooldowns.has(cmd.meta.name)) {
+                    this.cooldowns.set(cmd.meta.name, new Collection());
+                }
+
+                const now = Date.now();
+                const timestamps = this.cooldowns.get(cmd.meta.name);
+                const cooldownAmount = (cmd.meta.cooldown ?? 3) * 1_000;
+                const isDeveloper = this.client.config.devs.includes(interaction.user.id);
+
+                if (!isDeveloper) {
+                    if (timestamps?.has(interaction.user.id) === true) {
+                        const expirationTime =
+                            (timestamps.get(interaction.user.id) as unknown as number) +
+                            cooldownAmount;
+                        if (now < expirationTime) {
+                            const timeLeft = (expirationTime - now) / 1_000;
+                            await interaction.reply({
+                                flags: MessageFlags.Ephemeral,
+                                embeds: [
+                                    createEmbed(
+                                        "warn",
+                                        `⚠️ **|** ${__mf("utils.cooldownMessage", {
+                                            author: interaction.user.toString(),
+                                            timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
+                                        })}`,
+                                        true,
+                                    ),
+                                ],
+                            });
+                            return;
+                        }
+
+                        timestamps.set(interaction.user.id, now);
+                        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+                    } else {
+                        timestamps?.set(interaction.user.id, now);
+                        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+                    }
+                }
+
                 this.client.logger.info(
                     `[MultiBot] ${this.client.user?.tag} ✅ EXECUTING slash command "${interaction.commandName}" from ${interaction.user.tag}`,
                 );
@@ -628,7 +672,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: `\`${nextMode}\`` })}`,
+                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: `**\`${nextMode}\`**` })}`,
                         ),
                     ],
                 });
@@ -656,7 +700,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: `\`${queue.shuffle ? "ON" : "OFF"}\`` })}`,
+                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: `**\`${queue.shuffle ? "ON" : "OFF"}\`**` })}`,
                         ),
                     ],
                 });
@@ -685,7 +729,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `\`${newVolDown}%\`` })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `**\`${newVolDown}%\`**` })}`,
                         ),
                     ],
                 });
@@ -714,7 +758,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `\`${newVolUp}%\`` })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `**\`${newVolUp}%\`**` })}`,
                         ),
                     ],
                 });
