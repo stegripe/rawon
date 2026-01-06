@@ -28,6 +28,25 @@ export class RequestChannelManager {
     }
 
     public getRequestChannel(guild: Guild): TextChannel | null {
+        const botId = this.client.user?.id ?? "unknown";
+
+        if (
+            "getRequestChannel" in this.client.data &&
+            typeof this.client.data.getRequestChannel === "function"
+        ) {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            if (!this.isValidId(data?.channelId)) {
+                return null;
+            }
+
+            const channel = guild.channels.cache.get(data.channelId);
+            if (!channel || channel.type !== ChannelType.GuildText) {
+                return null;
+            }
+
+            return channel;
+        }
+
         const data = this.client.data.data?.[guild.id]?.requestChannel;
         if (!this.isValidId(data?.channelId)) {
             return null;
@@ -42,6 +61,32 @@ export class RequestChannelManager {
     }
 
     public async getPlayerMessage(guild: Guild): Promise<Message | null> {
+        const botId = this.client.user?.id ?? "unknown";
+
+        if (
+            "getRequestChannel" in this.client.data &&
+            typeof this.client.data.getRequestChannel === "function"
+        ) {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            if (!this.isValidId(data?.channelId)) {
+                return null;
+            }
+            if (!this.isValidId(data?.messageId)) {
+                return null;
+            }
+
+            const channel = this.getRequestChannel(guild);
+            if (!channel) {
+                return null;
+            }
+
+            try {
+                return await channel.messages.fetch(data.messageId);
+            } catch {
+                return null;
+            }
+        }
+
         const data = this.client.data.data?.[guild.id]?.requestChannel;
         if (!this.isValidId(data?.channelId)) {
             return null;
@@ -63,45 +108,110 @@ export class RequestChannelManager {
     }
 
     public hasRequestChannel(guild: Guild): boolean {
+        const botId = this.client.user?.id ?? "unknown";
+
+        if (
+            "getRequestChannel" in this.client.data &&
+            typeof this.client.data.getRequestChannel === "function"
+        ) {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            return this.isValidId(data?.channelId);
+        }
+
         const data = this.client.data.data?.[guild.id]?.requestChannel;
         return this.isValidId(data?.channelId);
     }
 
     public async setRequestChannel(guild: Guild, channelId: string | null): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[guild.id] ?? {};
+        const botId = this.client.user?.id ?? "unknown";
 
-        if (channelId === null) {
-            const existingMessage = await this.getPlayerMessage(guild);
-            if (existingMessage) {
-                await existingMessage.delete().catch(() => null);
+        if (
+            "saveRequestChannel" in this.client.data &&
+            typeof this.client.data.saveRequestChannel === "function"
+        ) {
+            if (channelId === null) {
+                const existingMessage = await this.getPlayerMessage(guild);
+                if (existingMessage) {
+                    await existingMessage.delete().catch(() => null);
+                }
+                await (this.client.data as any).saveRequestChannel(guild.id, botId, null, null);
+            } else {
+                await (this.client.data as any).saveRequestChannel(
+                    guild.id,
+                    botId,
+                    channelId,
+                    null,
+                );
             }
-            guildData.requestChannel = { channelId: null, messageId: null };
+            if (typeof this.client.data.load === "function") {
+                await this.client.data.load();
+            }
         } else {
-            guildData.requestChannel = { channelId, messageId: null };
-        }
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[guild.id] ?? {};
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [guild.id]: guildData,
-        }));
+            if (channelId === null) {
+                const existingMessage = await this.getPlayerMessage(guild);
+                if (existingMessage) {
+                    await existingMessage.delete().catch(() => null);
+                }
+                guildData.requestChannel = { channelId: null, messageId: null };
+            } else {
+                guildData.requestChannel = { channelId, messageId: null };
+            }
+
+            await this.client.data.save(() => ({
+                ...currentData,
+                [guild.id]: guildData,
+            }));
+        }
     }
 
     public async setPlayerMessageId(guild: Guild, messageId: string | null): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[guild.id] ?? {};
+        const botId = this.client.user?.id ?? "unknown";
 
-        guildData.requestChannel ??= { channelId: null, messageId: null };
-        guildData.requestChannel.messageId = messageId;
+        if (
+            "getRequestChannel" in this.client.data &&
+            typeof this.client.data.getRequestChannel === "function"
+        ) {
+            const current = (this.client.data as any).getRequestChannel(guild.id, botId);
+            const channelId = current?.channelId ?? null;
+            await (this.client.data as any).saveRequestChannel(
+                guild.id,
+                botId,
+                channelId,
+                messageId,
+            );
+            if (typeof this.client.data.load === "function") {
+                await this.client.data.load();
+            }
+        } else {
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[guild.id] ?? {};
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [guild.id]: guildData,
-        }));
+            guildData.requestChannel ??= { channelId: null, messageId: null };
+            guildData.requestChannel.messageId = messageId;
+
+            await this.client.data.save(() => ({
+                ...currentData,
+                [guild.id]: guildData,
+            }));
+        }
     }
 
     public createPlayerEmbed(guild: Guild): EmbedBuilder {
-        const queue = guild.queue;
+        let queue = guild.queue;
+        if (!queue && this.client.config.isMultiBot) {
+            const bots = this.client.multiBotManager.getBots();
+            for (const bot of bots) {
+                const botGuild = bot.client.guilds.cache.get(guild.id);
+                if (botGuild?.queue) {
+                    queue = botGuild.queue;
+                    break;
+                }
+            }
+        }
+
         const savedState = this.client.data.data?.[guild.id]?.playerState;
 
         const __ = i18n__(this.client, guild);
@@ -217,7 +327,18 @@ export class RequestChannelManager {
     }
 
     public createPlayerButtons(guild: Guild): ActionRowBuilder<ButtonBuilder>[] {
-        const queue = guild.queue;
+        let queue = guild.queue;
+        if (!queue && this.client.config.isMultiBot) {
+            const bots = this.client.multiBotManager.getBots();
+            for (const bot of bots) {
+                const botGuild = bot.client.guilds.cache.get(guild.id);
+                if (botGuild?.queue) {
+                    queue = botGuild.queue;
+                    break;
+                }
+            }
+        }
+
         const isPlaying = queue?.playing ?? false;
 
         const pauseResumeEmoji = isPlaying ? "⏸️" : "▶️";
@@ -263,6 +384,22 @@ export class RequestChannelManager {
     }
 
     public async updatePlayerMessage(guild: Guild, immediate = false): Promise<void> {
+        if (this.client.config.isMultiBot) {
+            const primaryBot = this.client.multiBotManager.getPrimaryBot();
+            if (primaryBot && primaryBot !== this.client) {
+                const primaryGuild = primaryBot.guilds.cache.get(guild.id);
+                if (primaryGuild) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} delegating updatePlayerMessage to primary bot ${primaryBot.user?.tag}`,
+                    );
+                    return primaryBot.requestChannelManager.updatePlayerMessage(
+                        primaryGuild,
+                        immediate,
+                    );
+                }
+            }
+        }
+
         const existingTimeout = this.pendingUpdates.get(guild.id);
         if (existingTimeout) {
             clearTimeout(existingTimeout);
@@ -275,6 +412,13 @@ export class RequestChannelManager {
             try {
                 const message = await this.getPlayerMessage(guild).catch(() => null);
                 if (!message) {
+                    return;
+                }
+
+                if (message.author.id !== this.client.user?.id) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} cannot edit message ${message.id} - created by ${message.author.tag}`,
+                    );
                     return;
                 }
 
@@ -308,6 +452,21 @@ export class RequestChannelManager {
     }
 
     public async createOrUpdatePlayerMessage(guild: Guild): Promise<Message | null> {
+        if (this.client.config.isMultiBot) {
+            const primaryBot = this.client.multiBotManager.getPrimaryBot();
+            if (primaryBot && primaryBot !== this.client) {
+                const primaryGuild = primaryBot.guilds.cache.get(guild.id);
+                if (primaryGuild) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} delegating createOrUpdatePlayerMessage to primary bot ${primaryBot.user?.tag}`,
+                    );
+                    return primaryBot.requestChannelManager.createOrUpdatePlayerMessage(
+                        primaryGuild,
+                    );
+                }
+            }
+        }
+
         const channel = this.getRequestChannel(guild);
         if (!channel) {
             return null;
@@ -335,7 +494,57 @@ export class RequestChannelManager {
     }
 
     public isRequestChannel(guild: Guild, channelId: string): boolean {
+        if (this.client.config.isMultiBot) {
+            const bots = this.client.multiBotManager.getBotsInGuild(guild);
+
+            for (const bot of bots) {
+                const botId = bot.botId;
+                if (
+                    "getRequestChannel" in bot.client.data &&
+                    typeof bot.client.data.getRequestChannel === "function"
+                ) {
+                    const data = (bot.client.data as any).getRequestChannel(guild.id, botId);
+                    if (data?.channelId === channelId) {
+                        this.client.logger.debug(
+                            `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=true (owned by bot ${botId})`,
+                        );
+                        return true;
+                    }
+                } else {
+                    const data = bot.client.data.data?.[guild.id]?.requestChannel;
+                    if (data?.channelId === channelId) {
+                        this.client.logger.debug(
+                            `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=true (owned by bot ${botId})`,
+                        );
+                        return true;
+                    }
+                }
+            }
+
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=false (no bot has this channel)`,
+            );
+            return false;
+        }
+
+        const botId = this.client.user?.id ?? "unknown";
+        if (
+            "getRequestChannel" in this.client.data &&
+            typeof this.client.data.getRequestChannel === "function"
+        ) {
+            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+            const isRequest = data?.channelId === channelId;
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} checking request channel using own data: channelId=${channelId}, isRequest=${isRequest}`,
+            );
+            return isRequest;
+        }
+
         const data = this.client.data.data?.[guild.id]?.requestChannel;
-        return data?.channelId === channelId;
+        const isRequest = data?.channelId === channelId;
+        this.client.logger.debug(
+            `[MultiBot] ${this.client.user?.tag} checking request channel using own data (JSON): channelId=${channelId}, isRequest=${isRequest}`,
+        );
+        return isRequest;
     }
 }

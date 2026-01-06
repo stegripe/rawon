@@ -45,11 +45,47 @@ export async function getStream(
         };
     }
 
-    if (enableAudioCache && !isLive && client.audioCache.isCached(url)) {
+    if (enableAudioCache && !isLive && seekSeconds > 0) {
+        client.logger.info(
+            `[YTDLUtil] Seek position ${seekSeconds}s requested for ${url.substring(0, 50)}..., waiting for cache to complete`,
+        );
+
+        const cacheReady = await client.audioCache.waitForCache(url, 300_000);
+
+        if (cacheReady) {
+            const cacheStream = client.audioCache.getFromCache(url);
+            if (cacheStream) {
+                cacheStream.destroy();
+                const cachePath = client.audioCache.getCachePath(url);
+                client.logger.info(
+                    `[YTDLUtil] ✅ Using cached file for ${url.substring(0, 50)}... with seek position ${seekSeconds}s`,
+                );
+                return {
+                    stream: null,
+                    cachePath,
+                };
+            }
+        } else {
+            client.logger.warn(
+                `[YTDLUtil] ⚠️ Cache not ready after timeout for ${url.substring(0, 50)}..., falling back to stream (will play from beginning)`,
+            );
+        }
+    }
+
+    if (
+        enableAudioCache &&
+        !isLive &&
+        seekSeconds === 0 &&
+        client.audioCache.isCached(url) &&
+        !client.audioCache.isInProgress(url)
+    ) {
         const cacheStream = client.audioCache.getFromCache(url);
         if (cacheStream) {
             cacheStream.destroy();
             const cachePath = client.audioCache.getCachePath(url);
+            client.logger.info(
+                `[YTDLUtil] Using cached file for ${url.substring(0, 50)}... (seekSeconds=0)`,
+            );
             return {
                 stream: null,
                 cachePath,
@@ -95,10 +131,6 @@ async function attemptStreamWithRetry(
               };
 
         const options = { ...baseOptions };
-        if (seekSeconds > 0 && !isLive) {
-            (options as Record<string, unknown>).downloadSections = `*${seekSeconds}-inf`;
-            (options as Record<string, unknown>).forceKeyframesAtCuts = true;
-        }
 
         const proc = exec(url, options, { stdio: ["ignore", "pipe", "pipe"] });
 

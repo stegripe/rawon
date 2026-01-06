@@ -55,12 +55,43 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
 
 export const sameVC = createCmdExecuteDecorator((ctx) => {
     const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
-    if (!ctx.guild?.members.me?.voice.channel) {
+    const client = ctx.guild?.client as Rawon;
+
+    if (!client || !ctx.guild) {
+        return true;
+    }
+
+    const thisBotGuild = client.guilds.cache.get(ctx.guild.id);
+    if (!thisBotGuild) {
+        return false;
+    }
+
+    if (client.config.isMultiBot) {
+        const userVoiceChannelId = ctx.member?.voice.channel?.id ?? null;
+
+        if (userVoiceChannelId) {
+            const shouldRespond = client.multiBotManager.shouldRespondToMusicCommand(
+                client,
+                thisBotGuild,
+                userVoiceChannelId,
+            );
+
+            if (!shouldRespond) {
+                void ctx.reply({
+                    embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
+                });
+                return false;
+            }
+        }
+    }
+
+    if (!thisBotGuild.members.me?.voice.channel) {
         return true;
     }
 
     const botVc =
-        ctx.guild.queue?.connection?.joinConfig.channelId ?? ctx.guild.members.me.voice.channel.id;
+        thisBotGuild.queue?.connection?.joinConfig.channelId ??
+        thisBotGuild.members.me.voice.channel.id;
     if (ctx.member?.voice.channel?.id !== botVc) {
         void ctx.reply({
             embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],

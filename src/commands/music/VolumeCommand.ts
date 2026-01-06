@@ -60,7 +60,7 @@ export class VolumeCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         `🔊 **|** ${__mf("commands.music.volume.currentVolume", {
-                            volume: `**\`${current}\`**`,
+                            volume: `**\`${current}%\`**`,
                         })}\n${current}% ${createProgressBar(current, 100)} 100%`,
                     ).setFooter({ text: `• ${__("commands.music.volume.changeVolume")}` }),
                 ],
@@ -84,7 +84,7 @@ export class VolumeCommand extends BaseCommand {
                             createEmbed(
                                 "info",
                                 `🔊 **|** ${__mf("commands.music.volume.currentVolume", {
-                                    volume: `**\`${newVolume}\`**`,
+                                    volume: `**\`${newVolume}%\`**`,
                                 })}\n${newVolume}% ${createProgressBar(newVolume, 100)} 100%`,
                             ).setFooter({
                                 text: `• ${__("commands.music.volume.changeVolume")}`,
@@ -100,7 +100,7 @@ export class VolumeCommand extends BaseCommand {
                             createEmbed(
                                 "info",
                                 `🔊 **|** ${__mf("commands.music.volume.currentVolume", {
-                                    volume: `**\`${cur}\`**`,
+                                    volume: `**\`${cur}%\`**`,
                                 })}\n${cur}% ${createProgressBar(cur, 100)} 100%`,
                             ).setFooter({
                                 text: `• ${__("commands.music.volume.changeVolume")}`,
@@ -117,7 +117,7 @@ export class VolumeCommand extends BaseCommand {
                     createEmbed(
                         "warn",
                         __mf("commands.music.volume.plsPause", {
-                            volume: `**\`${volume}\`**`,
+                            volume: `**\`${volume}%\`**`,
                         }),
                     ),
                 ],
@@ -133,7 +133,7 @@ export class VolumeCommand extends BaseCommand {
                 createEmbed(
                     "success",
                     `🔊 **|** ${__mf("commands.music.volume.newVolume", {
-                        volume: `**\`${volume}\`**`,
+                        volume: `**\`${volume}%\`**`,
                     })}`,
                 ),
             ],

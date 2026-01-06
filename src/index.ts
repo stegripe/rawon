@@ -1,37 +1,82 @@
 import nodePath from "node:path";
 import process from "node:process";
-import { ShardingManager } from "discord.js";
-import { isProd, shardingMode, shardsCount } from "./config/index.js";
+import { discordTokens, isMultiBot, isProd, shardsCount } from "./config/index.js";
 import { importURLToString } from "./utils/functions/importURLToString.js";
+import { CustomShardingManager } from "./utils/structures/CustomShardingManager.js";
+import { MultiBotLauncher } from "./utils/structures/MultiBotLauncher.js";
 import { RawonLogger } from "./utils/structures/RawonLogger.js";
 
 const log = new RawonLogger({ prod: isProd });
 
-const manager = new ShardingManager(
-    nodePath.resolve(importURLToString(import.meta.url), "bot.js"),
-    {
+if (isMultiBot && discordTokens.length > 1) {
+    log.info(
+        `[MultiBot] Using custom multi-bot launcher for ${discordTokens.length} bot instances.`,
+    );
+
+    const launcher = new MultiBotLauncher();
+    await launcher.start().catch((error: unknown) => {
+        log.error("MULTIBOT_LAUNCHER_ERR: ", error);
+        process.exit(1);
+    });
+} else {
+    const botFile = nodePath.resolve(importURLToString(import.meta.url), "bot.js");
+    const token = discordTokens[0] ?? process.env.DISCORD_TOKEN ?? "";
+
+    if (!token) {
+        log.error("[FATAL] DISCORD_TOKEN is not set in environment variables!");
+        process.exit(1);
+    }
+
+    const manager = new CustomShardingManager({
+        file: botFile,
         totalShards: shardsCount,
         respawn: true,
-        token: process.env.DISCORD_TOKEN,
-        mode: shardingMode,
-    },
-);
+        token,
+        logger: log,
+    });
 
-await manager
-    .on("shardCreate", (shard) => {
+    manager.on("shardCreate", (shard) => {
         log.info(`[ShardManager] Shard #${shard.id} has spawned.`);
-        shard
-            .on("disconnect", () =>
-                log.warn("SHARD_DISCONNECTED: ", {
-                    stack: `[ShardManager] Shard #${shard.id} has disconnected.`,
-                }),
-            )
-            .on("reconnecting", () =>
-                log.info(`[ShardManager] Shard #${shard.id} has reconnected.`),
-            );
+    });
+
+    manager.on("shardReady", (shard) => {
+        log.info(`[ShardManager] Shard #${shard.id} is ready.`);
         if (manager.shards.size === manager.totalShards) {
             log.info("[ShardManager] All shards are spawned successfully.");
         }
-    })
-    .spawn()
-    .catch((error: unknown) => log.error("SHARD_SPAWN_ERR: ", error));
+    });
+
+    manager.on("shardDisconnect", (shard) => {
+        log.warn(`[ShardManager] Shard #${shard.id} has disconnected.`);
+    });
+
+    manager.on("shardReconnecting", (shard) => {
+        log.info(`[ShardManager] Shard #${shard.id} is reconnecting.`);
+    });
+
+    manager.on("shardError", (shard, error) => {
+        log.error(`[ShardManager] Shard #${shard.id} error:`, error);
+    });
+
+    manager.on("shardDeath", (shard, data) => {
+        if (data.code !== 0) {
+            log.warn(
+                `[ShardManager] Shard #${shard.id} died unexpectedly with code ${data.code} and signal ${data.signal}`,
+            );
+        }
+    });
+
+    const shutdown = async (): Promise<void> => {
+        log.info("[ShardManager] Received shutdown signal, killing all shards...");
+        await manager.killAll("SIGTERM");
+        process.exit(0);
+    };
+
+    process.on("SIGINT", shutdown);
+    process.on("SIGTERM", shutdown);
+
+    await manager.spawn().catch((error: unknown) => {
+        log.error("SHARD_SPAWN_ERR: ", error);
+        process.exit(1);
+    });
+}

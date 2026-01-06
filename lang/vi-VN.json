@@ -371,7 +371,7 @@
         "stopped": "Đã dừng nhạc và xóa hàng đợi.",
         "loopChanged": "Chế độ lặp đã thay đổi thành {mode}.",
         "shuffleChanged": "Chế độ trộn bây giờ là {state}.",
-        "volumeChanged": "Âm lượng đã thay đổi thành {volume}%.",
+        "volumeChanged": "Âm lượng đã thay đổi thành {volume}.",
         "queueCleared": "Hàng đợi đã được xóa.",
         "queueListTitle": "Danh sách hàng đợi",
         "emptyQueue": "Hàng đợi trống.",

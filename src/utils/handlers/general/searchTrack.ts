@@ -20,6 +20,9 @@ function extractVideoId(url: URL): string | null {
     if (url.pathname.startsWith("/shorts/")) {
         return url.pathname.replace("/shorts/", "").split("/")[0];
     }
+    if (url.pathname.startsWith("/live/")) {
+        return url.pathname.replace("/live/", "").split("/")[0];
+    }
     return url.searchParams.get("v");
 }
 
