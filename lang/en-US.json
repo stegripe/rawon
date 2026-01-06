@@ -339,7 +339,7 @@
         "stopped": "Stopped the music and cleared the queue.",
         "loopChanged": "Loop mode changed to {mode}.",
         "shuffleChanged": "Shuffle mode is now {state}.",
-        "volumeChanged": "Volume changed to {volume}%.",
+        "volumeChanged": "Volume changed to {volume}.",
         "queueCleared": "Queue has been cleared.",
         "queueListTitle": "Queue List",
         "emptyQueue": "The queue is empty.",

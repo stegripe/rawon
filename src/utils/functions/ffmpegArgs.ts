@@ -40,10 +40,10 @@ export function ffmpegArgs(
 
     const inputArgs: string[] = [];
     if (inputPath) {
+        inputArgs.push("-i", inputPath);
         if (seekSeconds > 0) {
             inputArgs.push("-ss", seekSeconds.toString());
         }
-        inputArgs.push("-i", inputPath);
     } else {
         inputArgs.push("-i", "-");
     }

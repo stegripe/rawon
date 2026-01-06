@@ -371,7 +371,7 @@
         "stopped": "Música parada e fila limpa.",
         "loopChanged": "Modo loop alterado para {mode}.",
         "shuffleChanged": "Modo aleatório agora está {state}.",
-        "volumeChanged": "Volume alterado para {volume}%.",
+        "volumeChanged": "Volume alterado para {volume}.",
         "queueCleared": "A fila foi limpa.",
         "queueListTitle": "Lista da Fila",
         "emptyQueue": "A fila está vazia.",

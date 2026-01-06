@@ -371,7 +371,7 @@
         "stopped": "Musik distop dan antrian dikosongkan.",
         "loopChanged": "Mode repeat diubah ke {mode}.",
         "shuffleChanged": "Mode acak sekarang {state}.",
-        "volumeChanged": "Volume diubah ke {volume}%.",
+        "volumeChanged": "Volume diubah ke {volume}.",
         "queueCleared": "Antrian udah dikosongkan.",
         "queueListTitle": "Daftar Antrian",
         "emptyQueue": "Antriannya kosong.",

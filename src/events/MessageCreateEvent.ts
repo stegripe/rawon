@@ -1,5 +1,5 @@
 import { setTimeout } from "node:timers";
-import { type DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
+import { joinVoiceChannel } from "@discordjs/voice";
 import {
     ChannelType,
     type EmbedBuilder,
@@ -12,6 +12,7 @@ import { BaseEvent } from "../structures/BaseEvent.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
 import { Event } from "../utils/decorators/Event.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
@@ -31,14 +32,26 @@ export class MessageCreateEvent extends BaseEvent {
             ["Author", `${message.author.tag}(${message.author.id})`],
         ]);
 
+        if (message.guild) {
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} received messageCreate event in guild ${message.guild.id}`,
+            );
+        }
+
         if (
             message.author.bot ||
             message.channel.type === ChannelType.DM ||
             !this.client.commands.isReady
         ) {
+            if (!this.client.commands.isReady) {
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} commands not ready yet, skipping`,
+                );
+            }
             return;
         }
 
+        let isMentionPrefix = false;
         const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
             (pr) => {
                 if (pr === "{mention}") {
@@ -47,17 +60,142 @@ export class MessageCreateEvent extends BaseEvent {
                         return false;
                     }
                     const user = this.getUserFromMention(userMention[0]);
-                    return user?.id === this.client.user?.id;
+                    if (user?.id === this.client.user?.id) {
+                        isMentionPrefix = true;
+                        return true;
+                    }
+                    return false;
                 }
                 return message.content.startsWith(pr);
             },
         );
 
-        if (
+        const isRequestChannel =
             message.guild &&
-            this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id)
-        ) {
+            this.client.requestChannelManager.isRequestChannel(message.guild, message.channel.id);
+
+        if (message.guild) {
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${message.channel.id}, isRequestChannel=${isRequestChannel}`,
+            );
+        }
+
+        if (isRequestChannel) {
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} received message in request channel ${message.channel.id} from ${message.author.tag}`,
+            );
+
             if ((prefixMatch?.length ?? 0) > 0) {
+                if (message.guild && this.client.config.isMultiBot) {
+                    const thisBotGuild = this.client.guilds.cache.get(message.guild.id);
+                    if (!thisBotGuild) {
+                        return;
+                    }
+
+                    const prefix = prefixMatch || "";
+                    const cmdContent = message.content.slice(prefix.length).trim();
+                    const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
+                    const musicCommands = [
+                        "volume",
+                        "vol",
+                        "loop",
+                        "repeat",
+                        "shuffle",
+                        "filter",
+                        "skip",
+                        "skipto",
+                        "pause",
+                        "resume",
+                        "stop",
+                        "disconnect",
+                        "dc",
+                        "remove",
+                        "seek",
+                        "nowplaying",
+                        "np",
+                        "queue",
+                        "q",
+                    ];
+                    const isMusicCommand = cmdName && musicCommands.includes(cmdName);
+
+                    if (isMusicCommand) {
+                        let member = thisBotGuild.members.cache.get(message.author.id);
+                        if (!member) {
+                            try {
+                                const fetchedMember = await thisBotGuild.members
+                                    .fetch(message.author.id)
+                                    .catch(() => null);
+                                if (fetchedMember) {
+                                    member = fetchedMember;
+                                }
+                            } catch {
+                                if (message.member && message.member.guild.id === thisBotGuild.id) {
+                                    member = message.member;
+                                }
+                            }
+                        }
+                        if (
+                            !member &&
+                            message.member &&
+                            message.member.guild.id === thisBotGuild.id
+                        ) {
+                            member = message.member;
+                        }
+
+                        const userVoiceChannelId = member?.voice.channelId ?? null;
+
+                        this.client.logger.info(
+                            `[MultiBot] ${this.client.user?.tag} PRE-CHECK music command "${cmdName}" in REQUEST CHANNEL from ${message.author.tag}: ` +
+                                `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
+                        );
+
+                        if (userVoiceChannelId) {
+                            const shouldRespond =
+                                this.client.multiBotManager.shouldRespondToMusicCommand(
+                                    this.client,
+                                    thisBotGuild,
+                                    userVoiceChannelId,
+                                );
+
+                            this.client.logger.info(
+                                `[MultiBot] ${this.client.user?.tag} PRE-CHECK result for music command "${cmdName}": shouldRespond=${shouldRespond}`,
+                            );
+
+                            if (!shouldRespond) {
+                                this.client.logger.warn(
+                                    `[MultiBot] ${this.client.user?.tag} ❌❌❌ BLOCKING music command "${cmdName}" in REQUEST CHANNEL from ${message.author.tag} ` +
+                                        `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - COMMAND WILL NOT EXECUTE!`,
+                                );
+                                return;
+                            }
+
+                            this.client.logger.info(
+                                `[MultiBot] ${this.client.user?.tag} ✅ ALLOWING music command "${cmdName}" in REQUEST CHANNEL - will proceed to command handler`,
+                            );
+                        } else if (
+                            !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
+                        ) {
+                            this.client.logger.debug(
+                                `[MultiBot] ${this.client.user?.tag} skipping music command in request channel - not responsible bot`,
+                            );
+                            return;
+                        }
+                    } else if (
+                        !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
+                    ) {
+                        this.client.logger.debug(
+                            `[MultiBot] ${this.client.user?.tag} skipping prefix command in request channel - not responsible bot`,
+                        );
+                        return;
+                    }
+                }
+
+                const prefix = prefixMatch || "";
+                const cmdContent = message.content.slice(prefix.length).trim();
+                const cmdNameFromMsg = cmdContent.split(/ +/u)[0]?.toLowerCase();
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ PROCEEDING to execute command "${cmdNameFromMsg}" in REQUEST CHANNEL`,
+                );
                 this.client.commands.handle(message, prefixMatch as unknown as string);
 
                 setTimeout(() => {
@@ -90,13 +228,27 @@ export class MessageCreateEvent extends BaseEvent {
                 });
                 return;
             }
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} calling handleRequestChannelMessage for ${message.author.tag}`,
+            );
             await this.handleRequestChannelMessage(message);
             return;
         }
 
         const __mf = i18n__mf(this.client, message.guild);
 
-        if (this.getUserFromMention(message.content)?.id === this.client.user?.id) {
+        const mentionedBot = this.getUserFromMention(message.content);
+        const shouldRespondToMention = mentionedBot && mentionedBot.id === this.client.user?.id;
+
+        if (shouldRespondToMention) {
+            let prefixToShow = this.client.config.mainPrefix;
+            if (this.client.config.isMultiBot) {
+                const primaryBot = this.client.multiBotManager.getPrimaryBot();
+                if (primaryBot) {
+                    prefixToShow = primaryBot.config.mainPrefix;
+                }
+            }
+
             await message
                 .reply({
                     embeds: [
@@ -104,7 +256,7 @@ export class MessageCreateEvent extends BaseEvent {
                             "info",
                             `👋 **|** ${__mf("events.createMessage", {
                                 author: message.author.toString(),
-                                prefix: `**\`${this.client.config.mainPrefix}\`**`,
+                                prefix: `**\`${prefixToShow}\`**`,
                             })}`,
                         ),
                     ],
@@ -113,18 +265,128 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         if ((prefixMatch?.length ?? 0) > 0) {
+            if (message.guild && this.client.config.isMultiBot) {
+                const thisBotGuild = this.client.guilds.cache.get(message.guild.id);
+                if (!thisBotGuild) {
+                    return;
+                }
+
+                const prefix = prefixMatch || "";
+                const cmdContent = message.content.slice(prefix.length).trim();
+                const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
+                const musicCommands = [
+                    "volume",
+                    "vol",
+                    "loop",
+                    "repeat",
+                    "shuffle",
+                    "filter",
+                    "skip",
+                    "skipto",
+                    "pause",
+                    "resume",
+                    "stop",
+                    "disconnect",
+                    "dc",
+                    "remove",
+                    "seek",
+                    "nowplaying",
+                    "np",
+                    "queue",
+                    "q",
+                ];
+                const isMusicCommand = cmdName && musicCommands.includes(cmdName);
+
+                if (isMusicCommand) {
+                    let member = thisBotGuild.members.cache.get(message.author.id);
+                    if (!member) {
+                        try {
+                            const fetchedMember = await thisBotGuild.members
+                                .fetch(message.author.id)
+                                .catch(() => null);
+                            if (fetchedMember) {
+                                member = fetchedMember;
+                            }
+                        } catch {
+                            if (message.member && message.member.guild.id === thisBotGuild.id) {
+                                member = message.member;
+                            }
+                        }
+                    }
+                    if (!member && message.member && message.member.guild.id === thisBotGuild.id) {
+                        member = message.member;
+                    }
+
+                    const userVoiceChannelId = member?.voice.channelId ?? null;
+
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} checking music command "${cmdName}" from ${message.author.tag}: ` +
+                            `userVoiceChannel=${userVoiceChannelId ?? "none"}, memberCached=${member !== null}`,
+                    );
+
+                    if (userVoiceChannelId) {
+                        const shouldRespond =
+                            this.client.multiBotManager.shouldRespondToMusicCommand(
+                                this.client,
+                                thisBotGuild,
+                                userVoiceChannelId,
+                            );
+
+                        if (!shouldRespond) {
+                            this.client.logger.warn(
+                                `[MultiBot] ${this.client.user?.tag} ❌❌❌ BLOCKING music command "${cmdName}" from ${message.author.tag} ` +
+                                    `- NOT in same voice channel (user in: ${userVoiceChannelId}). ` +
+                                    `RETURNING EARLY - COMMAND WILL NOT BE EXECUTED!`,
+                            );
+                            return;
+                        }
+                        this.client.logger.info(
+                            `[MultiBot] ${this.client.user?.tag} ALLOWING music command "${cmdName}" from ${message.author.tag} - in same voice channel (${userVoiceChannelId})`,
+                        );
+                    } else if (
+                        !isMentionPrefix &&
+                        !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
+                    ) {
+                        this.client.logger.debug(
+                            `[MultiBot] ${this.client.user?.tag} skipping music command "${cmdName}" - user not in voice and not responsible bot`,
+                        );
+                        return;
+                    }
+                } else if (
+                    !isMentionPrefix &&
+                    !this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)
+                ) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} skipping prefix command "${cmdName}" - not responsible bot`,
+                    );
+                    return;
+                }
+            }
             this.client.commands.handle(message, prefixMatch as unknown as string);
         }
     }
 
     private async handleRequestChannelMessage(message: Message): Promise<void> {
-        const guild = message.guild;
-        if (!guild) {
+        if (!message.guild) {
             return;
         }
 
+        const thisBotGuild = this.client.guilds.cache.get(message.guild.id);
+        if (!thisBotGuild) {
+            this.client.logger.warn(
+                `[MultiBot] ${this.client.user?.tag} cannot find guild ${message.guild.id} in its own cache`,
+            );
+            return;
+        }
+
+        const guild = thisBotGuild;
+
         const __ = i18n__(this.client, guild);
         const __mf = i18n__mf(this.client, guild);
+
+        this.client.logger.debug(
+            `[MultiBot] ${this.client.user?.tag} received request in channel ${message.channel.id} from ${message.author.tag}`,
+        );
 
         setTimeout(() => {
             void (async (): Promise<void> => {
@@ -159,6 +421,27 @@ export class MessageCreateEvent extends BaseEvent {
             return;
         }
 
+        const shouldHandle = this.client.multiBotManager.shouldRespondToVoice(
+            this.client,
+            guild,
+            voiceChannel.id,
+        );
+
+        if (!shouldHandle) {
+            const responsibleBot = this.client.multiBotManager.getBotForVoiceChannel(
+                guild,
+                voiceChannel.id,
+            );
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} SKIPPING voice channel ${voiceChannel.id} (${voiceChannel.name}) - responsible bot: ${responsibleBot?.user?.tag ?? "none"}`,
+            );
+            return;
+        }
+
+        this.client.logger.info(
+            `[MultiBot] ${this.client.user?.tag} PROCESSING voice channel ${voiceChannel.id} (${voiceChannel.name}) for request from ${message.author.tag}`,
+        );
+
         const songs = await searchTrack(this.client, query).catch(() => null);
         if (!songs || songs.items.length === 0) {
             this.sendTemporaryReply(
@@ -169,22 +452,56 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         const wasIdle = guild.queue?.idle ?? false;
-        const isNewQueue = !guild.queue;
 
-        if (!guild.queue) {
-            guild.queue = new ServerQueue(message.channel as TextChannel);
+        const existingQueueChannel = guild.queue?.connection?.joinConfig.channelId;
+        const isNewQueue =
+            !guild.queue ||
+            (existingQueueChannel !== undefined && existingQueueChannel !== voiceChannel.id);
+
+        if (
+            !guild.queue ||
+            (existingQueueChannel !== undefined && existingQueueChannel !== voiceChannel.id)
+        ) {
+            if (guild.queue && existingQueueChannel !== voiceChannel.id) {
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} destroying queue for channel ${existingQueueChannel} to create new queue for channel ${voiceChannel.id}`,
+                );
+                guild.queue.destroy();
+            }
+
+            const textChannel = guild.channels.cache.get(message.channel.id) as
+                | TextChannel
+                | undefined;
+            if (!textChannel || textChannel.type !== ChannelType.GuildText) {
+                this.client.logger.error(
+                    `[MultiBot] ${this.client.user?.tag} cannot find text channel ${message.channel.id} in own guild`,
+                );
+                return;
+            }
+
+            guild.queue = new ServerQueue(textChannel);
 
             try {
+                const adapterCreator = createVoiceAdapter(this.client, guild.id);
+
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} creating voice connection for channel ${voiceChannel.id} (${voiceChannel.name}) using custom adapter`,
+                );
+
                 const connection = joinVoiceChannel({
-                    adapterCreator: guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
+                    adapterCreator,
                     channelId: voiceChannel.id,
                     guildId: guild.id,
                     selfDeaf: true,
+                    group: this.client.user?.id ?? "default",
                 }).on("debug", (debugMessage) => {
-                    this.client.logger.debug(debugMessage);
+                    this.client.logger.debug(`[VOICE] ${debugMessage}`);
                 });
 
                 guild.queue.connection = connection;
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} joined voice channel ${voiceChannel.id} (${voiceChannel.name})`,
+                );
             } catch (error) {
                 guild.queue?.songs.clear();
                 delete guild.queue;

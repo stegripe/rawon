@@ -7,14 +7,23 @@ import { type EnvActivityTypes, type PresenceData } from "../typings/index.js";
 import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 
 const envFiles = ["dev.env", "optional.env", ".env"];
+
+const existingToken = process.env.DISCORD_TOKEN;
 for (const envFile of envFiles) {
     const envPath = path.resolve(process.cwd(), envFile);
     if (existsSync(envPath)) {
         const parsed = parse(readFileSync(envPath));
         for (const [key, val] of Object.entries(parsed)) {
+            if (key === "DISCORD_TOKEN" && existingToken && !existingToken.includes(",")) {
+                continue;
+            }
             process.env[key] = val;
         }
     }
+}
+
+if (existingToken && !process.env.DISCORD_TOKEN?.includes(",")) {
+    process.env.DISCORD_TOKEN = existingToken;
 }
 
 const toCapitalCase = (text: string): string => {
@@ -36,13 +45,35 @@ const formatLocale = (locale: string | undefined): string => {
 };
 export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
+const rawTokens = process.env.DISCORD_TOKEN ?? "";
+const rawIds = process.env.DISCORD_ID ?? "";
+
+const hasComma = rawTokens.includes(",");
+const tokenArray = hasComma
+    ? rawTokens
+          .split(",")
+          .map((t) => t.trim())
+          .filter((t) => t.length > 0)
+    : rawTokens.trim().length > 0
+      ? [rawTokens.trim()]
+      : [];
+
+const idArray = rawIds
+    .split(",")
+    .map((id) => id.trim())
+    .filter((id) => id.length > 0);
+
+export const discordTokens: string[] = tokenArray;
+export const discordIds: string[] = idArray;
+export const discordToken = tokenArray[0] ?? "";
+export const isMultiBot = tokenArray.length > 1 && hasComma;
 
 export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
 export const lang = formatLocale(process.env.LOCALE) || "en-US";
 export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
-export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() === "yes";
+export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
 export const musicSelectionType =
     (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";

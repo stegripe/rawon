@@ -371,7 +371,7 @@
         "stopped": "Музику зупинено та чергу очищено.",
         "loopChanged": "Режим повтору змінено на {mode}.",
         "shuffleChanged": "Режим перемішування тепер {state}.",
-        "volumeChanged": "Гучність змінено на {volume}%.",
+        "volumeChanged": "Гучність змінено на {volume}.",
         "queueCleared": "Чергу очищено.",
         "queueListTitle": "Список черги",
         "emptyQueue": "Черга порожня.",

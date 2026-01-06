@@ -213,6 +213,74 @@ export class ServerQueue {
     }
 
     private loadSavedState(): void {
+        if (this.client.config.isMultiBot) {
+            if (
+                "getPlayerState" in this.client.data &&
+                typeof this.client.data.getPlayerState === "function"
+            ) {
+                const botId = this.client.user?.id ?? "unknown";
+                const guildId = this.textChannel.guild.id;
+
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} attempting to load player state for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}`,
+                );
+
+                if (
+                    "getBotsWithPlayerState" in this.client.data &&
+                    typeof this.client.data.getBotsWithPlayerState === "function"
+                ) {
+                    const botsWithState = (this.client.data as any).getBotsWithPlayerState(guildId);
+                    if (botsWithState && botsWithState.length > 0) {
+                        this.client.logger.info(
+                            `[MultiBot] ${this.client.user?.tag} found player states for guild ${guildId} from bots: ${botsWithState.join(", ")}`,
+                        );
+                    } else {
+                        this.client.logger.warn(
+                            `[MultiBot] ${this.client.user?.tag} no player states found for guild ${guildId} from any bot`,
+                        );
+                    }
+                }
+
+                const savedState = (this.client.data as any).getPlayerState(guildId, botId);
+
+                if (savedState) {
+                    this.loopMode = savedState.loopMode ?? "OFF";
+                    this.shuffle = savedState.shuffle ?? false;
+                    this._volume = savedState.volume ?? 100;
+                    this.filters = (savedState.filters ?? {}) as Partial<
+                        Record<keyof typeof filterArgs, boolean>
+                    >;
+                    this.client.logger.info(
+                        `[MultiBot] ${this.client.user?.tag} ✅ loaded saved player state for guild ${this.textChannel.guild.name}: ` +
+                            `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+                    );
+                } else if (
+                    "getBotsWithPlayerState" in this.client.data &&
+                    typeof this.client.data.getBotsWithPlayerState === "function"
+                ) {
+                    const botsWithState = (this.client.data as any).getBotsWithPlayerState(guildId);
+                    if (botsWithState && botsWithState.length > 0) {
+                        this.client.logger.warn(
+                            `[MultiBot] ${this.client.user?.tag} ⚠️ no saved player state found for THIS bot (botId=${botId}), but player state exists from other bots: ${botsWithState.join(", ")}. Using defaults.`,
+                        );
+                    } else {
+                        this.client.logger.warn(
+                            `[MultiBot] ${this.client.user?.tag} ⚠️ no saved player state found for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}. Using defaults: loop=OFF, shuffle=false, volume=100`,
+                        );
+                    }
+                } else {
+                    this.client.logger.warn(
+                        `[MultiBot] ${this.client.user?.tag} ⚠️ no saved player state found for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}. Using defaults: loop=OFF, shuffle=false, volume=100`,
+                    );
+                }
+            } else {
+                this.client.logger.warn(
+                    `[MultiBot] ${this.client.user?.tag} SQLite getPlayerState not available, using default values`,
+                );
+            }
+            return;
+        }
+
         const savedState = this.client.data.data?.[this.textChannel.guild.id]?.playerState;
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
@@ -222,21 +290,60 @@ export class ServerQueue {
                 Record<keyof typeof filterArgs, boolean>
             >;
             this.client.logger.info(
-                `Loaded saved player state for guild ${this.textChannel.guild.name}`,
+                `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
+                    `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+            );
+        } else {
+            this.client.logger.warn(
+                `⚠️ No saved player state found for guild ${this.textChannel.guild.name}, using defaults`,
             );
         }
     }
 
     public async saveState(): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? {};
-
-        guildData.playerState = {
+        const playerState = {
             loopMode: this.loopMode,
             shuffle: this.shuffle,
             volume: this._volume,
             filters: this.filters as Record<string, boolean>,
         };
+
+        if (this.client.config.isMultiBot) {
+            if (
+                "savePlayerState" in this.client.data &&
+                typeof this.client.data.savePlayerState === "function"
+            ) {
+                const botId = this.client.user?.id ?? "unknown";
+                const guildId = this.textChannel.guild.id;
+
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
+                        `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
+                );
+
+                try {
+                    await (this.client.data as any).savePlayerState(guildId, botId, playerState);
+                    this.client.logger.info(
+                        `[MultiBot] ${this.client.user?.tag} ✅ saved player state to SQLite successfully`,
+                    );
+                } catch (error) {
+                    this.client.logger.error(
+                        `[MultiBot] ${this.client.user?.tag} ❌ failed to save player state to SQLite:`,
+                        error,
+                    );
+                }
+            } else {
+                this.client.logger.warn(
+                    `[MultiBot] ${this.client.user?.tag} SQLite savePlayerState not available`,
+                );
+            }
+            return;
+        }
+
+        const currentData = this.client.data.data ?? {};
+        const guildData = currentData[this.textChannel.guild.id] ?? {};
+
+        guildData.playerState = playerState;
 
         await this.client.data.save(() => ({
             ...currentData,
@@ -244,10 +351,17 @@ export class ServerQueue {
         }));
     }
 
-    public async saveQueueState(): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? {};
+    public copyStateFrom(sourceQueue: ServerQueue): void {
+        this.loopMode = sourceQueue.loopMode;
+        this.shuffle = sourceQueue.shuffle;
+        this._volume = sourceQueue.volume;
+        this.filters = { ...sourceQueue.filters };
+        this.client.logger.info(
+            `[MultiBot] Copied player state from primary bot: loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}`,
+        );
+    }
 
+    public async saveQueueState(): Promise<void> {
         let currentSongKey: string | null = null;
         let currentPosition = 0;
         if (this.player.state.status === AudioPlayerStatus.Playing) {
@@ -276,7 +390,7 @@ export class ServerQueue {
             return;
         }
 
-        guildData.queueState = {
+        const queueState = {
             textChannelId: this.textChannel.id,
             voiceChannelId,
             songs: savedSongs,
@@ -284,22 +398,46 @@ export class ServerQueue {
             currentPosition,
         };
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [this.textChannel.guild.id]: guildData,
-        }));
+        if (
+            "saveQueueState" in this.client.data &&
+            typeof this.client.data.saveQueueState === "function"
+        ) {
+            const botId = this.client.user?.id ?? "unknown";
+            await (this.client.data as any).saveQueueState(
+                this.textChannel.guild.id,
+                botId,
+                queueState,
+            );
+        } else {
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[this.textChannel.guild.id] ?? {};
+            guildData.queueState = queueState;
+
+            await this.client.data.save(() => ({
+                ...currentData,
+                [this.textChannel.guild.id]: guildData,
+            }));
+        }
     }
 
     public async clearQueueState(): Promise<void> {
-        const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? {};
+        if (
+            "deleteQueueState" in this.client.data &&
+            typeof this.client.data.deleteQueueState === "function"
+        ) {
+            const botId = this.client.user?.id ?? "unknown";
+            await (this.client.data as any).deleteQueueState(this.textChannel.guild.id, botId);
+        } else {
+            const currentData = this.client.data.data ?? {};
+            const guildData = currentData[this.textChannel.guild.id] ?? {};
 
-        delete guildData.queueState;
+            delete guildData.queueState;
 
-        await this.client.data.save(() => ({
-            ...currentData,
-            [this.textChannel.guild.id]: guildData,
-        }));
+            await this.client.data.save(() => ({
+                ...currentData,
+                [this.textChannel.guild.id]: guildData,
+            }));
+        }
     }
 
     public setFilter(filter: keyof typeof filterArgs, state: boolean): void {
@@ -342,11 +480,15 @@ export class ServerQueue {
     }
 
     public destroy(): void {
+        const songUrls = this.songs.map((song) => song.song.url);
         this.stop();
         this.connection?.disconnect();
         clearTimeout(this.timeout ?? undefined);
         void this.clearQueueState();
         delete this.textChannel.guild.queue;
+        if (songUrls.length > 0) {
+            this.client.audioCache.clearCacheForUrls(songUrls);
+        }
     }
 
     private startPositionSaveInterval(): void {
@@ -396,12 +538,15 @@ export class ServerQueue {
                         void msg.delete();
                         return 0;
                     })
-                    .catch((error: unknown) =>
-                        this.textChannel.client.logger.error(
-                            "DELETE_LAST_MUSIC_MESSAGE_ERR:",
-                            error,
-                        ),
-                    );
+                    .catch((error: unknown) => {
+                        const discordError = error as { code?: number };
+                        if (discordError.code !== 10008) {
+                            this.textChannel.client.logger.error(
+                                "DELETE_LAST_MUSIC_MESSAGE_ERR:",
+                                error,
+                            );
+                        }
+                    });
             })();
         }
         this._lastMusicMsg = value;
@@ -420,12 +565,15 @@ export class ServerQueue {
                         void msg.delete();
                         return 0;
                     })
-                    .catch((error: unknown) =>
-                        this.textChannel.client.logger.error(
-                            "DELETE_LAST_VS_UPDATE_MESSAGE_ERR:",
-                            error,
-                        ),
-                    );
+                    .catch((error: unknown) => {
+                        const discordError = error as { code?: number };
+                        if (discordError.code !== 10008) {
+                            this.textChannel.client.logger.error(
+                                "DELETE_LAST_VS_UPDATE_MESSAGE_ERR:",
+                                error,
+                            );
+                        }
+                    });
             })();
         }
         this._lastVSUpdateMsg = value;

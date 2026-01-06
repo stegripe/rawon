@@ -371,7 +371,7 @@
         "stopped": "Se detuvo la música y se vació la cola.",
         "loopChanged": "Modo de bucle cambiado a {mode}.",
         "shuffleChanged": "Modo aleatorio ahora está {state}.",
-        "volumeChanged": "Volumen cambiado a {volume}%.",
+        "volumeChanged": "Volumen cambiado a {volume}.",
         "queueCleared": "La cola ha sido vaciada.",
         "queueListTitle": "Lista de Cola",
         "emptyQueue": "La cola está vacía.",

@@ -18,13 +18,14 @@
 - Multi-cookie rotation for uninterrupted playback
 - Smart audio pre-caching for smoother playback
 - Support for YouTube, Spotify, and SoundCloud
+- **Multi-bot support** - Run multiple bot instances for different voice channels
 
 ## Installation
 
 ### Standard Setup (Node.js)
 1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
 2. Clone or download this repository
-3. Copy `.env_example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)
+3. Copy `.env.example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)
 4. Install dependencies:
 ```sh
 pnpm install
@@ -46,7 +47,7 @@ Example: `!requestchannel #music-requests`
 ### Docker Setup (Recommended)
 
 #### Using Docker Compose
-1. Create a `.env` file with your configuration (copy from `.env_example`)
+1. Create a `.env` file with your configuration (copy from `.env.example`)
 2. Create a `docker-compose.yaml` file:
 ```yaml
 services:
@@ -88,11 +89,29 @@ The `/app/cache` volume stores:
 - Cookie files for YouTube authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
 ## Configuration Files
-- `.env_example` - Essential settings (Discord token, prefix, Spotify, etc.)
-- `optional.env_example` - Optional customization (colors, emojis, activities)
-- `dev.env_example` - Developer settings (debug mode, dev IDs)
+- `.env.example` - Essential settings (Discord token, prefix, Spotify, etc.)
+- `optional.env.example` - Optional customization (colors, emojis, activities)
+- `dev.env.example` - Developer settings (debug mode, dev IDs)
 
 Use the ones you need/should and fill in the values.
+
+### Multi-Bot Mode (Automatic)
+
+Multi-bot mode is **automatic and adaptive** - no extra configuration needed!
+
+- **Single token** = Single bot mode
+- **Multiple tokens (comma-separated)** = Multi-bot mode automatically enabled
+
+Example for multi-bot:
+```env
+DISCORD_TOKEN=token1,token2,token3
+```
+
+Features:
+- The first token becomes the primary bot for general commands
+- Each bot handles music commands for users in its voice channel
+- Adaptive ordering - if the primary bot is not in a server, the next available bot takes over
+- Each bot requires its own Discord application
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information

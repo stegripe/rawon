@@ -8,7 +8,7 @@ import {
     type ButtonInteraction,
     ButtonStyle,
     ComponentType,
-    type GuildMember,
+    GuildMember,
     type Interaction,
     Message,
     MessageFlags,
@@ -18,6 +18,7 @@ import {
 } from "discord.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { CommandContext } from "../structures/CommandContext.js";
+import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
@@ -50,7 +51,130 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
-        const __mf = i18n__mf(this.client, interaction.guild);
+        if (interaction.guild) {
+            const thisBotGuild = this.client.guilds.cache.get(interaction.guild.id);
+            if (!thisBotGuild) {
+                return;
+            }
+
+            let isMusicCommand = false;
+            let commandName = "";
+
+            if (interaction.isChatInputCommand()) {
+                commandName = interaction.commandName;
+                const cmd = this.client.commands
+                    .filter((x) => x.meta.slash !== undefined)
+                    .find((x) => x.meta.slash?.name === commandName);
+
+                const musicCommands = [
+                    "volume",
+                    "vol",
+                    "loop",
+                    "repeat",
+                    "shuffle",
+                    "filter",
+                    "skip",
+                    "skipto",
+                    "pause",
+                    "resume",
+                    "stop",
+                    "disconnect",
+                    "dc",
+                    "remove",
+                    "seek",
+                ];
+                isMusicCommand =
+                    cmd !== undefined &&
+                    (musicCommands.includes(commandName) ||
+                        (cmd.meta.aliases !== undefined &&
+                            musicCommands.some((name) => cmd.meta.aliases?.includes(name))));
+            }
+
+            if (isMusicCommand) {
+                let member = thisBotGuild.members.cache.get(interaction.user.id);
+                if (!member) {
+                    try {
+                        const fetchedMember = await thisBotGuild.members
+                            .fetch(interaction.user.id)
+                            .catch(() => null);
+                        if (fetchedMember) {
+                            member = fetchedMember;
+                        }
+                    } catch {
+                        if (
+                            interaction.member &&
+                            interaction.member instanceof GuildMember &&
+                            interaction.member.guild.id === thisBotGuild.id
+                        ) {
+                            member = interaction.member;
+                        }
+                    }
+                }
+                if (
+                    !member &&
+                    interaction.member &&
+                    interaction.member instanceof GuildMember &&
+                    interaction.member.guild.id === thisBotGuild.id
+                ) {
+                    member = interaction.member;
+                }
+
+                const userVoiceChannelId = member?.voice.channelId ?? null;
+
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} PRE-CHECK music interaction "${commandName}" from ${interaction.user.tag}: ` +
+                        `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
+                );
+
+                if (userVoiceChannelId) {
+                    const shouldRespond = this.client.multiBotManager.shouldRespondToMusicCommand(
+                        this.client,
+                        thisBotGuild,
+                        userVoiceChannelId,
+                    );
+
+                    this.client.logger.info(
+                        `[MultiBot] ${this.client.user?.tag} PRE-CHECK result for music interaction "${commandName}": shouldRespond=${shouldRespond}`,
+                    );
+
+                    if (!shouldRespond) {
+                        this.client.logger.warn(
+                            `[MultiBot] ${this.client.user?.tag} ❌❌❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
+                                `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - INTERACTION WILL NOT BE EXECUTED!`,
+                        );
+                        return;
+                    }
+
+                    this.client.logger.info(
+                        `[MultiBot] ${this.client.user?.tag} ✅ ALLOWING music interaction "${commandName}" - will proceed to command handler`,
+                    );
+                } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} skipping music interaction "${commandName}" - user not in voice and not responsible bot`,
+                    );
+                    return;
+                }
+            } else if (interaction.isChatInputCommand()) {
+                commandName = interaction.commandName;
+                if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} skipping interaction "${commandName}" - not responsible bot`,
+                    );
+                    return;
+                }
+            } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
+                this.client.logger.debug(
+                    `[MultiBot] ${this.client.user?.tag} skipping interaction - not responsible bot`,
+                );
+                return;
+            }
+        }
+
+        const thisBotGuildForContext = interaction.guild
+            ? (this.client.guilds.cache.get(interaction.guild.id) ?? interaction.guild)
+            : interaction.guild;
+
+        const __mf = i18n__mf(this.client, thisBotGuildForContext);
 
         if (interaction.isButton()) {
             if (interaction.customId.startsWith("RC_")) {
@@ -95,6 +219,23 @@ export class InteractionCreateEvent extends BaseEvent {
         }
 
         const context = new CommandContext(interaction);
+
+        if (
+            interaction.guild &&
+            thisBotGuildForContext &&
+            thisBotGuildForContext !== interaction.guild
+        ) {
+            Object.defineProperty(context, "guild", {
+                value: thisBotGuildForContext,
+                writable: false,
+                enumerable: true,
+                configurable: true,
+            });
+            this.client.logger.debug(
+                `[MultiBot] ${this.client.user?.tag} overrode context.guild with thisBotGuild for interaction`,
+            );
+        }
+
         if (interaction.isUserContextMenuCommand()) {
             const data =
                 interaction.options.getUser("user") ?? interaction.options.get("message")?.message;
@@ -121,11 +262,18 @@ export class InteractionCreateEvent extends BaseEvent {
                 .find((x) => x.meta.slash?.name === interaction.commandName);
             if (cmd) {
                 this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ EXECUTING slash command "${interaction.commandName}" from ${interaction.user.tag}`,
+                );
+                this.client.logger.info(
                     `${interaction.user.tag} [${interaction.user.id}] used /${interaction.commandName} ` +
                         `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
-                        `in guild: ${interaction.guild?.name} [${interaction.guildId}]`,
+                        `in guild: ${thisBotGuildForContext?.name ?? interaction.guild?.name} [${interaction.guildId}]`,
                 );
                 void cmd.execute(context);
+            } else {
+                this.client.logger.warn(
+                    `[MultiBot] ${this.client.user?.tag} command not found for interaction "${interaction.commandName}"`,
+                );
             }
         }
 
@@ -167,17 +315,132 @@ export class InteractionCreateEvent extends BaseEvent {
             return;
         }
 
-        const __ = i18n__(this.client, guild);
-        const __mf = i18n__mf(this.client, guild);
+        const thisBotGuild = this.client.guilds.cache.get(guild.id);
+        if (!thisBotGuild) {
+            return;
+        }
+
+        if (this.client.config.isMultiBot) {
+            const botId = this.client.user?.id ?? "unknown";
+            let ownsRequestChannel = false;
+
+            if (
+                "getRequestChannel" in this.client.data &&
+                typeof this.client.data.getRequestChannel === "function"
+            ) {
+                const requestChannelData = (this.client.data as any).getRequestChannel(
+                    thisBotGuild.id,
+                    botId,
+                );
+                ownsRequestChannel = requestChannelData?.channelId === interaction.channelId;
+            } else {
+                const data = this.client.data.data?.[thisBotGuild.id]?.requestChannel;
+                ownsRequestChannel = data?.channelId === interaction.channelId;
+            }
+
+            if (ownsRequestChannel) {
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
+                );
+            } else {
+                const primaryBot = this.client.multiBotManager.getPrimaryBot();
+                if (primaryBot) {
+                    const primaryBotGuild = primaryBot.guilds.cache.get(thisBotGuild.id);
+                    if (primaryBotGuild) {
+                        const primaryBotId = primaryBot.user?.id ?? "unknown";
+                        let primaryOwnsRequestChannel = false;
+
+                        if (
+                            "getRequestChannel" in primaryBot.data &&
+                            typeof primaryBot.data.getRequestChannel === "function"
+                        ) {
+                            const requestChannelData = (primaryBot.data as any).getRequestChannel(
+                                thisBotGuild.id,
+                                primaryBotId,
+                            );
+                            primaryOwnsRequestChannel =
+                                requestChannelData?.channelId === interaction.channelId;
+                        } else {
+                            const data = primaryBot.data.data?.[thisBotGuild.id]?.requestChannel;
+                            primaryOwnsRequestChannel = data?.channelId === interaction.channelId;
+                        }
+
+                        if (primaryOwnsRequestChannel && primaryBot !== this.client) {
+                            this.client.logger.debug(
+                                `[MultiBot] ${this.client.user?.tag} skipping button "${interaction.customId}" - primary bot owns request channel`,
+                            );
+                            try {
+                                await interaction.deferUpdate();
+                            } catch {
+                                // Ignore errors
+                            }
+                            return;
+                        }
+                    }
+                }
+
+                this.client.logger.info(
+                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel or no other bot owns it)`,
+                );
+            }
+        }
+
+        const __ = i18n__(this.client, thisBotGuild);
+        const __mf = i18n__mf(this.client, thisBotGuild);
 
         this.client.logger.info(
             `${interaction.user.tag} [${interaction.user.id}] clicked ${interaction.customId} button ` +
-                `in guild: ${guild.name} [${guild.id}]`,
+                `in guild: ${thisBotGuild.name} [${thisBotGuild.id}]`,
         );
+        let member = thisBotGuild.members.cache.get(interaction.user.id);
+        if (!member) {
+            try {
+                const fetchedMember = await thisBotGuild.members
+                    .fetch(interaction.user.id)
+                    .catch(() => null);
+                if (fetchedMember) {
+                    member = fetchedMember;
+                }
+            } catch {
+                if (
+                    interaction.member &&
+                    interaction.member instanceof GuildMember &&
+                    interaction.member.guild.id === thisBotGuild.id
+                ) {
+                    member = interaction.member;
+                }
+            }
+        }
+        if (
+            !member &&
+            interaction.member &&
+            interaction.member instanceof GuildMember &&
+            interaction.member.guild.id === thisBotGuild.id
+        ) {
+            member = interaction.member;
+        }
 
-        const member = guild.members.cache.get(interaction.user.id);
         const voiceChannel = member?.voice.channel;
-        const queue = guild.queue;
+
+        let queue = thisBotGuild.queue;
+        let queueGuild = thisBotGuild;
+
+        if (this.client.config.isMultiBot && voiceChannel) {
+            const responsibleBot = this.client.multiBotManager.getBotForVoiceChannel(
+                thisBotGuild,
+                voiceChannel.id,
+            );
+            if (responsibleBot && responsibleBot !== this.client) {
+                const responsibleGuild = responsibleBot.guilds.cache.get(thisBotGuild.id);
+                if (responsibleGuild?.queue) {
+                    queue = responsibleGuild.queue;
+                    queueGuild = responsibleGuild;
+                    this.client.logger.info(
+                        `[MultiBot] ${this.client.user?.tag} (primary) using queue from ${responsibleBot.user?.tag} for voice channel ${voiceChannel.id}`,
+                    );
+                }
+            }
+        }
 
         if (interaction.customId === "RC_LYRICS") {
             await this.handleLyricsButton(interaction, queue);
@@ -188,15 +451,6 @@ export class InteractionCreateEvent extends BaseEvent {
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
                 embeds: [createEmbed("warn", __("requestChannel.notInVoice"))],
-            });
-            return;
-        }
-
-        const botVoiceChannel = guild.members.me?.voice.channel;
-        if (botVoiceChannel && voiceChannel.id !== botVoiceChannel.id) {
-            await interaction.reply({
-                flags: MessageFlags.Ephemeral,
-                embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
             });
             return;
         }
@@ -379,7 +633,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: nextMode })}`,
+                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: `\`${nextMode}\`` })}`,
                         ),
                     ],
                 });
@@ -408,7 +662,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: queue.shuffle ? "ON" : "OFF" })}`,
+                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: `\`${queue.shuffle ? "ON" : "OFF"}\`` })}`,
                         ),
                     ],
                 });
@@ -438,7 +692,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: newVolDown })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `\`${newVolDown}%\`` })}`,
                         ),
                     ],
                 });
@@ -468,7 +722,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: newVolUp })}`,
+                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `\`${newVolUp}%\`` })}`,
                         ),
                     ],
                 });
@@ -701,7 +955,12 @@ export class InteractionCreateEvent extends BaseEvent {
                 break;
         }
 
-        await this.client.requestChannelManager.updatePlayerMessage(guild);
+        if (this.client.config.isMultiBot && queue && queueGuild !== thisBotGuild) {
+            const responsibleBot = queueGuild.client as Rawon;
+            await responsibleBot.requestChannelManager.updatePlayerMessage(queueGuild);
+        } else {
+            await this.client.requestChannelManager.updatePlayerMessage(thisBotGuild);
+        }
     }
 
     private async checkMusicPermission(
@@ -714,7 +973,8 @@ export class InteractionCreateEvent extends BaseEvent {
             return { hasPermission: false, djRole: null };
         }
 
-        const djRole = await this.client.utils.fetchDJRole(guild).catch(() => null);
+        const thisBotGuild = this.client.guilds.cache.get(guild.id) ?? guild;
+        const djRole = await this.client.utils.fetchDJRole(thisBotGuild).catch(() => null);
 
         const hasPermission =
             member.roles.cache.has(djRole?.id ?? "") ||
@@ -734,13 +994,13 @@ export class InteractionCreateEvent extends BaseEvent {
             return false;
         }
 
-        const __mf = i18n__mf(this.client, guild);
+        const thisBotGuild = this.client.guilds.cache.get(guild.id) ?? guild;
+        const __mf = i18n__mf(this.client, thisBotGuild);
 
         const required = this.client.utils.requiredVoters(
-            guild.members.me?.voice.channel?.members.size ?? 0,
+            thisBotGuild.members.me?.voice.channel?.members.size ?? 0,
         );
 
-        // Toggle vote
         if (queue.skipVoters.includes(member.id)) {
             queue.skipVoters = queue.skipVoters.filter(
                 (x) => x !== member.id,
