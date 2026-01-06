@@ -6,6 +6,9 @@ import { Command } from "../../utils/decorators/Command.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__mf } from "../../utils/functions/i18n.js";
 
+// SetVoiceChannelStatus permission (bit 48) - not yet in discord.js PermissionFlagsBits
+const SetVoiceChannelStatus = 281474976710656n;
+
 @Command({
     aliases: ["inv"],
     description: i18n.__("commands.general.invite.description"),
@@ -35,6 +38,8 @@ export class InviteCommand extends BaseCommand {
                 PermissionFlagsBits.RequestToSpeak,
                 PermissionFlagsBits.SendMessagesInThreads,
                 PermissionFlagsBits.SendVoiceMessages,
+                SetVoiceChannelStatus,
+                PermissionFlagsBits.BypassSlowmode,
             ],
             scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
         });
