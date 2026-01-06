@@ -4,12 +4,44 @@ import { ActivityType, ChannelType, type Presence } from "discord.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
-import { type EnvActivityTypes, type GuildData } from "../typings/index.js";
+import {
+    type EnvActivityTypes,
+    type ExtendedDataManager,
+    type GuildData,
+} from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
+
+// Type guard to check if data manager has extended methods
+function hasExtendedMethods(data: unknown): data is ExtendedDataManager {
+    return (
+        typeof data === "object" &&
+        data !== null &&
+        "getAllGuildIds" in data &&
+        typeof (data as ExtendedDataManager).getAllGuildIds === "function" &&
+        "deleteRequestChannel" in data &&
+        typeof (data as ExtendedDataManager).deleteRequestChannel === "function" &&
+        "deletePlayerState" in data &&
+        typeof (data as ExtendedDataManager).deletePlayerState === "function" &&
+        "deleteQueueState" in data &&
+        typeof (data as ExtendedDataManager).deleteQueueState === "function"
+    );
+}
+
+// Type guard to check if data manager has getRequestChannel method
+function hasGetRequestChannel(
+    data: unknown,
+): data is { getRequestChannel: ExtendedDataManager["getRequestChannel"] } {
+    return (
+        typeof data === "object" &&
+        data !== null &&
+        "getRequestChannel" in data &&
+        typeof (data as ExtendedDataManager).getRequestChannel === "function"
+    );
+}
 
 @Event<typeof ReadyEvent>("clientReady")
 export class ReadyEvent extends BaseEvent {
@@ -94,14 +126,13 @@ export class ReadyEvent extends BaseEvent {
             return;
         }
 
-        if (
-            !("getAllGuildIds" in this.client.data) ||
-            typeof this.client.data.getAllGuildIds !== "function"
-        ) {
+        // Check if data manager has extended methods
+        if (!hasExtendedMethods(this.client.data)) {
             return;
         }
 
-        const dbGuildIds = (this.client.data as any).getAllGuildIds() as string[];
+        const dataManager = this.client.data;
+        const dbGuildIds = dataManager.getAllGuildIds();
         const botGuildIds = new Set(this.client.guilds.cache.keys());
 
         // In multi-bot mode, collect guild IDs from all bots
@@ -154,33 +185,18 @@ export class ReadyEvent extends BaseEvent {
                 );
 
                 try {
-                    // Delete bot-specific data
-                    if (
-                        "deleteRequestChannel" in this.client.data &&
-                        typeof this.client.data.deleteRequestChannel === "function"
-                    ) {
-                        await (this.client.data as any).deleteRequestChannel(dbGuildId, botId);
-                    }
-                    if (
-                        "deletePlayerState" in this.client.data &&
-                        typeof this.client.data.deletePlayerState === "function"
-                    ) {
-                        await (this.client.data as any).deletePlayerState(dbGuildId, botId);
-                    }
-                    if (
-                        "deleteQueueState" in this.client.data &&
-                        typeof this.client.data.deleteQueueState === "function"
-                    ) {
-                        await (this.client.data as any).deleteQueueState(dbGuildId, botId);
-                    }
+                    // Delete bot-specific data using the type-safe dataManager
+                    await dataManager.deleteRequestChannel(dbGuildId, botId);
+                    await dataManager.deletePlayerState(dbGuildId, botId);
+                    await dataManager.deleteQueueState(dbGuildId, botId);
 
                     // For single bot mode, also delete the guild entry itself
                     if (
                         !this.client.config.isMultiBot &&
-                        "deleteGuildData" in this.client.data &&
-                        typeof this.client.data.deleteGuildData === "function"
+                        "deleteGuildData" in dataManager &&
+                        typeof dataManager.deleteGuildData === "function"
                     ) {
-                        await (this.client.data as any).deleteGuildData(dbGuildId);
+                        await dataManager.deleteGuildData(dbGuildId);
                     }
 
                     cleanedCount++;
@@ -217,11 +233,8 @@ export class ReadyEvent extends BaseEvent {
             let requestChannelData: { channelId: string | null; messageId: string | null } | null =
                 null;
 
-            if (
-                "getRequestChannel" in this.client.data &&
-                typeof this.client.data.getRequestChannel === "function"
-            ) {
-                requestChannelData = (this.client.data as any).getRequestChannel(guildId, botId);
+            if (hasGetRequestChannel(this.client.data)) {
+                requestChannelData = this.client.data.getRequestChannel(guildId, botId);
             } else {
                 requestChannelData = data[guildId]?.requestChannel ?? null;
             }

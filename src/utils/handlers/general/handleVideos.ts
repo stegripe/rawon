@@ -94,7 +94,7 @@ export async function handleVideos(
             autoDeleteMessage(msg);
         }
 
-        return new ButtonPagination(msg, {
+        void new ButtonPagination(msg, {
             author: ctx.author.id,
             edit: (i, emb, page) => {
                 emb.setDescription(`\`\`\`\n${page}\`\`\``)
@@ -111,6 +111,8 @@ export async function handleVideos(
             embed,
             pages,
         }).start();
+
+        return msg;
     }
 
     if (ctx.guild?.queue) {

@@ -108,23 +108,28 @@ export class RequestChannelCommand extends BaseCommand {
                 });
             }
 
-            // Check if this channel is already used as a request channel (for multi-bot duplication prevention)
-            if (this.client.requestChannelManager.isRequestChannel(ctx.guild, channel.id)) {
-                const existingChannel = this.client.requestChannelManager.getRequestChannel(
-                    ctx.guild,
-                );
-                if (existingChannel?.id !== channel.id) {
-                    // Another bot already has this channel as a request channel
-                    return ctx.reply({
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                __("commands.music.requestChannel.channelAlreadyInUse"),
-                                true,
-                            ),
-                        ],
-                    });
-                }
+            // Check if this channel is already used as a request channel by another bot (multi-bot mode)
+            // isRequestChannel checks if ANY bot has this channel set
+            // getRequestChannel returns THIS bot's request channel
+            // If isRequestChannel returns true but this bot's request channel is different or not set,
+            // then another bot owns this channel
+            const isChannelUsedByAnyBot = this.client.requestChannelManager.isRequestChannel(
+                ctx.guild,
+                channel.id,
+            );
+            const thisBotOwnsChannel = currentChannel?.id === channel.id;
+
+            if (isChannelUsedByAnyBot && !thisBotOwnsChannel) {
+                // Another bot already has this channel as a request channel
+                return ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            __("commands.music.requestChannel.channelAlreadyInUse"),
+                            true,
+                        ),
+                    ],
+                });
             }
 
             const textChannel = channel as TextChannel;
