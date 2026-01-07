@@ -270,3 +270,15 @@ export type RegisterCmdOptions = {
     onRegistered(guild: OG): Promisable<any>;
     onError(guild: OG | null, error: Error): Promisable<any>;
 };
+
+export interface ExtendedDataManager {
+    getAllGuildIds(): string[];
+    deleteRequestChannel(guildId: string, botId: string): Promise<void>;
+    deletePlayerState(guildId: string, botId: string): Promise<void>;
+    deleteQueueState(guildId: string, botId: string): Promise<void>;
+    deleteGuildData(guildId: string): Promise<void>;
+    getRequestChannel(
+        guildId: string,
+        botId: string,
+    ): { channelId: string | null; messageId: string | null } | null;
+}

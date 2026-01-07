@@ -92,6 +92,38 @@ export class RequestChannelCommand extends BaseCommand {
                 });
             }
 
+            const currentChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+            if (currentChannel) {
+                return ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            __mf("commands.music.requestChannel.alreadyHasChannel", {
+                                channel: `<#${currentChannel.id}>`,
+                            }),
+                            true,
+                        ),
+                    ],
+                });
+            }
+
+            const isChannelUsedByAnyBot = this.client.requestChannelManager.isRequestChannel(
+                ctx.guild,
+                channel.id,
+            );
+
+            if (isChannelUsedByAnyBot) {
+                return ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            __("commands.music.requestChannel.channelAlreadyInUse"),
+                            true,
+                        ),
+                    ],
+                });
+            }
+
             const textChannel = channel as TextChannel;
             const botMember = ctx.guild.members.me;
 
@@ -171,6 +203,19 @@ export class RequestChannelCommand extends BaseCommand {
         }
 
         if (subcommand === "remove") {
+            const existingChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+            if (!existingChannel) {
+                return ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "warn",
+                            __("commands.music.requestChannel.noChannelToRemove"),
+                            true,
+                        ),
+                    ],
+                });
+            }
+
             await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
 
             return ctx.reply({
