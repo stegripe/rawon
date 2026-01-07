@@ -27,14 +27,12 @@ export const id = {
         features: {
             title: "✨ Fitur",
             items: [
-                "🎮 Dukungan interaksi (slash commands dan tombol)",
-                "📺 Fitur request channel untuk pengalaman musik yang mulus",
                 "🚀 Siap produksi, tanpa perlu coding",
-                "🎵 Perintah musik dasar (play, pause, skip, queue, dll.)",
-                "🌍 Dukungan multi-bahasa (12 bahasa)",
-                "🔄 Rotasi multi-cookie untuk pemutaran tanpa gangguan",
+                "📺 Fitur request channel untuk pengalaman musik yang mulus",
+                "🤖 Jalankan beberapa instance bot untuk voice channel berbeda",
                 "⚡ Pre-caching audio pintar untuk pemutaran lebih lancar",
-                "🎶 Dukungan berbagai platform musik (situs video, Spotify, SoundCloud)"
+                "🎶 Dukungan untuk YouTube, Spotify, dan SoundCloud",
+                "🔄 Rotasi multi-cookie untuk pemutaran tanpa gangguan"
             ]
         },
         requirements: {
@@ -49,7 +47,7 @@ export const id = {
             steps: [
                 "Download dan install **Node.js** versi `22.12.0` atau lebih tinggi",
                 "Clone atau download repository ini",
-                "Salin `.env_example` ke `.env` dan isi nilai yang diperlukan (minimal: `DISCORD_TOKEN`)",
+                "Salin `.env.example` ke `.env` dan isi nilai yang diperlukan (minimal: `DISCORD_TOKEN`)",
                 "Install dependencies: `pnpm install`",
                 "Build project: `pnpm run build`",
                 "Jalankan bot: `pnpm start`"
@@ -61,7 +59,7 @@ export const id = {
             title: "🐳 Setup Docker (Disarankan)",
             composeTitle: "Menggunakan Docker Compose",
             composeSteps: [
-                "Buat file `.env` dengan konfigurasi Anda (salin dari `.env_example`)",
+                "Buat file `.env` dengan konfigurasi Anda (salin dari `.env.example`)",
                 "Buat file `docker-compose.yaml` (lihat contoh di bawah)",
                 "Jalankan bot: `docker compose up -d`",
                 "Lihat log: `docker logs -f rawon-bot`"

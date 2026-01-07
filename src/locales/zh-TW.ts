@@ -25,11 +25,12 @@ export const zhTW = {
         features: {
             title: "功能",
             items: [
-                "互動支援（斜線命令和按鈕）",
-                "無縫音樂體驗的請求頻道功能",
-                "生產就緒，無需編碼",
-                "基本音樂命令（play、pause、skip、queue等）",
-                "多語言支援"
+                "🚀 生產就緒，無需編碼",
+                "📺 無縫音樂體驗的請求頻道功能",
+                "🤖 為不同語音頻道運行多個機器人實例",
+                "⚡ 智能音頻預緩存，播放更流暢",
+                "🎶 支援YouTube、Spotify和SoundCloud",
+                "🔄 多Cookie輪換，不間斷播放"
             ]
         },
         requirements: {
@@ -43,7 +44,7 @@ export const zhTW = {
             steps: [
                 "下載並安裝Node.js版本22.12.0或更高",
                 "克隆或下載此倉庫",
-                "將.env_example複製為.env並填寫所需值（最少：DISCORD_TOKEN）",
+                "將.env.example複製為.env並填寫所需值（最少：DISCORD_TOKEN）",
                 "安裝依賴：pnpm install",
                 "構建項目：pnpm run build",
                 "啟動機器人：pnpm start"
@@ -54,7 +55,7 @@ export const zhTW = {
             title: "Docker設置（推薦）",
             composeTitle: "使用Docker Compose",
             composeSteps: [
-                "創建.env檔案（從.env_example複製）",
+                "創建.env檔案（從.env.example複製）",
                 "創建docker-compose.yaml檔案（見下面示例）",
                 "啟動機器人：docker compose up -d",
                 "查看日誌：docker logs -f rawon-bot"

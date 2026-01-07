@@ -27,11 +27,12 @@ export const ja = {
         features: {
             title: "機能",
             items: [
-                "インタラクションサポート（スラッシュコマンドとボタン）",
-                "シームレスな音楽体験のためのリクエストチャンネル機能",
-                "本番環境対応、コーディング不要",
-                "基本的な音楽コマンド（play、pause、skip、queue等）",
-                "多言語サポート"
+                "🚀 本番環境対応、コーディング不要",
+                "📺 シームレスな音楽体験のためのリクエストチャンネル機能",
+                "🤖 異なるボイスチャンネル用に複数のボットインスタンスを実行",
+                "⚡ スムーズな再生のためのスマートオーディオプリキャッシュ",
+                "🎶 YouTube、Spotify、SoundCloudをサポート",
+                "🔄 中断のない再生のためのマルチクッキーローテーション"
             ]
         },
         requirements: {
@@ -46,7 +47,7 @@ export const ja = {
             steps: [
                 "**Node.js** バージョン`22.12.0`以上をダウンロードしてインストール",
                 "このリポジトリをクローンまたはダウンロード",
-                "`.env_example`を`.env`にコピーして必要な値を入力（最低限：`DISCORD_TOKEN`）",
+                "`.env.example`を`.env`にコピーして必要な値を入力（最低限：`DISCORD_TOKEN`）",
                 "依存関係をインストール：`pnpm install`",
                 "プロジェクトをビルド：`pnpm run build`",
                 "ボットを起動：`pnpm start`"
@@ -58,7 +59,7 @@ export const ja = {
             title: "Dockerセットアップ（推奨）",
             composeTitle: "Docker Composeを使用",
             composeSteps: [
-                "`.env_example`からコピーして`.env`ファイルを作成",
+                "`.env.example`からコピーして`.env`ファイルを作成",
                 "`docker-compose.yaml`ファイルを作成（下記の例を参照）",
                 "ボットを起動：`docker compose up -d`",
                 "ログを確認：`docker logs -f rawon-bot`"

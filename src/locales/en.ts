@@ -27,14 +27,12 @@ export const en = {
         features: {
             title: "✨ Features",
             items: [
-                "🎮 Interaction support (slash commands and buttons)",
-                "📺 Request channel feature for seamless music experience",
                 "🚀 Production-ready, no coding required",
-                "🎵 Basic music commands (play, pause, skip, queue, etc.)",
-                "🌍 Multi-language support (12 languages)",
-                "🔄 Multi-cookie rotation for uninterrupted playback",
+                "📺 Request channel feature for seamless music experience",
+                "🤖 Run multiple bot instances for different voice channels",
                 "⚡ Smart audio pre-caching for smoother playback",
-                "🎶 Support for multiple music platforms (video sites, Spotify, SoundCloud)"
+                "🎶 Support for YouTube, Spotify, and SoundCloud",
+                "🔄 Multi-cookie rotation for uninterrupted playback"
             ]
         },
         requirements: {
@@ -49,7 +47,7 @@ export const en = {
             steps: [
                 "Download and install **Node.js** version `22.12.0` or higher",
                 "Clone or download this repository",
-                "Copy `.env_example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)",
+                "Copy `.env.example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)",
                 "Install dependencies: `pnpm install`",
                 "Build the project: `pnpm run build`",
                 "Start the bot: `pnpm start`"
@@ -61,7 +59,7 @@ export const en = {
             title: "🐳 Docker Setup (Recommended)",
             composeTitle: "Using Docker Compose",
             composeSteps: [
-                "Create a `.env` file with your configuration (copy from `.env_example`)",
+                "Create a `.env` file with your configuration (copy from `.env.example`)",
                 "Create a `docker-compose.yaml` file (see example below)",
                 "Start the bot: `docker compose up -d`",
                 "View logs: `docker logs -f rawon-bot`"

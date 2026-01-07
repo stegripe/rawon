@@ -26,11 +26,12 @@ export const tr = {
         features: {
             title: "Özellikler",
             items: [
-                "Etkileşim desteği (slash komutları ve butonlar)",
-                "Kesintisiz müzik deneyimi için istek kanalı özelliği",
-                "Üretime hazır, kodlama gerektirmez",
-                "Temel müzik komutları (play, pause, skip, queue vb.)",
-                "Çoklu dil desteği"
+                "🚀 Üretime hazır, kodlama gerektirmez",
+                "📺 Kesintisiz müzik deneyimi için istek kanalı özelliği",
+                "🤖 Farklı ses kanalları için birden fazla bot örneği çalıştırın",
+                "⚡ Daha akıcı oynatma için akıllı ses ön önbelleğe alma",
+                "🎶 YouTube, Spotify ve SoundCloud desteği",
+                "🔄 Kesintisiz oynatma için çoklu çerez rotasyonu"
             ]
         },
         requirements: {
@@ -44,7 +45,7 @@ export const tr = {
             steps: [
                 "Node.js sürüm 22.12.0 veya üstünü indirin ve yükleyin",
                 "Bu depoyu klonlayın veya indirin",
-                ".env_example'ı .env'ye kopyalayın ve gerekli değerleri doldurun (minimum: DISCORD_TOKEN)",
+                ".env.example'ı .env'ye kopyalayın ve gerekli değerleri doldurun (minimum: DISCORD_TOKEN)",
                 "Bağımlılıkları yükleyin: pnpm install",
                 "Projeyi derleyin: pnpm run build",
                 "Botu başlatın: pnpm start"
@@ -55,7 +56,7 @@ export const tr = {
             title: "Docker Kurulumu (Önerilen)",
             composeTitle: "Docker Compose Kullanarak",
             composeSteps: [
-                "Yapılandırmanızla bir .env dosyası oluşturun (.env_example'dan kopyalayın)",
+                "Yapılandırmanızla bir .env dosyası oluşturun (.env.example'dan kopyalayın)",
                 "Bir docker-compose.yaml dosyası oluşturun (aşağıdaki örneğe bakın)",
                 "Botu başlatın: docker compose up -d",
                 "Günlükleri görüntüleyin: docker logs -f rawon-bot"
