@@ -312,6 +312,7 @@ export class MultiBotManager {
         const thisBotIsInVoiceChannel = actualBotVoiceChannel === userVoiceChannelId;
         const thisBotHasQueueForChannel = thisBotQueueChannel === userVoiceChannelId;
         const thisBotIsInChannel = thisBotIsInVoiceChannel || thisBotHasQueueForChannel;
+        const thisBotIsFree = !actualBotVoiceChannel && !thisBotQueueChannel;
 
         client.logger.info(
             `[MultiBot] ${client.user?.tag} checking music command response: ` +
@@ -322,47 +323,70 @@ export class MultiBotManager {
                 `thisBotQueueChannel=${thisBotQueueChannel ?? "none"}, ` +
                 `thisBotIsInVoiceChannel=${thisBotIsInVoiceChannel}, ` +
                 `thisBotHasQueueForChannel=${thisBotHasQueueForChannel}, ` +
-                `thisBotIsInChannel=${thisBotIsInChannel}`,
+                `thisBotIsInChannel=${thisBotIsInChannel}, ` +
+                `thisBotIsFree=${thisBotIsFree}`,
         );
 
-        if (!thisBotIsInChannel) {
+        // If bot is in the user's channel, verify it's the responsible one
+        if (thisBotIsInChannel) {
             const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
-            if (responsibleBot) {
-                client.logger.warn(
-                    `[MultiBot] ${client.user?.tag} ❌ BLOCKED music command - NOT in user's voice channel! ` +
-                        `User in: ${userVoiceChannelId}, responsible bot: ${responsibleBot.user?.tag}. ` +
-                        `This bot should NOT respond to this command!`,
+            if (!responsibleBot) {
+                client.logger.debug(
+                    `[MultiBot] ${client.user?.tag} no responsible bot found but this bot is in channel, allowing response`,
                 );
-            } else {
+                return true;
+            }
+            const shouldRespond = responsibleBot.user?.id === client.user?.id;
+            if (!shouldRespond) {
                 client.logger.warn(
-                    `[MultiBot] ${client.user?.tag} ❌ BLOCKED music command - NOT in user's voice channel and no responsible bot found! ` +
-                        `User in: ${userVoiceChannelId}. This bot should NOT respond!`,
+                    `[MultiBot] ${client.user?.tag} CONFLICT: This bot thinks it's in channel ${userVoiceChannelId} ` +
+                        `but getBotForVoiceChannel says ${responsibleBot.user?.tag} is responsible!`,
                 );
+                return false;
             }
 
-            return false;
-        }
-
-        const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
-        if (!responsibleBot) {
-            client.logger.debug(
-                `[MultiBot] ${client.user?.tag} no responsible bot found but this bot is in channel, allowing response`,
+            client.logger.info(
+                `[MultiBot] ${client.user?.tag} WILL respond to music command - confirmed responsible for voice channel ${userVoiceChannelId}`,
             );
             return true;
         }
-        const shouldRespond = responsibleBot.user?.id === client.user?.id;
-        if (!shouldRespond) {
-            client.logger.warn(
-                `[MultiBot] ${client.user?.tag} CONFLICT: This bot thinks it's in channel ${userVoiceChannelId} ` +
-                    `but getBotForVoiceChannel says ${responsibleBot.user?.tag} is responsible!`,
-            );
+
+        // Bot is not in user's channel - check if it's free and should handle
+        if (thisBotIsFree) {
+            const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
+            if (responsibleBot && responsibleBot.user?.id === client.user?.id) {
+                client.logger.info(
+                    `[MultiBot] ${client.user?.tag} ✅ ALLOWING music command - bot is FREE and selected as responsible for voice channel ${userVoiceChannelId}`,
+                );
+                return true;
+            }
+            if (responsibleBot) {
+                client.logger.debug(
+                    `[MultiBot] ${client.user?.tag} ❌ bot is free but another bot (${responsibleBot.user?.tag}) is responsible for voice channel ${userVoiceChannelId}`,
+                );
+            } else {
+                client.logger.debug(
+                    `[MultiBot] ${client.user?.tag} ❌ bot is free but no responsible bot found for voice channel ${userVoiceChannelId}`,
+                );
+            }
             return false;
         }
 
-        client.logger.info(
-            `[MultiBot] ${client.user?.tag} WILL respond to music command - confirmed responsible for voice channel ${userVoiceChannelId}`,
-        );
-        return true;
+        // Bot is in a different channel than the user (busy with another channel)
+        const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
+        if (responsibleBot) {
+            client.logger.warn(
+                `[MultiBot] ${client.user?.tag} ❌ BLOCKED music command - bot is in different voice channel! ` +
+                    `User in: ${userVoiceChannelId}, this bot in: ${actualBotVoiceChannel ?? thisBotQueueChannel ?? "none"}, ` +
+                    `responsible bot: ${responsibleBot.user?.tag}. This bot should NOT respond!`,
+            );
+        } else {
+            client.logger.warn(
+                `[MultiBot] ${client.user?.tag} ❌ BLOCKED music command - bot is in different voice channel and no responsible bot found! ` +
+                    `User in: ${userVoiceChannelId}, this bot in: ${actualBotVoiceChannel ?? thisBotQueueChannel ?? "none"}. This bot should NOT respond!`,
+            );
+        }
+        return false;
     }
 
     public shouldRespondToVoice(client: Rawon, guild: Guild, voiceChannelId: Snowflake): boolean {
