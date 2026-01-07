@@ -165,8 +165,8 @@ export const ja = {
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "**[実験的]** ダウンロードしたオーディオをキャッシュして繰り返し再生を高速化。ディスク容量を多く使用しますが、頻繁に再生される曲を高速化",
-                default: "no"
+                    "ダウンロードしたオーディオをキャッシュして繰り返し再生を高速化。ディスク容量を多く使用しますが、頻繁に再生される曲を高速化",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

@@ -156,8 +156,8 @@ export const tr = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[DENEYSEL] Daha hızlı tekrar oynatma için indirilen sesi önbelleğe al",
-                default: "no"
+                description: "Daha hızlı tekrar oynatma için indirilen sesi önbelleğe al",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

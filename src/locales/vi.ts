@@ -156,8 +156,8 @@ export const vi = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[THỰC NGHIỆM] Cache audio đã tải để phát lại nhanh hơn",
-                default: "no"
+                description: "Cache audio đã tải để phát lại nhanh hơn",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

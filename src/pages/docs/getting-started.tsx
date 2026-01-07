@@ -159,7 +159,7 @@ volumes:
                             codeBlock
                         />
 
-                        <div className="rounded-lg border-1 border-solid border-fourth bg-primary p-3">
+                        <div className="mt-4 rounded-lg border-1 border-solid border-fourth bg-primary p-3">
                             <Typography className="font-sans font-medium">
                                 {t.gettingStarted.dockerSetup.volumeInfo.title}
                             </Typography>

@@ -156,8 +156,8 @@ export const zhCN = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[实验性] 缓存下载的音频以加快重复播放",
-                default: "no"
+                description: "缓存下载的音频以加快重复播放",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

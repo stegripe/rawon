@@ -166,8 +166,8 @@ export const id = {
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "**[EKSPERIMENTAL]** Cache audio yang didownload untuk pemutaran ulang lebih cepat. Menggunakan lebih banyak disk space tapi mempercepat lagu yang sering diputar",
-                default: "no"
+                    "Cache audio yang didownload untuk pemutaran ulang lebih cepat. Menggunakan lebih banyak disk space tapi mempercepat lagu yang sering diputar",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

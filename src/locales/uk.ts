@@ -156,8 +156,8 @@ export const uk = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[ЕКСПЕРИМЕНТАЛЬНО] Кешування завантаженого аудіо для швидшого повторного відтворення",
-                default: "no"
+                description: "Кешування завантаженого аудіо для швидшого повторного відтворення",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

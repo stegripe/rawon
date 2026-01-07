@@ -156,8 +156,8 @@ export const fr = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "**[EXPÉRIMENTAL]** Cache audio téléchargé pour une lecture répétée plus rapide",
-                default: "no"
+                description: "Cache audio téléchargé pour une lecture répétée plus rapide",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

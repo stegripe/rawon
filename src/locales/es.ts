@@ -165,8 +165,8 @@ export const es = {
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "**[EXPERIMENTAL]** Cachea audio descargado para reproducción más rápida. Usa más espacio en disco pero acelera canciones frecuentes",
-                default: "no"
+                    "Cachea audio descargado para reproducción más rápida. Usa más espacio en disco pero acelera canciones frecuentes",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

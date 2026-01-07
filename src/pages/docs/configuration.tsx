@@ -385,7 +385,7 @@ REQUEST_CHANNEL_SPLASH=""
 
 # Other settings
 MUSIC_SELECTION_TYPE="message"
-ENABLE_AUDIO_CACHE="no"`}
+ENABLE_AUDIO_CACHE="yes"`}
                             theme={dracula}
                             showLineNumbers
                             codeBlock

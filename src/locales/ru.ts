@@ -156,8 +156,8 @@ export const ru = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[ЭКСПЕРИМЕНТАЛЬНО] Кэширование загруженного аудио для более быстрого повторного воспроизведения",
-                default: "no"
+                description: "Кэширование загруженного аудио для более быстрого повторного воспроизведения",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",
