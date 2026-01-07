@@ -166,7 +166,8 @@
                 "description": "미디어 플레이어 상태 보기",
                 "disableButton": "이전 버튼들은 더 이상 활성화되지 않으며 제거되었어요.",
                 "emptyQueue": "대기열이 비어 있어요.",
-                "live": "라이브"
+                "live": "라이브",
+                "requestedBy": "요청자"
             },
             "pause": {
                 "alreadyPause": "음악 플레이어가 이미 일시 정지되어 있어요.",
@@ -342,9 +343,9 @@
         "skipped": "{song}을(를) 건너뛰었어요",
         "removed": "{song}을(를) 대기열에서 삭제하고 건너뛰었어요.",
         "stopped": "음악을 정지하고 대기열을 비웠어요.",
-        "loopChanged": "반복 모드가 {mode}로 변경되었어요.",
-        "shuffleChanged": "셔플 모드가 이제 {state}예요.",
-        "volumeChanged": "볼륨이 {volume}(으)로 변경되었어요.",
+        "loopChanged": "반복 모드가 {mode}로 변경되었어요",
+        "shuffleChanged": "셔플 모드가 이제 {state}예요",
+        "volumeChanged": "볼륨이 {volume}(으)로 변경되었어요",
         "queueCleared": "대기열이 비워졌어요.",
         "queueListTitle": "대기열 목록",
         "emptyQueue": "대기열이 비어 있어요.",
@@ -362,7 +363,9 @@
     "reusable": {
         "invalidUsage": "잘못된 사용법이에요. {prefix} {name}으로 자세한 정보를 확인하세요.",
         "pageFooter": "페이지 {actual}/{total}",
-        "lyricsSource": "출처: {source}"
+        "lyricsSource": "출처: {source}",
+        "enabled": "활성화됨",
+        "disabled": "비활성화됨"
     },
     "utils": {
         "commonUtil": {

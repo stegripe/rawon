@@ -166,7 +166,8 @@
                 "description": "Show the media player status",
                 "disableButton": "Previous buttons are no longer active and removed.",
                 "emptyQueue": "Queue is empty.",
-                "live": "LIVE"
+                "live": "LIVE",
+                "requestedBy": "Requested by"
             },
             "pause": {
                 "alreadyPause": "The music player is already paused.",
@@ -342,9 +343,9 @@
         "skipped": "Skipped {song}",
         "removed": "Removed {song} from the queue and skipped.",
         "stopped": "Stopped the music and cleared the queue.",
-        "loopChanged": "Loop mode changed to {mode}.",
-        "shuffleChanged": "Shuffle mode is now {state}.",
-        "volumeChanged": "Volume changed to {volume}.",
+        "loopChanged": "Loop mode changed to {mode}",
+        "shuffleChanged": "Shuffle mode is now {state}",
+        "volumeChanged": "Volume changed to {volume}",
         "queueCleared": "Queue has been cleared.",
         "queueListTitle": "Queue List",
         "emptyQueue": "The queue is empty.",
@@ -362,7 +363,9 @@
     "reusable": {
         "invalidUsage": "Invalid usage, please use {prefix} {name} for more information.",
         "pageFooter": "Page {actual} of {total}",
-        "lyricsSource": "Source: {source}"
+        "lyricsSource": "Source: {source}",
+        "enabled": "Enabled",
+        "disabled": "Disabled"
     },
     "utils": {
         "commonUtil": {

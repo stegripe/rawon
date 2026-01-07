@@ -166,7 +166,8 @@
                 "description": "Afficher l'état du lecteur multimédia",
                 "disableButton": "Les boutons précédents ne sont plus actifs et ont été supprimés.",
                 "emptyQueue": "La file d'attente est vide.",
-                "live": "EN DIRECT"
+                "live": "EN DIRECT",
+                "requestedBy": "Demandé par"
             },
             "pause": {
                 "alreadyPause": "Le lecteur de musique est déjà en pause.",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",
         "pageFooter": "Page {actual} sur {total}",
-        "lyricsSource": "Source: {source}"
+        "lyricsSource": "Source: {source}",
+        "enabled": "Activé",
+        "disabled": "Désactivé"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "{song} passée",
         "removed": "Supprimé {song} de la file d'attente et passée.",
         "stopped": "Musique arrêtée et file d'attente vidée.",
-        "loopChanged": "Mode boucle changé en {mode}.",
-        "shuffleChanged": "Mode aléatoire maintenant {state}.",
-        "volumeChanged": "Volume changé à {volume}.",
+        "loopChanged": "Mode boucle changé en {mode}",
+        "shuffleChanged": "Mode aléatoire maintenant {state}",
+        "volumeChanged": "Volume changé à {volume}",
         "queueCleared": "La file d'attente a été vidée.",
         "queueListTitle": "Liste de File d'attente",
         "emptyQueue": "La file d'attente est vide.",
