@@ -137,7 +137,7 @@ export class FilterCommand extends BaseCommand {
                             }),
                             true,
                         ).setFooter({
-                            text: __("commands.music.filter.filterRestartedFooter"),
+                            text: `• ${__("commands.music.filter.filterRestartedFooter")}`,
                         }),
                     ],
                 });
@@ -153,7 +153,7 @@ export class FilterCommand extends BaseCommand {
                         }),
                         true,
                     ).setFooter({
-                        text: __("commands.music.filter.filterNoQueueFooter"),
+                        text: `• ${__("commands.music.filter.filterNoQueueFooter")}`,
                     }),
                 ],
             });

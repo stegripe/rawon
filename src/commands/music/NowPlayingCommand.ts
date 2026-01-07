@@ -61,7 +61,7 @@ export class NowPlayingCommand extends BaseCommand {
 
             if (song) {
                 const requesterLine = queueSong?.requester
-                    ? `\n${__("commands.music.nowplaying.requestedBy")}: ${queueSong.requester.toString()}`
+                    ? `\n\n${__("commands.music.nowplaying.requestedBy")}: ${queueSong.requester.toString()}`
                     : "";
                 embed.data.description += `**[${song.title}](${song.url})**\n${progressLine}${requesterLine}`;
             } else {
@@ -149,7 +149,7 @@ export class NowPlayingCommand extends BaseCommand {
             })
             .on("end", async () => {
                 const embed = getEmbed().setFooter({
-                    text: __("commands.music.nowplaying.disableButton"),
+                    text: `• ${__("commands.music.nowplaying.disableButton")}`,
                 });
 
                 await msg

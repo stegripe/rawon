@@ -122,7 +122,7 @@ export class DJCommand extends BaseCommand {
                     this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true
                         ? "enable"
                         : "disable";
-                const footer = `${__("commands.music.dj.embedTitle")}: ${__(`commands.music.dj.${txt}`)}`;
+                const footer = `• ${__("commands.music.dj.embedTitle")}: ${__(`commands.music.dj.${txt}`)}`;
 
                 if ((newRole?.length ?? 0) === 0) {
                     const cur = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.role ?? null;
