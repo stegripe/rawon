@@ -327,7 +327,6 @@ export class MultiBotManager {
                 `thisBotIsFree=${thisBotIsFree}`,
         );
 
-        // If bot is in the user's channel, verify it's the responsible one
         if (thisBotIsInChannel) {
             const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
             if (!responsibleBot) {
@@ -351,7 +350,6 @@ export class MultiBotManager {
             return true;
         }
 
-        // Bot is not in user's channel - check if it's free and should handle
         if (thisBotIsFree) {
             const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
             if (responsibleBot && responsibleBot.user?.id === client.user?.id) {
@@ -372,7 +370,6 @@ export class MultiBotManager {
             return false;
         }
 
-        // Bot is in a different channel than the user (busy with another channel)
         const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
         if (responsibleBot) {
             client.logger.warn(

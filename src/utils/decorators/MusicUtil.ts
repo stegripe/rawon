@@ -77,8 +77,6 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
             );
 
             if (!shouldRespond) {
-                // Don't send error message - this bot is not responsible for this voice channel
-                // The responsible bot will handle it or send the error
                 return false;
             }
         }

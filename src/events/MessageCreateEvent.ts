@@ -17,7 +17,6 @@ import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
 
-// Music commands that should be routed through shouldRespondToMusicCommand
 const MUSIC_COMMANDS = [
     "play",
     "p",
