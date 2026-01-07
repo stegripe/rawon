@@ -52,7 +52,7 @@ export default function HomePage() {
                         className="flex w-full max-w-sm flex-col items-center gap-4 px-4 sm:px-0"
                     >
                         <div className="flex w-full flex-col gap-2">
-                            <Typography className="text-center font-sans text-sm font-medium text-third">
+                            <Typography className="text-center font-sans text-base font-semibold text-third sm:text-lg">
                                 {t.home.inviteBot}
                             </Typography>
                             <div className="grid w-full grid-cols-5 gap-2">
