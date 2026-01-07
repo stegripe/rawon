@@ -1,5 +1,5 @@
 import { type Guild, type Snowflake } from "discord.js";
-import { discordIds, discordTokens, isMultiBot } from "../../config/env.js";
+import { discordTokens, isMultiBot } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 
 export interface BotInstance {
@@ -411,13 +411,6 @@ export class MultiBotManager {
         }
 
         return shouldRespond;
-    }
-
-    public static getBotIdForTokenIndex(index: number): Snowflake | null {
-        if (index >= 0 && index < discordIds.length) {
-            return discordIds[index];
-        }
-        return null;
     }
 
     public static isEnabled(): boolean {

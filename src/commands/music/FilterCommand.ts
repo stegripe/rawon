@@ -117,11 +117,12 @@ export class FilterCommand extends BaseCommand {
                     return ctx.reply({
                         embeds: [
                             createEmbed(
-                                "info",
+                                "success",
                                 __mf("commands.music.filter.filterSet", {
                                     filter: `**\`${filter}\`**`,
                                     state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
                                 }),
+                                true,
                             ),
                         ],
                     });
@@ -129,11 +130,12 @@ export class FilterCommand extends BaseCommand {
                 return ctx.reply({
                     embeds: [
                         createEmbed(
-                            "info",
+                            "success",
                             __mf("commands.music.filter.filterSet", {
                                 filter: `**\`${filter}\`**`,
                                 state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
                             }),
+                            true,
                         ).setFooter({
                             text: __("commands.music.filter.filterRestartedFooter"),
                         }),
@@ -144,11 +146,12 @@ export class FilterCommand extends BaseCommand {
             return ctx.reply({
                 embeds: [
                     createEmbed(
-                        "info",
+                        "success",
                         __mf("commands.music.filter.filterSet", {
                             filter: `**\`${filter}\`**`,
                             state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
                         }),
+                        true,
                     ).setFooter({
                         text: __("commands.music.filter.filterNoQueueFooter"),
                     }),

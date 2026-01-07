@@ -29,8 +29,6 @@ RUN apk add --no-cache ffmpeg python3 deno && ln -sf python3 /usr/bin/python
 
 RUN mkdir -p /app/cache
 
-RUN echo "{}" > /app/cache/data.json
-
 COPY --from=build-stage /tmp/build/package.json .
 COPY --from=build-stage /tmp/build/node_modules ./node_modules
 COPY --from=build-stage /tmp/build/dist ./dist
