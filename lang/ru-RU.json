@@ -166,7 +166,8 @@
                 "description": "Показать статус медиа проигрывателя",
                 "disableButton": "Предыдущие кнопки больше неактивные и будут удалены.",
                 "emptyQueue": "Очередь пустая.",
-                "live": "ПРЯМОЙ ЭФИР"
+                "live": "ПРЯМОЙ ЭФИР",
+                "requestedBy": "Запрошено"
             },
             "pause": {
                 "alreadyPause": "Музыкальный проигрыватель уже на паузе.",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "Неверное использование, пожалуйста используйте {prefix} {name} для большей информации.",
         "pageFooter": "Страница {actual} из {total}",
-        "lyricsSource": "Источник: {source}"
+        "lyricsSource": "Источник: {source}",
+        "enabled": "Включено",
+        "disabled": "Отключено"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "Пропущено {song}",
         "removed": "Удалено {song} из очереди и пропущено.",
         "stopped": "Музыка остановлена и очередь очищена.",
-        "loopChanged": "Режим повтора изменен на {mode}.",
-        "shuffleChanged": "Режим перемешивания теперь {state}.",
-        "volumeChanged": "Громкость изменена на {volume}.",
+        "loopChanged": "Режим повтора изменен на {mode}",
+        "shuffleChanged": "Режим перемешивания теперь {state}",
+        "volumeChanged": "Громкость изменена на {volume}",
         "queueCleared": "Очередь очищена.",
         "queueListTitle": "Список очереди",
         "emptyQueue": "Очередь пуста.",

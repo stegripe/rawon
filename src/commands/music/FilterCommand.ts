@@ -120,7 +120,7 @@ export class FilterCommand extends BaseCommand {
                                 "success",
                                 __mf("commands.music.filter.filterSet", {
                                     filter: `**\`${filter}\`**`,
-                                    state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
+                                    state: `**\`${newState ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                                 }),
                                 true,
                             ),
@@ -133,7 +133,7 @@ export class FilterCommand extends BaseCommand {
                             "success",
                             __mf("commands.music.filter.filterSet", {
                                 filter: `**\`${filter}\`**`,
-                                state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
+                                state: `**\`${newState ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                             }),
                             true,
                         ).setFooter({
@@ -149,7 +149,7 @@ export class FilterCommand extends BaseCommand {
                         "success",
                         __mf("commands.music.filter.filterSet", {
                             filter: `**\`${filter}\`**`,
-                            state: `**\`${newState ? "Enabled" : "Disabled"}\`**`,
+                            state: `**\`${newState ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                         }),
                         true,
                     ).setFooter({
@@ -169,7 +169,7 @@ export class FilterCommand extends BaseCommand {
                         "info",
                         __mf("commands.music.filter.currentState", {
                             filter: `**\`${filter}\`**`,
-                            state: `**\`${isEnabled ? "Enabled" : "Disabled"}\`**`,
+                            state: `**\`${isEnabled ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                         }),
                     ).setFooter({
                         text: `• ${__mf("commands.music.filter.embedFooter", {

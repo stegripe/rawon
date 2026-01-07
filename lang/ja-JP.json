@@ -166,7 +166,8 @@
                 "description": "メディアプレイヤーのステータス",
                 "disableButton": "「前に戻る」ボタンは無効化され、削除されました。",
                 "emptyQueue": "キューは空です。",
-                "live": "ライブ"
+                "live": "ライブ",
+                "requestedBy": "リクエスト者"
             },
             "pause": {
                 "alreadyPause": "プレイヤーはすでに一時停止しています。",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "無効な使用方法です。{prefix} {name}を実行して情報を照会してください。",
         "pageFooter": "ページ {actual}/{total}",
-        "lyricsSource": "ソース: {source}"
+        "lyricsSource": "ソース: {source}",
+        "enabled": "有効",
+        "disabled": "無効"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "{song} をスキップしました",
         "removed": "{song} をキューから削除してスキップしました。",
         "stopped": "音楽を停止し、キューをクリアしました。",
-        "loopChanged": "ループモードを {mode} に変更しました。",
-        "shuffleChanged": "シャッフルモードは現在 {state} です。",
-        "volumeChanged": "音量を {volume} に変更しました。",
+        "loopChanged": "ループモードを {mode} に変更しました",
+        "shuffleChanged": "シャッフルモードは現在 {state} です",
+        "volumeChanged": "音量を {volume} に変更しました",
         "queueCleared": "キューがクリアされました。",
         "queueListTitle": "キューリスト",
         "emptyQueue": "キューは空です。",

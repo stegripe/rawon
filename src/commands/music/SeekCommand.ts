@@ -1,5 +1,6 @@
 import { type AudioPlayerPlayingState, AudioPlayerStatus } from "@discordjs/voice";
 import { ApplicationCommandOptionType } from "discord.js";
+import { enableAudioCache } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { BaseCommand } from "../../structures/BaseCommand.js";
 import { type CommandContext } from "../../structures/CommandContext.js";
@@ -100,6 +101,28 @@ export class SeekCommand extends BaseCommand {
                 ],
             });
             return;
+        }
+
+        // Check if cache is available when seeking with caching enabled
+        if (enableAudioCache && seekSeconds > 0) {
+            const isCached = this.client.audioCache.isCached(song.song.url);
+            const isInProgress = this.client.audioCache.isInProgress(song.song.url);
+
+            if (!isCached && isInProgress) {
+                // Cache is being built, tell user to wait
+                await ctx.reply({
+                    embeds: [createEmbed("warn", __("commands.music.seek.waitingForCache"))],
+                });
+                return;
+            }
+
+            if (!isCached && !isInProgress) {
+                // Cache not available and not being built
+                await ctx.reply({
+                    embeds: [createEmbed("error", __("commands.music.seek.notCached"), true)],
+                });
+                return;
+            }
         }
 
         await ctx.reply({
