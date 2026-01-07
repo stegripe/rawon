@@ -160,13 +160,14 @@
                 "searchingLyrics": "Recherche de paroles...",
                 "slashDescription": "Musique à rechercher",
                 "usage": "{prefix}lyrics [musique]",
-                "noLyrics": "Aucune parole trouvée pour {song}."
+                "noLyrics": "Aucune parole trouvée pour {song}"
             },
             "nowplaying": {
                 "description": "Afficher l'état du lecteur multimédia",
                 "disableButton": "Les boutons précédents ne sont plus actifs et ont été supprimés.",
                 "emptyQueue": "La file d'attente est vide.",
-                "live": "EN DIRECT"
+                "live": "EN DIRECT",
+                "requestedBy": "Demandé par"
             },
             "pause": {
                 "alreadyPause": "Le lecteur de musique est déjà en pause.",
@@ -320,6 +321,10 @@
         }
     },
     "reusable": {
+        "enabled": "Activé",
+        "disabled": "Désactivé",
+        "on": "ON",
+        "off": "OFF",
         "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",
         "pageFooter": "Page {actual} sur {total}",
         "lyricsSource": "Source: {source}"
@@ -374,9 +379,9 @@
         "skipped": "{song} passée",
         "removed": "Supprimé {song} de la file d'attente et passée.",
         "stopped": "Musique arrêtée et file d'attente vidée.",
-        "loopChanged": "Mode boucle changé en {mode}.",
-        "shuffleChanged": "Mode aléatoire maintenant {state}.",
-        "volumeChanged": "Volume changé à {volume}.",
+        "loopChanged": "Mode boucle changé en {mode}",
+        "shuffleChanged": "Mode aléatoire maintenant {state}",
+        "volumeChanged": "Volume changé à {volume}",
         "queueCleared": "La file d'attente a été vidée.",
         "queueListTitle": "Liste de File d'attente",
         "emptyQueue": "La file d'attente est vide.",
@@ -384,7 +389,7 @@
         "alreadyPlaying": "La musique est déjà en lecture.",
         "nothingPlaying": "Rien n'est en cours de lecture.",
         "volumeLimit": "Le volume doit être entre 1 et 100.",
-        "setChannel": "Le salon de demandes a été défini sur {channel}.",
+        "setChannel": "Le salon de demandes a été défini sur {channel}",
         "removeChannel": "Le salon de demandes a été supprimé.",
         "noChannel": "Aucun salon de demandes n'est actuellement défini.",
         "currentChannel": "Salon de demandes actuel : {channel}",

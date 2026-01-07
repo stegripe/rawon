@@ -40,7 +40,9 @@ export class NowPlayingCommand extends BaseCommand {
                       })
                     | undefined
             )?.resource;
-            const song = (res?.metadata as QueueSong | undefined)?.song;
+            const queueSong = res?.metadata as QueueSong | undefined;
+            const song = queueSong?.song;
+            const requester = queueSong?.requester;
             const seekOffset = ctx.guild?.queue?.seekOffset ?? 0;
 
             const embed = createEmbed(
@@ -58,8 +60,12 @@ export class NowPlayingCommand extends BaseCommand {
                 progressLine = "";
             }
 
+            const requesterLine = requester
+                ? `\n👤 **${__("commands.music.nowplaying.requestedBy")}:** ${requester.toString()}`
+                : "";
+
             embed.data.description += song
-                ? `**[${song.title}](${song.url})**\n${progressLine}`
+                ? `**[${song.title}](${song.url})**\n${progressLine}${requesterLine}`
                 : __("commands.music.nowplaying.emptyQueue");
 
             return embed;

@@ -156,7 +156,7 @@
             "lyrics": {
                 "apiError": "The API could not find the song {song}, because: {message}",
                 "description": "Show the lyrics from the song",
-                "noLyrics": "No lyrics found for {song}.",
+                "noLyrics": "No lyrics found for {song}",
                 "noQuery": "There is nothing playing, or no arguments are provided.",
                 "searchingLyrics": "Searching for lyrics...",
                 "slashDescription": "Song to search",
@@ -166,7 +166,8 @@
                 "description": "Show the media player status",
                 "disableButton": "Previous buttons are no longer active and removed.",
                 "emptyQueue": "Queue is empty.",
-                "live": "LIVE"
+                "live": "LIVE",
+                "requestedBy": "Requested by"
             },
             "pause": {
                 "alreadyPause": "The music player is already paused.",
@@ -342,9 +343,9 @@
         "skipped": "Skipped {song}",
         "removed": "Removed {song} from the queue and skipped.",
         "stopped": "Stopped the music and cleared the queue.",
-        "loopChanged": "Loop mode changed to {mode}.",
-        "shuffleChanged": "Shuffle mode is now {state}.",
-        "volumeChanged": "Volume changed to {volume}.",
+        "loopChanged": "Loop mode changed to {mode}",
+        "shuffleChanged": "Shuffle mode is now {state}",
+        "volumeChanged": "Volume changed to {volume}",
         "queueCleared": "Queue has been cleared.",
         "queueListTitle": "Queue List",
         "emptyQueue": "The queue is empty.",
@@ -352,7 +353,7 @@
         "alreadyPlaying": "The music is already playing.",
         "nothingPlaying": "Nothing is currently playing.",
         "volumeLimit": "Volume must be between 1 and 100.",
-        "setChannel": "Request channel has been set to {channel}.",
+        "setChannel": "Request channel has been set to {channel}",
         "removeChannel": "Request channel has been removed.",
         "noChannel": "No request channel is currently set.",
         "currentChannel": "Current request channel: {channel}",
@@ -360,6 +361,10 @@
         "noPermission": "You don't have permission to perform this action. Only DJ role, server managers, or the song requester can do this."
     },
     "reusable": {
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "on": "ON",
+        "off": "OFF",
         "invalidUsage": "Invalid usage, please use {prefix} {name} for more information.",
         "pageFooter": "Page {actual} of {total}",
         "lyricsSource": "Source: {source}"

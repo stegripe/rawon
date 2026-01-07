@@ -160,13 +160,14 @@
                 "searchingLyrics": "Procurando letra...",
                 "slashDescription": "Música a buscar",
                 "usage": "{prefix}lyrics [música]",
-                "noLyrics": "Não foram encontradas letras para {song}."
+                "noLyrics": "Não foram encontradas letras para {song}"
             },
             "nowplaying": {
                 "description": "Mostra o status do player de mídia",
                 "disableButton": "Este botão já não está ativo e foi removido.",
                 "emptyQueue": "A fila está vazia.",
-                "live": "AO VIVO"
+                "live": "AO VIVO",
+                "requestedBy": "Pedido por"
             },
             "pause": {
                 "alreadyPause": "O player de música já está pausado.",
@@ -320,6 +321,10 @@
         }
     },
     "reusable": {
+        "enabled": "Ativado",
+        "disabled": "Desativado",
+        "on": "LIGADO",
+        "off": "DESLIGADO",
         "invalidUsage": "Uso inválido, por favor use {prefix} {name} para mais informações.",
         "pageFooter": "Página {actual} de {total}",
         "lyricsSource": "Fonte: {source}"
@@ -374,9 +379,9 @@
         "skipped": "Pulou {song}",
         "removed": "Removido {song} da fila e pulado.",
         "stopped": "Música parada e fila limpa.",
-        "loopChanged": "Modo loop alterado para {mode}.",
-        "shuffleChanged": "Modo aleatório agora está {state}.",
-        "volumeChanged": "Volume alterado para {volume}.",
+        "loopChanged": "Modo loop alterado para {mode}",
+        "shuffleChanged": "Modo aleatório agora está {state}",
+        "volumeChanged": "Volume alterado para {volume}",
         "queueCleared": "A fila foi limpa.",
         "queueListTitle": "Lista da Fila",
         "emptyQueue": "A fila está vazia.",
@@ -384,7 +389,7 @@
         "alreadyPlaying": "A música já está tocando.",
         "nothingPlaying": "Nada está tocando no momento.",
         "volumeLimit": "O volume deve estar entre 1 e 100.",
-        "setChannel": "O canal de pedidos foi definido para {channel}.",
+        "setChannel": "O canal de pedidos foi definido para {channel}",
         "removeChannel": "O canal de pedidos foi removido.",
         "noChannel": "Nenhum canal de pedidos está definido atualmente.",
         "currentChannel": "Canal de pedidos atual: {channel}",

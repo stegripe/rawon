@@ -160,13 +160,14 @@
                 "searchingLyrics": "Поиск текста песни...",
                 "slashDescription": "Песня для поиска",
                 "usage": "{prefix}lyrics [песня]",
-                "noLyrics": "Текст для {song} не найден."
+                "noLyrics": "Текст для {song} не найден"
             },
             "nowplaying": {
                 "description": "Показать статус медиа проигрывателя",
                 "disableButton": "Предыдущие кнопки больше неактивные и будут удалены.",
                 "emptyQueue": "Очередь пустая.",
-                "live": "ПРЯМОЙ ЭФИР"
+                "live": "ПРЯМОЙ ЭФИР",
+                "requestedBy": "Запросил"
             },
             "pause": {
                 "alreadyPause": "Музыкальный проигрыватель уже на паузе.",
@@ -320,6 +321,10 @@
         }
     },
     "reusable": {
+        "enabled": "Включено",
+        "disabled": "Отключено",
+        "on": "ВКЛ",
+        "off": "ВЫКЛ",
         "invalidUsage": "Неверное использование, пожалуйста используйте {prefix} {name} для большей информации.",
         "pageFooter": "Страница {actual} из {total}",
         "lyricsSource": "Источник: {source}"
@@ -374,9 +379,9 @@
         "skipped": "Пропущено {song}",
         "removed": "Удалено {song} из очереди и пропущено.",
         "stopped": "Музыка остановлена и очередь очищена.",
-        "loopChanged": "Режим повтора изменен на {mode}.",
-        "shuffleChanged": "Режим перемешивания теперь {state}.",
-        "volumeChanged": "Громкость изменена на {volume}.",
+        "loopChanged": "Режим повтора изменен на {mode}",
+        "shuffleChanged": "Режим перемешивания теперь {state}",
+        "volumeChanged": "Громкость изменена на {volume}",
         "queueCleared": "Очередь очищена.",
         "queueListTitle": "Список очереди",
         "emptyQueue": "Очередь пуста.",
@@ -384,7 +389,7 @@
         "alreadyPlaying": "Музыка уже воспроизводится.",
         "nothingPlaying": "Сейчас ничего не воспроизводится.",
         "volumeLimit": "Громкость должна быть от 1 до 100.",
-        "setChannel": "Канал запросов установлен на {channel}.",
+        "setChannel": "Канал запросов установлен на {channel}",
         "removeChannel": "Канал запросов удален.",
         "noChannel": "Канал запросов не установлен.",
         "currentChannel": "Текущий канал запросов: {channel}",

@@ -166,7 +166,8 @@
                 "description": "顯示媒體播放器狀態",
                 "disableButton": "以前的按鈕不再處於活動狀態並被刪除。",
                 "emptyQueue": "隊列為空。",
-                "live": "直播"
+                "live": "直播",
+                "requestedBy": "點播者"
             },
             "pause": {
                 "alreadyPause": "音樂播放器已經被暫停。",
@@ -320,6 +321,10 @@
         }
     },
     "reusable": {
+        "enabled": "啟用",
+        "disabled": "停用",
+        "on": "開",
+        "off": "關",
         "invalidUsage": "無效的用法，請用 {prefix} {name}了解更多資訊。",
         "pageFooter": "{actual}/{total} 頁",
         "lyricsSource": "來源: {source}"

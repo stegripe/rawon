@@ -166,7 +166,8 @@
                 "description": "미디어 플레이어 상태 보기",
                 "disableButton": "이전 버튼들은 더 이상 활성화되지 않으며 제거되었어요.",
                 "emptyQueue": "대기열이 비어 있어요.",
-                "live": "라이브"
+                "live": "라이브",
+                "requestedBy": "요청자"
             },
             "pause": {
                 "alreadyPause": "음악 플레이어가 이미 일시 정지되어 있어요.",
@@ -360,6 +361,10 @@
         "noPermission": "이 작업을 수행할 권한이 없어요. DJ 역할, 서버 관리자 또는 노래 요청자만 할 수 있어요."
     },
     "reusable": {
+        "enabled": "활성화됨",
+        "disabled": "비활성화됨",
+        "on": "켜짐",
+        "off": "꺼짐",
         "invalidUsage": "잘못된 사용법이에요. {prefix} {name}으로 자세한 정보를 확인하세요.",
         "pageFooter": "페이지 {actual}/{total}",
         "lyricsSource": "출처: {source}"

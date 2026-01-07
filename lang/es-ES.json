@@ -160,13 +160,14 @@
                 "searchingLyrics": "Buscando letra...",
                 "slashDescription": "Canción a buscar",
                 "usage": "{prefix}lyrics [canción]",
-                "noLyrics": "No se encontraron letras para {song}."
+                "noLyrics": "No se encontraron letras para {song}"
             },
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
                 "disableButton": "Este botón ya no está activo y ha sido eliminado.",
                 "emptyQueue": "La cola está vacía.",
-                "live": "EN VIVO"
+                "live": "EN VIVO",
+                "requestedBy": "Solicitado por"
             },
             "pause": {
                 "alreadyPause": "El reproductor de música ya está en pausa.",
@@ -320,6 +321,10 @@
         }
     },
     "reusable": {
+        "enabled": "Activado",
+        "disabled": "Desactivado",
+        "on": "ON",
+        "off": "OFF",
         "invalidUsage": "Uso inválido, por favor usa {prefix} {name} para más información.",
         "pageFooter": "Página {actual} de {total}",
         "lyricsSource": "Fuente: {source}"
@@ -374,9 +379,9 @@
         "skipped": "Se saltó {song}",
         "removed": "Eliminado {song} de la cola y saltado.",
         "stopped": "Se detuvo la música y se vació la cola.",
-        "loopChanged": "Modo de bucle cambiado a {mode}.",
-        "shuffleChanged": "Modo aleatorio ahora está {state}.",
-        "volumeChanged": "Volumen cambiado a {volume}.",
+        "loopChanged": "Modo de bucle cambiado a {mode}",
+        "shuffleChanged": "Modo aleatorio ahora está {state}",
+        "volumeChanged": "Volumen cambiado a {volume}",
         "queueCleared": "La cola ha sido vaciada.",
         "queueListTitle": "Lista de Cola",
         "emptyQueue": "La cola está vacía.",
@@ -384,7 +389,7 @@
         "alreadyPlaying": "La música ya se está reproduciendo.",
         "nothingPlaying": "No se está reproduciendo nada actualmente.",
         "volumeLimit": "El volumen debe estar entre 1 y 100.",
-        "setChannel": "El canal de solicitudes se ha establecido en {channel}.",
+        "setChannel": "El canal de solicitudes se ha establecido en {channel}",
         "removeChannel": "El canal de solicitudes ha sido eliminado.",
         "noChannel": "No hay canal de solicitudes establecido actualmente.",
         "currentChannel": "Canal de solicitudes actual: {channel}",

@@ -1,4 +1,4 @@
-FROM ghcr.io/hazmi35/node:24-dev-alpine as build-stage
+FROM node:24-alpine AS build-stage
 
 # Prepare pnpm with corepack (experimental feature)
 RUN corepack enable && corepack prepare pnpm@latest
@@ -31,7 +31,7 @@ RUN git rev-parse --short HEAD > commit-hash.txt 2>/dev/null || echo "???" > com
 RUN pnpm prune --production
 
 # Start new production stage
-FROM ghcr.io/hazmi35/node:24-alpine
+FROM node:24-alpine
 
 LABEL name="rawon"
 LABEL maintainer="Stegripe Development <support@stegripe.org>"

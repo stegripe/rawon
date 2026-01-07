@@ -166,7 +166,8 @@
                 "description": "Показати статус медіа програвача",
                 "disableButton": "Попередні кнопки більше не активні та будуть видалені.",
                 "emptyQueue": "Черга пуста.",
-                "live": "НАЖИВО"
+                "live": "НАЖИВО",
+                "requestedBy": "Запитав"
             },
             "pause": {
                 "alreadyPause": "Медіа програвач вже на паузі.",
@@ -320,6 +321,10 @@
         }
     },
     "reusable": {
+        "enabled": "Увімкнено",
+        "disabled": "Вимкнено",
+        "on": "УВІМК",
+        "off": "ВИМК",
         "invalidUsage": "Некоректне використання, будь ласка, скористайтесь {prefix} {name} для отримання інформації.",
         "pageFooter": "Сторінка {actual} з {total}",
         "lyricsSource": "Джерело: {source}"
@@ -374,9 +379,9 @@
         "skipped": "Пропущено {song}",
         "removed": "Видалено {song} з черги та пропущено.",
         "stopped": "Музику зупинено та чергу очищено.",
-        "loopChanged": "Режим повтору змінено на {mode}.",
-        "shuffleChanged": "Режим перемішування тепер {state}.",
-        "volumeChanged": "Гучність змінено на {volume}.",
+        "loopChanged": "Режим повтору змінено на {mode}",
+        "shuffleChanged": "Режим перемішування тепер {state}",
+        "volumeChanged": "Гучність змінено на {volume}",
         "queueCleared": "Чергу очищено.",
         "queueListTitle": "Список черги",
         "emptyQueue": "Черга порожня.",
@@ -384,7 +389,7 @@
         "alreadyPlaying": "Музика вже грає.",
         "nothingPlaying": "Наразі нічого не грає.",
         "volumeLimit": "Гучність повинна бути від 1 до 100.",
-        "setChannel": "Канал запитів встановлено на {channel}.",
+        "setChannel": "Канал запитів встановлено на {channel}",
         "removeChannel": "Канал запитів видалено.",
         "noChannel": "Канал запитів наразі не встановлено.",
         "currentChannel": "Поточний канал запитів: {channel}",

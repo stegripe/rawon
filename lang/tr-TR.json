@@ -160,13 +160,14 @@
                 "searchingLyrics": "Şarkı sözleri aranıyor...",
                 "slashDescription": "Aranacak şarkı",
                 "usage": "{prefix}lyrics [şarkı]",
-                "noLyrics": "{song} için şarkı sözü bulunamadı."
+                "noLyrics": "{song} için şarkı sözü bulunamadı"
             },
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu göster",
                 "disableButton": "Önceki düğmeler artık etkin değildir ve kaldırılmıştır.",
                 "emptyQueue": "Kuyruk boş.",
-                "live": "CANLI"
+                "live": "CANLI",
+                "requestedBy": "İsteyen"
             },
             "pause": {
                 "alreadyPause": "Müzik zaten duraklatılmıştır.",
@@ -320,6 +321,10 @@
         }
     },
     "reusable": {
+        "enabled": "Etkin",
+        "disabled": "Devre dışı",
+        "on": "AÇIK",
+        "off": "KAPALI",
         "invalidUsage": "Geçersiz kullanım, lütfen daha fazla bilgi için {prefix} {name} kullanın.",
         "pageFooter": "Sayfa {actual}/{total}",
         "lyricsSource": "Kaynak: {source}"
@@ -374,9 +379,9 @@
         "skipped": "{song} atlandı",
         "removed": "{song} kuyruktan kaldırıldı ve atlandı.",
         "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
-        "loopChanged": "Döngü modu {mode} olarak değiştirildi.",
-        "shuffleChanged": "Karıştırma modu şimdi {state}.",
-        "volumeChanged": "Ses seviyesi {volume} olarak değiştirildi.",
+        "loopChanged": "Döngü modu {mode} olarak değiştirildi",
+        "shuffleChanged": "Karıştırma modu şimdi {state}",
+        "volumeChanged": "Ses seviyesi {volume} olarak değiştirildi",
         "queueCleared": "Kuyruk temizlendi.",
         "queueListTitle": "Kuyruk Listesi",
         "emptyQueue": "Kuyruk boş.",
@@ -384,7 +389,7 @@
         "alreadyPlaying": "Müzik zaten çalıyor.",
         "nothingPlaying": "Şu anda hiçbir şey çalmıyor.",
         "volumeLimit": "Ses seviyesi 1 ile 100 arasında olmalıdır.",
-        "setChannel": "İstek kanalı {channel} olarak ayarlandı.",
+        "setChannel": "İstek kanalı {channel} olarak ayarlandı",
         "removeChannel": "İstek kanalı kaldırıldı.",
         "noChannel": "Şu anda ayarlanmış istek kanalı yok.",
         "currentChannel": "Mevcut istek kanalı: {channel}",

@@ -706,7 +706,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: `**\`${queue.shuffle ? "ON" : "OFF"}\`**` })}`,
+                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: `**\`${queue.shuffle ? __("reusable.on") : __("reusable.off")}\`**` })}`,
                         ),
                     ],
                 });
