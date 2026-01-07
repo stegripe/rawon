@@ -212,7 +212,23 @@ export class RequestChannelManager {
             }
         }
 
-        const savedState = this.client.data.data?.[guild.id]?.playerState;
+        // Get saved state from SQLite (or JSON fallback)
+        const botId = this.client.user?.id ?? "unknown";
+        let savedState: {
+            loopMode?: string;
+            shuffle?: boolean;
+            volume?: number;
+            filters?: Record<string, boolean>;
+        } | null = null;
+
+        if (
+            "getPlayerState" in this.client.data &&
+            typeof this.client.data.getPlayerState === "function"
+        ) {
+            savedState = (this.client.data as any).getPlayerState(guild.id, botId);
+        } else {
+            savedState = this.client.data.data?.[guild.id]?.playerState ?? null;
+        }
 
         const __ = i18n__(this.client, guild);
         const __mf = i18n__mf(this.client, guild);
