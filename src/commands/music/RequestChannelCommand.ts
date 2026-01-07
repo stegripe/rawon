@@ -92,9 +92,10 @@ export class RequestChannelCommand extends BaseCommand {
                 });
             }
 
-            // Check if this guild already has a request channel set to a different channel
+            // Check if this guild already has a request channel set
             const currentChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
-            if (currentChannel && currentChannel.id !== channel.id) {
+            if (currentChannel) {
+                // Already has a request channel - show which one (regardless if same or different)
                 return ctx.reply({
                     embeds: [
                         createEmbed(
@@ -109,17 +110,12 @@ export class RequestChannelCommand extends BaseCommand {
             }
 
             // Check if this channel is already used as a request channel by another bot (multi-bot mode)
-            // isRequestChannel checks if ANY bot has this channel set
-            // getRequestChannel returns THIS bot's request channel
-            // If isRequestChannel returns true but this bot's request channel is different or not set,
-            // then another bot owns this channel
             const isChannelUsedByAnyBot = this.client.requestChannelManager.isRequestChannel(
                 ctx.guild,
                 channel.id,
             );
-            const thisBotOwnsChannel = currentChannel?.id === channel.id;
 
-            if (isChannelUsedByAnyBot && !thisBotOwnsChannel) {
+            if (isChannelUsedByAnyBot) {
                 // Another bot already has this channel as a request channel
                 return ctx.reply({
                     embeds: [
