@@ -237,14 +237,15 @@ export class ServerQueue {
                     `[MultiBot] ${this.client.user?.tag} attempting to load player state for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}, isPrimary=${isPrimary}`,
                 );
 
-                if (isPrimary) {
-                    // Primary bot loads its own state
-                    savedState = (this.client.data as any).getPlayerState(guildId, botId);
+                // All bots (primary and non-primary) first try to load their own state
+                savedState = (this.client.data as any).getPlayerState(guildId, botId);
+
+                if (savedState) {
                     this.client.logger.debug(
-                        `[MultiBot] ${this.client.user?.tag} (PRIMARY) loading own player state`,
+                        `[MultiBot] ${this.client.user?.tag} loaded own player state`,
                     );
-                } else {
-                    // Non-primary bot: try to load PRIMARY bot's state
+                } else if (!isPrimary) {
+                    // Non-primary bot with no saved state: fall back to PRIMARY bot's state
                     const primaryBot = this.client.multiBotManager.getPrimaryBot();
                     const primaryBotId = primaryBot?.user?.id;
 
@@ -255,17 +256,7 @@ export class ServerQueue {
                         );
                         if (savedState) {
                             this.client.logger.info(
-                                `[MultiBot] ${this.client.user?.tag} (non-primary) loaded PRIMARY bot's (${primaryBot?.user?.tag}) player state for inheritance`,
-                            );
-                        }
-                    }
-
-                    // If no primary bot state, fall back to own state (if any)
-                    if (!savedState) {
-                        savedState = (this.client.data as any).getPlayerState(guildId, botId);
-                        if (savedState) {
-                            this.client.logger.debug(
-                                `[MultiBot] ${this.client.user?.tag} (non-primary) no primary bot state found, using own state`,
+                                `[MultiBot] ${this.client.user?.tag} (non-primary) no own state found, inheriting from PRIMARY bot (${primaryBot?.user?.tag})`,
                             );
                         }
                     }
@@ -333,17 +324,8 @@ export class ServerQueue {
             "savePlayerState" in this.client.data &&
             typeof this.client.data.savePlayerState === "function"
         ) {
-            // In multi-bot mode, only PRIMARY bot saves state
-            if (this.client.config.isMultiBot) {
-                const botInstance = this.client.multiBotManager.getBotByClient(this.client);
-                if (botInstance && !botInstance.isPrimary) {
-                    this.client.logger.debug(
-                        `[MultiBot] ${this.client.user?.tag} (non-primary) NOT saving player state - temporary only`,
-                    );
-                    return;
-                }
-            }
-
+            // All bots (primary and non-primary) save their own state
+            // Non-primary bots' state will be cleared on destroy (when leaving voice)
             this.client.logger.debug(
                 `Saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
                     `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
