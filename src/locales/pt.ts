@@ -15,7 +15,9 @@ export const pt = {
         description:
             "Um bot de música Discord simples mas poderoso, criado para atender às suas necessidades de produção.",
         invite: "Convidar",
-        support: "Suporte"
+        inviteBot: "Convidar Bot",
+        support: "Suporte",
+        viewDocs: "Ver Docs"
     },
 
     gettingStarted: {

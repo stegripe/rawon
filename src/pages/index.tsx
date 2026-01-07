@@ -51,29 +51,34 @@ export default function HomePage() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="flex w-full max-w-sm flex-col items-center gap-4 px-4 sm:px-0"
                     >
-                        <div className="grid w-full grid-cols-5 gap-2">
-                            {INVITE_BOTS.map((bot, index) => (
-                                <Link
-                                    key={index}
-                                    href={getInviteUrl(bot.id)}
-                                    passHref
-                                    legacyBehavior
-                                >
-                                    <a
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="w-full"
+                        <div className="flex w-full flex-col gap-2">
+                            <Typography className="text-center font-sans text-sm font-medium text-third">
+                                {t.home.inviteBot}
+                            </Typography>
+                            <div className="grid w-full grid-cols-5 gap-2">
+                                {INVITE_BOTS.map((bot, index) => (
+                                    <Link
+                                        key={index}
+                                        href={getInviteUrl(bot.id)}
+                                        passHref
+                                        legacyBehavior
                                     >
-                                        <Button
-                                            id={`inviteButton-${index + 1}`}
-                                            color="inherit"
-                                            className="h-11 w-full rounded-lg bg-secondary px-2 font-sans text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg sm:text-base"
+                                        <a
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="w-full"
                                         >
-                                            #{index + 1}
-                                        </Button>
-                                    </a>
-                                </Link>
-                            ))}
+                                            <Button
+                                                id={`inviteButton-${index + 1}`}
+                                                color="inherit"
+                                                className="h-11 w-full rounded-lg bg-secondary px-2 font-sans text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg sm:text-base"
+                                            >
+                                                #{index + 1}
+                                            </Button>
+                                        </a>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
                         <Link
                             href="https://stegripe.org/discord"
@@ -93,6 +98,15 @@ export default function HomePage() {
                                     {t.home.support}
                                 </Button>
                             </a>
+                        </Link>
+                        <Link href="/docs/getting-started" className="w-full">
+                            <Button
+                                id="docsButton"
+                                color="inherit"
+                                className="h-11 w-full rounded-lg border-2 border-solid border-third px-6 font-sans text-base font-semibold text-third transition-all duration-200 hover:scale-105 hover:bg-third hover:text-white sm:text-lg"
+                            >
+                                {t.home.viewDocs}
+                            </Button>
                         </Link>
                     </motion.div>
                 </div>

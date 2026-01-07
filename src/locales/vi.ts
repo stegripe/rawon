@@ -15,7 +15,9 @@ export const vi = {
         description:
             "Bot nhạc Discord đơn giản nhưng mạnh mẽ, được tạo ra để đáp ứng nhu cầu sản xuất của bạn.",
         invite: "Mời",
-        support: "Hỗ trợ"
+        inviteBot: "Mời Bot",
+        support: "Hỗ trợ",
+        viewDocs: "Xem tài liệu"
     },
 
     gettingStarted: {

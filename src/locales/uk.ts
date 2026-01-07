@@ -15,7 +15,9 @@ export const uk = {
         description:
             "Простий, але потужний музичний бот Discord, створений для задоволення ваших виробничих потреб.",
         invite: "Запросити",
-        support: "Підтримка"
+        inviteBot: "Запросити бота",
+        support: "Підтримка",
+        viewDocs: "Документація"
     },
 
     gettingStarted: {
