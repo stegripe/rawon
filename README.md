@@ -93,9 +93,9 @@ The `/app/cache` volume stores:
 
 Use the ones you need/should and fill in the values.
 
-### Multi-Bot Mode (Automatic)
+### Multi-Bot Mode
 
-Multi-bot mode is automatic and adaptive - no extra configuration needed!
+Multi-bot mode is adaptive - no extra configuration needed!
 
 - **Single token** = Single bot mode
 - **Multiple tokens (comma-separated)** = Multi-bot mode automatically enabled
@@ -106,7 +106,7 @@ DISCORD_TOKEN="token1, token2, token3"
 ```
 
 Features:
-- The first token becomes the primary bot for general commands
+- The first (order) token becomes the primary bot for general commands
 - Each bot handles music commands for users in its voice channel
 - Adaptive ordering - if the primary bot is not in a server, the next available bot takes over
 - Each bot requires its own Discord application
