@@ -166,7 +166,8 @@
                 "description": "显示媒体播放器状态",
                 "disableButton": "以前的按钮不再处于活动状态并被删除。",
                 "emptyQueue": "队列为空。",
-                "live": "直播"
+                "live": "直播",
+                "requestedBy": "请求者"
             },
             "pause": {
                 "alreadyPause": "音乐播放器已经被暂停。",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "无效的用法，请用 {prefix} {name}了解更多资讯。",
         "pageFooter": "{actual}/{total} 页",
-        "lyricsSource": "来源: {source}"
+        "lyricsSource": "来源: {source}",
+        "enabled": "启用",
+        "disabled": "禁用"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "已跳过 {song}",
         "removed": "已从队列中移除 {song} 并跳过。",
         "stopped": "音乐已停止，队列已清空。",
-        "loopChanged": "循环模式已更改为 {mode}。",
+        "loopChanged": "循环模式已更改为 {mode}",
         "shuffleChanged": "随机播放模式现在是 {state}。",
-        "volumeChanged": "音量已更改为 {volume}。",
+        "volumeChanged": "音量已更改为 {volume}",
         "queueCleared": "队列已清空。",
         "queueListTitle": "队列列表",
         "emptyQueue": "队列是空的。",

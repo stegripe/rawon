@@ -209,10 +209,10 @@ export class SearchCommand extends BaseCommand {
                         iconURL: this.client.user?.displayAvatarURL(),
                     })
                     .setFooter({
-                        text: __mf("commands.music.search.cancelMessage", {
+                        text: `• ${__mf("commands.music.search.cancelMessage", {
                             cancel: "cancel",
                             c: "c",
-                        }),
+                        })}`,
                     }),
             ],
         });

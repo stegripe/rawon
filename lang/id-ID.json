@@ -120,10 +120,10 @@
                 "description": "Ubah pengaturan fitur DJ",
                 "usage": "{prefix}dj <enable | disable | role> [role]",
                 "disable": "Nonaktif",
-                "disableText": "Fitur DJ udah di **`Disabled`**",
+                "disableText": "Fitur DJ udah di **`Nonaktif`**",
                 "embedTitle": "Fitur DJ",
                 "enable": "Aktif",
-                "enableText": "Fitur DJ udah di **`Enabled`**",
+                "enableText": "Fitur DJ udah di **`Aktif`**",
                 "newRoleText": "role baru",
                 "noPermission": "Kamu gak punya izin **Manage Server** buat pake perintah ini.",
                 "role": {
@@ -166,7 +166,8 @@
                 "description": "Lihat status media player",
                 "disableButton": "Tombol-tombol ini udah gak aktif lagi dan udah dihapus.",
                 "emptyQueue": "Antriannya lagi kosong nih.",
-                "live": "LIVE"
+                "live": "LIVE",
+                "requestedBy": "Direquest sama"
             },
             "pause": {
                 "alreadyPause": "Media player-nya udah dijeda kok.",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "Cara pakenya salah, coba pake {prefix} {name} buat info lebih lanjut.",
         "pageFooter": "Halaman {actual} dari {total}",
-        "lyricsSource": "Sumber: {source}"
+        "lyricsSource": "Sumber: {source}",
+        "enabled": "Aktif",
+        "disabled": "Nonaktif"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "Skip {song}",
         "removed": "Hapus {song} dari antrian dan di-skip.",
         "stopped": "Musik distop dan antrian dikosongkan.",
-        "loopChanged": "Mode repeat diubah ke {mode}.",
-        "shuffleChanged": "Mode acak sekarang {state}.",
-        "volumeChanged": "Volume diubah ke {volume}.",
+        "loopChanged": "Mode repeat diubah ke {mode}",
+        "shuffleChanged": "Mode acak sekarang {state}",
+        "volumeChanged": "Volume diubah ke {volume}",
         "queueCleared": "Antrian udah dikosongkan.",
         "queueListTitle": "Daftar Antrian",
         "emptyQueue": "Antriannya kosong.",
