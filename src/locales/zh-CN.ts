@@ -29,7 +29,7 @@ export const zhCN = {
                 "📺 无缝音乐体验的请求频道功能",
                 "🤖 为不同语音频道运行多个机器人实例",
                 "⚡ 智能音频预缓存，播放更流畅",
-                "🎶 支持YouTube、Spotify和SoundCloud",
+                "🎶 支持多个音乐平台（视频网站、Spotify、SoundCloud）",
                 "🔄 多Cookie轮换，不间断播放"
             ]
         },
@@ -68,7 +68,7 @@ export const zhCN = {
                     "用于音频流的yt-dlp二进制文件",
                     "用于持久设置的data.*（请求频道、播放器状态）",
                     "缓存的音频文件（如果启用了音频缓存）",
-                    "用于YouTube认证的Cookie文件"
+                    "用于视频平台认证的Cookie文件"
                 ]
             }
         },

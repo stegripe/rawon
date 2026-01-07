@@ -30,7 +30,7 @@ export const tr = {
                 "📺 Kesintisiz müzik deneyimi için istek kanalı özelliği",
                 "🤖 Farklı ses kanalları için birden fazla bot örneği çalıştırın",
                 "⚡ Daha akıcı oynatma için akıllı ses ön önbelleğe alma",
-                "🎶 YouTube, Spotify ve SoundCloud desteği",
+                "🎶 Çoklu müzik platformları desteği (video siteleri, Spotify, SoundCloud)",
                 "🔄 Kesintisiz oynatma için çoklu çerez rotasyonu"
             ]
         },
@@ -69,7 +69,7 @@ export const tr = {
                     "Ses akışı için yt-dlp ikili dosyası",
                     "Kalıcı ayarlar için data.* (istek kanalları, oynatıcı durumları)",
                     "Önbelleğe alınmış ses dosyaları (ses önbelleği etkinse)",
-                    "YouTube kimlik doğrulaması için çerez dosyaları"
+                    "video platformu kimlik doğrulaması için çerez dosyaları"
                 ]
             }
         },

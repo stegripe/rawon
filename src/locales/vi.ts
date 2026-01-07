@@ -30,7 +30,7 @@ export const vi = {
                 "📺 Tính năng kênh yêu cầu cho trải nghiệm âm nhạc liền mạch",
                 "🤖 Chạy nhiều instance bot cho các kênh thoại khác nhau",
                 "⚡ Pre-cache âm thanh thông minh để phát mượt mà hơn",
-                "🎶 Hỗ trợ YouTube, Spotify và SoundCloud",
+                "🎶 Hỗ trợ nhiều nền tảng âm nhạc (trang video, Spotify, SoundCloud)",
                 "🔄 Xoay vòng đa cookie cho phát không gián đoạn"
             ]
         },
@@ -69,7 +69,7 @@ export const vi = {
                     "Binary yt-dlp cho streaming audio",
                     "data.* cho cài đặt bền vững (kênh yêu cầu, trạng thái player)",
                     "File audio được cache (nếu bật cache audio)",
-                    "File cookie cho xác thực YouTube"
+                    "File cookie cho xác thực nền tảng video"
                 ]
             }
         },

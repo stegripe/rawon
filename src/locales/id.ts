@@ -31,7 +31,7 @@ export const id = {
                 "📺 Fitur request channel untuk pengalaman musik yang mulus",
                 "🤖 Jalankan beberapa instance bot untuk voice channel berbeda",
                 "⚡ Pre-caching audio pintar untuk pemutaran lebih lancar",
-                "🎶 Dukungan untuk YouTube, Spotify, dan SoundCloud",
+                "🎶 Dukungan untuk berbagai platform musik (situs video, Spotify, SoundCloud)",
                 "🔄 Rotasi multi-cookie untuk pemutaran tanpa gangguan"
             ]
         },
@@ -72,7 +72,7 @@ export const id = {
                     "Binary `yt-dlp` untuk streaming audio",
                     "`data.*` untuk pengaturan persisten (request channels, status player)",
                     "File audio yang di-cache (jika audio caching diaktifkan)",
-                    "File cookie untuk autentikasi YouTube"
+                    "File cookie untuk autentikasi platform video"
                 ]
             }
         },

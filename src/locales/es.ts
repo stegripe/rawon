@@ -31,7 +31,7 @@ export const es = {
                 "📺 Canal de solicitud para una experiencia musical perfecta",
                 "🤖 Ejecutar múltiples instancias de bot para diferentes canales de voz",
                 "⚡ Pre-caché de audio inteligente para reproducción más suave",
-                "🎶 Soporte para YouTube, Spotify y SoundCloud",
+                "🎶 Soporte para múltiples plataformas de música (sitios de video, Spotify, SoundCloud)",
                 "🔄 Rotación multi-cookie para reproducción ininterrumpida"
             ]
         },
@@ -72,7 +72,7 @@ export const es = {
                     "Binario `yt-dlp` para streaming de audio",
                     "`data.*` para configuraciones persistentes (canales de solicitud, estados del reproductor)",
                     "Archivos de audio en caché (si el caché de audio está habilitado)",
-                    "Archivos de cookies para autenticación de YouTube"
+                    "Archivos de cookies para autenticación de plataforma de video"
                 ]
             }
         },
