@@ -46,25 +46,31 @@ Example: `!requestchannel #music-requests`
 
 #### Using Docker Compose
 1. Create a `.env` file with your configuration (copy from `.env.example`)
-2. Create a `docker-compose.yaml` file:
+2. (Optional) Create `optional.env` and/or `dev.env` for additional settings
+3. Create a `docker-compose.yaml` file:
 ```yaml
 services:
   rawon:
     image: ghcr.io/stegripe/rawon:latest
     container_name: rawon-bot
     restart: unless-stopped
-    env_file: .env
+    env_file:
+      - .env
+      - path: optional.env
+        required: false
+      - path: dev.env
+        required: false
     volumes:
       - rawon:/app/cache
 
 volumes:
   rawon:
 ```
-3. Start the bot:
+4. Start the bot:
 ```sh
 docker compose up -d
 ```
-4. View logs:
+5. View logs:
 ```sh
 docker logs -f rawon-bot
 ```
