@@ -77,9 +77,6 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
             );
 
             if (!shouldRespond) {
-                void ctx.reply({
-                    embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
-                });
                 return false;
             }
         }

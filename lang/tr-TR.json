@@ -166,7 +166,8 @@
                 "description": "Medya oynatıcı durumunu göster",
                 "disableButton": "Önceki düğmeler artık etkin değildir ve kaldırılmıştır.",
                 "emptyQueue": "Kuyruk boş.",
-                "live": "CANLI"
+                "live": "CANLI",
+                "requestedBy": "İsteyen"
             },
             "pause": {
                 "alreadyPause": "Müzik zaten duraklatılmıştır.",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "Geçersiz kullanım, lütfen daha fazla bilgi için {prefix} {name} kullanın.",
         "pageFooter": "Sayfa {actual}/{total}",
-        "lyricsSource": "Kaynak: {source}"
+        "lyricsSource": "Kaynak: {source}",
+        "enabled": "Etkin",
+        "disabled": "Devre Dışı"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "{song} atlandı",
         "removed": "{song} kuyruktan kaldırıldı ve atlandı.",
         "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
-        "loopChanged": "Döngü modu {mode} olarak değiştirildi.",
-        "shuffleChanged": "Karıştırma modu şimdi {state}.",
-        "volumeChanged": "Ses seviyesi {volume} olarak değiştirildi.",
+        "loopChanged": "Döngü modu {mode} olarak değiştirildi",
+        "shuffleChanged": "Karıştırma modu şimdi {state}",
+        "volumeChanged": "Ses seviyesi {volume} olarak değiştirildi",
         "queueCleared": "Kuyruk temizlendi.",
         "queueListTitle": "Kuyruk Listesi",
         "emptyQueue": "Kuyruk boş.",

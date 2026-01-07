@@ -166,7 +166,8 @@
                 "description": "Muestra la canción que se está reproduciendo",
                 "disableButton": "Este botón ya no está activo y ha sido eliminado.",
                 "emptyQueue": "La cola está vacía.",
-                "live": "EN VIVO"
+                "live": "EN VIVO",
+                "requestedBy": "Solicitado por"
             },
             "pause": {
                 "alreadyPause": "El reproductor de música ya está en pausa.",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "Uso inválido, por favor usa {prefix} {name} para más información.",
         "pageFooter": "Página {actual} de {total}",
-        "lyricsSource": "Fuente: {source}"
+        "lyricsSource": "Fuente: {source}",
+        "enabled": "Activado",
+        "disabled": "Desactivado"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "Se saltó {song}",
         "removed": "Eliminado {song} de la cola y saltado.",
         "stopped": "Se detuvo la música y se vació la cola.",
-        "loopChanged": "Modo de bucle cambiado a {mode}.",
-        "shuffleChanged": "Modo aleatorio ahora está {state}.",
-        "volumeChanged": "Volumen cambiado a {volume}.",
+        "loopChanged": "Modo de bucle cambiado a {mode}",
+        "shuffleChanged": "Modo aleatorio ahora está {state}",
+        "volumeChanged": "Volumen cambiado a {volume}",
         "queueCleared": "La cola ha sido vaciada.",
         "queueListTitle": "Lista de Cola",
         "emptyQueue": "La cola está vacía.",

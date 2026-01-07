@@ -166,7 +166,8 @@
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
                 "disableButton": "Các nút trước đó không còn hoạt động và bị loại bỏ.",
                 "emptyQueue": "Hàng đợi trống.",
-                "live": "TRỰC TIẾP"
+                "live": "TRỰC TIẾP",
+                "requestedBy": "Yêu cầu bởi"
             },
             "pause": {
                 "alreadyPause": "Trình phát nhạc đã bị tạm dừng.",
@@ -322,7 +323,9 @@
     "reusable": {
         "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập {prefix} {name} để biết thêm thông tin.",
         "pageFooter": "Trang {actual} trong {total}",
-        "lyricsSource": "Nguồn: {source}"
+        "lyricsSource": "Nguồn: {source}",
+        "enabled": "Bật",
+        "disabled": "Tắt"
     },
     "utils": {
         "commonUtil": {
@@ -374,9 +377,9 @@
         "skipped": "Đã bỏ qua {song}",
         "removed": "Đã xóa {song} khỏi hàng đợi và bỏ qua.",
         "stopped": "Đã dừng nhạc và xóa hàng đợi.",
-        "loopChanged": "Chế độ lặp đã thay đổi thành {mode}.",
-        "shuffleChanged": "Chế độ trộn bây giờ là {state}.",
-        "volumeChanged": "Âm lượng đã thay đổi thành {volume}.",
+        "loopChanged": "Chế độ lặp đã thay đổi thành {mode}",
+        "shuffleChanged": "Chế độ trộn bây giờ là {state}",
+        "volumeChanged": "Âm lượng đã thay đổi thành {volume}",
         "queueCleared": "Hàng đợi đã được xóa.",
         "queueListTitle": "Danh sách hàng đợi",
         "emptyQueue": "Hàng đợi trống.",

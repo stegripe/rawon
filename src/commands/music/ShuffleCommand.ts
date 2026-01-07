@@ -5,7 +5,7 @@ import { type CommandContext } from "../../structures/CommandContext.js";
 import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
-import { i18n__mf } from "../../utils/functions/i18n.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @Command({
     description: i18n.__("commands.music.shuffle.description"),
@@ -38,6 +38,7 @@ export class ShuffleCommand extends BaseCommand {
     @haveQueue
     @sameVC
     public execute(ctx: CommandContext): void {
+        const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 
         const newState = ctx.options?.getString("state") ?? (ctx.args[0] as string | undefined);
@@ -47,7 +48,7 @@ export class ShuffleCommand extends BaseCommand {
                     createEmbed(
                         "info",
                         `🔀 **|** ${__mf("commands.music.shuffle.actualState", {
-                            state: `**\`${ctx.guild?.queue?.shuffle === true ? "Enabled" : "Disabled"}\`**`,
+                            state: `**\`${ctx.guild?.queue?.shuffle === true ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                         })}`,
                     ),
                 ],
@@ -65,7 +66,7 @@ export class ShuffleCommand extends BaseCommand {
                     `${isShuffle === true ? "🔀" : "▶️"} **|** ${__mf(
                         "commands.music.shuffle.newState",
                         {
-                            state: `**\`${isShuffle === true ? "Enabled" : "Disabled"}\`**`,
+                            state: `**\`${isShuffle === true ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                         },
                     )}`,
                 ),
