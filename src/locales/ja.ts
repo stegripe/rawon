@@ -15,8 +15,7 @@ export const ja = {
         description:
             "あなたの制作欲求を満たすためのシンプルで強力なDiscord音楽ボット。",
         invite: "招待",
-        support: "サポート",
-        viewDocs: "ドキュメント"
+        support: "サポート"
     },
 
     gettingStarted: {

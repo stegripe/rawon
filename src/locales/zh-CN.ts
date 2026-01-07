@@ -14,8 +14,7 @@ export const zhCN = {
         title: "Rawon",
         description: "一个简单而强大的Discord音乐机器人，满足您的制作需求。",
         invite: "邀请",
-        support: "支持",
-        viewDocs: "查看文档"
+        support: "支持"
     },
 
     gettingStarted: {

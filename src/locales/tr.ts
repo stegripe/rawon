@@ -15,8 +15,7 @@ export const tr = {
         description:
             "Üretim ihtiyaçlarınızı karşılamak için tasarlanmış basit ama güçlü bir Discord müzik botu.",
         invite: "Davet Et",
-        support: "Destek",
-        viewDocs: "Belgeleri Gör"
+        support: "Destek"
     },
 
     gettingStarted: {

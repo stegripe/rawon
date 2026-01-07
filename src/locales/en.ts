@@ -15,8 +15,7 @@ export const en = {
         description:
             "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
         invite: "Invite",
-        support: "Support",
-        viewDocs: "View Docs"
+        support: "Support"
     },
 
     gettingStarted: {

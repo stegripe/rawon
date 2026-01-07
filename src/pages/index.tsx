@@ -4,6 +4,17 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+const INVITE_BOTS = [
+    { id: "999162626036740138", name: "Rawon #1" },
+    { id: "999162626036740138", name: "Rawon #2" },
+    { id: "999162626036740138", name: "Rawon #3" },
+    { id: "999162626036740138", name: "Rawon #4" },
+    { id: "999162626036740138", name: "Rawon #5" }
+];
+
+const getInviteUrl = (clientId: string) =>
+    `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=4855722558221376&scope=bot%20applications.commands`;
+
 export default function HomePage() {
     const { t } = useLocale();
 
@@ -40,25 +51,30 @@ export default function HomePage() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="flex w-full max-w-sm flex-col items-center gap-4 px-4 sm:px-0"
                     >
-                        <Link
-                            href="https://discord.com/api/oauth2/authorize?client_id=999162626036740138&permissions=275183430727&scope=applications.commands%20bot"
-                            passHref
-                            legacyBehavior
-                        >
-                            <a
-                                target="_blank"
-                                rel="noreferrer"
-                                className="w-full"
-                            >
-                                <Button
-                                    id="inviteButton"
-                                    color="inherit"
-                                    className="h-11 w-full rounded-lg bg-secondary px-6 font-sans text-base font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg sm:text-lg"
+                        <div className="grid w-full grid-cols-5 gap-2">
+                            {INVITE_BOTS.map((bot, index) => (
+                                <Link
+                                    key={index}
+                                    href={getInviteUrl(bot.id)}
+                                    passHref
+                                    legacyBehavior
                                 >
-                                    {t.home.invite}
-                                </Button>
-                            </a>
-                        </Link>
+                                    <a
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="w-full"
+                                    >
+                                        <Button
+                                            id={`inviteButton-${index + 1}`}
+                                            color="inherit"
+                                            className="h-11 w-full rounded-lg bg-secondary px-2 font-sans text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg sm:text-base"
+                                        >
+                                            #{index + 1}
+                                        </Button>
+                                    </a>
+                                </Link>
+                            ))}
+                        </div>
                         <Link
                             href="https://stegripe.org/discord"
                             passHref
@@ -77,15 +93,6 @@ export default function HomePage() {
                                     {t.home.support}
                                 </Button>
                             </a>
-                        </Link>
-                        <Link href="/docs/getting-started" className="w-full">
-                            <Button
-                                id="docsButton"
-                                color="inherit"
-                                className="h-11 w-full rounded-lg border-2 border-solid border-third px-6 font-sans text-base font-semibold text-third transition-all duration-200 hover:scale-105 hover:bg-third hover:text-white sm:text-lg"
-                            >
-                                {t.home.viewDocs}
-                            </Button>
                         </Link>
                     </motion.div>
                 </div>
