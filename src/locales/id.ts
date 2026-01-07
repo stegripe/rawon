@@ -70,9 +70,9 @@ export const id = {
                 description: "Volume `/app/cache` menyimpan:",
                 items: [
                     "Binary `yt-dlp` untuk streaming audio",
-                    "`data.json` untuk pengaturan persisten (request channels, status player)",
+                    "`data.*` untuk pengaturan persisten (request channels, status player)",
                     "File audio yang di-cache (jika audio caching diaktifkan)",
-                    "File cookie untuk autentikasi platform video"
+                    "File cookie untuk autentikasi YouTube"
                 ]
             }
         },

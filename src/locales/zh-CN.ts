@@ -66,8 +66,9 @@ export const zhCN = {
                 description: "/app/cache卷存储：",
                 items: [
                     "用于音频流的yt-dlp二进制文件",
-                    "用于持久设置的data.json（请求频道、播放器状态）",
-                    "缓存的音频文件（如果启用了音频缓存）"
+                    "用于持久设置的data.*（请求频道、播放器状态）",
+                    "缓存的音频文件（如果启用了音频缓存）",
+                    "用于YouTube认证的Cookie文件"
                 ]
             }
         },

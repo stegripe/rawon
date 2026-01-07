@@ -67,8 +67,9 @@ export const fr = {
                 description: "Le volume `/app/cache` stocke:",
                 items: [
                     "Binaire `yt-dlp` pour le streaming audio",
-                    "`data.json` pour les paramètres persistants (canaux de requêtes, états du lecteur)",
-                    "Fichiers audio en cache (si le cache audio est activé)"
+                    "`data.*` pour les paramètres persistants (canaux de requêtes, états du lecteur)",
+                    "Fichiers audio en cache (si le cache audio est activé)",
+                    "Fichiers de cookies pour l'authentification YouTube"
                 ]
             }
         },

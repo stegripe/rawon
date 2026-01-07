@@ -66,8 +66,9 @@ export const zhTW = {
                 description: "/app/cache卷存儲：",
                 items: [
                     "用於音訊串流的yt-dlp二進制檔案",
-                    "用於持久設置的data.json（請求頻道、播放器狀態）",
-                    "快取的音訊檔案（如果啟用了音訊快取）"
+                    "用於持久設置的data.*（請求頻道、播放器狀態）",
+                    "快取的音訊檔案（如果啟用了音訊快取）",
+                    "用於YouTube認證的Cookie檔案"
                 ]
             }
         },

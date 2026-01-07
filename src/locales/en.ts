@@ -70,9 +70,9 @@ export const en = {
                 description: "The `/app/cache` volume stores:",
                 items: [
                     "`yt-dlp` binary for audio streaming",
-                    "`data.json` for persistent settings (request channels, player states)",
+                    "`data.*` for persistent settings (request channels, player states)",
                     "Cached audio files (if audio caching is enabled)",
-                    "Cookie files for video platform authentication"
+                    "Cookie files for YouTube authentication"
                 ]
             }
         },

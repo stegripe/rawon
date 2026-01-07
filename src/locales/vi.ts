@@ -67,8 +67,9 @@ export const vi = {
                 description: "Volume /app/cache lưu trữ:",
                 items: [
                     "Binary yt-dlp cho streaming audio",
-                    "data.json cho cài đặt bền vững (kênh yêu cầu, trạng thái player)",
-                    "File audio được cache (nếu bật cache audio)"
+                    "data.* cho cài đặt bền vững (kênh yêu cầu, trạng thái player)",
+                    "File audio được cache (nếu bật cache audio)",
+                    "File cookie cho xác thực YouTube"
                 ]
             }
         },

@@ -67,8 +67,9 @@ export const tr = {
                 description: "/app/cache birimi şunları saklar:",
                 items: [
                     "Ses akışı için yt-dlp ikili dosyası",
-                    "Kalıcı ayarlar için data.json (istek kanalları, oynatıcı durumları)",
-                    "Önbelleğe alınmış ses dosyaları (ses önbelleği etkinse)"
+                    "Kalıcı ayarlar için data.* (istek kanalları, oynatıcı durumları)",
+                    "Önbelleğe alınmış ses dosyaları (ses önbelleği etkinse)",
+                    "YouTube kimlik doğrulaması için çerez dosyaları"
                 ]
             }
         },
