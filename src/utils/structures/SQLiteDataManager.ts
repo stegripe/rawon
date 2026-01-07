@@ -409,6 +409,18 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         return rows.map((row) => row.bot_id);
     }
 
+    public getAllGuildIds(): string[] {
+        const stmt = this.db.prepare("SELECT guild_id FROM guilds");
+        const rows = stmt.all() as { guild_id: string }[];
+        return rows.map((row) => row.guild_id);
+    }
+
+    public async deleteGuildData(guildId: string): Promise<void> {
+        await this.manager.add(async () => {
+            this.db.prepare("DELETE FROM guilds WHERE guild_id = ?").run(guildId);
+        });
+    }
+
     public close(): void {
         this.db.close();
     }

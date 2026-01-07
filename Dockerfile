@@ -39,11 +39,8 @@ LABEL maintainer="Stegripe Development <support@stegripe.org>"
 # Install ffmpeg, python3, and deno (JavaScript runtime for yt-dlp signature solving)
 RUN apk add --no-cache ffmpeg python3 deno && ln -sf python3 /usr/bin/python
 
-# Create necessary directory for caching
+# Create necessary directory for caching (SQLite database will be stored here)
 RUN mkdir -p /app/cache
-
-# Create empty data.json for persistence cache volume mount
-RUN echo "{}" > /app/cache/data.json
 
 # Copy needed files
 COPY --from=build-stage /tmp/build/package.json .

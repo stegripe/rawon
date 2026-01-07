@@ -214,75 +214,77 @@ export class ServerQueue {
     }
 
     private loadSavedState(): void {
-        if (this.client.config.isMultiBot) {
-            if (
-                "getPlayerState" in this.client.data &&
-                typeof this.client.data.getPlayerState === "function"
-            ) {
-                const botId = this.client.user?.id ?? "unknown";
-                const guildId = this.textChannel.guild.id;
+        const botId = this.client.user?.id ?? "unknown";
+        const guildId = this.textChannel.guild.id;
+
+        if (
+            "getPlayerState" in this.client.data &&
+            typeof this.client.data.getPlayerState === "function"
+        ) {
+            let savedState: {
+                loopMode?: string;
+                shuffle?: boolean;
+                volume?: number;
+                filters?: Record<string, boolean>;
+            } | null = null;
+
+            if (this.client.config.isMultiBot) {
+                const botInstance = this.client.multiBotManager.getBotByClient(this.client);
+                const isPrimary = botInstance?.isPrimary ?? true;
 
                 this.client.logger.info(
-                    `[MultiBot] ${this.client.user?.tag} attempting to load player state for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}`,
+                    `[MultiBot] ${this.client.user?.tag} attempting to load player state for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}, isPrimary=${isPrimary}`,
                 );
 
-                if (
-                    "getBotsWithPlayerState" in this.client.data &&
-                    typeof this.client.data.getBotsWithPlayerState === "function"
-                ) {
-                    const botsWithState = (this.client.data as any).getBotsWithPlayerState(guildId);
-                    if (botsWithState && botsWithState.length > 0) {
-                        this.client.logger.info(
-                            `[MultiBot] ${this.client.user?.tag} found player states for guild ${guildId} from bots: ${botsWithState.join(", ")}`,
-                        );
-                    } else {
-                        this.client.logger.warn(
-                            `[MultiBot] ${this.client.user?.tag} no player states found for guild ${guildId} from any bot`,
-                        );
-                    }
-                }
-
-                const savedState = (this.client.data as any).getPlayerState(guildId, botId);
+                savedState = (this.client.data as any).getPlayerState(guildId, botId);
 
                 if (savedState) {
-                    this.loopMode = savedState.loopMode ?? "OFF";
-                    this.shuffle = savedState.shuffle ?? false;
-                    this._volume = savedState.volume ?? 100;
-                    this.filters = (savedState.filters ?? {}) as Partial<
-                        Record<keyof typeof filterArgs, boolean>
-                    >;
-                    this.client.logger.info(
-                        `[MultiBot] ${this.client.user?.tag} ✅ loaded saved player state for guild ${this.textChannel.guild.name}: ` +
-                            `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+                    this.client.logger.debug(
+                        `[MultiBot] ${this.client.user?.tag} loaded own player state`,
                     );
-                } else if (
-                    "getBotsWithPlayerState" in this.client.data &&
-                    typeof this.client.data.getBotsWithPlayerState === "function"
-                ) {
-                    const botsWithState = (this.client.data as any).getBotsWithPlayerState(guildId);
-                    if (botsWithState && botsWithState.length > 0) {
-                        this.client.logger.warn(
-                            `[MultiBot] ${this.client.user?.tag} ⚠️ no saved player state found for THIS bot (botId=${botId}), but player state exists from other bots: ${botsWithState.join(", ")}. Using defaults.`,
+                } else if (!isPrimary) {
+                    const primaryBot = this.client.multiBotManager.getPrimaryBot();
+                    const primaryBotId = primaryBot?.user?.id;
+
+                    if (primaryBotId) {
+                        savedState = (this.client.data as any).getPlayerState(
+                            guildId,
+                            primaryBotId,
                         );
-                    } else {
-                        this.client.logger.warn(
-                            `[MultiBot] ${this.client.user?.tag} ⚠️ no saved player state found for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}. Using defaults: loop=OFF, shuffle=false, volume=100`,
-                        );
+                        if (savedState) {
+                            this.client.logger.info(
+                                `[MultiBot] ${this.client.user?.tag} (non-primary) no own state found, inheriting from PRIMARY bot (${primaryBot?.user?.tag})`,
+                            );
+                        }
                     }
-                } else {
-                    this.client.logger.warn(
-                        `[MultiBot] ${this.client.user?.tag} ⚠️ no saved player state found for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}. Using defaults: loop=OFF, shuffle=false, volume=100`,
-                    );
                 }
             } else {
+                savedState = (this.client.data as any).getPlayerState(guildId, botId);
+                this.client.logger.debug(
+                    `Loading player state from SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}`,
+                );
+            }
+
+            if (savedState) {
+                this.loopMode = (savedState.loopMode as typeof this.loopMode) ?? "OFF";
+                this.shuffle = savedState.shuffle ?? false;
+                this._volume = savedState.volume ?? 100;
+                this.filters = (savedState.filters ?? {}) as Partial<
+                    Record<keyof typeof filterArgs, boolean>
+                >;
+                this.client.logger.info(
+                    `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
+                        `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+                );
+            } else {
                 this.client.logger.warn(
-                    `[MultiBot] ${this.client.user?.tag} SQLite getPlayerState not available, using default values`,
+                    `⚠️ No saved player state found for guild ${this.textChannel.guild.name}, using defaults`,
                 );
             }
             return;
         }
 
-        const savedState = this.client.data.data?.[this.textChannel.guild.id]?.playerState;
+        const savedState = this.client.data.data?.[guildId]?.playerState;
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
@@ -309,46 +311,37 @@ export class ServerQueue {
             filters: this.filters as Record<string, boolean>,
         };
 
-        if (this.client.config.isMultiBot) {
-            if (
-                "savePlayerState" in this.client.data &&
-                typeof this.client.data.savePlayerState === "function"
-            ) {
-                const botId = this.client.user?.id ?? "unknown";
-                const guildId = this.textChannel.guild.id;
+        const botId = this.client.user?.id ?? "unknown";
+        const guildId = this.textChannel.guild.id;
 
-                this.client.logger.debug(
-                    `[MultiBot] ${this.client.user?.tag} saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
-                        `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
-                );
+        if (
+            "savePlayerState" in this.client.data &&
+            typeof this.client.data.savePlayerState === "function"
+        ) {
+            this.client.logger.debug(
+                `Saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
+                    `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
+            );
 
-                try {
-                    await (this.client.data as any).savePlayerState(guildId, botId, playerState);
-                    this.client.logger.info(
-                        `[MultiBot] ${this.client.user?.tag} ✅ saved player state to SQLite successfully`,
-                    );
-                } catch (error) {
-                    this.client.logger.error(
-                        `[MultiBot] ${this.client.user?.tag} ❌ failed to save player state to SQLite:`,
-                        error,
-                    );
-                }
-            } else {
-                this.client.logger.warn(
-                    `[MultiBot] ${this.client.user?.tag} SQLite savePlayerState not available`,
+            try {
+                await (this.client.data as any).savePlayerState(guildId, botId, playerState);
+                this.client.logger.info(
+                    `✅ Saved player state to SQLite for guild ${this.textChannel.guild.name}`,
                 );
+            } catch (error) {
+                this.client.logger.error(`❌ Failed to save player state to SQLite:`, error);
             }
             return;
         }
 
         const currentData = this.client.data.data ?? {};
-        const guildData = currentData[this.textChannel.guild.id] ?? {};
+        const guildData = currentData[guildId] ?? {};
 
         guildData.playerState = playerState;
 
         await this.client.data.save(() => ({
             ...currentData,
-            [this.textChannel.guild.id]: guildData,
+            [guildId]: guildData,
         }));
     }
 
@@ -442,31 +435,30 @@ export class ServerQueue {
     }
 
     public async clearPlayerState(): Promise<void> {
-        if (this.client.config.isMultiBot) {
-            if (
-                "deletePlayerState" in this.client.data &&
-                typeof this.client.data.deletePlayerState === "function"
-            ) {
-                const botId = this.client.user?.id ?? "unknown";
-                await (this.client.data as any).deletePlayerState(this.textChannel.guild.id, botId);
-                this.client.logger.info(
-                    `[MultiBot] ${this.client.user?.tag} ✅ cleared player state for guild ${this.textChannel.guild.name}`,
-                );
-            }
-        } else {
-            const currentData = this.client.data.data ?? {};
-            const guildData = currentData[this.textChannel.guild.id] ?? {};
+        const botId = this.client.user?.id ?? "unknown";
+        const guildId = this.textChannel.guild.id;
 
-            delete guildData.playerState;
-
-            await this.client.data.save(() => ({
-                ...currentData,
-                [this.textChannel.guild.id]: guildData,
-            }));
+        if (
+            "deletePlayerState" in this.client.data &&
+            typeof this.client.data.deletePlayerState === "function"
+        ) {
+            await (this.client.data as any).deletePlayerState(guildId, botId);
             this.client.logger.info(
                 `✅ Cleared player state for guild ${this.textChannel.guild.name}`,
             );
+            return;
         }
+
+        const currentData = this.client.data.data ?? {};
+        const guildData = currentData[guildId] ?? {};
+
+        delete guildData.playerState;
+
+        await this.client.data.save(() => ({
+            ...currentData,
+            [guildId]: guildData,
+        }));
+        this.client.logger.info(`✅ Cleared player state for guild ${this.textChannel.guild.name}`);
     }
 
     public setFilter(filter: keyof typeof filterArgs, state: boolean): boolean {
