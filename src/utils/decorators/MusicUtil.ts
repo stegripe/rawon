@@ -77,9 +77,8 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
             );
 
             if (!shouldRespond) {
-                void ctx.reply({
-                    embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
-                });
+                // Don't send error message - this bot is not responsible for this voice channel
+                // The responsible bot will handle it or send the error
                 return false;
             }
         }

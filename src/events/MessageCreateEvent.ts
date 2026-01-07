@@ -17,6 +17,33 @@ import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
 
+// Music commands that should be routed through shouldRespondToMusicCommand
+const MUSIC_COMMANDS = [
+    "play",
+    "p",
+    "add",
+    "search",
+    "volume",
+    "vol",
+    "loop",
+    "repeat",
+    "shuffle",
+    "filter",
+    "skip",
+    "skipto",
+    "pause",
+    "resume",
+    "stop",
+    "disconnect",
+    "dc",
+    "remove",
+    "seek",
+    "nowplaying",
+    "np",
+    "queue",
+    "q",
+];
+
 @Event<typeof MessageCreateEvent>("messageCreate")
 export class MessageCreateEvent extends BaseEvent {
     public async execute(message: Message): Promise<void> {
@@ -95,28 +122,7 @@ export class MessageCreateEvent extends BaseEvent {
                     const prefix = prefixMatch || "";
                     const cmdContent = message.content.slice(prefix.length).trim();
                     const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
-                    const musicCommands = [
-                        "volume",
-                        "vol",
-                        "loop",
-                        "repeat",
-                        "shuffle",
-                        "filter",
-                        "skip",
-                        "skipto",
-                        "pause",
-                        "resume",
-                        "stop",
-                        "disconnect",
-                        "dc",
-                        "remove",
-                        "seek",
-                        "nowplaying",
-                        "np",
-                        "queue",
-                        "q",
-                    ];
-                    const isMusicCommand = cmdName && musicCommands.includes(cmdName);
+                    const isMusicCommand = cmdName && MUSIC_COMMANDS.includes(cmdName);
 
                     if (isMusicCommand) {
                         let member = thisBotGuild.members.cache.get(message.author.id);
@@ -274,28 +280,7 @@ export class MessageCreateEvent extends BaseEvent {
                 const prefix = prefixMatch || "";
                 const cmdContent = message.content.slice(prefix.length).trim();
                 const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
-                const musicCommands = [
-                    "volume",
-                    "vol",
-                    "loop",
-                    "repeat",
-                    "shuffle",
-                    "filter",
-                    "skip",
-                    "skipto",
-                    "pause",
-                    "resume",
-                    "stop",
-                    "disconnect",
-                    "dc",
-                    "remove",
-                    "seek",
-                    "nowplaying",
-                    "np",
-                    "queue",
-                    "q",
-                ];
-                const isMusicCommand = cmdName && musicCommands.includes(cmdName);
+                const isMusicCommand = cmdName && MUSIC_COMMANDS.includes(cmdName);
 
                 if (isMusicCommand) {
                     let member = thisBotGuild.members.cache.get(message.author.id);
