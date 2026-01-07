@@ -1,0 +1,34 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Environment files (should be provided at runtime)
+.env
+*.env
+!*.env.example
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Cache
+.cache
+.pnpm-store
+
+# Docker files (not needed in build context)
+docker-compose*.yaml
+Dockerfile*
+.dockerignore

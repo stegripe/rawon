@@ -46,7 +46,7 @@ COPY --from=build-stage /tmp/build/index.js ./index.js
 COPY --from=build-stage /tmp/build/.git ./.git
 
 # Additional Environment Variables
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 # Start the app with node
 CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
