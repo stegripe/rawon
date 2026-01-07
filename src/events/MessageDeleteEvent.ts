@@ -3,7 +3,6 @@ import { BaseEvent } from "../structures/BaseEvent.js";
 import { type ExtendedDataManager } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 
-// Type guard to check if data manager has getRequestChannel method
 function hasGetRequestChannel(
     data: unknown,
 ): data is Pick<ExtendedDataManager, "getRequestChannel"> {
@@ -18,7 +17,6 @@ function hasGetRequestChannel(
 @Event("messageDelete")
 export class MessageDeleteEvent extends BaseEvent {
     public async execute(message: Message | PartialMessage): Promise<void> {
-        // Ignore DMs
         if (!message.guild) {
             return;
         }
@@ -26,7 +24,6 @@ export class MessageDeleteEvent extends BaseEvent {
         const guild = message.guild;
         const botId = this.client.user?.id ?? "unknown";
 
-        // Check if this message was the request channel player message
         let requestChannelData: { channelId: string | null; messageId: string | null } | null =
             null;
 
@@ -36,7 +33,6 @@ export class MessageDeleteEvent extends BaseEvent {
             requestChannelData = this.client.data.data?.[guild.id]?.requestChannel ?? null;
         }
 
-        // If this deleted message was the request channel player message, clean up
         if (requestChannelData?.messageId === message.id) {
             this.client.logger.info(
                 `Request channel player message (${message.id}) was deleted in guild ${guild.name} (${guild.id}). Cleaning up request channel...`,
@@ -49,7 +45,6 @@ export class MessageDeleteEvent extends BaseEvent {
             ]);
 
             try {
-                // Remove the request channel configuration since the message is gone
                 await this.client.requestChannelManager.setRequestChannel(guild, null);
                 this.client.logger.info(
                     `Cleaned up request channel data for guild ${guild.name} (${guild.id}) after player message deletion`,

@@ -271,7 +271,6 @@ export type RegisterCmdOptions = {
     onError(guild: OG | null, error: Error): Promisable<any>;
 };
 
-// Interface for extended SQLite data manager methods
 export interface ExtendedDataManager {
     getAllGuildIds(): string[];
     deleteRequestChannel(guildId: string, botId: string): Promise<void>;

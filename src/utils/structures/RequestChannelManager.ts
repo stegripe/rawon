@@ -212,7 +212,6 @@ export class RequestChannelManager {
             }
         }
 
-        // Get saved state from SQLite (or JSON fallback)
         const botId = this.client.user?.id ?? "unknown";
         let savedState: {
             loopMode?: string;

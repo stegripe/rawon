@@ -53,7 +53,6 @@ export async function handleVideos(
             );
         }
 
-        // For single songs, show the song title in the message (consistent with request-channel)
         if (toQueue.length === 1) {
             const song = toQueue[0];
             const songTitle = escapeMarkdown(parseHTMLElements(song.title));
@@ -75,7 +74,6 @@ export async function handleVideos(
             return msg;
         }
 
-        // For multiple songs, show pagination
         const opening = __mf("utils.generalHandler.handleVideoInitial", {
             length: toQueue.length,
         });

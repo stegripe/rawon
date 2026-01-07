@@ -3,7 +3,6 @@ import { BaseEvent } from "../structures/BaseEvent.js";
 import { type ExtendedDataManager } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 
-// Type guard to check if data manager has the delete methods
 function hasDeleteMethods(
     data: unknown,
 ): data is Pick<
@@ -36,7 +35,6 @@ export class GuildDeleteEvent extends BaseEvent {
         const botId = this.client.user?.id ?? "unknown";
 
         try {
-            // Check if data manager has the delete methods
             if (hasDeleteMethods(this.client.data)) {
                 const dataManager = this.client.data;
 
@@ -54,7 +52,6 @@ export class GuildDeleteEvent extends BaseEvent {
                 this.client.logger.info(`Deleted queue state for guild ${guild.id} (bot ${botId})`);
             }
 
-            // Clean up the queue if it exists
             if (guild.queue) {
                 guild.queue.destroy();
                 this.client.logger.info(`Destroyed queue for guild ${guild.id}`);

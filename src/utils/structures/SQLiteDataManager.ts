@@ -417,8 +417,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
 
     public async deleteGuildData(guildId: string): Promise<void> {
         await this.manager.add(async () => {
-            // With CASCADE enabled, deleting from guilds will automatically
-            // delete related records from request_channels, player_states, and queue_states
             this.db.prepare("DELETE FROM guilds WHERE guild_id = ?").run(guildId);
         });
     }

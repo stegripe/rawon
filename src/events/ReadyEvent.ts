@@ -15,7 +15,6 @@ import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 
-// Type guard to check if data manager has extended methods
 function hasExtendedMethods(data: unknown): data is ExtendedDataManager {
     return (
         typeof data === "object" &&
@@ -31,7 +30,6 @@ function hasExtendedMethods(data: unknown): data is ExtendedDataManager {
     );
 }
 
-// Type guard to check if data manager has getRequestChannel method
 function hasGetRequestChannel(
     data: unknown,
 ): data is { getRequestChannel: ExtendedDataManager["getRequestChannel"] } {
@@ -118,7 +116,6 @@ export class ReadyEvent extends BaseEvent {
     private async cleanupOrphanedGuildData(): Promise<void> {
         const botId = this.client.user?.id ?? "unknown";
 
-        // Only primary bot or single bot should do cleanup to avoid race conditions
         const isPrimaryOrSingle =
             !this.client.config.isMultiBot ||
             this.client.multiBotManager.getPrimaryBot() === this.client;
@@ -126,7 +123,6 @@ export class ReadyEvent extends BaseEvent {
             return;
         }
 
-        // Check if data manager has extended methods
         if (!hasExtendedMethods(this.client.data)) {
             return;
         }
@@ -135,7 +131,6 @@ export class ReadyEvent extends BaseEvent {
         const dbGuildIds = dataManager.getAllGuildIds();
         const botGuildIds = new Set(this.client.guilds.cache.keys());
 
-        // In multi-bot mode, collect guild IDs from all bots
         if (this.client.config.isMultiBot) {
             const bots = this.client.multiBotManager.getBots();
             for (const bot of bots) {
@@ -147,21 +142,15 @@ export class ReadyEvent extends BaseEvent {
 
         let cleanedCount = 0;
         for (const dbGuildId of dbGuildIds) {
-            // IMPORTANT: Double-check that the bot is truly not in this guild
-            // before deleting. This ensures we don't accidentally delete data
-            // for guilds we're still a member of.
             if (!botGuildIds.has(dbGuildId)) {
-                // Do an additional verification by trying to fetch the guild
                 const guild = this.client.guilds.cache.get(dbGuildId);
                 if (guild) {
-                    // Guild exists in cache, don't delete
                     this.client.logger.debug(
                         `[Cleanup] Guild ${dbGuildId} found in cache after all, skipping cleanup`,
                     );
                     continue;
                 }
 
-                // For multi-bot mode, check all bots
                 if (this.client.config.isMultiBot) {
                     let foundInAnyBot = false;
                     const bots = this.client.multiBotManager.getBots();
@@ -179,18 +168,15 @@ export class ReadyEvent extends BaseEvent {
                     }
                 }
 
-                // Safe to delete - bot is confirmed not in this guild
                 this.client.logger.info(
                     `[Cleanup] Removing orphaned data for guild ${dbGuildId} - bot is no longer a member`,
                 );
 
                 try {
-                    // Delete bot-specific data using the type-safe dataManager
                     await dataManager.deleteRequestChannel(dbGuildId, botId);
                     await dataManager.deletePlayerState(dbGuildId, botId);
                     await dataManager.deleteQueueState(dbGuildId, botId);
 
-                    // For single bot mode, also delete the guild entry itself
                     if (
                         !this.client.config.isMultiBot &&
                         "deleteGuildData" in dataManager &&
@@ -229,7 +215,6 @@ export class ReadyEvent extends BaseEvent {
                 continue;
             }
 
-            // Get request channel data for this bot
             let requestChannelData: { channelId: string | null; messageId: string | null } | null =
                 null;
 
@@ -245,7 +230,6 @@ export class ReadyEvent extends BaseEvent {
 
             const channel = guild.channels.cache.get(requestChannelData.channelId);
 
-            // Check if channel is invalid (deleted or inaccessible)
             if (!channel || channel.type !== ChannelType.GuildText) {
                 this.client.logger.warn(
                     `[Validation] Request channel ${requestChannelData.channelId} for guild ${guild.name} (${guildId}) is invalid. Cleaning up...`,

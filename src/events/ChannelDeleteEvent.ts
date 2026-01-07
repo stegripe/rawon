@@ -3,7 +3,6 @@ import { BaseEvent } from "../structures/BaseEvent.js";
 import { type ExtendedDataManager } from "../typings/index.js";
 import { Event } from "../utils/decorators/Event.js";
 
-// Type guard to check if data manager has getRequestChannel method
 function hasGetRequestChannel(
     data: unknown,
 ): data is Pick<ExtendedDataManager, "getRequestChannel"> {
@@ -18,12 +17,10 @@ function hasGetRequestChannel(
 @Event("channelDelete")
 export class ChannelDeleteEvent extends BaseEvent {
     public async execute(channel: DMChannel | GuildChannel): Promise<void> {
-        // Ignore DM channels
         if (channel.type === ChannelType.DM) {
             return;
         }
 
-        // Only handle text channels
         if (channel.type !== ChannelType.GuildText) {
             return;
         }
@@ -36,7 +33,6 @@ export class ChannelDeleteEvent extends BaseEvent {
             ["Guild", `${guild.name}(${guild.id})`],
         ]);
 
-        // Check if this was a request channel
         let requestChannelData: { channelId: string | null; messageId: string | null } | null =
             null;
 

@@ -217,7 +217,6 @@ export class ServerQueue {
         const botId = this.client.user?.id ?? "unknown";
         const guildId = this.textChannel.guild.id;
 
-        // Check if SQLite methods are available (always true for SQLiteDataManager)
         if (
             "getPlayerState" in this.client.data &&
             typeof this.client.data.getPlayerState === "function"
@@ -237,7 +236,6 @@ export class ServerQueue {
                     `[MultiBot] ${this.client.user?.tag} attempting to load player state for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}, isPrimary=${isPrimary}`,
                 );
 
-                // All bots (primary and non-primary) first try to load their own state
                 savedState = (this.client.data as any).getPlayerState(guildId, botId);
 
                 if (savedState) {
@@ -245,7 +243,6 @@ export class ServerQueue {
                         `[MultiBot] ${this.client.user?.tag} loaded own player state`,
                     );
                 } else if (!isPrimary) {
-                    // Non-primary bot with no saved state: fall back to PRIMARY bot's state
                     const primaryBot = this.client.multiBotManager.getPrimaryBot();
                     const primaryBotId = primaryBot?.user?.id;
 
@@ -262,7 +259,6 @@ export class ServerQueue {
                     }
                 }
             } else {
-                // Single-bot mode: load own state from SQLite
                 savedState = (this.client.data as any).getPlayerState(guildId, botId);
                 this.client.logger.debug(
                     `Loading player state from SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}`,
@@ -288,7 +284,6 @@ export class ServerQueue {
             return;
         }
 
-        // Fallback for JSONDataManager (legacy)
         const savedState = this.client.data.data?.[guildId]?.playerState;
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
@@ -319,13 +314,10 @@ export class ServerQueue {
         const botId = this.client.user?.id ?? "unknown";
         const guildId = this.textChannel.guild.id;
 
-        // Check if SQLite methods are available (always true for SQLiteDataManager)
         if (
             "savePlayerState" in this.client.data &&
             typeof this.client.data.savePlayerState === "function"
         ) {
-            // All bots (primary and non-primary) save their own state
-            // Non-primary bots' state will be cleared on destroy (when leaving voice)
             this.client.logger.debug(
                 `Saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
                     `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
@@ -342,7 +334,6 @@ export class ServerQueue {
             return;
         }
 
-        // Fallback for JSONDataManager (legacy)
         const currentData = this.client.data.data ?? {};
         const guildData = currentData[guildId] ?? {};
 
@@ -447,7 +438,6 @@ export class ServerQueue {
         const botId = this.client.user?.id ?? "unknown";
         const guildId = this.textChannel.guild.id;
 
-        // Check if SQLite methods are available (always true for SQLiteDataManager)
         if (
             "deletePlayerState" in this.client.data &&
             typeof this.client.data.deletePlayerState === "function"
@@ -459,7 +449,6 @@ export class ServerQueue {
             return;
         }
 
-        // Fallback for JSONDataManager (legacy)
         const currentData = this.client.data.data ?? {};
         const guildData = currentData[guildId] ?? {};
 

@@ -92,10 +92,8 @@ export class RequestChannelCommand extends BaseCommand {
                 });
             }
 
-            // Check if this guild already has a request channel set
             const currentChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
             if (currentChannel) {
-                // Already has a request channel - show which one (regardless if same or different)
                 return ctx.reply({
                     embeds: [
                         createEmbed(
@@ -109,14 +107,12 @@ export class RequestChannelCommand extends BaseCommand {
                 });
             }
 
-            // Check if this channel is already used as a request channel by another bot (multi-bot mode)
             const isChannelUsedByAnyBot = this.client.requestChannelManager.isRequestChannel(
                 ctx.guild,
                 channel.id,
             );
 
             if (isChannelUsedByAnyBot) {
-                // Another bot already has this channel as a request channel
                 return ctx.reply({
                     embeds: [
                         createEmbed(
@@ -207,7 +203,6 @@ export class RequestChannelCommand extends BaseCommand {
         }
 
         if (subcommand === "remove") {
-            // Check if there's a request channel to remove
             const existingChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
             if (!existingChannel) {
                 return ctx.reply({
