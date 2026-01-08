@@ -6,10 +6,10 @@ import Link from "next/link";
 
 const INVITE_BOTS = [
     { id: "999162626036740138", name: "Rawon #1" },
-    { id: "999162626036740138", name: "Rawon #2" },
-    { id: "999162626036740138", name: "Rawon #3" },
-    { id: "999162626036740138", name: "Rawon #4" },
-    { id: "999162626036740138", name: "Rawon #5" }
+    { id: "1458722150620856351", name: "Rawon #2" },
+    { id: "1458722316627476603", name: "Rawon #3" },
+    { id: "1458722403755753585", name: "Rawon #4" },
+    { id: "1458722484730724514", name: "Rawon #5" }
 ];
 
 const getInviteUrl = (clientId: string) =>
