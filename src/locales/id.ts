@@ -152,7 +152,7 @@ export const id = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emoji",
+                name: "(EMOJIS)",
                 description:
                     "Kustomisasi emoji sukses (`YES_EMOJI`) dan gagal (`NO_EMOJI`) yang ditampilkan di respon bot",
                 defaults: "✅ / ❌"

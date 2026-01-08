@@ -144,7 +144,7 @@ export const vi = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emoji",
+                name: "(EMOJIS)",
                 description: "Tùy chỉnh emoji thành công (YES_EMOJI) và thất bại (NO_EMOJI)",
                 defaults: "✅ / ❌"
             },

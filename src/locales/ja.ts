@@ -152,7 +152,7 @@ export const ja = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "絵文字",
+                name: "(EMOJIS)",
                 description: "成功（`YES_EMOJI`）と失敗（`NO_EMOJI`）の絵文字をカスタマイズ",
                 defaults: "✅ / ❌"
             },

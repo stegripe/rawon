@@ -144,7 +144,7 @@ export const ru = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Эмодзи",
+                name: "(EMOJIS)",
                 description: "Настройте эмодзи успеха (YES_EMOJI) и ошибки (NO_EMOJI)",
                 defaults: "✅ / ❌"
             },

@@ -144,7 +144,7 @@ export const zhTW = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "表情符號",
+                name: "(EMOJIS)",
                 description: "自定義成功（YES_EMOJI）和失敗（NO_EMOJI）表情符號",
                 defaults: "✅ / ❌"
             },

@@ -152,7 +152,7 @@ export const en = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emojis",
+                name: "(EMOJIS)",
                 description: "Customize success (`YES_EMOJI`) and failure (`NO_EMOJI`) emojis shown in bot responses",
                 defaults: "✅ / ❌"
             },

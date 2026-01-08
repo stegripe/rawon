@@ -144,7 +144,7 @@ export const fr = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emojis",
+                name: "(EMOJIS)",
                 description: "Personnalisez les emojis de succès (`YES_EMOJI`) et d'échec (`NO_EMOJI`)",
                 defaults: "✅ / ❌"
             },

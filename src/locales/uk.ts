@@ -144,7 +144,7 @@ export const uk = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Емодзі",
+                name: "(EMOJIS)",
                 description: "Налаштуйте емодзі успіху (YES_EMOJI) та помилки (NO_EMOJI)",
                 defaults: "✅ / ❌"
             },

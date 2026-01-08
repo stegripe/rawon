@@ -144,7 +144,7 @@ export const tr = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emojiler",
+                name: "(EMOJIS)",
                 description: "Başarı (YES_EMOJI) ve hata (NO_EMOJI) emojilerini özelleştirin",
                 defaults: "✅ / ❌"
             },
