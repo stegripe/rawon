@@ -153,9 +153,7 @@ export class CookiesCommand extends BaseCommand {
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", __("commands.developers.cookies.invalidNumber"), true),
-                ],
+                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidNumber"))],
             });
         }
 
@@ -171,17 +169,13 @@ export class CookiesCommand extends BaseCommand {
 
         if (!attachment) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", __("commands.developers.cookies.noAttachment"), true),
-                ],
+                embeds: [createEmbed("warn", __("commands.developers.cookies.noAttachment"))],
             });
         }
 
         if (!attachment.name.endsWith(".txt")) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", __("commands.developers.cookies.invalidFileType"), true),
-                ],
+                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidFileType"))],
             });
         }
 
@@ -285,9 +279,7 @@ export class CookiesCommand extends BaseCommand {
 
         if (!target) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", __("commands.developers.cookies.noRemoveTarget"), true),
-                ],
+                embeds: [createEmbed("warn", __("commands.developers.cookies.noRemoveTarget"))],
             });
         }
 
@@ -310,11 +302,7 @@ export class CookiesCommand extends BaseCommand {
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        __("commands.developers.cookies.invalidRemoveTarget"),
-                        true,
-                    ),
+                    createEmbed("warn", __("commands.developers.cookies.invalidRemoveTarget")),
                 ],
             });
         }
@@ -423,9 +411,7 @@ export class CookiesCommand extends BaseCommand {
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", __("commands.developers.cookies.invalidNumber"), true),
-                ],
+                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidNumber"))],
             });
         }
 
@@ -503,9 +489,7 @@ export class CookiesCommand extends BaseCommand {
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
-                embeds: [
-                    createEmbed("error", __("commands.developers.cookies.invalidNumber"), true),
-                ],
+                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidNumber"))],
             });
         }
 
