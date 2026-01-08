@@ -15,6 +15,7 @@ export const id = {
         description:
             "Bot musik Discord yang simpel tapi powerful, dibuat untuk memenuhi kebutuhan produksi Anda. Mudah digunakan, tanpa perlu coding.",
         invite: "Undang",
+        inviteBot: "Undang Bot",
         support: "Dukungan",
         viewDocs: "Dokumentasi"
     },
@@ -26,14 +27,12 @@ export const id = {
         features: {
             title: "✨ Fitur",
             items: [
-                "🎮 Dukungan interaksi (slash commands dan tombol)",
-                "📺 Fitur request channel untuk pengalaman musik yang mulus",
                 "🚀 Siap produksi, tanpa perlu coding",
-                "🎵 Perintah musik dasar (play, pause, skip, queue, dll.)",
-                "🌍 Dukungan multi-bahasa (12 bahasa)",
-                "🔄 Rotasi multi-cookie untuk pemutaran tanpa gangguan",
+                "📺 Fitur request channel untuk pengalaman musik yang mulus",
+                "🤖 Jalankan beberapa instance bot untuk voice channel berbeda",
                 "⚡ Pre-caching audio pintar untuk pemutaran lebih lancar",
-                "🎶 Dukungan berbagai platform musik (situs video, Spotify, SoundCloud)"
+                "🎶 Dukungan untuk berbagai platform musik (situs video, Spotify, SoundCloud)",
+                "🔄 Rotasi multi-cookie untuk pemutaran tanpa gangguan"
             ]
         },
         requirements: {
@@ -48,7 +47,7 @@ export const id = {
             steps: [
                 "Download dan install **Node.js** versi `22.12.0` atau lebih tinggi",
                 "Clone atau download repository ini",
-                "Salin `.env_example` ke `.env` dan isi nilai yang diperlukan (minimal: `DISCORD_TOKEN`)",
+                "Salin `.env.example` ke `.env` dan isi nilai yang diperlukan (minimal: `DISCORD_TOKEN`)",
                 "Install dependencies: `pnpm install`",
                 "Build project: `pnpm run build`",
                 "Jalankan bot: `pnpm start`"
@@ -60,7 +59,7 @@ export const id = {
             title: "🐳 Setup Docker (Disarankan)",
             composeTitle: "Menggunakan Docker Compose",
             composeSteps: [
-                "Buat file `.env` dengan konfigurasi Anda (salin dari `.env_example`)",
+                "Buat file `.env` dengan konfigurasi Anda (salin dari `.env.example`)",
                 "Buat file `docker-compose.yaml` (lihat contoh di bawah)",
                 "Jalankan bot: `docker compose up -d`",
                 "Lihat log: `docker logs -f rawon-bot`"
@@ -71,7 +70,7 @@ export const id = {
                 description: "Volume `/app/cache` menyimpan:",
                 items: [
                     "Binary `yt-dlp` untuk streaming audio",
-                    "`data.json` untuk pengaturan persisten (request channels, status player)",
+                    "`data.*` untuk pengaturan persisten (request channels, status player)",
                     "File audio yang di-cache (jika audio caching diaktifkan)",
                     "File cookie untuk autentikasi platform video"
                 ]
@@ -153,7 +152,7 @@ export const id = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emoji",
+                name: "(EMOJIS)",
                 description:
                     "Kustomisasi emoji sukses (`YES_EMOJI`) dan gagal (`NO_EMOJI`) yang ditampilkan di respon bot",
                 defaults: "✅ / ❌"
@@ -167,8 +166,8 @@ export const id = {
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "**[EKSPERIMENTAL]** Cache audio yang didownload untuk pemutaran ulang lebih cepat. Menggunakan lebih banyak disk space tapi mempercepat lagu yang sering diputar",
-                default: "no"
+                    "Cache audio yang didownload untuk pemutaran ulang lebih cepat. Menggunakan lebih banyak disk space tapi mempercepat lagu yang sering diputar",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

@@ -15,6 +15,7 @@ export const fr = {
         description:
             "Un bot musical Discord simple mais puissant, conçu pour répondre à vos besoins de production.",
         invite: "Inviter",
+        inviteBot: "Inviter Bot",
         support: "Support",
         viewDocs: "Voir Docs"
     },
@@ -25,11 +26,12 @@ export const fr = {
         features: {
             title: "Fonctionnalités",
             items: [
-                "Support des interactions (commandes slash et boutons)",
-                "Canal de requêtes pour une expérience musicale fluide",
-                "Prêt pour la production, sans codage requis",
-                "Commandes musicales de base (play, pause, skip, queue, etc.)",
-                "Support multilingue"
+                "🚀 Prêt pour la production, sans codage requis",
+                "📺 Canal de requêtes pour une expérience musicale fluide",
+                "🤖 Exécuter plusieurs instances de bot pour différents canaux vocaux",
+                "⚡ Pré-mise en cache audio intelligente pour une lecture plus fluide",
+                "🎶 Support pour plusieurs plateformes musicales (sites vidéo, Spotify, SoundCloud)",
+                "🔄 Rotation multi-cookies pour une lecture ininterrompue"
             ]
         },
         requirements: {
@@ -43,7 +45,7 @@ export const fr = {
             steps: [
                 "Téléchargez et installez **Node.js** version `22.12.0` ou supérieure",
                 "Clonez ou téléchargez ce dépôt",
-                "Copiez `.env_example` vers `.env` et remplissez les valeurs requises (minimum: `DISCORD_TOKEN`)",
+                "Copiez `.env.example` vers `.env` et remplissez les valeurs requises (minimum: `DISCORD_TOKEN`)",
                 "Installez les dépendances: `pnpm install`",
                 "Compilez le projet: `pnpm run build`",
                 "Démarrez le bot: `pnpm start`"
@@ -54,7 +56,7 @@ export const fr = {
             title: "Installation Docker (Recommandé)",
             composeTitle: "Avec Docker Compose",
             composeSteps: [
-                "Créez un fichier `.env` avec votre configuration (copiez depuis `.env_example`)",
+                "Créez un fichier `.env` avec votre configuration (copiez depuis `.env.example`)",
                 "Créez un fichier `docker-compose.yaml` (voir exemple ci-dessous)",
                 "Démarrez le bot: `docker compose up -d`",
                 "Voir les logs: `docker logs -f rawon-bot`"
@@ -65,8 +67,9 @@ export const fr = {
                 description: "Le volume `/app/cache` stocke:",
                 items: [
                     "Binaire `yt-dlp` pour le streaming audio",
-                    "`data.json` pour les paramètres persistants (canaux de requêtes, états du lecteur)",
-                    "Fichiers audio en cache (si le cache audio est activé)"
+                    "`data.*` pour les paramètres persistants (canaux de requêtes, états du lecteur)",
+                    "Fichiers audio en cache (si le cache audio est activé)",
+                    "Fichiers de cookies pour l'authentification de plateforme vidéo"
                 ]
             }
         },
@@ -141,7 +144,7 @@ export const fr = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emojis",
+                name: "(EMOJIS)",
                 description: "Personnalisez les emojis de succès (`YES_EMOJI`) et d'échec (`NO_EMOJI`)",
                 defaults: "✅ / ❌"
             },
@@ -153,8 +156,8 @@ export const fr = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "**[EXPÉRIMENTAL]** Cache audio téléchargé pour une lecture répétée plus rapide",
-                default: "no"
+                description: "Cache audio téléchargé pour une lecture répétée plus rapide",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

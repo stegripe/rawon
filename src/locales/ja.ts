@@ -15,6 +15,7 @@ export const ja = {
         description:
             "あなたの制作欲求を満たすためのシンプルで強力なDiscord音楽ボット。",
         invite: "招待",
+        inviteBot: "ボットを招待",
         support: "サポート",
         viewDocs: "ドキュメント"
     },
@@ -26,11 +27,12 @@ export const ja = {
         features: {
             title: "機能",
             items: [
-                "インタラクションサポート（スラッシュコマンドとボタン）",
-                "シームレスな音楽体験のためのリクエストチャンネル機能",
-                "本番環境対応、コーディング不要",
-                "基本的な音楽コマンド（play、pause、skip、queue等）",
-                "多言語サポート"
+                "🚀 本番環境対応、コーディング不要",
+                "📺 シームレスな音楽体験のためのリクエストチャンネル機能",
+                "🤖 異なるボイスチャンネル用に複数のボットインスタンスを実行",
+                "⚡ スムーズな再生のためのスマートオーディオプリキャッシュ",
+                "🎶 複数の音楽プラットフォームをサポート（動画サイト、Spotify、SoundCloud）",
+                "🔄 中断のない再生のためのマルチクッキーローテーション"
             ]
         },
         requirements: {
@@ -45,7 +47,7 @@ export const ja = {
             steps: [
                 "**Node.js** バージョン`22.12.0`以上をダウンロードしてインストール",
                 "このリポジトリをクローンまたはダウンロード",
-                "`.env_example`を`.env`にコピーして必要な値を入力（最低限：`DISCORD_TOKEN`）",
+                "`.env.example`を`.env`にコピーして必要な値を入力（最低限：`DISCORD_TOKEN`）",
                 "依存関係をインストール：`pnpm install`",
                 "プロジェクトをビルド：`pnpm run build`",
                 "ボットを起動：`pnpm start`"
@@ -57,7 +59,7 @@ export const ja = {
             title: "Dockerセットアップ（推奨）",
             composeTitle: "Docker Composeを使用",
             composeSteps: [
-                "`.env_example`からコピーして`.env`ファイルを作成",
+                "`.env.example`からコピーして`.env`ファイルを作成",
                 "`docker-compose.yaml`ファイルを作成（下記の例を参照）",
                 "ボットを起動：`docker compose up -d`",
                 "ログを確認：`docker logs -f rawon-bot`"
@@ -68,8 +70,9 @@ export const ja = {
                 description: "`/app/cache`ボリュームには以下が保存されます：",
                 items: [
                     "オーディオストリーミング用の`yt-dlp`バイナリ",
-                    "永続的な設定のための`data.json`（リクエストチャンネル、プレーヤー状態）",
-                    "キャッシュされたオーディオファイル（オーディオキャッシュが有効な場合）"
+                    "永続的な設定のための`data.*`（リクエストチャンネル、プレーヤー状態）",
+                    "キャッシュされたオーディオファイル（オーディオキャッシュが有効な場合）",
+                    "動画プラットフォーム認証用のCookieファイル"
                 ]
             }
         },
@@ -149,7 +152,7 @@ export const ja = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "絵文字",
+                name: "(EMOJIS)",
                 description: "成功（`YES_EMOJI`）と失敗（`NO_EMOJI`）の絵文字をカスタマイズ",
                 defaults: "✅ / ❌"
             },
@@ -162,8 +165,8 @@ export const ja = {
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "**[実験的]** ダウンロードしたオーディオをキャッシュして繰り返し再生を高速化。ディスク容量を多く使用しますが、頻繁に再生される曲を高速化",
-                default: "no"
+                    "ダウンロードしたオーディオをキャッシュして繰り返し再生を高速化。ディスク容量を多く使用しますが、頻繁に再生される曲を高速化",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

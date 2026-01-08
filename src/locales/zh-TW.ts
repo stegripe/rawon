@@ -14,6 +14,7 @@ export const zhTW = {
         title: "Rawon",
         description: "一個簡單而強大的Discord音樂機器人，滿足您的製作需求。",
         invite: "邀請",
+        inviteBot: "邀請機器人",
         support: "支援",
         viewDocs: "查看文檔"
     },
@@ -24,11 +25,12 @@ export const zhTW = {
         features: {
             title: "功能",
             items: [
-                "互動支援（斜線命令和按鈕）",
-                "無縫音樂體驗的請求頻道功能",
-                "生產就緒，無需編碼",
-                "基本音樂命令（play、pause、skip、queue等）",
-                "多語言支援"
+                "🚀 生產就緒，無需編碼",
+                "📺 無縫音樂體驗的請求頻道功能",
+                "🤖 為不同語音頻道運行多個機器人實例",
+                "⚡ 智能音頻預緩存，播放更流暢",
+                "🎶 支援多個音樂平台（影片網站、Spotify、SoundCloud）",
+                "🔄 多Cookie輪換，不間斷播放"
             ]
         },
         requirements: {
@@ -42,7 +44,7 @@ export const zhTW = {
             steps: [
                 "下載並安裝Node.js版本22.12.0或更高",
                 "克隆或下載此倉庫",
-                "將.env_example複製為.env並填寫所需值（最少：DISCORD_TOKEN）",
+                "將.env.example複製為.env並填寫所需值（最少：DISCORD_TOKEN）",
                 "安裝依賴：pnpm install",
                 "構建項目：pnpm run build",
                 "啟動機器人：pnpm start"
@@ -53,7 +55,7 @@ export const zhTW = {
             title: "Docker設置（推薦）",
             composeTitle: "使用Docker Compose",
             composeSteps: [
-                "創建.env檔案（從.env_example複製）",
+                "創建.env檔案（從.env.example複製）",
                 "創建docker-compose.yaml檔案（見下面示例）",
                 "啟動機器人：docker compose up -d",
                 "查看日誌：docker logs -f rawon-bot"
@@ -64,8 +66,9 @@ export const zhTW = {
                 description: "/app/cache卷存儲：",
                 items: [
                     "用於音訊串流的yt-dlp二進制檔案",
-                    "用於持久設置的data.json（請求頻道、播放器狀態）",
-                    "快取的音訊檔案（如果啟用了音訊快取）"
+                    "用於持久設置的data.*（請求頻道、播放器狀態）",
+                    "快取的音訊檔案（如果啟用了音訊快取）",
+                    "用於影片平台認證的Cookie檔案"
                 ]
             }
         },
@@ -141,7 +144,7 @@ export const zhTW = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "表情符號",
+                name: "(EMOJIS)",
                 description: "自定義成功（YES_EMOJI）和失敗（NO_EMOJI）表情符號",
                 defaults: "✅ / ❌"
             },
@@ -153,8 +156,8 @@ export const zhTW = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[實驗性] 快取下載的音訊以加快重複播放",
-                default: "no"
+                description: "快取下載的音訊以加快重複播放",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

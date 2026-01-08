@@ -15,6 +15,7 @@ export const es = {
         description:
             "Un bot de música de Discord simple pero potente, creado para cumplir tus deseos de producción. Fácil de usar, sin necesidad de código.",
         invite: "Invitar",
+        inviteBot: "Invitar Bot",
         support: "Soporte",
         viewDocs: "Ver Docs"
     },
@@ -26,14 +27,12 @@ export const es = {
         features: {
             title: "✨ Características",
             items: [
-                "🎮 Soporte de interacción (comandos slash y botones)",
-                "📺 Canal de solicitud para una experiencia musical perfecta",
                 "🚀 Listo para producción, sin necesidad de código",
-                "🎵 Comandos básicos de música (play, pause, skip, queue, etc.)",
-                "🌍 Soporte multilingüe (12 idiomas)",
-                "🔄 Rotación multi-cookie para reproducción ininterrumpida",
+                "📺 Canal de solicitud para una experiencia musical perfecta",
+                "🤖 Ejecutar múltiples instancias de bot para diferentes canales de voz",
                 "⚡ Pre-caché de audio inteligente para reproducción más suave",
-                "🎶 Soporte para múltiples plataformas de música (sitios de video, Spotify, SoundCloud)"
+                "🎶 Soporte para múltiples plataformas de música (sitios de video, Spotify, SoundCloud)",
+                "🔄 Rotación multi-cookie para reproducción ininterrumpida"
             ]
         },
         requirements: {
@@ -48,7 +47,7 @@ export const es = {
             steps: [
                 "Descarga e instala **Node.js** versión `22.12.0` o superior",
                 "Clona o descarga este repositorio",
-                "Copia `.env_example` a `.env` y rellena los valores requeridos (mínimo: `DISCORD_TOKEN`)",
+                "Copia `.env.example` a `.env` y rellena los valores requeridos (mínimo: `DISCORD_TOKEN`)",
                 "Instala dependencias: `pnpm install`",
                 "Compila el proyecto: `pnpm run build`",
                 "Inicia el bot: `pnpm start`"
@@ -60,7 +59,7 @@ export const es = {
             title: "🐳 Configuración Docker (Recomendado)",
             composeTitle: "Usando Docker Compose",
             composeSteps: [
-                "Crea un archivo `.env` con tu configuración (copia de `.env_example`)",
+                "Crea un archivo `.env` con tu configuración (copia de `.env.example`)",
                 "Crea un archivo `docker-compose.yaml` (ver ejemplo abajo)",
                 "Inicia el bot: `docker compose up -d`",
                 "Ver logs: `docker logs -f rawon-bot`"
@@ -71,7 +70,7 @@ export const es = {
                 description: "El volumen `/app/cache` almacena:",
                 items: [
                     "Binario `yt-dlp` para streaming de audio",
-                    "`data.json` para configuraciones persistentes (canales de solicitud, estados del reproductor)",
+                    "`data.*` para configuraciones persistentes (canales de solicitud, estados del reproductor)",
                     "Archivos de audio en caché (si el caché de audio está habilitado)",
                     "Archivos de cookies para autenticación de plataforma de video"
                 ]
@@ -153,7 +152,7 @@ export const es = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emojis",
+                name: "(EMOJIS)",
                 description: "Personaliza emojis de éxito (`YES_EMOJI`) y error (`NO_EMOJI`) mostrados en respuestas del bot",
                 defaults: "✅ / ❌"
             },
@@ -166,8 +165,8 @@ export const es = {
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
                 description:
-                    "**[EXPERIMENTAL]** Cachea audio descargado para reproducción más rápida. Usa más espacio en disco pero acelera canciones frecuentes",
-                default: "no"
+                    "Cachea audio descargado para reproducción más rápida. Usa más espacio en disco pero acelera canciones frecuentes",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

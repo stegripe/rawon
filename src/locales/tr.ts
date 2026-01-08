@@ -15,6 +15,7 @@ export const tr = {
         description:
             "Üretim ihtiyaçlarınızı karşılamak için tasarlanmış basit ama güçlü bir Discord müzik botu.",
         invite: "Davet Et",
+        inviteBot: "Bot Davet Et",
         support: "Destek",
         viewDocs: "Belgeleri Gör"
     },
@@ -25,11 +26,12 @@ export const tr = {
         features: {
             title: "Özellikler",
             items: [
-                "Etkileşim desteği (slash komutları ve butonlar)",
-                "Kesintisiz müzik deneyimi için istek kanalı özelliği",
-                "Üretime hazır, kodlama gerektirmez",
-                "Temel müzik komutları (play, pause, skip, queue vb.)",
-                "Çoklu dil desteği"
+                "🚀 Üretime hazır, kodlama gerektirmez",
+                "📺 Kesintisiz müzik deneyimi için istek kanalı özelliği",
+                "🤖 Farklı ses kanalları için birden fazla bot örneği çalıştırın",
+                "⚡ Daha akıcı oynatma için akıllı ses ön önbelleğe alma",
+                "🎶 Çoklu müzik platformları desteği (video siteleri, Spotify, SoundCloud)",
+                "🔄 Kesintisiz oynatma için çoklu çerez rotasyonu"
             ]
         },
         requirements: {
@@ -43,7 +45,7 @@ export const tr = {
             steps: [
                 "Node.js sürüm 22.12.0 veya üstünü indirin ve yükleyin",
                 "Bu depoyu klonlayın veya indirin",
-                ".env_example'ı .env'ye kopyalayın ve gerekli değerleri doldurun (minimum: DISCORD_TOKEN)",
+                ".env.example'ı .env'ye kopyalayın ve gerekli değerleri doldurun (minimum: DISCORD_TOKEN)",
                 "Bağımlılıkları yükleyin: pnpm install",
                 "Projeyi derleyin: pnpm run build",
                 "Botu başlatın: pnpm start"
@@ -54,7 +56,7 @@ export const tr = {
             title: "Docker Kurulumu (Önerilen)",
             composeTitle: "Docker Compose Kullanarak",
             composeSteps: [
-                "Yapılandırmanızla bir .env dosyası oluşturun (.env_example'dan kopyalayın)",
+                "Yapılandırmanızla bir .env dosyası oluşturun (.env.example'dan kopyalayın)",
                 "Bir docker-compose.yaml dosyası oluşturun (aşağıdaki örneğe bakın)",
                 "Botu başlatın: docker compose up -d",
                 "Günlükleri görüntüleyin: docker logs -f rawon-bot"
@@ -65,8 +67,9 @@ export const tr = {
                 description: "/app/cache birimi şunları saklar:",
                 items: [
                     "Ses akışı için yt-dlp ikili dosyası",
-                    "Kalıcı ayarlar için data.json (istek kanalları, oynatıcı durumları)",
-                    "Önbelleğe alınmış ses dosyaları (ses önbelleği etkinse)"
+                    "Kalıcı ayarlar için data.* (istek kanalları, oynatıcı durumları)",
+                    "Önbelleğe alınmış ses dosyaları (ses önbelleği etkinse)",
+                    "video platformu kimlik doğrulaması için çerez dosyaları"
                 ]
             }
         },
@@ -141,7 +144,7 @@ export const tr = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emojiler",
+                name: "(EMOJIS)",
                 description: "Başarı (YES_EMOJI) ve hata (NO_EMOJI) emojilerini özelleştirin",
                 defaults: "✅ / ❌"
             },
@@ -153,8 +156,8 @@ export const tr = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[DENEYSEL] Daha hızlı tekrar oynatma için indirilen sesi önbelleğe al",
-                default: "no"
+                description: "Daha hızlı tekrar oynatma için indirilen sesi önbelleğe al",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

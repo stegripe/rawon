@@ -15,6 +15,7 @@ export const vi = {
         description:
             "Bot nhạc Discord đơn giản nhưng mạnh mẽ, được tạo ra để đáp ứng nhu cầu sản xuất của bạn.",
         invite: "Mời",
+        inviteBot: "Mời Bot",
         support: "Hỗ trợ",
         viewDocs: "Xem tài liệu"
     },
@@ -25,11 +26,12 @@ export const vi = {
         features: {
             title: "Tính năng",
             items: [
-                "Hỗ trợ tương tác (lệnh slash và nút)",
-                "Tính năng kênh yêu cầu cho trải nghiệm âm nhạc liền mạch",
-                "Sẵn sàng sản xuất, không cần code",
-                "Các lệnh nhạc cơ bản (play, pause, skip, queue, v.v.)",
-                "Hỗ trợ đa ngôn ngữ"
+                "🚀 Sẵn sàng sản xuất, không cần code",
+                "📺 Tính năng kênh yêu cầu cho trải nghiệm âm nhạc liền mạch",
+                "🤖 Chạy nhiều instance bot cho các kênh thoại khác nhau",
+                "⚡ Pre-cache âm thanh thông minh để phát mượt mà hơn",
+                "🎶 Hỗ trợ nhiều nền tảng âm nhạc (trang video, Spotify, SoundCloud)",
+                "🔄 Xoay vòng đa cookie cho phát không gián đoạn"
             ]
         },
         requirements: {
@@ -43,7 +45,7 @@ export const vi = {
             steps: [
                 "Tải và cài đặt Node.js phiên bản 22.12.0 trở lên",
                 "Clone hoặc tải repository này",
-                "Sao chép .env_example thành .env và điền các giá trị cần thiết (tối thiểu: DISCORD_TOKEN)",
+                "Sao chép .env.example thành .env và điền các giá trị cần thiết (tối thiểu: DISCORD_TOKEN)",
                 "Cài đặt dependencies: pnpm install",
                 "Build project: pnpm run build",
                 "Khởi chạy bot: pnpm start"
@@ -54,7 +56,7 @@ export const vi = {
             title: "Cài đặt Docker (Khuyến nghị)",
             composeTitle: "Sử dụng Docker Compose",
             composeSteps: [
-                "Tạo file .env với cấu hình của bạn (sao chép từ .env_example)",
+                "Tạo file .env với cấu hình của bạn (sao chép từ .env.example)",
                 "Tạo file docker-compose.yaml (xem ví dụ bên dưới)",
                 "Khởi chạy bot: docker compose up -d",
                 "Xem logs: docker logs -f rawon-bot"
@@ -65,8 +67,9 @@ export const vi = {
                 description: "Volume /app/cache lưu trữ:",
                 items: [
                     "Binary yt-dlp cho streaming audio",
-                    "data.json cho cài đặt bền vững (kênh yêu cầu, trạng thái player)",
-                    "File audio được cache (nếu bật cache audio)"
+                    "data.* cho cài đặt bền vững (kênh yêu cầu, trạng thái player)",
+                    "File audio được cache (nếu bật cache audio)",
+                    "File cookie cho xác thực nền tảng video"
                 ]
             }
         },
@@ -141,7 +144,7 @@ export const vi = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "Emoji",
+                name: "(EMOJIS)",
                 description: "Tùy chỉnh emoji thành công (YES_EMOJI) và thất bại (NO_EMOJI)",
                 defaults: "✅ / ❌"
             },
@@ -153,8 +156,8 @@ export const vi = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[THỰC NGHIỆM] Cache audio đã tải để phát lại nhanh hơn",
-                default: "no"
+                description: "Cache audio đã tải để phát lại nhanh hơn",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

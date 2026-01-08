@@ -14,6 +14,7 @@ export const zhCN = {
         title: "Rawon",
         description: "一个简单而强大的Discord音乐机器人，满足您的制作需求。",
         invite: "邀请",
+        inviteBot: "邀请机器人",
         support: "支持",
         viewDocs: "查看文档"
     },
@@ -24,11 +25,12 @@ export const zhCN = {
         features: {
             title: "功能",
             items: [
-                "交互支持（斜杠命令和按钮）",
-                "无缝音乐体验的请求频道功能",
-                "生产就绪，无需编码",
-                "基本音乐命令（play、pause、skip、queue等）",
-                "多语言支持"
+                "🚀 生产就绪，无需编码",
+                "📺 无缝音乐体验的请求频道功能",
+                "🤖 为不同语音频道运行多个机器人实例",
+                "⚡ 智能音频预缓存，播放更流畅",
+                "🎶 支持多个音乐平台（视频网站、Spotify、SoundCloud）",
+                "🔄 多Cookie轮换，不间断播放"
             ]
         },
         requirements: {
@@ -42,7 +44,7 @@ export const zhCN = {
             steps: [
                 "下载并安装Node.js版本22.12.0或更高",
                 "克隆或下载此仓库",
-                "将.env_example复制为.env并填写所需值（最少：DISCORD_TOKEN）",
+                "将.env.example复制为.env并填写所需值（最少：DISCORD_TOKEN）",
                 "安装依赖：pnpm install",
                 "构建项目：pnpm run build",
                 "启动机器人：pnpm start"
@@ -53,7 +55,7 @@ export const zhCN = {
             title: "Docker设置（推荐）",
             composeTitle: "使用Docker Compose",
             composeSteps: [
-                "创建.env文件（从.env_example复制）",
+                "创建.env文件（从.env.example复制）",
                 "创建docker-compose.yaml文件（见下面示例）",
                 "启动机器人：docker compose up -d",
                 "查看日志：docker logs -f rawon-bot"
@@ -64,8 +66,9 @@ export const zhCN = {
                 description: "/app/cache卷存储：",
                 items: [
                     "用于音频流的yt-dlp二进制文件",
-                    "用于持久设置的data.json（请求频道、播放器状态）",
-                    "缓存的音频文件（如果启用了音频缓存）"
+                    "用于持久设置的data.*（请求频道、播放器状态）",
+                    "缓存的音频文件（如果启用了音频缓存）",
+                    "用于视频平台认证的Cookie文件"
                 ]
             }
         },
@@ -141,7 +144,7 @@ export const zhCN = {
                 default: "22C9FF"
             },
             emojis: {
-                name: "表情符号",
+                name: "(EMOJIS)",
                 description: "自定义成功（YES_EMOJI）和失败（NO_EMOJI）表情符号",
                 defaults: "✅ / ❌"
             },
@@ -153,8 +156,8 @@ export const zhCN = {
             },
             audioCache: {
                 name: "ENABLE_AUDIO_CACHE",
-                description: "[实验性] 缓存下载的音频以加快重复播放",
-                default: "no"
+                description: "缓存下载的音频以加快重复播放",
+                default: "yes"
             },
             requestChannelSplash: {
                 name: "REQUEST_CHANNEL_SPLASH",

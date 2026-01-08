@@ -159,14 +159,14 @@ export default function ConfigurationPage() {
                         <CopyBlock
                             language="bash"
                             text={`# Essential configuration (only DISCORD_TOKEN is required!)
-DISCORD_TOKEN="your-discord-bot-token"
+DISCORD_TOKEN="your-first-discord-bot-token", "your-optional-second-discord-bot-token"
 MAIN_PREFIX="!"
-MAIN_SERVER=""
+MAIN_SERVER="972407605295198258"
 LOCALE="en-US"
 
 # Spotify (optional - for Spotify links support)
-SPOTIFY_CLIENT_ID=""
-SPOTIFY_CLIENT_SECRET=""`}
+SPOTIFY_CLIENT_ID="your-spotify-id"
+SPOTIFY_CLIENT_SECRET="your-spotify-secret"`}
                             theme={dracula}
                             showLineNumbers
                             codeBlock
@@ -381,11 +381,11 @@ ACTIVITY_TYPES="PLAYING, LISTENING"
 EMBED_COLOR="22C9FF"
 YES_EMOJI="✅"
 NO_EMOJI="❌"
-REQUEST_CHANNEL_SPLASH=""
+REQUEST_CHANNEL_SPLASH="https://cdn.stegripe.org/images/rawon_splash.png"
 
 # Other settings
 MUSIC_SELECTION_TYPE="message"
-ENABLE_AUDIO_CACHE="no"`}
+ENABLE_AUDIO_CACHE="yes"`}
                             theme={dracula}
                             showLineNumbers
                             codeBlock
@@ -519,7 +519,7 @@ ENABLE_AUDIO_CACHE="no"`}
                         <CopyBlock
                             language="bash"
                             text={`# Developer configuration (for bot developers)
-DEVS=""
+DEVS="319872685897416725, 397322976552550400"
 ENABLE_PREFIX="yes"
 ENABLE_SLASH_COMMAND="yes"
 NODE_ENV="production"
