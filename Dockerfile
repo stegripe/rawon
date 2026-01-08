@@ -30,10 +30,13 @@ FROM node:24-alpine
 LABEL name="rawon"
 LABEL maintainer="Stegripe Development <support@stegripe.org>"
 
+# Set working directory so `process.cwd()` is `/app`
+WORKDIR /app
+
 # Install git, ffmpeg, python3, and deno (JavaScript runtime for yt-dlp signature solving)
 RUN apk add --no-cache git ffmpeg python3 deno && ln -sf python3 /usr/bin/python
 
-# Create necessary directory for caching (SQLite database will be stored here)
+# Create necessary directory for caching and database
 RUN mkdir -p /app/cache
 
 # Copy needed files
