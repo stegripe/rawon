@@ -8,8 +8,7 @@ const INVITE_BOTS = [
     { id: "999162626036740138", name: "Rawon #1" },
     { id: "1458722150620856351", name: "Rawon #2" },
     { id: "1458722316627476603", name: "Rawon #3" },
-    { id: "1458722403755753585", name: "Rawon #4" },
-    { id: "1458722484730724514", name: "Rawon #5" }
+    { id: "1458722403755753585", name: "Rawon #4" }
 ];
 
 const getInviteUrl = (clientId: string) =>
@@ -55,7 +54,7 @@ export default function HomePage() {
                             <Typography className="text-center font-sans text-base font-semibold uppercase text-third sm:text-lg">
                                 {t.home.inviteBot}
                             </Typography>
-                            <div className="grid w-full grid-cols-5 gap-2">
+                            <div className="grid w-full grid-cols-4 gap-2">
                                 {INVITE_BOTS.map((bot, index) => (
                                     <Link
                                         key={index}
