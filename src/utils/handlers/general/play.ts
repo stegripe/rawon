@@ -125,7 +125,7 @@ export async function play(
                     embeds: [
                         createEmbed(
                             "error",
-                            `⚠️ **|** ${__mf("utils.generalHandler.allCookiesFailed", {
+                            `${__mf("utils.generalHandler.allCookiesFailed", {
                                 prefix: guild.client.config.mainPrefix,
                             })}`,
                             true,
