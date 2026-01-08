@@ -21,6 +21,8 @@ FROM node:24-alpine
 LABEL name="rawon"
 LABEL maintainer="Stegripe Development <support@stegripe.org>"
 
+WORKDIR /app
+
 RUN apk add --no-cache git ffmpeg python3 deno && ln -sf python3 /usr/bin/python
 
 RUN mkdir -p /app/cache
