@@ -331,16 +331,21 @@ export async function play(
         return;
     }
 
-    let resource: ReturnType<typeof createAudioResource> | undefined;
+    let resource: import("@discordjs/voice").AudioResource<unknown> | undefined;
     try {
         queue.client.logger.debug(
             "[PLAY_HANDLER] Creating audio resource with inputType=Arbitrary",
         );
-        resource = createAudioResource(ffmpegStream, {
+        resource = createAudioResource<unknown>(ffmpegStream, {
             inlineVolume: true,
             inputType: StreamType.Arbitrary,
-            metadata: song,
+            metadata: song as unknown,
         });
+
+        if (!resource) {
+            queue.client.logger.error("[PLAY_HANDLER] Resource creation returned undefined");
+            return;
+        }
 
         resource.volume?.setVolumeLogarithmic(queue.volume / 100);
     } catch (err) {
@@ -380,7 +385,7 @@ export async function play(
             title: song.song.title,
             url: song.song.url,
             isLive: song.song.isLive,
-            metadata: resource.metadata ?? null,
+            metadata: resource?.metadata ?? null,
         });
     } catch {
     }
@@ -412,13 +417,13 @@ export async function play(
                 );
                 (queue?.player as unknown as EventEmitter).emit(
                     "error",
-                    new AudioPlayerError(suppressed.error as Error, resource),
+                    new AudioPlayerError(suppressed.error as Error, resource as unknown as any),
                 );
                 return;
             }
         }
 
-        queue?.player.play(resource);
+        queue?.player.play(resource!);
     }
 
     if (wasIdle === true) {
@@ -450,7 +455,7 @@ export async function play(
                 );
                 (queue.player as unknown as EventEmitter).emit(
                     "error",
-                    new AudioPlayerError(error as Error, resource),
+                    new AudioPlayerError(error as Error, resource as unknown as any),
                 );
             });
     }
