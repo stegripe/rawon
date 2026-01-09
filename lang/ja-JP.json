@@ -167,8 +167,10 @@
                 "description": "メディアプレイヤーのステータス",
                 "disableButton": "「前に戻る」ボタンは無効化され、削除されました。",
                 "emptyQueue": "キューは空です。",
+                "error": "再生情報の取得中にエラーが発生しました: {message}",
                 "live": "ライブ",
-                "requestedBy": "リクエスト者"
+                "requestedBy": "リクエスト者",
+                "unknownDuration": "再生時間不明"
             },
             "pause": {
                 "alreadyPause": "プレイヤーはすでに一時停止しています。",

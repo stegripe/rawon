@@ -167,8 +167,10 @@
                 "description": "Muestra la canción que se está reproduciendo",
                 "disableButton": "Este botón ya no está activo y ha sido eliminado.",
                 "emptyQueue": "La cola está vacía.",
+                "error": "Error al obtener la pista en reproducción: {message}",
                 "live": "EN VIVO",
-                "requestedBy": "Solicitado por"
+                "requestedBy": "Solicitado por",
+                "unknownDuration": "Duración desconocida"
             },
             "pause": {
                 "alreadyPause": "El reproductor de música ya está en pausa.",
