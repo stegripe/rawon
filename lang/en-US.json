@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
-            "message2": "Sorry, but that interaction is only for <@{user}>"
+            "message2": "Sorry, but that interaction is only for <@{user}>",
+            "devOnly": "Developer-only command."
         },
         "createMessage": "Hi {author}, my prefix is {prefix}",
         "cmdLoading": "Loading...",

@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "Xin lỗi, tương tác chỉ dành cho <@{user}> và quản lý máy chủ.",
-            "message2": "Xin lỗi, tương tác chỉ dành cho <@{user}>"
+            "message2": "Xin lỗi, tương tác chỉ dành cho <@{user}>",
+            "devOnly": "Lệnh chỉ dành cho nhà phát triển."
         },
         "createMessage": "Chào {author}, tiền tố của tôi là {prefix}",
         "cmdLoading": "Đang tải...",

@@ -255,6 +255,26 @@ export class InteractionCreateEvent extends BaseEvent {
                     : x.meta.contextUser === interaction.commandName,
             );
             if (cmd) {
+                const isDeveloper = this.client.config.devs.includes(interaction.user.id);
+                if (cmd.meta.devOnly === true && !isDeveloper) {
+                    try {
+                        await interaction.reply({
+                            flags: MessageFlags.Ephemeral,
+                            embeds: [
+                                createEmbed(
+                                    "error",
+                                    __mf("events.createInteraction.devOnly"),
+                                    true,
+                                ),
+                            ],
+                        });
+                    } catch {
+                    }
+                    this.client.logger.warn(
+                        `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only context/menu ${interaction.commandName}`,
+                    );
+                    return;
+                }
                 context.additionalArgs.set("options", data);
                 void cmd.execute(context);
             }
@@ -305,6 +325,26 @@ export class InteractionCreateEvent extends BaseEvent {
                     }
                 }
 
+                if (cmd.meta.devOnly === true && !isDeveloper) {
+                    try {
+                        await interaction.reply({
+                            flags: MessageFlags.Ephemeral,
+                            embeds: [
+                                createEmbed(
+                                    "error",
+                                    __mf("events.createInteraction.devOnly"),
+                                    true,
+                                ),
+                            ],
+                        });
+                    } catch {
+                    }
+                    this.client.logger.warn(
+                        `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only slash ${interaction.commandName}`,
+                    );
+                    return;
+                }
+
                 this.client.logger.info(
                     `[MultiBot] ${this.client.user?.tag} ✅ EXECUTING slash command "${interaction.commandName}" from ${interaction.user.tag}`,
                 );
@@ -346,6 +386,26 @@ export class InteractionCreateEvent extends BaseEvent {
                     .filter((x) => x.meta.slash !== undefined)
                     .find((x) => x.meta.name === cmd);
                 if (command) {
+                    const isDeveloper = this.client.config.devs.includes(interaction.user.id);
+                    if (command.meta.devOnly === true && !isDeveloper) {
+                        try {
+                            await interaction.reply({
+                                flags: MessageFlags.Ephemeral,
+                                embeds: [
+                                    createEmbed(
+                                        "error",
+                                        __mf("events.createInteraction.devOnly"),
+                                        true,
+                                    ),
+                                ],
+                            });
+                        } catch {
+                        }
+                        this.client.logger.warn(
+                            `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only select ${interaction.customId}`,
+                        );
+                        return;
+                    }
                     context.additionalArgs.set("values", interaction.values);
                     void command.execute(context);
                 }

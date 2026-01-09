@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "Désolé, mais cette interaction est uniquement pour <@{user}> et le staff du serveur.",
-            "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>"
+            "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>",
+            "devOnly": "Commande réservée aux développeurs."
         },
         "createMessage": "Salut {author}, mon préfixe est {prefix}",
         "cmdLoading": "Chargement en cours...",
