@@ -167,8 +167,10 @@
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
                 "disableButton": "Các nút trước đó không còn hoạt động và bị loại bỏ.",
                 "emptyQueue": "Hàng đợi trống.",
+                "error": "Lỗi khi lấy thông tin bài hát đang phát: {message}",
                 "live": "TRỰC TIẾP",
-                "requestedBy": "Yêu cầu bởi"
+                "requestedBy": "Yêu cầu bởi",
+                "unknownDuration": "Không rõ thời lượng"
             },
             "pause": {
                 "alreadyPause": "Trình phát nhạc đã bị tạm dừng.",

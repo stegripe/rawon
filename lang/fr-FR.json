@@ -167,8 +167,10 @@
                 "description": "Afficher l'état du lecteur multimédia",
                 "disableButton": "Les boutons précédents ne sont plus actifs et ont été supprimés.",
                 "emptyQueue": "La file d'attente est vide.",
+                "error": "Erreur lors de la récupération de la piste en cours : {message}",
                 "live": "EN DIRECT",
-                "requestedBy": "Demandé par"
+                "requestedBy": "Demandé par",
+                "unknownDuration": "Durée inconnue"
             },
             "pause": {
                 "alreadyPause": "Le lecteur de musique est déjà en pause.",

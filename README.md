@@ -15,7 +15,7 @@
 - Request channel feature for seamless music experience
 - Run multiple bot instances for different voice channels
 - Smart audio pre-caching for smoother playback
-- Support for YouTube, Spotify, and SoundCloud
+- Support for YouTube, Spotify, SoundCloud, and direct files!
 - Multi-cookie rotation for uninterrupted playback
 
 ## Installation
@@ -87,7 +87,7 @@ The `/app/cache` volume stores:
 - `yt-dlp` binary for audio streaming
 - `data.*` for persistent settings (request channels, player states)
 - Cached audio files (if audio caching is enabled)
-- Cookie files for YouTube authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
+- Cookie files for the platform authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
 ## Configuration Files
 - `.env.example` - Essential settings (Discord/Spotify token, prefix, IDs, etc.)

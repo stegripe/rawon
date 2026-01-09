@@ -167,8 +167,10 @@
                 "description": "Lihat status media player",
                 "disableButton": "Tombol-tombol ini udah gak aktif lagi dan udah dihapus.",
                 "emptyQueue": "Antriannya lagi kosong nih.",
+                "error": "Gagal mendapatkan now playing: {message}",
                 "live": "LIVE",
-                "requestedBy": "Direquest sama"
+                "requestedBy": "Direquest sama",
+                "unknownDuration": "Durasi gak diketahui"
             },
             "pause": {
                 "alreadyPause": "Media player-nya udah dijeda kok.",

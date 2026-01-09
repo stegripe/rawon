@@ -167,8 +167,10 @@
                 "description": "Show the media player status",
                 "disableButton": "Previous buttons are no longer active and removed.",
                 "emptyQueue": "Queue is empty.",
+                "error": "Error retrieving now playing: {message}",
                 "live": "LIVE",
-                "requestedBy": "Requested by"
+                "requestedBy": "Requested by",
+                "unknownDuration": "Unknown duration"
             },
             "pause": {
                 "alreadyPause": "The music player is already paused.",
