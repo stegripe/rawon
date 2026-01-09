@@ -106,6 +106,9 @@ export class EvalCommand extends BaseCommand {
         const result = await this.client.request
             .post("https://bin.stegripe.org/documents", {
                 body: text,
+                headers: {
+                    "content-type": "text/plain; charset=utf-8",
+                },
             })
             .json<{ key: string }>();
 
