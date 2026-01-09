@@ -12,8 +12,9 @@
             },
             "cookies": {
                 "description": "管理cookies以繞過機器人偵測",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [編號 | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [編號 | all | url]",
                 "slashAddDescription": "新增cookie檔案",
+                "slashUrlDescription": "cookies.txt 的 URL",
                 "slashRemoveDescription": "刪除cookie檔案",
                 "slashListDescription": "列出所有cookie檔案",
                 "slashResetDescription": "重設失敗的cookie狀態",

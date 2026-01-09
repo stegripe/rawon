@@ -12,8 +12,9 @@
             },
             "cookies": {
                 "description": "Administrar cookies para bypass de detección de bot",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [número | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [número | all | url]",
                 "slashAddDescription": "Agregar un nuevo archivo de cookies",
+                "slashUrlDescription": "URL al cookies.txt",
                 "slashRemoveDescription": "Eliminar un archivo de cookies",
                 "slashListDescription": "Listar todos los archivos de cookies",
                 "slashResetDescription": "Restablecer el estado de cookies fallidas",

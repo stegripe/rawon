@@ -28,6 +28,12 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
                         required: true,
                         minValue: 1,
                     },
+                    {
+                        description: i18n.__("commands.developers.cookies.slashUrlDescription"),
+                        name: "url",
+                        type: ApplicationCommandOptionType.String,
+                        required: false,
+                    },
                 ],
             },
             {
@@ -164,6 +170,21 @@ export class CookiesCommand extends BaseCommand {
             const firstAttachment = message.attachments.first();
             if (firstAttachment) {
                 attachment = { url: firstAttachment.url, name: firstAttachment.name ?? "unknown" };
+            }
+        }
+
+        const urlArg = (ctx.options?.getString("url") ?? ctx.args[2] ?? null) as string | null;
+        if (!attachment && urlArg) {
+            try {
+                const parsed = new URL(urlArg);
+                const nameFromPath = parsed.pathname.split("/").pop() ?? parsed.hostname;
+                attachment = { url: parsed.toString(), name: nameFromPath };
+            } catch {
+                return ctx.reply({
+                    embeds: [
+                        createEmbed("warn", __("commands.developers.cookies.invalidFileType")),
+                    ],
+                });
             }
         }
 

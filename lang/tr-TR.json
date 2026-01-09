@@ -12,11 +12,12 @@
             },
             "cookies": {
                 "description": "Bot algılama bypass için çerezleri yönet",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [numara | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [numara | all | url]",
                 "slashAddDescription": "Yeni çerez dosyası ekle",
                 "slashRemoveDescription": "Çerez dosyasını kaldır",
                 "slashListDescription": "Tüm çerez dosyalarını listele",
                 "slashResetDescription": "Başarısız çerez durumunu sıfırla",
+                "slashUrlDescription": "cookies.txt için URL",
                 "slashNumberDescription": "Çerez numarası (1'den başlayarak)",
                 "slashRemoveTargetDescription": "Kaldırılacak çerez numarası veya 'all'",
                 "invalidNumber": "Lütfen geçerli bir çerez numarası girin (1'den başlayarak).",

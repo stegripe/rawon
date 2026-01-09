@@ -12,8 +12,9 @@
             },
             "cookies": {
                 "description": "봇 감지 우회를 위한 쿠키 관리",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [번호 | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [번호 | all | url]",
                 "slashAddDescription": "새 쿠키 파일 추가",
+                "slashUrlDescription": "cookies.txt URL",
                 "slashRemoveDescription": "쿠키 파일 삭제",
                 "slashListDescription": "모든 쿠키 파일 목록 보기",
                 "slashResetDescription": "실패한 쿠키 상태 초기화",
