@@ -429,7 +429,6 @@ export async function play(
             }
         }
 
-        // resource is created above and checked; assert non-null for TS
         queue?.player.play(resource!);
     }
 
