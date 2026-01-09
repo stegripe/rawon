@@ -118,10 +118,18 @@ export class CommandContext {
         }
         if (this.isInteraction()) {
             (options as InteractionReplyOptions).withResponse = true;
-            const msg = (await (this.context as CommandInteraction)[type](
-                options as any,
-            )) as Message;
+            const msg = (await (this.context as CommandInteraction)[type](options as any)) as
+                | Message
+                | null
+                | undefined;
             const channel = this.context.channel;
+            if (!msg || !msg.id) {
+                const res = await channel?.messages
+                    .fetch({ limit: 1 })
+                    .then((c) => c.first())
+                    .catch(() => null);
+                return (res as Message) ?? (msg as Message);
+            }
             const res = await channel?.messages.fetch(msg.id).catch(() => null);
             return res ?? msg;
         }
