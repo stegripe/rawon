@@ -8,6 +8,14 @@ import { RawonLogger } from "./utils/structures/RawonLogger.js";
 
 const log = new RawonLogger({ prod: isProd });
 
+process.on("unhandledRejection", (reason, _promise) => {
+    log.error("UNHANDLED_REJECTION:", reason instanceof Error ? (reason.stack ?? reason) : reason);
+});
+
+process.on("uncaughtException", (error) => {
+    log.error("UNCAUGHT_EXCEPTION:", error instanceof Error ? (error.stack ?? error) : error);
+});
+
 if (isMultiBot && discordTokens.length > 1) {
     log.info(
         `[MultiBot] Using custom multi-bot launcher for ${discordTokens.length} bot instances.`,

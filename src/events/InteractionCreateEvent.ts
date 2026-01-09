@@ -143,7 +143,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
                     if (!shouldRespond) {
                         this.client.logger.warn(
-                            `[MultiBot] ${this.client.user?.tag} ❌❌❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
+                            `[MultiBot] ${this.client.user?.tag} ❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
                                 `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - INTERACTION WILL NOT BE EXECUTED!`,
                         );
                         return;
@@ -339,7 +339,7 @@ export class InteractionCreateEvent extends BaseEvent {
                             ],
                         });
                     } catch {
-                        // Ignore reply failures
+                        // Ignore errors
                     }
                     this.client.logger.warn(
                         `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only slash ${interaction.commandName}`,

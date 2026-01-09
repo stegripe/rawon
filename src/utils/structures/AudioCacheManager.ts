@@ -13,6 +13,7 @@ import path from "node:path";
 import process from "node:process";
 import { PassThrough, type Readable } from "node:stream";
 import { clearInterval, setInterval, setTimeout } from "node:timers";
+import got from "got";
 import { type Rawon } from "../../structures/Rawon.js";
 
 const PRE_CACHE_AHEAD_COUNT = 3;
@@ -33,6 +34,29 @@ export class AudioCacheManager {
     public constructor(public readonly client: Rawon) {
         this.cacheDir = path.resolve(process.cwd(), "cache", "audio");
         this.ensureCacheDir();
+    }
+
+    private async isDirectDownload(url: string): Promise<boolean> {
+        try {
+            const extRegex = /\.(mp4|m4a|webm|mp3|opus|wav|flac)(\?|$)/i;
+            if (extRegex.test(url)) {
+                return true;
+            }
+
+            const res = await got.head(url, { timeout: 2_000, throwHttpErrors: false });
+            const ct = (res.headers["content-type"] ?? "").toString().toLowerCase();
+            if (ct.startsWith("audio/") || ct.startsWith("video/")) {
+                return true;
+            }
+
+            const cd = (res.headers["content-disposition"] ?? "").toString().toLowerCase();
+            if (cd.includes("attachment")) {
+                return true;
+            }
+        } catch {
+            // Ignore errors
+        }
+        return false;
     }
 
     private ensureCacheDir(): void {
@@ -290,84 +314,32 @@ export class AudioCacheManager {
         const key = this.getCacheKey(url);
 
         try {
-            const { exec, isBotDetectionError } = await import("../yt-dlp/index.js");
             const cachePath = this.getCachePath(url);
 
             this.inProgressFiles.add(key);
 
-            const proc = exec(
-                url,
-                {
-                    output: "-",
-                    quiet: true,
-                    format: "bestaudio",
-                    limitRate: "300K",
-                },
-                { stdio: ["ignore", "pipe", "pipe"] },
-            );
+            if (await this.isDirectDownload(url)) {
+                const writeStream = createWriteStream(cachePath);
+                const httpStream = got.stream(url);
 
-            if (!proc.stdout) {
-                this.inProgressFiles.delete(key);
-                this.markFailed(key);
-                return;
-            }
-
-            let stderrData = "";
-            let hasBotDetectionError = false;
-            let processKilled = false;
-
-            if (proc.stderr) {
-                proc.stderr.on("data", (chunk: Buffer) => {
-                    stderrData += chunk.toString();
-                    if (
-                        isBotDetectionError(stderrData) &&
-                        !hasBotDetectionError &&
-                        !processKilled
-                    ) {
-                        hasBotDetectionError = true;
-                        processKilled = true;
-                        proc.kill("SIGKILL");
-
-                        this.client.logger.warn(
-                            `[AudioCacheManager] Bot detection during pre-cache, rotating cookie (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.substring(0, 50)}...`,
-                        );
-                        const rotated = this.client.cookies.rotateOnFailure();
-                        if (rotated) {
-                            this.client.logger.info(
-                                `[AudioCacheManager] Rotated to cookie ${this.client.cookies.getCurrentCookieIndex()}`,
-                            );
-                        }
+                httpStream.on("error", (err: Error) => {
+                    this.client.logger.warn(
+                        `[AudioCacheManager] HTTP pre-cache stream error for ${url.substring(0, 50)}...: ${err.message}`,
+                    );
+                    this.inProgressFiles.delete(key);
+                    this.markFailed(key);
+                    try {
+                        rmSync(cachePath, { force: true });
+                    } catch {
+                        // Ignore errors
                     }
                 });
-            }
 
-            const writeStream = createWriteStream(cachePath);
-            proc.stdout.pipe(writeStream);
+                httpStream.pipe(writeStream);
 
-            await new Promise<void>((resolve) => {
-                writeStream.on("finish", () => {
-                    this.inProgressFiles.delete(key);
-                    if (hasBotDetectionError) {
-                        try {
-                            rmSync(cachePath, { force: true });
-                        } catch {
-                            // Ignore errors
-                        }
-
-                        if (
-                            retryCount < MAX_PRE_CACHE_RETRIES &&
-                            !this.client.cookies.areAllCookiesFailed()
-                        ) {
-                            setTimeout(
-                                () => {
-                                    void this.doPreCache(url, retryCount + 1);
-                                },
-                                1000 * (retryCount + 1),
-                            );
-                        } else {
-                            this.markFailed(key);
-                        }
-                    } else {
+                await new Promise<void>((resolve) => {
+                    writeStream.on("finish", () => {
+                        this.inProgressFiles.delete(key);
                         try {
                             const stats = statSync(cachePath);
                             if (stats.size >= 1024) {
@@ -386,32 +358,141 @@ export class AudioCacheManager {
                         } catch {
                             this.markFailed(key);
                         }
-                    }
-                    resolve();
-                });
+                        resolve();
+                    });
 
-                writeStream.on("error", () => {
+                    writeStream.on("error", () => {
+                        this.inProgressFiles.delete(key);
+                        this.markFailed(key);
+                        try {
+                            rmSync(cachePath, { force: true });
+                        } catch {
+                            // Ignore errors
+                        }
+                        resolve();
+                    });
+                });
+            } else {
+                const { exec, isBotDetectionError } = await import("../yt-dlp/index.js");
+
+                const proc = exec(
+                    url,
+                    {
+                        output: "-",
+                        quiet: true,
+                        format: "bestaudio",
+                        limitRate: "300K",
+                    },
+                    { stdio: ["ignore", "pipe", "pipe"] },
+                );
+
+                if (!proc.stdout) {
                     this.inProgressFiles.delete(key);
                     this.markFailed(key);
-                    try {
-                        rmSync(cachePath, { force: true });
-                    } catch {
-                        // Ignore errors
-                    }
-                    resolve();
-                });
+                    return;
+                }
 
-                proc.on("error", () => {
-                    this.inProgressFiles.delete(key);
-                    this.markFailed(key);
-                    try {
-                        rmSync(cachePath, { force: true });
-                    } catch {
-                        // Ignore errors
-                    }
-                    resolve();
+                let stderrData = "";
+                let hasBotDetectionError = false;
+                let processKilled = false;
+
+                if (proc.stderr) {
+                    proc.stderr.on("data", (chunk: Buffer) => {
+                        stderrData += chunk.toString();
+                        if (
+                            isBotDetectionError(stderrData) &&
+                            !hasBotDetectionError &&
+                            !processKilled
+                        ) {
+                            hasBotDetectionError = true;
+                            processKilled = true;
+                            proc.kill("SIGKILL");
+
+                            this.client.logger.warn(
+                                `[AudioCacheManager] Bot detection during pre-cache, rotating cookie (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                            );
+                            const rotated = this.client.cookies.rotateOnFailure();
+                            if (rotated) {
+                                this.client.logger.info(
+                                    `[AudioCacheManager] Rotated to cookie ${this.client.cookies.getCurrentCookieIndex()}`,
+                                );
+                            }
+                        }
+                    });
+                }
+
+                const writeStream = createWriteStream(cachePath);
+                proc.stdout.pipe(writeStream);
+
+                await new Promise<void>((resolve) => {
+                    writeStream.on("finish", () => {
+                        this.inProgressFiles.delete(key);
+                        if (hasBotDetectionError) {
+                            try {
+                                rmSync(cachePath, { force: true });
+                            } catch {
+                                // Ignore errors
+                            }
+
+                            if (
+                                retryCount < MAX_PRE_CACHE_RETRIES &&
+                                !this.client.cookies.areAllCookiesFailed()
+                            ) {
+                                setTimeout(
+                                    () => {
+                                        void this.doPreCache(url, retryCount + 1);
+                                    },
+                                    1000 * (retryCount + 1),
+                                );
+                            } else {
+                                this.markFailed(key);
+                            }
+                        } else {
+                            try {
+                                const stats = statSync(cachePath);
+                                if (stats.size >= 1024) {
+                                    this.cachedFiles.set(key, {
+                                        path: cachePath,
+                                        lastAccess: Date.now(),
+                                    });
+                                    this.failedUrls.delete(key);
+                                    this.client.logger.info(
+                                        `[AudioCacheManager] Pre-cached audio for: ${url.substring(0, 50)}...`,
+                                    );
+                                } else {
+                                    rmSync(cachePath, { force: true });
+                                    this.markFailed(key);
+                                }
+                            } catch {
+                                this.markFailed(key);
+                            }
+                        }
+                        resolve();
+                    });
+
+                    writeStream.on("error", () => {
+                        this.inProgressFiles.delete(key);
+                        this.markFailed(key);
+                        try {
+                            rmSync(cachePath, { force: true });
+                        } catch {
+                            // Ignore errors
+                        }
+                        resolve();
+                    });
+
+                    proc.on("error", () => {
+                        this.inProgressFiles.delete(key);
+                        this.markFailed(key);
+                        try {
+                            rmSync(cachePath, { force: true });
+                        } catch {
+                            // Ignore errors
+                        }
+                        resolve();
+                    });
                 });
-            });
+            }
 
             void this.cleanupOldCache();
         } catch (error) {

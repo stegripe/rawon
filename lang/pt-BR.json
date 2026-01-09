@@ -167,8 +167,10 @@
                 "description": "Mostra o status do player de mídia",
                 "disableButton": "Este botão já não está ativo e foi removido.",
                 "emptyQueue": "A fila está vazia.",
+                "error": "Erro ao recuperar a faixa atual: {message}",
                 "live": "AO VIVO",
-                "requestedBy": "Pedido por"
+                "requestedBy": "Pedido por",
+                "unknownDuration": "Duração desconhecida"
             },
             "pause": {
                 "alreadyPause": "O player de música já está pausado.",

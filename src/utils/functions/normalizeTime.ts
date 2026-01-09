@@ -4,6 +4,10 @@ function tS(num: number): string {
 }
 
 export function normalizeTime(second: number): string {
+    if (!Number.isFinite(second) || Number.isNaN(second) || second < 0) {
+        second = 0;
+    }
+
     const hour = Math.floor(second / 3_600);
     const min = Math.floor((second % 3_600) / 60);
     const sec = Math.floor(second % 60);

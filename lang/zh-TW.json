@@ -167,8 +167,10 @@
                 "description": "顯示媒體播放器狀態",
                 "disableButton": "以前的按鈕不再處於活動狀態並被刪除。",
                 "emptyQueue": "隊列為空。",
+                "error": "取得目前播放資訊時發生錯誤：{message}",
                 "live": "直播",
-                "requestedBy": "請求者"
+                "requestedBy": "請求者",
+                "unknownDuration": "未知長度"
             },
             "pause": {
                 "alreadyPause": "音樂播放器已經被暫停。",

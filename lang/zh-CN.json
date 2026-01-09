@@ -167,8 +167,10 @@
                 "description": "显示媒体播放器状态",
                 "disableButton": "以前的按钮不再处于活动状态并被删除。",
                 "emptyQueue": "队列为空。",
+                "error": "获取当前播放信息时出错：{message}",
                 "live": "直播",
-                "requestedBy": "请求者"
+                "requestedBy": "请求者",
+                "unknownDuration": "未知时长"
             },
             "pause": {
                 "alreadyPause": "音乐播放器已经被暂停。",

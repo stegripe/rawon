@@ -164,11 +164,13 @@
                 "noLyrics": "{song} için şarkı sözü bulunamadı."
             },
             "nowplaying": {
-                "description": "Medya oynatıcı durumunu göster",
-                "disableButton": "Önceki düğmeler artık etkin değildir ve kaldırılmıştır.",
+                "description": "Medya oynatıcı durumunu gösterir",
+                "disableButton": "Bu buton artık aktif değil ve kaldırıldı.",
                 "emptyQueue": "Kuyruk boş.",
+                "error": "Çalan parça bilgisi alınırken hata oluştu: {message}",
                 "live": "CANLI",
-                "requestedBy": "İsteyen"
+                "requestedBy": "İsteyen",
+                "unknownDuration": "Bilinmeyen süre"
             },
             "pause": {
                 "alreadyPause": "Müzik zaten duraklatılmıştır.",

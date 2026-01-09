@@ -1,3 +1,4 @@
+import { clearInterval, setInterval } from "node:timers";
 import { type AudioPlayerState, type AudioResource } from "@discordjs/voice";
 import {
     ActionRowBuilder,
@@ -15,7 +16,7 @@ import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
-import { i18n__ } from "../../utils/functions/i18n.js";
+import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 
 @Command<typeof NowPlayingCommand>({
@@ -31,45 +32,67 @@ export class NowPlayingCommand extends BaseCommand {
     @haveQueue
     public async execute(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
+        const __mf = i18n__mf(this.client, ctx.guild);
+        const getEmbed = (): EmbedBuilder => {
+            try {
+                const res = (
+                    ctx.guild?.queue?.player.state as
+                        | (AudioPlayerState & {
+                              resource: AudioResource | undefined;
+                          })
+                        | undefined
+                )?.resource;
+                const queueSong = res?.metadata as QueueSong | undefined;
+                const song = queueSong?.song;
+                const seekOffset = ctx.guild?.queue?.seekOffset ?? 0;
 
-        function getEmbed(): EmbedBuilder {
-            const res = (
-                ctx.guild?.queue?.player.state as
-                    | (AudioPlayerState & {
-                          resource: AudioResource | undefined;
-                      })
-                    | undefined
-            )?.resource;
-            const queueSong = res?.metadata as QueueSong | undefined;
-            const song = queueSong?.song;
-            const seekOffset = ctx.guild?.queue?.seekOffset ?? 0;
+                const embed = createEmbed(
+                    "info",
+                    `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `,
+                );
+                const defaultThumb = "https://cdn.stegripe.org/images/icon.png";
+                let thumb: string | undefined = song?.thumbnail;
+                if (typeof thumb !== "string" || !/^https?:\/\//i.test(thumb)) {
+                    thumb = defaultThumb;
+                }
+                embed.setThumbnail(thumb);
 
-            const embed = createEmbed(
-                "info",
-                `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `,
-            ).setThumbnail(song?.thumbnail ?? "https://cdn.stegripe.org/images/icon.png");
+                const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000) + seekOffset;
+                let progressLine: string;
+                if (song?.isLive === true) {
+                    progressLine = `🔴 **\`${__("commands.music.nowplaying.live")}\`**`;
+                } else if (song) {
+                    const total = Number.isFinite(song.duration) ? song.duration : 0;
+                    if (total <= 0) {
+                        progressLine = `${normalizeTime(curr)} • ${__("commands.music.nowplaying.unknownDuration")}`;
+                    } else {
+                        progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, total)} ${normalizeTime(total)}`;
+                    }
+                } else {
+                    progressLine = "";
+                }
 
-            const curr = Math.trunc((res?.playbackDuration ?? 0) / 1_000) + seekOffset;
-            let progressLine: string;
-            if (song?.isLive === true) {
-                progressLine = `🔴 **\`${__("commands.music.nowplaying.live")}\`**`;
-            } else if (song) {
-                progressLine = `${normalizeTime(curr)} ${createProgressBar(curr, song.duration)} ${normalizeTime(song.duration)}`;
-            } else {
-                progressLine = "";
+                if (song) {
+                    const requesterLine = queueSong?.requester
+                        ? `\n\n${__("commands.music.nowplaying.requestedBy")}: ${queueSong.requester.toString()}`
+                        : "";
+                    embed.data.description += `**[${song.title}](${song.url})**\n${progressLine}${requesterLine}`;
+                } else {
+                    embed.data.description += __("commands.music.nowplaying.emptyQueue");
+                }
+
+                return embed;
+            } catch (error) {
+                this.client.logger.error(
+                    "NOWPLAY_ERR:",
+                    error instanceof Error ? (error.stack ?? error) : error,
+                );
+                const msg = __mf("commands.music.nowplaying.error", {
+                    message: (error as Error)?.message ?? "Unknown error",
+                });
+                return createEmbed("error", msg, true);
             }
-
-            if (song) {
-                const requesterLine = queueSong?.requester
-                    ? `\n\n${__("commands.music.nowplaying.requestedBy")}: ${queueSong.requester.toString()}`
-                    : "";
-                embed.data.description += `**[${song.title}](${song.url})**\n${progressLine}${requesterLine}`;
-            } else {
-                embed.data.description += __("commands.music.nowplaying.emptyQueue");
-            }
-
-            return embed;
-        }
+        };
 
         const hasRequestChannel = ctx.guild
             ? (ctx.guild.client as unknown as Rawon).requestChannelManager.hasRequestChannel(
@@ -112,6 +135,26 @@ export class NowPlayingCommand extends BaseCommand {
             idle: 30_000,
         });
 
+        const updateInterval = setInterval(async () => {
+            try {
+                const res = (
+                    ctx.guild?.queue?.player.state as
+                        | (AudioPlayerState & {
+                              resource: AudioResource | undefined;
+                          })
+                        | undefined
+                )?.resource;
+                const queueSong = res?.metadata as QueueSong | undefined;
+                if (!queueSong) {
+                    return;
+                }
+
+                await msg.edit({ embeds: [getEmbed()] }).catch(() => null);
+            } catch {
+                // Ignore errors
+            }
+        }, 5_000);
+
         collector
             .on("collect", async (i) => {
                 const newCtx = new CommandContext(i);
@@ -148,6 +191,8 @@ export class NowPlayingCommand extends BaseCommand {
                 await msg.edit({ embeds: [embed] }).catch(() => null);
             })
             .on("end", async () => {
+                clearInterval(updateInterval);
+
                 const embed = getEmbed().setFooter({
                     text: `• ${__("commands.music.nowplaying.disableButton")}`,
                 });

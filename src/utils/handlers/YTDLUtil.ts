@@ -1,6 +1,7 @@
 import { type Buffer } from "node:buffer";
 import { type Readable } from "node:stream";
 import { clearTimeout, setTimeout } from "node:timers";
+import got from "got";
 import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
@@ -24,6 +25,29 @@ export class CookieRotationNeededError extends Error {
         super(message);
         this.name = "CookieRotationNeededError";
     }
+}
+
+async function isDirectDownload(url: string): Promise<boolean> {
+    try {
+        const extRegex = /\.(mp4|m4a|webm|mp3|opus|wav|flac)(\?|$)/i;
+        if (extRegex.test(url)) {
+            return true;
+        }
+
+        const res = await got.head(url, { timeout: 2_000, throwHttpErrors: false });
+        const ct = (res.headers["content-type"] ?? "").toString().toLowerCase();
+        if (ct.startsWith("audio/") || ct.startsWith("video/")) {
+            return true;
+        }
+
+        const cd = (res.headers["content-disposition"] ?? "").toString().toLowerCase();
+        if (cd.includes("attachment")) {
+            return true;
+        }
+    } catch {
+        // Ignore errors
+    }
+    return false;
 }
 
 export interface StreamResult {
@@ -95,6 +119,20 @@ export async function getStream(
 
     if (client.cookies.areAllCookiesFailed()) {
         throw new AllCookiesFailedError();
+    }
+
+    if (await isDirectDownload(url)) {
+        try {
+            const stream = got.stream(url);
+            return {
+                stream: stream as unknown as Readable,
+                cachePath: null,
+            };
+        } catch (err) {
+            client.logger.warn(
+                `[YTDLUtil] Direct HTTP stream failed for ${url.substring(0, 50)}..., falling back to yt-dlp. Error: ${(err as Error).message}`,
+            );
+        }
     }
 
     const stream = await attemptStreamWithRetry(client, url, isLive, 0, seekSeconds);

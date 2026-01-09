@@ -1,5 +1,9 @@
+import { type Buffer } from "node:buffer";
 import type EventEmitter from "node:events";
-import { setTimeout } from "node:timers";
+import fs, { promises as fsp } from "node:fs";
+import os from "node:os";
+import nodePath from "node:path";
+import { clearTimeout, setTimeout } from "node:timers";
 import {
     AudioPlayerError,
     createAudioResource,
@@ -87,6 +91,7 @@ export async function play(
     }
 
     let ffmpegStream: prism.FFmpeg;
+    let ffmpegStderr = "";
 
     try {
         const streamResult = await getStream(
@@ -96,19 +101,135 @@ export async function play(
             seekSeconds,
         );
 
+        queue.client.logger.debug(
+            `[PLAY_HANDLER] streamResult for ${song.song.title}: cachePath=${Boolean(
+                streamResult.cachePath,
+            )}, hasStream=${Boolean(streamResult.stream)}`,
+        );
+
         if (streamResult.cachePath) {
+            const args = ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath);
+            queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_ARGS]", args.join(" "));
             ffmpegStream = new prism.FFmpeg({
-                args: ffmpegArgs(queue.filters, seekSeconds, streamResult.cachePath),
+                args,
             });
+            (ffmpegStream as any).stderr?.on?.("data", (chunk: Buffer) => {
+                const s = chunk.toString();
+                ffmpegStderr += s;
+                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_STERR]", s);
+            });
+            (ffmpegStream as any).on?.("error", (e: unknown) =>
+                queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e),
+            );
+            (ffmpegStream as any).on?.("close", (code?: unknown) =>
+                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code),
+            );
         } else if (streamResult.stream) {
-            ffmpegStream = new prism.FFmpeg({
-                args: ffmpegArgs(queue.filters, 0),
+            const tmpFile = nodePath.join(
+                os.tmpdir(),
+                `rawon-direct-${Date.now()}-${Math.random().toString(36).slice(2)}.tmp`,
+            );
+
+            queue.client.logger.debug(
+                "[PLAY_HANDLER] Writing incoming stream to temp file",
+                tmpFile,
+            );
+
+            const writeStream = fs.createWriteStream(tmpFile);
+            const DOWNLOAD_TIMEOUT_MS = 60_000;
+            let downloadTimeout: NodeJS.Timeout | null = null;
+
+            const streamPromise = new Promise<void>((resolve, reject) => {
+                const onError = (e: unknown) => {
+                    if (downloadTimeout) {
+                        clearTimeout(downloadTimeout);
+                        downloadTimeout = null;
+                    }
+                    try {
+                        writeStream.destroy();
+                    } catch {
+                        // Ignore errors
+                    }
+                    reject(e);
+                };
+
+                downloadTimeout = setTimeout(() => {
+                    onError(new Error("Temp download timeout"));
+                }, DOWNLOAD_TIMEOUT_MS);
+
+                streamResult.stream?.on?.("error", onError);
+                writeStream.on("error", onError);
+                writeStream.on("finish", () => {
+                    if (downloadTimeout) {
+                        clearTimeout(downloadTimeout);
+                        downloadTimeout = null;
+                    }
+                    resolve();
+                });
+
+                streamResult.stream?.pipe(writeStream);
             });
-            streamResult.stream.pipe(ffmpegStream as unknown as NodeJS.WritableStream);
+
+            try {
+                await streamPromise;
+            } catch (e) {
+                queue.client.logger.error("[PLAY_HANDLER] Failed to write stream to temp file:", e);
+                throw e;
+            }
+
+            const args = ffmpegArgs(queue.filters, seekSeconds, tmpFile);
+            queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_ARGS]", args.join(" "));
+            ffmpegStream = new prism.FFmpeg({ args });
+
+            (ffmpegStream as any).stderr?.on?.("data", (chunk: Buffer) => {
+                const s = chunk.toString();
+                ffmpegStderr += s;
+                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_STERR]", s);
+            });
+            (ffmpegStream as any).on?.("error", (e: unknown) => {
+                queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
+                const errStr = String(e ?? "");
+                const isPremature =
+                    errStr.includes("Premature close") ||
+                    (e as any)?.code === "ERR_STREAM_PREMATURE_CLOSE";
+                if (isPremature) {
+                    queue.client.logger.debug(
+                        "[PLAY_HANDLER] Ignoring premature-close ffmpeg error",
+                        e,
+                    );
+                    return;
+                }
+                try {
+                    (queue.player as unknown as EventEmitter).emit(
+                        "error",
+                        new AudioPlayerError(e as Error, undefined as unknown as any),
+                    );
+                } catch (_) {
+                    // Ignore errors
+                }
+            });
+            (ffmpegStream as any).on?.("close", async (code?: unknown) => {
+                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code);
+                try {
+                    await fsp.unlink(tmpFile).catch(() => null);
+                    queue.client.logger.debug("[PLAY_HANDLER] Temp file deleted", tmpFile);
+                } catch {
+                    // Ignore errors
+                }
+            });
         } else {
             throw new Error("No stream or cache path available");
         }
     } catch (error) {
+        try {
+            queue.client.logger.debug("[PLAY_HANDLER][DIAGNOSTIC] resource metadata:", {
+                url: song.song.url,
+                title: song.song.title,
+                isLive: song.song.isLive,
+            });
+        } catch {
+            // Ignore errors
+        }
         queue.endSkip();
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
             guild,
@@ -214,19 +335,61 @@ export async function play(
         return;
     }
 
-    const resource = createAudioResource(ffmpegStream, {
-        inlineVolume: true,
-        inputType: StreamType.OggOpus,
-        metadata: song,
-    });
+    let resource: ReturnType<typeof createAudioResource> | undefined;
+    try {
+        queue.client.logger.debug(
+            "[PLAY_HANDLER] Creating audio resource with inputType=Arbitrary",
+        );
+        resource = createAudioResource(ffmpegStream, {
+            inlineVolume: true,
+            inputType: StreamType.Arbitrary,
+            metadata: song,
+        });
 
-    resource.volume?.setVolumeLogarithmic(queue.volume / 100);
+        resource.volume?.setVolumeLogarithmic(queue.volume / 100);
+    } catch (err) {
+        queue.client.logger.error(
+            "[PLAY_HANDLER][RESOURCE_CREATE_ERROR]",
+            err instanceof Error ? (err.stack ?? err.message) : err,
+        );
+        queue.client.logger.debug(
+            "[PLAY_HANDLER][RESOURCE_DIAGNOSTIC] ffmpegStderr:",
+            ffmpegStderr.substring(0, 10_000),
+        );
+        queue.client.logger.debug("[PLAY_HANDLER][RESOURCE_DIAGNOSTIC] song metadata:", {
+            title: song.song.title,
+            url: song.song.url,
+            isLive: song.song.isLive,
+        });
+        try {
+            (queue.player as unknown as EventEmitter).emit(
+                "error",
+                new AudioPlayerError(
+                    err instanceof Error ? err : new Error(String(err)),
+                    undefined as unknown as any,
+                ),
+            );
+        } catch (_) {
+            // Ignore errors
+        }
+        return;
+    }
 
     queue.client.debugLog.logData(
         "info",
         "PLAY_HANDLER",
         `Created audio resource for ${guild.name}(${guild.id})`,
     );
+    try {
+        queue.client.logger.debug("[PLAY_HANDLER][RESOURCE_CREATED]", {
+            title: song.song.title,
+            url: song.song.url,
+            isLive: song.song.isLive,
+            metadata: resource.metadata ?? null,
+        });
+    } catch {
+        // Ignore errors
+    }
 
     queue.connection?.subscribe(queue.player);
 

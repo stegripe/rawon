@@ -167,8 +167,10 @@
                 "description": "미디어 플레이어 상태 보기",
                 "disableButton": "이전 버튼들은 더 이상 활성화되지 않으며 제거되었어요.",
                 "emptyQueue": "대기열이 비어 있어요.",
+                "error": "재생 정보 가져오기 오류: {message}",
                 "live": "라이브",
-                "requestedBy": "요청자"
+                "requestedBy": "요청자",
+                "unknownDuration": "재생 시간 알 수 없음"
             },
             "pause": {
                 "alreadyPause": "음악 플레이어가 이미 일시 정지되어 있어요.",

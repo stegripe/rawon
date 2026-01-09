@@ -168,7 +168,7 @@ export class MessageCreateEvent extends BaseEvent {
 
                             if (!shouldRespond) {
                                 this.client.logger.warn(
-                                    `[MultiBot] ${this.client.user?.tag} ❌❌❌ BLOCKING music command "${cmdName}" in REQUEST CHANNEL from ${message.author.tag} ` +
+                                    `[MultiBot] ${this.client.user?.tag} ❌ BLOCKING music command "${cmdName}" in REQUEST CHANNEL from ${message.author.tag} ` +
                                         `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - COMMAND WILL NOT EXECUTE!`,
                                 );
                                 return;
@@ -318,7 +318,7 @@ export class MessageCreateEvent extends BaseEvent {
 
                         if (!shouldRespond) {
                             this.client.logger.warn(
-                                `[MultiBot] ${this.client.user?.tag} ❌❌❌ BLOCKING music command "${cmdName}" from ${message.author.tag} ` +
+                                `[MultiBot] ${this.client.user?.tag} ❌ BLOCKING music command "${cmdName}" from ${message.author.tag} ` +
                                     `- NOT in same voice channel (user in: ${userVoiceChannelId}). ` +
                                     `RETURNING EARLY - COMMAND WILL NOT BE EXECUTED!`,
                             );
