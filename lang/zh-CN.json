@@ -12,8 +12,9 @@
             },
             "cookies": {
                 "description": "管理cookies以绕过机器人检测",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [编号 | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [编号 | all | url]",
                 "slashAddDescription": "添加新的cookie文件",
+                "slashUrlDescription": "cookies.txt 的 URL",
                 "slashRemoveDescription": "删除cookie文件",
                 "slashListDescription": "列出所有cookie文件",
                 "slashResetDescription": "重置失败的cookie状态",
