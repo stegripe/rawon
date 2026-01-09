@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "Sori, tapi interaction ini cuma buat <@{user}> sama staff server.",
-            "message2": "Sori, tapi interaction ini cuma buat <@{user}>"
+            "message2": "Sori, tapi interaction ini cuma buat <@{user}>",
+            "devOnly": "Perintah khusus pengembang."
         },
         "createMessage": "Halo {author}, prefix-ku adalah {prefix}",
         "cmdLoading": "Loading...",

@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> ve sunucu moderatörleri için kullanılabilir.",
-            "message2": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> için kullanılabilir."
+            "message2": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> için kullanılabilir.",
+            "devOnly": "Sadece geliştiricilere özel komut."
         },
         "createMessage": "Merhaba {author}, benim ön ekim: {prefix}",
         "cmdLoading": "Yükleniyor...",

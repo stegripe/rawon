@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "Desculpe, mas essa interação é somente para <@{user}> e a moderação do servidor.",
-            "message2": "Desculpe, mas essa interação é somente para <@{user}>"
+            "message2": "Desculpe, mas essa interação é somente para <@{user}>",
+            "devOnly": "Comando somente para desenvolvedores."
         },
         "createMessage": "Olá {author}, meu prefixo é {prefix}",
         "cmdLoading": "Carregando...",

@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "抱歉，该互动仅限于 <@{user}> 和伺服器权限者。",
-            "message2": "抱歉，该互动仅限于 <@{user}>"
+            "message2": "抱歉，该互动仅限于 <@{user}>",
+            "devOnly": "仅限开发者的命令。"
         },
         "createMessage": "你好 {author}, 我的前缀是 {prefix}",
         "cmdLoading": "加载中...",
