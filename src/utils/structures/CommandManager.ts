@@ -36,7 +36,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
             const categories = await fs.readdir(nodePath.resolve(this.path));
             this.client.logger.info(`Found ${categories.length} categories, registering...`);
 
-            const allCmd = await (
+            const _allCmd = await (
                 this.client.application as unknown as NonNullable<typeof this.client.application>
             ).commands.fetch();
 
@@ -97,11 +97,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                     type: ApplicationCommandType.User,
                                 });
                             }
-                            if (
-                                !allCmd.has(command.meta.name) &&
-                                command.meta.slash &&
-                                this.client.config.enableSlashCommand
-                            ) {
+                            if (command.meta.slash && this.client.config.enableSlashCommand) {
                                 if ((command.meta.slash.name?.length ?? 0) === 0) {
                                     Object.assign(command.meta.slash, {
                                         name: command.meta.name,
