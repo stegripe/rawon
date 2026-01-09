@@ -46,7 +46,7 @@ Example: `!requestchannel #music-requests`
 
 #### Using Docker Compose
 1. Create a `.env` file with your configuration (copy from `.env.example`)
-2. (Optional) Create `optional.env` and/or `dev.env` for additional settings
+2. (Optional) Create `dev.env` for additional settings
 3. Create a `docker-compose.yaml` file:
 ```yaml
 services:
@@ -56,10 +56,7 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-      - path: optional.env
-        required: false
-      - path: dev.env
-        required: false
+      - dev.env
     volumes:
       - rawon:/app/cache
 
@@ -93,9 +90,8 @@ The `/app/cache` volume stores:
 - Cookie files for YouTube authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
 ## Configuration Files
-- `.env.example` - Essential settings (Discord token, prefix, Spotify, etc.)
-- `optional.env.example` - Optional customization (colors, emojis, activities)
-- `dev.env.example` - Developer settings (debug mode, dev IDs)
+- `.env.example` - Essential settings (Discord/Spotify token, prefix, IDs, etc.)
+- `dev.env.example` - Optional and/or developer customization/settings (colors, interactions, debug mode, etc.)
 
 Use the ones you need/should and fill in the values.
 

@@ -6,7 +6,7 @@ import { parse } from "dotenv";
 import { type EnvActivityTypes, type PresenceData } from "../typings/index.js";
 import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
 
-const envFiles = ["dev.env", "optional.env", ".env"];
+const envFiles = ["dev.env", ".env"];
 
 const existingToken = process.env.DISCORD_TOKEN;
 for (const envFile of envFiles) {

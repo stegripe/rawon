@@ -12,10 +12,7 @@ services:
     container_name: rawon-bot
     env_file:
       - .env
-      - path: optional.env
-        required: false
-      - path: dev.env
-        required: false
+      - dev.env
     networks:
       - net
     volumes:
