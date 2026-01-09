@@ -300,7 +300,8 @@
         },
         "createInteraction": {
             "message1": "죄송해요, 이 상호작용은 <@{user}>와 서버 스태프만 사용할 수 있어요.",
-            "message2": "죄송해요, 이 상호작용은 <@{user}>만 사용할 수 있어요"
+            "message2": "죄송해요, 이 상호작용은 <@{user}>만 사용할 수 있어요",
+            "devOnly": "개발자 전용 명령어."
         },
         "createMessage": "안녕하세요 {author}님, 제 접두사는 {prefix}예요",
         "cmdLoading": "로딩 중...",
