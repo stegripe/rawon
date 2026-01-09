@@ -43,7 +43,10 @@ export class AudioCacheManager {
                 return true;
             }
 
-            const res = await got.head(url, { timeout: 2_000, throwHttpErrors: false });
+            const res = await got.head(url, {
+                timeout: { request: 2_000 },
+                throwHttpErrors: false,
+            });
             const ct = (res.headers["content-type"] ?? "").toString().toLowerCase();
             if (ct.startsWith("audio/") || ct.startsWith("video/")) {
                 return true;
