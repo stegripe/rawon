@@ -12,7 +12,7 @@
             },
             "cookies": {
                 "description": "Управление cookies для обхода обнаружения бота",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [номер | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [номер | all | url]",
                 "slashAddDescription": "Добавить новый файл cookies",
                 "slashRemoveDescription": "Удалить файл cookies",
                 "slashListDescription": "Показать все файлы cookies",
@@ -44,6 +44,7 @@
                 "allCookiesFailed": "Все cookies неудачны! Пожалуйста, добавьте новые cookies или используйте {resetCmd} для повторной попытки.",
                 "resetSuccess": "Статус неудачных cookies сброшен. Все cookies будут повторно попробованы.",
                 "replaceSuccess": "{cookie} успешно заменён! Вступит в силу немедленно.",
+                "slashUrlDescription": "URL на cookies.txt",
                 "slashViewDescription": "Просмотреть/скачать файл cookie",
                 "viewSuccess": "Вот {cookie}:",
                 "viewNotFound": "{cookie} не найден.",

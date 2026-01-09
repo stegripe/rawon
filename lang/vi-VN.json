@@ -12,8 +12,9 @@
             },
             "cookies": {
                 "description": "Quản lý cookies để vượt qua phát hiện bot",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [số | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [số | all | url]",
                 "slashAddDescription": "Thêm file cookies mới",
+                "slashUrlDescription": "URL tới cookies.txt",
                 "slashRemoveDescription": "Xóa file cookies",
                 "slashListDescription": "Liệt kê tất cả file cookies",
                 "slashResetDescription": "Đặt lại trạng thái cookies thất bại",

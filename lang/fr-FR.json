@@ -12,8 +12,9 @@
             },
             "cookies": {
                 "description": "Gérer les cookies pour contourner la détection de bot",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [numéro | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [numéro | all | url]",
                 "slashAddDescription": "Ajouter un nouveau fichier de cookies",
+                "slashUrlDescription": "URL vers cookies.txt",
                 "slashRemoveDescription": "Supprimer un fichier de cookies",
                 "slashListDescription": "Lister tous les fichiers de cookies",
                 "slashResetDescription": "Réinitialiser le statut des cookies échoués",

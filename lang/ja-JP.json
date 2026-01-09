@@ -12,10 +12,11 @@
             },
             "cookies": {
                 "description": "Bot検出を回避するためのCookieを管理",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [番号 | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [番号 | all | url]",
                 "slashAddDescription": "新しいCookieファイルを追加",
                 "slashRemoveDescription": "Cookieファイルを削除",
                 "slashListDescription": "すべてのCookieファイルを一覧表示",
+                "slashUrlDescription": "cookies.txt の URL",
                 "slashResetDescription": "失敗したCookieのステータスをリセット",
                 "slashNumberDescription": "Cookie番号（1から開始）",
                 "slashRemoveTargetDescription": "削除するCookie番号または'all'",

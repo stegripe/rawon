@@ -12,11 +12,12 @@
             },
             "cookies": {
                 "description": "Керування cookies для обходу виявлення бота",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [номер | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [номер | all | url]",
                 "slashAddDescription": "Додати новий файл cookies",
                 "slashRemoveDescription": "Видалити файл cookies",
                 "slashListDescription": "Показати всі файли cookies",
                 "slashResetDescription": "Скинути статус невдалих cookies",
+                "slashUrlDescription": "URL до cookies.txt",
                 "slashNumberDescription": "Номер cookie (починаючи з 1)",
                 "slashRemoveTargetDescription": "Номер cookie для видалення або 'all'",
                 "invalidNumber": "Будь ласка, вкажіть правильний номер cookie (починаючи з 1).",

@@ -269,7 +269,7 @@ export class InteractionCreateEvent extends BaseEvent {
                             ],
                         });
                     } catch {
-                        // ignore
+                        // Ignore errors
                     }
                     this.client.logger.warn(
                         `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only context/menu ${interaction.commandName}`,
@@ -339,7 +339,7 @@ export class InteractionCreateEvent extends BaseEvent {
                             ],
                         });
                     } catch {
-                        // ignore reply failures
+                        // Ignore reply failures
                     }
                     this.client.logger.warn(
                         `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only slash ${interaction.commandName}`,
@@ -402,7 +402,7 @@ export class InteractionCreateEvent extends BaseEvent {
                                 ],
                             });
                         } catch {
-                            // ignore
+                            // Ignore errors
                         }
                         this.client.logger.warn(
                             `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only select ${interaction.customId}`,

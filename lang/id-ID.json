@@ -12,8 +12,9 @@
             },
             "cookies": {
                 "description": "Kelola cookies buat bypass deteksi bot",
-                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [nomor | all]",
+                "usage": "{prefix}cookies <add | remove | list | view | reset | use> [nomor | all | url]",
                 "slashAddDescription": "Tambahin file cookie baru",
+                "slashUrlDescription": "URL ke file cookies.txt",
                 "slashRemoveDescription": "Hapus file cookie",
                 "slashListDescription": "Lihat semua file cookie",
                 "slashResetDescription": "Reset status cookie yang gagal",
