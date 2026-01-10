@@ -125,98 +125,150 @@ export async function play(
                 queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code),
             );
         } else if (streamResult.stream) {
-            const tmpFile = nodePath.join(
-                os.tmpdir(),
-                `rawon-direct-${Date.now()}-${Math.random().toString(36).slice(2)}.tmp`,
-            );
+            // If no seek is requested, pipe incoming stream directly into ffmpeg
+            // to start playback immediately instead of writing whole temp file.
+            if (seekSeconds === 0) {
+                const args = ffmpegArgs(queue.filters, 0);
+                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_ARGS_STREAM]", args.join(" "));
+                ffmpegStream = new prism.FFmpeg({ args });
 
-            queue.client.logger.debug(
-                "[PLAY_HANDLER] Writing incoming stream to temp file",
-                tmpFile,
-            );
+                (ffmpegStream as any).stderr?.on?.("data", (chunk: Buffer) => {
+                    const s = chunk.toString();
+                    ffmpegStderr += s;
+                    queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_STERR]", s);
+                });
 
-            const writeStream = fs.createWriteStream(tmpFile);
-            const DOWNLOAD_TIMEOUT_MS = 60_000;
-            let downloadTimeout: NodeJS.Timeout | null = null;
-
-            const streamPromise = new Promise<void>((resolve, reject) => {
-                const onError = (e: unknown) => {
-                    if (downloadTimeout) {
-                        clearTimeout(downloadTimeout);
-                        downloadTimeout = null;
+                (ffmpegStream as any).on?.("error", (e: unknown) => {
+                    queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
+                    const errStr = String(e ?? "");
+                    const isPremature =
+                        errStr.includes("Premature close") ||
+                        (e as any)?.code === "ERR_STREAM_PREMATURE_CLOSE";
+                    if (isPremature) {
+                        queue.client.logger.debug(
+                            "[PLAY_HANDLER] Ignoring premature-close ffmpeg error",
+                            e,
+                        );
+                        return;
                     }
                     try {
-                        writeStream.destroy();
+                        (queue.player as unknown as EventEmitter).emit(
+                            "error",
+                            new AudioPlayerError(e as Error, undefined as unknown as any),
+                        );
+                    } catch (_) {
+                        // Ignore errors
+                    }
+                });
+
+                // Pipe original stream into ffmpeg stdin and proceed immediately
+                try {
+                    streamResult.stream.pipe(ffmpegStream);
+                } catch (e) {
+                    queue.client.logger.error(
+                        "[PLAY_HANDLER] Failed to pipe stream into ffmpeg:",
+                        e,
+                    );
+                    throw e;
+                }
+            } else {
+                // For seek > 0 fallback to previous behavior (write to temp file then read)
+                const tmpFile = nodePath.join(
+                    os.tmpdir(),
+                    `rawon-direct-${Date.now()}-${Math.random().toString(36).slice(2)}.tmp`,
+                );
+
+                queue.client.logger.debug(
+                    "[PLAY_HANDLER] Writing incoming stream to temp file",
+                    tmpFile,
+                );
+
+                const writeStream = fs.createWriteStream(tmpFile);
+                const DOWNLOAD_TIMEOUT_MS = 60_000;
+                let downloadTimeout: NodeJS.Timeout | null = null;
+
+                const streamPromise = new Promise<void>((resolve, reject) => {
+                    const onError = (e: unknown) => {
+                        if (downloadTimeout) {
+                            clearTimeout(downloadTimeout);
+                            downloadTimeout = null;
+                        }
+                        try {
+                            writeStream.destroy();
+                        } catch {
+                            // Ignore errors
+                        }
+                        reject(e);
+                    };
+
+                    downloadTimeout = setTimeout(() => {
+                        onError(new Error("Temp download timeout"));
+                    }, DOWNLOAD_TIMEOUT_MS);
+
+                    streamResult.stream?.on?.("error", onError);
+                    writeStream.on("error", onError);
+                    writeStream.on("finish", () => {
+                        if (downloadTimeout) {
+                            clearTimeout(downloadTimeout);
+                            downloadTimeout = null;
+                        }
+                        resolve();
+                    });
+
+                    streamResult.stream?.pipe(writeStream);
+                });
+
+                try {
+                    await streamPromise;
+                } catch (e) {
+                    queue.client.logger.error(
+                        "[PLAY_HANDLER] Failed to write stream to temp file:",
+                        e,
+                    );
+                    throw e;
+                }
+
+                const args = ffmpegArgs(queue.filters, seekSeconds, tmpFile);
+                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_ARGS]", args.join(" "));
+                ffmpegStream = new prism.FFmpeg({ args });
+
+                (ffmpegStream as any).stderr?.on?.("data", (chunk: Buffer) => {
+                    const s = chunk.toString();
+                    ffmpegStderr += s;
+                    queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_STERR]", s);
+                });
+                (ffmpegStream as any).on?.("error", (e: unknown) => {
+                    queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
+                    const errStr = String(e ?? "");
+                    const isPremature =
+                        errStr.includes("Premature close") ||
+                        (e as any)?.code === "ERR_STREAM_PREMATURE_CLOSE";
+                    if (isPremature) {
+                        queue.client.logger.debug(
+                            "[PLAY_HANDLER] Ignoring premature-close ffmpeg error",
+                            e,
+                        );
+                        return;
+                    }
+                    try {
+                        (queue.player as unknown as EventEmitter).emit(
+                            "error",
+                            new AudioPlayerError(e as Error, undefined as unknown as any),
+                        );
+                    } catch (_) {
+                        // Ignore errors
+                    }
+                });
+                (ffmpegStream as any).on?.("close", async (code?: unknown) => {
+                    queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code);
+                    try {
+                        await fsp.unlink(tmpFile).catch(() => null);
+                        queue.client.logger.debug("[PLAY_HANDLER] Temp file deleted", tmpFile);
                     } catch {
                         // Ignore errors
                     }
-                    reject(e);
-                };
-
-                downloadTimeout = setTimeout(() => {
-                    onError(new Error("Temp download timeout"));
-                }, DOWNLOAD_TIMEOUT_MS);
-
-                streamResult.stream?.on?.("error", onError);
-                writeStream.on("error", onError);
-                writeStream.on("finish", () => {
-                    if (downloadTimeout) {
-                        clearTimeout(downloadTimeout);
-                        downloadTimeout = null;
-                    }
-                    resolve();
                 });
-
-                streamResult.stream?.pipe(writeStream);
-            });
-
-            try {
-                await streamPromise;
-            } catch (e) {
-                queue.client.logger.error("[PLAY_HANDLER] Failed to write stream to temp file:", e);
-                throw e;
             }
-
-            const args = ffmpegArgs(queue.filters, seekSeconds, tmpFile);
-            queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_ARGS]", args.join(" "));
-            ffmpegStream = new prism.FFmpeg({ args });
-
-            (ffmpegStream as any).stderr?.on?.("data", (chunk: Buffer) => {
-                const s = chunk.toString();
-                ffmpegStderr += s;
-                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_STERR]", s);
-            });
-            (ffmpegStream as any).on?.("error", (e: unknown) => {
-                queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
-                const errStr = String(e ?? "");
-                const isPremature =
-                    errStr.includes("Premature close") ||
-                    (e as any)?.code === "ERR_STREAM_PREMATURE_CLOSE";
-                if (isPremature) {
-                    queue.client.logger.debug(
-                        "[PLAY_HANDLER] Ignoring premature-close ffmpeg error",
-                        e,
-                    );
-                    return;
-                }
-                try {
-                    (queue.player as unknown as EventEmitter).emit(
-                        "error",
-                        new AudioPlayerError(e as Error, undefined as unknown as any),
-                    );
-                } catch (_) {
-                    // Ignore errors
-                }
-            });
-            (ffmpegStream as any).on?.("close", async (code?: unknown) => {
-                queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code);
-                try {
-                    await fsp.unlink(tmpFile).catch(() => null);
-                    queue.client.logger.debug("[PLAY_HANDLER] Temp file deleted", tmpFile);
-                } catch {
-                    // Ignore errors
-                }
-            });
         } else {
             throw new Error("No stream or cache path available");
         }
