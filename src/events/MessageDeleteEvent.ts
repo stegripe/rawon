@@ -30,7 +30,7 @@ export class MessageDeleteEvent extends BaseEvent {
         if (hasGetRequestChannel(this.client.data)) {
             requestChannelData = this.client.data.getRequestChannel(guild.id, botId);
         } else {
-            requestChannelData = this.client.data.data?.[guild.id]?.requestChannel ?? null;
+            requestChannelData = (this.client.data as any).data?.[guild.id]?.requestChannel ?? null;
         }
 
         if (requestChannelData?.messageId === message.id) {
