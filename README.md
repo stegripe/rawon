@@ -13,9 +13,9 @@
 ## Features
 - Production-ready, no coding required
 - Request channel feature for seamless music experience
+- Support for YouTube, Spotify, SoundCloud, and direct files
 - Run multiple bot instances for different voice channels
 - Smart audio pre-caching for smoother playback
-- Support for YouTube, Spotify, SoundCloud, and direct files!
 - Multi-cookie rotation for uninterrupted playback
 
 ## Installation
@@ -125,9 +125,9 @@ If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may e
 
 **Quick fix using the cookies command:**
 ```
-!cookies add 1    # Attach your cookies.txt file
-!cookies list     # Check cookie status
-!cookies reset    # Reset failed status
+!cookies add 1  # Attach your cookies.txt file
+!cookies list   # Check cookie status
+!cookies reset  # Reset failed status
 ```
 
 ## Support & Questions
