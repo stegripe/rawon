@@ -67,6 +67,11 @@ export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
+
+const rawDefaultVolume = Number(process.env.DEFAULT_VOLUME);
+export const defaultVolume = Number.isFinite(rawDefaultVolume)
+    ? Math.min(200, Math.max(1, Math.round(rawDefaultVolume)))
+    : 100;
 export const musicSelectionType =
     (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
 export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
