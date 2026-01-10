@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
+import { defaultVolume } from "../../config/env.js";
 import { type GuildData } from "../../typings/index.js";
 import { OperationManager } from "./OperationManager.js";
 
@@ -289,7 +290,7 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         return {
             loopMode: (result.loop_mode ?? "OFF") as "OFF" | "SONG" | "QUEUE",
             shuffle: result.shuffle === 1,
-            volume: result.volume ?? 100,
+            volume: result.volume ?? defaultVolume,
             filters,
         };
     }
