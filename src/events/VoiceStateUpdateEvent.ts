@@ -29,7 +29,6 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 oldState.channel?.id === newState.channel?.id
                     ? []
                     : [["Channel", `${oldCh} -> ${newCh}`]];
-
             const oldServM = oldState.serverMute === true ? "Muted" : "Unmuted";
             const newServM = newState.serverMute === true ? "Muted" : "Unmuted";
             const servMute =
@@ -104,7 +103,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 queue.textChannel.id,
             );
 
-            queue.destroy();
+            await queue.destroy();
             if (!isIdle) {
                 this.client.logger.info(
                     `${
@@ -211,7 +210,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                         }, 10_000);
                     }
                 } catch {
-                    queue.destroy();
+                    await queue.destroy();
                     this.client.logger.info(
                         `${
                             this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
@@ -245,7 +244,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     .catch((error: unknown) => ({ error }));
 
                 if ("error" in suppress) {
-                    queue.destroy();
+                    await queue.destroy();
                     this.client.logger.info(
                         `${
                             this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
@@ -334,8 +333,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         );
 
         queue.lastVSUpdateMsg = null;
-        (guild.queue as unknown as ServerQueue).timeout = setTimeout(() => {
-            queue.destroy();
+        (guild.queue as unknown as ServerQueue).timeout = setTimeout(async () => {
+            await queue.destroy();
             void (async () => {
                 const msg = await queue.textChannel.send({
                     embeds: [

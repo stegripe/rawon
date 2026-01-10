@@ -53,7 +53,7 @@ export class GuildDeleteEvent extends BaseEvent {
             }
 
             if (guild.queue) {
-                guild.queue.destroy();
+                await guild.queue.destroy();
                 this.client.logger.info(`Destroyed queue for guild ${guild.id}`);
             }
 

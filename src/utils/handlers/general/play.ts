@@ -69,7 +69,7 @@ export async function play(
 
         setTimeout(async () => {
             if (!guild.queue?.songs.first()) {
-                queue.destroy();
+                await queue.destroy();
                 if (!isRequestChannel) {
                     const msg = await queue.textChannel.send({
                         embeds: [
@@ -125,8 +125,6 @@ export async function play(
                 queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code),
             );
         } else if (streamResult.stream) {
-            // If no seek is requested, pipe incoming stream directly into ffmpeg
-            // to start playback immediately instead of writing whole temp file.
             if (seekSeconds === 0) {
                 const args = ffmpegArgs(queue.filters, 0);
                 queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_ARGS_STREAM]", args.join(" "));
@@ -161,7 +159,6 @@ export async function play(
                     }
                 });
 
-                // Pipe original stream into ffmpeg stdin and proceed immediately
                 try {
                     streamResult.stream.pipe(ffmpegStream);
                 } catch (e) {
@@ -172,7 +169,6 @@ export async function play(
                     throw e;
                 }
             } else {
-                // For seek > 0 fallback to previous behavior (write to temp file then read)
                 const tmpFile = nodePath.join(
                     os.tmpdir(),
                     `rawon-direct-${Date.now()}-${Math.random().toString(36).slice(2)}.tmp`,
@@ -307,7 +303,7 @@ export async function play(
                 });
             }
 
-            queue.destroy();
+            await queue.destroy();
             return;
         }
 
