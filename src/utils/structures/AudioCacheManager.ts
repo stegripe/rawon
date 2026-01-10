@@ -20,7 +20,7 @@ const PRE_CACHE_AHEAD_COUNT = 3;
 const MAX_CACHE_SIZE_MB = 500;
 const MAX_CACHE_FILES = 50;
 const PRE_CACHE_RETRY_COUNT = 2;
-const QUEUE_PROCESSING_DELAY_MS = 100;
+const QUEUE_PROCESSING_DELAY_MS = 50;
 const MAX_PRE_CACHE_RETRIES = 3;
 
 export class AudioCacheManager {
@@ -254,7 +254,7 @@ export class AudioCacheManager {
         }
 
         const startTime = Date.now();
-        const pollInterval = 500;
+        const pollInterval = 200;
 
         return new Promise<boolean>((resolve) => {
             const checkCache = setInterval(() => {

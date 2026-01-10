@@ -144,7 +144,7 @@ export async function getStream(
 
 const MAX_COOKIE_RETRIES = 10;
 const MAX_TRANSIENT_RETRIES = 3;
-const STREAM_VALIDATION_DELAY_MS = 500;
+const STREAM_VALIDATION_DELAY_MS = 200;
 
 async function attemptStreamWithRetry(
     client: Rawon,
