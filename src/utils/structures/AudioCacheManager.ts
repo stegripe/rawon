@@ -152,7 +152,6 @@ export class AudioCacheManager {
 
         this.inProgressFiles.add(key);
 
-        // Track active source stream so we can abort/cleanup if needed
         this.inProgressProcs.set(key, { stream: sourceStream, writeStreamPath: cachePath });
 
         const playbackStream = new PassThrough();
@@ -335,7 +334,6 @@ export class AudioCacheManager {
                 const writeStream = createWriteStream(cachePath);
                 const httpStream = got.stream(url);
 
-                // Track http stream and write path for potential cleanup
                 this.inProgressProcs.set(key, { stream: httpStream, writeStreamPath: cachePath });
 
                 httpStream.on("error", (err: Error) => {
@@ -404,7 +402,6 @@ export class AudioCacheManager {
                     { stdio: ["ignore", "pipe", "pipe"] },
                 );
 
-                // Track child process for potential cleanup
                 this.inProgressProcs.set(key, { proc, writeStreamPath: cachePath });
 
                 if (!proc.stdout) {
@@ -608,7 +605,6 @@ export class AudioCacheManager {
                     // Ignore errors
                 }
             }
-            // If there's an in-progress download or process, attempt to abort and remove partial file
             const procInfo = this.inProgressProcs.get(key);
             if (procInfo) {
                 try {

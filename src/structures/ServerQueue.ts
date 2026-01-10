@@ -596,8 +596,6 @@ export class ServerQueue {
 
     public stop(): void {
         this.stopPositionSaveInterval();
-        // Record pending cache URLs so they can be cleared when the bot actually
-        // disconnects from the voice channel. Do NOT clear cache here.
         try {
             const songUrls: string[] = this.songs.map((s) => s.song.url);
             try {
@@ -609,12 +607,12 @@ export class ServerQueue {
                     songUrls.push(currentUrl);
                 }
             } catch {
-                // ignore
+                // Ignore errors
             }
 
             this._pendingCacheUrls = songUrls;
         } catch {
-            // ignore
+            // Ignore errors
         }
 
         this.songs.clear();
@@ -625,7 +623,7 @@ export class ServerQueue {
         this.player.stop(true);
     }
 
-    public destroy(): void {
+    public async destroy(): Promise<void> {
         let songUrls = this.songs.map((song) => song.song.url);
         if (
             (songUrls.length === 0 || songUrls.every((s) => !s)) &&
@@ -635,14 +633,34 @@ export class ServerQueue {
         }
         this._suppressPlayerErrors = true;
         this.stop();
-        this.connection?.disconnect();
+
+        try {
+            this.connection?.disconnect();
+        } catch {
+            // Ignore errors
+        }
+
+        const start = Date.now();
+        const timeoutMs = 5_000;
+        while (Date.now() - start < timeoutMs) {
+            try {
+                const guildMe = this.textChannel.guild.members.me;
+                if (!guildMe || !guildMe.voice || !guildMe.voice.channelId) {
+                    break;
+                }
+            } catch {
+                break;
+            }
+            await new Promise((r) => setTimeout(r, 100));
+        }
+
         clearTimeout(this.timeout ?? undefined);
-        void this.clearQueueState();
+        await this.clearQueueState();
 
         if (this.client.config.isMultiBot) {
             const botInstance = this.client.multiBotManager.getBotByClient(this.client);
             if (botInstance && !botInstance.isPrimary) {
-                void this.clearPlayerState();
+                await this.clearPlayerState();
                 this.client.logger.info(
                     `[MultiBot] ${this.client.user?.tag} (non-primary) cleared player state on destroy`,
                 );
@@ -654,9 +672,37 @@ export class ServerQueue {
         }
 
         delete this.textChannel.guild.queue;
+
         if (songUrls.length > 0) {
             this.client.audioCache.clearCacheForUrls(songUrls);
             this._pendingCacheUrls.length = 0;
+        }
+
+        try {
+            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+                this.textChannel.guild,
+                this.textChannel.id,
+            );
+            if (!isRequestChannel) {
+                const __mf = i18n__mf(this.client, this.textChannel.guild);
+                const msg = await this.textChannel
+                    .send({
+                        embeds: [
+                            createEmbed(
+                                "info",
+                                `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
+                                    usage: `**\`${this.client.config.mainPrefix}play\`**`,
+                                })}`,
+                            ),
+                        ],
+                    })
+                    .catch(() => null);
+                if (msg) {
+                    this.lastMusicMsg = msg.id;
+                }
+            }
+        } catch (e) {
+            this.client.logger.debug("DESTROY_MSG_ERR:", e);
         }
     }
 

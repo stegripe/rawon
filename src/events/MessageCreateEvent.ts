@@ -450,7 +450,7 @@ export class MessageCreateEvent extends BaseEvent {
                 this.client.logger.info(
                     `[MultiBot] ${this.client.user?.tag} destroying queue for channel ${existingQueueChannel} to create new queue for channel ${voiceChannel.id}`,
                 );
-                guild.queue.destroy();
+                await guild.queue.destroy();
             }
 
             const textChannel = guild.channels.cache.get(message.channel.id) as
