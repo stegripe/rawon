@@ -69,7 +69,7 @@ export async function play(
 
         setTimeout(async () => {
             if (!guild.queue?.songs.first()) {
-                queue.destroy();
+                await queue.destroy();
                 if (!isRequestChannel) {
                     const msg = await queue.textChannel.send({
                         embeds: [
@@ -298,7 +298,7 @@ export async function play(
                 });
             }
 
-            queue.destroy();
+            await queue.destroy();
             return;
         }
 
