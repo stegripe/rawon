@@ -43,10 +43,8 @@ const formatLocale = (locale: string | undefined): string => {
     }
     return parts.join("-");
 };
-export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
-export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
-const rawTokens = process.env.DISCORD_TOKEN ?? "";
 
+const rawTokens = process.env.DISCORD_TOKEN ?? "";
 const hasComma = rawTokens.includes(",");
 const tokenArray = hasComma
     ? rawTokens
@@ -61,29 +59,18 @@ export const discordTokens: string[] = tokenArray;
 export const discordToken = tokenArray[0] ?? "";
 export const isMultiBot = tokenArray.length > 1 && hasComma;
 
-export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
-export const lang = formatLocale(process.env.LOCALE) || "en-US";
-export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
-export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
-export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
-export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
-export const musicSelectionType =
-    (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
-export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
-export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
-export const requestChannelSplash =
-    (process.env.REQUEST_CHANNEL_SPLASH ?? "") ||
-    "https://cdn.stegripe.org/images/rawon_splash.png";
+export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
+export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 
-export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
-export const isDev = process.env.NODE_ENV?.toLowerCase() === "development";
-export const isProd = !isDev;
+const computedIsDev = process.env.NODE_ENV?.toLowerCase() === "development";
+export const isDev = computedIsDev;
+export const isProd = !computedIsDev;
+
 export const mainPrefix = isDev ? "d!" : (process.env.MAIN_PREFIX ?? "") || "!";
-export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";
+export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
+export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
+export const lang = formatLocale(process.env.LOCALE) || "en-US";
 
-export const altPrefixes: string[] = parseEnvValue(
-    (process.env.ALT_PREFIX ?? "") || "{mention}",
-).filter((x, i, a) => a.indexOf(x) === i && x !== mainPrefix);
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
@@ -93,3 +80,26 @@ export const presenceData: PresenceData = {
     status: ["online"] as ClientPresenceStatus[],
     interval: 60_000,
 };
+
+export const altPrefixes: string[] = parseEnvValue(
+    (process.env.ALT_PREFIX ?? "") || "{mention}",
+).filter((x, i, a) => a.indexOf(x) === i && x !== mainPrefix);
+
+export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
+export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
+export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
+export const requestChannelSplash =
+    (process.env.REQUEST_CHANNEL_SPLASH ?? "") ||
+    "https://cdn.stegripe.org/images/rawon_splash.png";
+
+const rawDefaultVolume = Number(process.env.DEFAULT_VOLUME);
+export const defaultVolume = Number.isFinite(rawDefaultVolume)
+    ? Math.min(200, Math.max(1, Math.round(rawDefaultVolume)))
+    : 100;
+export const musicSelectionType =
+    (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
+
+export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
+export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
+export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
+export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";

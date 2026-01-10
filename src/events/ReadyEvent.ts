@@ -1,6 +1,7 @@
 import { setInterval } from "node:timers";
 import { joinVoiceChannel } from "@discordjs/voice";
 import { ActivityType, ChannelType, type Presence } from "discord.js";
+import { defaultVolume } from "../config/env.js";
 import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
@@ -379,7 +380,7 @@ export class ReadyEvent extends BaseEvent {
                                 try {
                                     const loopMode = savedState.loopMode ?? "OFF";
                                     const shuffle = savedState.shuffle ?? false;
-                                    const volume = savedState.volume ?? 100;
+                                    const volume = savedState.volume ?? defaultVolume;
                                     const filters = savedState.filters ?? {};
 
                                     this.client.logger.info(

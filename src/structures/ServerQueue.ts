@@ -8,7 +8,7 @@ import {
     type VoiceConnection,
 } from "@discordjs/voice";
 import { type Snowflake, type TextChannel } from "discord.js";
-import { enableAudioCache } from "../config/env.js";
+import { defaultVolume, enableAudioCache } from "../config/env.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
@@ -29,7 +29,7 @@ export class ServerQueue {
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
     public seekOffset = 0;
 
-    private _volume = 100;
+    private _volume = defaultVolume;
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
     private _skipVoters: Snowflake[] = [];
@@ -347,7 +347,7 @@ export class ServerQueue {
             if (savedState) {
                 this.loopMode = (savedState.loopMode as typeof this.loopMode) ?? "OFF";
                 this.shuffle = savedState.shuffle ?? false;
-                this._volume = savedState.volume ?? 100;
+                this._volume = savedState.volume ?? defaultVolume;
                 this.filters = (savedState.filters ?? {}) as Partial<
                     Record<keyof typeof filterArgs, boolean>
                 >;
@@ -367,7 +367,7 @@ export class ServerQueue {
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
-            this._volume = savedState.volume ?? 100;
+            this._volume = savedState.volume ?? defaultVolume;
             this.filters = (savedState.filters ?? {}) as Partial<
                 Record<keyof typeof filterArgs, boolean>
             >;
