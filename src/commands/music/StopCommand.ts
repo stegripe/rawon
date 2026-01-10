@@ -30,10 +30,11 @@ export class StopCommand extends BaseCommand {
     public async execute(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
 
-        ctx.guild?.queue?.stop();
-        (
-            ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
-        ).lastMusicMsg = null;
+        const q = ctx.guild?.queue;
+        if (q) {
+            q.lastMusicMsg = null;
+            await q.destroy();
+        }
 
         await ctx
             .reply({

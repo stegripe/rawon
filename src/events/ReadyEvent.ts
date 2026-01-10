@@ -538,7 +538,7 @@ export class ReadyEvent extends BaseEvent {
                         error,
                     );
                     if (guild.queue) {
-                        guild.queue.destroy();
+                        await guild.queue.destroy();
                     }
                 }
             },

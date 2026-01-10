@@ -318,10 +318,10 @@ export class InteractionCreateEvent extends BaseEvent {
                         }
 
                         timestamps.set(interaction.user.id, now);
-                        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+                        setTimeout(() => timestamps?.delete(interaction.user.id), cooldownAmount);
                     } else {
                         timestamps?.set(interaction.user.id, now);
-                        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+                        setTimeout(() => timestamps?.delete(interaction.user.id), cooldownAmount);
                     }
                 }
 
@@ -699,7 +699,7 @@ export class InteractionCreateEvent extends BaseEvent {
                     return;
                 }
 
-                queue.destroy();
+                await queue.destroy();
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
                     embeds: [createEmbed("success", `⏹️ **|** ${__("requestChannel.stopped")}`)],

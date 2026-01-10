@@ -61,8 +61,8 @@ export class ChannelUpdateEvent extends BaseEvent {
                     }
                     return 0;
                 })
-                .catch(() => {
-                    queue.destroy();
+                .catch(async () => {
+                    await queue.destroy();
                     this.client.logger.info(
                         `${
                             this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
