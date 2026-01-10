@@ -38,6 +38,7 @@ export class ServerQueue {
     private _skipCooldownMs = 2000;
     private _positionSaveInterval: NodeJS.Timeout | null = null;
     private _suppressPlayerErrors = false;
+    private _pendingCacheUrls: string[] = [];
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -594,6 +595,23 @@ export class ServerQueue {
 
     public stop(): void {
         this.stopPositionSaveInterval();
+        try {
+            const songUrls: string[] = this.songs.map((s) => s.song.url);
+            try {
+                const playingResource = (this.player.state as AudioPlayerPlayingState | any)
+                    .resource as import("@discordjs/voice").AudioResource | undefined;
+                const metadata = playingResource?.metadata as QueueSong | undefined;
+                const currentUrl = metadata?.song?.url ?? (metadata as any)?.url ?? null;
+                if (currentUrl && !songUrls.includes(currentUrl)) {
+                    songUrls.push(currentUrl);
+                }
+            } catch {
+            }
+
+            this._pendingCacheUrls = songUrls;
+        } catch {
+        }
+
         this.songs.clear();
         this._suppressPlayerErrors = true;
         setTimeout(() => {
@@ -603,7 +621,13 @@ export class ServerQueue {
     }
 
     public destroy(): void {
-        const songUrls = this.songs.map((song) => song.song.url);
+        let songUrls = this.songs.map((song) => song.song.url);
+        if (
+            (songUrls.length === 0 || songUrls.every((s) => !s)) &&
+            this._pendingCacheUrls.length > 0
+        ) {
+            songUrls = [...this._pendingCacheUrls];
+        }
         this._suppressPlayerErrors = true;
         this.stop();
         this.connection?.disconnect();
@@ -627,6 +651,7 @@ export class ServerQueue {
         delete this.textChannel.guild.queue;
         if (songUrls.length > 0) {
             this.client.audioCache.clearCacheForUrls(songUrls);
+            this._pendingCacheUrls.length = 0;
         }
     }
 

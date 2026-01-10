@@ -27,6 +27,10 @@ export class AudioCacheManager {
     public readonly cacheDir: string;
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
     private readonly inProgressFiles = new Set<string>();
+    private readonly inProgressProcs = new Map<
+        string,
+        { proc?: any; stream?: Readable; writeStreamPath?: string }
+    >();
     private readonly failedUrls = new Map<string, { count: number; lastAttempt: number }>();
     private readonly preCacheQueue: string[] = [];
     private isProcessingQueue = false;
@@ -147,6 +151,8 @@ export class AudioCacheManager {
 
         this.inProgressFiles.add(key);
 
+        this.inProgressProcs.set(key, { stream: sourceStream, writeStreamPath: cachePath });
+
         const playbackStream = new PassThrough();
         const cacheStream = new PassThrough();
         const writeStream = createWriteStream(cachePath);
@@ -160,6 +166,7 @@ export class AudioCacheManager {
             this.client.logger.error("[AudioCacheManager] Error writing cache file:", error);
             this.inProgressFiles.delete(key);
             this.cachedFiles.delete(key);
+            this.inProgressProcs.delete(key);
             try {
                 rmSync(cachePath, { force: true });
             } catch {
@@ -168,6 +175,7 @@ export class AudioCacheManager {
 
         writeStream.on("finish", () => {
             this.inProgressFiles.delete(key);
+            this.inProgressProcs.delete(key);
             this.cachedFiles.set(key, {
                 path: cachePath,
                 lastAccess: Date.now(),
@@ -184,6 +192,7 @@ export class AudioCacheManager {
             playbackStream.destroy(error);
             this.inProgressFiles.delete(key);
             this.cachedFiles.delete(key);
+            this.inProgressProcs.delete(key);
             try {
                 rmSync(cachePath, { force: true });
             } catch {
@@ -322,11 +331,14 @@ export class AudioCacheManager {
                 const writeStream = createWriteStream(cachePath);
                 const httpStream = got.stream(url);
 
+                this.inProgressProcs.set(key, { stream: httpStream, writeStreamPath: cachePath });
+
                 httpStream.on("error", (err: Error) => {
                     this.client.logger.warn(
                         `[AudioCacheManager] HTTP pre-cache stream error for ${url.substring(0, 50)}...: ${err.message}`,
                     );
                     this.inProgressFiles.delete(key);
+                    this.inProgressProcs.delete(key);
                     this.markFailed(key);
                     try {
                         rmSync(cachePath, { force: true });
@@ -339,6 +351,7 @@ export class AudioCacheManager {
                 await new Promise<void>((resolve) => {
                     writeStream.on("finish", () => {
                         this.inProgressFiles.delete(key);
+                        this.inProgressProcs.delete(key);
                         try {
                             const stats = statSync(cachePath);
                             if (stats.size >= 1024) {
@@ -384,6 +397,8 @@ export class AudioCacheManager {
                     { stdio: ["ignore", "pipe", "pipe"] },
                 );
 
+                this.inProgressProcs.set(key, { proc, writeStreamPath: cachePath });
+
                 if (!proc.stdout) {
                     this.inProgressFiles.delete(key);
                     this.markFailed(key);
@@ -425,6 +440,7 @@ export class AudioCacheManager {
                 await new Promise<void>((resolve) => {
                     writeStream.on("finish", () => {
                         this.inProgressFiles.delete(key);
+                        this.inProgressProcs.delete(key);
                         if (hasBotDetectionError) {
                             try {
                                 rmSync(cachePath, { force: true });
@@ -469,6 +485,7 @@ export class AudioCacheManager {
 
                     writeStream.on("error", () => {
                         this.inProgressFiles.delete(key);
+                        this.inProgressProcs.delete(key);
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
@@ -479,6 +496,7 @@ export class AudioCacheManager {
 
                     proc.on("error", () => {
                         this.inProgressFiles.delete(key);
+                        this.inProgressProcs.delete(key);
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
@@ -577,6 +595,24 @@ export class AudioCacheManager {
                 } catch {
                 }
             }
+            const procInfo = this.inProgressProcs.get(key);
+            if (procInfo) {
+                try {
+                    if (procInfo.proc && typeof procInfo.proc.kill === "function") {
+                        procInfo.proc.kill("SIGKILL");
+                    }
+                    if (procInfo.stream && typeof procInfo.stream.destroy === "function") {
+                        procInfo.stream.destroy();
+                    }
+                    if (procInfo.writeStreamPath && existsSync(procInfo.writeStreamPath)) {
+                        rmSync(procInfo.writeStreamPath, { force: true });
+                        removedCount++;
+                    }
+                } catch {
+                }
+                this.inProgressProcs.delete(key);
+            }
+
             this.inProgressFiles.delete(key);
             this.failedUrls.delete(key);
             const queueIndex = this.preCacheQueue.indexOf(url);
