@@ -1,8 +1,8 @@
 import { setInterval } from "node:timers";
 import { joinVoiceChannel } from "@discordjs/voice";
 import { ActivityType, ChannelType, type Presence } from "discord.js";
-import i18n from "../config/index.js";
 import { defaultVolume } from "../config/env.js";
+import i18n from "../config/index.js";
 import { BaseEvent } from "../structures/BaseEvent.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
 import {
