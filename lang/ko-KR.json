@@ -286,6 +286,7 @@
                 "currentVolume": "현재 볼륨은 {volume}이에요",
                 "description": "미디어 플레이어 볼륨 변경",
                 "newVolume": "볼륨이 {volume}로 설정되었어요",
+                "noPermission": "`100%`를 초과하는 볼륨을 설정하려면 DJ 역할 또는 **서버 관리** 권한이 필요해요.",
                 "plsPause": "볼륨을 {volume}로 설정하는 대신 음악을 일시 정지해주세요",
                 "slashDescription": "새 볼륨",
                 "usage": "{prefix}volume [새 볼륨]",

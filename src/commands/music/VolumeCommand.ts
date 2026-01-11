@@ -4,6 +4,7 @@ import {
     ButtonBuilder,
     ButtonStyle,
     ComponentType,
+    type GuildMember,
     type Message,
 } from "discord.js";
 import i18n from "../../config/index.js";
@@ -123,6 +124,23 @@ export class VolumeCommand extends BaseCommand {
                 ],
             });
             return;
+        }
+
+        // Check permission for volume > 100 (requires DJ role or ManageGuild permission)
+        if (volume > 100) {
+            const djRole = await this.client.utils
+                .fetchDJRole(ctx.guild as unknown as GuildMember["guild"])
+                .catch(() => null);
+            const hasPermission =
+                ctx.member?.roles.cache.has(djRole?.id ?? "") === true ||
+                ctx.member?.permissions.has("ManageGuild") === true;
+
+            if (!hasPermission) {
+                await ctx.reply({
+                    embeds: [createEmbed("error", __("commands.music.volume.noPermission"), true)],
+                });
+                return;
+            }
         }
 
         (

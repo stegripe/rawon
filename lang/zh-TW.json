@@ -286,6 +286,7 @@
                 "currentVolume": "目前音量是 {volume}",
                 "description": "更改音樂播放器音量",
                 "newVolume": "音量已設置為 {volume}",
+                "noPermission": "您需要DJ身份組或**管理伺服器**權限才能將音量設置為`100%`以上。",
                 "plsPause": "請暫停音樂而不是將音量調到 {volume}",
                 "slashDescription": "新音量",
                 "usage": "{prefix}volume [新音量]",

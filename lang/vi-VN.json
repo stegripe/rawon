@@ -286,6 +286,7 @@
                 "currentVolume": "Âm lượng hiện tại là {volume}",
                 "description": "Thay đổi âm lượng trình phát đa phương tiện",
                 "newVolume": "Âm lượng đã được thiết lập thành {volume}",
+                "noPermission": "Bạn cần vai trò DJ hoặc quyền **Quản lý máy chủ** để đặt âm lượng trên `100%`.",
                 "plsPause": "Vui lòng tạm dừng nhạc để đặt âm lượng thành {volume}",
                 "slashDescription": "Âm lượng mới",
                 "usage": "{prefix}volume [âm lượng mới]",

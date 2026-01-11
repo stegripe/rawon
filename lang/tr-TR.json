@@ -286,6 +286,7 @@
                 "currentVolume": "Mevcut ses düzeyi {volume}",
                 "description": "Medya oynatıcının ses düzeyini değiştir",
                 "newVolume": "Ses seviyesi {volume} olarak ayarlandı",
+                "noPermission": "Ses seviyesini `100%`'in üzerine ayarlamak için DJ rolü veya **Sunucuyu Yönet** iznine ihtiyacınız var.",
                 "plsPause": "Lütfen ses seviyesini {volume} olarak ayarlamak yerine müziği duraklatın",
                 "slashDescription": "Yeni ses seviyesi",
                 "usage": "{prefix}volume [yeni değer]",

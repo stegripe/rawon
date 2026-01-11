@@ -286,6 +286,7 @@
                 "currentVolume": "現在のボリュームは{volume}です。",
                 "description": "メディアプレイヤーのボリュームを変更",
                 "newVolume": "ボリュームは{volume}にセットされました。",
+                "noPermission": "`100%`を超えるボリュームを設定するには、DJロールまたは**サーバー管理**権限が必要です。",
                 "plsPause": "{volume}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]",
