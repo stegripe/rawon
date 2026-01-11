@@ -91,7 +91,7 @@
                 "usageString": "사용법"
             },
             "invite": {
-                "clickURL": "**[여기를 클릭]({url})**해서 이 봇을 서버에 초대하세요.",
+                "clickURL": "- **[여기를 클릭]({url})**해서 이 봇 **#{botNum}**을 서버에 초대하세요.",
                 "description": "봇 초대 링크 받기",
                 "inviteTitle": "{bot} - 초대 링크"
             },

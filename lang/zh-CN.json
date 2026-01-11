@@ -91,7 +91,7 @@
                 "usageString": "用法"
             },
             "invite": {
-                "clickURL": "**[点击这里]({url})** 邀请此机器人到您的伺服器。",
+                "clickURL": "- **[点击这里]({url})** 邀请此机器人 **#{botNum}** 到您的伺服器。",
                 "description": "获取机器人的邀请链接",
                 "inviteTitle": "{bot} - 邀请链接"
             },

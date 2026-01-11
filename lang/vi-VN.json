@@ -91,7 +91,7 @@
                 "usageString": "Cách dùng"
             },
             "invite": {
-                "clickURL": "**[Nhấn vào đây]({url})** để mời bot vào máy chủ của bạn",
+                "clickURL": "- **[Nhấn vào đây]({url})** để mời bot **#{botNum}** vào máy chủ của bạn",
                 "description": "Nhận liên kết mời bot",
                 "inviteTitle": "{bot} - Link mời"
             },

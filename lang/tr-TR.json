@@ -91,7 +91,7 @@
                 "usageString": "Kullanım"
             },
             "invite": {
-                "clickURL": "Botu sunucuna eklemek için **[buraya tıkla]({url})**",
+                "clickURL": "- **#{botNum}** numaralı botu sunucuna eklemek için **[buraya tıkla]({url})**.",
                 "description": "Bot için davet bağlantısını edinin",
                 "inviteTitle": "{bot} - Davet Linki"
             },
