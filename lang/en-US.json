@@ -113,6 +113,20 @@
                 "languageReset": "Server language has been reset to default:",
                 "invalidLocale": "Invalid language. Available languages:",
                 "availableLocales": "Available languages"
+            },
+            "prefix": {
+                "currentPrefix": "Current prefix: {prefix}",
+                "description": "Change the command prefix for this server",
+                "embedTitle": "Prefix Settings",
+                "noPermission": "You need the **Manage Server** permission to use this command.",
+                "prefixReset": "Prefix has been reset to: {prefix}",
+                "prefixSet": "Prefix has been set to: {prefix}",
+                "prefixTooLong": "Prefix cannot be longer than 10 characters.",
+                "slashPrefixOption": "The new prefix (max 10 characters)",
+                "slashResetDescription": "Reset to default prefix",
+                "slashSetDescription": "Set a custom prefix for this server",
+                "slashViewDescription": "View the current prefix",
+                "usage": "{prefix}prefix [new prefix | view | reset]"
             }
         },
         "music": {
