@@ -86,6 +86,22 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
             CREATE INDEX IF NOT EXISTS idx_request_channels_guild ON request_channels(guild_id);
             CREATE INDEX IF NOT EXISTS idx_request_channels_bot ON request_channels(bot_id);
         `);
+
+        const tableInfo = this.db.prepare("PRAGMA table_info(guilds)").all() as Array<{
+            cid: number;
+            name: string;
+            type: string;
+            notnull: number;
+            dflt_value: string | null;
+            pk: number;
+        }>;
+
+        const hasPrefixColumn = tableInfo.some((col) => col.name === "prefix");
+        if (!hasPrefixColumn) {
+            this.db.exec(`
+                ALTER TABLE guilds ADD COLUMN prefix TEXT DEFAULT '';
+            `);
+        }
     }
 
     public get data(): T | null {
@@ -100,6 +116,7 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                     locale: string | null;
                     dj_enable: number;
                     dj_role: string | null;
+                    prefix: string | null;
                 }>;
 
                 const requestChannels = this.db
@@ -115,6 +132,7 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                 for (const guild of guilds) {
                     data[guild.guild_id] = {
                         locale: guild.locale ?? undefined,
+                        prefix: guild.prefix ?? undefined,
                         dj:
                             guild.dj_enable !== 0 || guild.dj_role !== null
                                 ? {
@@ -165,12 +183,13 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
             const transaction = this.db.transaction(() => {
                 for (const [guildId, guildData] of Object.entries(dat) as [string, GuildData][]) {
                     const guildStmt = this.db.prepare(`
-                        INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
-                        VALUES (?, ?, ?, ?)
+                        INSERT INTO guilds (guild_id, locale, dj_enable, dj_role, prefix)
+                        VALUES (?, ?, ?, ?, ?)
                         ON CONFLICT(guild_id) DO UPDATE SET
                             locale = excluded.locale,
                             dj_enable = excluded.dj_enable,
-                            dj_role = excluded.dj_role
+                            dj_role = excluded.dj_role,
+                            prefix = excluded.prefix
                     `);
 
                     guildStmt.run(
@@ -178,6 +197,7 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                         guildData.locale ?? null,
                         guildData.dj?.enable ? 1 : 0,
                         guildData.dj?.role ?? null,
+                        guildData.prefix ?? null,
                     );
                 }
             });
@@ -225,11 +245,11 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
 
         await this.manager.add(async () => {
             const guildStmt = this.db.prepare(`
-                INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO guilds (guild_id, locale, dj_enable, dj_role, prefix)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(guild_id) DO NOTHING
             `);
-            guildStmt.run(guildId, null, 0, null);
+            guildStmt.run(guildId, null, 0, null, null);
 
             const stmt = this.db.prepare(`
                 INSERT INTO queue_states (guild_id, bot_id, text_channel_id, voice_channel_id, songs_json, current_song_key, current_position)
@@ -306,11 +326,11 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
 
         await this.manager.add(async () => {
             const guildStmt = this.db.prepare(`
-                INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO guilds (guild_id, locale, dj_enable, dj_role, prefix)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(guild_id) DO NOTHING
             `);
-            guildStmt.run(guildId, null, 0, null);
+            guildStmt.run(guildId, null, 0, null, null);
 
             const stmt = this.db.prepare(`
                 INSERT INTO player_states (guild_id, bot_id, loop_mode, shuffle, volume, filters_json)
@@ -373,11 +393,11 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
     ): Promise<void> {
         await this.manager.add(async () => {
             const guildStmt = this.db.prepare(`
-                INSERT INTO guilds (guild_id, locale, dj_enable, dj_role)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO guilds (guild_id, locale, dj_enable, dj_role, prefix)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(guild_id) DO NOTHING
             `);
-            guildStmt.run(guildId, null, 0, null);
+            guildStmt.run(guildId, null, 0, null, null);
 
             const stmt = this.db.prepare(`
                 INSERT INTO request_channels (guild_id, bot_id, channel_id, message_id)
@@ -414,6 +434,46 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         const stmt = this.db.prepare("SELECT guild_id FROM guilds");
         const rows = stmt.all() as { guild_id: string }[];
         return rows.map((row) => row.guild_id);
+    }
+
+    public getPrefix(guildId: string): string | null {
+        const result = this.db
+            .prepare("SELECT prefix FROM guilds WHERE guild_id = ?")
+            .get(guildId) as { prefix: string | null } | undefined;
+        return result?.prefix ?? null;
+    }
+
+    public async setPrefix(guildId: string, prefix: string | null): Promise<void> {
+        await this.manager.add(async () => {
+            // Try to update prefix first (only if guild exists)
+            const updateStmt = this.db.prepare(`
+                UPDATE guilds SET prefix = ? WHERE guild_id = ?
+            `);
+            const changes = updateStmt.run(prefix, guildId).changes;
+
+            // If no rows were updated, guild doesn't exist, create it with default values
+            if (changes === 0) {
+                const insertStmt = this.db.prepare(`
+                    INSERT INTO guilds (guild_id, locale, dj_enable, dj_role, prefix)
+                    VALUES (?, ?, ?, ?, ?)
+                `);
+                insertStmt.run(guildId, null, 0, null, prefix);
+            }
+
+            // Update in-memory data
+            if (!this._data) {
+                this._data = {} as T;
+            }
+            const data = this._data as Record<string, GuildData>;
+            if (!data[guildId]) {
+                data[guildId] = {};
+            }
+            if (prefix === null) {
+                delete data[guildId].prefix;
+            } else {
+                data[guildId].prefix = prefix;
+            }
+        });
     }
 
     public async deleteGuildData(guildId: string): Promise<void> {

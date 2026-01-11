@@ -113,6 +113,20 @@
                 "languageReset": "La langue du serveur a été réinitialisée à :",
                 "invalidLocale": "Langue invalide. Langues disponibles :",
                 "availableLocales": "Langues disponibles"
+            },
+            "prefix": {
+                "currentPrefix": "Préfixe actuel: {prefix}",
+                "description": "Changer le préfixe de commande pour ce serveur",
+                "embedTitle": "Paramètres de préfixe",
+                "noPermission": "Vous avez besoin de la permission **Gérer le serveur** pour utiliser cette commande.",
+                "prefixReset": "Le préfixe a été réinitialisé à: {prefix}",
+                "prefixSet": "Le préfixe a été défini à: {prefix}",
+                "prefixTooLong": "Le préfixe ne peut pas dépasser 10 caractères.",
+                "slashPrefixOption": "Le nouveau préfixe (max 10 caractères)",
+                "slashResetDescription": "Réinitialiser au préfixe par défaut",
+                "slashSetDescription": "Définir un préfixe personnalisé pour ce serveur",
+                "slashViewDescription": "Voir le préfixe actuel",
+                "usage": "{prefix}prefix [nouveau préfixe | view | reset]"
             }
         },
         "music": {

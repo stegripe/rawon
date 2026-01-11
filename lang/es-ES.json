@@ -113,6 +113,20 @@
                 "languageReset": "El idioma del servidor ha sido restablecido a:",
                 "invalidLocale": "Idioma no válido. Idiomas disponibles:",
                 "availableLocales": "Idiomas disponibles"
+            },
+            "prefix": {
+                "currentPrefix": "Prefijo actual: {prefix}",
+                "description": "Cambiar el prefijo de comandos para este servidor",
+                "embedTitle": "Configuración de prefijo",
+                "noPermission": "Necesitas el permiso **Gestionar Servidor** para usar este comando.",
+                "prefixReset": "El prefijo se ha restablecido a: {prefix}",
+                "prefixSet": "El prefijo se ha establecido en: {prefix}",
+                "prefixTooLong": "El prefijo no puede tener más de 10 caracteres.",
+                "slashPrefixOption": "El nuevo prefijo (máx. 10 caracteres)",
+                "slashResetDescription": "Restablecer al prefijo predeterminado",
+                "slashSetDescription": "Establecer un prefijo personalizado para este servidor",
+                "slashViewDescription": "Ver el prefijo actual",
+                "usage": "{prefix}prefix [nuevo prefijo | view | reset]"
             }
         },
         "music": {

@@ -113,6 +113,20 @@
                 "languageReset": "서버 언어가 기본값으로 재설정되었어요:",
                 "invalidLocale": "잘못된 언어예요. 사용 가능한 언어:",
                 "availableLocales": "사용 가능한 언어"
+            },
+            "prefix": {
+                "currentPrefix": "Prefix sekarang: {prefix}",
+                "description": "Ubah prefix command untuk server ini",
+                "embedTitle": "Pengaturan Prefix",
+                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
+                "prefixReset": "Prefix udah direset ke: {prefix}",
+                "prefixSet": "Prefix udah diatur ke: {prefix}",
+                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
+                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
+                "slashResetDescription": "Reset ke prefix default",
+                "slashSetDescription": "Atur custom prefix untuk server ini",
+                "slashViewDescription": "Lihat prefix sekarang",
+                "usage": "{prefix}prefix [prefix baru | view | reset]"
             }
         },
         "music": {
