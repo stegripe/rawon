@@ -91,7 +91,7 @@
                 "usageString": "使い方"
             },
             "invite": {
-                "clickURL": "**[ここをクリック]({url})**してこのBotをサーバーに招待",
+                "clickURL": "- **[ここをクリック]({url})**してこのBot **#{botNum}**をサーバーに招待",
                 "description": "このBotの招待リンクを取得",
                 "inviteTitle": "{bot} - 招待リンク"
             },

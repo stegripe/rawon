@@ -91,7 +91,7 @@
                 "usageString": "Cara pake"
             },
             "invite": {
-                "clickURL": "**[Klik sini]({url})** buat invite bot ini ke servermu.",
+                "clickURL": "- **[Klik di sini]({url})** buat invite bot **#{botNum}** ke servermu.",
                 "description": "Dapetin link invite bot",
                 "inviteTitle": "{bot} - Link Invite"
             },
