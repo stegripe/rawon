@@ -286,6 +286,7 @@
                 "currentVolume": "Volume sekarang {volume}",
                 "description": "Ganti volume media player",
                 "newVolume": "Volume udah diatur ke {volume}",
+                "noPermission": "Butuh role DJ atau izin **Manage Server** buat atur volume di atas `100%`.",
                 "plsPause": "Mending jeda media player-nya aja daripada atur volume ke {volume}",
                 "slashDescription": "Volume baru",
                 "usage": "{prefix}volume [volume baru]",

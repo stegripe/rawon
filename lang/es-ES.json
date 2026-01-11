@@ -286,6 +286,7 @@
                 "currentVolume": "El volúmen actual es {volume}",
                 "description": "Cambia el volúmen del reproductor de música",
                 "newVolume": "Volúmen establecido en {volume}",
+                "noPermission": "Necesitas el rol DJ o el permiso **Gestionar Servidor** para establecer el volúmen por encima de `100%`.",
                 "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en {volume}",
                 "slashDescription": "Nuevo volúmen",
                 "usage": "{prefix}volume [volumen]",

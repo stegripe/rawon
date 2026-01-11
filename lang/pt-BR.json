@@ -286,6 +286,7 @@
                 "currentVolume": "O volume atual é {volume}",
                 "description": "Muda o volume do player de mídia",
                 "newVolume": "Volume posto em {volume}",
+                "noPermission": "Você precisa do cargo DJ ou da permissão **Gerenciar Servidor** para definir o volume acima de `100%`.",
                 "plsPause": "Por favor pause a música ao invés de por o volume em{volume}",
                 "slashDescription": "Novo volume",
                 "usage": "{prefix}volume [novo volume]",
