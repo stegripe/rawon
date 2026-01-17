@@ -12,8 +12,8 @@ importers:
         specifier: ^0.19.0
         version: 0.19.0(ffmpeg-static@5.3.0)(opusscript@0.0.8)
       '@swc/cli':
-        specifier: 0.7.9
-        version: 0.7.9(@swc/core@1.15.8)
+        specifier: 0.7.10
+        version: 0.7.10(@swc/core@1.15.8)
       '@swc/core':
         specifier: 1.15.8
         version: 1.15.8
@@ -21,8 +21,8 @@ importers:
         specifier: ^7.6.13
         version: 7.6.13
       better-sqlite3:
-        specifier: ^12.6.0
-        version: 12.6.0
+        specifier: ^12.6.2
+        version: 12.6.2
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -73,8 +73,8 @@ importers:
         specifier: 0.13.12
         version: 0.13.12
       '@types/node':
-        specifier: 24.10.8
-        version: 24.10.8
+        specifier: 24.10.9
+        version: 24.10.9
       rimraf:
         specifier: ^6.1.2
         version: 6.1.2
@@ -467,8 +467,8 @@ packages:
   '@stegripe/biomejs-config@1.1.0':
     resolution: {integrity: sha512-FS4AqXqIwqLALHnTnAE71H29XmS1OoufEYeKMDUgdG6rKTMIAWVuRh+Mq1bavqTHpEiZIqUJfnC7KujUiqawPw==}
 
-  '@swc/cli@0.7.9':
-    resolution: {integrity: sha512-AFQu3ZZ9IcdClTknxbug08S9ed/q8F3aYkO5NoZ+6IjQ5UEo1s2HN1GRKNvUslYx2EoVYxd+6xGcp6C7wwtxyQ==}
+  '@swc/cli@0.7.10':
+    resolution: {integrity: sha512-QQ36Q1VwGTT2YzvMeNe/j1x4DKS277DscNhWc57dIwQn//C+zAgvuSupMB/XkmYqPKQX+8hjn5/cHRJrMvWy0Q==}
     engines: {node: '>= 16.14.0'}
     hasBin: true
     peerDependencies:
@@ -579,8 +579,8 @@ packages:
   '@types/node@10.17.60':
     resolution: {integrity: sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==}
 
-  '@types/node@24.10.8':
-    resolution: {integrity: sha512-r0bBaXu5Swb05doFYO2kTWHMovJnNVbCsII0fhesM8bNRlLhXIuckley4a2DaD+vOdmm5G+zGkQZAPZsF80+YQ==}
+  '@types/node@24.10.9':
+    resolution: {integrity: sha512-ne4A0IpG3+2ETuREInjPNhUGis1SFjv1d5asp8MzEAGtOZeTeHVDOYqOgqfhvseqg/iXty2hjBf1zAOb7RNiNw==}
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
@@ -658,8 +658,8 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
-  better-sqlite3@12.6.0:
-    resolution: {integrity: sha512-FXI191x+D6UPWSze5IzZjhz+i9MK9nsuHsmTX9bXVl52k06AfZ2xql0lrgIUuzsMsJ7Vgl5kIptvDgBLIV3ZSQ==}
+  better-sqlite3@12.6.2:
+    resolution: {integrity: sha512-8VYKM3MjCa9WcaSAI3hzwhmyHVlH8tiGFwf0RlTsZPWJ1I5MkzjiudCo4KC4DxOaL/53A5B1sI/IbldNFDbsKA==}
     engines: {node: 20.x || 22.x || 23.x || 24.x || 25.x}
 
   bin-version-check@5.1.0:
@@ -1679,7 +1679,7 @@ snapshots:
 
   '@stegripe/biomejs-config@1.1.0': {}
 
-  '@swc/cli@0.7.9(@swc/core@1.15.8)':
+  '@swc/cli@0.7.10(@swc/core@1.15.8)':
     dependencies:
       '@swc/core': 1.15.8
       '@swc/counter': 0.1.3
@@ -1769,7 +1769,7 @@ snapshots:
 
   '@types/better-sqlite3@7.6.13':
     dependencies:
-      '@types/node': 24.10.8
+      '@types/node': 24.10.9
 
   '@types/http-cache-semantics@4.0.4': {}
 
@@ -1777,13 +1777,13 @@ snapshots:
 
   '@types/node@10.17.60': {}
 
-  '@types/node@24.10.8':
+  '@types/node@24.10.9':
     dependencies:
       undici-types: 7.16.0
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 24.10.8
+      '@types/node': 24.10.9
 
   '@vladfrangu/async_event_emitter@2.4.7': {}
 
@@ -1898,7 +1898,7 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  better-sqlite3@12.6.0:
+  better-sqlite3@12.6.2:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.3
@@ -2354,7 +2354,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 24.10.8
+      '@types/node': 24.10.9
       long: 5.3.2
 
   pump@3.0.3:
