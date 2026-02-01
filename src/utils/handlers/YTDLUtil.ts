@@ -144,6 +144,7 @@ export async function getStream(
 
 const MAX_COOKIE_RETRIES = 10;
 const MAX_TRANSIENT_RETRIES = 5;
+const MAX_BACKOFF_DELAY_MS = 10_000;
 const STREAM_VALIDATION_DELAY_MS = 200;
 
 async function attemptStreamWithRetry(
@@ -242,7 +243,7 @@ async function attemptStreamWithRetry(
                     client.logger.warn(
                         `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
                     );
-                    const backoffDelay = Math.min(1000 * 2 ** retryCount, 10_000);
+                    const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                     setTimeout(() => {
                         attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
                             .then(resolve)
@@ -302,7 +303,7 @@ async function attemptStreamWithRetry(
                     hasHandledError = true;
                     const errorMsg = stderrData.trim() || `Process exited with code ${code}`;
                     if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
-                        const backoffDelay = Math.min(1000 * 2 ** retryCount, 10_000);
+                        const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                         setTimeout(() => {
                             attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
                                 .then(resolve)
@@ -376,8 +377,6 @@ function isTransientError(errorMessage: string): boolean {
         "remote end closed",
         "transfer closed",
         "operation timed out",
-        "unable to extract",
-        "unable to decode",
         "format may not be available",
         "requested format is not available",
         "throttled",
@@ -434,7 +433,7 @@ async function attemptGetInfoWithRetry(
             client?.logger.warn(
                 `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
-            const backoffDelay = Math.min(1000 * 2 ** retryCount, 10_000);
+            const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
             await new Promise((resolve) => setTimeout(resolve, backoffDelay));
             return attemptGetInfoWithRetry(url, client, retryCount + 1);
         }
