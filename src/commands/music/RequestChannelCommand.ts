@@ -158,7 +158,9 @@ export class RequestChannelCommand extends BaseCommand {
                     const flagName = Object.entries(PermissionsBitField.Flags).find(
                         ([, value]) => value === perm,
                     )?.[0];
-                    return flagName ?? "Unknown";
+                    // Convert camelCase to spaced format (e.g., ViewChannel -> View Channel)
+                    const spacedName = (flagName ?? "Unknown").replace(/([a-z])([A-Z])/g, "$1 $2");
+                    return `**\`${spacedName}\`**`;
                 });
                 return ctx.reply({
                     embeds: [

@@ -54,12 +54,12 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
         const __mf = i18n__mf(ctx.guild?.client as Rawon, ctx.guild);
         const permNames = missingPerms.map((perm) => {
             if (perm === PermissionFlagsBits.SendMessages) {
-                return "SendMessages";
+                return "**`Send Messages`**";
             }
             if (perm === PermissionFlagsBits.EmbedLinks) {
-                return "EmbedLinks";
+                return "**`Embed Links`**";
             }
-            return "Unknown";
+            return "**`Unknown`**";
         });
 
         try {
