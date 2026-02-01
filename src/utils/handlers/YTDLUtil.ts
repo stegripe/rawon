@@ -367,7 +367,6 @@ function isTransientError(errorMessage: string): boolean {
         "http error 502",
         "http error 500",
         "http error 504",
-        "gateway timeout",
         "read timed out",
         "incomplete read",
         "premature eof",
@@ -376,8 +375,6 @@ function isTransientError(errorMessage: string): boolean {
         "remote end closed",
         "transfer closed",
         "operation timed out",
-        "rate limit",
-        "too many requests",
     ];
     const lowerError = errorMessage.toLowerCase();
     return transientPatterns.some((pattern) => lowerError.includes(pattern));
