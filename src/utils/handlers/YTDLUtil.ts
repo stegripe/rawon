@@ -243,7 +243,7 @@ async function attemptStreamWithRetry(
                     client.logger.warn(
                         `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
                     );
-                    // Exponential backoff: 1s, 2s, 4s, 8s, 10s (capped) for retries 1-5
+                    // Exponential backoff with delays: 1s, 2s, 4s, 8s, 10s (capped)
                     const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                     setTimeout(() => {
                         attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
@@ -304,7 +304,7 @@ async function attemptStreamWithRetry(
                     hasHandledError = true;
                     const errorMsg = stderrData.trim() || `Process exited with code ${code}`;
                     if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
-                        // Exponential backoff: 1s, 2s, 4s, 8s, 10s (capped) for retries 1-5
+                        // Exponential backoff with delays: 1s, 2s, 4s, 8s, 10s (capped)
                         const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                         setTimeout(() => {
                             attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
@@ -433,7 +433,7 @@ async function attemptGetInfoWithRetry(
             client?.logger.warn(
                 `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
-            // Exponential backoff: 1s, 2s, 4s, 8s, 10s (capped) for retries 1-5
+            // Exponential backoff with delays: 1s, 2s, 4s, 8s, 10s (capped)
             const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
             await new Promise((resolve) => setTimeout(resolve, backoffDelay));
             return attemptGetInfoWithRetry(url, client, retryCount + 1);
