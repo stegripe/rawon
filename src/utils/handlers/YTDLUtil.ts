@@ -243,7 +243,6 @@ async function attemptStreamWithRetry(
                     client.logger.warn(
                         `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
                     );
-                    // Exponential backoff with delays: 1s, 2s, 4s, 8s, 10s (capped)
                     const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                     setTimeout(() => {
                         attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
@@ -304,7 +303,6 @@ async function attemptStreamWithRetry(
                     hasHandledError = true;
                     const errorMsg = stderrData.trim() || `Process exited with code ${code}`;
                     if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
-                        // Exponential backoff with delays: 1s, 2s, 4s, 8s, 10s (capped)
                         const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                         setTimeout(() => {
                             attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
@@ -359,22 +357,18 @@ async function attemptStreamWithRetry(
 }
 
 function isTransientError(errorMessage: string): boolean {
-    // Network and connection errors that are typically transient
     const transientPatterns = [
         "connection reset",
         "connection timed out",
         "temporarily unavailable",
         "network is unreachable",
         "unable to download",
-        // HTTP server errors
         "http error 503",
         "http error 502",
         "http error 500",
         "http error 504",
-        // Timeout errors - covers various timeout types (read, operation, etc.)
         "read timed out",
         "operation timed out",
-        // Transfer/stream errors
         "incomplete read",
         "premature eof",
         "broken pipe",
@@ -433,7 +427,6 @@ async function attemptGetInfoWithRetry(
             client?.logger.warn(
                 `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
-            // Exponential backoff with delays: 1s, 2s, 4s, 8s, 10s (capped)
             const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
             await new Promise((resolve) => setTimeout(resolve, backoffDelay));
             return attemptGetInfoWithRetry(url, client, retryCount + 1);
