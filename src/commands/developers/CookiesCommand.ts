@@ -103,7 +103,7 @@ export class CookiesCommand extends BaseCommand {
     }
 
     private formatResetCmd(): string {
-        return `\`cookies reset\``;
+        return `\`${this.client.config.mainPrefix}cookies reset\``;
     }
 
     public async execute(ctx: CommandContext): Promise<Message | undefined> {
