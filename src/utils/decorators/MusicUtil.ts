@@ -100,8 +100,9 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
-    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
-    const __mf = i18n__mf(ctx.guild?.client as Rawon, ctx.guild);
+    const client = ctx.guild?.client as Rawon;
+    const __ = i18n__(client, ctx.guild);
+    const __mf = i18n__mf(client, ctx.guild);
     if (!ctx.guild) {
         return true;
     }
@@ -110,7 +111,14 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         return true;
     }
 
-    const requestChannel = ctx.guild.client.requestChannelManager.getRequestChannel(ctx.guild);
+    // In multibot mode, check request channel from primary bot or current bot
+    let requestChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
+    if (!requestChannel && client.config.isMultiBot) {
+        const primaryBot = client.multiBotManager.getPrimaryBot();
+        if (primaryBot && primaryBot !== client) {
+            requestChannel = primaryBot.requestChannelManager.getRequestChannel(ctx.guild);
+        }
+    }
     if (requestChannel === null) {
         return true;
     }

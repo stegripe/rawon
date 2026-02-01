@@ -66,7 +66,10 @@ export async function handleVideos(
             if (song.thumbnail) {
                 confirmEmbed.setThumbnail(song.thumbnail);
             }
-            const msg = await ctx.reply({ embeds: [confirmEmbed] }, true);
+            const msg = await ctx.reply(
+                { embeds: [confirmEmbed], allowedMentions: { repliedUser: false } },
+                true,
+            );
 
             if (inRequestChannel && msg) {
                 autoDeleteMessage(msg);
@@ -86,7 +89,10 @@ export async function handleVideos(
             return texts.join("\n");
         });
         const embed = createEmbed("info", opening);
-        const msg = await ctx.reply({ embeds: [embed] }, true);
+        const msg = await ctx.reply(
+            { embeds: [embed], allowedMentions: { repliedUser: false } },
+            true,
+        );
 
         if (inRequestChannel && msg) {
             autoDeleteMessage(msg);
