@@ -143,7 +143,8 @@ export async function getStream(
 }
 
 const MAX_COOKIE_RETRIES = 10;
-const MAX_TRANSIENT_RETRIES = 3;
+const MAX_TRANSIENT_RETRIES = 5;
+const MAX_BACKOFF_DELAY_MS = 10_000;
 const STREAM_VALIDATION_DELAY_MS = 200;
 
 async function attemptStreamWithRetry(
@@ -242,14 +243,12 @@ async function attemptStreamWithRetry(
                     client.logger.warn(
                         `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
                     );
-                    setTimeout(
-                        () => {
-                            attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
-                                .then(resolve)
-                                .catch(reject);
-                        },
-                        1000 * (retryCount + 1),
-                    );
+                    const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
+                    setTimeout(() => {
+                        attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
+                            .then(resolve)
+                            .catch(reject);
+                    }, backoffDelay);
                 } else {
                     reject(new Error(`Transient error after retries: ${errorMessage}`));
                 }
@@ -304,20 +303,12 @@ async function attemptStreamWithRetry(
                     hasHandledError = true;
                     const errorMsg = stderrData.trim() || `Process exited with code ${code}`;
                     if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
-                        setTimeout(
-                            () => {
-                                attemptStreamWithRetry(
-                                    client,
-                                    url,
-                                    isLive,
-                                    retryCount + 1,
-                                    seekSeconds,
-                                )
-                                    .then(resolve)
-                                    .catch(reject);
-                            },
-                            1000 * (retryCount + 1),
-                        );
+                        const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
+                        setTimeout(() => {
+                            attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
+                                .then(resolve)
+                                .catch(reject);
+                        }, backoffDelay);
                     } else {
                         reject(new Error(`yt-dlp process exited with code ${code}: ${stderrData}`));
                     }
@@ -375,6 +366,15 @@ function isTransientError(errorMessage: string): boolean {
         "http error 503",
         "http error 502",
         "http error 500",
+        "http error 504",
+        "read timed out",
+        "operation timed out",
+        "incomplete read",
+        "premature eof",
+        "broken pipe",
+        "connection aborted",
+        "remote end closed",
+        "transfer closed",
     ];
     const lowerError = errorMessage.toLowerCase();
     return transientPatterns.some((pattern) => lowerError.includes(pattern));
@@ -427,7 +427,8 @@ async function attemptGetInfoWithRetry(
             client?.logger.warn(
                 `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
-            await new Promise((resolve) => setTimeout(resolve, 1000 * (retryCount + 1)));
+            const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
+            await new Promise((resolve) => setTimeout(resolve, backoffDelay));
             return attemptGetInfoWithRetry(url, client, retryCount + 1);
         }
 
