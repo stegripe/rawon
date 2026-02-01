@@ -111,7 +111,6 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         return true;
     }
 
-    // In multibot mode, check request channel from primary bot or current bot
     let requestChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
     if (!requestChannel && client.config.isMultiBot) {
         const primaryBot = client.multiBotManager.getPrimaryBot();
