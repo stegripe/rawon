@@ -29,10 +29,10 @@
     },
     "dependencies": {
         "@discordjs/voice": "^0.19.0",
-        "@swc/cli": "0.7.9",
-        "@swc/core": "1.15.8",
+        "@swc/cli": "0.7.10",
+        "@swc/core": "1.15.11",
         "@types/better-sqlite3": "^7.6.13",
-        "better-sqlite3": "^12.6.0",
+        "better-sqlite3": "^12.6.2",
         "date-fns": "4.1.0",
         "discord.js": "14.25.1",
         "dotenv": "17.2.3",
@@ -44,14 +44,14 @@
         "soundcloud.ts": "^0.7.1",
         "tslib": "2.8.1",
         "tweetnacl": "1.0.3",
-        "youtubei": "1.8.3",
+        "youtubei": "1.8.4",
         "zip-lib": "^1.1.2"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.3.11",
+        "@biomejs/biome": "^2.3.13",
         "@stegripe/biomejs-config": "^1.1.0",
         "@types/i18n": "0.13.12",
-        "@types/node": "24.10.8",
+        "@types/node": "24.10.9",
         "rimraf": "^6.1.2",
         "typescript": "5.9.3"
     },
