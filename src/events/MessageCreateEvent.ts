@@ -549,7 +549,9 @@ export class MessageCreateEvent extends BaseEvent {
 
     private sendTemporaryReply(message: Message, embed: ReturnType<typeof createEmbed>): void {
         void (async () => {
-            const msg = await message.reply({ embeds: [embed] }).catch(() => null);
+            const msg = await message
+                .reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
+                .catch(() => null);
             if (msg) {
                 setTimeout(() => {
                     void (async () => {
