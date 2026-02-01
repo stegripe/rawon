@@ -377,8 +377,6 @@ function isTransientError(errorMessage: string): boolean {
         "remote end closed",
         "transfer closed",
         "operation timed out",
-        "format may not be available",
-        "requested format is not available",
         "throttled",
         "slow down",
     ];
