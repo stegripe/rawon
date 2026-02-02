@@ -139,7 +139,7 @@ For help and questions, join our official [Discord Server](https://stegripe.org/
 - [Stegripe Developers](https://github.com/orgs/stegripe/teams/developer)
 
 ### Translators
-- [Stegripe Developers](https://github.com/orgs/stegripe/teams/developer) (en-US, id-ID, ko-KR)
+- [Stegripe Developers](https://github.com/orgs/stegripe/teams/developer) (en-US, id-ID, ko-KR, ms-MY)
 - [@21Z](https://github.com/21Z) (en-US)
 - [@lxndr-rl](https://github.com/lxndr-rl) (es-ES)
 - [@MoustacheOff](https://github.com/MoustacheOff) (fr-FR)
