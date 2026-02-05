@@ -1,37 +1,54 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { Buffer } from "node:buffer";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
-    ApplicationCommandOptionType,
     ComponentType,
+    PermissionFlagsBits,
     type SelectMenuComponentOptionData,
+    type SlashCommandBuilder,
     StringSelectMenuBuilder,
     type StringSelectMenuInteraction,
 } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command<typeof HelpCommand>({
+@ApplyOptions<Command.Options>({
+    name: "help",
     aliases: ["h", "command", "commands", "cmd", "cmds"],
     description: i18n.__("commands.general.help.description"),
-    name: "help",
-    slash: {
-        options: [
-            {
-                type: ApplicationCommandOptionType.String,
-                name: "command",
-                description: i18n.__("commands.general.help.slashDescription"),
-            },
-        ],
+    detailedDescription: { usage: i18n.__("commands.general.help.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "help")
+            .setDescription(opts.description ?? "Shows help for commands.")
+            .addStringOption((opt) =>
+                opt
+                    .setName("command")
+                    .setDescription(i18n.__("commands.general.help.slashDescription"))
+                    .setRequired(false),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.general.help.usage"),
 })
-export class HelpCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<void> {
-        if (ctx.isInteraction() && !ctx.deferred) {
+export class HelpCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
+    public async contextRun(ctx: CommandContext): Promise<void> {
+        if (ctx.isCommandInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
 
@@ -85,7 +102,7 @@ export class HelpCommand extends BaseCommand {
 
             await ctx
                 .send({ embeds: [listEmbed] }, "editReply")
-                .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
+                .catch((error: unknown) => this.container.logger.error("PROMISE_ERR:", error));
             return;
         }
 
@@ -109,7 +126,7 @@ export class HelpCommand extends BaseCommand {
                                 .setMinValues(1)
                                 .setMaxValues(1)
                                 .setCustomId(
-                                    Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString(
+                                    Buffer.from(`${ctx.author.id}_${this.options.name}`).toString(
                                         "base64",
                                     ),
                                 )

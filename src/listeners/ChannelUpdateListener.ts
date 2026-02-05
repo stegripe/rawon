@@ -1,15 +1,16 @@
 import { setTimeout } from "node:timers";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import { ChannelType, type GuildChannel, type VoiceChannel } from "discord.js";
-import { BaseEvent } from "../structures/BaseEvent.js";
-import { Event } from "../utils/decorators/Event.js";
+import { type Rawon } from "../structures/Rawon.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__ } from "../utils/functions/i18n.js";
 
-@Event("channelUpdate")
-export class ChannelUpdateEvent extends BaseEvent {
-    public async execute(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
-        this.client.debugLog.logData("info", "CHANNEL_UPDATE_EVENT", [
+@ApplyOptions<ListenerOptions>({ event: Events.ChannelUpdate })
+export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate> {
+    public async run(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
+        this.container.debugLog.logData("info", "CHANNEL_UPDATE_EVENT", [
             ["Channel", `${newChannel.name}(${newChannel.id})`],
             ["Type", newChannel.type.toString()],
         ]);
@@ -27,12 +28,13 @@ export class ChannelUpdateEvent extends BaseEvent {
 
         if ((oldChannel as VoiceChannel).rtcRegion !== (newChannel as VoiceChannel).rtcRegion) {
             const queue = newChannel.guild.queue;
-            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+            const client = this.container.client as Rawon;
+            const isRequestChannel = this.container.requestChannelManager.isRequestChannel(
                 newChannel.guild,
                 queue.textChannel.id,
             );
 
-            const __ = i18n__(this.client, newChannel.guild);
+            const __ = i18n__(client, newChannel.guild);
 
             const msg = await queue.textChannel.send({
                 embeds: [createEmbed("info", __("events.channelUpdate.reconfigureConnection"))],
@@ -63,9 +65,9 @@ export class ChannelUpdateEvent extends BaseEvent {
                 })
                 .catch(async () => {
                     await queue.destroy();
-                    this.client.logger.info(
+                    this.container.logger.info(
                         `${
-                            this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                            client.shard ? `[Shard #${client.shard.ids[0]}]` : ""
                         } Unable to re-configure network on ${
                             newChannel.guild.name
                         } voice channel, the queue was deleted.`,

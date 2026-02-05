@@ -1,25 +1,42 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import process from "node:process";
 import { inspect } from "node:util";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
 
-@Command<typeof EvalCommand>({
-    aliases: ["evaluate", "ev", "js-exec"],
-    cooldown: 0,
-    description: i18n.__("commands.developers.eval.description"),
-    devOnly: true,
+@ApplyOptions<Command.Options>({
     name: "eval",
-    usage: i18n.__("commands.developers.eval.usage"),
+    aliases: ["evaluate", "ev", "js-exec"],
+    description: i18n.__("commands.developers.eval.description"),
+    detailedDescription: { usage: i18n.__("commands.developers.eval.usage") },
+    preconditions: ["DevOnly"],
+    cooldownDelay: 0,
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "eval")
+            .setDescription(opts.description ?? "Evaluate JavaScript code.") as SlashCommandBuilder;
+    },
 })
-export class EvalCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
+export class EvalCommand extends ContextCommand {
+    public async contextRun(ctx: CommandContext): Promise<void> {
+        const client = this.container.client as Rawon;
+        const __ = i18n__(client, ctx.guild);
         const _msg = ctx;
-        const _client = this.client;
+        const _client = client;
 
         const code = ctx.args
             .join(" ")
@@ -70,7 +87,7 @@ export class EvalCommand extends BaseCommand {
                     },
                     embeds: [embed],
                 })
-                .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
+                .catch((error: unknown) => this.container.logger.error("PROMISE_ERR:", error));
         } catch (error_) {
             const cleaned = this.clean(String(error_));
             const isTooLong = cleaned.length > 1_024;
@@ -88,7 +105,7 @@ export class EvalCommand extends BaseCommand {
                     },
                     embeds: [embed],
                 })
-                .catch((err: unknown) => this.client.logger.error("PROMISE_ERR:", err));
+                .catch((err: unknown) => this.container.logger.error("PROMISE_ERR:", err));
         }
     }
 
@@ -103,7 +120,8 @@ export class EvalCommand extends BaseCommand {
     }
 
     private async hastebin(text: string): Promise<string> {
-        const result = await this.client.request
+        const client = this.container.client as Rawon;
+        const result = await client.request
             .post("https://bin.stegripe.org/documents", {
                 body: text,
                 headers: {

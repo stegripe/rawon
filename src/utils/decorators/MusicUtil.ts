@@ -1,3 +1,4 @@
+import { container } from "@sapphire/framework";
 import { PermissionFlagsBits } from "discord.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
@@ -5,7 +6,8 @@ import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
 
 export const haveQueue = createCmdExecuteDecorator((ctx) => {
-    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
+    const client = container.client as Rawon;
+    const __ = i18n__(client, ctx.guild);
     if (!ctx.guild?.queue) {
         void ctx.reply({
             embeds: [createEmbed("warn", __("utils.musicDecorator.noQueue"))],
@@ -16,7 +18,8 @@ export const haveQueue = createCmdExecuteDecorator((ctx) => {
 });
 
 export const inVC = createCmdExecuteDecorator((ctx) => {
-    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
+    const client = container.client as Rawon;
+    const __ = i18n__(client, ctx.guild);
     if (!ctx.member?.voice.channel) {
         void ctx.reply({
             embeds: [createEmbed("warn", __("utils.musicDecorator.noInVC"))],
@@ -27,7 +30,8 @@ export const inVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const validVC = createCmdExecuteDecorator((ctx) => {
-    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
+    const client = container.client as Rawon;
+    const __ = i18n__(client, ctx.guild);
     const voiceChannel = ctx.member?.voice.channel;
 
     if (!ctx.guild?.members.me) {
@@ -54,8 +58,8 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const sameVC = createCmdExecuteDecorator((ctx) => {
-    const __ = i18n__(ctx.guild?.client as Rawon, ctx.guild);
-    const client = ctx.guild?.client as Rawon;
+    const client = container.client as Rawon;
+    const __ = i18n__(client, ctx.guild);
 
     if (!client || !ctx.guild) {
         return true;
@@ -100,7 +104,7 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
-    const client = ctx.guild?.client as Rawon;
+    const client = container.client as Rawon;
     const __ = i18n__(client, ctx.guild);
     const __mf = i18n__mf(client, ctx.guild);
     if (!ctx.guild) {
@@ -122,11 +126,11 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         return true;
     }
 
-    if (ctx.channel?.id === requestChannel.id && ctx.isInteraction()) {
+    if (ctx.channel?.id === requestChannel.id && ctx.isCommandInteraction()) {
         return true;
     }
 
-    if (ctx.channel?.id === requestChannel.id && !ctx.isInteraction()) {
+    if (ctx.channel?.id === requestChannel.id && !ctx.isCommandInteraction()) {
         void ctx.reply({
             embeds: [createEmbed("warn", __("utils.musicDecorator.useRequestChannelDirect"))],
         });

@@ -1,43 +1,53 @@
-import { ApplicationCommandOptionType } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command({
-    description: i18n.__("commands.music.shuffle.description"),
+@ApplyOptions<Command.Options>({
     name: "shuffle",
-    slash: {
-        options: [
-            {
-                choices: [
-                    {
-                        name: "ENABLE",
-                        value: "enable",
-                    },
-                    {
-                        name: "DISABLE",
-                        value: "disable",
-                    },
-                ],
-                description: i18n.__("commands.music.shuffle.description"),
-                name: "state",
-                required: false,
-                type: ApplicationCommandOptionType.String,
-            },
-        ],
+    aliases: [],
+    description: i18n.__("commands.music.shuffle.description"),
+    detailedDescription: { usage: "{prefix}shuffle [enable | disable]" },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "shuffle")
+            .setDescription(opts.description ?? "Toggle shuffle mode.")
+            .addStringOption((opt) =>
+                opt
+                    .setName("state")
+                    .setDescription(i18n.__("commands.music.shuffle.description"))
+                    .setRequired(false)
+                    .addChoices(
+                        { name: "ENABLE", value: "enable" },
+                        { name: "DISABLE", value: "disable" },
+                    ),
+            ) as SlashCommandBuilder;
     },
-    usage: "{prefix}shuffle [enable | disable]",
 })
-export class ShuffleCommand extends BaseCommand {
+export class ShuffleCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @useRequestChannel
     @inVC
     @haveQueue
     @sameVC
-    public execute(ctx: CommandContext): void {
+    public contextRun(ctx: CommandContext): void {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 

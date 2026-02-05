@@ -1,5 +1,7 @@
 import { clearTimeout, setTimeout } from "node:timers";
 import { type AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
     ChannelType,
     type Message,
@@ -7,18 +9,21 @@ import {
     type VoiceChannel,
     type VoiceState,
 } from "discord.js";
-import { BaseEvent } from "../structures/BaseEvent.js";
+import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type QueueSong } from "../typings/index.js";
-import { Event } from "../utils/decorators/Event.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 
-@Event<typeof VoiceStateUpdateEvent>("voiceStateUpdate")
-export class VoiceStateUpdateEvent extends BaseEvent {
-    public async execute(oldState: VoiceState, newState: VoiceState): Promise<Message | undefined> {
-        if (this.client.config.debugMode) {
+@ApplyOptions<ListenerOptions>({
+    event: Events.VoiceStateUpdate,
+})
+export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateUpdate> {
+    public async run(oldState: VoiceState, newState: VoiceState): Promise<Message | undefined> {
+        const client = this.container.client as Rawon;
+
+        if (this.container.config.debugMode) {
             const oldCh = oldState.channel
                 ? `${oldState.channel.name}(${oldState.channel.id})`
                 : "Not connected";
@@ -49,7 +54,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             const selfDeaf =
                 oldSelfD === newSelfD ? [] : [["Self Deaf", `${oldSelfD} -> ${newSelfD}`]];
 
-            this.client.debugLog.logData("info", "VOICE_STATE_UPDATE", [
+            this.container.debugLog.logData("info", "VOICE_STATE_UPDATE", [
                 ["Guild", `${oldState.guild.name}(${oldState.guild.id})`],
                 [
                     "User",
@@ -65,9 +70,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             ]);
         }
 
-        const botId = this.client.user?.id;
+        const botId = client.user?.id;
 
-        const thisBotGuild = this.client.guilds.cache.get(newState.guild.id);
+        const thisBotGuild = client.guilds.cache.get(newState.guild.id);
         if (!thisBotGuild) {
             return;
         }
@@ -77,8 +82,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             return;
         }
 
-        const __ = i18n__(this.client, thisBotGuild);
-        const __mf = i18n__mf(this.client, thisBotGuild);
+        const __ = i18n__(client, thisBotGuild);
+        const __mf = i18n__mf(client, thisBotGuild);
 
         const newVc = newState.channel;
         const oldVc = oldState.channel;
@@ -98,16 +103,16 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
             const isIdle = queue.idle;
-            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+            const isRequestChannel = this.container.requestChannelManager.isRequestChannel(
                 thisBotGuild,
                 queue.textChannel.id,
             );
 
             await queue.destroy();
             if (!isIdle) {
-                this.client.logger.info(
+                this.container.logger.info(
                     `${
-                        this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                        client.shard ? `[Shard #${client.shard.ids[0]}]` : ""
                     } Disconnected from the voice channel at ${newState.guild.name}, the queue was deleted.`,
                 );
                 (async () => {
@@ -121,7 +126,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             ],
                         })
                         .catch((error: unknown) => {
-                            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
+                            this.container.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
                             return null;
                         });
                     if (msg && isRequestChannel) {
@@ -144,14 +149,14 @@ export class VoiceStateUpdateEvent extends BaseEvent {
             const newChannelMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
             const newChannelMemberCount = newChannelMembers?.size ?? 0;
 
-            this.client.logger.info(
-                `[VoiceState] ${this.client.user?.tag} was MOVED from ${oldId} to ${newId}, ` +
+            this.container.logger.info(
+                `[VoiceState] ${client.user?.tag} was MOVED from ${oldId} to ${newId}, ` +
                     `newChannelMemberCount=${newChannelMemberCount}, queueVcId=${queueVc.id}, idle=${queue.idle}`,
             );
 
             if (newChannelMemberCount === 0 && !queue.idle) {
-                this.client.logger.info(
-                    `[VoiceState] ${this.client.user?.tag} moved to EMPTY channel ${newId}, triggering pause and timeout`,
+                this.container.logger.info(
+                    `[VoiceState] ${client.user?.tag} moved to EMPTY channel ${newId}, triggering pause and timeout`,
                 );
                 queue.skipVoters = [];
                 if (queue.timeout === null) {
@@ -166,8 +171,8 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 queue.timeout !== null &&
                 newChannelMembers !== undefined
             ) {
-                this.client.logger.info(
-                    `[VoiceState] ${this.client.user?.tag} moved to channel ${newId} with members, resuming`,
+                this.container.logger.info(
+                    `[VoiceState] ${client.user?.tag} moved to channel ${newId} with members, resuming`,
                 );
                 this.resume(newChannelMembers, queue, newState, thisBotGuild);
             }
@@ -176,7 +181,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                 return;
             }
             queue.skipVoters = [];
-            const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+            const isRequestChannel = this.container.requestChannelManager.isRequestChannel(
                 thisBotGuild,
                 queue.textChannel.id,
             );
@@ -211,9 +216,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                     }
                 } catch {
                     await queue.destroy();
-                    this.client.logger.info(
+                    this.container.logger.info(
                         `${
-                            this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                            client.shard ? `[Shard #${client.shard.ids[0]}]` : ""
                         } Unable to re-configure networking on ${
                             newState.guild.name
                         } voice channel, the queue was deleted.`,
@@ -245,9 +250,9 @@ export class VoiceStateUpdateEvent extends BaseEvent {
 
                 if ("error" in suppress) {
                     await queue.destroy();
-                    this.client.logger.info(
+                    this.container.logger.info(
                         `${
-                            this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""
+                            client.shard ? `[Shard #${client.shard.ids[0]}]` : ""
                         } Unable to join as Speaker at ${newState.guild.name} stage channel, the queue was deleted.`,
                     );
                     const errorMsg = await queue.textChannel
@@ -261,7 +266,7 @@ export class VoiceStateUpdateEvent extends BaseEvent {
                             ],
                         })
                         .catch((error: unknown) => {
-                            this.client.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
+                            this.container.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
                             return null;
                         });
                     if (isRequestChannel) {
@@ -314,12 +319,14 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         _state: VoiceState,
         guild: typeof _state.guild,
     ): void {
+        const client = this.container.client as Rawon;
+
         if (vcMembers.size > 0) {
             return;
         }
 
-        const __ = i18n__(this.client, guild);
-        const __mf = i18n__mf(this.client, guild);
+        const __ = i18n__(client, guild);
+        const __mf = i18n__mf(client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
         (guild.queue as unknown as ServerQueue).timeout = null;
@@ -379,12 +386,14 @@ export class VoiceStateUpdateEvent extends BaseEvent {
         _state: VoiceState,
         guild: typeof _state.guild,
     ): void {
+        const client = this.container.client as Rawon;
+
         if (vcMembers.size <= 0) {
             return;
         }
 
-        const __ = i18n__(this.client, guild);
-        const __mf = i18n__mf(this.client, guild);
+        const __ = i18n__(client, guild);
+        const __mf = i18n__mf(client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
         (guild.queue as unknown as ServerQueue).timeout = null;

@@ -1,5 +1,6 @@
 import process from "node:process";
 import { setInterval } from "node:timers";
+import { container } from "@sapphire/framework";
 import { clientOptions } from "./config/index.js";
 import { Rawon } from "./structures/Rawon.js";
 import { NoStackError } from "./utils/structures/NoStackError.js";
@@ -102,29 +103,29 @@ async function saveAllQueueStates(): Promise<void> {
 }
 
 process.on("SIGINT", async () => {
-    client.logger.info("Received SIGINT, saving queue states before exit...");
+    container.logger.info("Received SIGINT, saving queue states before exit...");
     await saveAllQueueStates();
     process.exit(0);
 });
 
 process.on("SIGTERM", async () => {
-    client.logger.info("Received SIGTERM, saving queue states before exit...");
+    container.logger.info("Received SIGTERM, saving queue states before exit...");
     await saveAllQueueStates();
     process.exit(0);
 });
 
 process
-    .on("exit", (code) => client.logger.info(`NodeJS process exited with code ${code}`))
+    .on("exit", (code) => container.logger.info(`NodeJS process exited with code ${code}`))
     .on("unhandledRejection", (reason) =>
-        client.logger.error(
-            "UNHANDLED_REJECTION:",
+        container.logger.error(
             ((reason as Error).stack?.length ?? 0) ? reason : new NoStackError(reason as string),
+            "UNHANDLED_REJECTION",
         ),
     )
-    .on("warning", (...args) => client.logger.warn(...args))
+    .on("warning", (...args) => container.logger.warn({ args }, "NODE_WARNING"))
     .on("uncaughtException", (err) => {
-        client.logger.error("UNCAUGHT_EXCEPTION:", err);
-        client.logger.warn("Uncaught Exception detected, trying to restart...");
+        container.logger.error(err, "UNCAUGHT_EXCEPTION");
+        container.logger.warn("Uncaught Exception detected, trying to restart...");
         process.exit(1);
     });
 
@@ -140,7 +141,7 @@ await client
         }
     })
     .catch((error: unknown) => {
-        client.logger.error("PROMISE_ERR:", error);
+        container.logger.error(error, "PROMISE_ERR");
         if (process.send) {
             const shardId = parseInt(process.env.SHARD_ID ?? "0", 10);
             process.send({

@@ -1,5 +1,7 @@
 import { setTimeout } from "node:timers";
 import { type AudioPlayerPlayingState } from "@discordjs/voice";
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
     ActionRowBuilder,
     ApplicationCommandType,
@@ -18,23 +20,26 @@ import {
     type Snowflake,
     type TextChannel,
 } from "discord.js";
-import { BaseEvent } from "../structures/BaseEvent.js";
+import { type BaseCommand } from "../structures/BaseCommand.js";
 import { CommandContext } from "../structures/CommandContext.js";
 import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/index.js";
-import { Event } from "../utils/decorators/Event.js";
 import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { type SongManager } from "../utils/structures/SongManager.js";
 
-@Event("interactionCreate")
-export class InteractionCreateEvent extends BaseEvent {
+@ApplyOptions<ListenerOptions>({
+    event: Events.InteractionCreate,
+})
+export class InteractionCreateListener extends Listener<typeof Events.InteractionCreate> {
     private readonly cooldowns = new Collection<string, Collection<Snowflake, number>>();
 
-    public async execute(interaction: Interaction): Promise<void> {
-        this.client.debugLog.logData("info", "INTERACTION_CREATE", [
+    public async run(interaction: Interaction): Promise<void> {
+        const client = this.container.client as Rawon;
+
+        this.container.debugLog.logData("info", "INTERACTION_CREATE", [
             ["Type", interaction.type.toString()],
             [
                 "Guild",
@@ -51,12 +56,12 @@ export class InteractionCreateEvent extends BaseEvent {
             ["User", `${interaction.user.tag}(${interaction.user.id})`],
         ]);
 
-        if (!interaction.inGuild() || !this.client.commands.isReady) {
+        if (!interaction.inGuild() || !client.commands.isReady) {
             return;
         }
 
         if (interaction.guild) {
-            const thisBotGuild = this.client.guilds.cache.get(interaction.guild.id);
+            const thisBotGuild = client.guilds.cache.get(interaction.guild.id);
             if (!thisBotGuild) {
                 return;
             }
@@ -66,9 +71,9 @@ export class InteractionCreateEvent extends BaseEvent {
 
             if (interaction.isChatInputCommand()) {
                 commandName = interaction.commandName;
-                const cmd = this.client.commands
-                    .filter((x) => x.meta.slash !== undefined)
-                    .find((x) => x.meta.slash?.name === commandName);
+                const cmd = client.commands
+                    .filter((x: BaseCommand) => x.meta.slash !== undefined)
+                    .find((x: BaseCommand) => x.meta.slash?.name === commandName);
 
                 const musicCommands = [
                     "volume",
@@ -125,60 +130,60 @@ export class InteractionCreateEvent extends BaseEvent {
 
                 const userVoiceChannelId = member?.voice.channelId ?? null;
 
-                this.client.logger.info(
-                    `[MultiBot] ${this.client.user?.tag} PRE-CHECK music interaction "${commandName}" from ${interaction.user.tag}: ` +
+                this.container.logger.info(
+                    `[MultiBot] ${client.user?.tag} PRE-CHECK music interaction "${commandName}" from ${interaction.user.tag}: ` +
                         `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
                 );
 
                 if (userVoiceChannelId) {
-                    const shouldRespond = this.client.multiBotManager.shouldRespondToMusicCommand(
-                        this.client,
+                    const shouldRespond = client.multiBotManager.shouldRespondToMusicCommand(
+                        client,
                         thisBotGuild,
                         userVoiceChannelId,
                     );
 
-                    this.client.logger.info(
-                        `[MultiBot] ${this.client.user?.tag} PRE-CHECK result for music interaction "${commandName}": shouldRespond=${shouldRespond}`,
+                    this.container.logger.info(
+                        `[MultiBot] ${client.user?.tag} PRE-CHECK result for music interaction "${commandName}": shouldRespond=${shouldRespond}`,
                     );
 
                     if (!shouldRespond) {
-                        this.client.logger.warn(
-                            `[MultiBot] ${this.client.user?.tag} ❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
+                        this.container.logger.warn(
+                            `[MultiBot] ${client.user?.tag} ❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
                                 `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - INTERACTION WILL NOT BE EXECUTED!`,
                         );
                         return;
                     }
 
-                    this.client.logger.info(
-                        `[MultiBot] ${this.client.user?.tag} ✅ ALLOWING music interaction "${commandName}" - will proceed to command handler`,
+                    this.container.logger.info(
+                        `[MultiBot] ${client.user?.tag} ✅ ALLOWING music interaction "${commandName}" - will proceed to command handler`,
                     );
-                } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
-                    this.client.logger.debug(
-                        `[MultiBot] ${this.client.user?.tag} skipping music interaction "${commandName}" - user not in voice and not responsible bot`,
+                } else if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
+                    this.container.logger.debug(
+                        `[MultiBot] ${client.user?.tag} skipping music interaction "${commandName}" - user not in voice and not responsible bot`,
                     );
                     return;
                 }
             } else if (interaction.isChatInputCommand()) {
                 commandName = interaction.commandName;
-                if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
-                    this.client.logger.debug(
-                        `[MultiBot] ${this.client.user?.tag} skipping interaction "${commandName}" - not responsible bot`,
+                if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
+                    this.container.logger.debug(
+                        `[MultiBot] ${client.user?.tag} skipping interaction "${commandName}" - not responsible bot`,
                     );
                     return;
                 }
-            } else if (!this.client.multiBotManager.shouldRespond(this.client, thisBotGuild)) {
-                this.client.logger.debug(
-                    `[MultiBot] ${this.client.user?.tag} skipping interaction - not responsible bot`,
+            } else if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
+                this.container.logger.debug(
+                    `[MultiBot] ${client.user?.tag} skipping interaction - not responsible bot`,
                 );
                 return;
             }
         }
 
         const thisBotGuildForContext = interaction.guild
-            ? (this.client.guilds.cache.get(interaction.guild.id) ?? interaction.guild)
+            ? (client.guilds.cache.get(interaction.guild.id) ?? interaction.guild)
             : interaction.guild;
 
-        const __mf = i18n__mf(this.client, thisBotGuildForContext);
+        const __mf = i18n__mf(client, thisBotGuildForContext);
 
         if (interaction.isButton()) {
             if (interaction.customId.startsWith("RC_")) {
@@ -186,7 +191,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 return;
             }
 
-            const val = this.client.utils.decode(interaction.customId);
+            const val = this.container.utils.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
 
@@ -235,8 +240,8 @@ export class InteractionCreateEvent extends BaseEvent {
                 enumerable: true,
                 configurable: true,
             });
-            this.client.logger.debug(
-                `[MultiBot] ${this.client.user?.tag} overrode context.guild with thisBotGuild for interaction`,
+            this.container.logger.debug(
+                `[MultiBot] ${client.user?.tag} overrode context.guild with thisBotGuild for interaction`,
             );
         }
 
@@ -249,13 +254,13 @@ export class InteractionCreateEvent extends BaseEvent {
                 dataType = ApplicationCommandType.Message;
             }
 
-            const cmd = this.client.commands.find((x) =>
+            const cmd = client.commands.find((x: BaseCommand) =>
                 dataType === ApplicationCommandType.Message
                     ? x.meta.contextChat === interaction.commandName
                     : x.meta.contextUser === interaction.commandName,
             );
             if (cmd) {
-                const isDeveloper = this.client.config.devs.includes(interaction.user.id);
+                const isDeveloper = this.container.config.devs.includes(interaction.user.id);
                 if (cmd.meta.devOnly === true && !isDeveloper) {
                     try {
                         await interaction.reply({
@@ -271,8 +276,8 @@ export class InteractionCreateEvent extends BaseEvent {
                     } catch {
                         // Ignore errors
                     }
-                    this.client.logger.warn(
-                        `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only context/menu ${interaction.commandName}`,
+                    this.container.logger.warn(
+                        `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only context/menu ${interaction.commandName}`,
                     );
                     return;
                 }
@@ -282,9 +287,9 @@ export class InteractionCreateEvent extends BaseEvent {
         }
 
         if (interaction.isCommand()) {
-            const cmd = this.client.commands
-                .filter((x) => x.meta.slash !== undefined)
-                .find((x) => x.meta.slash?.name === interaction.commandName);
+            const cmd = client.commands
+                .filter((x: BaseCommand) => x.meta.slash !== undefined)
+                .find((x: BaseCommand) => x.meta.slash?.name === interaction.commandName);
             if (cmd) {
                 if (!this.cooldowns.has(cmd.meta.name)) {
                     this.cooldowns.set(cmd.meta.name, new Collection());
@@ -293,7 +298,7 @@ export class InteractionCreateEvent extends BaseEvent {
                 const now = Date.now();
                 const timestamps = this.cooldowns.get(cmd.meta.name);
                 const cooldownAmount = (cmd.meta.cooldown ?? 3) * 1_000;
-                const isDeveloper = this.client.config.devs.includes(interaction.user.id);
+                const isDeveloper = this.container.config.devs.includes(interaction.user.id);
 
                 if (!isDeveloper) {
                     if (timestamps?.has(interaction.user.id) === true) {
@@ -341,30 +346,30 @@ export class InteractionCreateEvent extends BaseEvent {
                     } catch {
                         // Ignore errors
                     }
-                    this.client.logger.warn(
-                        `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only slash ${interaction.commandName}`,
+                    this.container.logger.warn(
+                        `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only slash ${interaction.commandName}`,
                     );
                     return;
                 }
 
-                this.client.logger.info(
-                    `[MultiBot] ${this.client.user?.tag} ✅ EXECUTING slash command "${interaction.commandName}" from ${interaction.user.tag}`,
+                this.container.logger.info(
+                    `[MultiBot] ${client.user?.tag} ✅ EXECUTING slash command "${interaction.commandName}" from ${interaction.user.tag}`,
                 );
-                this.client.logger.info(
+                this.container.logger.info(
                     `${interaction.user.tag} [${interaction.user.id}] used /${interaction.commandName} ` +
                         `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
                         `in guild: ${thisBotGuildForContext?.name ?? interaction.guild?.name} [${interaction.guildId}]`,
                 );
                 void cmd.execute(context);
             } else {
-                this.client.logger.warn(
-                    `[MultiBot] ${this.client.user?.tag} command not found for interaction "${interaction.commandName}"`,
+                this.container.logger.warn(
+                    `[MultiBot] ${client.user?.tag} command not found for interaction "${interaction.commandName}"`,
                 );
             }
         }
 
         if (interaction.isStringSelectMenu()) {
-            const val = this.client.utils.decode(interaction.customId);
+            const val = this.container.utils.decode(interaction.customId);
             const user = val.split("_")[0] ?? "";
             const cmd = val.split("_")[1] ?? "";
             const exec = (val.split("_")[2] ?? "yes") === "yes";
@@ -384,11 +389,11 @@ export class InteractionCreateEvent extends BaseEvent {
                 });
             }
             if (cmd && user === interaction.user.id && exec) {
-                const command = this.client.commands
-                    .filter((x) => x.meta.slash !== undefined)
-                    .find((x) => x.meta.name === cmd);
+                const command = client.commands
+                    .filter((x: BaseCommand) => x.meta.slash !== undefined)
+                    .find((x: BaseCommand) => x.meta.name === cmd);
                 if (command) {
-                    const isDeveloper = this.client.config.devs.includes(interaction.user.id);
+                    const isDeveloper = this.container.config.devs.includes(interaction.user.id);
                     if (command.meta.devOnly === true && !isDeveloper) {
                         try {
                             await interaction.reply({
@@ -404,8 +409,8 @@ export class InteractionCreateEvent extends BaseEvent {
                         } catch {
                             // Ignore errors
                         }
-                        this.client.logger.warn(
-                            `[MultiBot] ${this.client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only select ${interaction.customId}`,
+                        this.container.logger.warn(
+                            `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only select ${interaction.customId}`,
                         );
                         return;
                     }
@@ -417,40 +422,41 @@ export class InteractionCreateEvent extends BaseEvent {
     }
 
     private async handleRequestChannelButton(interaction: ButtonInteraction): Promise<void> {
+        const client = this.container.client as Rawon;
         const guild = interaction.guild;
         if (!guild) {
             return;
         }
 
-        const thisBotGuild = this.client.guilds.cache.get(guild.id);
+        const thisBotGuild = client.guilds.cache.get(guild.id);
         if (!thisBotGuild) {
             return;
         }
 
-        if (this.client.config.isMultiBot) {
-            const botId = this.client.user?.id ?? "unknown";
+        if (this.container.config.isMultiBot) {
+            const botId = client.user?.id ?? "unknown";
             let ownsRequestChannel = false;
 
             if (
-                "getRequestChannel" in this.client.data &&
-                typeof this.client.data.getRequestChannel === "function"
+                "getRequestChannel" in this.container.data &&
+                typeof this.container.data.getRequestChannel === "function"
             ) {
-                const requestChannelData = (this.client.data as any).getRequestChannel(
+                const requestChannelData = (this.container.data as any).getRequestChannel(
                     thisBotGuild.id,
                     botId,
                 );
                 ownsRequestChannel = requestChannelData?.channelId === interaction.channelId;
             } else {
-                const data = this.client.data.data?.[thisBotGuild.id]?.requestChannel;
+                const data = this.container.data.data?.[thisBotGuild.id]?.requestChannel;
                 ownsRequestChannel = data?.channelId === interaction.channelId;
             }
 
             if (ownsRequestChannel) {
-                this.client.logger.info(
-                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
+                this.container.logger.info(
+                    `[MultiBot] ${client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
                 );
             } else {
-                const primaryBot = this.client.multiBotManager.getPrimaryBot();
+                const primaryBot = client.multiBotManager.getPrimaryBot();
                 if (primaryBot) {
                     const primaryBotGuild = primaryBot.guilds.cache.get(thisBotGuild.id);
                     if (primaryBotGuild) {
@@ -472,9 +478,9 @@ export class InteractionCreateEvent extends BaseEvent {
                             primaryOwnsRequestChannel = data?.channelId === interaction.channelId;
                         }
 
-                        if (primaryOwnsRequestChannel && primaryBot !== this.client) {
-                            this.client.logger.debug(
-                                `[MultiBot] ${this.client.user?.tag} skipping button "${interaction.customId}" - primary bot owns request channel`,
+                        if (primaryOwnsRequestChannel && primaryBot !== client) {
+                            this.container.logger.debug(
+                                `[MultiBot] ${client.user?.tag} skipping button "${interaction.customId}" - primary bot owns request channel`,
                             );
                             try {
                                 await interaction.deferUpdate();
@@ -486,16 +492,16 @@ export class InteractionCreateEvent extends BaseEvent {
                     }
                 }
 
-                this.client.logger.info(
-                    `[MultiBot] ${this.client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel or no other bot owns it)`,
+                this.container.logger.info(
+                    `[MultiBot] ${client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel or no other bot owns it)`,
                 );
             }
         }
 
-        const __ = i18n__(this.client, thisBotGuild);
-        const __mf = i18n__mf(this.client, thisBotGuild);
+        const __ = i18n__(client, thisBotGuild);
+        const __mf = i18n__mf(client, thisBotGuild);
 
-        this.client.logger.info(
+        this.container.logger.info(
             `${interaction.user.tag} [${interaction.user.id}] clicked ${interaction.customId} button ` +
                 `in guild: ${thisBotGuild.name} [${thisBotGuild.id}]`,
         );
@@ -532,18 +538,18 @@ export class InteractionCreateEvent extends BaseEvent {
         let queue = thisBotGuild.queue;
         let queueGuild = thisBotGuild;
 
-        if (this.client.config.isMultiBot && voiceChannel) {
-            const responsibleBot = this.client.multiBotManager.getBotForVoiceChannel(
+        if (this.container.config.isMultiBot && voiceChannel) {
+            const responsibleBot = client.multiBotManager.getBotForVoiceChannel(
                 thisBotGuild,
                 voiceChannel.id,
             );
-            if (responsibleBot && responsibleBot !== this.client) {
+            if (responsibleBot && responsibleBot !== client) {
                 const responsibleGuild = responsibleBot.guilds.cache.get(thisBotGuild.id);
                 if (responsibleGuild?.queue) {
                     queue = responsibleGuild.queue;
                     queueGuild = responsibleGuild;
-                    this.client.logger.info(
-                        `[MultiBot] ${this.client.user?.tag} (primary) using queue from ${responsibleBot.user?.tag} for voice channel ${voiceChannel.id}`,
+                    this.container.logger.info(
+                        `[MultiBot] ${client.user?.tag} (primary) using queue from ${responsibleBot.user?.tag} for voice channel ${voiceChannel.id}`,
                     );
                 }
             }
@@ -1062,11 +1068,11 @@ export class InteractionCreateEvent extends BaseEvent {
                 break;
         }
 
-        if (this.client.config.isMultiBot && queue && queueGuild !== thisBotGuild) {
+        if (this.container.config.isMultiBot && queue && queueGuild !== thisBotGuild) {
             const responsibleBot = queueGuild.client as Rawon;
             await responsibleBot.requestChannelManager.updatePlayerMessage(queueGuild);
         } else {
-            await this.client.requestChannelManager.updatePlayerMessage(thisBotGuild);
+            await this.container.requestChannelManager.updatePlayerMessage(thisBotGuild);
         }
     }
 
@@ -1080,8 +1086,9 @@ export class InteractionCreateEvent extends BaseEvent {
             return { hasPermission: false, djRole: null };
         }
 
-        const thisBotGuild = this.client.guilds.cache.get(guild.id) ?? guild;
-        const djRole = await this.client.utils.fetchDJRole(thisBotGuild).catch(() => null);
+        const client = this.container.client as Rawon;
+        const thisBotGuild = client.guilds.cache.get(guild.id) ?? guild;
+        const djRole = await this.container.utils.fetchDJRole(thisBotGuild).catch(() => null);
 
         const hasPermission =
             member.roles.cache.has(djRole?.id ?? "") ||
@@ -1096,15 +1103,16 @@ export class InteractionCreateEvent extends BaseEvent {
         queue: ServerQueue,
         member: GuildMember,
     ): Promise<boolean> {
+        const client = this.container.client as Rawon;
         const guild = interaction.guild;
         if (!guild) {
             return false;
         }
 
-        const thisBotGuild = this.client.guilds.cache.get(guild.id) ?? guild;
-        const __mf = i18n__mf(this.client, thisBotGuild);
+        const thisBotGuild = client.guilds.cache.get(guild.id) ?? guild;
+        const __mf = i18n__mf(client, thisBotGuild);
 
-        const required = this.client.utils.requiredVoters(
+        const required = this.container.utils.requiredVoters(
             thisBotGuild.members.me?.voice.channel?.members.size ?? 0,
         );
 
@@ -1147,9 +1155,10 @@ export class InteractionCreateEvent extends BaseEvent {
         interaction: ButtonInteraction,
         queue: ServerQueue | undefined,
     ): Promise<void> {
+        const client = this.container.client as Rawon;
         const guild = interaction.guild;
-        const __ = i18n__(this.client, guild);
-        const __mf = i18n__mf(this.client, guild);
+        const __ = i18n__(client, guild);
+        const __mf = i18n__mf(client, guild);
 
         if (!queue || queue.songs.size === 0) {
             await interaction.reply({
@@ -1175,7 +1184,7 @@ export class InteractionCreateEvent extends BaseEvent {
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-        const lyricsCommand = this.client.commands.get("lyrics");
+        const lyricsCommand = client.commands.get("lyrics");
         if (lyricsCommand && "fetchLyricsData" in lyricsCommand) {
             try {
                 const data = await (

@@ -1,35 +1,52 @@
-import { type ColorResolvable } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { type ColorResolvable, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command<typeof PingCommand>({
+@ApplyOptions<Command.Options>({
+    name: "ping",
     aliases: ["pang", "pung", "peng", "pong"],
     description: i18n.__("commands.general.ping.description"),
-    name: "ping",
-    slash: {
-        options: [],
+    detailedDescription: {
+        usage: "{prefix}ping",
     },
-    usage: "{prefix}ping",
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "ping")
+            .setDescription(
+                opts.description ?? "Shows current ping of the bot.",
+            ) as SlashCommandBuilder;
+    },
 })
-export class PingCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<void> {
-        if (ctx.isInteraction() && !ctx.deferred) {
+export class PingCommand extends ContextCommand {
+    public async contextRun(ctx: CommandContext): Promise<void> {
+        if (ctx.isCommandInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
 
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const client = this.container.client as Rawon;
+        const __mf = i18n__mf(client, ctx.guild);
 
         const before = Date.now();
         const msg = await ctx.reply({ content: "🏓" });
         const latency = Date.now() - before;
-        const wsLatency = this.client.ws.ping.toFixed(0);
+        const wsLatency = client.ws.ping.toFixed(0);
         const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "N/A";
         const embed = createEmbed("info")
-            .setColor(this.searchHex(wsLatency))
+            .setColor(PingCommand.searchHex(wsLatency))
             .setAuthor({
                 name: "🏓 PONG",
             })
@@ -52,17 +69,23 @@ export class PingCommand extends BaseCommand {
             )
             .setFooter({
                 text: __mf("commands.general.ping.footerString", {
-                    user: this.client.user?.tag,
+                    user: client.user?.tag,
                 }),
-                iconURL: this.client.user?.displayAvatarURL(),
+                iconURL: client.user?.displayAvatarURL(),
             })
             .setTimestamp();
+
+        if (ctx.isCommandInteraction()) {
+            await ctx.send({ content: "", embeds: [embed] });
+            return;
+        }
+
         await msg
             .edit({ content: " ", embeds: [embed] })
-            .catch((error: unknown) => this.client.logger.error("PROMISE_ERR:", error));
+            .catch((error: unknown) => this.container.logger.error(error, "PROMISE_ERR"));
     }
 
-    private searchHex(ms: number | string): ColorResolvable {
+    private static searchHex(ms: number | string): ColorResolvable {
         const listColorHex = [
             [0, 20, "Green"],
             [21, 50, "Green"],

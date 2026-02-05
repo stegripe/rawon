@@ -1,62 +1,71 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { Buffer } from "node:buffer";
 import { setTimeout } from "node:timers";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
-    ApplicationCommandOptionType,
     type Collection,
     type CommandInteractionOptionResolver,
     ComponentType,
     escapeMarkdown,
     type Message,
+    PermissionFlagsBits,
     type SelectMenuComponentOptionData,
+    type SlashCommandBuilder,
     StringSelectMenuBuilder,
     type StringSelectMenuInteraction,
 } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { type Song } from "../../typings/index.js";
-import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
-@Command<typeof SearchCommand>({
-    aliases: ["sc"],
-    contextChat: "Add to queue",
-    description: i18n.__("commands.music.search.description"),
+@ApplyOptions<Command.Options>({
     name: "search",
-    slash: {
-        description: i18n.__("commands.music.search.slashDescription"),
-        options: [
-            {
-                description: i18n.__("commands.music.search.slashQueryDescription"),
-                name: "query",
-                type: ApplicationCommandOptionType.String,
-            },
-            {
-                choices: [
-                    {
-                        name: "YouTube",
-                        value: "youtube",
-                    },
-                    {
-                        name: "SoundCloud",
-                        value: "soundcloud",
-                    },
-                ],
-                description: i18n.__("commands.music.search.slashSourceDescription"),
-                name: "source",
-                required: false,
-                type: ApplicationCommandOptionType.String,
-            },
-        ],
+    aliases: ["sc"],
+    description: i18n.__("commands.music.search.description"),
+    detailedDescription: { usage: i18n.__("commands.music.search.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "search")
+            .setDescription(opts.description ?? i18n.__("commands.music.search.slashDescription"))
+            .addStringOption((opt) =>
+                opt
+                    .setName("query")
+                    .setDescription(i18n.__("commands.music.search.slashQueryDescription"))
+                    .setRequired(false),
+            )
+            .addStringOption((opt) =>
+                opt
+                    .setName("source")
+                    .setDescription(i18n.__("commands.music.search.slashSourceDescription"))
+                    .setRequired(false)
+                    .addChoices(
+                        { name: "YouTube", value: "youtube" },
+                        { name: "SoundCloud", value: "soundcloud" },
+                    ),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.search.usage"),
 })
-export class SearchCommand extends BaseCommand {
+export class SearchCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     private isRequestChannel(ctx: CommandContext): boolean {
         if (!ctx.guild) {
             return false;
@@ -74,11 +83,11 @@ export class SearchCommand extends BaseCommand {
     @inVC
     @validVC
     @sameVC
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 
-        if (ctx.isInteraction() && !ctx.deferred) {
+        if (ctx.isCommandInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
 
@@ -178,7 +187,7 @@ export class SearchCommand extends BaseCommand {
                             .setMinValues(1)
                             .setMaxValues(10)
                             .setCustomId(
-                                Buffer.from(`${ctx.author.id}_${this.meta.name}`).toString(
+                                Buffer.from(`${ctx.author.id}_${this.options.name}`).toString(
                                     "base64",
                                 ),
                             )
@@ -246,7 +255,7 @@ export class SearchCommand extends BaseCommand {
             await msg
                 .delete()
                 .catch((error: unknown) =>
-                    this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
+                    this.container.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
             const noSelectionMsg = await ctx.reply({
                 embeds: [createEmbed("error", __("commands.music.search.noSelection"), true)],
@@ -260,7 +269,7 @@ export class SearchCommand extends BaseCommand {
             await msg
                 .delete()
                 .catch((error: unknown) =>
-                    this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
+                    this.container.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
             const canceledMsg = await ctx.reply({
                 embeds: [createEmbed("info", __("commands.music.search.canceledMessage"))],
@@ -274,13 +283,13 @@ export class SearchCommand extends BaseCommand {
         await msg
             .delete()
             .catch((error: unknown) =>
-                this.client.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
+                this.container.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
             );
         await respond
             .first()
             ?.delete()
             .catch((error: unknown) =>
-                this.client.logger.error("SEARCH_SELECTION_NUM_DELETE_MSG_ERR:", error),
+                this.container.logger.error("SEARCH_SELECTION_NUM_DELETE_MSG_ERR:", error),
             );
 
         const songs = respond

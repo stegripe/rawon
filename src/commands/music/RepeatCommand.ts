@@ -1,44 +1,57 @@
-import { ApplicationCommandOptionType, type Message } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { type Message, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { type LoopMode } from "../../typings/index.js";
-import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "repeat",
     aliases: ["loop", "music-repeat", "music-loop"],
     description: i18n.__("commands.music.repeat.description"),
-    name: "repeat",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.repeat.slashQueue"),
-                name: "queue",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.repeat.slashQueue"),
-                name: "song",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.repeat.slashDisable"),
-                name: "disable",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-        ],
+    detailedDescription: {
+        usage: i18n.__mf("commands.music.repeat.usage", { options: "queue | one | disable" }),
     },
-    usage: i18n.__mf("commands.music.repeat.usage", { options: "queue | one | disable" }),
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "repeat")
+            .setDescription(opts.description ?? "Set repeat mode for the queue.")
+            .addSubcommand((sub) =>
+                sub.setName("queue").setDescription(i18n.__("commands.music.repeat.slashQueue")),
+            )
+            .addSubcommand((sub) =>
+                sub.setName("song").setDescription(i18n.__("commands.music.repeat.slashQueue")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("disable")
+                    .setDescription(i18n.__("commands.music.repeat.slashDisable")),
+            ) as SlashCommandBuilder;
+    },
 })
-export class RepeatCommand extends BaseCommand {
+export class RepeatCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @useRequestChannel
     @inVC
     @haveQueue
     @sameVC
-    public execute(ctx: CommandContext): Promise<Message> | undefined {
+    public contextRun(ctx: CommandContext): Promise<Message> | undefined {
         const __mf = i18n__mf(this.client, ctx.guild);
 
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {

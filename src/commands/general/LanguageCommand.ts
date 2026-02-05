@@ -1,9 +1,11 @@
-import { ApplicationCommandOptionType } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "i18n";
 import i18nConfig from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, supportedLocales } from "../../utils/functions/i18n.js";
@@ -13,43 +15,62 @@ function findLocale(input: string): string | null {
     return supportedLocales.find((loc) => loc.toLowerCase() === lowerInput) ?? null;
 }
 
-@Command<typeof LanguageCommand>({
+@ApplyOptions<Command.Options>({
+    name: "language",
     aliases: ["lang", "locale"],
     description: i18nConfig.__("commands.general.language.description"),
-    name: "language",
-    slash: {
-        options: [
-            {
-                description: i18nConfig.__("commands.general.language.slashSetDescription"),
-                name: "set",
-                options: [
-                    {
-                        description: i18nConfig.__("commands.general.language.slashLocaleOption"),
-                        name: "locale",
-                        required: true,
-                        type: ApplicationCommandOptionType.String,
-                        choices: supportedLocales.map((loc) => ({ name: loc, value: loc })),
-                    },
-                ],
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18nConfig.__("commands.general.language.slashViewDescription"),
-                name: "view",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18nConfig.__("commands.general.language.slashResetDescription"),
-                name: "reset",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-        ],
+    detailedDescription: { usage: i18nConfig.__("commands.general.language.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "language")
+            .setDescription(opts.description ?? "Change the bot language for this server.")
+            .addSubcommand((sub) =>
+                sub
+                    .setName("set")
+                    .setDescription(i18nConfig.__("commands.general.language.slashSetDescription"))
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("locale")
+                            .setDescription(
+                                i18nConfig.__("commands.general.language.slashLocaleOption"),
+                            )
+                            .setRequired(true)
+                            .addChoices(
+                                ...supportedLocales.map((loc) => ({ name: loc, value: loc })),
+                            ),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("view")
+                    .setDescription(
+                        i18nConfig.__("commands.general.language.slashViewDescription"),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("reset")
+                    .setDescription(
+                        i18nConfig.__("commands.general.language.slashResetDescription"),
+                    ),
+            ) as SlashCommandBuilder;
     },
-    usage: i18nConfig.__("commands.general.language.usage"),
 })
-export class LanguageCommand extends BaseCommand {
+export class LanguageCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @memberReqPerms(["ManageGuild"], i18nConfig.__("commands.general.language.noPermission"))
-    public async execute(ctx: CommandContext): Promise<void> {
+    public async contextRun(ctx: CommandContext): Promise<void> {
         const guildId = ctx.guild?.id;
         if (!guildId) {
             return;
