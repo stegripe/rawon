@@ -1,5 +1,6 @@
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 import {
     type ClientOptions,
     IntentsBitField,
@@ -8,7 +9,7 @@ import {
     Sweepers,
 } from "discord.js";
 import i18n from "i18n";
-import { enablePrefix, enableSlashCommand, lang } from "./env.js";
+import { enablePrefix, enableSlashCommand, lang, mainPrefix } from "./env.js";
 
 const intents: number[] = [
     IntentsBitField.Flags.Guilds,
@@ -27,7 +28,13 @@ if (!enablePrefix && !enableSlashCommand) {
     process.exit(1);
 }
 
-export const clientOptions: ClientOptions = {
+const rootDir: string = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+
+export const clientOptions: ClientOptions & {
+    loadMessageCommandListeners: boolean;
+    defaultPrefix: string;
+    baseUserDirectory: string;
+} = {
     allowedMentions: { parse: ["users"], repliedUser: true },
     intents,
     makeCache: Options.cacheWithLimits({
@@ -48,6 +55,9 @@ export const clientOptions: ClientOptions = {
             }),
         },
     },
+    loadMessageCommandListeners: enablePrefix,
+    defaultPrefix: mainPrefix,
+    baseUserDirectory: rootDir,
 };
 
 i18n.configure({

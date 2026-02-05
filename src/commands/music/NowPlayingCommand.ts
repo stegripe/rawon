@@ -1,36 +1,55 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { clearInterval, setInterval } from "node:timers";
 import { type AudioPlayerState, type AudioResource } from "@discordjs/voice";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     ComponentType,
     type EmbedBuilder,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
 } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
-import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 
-@Command<typeof NowPlayingCommand>({
+@ApplyOptions<Command.Options>({
+    name: "nowplaying",
     aliases: ["np"],
     description: i18n.__("commands.music.nowplaying.description"),
-    name: "nowplaying",
-    slash: {
-        options: [],
+    detailedDescription: { usage: "{prefix}nowplaying" },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "nowplaying")
+            .setDescription(
+                opts.description ?? "Shows the currently playing song.",
+            ) as SlashCommandBuilder;
     },
-    usage: "{prefix}nowplaying",
 })
-export class NowPlayingCommand extends BaseCommand {
+export class NowPlayingCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @haveQueue
-    public async execute(ctx: CommandContext): Promise<void> {
+    public async contextRun(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
         const getEmbed = (): EmbedBuilder => {
@@ -83,7 +102,7 @@ export class NowPlayingCommand extends BaseCommand {
 
                 return embed;
             } catch (error) {
-                this.client.logger.error(
+                this.container.logger.error(
                     "NOWPLAY_ERR:",
                     error instanceof Error ? (error.stack ?? error) : error,
                 );

@@ -1,40 +1,59 @@
-import { ApplicationCommandOptionType, type Message, type VoiceBasedChannel } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import {
+    type Message,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
+    type VoiceBasedChannel,
+} from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "play",
     aliases: ["p", "add"],
     description: i18n.__("commands.music.play.description"),
-    name: "play",
-    slash: {
-        description: i18n.__("commands.music.play.description"),
-        options: [
-            {
-                description: i18n.__("commands.music.play.slashQueryDescription"),
-                name: "query",
-                type: ApplicationCommandOptionType.String,
-                required: true,
-            },
-        ],
+    detailedDescription: { usage: i18n.__("commands.music.play.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "play")
+            .setDescription(opts.description ?? i18n.__("commands.music.play.description"))
+            .addStringOption((opt) =>
+                opt
+                    .setName("query")
+                    .setDescription(i18n.__("commands.music.play.slashQueryDescription"))
+                    .setRequired(true),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.play.usage"),
 })
-export class PlayCommand extends BaseCommand {
+export class PlayCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @useRequestChannel
     @inVC
     @validVC
     @sameVC
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 
-        if (ctx.isInteraction() && !ctx.deferred) {
+        if (ctx.isCommandInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
 
@@ -64,7 +83,7 @@ export class PlayCommand extends BaseCommand {
                         "warn",
                         __mf("reusable.invalidUsage", {
                             prefix: `**\`${this.client.config.mainPrefix}help\`**`,
-                            name: `**\`${this.meta.name}\`**`,
+                            name: `**\`${this.options.name}\`**`,
                         }),
                     ),
                 ],

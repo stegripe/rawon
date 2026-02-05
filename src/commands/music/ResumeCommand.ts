@@ -1,26 +1,43 @@
-import { type Message } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { type Message, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
 
-@Command({
-    description: i18n.__("commands.music.resume.description"),
+@ApplyOptions<Command.Options>({
     name: "resume",
-    slash: {
-        options: [],
+    aliases: [],
+    description: i18n.__("commands.music.resume.description"),
+    detailedDescription: { usage: "{prefix}resume" },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "resume")
+            .setDescription(opts.description ?? "Resume the paused song.") as SlashCommandBuilder;
     },
-    usage: "{prefix}resume",
 })
-export class ResumeCommand extends BaseCommand {
+export class ResumeCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @useRequestChannel
     @inVC
     @haveQueue
     @sameVC
-    public execute(ctx: CommandContext): Promise<Message> | undefined {
+    public contextRun(ctx: CommandContext): Promise<Message> | undefined {
         const __ = i18n__(this.client, ctx.guild);
 
         if (ctx.guild?.queue?.playing === true) {

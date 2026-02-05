@@ -1,53 +1,71 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+
 import { type AudioPlayerPlayingState, AudioPlayerStatus } from "@discordjs/voice";
-import { ApplicationCommandOptionType, type VoiceChannel } from "discord.js";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { PermissionFlagsBits, type SlashCommandBuilder, type VoiceChannel } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
-import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { play } from "../../utils/handlers/GeneralUtil.js";
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "skipto",
     aliases: ["st"],
     description: i18n.__("commands.music.skipTo.description"),
-    name: "skipto",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.skipTo.slashFirstDescription"),
-                name: "first",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.skipTo.slashLastDescription"),
-                name: "last",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.skipTo.slashSpecificDescription"),
-                name: "specific",
-                options: [
-                    {
-                        description: i18n.__("commands.music.skipTo.slashPositionDescription"),
-                        name: "position",
-                        required: true,
-                        type: ApplicationCommandOptionType.Number,
-                    },
-                ],
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-        ],
+    detailedDescription: {
+        usage: i18n.__mf("commands.music.skipTo.usage", { options: "first | last" }),
     },
-    usage: i18n.__mf("commands.music.skipTo.usage", { options: "first | last" }),
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "skipto")
+            .setDescription(opts.description ?? "Skip to a specific position in the queue.")
+            .addSubcommand((sub) =>
+                sub
+                    .setName("first")
+                    .setDescription(i18n.__("commands.music.skipTo.slashFirstDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("last")
+                    .setDescription(i18n.__("commands.music.skipTo.slashLastDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("specific")
+                    .setDescription(i18n.__("commands.music.skipTo.slashSpecificDescription"))
+                    .addNumberOption((opt) =>
+                        opt
+                            .setName("position")
+                            .setDescription(
+                                i18n.__("commands.music.skipTo.slashPositionDescription"),
+                            )
+                            .setRequired(true),
+                    ),
+            ) as SlashCommandBuilder;
+    },
 })
-export class SkipToCommand extends BaseCommand {
+export class SkipToCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @inVC
     @haveQueue
     @sameVC
-    public async execute(ctx: CommandContext): Promise<void> {
+    public async contextRun(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 
@@ -113,7 +131,7 @@ export class SkipToCommand extends BaseCommand {
                         "warn",
                         __mf("reusable.invalidUsage", {
                             prefix: `**\`${this.client.config.mainPrefix}help\`**`,
-                            name: `**\`${this.meta.name}\`**`,
+                            name: `**\`${this.options.name}\`**`,
                         }),
                     ),
                 ],

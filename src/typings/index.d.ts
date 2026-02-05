@@ -1,17 +1,27 @@
-import type {
-    ApplicationCommandOptionData,
-    ApplicationCommandType,
-    Client as OClient,
-    ClientEvents,
-    ClientPresenceStatus,
-    Collection,
-    Guild as OG,
-    GuildMember,
-    EmbedBuilder,
+import {
+    type ApplicationCommandOptionData,
+    type ApplicationCommandType,
+    type Client as OClient,
+    type ClientEvents,
+    type ClientPresenceStatus,
+    type Collection,
+    type Guild as OG,
+    type GuildMember,
+    type EmbedBuilder,
 } from "discord.js";
-import type { CommandContext } from "../structures/CommandContext.js";
-import type { Rawon } from "../structures/Rawon.js";
-import type { ServerQueue } from "../structures/ServerQueue.js";
+import { type Got } from "got";
+import { type Soundcloud } from "soundcloud.ts";
+import { type CommandContext } from "../structures/CommandContext.js";
+import { type Rawon } from "../structures/Rawon.js";
+import { type ServerQueue } from "../structures/ServerQueue.js";
+import { type SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
+import { type AudioCacheManager } from "../utils/structures/AudioCacheManager.js";
+import { type ClientUtils } from "../utils/structures/ClientUtils.js";
+import { type CookiesManager } from "../utils/structures/CookiesManager.js";
+import { type DebugLogManager } from "../utils/structures/DebugLogManager.js";
+import { type RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
+import { type SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
+import type * as config from "../config/index.js";
 
 export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
@@ -282,4 +292,19 @@ export interface ExtendedDataManager {
         guildId: string,
         botId: string,
     ): { channelId: string | null; messageId: string | null } | null;
+}
+
+declare module "@sapphire/framework" {
+    interface Container {
+        config: typeof config;
+        data: SQLiteDataManager<Record<string, GuildData>>;
+        debugLog: DebugLogManager;
+        spotify: SpotifyUtil;
+        utils: ClientUtils;
+        soundcloud: Soundcloud;
+        requestChannelManager: RequestChannelManager;
+        audioCache: AudioCacheManager;
+        cookies: CookiesManager;
+        request: Got;
+    }
 }

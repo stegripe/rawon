@@ -1,55 +1,73 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
-    ApplicationCommandOptionType,
     ChannelType,
     type Message,
+    PermissionFlagsBits,
     PermissionsBitField,
+    type SlashCommandBuilder,
     type TextChannel,
 } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "requestchannel",
     aliases: ["rc", "reqchannel", "musicchannel"],
     description: i18n.__("commands.music.requestChannel.description"),
-    name: "requestchannel",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.requestChannel.slashSetDescription"),
-                name: "set",
-                type: ApplicationCommandOptionType.Subcommand,
-                options: [
-                    {
-                        description: i18n.__(
-                            "commands.music.requestChannel.slashChannelDescription",
-                        ),
-                        name: "channel",
-                        type: ApplicationCommandOptionType.Channel,
-                        channelTypes: [ChannelType.GuildText],
-                        required: true,
-                    },
-                ],
-            },
-            {
-                description: i18n.__("commands.music.requestChannel.slashRemoveDescription"),
-                name: "remove",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.requestChannel.slashStatusDescription"),
-                name: "status",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-        ],
+    detailedDescription: { usage: i18n.__("commands.music.requestChannel.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "requestchannel")
+            .setDescription(opts.description ?? "Configure the music request channel.")
+            .addSubcommand((sub) =>
+                sub
+                    .setName("set")
+                    .setDescription(i18n.__("commands.music.requestChannel.slashSetDescription"))
+                    .addChannelOption((opt) =>
+                        opt
+                            .setName("channel")
+                            .setDescription(
+                                i18n.__("commands.music.requestChannel.slashChannelDescription"),
+                            )
+                            .addChannelTypes(ChannelType.GuildText)
+                            .setRequired(true),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("remove")
+                    .setDescription(
+                        i18n.__("commands.music.requestChannel.slashRemoveDescription"),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("status")
+                    .setDescription(
+                        i18n.__("commands.music.requestChannel.slashStatusDescription"),
+                    ),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.requestChannel.usage"),
 })
-export class RequestChannelCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+export class RequestChannelCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
+    public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 
