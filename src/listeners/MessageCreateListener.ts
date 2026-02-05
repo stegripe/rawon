@@ -49,7 +49,7 @@ const MUSIC_COMMANDS = [
 })
 export class MessageCreateListener extends Listener<typeof Events.MessageCreate> {
     private readonly processedMessages = new Map<string, number>();
-    private readonly CACHE_TTL = 5000; // 5 seconds
+    private readonly CACHE_TTL = 5000;
 
     private cleanupCache(): void {
         const now = Date.now();
@@ -143,7 +143,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 const user = this.getUserFromMention(userMention[0], message);
                 if (user?.id === client.user?.id) {
                     isMentionPrefix = true;
-                    actualPrefix = userMention[0]; // Store the actual mention string
+                    actualPrefix = userMention[0];
                     return true;
                 }
                 return false;
