@@ -253,6 +253,7 @@ export class Rawon extends SapphireClient {
         super({
             ...clientOptions,
             loadApplicationCommandRegistriesStatusListeners: !config.isMultiBot,
+            loadDefaultErrorListeners: false,
             logger: {
                 instance: new PinoLogger({
                     name: "rawon",
@@ -285,10 +286,11 @@ export class Rawon extends SapphireClient {
             const listenerStore = this.stores.get("listeners");
             const coreReady = listenerStore.get("CoreReady");
             if (coreReady) {
-                listenerStore.unload(coreReady);
-                container.logger.debug(
-                    "[MultiBot] Unloaded CoreReady listener to prevent application command registration errors",
-                );
+                (coreReady as { run: () => void }).run = () => {
+                    container.logger.debug(
+                        "[MultiBot] Skipped CoreReady listener to prevent application command registration errors",
+                    );
+                };
             }
         }
 
