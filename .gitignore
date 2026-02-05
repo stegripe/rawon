@@ -32,6 +32,3 @@ dist
 cache
 cookies.txt
 *.cookies.txt
-
-# Temporary folders
-pevita-bot
