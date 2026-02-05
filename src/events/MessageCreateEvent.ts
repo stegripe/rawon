@@ -79,13 +79,10 @@ export class MessageCreateEvent extends BaseEvent {
 
         let isMentionPrefix = false;
 
-        // Get custom prefix for this guild
         const guildPrefix = message.guild
             ? (this.client.data.data?.[message.guild.id]?.prefix ?? null)
             : null;
 
-        // If guild has custom prefix, use only that prefix (override default prefixes)
-        // Otherwise, use default prefixes (altPrefixes + mainPrefix)
         const prefixList: string[] = [];
         if (guildPrefix) {
             prefixList.push(guildPrefix);

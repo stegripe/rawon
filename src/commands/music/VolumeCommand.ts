@@ -126,7 +126,6 @@ export class VolumeCommand extends BaseCommand {
             return;
         }
 
-        // Check permission for volume > 100 (requires DJ role or ManageGuild permission)
         if (volume > 100) {
             const djRole = await this.client.utils
                 .fetchDJRole(ctx.guild as unknown as GuildMember["guild"])

@@ -445,13 +445,11 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
 
     public async setPrefix(guildId: string, prefix: string | null): Promise<void> {
         await this.manager.add(async () => {
-            // Try to update prefix first (only if guild exists)
             const updateStmt = this.db.prepare(`
                 UPDATE guilds SET prefix = ? WHERE guild_id = ?
             `);
             const changes = updateStmt.run(prefix, guildId).changes;
 
-            // If no rows were updated, guild doesn't exist, create it with default values
             if (changes === 0) {
                 const insertStmt = this.db.prepare(`
                     INSERT INTO guilds (guild_id, locale, dj_enable, dj_role, prefix)
@@ -460,7 +458,6 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                 insertStmt.run(guildId, null, 0, null, prefix);
             }
 
-            // Update in-memory data
             if (!this._data) {
                 this._data = {} as T;
             }

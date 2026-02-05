@@ -50,7 +50,6 @@ export class InviteCommand extends BaseCommand {
             const bots = multiBotManager.getBots();
 
             if (bots.length === 0) {
-                // Fallback to single bot if no bots registered
                 const invite = this.client.generateInvite({
                     permissions,
                     scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
@@ -62,7 +61,6 @@ export class InviteCommand extends BaseCommand {
                     bot: this.client.user?.username,
                 });
             } else {
-                // Generate invites for all bots
                 const inviteLines = bots
                     .sort((a, b) => a.tokenIndex - b.tokenIndex)
                     .map((bot) => {
@@ -71,7 +69,6 @@ export class InviteCommand extends BaseCommand {
                             scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
                         });
                         const botNum = bot.tokenIndex + 1;
-                        // return `- [Click here](${invite}) to invite bot #${botNum} to your server`;
                         return __mf("commands.general.invite.clickURL", {
                             url: invite,
                             botNum,
@@ -83,7 +80,6 @@ export class InviteCommand extends BaseCommand {
                 });
             }
         } else {
-            // Single bot mode
             const invite = this.client.generateInvite({
                 permissions,
                 scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],

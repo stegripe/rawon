@@ -91,7 +91,6 @@ export class PrefixCommand extends BaseCommand {
             return;
         }
 
-        // Validate prefix (max length, no spaces for single word prefixes)
         if (prefixArg.length > 10) {
             await ctx.reply({
                 embeds: [createEmbed("error", __("commands.general.prefix.prefixTooLong"), true)],
