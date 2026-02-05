@@ -63,13 +63,14 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class RequestChannelCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const hasPermission =
             ctx.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) ?? false;
@@ -110,7 +111,7 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            const currentChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+            const currentChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
             if (currentChannel) {
                 return ctx.reply({
                     embeds: [
@@ -125,7 +126,7 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            const isChannelUsedByAnyBot = this.client.requestChannelManager.isRequestChannel(
+            const isChannelUsedByAnyBot = client.requestChannelManager.isRequestChannel(
                 ctx.guild,
                 channel.id,
             );
@@ -143,18 +144,23 @@ export class RequestChannelCommand extends ContextCommand {
             }
 
             const textChannel = channel as TextChannel;
-            const botMember = ctx.guild.members.me;
-
+            // Use the correct client to get bot member (not container.client)
+            let botMember = ctx.guild.members.cache.get(client.user!.id);
             if (!botMember) {
-                return ctx.reply({
-                    embeds: [
-                        createEmbed(
-                            "error",
-                            __("commands.music.requestChannel.noBotPermissions"),
-                            true,
-                        ),
-                    ],
-                });
+                // Try to fetch if not cached
+                try {
+                    botMember = await ctx.guild.members.fetch(client.user!.id);
+                } catch {
+                    return ctx.reply({
+                        embeds: [
+                            createEmbed(
+                                "error",
+                                __("commands.music.requestChannel.noBotPermissions"),
+                                true,
+                            ),
+                        ],
+                    });
+                }
             }
 
             const botPermissions = textChannel.permissionsFor(botMember);
@@ -192,13 +198,14 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            await this.client.requestChannelManager.setRequestChannel(ctx.guild, channel.id);
+            await client.requestChannelManager.setRequestChannel(ctx.guild, channel.id);
 
-            const playerMessage =
-                await this.client.requestChannelManager.createOrUpdatePlayerMessage(ctx.guild);
+            const playerMessage = await client.requestChannelManager.createOrUpdatePlayerMessage(
+                ctx.guild,
+            );
 
             if (!playerMessage) {
-                await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
+                await client.requestChannelManager.setRequestChannel(ctx.guild, null);
                 return ctx.reply({
                     embeds: [
                         createEmbed(
@@ -222,7 +229,7 @@ export class RequestChannelCommand extends ContextCommand {
         }
 
         if (subcommand === "remove") {
-            const existingChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+            const existingChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
             if (!existingChannel) {
                 return ctx.reply({
                     embeds: [
@@ -235,14 +242,14 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            await this.client.requestChannelManager.setRequestChannel(ctx.guild, null);
+            await client.requestChannelManager.setRequestChannel(ctx.guild, null);
 
             return ctx.reply({
                 embeds: [createEmbed("success", __("requestChannel.removeChannel"), true)],
             });
         }
 
-        const currentChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+        const currentChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
 
         if (currentChannel) {
             return ctx.reply({

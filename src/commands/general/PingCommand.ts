@@ -37,7 +37,7 @@ export class PingCommand extends ContextCommand {
             await ctx.deferReply();
         }
 
-        const client = this.container.client as Rawon;
+        const client = ctx.client as Rawon;
         const __mf = i18n__mf(client, ctx.guild);
 
         const before = Date.now();

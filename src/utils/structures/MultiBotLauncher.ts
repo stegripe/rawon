@@ -109,8 +109,8 @@ export class MultiBotLauncher {
         }
         log.info(`[MultiBot] Starting ${discordTokens.length} bot instances...`);
 
-        const startPromises: Promise<Rawon>[] = [];
-
+        // Start bots SEQUENTIALLY to avoid race conditions with container.client
+        // and listener binding. The first bot to login becomes container.client.
         for (let i = 0; i < discordTokens.length; i++) {
             const token = discordTokens[i];
 
@@ -118,16 +118,17 @@ export class MultiBotLauncher {
                 log.warn(`[MultiBot] Token #${i} is empty, skipping...`);
                 continue;
             }
-            startPromises.push(this.createBotInstance(token, i, clientOptions));
+
+            try {
+                const client = await this.createBotInstance(token, i, clientOptions);
+                this.clients.push(client);
+            } catch (error: unknown) {
+                log.error(`[MultiBot] Error starting bot #${i}:`, error);
+                throw error;
+            }
         }
-        try {
-            const clients = await Promise.all(startPromises);
-            this.clients.push(...clients);
-            log.info(`[MultiBot] Successfully started ${this.clients.length} bot instances!`);
-        } catch (error: unknown) {
-            log.error("[MultiBot] Error starting bot instances:", error);
-            throw error;
-        }
+
+        log.info(`[MultiBot] Successfully started ${this.clients.length} bot instances!`);
     }
 
     public getClients(): Rawon[] {

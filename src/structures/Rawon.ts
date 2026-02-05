@@ -2,7 +2,18 @@ import path from "node:path";
 import process from "node:process";
 import { type Command, container, SapphireClient } from "@sapphire/framework";
 import { PinoLogger } from "@stegripe/pino-logger";
-import { type ClientOptions, Collection, type Message } from "discord.js";
+import {
+    type ClientOptions,
+    Collection,
+    type DMChannel,
+    type Guild,
+    type GuildChannel,
+    type Interaction,
+    type Message,
+    type NonThreadGuildBasedChannel,
+    type PartialMessage,
+    type VoiceState,
+} from "discord.js";
 import got from "got";
 import { Soundcloud } from "soundcloud.ts";
 import * as config from "../config/index.js";
@@ -93,8 +104,8 @@ class CommandsCompatibility {
 
     public get(name: string): CompatibleCommand | undefined {
         const store = this.client.stores.get("commands");
-        container.logger.info(
-            `[CommandsCompat] get("${name}") - store has ${store.size} commands: ${[...store.keys()].join(", ")}`,
+        container.logger.debug(
+            `[CommandsCompat] get("${name}") - store has ${store.size} commands`,
         );
         // Try direct name first
         let cmd = store.get(name);
@@ -117,16 +128,12 @@ class CommandsCompatibility {
         return cmd ? wrapCommand(cmd) : undefined;
     }
 
-    public find<T extends Command>(fn: (cmd: CompatibleCommand) => cmd is T): T | undefined;
-    public find(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand | undefined;
     public find(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand | undefined {
         const store = this.client.stores.get("commands");
         const wrapped = [...store.values()].map(wrapCommand);
         return wrapped.find(fn);
     }
 
-    public filter<T extends Command>(fn: (cmd: CompatibleCommand) => cmd is T): T[];
-    public filter(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand[];
     public filter(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand[] {
         const store = this.client.stores.get("commands");
         const wrapped = [...store.values()].map(wrapCommand);
@@ -177,28 +184,28 @@ class CommandsCompatibility {
         const args = content.split(/ +/u);
         const commandName = args.shift()?.toLowerCase();
 
-        container.logger.info(
-            `[CommandsCompat] handle() called - prefix: "${prefix}", commandName: "${commandName}", content: "${content}"`,
+        container.logger.debug(
+            `[CommandsCompat] handle() called - prefix: "${prefix}", commandName: "${commandName}"`,
         );
 
         if (!commandName) {
-            container.logger.info("[CommandsCompat] No command name found");
+            container.logger.debug("[CommandsCompat] No command name found");
             return;
         }
 
         const command = this.get(commandName);
         if (!command) {
-            container.logger.info(`[CommandsCompat] Command "${commandName}" not found`);
+            container.logger.debug(`[CommandsCompat] Command "${commandName}" not found`);
             return;
         }
 
-        container.logger.info(
+        container.logger.debug(
             `[CommandsCompat] Found command: ${command.name}, meta.disable: ${command.meta.disable}`,
         );
 
         // Check if command is disabled
         if (command.meta.disable) {
-            container.logger.info(`[CommandsCompat] Command "${commandName}" is disabled`);
+            container.logger.debug(`[CommandsCompat] Command "${commandName}" is disabled`);
             return;
         }
 
@@ -210,7 +217,7 @@ class CommandsCompatibility {
             contextRun?: (ctx: CommandContext) => Promise<unknown>;
         };
 
-        container.logger.info(
+        container.logger.debug(
             `[CommandsCompat] contextRun available: ${typeof ctxCommand.contextRun === "function"}`,
         );
 
@@ -321,78 +328,77 @@ export class Rawon extends SapphireClient {
                 );
 
                 // Forward key events to listeners
-                this.on("messageCreate", (message) => {
+                this.on("messageCreate", (message: Message) => {
                     const listener = listenerStore.get("MessageCreateListener");
                     if (listener?.run) {
-                        void (listener as { run: (message: Message) => Promise<void> }).run(
-                            message,
+                        void (listener as { run: (m: Message) => Promise<void> }).run(message);
+                    }
+                });
+
+                this.on("interactionCreate", (interaction: Interaction) => {
+                    const listener = listenerStore.get("InteractionCreateListener");
+                    if (listener?.run) {
+                        void (listener as { run: (i: Interaction) => Promise<void> }).run(
+                            interaction,
                         );
                     }
                 });
 
-                this.on("interactionCreate", (interaction) => {
-                    const listener = listenerStore.get("InteractionCreateListener");
-                    if (listener?.run) {
-                        void (
-                            listener as { run: (interaction: typeof interaction) => Promise<void> }
-                        ).run(interaction);
-                    }
-                });
-
-                this.on("voiceStateUpdate", (oldState, newState) => {
+                this.on("voiceStateUpdate", (oldState: VoiceState, newState: VoiceState) => {
                     const listener = listenerStore.get("VoiceStateUpdateListener");
                     if (listener?.run) {
                         void (
                             listener as {
-                                run: (
-                                    oldState: typeof oldState,
-                                    newState: typeof newState,
-                                ) => Promise<Message | undefined>;
+                                run: (o: VoiceState, n: VoiceState) => Promise<Message | undefined>;
                             }
                         ).run(oldState, newState);
                     }
                 });
 
-                this.on("messageDelete", (message) => {
+                this.on("messageDelete", (message: Message | PartialMessage) => {
                     const listener = listenerStore.get("MessageDeleteListener");
                     if (listener?.run) {
-                        void (listener as { run: (message: typeof message) => Promise<void> }).run(
-                            message,
-                        );
+                        void (
+                            listener as { run: (m: Message | PartialMessage) => Promise<void> }
+                        ).run(message);
                     }
                 });
 
-                this.on("guildDelete", (guild) => {
+                this.on("guildDelete", (guild: Guild) => {
                     const listener = listenerStore.get("GuildDeleteListener");
                     if (listener?.run) {
-                        void (listener as { run: (guild: typeof guild) => Promise<void> }).run(
-                            guild,
-                        );
+                        void (listener as { run: (g: Guild) => Promise<void> }).run(guild);
                     }
                 });
 
-                this.on("channelDelete", (channel) => {
+                this.on("channelDelete", (channel: DMChannel | GuildChannel) => {
                     const listener = listenerStore.get("ChannelDeleteListener");
                     if (listener?.run) {
-                        void (listener as { run: (channel: typeof channel) => Promise<void> }).run(
-                            channel,
-                        );
+                        void (
+                            listener as { run: (c: DMChannel | GuildChannel) => Promise<void> }
+                        ).run(channel);
                     }
                 });
 
-                this.on("channelUpdate", (oldChannel, newChannel) => {
-                    const listener = listenerStore.get("ChannelUpdateListener");
-                    if (listener?.run) {
-                        void (
-                            listener as {
-                                run: (
-                                    oldChannel: typeof oldChannel,
-                                    newChannel: typeof newChannel,
-                                ) => Promise<void>;
-                            }
-                        ).run(oldChannel, newChannel);
-                    }
-                });
+                this.on(
+                    "channelUpdate",
+                    (
+                        oldChannel: DMChannel | NonThreadGuildBasedChannel,
+                        newChannel: DMChannel | NonThreadGuildBasedChannel,
+                    ) => {
+                        const listener = listenerStore.get("ChannelUpdateListener");
+                        if (listener?.run) {
+                            void (
+                                listener as {
+                                    run: (
+                                        o: DMChannel | NonThreadGuildBasedChannel,
+                                        n: DMChannel | NonThreadGuildBasedChannel,
+                                    ) => Promise<void>;
+                                }
+                            ).run(oldChannel, newChannel);
+                        }
+                    },
+                );
 
                 container.logger.info(
                     `[MultiBot] Event forwarding set up for bot ${this.user?.tag}`,

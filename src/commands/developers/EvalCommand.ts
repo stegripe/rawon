@@ -6,6 +6,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
@@ -33,14 +34,15 @@ import { i18n__ } from "../../utils/functions/i18n.js";
 })
 export class EvalCommand extends ContextCommand {
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const client = this.container.client as Rawon;
-        const __ = i18n__(client, ctx.guild);
-        const _msg = ctx;
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = localCtx.client as Rawon;
+        const __ = i18n__(client, localCtx.guild);
+        const _msg = localCtx;
         const _client = client;
 
-        const code = ctx.args
+        const code = localCtx.args
             .join(" ")
-            .replaceAll(/```(?:\S+\n)?(.*?)\n?```/gsu, (_, a: string) => a);
+            .replaceAll(/```(?:\S+\n)?(.*?)\n?```/gsu, (_: string, a: string) => a);
         const embed = createEmbed("info").addFields([
             {
                 name: __("commands.developers.eval.inputString"),
@@ -50,7 +52,7 @@ export class EvalCommand extends ContextCommand {
 
         try {
             if (!code) {
-                await ctx.send({
+                await localCtx.send({
                     embeds: [createEmbed("error", __("commands.developers.eval.noCode"), true)],
                 });
                 return;
@@ -80,11 +82,8 @@ export class EvalCommand extends ContextCommand {
                     : `\`\`\`js\n${cleaned}\`\`\``;
 
             embed.addFields([{ name: __("commands.developers.eval.outputString"), value: output }]);
-            await ctx
+            await localCtx
                 .send({
-                    askDeletion: {
-                        reference: ctx.author.id,
-                    },
                     embeds: [embed],
                 })
                 .catch((error: unknown) => this.container.logger.error("PROMISE_ERR:", error));
@@ -98,11 +97,8 @@ export class EvalCommand extends ContextCommand {
             embed
                 .setColor("Red")
                 .addFields([{ name: __("commands.developers.eval.errorString"), value: error }]);
-            await ctx
+            await localCtx
                 .send({
-                    askDeletion: {
-                        reference: ctx.author.id,
-                    },
                     embeds: [embed],
                 })
                 .catch((err: unknown) => this.container.logger.error("PROMISE_ERR:", err));

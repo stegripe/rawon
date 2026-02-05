@@ -28,7 +28,7 @@ export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate>
 
         if ((oldChannel as VoiceChannel).rtcRegion !== (newChannel as VoiceChannel).rtcRegion) {
             const queue = newChannel.guild.queue;
-            const client = this.container.client as Rawon;
+            const client = newChannel.client as Rawon;
             const isRequestChannel = this.container.requestChannelManager.isRequestChannel(
                 newChannel.guild,
                 queue.textChannel.id,

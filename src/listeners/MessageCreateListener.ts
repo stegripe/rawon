@@ -48,10 +48,39 @@ const MUSIC_COMMANDS = [
     event: Events.MessageCreate,
 })
 export class MessageCreateListener extends Listener<typeof Events.MessageCreate> {
+    // Cache to prevent duplicate message processing (messageId:botId -> timestamp)
+    private readonly processedMessages = new Map<string, number>();
+    private readonly CACHE_TTL = 5000; // 5 seconds
+
+    private cleanupCache(): void {
+        const now = Date.now();
+        for (const [key, timestamp] of this.processedMessages) {
+            if (now - timestamp > this.CACHE_TTL) {
+                this.processedMessages.delete(key);
+            }
+        }
+    }
+
     public async run(message: Message): Promise<void> {
         const client = message.client as Rawon;
 
+        // Deduplicate processing - prevent same message being processed twice by same bot
+        const cacheKey = `${message.id}:${client.user?.id}`;
+        if (this.processedMessages.has(cacheKey)) {
+            this.container.logger.debug(
+                `[MessageCreate] DEDUP: ${client.user?.tag} skipping already processed message ${message.id}`,
+            );
+            return;
+        }
+        this.processedMessages.set(cacheKey, Date.now());
+
+        // Cleanup old cache entries periodically
+        if (this.processedMessages.size > 100) {
+            this.cleanupCache();
+        }
+
         this.container.debugLog.logData("info", "MESSAGE_CREATE", [
+            ["Bot", client.user?.tag ?? "unknown"],
             ["ID", message.id],
             ["Guild", message.guild ? `${message.guild.name}(${message.guild.id})` : "DM"],
             [
@@ -69,7 +98,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             );
         }
 
-        this.container.logger.info(
+        this.container.logger.debug(
             `[MessageCreate] ${client.user?.tag} Processing message from ${message.author.tag}: "${message.content.slice(0, 30)}"`,
         );
 
@@ -78,7 +107,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             message.channel.type === ChannelType.DM ||
             !client.commands.isReady
         ) {
-            this.container.logger.info(
+            this.container.logger.debug(
                 `[MessageCreate] ${client.user?.tag} EARLY RETURN - bot:${message.author.bot}, DM:${message.channel.type === ChannelType.DM}, ready:${client.commands.isReady}`,
             );
             if (!client.commands.isReady) {
@@ -103,10 +132,11 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             prefixList.push(this.container.config.mainPrefix);
         }
 
-        this.container.logger.info(
+        this.container.logger.debug(
             `[MessageCreate] ${client.user?.tag} Prefix list: ${JSON.stringify(prefixList)}, message starts with: "${message.content.slice(0, 10)}"`,
         );
 
+        let actualPrefix = "";
         const prefixMatch = prefixList.find((pr) => {
             if (pr === "{mention}") {
                 const userMention = /<@(!)?\d*?>/u.exec(message.content);
@@ -116,15 +146,20 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 const user = this.getUserFromMention(userMention[0], message);
                 if (user?.id === client.user?.id) {
                     isMentionPrefix = true;
+                    actualPrefix = userMention[0]; // Store the actual mention string
                     return true;
                 }
                 return false;
             }
-            return message.content.startsWith(pr);
+            if (message.content.startsWith(pr)) {
+                actualPrefix = pr;
+                return true;
+            }
+            return false;
         });
 
-        this.container.logger.info(
-            `[MessageCreate] ${client.user?.tag} prefixMatch: "${prefixMatch}", isMentionPrefix: ${isMentionPrefix}`,
+        this.container.logger.debug(
+            `[MessageCreate] ${client.user?.tag} prefixMatch: "${prefixMatch}", actualPrefix: "${actualPrefix}", isMentionPrefix: ${isMentionPrefix}`,
         );
 
         const isRequestChannel =
@@ -152,8 +187,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                         return;
                     }
 
-                    const prefix = prefixMatch || "";
-                    const cmdContent = message.content.slice(prefix.length).trim();
+                    const cmdContent = message.content.slice(actualPrefix.length).trim();
                     const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
                     const isMusicCommand = cmdName && MUSIC_COMMANDS.includes(cmdName);
 
@@ -225,13 +259,12 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                     }
                 }
 
-                const prefix = prefixMatch || "";
-                const cmdContent = message.content.slice(prefix.length).trim();
+                const cmdContent = message.content.slice(actualPrefix.length).trim();
                 const cmdNameFromMsg = cmdContent.split(/ +/u)[0]?.toLowerCase();
                 this.container.logger.info(
                     `[MultiBot] ${client.user?.tag} ✅ PROCEEDING to execute command "${cmdNameFromMsg}" in REQUEST CHANNEL`,
                 );
-                client.commands.handle(message, prefixMatch as unknown as string);
+                client.commands.handle(message, actualPrefix);
 
                 setTimeout(() => {
                     void (async (): Promise<void> => {
@@ -306,8 +339,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                     return;
                 }
 
-                const prefix = prefixMatch || "";
-                const cmdContent = message.content.slice(prefix.length).trim();
+                const cmdContent = message.content.slice(actualPrefix.length).trim();
                 const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
                 const isMusicCommand = cmdName && MUSIC_COMMANDS.includes(cmdName);
 
@@ -375,10 +407,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                     return;
                 }
             }
-            this.container.logger.info(
-                `[MessageCreate] Calling commands.handle() for message "${message.content}" with prefix "${prefixMatch}"`,
+            this.container.logger.debug(
+                `[MessageCreate] Calling commands.handle() for message "${message.content.slice(0, 30)}" with prefix "${actualPrefix}"`,
             );
-            client.commands.handle(message, prefixMatch as unknown as string);
+            client.commands.handle(message, actualPrefix);
         }
     }
 
