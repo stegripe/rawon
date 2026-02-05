@@ -1,5 +1,4 @@
 import process from "node:process";
-import { type ClientOptions } from "discord.js";
 import { clientOptions, discordTokens, isMultiBot, isProd } from "../../config/index.js";
 import { Rawon } from "../../structures/Rawon.js";
 import { MultiBotManager } from "./MultiBotManager.js";
@@ -58,7 +57,7 @@ export class MultiBotLauncher {
     private async createBotInstance(
         token: string,
         tokenIndex: number,
-        options: ClientOptions,
+        options: typeof clientOptions,
     ): Promise<Rawon> {
         const client = new Rawon(options);
         client.on("clientReady", () => {

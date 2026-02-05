@@ -4,6 +4,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ChannelType,
+    type GuildMember,
     type Message,
     PermissionFlagsBits,
     PermissionsBitField,
@@ -11,6 +12,7 @@ import {
     type TextChannel,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -68,39 +70,43 @@ export class RequestChannelCommand extends ContextCommand {
     }
 
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
+        const localCtx = ctx as unknown as LocalCommandContext;
         const client = this.getClient(ctx);
-        const __ = i18n__(client, ctx.guild);
-        const __mf = i18n__mf(client, ctx.guild);
+        const __ = i18n__(client, localCtx.guild);
+        const __mf = i18n__mf(client, localCtx.guild);
 
+        const member = localCtx.member as GuildMember | null;
         const hasPermission =
-            ctx.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) ?? false;
+            member?.permissions instanceof PermissionsBitField
+                ? member.permissions.has(PermissionsBitField.Flags.ManageGuild)
+                : false;
         if (!hasPermission) {
-            return ctx.reply({
+            return localCtx.reply({
                 embeds: [
                     createEmbed("error", __("commands.music.requestChannel.noPermission"), true),
                 ],
             });
         }
 
-        if (!ctx.guild) {
-            return ctx.reply({
+        if (!localCtx.guild) {
+            return localCtx.reply({
                 embeds: [
                     createEmbed("error", __("commands.music.requestChannel.noPermission"), true),
                 ],
             });
         }
 
-        const subcommand = ctx.options?.getSubcommand() ?? ctx.args[0]?.toLowerCase();
+        const subcommand = localCtx.options?.getSubcommand() ?? localCtx.args[0]?.toLowerCase();
 
         if (subcommand === "set") {
             const channel =
-                ctx.options?.getChannel("channel") ??
-                (ctx.args[1]
-                    ? ctx.guild.channels.cache.get(ctx.args[1].replaceAll(/[<#>]/gu, ""))
+                localCtx.options?.getChannel("channel") ??
+                (localCtx.args[1]
+                    ? localCtx.guild.channels.cache.get(localCtx.args[1].replaceAll(/[<#>]/gu, ""))
                     : undefined);
 
             if (!channel || channel.type !== ChannelType.GuildText) {
-                return ctx.reply({
+                return localCtx.reply({
                     embeds: [
                         createEmbed(
                             "error",
@@ -111,9 +117,9 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            const currentChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
+            const currentChannel = client.requestChannelManager.getRequestChannel(localCtx.guild);
             if (currentChannel) {
-                return ctx.reply({
+                return localCtx.reply({
                     embeds: [
                         createEmbed(
                             "error",
@@ -127,12 +133,12 @@ export class RequestChannelCommand extends ContextCommand {
             }
 
             const isChannelUsedByAnyBot = client.requestChannelManager.isRequestChannel(
-                ctx.guild,
+                localCtx.guild,
                 channel.id,
             );
 
             if (isChannelUsedByAnyBot) {
-                return ctx.reply({
+                return localCtx.reply({
                     embeds: [
                         createEmbed(
                             "error",
@@ -144,12 +150,12 @@ export class RequestChannelCommand extends ContextCommand {
             }
 
             const textChannel = channel as TextChannel;
-            let botMember = ctx.guild.members.cache.get(client.user!.id);
+            let botMember = localCtx.guild.members.cache.get(client.user!.id);
             if (!botMember) {
                 try {
-                    botMember = await ctx.guild.members.fetch(client.user!.id);
+                    botMember = await localCtx.guild.members.fetch(client.user!.id);
                 } catch {
-                    return ctx.reply({
+                    return localCtx.reply({
                         embeds: [
                             createEmbed(
                                 "error",
@@ -183,7 +189,7 @@ export class RequestChannelCommand extends ContextCommand {
                     const spacedName = (flagName ?? "Unknown").replace(/([a-z])([A-Z])/g, "$1 $2");
                     return `**\`${spacedName}\`**`;
                 });
-                return ctx.reply({
+                return localCtx.reply({
                     embeds: [
                         createEmbed(
                             "error",
@@ -196,15 +202,15 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            await client.requestChannelManager.setRequestChannel(ctx.guild, channel.id);
+            await client.requestChannelManager.setRequestChannel(localCtx.guild, channel.id);
 
             const playerMessage = await client.requestChannelManager.createOrUpdatePlayerMessage(
-                ctx.guild,
+                localCtx.guild,
             );
 
             if (!playerMessage) {
-                await client.requestChannelManager.setRequestChannel(ctx.guild, null);
-                return ctx.reply({
+                await client.requestChannelManager.setRequestChannel(localCtx.guild, null);
+                return localCtx.reply({
                     embeds: [
                         createEmbed(
                             "error",
@@ -215,7 +221,7 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            return ctx.reply({
+            return localCtx.reply({
                 embeds: [
                     createEmbed(
                         "success",
@@ -227,9 +233,9 @@ export class RequestChannelCommand extends ContextCommand {
         }
 
         if (subcommand === "remove") {
-            const existingChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
+            const existingChannel = client.requestChannelManager.getRequestChannel(localCtx.guild);
             if (!existingChannel) {
-                return ctx.reply({
+                return localCtx.reply({
                     embeds: [
                         createEmbed(
                             "warn",
@@ -240,17 +246,17 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            await client.requestChannelManager.setRequestChannel(ctx.guild, null);
+            await client.requestChannelManager.setRequestChannel(localCtx.guild, null);
 
-            return ctx.reply({
+            return localCtx.reply({
                 embeds: [createEmbed("success", __("requestChannel.removeChannel"), true)],
             });
         }
 
-        const currentChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
+        const currentChannel = client.requestChannelManager.getRequestChannel(localCtx.guild);
 
         if (currentChannel) {
-            return ctx.reply({
+            return localCtx.reply({
                 embeds: [
                     createEmbed(
                         "info",
@@ -262,7 +268,7 @@ export class RequestChannelCommand extends ContextCommand {
             });
         }
 
-        return ctx.reply({
+        return localCtx.reply({
             embeds: [createEmbed("warn", __("requestChannel.noChannel"))],
         });
     }

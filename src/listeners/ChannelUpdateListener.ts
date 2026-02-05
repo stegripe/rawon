@@ -2,14 +2,25 @@ import { setTimeout } from "node:timers";
 import { entersState, VoiceConnectionStatus } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
-import { ChannelType, type GuildChannel, type VoiceChannel } from "discord.js";
+import {
+    ChannelType,
+    type DMChannel,
+    type NonThreadGuildBasedChannel,
+    type VoiceChannel,
+} from "discord.js";
 import { type Rawon } from "../structures/Rawon.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__ } from "../utils/functions/i18n.js";
 
 @ApplyOptions<ListenerOptions>({ event: Events.ChannelUpdate })
 export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate> {
-    public async run(oldChannel: GuildChannel, newChannel: GuildChannel): Promise<void> {
+    public async run(
+        oldChannel: DMChannel | NonThreadGuildBasedChannel,
+        newChannel: DMChannel | NonThreadGuildBasedChannel,
+    ): Promise<void> {
+        if (oldChannel.isDMBased() || newChannel.isDMBased()) {
+            return;
+        }
         this.container.debugLog.logData("info", "CHANNEL_UPDATE_EVENT", [
             ["Channel", `${newChannel.name}(${newChannel.id})`],
             ["Type", newChannel.type.toString()],
