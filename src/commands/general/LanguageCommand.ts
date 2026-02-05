@@ -5,6 +5,7 @@ import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "i18n";
 import i18nConfig from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -65,25 +66,27 @@ function findLocale(input: string): string | null {
     },
 })
 export class LanguageCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @memberReqPerms(["ManageGuild"], i18nConfig.__("commands.general.language.noPermission"))
     public async contextRun(ctx: CommandContext): Promise<void> {
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
         const guildId = ctx.guild?.id;
         if (!guildId) {
             return;
         }
 
-        const __ = i18n__(this.client, ctx.guild);
+        const __ = i18n__(client, ctx.guild);
 
-        const subCommand = ctx.options?.getSubcommand(false);
-        const localeArg = ctx.options?.getString("locale") ?? ctx.args[0];
+        const subCommand = localCtx.options?.getSubcommand(false);
+        const localeArg = localCtx.options?.getString("locale") ?? localCtx.args[0];
 
         if (subCommand === "reset" || localeArg?.toLowerCase() === "reset") {
-            await this.client.data.save(() => {
-                const data = this.client.data.data;
+            await client.data.save(() => {
+                const data = client.data.data;
                 const guildData = data?.[guildId];
 
                 if (guildData) {
@@ -96,7 +99,7 @@ export class LanguageCommand extends ContextCommand {
                 return data ?? {};
             });
 
-            const defaultLocale = this.client.config.lang;
+            const defaultLocale = client.config.lang;
             const defaultLocale__ = (phrase: string): string =>
                 i18n.__({ phrase, locale: defaultLocale });
 
@@ -113,8 +116,7 @@ export class LanguageCommand extends ContextCommand {
         }
 
         if (subCommand === "view" || !localeArg) {
-            const currentLocale =
-                this.client.data.data?.[guildId]?.locale ?? this.client.config.lang;
+            const currentLocale = client.data.data?.[guildId]?.locale ?? client.config.lang;
 
             await ctx.reply({
                 embeds: [
@@ -148,8 +150,8 @@ export class LanguageCommand extends ContextCommand {
             return;
         }
 
-        await this.client.data.save(() => {
-            const data = this.client.data.data;
+        await client.data.save(() => {
+            const data = client.data.data;
             const guildData = data?.[guildId];
 
             return {

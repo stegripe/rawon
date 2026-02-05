@@ -13,6 +13,7 @@ import {
     type StringSelectMenuInteraction,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -43,46 +44,47 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class HelpCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     public async contextRun(ctx: CommandContext): Promise<void> {
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
         if (ctx.isCommandInteraction() && !ctx.deferred) {
             await ctx.deferReply();
         }
 
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const val =
-            ctx.args[0] ??
-            ctx.options?.getString("command") ??
-            (ctx.additionalArgs.get("values") === undefined
+            localCtx.args[0] ??
+            localCtx.options?.getString("command") ??
+            (localCtx.additionalArgs.get("values") === undefined
                 ? null
-                : (ctx.additionalArgs.get("values") as string[])[0]);
+                : (localCtx.additionalArgs.get("values") as string[])[0]);
         const command =
-            this.client.commands.get(val) ??
-            this.client.commands.get(this.client.commands.aliases.get(val) ?? "");
+            client.commands.get(val) ?? client.commands.get(client.commands.aliases.get(val) ?? "");
 
         if (!val) {
             const listEmbed = createEmbed("info")
                 .setAuthor({
                     name: __mf("commands.general.help.authorString", {
-                        username: this.client.user?.username,
+                        username: client.user?.username,
                     }),
-                    iconURL: this.client.user?.displayAvatarURL(),
+                    iconURL: client.user?.displayAvatarURL(),
                 })
                 .setFooter({
                     text: __mf("commands.general.help.footerString", {
-                        prefix: this.client.config.mainPrefix,
+                        prefix: client.config.mainPrefix,
                     }),
                     iconURL: "https://cdn.stegripe.org/images/information.png",
                 })
                 .setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null);
 
-            for (const category of this.client.commands.categories.values()) {
-                const isDev = this.client.config.devs.includes(ctx.author.id);
+            for (const category of client.commands.categories.values()) {
+                const isDev = client.config.devs.includes(ctx.author.id);
                 const cmds = category.cmds
                     .filter((c) => (isDev ? true : c.meta.devOnly !== true))
                     .map((c) => `\`${c.meta.name}\``);
@@ -100,16 +102,16 @@ export class HelpCommand extends ContextCommand {
                 ]);
             }
 
-            await ctx
+            await localCtx
                 .send({ embeds: [listEmbed] }, "editReply")
                 .catch((error: unknown) => this.container.logger.error("PROMISE_ERR:", error));
             return;
         }
 
         if (!command) {
-            const matching = this.generateSelectMenu(val, ctx.author.id);
+            const matching = this.generateSelectMenu(client, val, ctx.author.id);
             if (matching.length === 0) {
-                await ctx.send(
+                await localCtx.send(
                     {
                         embeds: [createEmbed("error", __("commands.general.help.noCommand"), true)],
                     },
@@ -118,7 +120,7 @@ export class HelpCommand extends ContextCommand {
                 return;
             }
 
-            await ctx.send(
+            await localCtx.send(
                 {
                     components: [
                         new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
@@ -142,10 +144,10 @@ export class HelpCommand extends ContextCommand {
             );
         }
 
-        if (ctx.isStringSelectMenu()) {
+        if (localCtx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel?.messages
-                .fetch((ctx.context as StringSelectMenuInteraction).message.id)
+                .fetch((localCtx.context as unknown as StringSelectMenuInteraction).message.id)
                 .catch(() => void 0);
             if (msg !== undefined && msg.components.length > 0) {
                 const actionRow = msg.components[0];
@@ -178,10 +180,10 @@ export class HelpCommand extends ContextCommand {
             .setThumbnail("https://cdn.stegripe.org/images/question_mark.png")
             .setAuthor({
                 name: __mf("commands.general.help.commandDetailTitle", {
-                    username: this.client.user?.username,
+                    username: client.user?.username,
                     command: command?.meta.name,
                 }),
-                iconURL: this.client.user?.displayAvatarURL(),
+                iconURL: client.user?.displayAvatarURL(),
             })
             .addFields([
                 {
@@ -204,7 +206,7 @@ export class HelpCommand extends ContextCommand {
                 },
                 {
                     name: __("commands.general.help.usageString"),
-                    value: `\`${command?.meta.usage?.replaceAll("{prefix}", this.client.config.mainPrefix)}\``,
+                    value: `\`${command?.meta.usage?.replaceAll("{prefix}", client.config.mainPrefix)}\``,
                     inline: true,
                 },
             ])
@@ -215,14 +217,18 @@ export class HelpCommand extends ContextCommand {
                 iconURL: "https://cdn.stegripe.org/images/information.png",
             });
 
-        await ctx.send({ embeds: [infoEmbed] }, "editReply");
+        await localCtx.send({ embeds: [infoEmbed] }, "editReply");
     }
 
-    private generateSelectMenu(cmd: string, author: string): SelectMenuComponentOptionData[] {
+    private generateSelectMenu(
+        client: Rawon,
+        cmd: string,
+        author: string,
+    ): SelectMenuComponentOptionData[] {
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
-        const matching = [...this.client.commands.values()]
+        const matching = [...client.commands.values()]
             .filter((x) => {
-                const isDev = this.client.config.devs.includes(author);
+                const isDev = client.config.devs.includes(author);
                 if (isDev) {
                     return x.meta.name.includes(cmd);
                 }

@@ -5,11 +5,13 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     escapeMarkdown,
+    type GuildMember,
     PermissionFlagsBits,
     type SlashCommandBuilder,
     type VoiceChannel,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
@@ -46,29 +48,32 @@ import { type SongManager } from "../../utils/structures/SongManager.js";
     },
 })
 export class RemoveCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @inVC
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const member = localCtx.member as GuildMember | null;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
-        const djRole = await this.client.utils.fetchDJRole(
+        const djRole = await client.utils.fetchDJRole(
             ctx.guild as unknown as NonNullable<typeof ctx.guild>,
         );
         if (
-            this.client.data.data?.[ctx.guild?.id ?? "..."]?.dj?.enable === true &&
+            client.data.data?.[ctx.guild?.id ?? "..."]?.dj?.enable === true &&
             (
-                this.client.channels.cache.get(
+                client.channels.cache.get(
                     ctx.guild?.queue?.connection?.joinConfig.channelId ?? "",
                 ) as VoiceChannel
             ).members.size > 2 &&
-            !(ctx.member?.roles.cache.has(djRole?.id ?? "") === true) &&
-            !(ctx.member?.permissions.has("ManageGuild") === true)
+            !(member?.roles.cache.has(djRole?.id ?? "") === true) &&
+            !(member?.permissions.has("ManageGuild") === true)
         ) {
             void ctx.reply({
                 embeds: [createEmbed("error", __("commands.music.remove.noPermission"), true)],
@@ -81,7 +86,7 @@ export class RemoveCommand extends ContextCommand {
             return;
         }
 
-        const positions = (ctx.options?.getString("positions") ?? ctx.args.join(" "))
+        const positions = (localCtx.options?.getString("positions") ?? localCtx.args.join(" "))
             .split(/[ ,]/u)
             .filter(Boolean);
         if (positions.length === 0) {

@@ -4,6 +4,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -50,14 +51,16 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class DJCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @memberReqPerms(["ManageGuild"], i18n.__("commands.music.dj.noPermission"))
     public contextRun(ctx: CommandContext): void {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const options: Record<string, () => void> = {
             set: () => options.role(),
@@ -70,15 +73,15 @@ export class DJCommand extends ContextCommand {
                             })
                             .addFields([
                                 {
-                                    name: `${this.client.config.mainPrefix}dj enable`,
+                                    name: `${client.config.mainPrefix}dj enable`,
                                     value: __("commands.music.dj.slashEnableDescription"),
                                 },
                                 {
-                                    name: `${this.client.config.mainPrefix}dj disable`,
+                                    name: `${client.config.mainPrefix}dj disable`,
                                     value: __("commands.music.dj.slashDisableDescription"),
                                 },
                                 {
-                                    name: `${this.client.config.mainPrefix}dj role [${__(
+                                    name: `${client.config.mainPrefix}dj role [${__(
                                         "commands.music.dj.newRoleText",
                                     )}]`,
                                     value: __("commands.music.dj.slashRoleDescription"),
@@ -88,8 +91,8 @@ export class DJCommand extends ContextCommand {
                 });
             },
             disable: async () => {
-                await this.client.data.save(() => {
-                    const data = this.client.data.data;
+                await client.data.save(() => {
+                    const data = client.data.data;
                     const guildData = data?.[ctx.guild?.id ?? ""];
 
                     return {
@@ -109,8 +112,8 @@ export class DJCommand extends ContextCommand {
                 });
             },
             enable: async () => {
-                await this.client.data.save(() => {
-                    const data = this.client.data.data;
+                await client.data.save(() => {
+                    const data = client.data.data;
                     const guildData = data?.[ctx.guild?.id ?? ""];
 
                     return {
@@ -131,15 +134,16 @@ export class DJCommand extends ContextCommand {
             },
             role: async () => {
                 const newRole =
-                    ctx.options?.getRole("newrole")?.id ?? ctx.args.shift()?.replaceAll(/\D/gu, "");
+                    localCtx.options?.getRole("newrole")?.id ??
+                    localCtx.args.shift()?.replaceAll(/\D/gu, "");
                 const txt =
-                    this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true
+                    client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true
                         ? "enable"
                         : "disable";
                 const footer = `• ${__("commands.music.dj.embedTitle")}: ${__(`commands.music.dj.${txt}`)}`;
 
                 if ((newRole?.length ?? 0) === 0) {
-                    const cur = this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.role ?? null;
+                    const cur = client.data.data?.[ctx.guild?.id ?? ""]?.dj?.role ?? null;
 
                     return ctx.reply({
                         embeds: [
@@ -148,7 +152,7 @@ export class DJCommand extends ContextCommand {
                                 (cur?.length ?? 0) > 0
                                     ? __mf("commands.music.dj.role.current", { role: cur })
                                     : __mf("commands.music.dj.role.noRole", {
-                                          prefix: this.client.config.mainPrefix,
+                                          prefix: client.config.mainPrefix,
                                       }),
                             ).setFooter({
                                 text: footer,
@@ -164,8 +168,8 @@ export class DJCommand extends ContextCommand {
                     });
                 }
 
-                await this.client.data.save(() => {
-                    const data = this.client.data.data;
+                await client.data.save(() => {
+                    const data = client.data.data;
                     const guildData = data?.[ctx.guild?.id ?? ""];
 
                     return {
@@ -194,7 +198,7 @@ export class DJCommand extends ContextCommand {
             },
         };
 
-        const subname = ctx.options?.getSubcommand() ?? ctx.args.shift();
+        const subname = localCtx.options?.getSubcommand() ?? localCtx.args.shift();
         let sub = options[subname ?? ""] as (() => void) | undefined;
 
         sub ??= options.default;
