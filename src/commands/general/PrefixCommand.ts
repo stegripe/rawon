@@ -4,6 +4,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -50,32 +51,34 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class PrefixCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @memberReqPerms(["ManageGuild"], i18n.__("commands.general.prefix.noPermission"))
     public async contextRun(ctx: CommandContext): Promise<void> {
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
         const guildId = ctx.guild?.id;
         if (!guildId) {
             return;
         }
 
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
-        const subCommand = ctx.options?.getSubcommand(false);
-        const prefixArg = ctx.options?.getString("prefix") ?? ctx.args[0];
+        const subCommand = localCtx.options?.getSubcommand(false);
+        const prefixArg = localCtx.options?.getString("prefix") ?? localCtx.args[0];
 
         if (subCommand === "reset" || prefixArg?.toLowerCase() === "reset") {
-            await this.client.data.setPrefix(guildId, null);
+            await client.data.setPrefix(guildId, null);
 
             await ctx.reply({
                 embeds: [
                     createEmbed(
                         "success",
                         __mf("commands.general.prefix.prefixReset", {
-                            prefix: `\`${this.client.config.mainPrefix}\``,
+                            prefix: `\`${client.config.mainPrefix}\``,
                         }),
                         true,
                     ),
@@ -85,10 +88,9 @@ export class PrefixCommand extends ContextCommand {
         }
 
         if (subCommand === "view" || !prefixArg) {
-            let currentPrefix =
-                this.client.data.data?.[guildId]?.prefix ?? this.client.config.mainPrefix;
+            let currentPrefix = client.data.data?.[guildId]?.prefix ?? client.config.mainPrefix;
             if (currentPrefix === "") {
-                currentPrefix = this.client.config.mainPrefix;
+                currentPrefix = client.config.mainPrefix;
             }
 
             await ctx.reply({
@@ -111,7 +113,7 @@ export class PrefixCommand extends ContextCommand {
             return;
         }
 
-        await this.client.data.setPrefix(guildId, prefixArg);
+        await client.data.setPrefix(guildId, prefixArg);
 
         await ctx.reply({
             embeds: [

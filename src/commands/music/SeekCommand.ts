@@ -6,6 +6,7 @@ import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import { enableAudioCache } from "../../config/env.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
@@ -41,16 +42,18 @@ import { checkQuery, play } from "../../utils/handlers/GeneralUtil.js";
     },
 })
 export class SeekCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @inVC
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const queue = ctx.guild?.queue;
         if (!queue) {
@@ -81,7 +84,7 @@ export class SeekCommand extends ContextCommand {
             return;
         }
 
-        const timeArg = ctx.args[0] ?? ctx.options?.getString("time");
+        const timeArg = localCtx.args[0] ?? localCtx.options?.getString("time");
         if (!timeArg) {
             await ctx.reply({
                 embeds: [createEmbed("error", __("commands.music.seek.noTime"), true)],
@@ -119,8 +122,8 @@ export class SeekCommand extends ContextCommand {
         }
 
         if (enableAudioCache && seekSeconds > 0) {
-            const isCached = this.client.audioCache.isCached(song.song.url);
-            const isInProgress = this.client.audioCache.isInProgress(song.song.url);
+            const isCached = client.audioCache.isCached(song.song.url);
+            const isInProgress = client.audioCache.isInProgress(song.song.url);
 
             if (!isCached && isInProgress) {
                 await ctx.reply({

@@ -36,14 +36,15 @@ import { type SongManager } from "../../utils/structures/SongManager.js";
     },
 })
 export class QueueCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @haveQueue
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const np = (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource
             .metadata as QueueSong;

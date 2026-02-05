@@ -4,6 +4,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -39,8 +40,8 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class ShuffleCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @useRequestChannel
@@ -48,10 +49,13 @@ export class ShuffleCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public contextRun(ctx: CommandContext): void {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
-        const newState = ctx.options?.getString("state") ?? (ctx.args[0] as string | undefined);
+        const newState =
+            localCtx.options?.getString("state") ?? (localCtx.args[0] as string | undefined);
         if ((newState?.length ?? 0) === 0) {
             void ctx.reply({
                 embeds: [

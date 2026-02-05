@@ -35,8 +35,8 @@ import { OperationManager } from "../../utils/structures/OperationManager.js";
 export class SkipCommand extends ContextCommand {
     private readonly manager = new OperationManager();
 
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @useRequestChannel
@@ -44,8 +44,9 @@ export class SkipCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const queue = ctx.guild?.queue;
         if (!queue) {
@@ -59,7 +60,7 @@ export class SkipCommand extends ContextCommand {
             return;
         }
 
-        const djRole = await this.client.utils
+        const djRole = await client.utils
             .fetchDJRole(ctx.guild as unknown as GuildMember["guild"])
             .catch(() => null);
         const song = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
@@ -73,7 +74,7 @@ export class SkipCommand extends ContextCommand {
         }
 
         if (!ableToSkip(ctx.member as unknown as GuildMember)) {
-            const required = this.client.utils.requiredVoters(
+            const required = client.utils.requiredVoters(
                 ctx.guild?.members.me?.voice.channel?.members.size ?? 0,
             );
 

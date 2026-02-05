@@ -46,8 +46,8 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class VolumeCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @inVC
@@ -55,10 +55,13 @@ export class VolumeCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const member = localCtx.member as GuildMember | null;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
-        const volume = Number(ctx.args[0] ?? ctx.options?.get("volume", false)?.value);
+        const volume = Number(localCtx.args[0] ?? localCtx.options?.get("volume", false)?.value);
         const current = ctx.guild?.queue?.volume ?? Number.NaN;
 
         if (Number.isNaN(volume)) {
@@ -144,12 +147,12 @@ export class VolumeCommand extends ContextCommand {
         }
 
         if (volume > 100) {
-            const djRole = await this.client.utils
+            const djRole = await client.utils
                 .fetchDJRole(ctx.guild as unknown as GuildMember["guild"])
                 .catch(() => null);
             const hasPermission =
-                ctx.member?.roles.cache.has(djRole?.id ?? "") === true ||
-                ctx.member?.permissions.has("ManageGuild") === true;
+                member?.roles.cache.has(djRole?.id ?? "") === true ||
+                member?.permissions.has("ManageGuild") === true;
 
             if (!hasPermission) {
                 await ctx.reply({

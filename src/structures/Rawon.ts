@@ -252,6 +252,7 @@ export class Rawon extends SapphireClient {
     ) {
         super({
             ...clientOptions,
+            loadApplicationCommandRegistriesStatusListeners: !config.isMultiBot,
             logger: {
                 instance: new PinoLogger({
                     name: "rawon",

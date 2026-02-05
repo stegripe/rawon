@@ -3,12 +3,14 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
+    type GuildMember,
     type Message,
     PermissionFlagsBits,
     type SlashCommandBuilder,
     type VoiceBasedChannel,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -41,8 +43,8 @@ import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/Gene
     },
 })
 export class PlayCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @useRequestChannel
@@ -50,31 +52,34 @@ export class PlayCommand extends ContextCommand {
     @validVC
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const member = localCtx.member as GuildMember | null;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
-        if (ctx.isCommandInteraction() && !ctx.deferred) {
-            await ctx.deferReply();
+        if (ctx.isCommandInteraction() && !localCtx.deferred) {
+            await localCtx.deferReply();
         }
 
-        const voiceChannel = ctx.member?.voice.channel as unknown as VoiceBasedChannel;
-        if (ctx.additionalArgs.get("fromSearch") !== undefined) {
-            const tracks = ctx.additionalArgs.get("values") as string[];
+        const voiceChannel = member?.voice.channel as unknown as VoiceBasedChannel;
+        if (localCtx.additionalArgs.get("fromSearch") !== undefined) {
+            const tracks = localCtx.additionalArgs.get("values") as string[];
             const searchResults = await Promise.all(
-                tracks.map(async (track) => searchTrack(this.client, track).catch(() => null)),
+                tracks.map(async (track) => searchTrack(client, track).catch(() => null)),
             );
             const toQueue = searchResults
                 .filter((result): result is NonNullable<typeof result> => result !== null)
                 .map((result) => result.items[0]);
 
-            return handleVideos(this.client, ctx, toQueue, voiceChannel);
+            return handleVideos(client, localCtx, toQueue, voiceChannel);
         }
 
         const query =
-            (ctx.args.join(" ") || ctx.options?.getString("query")) ??
-            (ctx.additionalArgs.get("values") === undefined
+            (localCtx.args.join(" ") || localCtx.options?.getString("query")) ??
+            (localCtx.additionalArgs.get("values") === undefined
                 ? undefined
-                : (ctx.additionalArgs.get("values") as (string | undefined)[])[0]);
+                : (localCtx.additionalArgs.get("values") as (string | undefined)[])[0]);
 
         if ((query?.length ?? 0) === 0) {
             return ctx.reply({
@@ -82,7 +87,7 @@ export class PlayCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            prefix: `**\`${client.config.mainPrefix}help\`**`,
                             name: `**\`${this.options.name}\`**`,
                         }),
                     ),
@@ -115,7 +120,7 @@ export class PlayCommand extends ContextCommand {
         }
 
         const queryCheck = checkQuery(query ?? "");
-        const songs = await searchTrack(this.client, query ?? "").catch(() => void 0);
+        const songs = await searchTrack(client, query ?? "").catch(() => void 0);
 
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
@@ -124,8 +129,8 @@ export class PlayCommand extends ContextCommand {
         }
 
         return handleVideos(
-            this.client,
-            ctx,
+            client,
+            localCtx,
             queryCheck.type === "playlist" ? songs.items : [songs.items[0]],
             voiceChannel,
         );
