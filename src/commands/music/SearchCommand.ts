@@ -101,7 +101,10 @@ export class SearchCommand extends ContextCommand {
 
             nextCtx.additionalArgs.set("values", values);
             nextCtx.additionalArgs.set("fromSearch", true);
-            this.client.commands.get("play")?.execute(nextCtx);
+            const playCmd = this.client.commands.get("play") as
+                | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
+                | undefined;
+            playCmd?.contextRun?.(nextCtx);
 
             const prev = await ctx.channel?.messages
                 .fetch((ctx.context as StringSelectMenuInteraction).message.id)
@@ -158,7 +161,10 @@ export class SearchCommand extends ContextCommand {
         if (checkQuery(query ?? "").isURL) {
             const playCtx = new CommandContext(ctx.context, [String(query)]);
             playCtx.additionalArgs.set("fromSearch", true);
-            this.client.commands.get("play")?.execute(playCtx);
+            const playCmd2 = this.client.commands.get("play") as
+                | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
+                | undefined;
+            playCmd2?.contextRun?.(playCtx);
             return;
         }
 
@@ -304,7 +310,10 @@ export class SearchCommand extends ContextCommand {
             songs.map((x) => tracks.items[Number(x) - 1].url),
         );
         newCtx.additionalArgs.set("fromSearch", true);
-        this.client.commands.get("play")?.execute(newCtx);
+        const playCmd3 = this.client.commands.get("play") as
+            | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
+            | undefined;
+        playCmd3?.contextRun?.(newCtx);
     }
 
     private generateSelectMenu(tracks: Song[]): SelectMenuComponentOptionData[] {

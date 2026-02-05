@@ -110,6 +110,30 @@ export type CategoryMeta = {
     name: string;
 };
 
+// Augment Sapphire Command.Options with custom properties
+declare module "@sapphire/framework" {
+    interface CommandOptions {
+        devOnly?: boolean;
+        cooldown?: number;
+        contextChat?: string;
+        contextUser?: string;
+        disable?: boolean;
+    }
+}
+
+// Helper type for accessing command meta-like properties
+export type CommandMeta = {
+    name: string;
+    description?: string;
+    aliases?: readonly string[];
+    cooldown?: number;
+    devOnly?: boolean;
+    contextChat?: string;
+    contextUser?: string;
+    disable?: boolean;
+    slash?: boolean;
+};
+
 declare module "discord.js" {
     export interface Client extends OClient {
         commands: Rawon["commands"];

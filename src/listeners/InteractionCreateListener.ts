@@ -1,7 +1,7 @@
 import { setTimeout } from "node:timers";
 import { type AudioPlayerPlayingState } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
-import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
+import { type Command, Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
     ActionRowBuilder,
     ApplicationCommandType,
@@ -20,7 +20,6 @@ import {
     type Snowflake,
     type TextChannel,
 } from "discord.js";
-import { type BaseCommand } from "../structures/BaseCommand.js";
 import { CommandContext } from "../structures/CommandContext.js";
 import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
@@ -28,6 +27,17 @@ import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/
 import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
+
+// Helper to check if command has slash command
+function hasSlashCommand(cmd: Command): boolean {
+    return cmd.options.chatInputCommand !== undefined;
+}
+
+// Helper to get command options with custom properties
+function getCommandOptions(cmd: Command): Command.Options {
+    return cmd.options;
+}
+
 import { type SongManager } from "../utils/structures/SongManager.js";
 
 @ApplyOptions<ListenerOptions>({
@@ -37,7 +47,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
     private readonly cooldowns = new Collection<string, Collection<Snowflake, number>>();
 
     public async run(interaction: Interaction): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = interaction.client as Rawon;
 
         this.container.debugLog.logData("info", "INTERACTION_CREATE", [
             ["Type", interaction.type.toString()],
@@ -72,8 +82,8 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             if (interaction.isChatInputCommand()) {
                 commandName = interaction.commandName;
                 const cmd = client.commands
-                    .filter((x: BaseCommand) => x.meta.slash !== undefined)
-                    .find((x: BaseCommand) => x.meta.slash?.name === commandName);
+                    .filter((x: Command) => hasSlashCommand(x))
+                    .find((x: Command) => x.name === commandName);
 
                 const musicCommands = [
                     "volume",
@@ -95,8 +105,8 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 isMusicCommand =
                     cmd !== undefined &&
                     (musicCommands.includes(commandName) ||
-                        (cmd.meta.aliases !== undefined &&
-                            musicCommands.some((name) => cmd.meta.aliases?.includes(name))));
+                        (cmd.aliases.length > 0 &&
+                            musicCommands.some((name) => cmd.aliases.includes(name))));
             }
 
             if (isMusicCommand) {
@@ -254,14 +264,14 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 dataType = ApplicationCommandType.Message;
             }
 
-            const cmd = client.commands.find((x: BaseCommand) =>
+            const cmd = client.commands.find((x: Command) =>
                 dataType === ApplicationCommandType.Message
-                    ? x.meta.contextChat === interaction.commandName
-                    : x.meta.contextUser === interaction.commandName,
+                    ? getCommandOptions(x).contextChat === interaction.commandName
+                    : getCommandOptions(x).contextUser === interaction.commandName,
             );
             if (cmd) {
                 const isDeveloper = this.container.config.devs.includes(interaction.user.id);
-                if (cmd.meta.devOnly === true && !isDeveloper) {
+                if (getCommandOptions(cmd).devOnly === true && !isDeveloper) {
                     try {
                         await interaction.reply({
                             flags: MessageFlags.Ephemeral,
@@ -282,22 +292,23 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     return;
                 }
                 context.additionalArgs.set("options", data);
-                void cmd.execute(context);
+                const ctxCmd = cmd as { contextRun?: (ctx: CommandContext) => Promise<unknown> };
+                void ctxCmd.contextRun?.(context);
             }
         }
 
         if (interaction.isCommand()) {
             const cmd = client.commands
-                .filter((x: BaseCommand) => x.meta.slash !== undefined)
-                .find((x: BaseCommand) => x.meta.slash?.name === interaction.commandName);
+                .filter((x: Command) => hasSlashCommand(x))
+                .find((x: Command) => x.name === interaction.commandName);
             if (cmd) {
-                if (!this.cooldowns.has(cmd.meta.name)) {
-                    this.cooldowns.set(cmd.meta.name, new Collection());
+                if (!this.cooldowns.has(cmd.name)) {
+                    this.cooldowns.set(cmd.name, new Collection());
                 }
 
                 const now = Date.now();
-                const timestamps = this.cooldowns.get(cmd.meta.name);
-                const cooldownAmount = (cmd.meta.cooldown ?? 3) * 1_000;
+                const timestamps = this.cooldowns.get(cmd.name);
+                const cooldownAmount = (getCommandOptions(cmd).cooldown ?? 3) * 1_000;
                 const isDeveloper = this.container.config.devs.includes(interaction.user.id);
 
                 if (!isDeveloper) {
@@ -331,7 +342,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     }
                 }
 
-                if (cmd.meta.devOnly === true && !isDeveloper) {
+                if (getCommandOptions(cmd).devOnly === true && !isDeveloper) {
                     try {
                         await interaction.reply({
                             flags: MessageFlags.Ephemeral,
@@ -360,7 +371,8 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
                         `in guild: ${thisBotGuildForContext?.name ?? interaction.guild?.name} [${interaction.guildId}]`,
                 );
-                void cmd.execute(context);
+                const ctxCmd2 = cmd as { contextRun?: (ctx: CommandContext) => Promise<unknown> };
+                void ctxCmd2.contextRun?.(context);
             } else {
                 this.container.logger.warn(
                     `[MultiBot] ${client.user?.tag} command not found for interaction "${interaction.commandName}"`,
@@ -390,11 +402,11 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             }
             if (cmd && user === interaction.user.id && exec) {
                 const command = client.commands
-                    .filter((x: BaseCommand) => x.meta.slash !== undefined)
-                    .find((x: BaseCommand) => x.meta.name === cmd);
+                    .filter((x: Command) => hasSlashCommand(x))
+                    .find((x: Command) => x.name === cmd);
                 if (command) {
                     const isDeveloper = this.container.config.devs.includes(interaction.user.id);
-                    if (command.meta.devOnly === true && !isDeveloper) {
+                    if (getCommandOptions(command).devOnly === true && !isDeveloper) {
                         try {
                             await interaction.reply({
                                 flags: MessageFlags.Ephemeral,
@@ -415,14 +427,17 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         return;
                     }
                     context.additionalArgs.set("values", interaction.values);
-                    void command.execute(context);
+                    const ctxCmd3 = command as {
+                        contextRun?: (ctx: CommandContext) => Promise<unknown>;
+                    };
+                    void ctxCmd3.contextRun?.(context);
                 }
             }
         }
     }
 
     private async handleRequestChannelButton(interaction: ButtonInteraction): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = interaction.client as Rawon;
         const guild = interaction.guild;
         if (!guild) {
             return;
@@ -1086,7 +1101,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             return { hasPermission: false, djRole: null };
         }
 
-        const client = this.container.client as Rawon;
+        const client = interaction.client as Rawon;
         const thisBotGuild = client.guilds.cache.get(guild.id) ?? guild;
         const djRole = await this.container.utils.fetchDJRole(thisBotGuild).catch(() => null);
 
@@ -1103,7 +1118,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         queue: ServerQueue,
         member: GuildMember,
     ): Promise<boolean> {
-        const client = this.container.client as Rawon;
+        const client = interaction.client as Rawon;
         const guild = interaction.guild;
         if (!guild) {
             return false;
@@ -1155,7 +1170,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         interaction: ButtonInteraction,
         queue: ServerQueue | undefined,
     ): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = interaction.client as Rawon;
         const guild = interaction.guild;
         const __ = i18n__(client, guild);
         const __mf = i18n__mf(client, guild);

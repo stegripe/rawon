@@ -49,7 +49,7 @@ const MUSIC_COMMANDS = [
 })
 export class MessageCreateListener extends Listener<typeof Events.MessageCreate> {
     public async run(message: Message): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = message.client as Rawon;
 
         this.container.debugLog.logData("info", "MESSAGE_CREATE", [
             ["ID", message.id],
@@ -69,11 +69,18 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             );
         }
 
+        this.container.logger.info(
+            `[MessageCreate] ${client.user?.tag} Processing message from ${message.author.tag}: "${message.content.slice(0, 30)}"`,
+        );
+
         if (
             message.author.bot ||
             message.channel.type === ChannelType.DM ||
             !client.commands.isReady
         ) {
+            this.container.logger.info(
+                `[MessageCreate] ${client.user?.tag} EARLY RETURN - bot:${message.author.bot}, DM:${message.channel.type === ChannelType.DM}, ready:${client.commands.isReady}`,
+            );
             if (!client.commands.isReady) {
                 this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} commands not ready yet, skipping`,
@@ -96,13 +103,17 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             prefixList.push(this.container.config.mainPrefix);
         }
 
+        this.container.logger.info(
+            `[MessageCreate] ${client.user?.tag} Prefix list: ${JSON.stringify(prefixList)}, message starts with: "${message.content.slice(0, 10)}"`,
+        );
+
         const prefixMatch = prefixList.find((pr) => {
             if (pr === "{mention}") {
                 const userMention = /<@(!)?\d*?>/u.exec(message.content);
                 if (userMention?.index !== 0) {
                     return false;
                 }
-                const user = this.getUserFromMention(userMention[0]);
+                const user = this.getUserFromMention(userMention[0], message);
                 if (user?.id === client.user?.id) {
                     isMentionPrefix = true;
                     return true;
@@ -111,6 +122,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             }
             return message.content.startsWith(pr);
         });
+
+        this.container.logger.info(
+            `[MessageCreate] ${client.user?.tag} prefixMatch: "${prefixMatch}", isMentionPrefix: ${isMentionPrefix}`,
+        );
 
         const isRequestChannel =
             message.guild &&
@@ -257,7 +272,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
         const __mf = i18n__mf(client, message.guild);
 
-        const mentionedBot = this.getUserFromMention(message.content);
+        const mentionedBot = this.getUserFromMention(message.content, message);
         const shouldRespondToMention = mentionedBot && mentionedBot.id === client.user?.id;
 
         if (shouldRespondToMention) {
@@ -360,12 +375,15 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                     return;
                 }
             }
+            this.container.logger.info(
+                `[MessageCreate] Calling commands.handle() for message "${message.content}" with prefix "${prefixMatch}"`,
+            );
             client.commands.handle(message, prefixMatch as unknown as string);
         }
     }
 
     private async handleRequestChannelMessage(message: Message): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = message.client as Rawon;
 
         if (!message.guild) {
             return;
@@ -582,8 +600,8 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         })();
     }
 
-    private getUserFromMention(mention: string): User | undefined {
-        const client = this.container.client as Rawon;
+    private getUserFromMention(mention: string, message: Message): User | undefined {
+        const client = message.client as Rawon;
         const matches = /^<@!?(\d+)>$/u.exec(mention);
         if (!matches) {
             return undefined;

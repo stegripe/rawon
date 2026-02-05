@@ -203,7 +203,10 @@ export class NowPlayingCommand extends ContextCommand {
                     default:
                         break;
                 }
-                await this.client.commands.get(cmdName)?.execute(newCtx);
+                const cmd = this.client.commands.get(cmdName) as
+                    | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
+                    | undefined;
+                await cmd?.contextRun?.(newCtx);
 
                 const embed = getEmbed();
 

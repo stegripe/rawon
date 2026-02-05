@@ -33,7 +33,7 @@ export class GuildDeleteListener extends Listener<typeof Events.GuildDelete> {
             `Bot was removed from guild: ${guild.name} (${guild.id}). Cleaning up database...`,
         );
 
-        const botId = (this.container.client as Rawon).user?.id ?? "unknown";
+        const botId = (guild.client as Rawon).user?.id ?? "unknown";
 
         try {
             if (hasDeleteMethods(this.container.data)) {
