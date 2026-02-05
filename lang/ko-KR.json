@@ -18,9 +18,9 @@
                 "slashRemoveDescription": "쿠키 파일 삭제",
                 "slashListDescription": "모든 쿠키 파일 목록 보기",
                 "slashResetDescription": "실패한 쿠키 상태 초기화",
-                "slashNumberDescription": "쿠키 번호 (1부터 시작)",
+                "slashNumberDescription": "쿠키 번호 (`1`부터 시작)",
                 "slashRemoveTargetDescription": "삭제할 쿠키 번호 또는 'all'",
-                "invalidNumber": "유효한 쿠키 번호를 입력해주세요 (1부터 시작).",
+                "invalidNumber": "유효한 쿠키 번호를 입력해주세요 (`1`부터 시작).",
                 "noAttachment": "메시지에 cookies.txt 파일을 첨부해주세요.",
                 "invalidFileType": ".txt 파일을 첨부해주세요.",
                 "invalidCookiesFile": "파일이 유효한 쿠키 파일이 아닌 것 같아요.",
@@ -91,7 +91,7 @@
                 "usageString": "사용법"
             },
             "invite": {
-                "clickURL": "**[여기를 클릭]({url})**해서 이 봇을 서버에 초대하세요.",
+                "clickURL": "- **[여기를 클릭]({url})** 하여 봇 {botNum} 을 서버에 초대하세요.",
                 "description": "봇 초대 링크 받기",
                 "inviteTitle": "{bot} - 초대 링크"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "서버 언어가 기본값으로 재설정되었어요:",
                 "invalidLocale": "잘못된 언어예요. 사용 가능한 언어:",
                 "availableLocales": "사용 가능한 언어"
+            },
+            "prefix": {
+                "currentPrefix": "현재 접두사: {prefix}",
+                "description": "이 서버의 명령어 접두사 변경",
+                "embedTitle": "접두사 설정",
+                "noPermission": "이 명령어를 사용하려면 **서버 관리** 권한이 필요합니다.",
+                "prefixReset": "접두사가 재설정되었습니다: {prefix}",
+                "prefixSet": "접두사가 설정되었습니다: {prefix}",
+                "prefixTooLong": "접두사는 `10`자 이하여야 합니다.",
+                "slashPrefixOption": "새 접두사 (최대 `10`자)",
+                "slashResetDescription": "기본 접두사로 재설정",
+                "slashSetDescription": "이 서버의 사용자 정의 접두사 설정",
+                "slashViewDescription": "현재 접두사 보기",
+                "usage": "{prefix}prefix [새 접두사 | view | reset]"
             }
         },
         "music": {
@@ -272,6 +286,7 @@
                 "currentVolume": "현재 볼륨은 {volume}이에요",
                 "description": "미디어 플레이어 볼륨 변경",
                 "newVolume": "볼륨이 {volume}로 설정되었어요",
+                "noPermission": "`100%`를 초과하는 볼륨을 설정하려면 DJ 역할 또는 **서버 관리** 권한이 필요해요.",
                 "plsPause": "볼륨을 {volume}로 설정하는 대신 음악을 일시 정지해주세요",
                 "slashDescription": "새 볼륨",
                 "usage": "{prefix}volume [새 볼륨]",
@@ -356,7 +371,7 @@
         "alreadyPaused": "음악이 이미 일시 정지되어 있어요.",
         "alreadyPlaying": "음악이 이미 재생 중이에요.",
         "nothingPlaying": "현재 재생 중인 것이 없어요.",
-        "volumeLimit": "볼륨은 1에서 100 사이여야 해요.",
+        "volumeLimit": "볼륨은 `1`에서 `100` 사이여야 해요",
         "setChannel": "요청 채널이 {channel}로 설정되었어요.",
         "removeChannel": "요청 채널이 삭제되었어요.",
         "noChannel": "현재 설정된 요청 채널이 없어요.",

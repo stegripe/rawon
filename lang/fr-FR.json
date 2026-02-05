@@ -18,9 +18,9 @@
                 "slashRemoveDescription": "Supprimer un fichier de cookies",
                 "slashListDescription": "Lister tous les fichiers de cookies",
                 "slashResetDescription": "Réinitialiser le statut des cookies échoués",
-                "slashNumberDescription": "Numéro du cookie (à partir de 1)",
+                "slashNumberDescription": "Numéro du cookie (à partir de `1`)",
                 "slashRemoveTargetDescription": "Numéro du cookie à supprimer ou 'all'",
-                "invalidNumber": "Veuillez fournir un numéro de cookie valide (à partir de 1).",
+                "invalidNumber": "Veuillez fournir un numéro de cookie valide (à partir de `1`)",
                 "noAttachment": "Veuillez joindre un fichier cookies.txt à votre message.",
                 "invalidFileType": "Veuillez joindre un fichier .txt.",
                 "invalidCookiesFile": "Le fichier ne semble pas être un fichier de cookies valide.",
@@ -91,7 +91,7 @@
                 "usageString": "Usage"
             },
             "invite": {
-                "clickURL": "**[Cliquez ici]({url})** pour inviter ce bot sur votre serveur.",
+                "clickURL": "- **[Cliquez ici]({url})** pour inviter le bot {botNum} sur votre serveur.",
                 "description": "Obtenez le lien d'invitation pour le bot",
                 "inviteTitle": "{bot} - Lien d'invitation"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "La langue du serveur a été réinitialisée à :",
                 "invalidLocale": "Langue invalide. Langues disponibles :",
                 "availableLocales": "Langues disponibles"
+            },
+            "prefix": {
+                "currentPrefix": "Préfixe actuel: {prefix}",
+                "description": "Changer le préfixe de commande pour ce serveur",
+                "embedTitle": "Paramètres de préfixe",
+                "noPermission": "Vous avez besoin de la permission **Gérer le serveur** pour utiliser cette commande.",
+                "prefixReset": "Le préfixe a été réinitialisé à: {prefix}",
+                "prefixSet": "Le préfixe a été défini à: {prefix}",
+                "prefixTooLong": "Le préfixe ne peut pas dépasser `10` caractères.",
+                "slashPrefixOption": "Le nouveau préfixe (max `10` caractères)",
+                "slashResetDescription": "Réinitialiser au préfixe par défaut",
+                "slashSetDescription": "Définir un préfixe personnalisé pour ce serveur",
+                "slashViewDescription": "Voir le préfixe actuel",
+                "usage": "{prefix}prefix [nouveau préfixe | view | reset]"
             }
         },
         "music": {
@@ -237,7 +251,7 @@
                 "cantSeekSoundcloud": "Impossible de chercher dans les pistes SoundCloud.",
                 "description": "Aller à un moment précis de la chanson en cours",
                 "exceedsDuration": "Le temps de recherche dépasse la durée de la chanson ({duration}).",
-                "invalidTime": "Format de temps invalide : {time}. Utilisez des formats comme `1:30` ou `90`.",
+                "invalidTime": "Format de temps invalide : {time}. Utilisez des formats comme `1:30` ou `90`",
                 "noPlaying": "Aucune chanson n'est en cours de lecture.",
                 "noTime": "Veuillez spécifier un temps vers lequel aller.",
                 "notCached": "Impossible de chercher dans cette chanson pour le moment. Veuillez attendre que l'audio soit mis en tampon.",
@@ -272,6 +286,7 @@
                 "currentVolume": "Le volume actuel est {volume}",
                 "description": "Modifier le volume du lecteur multimédia",
                 "newVolume": "Le volume a été réglé sur {volume}",
+                "noPermission": "Vous avez besoin du rôle DJ ou de la permission **Gérer le serveur** pour régler le volume au-dessus de `100%`",
                 "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur {volume}",
                 "slashDescription": "Nouveau volume",
                 "usage": "{prefix}volume [nouveau volume]",
@@ -390,7 +405,7 @@
         "alreadyPaused": "La musique est déjà en pause.",
         "alreadyPlaying": "La musique est déjà en lecture.",
         "nothingPlaying": "Rien n'est en cours de lecture.",
-        "volumeLimit": "Le volume doit être entre 1 et 100.",
+        "volumeLimit": "Le volume doit être entre `1` et `100`",
         "setChannel": "Le salon de demandes a été défini sur {channel}.",
         "removeChannel": "Le salon de demandes a été supprimé.",
         "noChannel": "Aucun salon de demandes n'est actuellement défini.",

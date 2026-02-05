@@ -18,9 +18,9 @@
                 "slashListDescription": "すべてのCookieファイルを一覧表示",
                 "slashUrlDescription": "cookies.txt の URL",
                 "slashResetDescription": "失敗したCookieのステータスをリセット",
-                "slashNumberDescription": "Cookie番号（1から開始）",
+                "slashNumberDescription": "Cookie番号（`1`から開始）",
                 "slashRemoveTargetDescription": "削除するCookie番号または'all'",
-                "invalidNumber": "有効なCookie番号を入力してください（1から開始）。",
+                "invalidNumber": "有効なCookie番号を入力してください（`1`から開始）。",
                 "noAttachment": "cookies.txtファイルをメッセージに添付してください。",
                 "invalidFileType": ".txtファイルを添付してください。",
                 "invalidCookiesFile": "ファイルが有効なCookieファイルではないようです。",
@@ -91,7 +91,7 @@
                 "usageString": "使い方"
             },
             "invite": {
-                "clickURL": "**[ここをクリック]({url})**してこのBotをサーバーに招待",
+                "clickURL": "- **[ここをクリック]({url})** してBot {botNum} をサーバーに招待",
                 "description": "このBotの招待リンクを取得",
                 "inviteTitle": "{bot} - 招待リンク"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "サーバーの言語がデフォルトにリセットされました：",
                 "invalidLocale": "無効な言語です。利用可能な言語：",
                 "availableLocales": "利用可能な言語"
+            },
+            "prefix": {
+                "currentPrefix": "現在のプレフィックス: {prefix}",
+                "description": "このサーバーのコマンドプレフィックスを変更",
+                "embedTitle": "プレフィックス設定",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
+                "prefixReset": "プレフィックスがリセットされました: {prefix}",
+                "prefixSet": "プレフィックスが設定されました: {prefix}",
+                "prefixTooLong": "プレフィックスは`10`文字以下である必要があります。",
+                "slashPrefixOption": "新しいプレフィックス（最大`10`文字）",
+                "slashResetDescription": "デフォルトのプレフィックスにリセット",
+                "slashSetDescription": "このサーバーのカスタムプレフィックスを設定",
+                "slashViewDescription": "現在のプレフィックスを表示",
+                "usage": "{prefix}prefix [新しいプレフィックス | view | reset]"
             }
         },
         "music": {
@@ -272,6 +286,7 @@
                 "currentVolume": "現在のボリュームは{volume}です。",
                 "description": "メディアプレイヤーのボリュームを変更",
                 "newVolume": "ボリュームは{volume}にセットされました。",
+                "noPermission": "`100%`を超えるボリュームを設定するには、DJロールまたは**サーバー管理**権限が必要です。",
                 "plsPause": "{volume}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]",
@@ -390,7 +405,7 @@
         "alreadyPaused": "音楽は既に一時停止中です。",
         "alreadyPlaying": "音楽は既に再生中です。",
         "nothingPlaying": "現在何も再生されていません。",
-        "volumeLimit": "音量は1から100の間で設定してください。",
+        "volumeLimit": "音量は`1`から`100`の間で設定してください",
         "setChannel": "リクエストチャンネルを {channel} に設定しました。",
         "removeChannel": "リクエストチャンネルを削除しました。",
         "noChannel": "現在リクエストチャンネルは設定されていません。",

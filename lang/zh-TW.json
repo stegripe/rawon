@@ -18,9 +18,9 @@
                 "slashRemoveDescription": "刪除cookie檔案",
                 "slashListDescription": "列出所有cookie檔案",
                 "slashResetDescription": "重設失敗的cookie狀態",
-                "slashNumberDescription": "Cookie編號（從1開始）",
+                "slashNumberDescription": "Cookie編號（從`1`開始）",
                 "slashRemoveTargetDescription": "要刪除的cookie編號或'all'",
-                "invalidNumber": "請提供有效的cookie編號（從1開始）。",
+                "invalidNumber": "請提供有效的cookie編號（從`1`開始）。",
                 "noAttachment": "請在訊息中附加cookies.txt檔案。",
                 "invalidFileType": "請附加.txt檔案。",
                 "invalidCookiesFile": "該檔案似乎不是有效的cookies檔案。",
@@ -91,7 +91,7 @@
                 "usageString": "用法"
             },
             "invite": {
-                "clickURL": "**[點擊這裡]({url})** 邀請此機器人到您的伺服器。",
+                "clickURL": "- **[點擊這裡]({url})** 邀請機器人 {botNum} 到您的伺服器。",
                 "description": "獲取機器人的邀請鏈接",
                 "inviteTitle": "{bot} - 邀請鏈接"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "伺服器語言已重置為：",
                 "invalidLocale": "無效語言。可用語言：",
                 "availableLocales": "可用語言"
+            },
+            "prefix": {
+                "currentPrefix": "目前前綴: {prefix}",
+                "description": "變更此伺服器的指令前綴",
+                "embedTitle": "前綴設定",
+                "noPermission": "您需要**管理伺服器**權限才能使用此指令。",
+                "prefixReset": "前綴已重置為: {prefix}",
+                "prefixSet": "前綴已設定為: {prefix}",
+                "prefixTooLong": "前綴不能超過`10`個字元。",
+                "slashPrefixOption": "新前綴（最多`10`個字元）",
+                "slashResetDescription": "重置為預設前綴",
+                "slashSetDescription": "為此伺服器設定自定義前綴",
+                "slashViewDescription": "查看目前前綴",
+                "usage": "{prefix}prefix [新前綴 | view | reset]"
             }
         },
         "music": {
@@ -272,6 +286,7 @@
                 "currentVolume": "目前音量是 {volume}",
                 "description": "更改音樂播放器音量",
                 "newVolume": "音量已設置為 {volume}",
+                "noPermission": "您需要DJ身份組或**管理伺服器**權限才能將音量設置為`100%`以上。",
                 "plsPause": "請暫停音樂而不是將音量調到 {volume}",
                 "slashDescription": "新音量",
                 "usage": "{prefix}volume [新音量]",
@@ -390,7 +405,7 @@
         "alreadyPaused": "音樂已經暫停了。",
         "alreadyPlaying": "音樂已經在播放了。",
         "nothingPlaying": "當前沒有播放任何內容。",
-        "volumeLimit": "音量必須在1到100之間。",
+        "volumeLimit": "音量必須在`1`到`100`之間",
         "setChannel": "點歌頻道已設置為 {channel}。",
         "removeChannel": "點歌頻道已移除。",
         "noChannel": "當前沒有設置點歌頻道。",

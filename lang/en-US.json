@@ -18,9 +18,9 @@
                 "slashRemoveDescription": "Remove a cookie file",
                 "slashListDescription": "List all cookie files",
                 "slashResetDescription": "Reset failed cookie status",
-                "slashNumberDescription": "Cookie number (starting from 1)",
+                "slashNumberDescription": "Cookie number (starting from `1`)",
                 "slashRemoveTargetDescription": "Cookie number to remove or 'all'",
-                "invalidNumber": "Please provide a valid cookie number (starting from 1).",
+                "invalidNumber": "Please provide a valid cookie number (starting from `1`)",
                 "noAttachment": "Please attach a cookies.txt file to your message.",
                 "invalidFileType": "Please attach a .txt file.",
                 "invalidCookiesFile": "The file doesn't appear to be a valid cookies file.",
@@ -91,7 +91,7 @@
                 "usageString": "Usage"
             },
             "invite": {
-                "clickURL": "**[Click here]({url})** to invite this bot to your server.",
+                "clickURL": "- **[Click here]({url})** to invite the bot {botNum} to your server.",
                 "description": "Get the invite link for the bot",
                 "inviteTitle": "{bot} - Invite Link"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "Server language has been reset to default:",
                 "invalidLocale": "Invalid language. Available languages:",
                 "availableLocales": "Available languages"
+            },
+            "prefix": {
+                "currentPrefix": "Current prefix: {prefix}",
+                "description": "Change the command prefix for this server",
+                "embedTitle": "Prefix Settings",
+                "noPermission": "You need the **Manage Server** permission to use this command.",
+                "prefixReset": "Prefix has been reset to: {prefix}",
+                "prefixSet": "Prefix has been set to: {prefix}",
+                "prefixTooLong": "Prefix cannot be longer than `10` characters.",
+                "slashPrefixOption": "The new prefix (max `10` characters)",
+                "slashResetDescription": "Reset to default prefix",
+                "slashSetDescription": "Set a custom prefix for this server",
+                "slashViewDescription": "View the current prefix",
+                "usage": "{prefix}prefix [new prefix | view | reset]"
             }
         },
         "music": {
@@ -237,7 +251,7 @@
                 "cantSeekSoundcloud": "Cannot seek in SoundCloud tracks.",
                 "description": "Seek to a specific time in the current song",
                 "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
-                "invalidTime": "Invalid time format: {time}. Use formats like `1:30` or `90`.",
+                "invalidTime": "Invalid time format: {time}. Use formats like `1:30` or `90`",
                 "noPlaying": "No song is currently playing.",
                 "noTime": "Please specify a time to seek to.",
                 "notCached": "Cannot seek in this song yet. Please wait for the audio to buffer.",
@@ -272,6 +286,7 @@
                 "currentVolume": "The current volume is {volume}",
                 "description": "Change the media player volume",
                 "newVolume": "Volume has been set to {volume}",
+                "noPermission": "You need the DJ role or **Manage Server** permission to set the volume above `100%`",
                 "plsPause": "Please pause the music instead of setting the volume to {volume}",
                 "slashDescription": "New volume",
                 "usage": "{prefix}volume [new volume]",
@@ -356,7 +371,7 @@
         "alreadyPaused": "The music is already paused.",
         "alreadyPlaying": "The music is already playing.",
         "nothingPlaying": "Nothing is currently playing.",
-        "volumeLimit": "Volume must be between 1 and 100.",
+        "volumeLimit": "Volume must be between `1` and `100`",
         "setChannel": "Request channel has been set to {channel}.",
         "removeChannel": "Request channel has been removed.",
         "noChannel": "No request channel is currently set.",
