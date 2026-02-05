@@ -10,6 +10,7 @@ import {
     type SlashCommandBuilder,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -109,8 +110,8 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class CookiesCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     private formatCookie(number: number): string {
@@ -121,13 +122,15 @@ export class CookiesCommand extends ContextCommand {
         return `\`${prefix}cookies add <number>\``;
     }
 
-    private formatResetCmd(): string {
-        return `\`${this.client.config.mainPrefix}cookies reset\``;
+    private formatResetCmd(client: Rawon): string {
+        return `\`${client.config.mainPrefix}cookies reset\``;
     }
 
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const __mf = i18n__mf(this.client, ctx.guild);
-        const subcommand = ctx.options?.getSubcommand() ?? ctx.args[0]?.toLowerCase();
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __mf = i18n__mf(client, ctx.guild);
+        const subcommand = localCtx.options?.getSubcommand() ?? localCtx.args[0]?.toLowerCase();
 
         if (!subcommand) {
             return ctx.reply({
@@ -135,7 +138,7 @@ export class CookiesCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            prefix: `**\`${client.config.mainPrefix}help\`**`,
                             name: `**\`${this.options.name}\`**`,
                         }),
                     ),
@@ -145,24 +148,24 @@ export class CookiesCommand extends ContextCommand {
 
         switch (subcommand) {
             case "add":
-                return this.handleAdd(ctx);
+                return this.handleAdd(client, ctx);
             case "remove":
-                return this.handleRemove(ctx);
+                return this.handleRemove(client, ctx);
             case "list":
-                return this.handleList(ctx);
+                return this.handleList(client, ctx);
             case "view":
-                return this.handleView(ctx);
+                return this.handleView(client, ctx);
             case "reset":
-                return this.handleReset(ctx);
+                return this.handleReset(client, ctx);
             case "use":
-                return this.handleUse(ctx);
+                return this.handleUse(client, ctx);
             default:
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "warn",
                             __mf("reusable.invalidUsage", {
-                                prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                                prefix: `**\`${client.config.mainPrefix}help\`**`,
                                 name: `**\`${this.options.name}\`**`,
                             }),
                         ),
@@ -171,10 +174,12 @@ export class CookiesCommand extends ContextCommand {
         }
     }
 
-    private async handleAdd(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
-        const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
+    private async handleAdd(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
+        const number =
+            localCtx.options?.getInteger("number") ?? Number.parseInt(localCtx.args[1] ?? "", 10);
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
@@ -192,7 +197,9 @@ export class CookiesCommand extends ContextCommand {
             }
         }
 
-        const urlArg = (ctx.options?.getString("url") ?? ctx.args[2] ?? null) as string | null;
+        const urlArg = (localCtx.options?.getString("url") ?? localCtx.args[2] ?? null) as
+            | string
+            | null;
         if (!attachment && urlArg) {
             try {
                 const parsed = new URL(urlArg);
@@ -220,7 +227,7 @@ export class CookiesCommand extends ContextCommand {
         }
 
         try {
-            const response = await this.client.request.get(attachment.url);
+            const response = await client.request.get(attachment.url);
             const content = response.body;
 
             const lines = content.split("\n");
@@ -265,7 +272,7 @@ export class CookiesCommand extends ContextCommand {
                 );
             }
 
-            const result = this.client.cookies.addCookie(number, content);
+            const result = client.cookies.addCookie(number, content);
 
             if (result === "added") {
                 return ctx.reply({
@@ -312,10 +319,11 @@ export class CookiesCommand extends ContextCommand {
         }
     }
 
-    private async handleRemove(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
-        const target = ctx.options?.getString("target") ?? ctx.args[1]?.toLowerCase();
+    private async handleRemove(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
+        const target = localCtx.options?.getString("target") ?? localCtx.args[1]?.toLowerCase();
 
         if (!target) {
             return ctx.reply({
@@ -324,7 +332,7 @@ export class CookiesCommand extends ContextCommand {
         }
 
         if (target === "all") {
-            const count = this.client.cookies.removeAllCookies();
+            const count = client.cookies.removeAllCookies();
             return ctx.reply({
                 embeds: [
                     createEmbed(
@@ -347,7 +355,7 @@ export class CookiesCommand extends ContextCommand {
             });
         }
 
-        const success = this.client.cookies.removeCookie(number);
+        const success = client.cookies.removeCookie(number);
 
         if (success) {
             return ctx.reply({
@@ -375,10 +383,10 @@ export class CookiesCommand extends ContextCommand {
         });
     }
 
-    private async handleList(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
-        const cookies = this.client.cookies.listCookies();
+    private async handleList(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
+        const cookies = client.cookies.listCookies();
 
         if (cookies.length === 0) {
             return ctx.reply({
@@ -386,7 +394,7 @@ export class CookiesCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("commands.developers.cookies.noCookies", {
-                            usage: this.formatUsage(this.client.config.mainPrefix),
+                            usage: this.formatUsage(client.config.mainPrefix),
                         }),
                     ),
                 ],
@@ -395,7 +403,7 @@ export class CookiesCommand extends ContextCommand {
 
         const cookieList = cookies
             .map((index) => {
-                const status = this.client.cookies.getCookieStatus(index);
+                const status = client.cookies.getCookieStatus(index);
                 let emoji: string;
                 let statusText: string;
 
@@ -417,8 +425,8 @@ export class CookiesCommand extends ContextCommand {
             })
             .join("\n");
 
-        const currentCookie = this.client.cookies.getCurrentCookieIndex();
-        const statsValue = `${__("commands.developers.cookies.statsTotal")}: \`${cookies.length}\` | ${__("commands.developers.cookies.statsFailed")}: \`${this.client.cookies.getFailedCookieCount()}\` | ${__("commands.developers.cookies.statsCurrent")}: ${this.formatCookie(currentCookie)}`;
+        const currentCookie = client.cookies.getCurrentCookieIndex();
+        const statsValue = `${__("commands.developers.cookies.statsTotal")}: \`${cookies.length}\` | ${__("commands.developers.cookies.statsFailed")}: \`${client.cookies.getFailedCookieCount()}\` | ${__("commands.developers.cookies.statsCurrent")}: ${this.formatCookie(currentCookie)}`;
 
         const embed = createEmbed("info")
             .setTitle(`🍪 ${__("commands.developers.cookies.listTitle")}`)
@@ -430,12 +438,12 @@ export class CookiesCommand extends ContextCommand {
                 },
             ]);
 
-        if (this.client.cookies.areAllCookiesFailed()) {
+        if (client.cookies.areAllCookiesFailed()) {
             embed.addFields([
                 {
                     name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
                     value: __mf("commands.developers.cookies.allCookiesFailed", {
-                        resetCmd: this.formatResetCmd(),
+                        resetCmd: this.formatResetCmd(client),
                     }),
                 },
             ]);
@@ -444,10 +452,12 @@ export class CookiesCommand extends ContextCommand {
         return ctx.reply({ embeds: [embed] });
     }
 
-    private async handleView(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
-        const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
+    private async handleView(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
+        const number =
+            localCtx.options?.getInteger("number") ?? Number.parseInt(localCtx.args[1] ?? "", 10);
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
@@ -455,7 +465,7 @@ export class CookiesCommand extends ContextCommand {
             });
         }
 
-        const content = this.client.cookies.getCookieContent(number);
+        const content = client.cookies.getCookieContent(number);
 
         if (content === null) {
             return ctx.reply({
@@ -475,7 +485,7 @@ export class CookiesCommand extends ContextCommand {
             name: `cookies-${number}.txt`,
         });
 
-        const status = this.client.cookies.getCookieStatus(number);
+        const status = client.cookies.getCookieStatus(number);
         let emoji: string;
         let statusText: string;
 
@@ -514,18 +524,20 @@ export class CookiesCommand extends ContextCommand {
         return ctx.reply({ embeds: [embed], files: [attachment] });
     }
 
-    private async handleReset(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        this.client.cookies.resetFailedStatus();
+    private async handleReset(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
+        const __ = i18n__(client, ctx.guild);
+        client.cookies.resetFailedStatus();
         return ctx.reply({
             embeds: [createEmbed("success", __("commands.developers.cookies.resetSuccess"), true)],
         });
     }
 
-    private async handleUse(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
-        const number = ctx.options?.getInteger("number") ?? Number.parseInt(ctx.args[1] ?? "", 10);
+    private async handleUse(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
+        const number =
+            localCtx.options?.getInteger("number") ?? Number.parseInt(localCtx.args[1] ?? "", 10);
 
         if (Number.isNaN(number) || number < 1) {
             return ctx.reply({
@@ -533,7 +545,7 @@ export class CookiesCommand extends ContextCommand {
             });
         }
 
-        const result = this.client.cookies.useCookie(number);
+        const result = client.cookies.useCookie(number);
 
         if (result === "success") {
             return ctx.reply({

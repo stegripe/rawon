@@ -4,6 +4,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { type Message, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type LoopMode } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
@@ -43,8 +44,8 @@ import { i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class RepeatCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @useRequestChannel
@@ -52,7 +53,9 @@ export class RepeatCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public contextRun(ctx: CommandContext): Promise<Message> | undefined {
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const mode: Record<LoopMode, { aliases: string[]; emoji: string }> = {
             OFF: {
@@ -69,10 +72,10 @@ export class RepeatCommand extends ContextCommand {
             },
         };
         const selection =
-            (ctx.options?.getSubcommand() ?? ctx.args[0])
+            (localCtx.options?.getSubcommand() ?? localCtx.args[0])
                 ? Object.keys(mode).find((key) =>
                       mode[key as LoopMode].aliases.includes(
-                          ctx.args[0] ?? ctx.options?.getSubcommand(),
+                          localCtx.args[0] ?? localCtx.options?.getSubcommand(),
                       ),
                   )
                 : undefined;
@@ -90,7 +93,7 @@ export class RepeatCommand extends ContextCommand {
                         )}`,
                     ).setFooter({
                         text: `• ${__mf("commands.music.repeat.footer", {
-                            prefix: this.client.config.mainPrefix,
+                            prefix: client.config.mainPrefix,
                         })}`,
                     }),
                 ],

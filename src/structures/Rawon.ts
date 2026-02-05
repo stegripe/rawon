@@ -278,6 +278,9 @@ export class Rawon extends SapphireClient {
     ) {
         super({
             ...clientOptions,
+            // Disable automatic application command registration for multi-bot mode
+            // This prevents the CoreReady "Cannot read properties of null (reading 'commands')" error
+            loadApplicationCommandRegistriesStatusListeners: !config.isMultiBot,
             logger: {
                 instance: new PinoLogger({
                     name: "rawon",

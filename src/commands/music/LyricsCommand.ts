@@ -5,6 +5,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type LyricsAPIResult, type QueueSong } from "../../typings/index.js";
 import { chunk } from "../../utils/functions/chunk.js";
@@ -38,13 +39,15 @@ import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
     },
 })
 export class LyricsCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const currentSong = (
             (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as
@@ -53,10 +56,10 @@ export class LyricsCommand extends ContextCommand {
         )?.metadata as QueueSong | undefined;
 
         const userQuery =
-            ctx.args.length > 0
-                ? ctx.args.join(" ")
-                : (ctx.options?.getString("query")?.length ?? 0) > 0
-                  ? (ctx.options?.getString("query") ?? "")
+            localCtx.args.length > 0
+                ? localCtx.args.join(" ")
+                : (localCtx.options?.getString("query")?.length ?? 0) > 0
+                  ? (localCtx.options?.getString("query") ?? "")
                   : null;
 
         const query = userQuery ?? currentSong?.song.title;
@@ -70,10 +73,13 @@ export class LyricsCommand extends ContextCommand {
 
         const songThumbnail = userQuery === null ? currentSong?.song.thumbnail : undefined;
 
-        await this.getLyrics(ctx, query as unknown as string, songThumbnail, __, __mf);
+        await this.getLyrics(client, ctx, query as unknown as string, songThumbnail, __, __mf);
     }
 
-    public async fetchLyricsData(song: string): Promise<LyricsAPIResult<false> | null> {
+    public async fetchLyricsData(
+        client: Rawon,
+        song: string,
+    ): Promise<LyricsAPIResult<false> | null> {
         let data: LyricsAPIResult<false> | null = null;
 
         try {
@@ -85,7 +91,7 @@ export class LyricsCommand extends ContextCommand {
             const title = parts.length > 1 ? parts.slice(1).join(" ").trim() : cleanSong;
 
             const searchUrl = `https://lrclib.net/api/search?q=${encodeURIComponent(cleanSong)}`;
-            const searchResponse = await this.client.request
+            const searchResponse = await client.request
                 .get(searchUrl, { timeout: { request: 5_000 } })
                 .json<Array<{ trackName: string; artistName: string; id: number }>>();
 
@@ -104,7 +110,7 @@ export class LyricsCommand extends ContextCommand {
                 }
 
                 const getUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(selectedTrack.trackName)}&artist_name=${encodeURIComponent(selectedTrack.artistName)}`;
-                const lyricsResponse = await this.client.request
+                const lyricsResponse = await client.request
                     .get(getUrl, { timeout: { request: 5_000 } })
                     .json<{
                         trackName?: string;
@@ -148,14 +154,15 @@ export class LyricsCommand extends ContextCommand {
     }
 
     public async getLyrics(
+        client: Rawon,
         ctx: CommandContext,
         song: string,
         songThumbnail?: string,
         __?: ReturnType<typeof i18n__>,
         __mf?: ReturnType<typeof i18n__mf>,
     ): Promise<void> {
-        const localizedI18n = __ ?? i18n__(this.client, ctx.guild);
-        const localizedI18nMf = __mf ?? i18n__mf(this.client, ctx.guild);
+        const localizedI18n = __ ?? i18n__(client, ctx.guild);
+        const localizedI18nMf = __mf ?? i18n__mf(client, ctx.guild);
 
         const loadingMsg = await ctx.reply({
             embeds: [
@@ -166,7 +173,7 @@ export class LyricsCommand extends ContextCommand {
             ],
         });
 
-        const data = await this.fetchLyricsData(song);
+        const data = await this.fetchLyricsData(client, song);
 
         if (data === null || (data as { error: boolean }).error) {
             await loadingMsg.edit({

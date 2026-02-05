@@ -3,17 +3,19 @@ import { clearInterval, setInterval } from "node:timers";
 import { type AudioPlayerState, type AudioResource } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
-import { CommandContext, ContextCommand } from "@stegripe/command-context";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     ComponentType,
     type EmbedBuilder,
+    type Interaction,
     PermissionFlagsBits,
     type SlashCommandBuilder,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue } from "../../utils/decorators/MusicUtil.js";
@@ -44,14 +46,15 @@ import { normalizeTime } from "../../utils/functions/normalizeTime.js";
     },
 })
 export class NowPlayingCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @haveQueue
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
         const getEmbed = (): EmbedBuilder => {
             try {
                 const res = (
@@ -176,7 +179,7 @@ export class NowPlayingCommand extends ContextCommand {
 
         collector
             .on("collect", async (i) => {
-                const newCtx = new CommandContext(i);
+                const newCtx = new LocalCommandContext(i as unknown as Interaction, []);
                 let cmdName = "";
 
                 switch (i.customId) {
@@ -203,10 +206,10 @@ export class NowPlayingCommand extends ContextCommand {
                     default:
                         break;
                 }
-                const cmd = this.client.commands.get(cmdName) as
+                const cmd = client.commands.get(cmdName) as
                     | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
                     | undefined;
-                await cmd?.contextRun?.(newCtx);
+                await cmd?.contextRun?.(newCtx as unknown as CommandContext);
 
                 const embed = getEmbed();
 

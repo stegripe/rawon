@@ -3,7 +3,7 @@ import { Buffer } from "node:buffer";
 import { setTimeout } from "node:timers";
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
-import { CommandContext, ContextCommand } from "@stegripe/command-context";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
     type Collection,
@@ -18,6 +18,7 @@ import {
     type StringSelectMenuInteraction,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type Song } from "../../typings/index.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
@@ -62,15 +63,15 @@ import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
     },
 })
 export class SearchCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
-    private isRequestChannel(ctx: CommandContext): boolean {
+    private isRequestChannel(client: Rawon, ctx: CommandContext): boolean {
         if (!ctx.guild) {
             return false;
         }
-        const requestChannel = this.client.requestChannelManager.getRequestChannel(ctx.guild);
+        const requestChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
         return requestChannel !== null && ctx.channel?.id === requestChannel.id;
     }
 
@@ -84,30 +85,32 @@ export class SearchCommand extends ContextCommand {
     @validVC
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
-        if (ctx.isCommandInteraction() && !ctx.deferred) {
-            await ctx.deferReply();
+        if (ctx.isCommandInteraction() && !localCtx.deferred) {
+            await localCtx.deferReply();
         }
 
-        const values = ctx.additionalArgs.get("values") as string[] | undefined;
-        if (values && ctx.isStringSelectMenu()) {
-            if (!ctx.deferred) {
-                await ctx.deferReply();
+        const values = localCtx.additionalArgs.get("values") as string[] | undefined;
+        if (values && localCtx.isStringSelectMenu()) {
+            if (!localCtx.deferred) {
+                await localCtx.deferReply();
             }
 
-            const nextCtx = new CommandContext(ctx.context, []);
+            const nextCtx = new LocalCommandContext(localCtx.context, []);
 
             nextCtx.additionalArgs.set("values", values);
             nextCtx.additionalArgs.set("fromSearch", true);
-            const playCmd = this.client.commands.get("play") as
+            const playCmd = client.commands.get("play") as
                 | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
                 | undefined;
-            playCmd?.contextRun?.(nextCtx);
+            playCmd?.contextRun?.(nextCtx as unknown as CommandContext);
 
             const prev = await ctx.channel?.messages
-                .fetch((ctx.context as StringSelectMenuInteraction).message.id)
+                .fetch((localCtx.context as unknown as StringSelectMenuInteraction).message.id)
                 .catch(() => void 0);
             if (prev !== undefined && prev.components.length > 0) {
                 const actionRow = prev.components[0];
@@ -139,13 +142,13 @@ export class SearchCommand extends ContextCommand {
         }
 
         const source =
-            ctx.options?.getString("source") ??
-            (["youtube", "soundcloud"].includes(ctx.args.at(-1)?.toLowerCase() ?? "")
-                ? ctx.args.pop()
+            localCtx.options?.getString("source") ??
+            (["youtube", "soundcloud"].includes(localCtx.args.at(-1)?.toLowerCase() ?? "")
+                ? localCtx.args.pop()
                 : "youtube");
         const query =
-            (ctx.args.join(" ") || ctx.options?.getString("query")) ??
-            (ctx.options as CommandInteractionOptionResolver<"cached"> | null)?.getMessage(
+            (localCtx.args.join(" ") || localCtx.options?.getString("query")) ??
+            (localCtx.options as CommandInteractionOptionResolver<"cached"> | null)?.getMessage(
                 "message",
             )?.content;
 
@@ -153,38 +156,34 @@ export class SearchCommand extends ContextCommand {
             const noQueryMsg = await ctx.send({
                 embeds: [createEmbed("warn", __("commands.music.search.noQuery"))],
             });
-            if (this.isRequestChannel(ctx) && noQueryMsg) {
+            if (this.isRequestChannel(client, ctx) && noQueryMsg) {
                 this.autoDeleteMessage(noQueryMsg);
             }
             return;
         }
         if (checkQuery(query ?? "").isURL) {
-            const playCtx = new CommandContext(ctx.context, [String(query)]);
+            const playCtx = new LocalCommandContext(localCtx.context, [String(query)]);
             playCtx.additionalArgs.set("fromSearch", true);
-            const playCmd2 = this.client.commands.get("play") as
+            const playCmd2 = client.commands.get("play") as
                 | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
                 | undefined;
-            playCmd2?.contextRun?.(playCtx);
+            playCmd2?.contextRun?.(playCtx as unknown as CommandContext);
             return;
         }
 
-        const tracks = await searchTrack(
-            this.client,
-            query ?? "",
-            source as "soundcloud" | "youtube",
-        )
+        const tracks = await searchTrack(client, query ?? "", source as "soundcloud" | "youtube")
             .then((x) => ({ items: x.items.slice(0, 10), type: x.type }))
             .catch(() => void 0);
         if (!tracks || tracks.items.length <= 0) {
             const noTracksMsg = await ctx.reply({
                 embeds: [createEmbed("error", __("commands.music.search.noTracks"), true)],
             });
-            if (this.isRequestChannel(ctx) && noTracksMsg) {
+            if (this.isRequestChannel(client, ctx) && noTracksMsg) {
                 this.autoDeleteMessage(noTracksMsg);
             }
             return;
         }
-        if (this.client.config.musicSelectionType === "selectmenu") {
+        if (client.config.musicSelectionType === "selectmenu") {
             const selectMenuMsg = await ctx.send({
                 content: __("commands.music.search.interactionContent"),
                 components: [
@@ -202,7 +201,7 @@ export class SearchCommand extends ContextCommand {
                     ),
                 ],
             });
-            if (this.isRequestChannel(ctx) && selectMenuMsg) {
+            if (this.isRequestChannel(client, ctx) && selectMenuMsg) {
                 this.autoDeleteMessage(selectMenuMsg);
             }
             return;
@@ -221,7 +220,7 @@ export class SearchCommand extends ContextCommand {
                 )
                     .setAuthor({
                         name: __("commands.music.search.trackSelectionMessage"),
-                        iconURL: this.client.user?.displayAvatarURL(),
+                        iconURL: client.user?.displayAvatarURL(),
                     })
                     .setFooter({
                         text: `• ${__mf("commands.music.search.cancelMessage", {
@@ -266,7 +265,7 @@ export class SearchCommand extends ContextCommand {
             const noSelectionMsg = await ctx.reply({
                 embeds: [createEmbed("error", __("commands.music.search.noSelection"), true)],
             });
-            if (this.isRequestChannel(ctx) && noSelectionMsg) {
+            if (this.isRequestChannel(client, ctx) && noSelectionMsg) {
                 this.autoDeleteMessage(noSelectionMsg);
             }
             return;
@@ -280,7 +279,7 @@ export class SearchCommand extends ContextCommand {
             const canceledMsg = await ctx.reply({
                 embeds: [createEmbed("info", __("commands.music.search.canceledMessage"))],
             });
-            if (this.isRequestChannel(ctx) && canceledMsg) {
+            if (this.isRequestChannel(client, ctx) && canceledMsg) {
                 this.autoDeleteMessage(canceledMsg);
             }
             return;
@@ -303,17 +302,17 @@ export class SearchCommand extends ContextCommand {
             ?.content.split(/\s*,\s*/u)
             .filter((x) => Number(x) > 0 && Number(x) <= tracks.items.length)
             .sort((a, b) => Number(a) - Number(b)) as unknown as string[];
-        const newCtx = new CommandContext(ctx.context, []);
+        const newCtx = new LocalCommandContext(localCtx.context, []);
 
         newCtx.additionalArgs.set(
             "values",
             songs.map((x) => tracks.items[Number(x) - 1].url),
         );
         newCtx.additionalArgs.set("fromSearch", true);
-        const playCmd3 = this.client.commands.get("play") as
+        const playCmd3 = client.commands.get("play") as
             | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
             | undefined;
-        playCmd3?.contextRun?.(newCtx);
+        playCmd3?.contextRun?.(newCtx as unknown as CommandContext);
     }
 
     private generateSelectMenu(tracks: Song[]): SelectMenuComponentOptionData[] {

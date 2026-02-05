@@ -4,6 +4,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { type Message, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type GuildData } from "../../typings/index.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
@@ -89,16 +90,18 @@ const slashFilterChoices = Object.keys(filterArgs).map((x) => ({ name: x, value:
     },
 })
 export class FilterCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @inVC
     @validVC
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const mode: Record<string, FilterSubCmd> = {
             on: "enable",
@@ -110,11 +113,12 @@ export class FilterCommand extends ContextCommand {
         };
         const subcmd = mode[
             (
-                ctx.options?.getSubcommand() ?? (ctx.args[0] as string | undefined)
+                localCtx.options?.getSubcommand() ?? (localCtx.args[0] as string | undefined)
             )?.toLowerCase() as unknown as string
         ] as FilterSubCmd | undefined;
         const filter = (
-            ctx.options?.getString("filter") ?? (ctx.args[subcmd ? 1 : 0] as string | undefined)
+            localCtx.options?.getString("filter") ??
+            (localCtx.args[subcmd ? 1 : 0] as string | undefined)
         )?.toLowerCase() as keyof typeof filterArgs;
         if (subcmd === "enable" || subcmd === "disable") {
             if (!filterArgs[filter]) {
@@ -158,7 +162,7 @@ export class FilterCommand extends ContextCommand {
                     ],
                 });
             }
-            await this.saveFilterWithoutQueue(ctx, filter, newState);
+            await this.saveFilterWithoutQueue(client, ctx, filter, newState);
             return ctx.reply({
                 embeds: [
                     createEmbed(
@@ -175,7 +179,7 @@ export class FilterCommand extends ContextCommand {
             });
         }
 
-        const currentFilters = await this.getCurrentFilters(ctx);
+        const currentFilters = await this.getCurrentFilters(client, ctx);
 
         if (filterArgs[filter]) {
             const isEnabled = currentFilters[filter] === true;
@@ -191,7 +195,7 @@ export class FilterCommand extends ContextCommand {
                         text: `• ${__mf("commands.music.filter.embedFooter", {
                             filter,
                             opstate: isEnabled ? "disable" : "enable",
-                            prefix: ctx.isCommand() ? "/" : this.client.config.mainPrefix,
+                            prefix: localCtx.isCommand() ? "/" : client.config.mainPrefix,
                         })}`,
                     }),
                 ],
@@ -226,6 +230,7 @@ export class FilterCommand extends ContextCommand {
     }
 
     private async saveFilterWithoutQueue(
+        client: Rawon,
         ctx: CommandContext,
         filter: keyof typeof filterArgs,
         state: boolean,
@@ -235,40 +240,40 @@ export class FilterCommand extends ContextCommand {
             return;
         }
 
-        const botId = this.client.user?.id ?? "unknown";
+        const botId = client.user?.id ?? "unknown";
 
         let playerState: NonNullable<GuildData["playerState"]>;
 
-        if (this.client.config.isMultiBot) {
+        if (client.config.isMultiBot) {
             if (
-                "getPlayerState" in this.client.data &&
-                typeof this.client.data.getPlayerState === "function"
+                "getPlayerState" in client.data &&
+                typeof client.data.getPlayerState === "function"
             ) {
-                const existingState = (this.client.data as any).getPlayerState(guildId, botId);
+                const existingState = (client.data as any).getPlayerState(guildId, botId);
                 playerState = existingState ?? this.getDefaultPlayerState();
             } else {
                 playerState = this.getDefaultPlayerState();
             }
         } else {
-            const existingState = this.client.data.data?.[guildId]?.playerState;
+            const existingState = client.data.data?.[guildId]?.playerState;
             playerState = existingState ?? this.getDefaultPlayerState();
         }
 
         playerState.filters[filter] = state;
 
-        if (this.client.config.isMultiBot) {
+        if (client.config.isMultiBot) {
             if (
-                "savePlayerState" in this.client.data &&
-                typeof this.client.data.savePlayerState === "function"
+                "savePlayerState" in client.data &&
+                typeof client.data.savePlayerState === "function"
             ) {
-                await (this.client.data as any).savePlayerState(guildId, botId, playerState);
+                await (client.data as any).savePlayerState(guildId, botId, playerState);
             }
         } else {
-            const currentData = this.client.data.data ?? {};
+            const currentData = client.data.data ?? {};
             const guildData = currentData[guildId] ?? {};
             guildData.playerState = playerState;
 
-            await this.client.data.save(() => ({
+            await client.data.save(() => ({
                 ...currentData,
                 [guildId]: guildData,
             }));
@@ -276,6 +281,7 @@ export class FilterCommand extends ContextCommand {
     }
 
     private async getCurrentFilters(
+        client: Rawon,
         ctx: CommandContext,
     ): Promise<Partial<Record<keyof typeof filterArgs, boolean>>> {
         if (ctx.guild?.queue) {
@@ -287,18 +293,18 @@ export class FilterCommand extends ContextCommand {
             return {};
         }
 
-        const botId = this.client.user?.id ?? "unknown";
+        const botId = client.user?.id ?? "unknown";
 
-        if (this.client.config.isMultiBot) {
+        if (client.config.isMultiBot) {
             if (
-                "getPlayerState" in this.client.data &&
-                typeof this.client.data.getPlayerState === "function"
+                "getPlayerState" in client.data &&
+                typeof client.data.getPlayerState === "function"
             ) {
-                const state = (this.client.data as any).getPlayerState(guildId, botId);
+                const state = (client.data as any).getPlayerState(guildId, botId);
                 return (state?.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
             }
         } else {
-            const state = this.client.data.data?.[guildId]?.playerState;
+            const state = client.data.data?.[guildId]?.playerState;
             return (state?.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
         }
 

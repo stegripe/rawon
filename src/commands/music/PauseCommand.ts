@@ -31,8 +31,8 @@ import { i18n__ } from "../../utils/functions/i18n.js";
     },
 })
 export class PauseCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @useRequestChannel
@@ -40,7 +40,8 @@ export class PauseCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
 
         if (ctx.guild?.queue?.playing !== true) {
             await ctx.reply({

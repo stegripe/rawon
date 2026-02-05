@@ -4,8 +4,14 @@ import { type AudioPlayerPlayingState, AudioPlayerStatus } from "@discordjs/voic
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
-import { PermissionFlagsBits, type SlashCommandBuilder, type VoiceChannel } from "discord.js";
+import {
+    type GuildMember,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
+    type VoiceChannel,
+} from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
@@ -58,16 +64,19 @@ import { play } from "../../utils/handlers/GeneralUtil.js";
     },
 })
 export class SkipToCommand extends ContextCommand {
-    private get client(): Rawon {
-        return this.container.client as Rawon;
+    private getClient(ctx: CommandContext): Rawon {
+        return ctx.client as Rawon;
     }
 
     @inVC
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const __ = i18n__(this.client, ctx.guild);
-        const __mf = i18n__mf(this.client, ctx.guild);
+        const localCtx = ctx as unknown as LocalCommandContext;
+        const member = localCtx.member as GuildMember | null;
+        const client = this.getClient(ctx);
+        const __ = i18n__(client, ctx.guild);
+        const __mf = i18n__mf(client, ctx.guild);
 
         const queue = ctx.guild?.queue;
         if (!queue) {
@@ -81,18 +90,18 @@ export class SkipToCommand extends ContextCommand {
             return;
         }
 
-        const djRole = await this.client.utils.fetchDJRole(
+        const djRole = await client.utils.fetchDJRole(
             ctx.guild as unknown as NonNullable<typeof ctx.guild>,
         );
         if (
-            this.client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true &&
+            client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true &&
             (
-                this.client.channels.cache.get(
+                client.channels.cache.get(
                     queue.connection?.joinConfig.channelId ?? "",
                 ) as VoiceChannel
             )?.members.size > 2 &&
-            ctx.member?.roles.cache.has(djRole?.id ?? "") !== true &&
-            ctx.member?.permissions.has("ManageGuild") !== true
+            member?.roles.cache.has(djRole?.id ?? "") !== true &&
+            member?.permissions.has("ManageGuild") !== true
         ) {
             await ctx.reply({
                 embeds: [createEmbed("error", __("commands.music.skipTo.noPermission"), true)],
@@ -100,11 +109,11 @@ export class SkipToCommand extends ContextCommand {
             return;
         }
 
-        const subcommand = ctx.options?.getSubcommand(false);
+        const subcommand = localCtx.options?.getSubcommand(false);
         let targetType: number | string;
 
         if (subcommand === "specific") {
-            const position = ctx.options?.getNumber("position");
+            const position = localCtx.options?.getNumber("position");
             if (typeof position !== "number" || Number.isNaN(position)) {
                 await ctx.reply({
                     embeds: [
@@ -117,7 +126,7 @@ export class SkipToCommand extends ContextCommand {
         } else if (subcommand === "first" || subcommand === "last") {
             targetType = subcommand;
         } else {
-            const arg = ctx.args[0];
+            const arg = localCtx.args[0];
             targetType = Number.isNaN(Number(arg)) ? arg : Number(arg);
         }
 
@@ -130,7 +139,7 @@ export class SkipToCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `**\`${this.client.config.mainPrefix}help\`**`,
+                            prefix: `**\`${client.config.mainPrefix}help\`**`,
                             name: `**\`${this.options.name}\`**`,
                         }),
                     ),
