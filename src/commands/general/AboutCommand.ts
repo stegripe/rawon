@@ -41,7 +41,7 @@ const pkg = JSON.parse(
 })
 export class AboutCommand extends ContextCommand {
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = ctx.client as Rawon;
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
 

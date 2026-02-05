@@ -43,9 +43,30 @@ import { type SongManager } from "../utils/structures/SongManager.js";
 })
 export class InteractionCreateListener extends Listener<typeof Events.InteractionCreate> {
     private readonly cooldowns = new Collection<string, Collection<Snowflake, number>>();
+    private readonly processedInteractions = new Map<string, number>();
+    private readonly CACHE_TTL = 10000; // 10 seconds
+
+    private cleanupCache(): void {
+        const now = Date.now();
+        for (const [key, timestamp] of this.processedInteractions) {
+            if (now - timestamp > this.CACHE_TTL) {
+                this.processedInteractions.delete(key);
+            }
+        }
+    }
 
     public async run(interaction: Interaction): Promise<void> {
         const client = interaction.client as Rawon;
+
+        const cacheKey = `${interaction.id}:${client.user?.id}`;
+        if (this.processedInteractions.has(cacheKey)) {
+            return;
+        }
+        this.processedInteractions.set(cacheKey, Date.now());
+
+        if (this.processedInteractions.size > 100) {
+            this.cleanupCache();
+        }
 
         this.container.debugLog.logData("info", "INTERACTION_CREATE", [
             ["Type", interaction.type.toString()],

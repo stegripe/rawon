@@ -35,7 +35,7 @@ const SetVoiceChannelStatus = 281474976710656n;
 })
 export class InviteCommand extends ContextCommand {
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = ctx.client as Rawon;
         const __mf = i18n__mf(client, ctx.guild);
 
         const permissions = [

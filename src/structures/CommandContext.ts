@@ -207,4 +207,8 @@ export class CommandContext {
     public get member(): GuildMember | null {
         return this.guild?.members.resolve(this.author.id) ?? null;
     }
+
+    public get client() {
+        return this.context.client;
+    }
 }
