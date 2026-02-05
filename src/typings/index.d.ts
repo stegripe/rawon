@@ -246,6 +246,7 @@ export type GuildData = {
         currentPosition: number;
     };
     locale?: string;
+    prefix?: string;
 };
 
 export type NonAbstractConstructor<Result = unknown> = new (...args: any[]) => Result;

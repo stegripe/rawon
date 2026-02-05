@@ -18,9 +18,9 @@
                 "slashRemoveDescription": "Padam fail cookie",
                 "slashListDescription": "Senarai fail cookie",
                 "slashResetDescription": "Set semula status cookie yang gagal",
-                "slashNumberDescription": "Nombor cookie (dimulakan dari 1)",
+                "slashNumberDescription": "Nombor cookie (dimulakan dari `1`)",
                 "slashRemoveTargetDescription": "Nombor cookies yang mahu dipadam atau 'all'",
-                "invalidNumber": "Sila nyatakan nombor cookies yang sah (bermula dari 1).",
+                "invalidNumber": "Sila nyatakan nombor cookies yang sah (bermula dari `1`)",
                 "noAttachment": "Sila sertakan fail cookies.txt bersama mesej anda.",
                 "invalidFileType": "Tolong lampirkan fail .txt.",
                 "invalidCookiesFile": "Fail tidak sah.",
@@ -91,7 +91,7 @@
                 "usageString": "Cara penggunaan"
             },
             "invite": {
-                "clickURL": "**[Klik di sini]({url})** untuk jemput bot ini ke server anda.",
+                "clickURL": "- **[Klik di sini]({url})** untuk menjemput bot {botNum} ke server anda.",
                 "description": "Dapatkan pautan jemputan untuk bot ini",
                 "inviteTitle": "{bot} - Pautan Jemputan"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "Bahasa server telah ditetapkan ke bahasa asal:",
                 "invalidLocale": "Bahasa tidak tersedia. Bahasa yang tersedia:",
                 "availableLocales": "Bahasa yang tersedia"
+            },
+            "prefix": {
+                "currentPrefix": "Prefix semasa: {prefix}",
+                "description": "Tukar prefix arahan untuk server ini",
+                "embedTitle": "Tetapan Prefix",
+                "noPermission": "Anda perlu kebenaran **Pengelola Server** untuk menggunakan arahan ini.",
+                "prefixReset": "Prefix telah ditetapkan semula ke: {prefix}",
+                "prefixSet": "Prefix telah ditetapkan ke: {prefix}",
+                "prefixTooLong": "Prefix tidak boleh melebihi `10` aksara.",
+                "slashPrefixOption": "Prefix baru (maksimum `10` aksara)",
+                "slashResetDescription": "Tetapkan semula ke prefix asal",
+                "slashSetDescription": "Tetapkan prefix khas untuk server ini",
+                "slashViewDescription": "Paparkan prefix semasa",
+                "usage": "{prefix}prefix [prefix baru | view | reset]"
             }
         },
         "music": {
@@ -237,7 +251,7 @@
                 "cantSeekSoundcloud": "Tidak boleh melangkau masa dalam trek SoundCloud.",
                 "description": "Langkau ke masa tertentu dalam lagu semasa",
                 "exceedsDuration": "Masa yang dicari melebihi tempoh lagu ({duration}).",
-                "invalidTime": "Format masa tidak sah: {time}. Gunakan format seperti `1:30` atau `90`.",
+                "invalidTime": "Format masa tidak sah: {time}. Gunakan format seperti `1:30` atau `90`",
                 "noPlaying": "Tiada lagu yang sedang dimainkan.",
                 "noTime": "Sila nyatakan masa untuk dilangkau.",
                 "notCached": "Belum boleh melangkau masa untuk lagu ini. Sila tunggu audio selesai dimuat.",
@@ -272,6 +286,7 @@
                 "currentVolume": "Kelantangan semasa ialah {volume}",
                 "description": "Ubah kelantangan pemain media",
                 "newVolume": "Kelantangan ditetapkan ke {volume}",
+                "noPermission": "Anda memerlukan peranan DJ atau kebenaran **Pengelola Server** untuk menetapkan kelantangan melebihi `100%`",
                 "plsPause": "Sila jedakan muzik daripada menetapkan kelantangan kepada {volume}",
                 "slashDescription": "Kelantangan baharu",
                 "usage": "{prefix}volume [Kelantangan baharu]",
@@ -356,7 +371,7 @@
         "alreadyPaused": "Muzik sudah pun dijeda.",
         "alreadyPlaying": "Muzik sudah pun dimainkan.",
         "nothingPlaying": "Tiada yang sedang dimainkan.",
-        "volumeLimit": "Kelantangan hendaklah di antara 1 dan 100.",
+        "volumeLimit": "Kelantangan hendaklah di antara `1` dan `100`",
         "setChannel": "Saluran permintaan telah ditetapkan ke {channel}.",
         "removeChannel": "Saluran permintaan telah dipadam.",
         "noChannel": "Tiada saluran permintaan yang ditetapkan.",
