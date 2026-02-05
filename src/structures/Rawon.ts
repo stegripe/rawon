@@ -309,6 +309,19 @@ export class Rawon extends SapphireClient {
         this.startTimestamp = Date.now();
         setCookiesManager(this.cookies);
 
+        // Unload CoreReady listener in multi-bot mode to prevent
+        // "Cannot read properties of null (reading 'commands')" error
+        if (this.config.isMultiBot) {
+            const listenerStore = this.stores.get("listeners");
+            const coreReady = listenerStore.get("CoreReady");
+            if (coreReady) {
+                listenerStore.unload(coreReady);
+                container.logger.debug(
+                    "[MultiBot] Unloaded CoreReady listener to prevent application command registration errors",
+                );
+            }
+        }
+
         const loginToken = token ?? process.env.DISCORD_TOKEN;
         if (!loginToken) {
             throw new Error("No token provided for login");

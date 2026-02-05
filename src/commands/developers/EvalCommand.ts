@@ -78,7 +78,7 @@ export class EvalCommand extends ContextCommand {
             const cleaned = this.clean(evaled);
             const output =
                 cleaned.length > 1_024
-                    ? `${await this.hastebin(cleaned)}.js`
+                    ? `${await this.hastebin(client, cleaned)}.js`
                     : `\`\`\`js\n${cleaned}\`\`\``;
 
             embed.addFields([{ name: __("commands.developers.eval.outputString"), value: output }]);
@@ -91,7 +91,7 @@ export class EvalCommand extends ContextCommand {
             const cleaned = this.clean(String(error_));
             const isTooLong = cleaned.length > 1_024;
             const error = isTooLong
-                ? `${await this.hastebin(cleaned)}.js`
+                ? `${await this.hastebin(client, cleaned)}.js`
                 : `\`\`\`js\n${cleaned}\`\`\``;
 
             embed
@@ -115,8 +115,7 @@ export class EvalCommand extends ContextCommand {
             .replaceAll("@", `@${String.fromCodePoint(8_203)}`);
     }
 
-    private async hastebin(text: string): Promise<string> {
-        const client = this.container.client as Rawon;
+    private async hastebin(client: Rawon, text: string): Promise<string> {
         const result = await client.request
             .post("https://bin.stegripe.org/documents", {
                 body: text,
