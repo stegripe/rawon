@@ -91,7 +91,7 @@
                 "usageString": "Usage"
             },
             "invite": {
-                "clickURL": "- **[Cliquez ici]({url})** pour inviter ce bot **#{botNum}** sur votre serveur.",
+                "clickURL": "- **[Cliquez ici]({url})** pour inviter le bot {botNum} sur votre serveur.",
                 "description": "Obtenez le lien d'invitation pour le bot",
                 "inviteTitle": "{bot} - Lien d'invitation"
             },

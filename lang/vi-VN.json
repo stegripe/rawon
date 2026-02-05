@@ -91,7 +91,7 @@
                 "usageString": "Cách dùng"
             },
             "invite": {
-                "clickURL": "- **[Nhấn vào đây]({url})** để mời bot **#{botNum}** vào máy chủ của bạn",
+                "clickURL": "- **[Nhấn vào đây]({url})** để mời bot {botNum} vào máy chủ của bạn.",
                 "description": "Nhận liên kết mời bot",
                 "inviteTitle": "{bot} - Link mời"
             },
@@ -115,18 +115,18 @@
                 "availableLocales": "Ngôn ngữ có sẵn"
             },
             "prefix": {
-                "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
-                "embedTitle": "Pengaturan Prefix",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
-                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
-                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
-                "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
-                "usage": "{prefix}prefix [prefix baru | view | reset]"
+                "currentPrefix": "Tiền tố hiện tại: {prefix}",
+                "description": "Đổi tiền tố lệnh cho máy chủ này",
+                "embedTitle": "Cài đặt Tiền tố",
+                "noPermission": "Bạn cần quyền **Quản lý Máy chủ** để sử dụng lệnh này.",
+                "prefixReset": "Tiền tố đã được đặt lại thành: {prefix}",
+                "prefixSet": "Tiền tố đã được đặt thành: {prefix}",
+                "prefixTooLong": "Tiền tố không thể dài hơn 10 ký tự.",
+                "slashPrefixOption": "Tiền tố mới (tối đa 10 ký tự)",
+                "slashResetDescription": "Đặt lại về tiền tố mặc định",
+                "slashSetDescription": "Đặt tiền tố tùy chỉnh cho máy chủ này",
+                "slashViewDescription": "Xem tiền tố hiện tại",
+                "usage": "{prefix}prefix [tiền tố mới | view | reset]"
             }
         },
         "music": {

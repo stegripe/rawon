@@ -71,7 +71,7 @@ export class InviteCommand extends BaseCommand {
                         const botNum = bot.tokenIndex + 1;
                         return __mf("commands.general.invite.clickURL", {
                             url: invite,
-                            botNum,
+                            botNum: `**#${botNum}**`,
                         });
                     });
                 description = inviteLines.join("\n");
@@ -86,6 +86,7 @@ export class InviteCommand extends BaseCommand {
             });
             description = __mf("commands.general.invite.clickURL", {
                 url: invite,
+                botNum: "",
             });
             title = __mf("commands.general.invite.inviteTitle", {
                 bot: this.client.user?.username,

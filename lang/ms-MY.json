@@ -91,7 +91,7 @@
                 "usageString": "Cara penggunaan"
             },
             "invite": {
-                "clickURL": "**[Klik di sini]({url})** untuk jemput bot ini ke server anda.",
+                "clickURL": "- **[Klik di sini]({url})** untuk menjemput bot {botNum} ke server anda.",
                 "description": "Dapatkan pautan jemputan untuk bot ini",
                 "inviteTitle": "{bot} - Pautan Jemputan"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "Bahasa server telah ditetapkan ke bahasa asal:",
                 "invalidLocale": "Bahasa tidak tersedia. Bahasa yang tersedia:",
                 "availableLocales": "Bahasa yang tersedia"
+            },
+            "prefix": {
+                "currentPrefix": "Prefix semasa: {prefix}",
+                "description": "Tukar prefix arahan untuk server ini",
+                "embedTitle": "Tetapan Prefix",
+                "noPermission": "Anda perlu kebenaran **Pengelola Server** untuk menggunakan arahan ini.",
+                "prefixReset": "Prefix telah ditetapkan semula ke: {prefix}",
+                "prefixSet": "Prefix telah ditetapkan ke: {prefix}",
+                "prefixTooLong": "Prefix tidak boleh melebihi 10 aksara.",
+                "slashPrefixOption": "Prefix baru (maksimum 10 aksara)",
+                "slashResetDescription": "Tetapkan semula ke prefix asal",
+                "slashSetDescription": "Tetapkan prefix khas untuk server ini",
+                "slashViewDescription": "Paparkan prefix semasa",
+                "usage": "{prefix}prefix [prefix baru | view | reset]"
             }
         },
         "music": {

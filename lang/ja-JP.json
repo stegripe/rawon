@@ -91,7 +91,7 @@
                 "usageString": "使い方"
             },
             "invite": {
-                "clickURL": "- **[ここをクリック]({url})**してこのBot **#{botNum}**をサーバーに招待",
+                "clickURL": "- **[ここをクリック]({url})** してBot {botNum} をサーバーに招待",
                 "description": "このBotの招待リンクを取得",
                 "inviteTitle": "{bot} - 招待リンク"
             },
@@ -115,18 +115,18 @@
                 "availableLocales": "利用可能な言語"
             },
             "prefix": {
-                "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
-                "embedTitle": "Pengaturan Prefix",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
-                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
-                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
-                "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
-                "usage": "{prefix}prefix [prefix baru | view | reset]"
+                "currentPrefix": "現在のプレフィックス: {prefix}",
+                "description": "このサーバーのコマンドプレフィックスを変更",
+                "embedTitle": "プレフィックス設定",
+                "noPermission": "このコマンドを使用するには**サーバー管理**権限が必要です。",
+                "prefixReset": "プレフィックスがリセットされました: {prefix}",
+                "prefixSet": "プレフィックスが設定されました: {prefix}",
+                "prefixTooLong": "プレフィックスは10文字以下である必要があります。",
+                "slashPrefixOption": "新しいプレフィックス（最大10文字）",
+                "slashResetDescription": "デフォルトのプレフィックスにリセット",
+                "slashSetDescription": "このサーバーのカスタムプレフィックスを設定",
+                "slashViewDescription": "現在のプレフィックスを表示",
+                "usage": "{prefix}prefix [新しいプレフィックス | view | reset]"
             }
         },
         "music": {

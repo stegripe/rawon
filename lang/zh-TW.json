@@ -91,7 +91,7 @@
                 "usageString": "用法"
             },
             "invite": {
-                "clickURL": "- **[點擊這裡]({url})** 邀請此機器人 **#{botNum}** 到您的伺服器。",
+                "clickURL": "- **[點擊這裡]({url})** 邀請機器人 {botNum} 到您的伺服器。",
                 "description": "獲取機器人的邀請鏈接",
                 "inviteTitle": "{bot} - 邀請鏈接"
             },
@@ -115,18 +115,18 @@
                 "availableLocales": "可用語言"
             },
             "prefix": {
-                "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
-                "embedTitle": "Pengaturan Prefix",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
-                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
-                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
-                "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
-                "usage": "{prefix}prefix [prefix baru | view | reset]"
+                "currentPrefix": "目前前綴: {prefix}",
+                "description": "變更此伺服器的指令前綴",
+                "embedTitle": "前綴設定",
+                "noPermission": "您需要**管理伺服器**權限才能使用此指令。",
+                "prefixReset": "前綴已重置為: {prefix}",
+                "prefixSet": "前綴已設定為: {prefix}",
+                "prefixTooLong": "前綴不能超過10個字元。",
+                "slashPrefixOption": "新前綴（最多10個字元）",
+                "slashResetDescription": "重置為預設前綴",
+                "slashSetDescription": "為此伺服器設定自定義前綴",
+                "slashViewDescription": "查看目前前綴",
+                "usage": "{prefix}prefix [新前綴 | view | reset]"
             }
         },
         "music": {

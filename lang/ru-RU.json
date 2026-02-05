@@ -91,7 +91,7 @@
                 "usageString": "Использование"
             },
             "invite": {
-                "clickURL": "- **[Нажмите сюда]({url})** чтобы пригласить этого бота **#{botNum}** на свой сервер.",
+                "clickURL": "- **[Нажмите сюда]({url})** чтобы пригласить бота {botNum} на свой сервер.",
                 "description": "Получить ссылку для приглашения бота",
                 "inviteTitle": "{bot} - Ссылка приглашения"
             },
@@ -115,18 +115,18 @@
                 "availableLocales": "Доступные языки"
             },
             "prefix": {
-                "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
-                "embedTitle": "Pengaturan Prefix",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
-                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
-                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
-                "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
-                "usage": "{prefix}prefix [prefix baru | view | reset]"
+                "currentPrefix": "Текущий префикс: {prefix}",
+                "description": "Изменить префикс команд для этого сервера",
+                "embedTitle": "Настройки префикса",
+                "noPermission": "Вам нужно разрешение **Управление сервером** для использования этой команды.",
+                "prefixReset": "Префикс был сброшен на: {prefix}",
+                "prefixSet": "Префикс был установлен на: {prefix}",
+                "prefixTooLong": "Префикс не может быть длиннее 10 символов.",
+                "slashPrefixOption": "Новый префикс (максимум 10 символов)",
+                "slashResetDescription": "Сбросить на префикс по умолчанию",
+                "slashSetDescription": "Установить пользовательский префикс для этого сервера",
+                "slashViewDescription": "Посмотреть текущий префикс",
+                "usage": "{prefix}prefix [новый префикс | view | reset]"
             }
         },
         "music": {

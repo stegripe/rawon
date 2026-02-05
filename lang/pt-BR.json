@@ -91,7 +91,7 @@
                 "usageString": "Uso"
             },
             "invite": {
-                "clickURL": "- **[Clique aqui]({url})** para convidar este bot **#{botNum}** ao seu servidor.",
+                "clickURL": "- **[Clique aqui]({url})** para convidar o bot {botNum} ao seu servidor.",
                 "description": "Obtém o link de convite do bot",
                 "inviteTitle": "{bot} - Link de convite"
             },
@@ -115,18 +115,18 @@
                 "availableLocales": "Idiomas disponíveis"
             },
             "prefix": {
-                "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
-                "embedTitle": "Pengaturan Prefix",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
-                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
-                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
-                "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
-                "usage": "{prefix}prefix [prefix baru | view | reset]"
+                "currentPrefix": "Prefixo atual: {prefix}",
+                "description": "Alterar o prefixo de comandos para este servidor",
+                "embedTitle": "Configurações de Prefixo",
+                "noPermission": "Você precisa da permissão **Gerenciar Servidor** para usar este comando.",
+                "prefixReset": "O prefixo foi redefinido para: {prefix}",
+                "prefixSet": "O prefixo foi definido para: {prefix}",
+                "prefixTooLong": "O prefixo não pode ter mais de 10 caracteres.",
+                "slashPrefixOption": "O novo prefixo (máximo 10 caracteres)",
+                "slashResetDescription": "Redefinir para o prefixo padrão",
+                "slashSetDescription": "Definir um prefixo personalizado para este servidor",
+                "slashViewDescription": "Ver o prefixo atual",
+                "usage": "{prefix}prefix [novo prefixo | view | reset]"
             }
         },
         "music": {

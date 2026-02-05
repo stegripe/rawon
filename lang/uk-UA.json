@@ -91,7 +91,7 @@
                 "usageString": "Приклад використання"
             },
             "invite": {
-                "clickURL": "- **[Натисніть тут]({url})** щоб запросити бота **#{botNum}** на свій сервер.",
+                "clickURL": "- **[Натисніть тут]({url})** щоб запросити бота {botNum} на свій сервер.",
                 "description": "Отримати посилання для додавання бота на свій сервер",
                 "inviteTitle": "{bot} - Запрошувальне посилання"
             },
@@ -115,18 +115,18 @@
                 "availableLocales": "Доступні мови"
             },
             "prefix": {
-                "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
-                "embedTitle": "Pengaturan Prefix",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
-                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
-                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
-                "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
-                "usage": "{prefix}prefix [prefix baru | view | reset]"
+                "currentPrefix": "Поточний префікс: {prefix}",
+                "description": "Змінити префікс команд для цього сервера",
+                "embedTitle": "Налаштування префіксу",
+                "noPermission": "Вам потрібен дозвіл **Керувати сервером** для використання цієї команди.",
+                "prefixReset": "Префікс було скинуто до: {prefix}",
+                "prefixSet": "Префікс було встановлено на: {prefix}",
+                "prefixTooLong": "Префікс не може бути довшим за 10 символів.",
+                "slashPrefixOption": "Новий префікс (максимум 10 символів)",
+                "slashResetDescription": "Скинути до префіксу за замовчуванням",
+                "slashSetDescription": "Встановити власний префікс для цього сервера",
+                "slashViewDescription": "Переглянути поточний префікс",
+                "usage": "{prefix}prefix [новий префікс | view | reset]"
             }
         },
         "music": {

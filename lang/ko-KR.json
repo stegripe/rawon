@@ -91,7 +91,7 @@
                 "usageString": "사용법"
             },
             "invite": {
-                "clickURL": "- **[여기를 클릭]({url})**해서 이 봇 **#{botNum}**을 서버에 초대하세요.",
+                "clickURL": "- **[여기를 클릭]({url})** 하여 봇 {botNum} 을 서버에 초대하세요.",
                 "description": "봇 초대 링크 받기",
                 "inviteTitle": "{bot} - 초대 링크"
             },
@@ -115,18 +115,18 @@
                 "availableLocales": "사용 가능한 언어"
             },
             "prefix": {
-                "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
-                "embedTitle": "Pengaturan Prefix",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
-                "prefixTooLong": "Prefix gak bisa lebih dari 10 karakter.",
-                "slashPrefixOption": "Prefix baru (maks 10 karakter)",
-                "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
-                "usage": "{prefix}prefix [prefix baru | view | reset]"
+                "currentPrefix": "현재 접두사: {prefix}",
+                "description": "이 서버의 명령어 접두사 변경",
+                "embedTitle": "접두사 설정",
+                "noPermission": "이 명령어를 사용하려면 **서버 관리** 권한이 필요합니다.",
+                "prefixReset": "접두사가 재설정되었습니다: {prefix}",
+                "prefixSet": "접두사가 설정되었습니다: {prefix}",
+                "prefixTooLong": "접두사는 10자 이하여야 합니다.",
+                "slashPrefixOption": "새 접두사 (최대 10자)",
+                "slashResetDescription": "기본 접두사로 재설정",
+                "slashSetDescription": "이 서버의 사용자 정의 접두사 설정",
+                "slashViewDescription": "현재 접두사 보기",
+                "usage": "{prefix}prefix [새 접두사 | view | reset]"
             }
         },
         "music": {
