@@ -1,4 +1,5 @@
-import { PermissionFlagsBits } from "discord.js";
+import { type GuildMember, PermissionFlagsBits } from "discord.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
@@ -19,7 +20,8 @@ export const haveQueue = createCmdExecuteDecorator((ctx) => {
 export const inVC = createCmdExecuteDecorator((ctx) => {
     const client = ctx.client as Rawon;
     const __ = i18n__(client, ctx.guild);
-    if (!ctx.member?.voice.channel) {
+    const member = ctx.member as GuildMember | null;
+    if (!member?.voice.channel) {
         void ctx.reply({
             embeds: [createEmbed("warn", __("utils.musicDecorator.noInVC"))],
         });
@@ -31,7 +33,8 @@ export const inVC = createCmdExecuteDecorator((ctx) => {
 export const validVC = createCmdExecuteDecorator((ctx) => {
     const client = ctx.client as Rawon;
     const __ = i18n__(client, ctx.guild);
-    const voiceChannel = ctx.member?.voice.channel;
+    const member = ctx.member as GuildMember | null;
+    const voiceChannel = member?.voice.channel;
 
     if (!ctx.guild?.members.me) {
         return true;
@@ -59,6 +62,7 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
 export const sameVC = createCmdExecuteDecorator((ctx) => {
     const client = ctx.client as Rawon;
     const __ = i18n__(client, ctx.guild);
+    const member = ctx.member as GuildMember | null;
 
     if (!client || !ctx.guild) {
         return true;
@@ -70,7 +74,7 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
     }
 
     if (client.config.isMultiBot) {
-        const userVoiceChannelId = ctx.member?.voice.channel?.id ?? null;
+        const userVoiceChannelId = member?.voice.channel?.id ?? null;
 
         if (userVoiceChannelId) {
             const shouldRespond = client.multiBotManager.shouldRespondToMusicCommand(
@@ -92,7 +96,7 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
     const botVc =
         thisBotGuild.queue?.connection?.joinConfig.channelId ??
         thisBotGuild.members.me.voice.channel.id;
-    if (ctx.member?.voice.channel?.id !== botVc) {
+    if (member?.voice.channel?.id !== botVc) {
         void ctx.reply({
             embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
         });
@@ -103,6 +107,7 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
+    const localCtx = ctx as unknown as LocalCommandContext;
     const client = ctx.client as Rawon;
     const __ = i18n__(client, ctx.guild);
     const __mf = i18n__mf(client, ctx.guild);
@@ -110,7 +115,7 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         return true;
     }
 
-    if (ctx.additionalArgs.get("fromSearch") !== undefined) {
+    if (localCtx.additionalArgs.get("fromSearch") !== undefined) {
         return true;
     }
 
