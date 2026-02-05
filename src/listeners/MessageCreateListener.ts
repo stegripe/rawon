@@ -48,9 +48,8 @@ const MUSIC_COMMANDS = [
     event: Events.MessageCreate,
 })
 export class MessageCreateListener extends Listener<typeof Events.MessageCreate> {
-    // Cache to prevent duplicate message processing (messageId:botId -> timestamp)
     private readonly processedMessages = new Map<string, number>();
-    private readonly CACHE_TTL = 5000; // 5 seconds
+    private readonly CACHE_TTL = 5000;
 
     private cleanupCache(): void {
         const now = Date.now();
@@ -64,7 +63,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
     public async run(message: Message): Promise<void> {
         const client = message.client as Rawon;
 
-        // Deduplicate processing - prevent same message being processed twice by same bot
         const cacheKey = `${message.id}:${client.user?.id}`;
         if (this.processedMessages.has(cacheKey)) {
             this.container.logger.debug(
@@ -74,7 +72,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         }
         this.processedMessages.set(cacheKey, Date.now());
 
-        // Cleanup old cache entries periodically
         if (this.processedMessages.size > 100) {
             this.cleanupCache();
         }
@@ -146,7 +143,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 const user = this.getUserFromMention(userMention[0], message);
                 if (user?.id === client.user?.id) {
                     isMentionPrefix = true;
-                    actualPrefix = userMention[0]; // Store the actual mention string
+                    actualPrefix = userMention[0];
                     return true;
                 }
                 return false;

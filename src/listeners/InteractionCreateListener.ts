@@ -28,12 +28,10 @@ import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 
-// Helper to check if command has slash command
 function hasSlashCommand(cmd: Command): boolean {
     return cmd.options.chatInputCommand !== undefined;
 }
 
-// Helper to get command options with custom properties
 function getCommandOptions(cmd: Command): Command.Options {
     return cmd.options;
 }
@@ -45,9 +43,8 @@ import { type SongManager } from "../utils/structures/SongManager.js";
 })
 export class InteractionCreateListener extends Listener<typeof Events.InteractionCreate> {
     private readonly cooldowns = new Collection<string, Collection<Snowflake, number>>();
-    // Cache to prevent duplicate interaction processing (interactionId:botId -> timestamp)
     private readonly processedInteractions = new Map<string, number>();
-    private readonly CACHE_TTL = 10000; // 10 seconds
+    private readonly CACHE_TTL = 10000;
 
     private cleanupCache(): void {
         const now = Date.now();
@@ -61,14 +58,12 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
     public async run(interaction: Interaction): Promise<void> {
         const client = interaction.client as Rawon;
 
-        // Deduplicate processing - prevent same interaction being processed twice by same bot
         const cacheKey = `${interaction.id}:${client.user?.id}`;
         if (this.processedInteractions.has(cacheKey)) {
             return;
         }
         this.processedInteractions.set(cacheKey, Date.now());
 
-        // Cleanup old cache entries periodically
         if (this.processedInteractions.size > 100) {
             this.cleanupCache();
         }

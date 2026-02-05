@@ -107,12 +107,10 @@ class CommandsCompatibility {
         container.logger.debug(
             `[CommandsCompat] get("${name}") - store has ${store.size} commands`,
         );
-        // Try direct name first
         let cmd = store.get(name);
         if (cmd) {
             return wrapCommand(cmd);
         }
-        // Try aliases
         const aliasedName = this.aliases.get(name);
         if (aliasedName) {
             cmd = store.get(aliasedName);
@@ -120,7 +118,6 @@ class CommandsCompatibility {
                 return wrapCommand(cmd);
             }
         }
-        // Try finding by aliases in command options
         cmd = [...store.values()].find((c) => {
             const aliases = (c.options as { aliases?: string[] }).aliases ?? [];
             return aliases.includes(name);
@@ -149,15 +146,11 @@ class CommandsCompatibility {
         return this.values();
     }
 
-    /**
-     * Get commands organized by category (folder name)
-     */
     public get categories(): Collection<string, CommandCategory> {
         const store = this.client.stores.get("commands");
         const categories = new Collection<string, CommandCategory>();
 
         for (const cmd of store.values()) {
-            // Extract category from file path or fullCategory
             const category =
                 cmd.fullCategory.length > 0 ? (cmd.fullCategory.at(-1) ?? "general") : "general";
 
@@ -176,9 +169,6 @@ class CommandsCompatibility {
         return categories;
     }
 
-    /**
-     * Handle a message command - parse the message and execute the command
-     */
     public handle(message: Message, prefix: string): void {
         const content = message.content.slice(prefix.length).trim();
         const args = content.split(/ +/u);
@@ -203,16 +193,13 @@ class CommandsCompatibility {
             `[CommandsCompat] Found command: ${command.name}, meta.disable: ${command.meta.disable}`,
         );
 
-        // Check if command is disabled
         if (command.meta.disable) {
             container.logger.debug(`[CommandsCompat] Command "${commandName}" is disabled`);
             return;
         }
 
-        // Create context and execute
         const ctx = new CommandContext(message, args);
 
-        // Call contextRun if available
         const ctxCommand = command as unknown as {
             contextRun?: (ctx: CommandContext) => Promise<unknown>;
         };
@@ -278,10 +265,7 @@ export class Rawon extends SapphireClient {
     ) {
         super({
             ...clientOptions,
-            // Disable automatic application command registration for multi-bot mode
-            // This prevents the CoreReady "Cannot read properties of null (reading 'commands')" error
             loadApplicationCommandRegistriesStatusListeners: !config.isMultiBot,
-            // Disable default error listeners so we can use custom ones that suppress expected errors
             loadDefaultErrorListeners: false,
             logger: {
                 instance: new PinoLogger({
@@ -311,14 +295,10 @@ export class Rawon extends SapphireClient {
         this.startTimestamp = Date.now();
         setCookiesManager(this.cookies);
 
-        // Patch CoreReady listener in multi-bot mode to prevent
-        // "Cannot read properties of null (reading 'commands')" error
-        // This error occurs because container.client.application is null during startup
         if (this.config.isMultiBot) {
             const listenerStore = this.stores.get("listeners");
             const coreReady = listenerStore.get("CoreReady");
             if (coreReady) {
-                // Replace the run method with a no-op
                 (coreReady as { run: () => void }).run = () => {
                     container.logger.debug(
                         "[MultiBot] Skipped CoreReady listener to prevent application command registration errors",
@@ -334,21 +314,17 @@ export class Rawon extends SapphireClient {
 
         await this.login(loginToken);
 
-        // For multi-bot mode, we need to manually forward events to the listener store
-        // because Sapphire's container.client only points to ONE client
         if (this.config.isMultiBot) {
             container.logger.info(
                 `[MultiBot] Bot ${this.user?.tag} is in ${this.guilds.cache.size} guild(s): ${Array.from(this.guilds.cache.keys()).join(", ")}`,
             );
 
-            // Bind events to forward to listeners manually if this isn't the container.client
             const listenerStore = this.stores.get("listeners");
             if (container.client !== this) {
                 container.logger.info(
                     `[MultiBot] Bot ${this.user?.tag} is NOT container.client, setting up event forwarding...`,
                 );
 
-                // Forward key events to listeners
                 this.on("messageCreate", (message: Message) => {
                     const listener = listenerStore.get("MessageCreateListener");
                     if (listener?.run) {

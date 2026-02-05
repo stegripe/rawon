@@ -110,7 +110,6 @@ export type CategoryMeta = {
     name: string;
 };
 
-// Augment Sapphire Command.Options with custom properties
 declare module "@sapphire/framework" {
     interface CommandOptions {
         devOnly?: boolean;
@@ -121,7 +120,6 @@ declare module "@sapphire/framework" {
     }
 }
 
-// Helper type for accessing command meta-like properties
 export type CommandMeta = {
     name: string;
     description?: string;

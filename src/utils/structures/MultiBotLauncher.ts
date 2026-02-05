@@ -109,8 +109,6 @@ export class MultiBotLauncher {
         }
         log.info(`[MultiBot] Starting ${discordTokens.length} bot instances...`);
 
-        // Start bots SEQUENTIALLY to avoid race conditions with container.client
-        // and listener binding. The first bot to login becomes container.client.
         for (let i = 0; i < discordTokens.length; i++) {
             const token = discordTokens[i];
 

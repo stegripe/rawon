@@ -144,10 +144,8 @@ export class RequestChannelCommand extends ContextCommand {
             }
 
             const textChannel = channel as TextChannel;
-            // Use the correct client to get bot member (not container.client)
             let botMember = ctx.guild.members.cache.get(client.user!.id);
             if (!botMember) {
-                // Try to fetch if not cached
                 try {
                     botMember = await ctx.guild.members.fetch(client.user!.id);
                 } catch {
