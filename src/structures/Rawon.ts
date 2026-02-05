@@ -281,6 +281,8 @@ export class Rawon extends SapphireClient {
             // Disable automatic application command registration for multi-bot mode
             // This prevents the CoreReady "Cannot read properties of null (reading 'commands')" error
             loadApplicationCommandRegistriesStatusListeners: !config.isMultiBot,
+            // Disable default error listeners so we can use custom ones that suppress expected errors
+            loadDefaultErrorListeners: false,
             logger: {
                 instance: new PinoLogger({
                     name: "rawon",
@@ -309,16 +311,19 @@ export class Rawon extends SapphireClient {
         this.startTimestamp = Date.now();
         setCookiesManager(this.cookies);
 
-        // Unload CoreReady listener in multi-bot mode to prevent
+        // Patch CoreReady listener in multi-bot mode to prevent
         // "Cannot read properties of null (reading 'commands')" error
+        // This error occurs because container.client.application is null during startup
         if (this.config.isMultiBot) {
             const listenerStore = this.stores.get("listeners");
             const coreReady = listenerStore.get("CoreReady");
             if (coreReady) {
-                listenerStore.unload(coreReady);
-                container.logger.debug(
-                    "[MultiBot] Unloaded CoreReady listener to prevent application command registration errors",
-                );
+                // Replace the run method with a no-op
+                (coreReady as { run: () => void }).run = () => {
+                    container.logger.debug(
+                        "[MultiBot] Skipped CoreReady listener to prevent application command registration errors",
+                    );
+                };
             }
         }
 
