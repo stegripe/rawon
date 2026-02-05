@@ -149,6 +149,13 @@ export class CommandContext {
         return this.context instanceof BaseInteraction;
     }
 
+    public isCommandInteraction(): boolean {
+        return (
+            this.context instanceof CommandInteraction ||
+            this.context instanceof ContextMenuCommandInteraction
+        );
+    }
+
     public isCommand(): boolean {
         return this.context instanceof CommandInteraction;
     }

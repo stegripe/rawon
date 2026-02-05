@@ -21,7 +21,7 @@ import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 })
 export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateUpdate> {
     public async run(oldState: VoiceState, newState: VoiceState): Promise<Message | undefined> {
-        const client = this.container.client as Rawon;
+        const client = newState.client as Rawon;
 
         if (this.container.config.debugMode) {
             const oldCh = oldState.channel
@@ -319,7 +319,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         _state: VoiceState,
         guild: typeof _state.guild,
     ): void {
-        const client = this.container.client as Rawon;
+        const client = _state.client as Rawon;
 
         if (vcMembers.size > 0) {
             return;
@@ -386,7 +386,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         _state: VoiceState,
         guild: typeof _state.guild,
     ): void {
-        const client = this.container.client as Rawon;
+        const client = _state.client as Rawon;
 
         if (vcMembers.size <= 0) {
             return;

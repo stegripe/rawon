@@ -110,6 +110,28 @@ export type CategoryMeta = {
     name: string;
 };
 
+declare module "@sapphire/framework" {
+    interface CommandOptions {
+        devOnly?: boolean;
+        cooldown?: number;
+        contextChat?: string;
+        contextUser?: string;
+        disable?: boolean;
+    }
+}
+
+export type CommandMeta = {
+    name: string;
+    description?: string;
+    aliases?: readonly string[];
+    cooldown?: number;
+    devOnly?: boolean;
+    contextChat?: string;
+    contextUser?: string;
+    disable?: boolean;
+    slash?: boolean;
+};
+
 declare module "discord.js" {
     export interface Client extends OClient {
         commands: Rawon["commands"];

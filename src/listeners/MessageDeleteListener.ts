@@ -23,7 +23,7 @@ export class MessageDeleteListener extends Listener<typeof Events.MessageDelete>
         }
 
         const guild = message.guild;
-        const botId = (this.container.client as Rawon).user?.id ?? "unknown";
+        const botId = (message.client as Rawon).user?.id ?? "unknown";
 
         let requestChannelData: { channelId: string | null; messageId: string | null } | null =
             null;
