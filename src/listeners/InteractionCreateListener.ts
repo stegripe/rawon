@@ -44,7 +44,7 @@ import { type SongManager } from "../utils/structures/SongManager.js";
 export class InteractionCreateListener extends Listener<typeof Events.InteractionCreate> {
     private readonly cooldowns = new Collection<string, Collection<Snowflake, number>>();
     private readonly processedInteractions = new Map<string, number>();
-    private readonly CACHE_TTL = 10000; // 10 seconds
+    private readonly CACHE_TTL = 10000;
 
     private cleanupCache(): void {
         const now = Date.now();
