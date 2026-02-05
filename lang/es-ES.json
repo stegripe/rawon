@@ -18,9 +18,9 @@
                 "slashRemoveDescription": "Eliminar un archivo de cookies",
                 "slashListDescription": "Listar todos los archivos de cookies",
                 "slashResetDescription": "Restablecer el estado de cookies fallidas",
-                "slashNumberDescription": "Número de cookie (comenzando desde 1)",
+                "slashNumberDescription": "Número de cookie (comenzando desde `1`)",
                 "slashRemoveTargetDescription": "Número de cookie a eliminar o 'all'",
-                "invalidNumber": "Por favor, proporciona un número de cookie válido (comenzando desde 1).",
+                "invalidNumber": "Por favor, proporciona un número de cookie válido (comenzando desde `1`)",
                 "noAttachment": "Por favor, adjunta un archivo cookies.txt a tu mensaje.",
                 "invalidFileType": "Por favor, adjunta un archivo .txt.",
                 "invalidCookiesFile": "El archivo no parece ser un archivo de cookies válido.",
@@ -91,7 +91,7 @@
                 "usageString": "Uso"
             },
             "invite": {
-                "clickURL": "**[Haga click]({url})** aquí para invitar a este bot a su servidor.",
+                "clickURL": "- **[Haga click aquí]({url})** para invitar al bot {botNum} a su servidor.",
                 "description": "Obtén el enlace de invitación para el bot",
                 "inviteTitle": "{bot} - Enlace De Invitación"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "El idioma del servidor ha sido restablecido a:",
                 "invalidLocale": "Idioma no válido. Idiomas disponibles:",
                 "availableLocales": "Idiomas disponibles"
+            },
+            "prefix": {
+                "currentPrefix": "Prefijo actual: {prefix}",
+                "description": "Cambiar el prefijo de comandos para este servidor",
+                "embedTitle": "Configuración de prefijo",
+                "noPermission": "Necesitas el permiso **Gestionar Servidor** para usar este comando.",
+                "prefixReset": "El prefijo se ha restablecido a: {prefix}",
+                "prefixSet": "El prefijo se ha establecido en: {prefix}",
+                "prefixTooLong": "El prefijo no puede tener más de `10` caracteres.",
+                "slashPrefixOption": "El nuevo prefijo (máx. `10` caracteres)",
+                "slashResetDescription": "Restablecer al prefijo predeterminado",
+                "slashSetDescription": "Establecer un prefijo personalizado para este servidor",
+                "slashViewDescription": "Ver el prefijo actual",
+                "usage": "{prefix}prefix [nuevo prefijo | view | reset]"
             }
         },
         "music": {
@@ -237,7 +251,7 @@
                 "cantSeekSoundcloud": "No se puede buscar en pistas de SoundCloud.",
                 "description": "Saltar a un tiempo específico en la canción actual",
                 "exceedsDuration": "El tiempo de búsqueda excede la duración de la canción ({duration}).",
-                "invalidTime": "Formato de tiempo inválido: {time}. Use formatos como `1:30` o `90`.",
+                "invalidTime": "Formato de tiempo inválido: {time}. Use formatos como `1:30` o `90`",
                 "noPlaying": "No hay ninguna canción reproduciéndose actualmente.",
                 "noTime": "Por favor, especifica un tiempo al cual saltar.",
                 "notCached": "Aún no se puede buscar en esta canción. Por favor espera a que el audio se almacene.",
@@ -272,6 +286,7 @@
                 "currentVolume": "El volúmen actual es {volume}",
                 "description": "Cambia el volúmen del reproductor de música",
                 "newVolume": "Volúmen establecido en {volume}",
+                "noPermission": "Necesitas el rol DJ o el permiso **Gestionar Servidor** para establecer el volúmen por encima de `100%`",
                 "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en {volume}",
                 "slashDescription": "Nuevo volúmen",
                 "usage": "{prefix}volume [volumen]",
@@ -390,7 +405,7 @@
         "alreadyPaused": "La música ya está pausada.",
         "alreadyPlaying": "La música ya se está reproduciendo.",
         "nothingPlaying": "No se está reproduciendo nada actualmente.",
-        "volumeLimit": "El volumen debe estar entre 1 y 100.",
+        "volumeLimit": "El volumen debe estar entre `1` y `100`",
         "setChannel": "El canal de solicitudes se ha establecido en {channel}.",
         "removeChannel": "El canal de solicitudes ha sido eliminado.",
         "noChannel": "No hay canal de solicitudes establecido actualmente.",

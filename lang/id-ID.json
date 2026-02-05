@@ -18,9 +18,9 @@
                 "slashRemoveDescription": "Hapus file cookie",
                 "slashListDescription": "Lihat semua file cookie",
                 "slashResetDescription": "Reset status cookie yang gagal",
-                "slashNumberDescription": "Nomor cookie (mulai dari 1)",
+                "slashNumberDescription": "Nomor cookie (mulai dari `1`)",
                 "slashRemoveTargetDescription": "Nomor cookie yang mau dihapus atau 'all'",
-                "invalidNumber": "Kasih nomor cookie yang bener dong (mulai dari 1).",
+                "invalidNumber": "Kasih nomor cookie yang bener dong (mulai dari `1`)",
                 "noAttachment": "Lampirin file cookies.txt ke pesanmu dong.",
                 "invalidFileType": "Lampirin file .txt dong.",
                 "invalidCookiesFile": "Kayaknya ini bukan file cookies yang valid deh.",
@@ -32,8 +32,8 @@
                 "removeSuccess": "{cookie} udah berhasil dihapus.",
                 "removeAllSuccess": "Berhasil hapus {count} cookie.",
                 "removeNotFound": "{cookie} gak ketemu nih.",
-                "noCookies": "Belum ada cookies yang ditambahin. Pake {usage} dengan lampiran cookies.txt ya.",
-                "listTitle": "Pengelola Cookies",
+                "noCookies": "Belum ada cookies yang ditambahin. Pake {usage} sama attach file cookies.txt ya.",
+                "listTitle": "Manager Cookies",
                 "statusActive": "Aktif (lagi dipake)",
                 "statusFailed": "Gagal (kena rate limit)",
                 "statusAvailable": "Tersedia",
@@ -41,7 +41,7 @@
                 "statsTotal": "Total",
                 "statsFailed": "Gagal",
                 "statsCurrent": "Sekarang",
-                "warningTitle": "Peringatan",
+                "warningTitle": "Warning",
                 "allCookiesFailed": "Semua cookies gagal nih! Tambahin cookies baru atau pake {resetCmd} buat coba lagi ya.",
                 "resetSuccess": "Status cookie yang gagal udah direset. Semua cookies bakal dicoba lagi.",
                 "replaceSuccess": "{cookie} udah diganti! Langsung berlaku.",
@@ -76,22 +76,22 @@
             "categoryName": "UMUM",
             "help": {
                 "aliasesString": "Alias",
-                "authorString": "{username} - Daftar Perintah",
-                "commandDetailTitle": "{username} - Info tentang perintah {command}",
-                "commandSelectionString": "Pilih perintah yang kamu mau",
+                "authorString": "{username} - Daftar Command",
+                "commandDetailTitle": "{username} - Info tentang command {command}",
+                "commandSelectionString": "Pilih command yang kamu mau",
                 "commandUsageFooter": "<> = wajib | [] = opsional {devOnly}",
-                "description": "Lihat daftar perintah atau info tentang perintah tertentu",
+                "description": "Lihat daftar command atau info tentang command tertentu",
                 "descriptionString": "Deskripsi",
-                "footerString": "{prefix}help <perintah> buat dapetin info tentang perintah tertentu",
+                "footerString": "{prefix}help <command> buat dapetin info tentang command tertentu",
                 "nameString": "Nama",
-                "noCommanSuggest": "Gak nemu perintah dengan nama itu. Maksudnya ini kali?",
-                "noCommand": "Gak nemu perintah dengan nama itu.",
-                "slashDescription": "Nama perintah buat lihat info lebih lanjut",
-                "usage": "{prefix}help [nama perintah]",
+                "noCommanSuggest": "Gak nemu command dengan nama itu. Maksudnya ini kali?",
+                "noCommand": "Gak nemu command dengan nama itu.",
+                "slashDescription": "Nama command buat lihat info lebih lanjut",
+                "usage": "{prefix}help [nama command]",
                 "usageString": "Cara pake"
             },
             "invite": {
-                "clickURL": "**[Klik sini]({url})** buat invite bot ini ke servermu.",
+                "clickURL": "- **[Klik di sini]({url})** buat ngundang bot {botNum} ke servermu.",
                 "description": "Dapetin link invite bot",
                 "inviteTitle": "{bot} - Link Invite"
             },
@@ -101,24 +101,38 @@
             },
             "language": {
                 "description": "Ganti bahasa bot buat server ini",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake perintah ini.",
+                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
                 "slashSetDescription": "Atur bahasa server",
                 "slashViewDescription": "Lihat bahasa server sekarang",
                 "slashResetDescription": "Reset ke bahasa default",
                 "slashLocaleOption": "Bahasa yang mau diatur",
                 "usage": "{prefix}language <view | set | reset> [bahasa]",
-                "embedTitle": "Pengaturan Bahasa",
+                "embedTitle": "Setting Bahasa",
                 "currentLanguage": "Bahasa sekarang:",
                 "languageSet": "Bahasa server udah diubah ke",
                 "languageReset": "Bahasa server udah direset ke default:",
                 "invalidLocale": "Bahasa gak valid. Bahasa yang tersedia:",
                 "availableLocales": "Bahasa yang tersedia"
+            },
+            "prefix": {
+                "currentPrefix": "Prefix sekarang: {prefix}",
+                "description": "Ubah prefix command untuk server ini",
+                "embedTitle": "Setting Prefix",
+                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
+                "prefixReset": "Prefix udah direset ke: {prefix}",
+                "prefixSet": "Prefix udah diatur ke: {prefix}",
+                "prefixTooLong": "Prefix gak bisa lebih dari `10` karakter.",
+                "slashPrefixOption": "Prefix baru (maks `10` karakter)",
+                "slashResetDescription": "Reset ke prefix default",
+                "slashSetDescription": "Atur custom prefix untuk server ini",
+                "slashViewDescription": "Lihat prefix sekarang",
+                "usage": "{prefix}prefix [prefix baru | view | reset]"
             }
         },
         "music": {
             "categoryName": "MUSIK",
             "dj": {
-                "description": "Ubah pengaturan fitur DJ",
+                "description": "Ubah setting fitur DJ",
                 "usage": "{prefix}dj <enable | disable | role> [role]",
                 "disable": "Nonaktif",
                 "disableText": "Fitur DJ udah di **`Nonaktif`**",
@@ -126,7 +140,7 @@
                 "enable": "Aktif",
                 "enableText": "Fitur DJ udah di **`Aktif`**",
                 "newRoleText": "role baru",
-                "noPermission": "Kamu gak punya izin **Manage Server** buat pake perintah ini.",
+                "noPermission": "Kamu gak punya izin **Manage Server** buat pake command ini.",
                 "role": {
                     "current": "Role DJ sekarang: <@&{role}>",
                     "invalid": "Role-nya gak valid tuh.",
@@ -167,7 +181,7 @@
                 "description": "Lihat status media player",
                 "disableButton": "Tombol-tombol ini udah gak aktif lagi dan udah dihapus.",
                 "emptyQueue": "Antriannya lagi kosong nih.",
-                "error": "Gagal mendapatkan now playing: {message}",
+                "error": "Gagal dapetin now playing: {message}",
                 "live": "LIVE",
                 "requestedBy": "Direquest sama",
                 "unknownDuration": "Durasi gak diketahui"
@@ -236,8 +250,8 @@
                 "cantSeekLive": "Gak bisa seek di live stream.",
                 "cantSeekSoundcloud": "Gak bisa seek di track SoundCloud.",
                 "description": "Loncat ke waktu tertentu di lagu yang lagi diputar",
-                "exceedsDuration": "Waktu seek-nya melebihi durasi lagu ({duration}).",
-                "invalidTime": "Format waktunya gak valid: {time}. Pake format kayak `1:30` atau `90`.",
+                "exceedsDuration": "Waktu seek-nya lebih dari durasi lagu ({duration}).",
+                "invalidTime": "Format waktunya gak valid: {time}. Pake format kayak `1:30` atau `90`",
                 "noPlaying": "Gak ada lagu yang lagi diputar.",
                 "noTime": "Kasih waktu buat diloncatin dong.",
                 "notCached": "Belum bisa seek di lagu ini. Tunggu audionya di-buffer dulu ya.",
@@ -254,7 +268,7 @@
             "skipTo": {
                 "cantPlay": "Gak bisa loncat ke lagu yang lagi diputar.",
                 "description": "Loncat ke posisi tertentu di antrian",
-                "noPermission": "Kamu gak bisa pake perintah ini.",
+                "noPermission": "Kamu gak bisa pake command ini.",
                 "noSongPosition": "Gak bisa nemuin lagu di posisi itu.",
                 "skipMessage": "Loncat ke lagu {song}",
                 "slashFirstDescription": "Mundur ke lagu pertama di antrian",
@@ -268,10 +282,11 @@
                 "stoppedMessage": "Media player udah distop."
             },
             "volume": {
-                "changeVolume": "Buat ganti volume, kasih angka volume baru pas pake perintah ini.",
+                "changeVolume": "Buat ganti volume, kasih angka volume baru pas pake command ini.",
                 "currentVolume": "Volume sekarang {volume}",
                 "description": "Ganti volume media player",
                 "newVolume": "Volume udah diatur ke {volume}",
+                "noPermission": "Butuh role DJ atau izin **Manage Server** buat atur volume di atas `100%`",
                 "plsPause": "Mending jeda media player-nya aja daripada atur volume ke {volume}",
                 "slashDescription": "Volume baru",
                 "usage": "{prefix}volume [volume baru]",
@@ -279,7 +294,7 @@
             },
             "requestChannel": {
                 "description": "Atur channel request buat musik",
-                "noPermission": "Kamu butuh izin **Manage Server** buat pake perintah ini.",
+                "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
                 "invalidChannel": "Kasih channel teks yang valid dong.",
                 "noBotPermissions": "Gak bisa cek izinku di channel itu.",
                 "missingBotPermissions": "Aku kurang izin ini di channel itu: {permissions}",
@@ -297,30 +312,30 @@
     },
     "events": {
         "channelUpdate": {
-            "connectionReconfigured": "Koneksi berhasil dikonfigurasi ulang.",
+            "connectionReconfigured": "Koneksi udah dikonfigurasi ulang.",
             "reconfigureConnection": "Region voice channel diganti nih, lagi konfigurasi ulang koneksi...",
             "unableReconfigureConnection": "Gak bisa konfigurasi ulang koneksi, antriannya udah dihapus."
         },
         "createInteraction": {
             "message1": "Sori, tapi interaction ini cuma buat <@{user}> sama staff server.",
             "message2": "Sori, tapi interaction ini cuma buat <@{user}>",
-            "devOnly": "Perintah khusus pengembang."
+            "devOnly": "Command buat developer aja."
         },
-        "createMessage": "Halo {author}, prefix-ku adalah {prefix}",
+        "createMessage": "Halo {author}, prefix-ku {prefix}",
         "cmdLoading": "Loading...",
         "voiceStateUpdate": {
-            "connectionReconfigured": "Koneksi berhasil dikonfigurasi ulang.",
+            "connectionReconfigured": "Koneksi udah dikonfigurasi ulang.",
             "deleteQueue": "Udah {duration} lewat dan gak ada yang masuk voice channel, antriannya udah dihapus.",
             "deleteQueueFooter": "Antrian Dihapus",
             "disconnectFromVCMessage": "Keputus dari voice channel, antriannya udah dihapus.",
-            "joinStageMessage": "Berhasil gabung ke stage channel sebagai Speaker.",
-            "joiningAsSpeaker": "Dipindahin ke stage channel, lagi coba gabung sebagai Speaker...",
+            "joinStageMessage": "Berhasil masuk stage channel sebagai Speaker.",
+            "joiningAsSpeaker": "Pindah ke stage channel, lagi coba masuk sebagai Speaker...",
             "pauseQueue": "Semua orang udah keluar dari voice channel. Buat ngirit resource, antriannya udah dijeda.\nKalo dalam {duration} masih gak ada yang masuk voice channel, antriannya bakal dihapus.",
             "pauseQueueFooter": "Antrian Dijeda",
             "reconfigureConnection": "Dipindahin ke voice channel dengan region yang beda, lagi konfigurasi ulang koneksi...",
             "resumeQueue": "Ada yang masuk voice channel.\nLanjutin {song}",
             "resumeQueueFooter": "Antrian Dilanjutin",
-            "unableJoinStageMessage": "Gak bisa gabung sebagai Speaker, antriannya udah dihapus.",
+            "unableJoinStageMessage": "Gak bisa masuk sebagai Speaker, antriannya udah dihapus.",
             "unableReconfigureConnection": "Gak bisa konfigurasi ulang koneksi, antriannya udah dihapus."
         }
     },
@@ -345,7 +360,7 @@
             "startPlaying": "Mulai muter {song}",
             "stopPlaying": "Selesai muter {song}",
             "songRequeued": "Ada masalah pas muter {song}, udah ditambahin ulang ke antrian buat dicoba lagi.",
-            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Tambahin cookies baru pake perintah {prefix}cookies add <nomor> dengan lampiran cookies.txt, atau pake `{prefix}cookies reset` buat coba ulang cookies yang ada."
+            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Tambahin cookies baru pake command {prefix}cookies add <nomor> sama attach file cookies.txt, atau pake `{prefix}cookies reset` buat coba ulang cookies yang ada."
         },
         "musicDecorator": {
             "noInVC": "Sori, tapi kamu harus ada di voice channel dulu buat ngelakuin itu.",
@@ -354,8 +369,8 @@
             "sameVC": "Kamu harus ada di voice channel yang sama sama aku.",
             "validVCJoinable": "Sori, tapi aku gak bisa **`Connect`** ke voice channel-mu, pastiin aku punya izin yang bener ya.",
             "validVCPermission": "Sori, tapi aku gak bisa **`Speak`** di voice channel, pastiin aku punya izin yang bener ya.",
-            "useRequestChannel": "Pake channel request {channel} buat perintah musik ya.",
-            "useRequestChannelDirect": "Perintah ini dinonaktifin di channel request. Pake tombol pemutar atau ketik judul/link lagu langsung aja."
+            "useRequestChannel": "Pake channel request {channel} buat command musik ya.",
+            "useRequestChannelDirect": "Command ini dimatiin di channel request. Pake tombol pemutar atau ketik judul/link lagu langsung aja."
         }
     },
     "requestChannel": {
@@ -390,12 +405,12 @@
         "alreadyPaused": "Musiknya udah dijeda kok.",
         "alreadyPlaying": "Musiknya udah diputar kok.",
         "nothingPlaying": "Gak ada yang lagi diputar.",
-        "volumeLimit": "Volume harus antara 1 dan 100.",
+        "volumeLimit": "Volume harus antara `1` dan `100`",
         "setChannel": "Channel request udah diatur ke {channel}.",
         "removeChannel": "Channel request udah dihapus.",
         "noChannel": "Gak ada channel request yang diatur sekarang.",
         "currentChannel": "Channel request sekarang: {channel}",
-        "skipInProgress": "Bentar ya, operasi skip lagi berjalan.",
-        "noPermission": "Kamu gak punya izin buat ngelakuin ini. Cuma role DJ, pengelola server, atau yang request lagu yang bisa ngelakuin ini."
+        "skipInProgress": "Bentar ya, skip lagi jalan.",
+        "noPermission": "Kamu gak punya izin buat ngelakuin ini. Cuma role DJ, admin server, atau yang request lagu yang bisa."
     }
 }

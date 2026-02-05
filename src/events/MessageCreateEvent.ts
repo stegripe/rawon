@@ -78,23 +78,34 @@ export class MessageCreateEvent extends BaseEvent {
         }
 
         let isMentionPrefix = false;
-        const prefixMatch = [...this.client.config.altPrefixes, this.client.config.mainPrefix].find(
-            (pr) => {
-                if (pr === "{mention}") {
-                    const userMention = /<@(!)?\d*?>/u.exec(message.content);
-                    if (userMention?.index !== 0) {
-                        return false;
-                    }
-                    const user = this.getUserFromMention(userMention[0]);
-                    if (user?.id === this.client.user?.id) {
-                        isMentionPrefix = true;
-                        return true;
-                    }
+
+        const guildPrefix = message.guild
+            ? (this.client.data.data?.[message.guild.id]?.prefix ?? null)
+            : null;
+
+        const prefixList: string[] = [];
+        if (guildPrefix) {
+            prefixList.push(guildPrefix);
+        } else {
+            prefixList.push(...this.client.config.altPrefixes);
+            prefixList.push(this.client.config.mainPrefix);
+        }
+
+        const prefixMatch = prefixList.find((pr) => {
+            if (pr === "{mention}") {
+                const userMention = /<@(!)?\d*?>/u.exec(message.content);
+                if (userMention?.index !== 0) {
                     return false;
                 }
-                return message.content.startsWith(pr);
-            },
-        );
+                const user = this.getUserFromMention(userMention[0]);
+                if (user?.id === this.client.user?.id) {
+                    isMentionPrefix = true;
+                    return true;
+                }
+                return false;
+            }
+            return message.content.startsWith(pr);
+        });
 
         const isRequestChannel =
             message.guild &&

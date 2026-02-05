@@ -18,9 +18,9 @@
                 "slashListDescription": "Tüm çerez dosyalarını listele",
                 "slashResetDescription": "Başarısız çerez durumunu sıfırla",
                 "slashUrlDescription": "cookies.txt için URL",
-                "slashNumberDescription": "Çerez numarası (1'den başlayarak)",
+                "slashNumberDescription": "Çerez numarası (`1`'den başlayarak)",
                 "slashRemoveTargetDescription": "Kaldırılacak çerez numarası veya 'all'",
-                "invalidNumber": "Lütfen geçerli bir çerez numarası girin (1'den başlayarak).",
+                "invalidNumber": "Lütfen geçerli bir çerez numarası girin (`1`'den başlayarak).",
                 "noAttachment": "Lütfen mesajınıza cookies.txt dosyası ekleyin.",
                 "invalidFileType": "Lütfen bir .txt dosyası ekleyin.",
                 "invalidCookiesFile": "Dosya geçerli bir çerez dosyası gibi görünmüyor.",
@@ -91,7 +91,7 @@
                 "usageString": "Kullanım"
             },
             "invite": {
-                "clickURL": "Botu sunucuna eklemek için **[buraya tıkla]({url})**",
+                "clickURL": "- **[Buraya tıkla]({url})** {botNum} numaralı botu sunucuna eklemek için.",
                 "description": "Bot için davet bağlantısını edinin",
                 "inviteTitle": "{bot} - Davet Linki"
             },
@@ -113,6 +113,20 @@
                 "languageReset": "Sunucu dili varsayılana sıfırlandı:",
                 "invalidLocale": "Geçersiz dil. Kullanılabilir diller:",
                 "availableLocales": "Kullanılabilir diller"
+            },
+            "prefix": {
+                "currentPrefix": "Mevcut önek: {prefix}",
+                "description": "Bu sunucu için komut önekini değiştir",
+                "embedTitle": "Önek Ayarları",
+                "noPermission": "Bu komutu kullanmak için **Sunucu Yönet** iznine ihtiyacınız var.",
+                "prefixReset": "Önek sıfırlandı: {prefix}",
+                "prefixSet": "Önek ayarlandı: {prefix}",
+                "prefixTooLong": "Önek `10` karakterden uzun olamaz.",
+                "slashPrefixOption": "Yeni önek (maksimum `10` karakter)",
+                "slashResetDescription": "Varsayılan öneke sıfırla",
+                "slashSetDescription": "Bu sunucu için özel bir önek ayarla",
+                "slashViewDescription": "Mevcut öneki görüntüle",
+                "usage": "{prefix}prefix [yeni önek | view | reset]"
             }
         },
         "music": {
@@ -272,6 +286,7 @@
                 "currentVolume": "Mevcut ses düzeyi {volume}",
                 "description": "Medya oynatıcının ses düzeyini değiştir",
                 "newVolume": "Ses seviyesi {volume} olarak ayarlandı",
+                "noPermission": "Ses seviyesini `100%`'in üzerine ayarlamak için DJ rolü veya **Sunucuyu Yönet** iznine ihtiyacınız var.",
                 "plsPause": "Lütfen ses seviyesini {volume} olarak ayarlamak yerine müziği duraklatın",
                 "slashDescription": "Yeni ses seviyesi",
                 "usage": "{prefix}volume [yeni değer]",
@@ -390,7 +405,7 @@
         "alreadyPaused": "Müzik zaten duraklatılmış.",
         "alreadyPlaying": "Müzik zaten çalıyor.",
         "nothingPlaying": "Şu anda hiçbir şey çalmıyor.",
-        "volumeLimit": "Ses seviyesi 1 ile 100 arasında olmalıdır.",
+        "volumeLimit": "Ses seviyesi `1` ile `100` arasında olmalıdır",
         "setChannel": "İstek kanalı {channel} olarak ayarlandı.",
         "removeChannel": "İstek kanalı kaldırıldı.",
         "noChannel": "Şu anda ayarlanmış istek kanalı yok.",
