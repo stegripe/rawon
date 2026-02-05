@@ -1,4 +1,10 @@
-import { PermissionFlagsBits, type PermissionsString, type TextChannel } from "discord.js";
+import {
+    type GuildMember,
+    PermissionFlagsBits,
+    PermissionsBitField,
+    type PermissionsString,
+    type TextChannel,
+} from "discord.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { i18n__mf } from "../functions/i18n.js";
@@ -9,7 +15,12 @@ export function memberReqPerms(
     fallbackMsg: string,
 ): ReturnType<typeof createCmdExecuteDecorator> {
     return createCmdExecuteDecorator((ctx) => {
-        if (ctx.member?.permissions.has(perms) !== true) {
+        const member = ctx.member as GuildMember | null;
+        const hasPerms =
+            member?.permissions instanceof PermissionsBitField
+                ? member.permissions.has(perms)
+                : false;
+        if (!hasPerms) {
             void ctx.reply({
                 embeds: [createEmbed("error", fallbackMsg, true)],
             });
