@@ -27,7 +27,7 @@ export class ChannelDeleteListener extends Listener<typeof Events.ChannelDelete>
         }
 
         const guild = channel.guild;
-        const botId = (this.container.client as Rawon).user?.id ?? "unknown";
+        const botId = (channel.client as Rawon).user?.id ?? "unknown";
 
         this.container.debugLog.logData("info", "CHANNEL_DELETE_EVENT", [
             ["Channel", `${channel.name}(${channel.id})`],
