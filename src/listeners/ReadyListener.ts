@@ -104,7 +104,6 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
             });
         }
 
-        await client.commands.load();
         this.container.logger.info(`Ready took ${formatMS(Date.now() - client.startTimestamp)}`);
 
         await this.doPresence();
