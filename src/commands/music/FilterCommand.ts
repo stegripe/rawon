@@ -1,9 +1,11 @@
-import { ApplicationCommandOptionType, type Message } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { type Message, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { type GuildData } from "../../typings/index.js";
-import { Command } from "../../utils/decorators/Command.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
@@ -13,74 +15,88 @@ type FilterSubCmd = "disable" | "enable" | "status";
 
 const slashFilterChoices = Object.keys(filterArgs).map((x) => ({ name: x, value: x }));
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "filter",
     aliases: [],
     description: i18n.__("commands.music.filter.description"),
-    name: "filter",
-    slash: {
-        options: [
-            {
-                description: i18n.__mf("commands.music.filter.slashStateDescription", {
-                    state: "enable",
-                }),
-                name: "enable",
-                options: [
-                    {
-                        choices: slashFilterChoices,
-                        description: i18n.__mf(
-                            "commands.music.filter.slashStateFilterDescription",
-                            {
-                                state: "enable",
-                            },
-                        ),
-                        name: "filter",
-                        required: true,
-                        type: ApplicationCommandOptionType.String,
-                    },
-                ],
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__mf("commands.music.filter.slashStateDescription", {
-                    state: "disable",
-                }),
-                name: "disable",
-                options: [
-                    {
-                        choices: slashFilterChoices,
-                        description: i18n.__("commands.music.filter.slashStateFilterDescription", {
+    detailedDescription: { usage: i18n.__("commands.music.filter.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "filter")
+            .setDescription(opts.description ?? "Manage audio filters.")
+            .addSubcommand((sub) =>
+                sub
+                    .setName("enable")
+                    .setDescription(
+                        i18n.__mf("commands.music.filter.slashStateDescription", {
+                            state: "enable",
+                        }),
+                    )
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("filter")
+                            .setDescription(
+                                i18n.__mf("commands.music.filter.slashStateFilterDescription", {
+                                    state: "enable",
+                                }),
+                            )
+                            .setRequired(true)
+                            .addChoices(...slashFilterChoices),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("disable")
+                    .setDescription(
+                        i18n.__mf("commands.music.filter.slashStateDescription", {
                             state: "disable",
                         }),
-                        name: "filter",
-                        required: true,
-                        type: ApplicationCommandOptionType.String,
-                    },
-                ],
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.filter.slashStatusDescription"),
-                name: "status",
-                options: [
-                    {
-                        choices: slashFilterChoices,
-                        description: i18n.__("commands.music.filter.slashStatusFilterDescription"),
-                        name: "filter",
-                        required: false,
-                        type: ApplicationCommandOptionType.String,
-                    },
-                ],
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-        ],
+                    )
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("filter")
+                            .setDescription(
+                                i18n.__("commands.music.filter.slashStateFilterDescription", {
+                                    state: "disable",
+                                }),
+                            )
+                            .setRequired(true)
+                            .addChoices(...slashFilterChoices),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("status")
+                    .setDescription(i18n.__("commands.music.filter.slashStatusDescription"))
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("filter")
+                            .setDescription(
+                                i18n.__("commands.music.filter.slashStatusFilterDescription"),
+                            )
+                            .setRequired(false)
+                            .addChoices(...slashFilterChoices),
+                    ),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.filter.usage"),
 })
-export class FilterCommand extends BaseCommand {
+export class FilterCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @inVC
     @validVC
     @sameVC
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 

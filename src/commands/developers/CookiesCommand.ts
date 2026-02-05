@@ -1,99 +1,118 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { Buffer } from "node:buffer";
-import { ApplicationCommandOptionType, AttachmentBuilder, type Message } from "discord.js";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import {
+    AttachmentBuilder,
+    type Message,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
+} from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command<typeof CookiesCommand>({
-    aliases: ["cookie", "ck"],
-    cooldown: 3,
-    description: i18n.__("commands.developers.cookies.description"),
-    devOnly: true,
+@ApplyOptions<Command.Options>({
     name: "cookies",
-    slash: {
-        description: i18n.__("commands.developers.cookies.description"),
-        options: [
-            {
-                description: i18n.__("commands.developers.cookies.slashAddDescription"),
-                name: "add",
-                type: ApplicationCommandOptionType.Subcommand,
-                options: [
-                    {
-                        description: i18n.__("commands.developers.cookies.slashNumberDescription"),
-                        name: "number",
-                        type: ApplicationCommandOptionType.Integer,
-                        required: true,
-                        minValue: 1,
-                    },
-                    {
-                        description: i18n.__("commands.developers.cookies.slashUrlDescription"),
-                        name: "url",
-                        type: ApplicationCommandOptionType.String,
-                        required: false,
-                    },
-                ],
-            },
-            {
-                description: i18n.__("commands.developers.cookies.slashRemoveDescription"),
-                name: "remove",
-                type: ApplicationCommandOptionType.Subcommand,
-                options: [
-                    {
-                        description: i18n.__(
-                            "commands.developers.cookies.slashRemoveTargetDescription",
-                        ),
-                        name: "target",
-                        type: ApplicationCommandOptionType.String,
-                        required: true,
-                    },
-                ],
-            },
-            {
-                description: i18n.__("commands.developers.cookies.slashListDescription"),
-                name: "list",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.developers.cookies.slashViewDescription"),
-                name: "view",
-                type: ApplicationCommandOptionType.Subcommand,
-                options: [
-                    {
-                        description: i18n.__("commands.developers.cookies.slashNumberDescription"),
-                        name: "number",
-                        type: ApplicationCommandOptionType.Integer,
-                        required: true,
-                        minValue: 1,
-                    },
-                ],
-            },
-            {
-                description: i18n.__("commands.developers.cookies.slashResetDescription"),
-                name: "reset",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.developers.cookies.slashUseDescription"),
-                name: "use",
-                type: ApplicationCommandOptionType.Subcommand,
-                options: [
-                    {
-                        description: i18n.__("commands.developers.cookies.slashNumberDescription"),
-                        name: "number",
-                        type: ApplicationCommandOptionType.Integer,
-                        required: true,
-                        minValue: 1,
-                    },
-                ],
-            },
-        ],
+    aliases: ["cookie", "ck"],
+    description: i18n.__("commands.developers.cookies.description"),
+    detailedDescription: { usage: i18n.__("commands.developers.cookies.usage") },
+    preconditions: ["DevOnly"],
+    cooldownDelay: 3000,
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "cookies")
+            .setDescription(opts.description ?? i18n.__("commands.developers.cookies.description"))
+            .addSubcommand((sub) =>
+                sub
+                    .setName("add")
+                    .setDescription(i18n.__("commands.developers.cookies.slashAddDescription"))
+                    .addIntegerOption((opt) =>
+                        opt
+                            .setName("number")
+                            .setDescription(
+                                i18n.__("commands.developers.cookies.slashNumberDescription"),
+                            )
+                            .setRequired(true)
+                            .setMinValue(1),
+                    )
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("url")
+                            .setDescription(
+                                i18n.__("commands.developers.cookies.slashUrlDescription"),
+                            )
+                            .setRequired(false),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("remove")
+                    .setDescription(i18n.__("commands.developers.cookies.slashRemoveDescription"))
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("target")
+                            .setDescription(
+                                i18n.__("commands.developers.cookies.slashRemoveTargetDescription"),
+                            )
+                            .setRequired(true),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("list")
+                    .setDescription(i18n.__("commands.developers.cookies.slashListDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("view")
+                    .setDescription(i18n.__("commands.developers.cookies.slashViewDescription"))
+                    .addIntegerOption((opt) =>
+                        opt
+                            .setName("number")
+                            .setDescription(
+                                i18n.__("commands.developers.cookies.slashNumberDescription"),
+                            )
+                            .setRequired(true)
+                            .setMinValue(1),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("reset")
+                    .setDescription(i18n.__("commands.developers.cookies.slashResetDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("use")
+                    .setDescription(i18n.__("commands.developers.cookies.slashUseDescription"))
+                    .addIntegerOption((opt) =>
+                        opt
+                            .setName("number")
+                            .setDescription(
+                                i18n.__("commands.developers.cookies.slashNumberDescription"),
+                            )
+                            .setRequired(true)
+                            .setMinValue(1),
+                    ),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.developers.cookies.usage"),
 })
-export class CookiesCommand extends BaseCommand {
+export class CookiesCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     private formatCookie(number: number): string {
         return `**\`Cookie ${number}\`**`;
     }
@@ -106,7 +125,7 @@ export class CookiesCommand extends BaseCommand {
         return `\`${this.client.config.mainPrefix}cookies reset\``;
     }
 
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const __mf = i18n__mf(this.client, ctx.guild);
         const subcommand = ctx.options?.getSubcommand() ?? ctx.args[0]?.toLowerCase();
 
@@ -117,7 +136,7 @@ export class CookiesCommand extends BaseCommand {
                         "warn",
                         __mf("reusable.invalidUsage", {
                             prefix: `**\`${this.client.config.mainPrefix}help\`**`,
-                            name: `**\`${this.meta.name}\`**`,
+                            name: `**\`${this.options.name}\`**`,
                         }),
                     ),
                 ],
@@ -144,7 +163,7 @@ export class CookiesCommand extends BaseCommand {
                             "warn",
                             __mf("reusable.invalidUsage", {
                                 prefix: `**\`${this.client.config.mainPrefix}help\`**`,
-                                name: `**\`${this.meta.name}\`**`,
+                                name: `**\`${this.options.name}\`**`,
                             }),
                         ),
                     ],
@@ -241,7 +260,7 @@ export class CookiesCommand extends BaseCommand {
             }
 
             if (!hasYoutubeDomain) {
-                this.client.logger.warn(
+                this.container.logger.warn(
                     `[CookiesCommand] Cookie file for index ${number} does not contain YouTube domains`,
                 );
             }
@@ -278,7 +297,7 @@ export class CookiesCommand extends BaseCommand {
                 embeds: [createEmbed("error", __("commands.developers.cookies.addFailed"), true)],
             });
         } catch (error) {
-            this.client.logger.error("COOKIES_ADD_ERR:", error);
+            this.container.logger.error("COOKIES_ADD_ERR:", error);
             return ctx.reply({
                 embeds: [
                     createEmbed(

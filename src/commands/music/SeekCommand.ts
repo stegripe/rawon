@@ -1,11 +1,13 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { type AudioPlayerPlayingState, AudioPlayerStatus } from "@discordjs/voice";
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import { enableAudioCache } from "../../config/env.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
-import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -13,27 +15,40 @@ import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 import { parseTime } from "../../utils/functions/parseTime.js";
 import { checkQuery, play } from "../../utils/handlers/GeneralUtil.js";
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "seek",
     aliases: ["sk"],
     description: i18n.__("commands.music.seek.description"),
-    name: "seek",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.seek.slashTimeDescription"),
-                name: "time",
-                type: ApplicationCommandOptionType.String,
-                required: true,
-            },
-        ],
+    detailedDescription: { usage: i18n.__("commands.music.seek.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "seek")
+            .setDescription(opts.description ?? "Seek to a position in the song.")
+            .addStringOption((opt) =>
+                opt
+                    .setName("time")
+                    .setDescription(i18n.__("commands.music.seek.slashTimeDescription"))
+                    .setRequired(true),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.seek.usage"),
 })
-export class SeekCommand extends BaseCommand {
+export class SeekCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @inVC
     @haveQueue
     @sameVC
-    public async execute(ctx: CommandContext): Promise<void> {
+    public async contextRun(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 

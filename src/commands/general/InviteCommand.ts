@@ -1,27 +1,42 @@
-import { OAuth2Scopes, PermissionFlagsBits } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { OAuth2Scopes, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import { isMultiBot } from "../../config/env.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__mf } from "../../utils/functions/i18n.js";
 import { MultiBotManager } from "../../utils/structures/MultiBotManager.js";
 
 const SetVoiceChannelStatus = 281474976710656n;
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "invite",
     aliases: ["inv"],
     description: i18n.__("commands.general.invite.description"),
-    name: "invite",
-    slash: {
-        options: [],
+    detailedDescription: { usage: "{prefix}invite" },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "invite")
+            .setDescription(
+                opts.description ?? "Get the bot's invite link.",
+            ) as SlashCommandBuilder;
     },
-    usage: "{prefix}invite",
 })
-export class InviteCommand extends BaseCommand {
-    public async execute(ctx: CommandContext): Promise<void> {
-        const __mf = i18n__mf(this.client, ctx.guild);
+export class InviteCommand extends ContextCommand {
+    public async contextRun(ctx: CommandContext): Promise<void> {
+        const client = this.container.client as Rawon;
+        const __mf = i18n__mf(client, ctx.guild);
 
         const permissions = [
             PermissionFlagsBits.ViewChannel,
@@ -50,7 +65,7 @@ export class InviteCommand extends BaseCommand {
             const bots = multiBotManager.getBots();
 
             if (bots.length === 0) {
-                const invite = this.client.generateInvite({
+                const invite = client.generateInvite({
                     permissions,
                     scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
                 });
@@ -58,7 +73,7 @@ export class InviteCommand extends BaseCommand {
                     url: invite,
                 });
                 title = __mf("commands.general.invite.inviteTitle", {
-                    bot: this.client.user?.username,
+                    bot: client.user?.username,
                 });
             } else {
                 const inviteLines = bots
@@ -76,11 +91,11 @@ export class InviteCommand extends BaseCommand {
                     });
                 description = inviteLines.join("\n");
                 title = __mf("commands.general.invite.inviteTitle", {
-                    bot: this.client.user?.username ?? "Multi-Bot",
+                    bot: client.user?.username ?? "Multi-Bot",
                 });
             }
         } else {
-            const invite = this.client.generateInvite({
+            const invite = client.generateInvite({
                 permissions,
                 scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
             });
@@ -89,7 +104,7 @@ export class InviteCommand extends BaseCommand {
                 botNum: "",
             });
             title = __mf("commands.general.invite.inviteTitle", {
-                bot: this.client.user?.username,
+                bot: client.user?.username,
             });
         }
 
@@ -98,10 +113,10 @@ export class InviteCommand extends BaseCommand {
                 embeds: [
                     createEmbed("info", description).setAuthor({
                         name: title,
-                        iconURL: this.client.user?.displayAvatarURL(),
+                        iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
             })
-            .catch((error: unknown) => this.client.logger.error("PLAY_CMD_ERR:", error));
+            .catch((error: unknown) => this.container.logger.error("PLAY_CMD_ERR:", error));
     }
 }

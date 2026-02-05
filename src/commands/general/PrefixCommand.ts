@@ -1,48 +1,61 @@
-import { ApplicationCommandOptionType } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command<typeof PrefixCommand>({
+@ApplyOptions<Command.Options>({
+    name: "prefix",
     aliases: ["setprefix"],
     description: i18n.__("commands.general.prefix.description"),
-    name: "prefix",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.general.prefix.slashSetDescription"),
-                name: "set",
-                options: [
-                    {
-                        description: i18n.__("commands.general.prefix.slashPrefixOption"),
-                        name: "prefix",
-                        required: true,
-                        type: ApplicationCommandOptionType.String,
-                    },
-                ],
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.general.prefix.slashViewDescription"),
-                name: "view",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.general.prefix.slashResetDescription"),
-                name: "reset",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-        ],
+    detailedDescription: { usage: i18n.__("commands.general.prefix.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "prefix")
+            .setDescription(opts.description ?? "Change the bot prefix for this server.")
+            .addSubcommand((sub) =>
+                sub
+                    .setName("set")
+                    .setDescription(i18n.__("commands.general.prefix.slashSetDescription"))
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("prefix")
+                            .setDescription(i18n.__("commands.general.prefix.slashPrefixOption"))
+                            .setRequired(true),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("view")
+                    .setDescription(i18n.__("commands.general.prefix.slashViewDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("reset")
+                    .setDescription(i18n.__("commands.general.prefix.slashResetDescription")),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.general.prefix.usage"),
 })
-export class PrefixCommand extends BaseCommand {
+export class PrefixCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @memberReqPerms(["ManageGuild"], i18n.__("commands.general.prefix.noPermission"))
-    public async execute(ctx: CommandContext): Promise<void> {
+    public async contextRun(ctx: CommandContext): Promise<void> {
         const guildId = ctx.guild?.id;
         if (!guildId) {
             return;

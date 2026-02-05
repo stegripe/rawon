@@ -1,47 +1,61 @@
-import { ApplicationCommandOptionType } from "discord.js";
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command<typeof DJCommand>({
-    description: i18n.__("commands.music.dj.description"),
+@ApplyOptions<Command.Options>({
     name: "dj",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.dj.slashRoleDescription"),
-                name: "role",
-                options: [
-                    {
-                        description: i18n.__("commands.music.dj.slashRoleNewRoleOption"),
-                        name: "newrole",
-                        required: false,
-                        type: ApplicationCommandOptionType.Role,
-                    },
-                ],
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.dj.slashEnableDescription"),
-                name: "enable",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-            {
-                description: i18n.__("commands.music.dj.slashDisableDescription"),
-                name: "disable",
-                type: ApplicationCommandOptionType.Subcommand,
-            },
-        ],
+    aliases: [],
+    description: i18n.__("commands.music.dj.description"),
+    detailedDescription: { usage: i18n.__("commands.music.dj.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "dj")
+            .setDescription(opts.description ?? "Configure DJ role settings.")
+            .addSubcommand((sub) =>
+                sub
+                    .setName("role")
+                    .setDescription(i18n.__("commands.music.dj.slashRoleDescription"))
+                    .addRoleOption((opt) =>
+                        opt
+                            .setName("newrole")
+                            .setDescription(i18n.__("commands.music.dj.slashRoleNewRoleOption"))
+                            .setRequired(false),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("enable")
+                    .setDescription(i18n.__("commands.music.dj.slashEnableDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("disable")
+                    .setDescription(i18n.__("commands.music.dj.slashDisableDescription")),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.dj.usage"),
 })
-export class DJCommand extends BaseCommand {
+export class DJCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @memberReqPerms(["ManageGuild"], i18n.__("commands.music.dj.noPermission"))
-    public execute(ctx: CommandContext): void {
+    public contextRun(ctx: CommandContext): void {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 

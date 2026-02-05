@@ -1,7 +1,8 @@
+import { ApplyOptions } from "@sapphire/decorators";
+import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import { ChannelType, type DMChannel, type GuildChannel } from "discord.js";
-import { BaseEvent } from "../structures/BaseEvent.js";
+import { type Rawon } from "../structures/Rawon.js";
 import { type ExtendedDataManager } from "../typings/index.js";
-import { Event } from "../utils/decorators/Event.js";
 
 function hasGetRequestChannel(
     data: unknown,
@@ -14,9 +15,9 @@ function hasGetRequestChannel(
     );
 }
 
-@Event("channelDelete")
-export class ChannelDeleteEvent extends BaseEvent {
-    public async execute(channel: DMChannel | GuildChannel): Promise<void> {
+@ApplyOptions<ListenerOptions>({ event: Events.ChannelDelete })
+export class ChannelDeleteListener extends Listener<typeof Events.ChannelDelete> {
+    public async run(channel: DMChannel | GuildChannel): Promise<void> {
         if (channel.type === ChannelType.DM) {
             return;
         }
@@ -26,9 +27,9 @@ export class ChannelDeleteEvent extends BaseEvent {
         }
 
         const guild = channel.guild;
-        const botId = this.client.user?.id ?? "unknown";
+        const botId = (this.container.client as Rawon).user?.id ?? "unknown";
 
-        this.client.debugLog.logData("info", "CHANNEL_DELETE_EVENT", [
+        this.container.debugLog.logData("info", "CHANNEL_DELETE_EVENT", [
             ["Channel", `${channel.name}(${channel.id})`],
             ["Guild", `${guild.name}(${guild.id})`],
         ]);
@@ -36,24 +37,25 @@ export class ChannelDeleteEvent extends BaseEvent {
         let requestChannelData: { channelId: string | null; messageId: string | null } | null =
             null;
 
-        if (hasGetRequestChannel(this.client.data)) {
-            requestChannelData = this.client.data.getRequestChannel(guild.id, botId);
+        if (hasGetRequestChannel(this.container.data)) {
+            requestChannelData = this.container.data.getRequestChannel(guild.id, botId);
         } else {
-            requestChannelData = (this.client.data as any).data?.[guild.id]?.requestChannel ?? null;
+            requestChannelData =
+                (this.container.data as any).data?.[guild.id]?.requestChannel ?? null;
         }
 
         if (requestChannelData?.channelId === channel.id) {
-            this.client.logger.info(
+            this.container.logger.info(
                 `Request channel ${channel.name} (${channel.id}) was deleted in guild ${guild.name} (${guild.id}). Cleaning up...`,
             );
 
             try {
-                await this.client.requestChannelManager.setRequestChannel(guild, null);
-                this.client.logger.info(
+                await this.container.requestChannelManager.setRequestChannel(guild, null);
+                this.container.logger.info(
                     `Cleaned up request channel data for deleted channel in guild ${guild.name} (${guild.id})`,
                 );
             } catch (error) {
-                this.client.logger.error(
+                this.container.logger.error(
                     `Failed to clean up request channel data for guild ${guild.id}:`,
                     error,
                 );

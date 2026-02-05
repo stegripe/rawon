@@ -1,10 +1,17 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { type AudioPlayerState, type AudioResource } from "@discordjs/voice";
-import { ApplicationCommandOptionType, escapeMarkdown, type VoiceChannel } from "discord.js";
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
+import {
+    escapeMarkdown,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
+    type VoiceChannel,
+} from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { type CommandContext } from "../../structures/CommandContext.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
-import { Command } from "../../utils/decorators/Command.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
@@ -13,26 +20,40 @@ import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 import { type SongManager } from "../../utils/structures/SongManager.js";
 
-@Command({
-    description: i18n.__("commands.music.remove.description"),
+@ApplyOptions<Command.Options>({
     name: "remove",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.remove.slashPositionsDescription"),
-                name: "positions",
-                required: true,
-                type: ApplicationCommandOptionType.String,
-            },
-        ],
+    aliases: [],
+    description: i18n.__("commands.music.remove.description"),
+    detailedDescription: { usage: i18n.__("commands.music.remove.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "remove")
+            .setDescription(opts.description ?? "Remove songs from the queue.")
+            .addStringOption((opt) =>
+                opt
+                    .setName("positions")
+                    .setDescription(i18n.__("commands.music.remove.slashPositionsDescription"))
+                    .setRequired(true),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.remove.usage"),
 })
-export class RemoveCommand extends BaseCommand {
+export class RemoveCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @inVC
     @haveQueue
     @sameVC
-    public async execute(ctx: CommandContext): Promise<void> {
+    public async contextRun(ctx: CommandContext): Promise<void> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 

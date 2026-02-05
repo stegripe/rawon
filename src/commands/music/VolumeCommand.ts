@@ -1,43 +1,60 @@
+/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { ApplyOptions } from "@sapphire/decorators";
+import { type Command } from "@sapphire/framework";
+import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
-    ApplicationCommandOptionType,
     ButtonBuilder,
     ButtonStyle,
     ComponentType,
     type GuildMember,
     type Message,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
 } from "discord.js";
 import i18n from "../../config/index.js";
-import { BaseCommand } from "../../structures/BaseCommand.js";
-import { CommandContext } from "../../structures/CommandContext.js";
-import { Command } from "../../utils/decorators/Command.js";
+import { CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
+import { type Rawon } from "../../structures/Rawon.js";
 import { haveQueue, inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
-@Command({
+@ApplyOptions<Command.Options>({
+    name: "volume",
     aliases: ["vol"],
     description: i18n.__("commands.music.volume.description"),
-    name: "volume",
-    slash: {
-        options: [
-            {
-                description: i18n.__("commands.music.volume.slashDescription"),
-                name: "volume",
-                type: ApplicationCommandOptionType.Number,
-                required: false,
-            },
-        ],
+    detailedDescription: { usage: i18n.__("commands.music.volume.usage") },
+    requiredClientPermissions: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.EmbedLinks,
+    ],
+    chatInputCommand(
+        builder: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[0],
+        opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
+    ): SlashCommandBuilder {
+        return builder
+            .setName(opts.name ?? "volume")
+            .setDescription(opts.description ?? "Set the volume.")
+            .addNumberOption((opt) =>
+                opt
+                    .setName("volume")
+                    .setDescription(i18n.__("commands.music.volume.slashDescription"))
+                    .setRequired(false),
+            ) as SlashCommandBuilder;
     },
-    usage: i18n.__("commands.music.volume.usage"),
 })
-export class VolumeCommand extends BaseCommand {
+export class VolumeCommand extends ContextCommand {
+    private get client(): Rawon {
+        return this.container.client as Rawon;
+    }
+
     @inVC
     @validVC
     @haveQueue
     @sameVC
-    public async execute(ctx: CommandContext): Promise<Message | undefined> {
+    public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const __ = i18n__(this.client, ctx.guild);
         const __mf = i18n__mf(this.client, ctx.guild);
 
@@ -76,9 +93,9 @@ export class VolumeCommand extends BaseCommand {
 
             collector
                 .on("collect", async (i) => {
-                    const newContext = new CommandContext(i, [i.customId]);
+                    const newContext = new LocalCommandContext(i, [i.customId]);
                     const newVolume = Number(i.customId);
-                    await this.execute(newContext);
+                    await this.contextRun(newContext as unknown as CommandContext);
 
                     void msg.edit({
                         embeds: [
