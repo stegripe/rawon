@@ -1,8 +1,8 @@
 import path from "node:path";
 import process from "node:process";
-import { container, SapphireClient } from "@sapphire/framework";
+import { type Command, container, SapphireClient } from "@sapphire/framework";
 import { PinoLogger } from "@stegripe/pino-logger";
-import { type ClientOptions } from "discord.js";
+import { type ClientOptions, Collection, type Message } from "discord.js";
 import got from "got";
 import { Soundcloud } from "soundcloud.ts";
 import * as config from "../config/index.js";
@@ -16,6 +16,184 @@ import { MultiBotManager } from "../utils/structures/MultiBotManager.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 import { SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
 import { setCookiesManager } from "../utils/yt-dlp/index.js";
+import { CommandContext } from "./CommandContext.js";
+
+interface CompatibleCommand extends Command {
+    meta: {
+        name: string;
+        description?: string;
+        aliases?: readonly string[];
+        cooldown?: number;
+        devOnly?: boolean;
+        contextChat?: string;
+        contextUser?: string;
+        disable?: boolean;
+        usage?: string;
+        slash?: boolean;
+    };
+}
+
+interface CommandCategory {
+    name: string;
+    cmds: Collection<string, CompatibleCommand>;
+    hide: boolean;
+}
+
+function wrapCommand(cmd: Command): CompatibleCommand {
+    const opts = cmd.options as Command.Options & {
+        devOnly?: boolean;
+        cooldown?: number;
+        contextChat?: string;
+        contextUser?: string;
+        disable?: boolean;
+    };
+    return Object.assign(cmd, {
+        meta: {
+            name: cmd.name,
+            description: cmd.description,
+            aliases: cmd.aliases as readonly string[],
+            cooldown: opts.cooldown,
+            devOnly: opts.devOnly,
+            contextChat: opts.contextChat,
+            contextUser: opts.contextUser,
+            disable: opts.disable,
+            usage:
+                typeof cmd.detailedDescription === "object"
+                    ? (cmd.detailedDescription as { usage?: string }).usage
+                    : undefined,
+            slash: opts.chatInputCommand !== undefined,
+        },
+    }) as CompatibleCommand;
+}
+
+class CommandsCompatibility {
+    private readonly client: Rawon;
+    public readonly aliases = new Collection<string, string>();
+
+    public constructor(client: Rawon) {
+        this.client = client;
+    }
+
+    public get isReady(): boolean {
+        return this.client.isReady();
+    }
+
+    public get(name: string): CompatibleCommand | undefined {
+        const store = this.client.stores.get("commands");
+        container.logger.info(
+            `[CommandsCompat] get("${name}") - store has ${store.size} commands: ${[...store.keys()].join(", ")}`,
+        );
+        let cmd = store.get(name);
+        if (cmd) {
+            return wrapCommand(cmd);
+        }
+        const aliasedName = this.aliases.get(name);
+        if (aliasedName) {
+            cmd = store.get(aliasedName);
+            if (cmd) {
+                return wrapCommand(cmd);
+            }
+        }
+        cmd = [...store.values()].find((c) => {
+            const aliases = (c.options as { aliases?: string[] }).aliases ?? [];
+            return aliases.includes(name);
+        });
+        return cmd ? wrapCommand(cmd) : undefined;
+    }
+
+    public find<T extends Command>(fn: (cmd: CompatibleCommand) => cmd is T): T | undefined;
+    public find(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand | undefined;
+    public find(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand | undefined {
+        const store = this.client.stores.get("commands");
+        const wrapped = [...store.values()].map(wrapCommand);
+        return wrapped.find(fn);
+    }
+
+    public filter<T extends Command>(fn: (cmd: CompatibleCommand) => cmd is T): T[];
+    public filter(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand[];
+    public filter(fn: (cmd: CompatibleCommand) => boolean): CompatibleCommand[] {
+        const store = this.client.stores.get("commands");
+        const wrapped = [...store.values()].map(wrapCommand);
+        return wrapped.filter(fn);
+    }
+
+    public values(): IterableIterator<CompatibleCommand> {
+        const store = this.client.stores.get("commands");
+        return [...store.values()].map(wrapCommand)[Symbol.iterator]();
+    }
+
+    public [Symbol.iterator](): IterableIterator<CompatibleCommand> {
+        return this.values();
+    }
+
+    public get categories(): Collection<string, CommandCategory> {
+        const store = this.client.stores.get("commands");
+        const categories = new Collection<string, CommandCategory>();
+
+        for (const cmd of store.values()) {
+            const category =
+                cmd.fullCategory.length > 0 ? (cmd.fullCategory.at(-1) ?? "general") : "general";
+
+            if (!categories.has(category)) {
+                categories.set(category, {
+                    name: category.charAt(0).toUpperCase() + category.slice(1),
+                    cmds: new Collection(),
+                    hide: category === "developers",
+                });
+            }
+
+            const wrapped = wrapCommand(cmd);
+            categories.get(category)!.cmds.set(cmd.name, wrapped);
+        }
+
+        return categories;
+    }
+
+    public handle(message: Message, prefix: string): void {
+        const content = message.content.slice(prefix.length).trim();
+        const args = content.split(/ +/u);
+        const commandName = args.shift()?.toLowerCase();
+
+        container.logger.info(
+            `[CommandsCompat] handle() called - prefix: "${prefix}", commandName: "${commandName}", content: "${content}"`,
+        );
+
+        if (!commandName) {
+            container.logger.info("[CommandsCompat] No command name found");
+            return;
+        }
+
+        const command = this.get(commandName);
+        if (!command) {
+            container.logger.info(`[CommandsCompat] Command "${commandName}" not found`);
+            return;
+        }
+
+        container.logger.info(
+            `[CommandsCompat] Found command: ${command.name}, meta.disable: ${command.meta.disable}`,
+        );
+
+        if (command.meta.disable) {
+            container.logger.info(`[CommandsCompat] Command "${commandName}" is disabled`);
+            return;
+        }
+
+        const ctx = new CommandContext(message, args);
+
+        const ctxCommand = command as unknown as {
+            contextRun?: (ctx: CommandContext) => Promise<unknown>;
+        };
+
+        container.logger.info(
+            `[CommandsCompat] contextRun available: ${typeof ctxCommand.contextRun === "function"}`,
+        );
+
+        if (ctxCommand.contextRun) {
+            container.logger.info(`[CommandsCompat] Executing command "${commandName}"`);
+            void ctxCommand.contextRun(ctx);
+        }
+    }
+}
 
 export class Rawon extends SapphireClient {
     public startTimestamp = 0;
@@ -31,6 +209,7 @@ export class Rawon extends SapphireClient {
     public readonly audioCache = new AudioCacheManager(this);
     public readonly cookies = new CookiesManager(this);
     public readonly multiBotManager = MultiBotManager.getInstance();
+    public readonly commands = new CommandsCompatibility(this);
     public readonly request = got.extend({
         hooks: {
             beforeError: [
@@ -101,10 +280,94 @@ export class Rawon extends SapphireClient {
 
         await this.login(loginToken);
 
-        if (this.config.isMultiBot && this.user) {
+        if (this.config.isMultiBot) {
             container.logger.info(
-                `[MultiBot] Bot ${this.user.tag} is in ${this.guilds.cache.size} guild(s): ${Array.from(this.guilds.cache.keys()).join(", ")}`,
+                `[MultiBot] Bot ${this.user?.tag} is in ${this.guilds.cache.size} guild(s): ${Array.from(this.guilds.cache.keys()).join(", ")}`,
             );
+
+            const listenerStore = this.stores.get("listeners");
+            if (container.client !== this) {
+                container.logger.info(
+                    `[MultiBot] Bot ${this.user?.tag} is NOT container.client, setting up event forwarding...`,
+                );
+
+                this.on("messageCreate", (message) => {
+                    const listener = listenerStore.get("MessageCreateListener");
+                    if (listener?.run) {
+                        void (listener as { run: (message: Message) => Promise<void> }).run(
+                            message,
+                        );
+                    }
+                });
+
+                this.on("interactionCreate", (interaction) => {
+                    const listener = listenerStore.get("InteractionCreateListener");
+                    if (listener?.run) {
+                        void (
+                            listener as { run: (interaction: typeof interaction) => Promise<void> }
+                        ).run(interaction);
+                    }
+                });
+
+                this.on("voiceStateUpdate", (oldState, newState) => {
+                    const listener = listenerStore.get("VoiceStateUpdateListener");
+                    if (listener?.run) {
+                        void (
+                            listener as {
+                                run: (
+                                    oldState: typeof oldState,
+                                    newState: typeof newState,
+                                ) => Promise<Message | undefined>;
+                            }
+                        ).run(oldState, newState);
+                    }
+                });
+
+                this.on("messageDelete", (message) => {
+                    const listener = listenerStore.get("MessageDeleteListener");
+                    if (listener?.run) {
+                        void (listener as { run: (message: typeof message) => Promise<void> }).run(
+                            message,
+                        );
+                    }
+                });
+
+                this.on("guildDelete", (guild) => {
+                    const listener = listenerStore.get("GuildDeleteListener");
+                    if (listener?.run) {
+                        void (listener as { run: (guild: typeof guild) => Promise<void> }).run(
+                            guild,
+                        );
+                    }
+                });
+
+                this.on("channelDelete", (channel) => {
+                    const listener = listenerStore.get("ChannelDeleteListener");
+                    if (listener?.run) {
+                        void (listener as { run: (channel: typeof channel) => Promise<void> }).run(
+                            channel,
+                        );
+                    }
+                });
+
+                this.on("channelUpdate", (oldChannel, newChannel) => {
+                    const listener = listenerStore.get("ChannelUpdateListener");
+                    if (listener?.run) {
+                        void (
+                            listener as {
+                                run: (
+                                    oldChannel: typeof oldChannel,
+                                    newChannel: typeof newChannel,
+                                ) => Promise<void>;
+                            }
+                        ).run(oldChannel, newChannel);
+                    }
+                });
+
+                container.logger.info(
+                    `[MultiBot] Event forwarding set up for bot ${this.user?.tag}`,
+                );
+            }
         }
 
         return this;

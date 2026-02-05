@@ -48,8 +48,11 @@ function hasGetRequestChannel(
     once: true,
 })
 export class ReadyListener extends Listener<typeof Events.ClientReady> {
-    public async run(): Promise<void> {
-        const client = this.container.client as Rawon;
+    private currentClient!: Rawon;
+
+    public async run(readyClient: typeof this.container.client): Promise<void> {
+        const client = readyClient as Rawon;
+        this.currentClient = client;
 
         if (client.application?.owner) {
             this.container.config.devs.push(client.application.owner.id);
@@ -121,7 +124,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
     }
 
     private async cleanupOrphanedGuildData(): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = this.currentClient;
         const botId = client.user?.id ?? "unknown";
 
         const isPrimaryOrSingle =
@@ -210,7 +213,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
     }
 
     private async validateRequestChannels(): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = this.currentClient;
         const botId = client.user?.id ?? "unknown";
         const data = this.container.data.data;
         if (!data) {
@@ -259,7 +262,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
     }
 
     private async restoreQueueStates(): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = this.currentClient;
         const botId = client.user?.id ?? "unknown";
 
         const queueStates: Array<{
@@ -557,7 +560,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
     }
 
     private async restoreRequestChannelMessages(): Promise<void> {
-        const client = this.container.client as Rawon;
+        const client = this.currentClient;
         const data = this.container.data.data;
         if (!data) {
             return;
@@ -589,7 +592,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
     }
 
     private async formatString(text: string): Promise<string> {
-        const client = this.container.client as Rawon;
+        const client = this.currentClient;
         let newText = text;
 
         if (text.includes("{userCount}")) {
@@ -624,7 +627,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
     }
 
     private async setPresence(random: boolean): Promise<Presence> {
-        const client = this.container.client as Rawon;
+        const client = this.currentClient;
         const activityNumber = random
             ? Math.floor(Math.random() * this.container.config.presenceData.activities.length)
             : 0;
@@ -671,7 +674,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
     }
 
     private async doPresence(): Promise<Presence | undefined> {
-        const client = this.container.client as Rawon;
+        const client = this.currentClient;
         try {
             if (this.container.config.isMultiBot) {
                 const primaryBot = client.multiBotManager.getPrimaryBot();
