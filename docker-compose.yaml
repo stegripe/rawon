@@ -13,13 +13,8 @@ services:
     env_file:
       - .env
       - dev.env
-    networks:
-      - net
     volumes:
       - rawon:/app/cache
-
-networks:
-  net:
 
 volumes:
   rawon:
