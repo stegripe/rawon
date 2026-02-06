@@ -1,26 +1,37 @@
-.gitignore
-
-.vscode
-.idea
-*.swp
-*.swo
-
-README.md
-LICENSE
-docs/
+.gitattributes
+.github/
 
 Dockerfile
 docker-compose.yaml
 .dockerignore
 
-node_modules
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-dist
+README.md
+LICENSE
+docs/
 
 *.env
+*.env.*
+!.env.example
 dev.env.example
 
+node_modules/
+
+dist/
+
 cache/
+
+.node-version
+.nvmrc
+
+*.log
+npm-debug.log*
+pnpm-debug.log*
 
 .DS_Store
 Thumbs.db

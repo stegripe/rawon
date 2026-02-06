@@ -8,7 +8,9 @@ x-common-general: &common-general
 services:
   rawon:
     <<: *common-general
-    image: ghcr.io/stegripe/rawon:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: rawon-bot
     env_file:
       - .env
