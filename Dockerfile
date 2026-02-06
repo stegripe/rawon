@@ -1,18 +1,16 @@
 FROM node:24-alpine AS build-stage
 
-RUN corepack enable && corepack prepare pnpm@latest
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /tmp/build
 
-COPY package.json pnpm-lock.yaml *.npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc* ./
 
-RUN pnpm fetch
-
-RUN pnpm install --offline --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm run build
+RUN pnpm build
 
 RUN pnpm prune --production
 
