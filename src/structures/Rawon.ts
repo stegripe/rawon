@@ -29,9 +29,6 @@ import { SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
 import { setCookiesManager } from "../utils/yt-dlp/index.js";
 import { CommandContext } from "./CommandContext.js";
 
-/**
- * Command wrapper that provides backwards-compatible meta access
- */
 interface CompatibleCommand extends Command {
     meta: {
         name: string;
@@ -47,18 +44,12 @@ interface CompatibleCommand extends Command {
     };
 }
 
-/**
- * Category type for organizing commands
- */
 interface CommandCategory {
     name: string;
     cmds: Collection<string, CompatibleCommand>;
     hide: boolean;
 }
 
-/**
- * Wraps a Sapphire Command with backwards-compatible meta property
- */
 function wrapCommand(cmd: Command): CompatibleCommand {
     const opts = cmd.options as Command.Options & {
         devOnly?: boolean;
@@ -86,10 +77,6 @@ function wrapCommand(cmd: Command): CompatibleCommand {
     }) as CompatibleCommand;
 }
 
-/**
- * Compatibility layer for the old CommandManager API
- * Maps old client.commands API to Sapphire's command store
- */
 class CommandsCompatibility {
     private readonly client: Rawon;
     public readonly aliases = new Collection<string, string>();
