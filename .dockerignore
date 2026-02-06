@@ -1,34 +1,35 @@
-# Dependencies
-node_modules
+# Git
+.gitignore
 
-# Build output
-dist
-
-# Environment files (should be provided at runtime)
-.env
-*.env
-!*.env.example
-
-# IDE and editor files
+# IDE
 .vscode
 .idea
 *.swp
 *.swo
 
+# Documentation
+README.md
+LICENSE
+docs/
+
+# Docker
+Dockerfile
+docker-compose.yaml
+.dockerignore
+
+# Dependencies (akan di-install ulang di dalam container)
+node_modules
+
+# Build output
+dist
+
+# Env
+*.env
+dev.env.example
+
+# Cache
+cache/
+
 # OS files
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-
-# Cache
-.cache
-.pnpm-store
-
-# Docker files (not needed in build context)
-docker-compose*.yaml
-Dockerfile*
-.dockerignore
