@@ -1,35 +1,48 @@
-# Git
-.gitignore
+# Version control (metadata only)
+.gitattributes
+.github/
 
-# IDE
-.vscode
-.idea
+# CI/CD & Docker meta
+Dockerfile
+docker-compose.yaml
+.dockerignore
+
+# IDE & Editor
+.vscode/
+.idea/
 *.swp
 *.swo
+*~
 
 # Documentation
 README.md
 LICENSE
 docs/
 
-# Docker
-Dockerfile
-docker-compose.yaml
-.dockerignore
-
-# Dependencies (akan di-install ulang di dalam container)
-node_modules
-
-# Build output
-dist
-
-# Env
+# Environment
 *.env
+*.env.*
+!.env.example
 dev.env.example
 
-# Cache
+# Dependencies (re-installed in container)
+node_modules/
+
+# Build output (re-built in container)
+dist/
+
+# Runtime cache (mounted as volume)
 cache/
 
-# OS files
+# Node version managers
+.node-version
+.nvmrc
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS artifacts
 .DS_Store
 Thumbs.db
