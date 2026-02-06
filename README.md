@@ -130,6 +130,8 @@ If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may e
 !cookies reset  # Reset failed status
 ```
 
+This feature is still experimental and very buggy, especially the rotation system.
+
 ## Support & Questions
 For help and questions, join our official [Discord Server](https://stegripe.org/discord).
 
