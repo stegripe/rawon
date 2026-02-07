@@ -23,14 +23,6 @@ export interface CookieInfo {
 
 const FAILED_COOKIE_EXPIRY_MS = 30 * 60 * 1000;
 
-/**
- * CookiesManager handles cookie rotation for yt-dlp to avoid bot detection.
- *
- * Cookie files are stored in: `cache/cookies/`
- * Naming convention: `cookies-{n}.txt`
- *
- * State is persisted in SQLite via SQLiteDataManager.
- */
 export class CookiesManager {
     public readonly cookiesDir: string;
 

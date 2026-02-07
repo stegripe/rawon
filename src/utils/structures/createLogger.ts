@@ -3,10 +3,6 @@ import pino from "pino";
 
 export type Logger = pino.Logger;
 
-/**
- * Creates a scoped pino logger for standalone usage outside Sapphire client context.
- * Used by sharding manager, multi-bot launcher, and other entry-point code.
- */
 export function createScopedLogger(scope: string, production = false): Logger {
     return pino({
         name: scope,
