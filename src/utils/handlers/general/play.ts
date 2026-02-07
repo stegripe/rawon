@@ -63,6 +63,7 @@ export async function play(
                     ),
                 ],
             });
+            queue.queueEndedNotified = true;
         }
 
         void queue.client.requestChannelManager.updatePlayerMessage(guild);

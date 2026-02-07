@@ -22,6 +22,7 @@ const nonEnum = { enumerable: false };
 export class ServerQueue {
     public readonly player: AudioPlayer = createAudioPlayer();
     public connection: VoiceConnection | null = null;
+    public queueEndedNotified = false;
     public timeout: NodeJS.Timeout | null = null;
     public readonly songs: SongManager;
     public loopMode: LoopMode = "OFF";
@@ -683,7 +684,7 @@ export class ServerQueue {
                 this.textChannel.guild,
                 this.textChannel.id,
             );
-            if (!isRequestChannel) {
+            if (!isRequestChannel && !this.queueEndedNotified) {
                 const __mf = i18n__mf(this.client, this.textChannel.guild);
                 const msg = await this.textChannel
                     .send({
