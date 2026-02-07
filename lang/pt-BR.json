@@ -363,7 +363,8 @@
             "startPlaying": "Começando a tocar {song}",
             "stopPlaying": "Parando de tocar {song}",
             "songRequeued": "Houve um problema ao tocar {song}, adicionado de volta à fila para outra tentativa.",
-            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Por favor, adicione novos cookies usando o comando `{prefix}cookies add <number>` com um arquivo cookies.txt anexado, ou use `{prefix}cookies reset` para tentar novamente os cookies existentes."
+            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Por favor, adicione novos cookies usando o comando `{prefix}cookies add <number>` com um arquivo cookies.txt anexado, ou use `{prefix}cookies reset` para tentar novamente os cookies existentes.",
+            "ageRestricted": "Não é possível reproduzir {song} porque é restrito por idade e requer login."
         },
         "musicDecorator": {
             "noInVC": "Desculpe, mas você precisa estar em um canal de voz para fazer isso.",

@@ -363,7 +363,8 @@
             "startPlaying": "{song}の再生が開始",
             "stopPlaying": "{song}の再生が終了",
             "songRequeued": "{song}の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
-            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}cookies add <number>` コマンドでcookies.txtファイルを添付して新しいCookieを追加するか、`{prefix}cookies reset` で既存のCookieを再試行してください。"
+            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}cookies add <number>` コマンドでcookies.txtファイルを添付して新しいCookieを追加するか、`{prefix}cookies reset` で既存のCookieを再試行してください。",
+            "ageRestricted": "{song} は年齢制限があるため、ログインが必要です。再生できません。"
         },
         "musicDecorator": {
             "noInVC": "それを行うにはVCに参加している必要があります。",
