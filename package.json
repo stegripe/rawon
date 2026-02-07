@@ -52,7 +52,7 @@
         "tslib": "2.8.1",
         "tweetnacl": "1.0.3",
         "youtubei": "1.8.4",
-        "zip-lib": "^1.1.2"
+        "zip-lib": "^1.2.1"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.3.14",
