@@ -34,7 +34,7 @@
         "@sapphire/utilities": "^3.18.2",
         "@stegripe/command-context": "^1.2.0",
         "@stegripe/pino-logger": "^1.2.0",
-        "@swc/cli": "0.7.10",
+        "@swc/cli": "0.8.0",
         "@swc/core": "1.15.11",
         "@types/better-sqlite3": "^7.6.13",
         "better-sqlite3": "^12.6.2",
