@@ -79,6 +79,15 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         `);
 
         this.db.exec(`
+            CREATE TABLE IF NOT EXISTS cookies_state (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                current_cookie_index INTEGER DEFAULT 1,
+                failed_cookies_json TEXT DEFAULT '[]',
+                failure_timestamps_json TEXT DEFAULT '{}'
+            )
+        `);
+
+        this.db.exec(`
             CREATE INDEX IF NOT EXISTS idx_queue_states_guild ON queue_states(guild_id);
             CREATE INDEX IF NOT EXISTS idx_queue_states_bot ON queue_states(bot_id);
             CREATE INDEX IF NOT EXISTS idx_player_states_guild ON player_states(guild_id);
@@ -476,6 +485,53 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
     public async deleteGuildData(guildId: string): Promise<void> {
         await this.manager.add(async () => {
             this.db.prepare("DELETE FROM guilds WHERE guild_id = ?").run(guildId);
+        });
+    }
+
+    public getCookiesState(): {
+        currentCookieIndex: number;
+        failedCookies: number[];
+        failureTimestamps: Record<number, number>;
+    } | null {
+        const result = this.db.prepare("SELECT * FROM cookies_state WHERE id = 1").get() as
+            | {
+                  current_cookie_index: number;
+                  failed_cookies_json: string;
+                  failure_timestamps_json: string;
+              }
+            | undefined;
+
+        if (!result) {
+            return null;
+        }
+
+        return {
+            currentCookieIndex: result.current_cookie_index,
+            failedCookies: JSON.parse(result.failed_cookies_json),
+            failureTimestamps: JSON.parse(result.failure_timestamps_json),
+        };
+    }
+
+    public async saveCookiesState(state: {
+        currentCookieIndex: number;
+        failedCookies: number[];
+        failureTimestamps: Record<number, number>;
+    }): Promise<void> {
+        await this.manager.add(async () => {
+            const stmt = this.db.prepare(`
+                INSERT INTO cookies_state (id, current_cookie_index, failed_cookies_json, failure_timestamps_json)
+                VALUES (1, ?, ?, ?)
+                ON CONFLICT(id) DO UPDATE SET
+                    current_cookie_index = excluded.current_cookie_index,
+                    failed_cookies_json = excluded.failed_cookies_json,
+                    failure_timestamps_json = excluded.failure_timestamps_json
+            `);
+
+            stmt.run(
+                state.currentCookieIndex,
+                JSON.stringify(state.failedCookies),
+                JSON.stringify(state.failureTimestamps),
+            );
         });
     }
 

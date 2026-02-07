@@ -123,13 +123,14 @@ export class SearchCommand extends ContextCommand {
                 if (selection === undefined || !("customId" in selection.data)) {
                     return;
                 }
+                const disabledLabel = __("commands.music.search.disabledSelection");
                 const disabledMenu = new StringSelectMenuBuilder()
                     .setDisabled(true)
                     .setCustomId(selection.data.customId as string)
                     .addOptions({
-                        label: "Nothing to select here",
-                        description: "Nothing to select here",
-                        value: "Nothing to select here",
+                        label: disabledLabel,
+                        description: disabledLabel,
+                        value: disabledLabel,
                     });
                 await prev.edit({
                     components: [

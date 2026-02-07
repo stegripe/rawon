@@ -38,6 +38,9 @@ export class ClientUtils {
             );
 
             for (const users of shardUsers) {
+                if (users instanceof Error || !Array.isArray(users)) {
+                    continue;
+                }
                 arr = [...arr, ...users];
             }
         } else {
@@ -75,6 +78,9 @@ export class ClientUtils {
             );
 
             for (const channels of shardChannels) {
+                if (channels instanceof Error || !Array.isArray(channels)) {
+                    continue;
+                }
                 arr = [...arr, ...channels];
             }
         } else {
@@ -103,7 +109,9 @@ export class ClientUtils {
         if (this.client.shard) {
             const guilds = await this.client.shard.broadcastEval((c) => c.guilds.cache.size);
 
-            return guilds.reduce((prev, curr) => prev + curr);
+            return guilds
+                .filter((g): g is number => typeof g === "number")
+                .reduce((prev, curr) => prev + curr, 0);
         }
 
         return this.client.guilds.cache.size;
@@ -115,7 +123,9 @@ export class ClientUtils {
                 (c) => c.guilds.cache.filter((x) => x.queue?.playing === true).size,
             );
 
-            return playings.reduce((prev, curr) => prev + curr);
+            return playings
+                .filter((p): p is number => typeof p === "number")
+                .reduce((prev, curr) => prev + curr, 0);
         }
 
         return this.client.guilds.cache.filter((x) => x.queue?.playing === true).size;

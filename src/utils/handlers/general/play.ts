@@ -400,6 +400,20 @@ export async function play(
         }
 
         resource.volume?.setVolumeLogarithmic(queue.volume / 100);
+
+        resource.playStream.on("error", (e: unknown) => {
+            const errStr = String(e ?? "");
+            const isPremature =
+                errStr.includes("Premature close") ||
+                (e as any)?.code === "ERR_STREAM_PREMATURE_CLOSE";
+            if (isPremature) {
+                queue.client.logger.debug(
+                    "[PLAY_HANDLER] Ignoring premature-close resource stream error",
+                );
+                return;
+            }
+            queue.client.logger.error("[PLAY_HANDLER][RESOURCE_STREAM_ERROR]", e);
+        });
     } catch (err) {
         queue.client.logger.error(
             "[PLAY_HANDLER][RESOURCE_CREATE_ERROR]",

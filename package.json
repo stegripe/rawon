@@ -21,7 +21,7 @@
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "start": "node --es-module-specifier-resolution=node -r dotenv/config . | pino-pretty -t \"SYS:yyyy-MM-dd HH:mm:ss\"",
-        "start:dev": "rimraf ./dist && pnpm run compile && pnpm start"
+        "dev": "rimraf ./dist && pnpm run compile && pnpm start"
     },
     "engines": {
         "node": ">=20.0.0",

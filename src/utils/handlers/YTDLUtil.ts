@@ -240,8 +240,8 @@ async function attemptStreamWithRetry(
                 proc.kill("SIGKILL");
 
                 if (retryCount < MAX_TRANSIENT_RETRIES) {
-                    client.logger.warn(
-                        `[YTDLUtil] ⚠️ Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                    client.logger.debug(
+                        `[YTDLUtil] Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
                     );
                     const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                     setTimeout(() => {

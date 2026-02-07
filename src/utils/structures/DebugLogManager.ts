@@ -1,14 +1,18 @@
-import { BaseLogger, type LogLevel } from "./RawonLogger.js";
+import { createScopedLogger, type Logger } from "./createLogger.js";
 
-export class DebugLogManager extends BaseLogger {
+export type DebugLogLevel = "debug" | "error" | "info" | "warn";
+
+export class DebugLogManager {
+    private readonly logger: Logger;
+
     public constructor(
         public readonly logEnabled: boolean,
-        dev = true,
+        production = false,
     ) {
-        super(dev);
+        this.logger = createScopedLogger("Debug", production);
     }
 
-    public logData(level: LogLevel, contextName: string, data: string[][] | string): void {
+    public logData(level: DebugLogLevel, contextName: string, data: string[][] | string): void {
         if (!this.logEnabled) {
             return;
         }
@@ -22,6 +26,21 @@ export class DebugLogManager extends BaseLogger {
             messages.push(data);
         }
 
-        this.log([`${messages.join("\n")}\n`], level);
+        const message = `${messages.join("\n")}\n`;
+
+        switch (level) {
+            case "debug":
+                this.logger.debug(message);
+                break;
+            case "info":
+                this.logger.info(message);
+                break;
+            case "warn":
+                this.logger.warn(message);
+                break;
+            default:
+                this.logger.error(message);
+                break;
+        }
     }
 }

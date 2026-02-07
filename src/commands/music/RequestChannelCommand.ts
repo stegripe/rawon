@@ -237,11 +237,7 @@ export class RequestChannelCommand extends ContextCommand {
             if (!existingChannel) {
                 return localCtx.reply({
                     embeds: [
-                        createEmbed(
-                            "warn",
-                            __("commands.music.requestChannel.noChannelToRemove"),
-                            true,
-                        ),
+                        createEmbed("warn", __("commands.music.requestChannel.noChannelToRemove")),
                     ],
                 });
             }
