@@ -3,17 +3,19 @@ import process from "node:process";
 import { discordTokens, isMultiBot, isProd, shardsCount } from "./config/index.js";
 import { importURLToString } from "./utils/functions/importURLToString.js";
 import { CustomShardingManager } from "./utils/structures/CustomShardingManager.js";
+import { createScopedLogger } from "./utils/structures/createLogger.js";
 import { MultiBotLauncher } from "./utils/structures/MultiBotLauncher.js";
-import { RawonLogger } from "./utils/structures/RawonLogger.js";
 
-const log = new RawonLogger({ prod: isProd });
+const log = createScopedLogger("Main", isProd);
 
 process.on("unhandledRejection", (reason, _promise) => {
-    log.error("UNHANDLED_REJECTION:", reason instanceof Error ? (reason.stack ?? reason) : reason);
+    log.error(
+        `UNHANDLED_REJECTION: ${reason instanceof Error ? (reason.stack ?? reason) : reason}`,
+    );
 });
 
 process.on("uncaughtException", (error) => {
-    log.error("UNCAUGHT_EXCEPTION:", error instanceof Error ? (error.stack ?? error) : error);
+    log.error(`UNCAUGHT_EXCEPTION: ${error instanceof Error ? (error.stack ?? error) : error}`);
 });
 
 if (isMultiBot && discordTokens.length > 1) {
@@ -23,7 +25,7 @@ if (isMultiBot && discordTokens.length > 1) {
 
     const launcher = new MultiBotLauncher();
     await launcher.start().catch((error: unknown) => {
-        log.error("MULTIBOT_LAUNCHER_ERR: ", error);
+        log.error(`MULTIBOT_LAUNCHER_ERR: ${error}`);
         process.exit(1);
     });
 } else {
@@ -63,7 +65,7 @@ if (isMultiBot && discordTokens.length > 1) {
     });
 
     manager.on("shardError", (shard, error) => {
-        log.error(`[ShardManager] Shard #${shard.id} error:`, error);
+        log.error({ err: error }, `[ShardManager] Shard #${shard.id} error`);
     });
 
     manager.on("shardDeath", (shard, data) => {
@@ -84,7 +86,7 @@ if (isMultiBot && discordTokens.length > 1) {
     process.on("SIGTERM", shutdown);
 
     await manager.spawn().catch((error: unknown) => {
-        log.error("SHARD_SPAWN_ERR: ", error);
+        log.error(`SHARD_SPAWN_ERR: ${error}`);
         process.exit(1);
     });
 }

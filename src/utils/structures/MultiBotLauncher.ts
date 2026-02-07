@@ -1,11 +1,10 @@
 import process from "node:process";
 import { clientOptions, discordTokens, isMultiBot, isProd } from "../../config/index.js";
 import { Rawon } from "../../structures/Rawon.js";
+import { createScopedLogger } from "./createLogger.js";
 import { MultiBotManager } from "./MultiBotManager.js";
-import { NoStackError } from "./NoStackError.js";
-import { RawonLogger } from "./RawonLogger.js";
 
-const log = new RawonLogger({ prod: isProd });
+const log = createScopedLogger("MultiBot", isProd);
 
 export class MultiBotLauncher {
     private readonly clients: Rawon[] = [];
@@ -38,17 +37,13 @@ export class MultiBotLauncher {
 
         process
             .on("exit", (code) => log.info(`NodeJS process exited with code ${code}`))
-            .on("unhandledRejection", (reason) =>
-                log.error(
-                    "UNHANDLED_REJECTION:",
-                    ((reason as Error).stack?.length ?? 0)
-                        ? reason
-                        : new NoStackError(reason as string),
-                ),
-            )
-            .on("warning", (...args) => log.warn(...args))
+            .on("unhandledRejection", (reason) => {
+                const message = (reason as Error).stack ?? String(reason);
+                log.error(`UNHANDLED_REJECTION: ${message}`);
+            })
+            .on("warning", (warning) => log.warn(`NODE_WARNING: ${warning}`))
             .on("uncaughtException", (err) => {
-                log.error("UNCAUGHT_EXCEPTION:", err);
+                log.error(`UNCAUGHT_EXCEPTION: ${err.stack ?? err}`);
                 log.warn("Uncaught Exception detected, trying to restart...");
                 process.exit(1);
             });
@@ -74,11 +69,11 @@ export class MultiBotLauncher {
         });
 
         client.on("error", (error) => {
-            log.error(`[MultiBot] Bot #${tokenIndex} error:`, error);
+            log.error({ err: error }, `[MultiBot] Bot #${tokenIndex} error`);
         });
 
         client.on("warn", (warning) => {
-            log.warn(`[MultiBot] Bot #${tokenIndex} warning:`, warning);
+            log.warn(`[MultiBot] Bot #${tokenIndex} warning: ${warning}`);
         });
         await client.build(token);
         if (client.user) {
@@ -120,7 +115,7 @@ export class MultiBotLauncher {
                 const client = await this.createBotInstance(token, i, clientOptions);
                 this.clients.push(client);
             } catch (error: unknown) {
-                log.error(`[MultiBot] Error starting bot #${i}:`, error);
+                log.error(`[MultiBot] Error starting bot #${i}: ${error}`);
                 throw error;
             }
         }
@@ -140,7 +135,7 @@ export class MultiBotLauncher {
             try {
                 return await client.destroy();
             } catch (error) {
-                log.error(`[MultiBot] Error destroying client:`, error);
+                log.error(`[MultiBot] Error destroying client: ${error}`);
             }
         });
 

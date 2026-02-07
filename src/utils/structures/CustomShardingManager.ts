@@ -1,14 +1,14 @@
 import { EventEmitter } from "node:events";
 import { setTimeout } from "node:timers";
 import { CustomShard, type ShardOptions, type ShardStatus } from "./CustomShard.js";
-import { type RawonLogger } from "./RawonLogger.js";
+import { type Logger } from "./createLogger.js";
 
 export interface ShardingManagerOptions {
     file: string;
     totalShards: number | "auto";
     token: string;
     respawn?: boolean;
-    logger: RawonLogger;
+    logger: Logger;
 }
 
 export class CustomShardingManager extends EventEmitter {
@@ -17,7 +17,7 @@ export class CustomShardingManager extends EventEmitter {
     private readonly file: string;
     private readonly token: string;
     private readonly respawn: boolean;
-    private readonly logger: RawonLogger;
+    private readonly logger: Logger;
     private isSpawning = false;
 
     public constructor(options: ShardingManagerOptions) {
@@ -171,7 +171,7 @@ export class CustomShardingManager extends EventEmitter {
         try {
             await shard.spawn();
         } catch (error) {
-            this.logger.error(`[ShardingManager] Failed to spawn shard #${shardId}:`, error);
+            this.logger.error(`[ShardingManager] Failed to spawn shard #${shardId}: ${error}`);
             this.shards.delete(shardId);
             throw error;
         }
@@ -232,8 +232,7 @@ export class CustomShardingManager extends EventEmitter {
                             setTimeout(respawnNext, respawnDelay);
                         } catch (error) {
                             this.logger.error(
-                                `[ShardingManager] Failed to respawn shard #${shardId}:`,
-                                error,
+                                `[ShardingManager] Failed to respawn shard #${shardId}: ${error}`,
                             );
                             setTimeout(respawnNext, respawnDelay);
                         }
