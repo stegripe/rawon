@@ -55,7 +55,7 @@ export const clientOptions: ClientOptions & {
             }),
         },
     },
-    loadMessageCommandListeners: enablePrefix,
+    loadMessageCommandListeners: false,
     defaultPrefix: mainPrefix,
     baseUserDirectory: rootDir,
 };

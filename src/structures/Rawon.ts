@@ -258,7 +258,7 @@ export class Rawon extends SapphireClient {
                 instance: new PinoLogger({
                     name: "rawon",
                     timestamp: true,
-                    level: config.isDev ? "debug" : "info",
+                    level: config.isProd ? "info" : "debug",
                     formatters: {
                         bindings: () => ({ pid: `Rawon@${process.pid}` }),
                     },

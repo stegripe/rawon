@@ -2,7 +2,7 @@ import { type ChildProcess, fork } from "node:child_process";
 import { EventEmitter } from "node:events";
 import process from "node:process";
 import { clearTimeout, setTimeout } from "node:timers";
-import { type RawonLogger } from "./RawonLogger.js";
+import { type Logger } from "./createLogger.js";
 
 export interface ShardOptions {
     id: number;
@@ -10,7 +10,7 @@ export interface ShardOptions {
     token: string;
     totalShards: number;
     respawn?: boolean;
-    logger: RawonLogger;
+    logger: Logger;
 }
 
 export interface ShardStatus {
@@ -30,7 +30,7 @@ export class CustomShard extends EventEmitter {
     private readonly file: string;
     private readonly token: string;
     private readonly totalShards: number;
-    private readonly logger: RawonLogger;
+    private readonly logger: Logger;
     private respawnTimeout?: NodeJS.Timeout;
     private readonly maxRespawnAttempts = 5;
     private respawnAttempts = 0;
@@ -163,7 +163,7 @@ export class CustomShard extends EventEmitter {
             });
 
             this.process.on("error", (error) => {
-                this.logger.error(`[Shard #${this.id}] Process error:`, error);
+                this.logger.error({ err: error }, `[Shard #${this.id}] Process error`);
                 this.emit("error", error);
                 if (!this.ready) {
                     reject(error);
@@ -232,7 +232,7 @@ export class CustomShard extends EventEmitter {
             this.process.send({ ...message, shardId: this.id });
             return true;
         } catch (error) {
-            this.logger.error(`[Shard #${this.id}] Failed to send message:`, error);
+            this.logger.error(`[Shard #${this.id}] Failed to send message: ${error}`);
             return false;
         }
     }

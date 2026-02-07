@@ -137,7 +137,7 @@ export class HelpCommand extends ContextCommand {
                         ),
                     ],
                     embeds: [
-                        createEmbed("error", __("commands.general.help.noCommanSuggest"), true),
+                        createEmbed("error", __("commands.general.help.noCommandSuggest"), true),
                     ],
                 },
                 "editReply",
@@ -160,13 +160,14 @@ export class HelpCommand extends ContextCommand {
                 if (selection === undefined || !("customId" in selection.data)) {
                     return;
                 }
+                const disabledLabel = __("commands.general.help.disabledSelection");
                 const disabledMenu = new StringSelectMenuBuilder()
                     .setCustomId(selection.data.customId as string)
                     .setDisabled(true)
                     .addOptions({
-                        label: "Nothing to select here",
-                        description: "Nothing to select here",
-                        value: "Nothing to select here",
+                        label: disabledLabel,
+                        description: disabledLabel,
+                        value: disabledLabel,
                     });
                 await msg.edit({
                     components: [
@@ -200,8 +201,9 @@ export class HelpCommand extends ContextCommand {
                     name: __("commands.general.help.aliasesString"),
                     value:
                         Number(command?.meta.aliases?.length) > 0
-                            ? (command?.meta.aliases?.map((c) => `\`${c}\``).join(", ") ?? "None.")
-                            : "None.",
+                            ? (command?.meta.aliases?.map((c) => `\`${c}\``).join(", ") ??
+                              __("commands.general.help.noAliases"))
+                            : __("commands.general.help.noAliases"),
                     inline: false,
                 },
                 {

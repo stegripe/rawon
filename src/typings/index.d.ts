@@ -61,10 +61,6 @@ export type PaginationPayload = {
     author: string;
 };
 
-export type RawonLoggerOptions = {
-    prod: boolean;
-};
-
 export type SlashOption = {
     options?: ApplicationCommandOptionData[];
     type?: ApplicationCommandType;
