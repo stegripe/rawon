@@ -363,7 +363,8 @@
             "startPlaying": "Bắt đầu phát {song}",
             "stopPlaying": "Dừng phát {song}",
             "songRequeued": "Gặp sự cố khi phát {song}, đã thêm lại vào hàng đợi để thử lại.",
-            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Vui lòng thêm cookies mới bằng lệnh `{prefix}cookies add <number>` với file cookies.txt đính kèm, hoặc sử dụng `{prefix}cookies reset` để thử lại cookies hiện có."
+            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Vui lòng thêm cookies mới bằng lệnh `{prefix}cookies add <number>` với file cookies.txt đính kèm, hoặc sử dụng `{prefix}cookies reset` để thử lại cookies hiện có.",
+            "ageRestricted": "Không thể phát {song} vì nội dung bị giới hạn độ tuổi và yêu cầu đăng nhập."
         },
         "musicDecorator": {
             "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
