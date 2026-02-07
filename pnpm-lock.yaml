@@ -81,8 +81,8 @@ importers:
         specifier: 1.8.4
         version: 1.8.4
       zip-lib:
-        specifier: ^1.1.2
-        version: 1.1.2
+        specifier: ^1.2.1
+        version: 1.2.1
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.3.14
@@ -1511,9 +1511,9 @@ packages:
   youtubei@1.8.4:
     resolution: {integrity: sha512-32seNLM/xOHwcL5TF7SMf11K7jqL2P1yNk6HvtwGt1h7fyL1QtqCn3Mdb4V81TlEhRAzzDQivrACrJ5NuLB/YA==}
 
-  zip-lib@1.1.2:
-    resolution: {integrity: sha512-PdPYnjxRcbQ7UAhj6Cu8rggpHXFU/6Slhoy2vuA5E/52+i6aSr+9rWup6ll/Mr0mAxV9/YkRni9xGzVc/qh4rA==}
-    engines: {node: '>=18'}
+  zip-lib@1.2.1:
+    resolution: {integrity: sha512-7MT4fvAoEJPxB/TILqapSpZlJQk5gH29NzhU4ySWXRauXh290KnHK/QkOggL9jmN92H31fv+lkbFIaFKb78ySg==}
+    engines: {node: '>=20'}
 
 snapshots:
 
@@ -2880,7 +2880,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  zip-lib@1.1.2:
+  zip-lib@1.2.1:
     dependencies:
       yauzl: 3.2.0
       yazl: 3.3.1
