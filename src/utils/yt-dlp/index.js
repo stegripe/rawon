@@ -51,6 +51,7 @@ function json(str) {
 
 export function isBotDetectionError(errorMessage) {
     const lowerError = (errorMessage ?? "").toLowerCase();
+    if (lowerError.includes("age-restricted")) return false;
     return (
         lowerError.includes("sign in to confirm you're not a bot") ||
         lowerError.includes("sign in to confirm") ||
@@ -59,8 +60,16 @@ export function isBotDetectionError(errorMessage) {
         lowerError.includes("error 429") ||
         lowerError.includes("too many requests") ||
         (lowerError.includes("this video is unavailable") && lowerError.includes("429")) ||
-        lowerError.includes("login required") ||
-        (lowerError.includes("age-restricted") && lowerError.includes("sign in"))
+        lowerError.includes("login required")
+    );
+}
+
+export function isAgeRestrictedError(errorMessage) {
+    const lowerError = (errorMessage ?? "").toLowerCase();
+    if (lowerError.includes("age restricted content")) return true;
+    return (
+        lowerError.includes("age-restricted") &&
+        (lowerError.includes("sign in") || lowerError.includes("confirm"))
     );
 }
 
@@ -102,6 +111,10 @@ export default async function ytdl(url, options = {}, spawnOptions = {}, cookies
             .on("close", (code) => {
                 if (code !== 0 && stderrData && isBotDetectionError(stderrData)) {
                     reject(new Error(`Sign in to confirm you're not a bot. URL: ${url}`));
+                    return;
+                }
+                if (code !== 0 && stderrData && isAgeRestrictedError(stderrData)) {
+                    reject(new Error("Age restricted content."));
                     return;
                 }
                 if (code !== 0) {

@@ -17,6 +17,7 @@ import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import {
+    AgeRestrictedError,
     AllCookiesFailedError,
     CookieRotationNeededError,
     getStream,
@@ -348,6 +349,38 @@ export async function play(
                 void play(guild, nextS, wasIdle);
             } else {
                 void play(guild, newKey, wasIdle);
+            }
+            return;
+        }
+
+        if (error instanceof AgeRestrictedError) {
+            queue.client.logger.warn(
+                `[PLAY_HANDLER] ⚠️ Age restricted content detected for "${song.song.title}": ${(error as Error).message}`,
+            );
+
+            if (!isRequestChannel) {
+                await queue.textChannel.send({
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            `${__mf("utils.generalHandler.ageRestricted", {
+                                song: `**[${song.song.title}](${song.song.url})**`,
+                            })}`,
+                            true,
+                        ),
+                    ],
+                });
+            }
+            queue.songs.delete(song.key);
+            const nextS =
+                queue.shuffle && queue.loopMode !== "SONG"
+                    ? queue.songs.random()?.key
+                    : queue.loopMode === "SONG"
+                      ? song.key
+                      : (queue.songs.sortByIndex().first()?.key ?? "");
+
+            if (nextS && nextS.length > 0) {
+                void play(guild, nextS, wasIdle);
             }
             return;
         }

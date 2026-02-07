@@ -363,7 +363,8 @@
             "startPlaying": "開始播放{song}",
             "stopPlaying": "停止播放{song}",
             "songRequeued": "播放{song}時遇到問題，已重新添加到隊列中等待重試。",
-            "allCookiesFailed": "由於機器人偵測，所有cookie都已失敗！請使用 `{prefix}cookies add <number>` 指令附加cookies.txt檔案新增cookie，或使用 `{prefix}cookies reset` 重試現有cookie。"
+            "allCookiesFailed": "由於機器人偵測，所有cookie都已失敗！請使用 `{prefix}cookies add <number>` 指令附加cookies.txt檔案新增cookie，或使用 `{prefix}cookies reset` 重試現有cookie。",
+            "ageRestricted": "無法播放 {song}，因為它受到年齡限制並需要登入。"
         },
         "musicDecorator": {
             "noInVC": "抱歉，您需要在語音頻道中才能執行此操作。",

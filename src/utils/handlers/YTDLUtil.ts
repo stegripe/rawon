@@ -5,7 +5,7 @@ import got from "got";
 import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
-import ytdl, { exec, isBotDetectionError } from "../yt-dlp/index.js";
+import ytdl, { exec, isAgeRestrictedError, isBotDetectionError } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
 export class AllCookiesFailedError extends Error {
@@ -24,6 +24,13 @@ export class CookieRotationNeededError extends Error {
     ) {
         super(message);
         this.name = "CookieRotationNeededError";
+    }
+}
+
+export class AgeRestrictedError extends Error {
+    public constructor(url: string) {
+        super(`Age restricted content: ${url}`);
+        this.name = "AgeRestrictedError";
     }
 }
 
@@ -260,6 +267,10 @@ async function attemptStreamWithRetry(
                 stderrData += chunk.toString();
                 if (isBotDetectionError(stderrData) && !hasDetectedBotError) {
                     handleBotDetectionError();
+                } else if (isAgeRestrictedError(stderrData) && !hasHandledError) {
+                    hasHandledError = true;
+                    proc.kill("SIGKILL");
+                    reject(new AgeRestrictedError(url));
                 } else {
                     handleTransientError(stderrData);
                 }
@@ -299,6 +310,9 @@ async function attemptStreamWithRetry(
 
                 if (isBotDetectionError(stderrData)) {
                     handleBotDetectionError();
+                } else if (isAgeRestrictedError(stderrData)) {
+                    hasHandledError = true;
+                    reject(new AgeRestrictedError(url));
                 } else if (code !== 0) {
                     hasHandledError = true;
                     const errorMsg = stderrData.trim() || `Process exited with code ${code}`;
@@ -336,6 +350,12 @@ async function attemptStreamWithRetry(
 
                 if (isBotDetectionError(stderrData)) {
                     handleBotDetectionError();
+                    return;
+                }
+
+                if (isAgeRestrictedError(stderrData)) {
+                    hasHandledError = true;
+                    reject(new AgeRestrictedError(url));
                     return;
                 }
 
@@ -401,6 +421,10 @@ async function attemptGetInfoWithRetry(
     } catch (error) {
         const errorMessage = (error as Error)?.message ?? String(error ?? "");
 
+        if (isAgeRestrictedError(errorMessage)) {
+            throw new AgeRestrictedError(url);
+        }
+
         if (isBotDetectionError(errorMessage) && client) {
             client.logger.warn(
                 `[YTDLUtil] ⚠️ Bot detection in getInfo, rotating cookie (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
@@ -441,6 +465,9 @@ export function shouldRequeueOnError(error: Error): boolean {
         return error.shouldRequeue;
     }
     if (error instanceof AllCookiesFailedError) {
+        return false;
+    }
+    if (error instanceof AgeRestrictedError) {
         return false;
     }
     const errorMessage = error.message.toLowerCase();

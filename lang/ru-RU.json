@@ -363,7 +363,8 @@
             "startPlaying": "Играет: {song}",
             "stopPlaying": "Остановлено проигрывание: {song}",
             "songRequeued": "Возникла проблема с воспроизведением {song}, добавлено обратно в очередь для повторной попытки.",
-            "allCookiesFailed": "Все cookies неудачны из-за обнаружения бота! Пожалуйста, добавьте новые cookies командой `{prefix}cookies add <number>` с прикреплённым файлом cookies.txt, или используйте `{prefix}cookies reset` для повторной попытки существующих cookies."
+            "allCookiesFailed": "Все cookies неудачны из-за обнаружения бота! Пожалуйста, добавьте новые cookies командой `{prefix}cookies add <number>` с прикреплённым файлом cookies.txt, или используйте `{prefix}cookies reset` для повторной попытки существующих cookies.",
+            "ageRestricted": "Невозможно воспроизвести {song}, так как она имеет возрастное ограничение и требует входа в систему."
         },
         "musicDecorator": {
             "noInVC": "Извините, но для этого вам нужно быть в голосовом канале.",

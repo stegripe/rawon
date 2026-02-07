@@ -363,7 +363,8 @@
             "startPlaying": "Програвання почато: {song}",
             "stopPlaying": "Програвання зупинено: {song}",
             "songRequeued": "Виникла проблема з відтворенням {song}, додано назад до черги для повторної спроби.",
-            "allCookiesFailed": "Усі cookies невдалі через виявлення бота! Будь ласка, додайте нові cookies командою `{prefix}cookies add <number>` з прикріпленим файлом cookies.txt, або використайте `{prefix}cookies reset` для повторної спроби існуючих cookies."
+            "allCookiesFailed": "Усі cookies невдалі через виявлення бота! Будь ласка, додайте нові cookies командою `{prefix}cookies add <number>` з прикріпленим файлом cookies.txt, або використайте `{prefix}cookies reset` для повторної спроби існуючих cookies.",
+            "ageRestricted": "Не вдається відтворити {song}, оскільки вона має вікове обмеження та вимагає входу в систему."
         },
         "musicDecorator": {
             "noInVC": "Вибачте, але Ви повинні бути в каналі для використання цієї команди.",

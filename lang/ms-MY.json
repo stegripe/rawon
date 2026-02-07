@@ -403,7 +403,8 @@
             "startPlaying": "Mula memainkan {song}",
             "stopPlaying": "Berhenti memainkan {song}",
             "songRequeued": "Gagal memainkan {song}, dimasukkan semula ke giliran untuk cubaan lain.",
-            "allCookiesFailed": "Semua cookies gagal kerana dikesan sebagai bot! Sila tambah cookies baharu menggunakan arahan `{prefix}cookies add <number>` dengan lampiran fail cookies.txt, atau gunakan `{prefix}cookies reset` untuk mencuba semula cookies sedia ada."
+            "allCookiesFailed": "Semua cookies gagal kerana dikesan sebagai bot! Sila tambah cookies baharu menggunakan arahan `{prefix}cookies add <number>` dengan lampiran fail cookies.txt, atau gunakan `{prefix}cookies reset` untuk mencuba semula cookies sedia ada.",
+            "ageRestricted": "Tidak dapat memainkan {song} kerana ia disekat umur dan memerlukan log masuk."
         },
         "musicDecorator": {
             "noInVC": "Anda perlu berada di dalam saluran suara untuk melakukannya.",

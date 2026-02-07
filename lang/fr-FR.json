@@ -363,7 +363,8 @@
             "startPlaying": "Lancement de la lecture de {song}",
             "stopPlaying": "Arrêt de la lecture de {song}",
             "songRequeued": "Problème lors de la lecture de {song}, remis en file d'attente pour une nouvelle tentative.",
-            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Veuillez ajouter de nouveaux cookies en utilisant la commande `{prefix}cookies add <number>` avec un fichier cookies.txt en pièce jointe, ou utilisez `{prefix}cookies reset` pour réessayer les cookies existants."
+            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Veuillez ajouter de nouveaux cookies en utilisant la commande `{prefix}cookies add <number>` avec un fichier cookies.txt en pièce jointe, ou utilisez `{prefix}cookies reset` pour réessayer les cookies existants.",
+            "ageRestricted": "Impossible de lire {song} car elle est soumise à une limite d'âge et nécessite une connexion."
         },
         "musicDecorator": {
             "noInVC": "Désolé, mais vous devez être dans un salon vocal pour faire cela.",

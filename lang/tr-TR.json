@@ -363,7 +363,8 @@
             "startPlaying": "{song} çalınmaya başladı.",
             "stopPlaying": "{song} durduruldu.",
             "songRequeued": "{song} çalınırken sorun oluştu, başka bir deneme için kuyruğa yeniden eklendi.",
-            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! Lütfen `{prefix}cookies add <number>` komutu ile cookies.txt dosyası ekleyerek yeni çerezler ekleyin veya mevcut çerezleri yeniden denemek için `{prefix}cookies reset` kullanın."
+            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! Lütfen `{prefix}cookies add <number>` komutu ile cookies.txt dosyası ekleyerek yeni çerezler ekleyin veya mevcut çerezleri yeniden denemek için `{prefix}cookies reset` kullanın.",
+            "ageRestricted": "{song} yaş kısıtlamalı olduğu ve giriş yapmayı gerektirdiği için çalınamıyor."
         },
         "musicDecorator": {
             "noInVC": "Üzgünüm ama bunu yapmak için bir ses kanalında olmanız gerekiyor.",
