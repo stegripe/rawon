@@ -41,7 +41,7 @@ import { normalizeTime } from "../../utils/functions/normalizeTime.js";
         return builder
             .setName(opts.name ?? "nowplaying")
             .setDescription(
-                opts.description ?? "Shows the currently playing song.",
+                opts.description ?? "Show the media player status.",
             ) as SlashCommandBuilder;
     },
 })

@@ -209,7 +209,7 @@
                 "noPositions": "Kasih posisi lagu yang mau dihapus dong.",
                 "slashPositionsDescription": "Posisi lagu yang mau dihapus (pisahin pake koma atau spasi)",
                 "songSkip": "Lagu yang lagi diputar ikut kehapus, skip lagu deh.",
-                "songsRemoved": "{removed} lagu udah dihapus dari antrian\n\n",
+                "songsRemoved": "{removed} lagu udah dihapus dari antrian.",
                 "usage": "{prefix}remove <posisi>"
             },
             "repeat": {
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "Gak bisa loncat ke lagu yang lagi diputar.",
                 "description": "Loncat ke posisi tertentu di antrian",
+                "invalidPosition": "Kasih nomor posisi yang bener dong.",
                 "noPermission": "Kamu gak bisa pake command ini.",
                 "noSongPosition": "Gak bisa nemuin lagu di posisi itu.",
                 "skipMessage": "Loncat ke lagu {song}",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Sori, tapi interaction ini cuma buat <@{user}> sama staff server.",
             "message2": "Sori, tapi interaction ini cuma buat <@{user}>",
-            "devOnly": "Command buat developer aja."
+            "devOnly": "Command buat developer aja.",
+            "lyricsCommandNotFound": "Command lyrics gak ketemu."
         },
         "createMessage": "Halo {author}, prefix-ku {prefix}",
         "cmdLoading": "Loading...",
@@ -357,7 +359,7 @@
         "generalHandler": {
             "errorJoining": "Error pas masuk voice channel nih, soalnya: {message}",
             "errorPlaying": "Ada error pas mau muter lagu, soalnya: {message}",
-            "handleVideoInitial": "{length} lagu udah ditambahin ke antrian\n\n",
+            "handleVideoInitial": "{length} lagu udah ditambahin ke antrian.",
             "leftVC": "Keluar dari voice channel soalnya udah lama gak ada aktivitas.",
             "queueEnded": "Antriannya udah abis, pake {usage} buat muter lagu lagi.",
             "startPlaying": "Mulai muter {song}",

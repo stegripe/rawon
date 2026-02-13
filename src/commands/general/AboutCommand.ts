@@ -35,7 +35,7 @@ const pkg = JSON.parse(
         return builder
             .setName(opts.name ?? "about")
             .setDescription(
-                opts.description ?? "Shows information about the bot.",
+                opts.description ?? "Show the bot's information.",
             ) as SlashCommandBuilder;
     },
 })

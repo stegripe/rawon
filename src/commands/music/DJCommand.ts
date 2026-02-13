@@ -26,7 +26,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "dj")
-            .setDescription(opts.description ?? "Configure DJ role settings.")
+            .setDescription(opts.description ?? "Change DJ feature settings.")
             .addSubcommand((sub) =>
                 sub
                     .setName("role")

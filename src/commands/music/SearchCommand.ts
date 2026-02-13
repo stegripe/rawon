@@ -43,7 +43,7 @@ import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "search")
-            .setDescription(opts.description ?? i18n.__("commands.music.search.slashDescription"))
+            .setDescription(opts.description ?? i18n.__("commands.music.search.description"))
             .addStringOption((opt) =>
                 opt
                     .setName("query")

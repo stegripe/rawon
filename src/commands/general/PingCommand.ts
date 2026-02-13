@@ -27,7 +27,7 @@ import { i18n__mf } from "../../utils/functions/i18n.js";
         return builder
             .setName(opts.name ?? "ping")
             .setDescription(
-                opts.description ?? "Shows current ping of the bot.",
+                opts.description ?? "Show the current ping of the bot.",
             ) as SlashCommandBuilder;
     },
 })
@@ -53,17 +53,17 @@ export class PingCommand extends ContextCommand {
             .addFields(
                 {
                     name: "📶 **|** API",
-                    value: `**\`${latency}\`** ms`,
+                    value: `\`${latency}\` ms`,
                     inline: true,
                 },
                 {
                     name: "🌐 **|** WebSocket",
-                    value: `**\`${wsLatency}\`** ms`,
+                    value: `\`${wsLatency}\` ms`,
                     inline: true,
                 },
                 {
                     name: "🔊 **|** Voice",
-                    value: `**\`${vcLatency}\`** ms`,
+                    value: `\`${vcLatency}\` ms`,
                     inline: true,
                 },
             )
@@ -82,7 +82,7 @@ export class PingCommand extends ContextCommand {
 
         await msg
             .edit({ content: " ", embeds: [embed] })
-            .catch((error: unknown) => this.container.logger.error(error, "PROMISE_ERR"));
+            .catch((error: unknown) => this.container.logger.error("PROMISE_ERR:", error));
     }
 
     private static searchHex(ms: number | string): ColorResolvable {

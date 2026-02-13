@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "GELİŞTİRİCİ",
             "eval": {
-                "description": "Bot üzerinde bir kod yürüt",
+                "description": "JavaScript kodu yürüt",
                 "errorString": "Hata",
                 "noCode": "Herhangi bir kod girişi sağlanmadı",
                 "inputString": "Giriş",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "Güncel müziğe atlayamazsınız.",
                 "description": "Kuyrukta belirli bir konuma atlama",
+                "invalidPosition": "Lütfen geçerli bir konum numarası girin.",
                 "noPermission": "Bu komutu kullanmak için izniniz yok.",
                 "noSongPosition": "Bu pozisyonda bir şarkı bulamadım.",
                 "skipMessage": "{song}'a atlandı",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> ve sunucu moderatörleri için kullanılabilir.",
             "message2": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> için kullanılabilir.",
-            "devOnly": "Sadece geliştiricilere özel komut."
+            "devOnly": "Sadece geliştiricilere özel komut.",
+            "lyricsCommandNotFound": "Şarkı sözleri komutu bulunamadı."
         },
         "createMessage": "Merhaba {author}, benim ön ekim: {prefix}",
         "cmdLoading": "Yükleniyor...",

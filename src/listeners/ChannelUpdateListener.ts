@@ -79,7 +79,7 @@ export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate>
                     this.container.logger.info(
                         `${
                             client.shard ? `[Shard #${client.shard.ids[0]}]` : ""
-                        } Unable to re-configure network on ${
+                        } Unable to re-configure networking on ${
                             newChannel.guild.name
                         } voice channel, the queue was deleted.`,
                     );

@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "DESARROLLADOR",
             "eval": {
-                "description": "Evaluar al bot",
+                "description": "Evaluar código JavaScript",
                 "errorString": "Error",
                 "noCode": "No se ingresó código.",
                 "inputString": "Entrada",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "No puedes saltar la canción actual.",
                 "description": "Salta a una posición específica de la cola",
+                "invalidPosition": "Por favor, proporciona un número de posición válido.",
                 "noPermission": "No tienes permiso para usar este comando.",
                 "noSongPosition": "No se pudo encontrar la canción en esta posición.",
                 "skipMessage": "Se ha saltado a {song}",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Lo siento, pero esta interacción es solo para <@{user}> y el staff del servidor.",
             "message2": "Lo siento, pero esta interacción es solo para <@{user}>",
-            "devOnly": "Comando solo para desarrolladores."
+            "devOnly": "Comando solo para desarrolladores.",
+            "lyricsCommandNotFound": "Comando de letras no encontrado."
         },
         "createMessage": "Hola {author}, mi prefix es {prefix}",
         "cmdLoading": "Cargando...",
@@ -357,7 +359,7 @@
         "generalHandler": {
             "errorJoining": "Error al unirse al canal de voz, razón: {message}",
             "errorPlaying": "Ocurrió un error al tratar de reproducir música, razón: ${message}",
-            "handleVideoInitial": "Se han añadido {length} canciones a la cola\n\n",
+            "handleVideoInitial": "Se han añadido {length} canciones a la cola.",
             "leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
             "queueEnded": "La cola ha terminado, usa {usage} para reproducir más música.",
             "startPlaying": "Se empezó a reproducir {song}",

@@ -38,7 +38,7 @@ import { type SongManager } from "../../utils/structures/SongManager.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "remove")
-            .setDescription(opts.description ?? "Remove songs from the queue.")
+            .setDescription(opts.description ?? "Remove song(s) from the queue.")
             .addStringOption((opt) =>
                 opt
                     .setName("positions")

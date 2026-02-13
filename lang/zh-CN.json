@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "您不能跳到当前音乐。",
                 "description": "跳到队列中的特定位置",
+                "invalidPosition": "请提供有效的位置编号。",
                 "noPermission": "你无权使用此指令。",
                 "noSongPosition": "无法在该位置找到歌曲。",
                 "skipMessage": "已略过到 {song}",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "抱歉，该互动仅限于 <@{user}> 和伺服器权限者。",
             "message2": "抱歉，该互动仅限于 <@{user}>",
-            "devOnly": "仅限开发者的命令。"
+            "devOnly": "仅限开发者的命令。",
+            "lyricsCommandNotFound": "找不到歌词命令。"
         },
         "createMessage": "你好 {author}, 我的前缀是 {prefix}",
         "cmdLoading": "加载中...",

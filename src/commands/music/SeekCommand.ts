@@ -32,7 +32,7 @@ import { checkQuery, play } from "../../utils/handlers/GeneralUtil.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "seek")
-            .setDescription(opts.description ?? "Seek to a position in the song.")
+            .setDescription(opts.description ?? "Seek to a specific time in the current song.")
             .addStringOption((opt) =>
                 opt
                     .setName("time")

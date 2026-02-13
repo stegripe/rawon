@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "開発者向け",
             "eval": {
-                "description": "Botを評価",
+                "description": "JavaScriptコードを実行",
                 "errorString": "エラー",
                 "noCode": "コードが渡されませんでした。",
                 "inputString": "インプット",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "現在の曲をスキップすることはできません。",
                 "description": "キューの特定のポジションまでスキップ",
+                "invalidPosition": "有効な位置番号を指定してください。",
                 "noPermission": "あなたに権限がありません。",
                 "noSongPosition": "そのポジションに曲がありません。",
                 "skipMessage": "{song}にスキップ",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "そのインタラクションは<@{user}>とサーバースタッフのためのものです。",
             "message2": "そのインタラクションは<@{user}>のためのものです。",
-            "devOnly": "開発者専用コマンド。"
+            "devOnly": "開発者専用コマンド。",
+            "lyricsCommandNotFound": "歌詞コマンドが見つかりません。"
         },
         "createMessage": "こんにちは、{author}、私のプレフィックスは{prefix}です。",
         "cmdLoading": "起動中...",

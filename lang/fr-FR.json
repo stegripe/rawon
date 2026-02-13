@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "DÉVELOPPEUR",
             "eval": {
-                "description": "Évaluer au bot",
+                "description": "Évaluer du code JavaScript",
                 "errorString": "Erreur",
                 "noCode": "Aucun code n'a été fourni.",
                 "inputString": "Entrée",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "Vous ne pouvez pas passer à la musique actuelle.",
                 "description": "Passer à une position spécifique dans la file d'attente",
+                "invalidPosition": "Veuillez fournir un numéro de position valide.",
                 "noPermission": "Vous n'avez pas à utiliser cette commande.",
                 "noSongPosition": "Impossible de trouver une chanson dans cette position.",
                 "skipMessage": "Passé à {song}",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Désolé, mais cette interaction est uniquement pour <@{user}> et le staff du serveur.",
             "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>",
-            "devOnly": "Commande réservée aux développeurs."
+            "devOnly": "Commande réservée aux développeurs.",
+            "lyricsCommandNotFound": "Commande de paroles introuvable."
         },
         "createMessage": "Salut {author}, mon préfixe est {prefix}",
         "cmdLoading": "Chargement en cours...",

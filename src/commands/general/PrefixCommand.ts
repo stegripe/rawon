@@ -26,7 +26,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "prefix")
-            .setDescription(opts.description ?? "Change the bot prefix for this server.")
+            .setDescription(opts.description ?? "Change the command prefix for this server.")
             .addSubcommand((sub) =>
                 sub
                     .setName("set")

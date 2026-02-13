@@ -130,8 +130,6 @@ Just use the `!cookies` command - no additional configuration needed!
 3. Don't log out from the platform in that browser
 4. Keep the browser profile intact (don't clear cookies)
 
-In practice, cookies can last **months or even years** if you follow these tips.
-
 ### Troubleshooting
 
 **Still getting "Sign in to confirm you're not a bot" errors?**
@@ -283,8 +281,6 @@ Langsung pakai command `!cookies` - tidak perlu konfigurasi tambahan!
 2. Jangan gunakan akun tumbal untuk hal lain
 3. Jangan logout dari platform di browser tersebut
 4. Jaga profile browser tetap utuh (jangan hapus cookies)
-
-Dalam praktiknya, cookies bisa bertahan **berbulan-bulan bahkan bertahun-tahun** jika kamu mengikuti tips ini.
 
 ### Troubleshooting / Pemecahan Masalah
 

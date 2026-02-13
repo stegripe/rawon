@@ -36,7 +36,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "volume")
-            .setDescription(opts.description ?? "Set the volume.")
+            .setDescription(opts.description ?? "Change the media player volume.")
             .addNumberOption((opt) =>
                 opt
                     .setName("volume")
