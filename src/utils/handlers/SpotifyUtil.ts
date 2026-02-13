@@ -12,7 +12,7 @@ import {
 
 export class SpotifyUtil {
     public spotifyRegex =
-        /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(?<type>track|playlist|album)[/:](?<id>[\dA-Za-z]+)/u;
+        /(?:https:\/\/open\.spotify\.com\/|spotify:)(?:.+)?(?<type>track|playlist|album|artist)[/:](?<id>[\dA-Za-z]+)/u;
     public baseURI = "https://api.spotify.com/v1";
     private token!: string;
 
@@ -99,6 +99,8 @@ export class SpotifyUtil {
                 return this.getPlaylist(id);
             case "album":
                 return this.getAlbum(id);
+            case "artist":
+                return this.getArtistTopTracks(id);
             default:
                 break;
         }
@@ -117,6 +119,8 @@ export class SpotifyUtil {
                 return this.getPlaylistWithMetadata(id);
             case "album":
                 return this.getAlbumWithMetadata(id);
+            case "artist":
+                return this.getArtistTopTracksWithMetadata(id);
             default:
                 break;
         }
@@ -205,7 +209,9 @@ export class SpotifyUtil {
             next = nextPlaylistResponse.next;
         }
 
-        return allItems.map((item) => ({ track: item.track }));
+        return allItems
+            .filter((item) => item.track !== null && item.track !== undefined)
+            .map((item) => ({ track: item.track }));
     }
 
     public async getPlaylistWithMetadata(id: string): Promise<SpotifyResolveResult> {
@@ -239,7 +245,9 @@ export class SpotifyUtil {
         };
 
         return {
-            tracks: allItems.map((item) => ({ track: item.track })),
+            tracks: allItems
+                .filter((item) => item.track !== null && item.track !== undefined)
+                .map((item) => ({ track: item.track })),
             metadata,
         };
     }
@@ -252,5 +260,37 @@ export class SpotifyUtil {
                 },
             })
             .json<SpotifyTrack>();
+    }
+
+    public async getArtistTopTracks(id: string): Promise<{ track: SpotifyTrack }[]> {
+        const artistResponse = await this.client.request
+            .get(`${this.baseURI}/artists/${id}/top-tracks`, {
+                headers: {
+                    Authorization: this.token,
+                },
+            })
+            .json<SpotifyArtist>();
+
+        return artistResponse.tracks.filter(Boolean).map((track) => ({ track }));
+    }
+
+    public async getArtistTopTracksWithMetadata(id: string): Promise<SpotifyResolveResult> {
+        const artistResponse = await this.client.request
+            .get(`${this.baseURI}/artists/${id}/top-tracks`, {
+                headers: {
+                    Authorization: this.token,
+                },
+            })
+            .json<SpotifyArtist>();
+
+        const metadata: PlaylistMetadata = {
+            title: `${artistResponse.name} — Top Tracks`,
+            url: `https://open.spotify.com/artist/${id}`,
+        };
+
+        return {
+            tracks: artistResponse.tracks.filter(Boolean).map((track) => ({ track })),
+            metadata,
+        };
     }
 }

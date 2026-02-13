@@ -15,7 +15,13 @@ import {
 import i18n from "../../config/index.js";
 import { CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
-import { haveQueue, inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
+import {
+    haveQueue,
+    inVC,
+    sameVC,
+    useRequestChannel,
+    validVC,
+} from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -50,6 +56,7 @@ export class VolumeCommand extends ContextCommand {
         return ctx.client as Rawon;
     }
 
+    @useRequestChannel
     @inVC
     @validVC
     @haveQueue
