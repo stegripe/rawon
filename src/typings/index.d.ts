@@ -27,7 +27,7 @@ export type MessageInteractionAction = "editReply" | "followUp" | "reply";
 
 export type QueryData = {
     sourceType?: "query" | "soundcloud" | "spotify" | "unknown" | "youtube";
-    type?: "playlist" | "track" | "unknown";
+    type?: "artist" | "playlist" | "track" | "unknown";
     isURL: boolean;
 };
 

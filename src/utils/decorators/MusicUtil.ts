@@ -1,4 +1,5 @@
-import { type GuildMember, PermissionFlagsBits } from "discord.js";
+import { setTimeout } from "node:timers";
+import { type CommandInteraction, type GuildMember, PermissionFlagsBits } from "discord.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
@@ -131,6 +132,22 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
     }
 
     if (ctx.channel?.id === requestChannel.id && ctx.isCommandInteraction()) {
+        // Schedule auto-deletion of slash command reply to keep request channel clean
+        const interaction = localCtx.context as CommandInteraction;
+        setTimeout(() => {
+            void interaction
+                .fetchReply()
+                .then((reply) => {
+                    if (reply.deletable) {
+                        void reply.delete().catch(() => {
+                            // Ignore deletion errors
+                        });
+                    }
+                })
+                .catch(() => {
+                    // Ignore fetch errors
+                });
+        }, 60_000);
         return true;
     }
 

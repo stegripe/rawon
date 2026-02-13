@@ -311,6 +311,7 @@ export async function searchTrack(
                         break;
                     }
 
+                    case "artist":
                     case "playlist": {
                         const spotifyResult = (await client.spotify.resolveTracksWithMetadata(
                             url.toString(),
@@ -318,26 +319,33 @@ export async function searchTrack(
                         const songs = spotifyResult.tracks;
                         const trackResults = await Promise.all(
                             songs.map(async (x): Promise<Song | null> => {
-                                let response = await youtube.search(
-                                    x.track.external_ids?.isrc ??
-                                        `${x.track.artists.map((y) => y.name).join(", ")}${x.track.name}`,
-                                    { type: "video" },
-                                );
-                                if (response.items.length === 0) {
-                                    response = await youtube.search(
-                                        `${x.track.artists.map((y) => y.name).join(", ")}${x.track.name}`,
+                                if (!x.track) {
+                                    return null;
+                                }
+                                try {
+                                    let response = await youtube.search(
+                                        x.track.external_ids?.isrc ??
+                                            `${x.track.artists.map((y) => y.name).join(", ")} - ${x.track.name}`,
                                         { type: "video" },
                                     );
-                                }
-                                const track = sortVideos(x.track, response);
-                                if (track.length > 0) {
-                                    return {
-                                        duration: track[0].duration ?? 0,
-                                        id: track[0].id,
-                                        thumbnail: getYouTubeThumbnail(track[0].id),
-                                        title: track[0].title,
-                                        url: `https://youtube.com/watch?v=${track[0].id}`,
-                                    };
+                                    if (response.items.length === 0) {
+                                        response = await youtube.search(
+                                            `${x.track.artists.map((y) => y.name).join(", ")} - ${x.track.name}`,
+                                            { type: "video" },
+                                        );
+                                    }
+                                    const track = sortVideos(x.track, response);
+                                    if (track.length > 0) {
+                                        return {
+                                            duration: track[0].duration ?? 0,
+                                            id: track[0].id,
+                                            thumbnail: getYouTubeThumbnail(track[0].id),
+                                            title: track[0].title,
+                                            url: `https://youtube.com/watch?v=${track[0].id}`,
+                                        };
+                                    }
+                                } catch {
+                                    // Skip tracks that fail to resolve
                                 }
                                 return null;
                             }),

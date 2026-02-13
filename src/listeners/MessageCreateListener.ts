@@ -489,7 +489,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             `[MultiBot] ${client.user?.tag} PROCESSING voice channel ${voiceChannel.id} (${voiceChannel.name}) for request from ${message.author.tag}`,
         );
 
-        const songs = await searchTrack(client, query).catch(() => null);
+        const songs = await searchTrack(client, query).catch((error: unknown) => {
+            client.logger.error("[RequestChannel] searchTrack failed:", error);
+            return null;
+        });
         if (!songs || songs.items.length === 0) {
             this.sendTemporaryReply(
                 message,

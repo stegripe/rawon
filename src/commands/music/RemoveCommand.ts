@@ -14,7 +14,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
-import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
+import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -52,6 +52,7 @@ export class RemoveCommand extends ContextCommand {
         return ctx.client as Rawon;
     }
 
+    @useRequestChannel
     @inVC
     @haveQueue
     @sameVC
