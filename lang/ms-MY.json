@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "DEVELOPER",
             "eval": {
-                "description": "Menilai dan menjalankan kod pada bot",
+                "description": "Menilai dan menjalankan kod JavaScript",
                 "errorString": "Ralat",
                 "noCode": "Kod?",
                 "inputString": "Input",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "Anda tidak boleh melangkau ke lagu yang sedang dimainkan.",
                 "description": "Langkau ke kedudukan tertentu dalam giliran",
+                "invalidPosition": "Sila nyatakan nombor kedudukan yang sah.",
                 "noPermission": "Anda tidak mempunyai kebenaran untuk menggunakan arahan ini.",
                 "noSongPosition": "Gagal mencari lagu di kedudukan tersebut.",
                 "skipMessage": "Melangkau ke {song}",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Tindakan ini khas untuk <@{user}> dan staf server.",
             "message2": "Tindakan ini khas untuk <@{user}>",
-            "devOnly": "Arahan khusus untuk pembangun."
+            "devOnly": "Arahan khusus untuk pembangun.",
+            "lyricsCommandNotFound": "Arahan lirik tidak dijumpai."
         },
         "createMessage": "Hai {author}, prefix saya ialah {prefix}",
         "cmdLoading": "Memuat...",

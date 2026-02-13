@@ -34,7 +34,9 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "help")
-            .setDescription(opts.description ?? "Shows help for commands.")
+            .setDescription(
+                opts.description ?? "Show the command list or information for a specific command.",
+            )
             .addStringOption((opt) =>
                 opt
                     .setName("command")
@@ -142,6 +144,7 @@ export class HelpCommand extends ContextCommand {
                 },
                 "editReply",
             );
+            return;
         }
 
         if (localCtx.isStringSelectMenu()) {

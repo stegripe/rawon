@@ -15,10 +15,10 @@ export function createEmbed(type: HexColorsType, message?: string, emoji = false
     if ((message?.length ?? 0) > 0) {
         embed.setDescription(message ?? null);
     }
-    if (type === "error" && emoji) {
+    if (type === "error" && emoji && message) {
         embed.setDescription(`${noEmoji} **|** ${message}`);
     }
-    if (type === "success" && emoji) {
+    if (type === "success" && emoji && message) {
         embed.setDescription(`${yesEmoji} **|** ${message}`);
     }
     return embed;

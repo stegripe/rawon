@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "현재 음악으로 건너뛸 수 없어요.",
                 "description": "대기열의 특정 위치로 건너뛰기",
+                "invalidPosition": "유효한 위치 번호를 입력해주세요.",
                 "noPermission": "이 명령어를 사용할 권한이 없어요.",
                 "noSongPosition": "해당 위치에서 노래를 찾을 수 없어요.",
                 "skipMessage": "{song}(으)로 건너뛰었어요",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "죄송해요, 이 상호작용은 <@{user}>와 서버 스태프만 사용할 수 있어요.",
             "message2": "죄송해요, 이 상호작용은 <@{user}>만 사용할 수 있어요",
-            "devOnly": "개발자 전용 명령어."
+            "devOnly": "개발자 전용 명령어.",
+            "lyricsCommandNotFound": "가사 명령어를 찾을 수 없어요."
         },
         "createMessage": "안녕하세요 {author}님, 제 접두사는 {prefix}예요",
         "cmdLoading": "로딩 중...",
