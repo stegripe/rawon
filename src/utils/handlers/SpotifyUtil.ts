@@ -275,16 +275,25 @@ export class SpotifyUtil {
     }
 
     public async getArtistTopTracksWithMetadata(id: string): Promise<SpotifyResolveResult> {
-        const artistResponse = await this.client.request
-            .get(`${this.baseURI}/artists/${id}/top-tracks`, {
-                headers: {
-                    Authorization: this.token,
-                },
-            })
-            .json<SpotifyArtist>();
+        const [artistInfo, artistResponse] = await Promise.all([
+            this.client.request
+                .get(`${this.baseURI}/artists/${id}`, {
+                    headers: {
+                        Authorization: this.token,
+                    },
+                })
+                .json<{ name: string }>(),
+            this.client.request
+                .get(`${this.baseURI}/artists/${id}/top-tracks`, {
+                    headers: {
+                        Authorization: this.token,
+                    },
+                })
+                .json<SpotifyArtist>(),
+        ]);
 
         const metadata: PlaylistMetadata = {
-            title: `${artistResponse.name} — Top Tracks`,
+            title: `${artistInfo.name} — Top Tracks`,
             url: `https://open.spotify.com/artist/${id}`,
         };
 
