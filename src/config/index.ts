@@ -35,7 +35,7 @@ export const clientOptions: ClientOptions & {
     defaultPrefix: string;
     baseUserDirectory: string;
 } = {
-    allowedMentions: { parse: ["users"], repliedUser: true },
+    allowedMentions: { parse: ["users"], repliedUser: false },
     intents,
     makeCache: Options.cacheWithLimits({
         MessageManager: { maxSize: Infinity },

@@ -33,7 +33,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "requestchannel")
-            .setDescription(opts.description ?? "Configure the music request channel.")
+            .setDescription(opts.description ?? "Set up a request channel for music.")
             .addSubcommand((sub) =>
                 sub
                     .setName("set")

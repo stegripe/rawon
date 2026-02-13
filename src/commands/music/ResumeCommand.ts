@@ -25,7 +25,7 @@ import { i18n__ } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "resume")
-            .setDescription(opts.description ?? "Resume the paused song.") as SlashCommandBuilder;
+            .setDescription(opts.description ?? "Resume the music player.") as SlashCommandBuilder;
     },
 })
 export class ResumeCommand extends ContextCommand {

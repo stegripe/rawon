@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "DEVELOPER",
             "eval": {
-                "description": "Evaluate to the bot",
+                "description": "Evaluate JavaScript code",
                 "errorString": "Error",
                 "noCode": "No code was provided.",
                 "inputString": "Input",
@@ -20,7 +20,7 @@
                 "slashResetDescription": "Reset failed cookie status",
                 "slashNumberDescription": "Cookie number (starting from `1`)",
                 "slashRemoveTargetDescription": "Cookie number to remove or `all`",
-                "invalidNumber": "Please provide a valid cookie number (starting from `1`)",
+                "invalidNumber": "Please provide a valid cookie number (starting from `1`).",
                 "noAttachment": "Please attach a cookies.txt file to your message.",
                 "invalidFileType": "Please attach a .txt file.",
                 "invalidCookiesFile": "The file doesn't appear to be a valid cookies file.",
@@ -31,7 +31,7 @@
                 "invalidRemoveTarget": "Please provide a valid cookie number or `all`.",
                 "removeSuccess": "{cookie} has been removed successfully.",
                 "removeAllSuccess": "Removed {count} cookie(s) successfully.",
-                "removeNotFound": "{cookie} was not found.",
+                "removeNotFound": "{cookie} wasn't found.",
                 "noCookies": "No cookies have been added yet. Use {usage} with a cookies.txt attachment.",
                 "listTitle": "Cookies Manager",
                 "statusActive": "Active (in use)",
@@ -47,12 +47,12 @@
                 "replaceSuccess": "{cookie} has been replaced successfully! It will take effect immediately.",
                 "slashViewDescription": "View/download a cookie file",
                 "viewSuccess": "Here is {cookie}:",
-                "viewNotFound": "{cookie} was not found.",
+                "viewNotFound": "{cookie} wasn't found.",
                 "viewStatusTitle": "Status",
                 "viewSizeTitle": "Size",
                 "slashUseDescription": "Manually switch to a specific cookie",
                 "useSuccess": "Successfully switched to {cookie}. It will be used for the next request.",
-                "useNotFound": "{cookie} was not found.",
+                "useNotFound": "{cookie} wasn't found.",
                 "useFailed": "{cookie} is currently marked as failed. Use `cookies reset` first to retry failed cookies."
             }
         },
@@ -80,13 +80,13 @@
                 "commandDetailTitle": "{username} - Information about {command} command",
                 "commandSelectionString": "Please select the command",
                 "commandUsageFooter": "<> = required | [] = optional {devOnly}",
-                "description": "Shows the command list or information for a specific command",
+                "description": "Show the command list or information for a specific command",
                 "descriptionString": "Description",
                 "disabledSelection": "Nothing to select here",
                 "footerString": "{prefix}help <command> to get more information on a specific command",
                 "nameString": "Name",
                 "noAliases": "None.",
-                "noCommandSuggest": "Couldn't find matching command name. Did you mean this?",
+                "noCommandSuggest": "Couldn't find a matching command name. Did you mean this?",
                 "noCommand": "Couldn't find any matching command name.",
                 "slashDescription": "Command name to view specific information about the command",
                 "usage": "{prefix}help [command]",
@@ -98,7 +98,7 @@
                 "inviteTitle": "{bot} - Invite Link"
             },
             "ping": {
-                "description": "Shows the current ping of the bot",
+                "description": "Show the current ping of the bot",
                 "footerString": "Latency of: {user}"
             },
             "language": {
@@ -123,7 +123,7 @@
                 "noPermission": "You need the **Manage Server** permission to use this command.",
                 "prefixReset": "Prefix has been reset to: {prefix}",
                 "prefixSet": "Prefix has been set to: {prefix}",
-                "prefixTooLong": "Prefix cannot be longer than `10` characters.",
+                "prefixTooLong": "Prefix can't be longer than `10` characters.",
                 "slashPrefixOption": "The new prefix (max `10` characters)",
                 "slashResetDescription": "Reset to default prefix",
                 "slashSetDescription": "Set a custom prefix for this server",
@@ -171,10 +171,10 @@
                 "specifyFilter": "Please specify the song filter"
             },
             "lyrics": {
-                "apiError": "The API could not find the song {song}, because: {message}",
-                "description": "Show the lyrics from the song",
+                "apiError": "The API couldn't find the song {song}, because: {message}",
+                "description": "Show the lyrics of the song",
                 "noLyrics": "No lyrics found for {song}.",
-                "noQuery": "There is nothing playing, or no arguments are provided.",
+                "noQuery": "There's nothing playing, or no arguments are provided.",
                 "searchingLyrics": "Searching for lyrics...",
                 "slashDescription": "Song to search",
                 "usage": "{prefix}lyrics [song]"
@@ -223,7 +223,7 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "The music player is not paused.",
+                "alreadyResume": "The music player isn't paused.",
                 "description": "Resume the music player",
                 "resumeMessage": "The music player has been resumed."
             },
@@ -250,14 +250,14 @@
                 "newState": "Shuffle mode is now set to {state}"
             },
             "seek": {
-                "cantSeekLive": "Cannot seek in live streams.",
-                "cantSeekSoundcloud": "Cannot seek in SoundCloud tracks.",
+                "cantSeekLive": "Can't seek in live streams.",
+                "cantSeekSoundcloud": "Can't seek in SoundCloud tracks.",
                 "description": "Seek to a specific time in the current song",
                 "exceedsDuration": "The seek time exceeds the song duration ({duration}).",
                 "invalidTime": "Invalid time format: {time}. Use formats like `1:30` or `90`",
                 "noPlaying": "No song is currently playing.",
                 "noTime": "Please specify a time to seek to.",
-                "notCached": "Cannot seek in this song yet. Please wait for the audio to buffer.",
+                "notCached": "Can't seek in this song yet. Please wait for the audio to buffer.",
                 "seeked": "Seeked to {time}",
                 "slashTimeDescription": "Time to seek to (e.g., `1:30` or `90`)",
                 "usage": "{prefix}seek <time>",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "You can't skip to current music.",
                 "description": "Skip to a specific position in the queue",
+                "invalidPosition": "Please provide a valid position number.",
                 "noPermission": "You don't have permission to use this command.",
                 "noSongPosition": "Unable to find a song in that position.",
                 "skipMessage": "Skipped to {song}",
@@ -304,7 +305,7 @@
                 "failedToSetup": "Failed to set up the request channel. Please check my permissions.",
                 "alreadyHasChannel": "This server already has a request channel set to {channel}. Please remove it first before setting a new one.",
                 "channelAlreadyInUse": "This channel is already being used as a request channel.",
-                "noChannelToRemove": "There is no request channel set to remove.",
+                "noChannelToRemove": "There's no request channel set to remove.",
                 "slashSetDescription": "Set a channel as the request channel",
                 "slashRemoveDescription": "Remove the request channel",
                 "slashStatusDescription": "Show the current request channel",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
             "message2": "Sorry, but that interaction is only for <@{user}>",
-            "devOnly": "Developer-only command."
+            "devOnly": "Developer-only command.",
+            "lyricsCommandNotFound": "Lyrics command not found."
         },
         "createMessage": "Hi {author}, my prefix is {prefix}",
         "cmdLoading": "Loading...",
@@ -383,7 +385,7 @@
         "noPermission": "You don't have permission to perform this action. Only DJ role, server managers, or the song requester can do this."
     },
     "reusable": {
-        "invalidUsage": "Invalid usage, please use {prefix} {name} for more information.",
+        "invalidUsage": "Invalid usage. Please use {prefix} {name} for more information.",
         "pageFooter": "Page {actual} of {total}",
         "lyricsSource": "Source: {source}",
         "enabled": "Enabled",
@@ -393,27 +395,27 @@
         "commonUtil": {
             "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
         },
-        "cooldownMessage": "{author}, please wait {timeleft} of cooldown time.",
+        "cooldownMessage": "{author}, please wait {timeleft} due to cooldown.",
         "generalHandler": {
-            "errorJoining": "Error while joining the voice channel, because: {message}",
-            "errorPlaying": "An error occurred while trying to play music, because: {message}",
-            "handleVideoInitial": "Added {length} songs to the queue",
-            "leftVC": "Left from the voice channel because I've been inactive for too long.",
-            "queueEnded": "Queue has ended, use {usage} to play more music.",
-            "startPlaying": "Started playing {song}",
-            "stopPlaying": "Stopped playing {song}",
-            "songRequeued": "Had trouble playing {song}, re-queued for another attempt.",
+            "errorJoining": "Error while joining the voice channel because: {message}",
+            "errorPlaying": "An error occurred while trying to play music because: {message}",
+            "handleVideoInitial": "Added {length} songs to the queue.",
+            "leftVC": "Left the voice channel because I've been inactive for too long.",
+            "queueEnded": "Queue has ended. Use {usage} to play more music.",
+            "startPlaying": "Started playing {song}.",
+            "stopPlaying": "Stopped playing {song}.",
+            "songRequeued": "Had trouble playing {song}; re-queued for another attempt.",
             "allCookiesFailed": "All cookies have failed due to bot detection! Please add new cookies using `{prefix}cookies add <number>` command with a cookies.txt attachment, or use `{prefix}cookies reset` to retry existing cookies.",
             "ageRestricted": "Cannot play {song} because it is age-restricted and requires sign-in."
         },
         "musicDecorator": {
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
             "noQueue": "Nothing is being played.",
-            "notPlaying": "There is no music currently playing. Please play a song first.",
+            "notPlaying": "There's no music currently playing. Please play a song first.",
             "sameVC": "You need to be in the same voice channel as mine.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
             "useRequestChannelDirect": "This command is disabled in the request channel. Please use the player buttons or type the song title/link directly.",
-            "validVCJoinable": "Sorry, but I can't **`Connect`** to your voice channel, make sure I have the proper permissions.",
+            "validVCJoinable": "Sorry, but I can't **`Connect`** to your voice channel. Make sure I have the proper permissions.",
             "validVCPermission": "Sorry, but I can't **`Speak`** in this voice channel; make sure I have the proper permissions."
         }
     }

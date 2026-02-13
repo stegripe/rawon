@@ -32,7 +32,7 @@ function findLocale(input: string): string | null {
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "language")
-            .setDescription(opts.description ?? "Change the bot language for this server.")
+            .setDescription(opts.description ?? "Change the bot's language for this server.")
             .addSubcommand((sub) =>
                 sub
                     .setName("set")

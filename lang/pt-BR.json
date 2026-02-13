@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "DESENVOLVEDOR",
             "eval": {
-                "description": "Avaliar o bot",
+                "description": "Avaliar código JavaScript",
                 "errorString": "Erro",
                 "noCode": "Nenhum código fornecido.",
                 "inputString": "Entrada",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "Você não pode pular a música atual.",
                 "description": "Pula para uma posição específica na fila",
+                "invalidPosition": "Por favor, forneça um número de posição válido.",
                 "noPermission": "Você não possui permissão para usar esse comando.",
                 "noSongPosition": "Não foi possível encontrar uma música nessa posição.",
                 "skipMessage": "Pulei para {song}",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Desculpe, mas essa interação é somente para <@{user}> e a moderação do servidor.",
             "message2": "Desculpe, mas essa interação é somente para <@{user}>",
-            "devOnly": "Comando somente para desenvolvedores."
+            "devOnly": "Comando somente para desenvolvedores.",
+            "lyricsCommandNotFound": "Comando de letras não encontrado."
         },
         "createMessage": "Olá {author}, meu prefixo é {prefix}",
         "cmdLoading": "Carregando...",

@@ -3,7 +3,7 @@
         "developers": {
             "categoryName": "PHÁT TRIỂN",
             "eval": {
-                "description": "Đánh giá bot",
+                "description": "Đánh giá mã JavaScript",
                 "errorString": "Lỗi",
                 "noCode": "Mã không được cung cấp.",
                 "inputString": "Input",
@@ -271,6 +271,7 @@
             "skipTo": {
                 "cantPlay": "Bạn không thể bỏ qua bài hát hiện tại.",
                 "description": "Bỏ qua tới một vị trí cụ thể trong hàng đợi",
+                "invalidPosition": "Vui lòng cung cấp một số vị trí hợp lệ.",
                 "noPermission": "Bạn không có quyền sử dụng lệnh này.",
                 "noSongPosition": "Không thể tìm thấy một bài hát ở vị trí đó.",
                 "skipMessage": "Bỏ qua tới {song}",
@@ -322,7 +323,8 @@
         "createInteraction": {
             "message1": "Xin lỗi, tương tác chỉ dành cho <@{user}> và quản lý máy chủ.",
             "message2": "Xin lỗi, tương tác chỉ dành cho <@{user}>",
-            "devOnly": "Lệnh chỉ dành cho nhà phát triển."
+            "devOnly": "Lệnh chỉ dành cho nhà phát triển.",
+            "lyricsCommandNotFound": "Không tìm thấy lệnh lời bài hát."
         },
         "createMessage": "Chào {author}, tiền tố của tôi là {prefix}",
         "cmdLoading": "Đang tải...",

@@ -345,7 +345,6 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                             author: interaction.user.toString(),
                                             timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
                                         })}`,
-                                        true,
                                     ),
                                 ],
                             });
@@ -1209,9 +1208,12 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             try {
                 const data = await (
                     lyricsCommand as {
-                        fetchLyricsData: (song: string) => Promise<LyricsAPIResult<false> | null>;
+                        fetchLyricsData: (
+                            client: Rawon,
+                            song: string,
+                        ) => Promise<LyricsAPIResult<false> | null>;
                     }
-                ).fetchLyricsData(currentSong.song.title);
+                ).fetchLyricsData(client, currentSong.song.title);
 
                 if (
                     data === null ||
@@ -1348,7 +1350,13 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             }
         } else {
             await interaction.editReply({
-                embeds: [createEmbed("error", "Lyrics command not found.", true)],
+                embeds: [
+                    createEmbed(
+                        "error",
+                        __("events.createInteraction.lyricsCommandNotFound"),
+                        true,
+                    ),
+                ],
             });
         }
     }

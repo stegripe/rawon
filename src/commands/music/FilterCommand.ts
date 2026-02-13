@@ -32,7 +32,7 @@ const slashFilterChoices = Object.keys(filterArgs).map((x) => ({ name: x, value:
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "filter")
-            .setDescription(opts.description ?? "Manage audio filters.")
+            .setDescription(opts.description ?? "Configure song filter.")
             .addSubcommand((sub) =>
                 sub
                     .setName("enable")
@@ -65,7 +65,7 @@ const slashFilterChoices = Object.keys(filterArgs).map((x) => ({ name: x, value:
                         opt
                             .setName("filter")
                             .setDescription(
-                                i18n.__("commands.music.filter.slashStateFilterDescription", {
+                                i18n.__mf("commands.music.filter.slashStateFilterDescription", {
                                     state: "disable",
                                 }),
                             )

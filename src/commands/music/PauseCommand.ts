@@ -25,9 +25,7 @@ import { i18n__ } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "pause")
-            .setDescription(
-                opts.description ?? "Pause the currently playing song.",
-            ) as SlashCommandBuilder;
+            .setDescription(opts.description ?? "Pause the music player.") as SlashCommandBuilder;
     },
 })
 export class PauseCommand extends ContextCommand {

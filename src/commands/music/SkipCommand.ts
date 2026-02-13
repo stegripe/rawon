@@ -29,7 +29,7 @@ import { OperationManager } from "../../utils/structures/OperationManager.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "skip")
-            .setDescription(opts.description ?? "Skip the current song.") as SlashCommandBuilder;
+            .setDescription(opts.description ?? "Skip the music.") as SlashCommandBuilder;
     },
 })
 export class SkipCommand extends ContextCommand {

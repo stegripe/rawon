@@ -29,7 +29,7 @@ import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "lyrics")
-            .setDescription(opts.description ?? "Get lyrics for a song.")
+            .setDescription(opts.description ?? "Show the lyrics of the song.")
             .addStringOption((opt) =>
                 opt
                     .setName("query")

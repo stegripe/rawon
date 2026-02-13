@@ -29,7 +29,7 @@ const SetVoiceChannelStatus = 281474976710656n;
         return builder
             .setName(opts.name ?? "invite")
             .setDescription(
-                opts.description ?? "Get the bot's invite link.",
+                opts.description ?? "Get the invite link for the bot.",
             ) as SlashCommandBuilder;
     },
 })
@@ -117,6 +117,6 @@ export class InviteCommand extends ContextCommand {
                     }),
                 ],
             })
-            .catch((error: unknown) => this.container.logger.error("PLAY_CMD_ERR:", error));
+            .catch((error: unknown) => this.container.logger.error("INVITE_CMD_ERR:", error));
     }
 }
