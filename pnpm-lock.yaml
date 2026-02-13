@@ -45,8 +45,8 @@ importers:
         specifier: 14.25.1
         version: 14.25.1
       dotenv:
-        specifier: 17.2.4
-        version: 17.2.4
+        specifier: 17.3.1
+        version: 17.3.1
       ffmpeg-static:
         specifier: ^5.3.0
         version: 5.3.0
@@ -889,8 +889,8 @@ packages:
     resolution: {integrity: sha512-2l0gsPOLPs5t6GFZfQZKnL1OJNYFcuC/ETWsW4VtKVD/tg4ICa9x+jb9bkPffkMdRpRpuUaO/fKkHCBeiCKh8g==}
     engines: {node: '>=18'}
 
-  dotenv@17.2.4:
-    resolution: {integrity: sha512-mudtfb4zRB4bVvdj0xRo+e6duH1csJRM8IukBqfTRvHotn9+LBXB8ynAidP9zHqoRC/fsllXgk4kCKlR21fIhw==}
+  dotenv@17.3.1:
+    resolution: {integrity: sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==}
     engines: {node: '>=12'}
 
   end-of-stream@1.4.5:
@@ -2274,7 +2274,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  dotenv@17.2.4: {}
+  dotenv@17.3.1: {}
 
   end-of-stream@1.4.5:
     dependencies:
