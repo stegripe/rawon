@@ -120,7 +120,10 @@ export class PlayCommand extends ContextCommand {
         }
 
         const queryCheck = checkQuery(query ?? "");
-        const songs = await searchTrack(client, query ?? "").catch(() => void 0);
+        const songs = await searchTrack(client, query ?? "").catch((error: unknown) => {
+            client.logger.error("[PlayCommand] searchTrack failed:", error);
+            return undefined;
+        });
 
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
@@ -131,7 +134,9 @@ export class PlayCommand extends ContextCommand {
         return handleVideos(
             client,
             localCtx,
-            queryCheck.type === "playlist" ? songs.items : [songs.items[0]],
+            queryCheck.type === "playlist" || queryCheck.type === "artist"
+                ? songs.items
+                : [songs.items[0]],
             voiceChannel,
         );
     }

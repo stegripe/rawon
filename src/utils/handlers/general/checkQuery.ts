@@ -42,10 +42,13 @@ export function checkQuery(string: string): QueryData {
     } else if (/spotify/gu.test(url.hostname)) {
         result.sourceType = "spotify";
 
-        if (["/playlist", "/album"].some((path) => url.pathname.startsWith(path))) {
+        const pathSegments = url.pathname.split("/").filter(Boolean);
+        if (pathSegments.includes("playlist") || pathSegments.includes("album")) {
             result.type = "playlist";
-        } else if (url.pathname.startsWith("/track")) {
+        } else if (pathSegments.includes("track")) {
             result.type = "track";
+        } else if (pathSegments.includes("artist")) {
+            result.type = "artist";
         } else {
             result.type = "unknown";
         }
