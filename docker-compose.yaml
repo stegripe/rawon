@@ -16,6 +16,8 @@ services:
     env_file:
       - .env
       - dev.env
+    ports:
+      - "${DEVTOOLS_PORT:-3000}:${DEVTOOLS_PORT:-3000}"
     volumes:
       - rawon:/app/cache
 

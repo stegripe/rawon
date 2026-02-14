@@ -16,12 +16,19 @@
 - Support for YouTube, Spotify, SoundCloud, and direct files
 - Run multiple bot instances for different voice channels
 - Smart audio pre-caching for smoother playback
-- Multi-cookie rotation for uninterrupted playback
+- Built-in Google login via Puppeteer for cookie management
 
 ## Installation
 
+### Prerequisites
+- [Node.js](https://nodejs.org) version `20.0.0` or higher
+- [Deno](https://deno.land/) runtime (required by yt-dlp for signature solving)
+- [FFmpeg](https://ffmpeg.org/) for audio processing
+
+> **Note**: Docker users don't need to install Deno or FFmpeg manually — they're included in the Docker image.
+
 ### Standard Setup (Node.js)
-1. Download and install [Node.js](https://nodejs.org) version `22.12.0` or higher
+1. Download and install the prerequisites above
 2. Clone or download this repository
 3. Copy `.env.example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)
 4. Install dependencies:
@@ -57,6 +64,8 @@ services:
     env_file:
       - .env
       - dev.env
+    ports:
+      - "${DEVTOOLS_PORT:-3000}:${DEVTOOLS_PORT:-3000}"
     volumes:
       - rawon:/app/cache
 
@@ -77,6 +86,7 @@ docker logs -f rawon-bot
 docker run -d \
   --name rawon-bot \
   --env-file .env \
+  -p "${DEVTOOLS_PORT:-3000}:${DEVTOOLS_PORT:-3000}" \
   -v rawon:/app/cache \
   --restart unless-stopped \
   ghcr.io/stegripe/rawon:latest
@@ -87,7 +97,10 @@ The `/app/cache` volume stores:
 - `yt-dlp` binary for audio streaming
 - `data.*` for persistent settings (request channels, player states)
 - Cached audio files (if audio caching is enabled)
-- Cookie files for the platform authentication (see [Cookies Setup](./docs/COOKIES_SETUP.md))
+- Cookie file and browser profile from Google login (see [Cookies Setup](./docs/COOKIES_SETUP.md))
+
+#### Port Information
+The `DEVTOOLS_PORT` (default: `3000`) is used for Chrome DevTools remote debugging proxy. This is required for `!login start` to work from a remote machine. Set `DEVTOOLS_PORT` in your `dev.env` file to use a different port.
 
 ## Configuration Files
 - `.env.example` - Essential settings (Discord/Spotify token, prefix, IDs, etc.)
@@ -123,14 +136,13 @@ Features:
 
 If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may encounter bot detection errors. See [Cookies Setup](./docs/COOKIES_SETUP.md) for the solution.
 
-**Quick fix using the cookies command:**
+**Quick fix using the login command:**
 ```
-!cookies add 1  # Attach your cookies.txt file
-!cookies list   # Check cookie status
-!cookies reset  # Reset failed status
+!login start    # Opens a browser for Google login
+!login status   # Check current login session
+!cookies status # View cookie & login overview
+!cookies reset  # Reset bot detection counter
 ```
-
-This feature is still experimental and very buggy, especially the rotation system.
 
 ## Support & Questions
 For help and questions, join our official [Discord Server](https://stegripe.org/discord).

@@ -204,7 +204,7 @@ async function attemptStreamWithRetry(
             }
 
             client.logger.warn(
-                `[YTDLUtil] ⚠️ Bot detection error detected, attempting cookie rotation (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                `[YTDLUtil] ⚠️ Bot detection error detected, attempting cookie refresh (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
 
             proc.kill("SIGKILL");
@@ -217,20 +217,19 @@ async function attemptStreamWithRetry(
                 return;
             }
 
-            const rotated = client.cookies.rotateOnFailure();
-            if (rotated) {
-                client.logger.info(
-                    `[YTDLUtil] 🔄 Rotated to cookie ${client.cookies.getCurrentCookieIndex()}, retrying...`,
-                );
-                attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
-                    .then(resolve)
-                    .catch(reject);
-            } else {
-                client.logger.error(
-                    "[YTDLUtil] ❌ All cookies have failed! Song will be re-queued for retry.",
-                );
-                reject(new CookieRotationNeededError("All cookies failed", true));
-            }
+            void client.cookies.rotateOnFailure().then((rotated) => {
+                if (rotated) {
+                    client.logger.info("[YTDLUtil] 🔄 Cookies refreshed, retrying...");
+                    attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
+                        .then(resolve)
+                        .catch(reject);
+                } else {
+                    client.logger.error(
+                        "[YTDLUtil] ❌ Cookie refresh failed! Song will be re-queued for retry.",
+                    );
+                    reject(new CookieRotationNeededError("All cookies failed", true));
+                }
+            });
         };
 
         const handleTransientError = (errorMessage: string): void => {
@@ -427,7 +426,7 @@ async function attemptGetInfoWithRetry(
 
         if (isBotDetectionError(errorMessage) && client) {
             client.logger.warn(
-                `[YTDLUtil] ⚠️ Bot detection in getInfo, rotating cookie (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                `[YTDLUtil] ⚠️ Bot detection in getInfo, refreshing cookies (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
             );
 
             if (retryCount >= MAX_COOKIE_RETRIES) {
@@ -437,11 +436,9 @@ async function attemptGetInfoWithRetry(
                 throw new AllCookiesFailedError();
             }
 
-            const rotated = client.cookies.rotateOnFailure();
+            const rotated = await client.cookies.rotateOnFailure();
             if (rotated) {
-                client.logger.info(
-                    `[YTDLUtil] 🔄 Retrying getInfo with cookie ${client.cookies.getCurrentCookieIndex()}`,
-                );
+                client.logger.info("[YTDLUtil] 🔄 Retrying getInfo with refreshed cookies");
                 return attemptGetInfoWithRetry(url, client, retryCount + 1);
             }
             throw new AllCookiesFailedError();

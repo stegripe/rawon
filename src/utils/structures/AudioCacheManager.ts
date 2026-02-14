@@ -178,6 +178,28 @@ export class AudioCacheManager {
         writeStream.on("finish", () => {
             this.inProgressFiles.delete(key);
             this.inProgressProcs.delete(key);
+
+            try {
+                const stats = statSync(cachePath);
+                if (stats.size < 1024) {
+                    this.client.logger.warn(
+                        `[AudioCacheManager] Cached file too small (${stats.size} bytes) for ${url.substring(0, 50)}..., discarding`,
+                    );
+                    rmSync(cachePath, { force: true });
+                    return;
+                }
+            } catch {
+                this.client.logger.warn(
+                    `[AudioCacheManager] Could not stat cached file for ${url.substring(0, 50)}..., discarding`,
+                );
+                try {
+                    rmSync(cachePath, { force: true });
+                } catch {
+                    // Ignore errors
+                }
+                return;
+            }
+
             this.cachedFiles.set(key, {
                 path: cachePath,
                 lastAccess: Date.now(),
@@ -270,7 +292,7 @@ export class AudioCacheManager {
                 if (this.isCached(url) && !this.inProgressFiles.has(key)) {
                     clearInterval(checkCache);
                     this.client.logger.info(
-                        `[AudioCacheManager] Cache completed for ${url.substring(0, 50)}... after ${Date.now() - startTime}ms`,
+                        `[AudioCacheManager] Cache completed for ${url.substring(0, 50)}... after ${Date.now() - startTime} ms`,
                     );
                     resolve(true);
                     return;
@@ -279,7 +301,7 @@ export class AudioCacheManager {
                 if (Date.now() - startTime >= timeoutMs) {
                     clearInterval(checkCache);
                     this.client.logger.warn(
-                        `[AudioCacheManager] Timeout waiting for cache ${url.substring(0, 50)}... after ${timeoutMs}ms`,
+                        `[AudioCacheManager] Timeout waiting for cache ${url.substring(0, 50)}... after ${timeoutMs} ms`,
                     );
                     resolve(false);
                     return;
@@ -429,12 +451,21 @@ export class AudioCacheManager {
                             this.client.logger.warn(
                                 `[AudioCacheManager] Bot detection during pre-cache, rotating cookie (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.substring(0, 50)}...`,
                             );
-                            const rotated = this.client.cookies.rotateOnFailure();
-                            if (rotated) {
-                                this.client.logger.info(
-                                    `[AudioCacheManager] Rotated to cookie ${this.client.cookies.getCurrentCookieIndex()}`,
-                                );
-                            }
+                            void this.client.cookies.rotateOnFailure().then((rotated) => {
+                                if (rotated) {
+                                    this.client.logger.info(
+                                        `[AudioCacheManager] Rotated to cookie ${this.client.cookies.getCurrentCookieIndex()}`,
+                                    );
+                                }
+                            });
+                        }
+                    });
+
+                    proc.stderr.on("end", () => {
+                        if (stderrData.trim() && !hasBotDetectionError) {
+                            this.client.logger.warn(
+                                `[AudioCacheManager] yt-dlp stderr for ${url.substring(0, 50)}...: ${stderrData.substring(0, 500)}`,
+                            );
                         }
                     });
                 }

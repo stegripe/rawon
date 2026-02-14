@@ -7,7 +7,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type GuildData } from "../../typings/index.js";
-import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
+import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -94,7 +94,6 @@ export class FilterCommand extends ContextCommand {
         return ctx.client as Rawon;
     }
 
-    @useRequestChannel
     @inVC
     @validVC
     @sameVC

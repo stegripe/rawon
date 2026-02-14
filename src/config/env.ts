@@ -103,3 +103,7 @@ export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
 export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";
+
+const rawDevtoolsPort = Number(process.env.DEVTOOLS_PORT);
+export const devtoolsPort =
+    Number.isFinite(rawDevtoolsPort) && rawDevtoolsPort > 0 ? rawDevtoolsPort : 3000;

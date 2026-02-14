@@ -12,47 +12,44 @@ If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, or ot
 
 > "Sign in to confirm you're not a bot"
 
-This happens because the platform blocks requests from data center IP addresses. By using cookies from a logged-in account, you can bypass this restriction.
+This happens because the platform blocks requests from data center IP addresses. By authenticating with a Google account, Rawon can generate and maintain valid cookies to bypass this restriction.
 
-### 🆕 Recommended Method: Using the Cookies Command
+### Recommended Method: Using the Login Command
 
-The easiest way to manage cookies is using the built-in `!cookies` command. This method:
-- ✅ Works without restart
-- ✅ Supports multiple cookies with automatic rotation
-- ✅ Automatically switches to next cookie when one fails
+The easiest way to set up cookies is using the built-in `!login` command. This method:
+- ✅ Opens a real browser for Google login via Puppeteer
+- ✅ Automatically generates and refreshes cookies
+- ✅ Works without manual cookie file export
 - ✅ Persists across bot restarts (Docker volume or cache folder)
+- ✅ Auto-refreshes cookies when bot detection is encountered
 
 #### Command Usage
 
 ```
-!cookies add <number>    - Add a cookie (attach cookies.txt file)
-!cookies remove <number> - Remove a specific cookie
-!cookies remove all      - Remove all cookies
-!cookies list            - Show all cookies and their status
-!cookies reset           - Reset failed status to retry all cookies
+!login start    - Open a browser and start Google login
+!login status   - View current login session info
+!login refresh  - Manually refresh cookies from active session
+!login logout   - Clear the current login session
+
+!cookies status - View cookie file & login overview
+!cookies reset  - Reset bot detection counter
+!cookies refresh - Manually refresh cookies (shorthand)
 ```
 
-#### Quick Start with Command
+#### Quick Start
 
-1. Export cookies from your browser (see [How to Export Cookies](#how-to-export-cookies))
-2. In Discord, use `!cookies add 1` and attach your `cookies.txt` file
-3. Done! The cookie takes effect immediately
-
-You can add multiple cookies for redundancy:
-```
-!cookies add 1  (attach first cookies.txt)
-!cookies add 2  (attach second cookies.txt from another account)
-!cookies add 3  (attach third cookies.txt)
-```
-
-When one cookie gets rate-limited, Rawon automatically switches to the next available cookie.
+1. Run `!login start` in Discord
+2. The bot will send you a DevTools URL — open it in your browser
+3. A Google login page will appear in the remote browser
+4. Log in with a **throwaway Google account** (NOT your main account)
+5. Once logged in, the bot automatically saves the cookies
+6. Done! Cookies are refreshed automatically in the background
 
 ### Prerequisites
 
-- A **secondary/throwaway account** (DO NOT use your main account for security reasons)
-- A web browser (Chrome, Firefox, or Edge)
-- A cookies export extension
+- A **secondary/throwaway Google account** (DO NOT use your main account for security reasons)
 - **For non-Docker users**: [Deno](https://deno.land/) JavaScript runtime (required for yt-dlp signature solving)
+- **For non-Docker users**: Chrome or Chromium browser installed on the host machine
 
 ### Installing Deno (Non-Docker Users Only)
 
@@ -73,48 +70,33 @@ After installation, make sure `deno` is in your PATH. You can verify by running:
 deno --version
 ```
 
-> **Note**: Docker users don't need to install Deno manually - it's already included in the Docker image.
-
-### How to Export Cookies
-
-#### Step 1: Create a Throwaway Account
-
-1. Go to [Account Creation](https://accounts.google.com/signup)
-2. Create a new account specifically for this bot
-3. **Important**: Do NOT use your personal/main account
-
-#### Step 2: Log in to the Platform
-
-1. Open your browser
-2. Go to [the platform](https://www.youtube.com)
-3. Sign in with your throwaway account
-4. Accept any terms if prompted
-
-#### Step 3: Install Cookies Export Extension
-
-**For Chrome/Edge:**
-- Install [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (Recommended)
-- Or [cookies.txt](https://chromewebstore.google.com/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg)
-
-**For Firefox:**
-- Install [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)
-
-#### Step 4: Export Cookies
-
-1. Make sure you're on the platform website
-2. Click the cookies extension icon in your browser toolbar
-3. Choose "Export" or "Export cookies for this site"
-4. Save the file as `cookies.txt`
-
-#### Step 5: Add to Rawon
-
-Use the `!cookies add <number>` command in Discord with the file attached.
+> **Note**: Docker users don't need to install Deno manually — it's already included in the Docker image.
 
 ### Docker Setup
 
-Docker users have automatic cookie persistence through the named volume `rawon:/app/cache`. Cookies added via the `!cookies` command are stored in this volume and persist across container restarts.
+Docker users have automatic cookie persistence through the named volume `rawon:/app/cache`. The login session (cookies + browser profile) is stored in this volume and persists across container restarts.
 
-Just use the `!cookies` command - no additional configuration needed!
+The Docker image comes with Chromium pre-installed, so `!login start` works out of the box.
+
+### Environment Variables
+
+You can optionally configure the following in `dev.env`:
+
+```env
+# Port for Chrome DevTools remote debugging proxy
+# Used for the login command to access DevTools from a remote machine/host
+# Default: 3000
+DEVTOOLS_PORT=""
+
+# Path to Chrome/Chromium executable (auto-detected if empty)
+CHROMIUM_PATH=""
+```
+
+For Docker users, make sure the port mapping in `docker-compose.yaml` matches:
+```yaml
+ports:
+  - "${DEVTOOLS_PORT:-3000}:${DEVTOOLS_PORT:-3000}"
+```
 
 ### How Long Do Cookies Last?
 
@@ -124,35 +106,41 @@ Just use the `!cookies` command - no additional configuration needed!
 - ✅ You don't revoke the session from account settings
 - ✅ The platform doesn't detect suspicious activity on the account
 
-**Tips to keep cookies valid longer:**
-1. Use a dedicated browser profile just for this account
-2. Don't use the throwaway account for anything else
-3. Don't log out from the platform in that browser
-4. Keep the browser profile intact (don't clear cookies)
+Additionally, if the browser session is still running, Rawon will automatically refresh cookies when bot detection is encountered (after 3 consecutive detections).
 
 ### Troubleshooting
 
 **Still getting "Sign in to confirm you're not a bot" errors?**
-- Use `!cookies list` to check cookie status
-- If a cookie shows as "Failed", try `!cookies reset` to retry
-- Add more cookies from different accounts for redundancy
+- Use `!cookies status` to check cookie and login status
+- If bot detection counter is high, try `!cookies reset`
+- Use `!login refresh` to manually refresh cookies
+- If the session expired, run `!login start` again
 
-**All cookies failed?**
-- Create new throwaway accounts
-- Export fresh cookies
-- Add them with `!cookies add <number>`
+**Browser won't start?**
+- Check `!login status` for error details
+- Make sure Chrome/Chromium is installed (or set `CHROMIUM_PATH` in `dev.env`)
+- Docker users: this should work automatically with the included Chromium
 
 **Account got suspended?**
-- Create a new throwaway account
-- Export new cookies
-- Add with `!cookies add <number>`
+- Create a new throwaway Google account
+- Run `!login logout` to clear the old session
+- Run `!login start` to log in with the new account
+
+### Alternative: Manual Cookie File
+
+If you prefer not to use the login command, you can still manually place a Netscape-format cookie file at:
+```
+cache/cookies.txt
+```
+
+The bot will use this file if it exists. However, the `!login` method is recommended as it handles cookie refresh automatically.
 
 ### Security Notes
 
 ⚠️ **WARNING**: 
-- Never share your cookies file with anyone
-- Use a throwaway account, NOT your main account
-- The cookies file contains sensitive authentication data
+- Use a throwaway Google account, NOT your main account
+- The DevTools URL gives access to the browser session — don't share it publicly
+- Cookie files contain sensitive authentication data
 
 ---
 
@@ -164,47 +152,44 @@ Jika kamu hosting Rawon di cloud provider seperti OVHcloud, AWS, GCP, Azure, ata
 
 > "Sign in to confirm you're not a bot" (Masuk untuk memastikan kamu bukan bot)
 
-Ini terjadi karena platform memblokir request dari alamat IP data center. Dengan menggunakan cookies dari akun yang sudah login, kamu bisa melewati pembatasan ini.
+Ini terjadi karena platform memblokir request dari alamat IP data center. Dengan mengautentikasi menggunakan akun Google, Rawon bisa menghasilkan dan memelihara cookies yang valid untuk melewati pembatasan ini.
 
-### 🆕 Metode yang Direkomendasikan: Menggunakan Command Cookies
+### Metode yang Direkomendasikan: Menggunakan Command Login
 
-Cara termudah untuk mengelola cookies adalah menggunakan command `!cookies` bawaan. Metode ini:
-- ✅ Bekerja tanpa restart
-- ✅ Mendukung banyak cookies dengan rotasi otomatis
-- ✅ Otomatis beralih ke cookie berikutnya saat satu gagal
+Cara termudah untuk setup cookies adalah menggunakan command `!login` bawaan. Metode ini:
+- ✅ Membuka browser sungguhan untuk login Google via Puppeteer
+- ✅ Otomatis menghasilkan dan me-refresh cookies
+- ✅ Tanpa perlu export file cookie secara manual
 - ✅ Tetap tersimpan setelah restart bot (Docker volume atau folder cache)
+- ✅ Otomatis refresh cookies saat bot detection terdeteksi
 
 #### Penggunaan Command
 
 ```
-!cookies add <nomor>    - Tambah cookie (lampirkan file cookies.txt)
-!cookies remove <nomor> - Hapus cookie tertentu
-!cookies remove all     - Hapus semua cookies
-!cookies list           - Tampilkan semua cookies dan statusnya
-!cookies reset          - Reset status gagal untuk mencoba ulang semua cookies
+!login start    - Buka browser dan mulai login Google
+!login status   - Lihat info sesi login saat ini
+!login refresh  - Refresh cookies secara manual dari sesi aktif
+!login logout   - Hapus sesi login saat ini
+
+!cookies status - Lihat overview cookie & login
+!cookies reset  - Reset counter bot detection
+!cookies refresh - Refresh cookies secara manual (shorthand)
 ```
 
-#### Quick Start dengan Command
+#### Quick Start
 
-1. Export cookies dari browser kamu (lihat [Cara Export Cookies](#cara-export-cookies))
-2. Di Discord, gunakan `!cookies add 1` dan lampirkan file `cookies.txt`
-3. Selesai! Cookie langsung aktif
-
-Kamu bisa menambah banyak cookies untuk cadangan:
-```
-!cookies add 1  (lampirkan cookies.txt pertama)
-!cookies add 2  (lampirkan cookies.txt kedua dari akun lain)
-!cookies add 3  (lampirkan cookies.txt ketiga)
-```
-
-Saat satu cookie kena rate-limit, Rawon otomatis beralih ke cookie yang tersedia berikutnya.
+1. Jalankan `!login start` di Discord
+2. Bot akan mengirim URL DevTools — buka di browser kamu
+3. Akan muncul halaman login Google di browser remote
+4. Login dengan **akun Google tumbal** (JANGAN akun utama)
+5. Setelah login, bot otomatis menyimpan cookies
+6. Selesai! Cookies akan di-refresh otomatis di background
 
 ### Prasyarat
 
-- Akun **cadangan/tumbal** (JANGAN gunakan akun utama demi keamanan)
-- Browser web (Chrome, Firefox, atau Edge)
-- Extension untuk export cookies
+- Akun **cadangan/tumbal Google** (JANGAN gunakan akun utama demi keamanan)
 - **Untuk pengguna non-Docker**: [Deno](https://deno.land/) JavaScript runtime (diperlukan untuk yt-dlp signature solving)
+- **Untuk pengguna non-Docker**: Browser Chrome atau Chromium terinstall di mesin host
 
 ### Menginstall Deno (Hanya untuk Pengguna Non-Docker)
 
@@ -225,48 +210,33 @@ Setelah instalasi, pastikan `deno` ada di PATH kamu. Verifikasi dengan menjalank
 deno --version
 ```
 
-> **Catatan**: Pengguna Docker tidak perlu install Deno manual - sudah termasuk di Docker image.
-
-### Cara Export Cookies
-
-#### Langkah 1: Buat Akun Tumbal
-
-1. Buka [Pembuatan Akun](https://accounts.google.com/signup)
-2. Buat akun baru khusus untuk bot ini
-3. **Penting**: JANGAN gunakan akun pribadi/utama kamu
-
-#### Langkah 2: Login ke Platform
-
-1. Buka browser kamu
-2. Buka [platform](https://www.youtube.com)
-3. Login dengan akun tumbal kamu
-4. Terima syarat & ketentuan jika diminta
-
-#### Langkah 3: Install Extension Export Cookies
-
-**Untuk Chrome/Edge:**
-- Install [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (Direkomendasikan)
-- Atau [cookies.txt](https://chromewebstore.google.com/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg)
-
-**Untuk Firefox:**
-- Install [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)
-
-#### Langkah 4: Export Cookies
-
-1. Pastikan kamu sedang di website platform
-2. Klik ikon extension cookies di toolbar browser kamu
-3. Pilih "Export" atau "Export cookies for this site"
-4. Simpan file sebagai `cookies.txt`
-
-#### Langkah 5: Tambahkan ke Rawon
-
-Gunakan command `!cookies add <nomor>` di Discord dengan file terlampir.
+> **Catatan**: Pengguna Docker tidak perlu install Deno manual — sudah termasuk di Docker image.
 
 ### Setup Docker
 
-Pengguna Docker memiliki persistence cookie otomatis melalui named volume `rawon:/app/cache`. Cookies yang ditambah via command `!cookies` tersimpan di volume ini dan tetap ada setelah container restart.
+Pengguna Docker memiliki persistence cookie otomatis melalui named volume `rawon:/app/cache`. Sesi login (cookies + browser profile) tersimpan di volume ini dan tetap ada setelah container restart.
 
-Langsung pakai command `!cookies` - tidak perlu konfigurasi tambahan!
+Docker image sudah termasuk Chromium, jadi `!login start` langsung bisa dipakai tanpa konfigurasi tambahan.
+
+### Variabel Environment
+
+Kamu bisa mengkonfigurasi opsional berikut di `dev.env`:
+
+```env
+# Port untuk proxy remote debugging Chrome DevTools
+# Digunakan untuk command login agar DevTools bisa diakses dari mesin/host remote
+# Default: 3000
+DEVTOOLS_PORT=""
+
+# Path ke executable Chrome/Chromium (otomatis terdeteksi jika kosong)
+CHROMIUM_PATH=""
+```
+
+Untuk pengguna Docker, pastikan port mapping di `docker-compose.yaml` sesuai:
+```yaml
+ports:
+  - "${DEVTOOLS_PORT:-3000}:${DEVTOOLS_PORT:-3000}"
+```
 
 ### Berapa Lama Cookies Bertahan?
 
@@ -276,32 +246,38 @@ Langsung pakai command `!cookies` - tidak perlu konfigurasi tambahan!
 - ✅ Kamu tidak revoke session dari pengaturan akun
 - ✅ Platform tidak mendeteksi aktivitas mencurigakan di akun
 
-**Tips agar cookies awet lebih lama:**
-1. Gunakan profile browser khusus hanya untuk akun ini
-2. Jangan gunakan akun tumbal untuk hal lain
-3. Jangan logout dari platform di browser tersebut
-4. Jaga profile browser tetap utuh (jangan hapus cookies)
+Selain itu, jika sesi browser masih berjalan, Rawon akan otomatis me-refresh cookies saat bot detection terdeteksi (setelah 3 deteksi berturut-turut).
 
 ### Troubleshooting / Pemecahan Masalah
 
 **Masih dapat error "Sign in to confirm you're not a bot"?**
-- Gunakan `!cookies list` untuk cek status cookie
-- Jika cookie menunjukkan "Failed", coba `!cookies reset` untuk mencoba ulang
-- Tambah lebih banyak cookies dari akun berbeda untuk cadangan
+- Gunakan `!cookies status` untuk cek status cookie dan login
+- Jika counter bot detection tinggi, coba `!cookies reset`
+- Gunakan `!login refresh` untuk refresh cookies secara manual
+- Jika sesi expired, jalankan `!login start` lagi
 
-**Semua cookies gagal?**
-- Buat akun tumbal baru
-- Export cookies baru
-- Tambahkan dengan `!cookies add <nomor>`
+**Browser tidak mau start?**
+- Cek `!login status` untuk detail error
+- Pastikan Chrome/Chromium terinstall (atau set `CHROMIUM_PATH` di `dev.env`)
+- Pengguna Docker: harusnya bisa otomatis dengan Chromium bawaan
 
 **Akun di-suspend?**
-- Buat akun tumbal baru
-- Export cookies baru
-- Tambahkan dengan `!cookies add <nomor>`
+- Buat akun tumbal Google baru
+- Jalankan `!login logout` untuk hapus sesi lama
+- Jalankan `!login start` untuk login dengan akun baru
+
+### Alternatif: File Cookie Manual
+
+Jika kamu tidak ingin menggunakan command login, kamu masih bisa menaruh file cookie berformat Netscape secara manual di:
+```
+cache/cookies.txt
+```
+
+Bot akan menggunakan file ini jika ada. Namun, metode `!login` lebih direkomendasikan karena menangani refresh cookies secara otomatis.
 
 ### Catatan Keamanan
 
 ⚠️ **PERINGATAN**: 
-- Jangan pernah bagikan file cookies kamu ke siapapun
-- Gunakan akun tumbal, BUKAN akun utama kamu
+- Gunakan akun tumbal Google, BUKAN akun utama kamu
+- URL DevTools memberi akses ke sesi browser — jangan bagikan secara publik
 - File cookies berisi data autentikasi sensitif
