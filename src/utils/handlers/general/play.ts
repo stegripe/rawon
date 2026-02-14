@@ -299,6 +299,7 @@ export async function play(
                             `${__mf("utils.generalHandler.allCookiesFailed", {
                                 prefix: guild.client.config.mainPrefix,
                             })}`,
+
                             true,
                         ),
                     ],

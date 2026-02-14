@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
+import { setTimeout } from "node:timers";
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
@@ -10,12 +11,14 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @ApplyOptions<Command.Options>({
-    name: "cookies",
-    aliases: ["cookie", "ck"],
-    description: i18n.__("commands.developers.cookies.description"),
-    detailedDescription: { usage: i18n.__("commands.developers.cookies.usage") },
+    name: "login",
+    aliases: ["google-login", "gl"],
+    description: i18n.__("commands.developers.login.description"),
+    detailedDescription: {
+        usage: i18n.__("commands.developers.login.usage"),
+    },
     preconditions: ["DevOnly"],
-    cooldownDelay: 3000,
+    cooldownDelay: 5000,
     requiredClientPermissions: [
         PermissionFlagsBits.ViewChannel,
         PermissionFlagsBits.SendMessages,
@@ -26,26 +29,31 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
         opts: Parameters<NonNullable<Command.Options["chatInputCommand"]>>[1],
     ): SlashCommandBuilder {
         return builder
-            .setName(opts.name ?? "cookies")
-            .setDescription(opts.description ?? i18n.__("commands.developers.cookies.description"))
+            .setName(opts.name ?? "login")
+            .setDescription(opts.description ?? i18n.__("commands.developers.login.description"))
             .addSubcommand((sub) =>
                 sub
-                    .setName("status")
-                    .setDescription(i18n.__("commands.developers.cookies.slashStatusDescription")),
+                    .setName("start")
+                    .setDescription(i18n.__("commands.developers.login.slashStartDescription")),
             )
             .addSubcommand((sub) =>
                 sub
-                    .setName("reset")
-                    .setDescription(i18n.__("commands.developers.cookies.slashResetDescription")),
+                    .setName("status")
+                    .setDescription(i18n.__("commands.developers.login.slashStatusDescription")),
             )
             .addSubcommand((sub) =>
                 sub
                     .setName("refresh")
-                    .setDescription(i18n.__("commands.developers.cookies.slashRefreshDescription")),
+                    .setDescription(i18n.__("commands.developers.login.slashRefreshDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
+                    .setName("logout")
+                    .setDescription(i18n.__("commands.developers.login.slashLogoutDescription")),
             ) as SlashCommandBuilder;
     },
 })
-export class CookiesCommand extends ContextCommand {
+export class LoginCommand extends ContextCommand {
     private getClient(ctx: CommandContext): Rawon {
         return ctx.client as Rawon;
     }
@@ -58,29 +66,158 @@ export class CookiesCommand extends ContextCommand {
         const subcommand = localCtx.options?.getSubcommand() ?? localCtx.args[0]?.toLowerCase();
 
         if (!subcommand) {
-            return this.handleStatus(client, ctx, __, __mf);
+            return ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        __mf("commands.developers.login.invalidSubcommand", {
+                            loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | logout>\``,
+                        }),
+                    ),
+                ],
+            });
         }
 
         switch (subcommand) {
+            case "start":
+                return this.handleStart(client, ctx, __, __mf);
             case "status":
-            case "list":
-            case "info":
                 return this.handleStatus(client, ctx, __, __mf);
-            case "reset":
-                return this.handleReset(client, ctx, __);
             case "refresh":
                 return this.handleRefresh(client, ctx, __, __mf);
+            case "logout":
+                return this.handleLogout(client, ctx, __, __mf);
             default:
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "warn",
-                            __mf("commands.developers.cookies.invalidSubcommand", {
-                                prefix: client.config.mainPrefix,
+                            __mf("commands.developers.login.invalidSubcommand", {
+                                loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | logout>\``,
                             }),
                         ),
                     ],
                 });
+        }
+    }
+
+    private async handleStart(
+        client: Rawon,
+        ctx: CommandContext,
+        __: ReturnType<typeof i18n__>,
+        __mf: ReturnType<typeof i18n__mf>,
+    ): Promise<Message | undefined> {
+        const loginManager = client.cookies.loginManager;
+
+        if (loginManager.isLoggedIn()) {
+            return ctx.reply({
+                embeds: [createEmbed("warn", __("commands.developers.login.alreadyLoggedIn"))],
+            });
+        }
+
+        const statusMsg = await ctx.reply({
+            embeds: [createEmbed("info", __("commands.developers.login.launching"))],
+        });
+
+        try {
+            await loginManager.launchBrowser();
+
+            const loginPromise = loginManager.startLoginSession();
+
+            await new Promise((resolve) => setTimeout(resolve, 1_500));
+
+            const sessionInfo = loginManager.getSessionInfo();
+            const timeoutMinutes = Math.floor(loginManager.getLoginTimeoutMs() / 60_000);
+
+            if (sessionInfo.inspectUrl) {
+                await statusMsg?.edit({
+                    embeds: [
+                        createEmbed("info")
+                            .setTitle(__("commands.developers.login.sessionTitle"))
+                            .setDescription(
+                                `${__("commands.developers.login.sessionDescription")}\n\n` +
+                                    `${__("commands.developers.login.step1WithUrl")}\n` +
+                                    `${__("commands.developers.login.step2WithUrl")}\n` +
+                                    `${__("commands.developers.login.step3")}\n` +
+                                    `${__mf("commands.developers.login.step4", { url: sessionInfo.inspectUrl })}\n\n` +
+                                    __mf("commands.developers.login.timeLimit", {
+                                        minutes: `**${String(timeoutMinutes)}**`,
+                                    }),
+                            ),
+                    ],
+                });
+            } else {
+                const debugUrl = sessionInfo.debugUrl ?? "";
+                const port = debugUrl ? new URL(debugUrl).port || "4000" : "4000";
+
+                await statusMsg?.edit({
+                    embeds: [
+                        createEmbed("info")
+                            .setTitle(__("commands.developers.login.sessionTitle"))
+                            .setDescription(
+                                `${__("commands.developers.login.sessionDescription")}\n\n` +
+                                    `${__("commands.developers.login.step1Fallback")}\n` +
+                                    `${__mf("commands.developers.login.step2Fallback", { target: `\`localhost:${port}\`` })}\n` +
+                                    `${__("commands.developers.login.step3")}\n` +
+                                    `${__("commands.developers.login.step4")}\n\n` +
+                                    __mf("commands.developers.login.timeLimit", {
+                                        minutes: `**${String(timeoutMinutes)}**`,
+                                    }),
+                            ),
+                    ],
+                });
+            }
+
+            const loggedIn = await loginPromise;
+
+            if (loggedIn) {
+                const finalInfo = loginManager.getSessionInfo();
+                const emailSuffix = finalInfo.email
+                    ? __mf("commands.developers.login.loginSuccessEmail", {
+                          email: `**${finalInfo.email}**`,
+                      })
+                    : "";
+
+                await statusMsg?.edit({
+                    embeds: [
+                        createEmbed("success")
+                            .setTitle(__("commands.developers.login.loginSuccess"))
+                            .setDescription(
+                                __mf("commands.developers.login.loginSuccessDescription", {
+                                    email: emailSuffix,
+                                }),
+                            ),
+                    ],
+                });
+            } else {
+                await statusMsg?.edit({
+                    embeds: [
+                        createEmbed("error")
+                            .setTitle(__("commands.developers.login.loginFailed"))
+                            .setDescription(
+                                __mf("commands.developers.login.loginFailedDescription", {
+                                    cmd: `\`${client.config.mainPrefix}login start\``,
+                                }),
+                            ),
+                    ],
+                });
+            }
+
+            return statusMsg ?? undefined;
+        } catch (err) {
+            const errorMsg = (err as Error).message;
+            await statusMsg?.edit({
+                embeds: [
+                    createEmbed("error")
+                        .setTitle(__("commands.developers.login.loginError"))
+                        .setDescription(
+                            __mf("commands.developers.login.loginErrorDescription", {
+                                error: `\`\`\`\n${errorMsg}\n\`\`\``,
+                            }),
+                        ),
+                ],
+            });
+            return statusMsg ?? undefined;
         }
     }
 
@@ -145,7 +282,7 @@ export class CookiesCommand extends ContextCommand {
         ];
 
         const embed = createEmbed("info")
-            .setTitle(`${__("commands.developers.cookies.listTitle")}`)
+            .setTitle(__("commands.developers.login.statusTitle"))
             .setDescription(descriptionLines.join("\n"));
 
         const sizeText =
@@ -196,13 +333,11 @@ export class CookiesCommand extends ContextCommand {
             ]);
         }
 
-        if (client.cookies.areAllCookiesFailed()) {
+        if (sessionInfo.debugUrl) {
             embed.addFields([
                 {
-                    name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
-                    value: __mf("commands.developers.cookies.allCookiesFailed", {
-                        prefix: client.config.mainPrefix,
-                    }),
+                    name: __("commands.developers.login.debugInfoField"),
+                    value: `DevTools: \`${sessionInfo.debugUrl}\``,
                 },
             ]);
         }
@@ -221,18 +356,6 @@ export class CookiesCommand extends ContextCommand {
         return ctx.reply({ embeds: [embed] });
     }
 
-    private async handleReset(
-        client: Rawon,
-        ctx: CommandContext,
-        __: ReturnType<typeof i18n__>,
-    ): Promise<Message | undefined> {
-        client.cookies.resetFailedStatus();
-
-        return ctx.reply({
-            embeds: [createEmbed("success", __("commands.developers.cookies.resetSuccess"), true)],
-        });
-    }
-
     private async handleRefresh(
         client: Rawon,
         ctx: CommandContext,
@@ -244,19 +367,13 @@ export class CookiesCommand extends ContextCommand {
         if (!loginManager.isBrowserRunning()) {
             return ctx.reply({
                 embeds: [
-                    createEmbed(
-                        "error",
-                        __mf("commands.developers.cookies.refreshNoBrowser", {
-                            loginCmd: `\`${client.config.mainPrefix}login start\``,
-                        }),
-                        true,
-                    ),
+                    createEmbed("error", __("commands.developers.login.refreshNoBrowser"), true),
                 ],
             });
         }
 
         const msg = await ctx.reply({
-            embeds: [createEmbed("info", __("commands.developers.cookies.refreshing"))],
+            embeds: [createEmbed("info", __("commands.developers.login.refreshing"))],
         });
 
         try {
@@ -265,7 +382,7 @@ export class CookiesCommand extends ContextCommand {
 
             await msg?.edit({
                 embeds: [
-                    createEmbed("success", __("commands.developers.cookies.refreshSuccess"), true),
+                    createEmbed("success", __("commands.developers.login.refreshSuccess"), true),
                 ],
             });
         } catch (err) {
@@ -273,7 +390,7 @@ export class CookiesCommand extends ContextCommand {
                 embeds: [
                     createEmbed(
                         "error",
-                        __mf("commands.developers.cookies.refreshFailed", {
+                        __mf("commands.developers.login.refreshFailed", {
                             error: (err as Error).message,
                         }),
                         true,
@@ -283,5 +400,34 @@ export class CookiesCommand extends ContextCommand {
         }
 
         return msg ?? undefined;
+    }
+
+    private async handleLogout(
+        client: Rawon,
+        ctx: CommandContext,
+        __: ReturnType<typeof i18n__>,
+        __mf: ReturnType<typeof i18n__mf>,
+    ): Promise<Message | undefined> {
+        const loginManager = client.cookies.loginManager;
+
+        if (!loginManager.isBrowserRunning()) {
+            return ctx.reply({
+                embeds: [createEmbed("warn", __("commands.developers.login.logoutNoBrowser"))],
+            });
+        }
+
+        await loginManager.close();
+
+        return ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    __mf("commands.developers.login.logoutSuccess", {
+                        cmd: `\`${client.config.mainPrefix}login start\``,
+                    }),
+                    true,
+                ),
+            ],
+        });
     }
 }

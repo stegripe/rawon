@@ -588,7 +588,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 "success",
                 `🎶 **|** ${__mf("requestChannel.addedPlaylistToQueue", {
                     playlist: `**[${playlistTitle}](${playlistUrl})**`,
-                    count: `**${songs.items.length.toString()}**`,
+                    count: `**\`${songs.items.length.toString()}\`**`,
                 })}`,
             );
             if (songs.playlist.thumbnail) {

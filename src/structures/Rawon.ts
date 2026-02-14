@@ -282,6 +282,12 @@ export class Rawon extends SapphireClient {
         this.startTimestamp = Date.now();
         setCookiesManager(this.cookies);
 
+        try {
+            await this.cookies.initialize();
+        } catch (err) {
+            container.logger.warn("[Rawon] Cookie initialization failed (non-fatal):", err);
+        }
+
         if (this.config.isMultiBot) {
             const listenerStore = this.stores.get("listeners");
             const coreReady = listenerStore.get("CoreReady");
