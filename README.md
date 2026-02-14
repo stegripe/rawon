@@ -139,9 +139,10 @@ If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may e
 **Quick fix using the login command:**
 ```
 !login start    # Opens a browser for Google login
-!login status   # Check current login session
-!cookies status # View cookie & login overview
-!cookies reset  # Reset bot detection counter
+!login status   # Check current login & cookie status
+!login refresh  # Force refresh cookies from browser
+!login reset    # Reset bot detection counter
+!login logout   # Close browser session
 ```
 
 ## Support & Questions

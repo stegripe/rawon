@@ -107,8 +107,8 @@ process.on("SIGINT", async () => {
         "Received SIGINT, saving queue states and closing browser before exit...",
     );
     await saveAllQueueStates();
-    await client.cookies.close().catch(() => {
-        // Ignore close errors during shutdown
+    await client.cookies.shutdown().catch(() => {
+        // Ignore shutdown errors during exit
     });
     process.exit(0);
 });
@@ -118,8 +118,8 @@ process.on("SIGTERM", async () => {
         "Received SIGTERM, saving queue states and closing browser before exit...",
     );
     await saveAllQueueStates();
-    await client.cookies.close().catch(() => {
-        // Ignore close errors during shutdown
+    await client.cookies.shutdown().catch(() => {
+        // Ignore shutdown errors during exit
     });
     process.exit(0);
 });

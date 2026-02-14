@@ -53,6 +53,15 @@ export class CookiesManager {
                 "[Cookies] No cookies found. If you encounter bot detection errors, use the login command.",
             );
         }
+
+        try {
+            const relaunched = await this.loginManager.tryAutoRelaunch();
+            if (relaunched) {
+                container.logger.info("[Cookies] Browser auto-relaunched from previous session");
+            }
+        } catch (err) {
+            container.logger.warn("[Cookies] Auto-relaunch check failed (non-fatal):", err);
+        }
     }
 
     public getCurrentCookiePath(): string | null {
@@ -198,6 +207,10 @@ export class CookiesManager {
             lastDetection: this.lastBotDetection,
             threshold: CookiesManager.MAX_BOT_DETECTIONS_BEFORE_REFRESH,
         };
+    }
+
+    public async shutdown(): Promise<void> {
+        await this.loginManager.shutdown();
     }
 
     public async close(): Promise<void> {
