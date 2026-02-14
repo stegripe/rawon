@@ -27,13 +27,10 @@ The easiest way to set up cookies is using the built-in `!login` command. This m
 
 ```
 !login start    - Open a browser and start Google login
-!login status   - View current login session info
+!login status   - View current login & cookie status
 !login refresh  - Manually refresh cookies from active session
+!login reset    - Reset bot detection counter
 !login logout   - Clear the current login session
-
-!cookies status - View cookie file & login overview
-!cookies reset  - Reset bot detection counter
-!cookies refresh - Manually refresh cookies (shorthand)
 ```
 
 #### Quick Start
@@ -111,8 +108,8 @@ Additionally, if the browser session is still running, Rawon will automatically 
 ### Troubleshooting
 
 **Still getting "Sign in to confirm you're not a bot" errors?**
-- Use `!cookies status` to check cookie and login status
-- If bot detection counter is high, try `!cookies reset`
+- Use `!login status` to check cookie and login status
+- If bot detection counter is high, try `!login reset`
 - Use `!login refresh` to manually refresh cookies
 - If the session expired, run `!login start` again
 
@@ -167,13 +164,10 @@ Cara termudah untuk setup cookies adalah menggunakan command `!login` bawaan. Me
 
 ```
 !login start    - Buka browser dan mulai login Google
-!login status   - Lihat info sesi login saat ini
+!login status   - Lihat status login & cookie saat ini
 !login refresh  - Refresh cookies secara manual dari sesi aktif
+!login reset    - Reset counter bot detection
 !login logout   - Hapus sesi login saat ini
-
-!cookies status - Lihat overview cookie & login
-!cookies reset  - Reset counter bot detection
-!cookies refresh - Refresh cookies secara manual (shorthand)
 ```
 
 #### Quick Start
@@ -251,8 +245,8 @@ Selain itu, jika sesi browser masih berjalan, Rawon akan otomatis me-refresh coo
 ### Troubleshooting / Pemecahan Masalah
 
 **Masih dapat error "Sign in to confirm you're not a bot"?**
-- Gunakan `!cookies status` untuk cek status cookie dan login
-- Jika counter bot detection tinggi, coba `!cookies reset`
+- Gunakan `!login status` untuk cek status cookie dan login
+- Jika counter bot detection tinggi, coba `!login reset`
 - Gunakan `!login refresh` untuk refresh cookies secara manual
 - Jika sesi expired, jalankan `!login start` lagi
 
