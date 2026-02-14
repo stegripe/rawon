@@ -1,5 +1,8 @@
+ignoredBuiltDependencies:
+  - puppeteer
+
 onlyBuiltDependencies:
-  - '@swc/core'
+  - "@swc/core"
   - better-sqlite3
   - ffmpeg-static
   - protobufjs

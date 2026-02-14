@@ -1,14 +1,8 @@
 /** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
-import { Buffer } from "node:buffer";
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
-import {
-    AttachmentBuilder,
-    type Message,
-    PermissionFlagsBits,
-    type SlashCommandBuilder,
-} from "discord.js";
+import { type Message, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -36,57 +30,8 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
             .setDescription(opts.description ?? i18n.__("commands.developers.cookies.description"))
             .addSubcommand((sub) =>
                 sub
-                    .setName("add")
-                    .setDescription(i18n.__("commands.developers.cookies.slashAddDescription"))
-                    .addIntegerOption((opt) =>
-                        opt
-                            .setName("number")
-                            .setDescription(
-                                i18n.__("commands.developers.cookies.slashNumberDescription"),
-                            )
-                            .setRequired(true)
-                            .setMinValue(1),
-                    )
-                    .addStringOption((opt) =>
-                        opt
-                            .setName("url")
-                            .setDescription(
-                                i18n.__("commands.developers.cookies.slashUrlDescription"),
-                            )
-                            .setRequired(false),
-                    ),
-            )
-            .addSubcommand((sub) =>
-                sub
-                    .setName("remove")
-                    .setDescription(i18n.__("commands.developers.cookies.slashRemoveDescription"))
-                    .addStringOption((opt) =>
-                        opt
-                            .setName("target")
-                            .setDescription(
-                                i18n.__("commands.developers.cookies.slashRemoveTargetDescription"),
-                            )
-                            .setRequired(true),
-                    ),
-            )
-            .addSubcommand((sub) =>
-                sub
-                    .setName("list")
-                    .setDescription(i18n.__("commands.developers.cookies.slashListDescription")),
-            )
-            .addSubcommand((sub) =>
-                sub
-                    .setName("view")
-                    .setDescription(i18n.__("commands.developers.cookies.slashViewDescription"))
-                    .addIntegerOption((opt) =>
-                        opt
-                            .setName("number")
-                            .setDescription(
-                                i18n.__("commands.developers.cookies.slashNumberDescription"),
-                            )
-                            .setRequired(true)
-                            .setMinValue(1),
-                    ),
+                    .setName("status")
+                    .setDescription(i18n.__("commands.developers.cookies.slashStatusDescription")),
             )
             .addSubcommand((sub) =>
                 sub
@@ -95,17 +40,8 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
             )
             .addSubcommand((sub) =>
                 sub
-                    .setName("use")
-                    .setDescription(i18n.__("commands.developers.cookies.slashUseDescription"))
-                    .addIntegerOption((opt) =>
-                        opt
-                            .setName("number")
-                            .setDescription(
-                                i18n.__("commands.developers.cookies.slashNumberDescription"),
-                            )
-                            .setRequired(true)
-                            .setMinValue(1),
-                    ),
+                    .setName("refresh")
+                    .setDescription(i18n.__("commands.developers.cookies.slashRefreshDescription")),
             ) as SlashCommandBuilder;
     },
 })
@@ -114,59 +50,33 @@ export class CookiesCommand extends ContextCommand {
         return ctx.client as Rawon;
     }
 
-    private formatCookie(number: number): string {
-        return `**\`Cookie ${number}\`**`;
-    }
-
-    private formatUsage(prefix: string): string {
-        return `\`${prefix}cookies add <number>\``;
-    }
-
-    private formatResetCmd(client: Rawon): string {
-        return `\`${client.config.mainPrefix}cookies reset\``;
-    }
-
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const localCtx = ctx as unknown as LocalCommandContext;
         const client = this.getClient(ctx);
-        const __mf = i18n__mf(client, ctx.guild);
+        const __ = i18n__(client, localCtx.guild);
+        const __mf = i18n__mf(client, localCtx.guild);
         const subcommand = localCtx.options?.getSubcommand() ?? localCtx.args[0]?.toLowerCase();
 
         if (!subcommand) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "warn",
-                        __mf("reusable.invalidUsage", {
-                            prefix: `**\`${client.config.mainPrefix}help\`**`,
-                            name: `**\`${this.options.name}\`**`,
-                        }),
-                    ),
-                ],
-            });
+            return this.handleStatus(client, ctx, __, __mf);
         }
 
         switch (subcommand) {
-            case "add":
-                return this.handleAdd(client, ctx);
-            case "remove":
-                return this.handleRemove(client, ctx);
+            case "status":
             case "list":
-                return this.handleList(client, ctx);
-            case "view":
-                return this.handleView(client, ctx);
+            case "info":
+                return this.handleStatus(client, ctx, __, __mf);
             case "reset":
-                return this.handleReset(client, ctx);
-            case "use":
-                return this.handleUse(client, ctx);
+                return this.handleReset(client, ctx, __);
+            case "refresh":
+                return this.handleRefresh(client, ctx, __, __mf);
             default:
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "warn",
-                            __mf("reusable.invalidUsage", {
-                                prefix: `**\`${client.config.mainPrefix}help\`**`,
-                                name: `**\`${this.options.name}\`**`,
+                            __mf("commands.developers.cookies.invalidSubcommand", {
+                                prefix: client.config.mainPrefix,
                             }),
                         ),
                     ],
@@ -174,276 +84,135 @@ export class CookiesCommand extends ContextCommand {
         }
     }
 
-    private async handleAdd(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
-        const __ = i18n__(client, ctx.guild);
-        const __mf = i18n__mf(client, ctx.guild);
-        const number =
-            localCtx.options?.getInteger("number") ?? Number.parseInt(localCtx.args[1] ?? "", 10);
+    private async handleStatus(
+        client: Rawon,
+        ctx: CommandContext,
+        __: ReturnType<typeof i18n__>,
+        __mf: ReturnType<typeof i18n__mf>,
+    ): Promise<Message | undefined> {
+        const cookieInfo = client.cookies.getCookieInfo();
+        const sessionInfo = client.cookies.getLoginSessionInfo();
+        const botDetection = client.cookies.getBotDetectionStats();
 
-        if (Number.isNaN(number) || number < 1) {
-            return ctx.reply({
-                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidNumber"))],
-            });
+        let cookieEmoji: string;
+        let cookieStatusText: string;
+
+        switch (cookieInfo.status) {
+            case "active":
+                cookieEmoji = "🟢";
+                cookieStatusText = __("commands.developers.cookies.statusActive");
+                break;
+            case "stale":
+                cookieEmoji = "🟡";
+                cookieStatusText = __("commands.developers.cookies.statusStale");
+                break;
+            default:
+                cookieEmoji = "🔴";
+                cookieStatusText = __("commands.developers.cookies.statusMissing");
+                break;
         }
 
-        const message = ctx.context;
-        let attachment: { url: string; name: string } | null = null;
+        let loginEmoji: string;
+        let loginText: string;
 
-        if ("attachments" in message && message.attachments.size > 0) {
-            const firstAttachment = message.attachments.first();
-            if (firstAttachment) {
-                attachment = { url: firstAttachment.url, name: firstAttachment.name ?? "unknown" };
-            }
-        }
-
-        const urlArg = (localCtx.options?.getString("url") ?? localCtx.args[2] ?? null) as
-            | string
-            | null;
-        if (!attachment && urlArg) {
-            try {
-                const parsed = new URL(urlArg);
-                const nameFromPath = parsed.pathname.split("/").pop() ?? parsed.hostname;
-                attachment = { url: parsed.toString(), name: nameFromPath };
-            } catch {
-                return ctx.reply({
-                    embeds: [
-                        createEmbed("warn", __("commands.developers.cookies.invalidFileType")),
-                    ],
+        switch (sessionInfo.status) {
+            case "logged_in":
+                loginEmoji = "🟢";
+                loginText = __("commands.developers.cookies.sessionLoggedIn");
+                break;
+            case "waiting_for_login":
+                loginEmoji = "🟡";
+                loginText = __("commands.developers.cookies.sessionWaiting");
+                break;
+            case "error":
+                loginEmoji = "🔴";
+                loginText = __mf("commands.developers.cookies.sessionError", {
+                    error: sessionInfo.error ?? "Unknown",
                 });
-            }
+                break;
+            default:
+                loginEmoji = "⚪";
+                loginText = __("commands.developers.cookies.sessionIdle");
         }
 
-        if (!attachment) {
-            return ctx.reply({
-                embeds: [createEmbed("warn", __("commands.developers.cookies.noAttachment"))],
-            });
-        }
+        const lastRefresh = cookieInfo.lastRefresh
+            ? `<t:${Math.floor(cookieInfo.lastRefresh / 1000)}:R>`
+            : __("commands.developers.cookies.lastRefreshNever");
 
-        if (!attachment.name.endsWith(".txt")) {
-            return ctx.reply({
-                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidFileType"))],
-            });
-        }
+        const descriptionLines = [
+            `${cookieEmoji} **${__("commands.developers.cookies.cookieFileField")}** - ${cookieStatusText}`,
+            `${loginEmoji} **${__("commands.developers.cookies.googleLoginField")}** - ${loginText}`,
+        ];
 
-        try {
-            const response = await client.request.get(attachment.url);
-            const content = response.body;
+        const embed = createEmbed("info")
+            .setTitle(`${__("commands.developers.cookies.listTitle")}`)
+            .setDescription(descriptionLines.join("\n"));
 
-            const lines = content.split("\n");
-            let hasValidCookieLine = false;
-            let hasYoutubeDomain = false;
+        const sizeText =
+            cookieInfo.size > 0 ? `\`${(cookieInfo.size / 1024).toFixed(1)} KB\`` : "N/A";
+        const browserText = cookieInfo.browserRunning
+            ? __("commands.developers.cookies.browserRunning")
+            : __("commands.developers.cookies.browserStopped");
+        const accountText = sessionInfo.email ?? __("commands.developers.cookies.accountNA");
 
-            for (const line of lines) {
-                const trimmedLine = line.trim();
+        const statsValue = [
+            `${__("commands.developers.cookies.sizeLabel")}: ${sizeText}`,
+            `${__("commands.developers.cookies.lastRefreshLabel")}: ${lastRefresh}`,
+            `${__("commands.developers.cookies.browserLabel")}: ${browserText}`,
+            `${__("commands.developers.cookies.accountLabel")}: ${accountText}`,
+        ].join(" | ");
 
-                if (trimmedLine === "" || trimmedLine.startsWith("#")) {
-                    if (trimmedLine.includes("Netscape HTTP Cookie File")) {
-                        hasValidCookieLine = true;
-                    }
-                    continue;
-                }
+        embed.addFields([
+            {
+                name: __("commands.developers.cookies.statsTitle"),
+                value: statsValue,
+            },
+        ]);
 
-                const fields = trimmedLine.split("\t");
-                if (fields.length >= 7) {
-                    hasValidCookieLine = true;
-                    const domain = fields[0];
-                    if (this.isYouTubeRelatedDomain(domain)) {
-                        hasYoutubeDomain = true;
-                    }
-                }
-            }
+        if (botDetection.count > 0) {
+            const lastDetection = botDetection.lastDetection
+                ? `<t:${Math.floor(botDetection.lastDetection / 1000)}:R>`
+                : __("commands.developers.cookies.lastDetectionNone");
 
-            if (!hasValidCookieLine) {
-                return ctx.reply({
-                    embeds: [
-                        createEmbed(
-                            "error",
-                            __("commands.developers.cookies.invalidCookiesFile"),
-                            true,
-                        ),
-                    ],
-                });
-            }
+            const warningLines = [
+                `${__("commands.developers.cookies.detectionsLabel")}: ${botDetection.count}/${botDetection.threshold}`,
+                `${__("commands.developers.cookies.lastDetectionLabel")}: ${lastDetection}`,
+            ];
 
-            if (!hasYoutubeDomain) {
-                this.container.logger.warn(
-                    `[CookiesCommand] Cookie file for index ${number} does not contain YouTube domains`,
+            if (botDetection.count >= botDetection.threshold) {
+                warningLines.push(
+                    __mf("commands.developers.cookies.thresholdReached", {
+                        resetCmd: `\`${client.config.mainPrefix}cookies reset\``,
+                        refreshCmd: `\`${client.config.mainPrefix}login refresh\``,
+                    }),
                 );
             }
 
-            const result = client.cookies.addCookie(number, content);
-
-            if (result === "added") {
-                return ctx.reply({
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            __mf("commands.developers.cookies.addSuccess", {
-                                cookie: this.formatCookie(number),
-                            }),
-                            true,
-                        ),
-                    ],
-                });
-            }
-            if (result === "replaced") {
-                return ctx.reply({
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            __mf("commands.developers.cookies.replaceSuccess", {
-                                cookie: this.formatCookie(number),
-                            }),
-                            true,
-                        ),
-                    ],
-                });
-            }
-            return ctx.reply({
-                embeds: [createEmbed("error", __("commands.developers.cookies.addFailed"), true)],
-            });
-        } catch (error) {
-            this.container.logger.error("COOKIES_ADD_ERR:", error);
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        __mf("commands.developers.cookies.addError", {
-                            error: (error as Error).message,
-                        }),
-                        true,
-                    ),
-                ],
-            });
-        }
-    }
-
-    private async handleRemove(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
-        const __ = i18n__(client, ctx.guild);
-        const __mf = i18n__mf(client, ctx.guild);
-        const target = localCtx.options?.getString("target") ?? localCtx.args[1]?.toLowerCase();
-
-        if (!target) {
-            return ctx.reply({
-                embeds: [createEmbed("warn", __("commands.developers.cookies.noRemoveTarget"))],
-            });
-        }
-
-        if (target === "all") {
-            const count = client.cookies.removeAllCookies();
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "success",
-                        __mf("commands.developers.cookies.removeAllSuccess", {
-                            count: count.toString(),
-                        }),
-                        true,
-                    ),
-                ],
-            });
-        }
-
-        const number = Number.parseInt(target, 10);
-        if (Number.isNaN(number) || number < 1) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed("warn", __("commands.developers.cookies.invalidRemoveTarget")),
-                ],
-            });
-        }
-
-        const success = client.cookies.removeCookie(number);
-
-        if (success) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "success",
-                        __mf("commands.developers.cookies.removeSuccess", {
-                            cookie: this.formatCookie(number),
-                        }),
-                        true,
-                    ),
-                ],
-            });
-        }
-        return ctx.reply({
-            embeds: [
-                createEmbed(
-                    "error",
-                    __mf("commands.developers.cookies.removeNotFound", {
-                        cookie: this.formatCookie(number),
-                    }),
-                    true,
-                ),
-            ],
-        });
-    }
-
-    private async handleList(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(client, ctx.guild);
-        const __mf = i18n__mf(client, ctx.guild);
-        const cookies = client.cookies.listCookies();
-
-        if (cookies.length === 0) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "warn",
-                        __mf("commands.developers.cookies.noCookies", {
-                            usage: this.formatUsage(client.config.mainPrefix),
-                        }),
-                    ),
-                ],
-            });
-        }
-
-        const cookieList = cookies
-            .map((index) => {
-                const status = client.cookies.getCookieStatus(index);
-                let emoji: string;
-                let statusText: string;
-
-                switch (status) {
-                    case "active":
-                        emoji = "🟢";
-                        statusText = __("commands.developers.cookies.statusActive");
-                        break;
-                    case "failed":
-                        emoji = "🔴";
-                        statusText = __("commands.developers.cookies.statusFailed");
-                        break;
-                    default:
-                        emoji = "🟡";
-                        statusText = __("commands.developers.cookies.statusAvailable");
-                }
-
-                return `${emoji} ${this.formatCookie(index)} - ${statusText}`;
-            })
-            .join("\n");
-
-        const currentCookie = client.cookies.getCurrentCookieIndex();
-        const statsValue = `${__("commands.developers.cookies.statsTotal")}: \`${cookies.length}\` | ${__("commands.developers.cookies.statsFailed")}: \`${client.cookies.getFailedCookieCount()}\` | ${__("commands.developers.cookies.statsCurrent")}: ${this.formatCookie(currentCookie)}`;
-
-        const embed = createEmbed("info")
-            .setTitle(`🍪 ${__("commands.developers.cookies.listTitle")}`)
-            .setDescription(cookieList)
-            .addFields([
+            embed.addFields([
                 {
-                    name: __("commands.developers.cookies.statsTitle"),
-                    value: statsValue,
+                    name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
+                    value: warningLines.join("\n"),
                 },
             ]);
+        }
 
         if (client.cookies.areAllCookiesFailed()) {
             embed.addFields([
                 {
                     name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
                     value: __mf("commands.developers.cookies.allCookiesFailed", {
-                        resetCmd: this.formatResetCmd(client),
+                        prefix: client.config.mainPrefix,
+                    }),
+                },
+            ]);
+        }
+
+        if (cookieInfo.status === "missing" && sessionInfo.status === "idle") {
+            embed.addFields([
+                {
+                    name: __("commands.developers.cookies.gettingStartedField"),
+                    value: __mf("commands.developers.cookies.gettingStartedText", {
+                        loginCmd: `\`${client.config.mainPrefix}login start\``,
                     }),
                 },
             ]);
@@ -452,122 +221,33 @@ export class CookiesCommand extends ContextCommand {
         return ctx.reply({ embeds: [embed] });
     }
 
-    private async handleView(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
-        const __ = i18n__(client, ctx.guild);
-        const __mf = i18n__mf(client, ctx.guild);
-        const number =
-            localCtx.options?.getInteger("number") ?? Number.parseInt(localCtx.args[1] ?? "", 10);
-
-        if (Number.isNaN(number) || number < 1) {
-            return ctx.reply({
-                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidNumber"))],
-            });
-        }
-
-        const content = client.cookies.getCookieContent(number);
-
-        if (content === null) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        __mf("commands.developers.cookies.viewNotFound", {
-                            cookie: this.formatCookie(number),
-                        }),
-                        true,
-                    ),
-                ],
-            });
-        }
-
-        const attachment = new AttachmentBuilder(Buffer.from(content, "utf8"), {
-            name: `cookies-${number}.txt`,
-        });
-
-        const status = client.cookies.getCookieStatus(number);
-        let emoji: string;
-        let statusText: string;
-
-        switch (status) {
-            case "active":
-                emoji = "🟢";
-                statusText = __("commands.developers.cookies.statusActive");
-                break;
-            case "failed":
-                emoji = "🔴";
-                statusText = __("commands.developers.cookies.statusFailed");
-                break;
-            default:
-                emoji = "🟡";
-                statusText = __("commands.developers.cookies.statusAvailable");
-        }
-
-        const embed = createEmbed(
-            "info",
-            __mf("commands.developers.cookies.viewSuccess", {
-                cookie: this.formatCookie(number),
-            }),
-        ).addFields([
-            {
-                name: __("commands.developers.cookies.viewStatusTitle"),
-                value: `${emoji} ${statusText}`,
-                inline: true,
-            },
-            {
-                name: __("commands.developers.cookies.viewSizeTitle"),
-                value: `\`${content.length}\` bytes`,
-                inline: true,
-            },
-        ]);
-
-        return ctx.reply({ embeds: [embed], files: [attachment] });
-    }
-
-    private async handleReset(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
-        const __ = i18n__(client, ctx.guild);
+    private async handleReset(
+        client: Rawon,
+        ctx: CommandContext,
+        __: ReturnType<typeof i18n__>,
+    ): Promise<Message | undefined> {
         client.cookies.resetFailedStatus();
+
         return ctx.reply({
             embeds: [createEmbed("success", __("commands.developers.cookies.resetSuccess"), true)],
         });
     }
 
-    private async handleUse(client: Rawon, ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
-        const __ = i18n__(client, ctx.guild);
-        const __mf = i18n__mf(client, ctx.guild);
-        const number =
-            localCtx.options?.getInteger("number") ?? Number.parseInt(localCtx.args[1] ?? "", 10);
+    private async handleRefresh(
+        client: Rawon,
+        ctx: CommandContext,
+        __: ReturnType<typeof i18n__>,
+        __mf: ReturnType<typeof i18n__mf>,
+    ): Promise<Message | undefined> {
+        const loginManager = client.cookies.loginManager;
 
-        if (Number.isNaN(number) || number < 1) {
-            return ctx.reply({
-                embeds: [createEmbed("warn", __("commands.developers.cookies.invalidNumber"))],
-            });
-        }
-
-        const result = client.cookies.useCookie(number);
-
-        if (result === "success") {
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "success",
-                        __mf("commands.developers.cookies.useSuccess", {
-                            cookie: this.formatCookie(number),
-                        }),
-                        true,
-                    ),
-                ],
-            });
-        }
-
-        if (result === "not_found") {
+        if (!loginManager.isBrowserRunning()) {
             return ctx.reply({
                 embeds: [
                     createEmbed(
                         "error",
-                        __mf("commands.developers.cookies.useNotFound", {
-                            cookie: this.formatCookie(number),
+                        __mf("commands.developers.cookies.refreshNoBrowser", {
+                            loginCmd: `\`${client.config.mainPrefix}login start\``,
                         }),
                         true,
                     ),
@@ -575,38 +255,33 @@ export class CookiesCommand extends ContextCommand {
             });
         }
 
-        return ctx.reply({
-            embeds: [
-                createEmbed(
-                    "error",
-                    __mf("commands.developers.cookies.useFailed", {
-                        cookie: this.formatCookie(number),
-                    }),
-                    true,
-                ),
-            ],
+        const msg = await ctx.reply({
+            embeds: [createEmbed("info", __("commands.developers.cookies.refreshing"))],
         });
-    }
 
-    private isYouTubeRelatedDomain(domain: string): boolean {
-        const normalizedDomain = domain.startsWith(".") ? domain.slice(1) : domain;
+        try {
+            await loginManager.refreshCookiesNow();
+            client.cookies.resetFailedStatus();
 
-        const validDomains = [
-            "youtube.com",
-            "www.youtube.com",
-            "m.youtube.com",
-            "music.youtube.com",
-            "youtu.be",
-            "google.com",
-            "www.google.com",
-            "accounts.google.com",
-            "googleapis.com",
-            "googlevideo.com",
-        ];
+            await msg?.edit({
+                embeds: [
+                    createEmbed("success", __("commands.developers.cookies.refreshSuccess"), true),
+                ],
+            });
+        } catch (err) {
+            await msg?.edit({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        __mf("commands.developers.cookies.refreshFailed", {
+                            error: (err as Error).message,
+                        }),
+                        true,
+                    ),
+                ],
+            });
+        }
 
-        return validDomains.some(
-            (validDomain) =>
-                normalizedDomain === validDomain || normalizedDomain.endsWith(`.${validDomain}`),
-        );
+        return msg ?? undefined;
     }
 }

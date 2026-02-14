@@ -103,14 +103,22 @@ async function saveAllQueueStates(): Promise<void> {
 }
 
 process.on("SIGINT", async () => {
-    container.logger.info("Received SIGINT, saving queue states before exit...");
+    container.logger.info(
+        "Received SIGINT, saving queue states and closing browser before exit...",
+    );
     await saveAllQueueStates();
+    await client.cookies.close().catch(() => {
+    });
     process.exit(0);
 });
 
 process.on("SIGTERM", async () => {
-    container.logger.info("Received SIGTERM, saving queue states before exit...");
+    container.logger.info(
+        "Received SIGTERM, saving queue states and closing browser before exit...",
+    );
     await saveAllQueueStates();
+    await client.cookies.close().catch(() => {
+    });
     process.exit(0);
 });
 

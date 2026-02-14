@@ -99,7 +99,7 @@ export class CustomShard extends EventEmitter {
                         this.uptime = Date.now() - startTime;
                         this.respawnAttempts = 0;
                         this.logger.info(
-                            `[Shard #${this.id}] Shard is ready (took ${this.uptime}ms)`,
+                            `[Shard #${this.id}] Shard is ready (took ${this.uptime} ms)`,
                         );
                         this.emit("ready");
                         resolve();
@@ -195,7 +195,7 @@ export class CustomShard extends EventEmitter {
         const delay = Math.min(1000 * this.respawnAttempts, 30_000);
 
         this.logger.info(
-            `[Shard #${this.id}] Respawn attempt ${this.respawnAttempts}/${this.maxRespawnAttempts} in ${delay}ms...`,
+            `[Shard #${this.id}] Respawn attempt ${this.respawnAttempts}/${this.maxRespawnAttempts} in ${delay} ms...`,
         );
 
         if (this.respawnTimeout) {
