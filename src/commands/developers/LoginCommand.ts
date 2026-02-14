@@ -48,6 +48,11 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
             )
             .addSubcommand((sub) =>
                 sub
+                    .setName("reset")
+                    .setDescription(i18n.__("commands.developers.login.slashResetDescription")),
+            )
+            .addSubcommand((sub) =>
+                sub
                     .setName("logout")
                     .setDescription(i18n.__("commands.developers.login.slashLogoutDescription")),
             ) as SlashCommandBuilder;
@@ -71,7 +76,7 @@ export class LoginCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("commands.developers.login.invalidSubcommand", {
-                            loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | logout>\``,
+                            loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | reset | logout>\``,
                         }),
                     ),
                 ],
@@ -85,6 +90,8 @@ export class LoginCommand extends ContextCommand {
                 return this.handleStatus(client, ctx, __, __mf);
             case "refresh":
                 return this.handleRefresh(client, ctx, __, __mf);
+            case "reset":
+                return this.handleReset(client, ctx, __);
             case "logout":
                 return this.handleLogout(client, ctx, __, __mf);
             default:
@@ -93,7 +100,7 @@ export class LoginCommand extends ContextCommand {
                         createEmbed(
                             "warn",
                             __mf("commands.developers.login.invalidSubcommand", {
-                                loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | logout>\``,
+                                loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | reset | logout>\``,
                             }),
                         ),
                     ],
@@ -141,7 +148,7 @@ export class LoginCommand extends ContextCommand {
                                     `${__("commands.developers.login.step3")}\n` +
                                     `${__mf("commands.developers.login.step4", { url: sessionInfo.inspectUrl })}\n\n` +
                                     __mf("commands.developers.login.timeLimit", {
-                                        minutes: `**${String(timeoutMinutes)}**`,
+                                        minutes: `\`${String(timeoutMinutes)}\``,
                                     }),
                             ),
                     ],
@@ -161,7 +168,7 @@ export class LoginCommand extends ContextCommand {
                                     `${__("commands.developers.login.step3")}\n` +
                                     `${__("commands.developers.login.step4")}\n\n` +
                                     __mf("commands.developers.login.timeLimit", {
-                                        minutes: `**${String(timeoutMinutes)}**`,
+                                        minutes: `\`${String(timeoutMinutes)}\``,
                                     }),
                             ),
                     ],
@@ -174,31 +181,31 @@ export class LoginCommand extends ContextCommand {
                 const finalInfo = loginManager.getSessionInfo();
                 const emailSuffix = finalInfo.email
                     ? __mf("commands.developers.login.loginSuccessEmail", {
-                          email: `**${finalInfo.email}**`,
+                          email: `\`${finalInfo.email}\``,
                       })
                     : "";
 
                 await statusMsg?.edit({
                     embeds: [
-                        createEmbed("success")
-                            .setTitle(__("commands.developers.login.loginSuccess"))
-                            .setDescription(
-                                __mf("commands.developers.login.loginSuccessDescription", {
-                                    email: emailSuffix,
-                                }),
-                            ),
+                        createEmbed(
+                            "success",
+                            __mf("commands.developers.login.loginSuccessDescription", {
+                                email: emailSuffix,
+                            }),
+                            true,
+                        ).setTitle(__("commands.developers.login.loginSuccess")),
                     ],
                 });
             } else {
                 await statusMsg?.edit({
                     embeds: [
-                        createEmbed("error")
-                            .setTitle(__("commands.developers.login.loginFailed"))
-                            .setDescription(
-                                __mf("commands.developers.login.loginFailedDescription", {
-                                    cmd: `\`${client.config.mainPrefix}login start\``,
-                                }),
-                            ),
+                        createEmbed(
+                            "error",
+                            __mf("commands.developers.login.loginFailedDescription", {
+                                cmd: `\`${client.config.mainPrefix}login start\``,
+                            }),
+                            true,
+                        ).setTitle(__("commands.developers.login.loginFailed")),
                     ],
                 });
             }
@@ -208,13 +215,13 @@ export class LoginCommand extends ContextCommand {
             const errorMsg = (err as Error).message;
             await statusMsg?.edit({
                 embeds: [
-                    createEmbed("error")
-                        .setTitle(__("commands.developers.login.loginError"))
-                        .setDescription(
-                            __mf("commands.developers.login.loginErrorDescription", {
-                                error: `\`\`\`\n${errorMsg}\n\`\`\``,
-                            }),
-                        ),
+                    createEmbed(
+                        "error",
+                        __mf("commands.developers.login.loginErrorDescription", {
+                            error: `\`\`\`\n${errorMsg}\n\`\`\``,
+                        }),
+                        true,
+                    ).setTitle(__("commands.developers.login.loginError")),
                 ],
             });
             return statusMsg ?? undefined;
@@ -286,11 +293,13 @@ export class LoginCommand extends ContextCommand {
             .setDescription(descriptionLines.join("\n"));
 
         const sizeText =
-            cookieInfo.size > 0 ? `\`${(cookieInfo.size / 1024).toFixed(1)} KB\`` : "N/A";
+            cookieInfo.size > 0 ? `\`${(cookieInfo.size / 1024).toFixed(1)} KB\`` : "`N/A`";
         const browserText = cookieInfo.browserRunning
             ? __("commands.developers.cookies.browserRunning")
             : __("commands.developers.cookies.browserStopped");
-        const accountText = sessionInfo.email ?? __("commands.developers.cookies.accountNA");
+        const accountText = sessionInfo.email
+            ? `\`${sessionInfo.email}\``
+            : __("commands.developers.cookies.accountNA");
 
         const statsValue = [
             `${__("commands.developers.cookies.sizeLabel")}: ${sizeText}`,
@@ -319,7 +328,7 @@ export class LoginCommand extends ContextCommand {
             if (botDetection.count >= botDetection.threshold) {
                 warningLines.push(
                     __mf("commands.developers.cookies.thresholdReached", {
-                        resetCmd: `\`${client.config.mainPrefix}cookies reset\``,
+                        resetCmd: `\`${client.config.mainPrefix}login reset\``,
                         refreshCmd: `\`${client.config.mainPrefix}login refresh\``,
                     }),
                 );
@@ -329,6 +338,17 @@ export class LoginCommand extends ContextCommand {
                 {
                     name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
                     value: warningLines.join("\n"),
+                },
+            ]);
+        }
+
+        if (client.cookies.areAllCookiesFailed()) {
+            embed.addFields([
+                {
+                    name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
+                    value: __mf("commands.developers.cookies.allCookiesFailed", {
+                        prefix: client.config.mainPrefix,
+                    }),
                 },
             ]);
         }
@@ -354,6 +374,18 @@ export class LoginCommand extends ContextCommand {
         }
 
         return ctx.reply({ embeds: [embed] });
+    }
+
+    private async handleReset(
+        client: Rawon,
+        ctx: CommandContext,
+        __: ReturnType<typeof i18n__>,
+    ): Promise<Message | undefined> {
+        client.cookies.resetFailedStatus();
+
+        return ctx.reply({
+            embeds: [createEmbed("success", __("commands.developers.cookies.resetSuccess"), true)],
+        });
     }
 
     private async handleRefresh(
