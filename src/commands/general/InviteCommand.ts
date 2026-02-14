@@ -86,7 +86,7 @@ export class InviteCommand extends ContextCommand {
                         const botNum = bot.tokenIndex + 1;
                         return __mf("commands.general.invite.clickURL", {
                             url: invite,
-                            botNum: `**#${botNum}**`,
+                            botNum,
                         });
                     });
                 description = inviteLines.join("\n");

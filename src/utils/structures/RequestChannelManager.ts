@@ -322,11 +322,19 @@ export class RequestChannelManager {
         embed.addFields([
             {
                 name: __("requestChannel.status"),
-                value: `${loopEmoji} ${queue.loopMode}`,
+                value: `${loopEmoji} \`${queue.loopMode}\``,
                 inline: true,
             },
-            { name: __("requestChannel.shuffle"), value: `🔀 ${shuffleState}`, inline: true },
-            { name: __("requestChannel.volume"), value: `🔊 ${queue.volume}%`, inline: true },
+            {
+                name: __("requestChannel.shuffle"),
+                value: `🔀 \`${shuffleState}\``,
+                inline: true,
+            },
+            {
+                name: __("requestChannel.volume"),
+                value: `🔊 \`${queue.volume}%\``,
+                inline: true,
+            },
         ]);
 
         const queueDurationStr =

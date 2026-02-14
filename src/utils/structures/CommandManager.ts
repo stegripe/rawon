@@ -192,7 +192,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
         }
         const elapsed = Date.now() - startTime;
         this.client.logger.info(
-            `All slash commands have been registered in background. (took ${elapsed}ms)`,
+            `All slash commands have been registered in background. (took ${elapsed} ms)`,
         );
     }
 
@@ -239,7 +239,6 @@ export class CommandManager extends Collection<string, CommandComponent> {
                                             author: message.author.toString(),
                                             timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
                                         })}`,
-                                        true,
                                     ),
                                 ],
                             });

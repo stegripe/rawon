@@ -38,6 +38,8 @@ function args(url, options, cookiesPath) {
         optArgs.push("--cookies", effectiveCookiesPath);
     }
 
+    optArgs.push("--js-runtimes", "node");
+
     return [url, ...optArgs];
 }
 
