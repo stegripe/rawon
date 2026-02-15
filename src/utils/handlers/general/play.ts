@@ -19,7 +19,6 @@ import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import {
     AgeRestrictedError,
     AllCookiesFailedError,
-    CookieRotationNeededError,
     getStream,
     shouldRequeueOnError,
 } from "../YTDLUtil.js";
@@ -283,7 +282,7 @@ export async function play(
 
         if (error instanceof AllCookiesFailedError) {
             queue.client.logger.error(
-                `[PLAY_HANDLER] ❌ All cookies failed for guild ${guild.name}(${guild.id}), stopping queue`,
+                `[PLAY_HANDLER] ❌ Bot detection for guild ${guild.name}(${guild.id}), stopping queue`,
             );
 
             if (!isRequestChannel) {
@@ -291,10 +290,9 @@ export async function play(
                     embeds: [
                         createEmbed(
                             "error",
-                            `${__mf("utils.generalHandler.allCookiesFailed", {
+                            __mf("utils.generalHandler.allCookiesFailed", {
                                 prefix: guild.client.config.mainPrefix,
-                            })}`,
-
+                            }),
                             true,
                         ),
                     ],
@@ -305,7 +303,7 @@ export async function play(
             return;
         }
 
-        if (error instanceof CookieRotationNeededError || shouldRequeueOnError(error as Error)) {
+        if (shouldRequeueOnError(error as Error)) {
             queue.client.logger.warn(
                 `[PLAY_HANDLER] ⚠️ Error playing song "${song.song.title}", re-queuing for retry. Error: ${(error as Error).message}`,
             );

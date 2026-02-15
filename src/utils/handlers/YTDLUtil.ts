@@ -11,19 +11,9 @@ import { checkQuery } from "./GeneralUtil.js";
 export class AllCookiesFailedError extends Error {
     public constructor() {
         super(
-            "All cookies have failed due to bot detection. Please add new cookies using the cookies command.",
+            "Bot detection triggered. Cookies may be stale. Please re-login with the login command.",
         );
         this.name = "AllCookiesFailedError";
-    }
-}
-
-export class CookieRotationNeededError extends Error {
-    public constructor(
-        message: string,
-        public readonly shouldRequeue = true,
-    ) {
-        super(message);
-        this.name = "CookieRotationNeededError";
     }
 }
 
@@ -123,10 +113,6 @@ export async function getStream(
         }
     }
 
-    if (client.cookies.areAllCookiesFailed()) {
-        throw new AllCookiesFailedError();
-    }
-
     if (await isDirectDownload(url)) {
         try {
             const stream = got.stream(url);
@@ -148,7 +134,6 @@ export async function getStream(
     };
 }
 
-const MAX_COOKIE_RETRIES = 10;
 const MAX_TRANSIENT_RETRIES = 5;
 const MAX_BACKOFF_DELAY_MS = 10_000;
 const STREAM_VALIDATION_DELAY_MS = 200;
@@ -172,7 +157,6 @@ async function attemptStreamWithRetry(
                   output: "-",
                   quiet: true,
                   format: "bestaudio",
-                  limitRate: "300K",
               };
 
         const options = { ...baseOptions };
@@ -202,33 +186,13 @@ async function attemptStreamWithRetry(
                 validationTimeout = null;
             }
 
-            client.logger.warn(
-                `[YTDLUtil] ⚠️ Bot detection error detected, attempting cookie refresh (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
-            );
+            client.logger.warn(`[YTDLUtil] ⚠️ Bot detection error. URL: ${url.substring(0, 50)}...`);
 
             proc.kill("SIGKILL");
 
-            if (retryCount >= MAX_COOKIE_RETRIES) {
-                client.logger.error(
-                    `[YTDLUtil] ❌ Maximum retry limit (${MAX_COOKIE_RETRIES}) reached for URL: ${url.substring(0, 50)}...`,
-                );
-                reject(new CookieRotationNeededError("Maximum cookie retries reached", true));
-                return;
-            }
+            client.cookies.handleBotDetection();
 
-            void client.cookies.rotateOnFailure().then((rotated) => {
-                if (rotated) {
-                    client.logger.info("[YTDLUtil] 🔄 Cookies refreshed, retrying...");
-                    attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
-                        .then(resolve)
-                        .catch(reject);
-                } else {
-                    client.logger.error(
-                        "[YTDLUtil] ❌ Cookie refresh failed! Song will be re-queued for retry.",
-                    );
-                    reject(new CookieRotationNeededError("All cookies failed", true));
-                }
-            });
+            reject(new AllCookiesFailedError());
         };
 
         const handleTransientError = (errorMessage: string): void => {
@@ -399,10 +363,6 @@ function isTransientError(errorMessage: string): boolean {
 }
 
 export async function getInfo(url: string, client?: Rawon): Promise<BasicYoutubeVideoInfo> {
-    if (client?.cookies.areAllCookiesFailed()) {
-        throw new AllCookiesFailedError();
-    }
-
     return attemptGetInfoWithRetry(url, client, 0);
 }
 
@@ -425,21 +385,10 @@ async function attemptGetInfoWithRetry(
 
         if (isBotDetectionError(errorMessage) && client) {
             client.logger.warn(
-                `[YTDLUtil] ⚠️ Bot detection in getInfo, refreshing cookies (attempt ${retryCount + 1}/${MAX_COOKIE_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                `[YTDLUtil] ⚠️ Bot detection in getInfo. URL: ${url.substring(0, 50)}...`,
             );
 
-            if (retryCount >= MAX_COOKIE_RETRIES) {
-                client.logger.error(
-                    `[YTDLUtil] ❌ Maximum retry limit (${MAX_COOKIE_RETRIES}) reached in getInfo`,
-                );
-                throw new AllCookiesFailedError();
-            }
-
-            const rotated = await client.cookies.rotateOnFailure();
-            if (rotated) {
-                client.logger.info("[YTDLUtil] 🔄 Retrying getInfo with refreshed cookies");
-                return attemptGetInfoWithRetry(url, client, retryCount + 1);
-            }
+            client.cookies.handleBotDetection();
             throw new AllCookiesFailedError();
         }
 
@@ -457,9 +406,6 @@ async function attemptGetInfoWithRetry(
 }
 
 export function shouldRequeueOnError(error: Error): boolean {
-    if (error instanceof CookieRotationNeededError) {
-        return error.shouldRequeue;
-    }
     if (error instanceof AllCookiesFailedError) {
         return false;
     }
@@ -467,8 +413,10 @@ export function shouldRequeueOnError(error: Error): boolean {
         return false;
     }
     const errorMessage = error.message.toLowerCase();
+    if (isBotDetectionError(errorMessage)) {
+        return false;
+    }
     return (
-        isBotDetectionError(errorMessage) ||
         isTransientError(errorMessage) ||
         errorMessage.includes("socket hang up") ||
         errorMessage.includes("econnreset")

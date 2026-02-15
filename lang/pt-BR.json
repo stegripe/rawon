@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "Arquivo de Cookie",
                 "statusActive": "Ativo",
-                "statusStale": "Desatualizado (navegador não está atualizando)",
                 "statusMissing": "Sem cookies disponíveis",
                 "sizeLabel": "Tamanho",
                 "lastRefreshLabel": "Última Atualização",
@@ -24,28 +23,16 @@
                 "sessionError": "Erro: {error}",
                 "sessionIdle": "Não iniciado",
                 "accountLabel": "Conta",
-                "accountNA": "N/A",
-                "browserLabel": "Navegador",
-                "browserRunning": "Rodando",
-                "browserStopped": "Parado",
-                "detectionsLabel": "Detecções",
-                "lastDetectionLabel": "Última",
-                "lastDetectionNone": "Nenhuma",
-                "thresholdReached": "Limite atingido! Use {resetCmd} ou {refreshCmd}",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "Começando",
                 "gettingStartedText": "Use {loginCmd} para fazer login no Google e gerar cookies automaticamente.",
-                "statsTitle": "Estatísticas",
-                "warningTitle": "Aviso",
-                "resetSuccess": "O contador de detecção de bot foi resetado. As requisições serão retentadas com os cookies existentes.",
-                "allCookiesFailed": "Todos os cookies falharam! Use {prefix}login reset para tentar novamente."
+                "statsTitle": "Estatísticas"
             },
             "login": {
                 "description": "Gerenciar sessão de login do Google para autenticação de cookies do YouTube",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Iniciar uma sessão de login do Google via navegador",
                 "slashStatusDescription": "Verificar status atual da sessão de login",
-                "slashRefreshDescription": "Forçar atualização de cookies da sessão ativa do navegador",
-                "slashResetDescription": "Resetar contador de detecção de bot e retentar requisições falhas",
                 "slashLogoutDescription": "Fechar a sessão do navegador",
                 "invalidSubcommand": "Uso: {loginUsage}",
                 "alreadyLoggedIn": "Já está logado. Use `logout` primeiro para iniciar uma nova sessão.",
@@ -60,20 +47,15 @@
                 "step4": "4. URL DevTools remoto: {url} (opcional)",
                 "timeLimit": "Você tem {minutes} minutos para completar o login.",
                 "loginSuccess": "Login Bem-sucedido",
-                "loginSuccessDescription": "Login realizado com sucesso{email}.\n\nOs cookies foram exportados e serão atualizados automaticamente a cada 30 minutos.\nO YouTube deve funcionar agora sem problemas de detecção de bot.",
+                "loginSuccessDescription": "Login realizado com sucesso{email}.\n\nOs cookies foram exportados e salvos.\nO YouTube deve funcionar agora sem problemas de detecção de bot.",
                 "loginSuccessEmail": " como {email}",
                 "loginFailed": "Login Falhou",
-                "loginFailedDescription": "O login expirou ou foi cancelado.\nUse {cmd} para tentar novamente.",
+                "loginFailedDescription": "O login expirou ou foi cancelado.\n\nUse {cmd} para tentar novamente.",
                 "loginError": "Erro de Login",
                 "loginErrorDescription": "Ocorreu um erro durante o login:\n{error}",
                 "statusTitle": "Status de Login e Cookies",
-                "debugInfoField": "Info de Debug",
-                "refreshing": "Atualizando cookies...",
-                "refreshSuccess": "Cookies atualizados com sucesso!",
-                "refreshFailed": "Atualização de cookies falhou: {error}",
-                "refreshNoBrowser": "O navegador não está rodando. Inicie uma sessão de login primeiro com `login start`.",
-                "logoutSuccess": "Sessão do navegador fechada.\nOs cookies existentes continuarão funcionando até expirar.\nUse {cmd} para iniciar uma nova sessão.",
-                "logoutNoBrowser": "O navegador não está rodando."
+                "logoutSuccess": "Sessão de login limpa.\n\nTodos os cookies e dados de perfil foram apagados.\nUse {cmd} para iniciar uma nova sessão.",
+                "logoutNoBrowser": "Nenhuma sessão de login ativa."
             }
         },
         "general": {
@@ -385,7 +367,7 @@
             "startPlaying": "Começando a tocar {song}",
             "stopPlaying": "Parando de tocar {song}",
             "songRequeued": "Houve um problema ao tocar {song}, adicionado de volta à fila para outra tentativa.",
-            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Use {prefix}login reset para tentar novamente, ou {prefix}login start para fazer login novamente.",
+            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Use `{prefix}login logout` e depois `{prefix}login start` para fazer login novamente.",
             "ageRestricted": "Não é possível reproduzir {song} porque é restrito por idade e requer login."
         },
         "musicDecorator": {
