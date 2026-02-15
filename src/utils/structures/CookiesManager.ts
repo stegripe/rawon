@@ -39,7 +39,6 @@ export class CookiesManager {
     public async initialize(): Promise<void> {
         container.logger.info("[Cookies] Initializing cookie manager...");
 
-        // Restore session info (email, etc.) from DB without launching browser
         const restored = this.loginManager.restoreSessionFromDB();
 
         if (this.loginManager.hasCookies()) {
@@ -72,10 +71,6 @@ export class CookiesManager {
         return cookiePath;
     }
 
-    /**
-     * Called when bot detection is encountered.
-     * Logs a warning telling the user to re-login. Does NOT auto-rotate or retry.
-     */
     public handleBotDetection(): void {
         container.logger.warn(
             "[Cookies] Bot detection triggered. Cookies may be stale or invalid. " +
@@ -83,9 +78,6 @@ export class CookiesManager {
         );
     }
 
-    /**
-     * Returns true if there are no valid cookies available.
-     */
     public hasNoCookies(): boolean {
         return this.getCurrentCookiePath() === null;
     }

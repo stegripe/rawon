@@ -111,7 +111,6 @@ export class GoogleLoginManager {
             )
         `);
 
-        // Migration: add visitor_data column if missing (from older schema)
         try {
             this.db.exec("ALTER TABLE login_session ADD COLUMN visitor_data TEXT");
         } catch {
@@ -803,13 +802,11 @@ export class GoogleLoginManager {
             if (loggedIn) {
                 await this.connectPuppeteerAndExportCookies();
 
-                // Extract account name from the YouTube page (for display in status)
                 await this.extractAccountName();
 
                 this.status = "logged_in";
                 this.saveSessionState();
 
-                // Close browser — cookies are saved to disk, no need to keep it running.
                 await this.closeBrowserOnly();
 
                 container.logger.info(
@@ -824,7 +821,6 @@ export class GoogleLoginManager {
             this.error = "Login timed out or was cancelled";
             container.logger.warn("[GoogleLogin] Login timed out or was cancelled");
 
-            // Close browser on failure too
             await this.closeBrowserOnly();
 
             return false;
@@ -833,17 +829,12 @@ export class GoogleLoginManager {
             this.error = (err as Error).message;
             container.logger.error("[GoogleLogin] Login failed:", err);
 
-            // Close browser on error
             await this.closeBrowserOnly();
 
             return false;
         }
     }
 
-    /**
-     * Close the browser process without wiping cookies or session state.
-     * Used after login to free resources — cookies remain on disk for yt-dlp.
-     */
     private async closeBrowserOnly(): Promise<void> {
         this.cleanupLoginWait();
         this.stopDevtoolsProxy();
@@ -884,9 +875,6 @@ export class GoogleLoginManager {
     private async navigateToLoginPage(): Promise<void> {
         const port = this.actualPort ?? this.devtoolsPort;
         const host = "127.0.0.1";
-        // Use YouTube's login flow: Google login with continue=youtube.com
-        // This way after login, Google redirects back to YouTube, which triggers
-        // the SSO and sets YouTube-domain cookies (LOGIN_INFO, SID on .youtube.com, etc.)
         const loginUrl =
             "https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fwww.youtube.com%2F&service=youtube";
 
@@ -905,7 +893,6 @@ export class GoogleLoginManager {
         await this.applyStealthToPage(page);
         await page.setViewport({ width: 1280, height: 720 });
 
-        // First visit YouTube to establish initial cookies (avoids CookieMismatch)
         try {
             await page.goto("https://www.youtube.com", {
                 waitUntil: "domcontentloaded",
@@ -921,7 +908,6 @@ export class GoogleLoginManager {
             timeout: PAGE_NAVIGATION_TIMEOUT_MS,
         });
 
-        // If we hit CookieMismatch, clear cookies and retry
         const currentUrl = page.url();
         if (currentUrl.includes("CookieMismatch") || currentUrl.includes("cookie_disabled")) {
             container.logger.warn(
@@ -934,7 +920,6 @@ export class GoogleLoginManager {
 
             await new Promise((resolve) => setTimeout(resolve, 1_000));
 
-            // Retry: visit YouTube first then login
             await page.goto("https://www.youtube.com", {
                 waitUntil: "domcontentloaded",
                 timeout: PAGE_NAVIGATION_TIMEOUT_MS,
@@ -1000,23 +985,11 @@ export class GoogleLoginManager {
             await this.page.setViewport({ width: 1280, height: 720 });
         }
 
-        // Navigate to YouTube to trigger Google→YouTube SSO.
-        // This is REQUIRED because SID/HSID/SSID/APISID/SAPISID are set on .google.com
-        // but yt-dlp needs them on .youtube.com domain. Visiting YouTube while signed
-        // into Google causes YouTube to set LOGIN_INFO and other critical cookies
-        // on the .youtube.com domain.
         await this.navigateToYouTubeForSSO();
 
         await this.exportCookies();
     }
 
-    /**
-     * Navigate to YouTube to trigger the Google→YouTube SSO exchange.
-     * After Google login, critical cookies (SID, HSID, etc.) only exist on .google.com.
-     * YouTube's SSO creates copies on .youtube.com + sets LOGIN_INFO.
-     * Without this step, yt-dlp gets no authentication cookies for youtube.com.
-     * Returns true if LOGIN_INFO cookie was found (SSO successful).
-     */
     private async navigateToYouTubeForSSO(): Promise<boolean> {
         if (!this.page || this.page.isClosed()) {
             return false;
@@ -1051,8 +1024,6 @@ export class GoogleLoginManager {
                 timeout: PAGE_NAVIGATION_TIMEOUT_MS,
             });
 
-            // Wait for YouTube to process SSO — it needs time to exchange tokens
-            // and set cookies via redirects
             await new Promise((resolve) => setTimeout(resolve, 5_000));
 
             if (await checkForLoginInfo()) {
@@ -1062,7 +1033,6 @@ export class GoogleLoginManager {
                 return true;
             }
 
-            // Retry once — sometimes YouTube needs a reload
             container.logger.warn(
                 "[GoogleLogin] YouTube SSO: LOGIN_INFO not found after first visit, retrying...",
             );
@@ -1089,17 +1059,12 @@ export class GoogleLoginManager {
         }
     }
 
-    /**
-     * Extract the account name from the YouTube page after SSO.
-     * Tries ytcfg, script parsing, and avatar popup methods.
-     */
     private async extractAccountName(): Promise<void> {
         if (!this.page || this.page.isClosed()) {
             return;
         }
 
         try {
-            // Try ytcfg first (most reliable on YouTube)
             const ytcfgName = (await this.page.evaluate(
                 `(() => {
                     try {
@@ -1120,7 +1085,6 @@ export class GoogleLoginManager {
                 return;
             }
 
-            // Try script parsing for accountName
             const scriptName = (await this.page.evaluate(
                 `(() => {
                     try {
@@ -1144,7 +1108,6 @@ export class GoogleLoginManager {
                 return;
             }
 
-            // Try clicking avatar button for popup
             const avatarClicked = await this.page.evaluate(
                 `(() => {
                     const avatar = document.querySelector("button#avatar-btn");
@@ -1216,8 +1179,6 @@ export class GoogleLoginManager {
                     const url = loginTarget.url;
                     this.currentLoginUrl = url;
 
-                    // Only consider login successful if URL indicates actual post-login destination
-                    // Use whitelist approach: only accept known post-login URLs
                     const isPostLoginUrl =
                         url.includes("myaccount.google.com") ||
                         url.includes("youtube.com") ||
@@ -1226,7 +1187,6 @@ export class GoogleLoginManager {
                         url.endsWith("google.com") ||
                         url.endsWith("google.com/");
 
-                    // Explicitly reject known error/intermediate pages
                     const isErrorPage =
                         url.includes("CookieMismatch") ||
                         url.includes("cookie_disabled") ||
@@ -1234,7 +1194,6 @@ export class GoogleLoginManager {
                         url.includes("accounts.google.com");
 
                     if (isPostLoginUrl && !isErrorPage) {
-                        // Double-check: verify actual Google session cookies exist via CDP
                         const hasSession = await this.verifyGoogleSessionCookies();
                         if (hasSession) {
                             this.cleanupLoginWait();
@@ -1268,10 +1227,6 @@ export class GoogleLoginManager {
         }
     }
 
-    /**
-     * Verify that actual Google session cookies (SID, HSID) exist in the browser.
-     * This prevents false login detection from URL-only checks (e.g. CookieMismatch page).
-     */
     private async verifyGoogleSessionCookies(): Promise<boolean> {
         try {
             if (!this.browser?.connected) {
@@ -1299,10 +1254,6 @@ export class GoogleLoginManager {
         }
     }
 
-    /**
-     * Returns yt-dlp `--extractor-args` value with visitor data,
-     * or `null` if not available.
-     */
     public getExtractorArgs(): string | null {
         if (this.visitorData) {
             return `youtube:visitor_data=${this.visitorData}`;
@@ -1352,10 +1303,8 @@ export class GoogleLoginManager {
 
             const netscapeCookies = this.toNetscapeFormat(relevantCookies);
 
-            // Save primary cookie file
             writeFileSync(this.paths.cookiesFilePath, netscapeCookies, "utf8");
 
-            // Save backup copy (at least 2 copies on disk as safety net)
             const backupPath = `${this.paths.cookiesFilePath}.backup`;
             writeFileSync(backupPath, netscapeCookies, "utf8");
 
@@ -1371,7 +1320,6 @@ export class GoogleLoginManager {
                     `, critical: ${hasCritical.join(",") || "NONE"}, missing: ${missingCritical.join(",") || "none"})`,
             );
 
-            // Validate: read back and verify the file is parseable
             this.validateCookieFile();
             return true;
         } catch (err) {
@@ -1389,17 +1337,12 @@ export class GoogleLoginManager {
         ];
 
         for (const cookie of cookies) {
-            // Preserve host-only vs domain cookie distinction from CDP
-            // CDP: host-only cookies have no leading dot (e.g. "www.youtube.com")
-            // CDP: domain cookies have a leading dot (e.g. ".youtube.com")
             const isDomainCookie = cookie.domain.startsWith(".");
             const domain = cookie.domain;
             const includeSubDomains = isDomainCookie ? "TRUE" : "FALSE";
             const secure = cookie.secure ? "TRUE" : "FALSE";
             const expiry = cookie.expires > 0 ? Math.floor(cookie.expires) : 0;
 
-            // HttpOnly cookies use #HttpOnly_ prefix in Netscape format
-            // This is important for Python's MozillaCookieJar (used by yt-dlp)
             const httpOnlyPrefix = cookie.httpOnly ? "#HttpOnly_" : "";
 
             lines.push(
@@ -1493,7 +1436,6 @@ export class GoogleLoginManager {
         this.cleanupLoginWait();
         this.stopDevtoolsProxy();
 
-        // Close browser
         if (this.browser) {
             this.browser.removeAllListeners("disconnected");
             try {
@@ -1515,7 +1457,6 @@ export class GoogleLoginManager {
             }
         }
 
-        // Wipe browser profile directory for clean re-login
         try {
             rmSync(this.paths.userDataDir, { recursive: true, force: true });
             container.logger.info("[GoogleLogin] Browser profile directory wiped");
@@ -1523,7 +1464,6 @@ export class GoogleLoginManager {
             container.logger.warn("[GoogleLogin] Failed to wipe browser profile:", err);
         }
 
-        // Delete cookie files (primary + backup)
         for (const filePath of [
             this.paths.cookiesFilePath,
             `${this.paths.cookiesFilePath}.backup`,
@@ -1535,7 +1475,6 @@ export class GoogleLoginManager {
             }
         }
 
-        // Clear all state
         this.clearSessionState();
         this.browser = null;
         this.page = null;
@@ -1563,10 +1502,6 @@ export class GoogleLoginManager {
         return LOGIN_TIMEOUT_MS;
     }
 
-    /**
-     * Restore session info (email, visitorData) from the database on startup.
-     * Does NOT launch the browser — just restores metadata for display.
-     */
     public restoreSessionFromDB(): boolean {
         const state = this.getPersistedSessionState();
         if (!state?.wasRunning) {
@@ -1581,7 +1516,6 @@ export class GoogleLoginManager {
             return false;
         }
 
-        // Restore session info from DB
         if (state.email) {
             this.loginEmail = state.email;
         }

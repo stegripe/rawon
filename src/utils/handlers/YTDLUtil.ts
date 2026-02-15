@@ -191,7 +191,6 @@ async function attemptStreamWithRetry(
 
             proc.kill("SIGKILL");
 
-            // Notify cookies manager about bot detection
             client.cookies.handleBotDetection();
 
             reject(new AllCookiesFailedError());

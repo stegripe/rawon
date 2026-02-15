@@ -11,7 +11,6 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
-// Auto-update interval: 24 hours
 const UPDATE_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 let cookiesManagerRef = null;
@@ -36,20 +35,15 @@ function args(url, options, cookiesPath) {
         })
         .filter(Boolean);
 
-    // Use cookies if available on disk
     const effectiveCookiesPath = cookiesPath ?? cookiesManagerRef?.getCurrentCookiePath();
     const useCookies = effectiveCookiesPath && existsSync(effectiveCookiesPath);
     
     if (useCookies) {
-        // Copy cookies to a temp file so yt-dlp doesn't overwrite our master cookie file.
-        // yt-dlp dumps its cookie jar back to the --cookies file after each request,
-        // which can corrupt or lose cookies that were in our original file.
         const tempCookiesPath = effectiveCookiesPath + ".ytdlp-tmp";
         try {
             copyFileSync(effectiveCookiesPath, tempCookiesPath);
             optArgs.push("--cookies", tempCookiesPath);
         } catch {
-            // If copy fails, fall back to using the original
             optArgs.push("--cookies", effectiveCookiesPath);
         }
     }
@@ -59,7 +53,6 @@ function args(url, options, cookiesPath) {
         optArgs.push("--extractor-args", extractorArgs);
     }
 
-    // Log args periodically (at most once per 5 minutes) for debugging
     const now = Date.now();
     if (now - lastArgsLog > 300_000) {
         lastArgsLog = now;
@@ -106,7 +99,6 @@ export function isAgeRestrictedError(errorMessage) {
 export async function downloadExecutable() {
     let needsDownload = !existsSync(exePath);
 
-    // Auto-update: re-download if binary is older than 24 hours
     if (!needsDownload) {
         try {
             const stat = statSync(exePath);
@@ -144,7 +136,6 @@ export async function downloadExecutable() {
         }
     }
 
-    // Log version on startup
     try {
         const { execFileSync } = await import("node:child_process");
         const version = execFileSync(exePath, ["--version"], { timeout: 5000 }).toString().trim();
