@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "Файл Cookie",
                 "statusActive": "Активен",
-                "statusStale": "Устарел (браузер не обновляет)",
                 "statusMissing": "Нет доступных cookies",
                 "sizeLabel": "Размер",
                 "lastRefreshLabel": "Последнее обновление",
@@ -24,28 +23,16 @@
                 "sessionError": "Ошибка: {error}",
                 "sessionIdle": "Не запущено",
                 "accountLabel": "Аккаунт",
-                "accountNA": "N/A",
-                "browserLabel": "Браузер",
-                "browserRunning": "Работает",
-                "browserStopped": "Остановлен",
-                "detectionsLabel": "Обнаружения",
-                "lastDetectionLabel": "Последнее",
-                "lastDetectionNone": "Нет",
-                "thresholdReached": "Порог достигнут! Используйте {resetCmd} или {refreshCmd}",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "Начало работы",
                 "gettingStartedText": "Используйте {loginCmd} для входа в Google и автоматической генерации cookies.",
-                "statsTitle": "Статистика",
-                "warningTitle": "Предупреждение",
-                "resetSuccess": "Счётчик обнаружения бота сброшен. Запросы будут повторены с существующими cookies.",
-                "allCookiesFailed": "Все cookies неудачны! Используйте {prefix}login reset для повторной попытки."
+                "statsTitle": "Статистика"
             },
             "login": {
                 "description": "Управление сессией входа Google для аутентификации cookies YouTube",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Начать сессию входа Google через браузер",
                 "slashStatusDescription": "Проверить текущий статус сессии входа",
-                "slashRefreshDescription": "Принудительно обновить cookies из активной сессии браузера",
-                "slashResetDescription": "Сбросить счётчик обнаружения бота и повторить неудачные запросы",
                 "slashLogoutDescription": "Закрыть сессию браузера",
                 "invalidSubcommand": "Использование: {loginUsage}",
                 "alreadyLoggedIn": "Вход уже выполнен. Используйте `logout` для начала новой сессии.",
@@ -60,20 +47,15 @@
                 "step4": "4. URL удалённого DevTools: {url} (опционально)",
                 "timeLimit": "У вас есть {minutes} минут для завершения входа.",
                 "loginSuccess": "Вход Успешен",
-                "loginSuccessDescription": "Успешный вход{email}.\n\nCookies экспортированы и будут автоматически обновляться каждые 30 минут.\nYouTube должен теперь работать без проблем обнаружения бота.",
+                "loginSuccessDescription": "Успешный вход{email}.\n\nCookies экспортированы и сохранены.\nYouTube должен теперь работать без проблем обнаружения бота.",
                 "loginSuccessEmail": " как {email}",
                 "loginFailed": "Вход Не Удался",
-                "loginFailedDescription": "Время входа истекло или вход был отменён.\nИспользуйте {cmd} для повторной попытки.",
+                "loginFailedDescription": "Время входа истекло или вход был отменён.\n\nИспользуйте {cmd} для повторной попытки.",
                 "loginError": "Ошибка Входа",
                 "loginErrorDescription": "Во время входа произошла ошибка:\n{error}",
                 "statusTitle": "Статус Входа и Cookies",
-                "debugInfoField": "Инфо отладки",
-                "refreshing": "Обновление cookies...",
-                "refreshSuccess": "Cookies успешно обновлены!",
-                "refreshFailed": "Обновление cookies не удалось: {error}",
-                "refreshNoBrowser": "Браузер не запущен. Сначала начните сессию входа с `login start`.",
-                "logoutSuccess": "Сессия браузера закрыта.\nСуществующие cookies продолжат работать до истечения срока.\nИспользуйте {cmd} для начала новой сессии.",
-                "logoutNoBrowser": "Браузер не запущен."
+                "logoutSuccess": "Сессия входа очищена.\n\nВсе cookies и данные профиля были удалены.\nИспользуйте {cmd} для начала новой сессии.",
+                "logoutNoBrowser": "Нет активной сессии входа."
             }
         },
         "general": {
@@ -385,7 +367,7 @@
             "startPlaying": "Играет: {song}",
             "stopPlaying": "Остановлено проигрывание: {song}",
             "songRequeued": "Возникла проблема с воспроизведением {song}, добавлено обратно в очередь для повторной попытки.",
-            "allCookiesFailed": "Все cookies неудачны из-за обнаружения бота! Используйте {prefix}login reset для повторной попытки, или {prefix}login start для повторного входа.",
+            "allCookiesFailed": "Все cookies неудачны из-за обнаружения бота! Используйте `{prefix}login logout`, затем `{prefix}login start` для повторного входа.",
             "ageRestricted": "Невозможно воспроизвести {song}, так как она имеет возрастное ограничение и требует входа в систему."
         },
         "musicDecorator": {

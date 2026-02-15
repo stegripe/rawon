@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "Fail Cookie",
                 "statusActive": "Aktif",
-                "statusStale": "Lapuk (pelayar tidak menyegar)",
                 "statusMissing": "Tiada cookies tersedia",
                 "sizeLabel": "Saiz",
                 "lastRefreshLabel": "Penyegaran Terakhir",
@@ -24,28 +23,16 @@
                 "sessionError": "Ralat: {error}",
                 "sessionIdle": "Belum dimulakan",
                 "accountLabel": "Akaun",
-                "accountNA": "N/A",
-                "browserLabel": "Pelayar",
-                "browserRunning": "Berjalan",
-                "browserStopped": "Berhenti",
-                "detectionsLabel": "Pengesanan",
-                "lastDetectionLabel": "Terakhir",
-                "lastDetectionNone": "Tiada",
-                "thresholdReached": "Ambang dicapai! Guna {resetCmd} atau {refreshCmd}",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "Mula",
                 "gettingStartedText": "Guna {loginCmd} untuk log masuk ke Google dan jana cookies secara automatik.",
-                "statsTitle": "Statistik",
-                "warningTitle": "Peringatan",
-                "resetSuccess": "Kaunter pengesanan bot telah ditetapkan semula. Permintaan akan dicuba semula dengan cookies sedia ada.",
-                "allCookiesFailed": "Kesemua cookies gagal! Guna {prefix}login reset untuk mencuba lagi."
+                "statsTitle": "Statistik"
             },
             "login": {
                 "description": "Mengurus sesi log masuk Google untuk autentikasi cookies YouTube",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Mulakan sesi log masuk Google melalui pelayar",
                 "slashStatusDescription": "Semak status sesi log masuk semasa",
-                "slashRefreshDescription": "Paksa muat semula cookies dari sesi pelayar aktif",
-                "slashResetDescription": "Set semula kaunter pengesanan bot dan cuba semula permintaan gagal",
                 "slashLogoutDescription": "Tutup sesi pelayar",
                 "invalidSubcommand": "Penggunaan: {loginUsage}",
                 "alreadyLoggedIn": "Sudah log masuk. Guna `logout` dahulu untuk memulakan sesi baharu.",
@@ -60,20 +47,15 @@
                 "step4": "4. URL DevTools jarak jauh: {url} (pilihan)",
                 "timeLimit": "Anda mempunyai {minutes} minit untuk menyelesaikan log masuk.",
                 "loginSuccess": "Log Masuk Berjaya",
-                "loginSuccessDescription": "Berjaya log masuk{email}.\n\nCookies telah dieksport dan akan disegar secara automatik setiap 30 minit.\nYouTube sepatutnya berfungsi tanpa masalah pengesanan bot.",
+                "loginSuccessDescription": "Berjaya log masuk{email}.\n\nCookies telah dieksport dan disimpan.\nYouTube sepatutnya berfungsi tanpa masalah pengesanan bot.",
                 "loginSuccessEmail": " sebagai {email}",
                 "loginFailed": "Log Masuk Gagal",
-                "loginFailedDescription": "Log masuk tamat masa atau dibatalkan.\nGuna {cmd} untuk mencuba lagi.",
+                "loginFailedDescription": "Log masuk tamat masa atau dibatalkan.\n\nGuna {cmd} untuk mencuba lagi.",
                 "loginError": "Ralat Log Masuk",
                 "loginErrorDescription": "Ralat berlaku semasa log masuk:\n{error}",
                 "statusTitle": "Status Log Masuk & Cookie",
-                "debugInfoField": "Info Debug",
-                "refreshing": "Menyegar cookies...",
-                "refreshSuccess": "Cookies berjaya disegar!",
-                "refreshFailed": "Penyegaran cookies gagal: {error}",
-                "refreshNoBrowser": "Pelayar tidak berjalan. Mulakan sesi log masuk dahulu dengan `login start`.",
-                "logoutSuccess": "Sesi pelayar ditutup.\nCookies sedia ada akan terus berfungsi sehingga tamat tempoh.\nGuna {cmd} untuk memulakan sesi baharu.",
-                "logoutNoBrowser": "Pelayar tidak berjalan."
+                "logoutSuccess": "Sesi log masuk dikosongkan.\n\nSemua cookies dan data profil telah dipadam.\nGuna {cmd} untuk memulakan sesi baharu.",
+                "logoutNoBrowser": "Tiada sesi log masuk aktif."
             }
         },
         "general": {
@@ -425,7 +407,7 @@
             "startPlaying": "Mula memainkan {song}",
             "stopPlaying": "Berhenti memainkan {song}",
             "songRequeued": "Gagal memainkan {song}, dimasukkan semula ke giliran untuk cubaan lain.",
-            "allCookiesFailed": "Semua cookies gagal kerana dikesan sebagai bot! Guna {prefix}login reset untuk mencuba semula, atau {prefix}login start untuk log masuk semula.",
+            "allCookiesFailed": "Semua cookies gagal kerana dikesan sebagai bot! Guna `{prefix}login logout` kemudian `{prefix}login start` untuk log masuk semula.",
             "ageRestricted": "Tidak dapat memainkan {song} kerana ia disekat umur dan memerlukan log masuk."
         },
         "musicDecorator": {

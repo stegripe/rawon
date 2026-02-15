@@ -97,7 +97,7 @@ The `/app/cache` volume stores:
 - `yt-dlp` binary for audio streaming
 - `data.*` for persistent settings (request channels, player states)
 - Cached audio files (if audio caching is enabled)
-- Cookie file and browser profile from Google login (see [Cookies Setup](./docs/COOKIES_SETUP.md))
+- Cookie file and profile data from Google login (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
 #### Port Information
 The `DEVTOOLS_PORT` (default: `3000`) is used for Chrome DevTools remote debugging proxy. This is required for `!login start` to work from a remote machine. Set `DEVTOOLS_PORT` in your `dev.env` file to use a different port.
@@ -140,9 +140,7 @@ If you're hosting on cloud providers (AWS, GCP, Azure, Railway, etc.), you may e
 ```
 !login start    # Opens a browser for Google login
 !login status   # Check current login & cookie status
-!login refresh  # Force refresh cookies from browser
-!login reset    # Reset bot detection counter
-!login logout   # Close browser session
+!login logout   # Clear the login session (wipes all cookies and profile data)
 ```
 
 ## Support & Questions

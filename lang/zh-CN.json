@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "Cookie文件",
                 "statusActive": "活跃",
-                "statusStale": "过时（浏览器未刷新）",
                 "statusMissing": "无可用cookies",
                 "sizeLabel": "大小",
                 "lastRefreshLabel": "上次刷新",
@@ -24,28 +23,16 @@
                 "sessionError": "错误：{error}",
                 "sessionIdle": "未启动",
                 "accountLabel": "账号",
-                "accountNA": "N/A",
-                "browserLabel": "浏览器",
-                "browserRunning": "运行中",
-                "browserStopped": "已停止",
-                "detectionsLabel": "检测次数",
-                "lastDetectionLabel": "上次",
-                "lastDetectionNone": "无",
-                "thresholdReached": "已达到阈值！使用 {resetCmd} 或 {refreshCmd}",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "开始使用",
                 "gettingStartedText": "使用 {loginCmd} 登录Google并自动生成cookies。",
-                "statsTitle": "统计",
-                "warningTitle": "警告",
-                "resetSuccess": "机器人检测计数器已重置。请求将使用现有cookies重试。",
-                "allCookiesFailed": "所有cookie都已失败！使用 {prefix}login reset 重试。"
+                "statsTitle": "统计"
             },
             "login": {
                 "description": "管理Google登录会话以进行YouTube cookie身份验证",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "通过浏览器启动Google登录会话",
                 "slashStatusDescription": "检查当前登录会话状态",
-                "slashRefreshDescription": "从活动的浏览器会话强制刷新cookies",
-                "slashResetDescription": "重置机器人检测计数器并重试失败的请求",
                 "slashLogoutDescription": "关闭浏览器会话",
                 "invalidSubcommand": "用法：{loginUsage}",
                 "alreadyLoggedIn": "已经登录。请先使用 `logout` 开始新会话。",
@@ -60,20 +47,15 @@
                 "step4": "4. 远程DevTools URL: {url}（可选）",
                 "timeLimit": "您有 {minutes}分钟 完成登录。",
                 "loginSuccess": "登录成功",
-                "loginSuccessDescription": "成功登录{email}。\n\nCookies已导出，将每30分钟自动刷新。\nYouTube现在应该可以无机器人检测问题地运行。",
+                "loginSuccessDescription": "成功登录{email}。\n\nCookies已导出并保存。\nYouTube现在应该可以无机器人检测问题地运行。",
                 "loginSuccessEmail": "（以 {email} 身份）",
                 "loginFailed": "登录失败",
-                "loginFailedDescription": "登录超时或已取消。\n使用 {cmd} 重试。",
+                "loginFailedDescription": "登录超时或已取消。\n\n使用 {cmd} 重试。",
                 "loginError": "登录错误",
                 "loginErrorDescription": "登录时发生错误：\n{error}",
                 "statusTitle": "登录与Cookie状态",
-                "debugInfoField": "调试信息",
-                "refreshing": "正在刷新cookies...",
-                "refreshSuccess": "Cookies刷新成功！",
-                "refreshFailed": "Cookie刷新失败：{error}",
-                "refreshNoBrowser": "浏览器未运行。请先使用 `login start` 启动登录会话。",
-                "logoutSuccess": "浏览器会话已关闭。\n现有cookies将继续有效直到过期。\n使用 {cmd} 启动新会话。",
-                "logoutNoBrowser": "浏览器未运行。"
+                "logoutSuccess": "登录会话已清除。\n\n所有cookies和配置文件数据已被清除。\n使用 {cmd} 启动新会话。",
+                "logoutNoBrowser": "没有活跃的登录会话。"
             }
         },
         "general": {
@@ -385,7 +367,7 @@
             "startPlaying": "开始播放{song}",
             "stopPlaying": "停止播放{song}",
             "songRequeued": "播放{song}时遇到问题，已重新添加到队列中等待重试。",
-            "allCookiesFailed": "由于机器人检测，所有cookie都已失败！使用 {prefix}login reset 重试，或使用 {prefix}login start 重新登录。",
+            "allCookiesFailed": "由于机器人检测，所有cookie都已失败！使用 `{prefix}login logout` 然后 `{prefix}login start` 重新登录。",
             "ageRestricted": "无法播放 {song}，因为它受到年龄限制并需要登录。"
         },
         "musicDecorator": {

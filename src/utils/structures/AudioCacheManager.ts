@@ -16,12 +16,13 @@ import { clearInterval, setInterval, setTimeout } from "node:timers";
 import got from "got";
 import { type Rawon } from "../../structures/Rawon.js";
 
-const PRE_CACHE_AHEAD_COUNT = 3;
+const PRE_CACHE_AHEAD_COUNT = 5;
 const MAX_CACHE_SIZE_MB = 500;
 const MAX_CACHE_FILES = 50;
 const PRE_CACHE_RETRY_COUNT = 2;
 const QUEUE_PROCESSING_DELAY_MS = 50;
-const MAX_PRE_CACHE_RETRIES = 3;
+const MAX_PRE_CACHE_RETRIES = 2;
+const MAX_CONCURRENT_PRECACHE = 2;
 
 export class AudioCacheManager {
     public readonly cacheDir: string;
@@ -68,7 +69,7 @@ export class AudioCacheManager {
     private ensureCacheDir(): void {
         if (!existsSync(this.cacheDir)) {
             mkdirSync(this.cacheDir, { recursive: true });
-            this.client.logger.info("[AudioCacheManager] Cache directory created.");
+            this.client.logger.debug("[AudioCacheManager] Cache directory created.");
         }
     }
 
@@ -141,7 +142,7 @@ export class AudioCacheManager {
             cacheEntry.lastAccess = Date.now();
         }
 
-        this.client.logger.info(`[AudioCacheManager] Cache hit for: ${url.substring(0, 50)}...`);
+        this.client.logger.debug(`[AudioCacheManager] Cache hit for: ${url.substring(0, 50)}...`);
         return createReadStream(cachePath);
     }
 
@@ -324,17 +325,21 @@ export class AudioCacheManager {
         this.isProcessingQueue = true;
 
         while (this.preCacheQueue.length > 0) {
-            const url = this.preCacheQueue.shift();
-            if (!url) {
-                continue;
+            const batch: string[] = [];
+            while (batch.length < MAX_CONCURRENT_PRECACHE && this.preCacheQueue.length > 0) {
+                const url = this.preCacheQueue.shift();
+                if (url && !this.isCached(url) && !this.isInProgress(url)) {
+                    batch.push(url);
+                }
             }
 
-            if (this.isCached(url) || this.isInProgress(url)) {
-                continue;
+            if (batch.length > 0) {
+                await Promise.all(batch.map((url) => this.doPreCache(url)));
             }
 
-            await this.doPreCache(url);
-            await new Promise((resolve) => setTimeout(resolve, QUEUE_PROCESSING_DELAY_MS));
+            if (this.preCacheQueue.length > 0) {
+                await new Promise((resolve) => setTimeout(resolve, QUEUE_PROCESSING_DELAY_MS));
+            }
         }
 
         this.isProcessingQueue = false;
@@ -381,7 +386,7 @@ export class AudioCacheManager {
                                     lastAccess: Date.now(),
                                 });
                                 this.failedUrls.delete(key);
-                                this.client.logger.info(
+                                this.client.logger.debug(
                                     `[AudioCacheManager] Pre-cached audio for: ${url.substring(0, 50)}...`,
                                 );
                             } else {
@@ -413,7 +418,6 @@ export class AudioCacheManager {
                         output: "-",
                         quiet: true,
                         format: "bestaudio",
-                        limitRate: "300K",
                     },
                     { stdio: ["ignore", "pipe", "pipe"] },
                 );
@@ -443,15 +447,9 @@ export class AudioCacheManager {
                             proc.kill("SIGKILL");
 
                             this.client.logger.warn(
-                                `[AudioCacheManager] Bot detection during pre-cache, rotating cookie (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                                `[AudioCacheManager] Bot detection during pre-cache (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.substring(0, 50)}...`,
                             );
-                            void this.client.cookies.rotateOnFailure().then((rotated) => {
-                                if (rotated) {
-                                    this.client.logger.info(
-                                        `[AudioCacheManager] Rotated to cookie ${this.client.cookies.getCurrentCookieIndex()}`,
-                                    );
-                                }
-                            });
+                            this.client.cookies.handleBotDetection();
                         }
                     });
 
@@ -477,10 +475,7 @@ export class AudioCacheManager {
                             } catch {
                             }
 
-                            if (
-                                retryCount < MAX_PRE_CACHE_RETRIES &&
-                                !this.client.cookies.areAllCookiesFailed()
-                            ) {
+                            if (retryCount < MAX_PRE_CACHE_RETRIES && !hasBotDetectionError) {
                                 setTimeout(
                                     () => {
                                         void this.doPreCache(url, retryCount + 1);
