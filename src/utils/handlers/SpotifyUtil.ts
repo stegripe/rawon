@@ -5,6 +5,7 @@ import { type Rawon } from "../../structures/Rawon.js";
 import {
     type PlaylistMetadata,
     type SpotifyAlbum,
+    type SpotifyArtist,
     type SpotifyPlaylist,
     type SpotifyResolveResult,
     type SpotifyTrack,

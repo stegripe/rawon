@@ -12,25 +12,22 @@ If you're hosting Rawon on cloud providers like OVHcloud, AWS, GCP, Azure, or ot
 
 > "Sign in to confirm you're not a bot"
 
-This happens because the platform blocks requests from data center IP addresses. By authenticating with a Google account, Rawon can generate and maintain valid cookies to bypass this restriction.
+This happens because the platform blocks requests from data center IP addresses. By authenticating with a Google account, Rawon can generate valid cookies to bypass this restriction.
 
 ### Recommended Method: Using the Login Command
 
 The easiest way to set up cookies is using the built-in `!login` command. This method:
 - ✅ Opens a real browser for Google login via Puppeteer
-- ✅ Automatically generates and refreshes cookies
-- ✅ Works without manual cookie file export
+- ✅ Automatically exports cookies and saves them to disk
+- ✅ Closes the browser after login — no background processes
 - ✅ Persists across bot restarts (Docker volume or cache folder)
-- ✅ Auto-refreshes cookies when bot detection is encountered
 
 #### Command Usage
 
 ```
 !login start    - Open a browser and start Google login
 !login status   - View current login & cookie status
-!login refresh  - Manually refresh cookies from active session
-!login reset    - Reset bot detection counter
-!login logout   - Clear the current login session
+!login logout   - Clear the current login session (wipes all cookies and profile data)
 ```
 
 #### Quick Start
@@ -39,8 +36,14 @@ The easiest way to set up cookies is using the built-in `!login` command. This m
 2. The bot will send you a DevTools URL — open it in your browser
 3. A Google login page will appear in the remote browser
 4. Log in with a **throwaway Google account** (NOT your main account)
-5. Once logged in, the bot automatically saves the cookies
-6. Done! Cookies are refreshed automatically in the background
+5. Once logged in, the bot automatically saves the cookies and closes the browser
+6. Done! The bot uses the saved cookies for all subsequent requests
+
+#### If Bot Detection Occurs Again
+
+Cookies may eventually become stale due to server-side rotation. When this happens:
+1. Run `!login logout` to clear the old cookies
+2. Run `!login start` to log in again with a fresh session
 
 ### Prerequisites
 
@@ -71,7 +74,7 @@ deno --version
 
 ### Docker Setup
 
-Docker users have automatic cookie persistence through the named volume `rawon:/app/cache`. The login session (cookies + browser profile) is stored in this volume and persists across container restarts.
+Docker users have automatic cookie persistence through the named volume `rawon:/app/cache`. The cookies and profile data are stored in this volume and persist across container restarts.
 
 The Docker image comes with Chromium pre-installed, so `!login start` works out of the box.
 
@@ -97,21 +100,19 @@ ports:
 
 ### How Long Do Cookies Last?
 
-**Good news**: Platform cookies do NOT expire on a regular schedule like other websites. They will remain valid as long as:
+Cookies may become stale over time due to server-side rotation. They will generally remain valid as long as:
 - ✅ You don't log out from the platform in your browser
 - ✅ You don't change your account password
 - ✅ You don't revoke the session from account settings
 - ✅ The platform doesn't detect suspicious activity on the account
 
-Additionally, if the browser session is still running, Rawon will automatically refresh cookies when bot detection is encountered (after 3 consecutive detections).
+When cookies go stale, simply re-login using `!login logout` followed by `!login start`.
 
 ### Troubleshooting
 
 **Still getting "Sign in to confirm you're not a bot" errors?**
 - Use `!login status` to check cookie and login status
-- If bot detection counter is high, try `!login reset`
-- Use `!login refresh` to manually refresh cookies
-- If the session expired, run `!login start` again
+- Run `!login logout` then `!login start` to generate fresh cookies
 
 **Browser won't start?**
 - Check `!login status` for error details
@@ -130,7 +131,7 @@ If you prefer not to use the login command, you can still manually place a Netsc
 cache/cookies.txt
 ```
 
-The bot will use this file if it exists. However, the `!login` method is recommended as it handles cookie refresh automatically.
+The bot will use this file if it exists. However, the `!login` method is recommended as it provides a simpler workflow.
 
 ### Security Notes
 
@@ -149,25 +150,22 @@ Jika kamu hosting Rawon di cloud provider seperti OVHcloud, AWS, GCP, Azure, ata
 
 > "Sign in to confirm you're not a bot" (Masuk untuk memastikan kamu bukan bot)
 
-Ini terjadi karena platform memblokir request dari alamat IP data center. Dengan mengautentikasi menggunakan akun Google, Rawon bisa menghasilkan dan memelihara cookies yang valid untuk melewati pembatasan ini.
+Ini terjadi karena platform memblokir request dari alamat IP data center. Dengan mengautentikasi menggunakan akun Google, Rawon bisa menghasilkan cookies yang valid untuk melewati pembatasan ini.
 
 ### Metode yang Direkomendasikan: Menggunakan Command Login
 
 Cara termudah untuk setup cookies adalah menggunakan command `!login` bawaan. Metode ini:
 - ✅ Membuka browser sungguhan untuk login Google via Puppeteer
-- ✅ Otomatis menghasilkan dan me-refresh cookies
-- ✅ Tanpa perlu export file cookie secara manual
+- ✅ Otomatis mengekspor cookies dan menyimpannya ke disk
+- ✅ Menutup browser setelah login — tidak ada proses background
 - ✅ Tetap tersimpan setelah restart bot (Docker volume atau folder cache)
-- ✅ Otomatis refresh cookies saat bot detection terdeteksi
 
 #### Penggunaan Command
 
 ```
 !login start    - Buka browser dan mulai login Google
 !login status   - Lihat status login & cookie saat ini
-!login refresh  - Refresh cookies secara manual dari sesi aktif
-!login reset    - Reset counter bot detection
-!login logout   - Hapus sesi login saat ini
+!login logout   - Hapus sesi login saat ini (hapus semua cookies dan data profil)
 ```
 
 #### Quick Start
@@ -176,8 +174,14 @@ Cara termudah untuk setup cookies adalah menggunakan command `!login` bawaan. Me
 2. Bot akan mengirim URL DevTools — buka di browser kamu
 3. Akan muncul halaman login Google di browser remote
 4. Login dengan **akun Google tumbal** (JANGAN akun utama)
-5. Setelah login, bot otomatis menyimpan cookies
-6. Selesai! Cookies akan di-refresh otomatis di background
+5. Setelah login, bot otomatis menyimpan cookies dan menutup browser
+6. Selesai! Bot menggunakan cookies yang tersimpan untuk semua request selanjutnya
+
+#### Jika Bot Detection Terjadi Lagi
+
+Cookies mungkin menjadi kedaluwarsa karena rotasi di sisi server. Jika ini terjadi:
+1. Jalankan `!login logout` untuk menghapus cookies lama
+2. Jalankan `!login start` untuk login ulang dengan sesi baru
 
 ### Prasyarat
 
@@ -208,7 +212,7 @@ deno --version
 
 ### Setup Docker
 
-Pengguna Docker memiliki persistence cookie otomatis melalui named volume `rawon:/app/cache`. Sesi login (cookies + browser profile) tersimpan di volume ini dan tetap ada setelah container restart.
+Pengguna Docker memiliki persistence cookie otomatis melalui named volume `rawon:/app/cache`. Cookies dan data profil tersimpan di volume ini dan tetap ada setelah container restart.
 
 Docker image sudah termasuk Chromium, jadi `!login start` langsung bisa dipakai tanpa konfigurasi tambahan.
 
@@ -234,21 +238,19 @@ ports:
 
 ### Berapa Lama Cookies Bertahan?
 
-**Kabar baik**: Cookies platform TIDAK kadaluarsa secara berkala seperti website lain. Mereka akan tetap valid selama:
+Cookies mungkin menjadi kedaluwarsa seiring waktu karena rotasi di sisi server. Mereka umumnya akan tetap valid selama:
 - ✅ Kamu tidak logout dari platform di browser
 - ✅ Kamu tidak ganti password akun
 - ✅ Kamu tidak revoke session dari pengaturan akun
 - ✅ Platform tidak mendeteksi aktivitas mencurigakan di akun
 
-Selain itu, jika sesi browser masih berjalan, Rawon akan otomatis me-refresh cookies saat bot detection terdeteksi (setelah 3 deteksi berturut-turut).
+Jika cookies kedaluwarsa, cukup login ulang menggunakan `!login logout` diikuti `!login start`.
 
 ### Troubleshooting / Pemecahan Masalah
 
 **Masih dapat error "Sign in to confirm you're not a bot"?**
 - Gunakan `!login status` untuk cek status cookie dan login
-- Jika counter bot detection tinggi, coba `!login reset`
-- Gunakan `!login refresh` untuk refresh cookies secara manual
-- Jika sesi expired, jalankan `!login start` lagi
+- Jalankan `!login logout` lalu `!login start` untuk membuat cookies baru
 
 **Browser tidak mau start?**
 - Cek `!login status` untuk detail error
@@ -267,7 +269,7 @@ Jika kamu tidak ingin menggunakan command login, kamu masih bisa menaruh file co
 cache/cookies.txt
 ```
 
-Bot akan menggunakan file ini jika ada. Namun, metode `!login` lebih direkomendasikan karena menangani refresh cookies secara otomatis.
+Bot akan menggunakan file ini jika ada. Namun, metode `!login` lebih direkomendasikan karena menyediakan alur kerja yang lebih sederhana.
 
 ### Catatan Keamanan
 

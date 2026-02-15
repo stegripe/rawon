@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "Cookieファイル",
                 "statusActive": "アクティブ",
-                "statusStale": "古い（ブラウザが更新していない）",
                 "statusMissing": "Cookieがありません",
                 "sizeLabel": "サイズ",
                 "lastRefreshLabel": "最終更新",
@@ -24,28 +23,16 @@
                 "sessionError": "エラー: {error}",
                 "sessionIdle": "未開始",
                 "accountLabel": "アカウント",
-                "accountNA": "N/A",
-                "browserLabel": "ブラウザ",
-                "browserRunning": "実行中",
-                "browserStopped": "停止",
-                "detectionsLabel": "検出数",
-                "lastDetectionLabel": "最後",
-                "lastDetectionNone": "なし",
-                "thresholdReached": "閾値に達しました！{resetCmd} または {refreshCmd} を使用してください",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "はじめに",
                 "gettingStartedText": "{loginCmd} でGoogleにログインし、Cookieを自動生成してください。",
-                "statsTitle": "統計",
-                "warningTitle": "警告",
-                "resetSuccess": "Bot検出カウンターがリセットされました。既存のCookieでリクエストが再試行されます。",
-                "allCookiesFailed": "すべてのCookieが失敗しました！{prefix}login reset で再試行してください。"
+                "statsTitle": "統計"
             },
             "login": {
                 "description": "YouTube Cookie認証のためのGoogleログインセッションを管理",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "ブラウザ経由でGoogleログインセッションを開始",
                 "slashStatusDescription": "現在のログインセッション状態を確認",
-                "slashRefreshDescription": "アクティブなブラウザセッションからCookieを強制更新",
-                "slashResetDescription": "Bot検出カウンターをリセットし、失敗したリクエストを再試行",
                 "slashLogoutDescription": "ブラウザセッションを閉じる",
                 "invalidSubcommand": "使い方: {loginUsage}",
                 "alreadyLoggedIn": "すでにログインしています。新しいセッションを開始するには、まず `logout` を使用してください。",
@@ -60,20 +47,15 @@
                 "step4": "4. リモートDevTools URL: {url}（オプション）",
                 "timeLimit": "ログイン完了まで {minutes}分 あります。",
                 "loginSuccess": "ログイン成功",
-                "loginSuccessDescription": "ログインに成功しました{email}。\n\nCookieがエクスポートされ、30分ごとに自動更新されます。\nYouTubeがBot検出の問題なく動作するはずです。",
+                "loginSuccessDescription": "ログインに成功しました{email}。\n\nCookieがエクスポートされ、保存されました。\nYouTubeがBot検出の問題なく動作するはずです。",
                 "loginSuccessEmail": " ({email} として)",
                 "loginFailed": "ログイン失敗",
-                "loginFailedDescription": "ログインがタイムアウトしたかキャンセルされました。\n{cmd} で再試行してください。",
+                "loginFailedDescription": "ログインがタイムアウトしたかキャンセルされました。\n\n{cmd} で再試行してください。",
                 "loginError": "ログインエラー",
                 "loginErrorDescription": "ログイン中にエラーが発生しました:\n{error}",
                 "statusTitle": "ログイン & Cookieステータス",
-                "debugInfoField": "デバッグ情報",
-                "refreshing": "Cookieを更新中...",
-                "refreshSuccess": "Cookieの更新に成功しました！",
-                "refreshFailed": "Cookie更新に失敗しました: {error}",
-                "refreshNoBrowser": "ブラウザが起動していません。まず `login start` でログインセッションを開始してください。",
-                "logoutSuccess": "ブラウザセッションを閉じました。\n既存のCookieは有効期限まで機能し続けます。\n{cmd} で新しいセッションを開始できます。",
-                "logoutNoBrowser": "ブラウザが起動していません。"
+                "logoutSuccess": "ログインセッションをクリアしました。\n\nすべてのCookieとプロファイルデータが削除されました。\n{cmd} で新しいセッションを開始できます。",
+                "logoutNoBrowser": "アクティブなログインセッションがありません。"
             }
         },
         "general": {
@@ -385,7 +367,7 @@
             "startPlaying": "{song}の再生が開始",
             "stopPlaying": "{song}の再生が終了",
             "songRequeued": "{song}の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
-            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！{prefix}login reset で再試行するか、{prefix}login start で再ログインしてください。",
+            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}login logout` の後 `{prefix}login start` で再ログインしてください。",
             "ageRestricted": "{song} は年齢制限があるため、ログインが必要です。再生できません。"
         },
         "musicDecorator": {

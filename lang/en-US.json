@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "Cookie File",
                 "statusActive": "Active",
-                "statusStale": "Stale (browser not refreshing)",
                 "statusMissing": "No cookies available",
                 "sizeLabel": "Size",
                 "lastRefreshLabel": "Last Refresh",
@@ -24,28 +23,16 @@
                 "sessionError": "Error: {error}",
                 "sessionIdle": "Not started",
                 "accountLabel": "Account",
-                "accountNA": "N/A",
-                "browserLabel": "Browser",
-                "browserRunning": "Running",
-                "browserStopped": "Stopped",
-                "detectionsLabel": "Detections",
-                "lastDetectionLabel": "Last",
-                "lastDetectionNone": "None",
-                "thresholdReached": "Threshold reached! Use {resetCmd} or {refreshCmd}",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "Getting Started",
                 "gettingStartedText": "Use {loginCmd} to log in to Google and generate cookies automatically.",
-                "statsTitle": "Statistics",
-                "warningTitle": "Warning",
-                "resetSuccess": "Bot detection counter has been reset. Requests will be retried with existing cookies.",
-                "allCookiesFailed": "All cookies have failed! Use `{prefix}login reset` to retry."
+                "statsTitle": "Statistics"
             },
             "login": {
                 "description": "Manage Google login session for YouTube cookie authentication",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Start a Google login session via browser",
                 "slashStatusDescription": "Check current login session status",
-                "slashRefreshDescription": "Force refresh cookies from the active browser session",
-                "slashResetDescription": "Reset bot detection counter and retry failed requests",
                 "slashLogoutDescription": "Close the browser session",
                 "invalidSubcommand": "Usage: {loginUsage}",
                 "alreadyLoggedIn": "Already logged in. Use `logout` first to start a new session.",
@@ -60,20 +47,15 @@
                 "step4": "4. Remote DevTools URL: {url} (optional)",
                 "timeLimit": "You have {minutes} minutes to complete the login.",
                 "loginSuccess": "Login Successful",
-                "loginSuccessDescription": "Successfully logged in{email}.\n\nCookies have been exported and will be auto-refreshed every 30 minutes.\nYouTube should now work without bot detection issues.",
+                "loginSuccessDescription": "Successfully logged in{email}.\n\nCookies have been exported and saved.\nYouTube should now work without bot detection issues.",
                 "loginSuccessEmail": " as {email}",
                 "loginFailed": "Login Failed",
-                "loginFailedDescription": "Login timed out or was cancelled.\nUse {cmd} to try again.",
+                "loginFailedDescription": "Login timed out or was cancelled.\n\nUse {cmd} to try again.",
                 "loginError": "Login Error",
                 "loginErrorDescription": "An error occurred during login:\n{error}",
                 "statusTitle": "Login & Cookie Status",
-                "debugInfoField": "Debug Info",
-                "refreshing": "Refreshing cookies...",
-                "refreshSuccess": "Cookies refreshed successfully!",
-                "refreshFailed": "Cookie refresh failed: {error}",
-                "refreshNoBrowser": "Browser is not running. Start a login session first with `login start`.",
-                "logoutSuccess": "Browser session closed.\nExisting cookies will continue to work until they expire.\nUse {cmd} to start a new session.",
-                "logoutNoBrowser": "Browser is not running."
+                "logoutSuccess": "Login session cleared.\n\nAll cookies and profile data have been wiped.\nUse {cmd} to start a fresh session.",
+                "logoutNoBrowser": "No active login session."
             }
         },
         "general": {
@@ -425,7 +407,7 @@
             "startPlaying": "Started playing {song}.",
             "stopPlaying": "Stopped playing {song}.",
             "songRequeued": "Had trouble playing {song}; re-queued for another attempt.",
-            "allCookiesFailed": "All cookies have failed due to bot detection! Use `{prefix}login reset` to retry, or `{prefix}login start` to re-login.",
+            "allCookiesFailed": "All cookies have failed due to bot detection! Use `{prefix}login logout` then `{prefix}login start` to re-login.",
             "ageRestricted": "Cannot play {song} because it is age-restricted and requires sign-in."
         },
         "musicDecorator": {

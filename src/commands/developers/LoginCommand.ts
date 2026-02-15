@@ -43,16 +43,6 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
             )
             .addSubcommand((sub) =>
                 sub
-                    .setName("refresh")
-                    .setDescription(i18n.__("commands.developers.login.slashRefreshDescription")),
-            )
-            .addSubcommand((sub) =>
-                sub
-                    .setName("reset")
-                    .setDescription(i18n.__("commands.developers.login.slashResetDescription")),
-            )
-            .addSubcommand((sub) =>
-                sub
                     .setName("logout")
                     .setDescription(i18n.__("commands.developers.login.slashLogoutDescription")),
             ) as SlashCommandBuilder;
@@ -76,7 +66,7 @@ export class LoginCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("commands.developers.login.invalidSubcommand", {
-                            loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | reset | logout>\``,
+                            loginUsage: `\`${client.config.mainPrefix}login <start | status | logout>\``,
                         }),
                     ),
                 ],
@@ -88,10 +78,6 @@ export class LoginCommand extends ContextCommand {
                 return this.handleStart(client, ctx, __, __mf);
             case "status":
                 return this.handleStatus(client, ctx, __, __mf);
-            case "refresh":
-                return this.handleRefresh(client, ctx, __, __mf);
-            case "reset":
-                return this.handleReset(client, ctx, __);
             case "logout":
                 return this.handleLogout(client, ctx, __, __mf);
             default:
@@ -100,7 +86,7 @@ export class LoginCommand extends ContextCommand {
                         createEmbed(
                             "warn",
                             __mf("commands.developers.login.invalidSubcommand", {
-                                loginUsage: `\`${client.config.mainPrefix}login <start | status | refresh | reset | logout>\``,
+                                loginUsage: `\`${client.config.mainPrefix}login <start | status | logout>\``,
                             }),
                         ),
                     ],
@@ -236,7 +222,6 @@ export class LoginCommand extends ContextCommand {
     ): Promise<Message | undefined> {
         const cookieInfo = client.cookies.getCookieInfo();
         const sessionInfo = client.cookies.getLoginSessionInfo();
-        const botDetection = client.cookies.getBotDetectionStats();
 
         let cookieEmoji: string;
         let cookieStatusText: string;
@@ -245,10 +230,6 @@ export class LoginCommand extends ContextCommand {
             case "active":
                 cookieEmoji = "🟢";
                 cookieStatusText = __("commands.developers.cookies.statusActive");
-                break;
-            case "stale":
-                cookieEmoji = "🟡";
-                cookieStatusText = __("commands.developers.cookies.statusStale");
                 break;
             default:
                 cookieEmoji = "🔴";
@@ -284,8 +265,8 @@ export class LoginCommand extends ContextCommand {
             : __("commands.developers.cookies.lastRefreshNever");
 
         const descriptionLines = [
-            `${cookieEmoji} **${__("commands.developers.cookies.cookieFileField")}** - ${cookieStatusText}`,
-            `${loginEmoji} **${__("commands.developers.cookies.googleLoginField")}** - ${loginText}`,
+            `${cookieEmoji} **${__("commands.developers.cookies.cookieFileField")}** — ${cookieStatusText}`,
+            `${loginEmoji} **${__("commands.developers.cookies.googleLoginField")}** — ${loginText}`,
         ];
 
         const embed = createEmbed("info")
@@ -294,9 +275,6 @@ export class LoginCommand extends ContextCommand {
 
         const sizeText =
             cookieInfo.size > 0 ? `\`${(cookieInfo.size / 1024).toFixed(1)} KB\`` : "`N/A`";
-        const browserText = cookieInfo.browserRunning
-            ? __("commands.developers.cookies.browserRunning")
-            : __("commands.developers.cookies.browserStopped");
         const accountText = sessionInfo.email
             ? `\`${sessionInfo.email}\``
             : __("commands.developers.cookies.accountNA");
@@ -304,7 +282,6 @@ export class LoginCommand extends ContextCommand {
         const statsValue = [
             `${__("commands.developers.cookies.sizeLabel")}: ${sizeText}`,
             `${__("commands.developers.cookies.lastRefreshLabel")}: ${lastRefresh}`,
-            `${__("commands.developers.cookies.browserLabel")}: ${browserText}`,
             `${__("commands.developers.cookies.accountLabel")}: ${accountText}`,
         ].join(" | ");
 
@@ -314,53 +291,6 @@ export class LoginCommand extends ContextCommand {
                 value: statsValue,
             },
         ]);
-
-        if (botDetection.count > 0) {
-            const lastDetection = botDetection.lastDetection
-                ? `<t:${Math.floor(botDetection.lastDetection / 1000)}:R>`
-                : __("commands.developers.cookies.lastDetectionNone");
-
-            const warningLines = [
-                `${__("commands.developers.cookies.detectionsLabel")}: ${botDetection.count}/${botDetection.threshold}`,
-                `${__("commands.developers.cookies.lastDetectionLabel")}: ${lastDetection}`,
-            ];
-
-            if (botDetection.count >= botDetection.threshold) {
-                warningLines.push(
-                    __mf("commands.developers.cookies.thresholdReached", {
-                        resetCmd: `\`${client.config.mainPrefix}login reset\``,
-                        refreshCmd: `\`${client.config.mainPrefix}login refresh\``,
-                    }),
-                );
-            }
-
-            embed.addFields([
-                {
-                    name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
-                    value: warningLines.join("\n"),
-                },
-            ]);
-        }
-
-        if (client.cookies.areAllCookiesFailed()) {
-            embed.addFields([
-                {
-                    name: `⚠️ ${__("commands.developers.cookies.warningTitle")}`,
-                    value: __mf("commands.developers.cookies.allCookiesFailed", {
-                        prefix: client.config.mainPrefix,
-                    }),
-                },
-            ]);
-        }
-
-        if (sessionInfo.debugUrl) {
-            embed.addFields([
-                {
-                    name: __("commands.developers.login.debugInfoField"),
-                    value: `DevTools: \`${sessionInfo.debugUrl}\``,
-                },
-            ]);
-        }
 
         if (cookieInfo.status === "missing" && sessionInfo.status === "idle") {
             embed.addFields([
@@ -376,64 +306,6 @@ export class LoginCommand extends ContextCommand {
         return ctx.reply({ embeds: [embed] });
     }
 
-    private async handleReset(
-        client: Rawon,
-        ctx: CommandContext,
-        __: ReturnType<typeof i18n__>,
-    ): Promise<Message | undefined> {
-        client.cookies.resetFailedStatus();
-
-        return ctx.reply({
-            embeds: [createEmbed("success", __("commands.developers.cookies.resetSuccess"), true)],
-        });
-    }
-
-    private async handleRefresh(
-        client: Rawon,
-        ctx: CommandContext,
-        __: ReturnType<typeof i18n__>,
-        __mf: ReturnType<typeof i18n__mf>,
-    ): Promise<Message | undefined> {
-        const loginManager = client.cookies.loginManager;
-
-        if (!loginManager.isBrowserRunning()) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed("error", __("commands.developers.login.refreshNoBrowser"), true),
-                ],
-            });
-        }
-
-        const msg = await ctx.reply({
-            embeds: [createEmbed("info", __("commands.developers.login.refreshing"))],
-        });
-
-        try {
-            await loginManager.refreshCookiesNow();
-            client.cookies.resetFailedStatus();
-
-            await msg?.edit({
-                embeds: [
-                    createEmbed("success", __("commands.developers.login.refreshSuccess"), true),
-                ],
-            });
-        } catch (err) {
-            await msg?.edit({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        __mf("commands.developers.login.refreshFailed", {
-                            error: (err as Error).message,
-                        }),
-                        true,
-                    ),
-                ],
-            });
-        }
-
-        return msg ?? undefined;
-    }
-
     private async handleLogout(
         client: Rawon,
         ctx: CommandContext,
@@ -442,7 +314,11 @@ export class LoginCommand extends ContextCommand {
     ): Promise<Message | undefined> {
         const loginManager = client.cookies.loginManager;
 
-        if (!loginManager.isBrowserRunning()) {
+        if (
+            !loginManager.isLoggedIn() &&
+            !loginManager.isBrowserRunning() &&
+            !loginManager.hasCookies()
+        ) {
             return ctx.reply({
                 embeds: [createEmbed("warn", __("commands.developers.login.logoutNoBrowser"))],
             });

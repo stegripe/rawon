@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import nodePath from "node:path";
 import process from "node:process";
 import got from "got";
@@ -11,7 +11,11 @@ const filename = `yt-dlp${suffix}`;
 const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
+// Auto-update interval: 24 hours
+const UPDATE_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
 let cookiesManagerRef = null;
+let lastArgsLog = 0;
 
 export function setCookiesManager(manager) {
     cookiesManagerRef = manager;
@@ -32,13 +36,37 @@ function args(url, options, cookiesPath) {
         })
         .filter(Boolean);
 
+    // Use cookies if available on disk
     const effectiveCookiesPath = cookiesPath ?? cookiesManagerRef?.getCurrentCookiePath();
+    const useCookies = effectiveCookiesPath && existsSync(effectiveCookiesPath);
     
-    if (effectiveCookiesPath && existsSync(effectiveCookiesPath)) {
-        optArgs.push("--cookies", effectiveCookiesPath);
+    if (useCookies) {
+        // Copy cookies to a temp file so yt-dlp doesn't overwrite our master cookie file.
+        // yt-dlp dumps its cookie jar back to the --cookies file after each request,
+        // which can corrupt or lose cookies that were in our original file.
+        const tempCookiesPath = effectiveCookiesPath + ".ytdlp-tmp";
+        try {
+            copyFileSync(effectiveCookiesPath, tempCookiesPath);
+            optArgs.push("--cookies", tempCookiesPath);
+        } catch {
+            // If copy fails, fall back to using the original
+            optArgs.push("--cookies", effectiveCookiesPath);
+        }
     }
 
-    optArgs.push("--js-runtimes", "node");
+    const extractorArgs = cookiesManagerRef?.getExtractorArgs?.();
+    if (extractorArgs) {
+        optArgs.push("--extractor-args", extractorArgs);
+    }
+
+    // Log args periodically (at most once per 5 minutes) for debugging
+    const now = Date.now();
+    if (now - lastArgsLog > 300_000) {
+        lastArgsLog = now;
+        const shortUrl = url?.substring(0, 60);
+        const cookies = useCookies ? "yes" : "no";
+        console.info(`[yt-dlp] args: url=${shortUrl}, cookies=${cookies}, extractor-args=${extractorArgs ?? "none"}`);
+    }
 
     return [url, ...optArgs];
 }
@@ -76,20 +104,55 @@ export function isAgeRestrictedError(errorMessage) {
 }
 
 export async function downloadExecutable() {
-    if (!existsSync(exePath)) {
-        console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
-        const releases = await got.get("https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1").json();
-        const release = releases[0];
-        const asset = release.assets.find(ast => ast.name === filename);
-        await new Promise((resolve, reject) => {
-            got.get(asset.browser_download_url).buffer().then(x => {
-                mkdirSync(scriptsPath, { recursive: true });
-                writeFileSync(exePath, x, { mode: 0o777 });
-                return 0;
-            }).then(resolve).catch(reject);
-        });
-        console.info("[INFO] Yt-dlp has been downloaded.");
+    let needsDownload = !existsSync(exePath);
+
+    // Auto-update: re-download if binary is older than 24 hours
+    if (!needsDownload) {
+        try {
+            const stat = statSync(exePath);
+            const ageMs = Date.now() - stat.mtimeMs;
+            if (ageMs > UPDATE_INTERVAL_MS) {
+                console.info(`[INFO] Yt-dlp binary is ${Math.floor(ageMs / 3_600_000)} hours old, checking for updates...`);
+                needsDownload = true;
+            }
+        } catch {
+            needsDownload = true;
+        }
     }
+
+    if (needsDownload) {
+        const isUpdate = existsSync(exePath);
+        console.info(`[INFO] ${isUpdate ? "Updating" : "Downloading"} yt-dlp...`);
+        try {
+            const releases = await got.get("https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1").json();
+            const release = releases[0];
+            const asset = release.assets.find(ast => ast.name === filename);
+            await new Promise((resolve, reject) => {
+                got.get(asset.browser_download_url).buffer().then(x => {
+                    mkdirSync(scriptsPath, { recursive: true });
+                    writeFileSync(exePath, x, { mode: 0o777 });
+                    return 0;
+                }).then(resolve).catch(reject);
+            });
+            console.info(`[INFO] Yt-dlp ${isUpdate ? "updated" : "downloaded"} (release: ${release.tag_name}).`);
+        } catch (err) {
+            if (isUpdate) {
+                console.warn(`[WARN] Yt-dlp update failed, using existing binary: ${err.message}`);
+            } else {
+                throw err;
+            }
+        }
+    }
+
+    // Log version on startup
+    try {
+        const { execFileSync } = await import("node:child_process");
+        const version = execFileSync(exePath, ["--version"], { timeout: 5000 }).toString().trim();
+        console.info(`[INFO] Using yt-dlp version: ${version}`);
+    } catch {
+        // Ignore version check errors
+    }
+
 }
 
 export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) => spawn(exePath, args(url, options, cookiesPath), {
@@ -98,6 +161,11 @@ export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) =
 });
 
 export default async function ytdl(url, options = {}, spawnOptions = {}, cookiesPath = null) {
+    const result = await ytdlOnce(url, options, spawnOptions, cookiesPath);
+    return result;
+}
+
+async function ytdlOnce(url, options = {}, spawnOptions = {}, cookiesPath = null) {
     const proc = exec(url, options, { ...spawnOptions, stdio: ["ignore", "pipe", "pipe"] }, cookiesPath);
     let data = "";
     let stderrData = "";

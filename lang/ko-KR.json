@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "쿠키 파일",
                 "statusActive": "활성",
-                "statusStale": "오래됨 (브라우저가 갱신하지 않음)",
                 "statusMissing": "쿠키 없음",
                 "sizeLabel": "크기",
                 "lastRefreshLabel": "마지막 갱신",
@@ -24,28 +23,16 @@
                 "sessionError": "오류: {error}",
                 "sessionIdle": "시작되지 않음",
                 "accountLabel": "계정",
-                "accountNA": "N/A",
-                "browserLabel": "브라우저",
-                "browserRunning": "실행 중",
-                "browserStopped": "중지됨",
-                "detectionsLabel": "감지 횟수",
-                "lastDetectionLabel": "마지막",
-                "lastDetectionNone": "없음",
-                "thresholdReached": "임계값 도달! {resetCmd} 또는 {refreshCmd}를 사용하세요",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "시작하기",
                 "gettingStartedText": "{loginCmd}로 Google에 로그인하고 쿠키를 자동 생성하세요.",
-                "statsTitle": "통계",
-                "warningTitle": "경고",
-                "resetSuccess": "봇 감지 카운터가 초기화되었어요. 기존 쿠키로 요청이 재시도됩니다.",
-                "allCookiesFailed": "모든 쿠키가 실패했어요! {prefix}login reset로 재시도해주세요."
+                "statsTitle": "통계"
             },
             "login": {
                 "description": "YouTube 쿠키 인증을 위한 Google 로그인 세션 관리",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "브라우저를 통해 Google 로그인 세션 시작",
                 "slashStatusDescription": "현재 로그인 세션 상태 확인",
-                "slashRefreshDescription": "활성 브라우저 세션에서 쿠키 강제 새로고침",
-                "slashResetDescription": "봇 감지 카운터 초기화 및 실패한 요청 재시도",
                 "slashLogoutDescription": "브라우저 세션 닫기",
                 "invalidSubcommand": "사용법: {loginUsage}",
                 "alreadyLoggedIn": "이미 로그인되어 있어요. 새 세션을 시작하려면 먼저 `logout`을 사용하세요.",
@@ -60,20 +47,15 @@
                 "step4": "4. 원격 DevTools URL: {url} (선택사항)",
                 "timeLimit": "로그인 완료까지 {minutes}분이 있어요.",
                 "loginSuccess": "로그인 성공",
-                "loginSuccessDescription": "성공적으로 로그인했어요{email}.\n\n쿠키가 내보내졌고 30분마다 자동 갱신됩니다.\nYouTube가 이제 봇 감지 문제 없이 작동할 거예요.",
+                "loginSuccessDescription": "성공적으로 로그인했어요{email}.\n\n쿠키가 내보내지고 저장되었어요.\nYouTube가 이제 봇 감지 문제 없이 작동할 거예요.",
                 "loginSuccessEmail": " ({email}(으)로)",
                 "loginFailed": "로그인 실패",
-                "loginFailedDescription": "로그인이 시간 초과되었거나 취소되었어요.\n{cmd}로 다시 시도하세요.",
+                "loginFailedDescription": "로그인이 시간 초과되었거나 취소되었어요.\n\n{cmd}로 다시 시도하세요.",
                 "loginError": "로그인 오류",
                 "loginErrorDescription": "로그인 중 오류가 발생했어요:\n{error}",
                 "statusTitle": "로그인 & 쿠키 상태",
-                "debugInfoField": "디버그 정보",
-                "refreshing": "쿠키 갱신 중...",
-                "refreshSuccess": "쿠키가 성공적으로 갱신되었어요!",
-                "refreshFailed": "쿠키 갱신 실패: {error}",
-                "refreshNoBrowser": "브라우저가 실행 중이 아니에요. 먼저 `login start`로 로그인 세션을 시작하세요.",
-                "logoutSuccess": "브라우저 세션이 닫혔어요.\n기존 쿠키는 만료될 때까지 계속 작동합니다.\n{cmd}로 새 세션을 시작할 수 있어요.",
-                "logoutNoBrowser": "브라우저가 실행 중이 아니에요."
+                "logoutSuccess": "로그인 세션이 삭제되었어요.\n\n모든 쿠키와 프로필 데이터가 삭제되었습니다.\n{cmd}로 새 세션을 시작할 수 있어요.",
+                "logoutNoBrowser": "활성 로그인 세션이 없어요."
             }
         },
         "general": {
@@ -425,7 +407,7 @@
             "startPlaying": "{song} 재생 시작",
             "stopPlaying": "{song} 재생 종료",
             "songRequeued": "{song} 재생에 문제가 있어서 다시 시도하기 위해 대기열에 다시 추가했어요.",
-            "allCookiesFailed": "봇 감지로 인해 모든 쿠키가 실패했어요! {prefix}login reset으로 재시도하거나, {prefix}login start로 다시 로그인해주세요.",
+            "allCookiesFailed": "봇 감지로 인해 모든 쿠키가 실패했어요! `{prefix}login logout` 후 `{prefix}login start`로 다시 로그인해주세요.",
             "ageRestricted": "{song} 은(는) 연령 제한이 있어 로그인해야 하므로 재생할 수 없습니다."
         },
         "musicDecorator": {

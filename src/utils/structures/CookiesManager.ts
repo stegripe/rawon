@@ -6,7 +6,7 @@ import { devtoolsPort } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { GoogleLoginManager, type LoginSessionInfo } from "./GoogleLoginManager.js";
 
-export type CookieStatus = "active" | "stale" | "missing";
+export type CookieStatus = "active" | "missing";
 
 export interface CookieInfo {
     status: CookieStatus;
@@ -16,8 +16,6 @@ export interface CookieInfo {
     loginEmail: string | null;
     browserRunning: boolean;
 }
-
-const COOKIE_STALE_THRESHOLD_MS = 2 * 60 * 60 * 1000;
 
 let sharedLoginManager: GoogleLoginManager | null = null;
 
@@ -32,11 +30,6 @@ function getSharedLoginManager(): GoogleLoginManager {
 export class CookiesManager {
     public readonly cookiesDir: string;
     public readonly loginManager: GoogleLoginManager;
-    private botDetectionCount = 0;
-    private lastBotDetection: number | null = null;
-
-    private static readonly MAX_BOT_DETECTIONS_BEFORE_REFRESH = 3;
-    private static readonly BOT_DETECTION_WINDOW_MS = 5 * 60 * 1000;
 
     public constructor(public readonly client: Rawon) {
         this.cookiesDir = path.resolve(process.cwd(), "cache", "cookies");
@@ -46,21 +39,17 @@ export class CookiesManager {
     public async initialize(): Promise<void> {
         container.logger.info("[Cookies] Initializing cookie manager...");
 
+        // Restore session info (email, etc.) from DB without launching browser
+        const restored = this.loginManager.restoreSessionFromDB();
+
         if (this.loginManager.hasCookies()) {
-            container.logger.info("[Cookies] Found existing cookie file from previous session");
+            container.logger.info(
+                `[Cookies] Found existing cookies on disk${restored ? ` (account: ${this.loginManager.getSessionInfo().email ?? "unknown"})` : ""}. Ready to use.`,
+            );
         } else {
             container.logger.info(
-                "[Cookies] No cookies found. If you encounter bot detection errors, use the login command.",
+                "[Cookies] No cookies found. Use the login command to authenticate.",
             );
-        }
-
-        try {
-            const relaunched = await this.loginManager.tryAutoRelaunch();
-            if (relaunched) {
-                container.logger.info("[Cookies] Browser auto-relaunched from previous session");
-            }
-        } catch (err) {
-            container.logger.warn("[Cookies] Auto-relaunch check failed (non-fatal):", err);
         }
     }
 
@@ -83,75 +72,22 @@ export class CookiesManager {
         return cookiePath;
     }
 
-    public async rotateOnFailure(): Promise<boolean> {
-        const now = Date.now();
-
-        if (
-            this.lastBotDetection &&
-            now - this.lastBotDetection > CookiesManager.BOT_DETECTION_WINDOW_MS
-        ) {
-            this.botDetectionCount = 0;
-        }
-
-        this.botDetectionCount++;
-        this.lastBotDetection = now;
-
+    /**
+     * Called when bot detection is encountered.
+     * Logs a warning telling the user to re-login. Does NOT auto-rotate or retry.
+     */
+    public handleBotDetection(): void {
         container.logger.warn(
-            `[Cookies] Bot detection #${this.botDetectionCount} in current window`,
+            "[Cookies] Bot detection triggered. Cookies may be stale or invalid. " +
+                "Use `xlogin logout` then `xlogin start` to re-login.",
         );
-
-        if (
-            this.botDetectionCount >= CookiesManager.MAX_BOT_DETECTIONS_BEFORE_REFRESH &&
-            this.loginManager.isBrowserRunning()
-        ) {
-            container.logger.info(
-                "[Cookies] Attempting cookie refresh due to repeated bot detection...",
-            );
-
-            try {
-                await this.loginManager.refreshCookiesNow();
-                this.botDetectionCount = 0;
-                container.logger.info(
-                    "[Cookies] Cookies refreshed successfully after bot detection",
-                );
-                return true;
-            } catch (err) {
-                container.logger.error("[Cookies] Cookie refresh failed:", err);
-                return false;
-            }
-        }
-
-        if (this.getCurrentCookiePath()) {
-            return this.botDetectionCount < CookiesManager.MAX_BOT_DETECTIONS_BEFORE_REFRESH;
-        }
-
-        container.logger.warn(
-            "[Cookies] No cookies available and browser is not running. " +
-                "Use the login command to log in to Google and fix bot detection errors.",
-        );
-
-        return false;
     }
 
-    public areAllCookiesFailed(): boolean {
-        if (!this.getCurrentCookiePath()) {
-            return true;
-        }
-
-        if (
-            this.botDetectionCount >= CookiesManager.MAX_BOT_DETECTIONS_BEFORE_REFRESH &&
-            !this.loginManager.isBrowserRunning()
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public resetFailedStatus(): void {
-        this.botDetectionCount = 0;
-        this.lastBotDetection = null;
-        container.logger.info("[Cookies] Reset bot detection counter");
+    /**
+     * Returns true if there are no valid cookies available.
+     */
+    public hasNoCookies(): boolean {
+        return this.getCurrentCookiePath() === null;
     }
 
     public getCookieInfo(): CookieInfo {
@@ -167,16 +103,7 @@ export class CookiesManager {
                 size = stats.size;
 
                 if (size > 0) {
-                    const lastRefresh = sessionInfo.lastCookieRefresh;
-                    if (
-                        lastRefresh &&
-                        Date.now() - lastRefresh > COOKIE_STALE_THRESHOLD_MS &&
-                        !this.loginManager.isBrowserRunning()
-                    ) {
-                        status = "stale";
-                    } else {
-                        status = "active";
-                    }
+                    status = "active";
                 }
             } catch {
                 // File error
@@ -197,18 +124,6 @@ export class CookiesManager {
         return this.loginManager.getSessionInfo();
     }
 
-    public getBotDetectionStats(): {
-        count: number;
-        lastDetection: number | null;
-        threshold: number;
-    } {
-        return {
-            count: this.botDetectionCount,
-            lastDetection: this.lastBotDetection,
-            threshold: CookiesManager.MAX_BOT_DETECTIONS_BEFORE_REFRESH,
-        };
-    }
-
     public async shutdown(): Promise<void> {
         await this.loginManager.shutdown();
     }
@@ -217,15 +132,7 @@ export class CookiesManager {
         await this.loginManager.close();
     }
 
-    public getCurrentCookieIndex(): number {
-        return this.getCurrentCookiePath() ? 1 : 0;
-    }
-
-    public getCookieCount(): number {
-        return this.getCurrentCookiePath() ? 1 : 0;
-    }
-
-    public getFailedCookieCount(): number {
-        return this.areAllCookiesFailed() ? 1 : 0;
+    public getExtractorArgs(): string | null {
+        return this.loginManager.getExtractorArgs();
     }
 }

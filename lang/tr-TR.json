@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "Çerez Dosyası",
                 "statusActive": "Aktif",
-                "statusStale": "Eski (tarayıcı yenilemiyor)",
                 "statusMissing": "Çerez mevcut değil",
                 "sizeLabel": "Boyut",
                 "lastRefreshLabel": "Son Yenileme",
@@ -24,28 +23,16 @@
                 "sessionError": "Hata: {error}",
                 "sessionIdle": "Başlatılmadı",
                 "accountLabel": "Hesap",
-                "accountNA": "N/A",
-                "browserLabel": "Tarayıcı",
-                "browserRunning": "Çalışıyor",
-                "browserStopped": "Durduruldu",
-                "detectionsLabel": "Algılamalar",
-                "lastDetectionLabel": "Son",
-                "lastDetectionNone": "Yok",
-                "thresholdReached": "Eşik değerine ulaşıldı! {resetCmd} veya {refreshCmd} kullanın",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "Başlangıç",
                 "gettingStartedText": "Google'a giriş yapmak ve çerezleri otomatik oluşturmak için {loginCmd} kullanın.",
-                "statsTitle": "İstatistikler",
-                "warningTitle": "Uyarı",
-                "resetSuccess": "Bot algılama sayacı sıfırlandı. İstekler mevcut çerezlerle yeniden denenecek.",
-                "allCookiesFailed": "Tüm çerezler başarısız oldu! Yeniden denemek için {prefix}login reset kullanın."
+                "statsTitle": "İstatistikler"
             },
             "login": {
                 "description": "YouTube çerez kimlik doğrulaması için Google giriş oturumunu yönet",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Tarayıcı üzerinden Google giriş oturumu başlat",
                 "slashStatusDescription": "Mevcut giriş oturumu durumunu kontrol et",
-                "slashRefreshDescription": "Aktif tarayıcı oturumundan çerezleri zorla yenile",
-                "slashResetDescription": "Bot algılama sayacını sıfırla ve başarısız istekleri yeniden dene",
                 "slashLogoutDescription": "Tarayıcı oturumunu kapat",
                 "invalidSubcommand": "Kullanım: {loginUsage}",
                 "alreadyLoggedIn": "Zaten giriş yapılmış. Yeni bir oturum başlatmak için önce `logout` kullanın.",
@@ -60,20 +47,15 @@
                 "step4": "4. Uzak DevTools URL: {url} (isteğe bağlı)",
                 "timeLimit": "Girişi tamamlamak için {minutes} dakikanız var.",
                 "loginSuccess": "Giriş Başarılı",
-                "loginSuccessDescription": "Başarıyla giriş yapıldı{email}.\n\nÇerezler dışa aktarıldı ve her 30 dakikada otomatik yenilenecek.\nYouTube artık bot algılama sorunları olmadan çalışmalıdır.",
+                "loginSuccessDescription": "Başarıyla giriş yapıldı{email}.\n\nÇerezler dışa aktarıldı ve kaydedildi.\nYouTube artık bot algılama sorunları olmadan çalışmalıdır.",
                 "loginSuccessEmail": " {email} olarak",
                 "loginFailed": "Giriş Başarısız",
-                "loginFailedDescription": "Giriş zaman aşımına uğradı veya iptal edildi.\nTekrar denemek için {cmd} kullanın.",
+                "loginFailedDescription": "Giriş zaman aşımına uğradı veya iptal edildi.\n\nTekrar denemek için {cmd} kullanın.",
                 "loginError": "Giriş Hatası",
                 "loginErrorDescription": "Giriş sırasında bir hata oluştu:\n{error}",
                 "statusTitle": "Giriş & Çerez Durumu",
-                "debugInfoField": "Debug Bilgisi",
-                "refreshing": "Çerezler yenileniyor...",
-                "refreshSuccess": "Çerezler başarıyla yenilendi!",
-                "refreshFailed": "Çerez yenileme başarısız: {error}",
-                "refreshNoBrowser": "Tarayıcı çalışmıyor. Önce `login start` ile giriş oturumu başlatın.",
-                "logoutSuccess": "Tarayıcı oturumu kapatıldı.\nMevcut çerezler süresi dolana kadar çalışmaya devam edecek.\nYeni bir oturum başlatmak için {cmd} kullanın.",
-                "logoutNoBrowser": "Tarayıcı çalışmıyor."
+                "logoutSuccess": "Giriş oturumu temizlendi.\n\nTüm çerezler ve profil verileri silindi.\nYeni bir oturum başlatmak için {cmd} kullanın.",
+                "logoutNoBrowser": "Aktif giriş oturumu yok."
             }
         },
         "general": {
@@ -385,7 +367,7 @@
             "startPlaying": "{song} çalınmaya başladı.",
             "stopPlaying": "{song} durduruldu.",
             "songRequeued": "{song} çalınırken sorun oluştu, başka bir deneme için kuyruğa yeniden eklendi.",
-            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! Yeniden denemek için {prefix}login reset kullanın veya tekrar giriş yapmak için {prefix}login start kullanın.",
+            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! `{prefix}login logout` ardından `{prefix}login start` kullanarak tekrar giriş yapın.",
             "ageRestricted": "{song} yaş kısıtlamalı olduğu ve giriş yapmayı gerektirdiği için çalınamıyor."
         },
         "musicDecorator": {

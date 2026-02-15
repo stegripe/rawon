@@ -1,5 +1,13 @@
 import { type ChildProcess, execSync } from "node:child_process";
-import { existsSync, mkdirSync, readdirSync, unlinkSync, writeFileSync } from "node:fs";
+import {
+    existsSync,
+    mkdirSync,
+    readdirSync,
+    readFileSync,
+    rmSync,
+    unlinkSync,
+    writeFileSync,
+} from "node:fs";
 import { createConnection, createServer, type Server } from "node:net";
 import path from "node:path";
 import process from "node:process";
@@ -21,7 +29,7 @@ import puppeteer, { type Browser, type Cookie, type Page, type Target } from "pu
 export type LoginStatus = "idle" | "waiting_for_login" | "logged_in" | "error";
 
 const CHROME_USER_AGENT =
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36";
 
 export interface LoginSessionInfo {
     status: LoginStatus;
@@ -48,10 +56,11 @@ const YOUTUBE_DOMAINS = [
     ".youtu.be",
 ];
 
-const COOKIE_REFRESH_INTERVAL_MS = 30 * 60 * 1000;
 const LOGIN_CHECK_INTERVAL_MS = 5_000;
 const LOGIN_TIMEOUT_MS = 5 * 60 * 1000;
 const PAGE_NAVIGATION_TIMEOUT_MS = 30_000;
+
+const CRITICAL_YOUTUBE_COOKIES = ["LOGIN_INFO", "SID", "HSID", "SSID", "APISID", "SAPISID"];
 
 export class GoogleLoginManager {
     private browser: Browser | null = null;
@@ -62,7 +71,6 @@ export class GoogleLoginManager {
     private loginEmail: string | null = null;
     private lastCookieRefresh: number | null = null;
     private error: string | null = null;
-    private refreshInterval: ReturnType<typeof setInterval> | null = null;
     private loginCheckInterval: ReturnType<typeof setInterval> | null = null;
     private loginTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -76,6 +84,7 @@ export class GoogleLoginManager {
     private browserWSEndpoint: string | null = null;
     private currentLoginUrl: string | null = null;
     private proxyServer: Server | null = null;
+    private visitorData: string | null = null;
 
     public constructor(chromiumPath?: string, devtoolsPort = 3000) {
         const cacheDir = path.resolve(process.cwd(), "cache");
@@ -97,9 +106,17 @@ export class GoogleLoginManager {
                 id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
                 was_running INTEGER NOT NULL DEFAULT 0,
                 email TEXT,
+                visitor_data TEXT,
                 saved_at INTEGER NOT NULL
             )
         `);
+
+        // Migration: add visitor_data column if missing (from older schema)
+        try {
+            this.db.exec("ALTER TABLE login_session ADD COLUMN visitor_data TEXT");
+        } catch {
+            // Column already exists
+        }
     }
 
     private ensureDirectories(): void {
@@ -116,7 +133,7 @@ export class GoogleLoginManager {
             const lockPath = path.join(this.paths.userDataDir, lockFile);
             try {
                 unlinkSync(lockPath);
-                container.logger.info(`[GoogleLogin] Removed stale lock file: ${lockFile}`);
+                container.logger.debug(`[GoogleLogin] Removed stale lock file: ${lockFile}`);
             } catch {
                 // File doesn't exist, ignore
             }
@@ -265,7 +282,7 @@ export class GoogleLoginManager {
                     channel,
                 });
                 if (sysPath && existsSync(sysPath)) {
-                    container.logger.info(
+                    container.logger.debug(
                         `[GoogleLogin] Found system Chrome (${channel}): ${sysPath}`,
                     );
                     return sysPath;
@@ -279,14 +296,14 @@ export class GoogleLoginManager {
 
         for (const candidate of candidates) {
             if (candidate && existsSync(candidate)) {
-                container.logger.info(`[GoogleLogin] Found browser at: ${candidate}`);
+                container.logger.debug(`[GoogleLogin] Found browser at: ${candidate}`);
                 return candidate;
             }
         }
 
         const foundInPath = this.findBrowserInPath();
         if (foundInPath) {
-            container.logger.info(`[GoogleLogin] Found browser in PATH: ${foundInPath}`);
+            container.logger.debug(`[GoogleLogin] Found browser in PATH: ${foundInPath}`);
             return foundInPath;
         }
 
@@ -294,7 +311,9 @@ export class GoogleLoginManager {
             const puppeteerFull = await import("puppeteer");
             const execPath = puppeteerFull.executablePath();
             if (execPath && existsSync(execPath)) {
-                container.logger.info(`[GoogleLogin] Using puppeteer bundled browser: ${execPath}`);
+                container.logger.debug(
+                    `[GoogleLogin] Using puppeteer bundled browser: ${execPath}`,
+                );
                 return execPath;
             }
         } catch {
@@ -304,7 +323,7 @@ export class GoogleLoginManager {
         const downloadDir = path.resolve(process.cwd(), "cache", "scripts", "chrome");
         const existingPath = this.findDownloadedBrowser(downloadDir);
         if (existingPath) {
-            container.logger.info(
+            container.logger.debug(
                 `[GoogleLogin] Using previously downloaded Chrome: ${existingPath}`,
             );
             return existingPath;
@@ -590,7 +609,7 @@ export class GoogleLoginManager {
         return result.executablePath;
     }
 
-    public async launchBrowser(): Promise<string> {
+    public async launchBrowser(forceHeadless = false): Promise<string> {
         if (this.browser?.connected) {
             this.debugUrl = this.getDevtoolsBaseUrl();
             return this.debugUrl;
@@ -598,13 +617,14 @@ export class GoogleLoginManager {
 
         const browserPath = await this.findBrowserPath();
         const port = this.devtoolsPort;
-        const useHeadless = process.platform === "linux" && !process.env.DISPLAY;
+        const noDisplay = process.platform === "linux" && !process.env.DISPLAY;
+        const useHeadless = forceHeadless || noDisplay;
 
         container.logger.info(
             `[GoogleLogin] Launching browser from: ${browserPath}${useHeadless ? " (headless)" : ""}`,
         );
 
-        if (useHeadless) {
+        if (noDisplay && !forceHeadless) {
             container.logger.warn(
                 "[GoogleLogin] No display found. Using headless mode with stealth evasions.",
             );
@@ -614,7 +634,7 @@ export class GoogleLoginManager {
 
         this.browser = await puppeteer.launch({
             executablePath: browserPath,
-            headless: useHeadless ? "shell" : false,
+            headless: !!useHeadless,
             pipe: false,
             userDataDir: this.paths.userDataDir,
             args: [
@@ -661,7 +681,13 @@ export class GoogleLoginManager {
             container.logger.warn("[GoogleLogin] Browser disconnected");
             this.chromeProcess = null;
             this.stopDevtoolsProxy();
-            this.handleBrowserDisconnect();
+            this.browser = null;
+            this.page = null;
+            this.debugUrl = null;
+            this.inspectUrl = null;
+            this.loginTargetId = null;
+            this.currentLoginUrl = null;
+            this.cleanupLoginWait();
         });
 
         this.inspectUrl = await this.buildInspectUrl();
@@ -671,63 +697,6 @@ export class GoogleLoginManager {
         );
 
         return this.debugUrl;
-    }
-
-    private async launchBrowserHeadless(): Promise<void> {
-        if (this.browser?.connected) {
-            return;
-        }
-
-        const browserPath = await this.findBrowserPath();
-        const port = this.devtoolsPort;
-
-        container.logger.info("[GoogleLogin] Launching headless browser for session check...");
-
-        this.cleanProfileLocks();
-
-        this.browser = await puppeteer.launch({
-            executablePath: browserPath,
-            headless: "shell",
-            pipe: false,
-            userDataDir: this.paths.userDataDir,
-            args: [
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-extensions",
-                "--no-first-run",
-                "--disable-background-networking",
-                "--disable-default-apps",
-                "--disable-sync",
-                "--disable-translate",
-                "--disable-blink-features=AutomationControlled",
-                "--disable-features=Translate,AcceptCHFrame,MediaRouter,OptimizationHints",
-                "--disable-component-extensions-with-background-pages",
-                `--user-agent=${CHROME_USER_AGENT}`,
-                "--remote-allow-origins=*",
-            ],
-            defaultViewport: { width: 1280, height: 720 },
-        });
-
-        const headlessPages = await this.browser.pages();
-        for (const p of headlessPages) {
-            await this.applyStealthToPage(p);
-        }
-
-        this.chromeProcess = this.browser.process() ?? null;
-        this.browserWSEndpoint = this.browser.wsEndpoint();
-
-        const chromeDebugPort = this.extractPortFromWsEndpoint(this.browserWSEndpoint);
-        await this.startDevtoolsProxy(port, chromeDebugPort);
-        this.actualPort = port;
-
-        this.browser.on("disconnected", () => {
-            container.logger.warn("[GoogleLogin] Headless browser exited");
-            this.stopDevtoolsProxy();
-            this.chromeProcess = null;
-            this.handleBrowserDisconnect();
-        });
     }
 
     private extractPortFromWsEndpoint(wsEndpoint: string): number {
@@ -771,7 +740,7 @@ export class GoogleLoginManager {
             });
 
             this.proxyServer.listen(externalPort, "0.0.0.0", () => {
-                container.logger.info(
+                container.logger.debug(
                     `[GoogleLogin] DevTools proxy: 0.0.0.0:${externalPort} → 127.0.0.1:${chromePort}`,
                 );
                 resolve();
@@ -833,14 +802,20 @@ export class GoogleLoginManager {
 
             if (loggedIn) {
                 await this.connectPuppeteerAndExportCookies();
+
+                // Extract account name from the YouTube page (for display in status)
+                await this.extractAccountName();
+
                 this.status = "logged_in";
                 this.saveSessionState();
 
-                container.logger.info(
-                    `[GoogleLogin] Login successful! Email: ${this.loginEmail ?? "unknown"}`,
-                );
+                // Close browser — cookies are saved to disk, no need to keep it running.
+                await this.closeBrowserOnly();
 
-                await this.relaunchAsHeadless();
+                container.logger.info(
+                    `[GoogleLogin] Login successful! Account: ${this.loginEmail ?? "unknown"}. ` +
+                        "Cookies exported to disk. Browser closed.",
+                );
 
                 return true;
             }
@@ -848,19 +823,72 @@ export class GoogleLoginManager {
             this.status = "error";
             this.error = "Login timed out or was cancelled";
             container.logger.warn("[GoogleLogin] Login timed out or was cancelled");
+
+            // Close browser on failure too
+            await this.closeBrowserOnly();
+
             return false;
         } catch (err) {
             this.status = "error";
             this.error = (err as Error).message;
             container.logger.error("[GoogleLogin] Login failed:", err);
+
+            // Close browser on error
+            await this.closeBrowserOnly();
+
             return false;
         }
+    }
+
+    /**
+     * Close the browser process without wiping cookies or session state.
+     * Used after login to free resources — cookies remain on disk for yt-dlp.
+     */
+    private async closeBrowserOnly(): Promise<void> {
+        this.cleanupLoginWait();
+        this.stopDevtoolsProxy();
+
+        if (this.browser) {
+            this.browser.removeAllListeners("disconnected");
+            try {
+                await this.browser.close();
+            } catch {
+                if (this.chromeProcess && !this.chromeProcess.killed) {
+                    try {
+                        this.chromeProcess.kill();
+                    } catch {
+                        // Ignore
+                    }
+                }
+            }
+        } else if (this.chromeProcess && !this.chromeProcess.killed) {
+            try {
+                this.chromeProcess.kill();
+            } catch {
+                // Ignore
+            }
+        }
+
+        this.browser = null;
+        this.page = null;
+        this.chromeProcess = null;
+        this.debugUrl = null;
+        this.inspectUrl = null;
+        this.loginTargetId = null;
+        this.browserWSEndpoint = null;
+        this.currentLoginUrl = null;
+
+        container.logger.info("[GoogleLogin] Browser closed. Cookies remain on disk.");
     }
 
     private async navigateToLoginPage(): Promise<void> {
         const port = this.actualPort ?? this.devtoolsPort;
         const host = "127.0.0.1";
-        const loginUrl = "https://accounts.google.com/signin";
+        // Use YouTube's login flow: Google login with continue=youtube.com
+        // This way after login, Google redirects back to YouTube, which triggers
+        // the SSO and sets YouTube-domain cookies (LOGIN_INFO, SID on .youtube.com, etc.)
+        const loginUrl =
+            "https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fwww.youtube.com%2F&service=youtube";
 
         const listResponse = await fetch(`http://${host}:${port}/json`);
         const existingTargets = (await listResponse.json()) as Array<{
@@ -876,10 +904,48 @@ export class GoogleLoginManager {
         const page = pages[0] ?? (await this.browser.newPage());
         await this.applyStealthToPage(page);
         await page.setViewport({ width: 1280, height: 720 });
+
+        // First visit YouTube to establish initial cookies (avoids CookieMismatch)
+        try {
+            await page.goto("https://www.youtube.com", {
+                waitUntil: "domcontentloaded",
+                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 2_000));
+        } catch {
+            // Non-fatal: YouTube pre-visit failed, continue with login
+        }
+
         await page.goto(loginUrl, {
             waitUntil: "domcontentloaded",
             timeout: PAGE_NAVIGATION_TIMEOUT_MS,
         });
+
+        // If we hit CookieMismatch, clear cookies and retry
+        const currentUrl = page.url();
+        if (currentUrl.includes("CookieMismatch") || currentUrl.includes("cookie_disabled")) {
+            container.logger.warn(
+                "[GoogleLogin] Google CookieMismatch detected, clearing browser cookies and retrying...",
+            );
+
+            const cdp = await page.createCDPSession();
+            await cdp.send("Network.clearBrowserCookies");
+            await cdp.detach();
+
+            await new Promise((resolve) => setTimeout(resolve, 1_000));
+
+            // Retry: visit YouTube first then login
+            await page.goto("https://www.youtube.com", {
+                waitUntil: "domcontentloaded",
+                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 2_000));
+
+            await page.goto(loginUrl, {
+                waitUntil: "domcontentloaded",
+                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
+            });
+        }
 
         const updatedResponse = await fetch(`http://${host}:${port}/json`);
         const targets = (await updatedResponse.json()) as Array<{
@@ -925,11 +991,6 @@ export class GoogleLoginManager {
             this.browser = await puppeteer.connect({
                 browserWSEndpoint: this.browserWSEndpoint,
             });
-
-            this.browser.on("disconnected", () => {
-                container.logger.warn("[GoogleLogin] Browser disconnected");
-                this.handleBrowserDisconnect();
-            });
         }
 
         const pages = await this.browser.pages();
@@ -937,177 +998,108 @@ export class GoogleLoginManager {
 
         if (this.page) {
             await this.page.setViewport({ width: 1280, height: 720 });
-
-            await this.page.goto("https://www.youtube.com", {
-                waitUntil: "networkidle2",
-                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-            });
-
-            await new Promise((resolve) => setTimeout(resolve, 2_000));
-
-            await this.checkYouTubeLoginStatus();
         }
+
+        // Navigate to YouTube to trigger Google→YouTube SSO.
+        // This is REQUIRED because SID/HSID/SSID/APISID/SAPISID are set on .google.com
+        // but yt-dlp needs them on .youtube.com domain. Visiting YouTube while signed
+        // into Google causes YouTube to set LOGIN_INFO and other critical cookies
+        // on the .youtube.com domain.
+        await this.navigateToYouTubeForSSO();
 
         await this.exportCookies();
     }
 
-    public async checkExistingSession(): Promise<boolean> {
-        if (!this.browser?.connected) {
-            await this.launchBrowserHeadless();
-        }
-
-        try {
-            const pages = await this.browser!.pages();
-            this.page = pages.length > 0 ? pages[0] : await this.browser!.newPage();
-
-            await this.page.setViewport({ width: 1280, height: 720 });
-
-            await this.page.goto("https://www.youtube.com", {
-                waitUntil: "networkidle2",
-                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-            });
-
-            const isLoggedIn = await this.checkYouTubeLoginStatus();
-
-            if (isLoggedIn) {
-                this.status = "logged_in";
-                this.saveSessionState();
-                await this.exportCookies();
-                this.startCookieRefreshLoop();
-                container.logger.info(
-                    `[GoogleLogin] Existing session found! Email: ${this.loginEmail ?? "unknown"}`,
-                );
-                return true;
-            }
-
-            this.browser!.disconnect();
-            this.browser = null;
-            this.page = null;
-
-            container.logger.info("[GoogleLogin] No existing session found");
-            return false;
-        } catch (err) {
-            container.logger.warn("[GoogleLogin] Could not check existing session:", err);
-            if (this.browser?.connected) {
-                try {
-                    this.browser.disconnect();
-                } catch {
-                    // Ignore
-                }
-            }
-            this.browser = null;
-            this.page = null;
-            return false;
-        }
-    }
-
-    private waitForLogin(): Promise<boolean> {
-        const port = this.actualPort ?? this.devtoolsPort;
-        const host = "127.0.0.1";
-
-        return new Promise<boolean>((resolve) => {
-            this.loginCheckInterval = setInterval(async () => {
-                try {
-                    const response = await fetch(`http://${host}:${port}/json`);
-                    const targets = (await response.json()) as Array<{
-                        id: string;
-                        url: string;
-                    }>;
-
-                    const loginTarget = targets.find((t) => t.id === this.loginTargetId);
-
-                    if (!loginTarget) {
-                        this.cleanupLoginWait();
-                        resolve(false);
-                        return;
-                    }
-
-                    const url = loginTarget.url;
-                    this.currentLoginUrl = url;
-
-                    if (
-                        url.includes("myaccount.google.com") ||
-                        url.includes("youtube.com") ||
-                        (url.includes("google.com") &&
-                            !url.includes("accounts.google.com/signin") &&
-                            !url.includes("accounts.google.com/v3/signin") &&
-                            !url.includes("accounts.google.com/ServiceLogin") &&
-                            !url.includes("accounts.google.com/o/oauth2") &&
-                            !url.includes("accounts.google.com/CheckCookie") &&
-                            !url.includes("challenge"))
-                    ) {
-                        this.cleanupLoginWait();
-                        resolve(true);
-                        return;
-                    }
-                } catch {
-                    // Debug server not responding, ignore
-                }
-            }, LOGIN_CHECK_INTERVAL_MS);
-
-            this.loginTimeout = setTimeout(() => {
-                this.cleanupLoginWait();
-                resolve(false);
-            }, LOGIN_TIMEOUT_MS);
-        });
-    }
-
-    private cleanupLoginWait(): void {
-        if (this.loginCheckInterval) {
-            clearInterval(this.loginCheckInterval);
-            this.loginCheckInterval = null;
-        }
-        if (this.loginTimeout) {
-            clearTimeout(this.loginTimeout);
-            this.loginTimeout = null;
-        }
-    }
-
-    private async checkYouTubeLoginStatus(): Promise<boolean> {
+    /**
+     * Navigate to YouTube to trigger the Google→YouTube SSO exchange.
+     * After Google login, critical cookies (SID, HSID, etc.) only exist on .google.com.
+     * YouTube's SSO creates copies on .youtube.com + sets LOGIN_INFO.
+     * Without this step, yt-dlp gets no authentication cookies for youtube.com.
+     * Returns true if LOGIN_INFO cookie was found (SSO successful).
+     */
+    private async navigateToYouTubeForSSO(): Promise<boolean> {
         if (!this.page || this.page.isClosed()) {
             return false;
         }
 
+        container.logger.info("[GoogleLogin] Navigating to YouTube to finalize SSO cookies...");
+
+        const checkForLoginInfo = async (): Promise<boolean> => {
+            const cdp = await this.page!.createCDPSession();
+            const { cookies } = (await cdp.send("Network.getAllCookies")) as {
+                cookies: Array<{ name: string; domain: string }>;
+            };
+            await cdp.detach();
+
+            const hasLoginInfo = cookies.some(
+                (c) => c.name === "LOGIN_INFO" && c.domain.includes("youtube"),
+            );
+            const hasSID = cookies.some((c) => c.name === "SID" && c.domain.includes("youtube"));
+
+            if (hasSID) {
+                container.logger.debug(
+                    "[GoogleLogin] YouTube SSO: SID cookie present on .youtube.com",
+                );
+            }
+
+            return hasLoginInfo;
+        };
+
         try {
-            const currentUrl = this.page.url();
+            await this.page.goto("https://www.youtube.com", {
+                waitUntil: "domcontentloaded",
+                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
+            });
 
-            if (!currentUrl.includes("youtube.com")) {
-                await this.page.goto("https://www.youtube.com", {
-                    waitUntil: "networkidle2",
-                    timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-                });
+            // Wait for YouTube to process SSO — it needs time to exchange tokens
+            // and set cookies via redirects
+            await new Promise((resolve) => setTimeout(resolve, 5_000));
+
+            if (await checkForLoginInfo()) {
+                container.logger.info(
+                    "[GoogleLogin] YouTube SSO complete — LOGIN_INFO cookie present",
+                );
+                return true;
             }
 
-            const isLoggedIn = (await this.page.evaluate(
-                /* istanbul ignore next -- browser context */
-                `(() => {
-                    const avatarButton = document.querySelector(
-                        'button#avatar-btn, img.yt-spec-avatar-shape__avatar, #avatar-btn'
-                    );
-                    if (avatarButton) return true;
-                    const signInButton = document.querySelector(
-                        'a[href*="accounts.google.com"], ytd-button-renderer.style-suggestive a[href*="ServiceLogin"]'
-                    );
-                    return !signInButton;
-                })()`,
-            )) as boolean;
+            // Retry once — sometimes YouTube needs a reload
+            container.logger.warn(
+                "[GoogleLogin] YouTube SSO: LOGIN_INFO not found after first visit, retrying...",
+            );
+            await this.page.reload({
+                waitUntil: "domcontentloaded",
+                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 5_000));
 
-            if (isLoggedIn) {
-                await this.extractEmail();
+            if (await checkForLoginInfo()) {
+                container.logger.info(
+                    "[GoogleLogin] YouTube SSO complete — LOGIN_INFO present after retry",
+                );
+                return true;
             }
 
-            return isLoggedIn;
-        } catch {
+            container.logger.warn(
+                "[GoogleLogin] YouTube SSO failed — LOGIN_INFO not found after retry",
+            );
+            return false;
+        } catch (err) {
+            container.logger.warn("[GoogleLogin] YouTube SSO navigation failed:", err);
             return false;
         }
     }
 
-    private async extractEmail(): Promise<void> {
+    /**
+     * Extract the account name from the YouTube page after SSO.
+     * Tries ytcfg, script parsing, and avatar popup methods.
+     */
+    private async extractAccountName(): Promise<void> {
         if (!this.page || this.page.isClosed()) {
             return;
         }
 
         try {
+            // Try ytcfg first (most reliable on YouTube)
             const ytcfgName = (await this.page.evaluate(
                 `(() => {
                     try {
@@ -1124,10 +1116,11 @@ export class GoogleLoginManager {
 
             if (ytcfgName) {
                 this.loginEmail = ytcfgName;
-                container.logger.info(`[GoogleLogin] Email extracted via ytcfg: ${ytcfgName}`);
+                container.logger.info(`[GoogleLogin] Account name extracted: ${ytcfgName}`);
                 return;
             }
 
+            // Try script parsing for accountName
             const scriptName = (await this.page.evaluate(
                 `(() => {
                     try {
@@ -1146,11 +1139,12 @@ export class GoogleLoginManager {
             if (scriptName) {
                 this.loginEmail = scriptName;
                 container.logger.info(
-                    `[GoogleLogin] Email extracted via script parse: ${scriptName}`,
+                    `[GoogleLogin] Account name extracted via script: ${scriptName}`,
                 );
                 return;
             }
 
+            // Try clicking avatar button for popup
             const avatarClicked = await this.page.evaluate(
                 `(() => {
                     const avatar = document.querySelector("button#avatar-btn");
@@ -1181,7 +1175,7 @@ export class GoogleLoginManager {
                 if (popupName) {
                     this.loginEmail = popupName;
                     container.logger.info(
-                        `[GoogleLogin] Email extracted via avatar popup: ${popupName}`,
+                        `[GoogleLogin] Account name extracted via popup: ${popupName}`,
                     );
                 }
 
@@ -1194,11 +1188,130 @@ export class GoogleLoginManager {
                 );
             }
         } catch (err) {
-            container.logger.warn("[GoogleLogin] extractEmail failed:", err);
+            container.logger.warn("[GoogleLogin] extractAccountName failed:", err);
         }
     }
 
-    public async exportCookies(): Promise<void> {
+    private waitForLogin(): Promise<boolean> {
+        const port = this.actualPort ?? this.devtoolsPort;
+        const host = "127.0.0.1";
+
+        return new Promise<boolean>((resolve) => {
+            this.loginCheckInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`http://${host}:${port}/json`);
+                    const targets = (await response.json()) as Array<{
+                        id: string;
+                        url: string;
+                    }>;
+
+                    const loginTarget = targets.find((t) => t.id === this.loginTargetId);
+
+                    if (!loginTarget) {
+                        this.cleanupLoginWait();
+                        resolve(false);
+                        return;
+                    }
+
+                    const url = loginTarget.url;
+                    this.currentLoginUrl = url;
+
+                    // Only consider login successful if URL indicates actual post-login destination
+                    // Use whitelist approach: only accept known post-login URLs
+                    const isPostLoginUrl =
+                        url.includes("myaccount.google.com") ||
+                        url.includes("youtube.com") ||
+                        url.includes("google.com/webhp") ||
+                        url.includes("google.com/?") ||
+                        url.endsWith("google.com") ||
+                        url.endsWith("google.com/");
+
+                    // Explicitly reject known error/intermediate pages
+                    const isErrorPage =
+                        url.includes("CookieMismatch") ||
+                        url.includes("cookie_disabled") ||
+                        url.includes("/sorry/") ||
+                        url.includes("accounts.google.com");
+
+                    if (isPostLoginUrl && !isErrorPage) {
+                        // Double-check: verify actual Google session cookies exist via CDP
+                        const hasSession = await this.verifyGoogleSessionCookies();
+                        if (hasSession) {
+                            this.cleanupLoginWait();
+                            resolve(true);
+                            return;
+                        }
+                        container.logger.warn(
+                            `[GoogleLogin] URL looks post-login (${url.substring(0, 80)}) but no session cookies found yet, waiting...`,
+                        );
+                    }
+                } catch {
+                    // Debug server not responding, ignore
+                }
+            }, LOGIN_CHECK_INTERVAL_MS);
+
+            this.loginTimeout = setTimeout(() => {
+                this.cleanupLoginWait();
+                resolve(false);
+            }, LOGIN_TIMEOUT_MS);
+        });
+    }
+
+    private cleanupLoginWait(): void {
+        if (this.loginCheckInterval) {
+            clearInterval(this.loginCheckInterval);
+            this.loginCheckInterval = null;
+        }
+        if (this.loginTimeout) {
+            clearTimeout(this.loginTimeout);
+            this.loginTimeout = null;
+        }
+    }
+
+    /**
+     * Verify that actual Google session cookies (SID, HSID) exist in the browser.
+     * This prevents false login detection from URL-only checks (e.g. CookieMismatch page).
+     */
+    private async verifyGoogleSessionCookies(): Promise<boolean> {
+        try {
+            if (!this.browser?.connected) {
+                return false;
+            }
+
+            const pages = await this.browser.pages();
+            const page = pages[0];
+            if (!page) {
+                return false;
+            }
+
+            const cdp = await page.createCDPSession();
+            const { cookies } = (await cdp.send("Network.getAllCookies")) as {
+                cookies: Array<{ name: string; domain: string }>;
+            };
+            await cdp.detach();
+
+            const hasSID = cookies.some((c) => c.name === "SID" && c.domain.includes("google"));
+            const hasHSID = cookies.some((c) => c.name === "HSID" && c.domain.includes("google"));
+
+            return hasSID && hasHSID;
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Returns yt-dlp `--extractor-args` value with visitor data,
+     * or `null` if not available.
+     */
+    public getExtractorArgs(): string | null {
+        if (this.visitorData) {
+            return `youtube:visitor_data=${this.visitorData}`;
+        }
+
+        return null;
+    }
+
+    public async exportCookies(): Promise<boolean> {
         if (!this.browser?.connected) {
             throw new Error("Browser is not running");
         }
@@ -1226,17 +1339,41 @@ export class GoogleLoginManager {
 
             if (relevantCookies.length === 0) {
                 container.logger.warn("[GoogleLogin] No relevant cookies found to export");
-                return;
+                return false;
             }
 
+            const allCookieNames = relevantCookies.map((c) => c.name);
+            const hasCritical = CRITICAL_YOUTUBE_COOKIES.filter((name) =>
+                allCookieNames.includes(name),
+            );
+            const missingCritical = CRITICAL_YOUTUBE_COOKIES.filter(
+                (name) => !allCookieNames.includes(name),
+            );
+
             const netscapeCookies = this.toNetscapeFormat(relevantCookies);
+
+            // Save primary cookie file
             writeFileSync(this.paths.cookiesFilePath, netscapeCookies, "utf8");
+
+            // Save backup copy (at least 2 copies on disk as safety net)
+            const backupPath = `${this.paths.cookiesFilePath}.backup`;
+            writeFileSync(backupPath, netscapeCookies, "utf8");
 
             this.lastCookieRefresh = Date.now();
 
+            const ytCookieCount = relevantCookies.filter((c) =>
+                c.domain.includes("youtube"),
+            ).length;
+
             container.logger.info(
-                `[GoogleLogin] Exported ${relevantCookies.length} cookies to ${this.paths.cookiesFilePath}`,
+                `[GoogleLogin] Exported ${relevantCookies.length} cookies to ${this.paths.cookiesFilePath}` +
+                    ` (YouTube: ${ytCookieCount}` +
+                    `, critical: ${hasCritical.join(",") || "NONE"}, missing: ${missingCritical.join(",") || "none"})`,
             );
+
+            // Validate: read back and verify the file is parseable
+            this.validateCookieFile();
+            return true;
         } catch (err) {
             container.logger.error("[GoogleLogin] Failed to export cookies:", err);
             throw err;
@@ -1252,141 +1389,70 @@ export class GoogleLoginManager {
         ];
 
         for (const cookie of cookies) {
-            const domain = cookie.domain.startsWith(".") ? cookie.domain : `.${cookie.domain}`;
-            const includeSubDomains = domain.startsWith(".") ? "TRUE" : "FALSE";
+            // Preserve host-only vs domain cookie distinction from CDP
+            // CDP: host-only cookies have no leading dot (e.g. "www.youtube.com")
+            // CDP: domain cookies have a leading dot (e.g. ".youtube.com")
+            const isDomainCookie = cookie.domain.startsWith(".");
+            const domain = cookie.domain;
+            const includeSubDomains = isDomainCookie ? "TRUE" : "FALSE";
             const secure = cookie.secure ? "TRUE" : "FALSE";
             const expiry = cookie.expires > 0 ? Math.floor(cookie.expires) : 0;
 
+            // HttpOnly cookies use #HttpOnly_ prefix in Netscape format
+            // This is important for Python's MozillaCookieJar (used by yt-dlp)
+            const httpOnlyPrefix = cookie.httpOnly ? "#HttpOnly_" : "";
+
             lines.push(
-                `${domain}\t${includeSubDomains}\t${cookie.path}\t${secure}\t${expiry}\t${cookie.name}\t${cookie.value}`,
+                `${httpOnlyPrefix}${domain}\t${includeSubDomains}\t${cookie.path}\t${secure}\t${expiry}\t${cookie.name}\t${cookie.value}`,
             );
         }
 
         return `${lines.join("\n")}\n`;
     }
 
-    private startCookieRefreshLoop(): void {
-        this.stopCookieRefreshLoop();
+    private validateCookieFile(): void {
+        try {
+            const content = readFileSync(this.paths.cookiesFilePath, "utf8");
+            const lines = content.split("\n");
+            let cookieCount = 0;
+            let httpOnlyCount = 0;
+            let criticalCount = 0;
+            const domains = new Set<string>();
 
-        this.refreshInterval = setInterval(async () => {
-            try {
-                if (!this.browser?.connected) {
+            for (const line of lines) {
+                if ((line.startsWith("#") && !line.startsWith("#HttpOnly_")) || !line.trim()) {
+                    continue;
+                }
+
+                const isHttpOnly = line.startsWith("#HttpOnly_");
+                const cookieLine = isHttpOnly ? line.slice(10) : line;
+                const parts = cookieLine.split("\t");
+                if (parts.length < 7) {
                     container.logger.warn(
-                        "[GoogleLogin] Browser disconnected, stopping cookie refresh",
+                        `[GoogleLogin] Cookie file validation: malformed line: ${line.substring(0, 80)}`,
                     );
-                    this.stopCookieRefreshLoop();
-                    return;
+                    continue;
                 }
 
-                if (this.page && !this.page.isClosed()) {
-                    await this.page.goto("https://www.youtube.com", {
-                        waitUntil: "networkidle2",
-                        timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-                    });
-                    await new Promise((resolve) => setTimeout(resolve, 2_000));
+                cookieCount++;
+                if (isHttpOnly) {
+                    httpOnlyCount++;
                 }
-
-                await this.exportCookies();
-                container.logger.info("[GoogleLogin] Cookie refresh completed successfully");
-            } catch (err) {
-                container.logger.error("[GoogleLogin] Cookie refresh failed:", err);
+                if (CRITICAL_YOUTUBE_COOKIES.includes(parts[5])) {
+                    criticalCount++;
+                }
+                domains.add(parts[0]);
             }
-        }, COOKIE_REFRESH_INTERVAL_MS);
 
-        container.logger.info(
-            `[GoogleLogin] Cookie refresh loop started (every ${COOKIE_REFRESH_INTERVAL_MS / 60_000} minutes)`,
-        );
-    }
-
-    private stopCookieRefreshLoop(): void {
-        if (this.refreshInterval) {
-            clearInterval(this.refreshInterval);
-            this.refreshInterval = null;
-        }
-    }
-
-    public async refreshCookiesNow(): Promise<void> {
-        if (!this.browser?.connected) {
-            throw new Error("Browser is not running. Start a login session first.");
-        }
-
-        if (this.page && !this.page.isClosed()) {
-            await this.page.goto("https://www.youtube.com", {
-                waitUntil: "networkidle2",
-                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-            });
-            await new Promise((resolve) => setTimeout(resolve, 2_000));
-        }
-
-        await this.exportCookies();
-    }
-
-    private handleBrowserDisconnect(): void {
-        this.stopCookieRefreshLoop();
-        this.cleanupLoginWait();
-        this.browser = null;
-        this.page = null;
-        this.debugUrl = null;
-        this.inspectUrl = null;
-        this.loginTargetId = null;
-        this.currentLoginUrl = null;
-
-        if (this.hasCookies() && this.status === "logged_in") {
-            container.logger.info(
-                "[GoogleLogin] Browser disconnected but cookies still exist. " +
-                    "Cookies will continue to work until they expire.",
+            container.logger.debug(
+                `[GoogleLogin] Cookie file validation: ${cookieCount} cookies (${httpOnlyCount} httpOnly, ${criticalCount} critical), domains: ${[...domains].join(", ")}`,
             );
-        } else {
-            this.status = "idle";
+        } catch (err) {
+            container.logger.warn("[GoogleLogin] Cookie file validation failed:", err);
         }
-    }
-
-    private async relaunchAsHeadless(): Promise<void> {
-        container.logger.info("[GoogleLogin] Relaunching browser in headless mode...");
-
-        this.stopDevtoolsProxy();
-
-        if (this.browser) {
-            this.browser.removeAllListeners("disconnected");
-            try {
-                await this.browser.close();
-            } catch {
-                if (this.chromeProcess && !this.chromeProcess.killed) {
-                    this.chromeProcess.kill();
-                }
-            }
-        }
-        this.browser = null;
-        this.page = null;
-        this.chromeProcess = null;
-        this.browserWSEndpoint = null;
-
-        await new Promise((resolve) => setTimeout(resolve, 2_000));
-
-        await this.launchBrowserHeadless();
-
-        const pages = await this.browser!.pages();
-        this.page = pages[0] ?? (await this.browser!.newPage());
-        await this.applyStealthToPage(this.page);
-        await this.page.setViewport({ width: 1280, height: 720 });
-
-        await this.page.goto("https://www.youtube.com", {
-            waitUntil: "networkidle2",
-            timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-        });
-        await new Promise((resolve) => setTimeout(resolve, 2_000));
-
-        await this.exportCookies();
-
-        this.startCookieRefreshLoop();
-
-        container.logger.info(
-            "[GoogleLogin] Browser relaunched in headless mode with background cookie refresh.",
-        );
     }
 
     public async shutdown(): Promise<void> {
-        this.stopCookieRefreshLoop();
         this.cleanupLoginWait();
         this.stopDevtoolsProxy();
 
@@ -1419,17 +1485,74 @@ export class GoogleLoginManager {
         this.loginTargetId = null;
         this.browserWSEndpoint = null;
         this.currentLoginUrl = null;
-        this.status = "idle";
 
-        container.logger.info("[GoogleLogin] Browser shut down (session state preserved)");
+        container.logger.info("[GoogleLogin] Shutdown complete");
     }
 
     public async close(): Promise<void> {
-        await this.shutdown();
-        this.clearSessionState();
-        this.loginEmail = null;
+        this.cleanupLoginWait();
+        this.stopDevtoolsProxy();
 
-        container.logger.info("[GoogleLogin] Browser closed and session state cleared");
+        // Close browser
+        if (this.browser) {
+            this.browser.removeAllListeners("disconnected");
+            try {
+                await this.browser.close();
+            } catch {
+                if (this.chromeProcess && !this.chromeProcess.killed) {
+                    try {
+                        this.chromeProcess.kill();
+                    } catch {
+                        // Ignore
+                    }
+                }
+            }
+        } else if (this.chromeProcess && !this.chromeProcess.killed) {
+            try {
+                this.chromeProcess.kill();
+            } catch {
+                // Ignore
+            }
+        }
+
+        // Wipe browser profile directory for clean re-login
+        try {
+            rmSync(this.paths.userDataDir, { recursive: true, force: true });
+            container.logger.info("[GoogleLogin] Browser profile directory wiped");
+        } catch (err) {
+            container.logger.warn("[GoogleLogin] Failed to wipe browser profile:", err);
+        }
+
+        // Delete cookie files (primary + backup)
+        for (const filePath of [
+            this.paths.cookiesFilePath,
+            `${this.paths.cookiesFilePath}.backup`,
+        ]) {
+            try {
+                unlinkSync(filePath);
+            } catch {
+                // File might not exist
+            }
+        }
+
+        // Clear all state
+        this.clearSessionState();
+        this.browser = null;
+        this.page = null;
+        this.chromeProcess = null;
+        this.debugUrl = null;
+        this.inspectUrl = null;
+        this.loginTargetId = null;
+        this.browserWSEndpoint = null;
+        this.currentLoginUrl = null;
+        this.loginEmail = null;
+        this.visitorData = null;
+        this.lastCookieRefresh = null;
+        this.status = "idle";
+
+        container.logger.info(
+            "[GoogleLogin] Logout complete — all browser state and cookies cleared",
+        );
     }
 
     public getDebugUrl(): string | null {
@@ -1440,16 +1563,51 @@ export class GoogleLoginManager {
         return LOGIN_TIMEOUT_MS;
     }
 
+    /**
+     * Restore session info (email, visitorData) from the database on startup.
+     * Does NOT launch the browser — just restores metadata for display.
+     */
+    public restoreSessionFromDB(): boolean {
+        const state = this.getPersistedSessionState();
+        if (!state?.wasRunning) {
+            return false;
+        }
+
+        if (!this.hasCookies()) {
+            container.logger.info(
+                "[GoogleLogin] Session state found but cookies missing, clearing state",
+            );
+            this.clearSessionState();
+            return false;
+        }
+
+        // Restore session info from DB
+        if (state.email) {
+            this.loginEmail = state.email;
+        }
+        if (state.visitorData) {
+            this.visitorData = state.visitorData;
+        }
+
+        this.status = "logged_in";
+        this.lastCookieRefresh = Date.now();
+
+        container.logger.info(
+            `[GoogleLogin] Session restored from DB. Account: ${this.loginEmail ?? "unknown"}. Using cookies from disk.`,
+        );
+        return true;
+    }
+
     private saveSessionState(): void {
         try {
             this.db
                 .prepare(
-                    `INSERT INTO login_session (id, was_running, email, saved_at)
-                     VALUES (1, 1, ?, ?)
-                     ON CONFLICT(id) DO UPDATE SET was_running = 1, email = excluded.email, saved_at = excluded.saved_at`,
+                    `INSERT INTO login_session (id, was_running, email, visitor_data, saved_at)
+                     VALUES (1, 1, ?, ?, ?)
+                     ON CONFLICT(id) DO UPDATE SET was_running = 1, email = excluded.email, visitor_data = excluded.visitor_data, saved_at = excluded.saved_at`,
                 )
-                .run(this.loginEmail, Date.now());
-            container.logger.info("[GoogleLogin] Session state saved for auto-relaunch");
+                .run(this.loginEmail, this.visitorData, Date.now());
+            container.logger.debug("[GoogleLogin] Session state saved");
         } catch (err) {
             container.logger.warn("[GoogleLogin] Failed to save session state:", err);
         }
@@ -1458,107 +1616,37 @@ export class GoogleLoginManager {
     private clearSessionState(): void {
         try {
             this.db.prepare("DELETE FROM login_session WHERE id = 1").run();
-            container.logger.info("[GoogleLogin] Session state cleared");
+            container.logger.debug("[GoogleLogin] Session state cleared");
         } catch {
             // Ignore
         }
     }
 
-    private getPersistedSessionState(): { wasRunning: boolean; email: string | null } | null {
+    private getPersistedSessionState(): {
+        wasRunning: boolean;
+        email: string | null;
+        visitorData: string | null;
+    } | null {
         try {
             const row = this.db
-                .prepare("SELECT was_running, email FROM login_session WHERE id = 1")
-                .get() as { was_running: number; email: string | null } | undefined;
+                .prepare("SELECT was_running, email, visitor_data FROM login_session WHERE id = 1")
+                .get() as
+                | {
+                      was_running: number;
+                      email: string | null;
+                      visitor_data: string | null;
+                  }
+                | undefined;
             if (!row || !row.was_running) {
                 return null;
             }
-            return { wasRunning: true, email: row.email };
+            return {
+                wasRunning: true,
+                email: row.email,
+                visitorData: row.visitor_data,
+            };
         } catch {
             return null;
-        }
-    }
-
-    public async tryAutoRelaunch(): Promise<boolean> {
-        if (this.browser?.connected || this.status === "logged_in") {
-            return true;
-        }
-
-        const state = this.getPersistedSessionState();
-        if (!state?.wasRunning) {
-            return false;
-        }
-
-        if (!existsSync(this.paths.userDataDir) || !this.hasCookies()) {
-            container.logger.info(
-                "[GoogleLogin] Session state found but profile/cookies missing, skipping auto-relaunch",
-            );
-            this.clearSessionState();
-            return false;
-        }
-
-        container.logger.info(
-            `[GoogleLogin] Previous session detected (${state.email ?? "unknown"}), auto-relaunching browser...`,
-        );
-
-        if (state.email) {
-            this.loginEmail = state.email;
-        }
-
-        try {
-            await this.launchBrowserHeadless();
-
-            const pages = await this.browser!.pages();
-            this.page = pages[0] ?? (await this.browser!.newPage());
-            await this.applyStealthToPage(this.page);
-            await this.page.setViewport({ width: 1280, height: 720 });
-
-            await this.page.goto("https://www.youtube.com", {
-                waitUntil: "networkidle2",
-                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-            });
-
-            // Wait for SPA hydration
-            await new Promise((resolve) => setTimeout(resolve, 3_000));
-
-            const isLoggedIn = await this.checkYouTubeLoginStatus();
-
-            if (isLoggedIn) {
-                this.status = "logged_in";
-                await this.exportCookies();
-                this.startCookieRefreshLoop();
-                container.logger.info(
-                    `[GoogleLogin] Auto-relaunch successful! Email: ${this.loginEmail ?? "unknown"}, cookie refresh active.`,
-                );
-                return true;
-            }
-
-            // YouTube login check failed, but we still have cookies on disk.
-            // Trust the existing cookies — they may still work even if
-            // the headless check couldn't detect the avatar button.
-            if (this.hasCookies()) {
-                this.status = "logged_in";
-                this.startCookieRefreshLoop();
-                container.logger.info(
-                    "[GoogleLogin] Auto-relaunch: YouTube login check inconclusive, " +
-                        "but cookies exist on disk. Trusting existing cookies.",
-                );
-                return true;
-            }
-
-            container.logger.warn(
-                "[GoogleLogin] Auto-relaunch: browser profile exists but YouTube session expired. Manual login required.",
-            );
-            if (this.browser?.connected) {
-                this.browser.disconnect();
-            }
-            this.browser = null;
-            this.page = null;
-            this.clearSessionState();
-            return false;
-        } catch (err) {
-            container.logger.error("[GoogleLogin] Auto-relaunch failed:", err);
-            this.clearSessionState();
-            return false;
         }
     }
 }

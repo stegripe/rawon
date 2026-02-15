@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "File Cookie",
                 "statusActive": "Hoạt động",
-                "statusStale": "Lỗi thời (trình duyệt không làm mới)",
                 "statusMissing": "Không có cookies",
                 "sizeLabel": "Kích thước",
                 "lastRefreshLabel": "Lần làm mới cuối",
@@ -24,28 +23,16 @@
                 "sessionError": "Lỗi: {error}",
                 "sessionIdle": "Chưa bắt đầu",
                 "accountLabel": "Tài khoản",
-                "accountNA": "N/A",
-                "browserLabel": "Trình duyệt",
-                "browserRunning": "Đang chạy",
-                "browserStopped": "Đã dừng",
-                "detectionsLabel": "Phát hiện",
-                "lastDetectionLabel": "Lần cuối",
-                "lastDetectionNone": "Không có",
-                "thresholdReached": "Đã đạt ngưỡng! Dùng {resetCmd} hoặc {refreshCmd}",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "Bắt Đầu",
                 "gettingStartedText": "Dùng {loginCmd} để đăng nhập vào Google và tạo cookies tự động.",
-                "statsTitle": "Thống Kê",
-                "warningTitle": "Cảnh Báo",
-                "resetSuccess": "Bộ đếm phát hiện bot đã được đặt lại. Các yêu cầu sẽ được thử lại với cookies hiện có.",
-                "allCookiesFailed": "Tất cả cookies đã thất bại! Dùng {prefix}login reset để thử lại."
+                "statsTitle": "Thống Kê"
             },
             "login": {
                 "description": "Quản lý phiên đăng nhập Google cho xác thực cookies YouTube",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Bắt đầu phiên đăng nhập Google qua trình duyệt",
                 "slashStatusDescription": "Kiểm tra trạng thái phiên đăng nhập hiện tại",
-                "slashRefreshDescription": "Buộc làm mới cookies từ phiên trình duyệt đang hoạt động",
-                "slashResetDescription": "Đặt lại bộ đếm phát hiện bot và thử lại các yêu cầu thất bại",
                 "slashLogoutDescription": "Đóng phiên trình duyệt",
                 "invalidSubcommand": "Cách dùng: {loginUsage}",
                 "alreadyLoggedIn": "Đã đăng nhập rồi. Dùng `logout` trước để bắt đầu phiên mới.",
@@ -60,20 +47,15 @@
                 "step4": "4. URL DevTools từ xa: {url} (tùy chọn)",
                 "timeLimit": "Bạn có {minutes} phút để hoàn tất đăng nhập.",
                 "loginSuccess": "Đăng Nhập Thành Công",
-                "loginSuccessDescription": "Đăng nhập thành công{email}.\n\nCookies đã được xuất và sẽ tự động làm mới mỗi 30 phút.\nYouTube sẽ hoạt động mà không có vấn đề phát hiện bot.",
+                "loginSuccessDescription": "Đăng nhập thành công{email}.\n\nCookies đã được xuất và lưu lại.\nYouTube sẽ hoạt động mà không có vấn đề phát hiện bot.",
                 "loginSuccessEmail": " với tư cách {email}",
                 "loginFailed": "Đăng Nhập Thất Bại",
-                "loginFailedDescription": "Đăng nhập đã hết thời gian hoặc bị hủy.\nDùng {cmd} để thử lại.",
+                "loginFailedDescription": "Đăng nhập đã hết thời gian hoặc bị hủy.\n\nDùng {cmd} để thử lại.",
                 "loginError": "Lỗi Đăng Nhập",
                 "loginErrorDescription": "Đã xảy ra lỗi trong quá trình đăng nhập:\n{error}",
                 "statusTitle": "Trạng Thái Đăng Nhập & Cookies",
-                "debugInfoField": "Thông Tin Debug",
-                "refreshing": "Đang làm mới cookies...",
-                "refreshSuccess": "Cookies đã được làm mới thành công!",
-                "refreshFailed": "Làm mới cookies thất bại: {error}",
-                "refreshNoBrowser": "Trình duyệt không chạy. Bắt đầu phiên đăng nhập trước với `login start`.",
-                "logoutSuccess": "Phiên trình duyệt đã đóng.\nCookies hiện có sẽ tiếp tục hoạt động cho đến khi hết hạn.\nDùng {cmd} để bắt đầu phiên mới.",
-                "logoutNoBrowser": "Trình duyệt không chạy."
+                "logoutSuccess": "Phiên đăng nhập đã được xóa.\n\nTất cả cookies và dữ liệu hồ sơ đã được xóa.\nDùng {cmd} để bắt đầu phiên mới.",
+                "logoutNoBrowser": "Không có phiên đăng nhập đang hoạt động."
             }
         },
         "general": {
@@ -385,7 +367,7 @@
             "startPlaying": "Bắt đầu phát {song}",
             "stopPlaying": "Dừng phát {song}",
             "songRequeued": "Gặp sự cố khi phát {song}, đã thêm lại vào hàng đợi để thử lại.",
-            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Dùng {prefix}login reset để thử lại, hoặc {prefix}login start để đăng nhập lại.",
+            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Dùng `{prefix}login logout` rồi `{prefix}login start` để đăng nhập lại.",
             "ageRestricted": "Không thể phát {song} vì nội dung bị giới hạn độ tuổi và yêu cầu đăng nhập."
         },
         "musicDecorator": {

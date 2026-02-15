@@ -13,7 +13,6 @@
             "cookies": {
                 "cookieFileField": "File Cookie",
                 "statusActive": "Aktif",
-                "statusStale": "Basi (browser gak refresh)",
                 "statusMissing": "Gak ada cookies",
                 "sizeLabel": "Ukuran",
                 "lastRefreshLabel": "Terakhir Refresh",
@@ -24,28 +23,16 @@
                 "sessionError": "Error: {error}",
                 "sessionIdle": "Belum dimulai",
                 "accountLabel": "Akun",
-                "accountNA": "N/A",
-                "browserLabel": "Browser",
-                "browserRunning": "Berjalan",
-                "browserStopped": "Berhenti",
-                "detectionsLabel": "Deteksi",
-                "lastDetectionLabel": "Terakhir",
-                "lastDetectionNone": "Belum ada",
-                "thresholdReached": "Batas tercapai! Pake {resetCmd} atau {refreshCmd}",
+                "accountNA": "`N/A`",
                 "gettingStartedField": "Mulai",
                 "gettingStartedText": "Pake {loginCmd} buat login ke Google dan generate cookies otomatis.",
-                "statsTitle": "Statistik",
-                "warningTitle": "Peringatan",
-                "resetSuccess": "Penghitung deteksi bot sudah direset. Request bakal dicoba ulang pake cookies yang ada.",
-                "allCookiesFailed": "Semua cookies gagal! Pake {prefix}login reset buat coba lagi."
+                "statsTitle": "Statistik"
             },
             "login": {
                 "description": "Kelola sesi login Google buat autentikasi cookie YouTube",
-                "usage": "{prefix}login <start | status | refresh | reset | logout>",
+                "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Mulai sesi login Google via browser",
                 "slashStatusDescription": "Cek status sesi login saat ini",
-                "slashRefreshDescription": "Paksa refresh cookies dari sesi browser aktif",
-                "slashResetDescription": "Reset penghitung deteksi bot dan coba ulang request yang gagal",
                 "slashLogoutDescription": "Tutup sesi browser",
                 "invalidSubcommand": "Penggunaan: {loginUsage}",
                 "alreadyLoggedIn": "Udah login. Pake `logout` dulu buat mulai sesi baru.",
@@ -60,20 +47,15 @@
                 "step4": "4. URL DevTools remote: {url} (opsional)",
                 "timeLimit": "Kamu punya waktu {minutes} menit buat selesaiin login.",
                 "loginSuccess": "Login Berhasil",
-                "loginSuccessDescription": "Berhasil login{email}.\n\nCookies udah diekspor dan bakal di-auto-refresh tiap 30 menit.\nYouTube harusnya udah bisa jalan tanpa masalah deteksi bot.",
+                "loginSuccessDescription": "Berhasil login{email}.\n\nCookies udah diekspor dan disimpan.\nYouTube harusnya udah bisa jalan tanpa masalah deteksi bot.",
                 "loginSuccessEmail": " sebagai {email}",
                 "loginFailed": "Login Gagal",
-                "loginFailedDescription": "Login timeout atau dibatalin.\nPake {cmd} buat coba lagi.",
+                "loginFailedDescription": "Login timeout atau dibatalin.\n\nPake {cmd} buat coba lagi.",
                 "loginError": "Error Login",
                 "loginErrorDescription": "Ada error pas login:\n{error}",
                 "statusTitle": "Status Login & Cookie",
-                "debugInfoField": "Info Debug",
-                "refreshing": "Lagi refresh cookies...",
-                "refreshSuccess": "Cookies berhasil di-refresh!",
-                "refreshFailed": "Refresh cookies gagal: {error}",
-                "refreshNoBrowser": "Browser gak jalan. Mulai sesi login dulu pake `login start`.",
-                "logoutSuccess": "Sesi browser ditutup.\nCookies yang ada bakal tetep jalan sampe expired.\nPake {cmd} buat mulai sesi baru.",
-                "logoutNoBrowser": "Browser gak jalan."
+                "logoutSuccess": "Sesi login udah dihapus.\n\nSemua cookies dan data profil udah dihapus.\nPake {cmd} buat mulai sesi baru.",
+                "logoutNoBrowser": "Gak ada sesi login aktif."
             }
         },
         "general": {
@@ -385,7 +367,7 @@
             "startPlaying": "Mulai muter {song}",
             "stopPlaying": "Selesai muter {song}",
             "songRequeued": "Ada masalah pas muter {song}, udah ditambahin ulang ke antrian buat dicoba lagi.",
-            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Pake {prefix}login reset buat coba ulang, atau {prefix}login start buat login ulang.",
+            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Pake `{prefix}login logout` terus `{prefix}login start` buat login ulang.",
             "ageRestricted": "Gak bisa muter {song} karena kontennya dibatasi usia dan butuh login."
         },
         "musicDecorator": {
