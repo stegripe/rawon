@@ -8,17 +8,14 @@ x-common-general: &common-general
 services:
   rawon:
     <<: *common-general
-    build:
-      context: .
-      dockerfile: Dockerfile
-    # image: ghcr.io/stegripe/rawon:latest-dev
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: ghcr.io/stegripe/rawon:latest
     container_name: rawon-bot
     env_file:
       - .env
       - dev.env
-    environment:
-      - HTTP_PROXY=10.66.99.2:3128
-      - HTTPS_PROXY=10.66.99.2:3128
     ports:
       - "${DEVTOOLS_PORT:-3000}:${DEVTOOLS_PORT:-3000}"
     volumes:
