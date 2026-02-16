@@ -8,7 +8,7 @@
 
 # Rawon
 
-> A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.
+> A simple powerful Discord music (multi-)bot built to fulfill your production desires. Easy to use, with no coding required.
 
 ## Features
 - Production-ready, no coding required
