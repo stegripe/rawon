@@ -29,7 +29,7 @@ import { i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "repeat")
-            .setDescription(opts.description ?? "Repeat current music or the queue.")
+            .setDescription(opts.description ?? i18n.__("commands.music.repeat.description"))
             .addSubcommand((sub) =>
                 sub.setName("queue").setDescription(i18n.__("commands.music.repeat.slashQueue")),
             )

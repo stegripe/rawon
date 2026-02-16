@@ -26,7 +26,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "prefix")
-            .setDescription(opts.description ?? "Change the command prefix for this server.")
+            .setDescription(opts.description ?? i18n.__("commands.general.prefix.description"))
             .addSubcommand((sub) =>
                 sub
                     .setName("set")
@@ -108,7 +108,7 @@ export class PrefixCommand extends ContextCommand {
 
         if (prefixArg.length > 10) {
             await ctx.reply({
-                embeds: [createEmbed("error", __("commands.general.prefix.prefixTooLong"), true)],
+                embeds: [createEmbed("warn", __("commands.general.prefix.prefixTooLong"))],
             });
             return;
         }

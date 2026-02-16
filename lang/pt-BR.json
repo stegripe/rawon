@@ -95,7 +95,7 @@
                 "usageString": "Uso"
             },
             "invite": {
-                "clickURL": "- **[Clique aqui]({url})** para convidar o bot {botNum} ao seu servidor.",
+                "clickURL": "- **[Clique aqui]({url})** para convidar o bot{botNum} ao seu servidor.",
                 "description": "Obtém o link de convite do bot",
                 "inviteTitle": "{bot} - Link de convite"
             },
@@ -144,7 +144,7 @@
                 "enable": "Ativado",
                 "enableText": "A função DJ foi **`Ativada`**",
                 "newRoleText": "novo Cargo",
-                "noPermission": "Você não tem a permissão **Gerenciar Servidor** para usar este comando.",
+                "noPermission": "Você precisa da permissão **Gerenciar Servidor** para usar este comando.",
                 "role": {
                     "current": "Cargo atual de DJ: <@&{role}>",
                     "invalid": "Cargo inválido.",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "Mostra o status do player de mídia",
                 "disableButton": "Este botão já não está ativo e foi removido.",
+                "pauseResumeButton": "Pausar/Retomar",
+                "skipButton": "Pular",
+                "stopButton": "Parar",
+                "showQueueButton": "Ver Fila",
                 "emptyQueue": "A fila está vazia.",
                 "error": "Erro ao recuperar a faixa atual: {message}",
                 "live": "AO VIVO",

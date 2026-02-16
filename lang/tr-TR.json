@@ -95,7 +95,7 @@
                 "usageString": "Kullanım"
             },
             "invite": {
-                "clickURL": "- **[Buraya tıklayın]({url})** {botNum} numaralı botu sunucuna eklemek için.",
+                "clickURL": "- **[Buraya tıklayın]({url})**{botNum} numaralı botu sunucuna eklemek için.",
                 "description": "Bot için davet bağlantısını edinin",
                 "inviteTitle": "{bot} - Davet Linki"
             },
@@ -144,7 +144,7 @@
                 "enable": "Etkin",
                 "enableText": "DJ özelliği **`Etkin`**",
                 "newRoleText": "yeni rol",
-                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine sahip değilsiniz.",
+                "noPermission": "Bu komutu kullanmak için **Sunucuyu Yönet** iznine ihtiyacınız var.",
                 "role": {
                     "current": "Mevcut DJ Rolü: <@&{role}>",
                     "invalid": "Geçersiz rol.",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu gösterir",
                 "disableButton": "Bu buton artık aktif değil ve kaldırıldı.",
+                "pauseResumeButton": "Duraklat/Devam",
+                "skipButton": "Atla",
+                "stopButton": "Durdur",
+                "showQueueButton": "Sırayı Göster",
                 "emptyQueue": "Kuyruk boş.",
                 "error": "Çalan parça bilgisi alınırken hata oluştu: {message}",
                 "live": "CANLI",

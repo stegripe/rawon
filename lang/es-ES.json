@@ -95,7 +95,7 @@
                 "usageString": "Uso"
             },
             "invite": {
-                "clickURL": "- **[Haz clic aquí]({url})** para invitar al bot {botNum} a su servidor.",
+                "clickURL": "- **[Haz clic aquí]({url})** para invitar al bot{botNum} a su servidor.",
                 "description": "Obtén el enlace de invitación para el bot",
                 "inviteTitle": "{bot} - Enlace De Invitación"
             },
@@ -144,7 +144,7 @@
                 "enable": "Activado",
                 "enableText": "La función DJ ha sido **`Activada`**",
                 "newRoleText": "Nuevo rol",
-                "noPermission": "No tienes el permiso **Gestionar Servidor** para usar este comando.",
+                "noPermission": "Necesitas el permiso **Gestionar Servidor** para usar este comando.",
                 "role": {
                     "current": "<@&{role}> es el rol DJ actualmente.",
                     "invalid": "Rol no válido.",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
                 "disableButton": "Este botón ya no está activo y ha sido eliminado.",
+                "pauseResumeButton": "Pausar/Reanudar",
+                "skipButton": "Saltar",
+                "stopButton": "Detener",
+                "showQueueButton": "Ver Cola",
                 "emptyQueue": "La cola está vacía.",
                 "error": "Error al obtener la pista en reproducción: {message}",
                 "live": "EN VIVO",
