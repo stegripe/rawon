@@ -32,7 +32,7 @@ import { checkQuery, play } from "../../utils/handlers/GeneralUtil.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "seek")
-            .setDescription(opts.description ?? "Seek to a specific time in the current song.")
+            .setDescription(opts.description ?? i18n.__("commands.music.seek.description"))
             .addStringOption((opt) =>
                 opt
                     .setName("time")
@@ -87,7 +87,7 @@ export class SeekCommand extends ContextCommand {
         const timeArg = localCtx.args[0] ?? localCtx.options?.getString("time");
         if (!timeArg) {
             await ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.seek.noTime"), true)],
+                embeds: [createEmbed("warn", __("commands.music.seek.noTime"))],
             });
             return;
         }
@@ -97,9 +97,8 @@ export class SeekCommand extends ContextCommand {
             await ctx.reply({
                 embeds: [
                     createEmbed(
-                        "error",
+                        "warn",
                         __mf("commands.music.seek.invalidTime", { time: `**\`${timeArg}\`**` }),
-                        true,
                     ),
                 ],
             });
@@ -110,11 +109,10 @@ export class SeekCommand extends ContextCommand {
             await ctx.reply({
                 embeds: [
                     createEmbed(
-                        "error",
+                        "warn",
                         __mf("commands.music.seek.exceedsDuration", {
                             duration: `**\`${normalizeTime(song.song.duration)}\`**`,
                         }),
-                        true,
                     ),
                 ],
             });
@@ -134,7 +132,7 @@ export class SeekCommand extends ContextCommand {
 
             if (!isCached && !isInProgress) {
                 await ctx.reply({
-                    embeds: [createEmbed("error", __("commands.music.seek.notCached"), true)],
+                    embeds: [createEmbed("warn", __("commands.music.seek.notCached"))],
                 });
                 return;
             }

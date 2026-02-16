@@ -26,7 +26,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "dj")
-            .setDescription(opts.description ?? "Change DJ feature settings.")
+            .setDescription(opts.description ?? i18n.__("commands.music.dj.description"))
             .addSubcommand((sub) =>
                 sub
                     .setName("role")
@@ -164,7 +164,7 @@ export class DJCommand extends ContextCommand {
                 const role = await ctx.guild?.roles.fetch(newRole ?? "")?.catch(() => void 0);
                 if (!role) {
                     return ctx.reply({
-                        embeds: [createEmbed("error", __("commands.music.dj.role.invalid"), true)],
+                        embeds: [createEmbed("warn", __("commands.music.dj.role.invalid"))],
                     });
                 }
 

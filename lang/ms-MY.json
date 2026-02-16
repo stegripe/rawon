@@ -95,7 +95,7 @@
                 "usageString": "Cara penggunaan"
             },
             "invite": {
-                "clickURL": "- **[Klik di sini]({url})** untuk menjemput bot {botNum} ke server anda.",
+                "clickURL": "- **[Klik di sini]({url})** untuk menjemput bot{botNum} ke server anda.",
                 "description": "Dapatkan pautan jemputan untuk bot ini",
                 "inviteTitle": "{bot} - Pautan Jemputan"
             },
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "Tunjukkan status pemain media",
                 "disableButton": "Butang-butang sebelum ini tidak lagi aktif dan telah dipadam.",
+                "pauseResumeButton": "Jeda/Sambung",
+                "skipButton": "Langkau",
+                "stopButton": "Berhenti",
+                "showQueueButton": "Lihat Giliran",
                 "emptyQueue": "Giliran sedang kosong.",
                 "error": "Ralat semasa mengambil maklumat lagu semasa: {message}",
                 "live": "LIVE",

@@ -95,7 +95,7 @@
                 "usageString": "Cách dùng"
             },
             "invite": {
-                "clickURL": "- **[Nhấn vào đây]({url})** để mời bot {botNum} vào máy chủ của bạn.",
+                "clickURL": "- **[Nhấn vào đây]({url})** để mời bot{botNum} vào máy chủ của bạn.",
                 "description": "Nhận liên kết mời bot",
                 "inviteTitle": "{bot} - Link mời"
             },
@@ -144,7 +144,7 @@
                 "enable": "Đã bật",
                 "enableText": "Tính năng DJ đã được **`Bật`**",
                 "newRoleText": "vai trò mới",
-                "noPermission": "Bạn không có quyền **Quản lý máy chủ** để sử dụng lệnh này.",
+                "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "role": {
                     "current": "Vai trò DJ hiện tại: <@&{role}>",
                     "invalid": "Vai trò không hợp lệ.",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
                 "disableButton": "Các nút trước đó không còn hoạt động và bị loại bỏ.",
+                "pauseResumeButton": "Tạm dừng/Tiếp tục",
+                "skipButton": "Bỏ qua",
+                "stopButton": "Dừng phát",
+                "showQueueButton": "Xem hàng đợi",
                 "emptyQueue": "Hàng đợi trống.",
                 "error": "Lỗi khi lấy thông tin bài hát đang phát: {message}",
                 "live": "TRỰC TIẾP",

@@ -27,7 +27,7 @@ import { i18n__mf } from "../../utils/functions/i18n.js";
         return builder
             .setName(opts.name ?? "ping")
             .setDescription(
-                opts.description ?? "Show the current ping of the bot.",
+                opts.description ?? i18n.__("commands.general.ping.description"),
             ) as SlashCommandBuilder;
     },
 })
@@ -44,7 +44,7 @@ export class PingCommand extends ContextCommand {
         const msg = await ctx.reply({ content: "🏓" });
         const latency = Date.now() - before;
         const wsLatency = client.ws.ping.toFixed(0);
-        const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "`N/A`";
+        const vcLatency = ctx.guild?.queue?.connection?.ping.ws?.toFixed(0) ?? "N/A";
         const embed = createEmbed("info")
             .setColor(PingCommand.searchHex(wsLatency))
             .setAuthor({

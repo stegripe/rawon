@@ -33,7 +33,9 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "requestchannel")
-            .setDescription(opts.description ?? "Set up a request channel for music.")
+            .setDescription(
+                opts.description ?? i18n.__("commands.music.requestChannel.description"),
+            )
             .addSubcommand((sub) =>
                 sub
                     .setName("set")
@@ -108,11 +110,7 @@ export class RequestChannelCommand extends ContextCommand {
             if (!channel || channel.type !== ChannelType.GuildText) {
                 return localCtx.reply({
                     embeds: [
-                        createEmbed(
-                            "error",
-                            __("commands.music.requestChannel.invalidChannel"),
-                            true,
-                        ),
+                        createEmbed("warn", __("commands.music.requestChannel.invalidChannel")),
                     ],
                 });
             }

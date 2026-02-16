@@ -95,7 +95,7 @@
                 "usageString": "用法"
             },
             "invite": {
-                "clickURL": "- **[点击这里]({url})** 邀请机器人 {botNum} 到您的服务器。",
+                "clickURL": "- **[点击这里]({url})** 邀请机器人{botNum} 到您的服务器。",
                 "description": "获取机器人的邀请链接",
                 "inviteTitle": "{bot} - 邀请链接"
             },
@@ -144,7 +144,7 @@
                 "enable": "启用",
                 "enableText": "DJ 功能已**`启用`**",
                 "newRoleText": "新身分组",
-                "noPermission": "您没有**管理服务器**权限来使用此命令。",
+                "noPermission": "您需要**管理服务器**权限才能使用此命令。",
                 "role": {
                     "current": "目前 DJ 身分组: <@&{role}>",
                     "invalid": "无效的身分组。",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "显示媒体播放器状态",
                 "disableButton": "以前的按钮不再处于活动状态并被删除。",
+                "pauseResumeButton": "暂停/继续",
+                "skipButton": "跳过",
+                "stopButton": "停止播放",
+                "showQueueButton": "查看队列",
                 "emptyQueue": "队列为空。",
                 "error": "获取当前播放信息时出错：{message}",
                 "live": "直播",

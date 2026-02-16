@@ -120,7 +120,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                         .send({
                             embeds: [
                                 createEmbed(
-                                    "error",
+                                    "info",
                                     `⏹️ **|** ${__("events.voiceStateUpdate.disconnectFromVCMessage")}`,
                                 ),
                             ],
@@ -149,13 +149,13 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             const newChannelMembers = newVc?.members.filter((mbr) => !mbr.user.bot);
             const newChannelMemberCount = newChannelMembers?.size ?? 0;
 
-            this.container.logger.info(
+            this.container.logger.debug(
                 `[VoiceState] ${client.user?.tag} was MOVED from ${oldId} to ${newId}, ` +
                     `newChannelMemberCount=${newChannelMemberCount}, queueVcId=${queueVc.id}, idle=${queue.idle}`,
             );
 
             if (newChannelMemberCount === 0 && !queue.idle) {
-                this.container.logger.info(
+                this.container.logger.debug(
                     `[VoiceState] ${client.user?.tag} moved to EMPTY channel ${newId}, triggering pause and timeout`,
                 );
                 queue.skipVoters = [];
@@ -171,7 +171,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                 queue.timeout !== null &&
                 newChannelMembers !== undefined
             ) {
-                this.container.logger.info(
+                this.container.logger.debug(
                     `[VoiceState] ${client.user?.tag} moved to channel ${newId} with members, resuming`,
                 );
                 this.resume(newChannelMembers, queue, newState, thisBotGuild);
@@ -346,7 +346,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                 const msg = await queue.textChannel.send({
                     embeds: [
                         createEmbed(
-                            "error",
+                            "info",
                             `⏹️ **|** ${__mf("events.voiceStateUpdate.deleteQueue", {
                                 duration: `**\`${duration}\`**`,
                             })}`,

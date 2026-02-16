@@ -95,7 +95,7 @@
                 "usageString": "사용법"
             },
             "invite": {
-                "clickURL": "- **[여기를 클릭]({url})** 하여 봇 {botNum} 을 서버에 초대하세요.",
+                "clickURL": "- **[여기를 클릭]({url})** 하여 봇{botNum} 을 서버에 초대하세요.",
                 "description": "봇 초대 링크 받기",
                 "inviteTitle": "{bot} - 초대 링크"
             },
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "미디어 플레이어 상태 보기",
                 "disableButton": "이전 버튼들은 더 이상 활성화되지 않으며 제거되었어요.",
+                "pauseResumeButton": "일시정지/재개",
+                "skipButton": "건너뛰기",
+                "stopButton": "정지",
+                "showQueueButton": "대기열 보기",
                 "emptyQueue": "대기열이 비어 있어요.",
                 "error": "재생 정보 가져오기 오류: {message}",
                 "live": "라이브",
