@@ -95,7 +95,7 @@
                 "usageString": "用法"
             },
             "invite": {
-                "clickURL": "- **[點擊這裡]({url})** 邀請機器人 {botNum} 到您的伺服器。",
+                "clickURL": "- **[點擊這裡]({url})** 邀請機器人{botNum} 到您的伺服器。",
                 "description": "獲取機器人的邀請鏈接",
                 "inviteTitle": "{bot} - 邀請鏈接"
             },
@@ -144,7 +144,7 @@
                 "enable": "啟用",
                 "enableText": "DJ 功能已**`啟用`**",
                 "newRoleText": "新身分組",
-                "noPermission": "您沒有**管理伺服器**權限來使用此指令。",
+                "noPermission": "您需要**管理伺服器**權限才能使用此指令。",
                 "role": {
                     "current": "目前 DJ 身分組: <@&{role}>",
                     "invalid": "無效的身分組。",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "顯示媒體播放器狀態",
                 "disableButton": "以前的按鈕不再處於活動狀態並被刪除。",
+                "pauseResumeButton": "暫停/繼續",
+                "skipButton": "跳過",
+                "stopButton": "停止播放",
+                "showQueueButton": "查看佇列",
                 "emptyQueue": "隊列為空。",
                 "error": "取得目前播放資訊時發生錯誤：{message}",
                 "live": "直播",

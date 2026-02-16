@@ -181,7 +181,7 @@ export async function handleVideos(
         client.debugLog.logData(
             "error",
             "HANDLE_VIDEOS",
-            `Error occured while connecting to ${ctx.guild?.name}(${ctx.guild?.id}). Reason: ${
+            `Error occurred while connecting to ${ctx.guild?.name}(${ctx.guild?.id}). Reason: ${
                 (error as Error).message
             }`,
         );

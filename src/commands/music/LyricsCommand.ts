@@ -29,7 +29,7 @@ import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "lyrics")
-            .setDescription(opts.description ?? "Show the lyrics of the song.")
+            .setDescription(opts.description ?? i18n.__("commands.music.lyrics.description"))
             .addStringOption((opt) =>
                 opt
                     .setName("query")
@@ -65,7 +65,7 @@ export class LyricsCommand extends ContextCommand {
         const query = userQuery ?? currentSong?.song.title;
         if ((query?.length ?? 0) === 0) {
             await ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.lyrics.noQuery"), true)],
+                embeds: [createEmbed("warn", __("commands.music.lyrics.noQuery"))],
             });
 
             return;

@@ -159,7 +159,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
                 const userVoiceChannelId = member?.voice.channelId ?? null;
 
-                this.container.logger.info(
+                this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} PRE-CHECK music interaction "${commandName}" from ${interaction.user.tag}: ` +
                         `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
                 );
@@ -171,7 +171,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         userVoiceChannelId,
                     );
 
-                    this.container.logger.info(
+                    this.container.logger.debug(
                         `[MultiBot] ${client.user?.tag} PRE-CHECK result for music interaction "${commandName}": shouldRespond=${shouldRespond}`,
                     );
 
@@ -183,7 +183,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         return;
                     }
 
-                    this.container.logger.info(
+                    this.container.logger.debug(
                         `[MultiBot] ${client.user?.tag} ✅ ALLOWING music interaction "${commandName}" - will proceed to command handler`,
                     );
                 } else if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
@@ -381,10 +381,10 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     return;
                 }
 
-                this.container.logger.info(
+                this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} ✅ EXECUTING slash command "${interaction.commandName}" from ${interaction.user.tag}`,
                 );
-                this.container.logger.info(
+                this.container.logger.debug(
                     `${interaction.user.tag} [${interaction.user.id}] used /${interaction.commandName} ` +
                         `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
                         `in guild: ${thisBotGuildForContext?.name ?? interaction.guild?.name} [${interaction.guildId}]`,
@@ -485,7 +485,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             }
 
             if (ownsRequestChannel) {
-                this.container.logger.info(
+                this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
                 );
             } else {
@@ -525,7 +525,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     }
                 }
 
-                this.container.logger.info(
+                this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel or no other bot owns it)`,
                 );
             }
@@ -534,7 +534,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         const __ = i18n__(client, thisBotGuild);
         const __mf = i18n__mf(client, thisBotGuild);
 
-        this.container.logger.info(
+        this.container.logger.debug(
             `${interaction.user.tag} [${interaction.user.id}] clicked ${interaction.customId} button ` +
                 `in guild: ${thisBotGuild.name} [${thisBotGuild.id}]`,
         );
@@ -581,7 +581,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 if (responsibleGuild?.queue) {
                     queue = responsibleGuild.queue;
                     queueGuild = responsibleGuild;
-                    this.container.logger.info(
+                    this.container.logger.debug(
                         `[MultiBot] ${client.user?.tag} (primary) using queue from ${responsibleBot.user?.tag} for voice channel ${voiceChannel.id}`,
                     );
                 }

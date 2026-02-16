@@ -32,7 +32,9 @@ function findLocale(input: string): string | null {
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "language")
-            .setDescription(opts.description ?? "Change the bot's language for this server.")
+            .setDescription(
+                opts.description ?? i18nConfig.__("commands.general.language.description"),
+            )
             .addSubcommand((sub) =>
                 sub
                     .setName("set")
@@ -141,7 +143,7 @@ export class LanguageCommand extends ContextCommand {
             await ctx.reply({
                 embeds: [
                     createEmbed(
-                        "error",
+                        "warn",
                         `${__("commands.general.language.invalidLocale")} ${supportedLocales.map((loc) => `\`${loc}\``).join(", ")}`,
                         true,
                     ),

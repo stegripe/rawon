@@ -34,9 +34,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "help")
-            .setDescription(
-                opts.description ?? "Show the command list or information for a specific command.",
-            )
+            .setDescription(opts.description ?? i18n.__("commands.general.help.description"))
             .addStringOption((opt) =>
                 opt
                     .setName("command")
@@ -115,7 +113,7 @@ export class HelpCommand extends ContextCommand {
             if (matching.length === 0) {
                 await localCtx.send(
                     {
-                        embeds: [createEmbed("error", __("commands.general.help.noCommand"), true)],
+                        embeds: [createEmbed("warn", __("commands.general.help.noCommand"))],
                     },
                     "editReply",
                 );
@@ -138,9 +136,7 @@ export class HelpCommand extends ContextCommand {
                                 .setPlaceholder(__("commands.general.help.commandSelectionString")),
                         ),
                     ],
-                    embeds: [
-                        createEmbed("error", __("commands.general.help.noCommandSuggest"), true),
-                    ],
+                    embeds: [createEmbed("warn", __("commands.general.help.noCommandSuggest"))],
                 },
                 "editReply",
             );

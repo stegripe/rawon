@@ -28,7 +28,9 @@ import { OperationManager } from "../../utils/structures/OperationManager.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "skip")
-            .setDescription(opts.description ?? "Skip the music.") as SlashCommandBuilder;
+            .setDescription(
+                opts.description ?? i18n.__("commands.music.skip.description"),
+            ) as SlashCommandBuilder;
     },
 })
 export class SkipCommand extends ContextCommand {
@@ -83,12 +85,17 @@ export class SkipCommand extends ContextCommand {
                         (x) => x !== ctx.author.id,
                     ) as unknown as string[];
                 });
-                await ctx.reply(
-                    __mf("commands.music.skip.voteResultMessage", {
-                        length: queue.skipVoters.length,
-                        required,
-                    }),
-                );
+                await ctx.reply({
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            __mf("commands.music.skip.voteResultMessage", {
+                                length: queue.skipVoters.length,
+                                required,
+                            }),
+                        ),
+                    ],
+                });
 
                 return;
             }
@@ -98,7 +105,14 @@ export class SkipCommand extends ContextCommand {
             });
 
             const length = queue.skipVoters.length ?? 0;
-            await ctx.reply(__mf("commands.music.skip.voteResultMessage", { length, required }));
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "info",
+                        __mf("commands.music.skip.voteResultMessage", { length, required }),
+                    ),
+                ],
+            });
 
             if (length < required) {
                 return;

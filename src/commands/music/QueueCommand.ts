@@ -30,7 +30,9 @@ import { type SongManager } from "../../utils/structures/SongManager.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "queue")
-            .setDescription(opts.description ?? "Show the queue list.") as SlashCommandBuilder;
+            .setDescription(
+                opts.description ?? i18n.__("commands.music.queue.description"),
+            ) as SlashCommandBuilder;
     },
 })
 export class QueueCommand extends ContextCommand {

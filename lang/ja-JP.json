@@ -95,7 +95,7 @@
                 "usageString": "使い方"
             },
             "invite": {
-                "clickURL": "- **[ここをクリック]({url})** してBot {botNum} をサーバーに招待",
+                "clickURL": "- **[ここをクリック]({url})** してBot{botNum} をサーバーに招待",
                 "description": "このBotの招待リンクを取得",
                 "inviteTitle": "{bot} - 招待リンク"
             },
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",
                 "disableButton": "「前に戻る」ボタンは無効化され、削除されました。",
+                "pauseResumeButton": "一時停止/再開",
+                "skipButton": "スキップ",
+                "stopButton": "停止",
+                "showQueueButton": "キューを表示",
                 "emptyQueue": "キューは空です。",
                 "error": "再生情報の取得中にエラーが発生しました: {message}",
                 "live": "ライブ",

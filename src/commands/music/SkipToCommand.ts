@@ -36,7 +36,7 @@ import { play } from "../../utils/handlers/GeneralUtil.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "skipto")
-            .setDescription(opts.description ?? "Skip to a specific position in the queue.")
+            .setDescription(opts.description ?? i18n.__("commands.music.skipTo.description"))
             .addSubcommand((sub) =>
                 sub
                     .setName("first")
@@ -115,9 +115,7 @@ export class SkipToCommand extends ContextCommand {
             const position = localCtx.options?.getNumber("position");
             if (typeof position !== "number" || Number.isNaN(position)) {
                 await ctx.reply({
-                    embeds: [
-                        createEmbed("error", __("commands.music.skipTo.invalidPosition"), true),
-                    ],
+                    embeds: [createEmbed("warn", __("commands.music.skipTo.invalidPosition"))],
                 });
                 return;
             }
@@ -201,7 +199,7 @@ export class SkipToCommand extends ContextCommand {
 
         if (song.key === np.key) {
             await ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.skipTo.cantPlay"), true)],
+                embeds: [createEmbed("warn", __("commands.music.skipTo.cantPlay"))],
             });
             return;
         }

@@ -29,7 +29,7 @@ const SetVoiceChannelStatus = 281474976710656n;
         return builder
             .setName(opts.name ?? "invite")
             .setDescription(
-                opts.description ?? "Get the invite link for the bot.",
+                opts.description ?? i18n.__("commands.general.invite.description"),
             ) as SlashCommandBuilder;
     },
 })
@@ -83,7 +83,7 @@ export class InviteCommand extends ContextCommand {
                             permissions,
                             scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
                         });
-                        const botNum = bot.tokenIndex + 1;
+                        const botNum = ` #${bot.tokenIndex + 1}`;
                         return __mf("commands.general.invite.clickURL", {
                             url: invite,
                             botNum,

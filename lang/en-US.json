@@ -88,14 +88,14 @@
                 "footerString": "{prefix}help <command> to get more information on a specific command",
                 "nameString": "Name",
                 "noAliases": "None.",
-                "noCommandSuggest": "Couldn't find a matching command name. Did you mean this?",
-                "noCommand": "Couldn't find any matching command name.",
+                "noCommandSuggest": "Couldn't find a matching command. Did you mean this?",
+                "noCommand": "Couldn't find a matching command.",
                 "slashDescription": "Command name to view specific information about the command",
                 "usage": "{prefix}help [command]",
                 "usageString": "Usage"
             },
             "invite": {
-                "clickURL": "- **[Click here]({url})** to invite the bot {botNum} to your server.",
+                "clickURL": "- **[Click here]({url})** to invite the bot{botNum} to your server.",
                 "description": "Get the invite link for the bot",
                 "inviteTitle": "{bot} - Invite Link"
             },
@@ -144,7 +144,7 @@
                 "enable": "Enabled",
                 "enableText": "DJ feature has been **`Enabled`**",
                 "newRoleText": "new role",
-                "noPermission": "You don't have the **Manage Server** permission to use this command.",
+                "noPermission": "You need the **Manage Server** permission to use this command.",
                 "role": {
                     "current": "Current DJ role: <@&{role}>",
                     "invalid": "Invalid role.",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "Show the media player status",
                 "disableButton": "Previous buttons are no longer active and removed.",
+                "pauseResumeButton": "Pause/Resume",
+                "skipButton": "Skip",
+                "stopButton": "Stop Player",
+                "showQueueButton": "Show Queue",
                 "emptyQueue": "Queue is empty.",
                 "error": "Error retrieving now playing: {message}",
                 "live": "LIVE",
@@ -196,7 +200,7 @@
                 "pauseMessage": "The music player has been paused."
             },
             "play": {
-                "alreadyPlaying": "The music player is already playing to {voiceChannel} voice channel.",
+                "alreadyPlaying": "The music player is already playing in the {voiceChannel} voice channel.",
                 "description": "Play some music",
                 "noSongData": "That URL doesn't have any song data.",
                 "slashQueryDescription": "Query to search",
@@ -242,7 +246,7 @@
                 "queueEmbed": "Please select some music; you can choose more than one using blank space or {separator}.\n",
                 "slashDescription": "Search the specified music",
                 "slashQueryDescription": "Query to search",
-                "slashSourceDescription": "Where the music should be taken?",
+                "slashSourceDescription": "The source to search from",
                 "trackSelectionMessage": "Music Selection",
                 "usage": "{prefix}search <query> [source]"
             },

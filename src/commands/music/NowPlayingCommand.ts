@@ -41,7 +41,7 @@ import { normalizeTime } from "../../utils/functions/normalizeTime.js";
         return builder
             .setName(opts.name ?? "nowplaying")
             .setDescription(
-                opts.description ?? "Show the media player status.",
+                opts.description ?? i18n.__("commands.music.nowplaying.description"),
             ) as SlashCommandBuilder;
     },
 })
@@ -130,22 +130,22 @@ export class NowPlayingCommand extends ContextCommand {
         const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
                 .setCustomId("TOGGLE_STATE_BUTTON")
-                .setLabel("Pause/Resume")
+                .setLabel(__("commands.music.nowplaying.pauseResumeButton"))
                 .setStyle(ButtonStyle.Primary)
                 .setEmoji("⏯️"),
             new ButtonBuilder()
                 .setCustomId("SKIP_BUTTON")
-                .setLabel("Skip")
+                .setLabel(__("commands.music.nowplaying.skipButton"))
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji("⏭️"),
             new ButtonBuilder()
                 .setCustomId("STOP_BUTTON")
-                .setLabel("Stop Player")
+                .setLabel(__("commands.music.nowplaying.stopButton"))
                 .setStyle(ButtonStyle.Danger)
                 .setEmoji("⏹️"),
             new ButtonBuilder()
                 .setCustomId("SHOW_QUEUE_BUTTON")
-                .setLabel("Show Queue")
+                .setLabel(__("commands.music.nowplaying.showQueueButton"))
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji("#️⃣"),
         );

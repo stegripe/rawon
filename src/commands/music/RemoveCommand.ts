@@ -38,7 +38,7 @@ import { type SongManager } from "../../utils/structures/SongManager.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "remove")
-            .setDescription(opts.description ?? "Remove song(s) from the queue.")
+            .setDescription(opts.description ?? i18n.__("commands.music.remove.description"))
             .addStringOption((opt) =>
                 opt
                     .setName("positions")
@@ -91,7 +91,7 @@ export class RemoveCommand extends ContextCommand {
             .filter(Boolean);
         if (positions.length === 0) {
             void ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.remove.noPositions"), true)],
+                embeds: [createEmbed("warn", __("commands.music.remove.noPositions"))],
             });
             return;
         }

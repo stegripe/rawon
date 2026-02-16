@@ -214,7 +214,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
                         const userVoiceChannelId = member?.voice.channelId ?? null;
 
-                        this.container.logger.info(
+                        this.container.logger.debug(
                             `[MultiBot] ${client.user?.tag} PRE-CHECK music command "${cmdName}" in REQUEST CHANNEL from ${message.author.tag}: ` +
                                 `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
                         );
@@ -227,7 +227,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                                     userVoiceChannelId,
                                 );
 
-                            this.container.logger.info(
+                            this.container.logger.debug(
                                 `[MultiBot] ${client.user?.tag} PRE-CHECK result for music command "${cmdName}": shouldRespond=${shouldRespond}`,
                             );
 
@@ -239,7 +239,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                                 return;
                             }
 
-                            this.container.logger.info(
+                            this.container.logger.debug(
                                 `[MultiBot] ${client.user?.tag} ✅ ALLOWING music command "${cmdName}" in REQUEST CHANNEL - will proceed to command handler`,
                             );
                         } else if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
@@ -258,7 +258,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
                 const cmdContent = message.content.slice(actualPrefix.length).trim();
                 const cmdNameFromMsg = cmdContent.split(/ +/u)[0]?.toLowerCase();
-                this.container.logger.info(
+                this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} ✅ PROCEEDING to execute command "${cmdNameFromMsg}" in REQUEST CHANNEL`,
                 );
                 client.commands.handle(message, actualPrefix);
@@ -382,7 +382,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                             );
                             return;
                         }
-                        this.container.logger.info(
+                        this.container.logger.debug(
                             `[MultiBot] ${client.user?.tag} ALLOWING music command "${cmdName}" from ${message.author.tag} - in same voice channel (${userVoiceChannelId})`,
                         );
                     } else if (

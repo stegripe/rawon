@@ -32,7 +32,7 @@ const slashFilterChoices = Object.keys(filterArgs).map((x) => ({ name: x, value:
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "filter")
-            .setDescription(opts.description ?? "Configure song filter.")
+            .setDescription(opts.description ?? i18n.__("commands.music.filter.description"))
             .addSubcommand((sub) =>
                 sub
                     .setName("enable")
@@ -123,7 +123,7 @@ export class FilterCommand extends ContextCommand {
         if (subcmd === "enable" || subcmd === "disable") {
             if (!filterArgs[filter]) {
                 return ctx.reply({
-                    embeds: [createEmbed("error", __("commands.music.filter.specifyFilter"), true)],
+                    embeds: [createEmbed("warn", __("commands.music.filter.specifyFilter"))],
                 });
             }
 

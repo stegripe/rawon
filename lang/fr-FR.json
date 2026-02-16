@@ -95,7 +95,7 @@
                 "usageString": "Usage"
             },
             "invite": {
-                "clickURL": "- **[Cliquez ici]({url})** pour inviter le bot {botNum} sur votre serveur.",
+                "clickURL": "- **[Cliquez ici]({url})** pour inviter le bot{botNum} sur votre serveur.",
                 "description": "Obtenez le lien d'invitation pour le bot",
                 "inviteTitle": "{bot} - Lien d'invitation"
             },
@@ -144,7 +144,7 @@
                 "enable": "Activé",
                 "enableText": "La fonctionnalité DJ a été **`Activée`**",
                 "newRoleText": "nouveau rôle",
-                "noPermission": "Vous n'avez pas la permission **Gérer le serveur** pour utiliser cette commande.",
+                "noPermission": "Vous avez besoin de la permission **Gérer le serveur** pour utiliser cette commande.",
                 "role": {
                     "current": "Rôle actuel de DJ : <@&{role}>",
                     "invalid": "Rôle invalide.",
@@ -184,6 +184,10 @@
             "nowplaying": {
                 "description": "Afficher l'état du lecteur multimédia",
                 "disableButton": "Les boutons précédents ne sont plus actifs et ont été supprimés.",
+                "pauseResumeButton": "Pause/Reprendre",
+                "skipButton": "Passer",
+                "stopButton": "Arrêter",
+                "showQueueButton": "Voir la file",
                 "emptyQueue": "La file d'attente est vide.",
                 "error": "Erreur lors de la récupération de la piste en cours : {message}",
                 "live": "EN DIRECT",

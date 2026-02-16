@@ -26,7 +26,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "shuffle")
-            .setDescription(opts.description ?? "Set mode for shuffle feature.")
+            .setDescription(opts.description ?? i18n.__("commands.music.shuffle.description"))
             .addStringOption((opt) =>
                 opt
                     .setName("state")

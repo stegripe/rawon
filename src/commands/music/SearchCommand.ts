@@ -178,7 +178,7 @@ export class SearchCommand extends ContextCommand {
             .catch(() => void 0);
         if (!tracks || tracks.items.length <= 0) {
             const noTracksMsg = await ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.search.noTracks"), true)],
+                embeds: [createEmbed("warn", __("commands.music.search.noTracks"))],
             });
             if (this.isRequestChannel(client, ctx) && noTracksMsg) {
                 this.autoDeleteMessage(noTracksMsg);
@@ -265,7 +265,7 @@ export class SearchCommand extends ContextCommand {
                     this.container.logger.error("SEARCH_SELECTION_DELETE_MSG_ERR:", error),
                 );
             const noSelectionMsg = await ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.search.noSelection"), true)],
+                embeds: [createEmbed("warn", __("commands.music.search.noSelection"))],
             });
             if (this.isRequestChannel(client, ctx) && noSelectionMsg) {
                 this.autoDeleteMessage(noSelectionMsg);

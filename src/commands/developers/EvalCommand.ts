@@ -29,7 +29,9 @@ import { i18n__ } from "../../utils/functions/i18n.js";
     ): SlashCommandBuilder {
         return builder
             .setName(opts.name ?? "eval")
-            .setDescription(opts.description ?? "Evaluate JavaScript code.") as SlashCommandBuilder;
+            .setDescription(
+                opts.description ?? i18n.__("commands.developers.eval.description"),
+            ) as SlashCommandBuilder;
     },
 })
 export class EvalCommand extends ContextCommand {
@@ -53,7 +55,7 @@ export class EvalCommand extends ContextCommand {
         try {
             if (!code) {
                 await localCtx.send({
-                    embeds: [createEmbed("error", __("commands.developers.eval.noCode"), true)],
+                    embeds: [createEmbed("warn", __("commands.developers.eval.noCode"))],
                 });
                 return;
             }
