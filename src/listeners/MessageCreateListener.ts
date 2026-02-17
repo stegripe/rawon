@@ -118,7 +118,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         let isMentionPrefix = false;
 
         const guildPrefix = message.guild
-            ? (this.container.data.data?.[message.guild.id]?.prefix ?? null)
+            ? (client.data.data?.[message.guild.id]?.prefix ?? null)
             : null;
 
         const prefixList: string[] = [];
