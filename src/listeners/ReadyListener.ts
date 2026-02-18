@@ -596,27 +596,27 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
         let newText = text;
 
         if (text.includes("{userCount}")) {
-            const users = await this.container.utils.getUserCount();
+            const users = await client.utils.getUserCount();
 
             newText = newText.replaceAll("{userCount}", users.toString());
         }
         if (text.includes("{textChannelCount}")) {
-            const textChannels = await this.container.utils.getChannelCount(true);
+            const textChannels = await client.utils.getChannelCount(true);
 
             newText = newText.replaceAll("{textChannelCount}", textChannels.toString());
         }
         if (text.includes("{voiceChannelCount}")) {
-            const voiceChannels = await this.container.utils.getChannelCount(false, true);
+            const voiceChannels = await client.utils.getChannelCount(false, true);
 
             newText = newText.replaceAll("{voiceChannelCount}", voiceChannels.toString());
         }
         if (text.includes("{serverCount}")) {
-            const guilds = await this.container.utils.getGuildCount();
+            const guilds = await client.utils.getGuildCount();
 
             newText = newText.replaceAll("{serverCount}", guilds.toString());
         }
         if (text.includes("{playingCount}")) {
-            const playings = await this.container.utils.getPlayingCount();
+            const playings = await client.utils.getPlayingCount();
 
             newText = newText.replaceAll("{playingCount}", playings.toString());
         }
