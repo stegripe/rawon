@@ -102,6 +102,7 @@ export const musicSelectionType =
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
 export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
+export const enableSharding = process.env.ENABLE_SHARDING?.toLowerCase() === "yes";
 
 const rawDevtoolsPort = Number(process.env.DEVTOOLS_PORT);
 export const devtoolsPort =

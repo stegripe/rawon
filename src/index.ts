@@ -1,10 +1,16 @@
 import nodePath from "node:path";
 import process from "node:process";
-import { discordTokens, isMultiBot, isProd, shardsCount } from "./config/index.js";
+import { ShardingManager } from "discord.js";
+import {
+    discordTokens,
+    enableSharding,
+    isMultiBot,
+    isProd,
+    shardingMode,
+    shardsCount,
+} from "./config/index.js";
 import { importURLToString } from "./utils/functions/importURLToString.js";
-import { CustomShardingManager } from "./utils/structures/CustomShardingManager.js";
 import { createScopedLogger } from "./utils/structures/createLogger.js";
-import { MultiBotLauncher } from "./utils/structures/MultiBotLauncher.js";
 
 const log = createScopedLogger("Main", isProd);
 
@@ -19,16 +25,16 @@ process.on("uncaughtException", (error) => {
 });
 
 if (isMultiBot && discordTokens.length > 1) {
-    log.info(
-        `[MultiBot] Using custom multi-bot launcher for ${discordTokens.length} bot instances.`,
-    );
+    log.info(`[MultiBot] Starting ${discordTokens.length} bot instances directly...`);
 
+    const { MultiBotLauncher } = await import("./utils/structures/MultiBotLauncher.js");
     const launcher = new MultiBotLauncher();
+
     await launcher.start().catch((error: unknown) => {
         log.error(`MULTIBOT_LAUNCHER_ERR: ${error}`);
         process.exit(1);
     });
-} else {
+} else if (enableSharding) {
     const botFile = nodePath.resolve(importURLToString(import.meta.url), "bot.js");
     const token = discordTokens[0] ?? process.env.DISCORD_TOKEN ?? "";
 
@@ -37,56 +43,48 @@ if (isMultiBot && discordTokens.length > 1) {
         process.exit(1);
     }
 
-    const manager = new CustomShardingManager({
-        file: botFile,
+    const manager = new ShardingManager(botFile, {
         totalShards: shardsCount,
         respawn: true,
         token,
-        logger: log,
+        mode: shardingMode,
     });
 
     manager.on("shardCreate", (shard) => {
         log.info(`[ShardManager] Shard #${shard.id} has spawned.`);
-    });
 
-    manager.on("shardReady", (shard) => {
-        log.info(`[ShardManager] Shard #${shard.id} is ready.`);
+        shard.on("disconnect", () => {
+            log.warn(`[ShardManager] Shard #${shard.id} has disconnected.`);
+        });
+
+        shard.on("reconnecting", () => {
+            log.info(`[ShardManager] Shard #${shard.id} is reconnecting.`);
+        });
+
+        shard.on("error", (error) => {
+            log.error({ err: error }, `[ShardManager] Shard #${shard.id} error`);
+        });
+
+        shard.on("death", (proc) => {
+            const exitCode = "exitCode" in proc ? proc.exitCode : null;
+            const signalCode = "signalCode" in proc ? proc.signalCode : null;
+            if (exitCode !== 0) {
+                log.warn(
+                    `[ShardManager] Shard #${shard.id} died with code ${exitCode} signal ${signalCode}`,
+                );
+            }
+        });
+
         if (manager.shards.size === manager.totalShards) {
             log.info("[ShardManager] All shards are spawned successfully.");
         }
     });
 
-    manager.on("shardDisconnect", (shard) => {
-        log.warn(`[ShardManager] Shard #${shard.id} has disconnected.`);
-    });
-
-    manager.on("shardReconnecting", (shard) => {
-        log.info(`[ShardManager] Shard #${shard.id} is reconnecting.`);
-    });
-
-    manager.on("shardError", (shard, error) => {
-        log.error({ err: error }, `[ShardManager] Shard #${shard.id} error`);
-    });
-
-    manager.on("shardDeath", (shard, data) => {
-        if (data.code !== 0) {
-            log.warn(
-                `[ShardManager] Shard #${shard.id} died unexpectedly with code ${data.code} and signal ${data.signal}`,
-            );
-        }
-    });
-
-    const shutdown = async (): Promise<void> => {
-        log.info("[ShardManager] Received shutdown signal, killing all shards...");
-        await manager.killAll("SIGTERM");
-        process.exit(0);
-    };
-
-    process.on("SIGINT", shutdown);
-    process.on("SIGTERM", shutdown);
-
     await manager.spawn().catch((error: unknown) => {
         log.error(`SHARD_SPAWN_ERR: ${error}`);
         process.exit(1);
     });
+} else {
+    log.info("Sharding disabled, starting bot directly...");
+    await import("./bot.js");
 }
