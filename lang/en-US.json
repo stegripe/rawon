@@ -54,13 +54,6 @@
                 "gettingStartedField": "Getting Started",
                 "gettingStartedText": "Use {loginCmd} to log in to Google and generate cookies automatically.",
                 "statsTitle": "Statistics"
-            },
-            "cookies": {
-                "description": "commands.developers.cookies.description",
-                "usage": "commands.developers.cookies.usage",
-                "slashStatusDescription": "commands.developers.cookies.slashStatusDescription",
-                "slashResetDescription": "commands.developers.cookies.slashResetDescription",
-                "slashRefreshDescription": "commands.developers.cookies.slashRefreshDescription"
             }
         },
         "general": {
