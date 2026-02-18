@@ -10,7 +10,7 @@
                 "outputString": "输出",
                 "usage": "{prefix}eval <一些代码>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Cookie文件",
                 "statusActive": "活跃",
                 "statusMissing": "无可用cookies",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "开始使用",
                 "gettingStartedText": "使用 {loginCmd} 登录Google并自动生成cookies。",
-                "statsTitle": "统计"
-            },
-            "login": {
+                "statsTitle": "统计",
                 "description": "管理Google登录会话以进行YouTube cookie身份验证",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "通过浏览器启动Google登录会话",
@@ -393,10 +391,11 @@
         "volume": "音量",
         "queueLength": "队列",
         "queueFooter": "• 队列中剩余的曲目总数：{count}（{duration} 时长）",
-        "idle": "空闲",
+        "idle": "空闲/可用",
         "live": "直播",
         "songDuration": "时长",
         "requestedBy": "点播者",
+        "usedBy": "使用者",
         "unknown": "未知",
         "notInVoice": "您需要在语音频道中才能点歌。",
         "noResults": "没有找到您搜索的结果。",

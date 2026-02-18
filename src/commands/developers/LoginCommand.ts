@@ -229,11 +229,11 @@ export class LoginCommand extends ContextCommand {
         switch (cookieInfo.status) {
             case "active":
                 cookieEmoji = "🟢";
-                cookieStatusText = __("commands.developers.cookies.statusActive");
+                cookieStatusText = __("commands.developers.login.statusActive");
                 break;
             default:
                 cookieEmoji = "🔴";
-                cookieStatusText = __("commands.developers.cookies.statusMissing");
+                cookieStatusText = __("commands.developers.login.statusMissing");
                 break;
         }
 
@@ -243,30 +243,30 @@ export class LoginCommand extends ContextCommand {
         switch (sessionInfo.status) {
             case "logged_in":
                 loginEmoji = "🟢";
-                loginText = __("commands.developers.cookies.sessionLoggedIn");
+                loginText = __("commands.developers.login.sessionLoggedIn");
                 break;
             case "waiting_for_login":
                 loginEmoji = "🟡";
-                loginText = __("commands.developers.cookies.sessionWaiting");
+                loginText = __("commands.developers.login.sessionWaiting");
                 break;
             case "error":
                 loginEmoji = "🔴";
-                loginText = __mf("commands.developers.cookies.sessionError", {
+                loginText = __mf("commands.developers.login.sessionError", {
                     error: sessionInfo.error ?? "Unknown",
                 });
                 break;
             default:
                 loginEmoji = "⚪";
-                loginText = __("commands.developers.cookies.sessionIdle");
+                loginText = __("commands.developers.login.sessionIdle");
         }
 
         const lastRefresh = cookieInfo.lastRefresh
             ? `<t:${Math.floor(cookieInfo.lastRefresh / 1000)}:R>`
-            : __("commands.developers.cookies.lastRefreshNever");
+            : __("commands.developers.login.lastRefreshNever");
 
         const descriptionLines = [
-            `${cookieEmoji} **${__("commands.developers.cookies.cookieFileField")}** — ${cookieStatusText}`,
-            `${loginEmoji} **${__("commands.developers.cookies.googleLoginField")}** — ${loginText}`,
+            `${cookieEmoji} **${__("commands.developers.login.cookieFileField")}** — ${cookieStatusText}`,
+            `${loginEmoji} **${__("commands.developers.login.googleLoginField")}** — ${loginText}`,
         ];
 
         const embed = createEmbed("info")
@@ -277,17 +277,17 @@ export class LoginCommand extends ContextCommand {
             cookieInfo.size > 0 ? `\`${(cookieInfo.size / 1024).toFixed(1)} KB\`` : "`N/A`";
         const accountText = sessionInfo.email
             ? `\`${sessionInfo.email}\``
-            : __("commands.developers.cookies.accountNA");
+            : __("commands.developers.login.accountNA");
 
         const statsValue = [
-            `${__("commands.developers.cookies.sizeLabel")}: ${sizeText}`,
-            `${__("commands.developers.cookies.lastRefreshLabel")}: ${lastRefresh}`,
-            `${__("commands.developers.cookies.accountLabel")}: ${accountText}`,
+            `${__("commands.developers.login.sizeLabel")}: ${sizeText}`,
+            `${__("commands.developers.login.lastRefreshLabel")}: ${lastRefresh}`,
+            `${__("commands.developers.login.accountLabel")}: ${accountText}`,
         ].join(" | ");
 
         embed.addFields([
             {
-                name: __("commands.developers.cookies.statsTitle"),
+                name: __("commands.developers.login.statsTitle"),
                 value: statsValue,
             },
         ]);
@@ -295,8 +295,8 @@ export class LoginCommand extends ContextCommand {
         if (cookieInfo.status === "missing" && sessionInfo.status === "idle") {
             embed.addFields([
                 {
-                    name: __("commands.developers.cookies.gettingStartedField"),
-                    value: __mf("commands.developers.cookies.gettingStartedText", {
+                    name: __("commands.developers.login.gettingStartedField"),
+                    value: __mf("commands.developers.login.gettingStartedText", {
                         loginCmd: `\`${client.config.mainPrefix}login start\``,
                     }),
                 },

@@ -10,7 +10,7 @@
                 "outputString": "Output",
                 "usage": "{prefix}eval <code>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "File Cookie",
                 "statusActive": "Hoạt động",
                 "statusMissing": "Không có cookies",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "Bắt Đầu",
                 "gettingStartedText": "Dùng {loginCmd} để đăng nhập vào Google và tạo cookies tự động.",
-                "statsTitle": "Thống Kê"
-            },
-            "login": {
+                "statsTitle": "Thống Kê",
                 "description": "Quản lý phiên đăng nhập Google cho xác thực cookies YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Bắt đầu phiên đăng nhập Google qua trình duyệt",
@@ -393,10 +391,11 @@
         "volume": "Âm lượng",
         "queueLength": "Hàng đợi",
         "queueFooter": "• Tổng số bài hát còn lại trong hàng đợi: {count} ({duration} thời lượng)",
-        "idle": "Chờ",
-        "live": "TRỰC TIẾP",
+        "idle": "Chờ/Sẵn sàng",
+        "live": "TRỬa TIẾP",
         "songDuration": "Thời lượng",
         "requestedBy": "Yêu cầu bởi",
+        "usedBy": "được sử dụng bởi",
         "unknown": "Không rõ",
         "notInVoice": "Bạn cần ở trong kênh thoại để yêu cầu nhạc.",
         "noResults": "Không tìm thấy kết quả cho tìm kiếm của bạn.",

@@ -10,7 +10,7 @@
                 "outputString": "Output",
                 "usage": "{prefix}eval <some code>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Fail Cookie",
                 "statusActive": "Aktif",
                 "statusMissing": "Tiada cookies tersedia",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "Mula",
                 "gettingStartedText": "Guna {loginCmd} untuk log masuk ke Google dan jana cookies secara automatik.",
-                "statsTitle": "Statistik"
-            },
-            "login": {
+                "statsTitle": "Statistik",
                 "description": "Mengurus sesi log masuk Google untuk autentikasi cookies YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Mulakan sesi log masuk Google melalui pelayar",
@@ -358,10 +356,11 @@
         "volume": "Kelantangan",
         "queueLength": "Giliran",
         "queueFooter": "• Baki lagu dalam giliran: {count} ({duration} tempoh)",
-        "idle": "Sedia",
+        "idle": "Sedia/Tersedia",
         "live": "LIVE",
         "songDuration": "Tempoh",
         "requestedBy": "Permintaan",
+        "usedBy": "digunakan oleh",
         "unknown": "Tidak diketahui",
         "notInVoice": "Anda perlu menyertai saluran suara untuk membuat permintaan muzik.",
         "noResults": "Tiada hasil carian yang sepadan dengan permintaan anda.",
