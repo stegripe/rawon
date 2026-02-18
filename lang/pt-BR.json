@@ -10,7 +10,7 @@
                 "outputString": "Saída",
                 "usage": "{prefix}eval <algum código>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Arquivo de Cookie",
                 "statusActive": "Ativo",
                 "statusMissing": "Sem cookies disponíveis",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "Começando",
                 "gettingStartedText": "Use {loginCmd} para fazer login no Google e gerar cookies automaticamente.",
-                "statsTitle": "Estatísticas"
-            },
-            "login": {
+                "statsTitle": "Estatísticas",
                 "description": "Gerenciar sessão de login do Google para autenticação de cookies do YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Iniciar uma sessão de login do Google via navegador",
@@ -393,10 +391,11 @@
         "volume": "Volume",
         "queueLength": "Fila",
         "queueFooter": "• Total de faixas restantes na fila: {count} ({duration} de duração)",
-        "idle": "Inativo",
+        "idle": "Inativo/Disponível",
         "live": "AO VIVO",
         "songDuration": "Duração",
         "requestedBy": "Pedido por",
+        "usedBy": "usado por",
         "unknown": "Desconhecido",
         "notInVoice": "Você precisa estar em um canal de voz para pedir música.",
         "noResults": "Nenhum resultado encontrado para sua busca.",

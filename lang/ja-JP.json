@@ -10,7 +10,7 @@
                 "outputString": "アウトプット",
                 "usage": "{prefix}eval <何かのコード>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Cookieファイル",
                 "statusActive": "アクティブ",
                 "statusMissing": "Cookieがありません",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "はじめに",
                 "gettingStartedText": "{loginCmd} でGoogleにログインし、Cookieを自動生成してください。",
-                "statsTitle": "統計"
-            },
-            "login": {
+                "statsTitle": "統計",
                 "description": "YouTube Cookie認証のためのGoogleログインセッションを管理",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "ブラウザ経由でGoogleログインセッションを開始",
@@ -393,10 +391,11 @@
         "volume": "音量",
         "queueLength": "キュー",
         "queueFooter": "• キューに残っている曲数: {count} ({duration}の長さ)",
-        "idle": "待機中",
+        "idle": "待機中/利用可能",
         "live": "ライブ",
-        "songDuration": "長さ",
+        "songDuration": "曲の長さ",
         "requestedBy": "リクエスト者",
+        "usedBy": "使用者",
         "unknown": "不明",
         "notInVoice": "音楽をリクエストするにはボイスチャンネルに参加する必要があります。",
         "noResults": "検索結果が見つかりませんでした。",

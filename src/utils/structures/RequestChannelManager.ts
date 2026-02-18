@@ -10,12 +10,13 @@ import {
     type Message,
     type TextChannel,
 } from "discord.js";
-import { defaultVolume, requestChannelSplash } from "../../config/index.js";
+import { defaultVolume, isMultiBot, requestChannelSplash } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
+import { MultiBotManager } from "./MultiBotManager.js";
 
 export class RequestChannelManager {
     private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
@@ -309,13 +310,24 @@ export class RequestChannelManager {
                 durationLine = `${statusEmoji} ${__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
             }
 
+            let requesterLine: string;
+            if (isMultiBot) {
+                const botStatusLines = this.getBotStatusLines(guild, __);
+                requesterLine = botStatusLines.join("\n");
+            } else {
+                requesterLine = `${__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? __("requestChannel.unknown")}`;
+            }
+
             embed.setDescription(
-                `### [${song.title}](${song.url})\n\n` +
-                    `${durationLine}\n\n` +
-                    `${__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? __("requestChannel.unknown")}`,
+                `### [${song.title}](${song.url})\n\n${durationLine}\n\n${requesterLine}`,
             );
         } else {
-            embed.setDescription(`${statusEmoji} ${__("requestChannel.standby")}`);
+            let standbyLine = `${statusEmoji} ${__("requestChannel.standby")}`;
+            if (isMultiBot) {
+                const botStatusLines = this.getBotStatusLines(guild, __);
+                standbyLine += `\n\n${botStatusLines.join("\n")}`;
+            }
+            embed.setDescription(standbyLine);
         }
 
         const shuffleState = queue.shuffle ? "ON" : "OFF";
@@ -347,6 +359,41 @@ export class RequestChannelManager {
         });
 
         return embed;
+    }
+
+    private getBotStatusLines(guild: Guild, __: (key: string) => string): string[] {
+        const multiBotManager = MultiBotManager.getInstance();
+        const botsInGuild = multiBotManager.getBotsInGuild(guild);
+
+        if (botsInGuild.length === 0) {
+            return [];
+        }
+
+        return botsInGuild
+            .sort((a, b) => a.tokenIndex - b.tokenIndex)
+            .map((bot) => {
+                const botNum = bot.tokenIndex + 1;
+                const botGuild = bot.client.guilds.cache.get(guild.id);
+                const queue = botGuild?.queue;
+
+                if (queue && queue.songs.size > 0) {
+                    const res = (
+                        queue.player.state as
+                            | (AudioPlayerPlayingState & {
+                                  resource: AudioResource | undefined;
+                              })
+                            | undefined
+                    )?.resource;
+                    const queueSong = res?.metadata as QueueSong | undefined;
+                    const requester = queueSong?.requester;
+
+                    if (requester) {
+                        return `- **Bot #${botNum}** ${__("requestChannel.usedBy")}: ${requester.toString()}`;
+                    }
+                }
+
+                return `- **Bot #${botNum}** ${__("requestChannel.usedBy")}: \`${__("requestChannel.idle")}\``;
+            });
     }
 
     public createPlayerButtons(guild: Guild): ActionRowBuilder<ButtonBuilder>[] {

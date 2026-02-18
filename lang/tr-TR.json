@@ -10,7 +10,7 @@
                 "outputString": "Çıkış",
                 "usage": "{prefix}eval <kod>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Çerez Dosyası",
                 "statusActive": "Aktif",
                 "statusMissing": "Çerez mevcut değil",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "Başlangıç",
                 "gettingStartedText": "Google'a giriş yapmak ve çerezleri otomatik oluşturmak için {loginCmd} kullanın.",
-                "statsTitle": "İstatistikler"
-            },
-            "login": {
+                "statsTitle": "İstatistikler",
                 "description": "YouTube çerez kimlik doğrulaması için Google giriş oturumunu yönet",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Tarayıcı üzerinden Google giriş oturumu başlat",
@@ -393,10 +391,11 @@
         "volume": "Ses Seviyesi",
         "queueLength": "Kuyruk",
         "queueFooter": "• Kuyruktaki kalan toplam parça: {count} ({duration} süre)",
-        "idle": "Boşta",
+        "idle": "Boşta/Müsait",
         "live": "CANLI",
         "songDuration": "Süre",
         "requestedBy": "İsteyen",
+        "usedBy": "tarafından kullanılıyor",
         "unknown": "Bilinmiyor",
         "notInVoice": "Müzik istemek için bir ses kanalında olmanız gerekiyor.",
         "noResults": "Aramanız için sonuç bulunamadı.",

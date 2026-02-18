@@ -77,8 +77,11 @@ i18n.configure({
         "ja-JP",
         "tr-TR",
         "ko-KR",
+        "ms-MY",
     ],
     objectNotation: true,
+    updateFiles: false,
+    syncFiles: false,
 });
 
 i18n.setLocale(lang);

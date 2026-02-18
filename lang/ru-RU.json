@@ -10,7 +10,7 @@
                 "outputString": "Выход",
                 "usage": "{prefix}eval <код>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Файл Cookie",
                 "statusActive": "Активен",
                 "statusMissing": "Нет доступных cookies",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "Начало работы",
                 "gettingStartedText": "Используйте {loginCmd} для входа в Google и автоматической генерации cookies.",
-                "statsTitle": "Статистика"
-            },
-            "login": {
+                "statsTitle": "Статистика",
                 "description": "Управление сессией входа Google для аутентификации cookies YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Начать сессию входа Google через браузер",
@@ -393,10 +391,11 @@
         "volume": "Громкость",
         "queueLength": "Очередь",
         "queueFooter": "• Всего оставшихся треков в очереди: {count} ({duration} длительность)",
-        "idle": "Ожидание",
+        "idle": "Ожидание/Доступен",
         "live": "ПРЯМОЙ ЭФИР",
-        "songDuration": "Длительность",
+        "songDuration": "Продолжительность",
         "requestedBy": "Запросил",
+        "usedBy": "используется",
         "unknown": "Неизвестно",
         "notInVoice": "Вы должны быть в голосовом канале чтобы запросить музыку.",
         "noResults": "По вашему запросу ничего не найдено.",
