@@ -10,7 +10,7 @@
                 "outputString": "Вивід",
                 "usage": "{prefix}eval <код>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Файл Cookie",
                 "statusActive": "Активний",
                 "statusMissing": "Немає доступних cookies",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "Початок",
                 "gettingStartedText": "Використовуйте {loginCmd} для входу в Google та автоматичної генерації cookies.",
-                "statsTitle": "Статистика"
-            },
-            "login": {
+                "statsTitle": "Статистика",
                 "description": "Керування сесією входу Google для аутентифікації cookies YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Розпочати сесію входу Google через браузер",
@@ -393,10 +391,11 @@
         "volume": "Гучність",
         "queueLength": "Черга",
         "queueFooter": "• Всього залишилось треків у черзі: {count} ({duration} тривалість)",
-        "idle": "Очікування",
+        "idle": "Очікування/Доступний",
         "live": "НАЖИВО",
         "songDuration": "Тривалість",
         "requestedBy": "Запитав",
+        "usedBy": "використовується",
         "unknown": "Невідомо",
         "notInVoice": "Ви повинні бути в голосовому каналі щоб запросити музику.",
         "noResults": "За вашим запитом нічого не знайдено.",

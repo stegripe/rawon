@@ -10,7 +10,7 @@
                 "outputString": "輸出",
                 "usage": "{prefix}eval <一些代碼>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "Cookie檔案",
                 "statusActive": "活躍",
                 "statusMissing": "無可用cookies",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "開始使用",
                 "gettingStartedText": "使用 {loginCmd} 登入Google並自動產生cookies。",
-                "statsTitle": "統計"
-            },
-            "login": {
+                "statsTitle": "統計",
                 "description": "管理Google登入工作階段以進行YouTube cookie身份驗證",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "透過瀏覽器啟動Google登入工作階段",
@@ -393,10 +391,11 @@
         "volume": "音量",
         "queueLength": "佇列",
         "queueFooter": "• 佇列中剩餘的曲目總數：{count}（{duration} 時長）",
-        "idle": "閒置",
+        "idle": "閒置/可用",
         "live": "直播",
         "songDuration": "時長",
         "requestedBy": "點播者",
+        "usedBy": "使用者",
         "unknown": "未知",
         "notInVoice": "您需要在語音頻道中才能點歌。",
         "noResults": "沒有找到您搜尋的結果。",

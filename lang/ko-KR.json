@@ -10,7 +10,7 @@
                 "outputString": "출력",
                 "usage": "{prefix}eval <코드>"
             },
-            "cookies": {
+            "login": {
                 "cookieFileField": "쿠키 파일",
                 "statusActive": "활성",
                 "statusMissing": "쿠키 없음",
@@ -26,9 +26,7 @@
                 "accountNA": "`N/A`",
                 "gettingStartedField": "시작하기",
                 "gettingStartedText": "{loginCmd}로 Google에 로그인하고 쿠키를 자동 생성하세요.",
-                "statsTitle": "통계"
-            },
-            "login": {
+                "statsTitle": "통계",
                 "description": "YouTube 쿠키 인증을 위한 Google 로그인 세션 관리",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "브라우저를 통해 Google 로그인 세션 시작",
@@ -358,10 +356,11 @@
         "volume": "볼륨",
         "queueLength": "대기열",
         "queueFooter": "• 대기열에 남은 총 트랙: {count}개 (재생 시간 {duration})",
-        "idle": "대기 중",
+        "idle": "대기 중/사용 가능",
         "live": "라이브",
-        "songDuration": "길이",
+        "songDuration": "재생 시간",
         "requestedBy": "요청자",
+        "usedBy": "사용자",
         "unknown": "알 수 없음",
         "notInVoice": "음악을 요청하려면 음성 채널에 있어야 해요.",
         "noResults": "검색 결과를 찾을 수 없어요.",
