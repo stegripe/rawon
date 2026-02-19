@@ -1234,6 +1234,8 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 }
 
                 const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+                const lyricsSource =
+                    (data as LyricsAPIResult<false> & { source?: string }).source ?? "stegripe";
                 const pages: string[] = chunk(data.lyrics ?? "", 2_048);
                 let currentPage = 0;
                 const embed = createEmbed("info", pages[0])
@@ -1275,7 +1277,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     text: `• ${__mf("reusable.pageFooter", {
                         actual: 1,
                         total: pages.length,
-                    })}. ${__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                    })}. ${__mf("reusable.lyricsSource", { source: lyricsSource })}`,
                 });
 
                 await interaction.editReply({
@@ -1316,7 +1318,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             text: `• ${__mf("reusable.pageFooter", {
                                 actual: currentPage + 1,
                                 total: pages.length,
-                            })}. ${__mf("reusable.lyricsSource", { source: "lrclib" })}`,
+                            })}. ${__mf("reusable.lyricsSource", { source: lyricsSource })}`,
                         });
 
                         await i.update({
