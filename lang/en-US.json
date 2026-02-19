@@ -54,6 +54,51 @@
                 "gettingStartedField": "Getting Started",
                 "gettingStartedText": "Use {loginCmd} to log in to Google and generate cookies automatically.",
                 "statsTitle": "Statistics"
+            },
+            "setup": {
+                "description": "Configure bot settings (developer only)",
+                "usage": "{prefix}setup <setting> [value]",
+                "unknownSetting": "Unknown setting. Use {command} to see available settings.",
+                "embedTitle": "Bot Settings",
+                "embedColor": {
+                    "set": "Embed color has been set to {color}.",
+                    "reset": "Embed color has been reset to default.",
+                    "invalid": "Invalid hex color. Please use a 6-character hex code (e.g., `#FF5733` or `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "Success emoji has been set to {emoji}.",
+                    "reset": "Success emoji has been reset to default."
+                },
+                "noEmoji": {
+                    "set": "Error emoji has been set to {emoji}.",
+                    "reset": "Error emoji has been reset to default."
+                },
+                "altPrefix": {
+                    "set": "Alternative prefixes have been set to: {prefixes}.",
+                    "reset": "Alternative prefixes have been reset to default.",
+                    "invalid": "Please provide at least one prefix."
+                },
+                "splash": {
+                    "set": "Request channel splash image has been set.",
+                    "reset": "Request channel splash image has been reset to default.",
+                    "invalid": "Please provide a valid URL."
+                },
+                "defaultVolume": {
+                    "set": "Default volume has been set to {volume}.",
+                    "reset": "Default volume has been reset to default.",
+                    "invalid": "Volume must be a number between `1` and `200`."
+                },
+                "selectionType": {
+                    "set": "Music selection type has been set to {type}.",
+                    "reset": "Music selection type has been reset to default.",
+                    "invalid": "Selection type must be `message` or `selectmenu`."
+                },
+                "audioCache": {
+                    "set": "Audio cache has been {state}.",
+                    "enabled": "enabled",
+                    "disabled": "disabled"
+                },
+                "resetAll": "All bot settings have been reset to defaults."
             }
         },
         "general": {

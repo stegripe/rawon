@@ -54,6 +54,51 @@
                 "statusTitle": "Giriş & Çerez Durumu",
                 "logoutSuccess": "Giriş oturumu temizlendi.\n\nTüm çerezler ve profil verileri silindi.\nYeni bir oturum başlatmak için {cmd} kullanın.",
                 "logoutNoBrowser": "Aktif giriş oturumu yok."
+            },
+            "setup": {
+                "description": "Bot ayarlarını yapılandır (yalnızca geliştiriciler)",
+                "usage": "{prefix}setup <ayar> [değer]",
+                "unknownSetting": "Bilinmeyen ayar. Mevcut ayarları görmek için {command} kullanın.",
+                "embedTitle": "Bot Ayarları",
+                "embedColor": {
+                    "set": "Embed rengi {color} olarak ayarlandı.",
+                    "reset": "Embed rengi varsayılana sıfırlandı.",
+                    "invalid": "Geçersiz hex renk kodu. 6 karakterlik bir hex kodu kullanın (ör: `#FF5733` veya `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "Başarı emojisi {emoji} olarak ayarlandı.",
+                    "reset": "Başarı emojisi varsayılana sıfırlandı."
+                },
+                "noEmoji": {
+                    "set": "Hata emojisi {emoji} olarak ayarlandı.",
+                    "reset": "Hata emojisi varsayılana sıfırlandı."
+                },
+                "altPrefix": {
+                    "set": "Alternatif ön ekler şu şekilde ayarlandı: {prefixes}.",
+                    "reset": "Alternatif ön ekler varsayılana sıfırlandı.",
+                    "invalid": "Lütfen en az bir ön ek girin."
+                },
+                "splash": {
+                    "set": "İstek kanalı açılış görseli ayarlandı.",
+                    "reset": "İstek kanalı açılış görseli varsayılana sıfırlandı.",
+                    "invalid": "Lütfen geçerli bir URL girin."
+                },
+                "defaultVolume": {
+                    "set": "Varsayılan ses seviyesi {volume} olarak ayarlandı.",
+                    "reset": "Varsayılan ses seviyesi sıfırlandı.",
+                    "invalid": "Ses seviyesi `1` ile `200` arasında bir sayı olmalıdır."
+                },
+                "selectionType": {
+                    "set": "Müzik seçim türü {type} olarak ayarlandı.",
+                    "reset": "Müzik seçim türü varsayılana sıfırlandı.",
+                    "invalid": "Seçim türü `message` veya `selectmenu` olmalıdır."
+                },
+                "audioCache": {
+                    "set": "Ses önbelleği {state}.",
+                    "enabled": "etkinleştirildi",
+                    "disabled": "devre dışı bırakıldı"
+                },
+                "resetAll": "Tüm bot ayarları varsayılanlara sıfırlandı."
             }
         },
         "general": {
@@ -93,7 +138,7 @@
                 "usageString": "Kullanım"
             },
             "invite": {
-                "clickURL": "- **[Buraya tıklayın]({url})**{botNum} numaralı botu sunucuna eklemek için.",
+                "clickURL": "- **[Buraya tıklayın]({url})** {botNum} numaralı botu sunucuna eklemek için.",
                 "description": "Bot için davet bağlantısını edinin",
                 "inviteTitle": "{bot} - Davet Linki"
             },

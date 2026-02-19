@@ -1,9 +1,19 @@
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
-import { defaultVolume } from "../../config/env.js";
-import { type GuildData } from "../../typings/index.js";
+import { type BotSettings, type GuildData } from "../../typings/index.js";
 import { OperationManager } from "./OperationManager.js";
+
+export const BOT_SETTINGS_DEFAULTS: BotSettings = {
+    embedColor: "22C9FF",
+    yesEmoji: "✅",
+    noEmoji: "❌",
+    altPrefix: ["{mention}"],
+    requestChannelSplash: "https://cdn.stegripe.org/images/rawon_splash.png",
+    defaultVolume: 100,
+    musicSelectionType: "message",
+    enableAudioCache: true,
+};
 
 export class SQLiteDataManager<T extends Record<string, any> = Record<string, GuildData>> {
     private readonly db: Database.Database;
@@ -20,6 +30,7 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         this.db.pragma("foreign_keys = ON");
 
         this.initSchema();
+        this.loadBotSettings();
         void this.load();
     }
 
@@ -111,6 +122,24 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                 ALTER TABLE guilds ADD COLUMN prefix TEXT DEFAULT '';
             `);
         }
+
+        this.db.exec(`
+            CREATE TABLE IF NOT EXISTS bot_settings (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                embed_color TEXT,
+                yes_emoji TEXT,
+                no_emoji TEXT,
+                alt_prefix TEXT,
+                request_channel_splash TEXT,
+                default_volume INTEGER,
+                music_selection_type TEXT,
+                enable_audio_cache INTEGER
+            )
+        `);
+
+        this.db.exec(`
+            INSERT OR IGNORE INTO bot_settings (id) VALUES (1)
+        `);
     }
 
     public get data(): T | null {
@@ -319,7 +348,7 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
         return {
             loopMode: (result.loop_mode ?? "OFF") as "OFF" | "SONG" | "QUEUE",
             shuffle: result.shuffle === 1,
-            volume: result.volume ?? defaultVolume,
+            volume: result.volume ?? this.botSettings.defaultVolume,
             filters,
         };
     }
@@ -532,6 +561,76 @@ export class SQLiteDataManager<T extends Record<string, any> = Record<string, Gu
                 JSON.stringify(state.failedCookies),
                 JSON.stringify(state.failureTimestamps),
             );
+        });
+    }
+
+    private _botSettings: BotSettings = { ...BOT_SETTINGS_DEFAULTS };
+
+    public get botSettings(): BotSettings {
+        return this._botSettings;
+    }
+
+    private loadBotSettings(): void {
+        const row = this.db.prepare("SELECT * FROM bot_settings WHERE id = 1").get() as
+            | {
+                  embed_color: string | null;
+                  yes_emoji: string | null;
+                  no_emoji: string | null;
+                  alt_prefix: string | null;
+                  request_channel_splash: string | null;
+                  default_volume: number | null;
+                  music_selection_type: string | null;
+                  enable_audio_cache: number | null;
+              }
+            | undefined;
+
+        if (!row) {
+            this._botSettings = { ...BOT_SETTINGS_DEFAULTS };
+            return;
+        }
+
+        this._botSettings = {
+            embedColor: row.embed_color ?? BOT_SETTINGS_DEFAULTS.embedColor,
+            yesEmoji: row.yes_emoji ?? BOT_SETTINGS_DEFAULTS.yesEmoji,
+            noEmoji: row.no_emoji ?? BOT_SETTINGS_DEFAULTS.noEmoji,
+            altPrefix: row.alt_prefix
+                ? row.alt_prefix
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                : [...BOT_SETTINGS_DEFAULTS.altPrefix],
+            requestChannelSplash:
+                row.request_channel_splash ?? BOT_SETTINGS_DEFAULTS.requestChannelSplash,
+            defaultVolume: row.default_volume ?? BOT_SETTINGS_DEFAULTS.defaultVolume,
+            musicSelectionType:
+                row.music_selection_type ?? BOT_SETTINGS_DEFAULTS.musicSelectionType,
+            enableAudioCache:
+                row.enable_audio_cache !== null
+                    ? row.enable_audio_cache === 1
+                    : BOT_SETTINGS_DEFAULTS.enableAudioCache,
+        };
+    }
+
+    public async setBotSetting(key: string, value: string | number | null): Promise<void> {
+        const validColumns = new Set([
+            "embed_color",
+            "yes_emoji",
+            "no_emoji",
+            "alt_prefix",
+            "request_channel_splash",
+            "default_volume",
+            "music_selection_type",
+            "enable_audio_cache",
+        ]);
+
+        if (!validColumns.has(key)) {
+            throw new Error(`Invalid setting key: ${key}`);
+        }
+
+        await this.manager.add(async () => {
+            const stmt = this.db.prepare(`UPDATE bot_settings SET ${key} = ? WHERE id = 1`);
+            stmt.run(value);
+            this.loadBotSettings();
         });
     }
 

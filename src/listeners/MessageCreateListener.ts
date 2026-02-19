@@ -125,7 +125,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         if (guildPrefix) {
             prefixList.push(guildPrefix);
         } else {
-            prefixList.push(...this.container.config.altPrefixes);
+            prefixList.push(...this.container.data.botSettings.altPrefix);
             prefixList.push(this.container.config.mainPrefix);
         }
 
