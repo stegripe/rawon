@@ -2,9 +2,9 @@ import { type Buffer } from "node:buffer";
 import { type Readable } from "node:stream";
 import { clearTimeout, setTimeout } from "node:timers";
 import got from "got";
-import { enableAudioCache } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
+import { BOT_SETTINGS_DEFAULTS } from "../structures/SQLiteDataManager.js";
 import ytdl, { exec, isAgeRestrictedError, isBotDetectionError } from "../yt-dlp/index.js";
 import { checkQuery } from "./GeneralUtil.js";
 
@@ -65,6 +65,8 @@ export async function getStream(
             cachePath: null,
         };
     }
+
+    const enableAudioCache = client.data.botSettings.enableAudioCache;
 
     if (enableAudioCache && !isLive && seekSeconds > 0) {
         client.logger.info(
@@ -128,7 +130,14 @@ export async function getStream(
         }
     }
 
-    const stream = await attemptStreamWithRetry(client, url, isLive, 0, seekSeconds);
+    const stream = await attemptStreamWithRetry(
+        client,
+        url,
+        isLive,
+        0,
+        seekSeconds,
+        enableAudioCache,
+    );
     return {
         stream,
         cachePath: null,
@@ -145,6 +154,7 @@ async function attemptStreamWithRetry(
     isLive: boolean,
     retryCount = 0,
     seekSeconds = 0,
+    enableAudioCache = BOT_SETTINGS_DEFAULTS.enableAudioCache,
 ): Promise<Readable> {
     return new Promise<Readable>((resolve, reject) => {
         const baseOptions: Record<string, unknown> = isLive
@@ -215,7 +225,14 @@ async function attemptStreamWithRetry(
                     );
                     const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                     setTimeout(() => {
-                        attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
+                        attemptStreamWithRetry(
+                            client,
+                            url,
+                            isLive,
+                            retryCount + 1,
+                            seekSeconds,
+                            enableAudioCache,
+                        )
                             .then(resolve)
                             .catch(reject);
                     }, backoffDelay);
@@ -282,7 +299,14 @@ async function attemptStreamWithRetry(
                     if (isTransientError(errorMsg) && retryCount < MAX_TRANSIENT_RETRIES) {
                         const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                         setTimeout(() => {
-                            attemptStreamWithRetry(client, url, isLive, retryCount + 1, seekSeconds)
+                            attemptStreamWithRetry(
+                                client,
+                                url,
+                                isLive,
+                                retryCount + 1,
+                                seekSeconds,
+                                enableAudioCache,
+                            )
                                 .then(resolve)
                                 .catch(reject);
                         }, backoffDelay);

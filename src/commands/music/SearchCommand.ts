@@ -185,7 +185,7 @@ export class SearchCommand extends ContextCommand {
             }
             return;
         }
-        if (client.config.musicSelectionType === "selectmenu") {
+        if (client.data.botSettings.musicSelectionType === "selectmenu") {
             const selectMenuMsg = await ctx.send({
                 content: __("commands.music.search.interactionContent"),
                 components: [

@@ -54,6 +54,51 @@
                 "statusTitle": "Trạng Thái Đăng Nhập & Cookies",
                 "logoutSuccess": "Phiên đăng nhập đã được xóa.\n\nTất cả cookies và dữ liệu hồ sơ đã được xóa.\nDùng {cmd} để bắt đầu phiên mới.",
                 "logoutNoBrowser": "Không có phiên đăng nhập đang hoạt động."
+            },
+            "setup": {
+                "description": "Cấu hình cài đặt bot (chỉ dành cho nhà phát triển)",
+                "usage": "{prefix}setup <cài đặt> [giá trị]",
+                "unknownSetting": "Cài đặt không xác định. Dùng {command} để xem các cài đặt có sẵn.",
+                "embedTitle": "Cài đặt Bot",
+                "embedColor": {
+                    "set": "Màu embed đã được đặt thành {color}.",
+                    "reset": "Màu embed đã được đặt lại về mặc định.",
+                    "invalid": "Mã màu hex không hợp lệ. Vui lòng sử dụng mã hex 6 ký tự (ví dụ: `#FF5733` hoặc `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "Emoji thành công đã được đặt thành {emoji}.",
+                    "reset": "Emoji thành công đã được đặt lại về mặc định."
+                },
+                "noEmoji": {
+                    "set": "Emoji lỗi đã được đặt thành {emoji}.",
+                    "reset": "Emoji lỗi đã được đặt lại về mặc định."
+                },
+                "altPrefix": {
+                    "set": "Tiền tố thay thế đã được đặt thành: {prefixes}.",
+                    "reset": "Tiền tố thay thế đã được đặt lại về mặc định.",
+                    "invalid": "Vui lòng cung cấp ít nhất một tiền tố."
+                },
+                "splash": {
+                    "set": "Hình ảnh splash kênh yêu cầu đã được đặt.",
+                    "reset": "Hình ảnh splash kênh yêu cầu đã được đặt lại về mặc định.",
+                    "invalid": "Vui lòng cung cấp một URL hợp lệ."
+                },
+                "defaultVolume": {
+                    "set": "Âm lượng mặc định đã được đặt thành {volume}.",
+                    "reset": "Âm lượng mặc định đã được đặt lại.",
+                    "invalid": "Âm lượng phải là số từ `1` đến `200`."
+                },
+                "selectionType": {
+                    "set": "Kiểu chọn nhạc đã được đặt thành {type}.",
+                    "reset": "Kiểu chọn nhạc đã được đặt lại về mặc định.",
+                    "invalid": "Kiểu chọn phải là `message` hoặc `selectmenu`."
+                },
+                "audioCache": {
+                    "set": "Bộ nhớ đệm âm thanh đã được {state}.",
+                    "enabled": "bật",
+                    "disabled": "tắt"
+                },
+                "resetAll": "Tất cả cài đặt bot đã được đặt lại về mặc định."
             }
         },
         "general": {

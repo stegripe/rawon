@@ -3,7 +3,6 @@ import { joinVoiceChannel } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import { ActivityType, ChannelType, type Presence } from "discord.js";
-import { defaultVolume } from "../config/env.js";
 import i18n from "../config/index.js";
 import { type Rawon } from "../structures/Rawon.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
@@ -391,7 +390,8 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                                 try {
                                     const loopMode = savedState.loopMode ?? "OFF";
                                     const shuffle = savedState.shuffle ?? false;
-                                    const volume = savedState.volume ?? defaultVolume;
+                                    const volume =
+                                        savedState.volume ?? client.data.botSettings.defaultVolume;
                                     const filters = savedState.filters ?? {};
 
                                     this.container.logger.info(

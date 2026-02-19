@@ -54,6 +54,51 @@
                 "statusTitle": "État de Connexion et Cookies",
                 "logoutSuccess": "Session de connexion effacée.\n\nTous les cookies et les données de profil ont été supprimés.\nUtilisez {cmd} pour démarrer une nouvelle session.",
                 "logoutNoBrowser": "Aucune session de connexion active."
+            },
+            "setup": {
+                "description": "Configurer les paramètres du bot (développeurs uniquement)",
+                "usage": "{prefix}setup <paramètre> [valeur]",
+                "unknownSetting": "Paramètre inconnu. Utilisez {command} pour voir les paramètres disponibles.",
+                "embedTitle": "Paramètres du bot",
+                "embedColor": {
+                    "set": "La couleur d'embed a été définie sur {color}.",
+                    "reset": "La couleur d'embed a été réinitialisée par défaut.",
+                    "invalid": "Code couleur hexadécimal invalide. Veuillez utiliser un code hexadécimal de 6 caractères (ex : `#FF5733` ou `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "L'emoji de succès a été défini sur {emoji}.",
+                    "reset": "L'emoji de succès a été réinitialisé par défaut."
+                },
+                "noEmoji": {
+                    "set": "L'emoji d'erreur a été défini sur {emoji}.",
+                    "reset": "L'emoji d'erreur a été réinitialisé par défaut."
+                },
+                "altPrefix": {
+                    "set": "Les préfixes alternatifs ont été définis sur : {prefixes}.",
+                    "reset": "Les préfixes alternatifs ont été réinitialisés par défaut.",
+                    "invalid": "Veuillez fournir au moins un préfixe."
+                },
+                "splash": {
+                    "set": "L'image splash du canal de demande a été définie.",
+                    "reset": "L'image splash du canal de demande a été réinitialisée par défaut.",
+                    "invalid": "Veuillez fournir une URL valide."
+                },
+                "defaultVolume": {
+                    "set": "Le volume par défaut a été défini sur {volume}.",
+                    "reset": "Le volume par défaut a été réinitialisé.",
+                    "invalid": "Le volume doit être un nombre entre `1` et `200`."
+                },
+                "selectionType": {
+                    "set": "Le type de sélection musicale a été défini sur {type}.",
+                    "reset": "Le type de sélection musicale a été réinitialisé par défaut.",
+                    "invalid": "Le type de sélection doit être `message` ou `selectmenu`."
+                },
+                "audioCache": {
+                    "set": "Le cache audio a été {state}.",
+                    "enabled": "activé",
+                    "disabled": "désactivé"
+                },
+                "resetAll": "Tous les paramètres du bot ont été réinitialisés par défaut."
             }
         },
         "general": {

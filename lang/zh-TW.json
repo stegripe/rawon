@@ -54,6 +54,51 @@
                 "statusTitle": "登入與Cookie狀態",
                 "logoutSuccess": "登入工作階段已清除。\n\n所有cookies和設定檔資料已被清除。\n使用 {cmd} 啟動新工作階段。",
                 "logoutNoBrowser": "沒有活躍的登入工作階段。"
+            },
+            "setup": {
+                "description": "設定機器人配置（僅限開發者）",
+                "usage": "{prefix}setup <設定> [值]",
+                "unknownSetting": "未知設定。使用 {command} 查看可用設定。",
+                "embedTitle": "機器人設定",
+                "embedColor": {
+                    "set": "嵌入顏色已設定為 {color}。",
+                    "reset": "嵌入顏色已重設為預設值。",
+                    "invalid": "無效的十六進位顏色代碼。請使用6位十六進位代碼（例如：`#FF5733` 或 `FF5733`）。"
+                },
+                "yesEmoji": {
+                    "set": "成功表情已設定為 {emoji}。",
+                    "reset": "成功表情已重設為預設值。"
+                },
+                "noEmoji": {
+                    "set": "錯誤表情已設定為 {emoji}。",
+                    "reset": "錯誤表情已重設為預設值。"
+                },
+                "altPrefix": {
+                    "set": "替代前綴已設定為：{prefixes}。",
+                    "reset": "替代前綴已重設為預設值。",
+                    "invalid": "請至少提供一個前綴。"
+                },
+                "splash": {
+                    "set": "請求頻道封面圖片已設定。",
+                    "reset": "請求頻道封面圖片已重設為預設值。",
+                    "invalid": "請提供有效的URL。"
+                },
+                "defaultVolume": {
+                    "set": "預設音量已設定為 {volume}。",
+                    "reset": "預設音量已重設為預設值。",
+                    "invalid": "音量必須是 `1` 到 `200` 之間的數字。"
+                },
+                "selectionType": {
+                    "set": "音樂選擇類型已設定為 {type}。",
+                    "reset": "音樂選擇類型已重設為預設值。",
+                    "invalid": "選擇類型必須為 `message` 或 `selectmenu`。"
+                },
+                "audioCache": {
+                    "set": "音訊快取已 {state}。",
+                    "enabled": "啟用",
+                    "disabled": "停用"
+                },
+                "resetAll": "所有機器人設定已重設為預設值。"
             }
         },
         "general": {

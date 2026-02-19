@@ -54,6 +54,51 @@
                 "statusTitle": "Status Log Masuk & Cookie",
                 "logoutSuccess": "Sesi log masuk dikosongkan.\n\nSemua cookies dan data profil telah dipadam.\nGuna {cmd} untuk memulakan sesi baharu.",
                 "logoutNoBrowser": "Tiada sesi log masuk aktif."
+            },
+            "setup": {
+                "description": "Konfigurasi tetapan bot (pembangun sahaja)",
+                "usage": "{prefix}setup <tetapan> [nilai]",
+                "unknownSetting": "Tetapan tidak dikenali. Guna {command} untuk lihat tetapan yang tersedia.",
+                "embedTitle": "Tetapan Bot",
+                "embedColor": {
+                    "set": "Warna embed telah ditetapkan kepada {color}.",
+                    "reset": "Warna embed telah ditetapkan semula kepada lalai.",
+                    "invalid": "Kod warna hex tidak sah. Sila gunakan kod hex 6 aksara (cth: `#FF5733` atau `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "Emoji kejayaan telah ditetapkan kepada {emoji}.",
+                    "reset": "Emoji kejayaan telah ditetapkan semula kepada lalai."
+                },
+                "noEmoji": {
+                    "set": "Emoji ralat telah ditetapkan kepada {emoji}.",
+                    "reset": "Emoji ralat telah ditetapkan semula kepada lalai."
+                },
+                "altPrefix": {
+                    "set": "Awalan alternatif telah ditetapkan kepada: {prefixes}.",
+                    "reset": "Awalan alternatif telah ditetapkan semula kepada lalai.",
+                    "invalid": "Sila berikan sekurang-kurangnya satu awalan."
+                },
+                "splash": {
+                    "set": "Imej splash saluran permintaan telah ditetapkan.",
+                    "reset": "Imej splash saluran permintaan telah ditetapkan semula kepada lalai.",
+                    "invalid": "Sila berikan URL yang sah."
+                },
+                "defaultVolume": {
+                    "set": "Kelantangan lalai telah ditetapkan kepada {volume}.",
+                    "reset": "Kelantangan lalai telah ditetapkan semula.",
+                    "invalid": "Kelantangan mestilah nombor antara `1` dan `200`."
+                },
+                "selectionType": {
+                    "set": "Jenis pemilihan muzik telah ditetapkan kepada {type}.",
+                    "reset": "Jenis pemilihan muzik telah ditetapkan semula kepada lalai.",
+                    "invalid": "Jenis pemilihan mestilah `message` atau `selectmenu`."
+                },
+                "audioCache": {
+                    "set": "Cache audio telah {state}.",
+                    "enabled": "diaktifkan",
+                    "disabled": "dinyahaktifkan"
+                },
+                "resetAll": "Semua tetapan bot telah ditetapkan semula kepada lalai."
             }
         },
         "general": {

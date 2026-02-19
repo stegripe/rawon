@@ -54,6 +54,51 @@
                 "statusTitle": "Status Login & Cookie",
                 "logoutSuccess": "Sesi login udah dihapus.\n\nSemua cookies dan data profil udah dihapus.\nPake {cmd} buat mulai sesi baru.",
                 "logoutNoBrowser": "Gak ada sesi login aktif."
+            },
+            "setup": {
+                "description": "Atur settingan bot (khusus developer)",
+                "usage": "{prefix}setup <setting> [value]",
+                "unknownSetting": "Setting gak dikenal. Pake {command} buat liat settingan yang tersedia.",
+                "embedTitle": "Settingan Bot",
+                "embedColor": {
+                    "set": "Warna embed udah diatur ke {color}.",
+                    "reset": "Warna embed udah direset ke default.",
+                    "invalid": "Kode warna hex gak valid. Pake 6 karakter hex (contoh: `#FF5733` atau `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "Emoji sukses udah diatur ke {emoji}.",
+                    "reset": "Emoji sukses udah direset ke default."
+                },
+                "noEmoji": {
+                    "set": "Emoji error udah diatur ke {emoji}.",
+                    "reset": "Emoji error udah direset ke default."
+                },
+                "altPrefix": {
+                    "set": "Prefix alternatif udah diatur ke: {prefixes}.",
+                    "reset": "Prefix alternatif udah direset ke default.",
+                    "invalid": "Kasih minimal satu prefix dong."
+                },
+                "splash": {
+                    "set": "Gambar splash channel request udah diatur.",
+                    "reset": "Gambar splash channel request udah direset ke default.",
+                    "invalid": "Kasih URL yang valid dong."
+                },
+                "defaultVolume": {
+                    "set": "Volume default udah diatur ke {volume}.",
+                    "reset": "Volume default udah direset ke default.",
+                    "invalid": "Volume harus angka antara `1` sampai `200`."
+                },
+                "selectionType": {
+                    "set": "Tipe pemilihan musik udah diatur ke {type}.",
+                    "reset": "Tipe pemilihan musik udah direset ke default.",
+                    "invalid": "Tipe pemilihan harus `message` atau `selectmenu`."
+                },
+                "audioCache": {
+                    "set": "Cache audio udah {state}.",
+                    "enabled": "diaktifin",
+                    "disabled": "dimatiin"
+                },
+                "resetAll": "Semua settingan bot udah direset ke default."
             }
         },
         "general": {

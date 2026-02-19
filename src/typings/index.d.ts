@@ -251,6 +251,17 @@ export type SpotifyResolveResult = {
     metadata?: PlaylistMetadata;
 };
 
+export type BotSettings = {
+    embedColor: string;
+    yesEmoji: string;
+    noEmoji: string;
+    altPrefix: string[];
+    requestChannelSplash: string;
+    defaultVolume: number;
+    musicSelectionType: string;
+    enableAudioCache: boolean;
+};
+
 export type GuildData = {
     dj?: {
         enable: boolean;

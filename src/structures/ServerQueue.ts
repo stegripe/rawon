@@ -8,13 +8,13 @@ import {
     type VoiceConnection,
 } from "@discordjs/voice";
 import { type Snowflake, type TextChannel } from "discord.js";
-import { defaultVolume, enableAudioCache } from "../config/env.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
+import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
 import { type Rawon } from "./Rawon.js";
 
 const nonEnum = { enumerable: false };
@@ -30,7 +30,7 @@ export class ServerQueue {
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
     public seekOffset = 0;
 
-    private _volume = defaultVolume;
+    private _volume = BOT_SETTINGS_DEFAULTS.defaultVolume;
     private _lastVSUpdateMsg: Snowflake | null = null;
     private _lastMusicMsg: Snowflake | null = null;
     private _skipVoters: Snowflake[] = [];
@@ -348,7 +348,7 @@ export class ServerQueue {
             if (savedState) {
                 this.loopMode = (savedState.loopMode as typeof this.loopMode) ?? "OFF";
                 this.shuffle = savedState.shuffle ?? false;
-                this._volume = savedState.volume ?? defaultVolume;
+                this._volume = savedState.volume ?? this.resolvedDefaultVolume;
                 this.filters = (savedState.filters ?? {}) as Partial<
                     Record<keyof typeof filterArgs, boolean>
                 >;
@@ -368,7 +368,7 @@ export class ServerQueue {
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
-            this._volume = savedState.volume ?? defaultVolume;
+            this._volume = savedState.volume ?? this.guildDefaultVolume;
             this.filters = (savedState.filters ?? {}) as Partial<
                 Record<keyof typeof filterArgs, boolean>
             >;
@@ -553,7 +553,7 @@ export class ServerQueue {
             const songUrl = currentSong.song.url;
             const isLive = currentSong.song.isLive ?? false;
 
-            if (isLive || !enableAudioCache) {
+            if (isLive || !this.resolvedEnableAudioCache) {
                 this.seekOffset = 0;
                 this.playing = false;
                 void play(this.textChannel.guild, currentSong.key, true, 0);
@@ -813,6 +813,14 @@ export class ServerQueue {
 
     public get client(): Rawon {
         return this.textChannel.client as Rawon;
+    }
+
+    private get resolvedDefaultVolume(): number {
+        return this.client.data.botSettings.defaultVolume;
+    }
+
+    private get resolvedEnableAudioCache(): boolean {
+        return this.client.data.botSettings.enableAudioCache;
     }
 
     private sendStartPlayingMsg(newSong: QueueSong["song"]): void {

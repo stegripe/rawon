@@ -54,6 +54,51 @@
                 "statusTitle": "Status de Login e Cookies",
                 "logoutSuccess": "Sessão de login limpa.\n\nTodos os cookies e dados de perfil foram apagados.\nUse {cmd} para iniciar uma nova sessão.",
                 "logoutNoBrowser": "Nenhuma sessão de login ativa."
+            },
+            "setup": {
+                "description": "Configurar definições do bot (apenas desenvolvedores)",
+                "usage": "{prefix}setup <definição> [valor]",
+                "unknownSetting": "Definição desconhecida. Use {command} para ver as definições disponíveis.",
+                "embedTitle": "Definições do Bot",
+                "embedColor": {
+                    "set": "A cor do embed foi definida para {color}.",
+                    "reset": "A cor do embed foi redefinida para o padrão.",
+                    "invalid": "Código de cor hexadecimal inválido. Use um código hexadecimal de 6 caracteres (ex: `#FF5733` ou `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "O emoji de sucesso foi definido para {emoji}.",
+                    "reset": "O emoji de sucesso foi redefinido para o padrão."
+                },
+                "noEmoji": {
+                    "set": "O emoji de erro foi definido para {emoji}.",
+                    "reset": "O emoji de erro foi redefinido para o padrão."
+                },
+                "altPrefix": {
+                    "set": "Os prefixos alternativos foram definidos para: {prefixes}.",
+                    "reset": "Os prefixos alternativos foram redefinidos para o padrão.",
+                    "invalid": "Por favor forneça pelo menos um prefixo."
+                },
+                "splash": {
+                    "set": "A imagem splash do canal de pedidos foi definida.",
+                    "reset": "A imagem splash do canal de pedidos foi redefinida para o padrão.",
+                    "invalid": "Por favor forneça uma URL válida."
+                },
+                "defaultVolume": {
+                    "set": "O volume padrão foi definido para {volume}.",
+                    "reset": "O volume padrão foi redefinido para o padrão.",
+                    "invalid": "O volume deve ser um número entre `1` e `200`."
+                },
+                "selectionType": {
+                    "set": "O tipo de seleção musical foi definido para {type}.",
+                    "reset": "O tipo de seleção musical foi redefinido para o padrão.",
+                    "invalid": "O tipo de seleção deve ser `message` ou `selectmenu`."
+                },
+                "audioCache": {
+                    "set": "O cache de áudio foi {state}.",
+                    "enabled": "ativado",
+                    "disabled": "desativado"
+                },
+                "resetAll": "Todas as definições do bot foram redefinidas para os padrões."
             }
         },
         "general": {

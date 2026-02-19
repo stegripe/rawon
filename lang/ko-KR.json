@@ -54,6 +54,51 @@
                 "statusTitle": "로그인 & 쿠키 상태",
                 "logoutSuccess": "로그인 세션이 삭제되었어요.\n\n모든 쿠키와 프로필 데이터가 삭제되었습니다.\n{cmd}로 새 세션을 시작할 수 있어요.",
                 "logoutNoBrowser": "활성 로그인 세션이 없어요."
+            },
+            "setup": {
+                "description": "봇 설정 구성 (개발자 전용)",
+                "usage": "{prefix}setup <설정> [값]",
+                "unknownSetting": "알 수 없는 설정입니다. {command} 로 사용 가능한 설정을 확인하세요.",
+                "embedTitle": "봇 설정",
+                "embedColor": {
+                    "set": "임베드 색상이 {color} 으로 설정되었습니다.",
+                    "reset": "임베드 색상이 기본값으로 초기화되었습니다.",
+                    "invalid": "잘못된 16진수 색상 코드입니다. 6자리 16진수 코드를 사용하세요 (예: `#FF5733` 또는 `FF5733`)."
+                },
+                "yesEmoji": {
+                    "set": "성공 이모지가 {emoji} 으로 설정되었습니다.",
+                    "reset": "성공 이모지가 기본값으로 초기화되었습니다."
+                },
+                "noEmoji": {
+                    "set": "오류 이모지가 {emoji} 으로 설정되었습니다.",
+                    "reset": "오류 이모지가 기본값으로 초기화되었습니다."
+                },
+                "altPrefix": {
+                    "set": "대체 접두사가 {prefixes} 으로 설정되었습니다.",
+                    "reset": "대체 접두사가 기본값으로 초기화되었습니다.",
+                    "invalid": "최소 하나의 접두사를 입력해주세요."
+                },
+                "splash": {
+                    "set": "요청 채널 스플래시 이미지가 설정되었습니다.",
+                    "reset": "요청 채널 스플래시 이미지가 기본값으로 초기화되었습니다.",
+                    "invalid": "유효한 URL을 입력해주세요."
+                },
+                "defaultVolume": {
+                    "set": "기본 볼륨이 {volume} 으로 설정되었습니다.",
+                    "reset": "기본 볼륨이 기본값으로 초기화되었습니다.",
+                    "invalid": "볼륨은 `1`에서 `200` 사이의 숫자여야 합니다."
+                },
+                "selectionType": {
+                    "set": "음악 선택 유형이 {type} 으로 설정되었습니다.",
+                    "reset": "음악 선택 유형이 기본값으로 초기화되었습니다.",
+                    "invalid": "선택 유형은 `message` 또는 `selectmenu`이어야 합니다."
+                },
+                "audioCache": {
+                    "set": "오디오 캐시가 {state} 되었습니다.",
+                    "enabled": "활성화",
+                    "disabled": "비활성화"
+                },
+                "resetAll": "모든 봇 설정이 기본값으로 초기화되었습니다."
             }
         },
         "general": {

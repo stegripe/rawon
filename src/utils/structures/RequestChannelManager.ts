@@ -10,7 +10,7 @@ import {
     type Message,
     type TextChannel,
 } from "discord.js";
-import { defaultVolume, isMultiBot, requestChannelSplash } from "../../config/index.js";
+import { isMultiBot } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
@@ -230,17 +230,20 @@ export class RequestChannelManager {
             savedState = this.client.data.data?.[guild.id]?.playerState ?? null;
         }
 
+        const bs = this.client.data.botSettings;
+        const splash = bs.requestChannelSplash;
+
         const __ = i18n__(this.client, guild);
         const __mf = i18n__mf(this.client, guild);
 
         if (!queue || queue.songs.size === 0) {
             const savedLoopMode = savedState?.loopMode ?? "OFF";
             const savedShuffle = savedState?.shuffle ?? false;
-            const savedVolume = savedState?.volume ?? defaultVolume;
+            const savedVolume = savedState?.volume ?? bs.defaultVolume;
 
             return createEmbed("info", __("requestChannel.standby"))
                 .setTitle(`🎵  ${__("requestChannel.title")}`)
-                .setImage(requestChannelSplash)
+                .setImage(splash)
                 .addFields([
                     {
                         name: __("requestChannel.status"),
@@ -286,11 +289,11 @@ export class RequestChannelManager {
         const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶️";
 
         const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
-        const imageUrl = hasThumbnail ? song?.thumbnail : requestChannelSplash;
+        const imageUrl = hasThumbnail ? song?.thumbnail : splash;
 
         const embed = createEmbed("info")
             .setTitle(`🎵  ${__("requestChannel.title")}`)
-            .setImage(imageUrl ?? requestChannelSplash);
+            .setImage(imageUrl ?? splash);
 
         const guildIcon = guild.iconURL({ size: 2_048 });
         if (guildIcon !== null && guildIcon.length > 0) {

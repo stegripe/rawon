@@ -4,7 +4,6 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
-import { enableAudioCache } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -119,7 +118,7 @@ export class SeekCommand extends ContextCommand {
             return;
         }
 
-        if (enableAudioCache && seekSeconds > 0) {
+        if (client.data.botSettings.enableAudioCache && seekSeconds > 0) {
             const isCached = client.audioCache.isCached(song.song.url);
             const isInProgress = client.audioCache.isInProgress(song.song.url);
 
