@@ -54,6 +54,51 @@
                 "statusTitle": "登录与Cookie状态",
                 "logoutSuccess": "登录会话已清除。\n\n所有cookies和配置文件数据已被清除。\n使用 {cmd} 启动新会话。",
                 "logoutNoBrowser": "没有活跃的登录会话。"
+            },
+            "setup": {
+                "description": "配置机器人设置（仅限开发者）",
+                "usage": "{prefix}setup <设置> [值]",
+                "unknownSetting": "未知设置。使用 {command} 查看可用设置。",
+                "embedTitle": "机器人设置",
+                "embedColor": {
+                    "set": "嵌入颜色已设置为 {color}。",
+                    "reset": "嵌入颜色已重置为默认值。",
+                    "invalid": "无效的十六进制颜色代码。请使用6位十六进制代码（例如：`#FF5733` 或 `FF5733`）。"
+                },
+                "yesEmoji": {
+                    "set": "成功表情已设置为 {emoji}。",
+                    "reset": "成功表情已重置为默认值。"
+                },
+                "noEmoji": {
+                    "set": "错误表情已设置为 {emoji}。",
+                    "reset": "错误表情已重置为默认值。"
+                },
+                "altPrefix": {
+                    "set": "替代前缀已设置为：{prefixes}。",
+                    "reset": "替代前缀已重置为默认值。",
+                    "invalid": "请至少提供一个前缀。"
+                },
+                "splash": {
+                    "set": "请求频道封面图片已设置。",
+                    "reset": "请求频道封面图片已重置为默认值。",
+                    "invalid": "请提供有效的URL。"
+                },
+                "defaultVolume": {
+                    "set": "默认音量已设置为 {volume}。",
+                    "reset": "默认音量已重置为默认值。",
+                    "invalid": "音量必须是 `1` 到 `200` 之间的数字。"
+                },
+                "selectionType": {
+                    "set": "音乐选择类型已设置为 {type}。",
+                    "reset": "音乐选择类型已重置为默认值。",
+                    "invalid": "选择类型必须为 `message` 或 `selectmenu`。"
+                },
+                "audioCache": {
+                    "set": "音频缓存已 {state}。",
+                    "enabled": "启用",
+                    "disabled": "禁用"
+                },
+                "resetAll": "所有机器人设置已重置为默认值。"
             }
         },
         "general": {

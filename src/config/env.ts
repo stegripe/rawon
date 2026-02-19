@@ -81,27 +81,8 @@ export const presenceData: PresenceData = {
     interval: 60_000,
 };
 
-export const altPrefixes: string[] = parseEnvValue(
-    (process.env.ALT_PREFIX ?? "") || "{mention}",
-).filter((x, i, a) => a.indexOf(x) === i && x !== mainPrefix);
-
-export const embedColor = (process.env.EMBED_COLOR?.toUpperCase() ?? "") || "22C9FF";
-export const yesEmoji = (process.env.YES_EMOJI ?? "") || "✅";
-export const noEmoji = (process.env.NO_EMOJI ?? "") || "❌";
-export const requestChannelSplash =
-    (process.env.REQUEST_CHANNEL_SPLASH ?? "") ||
-    "https://cdn.stegripe.org/images/rawon_splash.png";
-
-const rawDefaultVolume = Number(process.env.DEFAULT_VOLUME);
-export const defaultVolume = Number.isFinite(rawDefaultVolume)
-    ? Math.min(200, Math.max(1, Math.round(rawDefaultVolume)))
-    : 100;
-export const musicSelectionType =
-    (process.env.MUSIC_SELECTION_TYPE?.toLowerCase() ?? "") || "message";
-
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
 export const enableSlashCommand = process.env.ENABLE_SLASH_COMMAND?.toLowerCase() !== "no";
-export const enableAudioCache = process.env.ENABLE_AUDIO_CACHE?.toLowerCase() !== "no";
 export const enableSharding = process.env.ENABLE_SHARDING?.toLowerCase() === "yes";
 
 const rawDevtoolsPort = Number(process.env.DEVTOOLS_PORT);
