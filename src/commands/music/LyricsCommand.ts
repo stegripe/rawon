@@ -80,8 +80,62 @@ export class LyricsCommand extends ContextCommand {
         client: Rawon,
         song: string,
     ): Promise<LyricsAPIResult<false> | null> {
-        let data: LyricsAPIResult<false> | null = null;
+        if (client.config.stegripeApiLyricsToken) {
+            const stegripeResult = await this.fetchFromStegripeAPI(client, song);
+            if (stegripeResult) {
+                return stegripeResult;
+            }
+        }
 
+        return this.fetchFromLrclib(client, song);
+    }
+
+    private async fetchFromStegripeAPI(
+        client: Rawon,
+        song: string,
+    ): Promise<(LyricsAPIResult<false> & { source?: string }) | null> {
+        try {
+            const apiUrl = `${client.config.stegripeApiUrl}/api/v1/lyrics?q=${encodeURIComponent(song)}`;
+            const response = await client.request
+                .get(apiUrl, {
+                    timeout: { request: 15_000 },
+                    headers: {
+                        Authorization: `Bearer ${client.config.stegripeApiLyricsToken}`,
+                    },
+                })
+                .json<{
+                    error: boolean;
+                    song?: string;
+                    artist?: string;
+                    lyrics?: string;
+                    source?: string;
+                    url?: string;
+                    message?: string;
+                }>();
+
+            if (response.error || !response.lyrics) {
+                return null;
+            }
+
+            return {
+                lyrics: response.lyrics,
+                song: response.song ?? null,
+                artist: response.artist ?? null,
+                album_art: "https://cdn.stegripe.org/images/icon.png",
+                synced: false,
+                url: response.url ?? null,
+                error: false,
+                source: response.source,
+            } as LyricsAPIResult<false> & { source?: string };
+        } catch {
+            return null;
+        }
+    }
+
+    private async fetchFromLrclib(
+        client: Rawon,
+        song: string,
+    ): Promise<(LyricsAPIResult<false> & { source?: string }) | null> {
         try {
             const cleanSong = song
                 .replaceAll(/\(.*?\)|\[.*?\]|official|video|audio|lyrics|hd|hq|mv/giu, "")
@@ -95,62 +149,58 @@ export class LyricsCommand extends ContextCommand {
                 .get(searchUrl, { timeout: { request: 5_000 } })
                 .json<Array<{ trackName: string; artistName: string; id: number }>>();
 
-            if (Array.isArray(searchResponse) && searchResponse.length > 0) {
-                let selectedTrack = searchResponse[0];
+            if (!Array.isArray(searchResponse) || searchResponse.length === 0) {
+                return null;
+            }
 
-                if (artist && title) {
-                    const betterMatch = searchResponse.find(
-                        (track) =>
-                            track.trackName.toLowerCase().includes(title.toLowerCase()) &&
-                            track.artistName.toLowerCase().includes(artist.toLowerCase()),
-                    );
-                    if (betterMatch) {
-                        selectedTrack = betterMatch;
-                    }
-                }
+            let selectedTrack = searchResponse[0];
 
-                const getUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(selectedTrack.trackName)}&artist_name=${encodeURIComponent(selectedTrack.artistName)}`;
-                const lyricsResponse = await client.request
-                    .get(getUrl, { timeout: { request: 5_000 } })
-                    .json<{
-                        trackName?: string;
-                        artistName?: string;
-                        albumName?: string;
-                        duration?: number;
-                        instrumental?: boolean;
-                        plainLyrics?: string;
-                        syncedLyrics?: string;
-                    }>();
-
-                if (lyricsResponse.plainLyrics || lyricsResponse.syncedLyrics) {
-                    let lyricsText = lyricsResponse.plainLyrics || "";
-                    if (lyricsResponse.syncedLyrics && !lyricsText) {
-                        lyricsText = lyricsResponse.syncedLyrics;
-                    }
-                    if (lyricsText) {
-                        lyricsText = lyricsText
-                            .replace(/\[(\d{1,2}:\d{2}\.\d{2,3})\]/g, "`[$1]`")
-                            .trim();
-                    }
-
-                    if (lyricsText) {
-                        data = {
-                            lyrics: lyricsText,
-                            song: lyricsResponse.trackName || selectedTrack.trackName,
-                            artist: lyricsResponse.artistName || selectedTrack.artistName,
-                            album_art: "https://cdn.stegripe.org/images/icon.png",
-                            synced: !!lyricsResponse.syncedLyrics,
-                            url: undefined,
-                            error: false,
-                        } as LyricsAPIResult<false>;
-                    }
+            if (artist && title) {
+                const betterMatch = searchResponse.find(
+                    (track) =>
+                        track.trackName.toLowerCase().includes(title.toLowerCase()) &&
+                        track.artistName.toLowerCase().includes(artist.toLowerCase()),
+                );
+                if (betterMatch) {
+                    selectedTrack = betterMatch;
                 }
             }
-        } catch {
-            // Ignore errors
-        }
 
-        return data;
+            const getUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(selectedTrack.trackName)}&artist_name=${encodeURIComponent(selectedTrack.artistName)}`;
+            const lyricsResponse = await client.request
+                .get(getUrl, { timeout: { request: 5_000 } })
+                .json<{
+                    trackName?: string;
+                    artistName?: string;
+                    plainLyrics?: string;
+                    syncedLyrics?: string;
+                }>();
+
+            let lyricsText = lyricsResponse.plainLyrics || "";
+            if (lyricsResponse.syncedLyrics && !lyricsText) {
+                lyricsText = lyricsResponse.syncedLyrics;
+            }
+            if (lyricsText) {
+                lyricsText = lyricsText.replace(/\[(\d{1,2}:\d{2}\.\d{2,3})\]/g, "`[$1]`").trim();
+            }
+
+            if (!lyricsText) {
+                return null;
+            }
+
+            return {
+                lyrics: lyricsText,
+                song: lyricsResponse.trackName || selectedTrack.trackName,
+                artist: lyricsResponse.artistName || selectedTrack.artistName,
+                album_art: "https://cdn.stegripe.org/images/icon.png",
+                synced: !!lyricsResponse.syncedLyrics,
+                url: undefined,
+                error: false,
+                source: "lrclib",
+            } as LyricsAPIResult<false> & { source?: string };
+        } catch {
+            return null;
+        }
     }
 
     public async getLyrics(
@@ -205,6 +255,8 @@ export class LyricsCommand extends ContextCommand {
 
         const albumArt =
             songThumbnail ?? data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+        const lyricsSource =
+            (data as LyricsAPIResult<false> & { source?: string }).source ?? "stegripe";
         const pages: string[] = chunk(data.lyrics ?? "", 2_048);
         const embed = createEmbed("info", pages[0])
             .setAuthor({
@@ -218,7 +270,7 @@ export class LyricsCommand extends ContextCommand {
                 text: `• ${localizedI18nMf("reusable.pageFooter", {
                     actual: 1,
                     total: pages.length,
-                })}. ${localizedI18nMf("reusable.lyricsSource", { source: "lrclib" })}`,
+                })}. ${localizedI18nMf("reusable.lyricsSource", { source: lyricsSource })}`,
             });
         await loadingMsg.edit({ embeds: [embed] });
         const msg = loadingMsg;
@@ -230,7 +282,7 @@ export class LyricsCommand extends ContextCommand {
                     text: `• ${localizedI18nMf("reusable.pageFooter", {
                         actual: i + 1,
                         total: pages.length,
-                    })}. ${localizedI18nMf("reusable.lyricsSource", { source: "lrclib" })}`,
+                    })}. ${localizedI18nMf("reusable.lyricsSource", { source: lyricsSource })}`,
                 }),
             embed,
             pages,

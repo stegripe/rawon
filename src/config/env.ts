@@ -109,3 +109,6 @@ export const devtoolsPort =
     Number.isFinite(rawDevtoolsPort) && rawDevtoolsPort > 0 ? rawDevtoolsPort : 3000;
 
 export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";
+
+export const stegripeApiUrl = "https://api.stegripe.org";
+export const stegripeApiLyricsToken = process.env.STEGRIPE_API_LYRICS_TOKEN ?? "";
