@@ -104,7 +104,8 @@ The `DEVTOOLS_PORT` (default: `3000`) is used for Chrome DevTools remote debuggi
 
 ## Configuration Files
 - `.env.example` - Essential settings (Discord/Spotify token, prefix, IDs, etc.)
-- `dev.env.example` - Optional and/or developer customization/settings (colors, interactions, debug mode, etc.)
+- `dev.env.example` - Optional developer settings (prefix/slash toggles, sharding, DevTools, debug mode, etc.)
+- Bot-specific settings (embed color, emojis, alt prefix, volume, splash, selection type, audio cache) are managed via the `setup` command (developer-only) and stored in the database.
 
 Use the ones you need/should and fill in the values.
 

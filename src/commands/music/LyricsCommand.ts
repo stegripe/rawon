@@ -267,10 +267,13 @@ export class LyricsCommand extends ContextCommand {
             })
             .setThumbnail(albumArt)
             .setFooter({
-                text: `• ${localizedI18nMf("reusable.pageFooter", {
-                    actual: 1,
-                    total: pages.length,
-                })}. ${localizedI18nMf("reusable.lyricsSource", { source: lyricsSource })}`,
+                text: `• ${localizedI18nMf("reusable.lyricsSource", { source: lyricsSource })}. ${localizedI18nMf(
+                    "reusable.pageFooter",
+                    {
+                        actual: 1,
+                        total: pages.length,
+                    },
+                )}`,
             });
         await loadingMsg.edit({ embeds: [embed] });
         const msg = loadingMsg;
@@ -279,10 +282,13 @@ export class LyricsCommand extends ContextCommand {
             author: ctx.author.id,
             edit: (i, emb, page) =>
                 emb.setDescription(page).setFooter({
-                    text: `• ${localizedI18nMf("reusable.pageFooter", {
-                        actual: i + 1,
-                        total: pages.length,
-                    })}. ${localizedI18nMf("reusable.lyricsSource", { source: lyricsSource })}`,
+                    text: `• ${localizedI18nMf("reusable.lyricsSource", { source: lyricsSource })}. ${localizedI18nMf(
+                        "reusable.pageFooter",
+                        {
+                            actual: i + 1,
+                            total: pages.length,
+                        },
+                    )}`,
                 }),
             embed,
             pages,
