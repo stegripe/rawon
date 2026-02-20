@@ -97,8 +97,7 @@ export class CookiesManager {
                 if (size > 0) {
                     status = "active";
                 }
-            } catch {
-            }
+            } catch {}
         }
 
         return {

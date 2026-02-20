@@ -141,8 +141,7 @@ export async function searchTrack(
                                         },
                                     ];
                                 }
-                            } catch {
-                            }
+                            } catch {}
                         }
                         break;
                     }
@@ -343,8 +342,7 @@ export async function searchTrack(
                                             url: `https://youtube.com/watch?v=${track[0].id}`,
                                         };
                                     }
-                                } catch {
-                                }
+                                } catch {}
                                 return null;
                             }),
                         );
@@ -440,8 +438,7 @@ export async function searchTrack(
                         }),
                     );
                     result.items = tracks;
-                } catch {
-                }
+                } catch {}
             }
         }
     }

@@ -41,8 +41,7 @@ async function isDirectDownload(url: string): Promise<boolean> {
         if (cd.includes("attachment")) {
             return true;
         }
-    } catch {
-    }
+    } catch {}
     return false;
 }
 

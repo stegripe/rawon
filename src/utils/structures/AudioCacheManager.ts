@@ -61,8 +61,7 @@ export class AudioCacheManager {
             if (cd.includes("attachment")) {
                 return true;
             }
-        } catch {
-        }
+        } catch {}
         return false;
     }
 
@@ -170,8 +169,7 @@ export class AudioCacheManager {
             this.inProgressProcs.delete(key);
             try {
                 rmSync(cachePath, { force: true });
-            } catch {
-            }
+            } catch {}
         });
 
         writeStream.on("finish", () => {
@@ -193,8 +191,7 @@ export class AudioCacheManager {
                 );
                 try {
                     rmSync(cachePath, { force: true });
-                } catch {
-                }
+                } catch {}
                 return;
             }
 
@@ -217,8 +214,7 @@ export class AudioCacheManager {
             this.inProgressProcs.delete(key);
             try {
                 rmSync(cachePath, { force: true });
-            } catch {
-            }
+            } catch {}
         });
 
         return playbackStream;
@@ -368,8 +364,7 @@ export class AudioCacheManager {
                     this.markFailed(key);
                     try {
                         rmSync(cachePath, { force: true });
-                    } catch {
-                    }
+                    } catch {}
                 });
 
                 httpStream.pipe(writeStream);
@@ -404,8 +399,7 @@ export class AudioCacheManager {
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
-                        } catch {
-                        }
+                        } catch {}
                         resolve();
                     });
                 });
@@ -472,8 +466,7 @@ export class AudioCacheManager {
                         if (hasBotDetectionError) {
                             try {
                                 rmSync(cachePath, { force: true });
-                            } catch {
-                            }
+                            } catch {}
 
                             if (retryCount < MAX_PRE_CACHE_RETRIES && !hasBotDetectionError) {
                                 setTimeout(
@@ -514,8 +507,7 @@ export class AudioCacheManager {
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
-                        } catch {
-                        }
+                        } catch {}
                         resolve();
                     });
 
@@ -525,8 +517,7 @@ export class AudioCacheManager {
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
-                        } catch {
-                        }
+                        } catch {}
                         resolve();
                     });
                 });
@@ -577,8 +568,7 @@ export class AudioCacheManager {
                         currentFiles--;
                     }
                     this.cachedFiles.delete(key);
-                } catch {
-                }
+                } catch {}
             }
 
             this.client.logger.info(
@@ -617,8 +607,7 @@ export class AudioCacheManager {
                         removedCount++;
                     }
                     this.cachedFiles.delete(key);
-                } catch {
-                }
+                } catch {}
             }
             const procInfo = this.inProgressProcs.get(key);
             if (procInfo) {
@@ -633,8 +622,7 @@ export class AudioCacheManager {
                         rmSync(procInfo.writeStreamPath, { force: true });
                         removedCount++;
                     }
-                } catch {
-                }
+                } catch {}
                 this.inProgressProcs.delete(key);
             }
 

@@ -155,8 +155,7 @@ export async function play(
                             "error",
                             new AudioPlayerError(e as Error, undefined as unknown as any),
                         );
-                    } catch (_) {
-                    }
+                    } catch (_) {}
                 });
 
                 try {
@@ -191,8 +190,7 @@ export async function play(
                         }
                         try {
                             writeStream.destroy();
-                        } catch {
-                        }
+                        } catch {}
                         reject(e);
                     };
 
@@ -250,16 +248,14 @@ export async function play(
                             "error",
                             new AudioPlayerError(e as Error, undefined as unknown as any),
                         );
-                    } catch (_) {
-                    }
+                    } catch (_) {}
                 });
                 (ffmpegStream as any).on?.("close", async (code?: unknown) => {
                     queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code);
                     try {
                         await fsp.unlink(tmpFile).catch(() => null);
                         queue.client.logger.debug("[PLAY_HANDLER] Temp file deleted", tmpFile);
-                    } catch {
-                    }
+                    } catch {}
                 });
             }
         } else {
@@ -272,8 +268,7 @@ export async function play(
                 title: song.song.title,
                 isLive: song.song.isLive,
             });
-        } catch {
-        }
+        } catch {}
         queue.endSkip();
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
             guild,
@@ -464,8 +459,7 @@ export async function play(
                     undefined as unknown as any,
                 ),
             );
-        } catch (_) {
-        }
+        } catch (_) {}
         return;
     }
 
@@ -481,8 +475,7 @@ export async function play(
             isLive: song.song.isLive,
             metadata: resource?.metadata ?? null,
         });
-    } catch {
-    }
+    } catch {}
 
     queue.connection?.subscribe(queue.player);
 

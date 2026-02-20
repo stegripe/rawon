@@ -18,7 +18,8 @@
             "suspicious": {
                 "noExplicitAny": "off",
                 "useAwait": "off",
-                "noAssignInExpressions": "off"
+                "noAssignInExpressions": "off",
+                "noEmptyBlockStatements": "off"
             },
             "security": {
                 "noGlobalEval": "off"

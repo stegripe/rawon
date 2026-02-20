@@ -267,8 +267,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                     void (async (): Promise<void> => {
                         try {
                             await message.delete();
-                        } catch {
-                        }
+                        } catch {}
                     })();
                 }, 60_000);
 
@@ -284,8 +283,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                         void (async (): Promise<void> => {
                             try {
                                 await botMsg.delete();
-                            } catch {
-                            }
+                            } catch {}
                         })();
                     }, 60_000);
                 });
@@ -437,8 +435,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             void (async (): Promise<void> => {
                 try {
                     await message.delete();
-                } catch {
-                }
+                } catch {}
             })();
         }, 60_000);
 
@@ -620,8 +617,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                     void (async () => {
                         try {
                             await msg.delete();
-                        } catch {
-                        }
+                        } catch {}
                     })();
                 }, 60_000);
             }
