@@ -15,6 +15,14 @@ import { i18n__mf } from "../utils/functions/i18n.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
+import {
+    type FallbackDataManager,
+    hasDeletePlayerState,
+    hasDeleteQueueState,
+    hasGetPlayerState,
+    hasSavePlayerState,
+    hasSaveQueueState,
+} from "../utils/typeGuards.js";
 import { type Rawon } from "./Rawon.js";
 
 const nonEnum = { enumerable: false };
@@ -295,10 +303,7 @@ export class ServerQueue {
         const botId = this.client.user?.id ?? "unknown";
         const guildId = this.textChannel.guild.id;
 
-        if (
-            "getPlayerState" in this.client.data &&
-            typeof this.client.data.getPlayerState === "function"
-        ) {
+        if (hasGetPlayerState(this.client.data)) {
             let savedState: {
                 loopMode?: string;
                 shuffle?: boolean;
@@ -314,7 +319,7 @@ export class ServerQueue {
                     `[MultiBot] ${this.client.user?.tag} attempting to load player state for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}, isPrimary=${isPrimary}`,
                 );
 
-                savedState = (this.client.data as any).getPlayerState(guildId, botId);
+                savedState = this.client.data.getPlayerState(guildId, botId) ?? null;
 
                 if (savedState) {
                     this.client.logger.debug(
@@ -325,10 +330,7 @@ export class ServerQueue {
                     const primaryBotId = primaryBot?.user?.id;
 
                     if (primaryBotId) {
-                        savedState = (this.client.data as any).getPlayerState(
-                            guildId,
-                            primaryBotId,
-                        );
+                        savedState = this.client.data.getPlayerState(guildId, primaryBotId) ?? null;
                         if (savedState) {
                             this.client.logger.info(
                                 `[MultiBot] ${this.client.user?.tag} (non-primary) no own state found, inheriting from PRIMARY bot (${primaryBot?.user?.tag})`,
@@ -337,7 +339,7 @@ export class ServerQueue {
                     }
                 }
             } else {
-                savedState = (this.client.data as any).getPlayerState(guildId, botId);
+                savedState = this.client.data.getPlayerState(guildId, botId) ?? null;
                 this.client.logger.debug(
                     `Loading player state from SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}`,
                 );
@@ -362,11 +364,12 @@ export class ServerQueue {
             return;
         }
 
-        const savedState = this.client.data.data?.[guildId]?.playerState;
+        const fallback = this.client.data as FallbackDataManager;
+        const savedState = fallback.data?.[guildId]?.playerState;
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
-            this._volume = savedState.volume ?? this.guildDefaultVolume;
+            this._volume = savedState.volume ?? this.resolvedDefaultVolume;
             this.filters = (savedState.filters ?? {}) as Partial<
                 Record<keyof typeof filterArgs, boolean>
             >;
@@ -392,17 +395,14 @@ export class ServerQueue {
         const botId = this.client.user?.id ?? "unknown";
         const guildId = this.textChannel.guild.id;
 
-        if (
-            "savePlayerState" in this.client.data &&
-            typeof this.client.data.savePlayerState === "function"
-        ) {
+        if (hasSavePlayerState(this.client.data)) {
             this.client.logger.debug(
                 `Saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
                     `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
             );
 
             try {
-                await (this.client.data as any).savePlayerState(guildId, botId, playerState);
+                await this.client.data.savePlayerState(guildId, botId, playerState);
                 this.client.logger.info(
                     `✅ Saved player state to SQLite for guild ${this.textChannel.guild.name}`,
                 );
@@ -412,15 +412,16 @@ export class ServerQueue {
             return;
         }
 
-        const currentData = this.client.data.data ?? {};
+        const fallback = this.client.data as FallbackDataManager;
+        const currentData = fallback.data ?? {};
         const guildData = currentData[guildId] ?? {};
 
         guildData.playerState = playerState;
 
-        await this.client.data.save(() => ({
+        (await fallback.save?.(() => ({
             ...currentData,
             [guildId]: guildData,
-        }));
+        }))) ?? Promise.resolve();
     }
 
     public copyStateFrom(sourceQueue: ServerQueue): void {
@@ -470,45 +471,37 @@ export class ServerQueue {
             currentPosition,
         };
 
-        if (
-            "saveQueueState" in this.client.data &&
-            typeof this.client.data.saveQueueState === "function"
-        ) {
+        if (hasSaveQueueState(this.client.data)) {
             const botId = this.client.user?.id ?? "unknown";
-            await (this.client.data as any).saveQueueState(
-                this.textChannel.guild.id,
-                botId,
-                queueState,
-            );
+            await this.client.data.saveQueueState(this.textChannel.guild.id, botId, queueState);
         } else {
-            const currentData = this.client.data.data ?? {};
+            const fallback = this.client.data as FallbackDataManager;
+            const currentData = fallback.data ?? {};
             const guildData = currentData[this.textChannel.guild.id] ?? {};
             guildData.queueState = queueState;
 
-            await this.client.data.save(() => ({
+            (await fallback.save?.(() => ({
                 ...currentData,
                 [this.textChannel.guild.id]: guildData,
-            }));
+            }))) ?? Promise.resolve();
         }
     }
 
     public async clearQueueState(): Promise<void> {
-        if (
-            "deleteQueueState" in this.client.data &&
-            typeof this.client.data.deleteQueueState === "function"
-        ) {
+        if (hasDeleteQueueState(this.client.data)) {
             const botId = this.client.user?.id ?? "unknown";
-            await (this.client.data as any).deleteQueueState(this.textChannel.guild.id, botId);
+            await this.client.data.deleteQueueState(this.textChannel.guild.id, botId);
         } else {
-            const currentData = this.client.data.data ?? {};
+            const fallback = this.client.data as FallbackDataManager;
+            const currentData = fallback.data ?? {};
             const guildData = currentData[this.textChannel.guild.id] ?? {};
 
             delete guildData.queueState;
 
-            await this.client.data.save(() => ({
+            (await fallback.save?.(() => ({
                 ...currentData,
                 [this.textChannel.guild.id]: guildData,
-            }));
+            }))) ?? Promise.resolve();
         }
     }
 
@@ -516,26 +509,24 @@ export class ServerQueue {
         const botId = this.client.user?.id ?? "unknown";
         const guildId = this.textChannel.guild.id;
 
-        if (
-            "deletePlayerState" in this.client.data &&
-            typeof this.client.data.deletePlayerState === "function"
-        ) {
-            await (this.client.data as any).deletePlayerState(guildId, botId);
+        if (hasDeletePlayerState(this.client.data)) {
+            await this.client.data.deletePlayerState(guildId, botId);
             this.client.logger.info(
                 `✅ Cleared player state for guild ${this.textChannel.guild.name}`,
             );
             return;
         }
 
-        const currentData = this.client.data.data ?? {};
+        const fallback = this.client.data as FallbackDataManager;
+        const currentData = fallback.data ?? {};
         const guildData = currentData[guildId] ?? {};
 
         delete guildData.playerState;
 
-        await this.client.data.save(() => ({
+        (await fallback.save?.(() => ({
             ...currentData,
             [guildId]: guildData,
-        }));
+        }))) ?? Promise.resolve();
         this.client.logger.info(`✅ Cleared player state for guild ${this.textChannel.guild.name}`);
     }
 
@@ -601,7 +592,8 @@ export class ServerQueue {
                 const playingResource = (this.player.state as AudioPlayerPlayingState | any)
                     .resource as import("@discordjs/voice").AudioResource | undefined;
                 const metadata = playingResource?.metadata as QueueSong | undefined;
-                const currentUrl = metadata?.song?.url ?? (metadata as any)?.url ?? null;
+                const meta = metadata as { song?: { url?: string }; url?: string } | undefined;
+                const currentUrl = meta?.song?.url ?? meta?.url ?? null;
                 if (currentUrl && !songUrls.includes(currentUrl)) {
                     songUrls.push(currentUrl);
                 }

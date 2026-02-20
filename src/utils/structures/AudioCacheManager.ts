@@ -1,4 +1,5 @@
 import { type Buffer } from "node:buffer";
+import { type ChildProcess } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
     createReadStream,
@@ -30,7 +31,7 @@ export class AudioCacheManager {
     private readonly inProgressFiles = new Set<string>();
     private readonly inProgressProcs = new Map<
         string,
-        { proc?: any; stream?: Readable; writeStreamPath?: string }
+        { proc?: ChildProcess; stream?: Readable; writeStreamPath?: string }
     >();
     private readonly failedUrls = new Map<string, { count: number; lastAttempt: number }>();
     private readonly preCacheQueue: string[] = [];
