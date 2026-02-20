@@ -79,11 +79,11 @@ export type PresenceData = {
 
 export type Event = {
     readonly name: keyof ClientEvents;
-    execute(...args: any): void;
+    execute(...args: unknown[]): void;
 };
 
 export type CommandComponent = {
-    execute(context: CommandContext): any;
+    execute(context: CommandContext): Promise<void> | void;
     meta: {
         readonly category?: string;
         readonly path?: string;
@@ -304,11 +304,11 @@ export type ClassDecorator<Target extends Constructor, Result = unknown> = (
     target: Target,
 ) => Result;
 export type Promisable<Output> = Output | Promise<Output>;
-export type FunctionType<Args extends any[] = any[], Result = any> = (...args: Args) => Result;
+export type FunctionType<Args extends any[] = any[], Result = unknown> = (...args: Args) => Result;
 
 export type RegisterCmdOptions = {
-    onRegistered(guild: OG): Promisable<any>;
-    onError(guild: OG | null, error: Error): Promisable<any>;
+    onRegistered(guild: OG): Promisable<void>;
+    onError(guild: OG | null, error: Error): Promisable<void>;
 };
 
 export interface ExtendedDataManager {
@@ -321,6 +321,23 @@ export interface ExtendedDataManager {
         guildId: string,
         botId: string,
     ): { channelId: string | null; messageId: string | null } | null;
+    saveRequestChannel(
+        guildId: string,
+        botId: string,
+        channelId: string | null,
+        messageId: string | null,
+    ): Promise<void>;
+    getPlayerState(guildId: string, botId: string): GuildData["playerState"] | null;
+    savePlayerState(
+        guildId: string,
+        botId: string,
+        playerState: GuildData["playerState"],
+    ): Promise<void>;
+    saveQueueState(
+        guildId: string,
+        botId: string,
+        queueState: GuildData["queueState"],
+    ): Promise<void>;
 }
 
 declare module "@sapphire/framework" {

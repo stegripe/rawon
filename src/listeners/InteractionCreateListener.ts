@@ -29,6 +29,7 @@ import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { parseHTMLElements } from "../utils/functions/parseHTMLElements.js";
+import { hasGetRequestChannel } from "../utils/typeGuards.js";
 
 function hasSlashCommand(cmd: Command): boolean {
     return cmd.options.chatInputCommand !== undefined;
@@ -37,8 +38,6 @@ function hasSlashCommand(cmd: Command): boolean {
 function getCommandOptions(cmd: Command): Command.Options {
     return cmd.options;
 }
-
-import { type SongManager } from "../utils/structures/SongManager.js";
 
 @ApplyOptions<ListenerOptions>({
     event: Events.InteractionCreate,
@@ -333,8 +332,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 if (!isDeveloper) {
                     if (timestamps?.has(interaction.user.id) === true) {
                         const expirationTime =
-                            (timestamps.get(interaction.user.id) as unknown as number) +
-                            cooldownAmount;
+                            (timestamps.get(interaction.user.id) ?? 0) + cooldownAmount;
                         if (now < expirationTime) {
                             const timeLeft = (expirationTime - now) / 1_000;
                             await interaction.reply({
@@ -466,17 +464,16 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             const botId = client.user?.id ?? "unknown";
             let ownsRequestChannel = false;
 
-            if (
-                "getRequestChannel" in this.container.data &&
-                typeof this.container.data.getRequestChannel === "function"
-            ) {
-                const requestChannelData = (this.container.data as any).getRequestChannel(
+            if (hasGetRequestChannel(this.container.data)) {
+                const requestChannelData = this.container.data.getRequestChannel(
                     thisBotGuild.id,
                     botId,
                 );
                 ownsRequestChannel = requestChannelData?.channelId === interaction.channelId;
             } else {
-                const data = this.container.data.data?.[thisBotGuild.id]?.requestChannel;
+                const fallback = this.container
+                    .data as import("../utils/typeGuards.js").FallbackDataManager;
+                const data = fallback.data?.[thisBotGuild.id]?.requestChannel;
                 ownsRequestChannel = data?.channelId === interaction.channelId;
             }
 
@@ -492,18 +489,17 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         const primaryBotId = primaryBot.user?.id ?? "unknown";
                         let primaryOwnsRequestChannel = false;
 
-                        if (
-                            "getRequestChannel" in primaryBot.data &&
-                            typeof primaryBot.data.getRequestChannel === "function"
-                        ) {
-                            const requestChannelData = (primaryBot.data as any).getRequestChannel(
+                        if (hasGetRequestChannel(primaryBot.data)) {
+                            const requestChannelData = primaryBot.data.getRequestChannel(
                                 thisBotGuild.id,
                                 primaryBotId,
                             );
                             primaryOwnsRequestChannel =
                                 requestChannelData?.channelId === interaction.channelId;
                         } else {
-                            const data = primaryBot.data.data?.[thisBotGuild.id]?.requestChannel;
+                            const fallback =
+                                primaryBot.data as import("../utils/typeGuards.js").FallbackDataManager;
+                            const data = fallback.data?.[thisBotGuild.id]?.requestChannel;
                             primaryOwnsRequestChannel = data?.channelId === interaction.channelId;
                         }
 
@@ -989,7 +985,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
                 const np = (queue.player.state as AudioPlayerPlayingState).resource
                     .metadata as QueueSong;
-                const full = queue.songs.sortByIndex() as unknown as SongManager;
+                const full = queue.songs.sortByIndex();
                 const songs =
                     queue.loopMode === "QUEUE" ? full : full.filter((val) => val.index >= np.index);
                 const pages = chunk([...songs.values()], 10).map((sngs, ind) => {
@@ -1158,9 +1154,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         );
 
         if (queue.skipVoters.includes(member.id)) {
-            queue.skipVoters = queue.skipVoters.filter(
-                (x) => x !== member.id,
-            ) as unknown as string[];
+            queue.skipVoters = queue.skipVoters.filter((x) => x !== member.id);
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
                 embeds: [

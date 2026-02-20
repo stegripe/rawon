@@ -15,7 +15,7 @@ export const BOT_SETTINGS_DEFAULTS: BotSettings = {
     enableAudioCache: true,
 };
 
-export class SQLiteDataManager<T extends Record<string, any> = Record<string, GuildData>> {
+export class SQLiteDataManager<T extends Record<string, GuildData> = Record<string, GuildData>> {
     private readonly db: Database.Database;
     private readonly manager = new OperationManager();
     private _data: T | null = null;
