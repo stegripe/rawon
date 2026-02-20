@@ -304,8 +304,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                 ),
                             ],
                         });
-                    } catch {
-                    }
+                    } catch {}
                     this.container.logger.warn(
                         `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only context/menu ${interaction.commandName}`,
                     );
@@ -373,8 +372,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                 ),
                             ],
                         });
-                    } catch {
-                    }
+                    } catch {}
                     this.container.logger.warn(
                         `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only slash ${interaction.commandName}`,
                     );
@@ -436,8 +434,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                     ),
                                 ],
                             });
-                        } catch {
-                        }
+                        } catch {}
                         this.container.logger.warn(
                             `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only select ${interaction.customId}`,
                         );
@@ -516,8 +513,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             );
                             try {
                                 await interaction.deferUpdate();
-                            } catch {
-                            }
+                            } catch {}
                             return;
                         }
                     }
@@ -623,8 +619,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     setTimeout(async () => {
                         try {
                             await interaction.deleteReply();
-                        } catch {
-                        }
+                        } catch {}
                     }, 60_000);
                 } else {
                     queue.playing = true;
@@ -640,8 +635,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     setTimeout(async () => {
                         try {
                             await interaction.deleteReply();
-                        } catch {
-                        }
+                        } catch {}
                     }, 60_000);
                 }
                 break;
@@ -714,8 +708,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();
-                    } catch {
-                    }
+                    } catch {}
                 }, 60_000);
                 break;
             }
@@ -762,8 +755,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();
-                    } catch {
-                    }
+                    } catch {}
                 }, 60_000);
                 break;
             }
@@ -801,8 +793,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();
-                    } catch {
-                    }
+                    } catch {}
                 }, 60_000);
                 break;
             }
@@ -835,8 +826,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();
-                    } catch {
-                    }
+                    } catch {}
                 }, 60_000);
                 break;
             }
@@ -866,8 +856,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();
-                    } catch {
-                    }
+                    } catch {}
                 }, 60_000);
                 break;
             }
@@ -897,8 +886,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();
-                    } catch {
-                    }
+                    } catch {}
                 }, 60_000);
                 break;
             }
@@ -985,8 +973,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();
-                    } catch {
-                    }
+                    } catch {}
                 }, 60_000);
                 break;
             }
@@ -1112,8 +1099,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                 embeds: [embed],
                                 components: [],
                             });
-                        } catch {
-                        }
+                        } catch {}
                     });
                 }
                 break;
@@ -1378,8 +1364,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                 embeds: [embed],
                                 components: [],
                             });
-                        } catch {
-                        }
+                        } catch {}
                     });
                 }
             } catch {
