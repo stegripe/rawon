@@ -61,9 +61,7 @@ export class AudioCacheManager {
             if (cd.includes("attachment")) {
                 return true;
             }
-        } catch {
-            // Ignore errors
-        }
+        } catch {}
         return false;
     }
 
@@ -171,9 +169,7 @@ export class AudioCacheManager {
             this.inProgressProcs.delete(key);
             try {
                 rmSync(cachePath, { force: true });
-            } catch {
-                // Ignore errors
-            }
+            } catch {}
         });
 
         writeStream.on("finish", () => {
@@ -195,9 +191,7 @@ export class AudioCacheManager {
                 );
                 try {
                     rmSync(cachePath, { force: true });
-                } catch {
-                    // Ignore errors
-                }
+                } catch {}
                 return;
             }
 
@@ -220,9 +214,7 @@ export class AudioCacheManager {
             this.inProgressProcs.delete(key);
             try {
                 rmSync(cachePath, { force: true });
-            } catch {
-                // Ignore errors
-            }
+            } catch {}
         });
 
         return playbackStream;
@@ -372,9 +364,7 @@ export class AudioCacheManager {
                     this.markFailed(key);
                     try {
                         rmSync(cachePath, { force: true });
-                    } catch {
-                        // Ignore errors
-                    }
+                    } catch {}
                 });
 
                 httpStream.pipe(writeStream);
@@ -409,9 +399,7 @@ export class AudioCacheManager {
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
-                        } catch {
-                            // Ignore errors
-                        }
+                        } catch {}
                         resolve();
                     });
                 });
@@ -478,9 +466,7 @@ export class AudioCacheManager {
                         if (hasBotDetectionError) {
                             try {
                                 rmSync(cachePath, { force: true });
-                            } catch {
-                                // Ignore errors
-                            }
+                            } catch {}
 
                             if (retryCount < MAX_PRE_CACHE_RETRIES && !hasBotDetectionError) {
                                 setTimeout(
@@ -521,9 +507,7 @@ export class AudioCacheManager {
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
-                        } catch {
-                            // Ignore errors
-                        }
+                        } catch {}
                         resolve();
                     });
 
@@ -533,9 +517,7 @@ export class AudioCacheManager {
                         this.markFailed(key);
                         try {
                             rmSync(cachePath, { force: true });
-                        } catch {
-                            // Ignore errors
-                        }
+                        } catch {}
                         resolve();
                     });
                 });
@@ -586,9 +568,7 @@ export class AudioCacheManager {
                         currentFiles--;
                     }
                     this.cachedFiles.delete(key);
-                } catch {
-                    // Ignore errors
-                }
+                } catch {}
             }
 
             this.client.logger.info(
@@ -627,9 +607,7 @@ export class AudioCacheManager {
                         removedCount++;
                     }
                     this.cachedFiles.delete(key);
-                } catch {
-                    // Ignore errors
-                }
+                } catch {}
             }
             const procInfo = this.inProgressProcs.get(key);
             if (procInfo) {
@@ -644,9 +622,7 @@ export class AudioCacheManager {
                         rmSync(procInfo.writeStreamPath, { force: true });
                         removedCount++;
                     }
-                } catch {
-                    // Ignore errors
-                }
+                } catch {}
                 this.inProgressProcs.delete(key);
             }
 

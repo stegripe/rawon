@@ -141,7 +141,6 @@ export async function downloadExecutable() {
         const version = execFileSync(exePath, ["--version"], { timeout: 5000 }).toString().trim();
         console.info(`[INFO] Using yt-dlp version: ${version}`);
     } catch {
-        // Ignore version check errors
     }
 
 }

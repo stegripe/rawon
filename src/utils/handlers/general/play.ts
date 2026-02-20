@@ -155,9 +155,7 @@ export async function play(
                             "error",
                             new AudioPlayerError(e as Error, undefined as unknown as any),
                         );
-                    } catch (_) {
-                        // Ignore errors
-                    }
+                    } catch (_) {}
                 });
 
                 try {
@@ -192,9 +190,7 @@ export async function play(
                         }
                         try {
                             writeStream.destroy();
-                        } catch {
-                            // Ignore errors
-                        }
+                        } catch {}
                         reject(e);
                     };
 
@@ -252,18 +248,14 @@ export async function play(
                             "error",
                             new AudioPlayerError(e as Error, undefined as unknown as any),
                         );
-                    } catch (_) {
-                        // Ignore errors
-                    }
+                    } catch (_) {}
                 });
                 (ffmpegStream as any).on?.("close", async (code?: unknown) => {
                     queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code);
                     try {
                         await fsp.unlink(tmpFile).catch(() => null);
                         queue.client.logger.debug("[PLAY_HANDLER] Temp file deleted", tmpFile);
-                    } catch {
-                        // Ignore errors
-                    }
+                    } catch {}
                 });
             }
         } else {
@@ -276,9 +268,7 @@ export async function play(
                 title: song.song.title,
                 isLive: song.song.isLive,
             });
-        } catch {
-            // Ignore errors
-        }
+        } catch {}
         queue.endSkip();
         const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
             guild,
@@ -469,9 +459,7 @@ export async function play(
                     undefined as unknown as any,
                 ),
             );
-        } catch (_) {
-            // Ignore errors
-        }
+        } catch (_) {}
         return;
     }
 
@@ -487,9 +475,7 @@ export async function play(
             isLive: song.song.isLive,
             metadata: resource?.metadata ?? null,
         });
-    } catch {
-        // Ignore errors
-    }
+    } catch {}
 
     queue.connection?.subscribe(queue.player);
 

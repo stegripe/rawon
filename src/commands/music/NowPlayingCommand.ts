@@ -172,9 +172,7 @@ export class NowPlayingCommand extends ContextCommand {
                 }
 
                 await msg.edit({ embeds: [getEmbed()] }).catch(() => null);
-            } catch {
-                // Ignore errors
-            }
+            } catch {}
         }, 5_000);
 
         collector

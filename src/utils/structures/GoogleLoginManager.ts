@@ -113,9 +113,7 @@ export class GoogleLoginManager {
 
         try {
             this.db.exec("ALTER TABLE login_session ADD COLUMN visitor_data TEXT");
-        } catch {
-            // Column already exists
-        }
+        } catch {}
     }
 
     private ensureDirectories(): void {
@@ -133,9 +131,7 @@ export class GoogleLoginManager {
             try {
                 unlinkSync(lockPath);
                 container.logger.debug(`[GoogleLogin] Removed stale lock file: ${lockFile}`);
-            } catch {
-                // File doesn't exist, ignore
-            }
+            } catch {}
         }
     }
 
@@ -223,9 +219,7 @@ export class GoogleLoginManager {
             await page.setExtraHTTPHeaders({
                 "Accept-Language": "en-US,en;q=0.9",
             });
-        } catch {
-            // Page may have been closed before stealth could be applied
-        }
+        } catch {}
     }
 
     public getSessionInfo(): LoginSessionInfo {
@@ -286,9 +280,7 @@ export class GoogleLoginManager {
                     );
                     return sysPath;
                 }
-            } catch {
-                // Channel not installed, try next
-            }
+            } catch {}
         }
 
         const candidates = this.getCandidatePaths();
@@ -315,9 +307,7 @@ export class GoogleLoginManager {
                 );
                 return execPath;
             }
-        } catch {
-            // Not available
-        }
+        } catch {}
 
         const downloadDir = path.resolve(process.cwd(), "cache", "scripts", "chrome");
         const existingPath = this.findDownloadedBrowser(downloadDir);
@@ -530,9 +520,7 @@ export class GoogleLoginManager {
                 if (firstLine && existsSync(firstLine)) {
                     return firstLine;
                 }
-            } catch {
-                // Not found, continue
-            }
+            } catch {}
         }
 
         return null;
@@ -565,16 +553,12 @@ export class GoogleLoginManager {
                                 if (existsSync(execPath)) {
                                     return execPath;
                                 }
-                            } catch {
-                                // Not a valid build, continue
-                            }
+                            } catch {}
                         }
                     }
                 }
             }
-        } catch {
-            // Error reading directory
-        }
+        } catch {}
 
         return null;
     }
@@ -847,17 +831,13 @@ export class GoogleLoginManager {
                 if (this.chromeProcess && !this.chromeProcess.killed) {
                     try {
                         this.chromeProcess.kill();
-                    } catch {
-                        // Ignore
-                    }
+                    } catch {}
                 }
             }
         } else if (this.chromeProcess && !this.chromeProcess.killed) {
             try {
                 this.chromeProcess.kill();
-            } catch {
-                // Ignore
-            }
+            } catch {}
         }
 
         this.browser = null;
@@ -899,9 +879,7 @@ export class GoogleLoginManager {
                 timeout: PAGE_NAVIGATION_TIMEOUT_MS,
             });
             await new Promise((resolve) => setTimeout(resolve, 2_000));
-        } catch {
-            // Non-fatal: YouTube pre-visit failed, continue with login
-        }
+        } catch {}
 
         await page.goto(loginUrl, {
             waitUntil: "domcontentloaded",
@@ -944,9 +922,7 @@ export class GoogleLoginManager {
             if (target.url === "about:blank" && target.id !== this.loginTargetId) {
                 try {
                     await fetch(`http://${host}:${port}/json/close/${target.id}`);
-                } catch {
-                    // Ignore
-                }
+                } catch {}
             }
         }
 
@@ -1204,9 +1180,7 @@ export class GoogleLoginManager {
                             `[GoogleLogin] URL looks post-login (${url.substring(0, 80)}) but no session cookies found yet, waiting...`,
                         );
                     }
-                } catch {
-                    // Debug server not responding, ignore
-                }
+                } catch {}
             }, LOGIN_CHECK_INTERVAL_MS);
 
             this.loginTimeout = setTimeout(() => {
@@ -1407,17 +1381,13 @@ export class GoogleLoginManager {
                 if (this.chromeProcess && !this.chromeProcess.killed) {
                     try {
                         this.chromeProcess.kill();
-                    } catch {
-                        // Ignore
-                    }
+                    } catch {}
                 }
             }
         } else if (this.chromeProcess && !this.chromeProcess.killed) {
             try {
                 this.chromeProcess.kill();
-            } catch {
-                // Ignore
-            }
+            } catch {}
         }
 
         this.browser = null;
@@ -1444,17 +1414,13 @@ export class GoogleLoginManager {
                 if (this.chromeProcess && !this.chromeProcess.killed) {
                     try {
                         this.chromeProcess.kill();
-                    } catch {
-                        // Ignore
-                    }
+                    } catch {}
                 }
             }
         } else if (this.chromeProcess && !this.chromeProcess.killed) {
             try {
                 this.chromeProcess.kill();
-            } catch {
-                // Ignore
-            }
+            } catch {}
         }
 
         try {
@@ -1470,9 +1436,7 @@ export class GoogleLoginManager {
         ]) {
             try {
                 unlinkSync(filePath);
-            } catch {
-                // File might not exist
-            }
+            } catch {}
         }
 
         this.clearSessionState();
@@ -1551,9 +1515,7 @@ export class GoogleLoginManager {
         try {
             this.db.prepare("DELETE FROM login_session WHERE id = 1").run();
             container.logger.debug("[GoogleLogin] Session state cleared");
-        } catch {
-            // Ignore
-        }
+        } catch {}
     }
 
     private getPersistedSessionState(): {

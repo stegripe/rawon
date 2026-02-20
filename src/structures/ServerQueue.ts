@@ -114,9 +114,7 @@ export class ServerQueue {
                                 playbackDurationMs: playbackMs,
                             },
                         );
-                    } catch {
-                        // Ignore errors
-                    }
+                    } catch {}
                     try {
                         const upcoming = this.songs.sortByIndex().map((s) => s.key);
                         this.client.logger.debug("[ServerQueue] IdleHandler - queueState", {
@@ -607,14 +605,10 @@ export class ServerQueue {
                 if (currentUrl && !songUrls.includes(currentUrl)) {
                     songUrls.push(currentUrl);
                 }
-            } catch {
-                // Ignore errors
-            }
+            } catch {}
 
             this._pendingCacheUrls = songUrls;
-        } catch {
-            // Ignore errors
-        }
+        } catch {}
 
         this.songs.clear();
         this._suppressPlayerErrors = true;
@@ -637,9 +631,7 @@ export class ServerQueue {
 
         try {
             this.connection?.disconnect();
-        } catch {
-            // Ignore errors
-        }
+        } catch {}
 
         const start = Date.now();
         const timeoutMs = 5_000;

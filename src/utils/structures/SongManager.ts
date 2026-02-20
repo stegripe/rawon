@@ -72,8 +72,6 @@ export class SongManager extends Collection<Snowflake, QueueSong> {
             if (queue?.songs && queue.connection) {
                 await queue.saveQueueState();
             }
-        } catch {
-            // Ignore errors
-        }
+        } catch {}
     }
 }
