@@ -11,6 +11,7 @@ import {
     ButtonStyle,
     Collection,
     ComponentType,
+    escapeMarkdown,
     GuildMember,
     type Interaction,
     Message,
@@ -27,6 +28,7 @@ import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/
 import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
+import { parseHTMLElements } from "../utils/functions/parseHTMLElements.js";
 
 function hasSlashCommand(cmd: Command): boolean {
     return cmd.options.chatInputCommand !== undefined;
@@ -611,7 +613,12 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     queue.playing = false;
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `⏸️ **|** ${__("requestChannel.paused")}`)],
+                        embeds: [
+                            createEmbed(
+                                "success",
+                                `⏸️ **|** ${__("commands.music.pause.pauseMessage")}`,
+                            ),
+                        ],
                     });
                     setTimeout(async () => {
                         try {
@@ -623,7 +630,12 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     queue.playing = true;
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("success", `▶️ **|** ${__("requestChannel.resumed")}`)],
+                        embeds: [
+                            createEmbed(
+                                "success",
+                                `▶️ **|** ${__("commands.music.resume.resumeMessage")}`,
+                            ),
+                        ],
                     });
                     setTimeout(async () => {
                         try {
@@ -690,11 +702,10 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
                 const skipEmbed = createEmbed(
                     "success",
-                    `⏭️ **|** ${__mf("requestChannel.skipped", { song: skipSong ? `**[${skipSong.song.title}](${skipSong.song.url})**` : "" })}`,
-                );
-                if (skipSong?.song.thumbnail) {
-                    skipEmbed.setThumbnail(skipSong.song.thumbnail);
-                }
+                    `⏭️ **|** ${__mf("commands.music.skip.skipMessage", {
+                        song: skipSong ? `**[${skipSong.song.title}](${skipSong.song.url})**` : "",
+                    })}`,
+                ).setThumbnail(skipSong?.song.thumbnail ?? null);
 
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
@@ -741,7 +752,12 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 await queue.destroy();
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
-                    embeds: [createEmbed("success", `⏹️ **|** ${__("requestChannel.stopped")}`)],
+                    embeds: [
+                        createEmbed(
+                            "success",
+                            `⏹️ **|** ${__("commands.music.stop.stoppedMessage")}`,
+                        ),
+                    ],
                 });
                 setTimeout(async () => {
                     try {
@@ -762,6 +778,11 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 }
 
                 const modes: LoopMode[] = ["OFF", "SONG", "QUEUE"];
+                const modeEmoji: Record<LoopMode, string> = {
+                    OFF: "▶️",
+                    QUEUE: "🔁",
+                    SONG: "🔂",
+                };
                 const currentIndex = modes.indexOf(queue.loopMode);
                 const nextMode = modes[(currentIndex + 1) % modes.length];
                 queue.setLoopMode(nextMode);
@@ -771,7 +792,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔁 **|** ${__mf("requestChannel.loopChanged", { mode: `**\`${nextMode}\`**` })}`,
+                            `${modeEmoji[nextMode]} **|** ${__mf("commands.music.repeat.newMode", {
+                                mode: `**\`${nextMode}\`**`,
+                            })}`,
                         ),
                     ],
                 });
@@ -794,12 +817,18 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 }
 
                 queue.setShuffle(!queue.shuffle);
+                const isShuffle = queue.shuffle;
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔀 **|** ${__mf("requestChannel.shuffleChanged", { state: `**\`${queue.shuffle ? "ON" : "OFF"}\`**` })}`,
+                            `${isShuffle ? "🔀" : "▶️"} **|** ${__mf(
+                                "commands.music.shuffle.newState",
+                                {
+                                    state: `**\`${isShuffle ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
+                                },
+                            )}`,
                         ),
                     ],
                 });
@@ -828,7 +857,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `**\`${newVolDown}%\`**` })}`,
+                            `🔊 **|** ${__mf("commands.music.volume.newVolume", {
+                                volume: `**\`${newVolDown}%\`**`,
+                            })}`,
                         ),
                     ],
                 });
@@ -857,7 +888,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     embeds: [
                         createEmbed(
                             "success",
-                            `🔊 **|** ${__mf("requestChannel.volumeChanged", { volume: `**\`${newVolUp}%\`**` })}`,
+                            `🔊 **|** ${__mf("commands.music.volume.newVolume", {
+                                volume: `**\`${newVolUp}%\`**`,
+                            })}`,
                         ),
                     ],
                 });
@@ -934,10 +967,13 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 }
                 queue.player.stop(true);
 
-                const removeEmbed = createEmbed(
-                    "success",
-                    `🗑️ **|** ${__mf("requestChannel.removed", { song: `**[${songTitle}](${songUrl})**` })}`,
-                );
+                const opening = __mf("commands.music.remove.songsRemoved", { removed: 1 });
+                const pageContent = `${__("commands.music.remove.songSkip")}1.) **[${escapeMarkdown(parseHTMLElements(songTitle))}](${songUrl})**`;
+                const removeEmbed = createEmbed("info", pageContent)
+                    .setAuthor({ name: opening })
+                    .setFooter({
+                        text: `• ${__mf("reusable.pageFooter", { actual: 1, total: 1 })}`,
+                    });
                 if (songThumbnail) {
                     removeEmbed.setThumbnail(songThumbnail);
                 }
@@ -1233,7 +1269,10 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     return;
                 }
 
-                const albumArt = data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+                const albumArt =
+                    currentSong.song.thumbnail ??
+                    data.album_art ??
+                    "https://cdn.stegripe.org/images/icon.png";
                 const lyricsSource =
                     (data as LyricsAPIResult<false> & { source?: string }).source ?? "stegripe";
                 const pages: string[] = chunk(data.lyrics ?? "", 2_048);
@@ -1274,10 +1313,13 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 };
 
                 embed.setFooter({
-                    text: `• ${__mf("reusable.pageFooter", {
-                        actual: 1,
-                        total: pages.length,
-                    })}. ${__mf("reusable.lyricsSource", { source: lyricsSource })}`,
+                    text: `• ${__mf("reusable.lyricsSource", { source: lyricsSource })}. ${__mf(
+                        "reusable.pageFooter",
+                        {
+                            actual: 1,
+                            total: pages.length,
+                        },
+                    )}`,
                 });
 
                 await interaction.editReply({
@@ -1315,10 +1357,13 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         currentPage = ((currentPage % pages.length) + pages.length) % pages.length;
 
                         embed.setDescription(pages[currentPage]).setFooter({
-                            text: `• ${__mf("reusable.pageFooter", {
-                                actual: currentPage + 1,
-                                total: pages.length,
-                            })}. ${__mf("reusable.lyricsSource", { source: lyricsSource })}`,
+                            text: `• ${__mf("reusable.lyricsSource", { source: lyricsSource })}. ${__mf(
+                                "reusable.pageFooter",
+                                {
+                                    actual: currentPage + 1,
+                                    total: pages.length,
+                                },
+                            )}`,
                         });
 
                         await i.update({
