@@ -11,6 +11,7 @@ import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import { hasGetPlayerState, hasSavePlayerState } from "../../utils/typeGuards.js";
 
 type FilterSubCmd = "disable" | "enable" | "status";
 
@@ -245,11 +246,8 @@ export class FilterCommand extends ContextCommand {
         let playerState: NonNullable<GuildData["playerState"]>;
 
         if (client.config.isMultiBot) {
-            if (
-                "getPlayerState" in client.data &&
-                typeof client.data.getPlayerState === "function"
-            ) {
-                const existingState = (client.data as any).getPlayerState(guildId, botId);
+            if (hasGetPlayerState(client.data)) {
+                const existingState = client.data.getPlayerState(guildId, botId);
                 playerState = existingState ?? this.getDefaultPlayerState();
             } else {
                 playerState = this.getDefaultPlayerState();
@@ -262,11 +260,8 @@ export class FilterCommand extends ContextCommand {
         playerState.filters[filter] = state;
 
         if (client.config.isMultiBot) {
-            if (
-                "savePlayerState" in client.data &&
-                typeof client.data.savePlayerState === "function"
-            ) {
-                await (client.data as any).savePlayerState(guildId, botId, playerState);
+            if (hasSavePlayerState(client.data)) {
+                await client.data.savePlayerState(guildId, botId, playerState);
             }
         } else {
             const currentData = client.data.data ?? {};
@@ -296,11 +291,8 @@ export class FilterCommand extends ContextCommand {
         const botId = client.user?.id ?? "unknown";
 
         if (client.config.isMultiBot) {
-            if (
-                "getPlayerState" in client.data &&
-                typeof client.data.getPlayerState === "function"
-            ) {
-                const state = (client.data as any).getPlayerState(guildId, botId);
+            if (hasGetPlayerState(client.data)) {
+                const state = client.data.getPlayerState(guildId, botId);
                 return (state?.filters ?? {}) as Partial<Record<keyof typeof filterArgs, boolean>>;
             }
         } else {

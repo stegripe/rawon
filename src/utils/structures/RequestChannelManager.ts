@@ -16,6 +16,12 @@ import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
+import {
+    type FallbackDataManager,
+    hasGetPlayerState,
+    hasGetRequestChannel,
+    hasSaveRequestChannel,
+} from "../typeGuards.js";
 import { MultiBotManager } from "./MultiBotManager.js";
 
 export class RequestChannelManager {
@@ -31,11 +37,8 @@ export class RequestChannelManager {
     public getRequestChannel(guild: Guild): TextChannel | null {
         const botId = this.client.user?.id ?? "unknown";
 
-        if (
-            "getRequestChannel" in this.client.data &&
-            typeof this.client.data.getRequestChannel === "function"
-        ) {
-            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+        if (hasGetRequestChannel(this.client.data)) {
+            const data = this.client.data.getRequestChannel(guild.id, botId);
             if (!this.isValidId(data?.channelId)) {
                 return null;
             }
@@ -48,7 +51,8 @@ export class RequestChannelManager {
             return channel;
         }
 
-        const data = this.client.data.data?.[guild.id]?.requestChannel;
+        const fallback = this.client.data as FallbackDataManager;
+        const data = fallback.data?.[guild.id]?.requestChannel;
         if (!this.isValidId(data?.channelId)) {
             return null;
         }
@@ -64,11 +68,8 @@ export class RequestChannelManager {
     public async getPlayerMessage(guild: Guild): Promise<Message | null> {
         const botId = this.client.user?.id ?? "unknown";
 
-        if (
-            "getRequestChannel" in this.client.data &&
-            typeof this.client.data.getRequestChannel === "function"
-        ) {
-            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+        if (hasGetRequestChannel(this.client.data)) {
+            const data = this.client.data.getRequestChannel(guild.id, botId);
             if (!this.isValidId(data?.channelId)) {
                 return null;
             }
@@ -88,7 +89,8 @@ export class RequestChannelManager {
             }
         }
 
-        const data = this.client.data.data?.[guild.id]?.requestChannel;
+        const fallback = this.client.data as FallbackDataManager;
+        const data = fallback.data?.[guild.id]?.requestChannel;
         if (!this.isValidId(data?.channelId)) {
             return null;
         }
@@ -111,44 +113,35 @@ export class RequestChannelManager {
     public hasRequestChannel(guild: Guild): boolean {
         const botId = this.client.user?.id ?? "unknown";
 
-        if (
-            "getRequestChannel" in this.client.data &&
-            typeof this.client.data.getRequestChannel === "function"
-        ) {
-            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+        if (hasGetRequestChannel(this.client.data)) {
+            const data = this.client.data.getRequestChannel(guild.id, botId);
             return this.isValidId(data?.channelId);
         }
 
-        const data = this.client.data.data?.[guild.id]?.requestChannel;
+        const fallback = this.client.data as FallbackDataManager;
+        const data = fallback.data?.[guild.id]?.requestChannel;
         return this.isValidId(data?.channelId);
     }
 
     public async setRequestChannel(guild: Guild, channelId: string | null): Promise<void> {
         const botId = this.client.user?.id ?? "unknown";
 
-        if (
-            "saveRequestChannel" in this.client.data &&
-            typeof this.client.data.saveRequestChannel === "function"
-        ) {
+        if (hasSaveRequestChannel(this.client.data)) {
             if (channelId === null) {
                 const existingMessage = await this.getPlayerMessage(guild);
                 if (existingMessage) {
                     await existingMessage.delete().catch(() => null);
                 }
-                await (this.client.data as any).saveRequestChannel(guild.id, botId, null, null);
+                await this.client.data.saveRequestChannel(guild.id, botId, null, null);
             } else {
-                await (this.client.data as any).saveRequestChannel(
-                    guild.id,
-                    botId,
-                    channelId,
-                    null,
-                );
+                await this.client.data.saveRequestChannel(guild.id, botId, channelId, null);
             }
             if (typeof this.client.data.load === "function") {
                 await this.client.data.load();
             }
         } else {
-            const currentData = this.client.data.data ?? {};
+            const fallback = this.client.data as FallbackDataManager;
+            const currentData = fallback.data ?? {};
             const guildData = currentData[guild.id] ?? {};
 
             if (channelId === null) {
@@ -161,42 +154,35 @@ export class RequestChannelManager {
                 guildData.requestChannel = { channelId, messageId: null };
             }
 
-            await this.client.data.save(() => ({
+            (await fallback.save?.(() => ({
                 ...currentData,
                 [guild.id]: guildData,
-            }));
+            }))) ?? Promise.resolve();
         }
     }
 
     public async setPlayerMessageId(guild: Guild, messageId: string | null): Promise<void> {
         const botId = this.client.user?.id ?? "unknown";
 
-        if (
-            "getRequestChannel" in this.client.data &&
-            typeof this.client.data.getRequestChannel === "function"
-        ) {
-            const current = (this.client.data as any).getRequestChannel(guild.id, botId);
+        if (hasGetRequestChannel(this.client.data) && hasSaveRequestChannel(this.client.data)) {
+            const current = this.client.data.getRequestChannel(guild.id, botId);
             const channelId = current?.channelId ?? null;
-            await (this.client.data as any).saveRequestChannel(
-                guild.id,
-                botId,
-                channelId,
-                messageId,
-            );
+            await this.client.data.saveRequestChannel(guild.id, botId, channelId, messageId);
             if (typeof this.client.data.load === "function") {
                 await this.client.data.load();
             }
         } else {
-            const currentData = this.client.data.data ?? {};
+            const fallback = this.client.data as FallbackDataManager;
+            const currentData = fallback.data ?? {};
             const guildData = currentData[guild.id] ?? {};
 
             guildData.requestChannel ??= { channelId: null, messageId: null };
             guildData.requestChannel.messageId = messageId;
 
-            await this.client.data.save(() => ({
+            (await fallback.save?.(() => ({
                 ...currentData,
                 [guild.id]: guildData,
-            }));
+            }))) ?? Promise.resolve();
         }
     }
 
@@ -221,13 +207,11 @@ export class RequestChannelManager {
             filters?: Record<string, boolean>;
         } | null = null;
 
-        if (
-            "getPlayerState" in this.client.data &&
-            typeof this.client.data.getPlayerState === "function"
-        ) {
-            savedState = (this.client.data as any).getPlayerState(guild.id, botId);
+        if (hasGetPlayerState(this.client.data)) {
+            savedState = this.client.data.getPlayerState(guild.id, botId) ?? null;
         } else {
-            savedState = this.client.data.data?.[guild.id]?.playerState ?? null;
+            const fallback = this.client.data as FallbackDataManager;
+            savedState = fallback.data?.[guild.id]?.playerState ?? null;
         }
 
         const bs = this.client.data.botSettings;
@@ -572,11 +556,8 @@ export class RequestChannelManager {
 
             for (const bot of bots) {
                 const botId = bot.botId;
-                if (
-                    "getRequestChannel" in bot.client.data &&
-                    typeof bot.client.data.getRequestChannel === "function"
-                ) {
-                    const data = (bot.client.data as any).getRequestChannel(guild.id, botId);
+                if (hasGetRequestChannel(bot.client.data)) {
+                    const data = bot.client.data.getRequestChannel(guild.id, botId);
                     if (data?.channelId === channelId) {
                         this.client.logger.debug(
                             `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=true (owned by bot ${botId})`,
@@ -584,7 +565,8 @@ export class RequestChannelManager {
                         return true;
                     }
                 } else {
-                    const data = bot.client.data.data?.[guild.id]?.requestChannel;
+                    const fallback = bot.client.data as FallbackDataManager;
+                    const data = fallback.data?.[guild.id]?.requestChannel;
                     if (data?.channelId === channelId) {
                         this.client.logger.debug(
                             `[MultiBot] ${this.client.user?.tag} checking request channel: channelId=${channelId}, isRequest=true (owned by bot ${botId})`,
@@ -601,11 +583,8 @@ export class RequestChannelManager {
         }
 
         const botId = this.client.user?.id ?? "unknown";
-        if (
-            "getRequestChannel" in this.client.data &&
-            typeof this.client.data.getRequestChannel === "function"
-        ) {
-            const data = (this.client.data as any).getRequestChannel(guild.id, botId);
+        if (hasGetRequestChannel(this.client.data)) {
+            const data = this.client.data.getRequestChannel(guild.id, botId);
             const isRequest = data?.channelId === channelId;
             this.client.logger.debug(
                 `[MultiBot] ${this.client.user?.tag} checking request channel using own data: channelId=${channelId}, isRequest=${isRequest}`,
@@ -613,7 +592,8 @@ export class RequestChannelManager {
             return isRequest;
         }
 
-        const data = this.client.data.data?.[guild.id]?.requestChannel;
+        const fallback = this.client.data as FallbackDataManager;
+        const data = fallback.data?.[guild.id]?.requestChannel;
         const isRequest = data?.channelId === channelId;
         this.client.logger.debug(
             `[MultiBot] ${this.client.user?.tag} checking request channel using own data (JSON): channelId=${channelId}, isRequest=${isRequest}`,

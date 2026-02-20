@@ -15,6 +15,7 @@ import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
+import { hasGetPlayerState, hasGetQueueState } from "../utils/typeGuards.js";
 
 function hasExtendedMethods(data: unknown): data is ExtendedDataManager {
     return (
@@ -270,14 +271,13 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
             botId?: string;
         }> = [];
 
-        if (
-            "getQueueState" in this.container.data &&
-            typeof this.container.data.getQueueState === "function"
-        ) {
-            const data = this.container.data.data;
+        if (hasGetQueueState(this.container.data)) {
+            const data = (
+                this.container.data as import("../utils/typeGuards.js").FallbackDataManager
+            ).data;
             if (data) {
                 for (const guildId of Object.keys(data)) {
-                    const queueState = (this.container.data as any).getQueueState(guildId, botId);
+                    const queueState = this.container.data.getQueueState(guildId, botId);
                     if (queueState && queueState.songs.length > 0) {
                         queueStates.push({ guildId, queueState, botId });
                         this.container.logger.info(
@@ -287,7 +287,9 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 }
             }
         } else {
-            const data = this.container.data.data;
+            const fallback = this.container
+                .data as import("../utils/typeGuards.js").FallbackDataManager;
+            const data = fallback.data;
             if (!data) {
                 return;
             }
@@ -359,14 +361,11 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                             `[Restore] ✅ Queue owner bot ID provided (${queueOwnerBotId}). Attempting to load player state from queue owner bot for guild ${guild.name} (restoringBotId=${botId})`,
                         );
 
-                        if (
-                            "getPlayerState" in this.container.data &&
-                            typeof this.container.data.getPlayerState === "function"
-                        ) {
+                        if (hasGetPlayerState(this.container.data)) {
                             this.container.logger.info(
                                 `[Restore] Calling getPlayerState(guildId=${guildId}, botId=${queueOwnerBotId})`,
                             );
-                            const savedState = (this.container.data as any).getPlayerState(
+                            const savedState = this.container.data.getPlayerState(
                                 guildId,
                                 queueOwnerBotId,
                             );
@@ -400,7 +399,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
 
                                     guild.queue.loopMode = loopMode;
                                     guild.queue.shuffle = shuffle;
-                                    (guild.queue as any)._volume = volume;
+                                    guild.queue.volume = volume;
                                     guild.queue.filters = filters as Partial<
                                         Record<keyof typeof filterArgs, boolean>
                                     >;

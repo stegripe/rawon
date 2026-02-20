@@ -2,18 +2,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import { ChannelType, type DMChannel, type GuildChannel } from "discord.js";
 import { type Rawon } from "../structures/Rawon.js";
-import { type ExtendedDataManager } from "../typings/index.js";
-
-function hasGetRequestChannel(
-    data: unknown,
-): data is Pick<ExtendedDataManager, "getRequestChannel"> {
-    return (
-        typeof data === "object" &&
-        data !== null &&
-        "getRequestChannel" in data &&
-        typeof (data as ExtendedDataManager).getRequestChannel === "function"
-    );
-}
+import { hasGetRequestChannel } from "../utils/typeGuards.js";
 
 @ApplyOptions<ListenerOptions>({ event: Events.ChannelDelete })
 export class ChannelDeleteListener extends Listener<typeof Events.ChannelDelete> {
@@ -40,8 +29,9 @@ export class ChannelDeleteListener extends Listener<typeof Events.ChannelDelete>
         if (hasGetRequestChannel(this.container.data)) {
             requestChannelData = this.container.data.getRequestChannel(guild.id, botId);
         } else {
-            requestChannelData =
-                (this.container.data as any).data?.[guild.id]?.requestChannel ?? null;
+            const fallback = this.container
+                .data as import("../utils/typeGuards.js").FallbackDataManager;
+            requestChannelData = fallback.data?.[guild.id]?.requestChannel ?? null;
         }
 
         if (requestChannelData?.channelId === channel.id) {
