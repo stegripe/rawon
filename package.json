@@ -58,7 +58,7 @@
         "zip-lib": "^1.2.1"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.4.3",
+        "@biomejs/biome": "^2.4.4",
         "@stegripe/biomejs-config": "^1.1.0",
         "@types/i18n": "0.13.12",
         "@types/node": "24.10.13",
