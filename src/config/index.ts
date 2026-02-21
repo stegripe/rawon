@@ -2,6 +2,7 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import {
+    ActivityType,
     type ClientOptions,
     IntentsBitField,
     Options,
@@ -36,6 +37,10 @@ export const clientOptions: ClientOptions & {
     baseUserDirectory: string;
 } = {
     allowedMentions: { parse: ["users"], repliedUser: false },
+    presence: {
+        status: "dnd",
+        activities: [{ name: "Loading...", type: ActivityType.Playing }],
+    },
     intents,
     makeCache: Options.cacheWithLimits({
         MessageManager: { maxSize: Infinity },
