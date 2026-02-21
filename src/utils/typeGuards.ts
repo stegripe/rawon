@@ -1,6 +1,5 @@
 import { type ExtendedDataManager, type GuildData } from "../typings/index.js";
 
-/** Fallback type when ExtendedDataManager methods are not available (e.g. in-memory data) */
 export type FallbackDataManager = {
     data?: Record<string, GuildData> | null;
     save?: (fn: () => Record<string, GuildData>) => Promise<unknown>;
@@ -84,7 +83,6 @@ export function hasDeletePlayerState(
     );
 }
 
-/** Check if error has Node.js ErrnoException-style `code` property */
 export function isErrnoException(e: unknown): e is NodeJS.ErrnoException {
     return (
         typeof e === "object" &&
@@ -95,7 +93,6 @@ export function isErrnoException(e: unknown): e is NodeJS.ErrnoException {
     );
 }
 
-/** Check if data manager has getQueueState (SQLiteDataManager-specific) */
 export function hasGetQueueState(
     data: unknown,
 ): data is { getQueueState(guildId: string, botId: string): unknown } {
@@ -107,7 +104,6 @@ export function hasGetQueueState(
     );
 }
 
-/** Minimal interface for prism FFmpeg stream with event handlers (prism-media typings incomplete) */
 export interface FfmpegStreamWithEvents {
     stderr?: {
         on?(event: string, cb: (chunk: import("node:buffer").Buffer) => void): void;

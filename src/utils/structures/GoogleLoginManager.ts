@@ -58,14 +58,9 @@ const YOUTUBE_DOMAINS = [
 
 const LOGIN_CHECK_INTERVAL_MS = 5_000;
 const LOGIN_TIMEOUT_MS = 5 * 60 * 1000;
-
 const PAGE_NAVIGATION_TIMEOUT_MS = 60_000;
-
-/** Poll interval & max wait for SSO cookies after navigating to YouTube. */
 const LOGIN_SSO_POLL_MS = 2_000;
 const LOGIN_SSO_MAX_WAIT_MS = 10_000;
-
-/** Retries for extractAccountName when page may still be loading. */
 const EXTRACT_ACCOUNT_RETRIES = 2;
 const EXTRACT_ACCOUNT_RETRY_DELAY_MS = 2_000;
 

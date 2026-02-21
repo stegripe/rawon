@@ -28,7 +28,9 @@ import { BOT_SETTINGS_DEFAULTS } from "../../utils/structures/SQLiteDataManager.
         return builder
             .setName(opts.name ?? "setup")
             .setDescription(opts.description ?? i18n.__("commands.developers.setup.description"))
-            .addSubcommand((sub) => sub.setName("view").setDescription("View current bot settings"))
+            .addSubcommand((sub) =>
+                sub.setName("view").setDescription("List available settings and usage"),
+            )
             .addSubcommand((sub) =>
                 sub
                     .setName("embedcolor")
@@ -142,8 +144,12 @@ export class SetupCommand extends ContextCommand {
         const subCommand = localCtx.options?.getSubcommand(false);
         const setting = subCommand ?? localCtx.args[0]?.toLowerCase();
 
-        if (!setting || setting === "view") {
+        if (!setting) {
             await this.showSettings(ctx, __);
+            return;
+        }
+        if (setting === "view") {
+            await this.showAvailableSettings(ctx, client, __);
             return;
         }
 
@@ -190,6 +196,78 @@ export class SetupCommand extends ContextCommand {
         }
     }
 
+    private async showAvailableSettings(
+        ctx: CommandContext,
+        client: Rawon,
+        __: (key: string) => string,
+    ): Promise<void> {
+        const prefix = client.config.mainPrefix;
+        const settings = [
+            {
+                param: "embedcolor",
+                desc: "Set embed color",
+                usage: `${prefix}setup embedcolor <hex|reset>`,
+            },
+            {
+                param: "yesemoji",
+                desc: "Set success emoji",
+                usage: `${prefix}setup yesemoji <emoji|reset>`,
+            },
+            {
+                param: "noemoji",
+                desc: "Set error emoji",
+                usage: `${prefix}setup noemoji <emoji|reset>`,
+            },
+            {
+                param: "splash",
+                desc: "Set request channel splash image",
+                usage: `${prefix}setup splash <url|reset>`,
+            },
+            {
+                param: "altprefix",
+                desc: "Set alternative prefixes",
+                usage: `${prefix}setup altprefix <prefixes|reset>`,
+            },
+            {
+                param: "defaultvolume",
+                desc: "Set default playback volume",
+                usage: `${prefix}setup defaultvolume <1-200|0=reset>`,
+            },
+            {
+                param: "selectiontype",
+                desc: "Set music selection type",
+                usage: `${prefix}setup selectiontype <message|selectmenu|reset>`,
+            },
+            {
+                param: "audiocache",
+                desc: "Enable or disable audio caching",
+                usage: `${prefix}setup audiocache <enable|disable>`,
+            },
+            {
+                param: "reset",
+                desc: "Reset all settings to defaults",
+                usage: `${prefix}setup reset`,
+            },
+        ];
+
+        const value = settings
+            .map((s) => `**${s.param}** — ${s.desc}\n\`${s.usage}\``)
+            .join("\n\n");
+
+        const embed = createEmbed("info")
+            .setAuthor({
+                name: `${__("commands.developers.setup.embedTitle")} — Available Settings`,
+            })
+            .setDescription(value)
+            .setFooter({
+                text: ctx.author.tag,
+                iconURL: ctx.author.displayAvatarURL(),
+            })
+            .setTimestamp();
+
+        await ctx.reply({ embeds: [embed] });
+    }
+
     private async showSettings(ctx: CommandContext, __: (key: string) => string): Promise<void> {
         const bs = this.container.data.botSettings;
 
@@ -207,24 +285,17 @@ export class SetupCommand extends ContextCommand {
                     inline: true,
                 },
                 {
-                    name: "✅ Success Emoji",
+                    name: "✅ Yes Emoji",
                     value: isDefault(bs.yesEmoji, BOT_SETTINGS_DEFAULTS.yesEmoji)
                         ? "`Default`"
                         : bs.yesEmoji,
                     inline: true,
                 },
                 {
-                    name: "❌ Error Emoji",
+                    name: "❌ No Emoji",
                     value: isDefault(bs.noEmoji, BOT_SETTINGS_DEFAULTS.noEmoji)
                         ? "`Default`"
                         : bs.noEmoji,
-                    inline: true,
-                },
-                {
-                    name: "📝 Alt Prefixes",
-                    value: isDefault(bs.altPrefix, BOT_SETTINGS_DEFAULTS.altPrefix)
-                        ? "`Default`"
-                        : bs.altPrefix.map((p) => `\`${p}\``).join(", "),
                     inline: true,
                 },
                 {
@@ -235,6 +306,13 @@ export class SetupCommand extends ContextCommand {
                     )
                         ? "`Default`"
                         : "`Custom`",
+                    inline: true,
+                },
+                {
+                    name: "📝 Alt Prefixes",
+                    value: isDefault(bs.altPrefix, BOT_SETTINGS_DEFAULTS.altPrefix)
+                        ? "`Default`"
+                        : bs.altPrefix.map((p) => `\`${p}\``).join(", "),
                     inline: true,
                 },
                 {
