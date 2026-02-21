@@ -15,6 +15,7 @@ import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { play } from "../../utils/handlers/GeneralUtil.js";
 
@@ -131,12 +132,13 @@ export class SkipToCommand extends ContextCommand {
             (typeof targetType === "string" && targetType.trim() === "") ||
             (typeof targetType === "number" && (Number.isNaN(targetType) || targetType <= 0))
         ) {
+            const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
             await ctx.reply({
                 embeds: [
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `**\`${client.config.mainPrefix}help\`**`,
+                            prefix: `**\`${prefix}help\`**`,
                             name: `**\`${this.options.name}\`**`,
                         }),
                     ),

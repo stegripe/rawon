@@ -14,6 +14,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
@@ -82,12 +83,13 @@ export class PlayCommand extends ContextCommand {
                 : (localCtx.additionalArgs.get("values") as (string | undefined)[])[0]);
 
         if ((query?.length ?? 0) === 0) {
+            const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
             return ctx.reply({
                 embeds: [
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `**\`${client.config.mainPrefix}help\`**`,
+                            prefix: `**\`${prefix}help\`**`,
                             name: `**\`${this.options.name}\`**`,
                         }),
                     ),

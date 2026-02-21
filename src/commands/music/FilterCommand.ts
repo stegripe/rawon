@@ -10,6 +10,7 @@ import { type GuildData } from "../../typings/index.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { filterArgs } from "../../utils/functions/ffmpegArgs.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { hasGetPlayerState, hasSavePlayerState } from "../../utils/typeGuards.js";
 
@@ -196,7 +197,9 @@ export class FilterCommand extends ContextCommand {
                         text: `• ${__mf("commands.music.filter.embedFooter", {
                             filter,
                             opstate: isEnabled ? "disable" : "enable",
-                            prefix: localCtx.isCommand() ? "/" : client.config.mainPrefix,
+                            prefix: localCtx.isCommand()
+                                ? "/"
+                                : getEffectivePrefix(client, localCtx.guild?.id ?? null),
                         })}`,
                     }),
                 ],

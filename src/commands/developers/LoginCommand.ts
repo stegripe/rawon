@@ -8,6 +8,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @ApplyOptions<Command.Options>({
@@ -61,12 +62,13 @@ export class LoginCommand extends ContextCommand {
         const subcommand = localCtx.options?.getSubcommand() ?? localCtx.args[0]?.toLowerCase();
 
         if (!subcommand) {
+            const prefix = getEffectivePrefix(client, localCtx.guild?.id ?? null);
             return ctx.reply({
                 embeds: [
                     createEmbed(
                         "warn",
                         __mf("commands.developers.login.invalidSubcommand", {
-                            loginUsage: `\`${client.config.mainPrefix}login <start | status | logout>\``,
+                            loginUsage: `\`${prefix}login <start | status | logout>\``,
                         }),
                     ),
                 ],
@@ -75,22 +77,24 @@ export class LoginCommand extends ContextCommand {
 
         switch (subcommand) {
             case "start":
-                return this.handleStart(client, ctx, __, __mf);
+                return this.handleStart(client, ctx, __, __mf, localCtx.guild?.id ?? null);
             case "status":
                 return this.handleStatus(client, ctx, __, __mf);
             case "logout":
                 return this.handleLogout(client, ctx, __, __mf);
-            default:
+            default: {
+                const prefix = getEffectivePrefix(client, localCtx.guild?.id ?? null);
                 return ctx.reply({
                     embeds: [
                         createEmbed(
                             "warn",
                             __mf("commands.developers.login.invalidSubcommand", {
-                                loginUsage: `\`${client.config.mainPrefix}login <start | status | logout>\``,
+                                loginUsage: `\`${prefix}login <start | status | logout>\``,
                             }),
                         ),
                     ],
                 });
+            }
         }
     }
 
@@ -99,6 +103,7 @@ export class LoginCommand extends ContextCommand {
         ctx: CommandContext,
         __: ReturnType<typeof i18n__>,
         __mf: ReturnType<typeof i18n__mf>,
+        guildId: string | null,
     ): Promise<Message | undefined> {
         const loginManager = client.cookies.loginManager;
 
@@ -183,12 +188,13 @@ export class LoginCommand extends ContextCommand {
                     ],
                 });
             } else {
+                const prefix = getEffectivePrefix(client, guildId);
                 await statusMsg?.edit({
                     embeds: [
                         createEmbed(
                             "error",
                             __mf("commands.developers.login.loginFailedDescription", {
-                                cmd: `\`${client.config.mainPrefix}login start\``,
+                                cmd: `\`${prefix}login start\``,
                             }),
                             true,
                         ).setTitle(__("commands.developers.login.loginFailed")),
@@ -293,11 +299,12 @@ export class LoginCommand extends ContextCommand {
         ]);
 
         if (cookieInfo.status === "missing" && sessionInfo.status === "idle") {
+            const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
             embed.addFields([
                 {
                     name: __("commands.developers.login.gettingStartedField"),
                     value: __mf("commands.developers.login.gettingStartedText", {
-                        loginCmd: `\`${client.config.mainPrefix}login start\``,
+                        loginCmd: `\`${prefix}login start\``,
                     }),
                 },
             ]);
@@ -326,12 +333,13 @@ export class LoginCommand extends ContextCommand {
 
         await loginManager.close();
 
+        const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
         return ctx.reply({
             embeds: [
                 createEmbed(
                     "success",
                     __mf("commands.developers.login.logoutSuccess", {
-                        cmd: `\`${client.config.mainPrefix}login start\``,
+                        cmd: `\`${prefix}login start\``,
                     }),
                     true,
                 ),

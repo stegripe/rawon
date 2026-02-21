@@ -8,6 +8,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @ApplyOptions<Command.Options>({
@@ -65,6 +66,7 @@ export class DJCommand extends ContextCommand {
         const options: Record<string, () => void> = {
             set: () => options.role(),
             default: () => {
+                const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
                 void ctx.reply({
                     embeds: [
                         createEmbed("info")
@@ -73,15 +75,15 @@ export class DJCommand extends ContextCommand {
                             })
                             .addFields([
                                 {
-                                    name: `${client.config.mainPrefix}dj enable`,
+                                    name: `${prefix}dj enable`,
                                     value: __("commands.music.dj.slashEnableDescription"),
                                 },
                                 {
-                                    name: `${client.config.mainPrefix}dj disable`,
+                                    name: `${prefix}dj disable`,
                                     value: __("commands.music.dj.slashDisableDescription"),
                                 },
                                 {
-                                    name: `${client.config.mainPrefix}dj role [${__(
+                                    name: `${prefix}dj role [${__(
                                         "commands.music.dj.newRoleText",
                                     )}]`,
                                     value: __("commands.music.dj.slashRoleDescription"),
@@ -152,7 +154,7 @@ export class DJCommand extends ContextCommand {
                                 (cur?.length ?? 0) > 0
                                     ? __mf("commands.music.dj.role.current", { role: cur })
                                     : __mf("commands.music.dj.role.noRole", {
-                                          prefix: client.config.mainPrefix,
+                                          prefix: getEffectivePrefix(client, ctx.guild?.id ?? null),
                                       }),
                             ).setFooter({
                                 text: footer,
