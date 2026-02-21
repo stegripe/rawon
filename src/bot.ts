@@ -1,4 +1,5 @@
 import process from "node:process";
+import { setTimeout } from "node:timers";
 import { ApplicationCommandRegistries, container, RegisterBehavior } from "@sapphire/framework";
 import { clientOptions } from "./config/index.js";
 import { Rawon } from "./structures/Rawon.js";
@@ -15,33 +16,51 @@ ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior
 
 const client = new Rawon(clientOptions);
 
+const SAVE_QUEUE_TIMEOUT_MS = 5000;
+
 async function saveAllQueueStates(): Promise<void> {
     const savePromises: Promise<void>[] = [];
-    for (const [, guild] of client.guilds.cache) {
+    for (const [guildId, guild] of client.guilds.cache) {
         if (guild.queue) {
-            savePromises.push(guild.queue.saveQueueState());
+            const timeout = new Promise<void>((_, reject) =>
+                setTimeout(
+                    () => reject(new Error(`Save timeout for guild ${guildId}`)),
+                    SAVE_QUEUE_TIMEOUT_MS,
+                ),
+            );
+            savePromises.push(
+                Promise.race([guild.queue.saveQueueState(), timeout]).catch((err) => {
+                    container.logger.warn(
+                        `[Shutdown] Queue save timeout/skip for guild ${guildId}:`,
+                        err,
+                    );
+                }),
+            );
         }
     }
     await Promise.all(savePromises);
 }
 
-process.on("SIGINT", async () => {
-    container.logger.info(
-        "Received SIGINT, saving queue states and closing browser before exit...",
-    );
-    await saveAllQueueStates();
-    await client.cookies.shutdown().catch(() => {});
-    process.exit(0);
-});
+async function gracefulShutdown(signal: string): Promise<void> {
+    container.logger.info(`Received ${signal}, shutting down gracefully...`);
+    const shutdownStart = Date.now();
 
-process.on("SIGTERM", async () => {
-    container.logger.info(
-        "Received SIGTERM, saving queue states and closing browser before exit...",
-    );
+    const saveStart = Date.now();
     await saveAllQueueStates();
+    container.logger.info(`[Shutdown] Queue states saved in ${Date.now() - saveStart}ms`);
+
+    const cookiesStart = Date.now();
     await client.cookies.shutdown().catch(() => {});
+    container.logger.info(`[Shutdown] Browser closed in ${Date.now() - cookiesStart}ms`);
+
+    client.destroy();
+    container.logger.info(`[Shutdown] Complete in ${Date.now() - shutdownStart}ms`);
+
     process.exit(0);
-});
+}
+
+process.on("SIGINT", () => void gracefulShutdown("SIGINT"));
+process.on("SIGTERM", () => void gracefulShutdown("SIGTERM"));
 
 process
     .on("exit", (code) => container.logger.info(`NodeJS process exited with code ${code}`))

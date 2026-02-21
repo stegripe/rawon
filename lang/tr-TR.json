@@ -33,7 +33,7 @@
                 "slashStatusDescription": "Mevcut giriş oturumu durumunu kontrol et",
                 "slashLogoutDescription": "Tarayıcı oturumunu kapat",
                 "invalidSubcommand": "Kullanım: {loginUsage}",
-                "alreadyLoggedIn": "Zaten giriş yapılmış. Yeni bir oturum başlatmak için önce `logout` kullanın.",
+                "alreadyLoggedIn": "Zaten giriş yapılmış. Yeni bir oturum başlatmak için önce {logoutCmd} kullanın.",
                 "launching": "Google girişi için tarayıcı başlatılıyor...",
                 "sessionTitle": "Google Giriş Oturumu",
                 "sessionDescription": "Bir tarayıcı penceresi açıldı. Google hesabınızla orada giriş yapın.",
@@ -74,7 +74,7 @@
                     "reset": "Hata emojisi varsayılana sıfırlandı."
                 },
                 "altPrefix": {
-                    "set": "Alternatif ön ekler şu şekilde ayarlandı: {prefixes}.",
+                    "set": "Alternatif ön ekler şu şekilde ayarlandı: {prefixes}",
                     "reset": "Alternatif ön ekler varsayılana sıfırlandı.",
                     "invalid": "Lütfen en az bir ön ek girin."
                 },
@@ -94,7 +94,7 @@
                     "invalid": "Seçim türü `message` veya `selectmenu` olmalıdır."
                 },
                 "audioCache": {
-                    "set": "Ses önbelleği {state}.",
+                    "set": "Ses önbelleği {state}",
                     "enabled": "etkinleştirildi",
                     "disabled": "devre dışı bırakıldı"
                 },
@@ -462,7 +462,7 @@
         "alreadyPlaying": "Müzik zaten çalıyor.",
         "nothingPlaying": "Şu anda hiçbir şey çalmıyor.",
         "volumeLimit": "Ses seviyesi `1` ile `100` arasında olmalıdır",
-        "setChannel": "İstek kanalı {channel} olarak ayarlandı.",
+        "setChannel": "İstek kanalı {channel} olarak ayarlandı",
         "removeChannel": "İstek kanalı kaldırıldı.",
         "noChannel": "Şu anda ayarlanmış istek kanalı yok.",
         "currentChannel": "Mevcut istek kanalı: {channel}",

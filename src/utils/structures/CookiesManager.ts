@@ -4,6 +4,7 @@ import process from "node:process";
 import { container } from "@sapphire/framework";
 import { devtoolsPort } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { GoogleLoginManager, type LoginSessionInfo } from "./GoogleLoginManager.js";
 
 export type CookieStatus = "active" | "missing";
@@ -72,9 +73,10 @@ export class CookiesManager {
     }
 
     public handleBotDetection(): void {
+        const prefix = getEffectivePrefix(this.client, null);
         container.logger.warn(
             "[Cookies] Bot detection triggered. Cookies may be stale or invalid. " +
-                "Use `xlogin logout` then `xlogin start` to re-login.",
+                `Use \`${prefix}login logout\` then \`${prefix}login start\` to re-login.`,
         );
     }
 

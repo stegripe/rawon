@@ -410,7 +410,7 @@ export class SetupCommand extends ContextCommand {
         const value = localCtx.options?.getString("emoji") ?? localCtx.args[1];
         if (!value) {
             await ctx.reply({
-                embeds: [createEmbed("warn", "Please provide an emoji or `reset`.")],
+                embeds: [createEmbed("warn", "Please provide an emoji or `reset`")],
             });
             return;
         }
@@ -446,7 +446,7 @@ export class SetupCommand extends ContextCommand {
         const value = localCtx.options?.getString("emoji") ?? localCtx.args[1];
         if (!value) {
             await ctx.reply({
-                embeds: [createEmbed("warn", "Please provide an emoji or `reset`.")],
+                embeds: [createEmbed("warn", "Please provide an emoji or `reset`")],
             });
             return;
         }

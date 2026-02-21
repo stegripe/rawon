@@ -33,7 +33,7 @@
                 "slashStatusDescription": "檢查目前登入工作階段狀態",
                 "slashLogoutDescription": "關閉瀏覽器工作階段",
                 "invalidSubcommand": "用法：{loginUsage}",
-                "alreadyLoggedIn": "已經登入。請先使用 `logout` 開始新工作階段。",
+                "alreadyLoggedIn": "已經登入。請先使用 {logoutCmd} 開始新工作階段。",
                 "launching": "正在啟動瀏覽器以登入Google...",
                 "sessionTitle": "Google登入工作階段",
                 "sessionDescription": "瀏覽器視窗已開啟。請在那裡使用Google帳號登入。",
@@ -66,11 +66,11 @@
                     "invalid": "無效的十六進位顏色代碼。請使用6位十六進位代碼（例如：`#FF5733` 或 `FF5733`）。"
                 },
                 "yesEmoji": {
-                    "set": "成功表情已設定為 {emoji}。",
+                    "set": "成功表情已設定為 {emoji}",
                     "reset": "成功表情已重設為預設值。"
                 },
                 "noEmoji": {
-                    "set": "錯誤表情已設定為 {emoji}。",
+                    "set": "錯誤表情已設定為 {emoji}",
                     "reset": "錯誤表情已重設為預設值。"
                 },
                 "altPrefix": {
@@ -86,12 +86,12 @@
                 "defaultVolume": {
                     "set": "預設音量已設定為 {volume}。",
                     "reset": "預設音量已重設為預設值。",
-                    "invalid": "音量必須是 `1` 到 `200` 之間的數字。"
+                    "invalid": "音量必須是 `1` 到 `200` 之間的數字"
                 },
                 "selectionType": {
                     "set": "音樂選擇類型已設定為 {type}。",
                     "reset": "音樂選擇類型已重設為預設值。",
-                    "invalid": "選擇類型必須為 `message` 或 `selectmenu`。"
+                    "invalid": "選擇類型必須為 `message` 或 `selectmenu`"
                 },
                 "audioCache": {
                     "set": "音訊快取已 {state}。",
@@ -462,7 +462,7 @@
         "alreadyPlaying": "音樂已經在播放了。",
         "nothingPlaying": "當前沒有播放任何內容。",
         "volumeLimit": "音量必須在`1`到`100`之間",
-        "setChannel": "點歌頻道已設置為 {channel}。",
+        "setChannel": "點歌頻道已設置為 {channel}",
         "removeChannel": "點歌頻道已移除。",
         "noChannel": "當前沒有設置點歌頻道。",
         "currentChannel": "當前點歌頻道：{channel}",
