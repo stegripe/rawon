@@ -9,6 +9,7 @@ import { type Rawon } from "../../structures/Rawon.js";
 import { type LoopMode } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__mf } from "../../utils/functions/i18n.js";
 
 @ApplyOptions<Command.Options>({
@@ -93,7 +94,7 @@ export class RepeatCommand extends ContextCommand {
                         )}`,
                     ).setFooter({
                         text: `• ${__mf("commands.music.repeat.footer", {
-                            prefix: client.config.mainPrefix,
+                            prefix: getEffectivePrefix(client, ctx.guild?.id ?? null),
                         })}`,
                     }),
                 ],

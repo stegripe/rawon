@@ -16,6 +16,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @ApplyOptions<Command.Options>({
@@ -68,6 +69,7 @@ export class HelpCommand extends ContextCommand {
             client.commands.get(val) ?? client.commands.get(client.commands.aliases.get(val) ?? "");
 
         if (!val) {
+            const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
             const listEmbed = createEmbed("info")
                 .setAuthor({
                     name: __mf("commands.general.help.authorString", {
@@ -77,7 +79,7 @@ export class HelpCommand extends ContextCommand {
                 })
                 .setFooter({
                     text: __mf("commands.general.help.footerString", {
-                        prefix: client.config.mainPrefix,
+                        prefix,
                     }),
                     iconURL: "https://cdn.stegripe.org/images/information.png",
                 })
@@ -207,7 +209,7 @@ export class HelpCommand extends ContextCommand {
                 },
                 {
                     name: __("commands.general.help.usageString"),
-                    value: `\`${command?.meta.usage?.replaceAll("{prefix}", client.config.mainPrefix)}\``,
+                    value: `\`${command?.meta.usage?.replaceAll("{prefix}", getEffectivePrefix(client, ctx.guild?.id ?? null))}\``,
                     inline: true,
                 },
             ])

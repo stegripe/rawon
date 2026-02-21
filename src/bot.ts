@@ -1,5 +1,5 @@
 import process from "node:process";
-import { container } from "@sapphire/framework";
+import { ApplicationCommandRegistries, container, RegisterBehavior } from "@sapphire/framework";
 import { clientOptions } from "./config/index.js";
 import { Rawon } from "./structures/Rawon.js";
 import { NoStackError } from "./utils/structures/NoStackError.js";
@@ -10,6 +10,8 @@ if (!token) {
     console.error("[FATAL] DISCORD_TOKEN is not set in environment variables!");
     process.exit(1);
 }
+
+ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
 
 const client = new Rawon(clientOptions);
 
