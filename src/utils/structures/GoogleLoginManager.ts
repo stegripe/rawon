@@ -58,7 +58,16 @@ const YOUTUBE_DOMAINS = [
 
 const LOGIN_CHECK_INTERVAL_MS = 5_000;
 const LOGIN_TIMEOUT_MS = 5 * 60 * 1000;
-const PAGE_NAVIGATION_TIMEOUT_MS = 30_000;
+
+const PAGE_NAVIGATION_TIMEOUT_MS = 60_000;
+
+/** Poll interval & max wait for SSO cookies after navigating to YouTube. */
+const LOGIN_SSO_POLL_MS = 2_000;
+const LOGIN_SSO_MAX_WAIT_MS = 10_000;
+
+/** Retries for extractAccountName when page may still be loading. */
+const EXTRACT_ACCOUNT_RETRIES = 2;
+const EXTRACT_ACCOUNT_RETRY_DELAY_MS = 2_000;
 
 const CRITICAL_YOUTUBE_COOKIES = ["LOGIN_INFO", "SID", "HSID", "SSID", "APISID", "SAPISID"];
 
@@ -784,7 +793,17 @@ export class GoogleLoginManager {
             const loggedIn = await this.waitForLogin();
 
             if (loggedIn) {
-                await this.connectPuppeteerAndExportCookies();
+                const exportOk = await this.connectPuppeteerAndExportCookies();
+                if (!exportOk) {
+                    this.status = "error";
+                    this.error =
+                        "YouTube SSO or cookie export failed. Try again on a faster connection.";
+                    container.logger.warn(
+                        "[GoogleLogin] Cookie export/verify failed — possible slow network.",
+                    );
+                    await this.closeBrowserOnly();
+                    return false;
+                }
 
                 await this.extractAccountName();
 
@@ -934,7 +953,7 @@ export class GoogleLoginManager {
         this.currentLoginUrl = loginUrl;
     }
 
-    private async connectPuppeteerAndExportCookies(): Promise<void> {
+    private async connectPuppeteerAndExportCookies(): Promise<boolean> {
         if (!this.browser?.connected) {
             if (!this.browserWSEndpoint) {
                 const port = this.actualPort ?? this.devtoolsPort;
@@ -961,9 +980,37 @@ export class GoogleLoginManager {
             await this.page.setViewport({ width: 1280, height: 720 });
         }
 
-        await this.navigateToYouTubeForSSO();
+        const ssoOk = await this.navigateToYouTubeForSSO();
+        if (!ssoOk) {
+            container.logger.warn(
+                "[GoogleLogin] YouTube SSO failed — LOGIN_INFO not found. Not exporting cookies.",
+            );
+            return false;
+        }
 
-        await this.exportCookies();
+        const exported = await this.exportCookies();
+        if (!exported) {
+            return false;
+        }
+
+        const hasCritical = this.verifyExportedCookiesHaveLogin();
+        if (!hasCritical) {
+            container.logger.warn(
+                "[GoogleLogin] Exported cookies lack LOGIN_INFO — session may be guest. Aborting.",
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    private verifyExportedCookiesHaveLogin(): boolean {
+        try {
+            const content = readFileSync(this.paths.cookiesFilePath, "utf8");
+            return content.includes("LOGIN_INFO") && content.includes("SID");
+        } catch {
+            return false;
+        }
     }
 
     private async navigateToYouTubeForSSO(): Promise<boolean> {
@@ -971,7 +1018,9 @@ export class GoogleLoginManager {
             return false;
         }
 
-        container.logger.info("[GoogleLogin] Navigating to YouTube to finalize SSO cookies...");
+        container.logger.info(
+            "[GoogleLogin] Navigating to YouTube to finalize SSO cookies (polling)...",
+        );
 
         const checkForLoginInfo = async (): Promise<boolean> => {
             const cdp = await this.page!.createCDPSession();
@@ -994,50 +1043,87 @@ export class GoogleLoginManager {
             return hasLoginInfo;
         };
 
-        try {
-            await this.page.goto("https://www.youtube.com", {
-                waitUntil: "domcontentloaded",
-                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-            });
-
-            await new Promise((resolve) => setTimeout(resolve, 5_000));
-
-            if (await checkForLoginInfo()) {
-                container.logger.info(
-                    "[GoogleLogin] YouTube SSO complete — LOGIN_INFO cookie present",
-                );
-                return true;
+        const pollUntilReady = async (): Promise<boolean> => {
+            const start = Date.now();
+            while (Date.now() - start < LOGIN_SSO_MAX_WAIT_MS) {
+                if (await checkForLoginInfo()) {
+                    return true;
+                }
+                await new Promise((resolve) => setTimeout(resolve, LOGIN_SSO_POLL_MS));
             }
+            return false;
+        };
 
-            container.logger.warn(
-                "[GoogleLogin] YouTube SSO: LOGIN_INFO not found after first visit, retrying...",
-            );
-            await this.page.reload({
-                waitUntil: "domcontentloaded",
-                timeout: PAGE_NAVIGATION_TIMEOUT_MS,
-            });
-            await new Promise((resolve) => setTimeout(resolve, 5_000));
+        const maxAttempts = 3;
 
-            if (await checkForLoginInfo()) {
-                container.logger.info(
-                    "[GoogleLogin] YouTube SSO complete — LOGIN_INFO present after retry",
-                );
-                return true;
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                if (attempt === 1) {
+                    await this.page.goto("https://www.youtube.com", {
+                        waitUntil: "domcontentloaded",
+                        timeout: PAGE_NAVIGATION_TIMEOUT_MS,
+                    });
+                } else {
+                    container.logger.info(
+                        `[GoogleLogin] YouTube SSO: attempt ${attempt}/${maxAttempts}, reloading...`,
+                    );
+                    await this.page.reload({
+                        waitUntil: "domcontentloaded",
+                        timeout: PAGE_NAVIGATION_TIMEOUT_MS,
+                    });
+                }
+
+                if (await pollUntilReady()) {
+                    container.logger.info(
+                        `[GoogleLogin] YouTube SSO complete — LOGIN_INFO present (attempt ${attempt})`,
+                    );
+                    return true;
+                }
+
+                if (attempt < maxAttempts) {
+                    container.logger.debug(
+                        `[GoogleLogin] LOGIN_INFO not found after ${LOGIN_SSO_MAX_WAIT_MS}ms, retrying...`,
+                    );
+                }
+            } catch (err) {
+                container.logger.warn(`[GoogleLogin] YouTube SSO attempt ${attempt} failed:`, err);
             }
-
-            container.logger.warn(
-                "[GoogleLogin] YouTube SSO failed — LOGIN_INFO not found after retry",
-            );
-            return false;
-        } catch (err) {
-            container.logger.warn("[GoogleLogin] YouTube SSO navigation failed:", err);
-            return false;
         }
+
+        container.logger.warn(
+            "[GoogleLogin] YouTube SSO failed — LOGIN_INFO not found after all retries",
+        );
+        return false;
     }
 
     private async extractAccountName(): Promise<void> {
         if (!this.page || this.page.isClosed()) {
             return;
+        }
+
+        for (let attempt = 1; attempt <= EXTRACT_ACCOUNT_RETRIES; attempt++) {
+            const extracted = await this.tryExtractAccountNameOnce();
+            if (extracted) {
+                return;
+            }
+            if (attempt < EXTRACT_ACCOUNT_RETRIES) {
+                container.logger.debug(
+                    `[GoogleLogin] Account name not ready (attempt ${attempt}), retrying in ${EXTRACT_ACCOUNT_RETRY_DELAY_MS}ms...`,
+                );
+                await new Promise((resolve) => setTimeout(resolve, EXTRACT_ACCOUNT_RETRY_DELAY_MS));
+            }
+        }
+
+        if (!this.loginEmail) {
+            container.logger.warn(
+                "[GoogleLogin] Could not extract account name from YouTube page after retries",
+            );
+        }
+    }
+
+    private async tryExtractAccountNameOnce(): Promise<boolean> {
+        if (!this.page || this.page.isClosed()) {
+            return false;
         }
 
         try {
@@ -1058,7 +1144,7 @@ export class GoogleLoginManager {
             if (ytcfgName) {
                 this.loginEmail = ytcfgName;
                 container.logger.info(`[GoogleLogin] Account name extracted: ${ytcfgName}`);
-                return;
+                return true;
             }
 
             const scriptName = (await this.page.evaluate(
@@ -1081,7 +1167,7 @@ export class GoogleLoginManager {
                 container.logger.info(
                     `[GoogleLogin] Account name extracted via script: ${scriptName}`,
                 );
-                return;
+                return true;
             }
 
             const avatarClicked = await this.page.evaluate(
@@ -1121,13 +1207,10 @@ export class GoogleLoginManager {
                 await this.page.keyboard.press("Escape");
             }
 
-            if (!this.loginEmail) {
-                container.logger.warn(
-                    "[GoogleLogin] Could not extract account name from YouTube page",
-                );
-            }
+            return !!this.loginEmail;
         } catch (err) {
-            container.logger.warn("[GoogleLogin] extractAccountName failed:", err);
+            container.logger.warn("[GoogleLogin] tryExtractAccountNameOnce failed:", err);
+            return false;
         }
     }
 
