@@ -8,6 +8,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @ApplyOptions<Command.Options>({
@@ -73,12 +74,13 @@ export class PrefixCommand extends ContextCommand {
         if (subCommand === "reset" || prefixArg?.toLowerCase() === "reset") {
             await client.data.setPrefix(guildId, null);
 
+            const defaultPrefix = getEffectivePrefix(client, guildId);
             await ctx.reply({
                 embeds: [
                     createEmbed(
                         "success",
                         __mf("commands.general.prefix.prefixReset", {
-                            prefix: `\`${client.config.mainPrefix}\``,
+                            prefix: `\`${defaultPrefix}\``,
                         }),
                         true,
                     ),
@@ -88,10 +90,7 @@ export class PrefixCommand extends ContextCommand {
         }
 
         if (subCommand === "view" || !prefixArg) {
-            let currentPrefix = client.data.data?.[guildId]?.prefix ?? client.config.mainPrefix;
-            if (currentPrefix === "") {
-                currentPrefix = client.config.mainPrefix;
-            }
+            const currentPrefix = getEffectivePrefix(client, guildId);
 
             await ctx.reply({
                 embeds: [

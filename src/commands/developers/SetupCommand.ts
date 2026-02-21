@@ -7,6 +7,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
 import { BOT_SETTINGS_DEFAULTS } from "../../utils/structures/SQLiteDataManager.js";
 
@@ -181,18 +182,20 @@ export class SetupCommand extends ContextCommand {
             case "reset":
                 await this.resetAll(ctx, client, __);
                 break;
-            default:
+            default: {
+                const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
                 await ctx.reply({
                     embeds: [
                         createEmbed(
                             "warn",
                             __("commands.developers.setup.unknownSetting").replace(
                                 "{command}",
-                                `\`${client.config.mainPrefix}setup view\``,
+                                `\`${prefix}setup view\``,
                             ),
                         ),
                     ],
                 });
+            }
         }
     }
 
@@ -201,7 +204,7 @@ export class SetupCommand extends ContextCommand {
         client: Rawon,
         __: (key: string) => string,
     ): Promise<void> {
-        const prefix = client.config.mainPrefix;
+        const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
         const settings = [
             {
                 param: "embedcolor",

@@ -11,6 +11,7 @@ import { type Snowflake, type TextChannel } from "discord.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
+import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
@@ -676,7 +677,10 @@ export class ServerQueue {
                             createEmbed(
                                 "info",
                                 `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
-                                    usage: `**\`${this.client.config.mainPrefix}play\`**`,
+                                    usage: `**\`${getEffectivePrefix(
+                                        this.client,
+                                        this.textChannel.guild?.id ?? null,
+                                    )}play\`**`,
                                 })}`,
                             ),
                         ],
