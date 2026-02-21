@@ -33,7 +33,7 @@
                 "slashStatusDescription": "現在のログインセッション状態を確認",
                 "slashLogoutDescription": "ブラウザセッションを閉じる",
                 "invalidSubcommand": "使い方: {loginUsage}",
-                "alreadyLoggedIn": "すでにログインしています。新しいセッションを開始するには、まず `logout` を使用してください。",
+                "alreadyLoggedIn": "すでにログインしています。新しいセッションを開始するには、まず {logoutCmd} を使用してください。",
                 "launching": "Googleログイン用のブラウザを起動中...",
                 "sessionTitle": "Googleログインセッション",
                 "sessionDescription": "ブラウザウィンドウが開きました。Googleアカウントでログインしてください。",
@@ -86,12 +86,12 @@
                 "defaultVolume": {
                     "set": "デフォルト音量が {volume} に設定されました。",
                     "reset": "デフォルト音量がデフォルトにリセットされました。",
-                    "invalid": "音量は `1` から `200` の間の数値でなければなりません。"
+                    "invalid": "音量は `1` から `200` の間の数値でなければなりません"
                 },
                 "selectionType": {
                     "set": "音楽選択タイプが {type} に設定されました。",
                     "reset": "音楽選択タイプがデフォルトにリセットされました。",
-                    "invalid": "選択タイプは `message` または `selectmenu` でなければなりません。"
+                    "invalid": "選択タイプは `message` または `selectmenu` でなければなりません"
                 },
                 "audioCache": {
                     "set": "オーディオキャッシュが {state} されました。",
@@ -462,7 +462,7 @@
         "alreadyPlaying": "音楽は既に再生中です。",
         "nothingPlaying": "現在何も再生されていません。",
         "volumeLimit": "音量は`1`から`100`の間で設定してください",
-        "setChannel": "リクエストチャンネルを {channel} に設定しました。",
+        "setChannel": "リクエストチャンネルを {channel} に設定しました",
         "removeChannel": "リクエストチャンネルを削除しました。",
         "noChannel": "現在リクエストチャンネルは設定されていません。",
         "currentChannel": "現在のリクエストチャンネル: {channel}",

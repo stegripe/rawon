@@ -33,7 +33,7 @@
                 "slashStatusDescription": "Kiểm tra trạng thái phiên đăng nhập hiện tại",
                 "slashLogoutDescription": "Đóng phiên trình duyệt",
                 "invalidSubcommand": "Cách dùng: {loginUsage}",
-                "alreadyLoggedIn": "Đã đăng nhập rồi. Dùng `logout` trước để bắt đầu phiên mới.",
+                "alreadyLoggedIn": "Đã đăng nhập rồi. Dùng {logoutCmd} trước để bắt đầu phiên mới.",
                 "launching": "Đang khởi động trình duyệt để đăng nhập Google...",
                 "sessionTitle": "Phiên Đăng Nhập Google",
                 "sessionDescription": "Cửa sổ trình duyệt đã mở. Đăng nhập bằng tài khoản Google của bạn tại đó.",
@@ -61,20 +61,20 @@
                 "unknownSetting": "Cài đặt không xác định. Dùng {command} để xem các cài đặt có sẵn.",
                 "embedTitle": "Cài đặt Bot",
                 "embedColor": {
-                    "set": "Màu embed đã được đặt thành {color}.",
+                    "set": "Màu embed đã được đặt thành {color}",
                     "reset": "Màu embed đã được đặt lại về mặc định.",
                     "invalid": "Mã màu hex không hợp lệ. Vui lòng sử dụng mã hex 6 ký tự (ví dụ: `#FF5733` hoặc `FF5733`)."
                 },
                 "yesEmoji": {
-                    "set": "Emoji thành công đã được đặt thành {emoji}.",
+                    "set": "Emoji thành công đã được đặt thành {emoji}",
                     "reset": "Emoji thành công đã được đặt lại về mặc định."
                 },
                 "noEmoji": {
-                    "set": "Emoji lỗi đã được đặt thành {emoji}.",
+                    "set": "Emoji lỗi đã được đặt thành {emoji}",
                     "reset": "Emoji lỗi đã được đặt lại về mặc định."
                 },
                 "altPrefix": {
-                    "set": "Tiền tố thay thế đã được đặt thành: {prefixes}.",
+                    "set": "Tiền tố thay thế đã được đặt thành: {prefixes}",
                     "reset": "Tiền tố thay thế đã được đặt lại về mặc định.",
                     "invalid": "Vui lòng cung cấp ít nhất một tiền tố."
                 },
@@ -84,17 +84,17 @@
                     "invalid": "Vui lòng cung cấp một URL hợp lệ."
                 },
                 "defaultVolume": {
-                    "set": "Âm lượng mặc định đã được đặt thành {volume}.",
+                    "set": "Âm lượng mặc định đã được đặt thành {volume}",
                     "reset": "Âm lượng mặc định đã được đặt lại.",
-                    "invalid": "Âm lượng phải là số từ `1` đến `200`."
+                    "invalid": "Âm lượng phải là số từ `1` đến `200`"
                 },
                 "selectionType": {
-                    "set": "Kiểu chọn nhạc đã được đặt thành {type}.",
+                    "set": "Kiểu chọn nhạc đã được đặt thành {type}",
                     "reset": "Kiểu chọn nhạc đã được đặt lại về mặc định.",
-                    "invalid": "Kiểu chọn phải là `message` hoặc `selectmenu`."
+                    "invalid": "Kiểu chọn phải là `message` hoặc `selectmenu`"
                 },
                 "audioCache": {
-                    "set": "Bộ nhớ đệm âm thanh đã được {state}.",
+                    "set": "Bộ nhớ đệm âm thanh đã được {state}",
                     "enabled": "bật",
                     "disabled": "tắt"
                 },
@@ -243,7 +243,7 @@
                 "pauseMessage": "Trình phát nhạc đã bị tạm dừng."
             },
             "play": {
-                "alreadyPlaying": "Đã phát trong kênh thoại {voiceChannel}.",
+                "alreadyPlaying": "Đã phát trong kênh thoại {voiceChannel}",
                 "description": "Phát nhạc",
                 "noSongData": "URL không có dữ liệu bài hát.",
                 "slashQueryDescription": "Tìm kiếm truy vấn",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "Tôi không thể kiểm tra quyền của mình trong kênh đó.",
                 "missingBotPermissions": "Tôi đang thiếu các quyền sau trong kênh đó: {permissions}",
                 "failedToSetup": "Không thể thiết lập kênh yêu cầu. Vui lòng kiểm tra quyền của tôi.",
-                "alreadyHasChannel": "Máy chủ này đã có kênh yêu cầu được thiết lập tại {channel}. Vui lòng xóa nó trước khi thiết lập kênh mới.",
+                "alreadyHasChannel": "Máy chủ này đã có kênh yêu cầu được thiết lập tại {channel} Vui lòng xóa nó trước khi thiết lập kênh mới.",
                 "channelAlreadyInUse": "Kênh này đã được sử dụng làm kênh yêu cầu.",
                 "noChannelToRemove": "Không có kênh yêu cầu nào được thiết lập để xóa.",
                 "slashSetDescription": "Đặt kênh làm kênh yêu cầu",
@@ -462,7 +462,7 @@
         "alreadyPlaying": "Nhạc đang phát.",
         "nothingPlaying": "Hiện không có gì đang phát.",
         "volumeLimit": "Âm lượng phải từ `1` đến `100`",
-        "setChannel": "Kênh yêu cầu đã được đặt thành {channel}.",
+        "setChannel": "Kênh yêu cầu đã được đặt thành {channel}",
         "removeChannel": "Kênh yêu cầu đã được xóa.",
         "noChannel": "Hiện không có kênh yêu cầu nào được đặt.",
         "currentChannel": "Kênh yêu cầu hiện tại: {channel}",

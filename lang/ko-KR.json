@@ -33,7 +33,7 @@
                 "slashStatusDescription": "현재 로그인 세션 상태 확인",
                 "slashLogoutDescription": "브라우저 세션 닫기",
                 "invalidSubcommand": "사용법: {loginUsage}",
-                "alreadyLoggedIn": "이미 로그인되어 있어요. 새 세션을 시작하려면 먼저 `logout`을 사용하세요.",
+                "alreadyLoggedIn": "이미 로그인되어 있어요. 새 세션을 시작하려면 먼저 {logoutCmd}를 사용하세요.",
                 "launching": "Google 로그인용 브라우저 시작 중...",
                 "sessionTitle": "Google 로그인 세션",
                 "sessionDescription": "브라우저 창이 열렸어요. Google 계정으로 로그인하세요.",
@@ -86,12 +86,12 @@
                 "defaultVolume": {
                     "set": "기본 볼륨이 {volume} 으로 설정되었습니다.",
                     "reset": "기본 볼륨이 기본값으로 초기화되었습니다.",
-                    "invalid": "볼륨은 `1`에서 `200` 사이의 숫자여야 합니다."
+                    "invalid": "볼륨은 `1`에서 `200` 사이의 숫자여야 합니다"
                 },
                 "selectionType": {
                     "set": "음악 선택 유형이 {type} 으로 설정되었습니다.",
                     "reset": "음악 선택 유형이 기본값으로 초기화되었습니다.",
-                    "invalid": "선택 유형은 `message` 또는 `selectmenu`이어야 합니다."
+                    "invalid": "선택 유형은 `message` 또는 `selectmenu`이어야 합니다"
                 },
                 "audioCache": {
                     "set": "오디오 캐시가 {state} 되었습니다.",
@@ -427,7 +427,7 @@
         "alreadyPlaying": "음악이 이미 재생 중이에요.",
         "nothingPlaying": "현재 재생 중인 것이 없어요.",
         "volumeLimit": "볼륨은 `1`에서 `100` 사이여야 해요",
-        "setChannel": "요청 채널이 {channel}로 설정되었어요.",
+        "setChannel": "요청 채널이 {channel}로 설정되었어요",
         "removeChannel": "요청 채널이 삭제되었어요.",
         "noChannel": "현재 설정된 요청 채널이 없어요.",
         "currentChannel": "현재 요청 채널: {channel}",
