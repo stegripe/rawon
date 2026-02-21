@@ -283,7 +283,9 @@ export class Rawon extends SapphireClient {
         setCookiesManager(this.cookies);
 
         try {
+            const cookiesStart = Date.now();
             await this.cookies.initialize();
+            container.logger.debug(`[Rawon] Cookie init in ${Date.now() - cookiesStart}ms`);
         } catch (err) {
             container.logger.warn("[Rawon] Cookie initialization failed (non-fatal):", err);
         }
@@ -305,7 +307,9 @@ export class Rawon extends SapphireClient {
             throw new Error("No token provided for login");
         }
 
+        const loginStart = Date.now();
         await this.login(loginToken);
+        container.logger.debug(`[Rawon] Login in ${Date.now() - loginStart}ms`);
 
         if (this.config.isMultiBot) {
             container.logger.info(

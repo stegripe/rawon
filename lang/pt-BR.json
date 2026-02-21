@@ -33,7 +33,7 @@
                 "slashStatusDescription": "Verificar status atual da sessão de login",
                 "slashLogoutDescription": "Fechar a sessão do navegador",
                 "invalidSubcommand": "Uso: {loginUsage}",
-                "alreadyLoggedIn": "Já está logado. Use `logout` primeiro para iniciar uma nova sessão.",
+                "alreadyLoggedIn": "Já está logado. Use {logoutCmd} primeiro para iniciar uma nova sessão.",
                 "launching": "Iniciando navegador para login do Google...",
                 "sessionTitle": "Sessão de Login do Google",
                 "sessionDescription": "Uma janela do navegador foi aberta. Faça login com sua conta Google lá.",
@@ -61,20 +61,20 @@
                 "unknownSetting": "Definição desconhecida. Use {command} para ver as definições disponíveis.",
                 "embedTitle": "Definições do Bot",
                 "embedColor": {
-                    "set": "A cor do embed foi definida para {color}.",
+                    "set": "A cor do embed foi definida para {color}",
                     "reset": "A cor do embed foi redefinida para o padrão.",
                     "invalid": "Código de cor hexadecimal inválido. Use um código hexadecimal de 6 caracteres (ex: `#FF5733` ou `FF5733`)."
                 },
                 "yesEmoji": {
-                    "set": "O emoji de sucesso foi definido para {emoji}.",
+                    "set": "O emoji de sucesso foi definido para {emoji}",
                     "reset": "O emoji de sucesso foi redefinido para o padrão."
                 },
                 "noEmoji": {
-                    "set": "O emoji de erro foi definido para {emoji}.",
+                    "set": "O emoji de erro foi definido para {emoji}",
                     "reset": "O emoji de erro foi redefinido para o padrão."
                 },
                 "altPrefix": {
-                    "set": "Os prefixos alternativos foram definidos para: {prefixes}.",
+                    "set": "Os prefixos alternativos foram definidos para: {prefixes}",
                     "reset": "Os prefixos alternativos foram redefinidos para o padrão.",
                     "invalid": "Por favor forneça pelo menos um prefixo."
                 },
@@ -84,17 +84,17 @@
                     "invalid": "Por favor forneça uma URL válida."
                 },
                 "defaultVolume": {
-                    "set": "O volume padrão foi definido para {volume}.",
+                    "set": "O volume padrão foi definido para {volume}",
                     "reset": "O volume padrão foi redefinido para o padrão.",
-                    "invalid": "O volume deve ser um número entre `1` e `200`."
+                    "invalid": "O volume deve ser um número entre `1` e `200`"
                 },
                 "selectionType": {
-                    "set": "O tipo de seleção musical foi definido para {type}.",
+                    "set": "O tipo de seleção musical foi definido para {type}",
                     "reset": "O tipo de seleção musical foi redefinido para o padrão.",
-                    "invalid": "O tipo de seleção deve ser `message` ou `selectmenu`."
+                    "invalid": "O tipo de seleção deve ser `message` ou `selectmenu`"
                 },
                 "audioCache": {
-                    "set": "O cache de áudio foi {state}.",
+                    "set": "O cache de áudio foi {state}",
                     "enabled": "ativado",
                     "disabled": "desativado"
                 },
@@ -243,7 +243,7 @@
                 "pauseMessage": "O player de música foi pausado."
             },
             "play": {
-                "alreadyPlaying": "O player de música já está tocando no canal {voiceChannel}.",
+                "alreadyPlaying": "O player de música já está tocando no canal {voiceChannel}",
                 "description": "Toca uma música",
                 "noSongData": "Essa URL não tem nenhuma música.",
                 "slashQueryDescription": "Busca",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "Não foi possível verificar minhas permissões para esse canal.",
                 "missingBotPermissions": "Estou faltando as seguintes permissões nesse canal: {permissions}",
                 "failedToSetup": "Falha ao configurar o canal de solicitação. Por favor, verifique minhas permissões.",
-                "alreadyHasChannel": "Este servidor já possui um canal de solicitação configurado em {channel}. Por favor, remova-o primeiro antes de configurar um novo.",
+                "alreadyHasChannel": "Este servidor já possui um canal de solicitação configurado em {channel} Por favor, remova-o primeiro antes de configurar um novo.",
                 "channelAlreadyInUse": "Este canal já está sendo usado como canal de solicitação.",
                 "noChannelToRemove": "Não há nenhum canal de solicitação configurado para remover.",
                 "slashSetDescription": "Definir um canal como canal de solicitação",
@@ -462,7 +462,7 @@
         "alreadyPlaying": "A música já está tocando.",
         "nothingPlaying": "Nada está tocando no momento.",
         "volumeLimit": "O volume deve estar entre `1` e `100`",
-        "setChannel": "O canal de pedidos foi definido para {channel}.",
+        "setChannel": "O canal de pedidos foi definido para {channel}",
         "removeChannel": "O canal de pedidos foi removido.",
         "noChannel": "Nenhum canal de pedidos está definido atualmente.",
         "currentChannel": "Canal de pedidos atual: {channel}",

@@ -630,6 +630,11 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         await this.manager.add(async () => {
             const stmt = this.db.prepare(`UPDATE bot_settings SET ${key} = ? WHERE id = 1`);
             stmt.run(value);
+            if (key === "yes_emoji") {
+                this._botSettings.yesEmoji = (value as string) ?? BOT_SETTINGS_DEFAULTS.yesEmoji;
+            } else if (key === "no_emoji") {
+                this._botSettings.noEmoji = (value as string) ?? BOT_SETTINGS_DEFAULTS.noEmoji;
+            }
             this.loadBotSettings();
         });
     }

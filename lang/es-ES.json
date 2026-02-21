@@ -33,7 +33,7 @@
                 "slashStatusDescription": "Verificar estado actual de la sesión de login",
                 "slashLogoutDescription": "Cerrar la sesión del navegador",
                 "invalidSubcommand": "Uso: {loginUsage}",
-                "alreadyLoggedIn": "Ya tienes sesión iniciada. Usa `logout` primero para iniciar una nueva sesión.",
+                "alreadyLoggedIn": "Ya tienes sesión iniciada. Usa {logoutCmd} primero para iniciar una nueva sesión.",
                 "launching": "Lanzando navegador para login de Google...",
                 "sessionTitle": "Sesión de Login de Google",
                 "sessionDescription": "Se ha abierto una ventana del navegador. Inicia sesión con tu cuenta de Google allí.",
@@ -61,20 +61,20 @@
                 "unknownSetting": "Ajuste desconocido. Usa {command} para ver los ajustes disponibles.",
                 "embedTitle": "Ajustes del Bot",
                 "embedColor": {
-                    "set": "El color del embed se ha establecido a {color}.",
+                    "set": "El color del embed se ha establecido a {color}",
                     "reset": "El color del embed se ha restablecido al valor predeterminado.",
                     "invalid": "Código de color hexadecimal inválido. Usa un código hexadecimal de 6 caracteres (ej: `#FF5733` o `FF5733`)."
                 },
                 "yesEmoji": {
-                    "set": "El emoji de éxito se ha establecido a {emoji}.",
+                    "set": "El emoji de éxito se ha establecido a {emoji}",
                     "reset": "El emoji de éxito se ha restablecido al valor predeterminado."
                 },
                 "noEmoji": {
-                    "set": "El emoji de error se ha establecido a {emoji}.",
+                    "set": "El emoji de error se ha establecido a {emoji}",
                     "reset": "El emoji de error se ha restablecido al valor predeterminado."
                 },
                 "altPrefix": {
-                    "set": "Los prefijos alternativos se han establecido a: {prefixes}.",
+                    "set": "Los prefijos alternativos se han establecido a: {prefixes}",
                     "reset": "Los prefijos alternativos se han restablecido al valor predeterminado.",
                     "invalid": "Por favor proporciona al menos un prefijo."
                 },
@@ -84,17 +84,17 @@
                     "invalid": "Por favor proporciona una URL válida."
                 },
                 "defaultVolume": {
-                    "set": "El volumen predeterminado se ha establecido a {volume}.",
+                    "set": "El volumen predeterminado se ha establecido a {volume}",
                     "reset": "El volumen predeterminado se ha restablecido.",
-                    "invalid": "El volumen debe ser un número entre `1` y `200`."
+                    "invalid": "El volumen debe ser un número entre `1` y `200`"
                 },
                 "selectionType": {
-                    "set": "El tipo de selección musical se ha establecido a {type}.",
+                    "set": "El tipo de selección musical se ha establecido a {type}",
                     "reset": "El tipo de selección musical se ha restablecido al valor predeterminado.",
-                    "invalid": "El tipo de selección debe ser `message` o `selectmenu`."
+                    "invalid": "El tipo de selección debe ser `message` o `selectmenu`"
                 },
                 "audioCache": {
-                    "set": "La caché de audio ha sido {state}.",
+                    "set": "La caché de audio ha sido {state}",
                     "enabled": "activada",
                     "disabled": "desactivada"
                 },
@@ -243,7 +243,7 @@
                 "pauseMessage": "Se ha pausado el reproductor de música."
             },
             "play": {
-                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz {voiceChannel}.",
+                "alreadyPlaying": "El reproductor de música ya está reproduciendo en el canal de voz {voiceChannel}",
                 "description": "Reproduce algo de música",
                 "noSongData": "Este URL no tiene datos de canciones.",
                 "slashQueryDescription": "Canción a reproducir",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "No pude verificar mis permisos para ese canal.",
                 "missingBotPermissions": "Me faltan los siguientes permisos en ese canal: {permissions}",
                 "failedToSetup": "No se pudo configurar el canal de solicitudes. Por favor verifica mis permisos.",
-                "alreadyHasChannel": "Este servidor ya tiene un canal de solicitudes configurado en {channel}. Por favor elimínalo primero antes de configurar uno nuevo.",
+                "alreadyHasChannel": "Este servidor ya tiene un canal de solicitudes configurado en {channel} Por favor elimínalo primero antes de configurar uno nuevo.",
                 "channelAlreadyInUse": "Este canal ya está siendo utilizado como canal de solicitudes.",
                 "noChannelToRemove": "No hay ningún canal de solicitudes configurado para eliminar.",
                 "slashSetDescription": "Establecer un canal como canal de solicitudes",
@@ -462,7 +462,7 @@
         "alreadyPlaying": "La música ya se está reproduciendo.",
         "nothingPlaying": "No se está reproduciendo nada actualmente.",
         "volumeLimit": "El volumen debe estar entre `1` y `100`",
-        "setChannel": "El canal de solicitudes se ha establecido en {channel}.",
+        "setChannel": "El canal de solicitudes se ha establecido en {channel}",
         "removeChannel": "El canal de solicitudes ha sido eliminado.",
         "noChannel": "No hay canal de solicitudes establecido actualmente.",
         "currentChannel": "Canal de solicitudes actual: {channel}",

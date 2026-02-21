@@ -33,7 +33,7 @@
                 "slashStatusDescription": "Semak status sesi log masuk semasa",
                 "slashLogoutDescription": "Tutup sesi pelayar",
                 "invalidSubcommand": "Penggunaan: {loginUsage}",
-                "alreadyLoggedIn": "Sudah log masuk. Guna `logout` dahulu untuk memulakan sesi baharu.",
+                "alreadyLoggedIn": "Sudah log masuk. Guna {logoutCmd} dahulu untuk memulakan sesi baharu.",
                 "launching": "Melancarkan pelayar untuk log masuk Google...",
                 "sessionTitle": "Sesi Log Masuk Google",
                 "sessionDescription": "Tetingkap pelayar telah dibuka. Log masuk dengan akaun Google anda di sana.",
@@ -61,20 +61,20 @@
                 "unknownSetting": "Tetapan tidak dikenali. Guna {command} untuk lihat tetapan yang tersedia.",
                 "embedTitle": "Tetapan Bot",
                 "embedColor": {
-                    "set": "Warna embed telah ditetapkan kepada {color}.",
+                    "set": "Warna embed telah ditetapkan kepada {color}",
                     "reset": "Warna embed telah ditetapkan semula kepada lalai.",
                     "invalid": "Kod warna hex tidak sah. Sila gunakan kod hex 6 aksara (cth: `#FF5733` atau `FF5733`)."
                 },
                 "yesEmoji": {
-                    "set": "Emoji kejayaan telah ditetapkan kepada {emoji}.",
+                    "set": "Emoji kejayaan telah ditetapkan kepada {emoji}",
                     "reset": "Emoji kejayaan telah ditetapkan semula kepada lalai."
                 },
                 "noEmoji": {
-                    "set": "Emoji ralat telah ditetapkan kepada {emoji}.",
+                    "set": "Emoji ralat telah ditetapkan kepada {emoji}",
                     "reset": "Emoji ralat telah ditetapkan semula kepada lalai."
                 },
                 "altPrefix": {
-                    "set": "Awalan alternatif telah ditetapkan kepada: {prefixes}.",
+                    "set": "Awalan alternatif telah ditetapkan kepada: {prefixes}",
                     "reset": "Awalan alternatif telah ditetapkan semula kepada lalai.",
                     "invalid": "Sila berikan sekurang-kurangnya satu awalan."
                 },
@@ -84,17 +84,17 @@
                     "invalid": "Sila berikan URL yang sah."
                 },
                 "defaultVolume": {
-                    "set": "Kelantangan lalai telah ditetapkan kepada {volume}.",
+                    "set": "Kelantangan lalai telah ditetapkan kepada {volume}",
                     "reset": "Kelantangan lalai telah ditetapkan semula.",
-                    "invalid": "Kelantangan mestilah nombor antara `1` dan `200`."
+                    "invalid": "Kelantangan mestilah nombor antara `1` dan `200`"
                 },
                 "selectionType": {
-                    "set": "Jenis pemilihan muzik telah ditetapkan kepada {type}.",
+                    "set": "Jenis pemilihan muzik telah ditetapkan kepada {type}",
                     "reset": "Jenis pemilihan muzik telah ditetapkan semula kepada lalai.",
-                    "invalid": "Jenis pemilihan mestilah `message` atau `selectmenu`."
+                    "invalid": "Jenis pemilihan mestilah `message` atau `selectmenu`"
                 },
                 "audioCache": {
-                    "set": "Cache audio telah {state}.",
+                    "set": "Cache audio telah {state}",
                     "enabled": "diaktifkan",
                     "disabled": "dinyahaktifkan"
                 },
@@ -243,7 +243,7 @@
                 "pauseMessage": "Pemain muzik telah dijeda."
             },
             "play": {
-                "alreadyPlaying": "Pemain muzik sudah pun dimainkan di saluran suara {voiceChannel}.",
+                "alreadyPlaying": "Pemain muzik sudah pun dimainkan di saluran suara {voiceChannel}",
                 "description": "Jom layan muzik",
                 "noSongData": "Pautan tersebut tidak mempunyai data lagu.",
                 "slashQueryDescription": "Masukkan carian",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "Saya tidak dapat menyemak kebenaran saya untuk saluran tersebut.",
                 "missingBotPermissions": "Saya kekurangan kebenaran berikut dalam: {permissions}",
                 "failedToSetup": "Gagal menyediakan saluran permintaan. Sila semak kebenaran saya.",
-                "alreadyHasChannel": "Server ini telah ada saluran permintaan yang ditetapkan ke {channel}. Padam dahulu sebelum membuat yang baharu.",
+                "alreadyHasChannel": "Server ini telah ada saluran permintaan yang ditetapkan ke {channel} Padam dahulu sebelum membuat yang baharu.",
                 "channelAlreadyInUse": "Saluran ini telah pun dijadikan saluran permintaan.",
                 "noChannelToRemove": "Tiada saluran permintaan untuk dipadam.",
                 "slashSetDescription": "Tetapkan saluran sebagai saluran permintaan",
@@ -427,7 +427,7 @@
         "alreadyPlaying": "Muzik sudah pun dimainkan.",
         "nothingPlaying": "Tiada yang sedang dimainkan.",
         "volumeLimit": "Kelantangan hendaklah di antara `1` dan `100`",
-        "setChannel": "Saluran permintaan telah ditetapkan ke {channel}.",
+        "setChannel": "Saluran permintaan telah ditetapkan ke {channel}",
         "removeChannel": "Saluran permintaan telah dipadam.",
         "noChannel": "Tiada saluran permintaan yang ditetapkan.",
         "currentChannel": "Saluran permintaan sekarang: {channel}",

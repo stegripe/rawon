@@ -33,7 +33,7 @@
                 "slashStatusDescription": "Cek status sesi login saat ini",
                 "slashLogoutDescription": "Tutup sesi browser",
                 "invalidSubcommand": "Penggunaan: {loginUsage}",
-                "alreadyLoggedIn": "Udah login. Pake `logout` dulu buat mulai sesi baru.",
+                "alreadyLoggedIn": "Udah login. Pake {logoutCmd} dulu buat mulai sesi baru.",
                 "launching": "Lagi nge-launch browser buat login Google...",
                 "sessionTitle": "Sesi Login Google",
                 "sessionDescription": "Jendela browser udah kebuka. Login pake akun Google kamu di sana.",
@@ -61,20 +61,20 @@
                 "unknownSetting": "Setting gak dikenal. Pake {command} buat liat settingan yang tersedia.",
                 "embedTitle": "Settingan Bot",
                 "embedColor": {
-                    "set": "Warna embed udah diatur ke {color}.",
+                    "set": "Warna embed udah diatur ke {color}",
                     "reset": "Warna embed udah direset ke default.",
                     "invalid": "Kode warna hex gak valid. Pake 6 karakter hex (contoh: `#FF5733` atau `FF5733`)."
                 },
                 "yesEmoji": {
-                    "set": "Emoji sukses udah diatur ke {emoji}.",
+                    "set": "Emoji sukses udah diatur ke {emoji}",
                     "reset": "Emoji sukses udah direset ke default."
                 },
                 "noEmoji": {
-                    "set": "Emoji error udah diatur ke {emoji}.",
+                    "set": "Emoji error udah diatur ke {emoji}",
                     "reset": "Emoji error udah direset ke default."
                 },
                 "altPrefix": {
-                    "set": "Prefix alternatif udah diatur ke: {prefixes}.",
+                    "set": "Prefix alternatif udah diatur ke: {prefixes}",
                     "reset": "Prefix alternatif udah direset ke default.",
                     "invalid": "Kasih minimal satu prefix dong."
                 },
@@ -84,17 +84,17 @@
                     "invalid": "Kasih URL yang valid dong."
                 },
                 "defaultVolume": {
-                    "set": "Volume default udah diatur ke {volume}.",
+                    "set": "Volume default udah diatur ke {volume}",
                     "reset": "Volume default udah direset ke default.",
-                    "invalid": "Volume harus angka antara `1` sampai `200`."
+                    "invalid": "Volume harus angka antara `1` sampai `200`"
                 },
                 "selectionType": {
-                    "set": "Tipe pemilihan musik udah diatur ke {type}.",
+                    "set": "Tipe pemilihan musik udah diatur ke {type}",
                     "reset": "Tipe pemilihan musik udah direset ke default.",
-                    "invalid": "Tipe pemilihan harus `message` atau `selectmenu`."
+                    "invalid": "Tipe pemilihan harus `message` atau `selectmenu`"
                 },
                 "audioCache": {
-                    "set": "Cache audio udah {state}.",
+                    "set": "Cache audio udah {state}",
                     "enabled": "diaktifin",
                     "disabled": "dimatiin"
                 },
@@ -243,7 +243,7 @@
                 "pauseMessage": "Media player udah dijeda."
             },
             "play": {
-                "alreadyPlaying": "Media player lagi muter lagu di channel {voiceChannel}.",
+                "alreadyPlaying": "Media player lagi muter lagu di channel {voiceChannel}",
                 "description": "Muter lagu",
                 "noSongData": "Link itu gak punya data lagunya.",
                 "slashQueryDescription": "Kata pencarian",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "Gak bisa cek izinku di channel itu.",
                 "missingBotPermissions": "Aku kurang izin ini di channel itu: {permissions}",
                 "failedToSetup": "Gagal atur channel request. Coba cek izinku ya.",
-                "alreadyHasChannel": "Server ini udah punya channel request di {channel}. Hapus dulu sebelum atur yang baru.",
+                "alreadyHasChannel": "Server ini udah punya channel request di {channel} Hapus dulu sebelum atur yang baru.",
                 "channelAlreadyInUse": "Channel ini udah dipake sebagai channel request.",
                 "noChannelToRemove": "Gak ada channel request yang diatur buat dihapus.",
                 "slashSetDescription": "Atur channel jadi channel request",
@@ -462,7 +462,7 @@
         "alreadyPlaying": "Musiknya udah diputar kok.",
         "nothingPlaying": "Gak ada yang lagi diputar.",
         "volumeLimit": "Volume harus antara `1` dan `100`",
-        "setChannel": "Channel request udah diatur ke {channel}.",
+        "setChannel": "Channel request udah diatur ke {channel}",
         "removeChannel": "Channel request udah dihapus.",
         "noChannel": "Gak ada channel request yang diatur sekarang.",
         "currentChannel": "Channel request sekarang: {channel}",

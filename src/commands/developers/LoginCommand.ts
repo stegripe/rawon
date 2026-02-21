@@ -108,8 +108,16 @@ export class LoginCommand extends ContextCommand {
         const loginManager = client.cookies.loginManager;
 
         if (loginManager.isLoggedIn()) {
+            const prefix = getEffectivePrefix(client, guildId);
             return ctx.reply({
-                embeds: [createEmbed("warn", __("commands.developers.login.alreadyLoggedIn"))],
+                embeds: [
+                    createEmbed(
+                        "warn",
+                        __mf("commands.developers.login.alreadyLoggedIn", {
+                            logoutCmd: `\`${prefix}login logout\``,
+                        }),
+                    ),
+                ],
             });
         }
 

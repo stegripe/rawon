@@ -1,6 +1,6 @@
 FROM node:24-alpine AS build-stage
 
-RUN apk add --no-cache python3 make g++ && \
+RUN apk add --no-cache python3 make g++ git && \
     corepack enable && corepack prepare pnpm@10.12.1 --activate
 
 WORKDIR /tmp/build
@@ -10,6 +10,8 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc* ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
+
+RUN COMMIT_SHA=$(git rev-parse HEAD 2>/dev/null || echo "Unknown") && echo "COMMIT_SHA=$COMMIT_SHA" > /tmp/build/.env.build
 
 RUN pnpm build
 
@@ -22,7 +24,7 @@ LABEL maintainer="Stegripe Development <support@stegripe.org>"
 
 WORKDIR /app
 
-RUN apk add --no-cache git ffmpeg python3 deno \
+RUN apk add --no-cache ffmpeg python3 deno \
     chromium nss freetype harfbuzz ca-certificates ttf-freefont \
     && ln -sf python3 /usr/bin/python
 
@@ -37,10 +39,17 @@ COPY --from=build-stage /tmp/build/dist ./dist
 COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
 COPY --from=build-stage /tmp/build/lang ./lang
 COPY --from=build-stage /tmp/build/index.js ./index.js
-COPY --from=build-stage /tmp/build/.git ./.git
+COPY --from=build-stage /tmp/build/.env.build ./
 
 ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["node", "--es-module-specifier-resolution=node", "index.js"]
+RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
+    echo 'set -a' >> /app/entrypoint.sh && \
+    echo '[ -f .env.build ] && . ./.env.build' >> /app/entrypoint.sh && \
+    echo 'set +a' >> /app/entrypoint.sh && \
+    echo 'exec node --es-module-specifier-resolution=node index.js' >> /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
+
+CMD ["/app/entrypoint.sh"]

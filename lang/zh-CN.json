@@ -33,7 +33,7 @@
                 "slashStatusDescription": "检查当前登录会话状态",
                 "slashLogoutDescription": "关闭浏览器会话",
                 "invalidSubcommand": "用法：{loginUsage}",
-                "alreadyLoggedIn": "已经登录。请先使用 `logout` 开始新会话。",
+                "alreadyLoggedIn": "已经登录。请先使用 {logoutCmd} 开始新会话。",
                 "launching": "正在启动浏览器以登录Google...",
                 "sessionTitle": "Google登录会话",
                 "sessionDescription": "浏览器窗口已打开。请在那里使用Google账号登录。",
@@ -66,11 +66,11 @@
                     "invalid": "无效的十六进制颜色代码。请使用6位十六进制代码（例如：`#FF5733` 或 `FF5733`）。"
                 },
                 "yesEmoji": {
-                    "set": "成功表情已设置为 {emoji}。",
+                    "set": "成功表情已设置为 {emoji}",
                     "reset": "成功表情已重置为默认值。"
                 },
                 "noEmoji": {
-                    "set": "错误表情已设置为 {emoji}。",
+                    "set": "错误表情已设置为 {emoji}",
                     "reset": "错误表情已重置为默认值。"
                 },
                 "altPrefix": {
@@ -86,12 +86,12 @@
                 "defaultVolume": {
                     "set": "默认音量已设置为 {volume}。",
                     "reset": "默认音量已重置为默认值。",
-                    "invalid": "音量必须是 `1` 到 `200` 之间的数字。"
+                    "invalid": "音量必须是 `1` 到 `200` 之间的数字"
                 },
                 "selectionType": {
                     "set": "音乐选择类型已设置为 {type}。",
                     "reset": "音乐选择类型已重置为默认值。",
-                    "invalid": "选择类型必须为 `message` 或 `selectmenu`。"
+                    "invalid": "选择类型必须为 `message` 或 `selectmenu`"
                 },
                 "audioCache": {
                     "set": "音频缓存已 {state}。",
@@ -462,7 +462,7 @@
         "alreadyPlaying": "音乐已经在播放了。",
         "nothingPlaying": "当前没有播放任何内容。",
         "volumeLimit": "音量必须在`1`到`100`之间",
-        "setChannel": "点歌频道已设置为 {channel}。",
+        "setChannel": "点歌频道已设置为 {channel}",
         "removeChannel": "点歌频道已移除。",
         "noChannel": "当前没有设置点歌频道。",
         "currentChannel": "当前点歌频道：{channel}",
