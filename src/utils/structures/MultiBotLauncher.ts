@@ -74,8 +74,19 @@ export class MultiBotLauncher {
             .on("warning", (warning) => log.warn(`NODE_WARNING: ${warning}`))
             .on("uncaughtException", (err) => {
                 log.error(`UNCAUGHT_EXCEPTION: ${err.stack ?? err}`);
-                log.warn("Uncaught Exception detected, trying to restart...");
-                process.exit(1);
+                log.warn(
+                    "Uncaught Exception detected, attempting to save queue states before exit...",
+                );
+                void this.saveAllQueueStates()
+                    .then(() => {
+                        log.info("[Crash] Queue states saved before exit");
+                    })
+                    .catch((saveErr) => {
+                        log.warn("[Crash] Failed to save queue states:", saveErr);
+                    })
+                    .finally(() => {
+                        process.exit(1);
+                    });
             });
     }
 

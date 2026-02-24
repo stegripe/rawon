@@ -24,7 +24,7 @@ LABEL maintainer="Stegripe Development <support@stegripe.org>"
 
 WORKDIR /app
 
-RUN apk add --no-cache ffmpeg python3 deno \
+RUN apk add --no-cache ffmpeg python3 \
     chromium nss freetype harfbuzz ca-certificates ttf-freefont \
     && ln -sf python3 /usr/bin/python
 

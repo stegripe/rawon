@@ -15,7 +15,11 @@ import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
-import { hasGetPlayerState, hasGetQueueState } from "../utils/typeGuards.js";
+import {
+    hasGetGuildIdsWithQueueState,
+    hasGetPlayerState,
+    hasGetQueueState,
+} from "../utils/typeGuards.js";
 
 function hasExtendedMethods(data: unknown): data is ExtendedDataManager {
     return (
@@ -272,18 +276,20 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
         }> = [];
 
         if (hasGetQueueState(this.container.data)) {
-            const data = (
-                this.container.data as import("../utils/typeGuards.js").FallbackDataManager
-            ).data;
-            if (data) {
-                for (const guildId of Object.keys(data)) {
-                    const queueState = this.container.data.getQueueState(guildId, botId);
-                    if (queueState && queueState.songs.length > 0) {
-                        queueStates.push({ guildId, queueState, botId });
-                        this.container.logger.info(
-                            `[Restore] Found queue state for guild ${guildId} from this bot ${botId}`,
-                        );
-                    }
+            const guildIdsToCheck = hasGetGuildIdsWithQueueState(this.container.data)
+                ? this.container.data.getGuildIdsWithQueueState(botId)
+                : Object.keys(
+                      (this.container.data as import("../utils/typeGuards.js").FallbackDataManager)
+                          .data ?? {},
+                  );
+
+            for (const guildId of guildIdsToCheck) {
+                const queueState = this.container.data.getQueueState(guildId, botId);
+                if (queueState && queueState.songs.length > 0) {
+                    queueStates.push({ guildId, queueState, botId });
+                    this.container.logger.info(
+                        `[Restore] Found queue state for guild ${guildId} from this bot ${botId}`,
+                    );
                 }
             }
         } else {
