@@ -246,6 +246,13 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         return this.load() as Promise<T | null>;
     }
 
+    public getGuildIdsWithQueueState(botId: string): string[] {
+        const rows = this.db
+            .prepare("SELECT guild_id FROM queue_states WHERE bot_id = ?")
+            .all(botId) as { guild_id: string }[];
+        return rows.map((row) => row.guild_id);
+    }
+
     public getQueueState(guildId: string, botId: string): GuildData["queueState"] | null {
         const result = this.db
             .prepare("SELECT * FROM queue_states WHERE guild_id = ? AND bot_id = ?")

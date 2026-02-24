@@ -21,11 +21,10 @@
 ## Installation
 
 ### Prerequisites
-- [Node.js](https://nodejs.org) version `20.0.0` or higher
-- [Deno](https://deno.land/) runtime (required by yt-dlp for signature solving)
+- [Node.js](https://nodejs.org) version `20.0.0` or higher (also used by yt-dlp for YouTube signature solving)
 - [FFmpeg](https://ffmpeg.org/) for audio processing
 
-> **Note**: Docker users don't need to install Deno or FFmpeg manually — they're included in the Docker image.
+> **Note**: Docker users don't need to install FFmpeg manually — it's included in the Docker image.
 
 ### Standard Setup (Node.js)
 1. Download and install the prerequisites above

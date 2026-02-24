@@ -104,6 +104,18 @@ export function hasGetQueueState(
     );
 }
 
+export function hasGetGuildIdsWithQueueState(
+    data: unknown,
+): data is { getGuildIdsWithQueueState(botId: string): string[] } {
+    return (
+        typeof data === "object" &&
+        data !== null &&
+        "getGuildIdsWithQueueState" in data &&
+        typeof (data as { getGuildIdsWithQueueState: unknown }).getGuildIdsWithQueueState ===
+            "function"
+    );
+}
+
 export interface FfmpegStreamWithEvents {
     stderr?: {
         on?(event: string, cb: (chunk: import("node:buffer").Buffer) => void): void;

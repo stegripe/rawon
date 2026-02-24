@@ -48,29 +48,7 @@ Cookies may eventually become stale due to server-side rotation. When this happe
 ### Prerequisites
 
 - A **secondary/throwaway Google account** (DO NOT use your main account for security reasons)
-- **For non-Docker users**: [Deno](https://deno.land/) JavaScript runtime (required for yt-dlp signature solving)
 - **For non-Docker users**: Chrome or Chromium browser installed on the host machine
-
-### Installing Deno (Non-Docker Users Only)
-
-If you're NOT using Docker, you need to install Deno for yt-dlp to solve the platform's signature challenge:
-
-**Linux/macOS:**
-```bash
-curl -fsSL https://deno.land/install.sh | sh
-```
-
-**Windows (PowerShell):**
-```powershell
-irm https://deno.land/install.ps1 | iex
-```
-
-After installation, make sure `deno` is in your PATH. You can verify by running:
-```bash
-deno --version
-```
-
-> **Note**: Docker users don't need to install Deno manually — it's already included in the Docker image.
 
 ### Docker Setup
 
@@ -186,29 +164,7 @@ Cookies mungkin menjadi kedaluwarsa karena rotasi di sisi server. Jika ini terja
 ### Prasyarat
 
 - Akun **cadangan/tumbal Google** (JANGAN gunakan akun utama demi keamanan)
-- **Untuk pengguna non-Docker**: [Deno](https://deno.land/) JavaScript runtime (diperlukan untuk yt-dlp signature solving)
 - **Untuk pengguna non-Docker**: Browser Chrome atau Chromium terinstall di mesin host
-
-### Menginstall Deno (Hanya untuk Pengguna Non-Docker)
-
-Jika kamu TIDAK menggunakan Docker, kamu perlu install Deno agar yt-dlp bisa solve signature challenge platform:
-
-**Linux/macOS:**
-```bash
-curl -fsSL https://deno.land/install.sh | sh
-```
-
-**Windows (PowerShell):**
-```powershell
-irm https://deno.land/install.ps1 | iex
-```
-
-Setelah instalasi, pastikan `deno` ada di PATH kamu. Verifikasi dengan menjalankan:
-```bash
-deno --version
-```
-
-> **Catatan**: Pengguna Docker tidak perlu install Deno manual — sudah termasuk di Docker image.
 
 ### Setup Docker
 
