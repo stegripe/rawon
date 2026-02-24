@@ -25,15 +25,19 @@ export function getCookiesManager() {
 }
 
 function args(url, options, cookiesPath) {
-    const optArgs = Object.entries(options)
-        .flatMap(([key, val]) => {
-            const flag = key.replaceAll(/[A-Z]/gu, ms => `-${ms.toLowerCase()}`);
-            return [
-                `--${(typeof val === "boolean") && !val ? "no-" : ""}${flag}`,
-                typeof val === "boolean" ? "" : val
-            ]
-        })
-        .filter(Boolean);
+    const optArgs = ["--js-runtimes", "node"];
+
+    optArgs.push(
+        ...Object.entries(options)
+            .flatMap(([key, val]) => {
+                const flag = key.replaceAll(/[A-Z]/gu, (ms) => `-${ms.toLowerCase()}`);
+                return [
+                    `--${(typeof val === "boolean") && !val ? "no-" : ""}${flag}`,
+                    typeof val === "boolean" ? "" : val,
+                ];
+            })
+            .filter(Boolean),
+    );
 
     const effectiveCookiesPath = cookiesPath ?? cookiesManagerRef?.getCurrentCookiePath();
     const useCookies = effectiveCookiesPath && existsSync(effectiveCookiesPath);

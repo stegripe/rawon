@@ -73,8 +73,19 @@ process
     .on("warning", (...args) => container.logger.warn({ args }, "NODE_WARNING"))
     .on("uncaughtException", (err) => {
         container.logger.error(err, "UNCAUGHT_EXCEPTION");
-        container.logger.warn("Uncaught Exception detected, trying to restart...");
-        process.exit(1);
+        container.logger.warn(
+            "Uncaught Exception detected, attempting to save queue states before exit...",
+        );
+        void saveAllQueueStates()
+            .then(() => {
+                container.logger.info("[Crash] Queue states saved before exit");
+            })
+            .catch((saveErr) => {
+                container.logger.warn("[Crash] Failed to save queue states:", saveErr);
+            })
+            .finally(() => {
+                process.exit(1);
+            });
     });
 
 await client.build(token).catch((error: unknown) => {
