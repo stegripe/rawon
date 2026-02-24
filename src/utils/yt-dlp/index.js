@@ -120,11 +120,13 @@ export async function downloadExecutable() {
         const isUpdate = existsSync(exePath);
         console.info(`[INFO] ${isUpdate ? "Updating" : "Downloading"} yt-dlp...`);
         try {
-            const releases = await got.get("https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1").json();
+            const releases = await got.get("https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1", {
+                timeout: { request: 15_000 },
+            }).json();
             const release = releases[0];
             const asset = release.assets.find(ast => ast.name === filename);
             await new Promise((resolve, reject) => {
-                got.get(asset.browser_download_url).buffer().then(x => {
+                got.get(asset.browser_download_url, { timeout: { request: 60_000 } }).buffer().then(x => {
                     mkdirSync(scriptsPath, { recursive: true });
                     writeFileSync(exePath, x, { mode: 0o777 });
                     return 0;
