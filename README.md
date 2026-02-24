@@ -21,7 +21,7 @@
 ## Installation
 
 ### Prerequisites
-- [Node.js](https://nodejs.org) version `20.0.0` or higher (also used by yt-dlp for YouTube signature solving)
+- [Node.js](https://nodejs.org) version `20.0.0` or higher
 - [FFmpeg](https://ffmpeg.org/) for audio processing
 
 > **Note**: Docker users don't need to install FFmpeg manually — it's included in the Docker image.
