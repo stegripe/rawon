@@ -218,6 +218,7 @@ export class Rawon extends SapphireClient {
     public readonly multiBotManager = MultiBotManager.getInstance();
     public readonly commands = new CommandsCompatibility(this);
     public readonly request = got.extend({
+        timeout: { request: 15_000 },
         hooks: {
             beforeError: [
                 (error) => {
