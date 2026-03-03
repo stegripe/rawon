@@ -66,6 +66,6 @@
         "typescript": "5.9.3"
     },
     "optionalDependencies": {
-        "@snazzah/davey": "^0.1.9"
+        "@snazzah/davey": "^0.1.10"
     }
 }
