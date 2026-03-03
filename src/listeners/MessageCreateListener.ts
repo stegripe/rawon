@@ -274,8 +274,8 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 const textChannel = message.channel as TextChannel;
                 const collector: MessageCollector = textChannel.createMessageCollector({
                     filter: (msg: Message) => msg.author.id === client.user?.id,
-                    time: 10_000,
-                    max: 1,
+                    time: 30_000,
+                    max: 5,
                 });
 
                 collector.on("collect", (botMsg: Message) => {
