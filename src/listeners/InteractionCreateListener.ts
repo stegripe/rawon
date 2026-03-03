@@ -312,6 +312,20 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 context.additionalArgs.set("options", data);
                 const ctxCmd = cmd as { contextRun?: (ctx: CommandContext) => Promise<unknown> };
                 void ctxCmd.contextRun?.(context);
+
+                if (thisBotGuildForContext && interaction.channelId) {
+                    const isReqChannel = this.container.requestChannelManager.isRequestChannel(
+                        thisBotGuildForContext,
+                        interaction.channelId,
+                    );
+                    if (isReqChannel) {
+                        setTimeout(async () => {
+                            try {
+                                await interaction.deleteReply();
+                            } catch {}
+                        }, 60_000);
+                    }
+                }
             }
         }
 
@@ -387,6 +401,20 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 );
                 const ctxCmd2 = cmd as { contextRun?: (ctx: CommandContext) => Promise<unknown> };
                 void ctxCmd2.contextRun?.(context);
+
+                if (thisBotGuildForContext && interaction.channelId) {
+                    const isReqChannel = this.container.requestChannelManager.isRequestChannel(
+                        thisBotGuildForContext,
+                        interaction.channelId,
+                    );
+                    if (isReqChannel) {
+                        setTimeout(async () => {
+                            try {
+                                await interaction.deleteReply();
+                            } catch {}
+                        }, 60_000);
+                    }
+                }
             } else {
                 this.container.logger.warn(
                     `[MultiBot] ${client.user?.tag} command not found for interaction "${interaction.commandName}"`,
@@ -443,6 +471,20 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         contextRun?: (ctx: CommandContext) => Promise<unknown>;
                     };
                     void ctxCmd3.contextRun?.(context);
+
+                    if (thisBotGuildForContext && interaction.channelId) {
+                        const isReqChannel = this.container.requestChannelManager.isRequestChannel(
+                            thisBotGuildForContext,
+                            interaction.channelId,
+                        );
+                        if (isReqChannel) {
+                            setTimeout(async () => {
+                                try {
+                                    await interaction.deleteReply();
+                                } catch {}
+                            }, 60_000);
+                        }
+                    }
                 }
             }
         }
