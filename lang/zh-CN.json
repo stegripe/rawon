@@ -11,22 +11,6 @@
                 "usage": "{prefix}eval <一些代码>"
             },
             "login": {
-                "cookieFileField": "Cookie文件",
-                "statusActive": "活跃",
-                "statusMissing": "无可用cookies",
-                "sizeLabel": "大小",
-                "lastRefreshLabel": "上次刷新",
-                "lastRefreshNever": "从未",
-                "googleLoginField": "Google登录",
-                "sessionLoggedIn": "已登录",
-                "sessionWaiting": "等待登录中...",
-                "sessionError": "错误：{error}",
-                "sessionIdle": "未启动",
-                "accountLabel": "账号",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "开始使用",
-                "gettingStartedText": "使用 {loginCmd} 登录Google并自动生成cookies。",
-                "statsTitle": "统计",
                 "description": "管理Google登录会话以进行YouTube cookie身份验证",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "通过浏览器启动Google登录会话",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "登录时发生错误：\n{error}",
                 "statusTitle": "登录与Cookie状态",
                 "logoutSuccess": "登录会话已清除。\n\n所有cookies和配置文件数据已被清除。\n使用 {cmd} 启动新会话。",
-                "logoutNoBrowser": "没有活跃的登录会话。"
+                "logoutNoBrowser": "没有活跃的登录会话。",
+                "cookieFileField": "Cookie文件",
+                "statusActive": "活跃",
+                "statusMissing": "无可用cookies",
+                "sizeLabel": "大小",
+                "lastRefreshLabel": "上次刷新",
+                "lastRefreshNever": "从未",
+                "googleLoginField": "Google登录",
+                "sessionLoggedIn": "已登录",
+                "sessionWaiting": "等待登录中...",
+                "sessionError": "错误：{error}",
+                "sessionIdle": "未启动",
+                "accountLabel": "账号",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "开始使用",
+                "gettingStartedText": "使用 {loginCmd} 登录Google并自动生成cookies。",
+                "statsTitle": "统计"
             },
             "setup": {
                 "description": "配置机器人设置（仅限开发者）",
@@ -213,16 +213,16 @@
                 "slashStateFilterDescription": "歌曲过滤器将会 {state, select, enable {启用} other {停用}}",
                 "slashStatusDescription": "检查歌曲过滤器的当前状态",
                 "slashStatusFilterDescription": "您要检查的歌曲过滤器",
-                "specifyFilter": "请指定歌曲过滤器"
+                "specifyFilter": "请指定歌曲过滤器。"
             },
             "lyrics": {
                 "apiError": "API 无法寻找歌曲 {song}， 因为: {message}",
                 "description": "显示歌曲的歌词",
+                "noLyrics": "找不到 {song} 的歌词。",
                 "noQuery": "目前没有播放任何内容，或者没有提供任何参数。",
                 "searchingLyrics": "正在搜索歌词...",
                 "slashDescription": "要搜索的歌曲",
-                "usage": "{prefix}lyrics [歌曲]",
-                "noLyrics": "找不到 {song} 的歌词。"
+                "usage": "{prefix}lyrics [歌曲]"
             },
             "nowplaying": {
                 "description": "显示媒体播放器状态",
@@ -315,7 +315,7 @@
             "skip": {
                 "description": "略过音乐",
                 "skipMessage": "已略过 {song}",
-                "voteResultMessage": "{length}/{required} 已投票跳过当前歌曲"
+                "voteResultMessage": "{length}/{required} 已投票跳过当前歌曲。"
             },
             "skipTo": {
                 "cantPlay": "您不能跳到当前音乐。",
@@ -393,41 +393,6 @@
             "unableReconfigureConnection": "无法重新配置连接，队列已被删除。"
         }
     },
-    "reusable": {
-        "invalidUsage": "无效的用法，请用 {prefix} {name}了解更多资讯。",
-        "pageFooter": "{actual}/{total} 页",
-        "lyricsSource": "来源: {source}",
-        "enabled": "启用",
-        "disabled": "禁用"
-    },
-    "utils": {
-        "commonUtil": {
-            "botMissingChannelPerms": "我在 {channel} 中缺少以下权限：{permissions}"
-        },
-        "cooldownMessage": "{author}，请稍等 {timeleft}的冷却时间。",
-        "generalHandler": {
-            "errorJoining": "加入语音通道时出错，因为: {message}",
-            "errorPlaying": "尝试播放音乐时出错，因为: {message}",
-            "handleVideoInitial": "已将 {length} 首歌曲添加到队列中",
-            "leftVC": "离开了语音频道是因为我待用太久了。",
-            "queueEnded": "队列已经结束，使用{usage}播放更多音乐。",
-            "startPlaying": "开始播放{song}",
-            "stopPlaying": "停止播放{song}",
-            "songRequeued": "播放{song}时遇到问题，已重新添加到队列中等待重试。",
-            "allCookiesFailed": "由于机器人检测，所有cookie都已失败！使用 `{prefix}login logout` 然后 `{prefix}login start` 重新登录。",
-            "ageRestricted": "无法播放 {song}，因为它受到年龄限制并需要登录。"
-        },
-        "musicDecorator": {
-            "noInVC": "抱歉，您需要在语音频道中才能执行此操作。",
-            "noQueue": "没有播放任何内容。",
-            "notPlaying": "当前没有音乐在播放。请先播放一首歌曲。",
-            "sameVC": "你需要和我在同一个语音频道。",
-            "validVCJoinable": "对不起，我不能**`连接`**到你的语音频道，请确保我有正确的权限。",
-            "validVCPermission": "对不起，我不能在这个语音频道**`说话`**;请确保我有正确的权限。",
-            "useRequestChannel": "请使用点歌频道 {channel} 来执行音乐命令。",
-            "useRequestChannelDirect": "此命令在请求频道中已禁用。请使用播放器按钮或直接输入歌曲名称/链接。"
-        }
-    },
     "requestChannel": {
         "title": "音乐播放器",
         "standby": "没有音乐播放中。发送歌曲名称或URL开始播放！",
@@ -453,7 +418,7 @@
         "removed": "已从队列中移除 {song} 并跳过。",
         "stopped": "音乐已停止，队列已清空。",
         "loopChanged": "循环模式已更改为 {mode}",
-        "shuffleChanged": "随机播放模式现在是 {state}。",
+        "shuffleChanged": "随机播放模式现在是 {state}",
         "volumeChanged": "音量已更改为 {volume}",
         "queueCleared": "队列已清空。",
         "queueListTitle": "队列列表",
@@ -468,5 +433,40 @@
         "currentChannel": "当前点歌频道：{channel}",
         "skipInProgress": "请稍候，跳过操作正在进行中。",
         "noPermission": "您没有权限执行此操作。只有DJ身份组、服务器管理员或点歌者可以执行此操作。"
+    },
+    "reusable": {
+        "invalidUsage": "无效的用法，请用 {prefix} {name}了解更多资讯。",
+        "pageFooter": "{actual}/{total} 页",
+        "lyricsSource": "来源: {source}",
+        "enabled": "启用",
+        "disabled": "禁用"
+    },
+    "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "我在 {channel} 中缺少以下权限：{permissions}"
+        },
+        "cooldownMessage": "{author}，请稍等 {timeleft}的冷却时间。",
+        "generalHandler": {
+            "errorJoining": "加入语音通道时出错，因为: {message}",
+            "errorPlaying": "尝试播放音乐时出错，因为: {message}",
+            "handleVideoInitial": "已将 {length} 首歌曲添加到队列中。",
+            "leftVC": "离开了语音频道是因为我待用太久了。",
+            "queueEnded": "队列已经结束，使用{usage}播放更多音乐。",
+            "startPlaying": "开始播放{song}",
+            "stopPlaying": "停止播放{song}",
+            "songRequeued": "播放{song}时遇到问题，已重新添加到队列中等待重试。",
+            "allCookiesFailed": "由于机器人检测，所有cookie都已失败！使用 `{prefix}login logout` 然后 `{prefix}login start` 重新登录。",
+            "ageRestricted": "无法播放 {song}，因为它受到年龄限制并需要登录。"
+        },
+        "musicDecorator": {
+            "noInVC": "抱歉，您需要在语音频道中才能执行此操作。",
+            "noQueue": "没有播放任何内容。",
+            "notPlaying": "当前没有音乐在播放。请先播放一首歌曲。",
+            "sameVC": "你需要和我在同一个语音频道。",
+            "useRequestChannel": "请使用点歌频道 {channel} 来执行音乐命令。",
+            "useRequestChannelDirect": "此命令在请求频道中已禁用。请使用播放器按钮或直接输入歌曲名称/链接。",
+            "validVCJoinable": "对不起，我不能**`连接`**到你的语音频道，请确保我有正确的权限。",
+            "validVCPermission": "对不起，我不能在这个语音频道**`说话`**;请确保我有正确的权限。"
+        }
     }
 }

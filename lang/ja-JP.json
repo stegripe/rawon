@@ -11,22 +11,6 @@
                 "usage": "{prefix}eval <何かのコード>"
             },
             "login": {
-                "cookieFileField": "Cookieファイル",
-                "statusActive": "アクティブ",
-                "statusMissing": "Cookieがありません",
-                "sizeLabel": "サイズ",
-                "lastRefreshLabel": "最終更新",
-                "lastRefreshNever": "なし",
-                "googleLoginField": "Googleログイン",
-                "sessionLoggedIn": "ログイン済み",
-                "sessionWaiting": "ログイン待ち...",
-                "sessionError": "エラー: {error}",
-                "sessionIdle": "未開始",
-                "accountLabel": "アカウント",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "はじめに",
-                "gettingStartedText": "{loginCmd} でGoogleにログインし、Cookieを自動生成してください。",
-                "statsTitle": "統計",
                 "description": "YouTube Cookie認証のためのGoogleログインセッションを管理",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "ブラウザ経由でGoogleログインセッションを開始",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "ログイン中にエラーが発生しました:\n{error}",
                 "statusTitle": "ログイン & Cookieステータス",
                 "logoutSuccess": "ログインセッションをクリアしました。\n\nすべてのCookieとプロファイルデータが削除されました。\n{cmd} で新しいセッションを開始できます。",
-                "logoutNoBrowser": "アクティブなログインセッションがありません。"
+                "logoutNoBrowser": "アクティブなログインセッションがありません。",
+                "cookieFileField": "Cookieファイル",
+                "statusActive": "アクティブ",
+                "statusMissing": "Cookieがありません",
+                "sizeLabel": "サイズ",
+                "lastRefreshLabel": "最終更新",
+                "lastRefreshNever": "なし",
+                "googleLoginField": "Googleログイン",
+                "sessionLoggedIn": "ログイン済み",
+                "sessionWaiting": "ログイン待ち...",
+                "sessionError": "エラー: {error}",
+                "sessionIdle": "未開始",
+                "accountLabel": "アカウント",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "はじめに",
+                "gettingStartedText": "{loginCmd} でGoogleにログインし、Cookieを自動生成してください。",
+                "statsTitle": "統計"
             },
             "setup": {
                 "description": "ボット設定を構成する（開発者専用）",
@@ -138,7 +138,7 @@
                 "usageString": "使い方"
             },
             "invite": {
-                "clickURL": "- **[ここをクリック]({url})** してBot{botNum} をサーバーに招待",
+                "clickURL": "- **[ここをクリック]({url})** してBot{botNum} をサーバーに招待。",
                 "description": "このBotの招待リンクを取得",
                 "inviteTitle": "{bot} - 招待リンク"
             },
@@ -218,11 +218,11 @@
             "lyrics": {
                 "apiError": "{message}のためAPIは{song}を見つけられませんでした。",
                 "description": "曲の歌詞を表示",
+                "noLyrics": "{song} の歌詞が見つかりませんでした。",
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
                 "searchingLyrics": "歌詞を検索中...",
                 "slashDescription": "検索する曲",
-                "usage": "{prefix}lyrics [曲]",
-                "noLyrics": "{song} の歌詞が見つかりませんでした。"
+                "usage": "{prefix}lyrics [曲]"
             },
             "nowplaying": {
                 "description": "メディアプレイヤーのステータス",
@@ -393,41 +393,6 @@
             "unableReconfigureConnection": "接続を再構成できませんでした、キューは削除されます。"
         }
     },
-    "reusable": {
-        "invalidUsage": "無効な使用方法です。{prefix} {name}を実行して情報を照会してください。",
-        "pageFooter": "ページ {actual}/{total}",
-        "lyricsSource": "ソース: {source}",
-        "enabled": "有効",
-        "disabled": "無効"
-    },
-    "utils": {
-        "commonUtil": {
-            "botMissingChannelPerms": "そのチャンネルで次の権限が不足しています {channel}: {permissions}"
-        },
-        "cooldownMessage": "{author}、クールダウンタイムは残り{timeleft}です。お待ち下さい。",
-        "generalHandler": {
-            "errorJoining": "ボイスチャンネルに接続中にエラーが発生しました。エラー:{message}",
-            "errorPlaying": "音楽を再生している間にエラーが発生しました。エラー:{message}",
-            "handleVideoInitial": "キューに{length}曲を追加しました。",
-            "leftVC": "非アクティブが続いたためVCから切断しました。",
-            "queueEnded": "キューが終了しました。{usage}を使用して曲を再生してください。",
-            "startPlaying": "{song}の再生が開始",
-            "stopPlaying": "{song}の再生が終了",
-            "songRequeued": "{song}の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
-            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}login logout` の後 `{prefix}login start` で再ログインしてください。",
-            "ageRestricted": "{song} は年齢制限があるため、ログインが必要です。再生できません。"
-        },
-        "musicDecorator": {
-            "noInVC": "それを行うにはVCに参加している必要があります。",
-            "noQueue": "何も再生されていません。",
-            "notPlaying": "現在音楽が再生されていません。まず曲を再生してください。",
-            "sameVC": "あなたは私と同じVCに参加する必要があります。",
-            "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
-            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。",
-            "useRequestChannel": "音楽コマンドにはリクエストチャンネル {channel} を使用してください。",
-            "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。プレイヤーのボタンを使用するか、曲名/リンクを直接入力してください。"
-        }
-    },
     "requestChannel": {
         "title": "ミュージックプレーヤー",
         "standby": "音楽は再生されていません。曲名またはURLを送信して再生を開始してください！",
@@ -468,5 +433,40 @@
         "currentChannel": "現在のリクエストチャンネル: {channel}",
         "skipInProgress": "お待ちください、スキップ操作が進行中です。",
         "noPermission": "このアクションを実行する権限がありません。DJロール、サーバー管理者、または曲をリクエストした人だけが実行できます。"
+    },
+    "reusable": {
+        "invalidUsage": "無効な使用方法です。{prefix} {name}を実行して情報を照会してください。",
+        "pageFooter": "ページ {actual}/{total}",
+        "lyricsSource": "ソース: {source}",
+        "enabled": "有効",
+        "disabled": "無効"
+    },
+    "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "そのチャンネルで次の権限が不足しています {channel}: {permissions}"
+        },
+        "cooldownMessage": "{author}、クールダウンタイムは残り{timeleft}です。お待ち下さい。",
+        "generalHandler": {
+            "errorJoining": "ボイスチャンネルに接続中にエラーが発生しました。エラー:{message}",
+            "errorPlaying": "音楽を再生している間にエラーが発生しました。エラー:{message}",
+            "handleVideoInitial": "キューに{length}曲を追加しました。",
+            "leftVC": "非アクティブが続いたためVCから切断しました。",
+            "queueEnded": "キューが終了しました。{usage}を使用して曲を再生してください。",
+            "startPlaying": "{song}の再生が開始",
+            "stopPlaying": "{song}の再生が終了",
+            "songRequeued": "{song}の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
+            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}login logout` の後 `{prefix}login start` で再ログインしてください。",
+            "ageRestricted": "{song} は年齢制限があるため、ログインが必要です。再生できません。"
+        },
+        "musicDecorator": {
+            "noInVC": "それを行うにはVCに参加している必要があります。",
+            "noQueue": "何も再生されていません。",
+            "notPlaying": "現在音楽が再生されていません。まず曲を再生してください。",
+            "sameVC": "あなたは私と同じVCに参加する必要があります。",
+            "useRequestChannel": "音楽コマンドにはリクエストチャンネル {channel} を使用してください。",
+            "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。プレイヤーのボタンを使用するか、曲名/リンクを直接入力してください。",
+            "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
+            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。"
+        }
     }
 }

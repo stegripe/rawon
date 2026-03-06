@@ -11,22 +11,6 @@
                 "usage": "{prefix}eval <code>"
             },
             "login": {
-                "cookieFileField": "File Cookie",
-                "statusActive": "Hoạt động",
-                "statusMissing": "Không có cookies",
-                "sizeLabel": "Kích thước",
-                "lastRefreshLabel": "Lần làm mới cuối",
-                "lastRefreshNever": "Chưa bao giờ",
-                "googleLoginField": "Đăng Nhập Google",
-                "sessionLoggedIn": "Đã đăng nhập",
-                "sessionWaiting": "Đang chờ đăng nhập...",
-                "sessionError": "Lỗi: {error}",
-                "sessionIdle": "Chưa bắt đầu",
-                "accountLabel": "Tài khoản",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "Bắt Đầu",
-                "gettingStartedText": "Dùng {loginCmd} để đăng nhập vào Google và tạo cookies tự động.",
-                "statsTitle": "Thống Kê",
                 "description": "Quản lý phiên đăng nhập Google cho xác thực cookies YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Bắt đầu phiên đăng nhập Google qua trình duyệt",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "Đã xảy ra lỗi trong quá trình đăng nhập:\n{error}",
                 "statusTitle": "Trạng Thái Đăng Nhập & Cookies",
                 "logoutSuccess": "Phiên đăng nhập đã được xóa.\n\nTất cả cookies và dữ liệu hồ sơ đã được xóa.\nDùng {cmd} để bắt đầu phiên mới.",
-                "logoutNoBrowser": "Không có phiên đăng nhập đang hoạt động."
+                "logoutNoBrowser": "Không có phiên đăng nhập đang hoạt động.",
+                "cookieFileField": "File Cookie",
+                "statusActive": "Hoạt động",
+                "statusMissing": "Không có cookies",
+                "sizeLabel": "Kích thước",
+                "lastRefreshLabel": "Lần làm mới cuối",
+                "lastRefreshNever": "Chưa bao giờ",
+                "googleLoginField": "Đăng Nhập Google",
+                "sessionLoggedIn": "Đã đăng nhập",
+                "sessionWaiting": "Đang chờ đăng nhập...",
+                "sessionError": "Lỗi: {error}",
+                "sessionIdle": "Chưa bắt đầu",
+                "accountLabel": "Tài khoản",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "Bắt Đầu",
+                "gettingStartedText": "Dùng {loginCmd} để đăng nhập vào Google và tạo cookies tự động.",
+                "statsTitle": "Thống Kê"
             },
             "setup": {
                 "description": "Cấu hình cài đặt bot (chỉ dành cho nhà phát triển)",
@@ -213,16 +213,16 @@
                 "slashStateFilterDescription": "Bộ lọc bài hát sẽ được {state, select, enable {bật} other {tắt}}",
                 "slashStatusDescription": "Kiểm tra trạng thái hiện tại của bộ lọc bài hát",
                 "slashStatusFilterDescription": "Bộ lọc bài hát mà bạn muốn kiểm tra",
-                "specifyFilter": "Vui lòng chỉ định bộ lọc bài hát"
+                "specifyFilter": "Vui lòng chỉ định bộ lọc bài hát."
             },
             "lyrics": {
                 "apiError": "Không thể tìm bài hát {song}, vì: {message}",
                 "description": "Hiển thị lời bài hát",
+                "noLyrics": "Không tìm thấy lời bài hát cho {song}.",
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
                 "searchingLyrics": "Đang tìm lời bài hát...",
                 "slashDescription": "Tìm bài hát",
-                "usage": "{prefix}lyrics [bài hát]",
-                "noLyrics": "Không tìm thấy lời bài hát cho {song}."
+                "usage": "{prefix}lyrics [bài hát]"
             },
             "nowplaying": {
                 "description": "Hiển thị trạng thái trình phát đa phương tiện",
@@ -258,7 +258,7 @@
                 "noPositions": "Vui lòng chỉ định bài hát cần xóa.",
                 "slashPositionsDescription": "Bài hát cần xóa được phân tách bằng dấu phẩy hoặc dấu cách",
                 "songSkip": "Bài hát hiện tại đã bị xóa, đã bỏ qua.\n\n",
-                "songsRemoved": "Xóa {removed} bài khỏi hàng đợi",
+                "songsRemoved": "Xóa {removed} bài khỏi hàng đợi.",
                 "usage": "{prefix}remove <vị trí>"
             },
             "repeat": {
@@ -315,7 +315,7 @@
             "skip": {
                 "description": "Bỏ qua bài nhạc",
                 "skipMessage": "Đã bỏ qua {song}",
-                "voteResultMessage": "{length}/{required} đã bình chọn để bỏ qua bài hát hiện tại"
+                "voteResultMessage": "{length}/{required} đã bình chọn để bỏ qua bài hát hiện tại."
             },
             "skipTo": {
                 "cantPlay": "Bạn không thể bỏ qua bài hát hiện tại.",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "Tôi không thể kiểm tra quyền của mình trong kênh đó.",
                 "missingBotPermissions": "Tôi đang thiếu các quyền sau trong kênh đó: {permissions}",
                 "failedToSetup": "Không thể thiết lập kênh yêu cầu. Vui lòng kiểm tra quyền của tôi.",
-                "alreadyHasChannel": "Máy chủ này đã có kênh yêu cầu được thiết lập tại {channel} Vui lòng xóa nó trước khi thiết lập kênh mới.",
+                "alreadyHasChannel": "Máy chủ này đã có kênh yêu cầu được thiết lập tại {channel}. Vui lòng xóa nó trước khi thiết lập kênh mới.",
                 "channelAlreadyInUse": "Kênh này đã được sử dụng làm kênh yêu cầu.",
                 "noChannelToRemove": "Không có kênh yêu cầu nào được thiết lập để xóa.",
                 "slashSetDescription": "Đặt kênh làm kênh yêu cầu",
@@ -391,41 +391,6 @@
             "resumeQueueFooter": "Tiếp tục phát hàng đợi",
             "unableJoinStageMessage": "Không thể tham gia với tư cách Diễn giả, hàng đợi đã bị xóa.",
             "unableReconfigureConnection": "Không thể định cấu hình lại kết nối, hàng đợi đã bị xóa."
-        }
-    },
-    "reusable": {
-        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập {prefix} {name} để biết thêm thông tin.",
-        "pageFooter": "Trang {actual} trong {total}",
-        "lyricsSource": "Nguồn: {source}",
-        "enabled": "Bật",
-        "disabled": "Tắt"
-    },
-    "utils": {
-        "commonUtil": {
-            "botMissingChannelPerms": "Tôi đang thiếu các quyền sau trong {channel}: {permissions}"
-        },
-        "cooldownMessage": "{author}, vui lòng đợi {timeleft}.",
-        "generalHandler": {
-            "errorJoining": "Lỗi khi tham gia kênh thoại, vì: {message}",
-            "errorPlaying": "Đã xảy ra lỗi khi cố gắng phát nhạc, vì: {message}",
-            "handleVideoInitial": "Đã thêm {length} bài hát vào hàng đợi",
-            "leftVC": "Rời khỏi kênh thoại do không hoạt động quá lâu.",
-            "queueEnded": "Hàng đợi đã hết, sử dụng {usage} để phát thêm nhạc.",
-            "startPlaying": "Bắt đầu phát {song}",
-            "stopPlaying": "Dừng phát {song}",
-            "songRequeued": "Gặp sự cố khi phát {song}, đã thêm lại vào hàng đợi để thử lại.",
-            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Dùng `{prefix}login logout` rồi `{prefix}login start` để đăng nhập lại.",
-            "ageRestricted": "Không thể phát {song} vì nội dung bị giới hạn độ tuổi và yêu cầu đăng nhập."
-        },
-        "musicDecorator": {
-            "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
-            "noQueue": "Đang rảnh rỗi.",
-            "notPlaying": "Hiện không có nhạc đang phát. Vui lòng phát một bài hát trước.",
-            "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
-            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`Kết nối`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`Nói`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc.",
-            "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp."
         }
     },
     "requestChannel": {
@@ -468,5 +433,40 @@
         "currentChannel": "Kênh yêu cầu hiện tại: {channel}",
         "skipInProgress": "Vui lòng đợi, thao tác bỏ qua đang được thực hiện.",
         "noPermission": "Bạn không có quyền thực hiện hành động này. Chỉ có vai trò DJ, quản lý máy chủ hoặc người yêu cầu bài hát mới có thể thực hiện."
+    },
+    "reusable": {
+        "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập {prefix} {name} để biết thêm thông tin.",
+        "pageFooter": "Trang {actual} trong {total}",
+        "lyricsSource": "Nguồn: {source}",
+        "enabled": "Bật",
+        "disabled": "Tắt"
+    },
+    "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "Tôi đang thiếu các quyền sau trong {channel}: {permissions}"
+        },
+        "cooldownMessage": "{author}, vui lòng đợi {timeleft}.",
+        "generalHandler": {
+            "errorJoining": "Lỗi khi tham gia kênh thoại, vì: {message}",
+            "errorPlaying": "Đã xảy ra lỗi khi cố gắng phát nhạc, vì: {message}",
+            "handleVideoInitial": "Đã thêm {length} bài hát vào hàng đợi.",
+            "leftVC": "Rời khỏi kênh thoại do không hoạt động quá lâu.",
+            "queueEnded": "Hàng đợi đã hết, sử dụng {usage} để phát thêm nhạc.",
+            "startPlaying": "Bắt đầu phát {song}",
+            "stopPlaying": "Dừng phát {song}",
+            "songRequeued": "Gặp sự cố khi phát {song}, đã thêm lại vào hàng đợi để thử lại.",
+            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Dùng `{prefix}login logout` rồi `{prefix}login start` để đăng nhập lại.",
+            "ageRestricted": "Không thể phát {song} vì nội dung bị giới hạn độ tuổi và yêu cầu đăng nhập."
+        },
+        "musicDecorator": {
+            "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
+            "noQueue": "Đang rảnh rỗi.",
+            "notPlaying": "Hiện không có nhạc đang phát. Vui lòng phát một bài hát trước.",
+            "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
+            "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc.",
+            "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp.",
+            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`Kết nối`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
+            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`Nói`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp."
+        }
     }
 }

@@ -11,22 +11,6 @@
                 "usage": "{prefix}eval <some code>"
             },
             "login": {
-                "cookieFileField": "Fail Cookie",
-                "statusActive": "Aktif",
-                "statusMissing": "Tiada cookies tersedia",
-                "sizeLabel": "Saiz",
-                "lastRefreshLabel": "Penyegaran Terakhir",
-                "lastRefreshNever": "Tidak pernah",
-                "googleLoginField": "Login Google",
-                "sessionLoggedIn": "Sudah log masuk",
-                "sessionWaiting": "Menunggu log masuk...",
-                "sessionError": "Ralat: {error}",
-                "sessionIdle": "Belum dimulakan",
-                "accountLabel": "Akaun",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "Mula",
-                "gettingStartedText": "Guna {loginCmd} untuk log masuk ke Google dan jana cookies secara automatik.",
-                "statsTitle": "Statistik",
                 "description": "Mengurus sesi log masuk Google untuk autentikasi cookies YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Mulakan sesi log masuk Google melalui pelayar",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "Ralat berlaku semasa log masuk:\n{error}",
                 "statusTitle": "Status Log Masuk & Cookie",
                 "logoutSuccess": "Sesi log masuk dikosongkan.\n\nSemua cookies dan data profil telah dipadam.\nGuna {cmd} untuk memulakan sesi baharu.",
-                "logoutNoBrowser": "Tiada sesi log masuk aktif."
+                "logoutNoBrowser": "Tiada sesi log masuk aktif.",
+                "cookieFileField": "Fail Cookie",
+                "statusActive": "Aktif",
+                "statusMissing": "Tiada cookies tersedia",
+                "sizeLabel": "Saiz",
+                "lastRefreshLabel": "Penyegaran Terakhir",
+                "lastRefreshNever": "Tidak pernah",
+                "googleLoginField": "Login Google",
+                "sessionLoggedIn": "Sudah log masuk",
+                "sessionWaiting": "Menunggu log masuk...",
+                "sessionError": "Ralat: {error}",
+                "sessionIdle": "Belum dimulakan",
+                "accountLabel": "Akaun",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "Mula",
+                "gettingStartedText": "Guna {loginCmd} untuk log masuk ke Google dan jana cookies secara automatik.",
+                "statsTitle": "Statistik"
             },
             "setup": {
                 "description": "Konfigurasi tetapan bot (pembangun sahaja)",
@@ -213,7 +213,7 @@
                 "slashStateFilterDescription": "Saringan akan di{state, select, enable {aktifkan} other {lumpuhkan}}",
                 "slashStatusDescription": "Semak status semasa saringan lagu",
                 "slashStatusFilterDescription": "Saringan lagu yang hendak disemak",
-                "specifyFilter": "Sila nyatakan saringan lagu"
+                "specifyFilter": "Sila nyatakan saringan lagu."
             },
             "lyrics": {
                 "apiError": "{song} tidak dijumpai, akibat: {message}",
@@ -258,7 +258,7 @@
                 "noPositions": "Sila nyatakan kedudukan lagu untuk dipadam.",
                 "slashPositionsDescription": "Kedudukan lagu untuk dipadam, diasingkan dengan koma atau ruang",
                 "songSkip": "Lagu semasa dipadam, melangkau.\n\n",
-                "songsRemoved": "{removed} dipadam dari giliran",
+                "songsRemoved": "{removed} dipadam dari giliran.",
                 "usage": "{prefix}remove <kedudukan>"
             },
             "repeat": {
@@ -315,7 +315,7 @@
             "skip": {
                 "description": "Melangkau muzik",
                 "skipMessage": "Melangkau {song}",
-                "voteResultMessage": "{length}/{required} telah mengundi untuk melangkau lagu"
+                "voteResultMessage": "{length}/{required} telah mengundi untuk melangkau lagu."
             },
             "skipTo": {
                 "cantPlay": "Anda tidak boleh melangkau ke lagu yang sedang dimainkan.",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "Saya tidak dapat menyemak kebenaran saya untuk saluran tersebut.",
                 "missingBotPermissions": "Saya kekurangan kebenaran berikut dalam: {permissions}",
                 "failedToSetup": "Gagal menyediakan saluran permintaan. Sila semak kebenaran saya.",
-                "alreadyHasChannel": "Server ini telah ada saluran permintaan yang ditetapkan ke {channel} Padam dahulu sebelum membuat yang baharu.",
+                "alreadyHasChannel": "Server ini telah ada saluran permintaan yang ditetapkan ke {channel}. Padam dahulu sebelum membuat yang baharu.",
                 "channelAlreadyInUse": "Saluran ini telah pun dijadikan saluran permintaan.",
                 "noChannelToRemove": "Tiada saluran permintaan untuk dipadam.",
                 "slashSetDescription": "Tetapkan saluran sebagai saluran permintaan",
@@ -449,7 +449,7 @@
         "generalHandler": {
             "errorJoining": "Ralat ketika menyertai saluran suara, akibat: {message}",
             "errorPlaying": "Ralat terjadi saat memainkan muzik, akibat: {message}",
-            "handleVideoInitial": "Menambah {length} lagu ke dalam giliran",
+            "handleVideoInitial": "Menambah {length} lagu ke dalam giliran.",
             "leftVC": "Meninggalkan saluran suara kerana tidak aktif terlalu lama.",
             "queueEnded": "Giliran telah berakhir, gunakan {usage} untuk terus mendengar muzik.",
             "startPlaying": "Mula memainkan {song}",
