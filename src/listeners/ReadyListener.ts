@@ -20,6 +20,7 @@ import {
     hasGetPlayerState,
     hasGetQueueState,
 } from "../utils/typeGuards.js";
+import { startAutoUpdater } from "../utils/yt-dlp/index.js";
 
 function hasExtendedMethods(data: unknown): data is ExtendedDataManager {
     return (
@@ -125,6 +126,12 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
         await this.validateRequestChannels();
         await this.restoreRequestChannelMessages();
         await this.restoreQueueStates();
+
+        const isPrimaryForUpdater =
+            !this.container.config.isMultiBot || client.multiBotManager.getPrimaryBot() === client;
+        if (isPrimaryForUpdater) {
+            startAutoUpdater(client);
+        }
     }
 
     private async cleanupOrphanedGuildData(): Promise<void> {

@@ -249,4 +249,6 @@ export function setCookiesManager(manager: CookiesManager): void;
 export function getCookiesManager(): CookiesManager | null;
 export function isBotDetectionError(errorMessage: string): boolean;
 export function isAgeRestrictedError(errorMessage: string): boolean;
+export function startAutoUpdater(client: import("../../structures/Rawon.js").Rawon): void;
+export function stopAutoUpdater(): void;
 export default function ytdl(url: string, options?: YTFlags, spawnOptions?: SpawnOptions, cookiesPath?: string | null): Promise<YTResponse>;
