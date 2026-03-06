@@ -11,22 +11,6 @@
                 "usage": "{prefix}eval <코드>"
             },
             "login": {
-                "cookieFileField": "쿠키 파일",
-                "statusActive": "활성",
-                "statusMissing": "쿠키 없음",
-                "sizeLabel": "크기",
-                "lastRefreshLabel": "마지막 갱신",
-                "lastRefreshNever": "없음",
-                "googleLoginField": "Google 로그인",
-                "sessionLoggedIn": "로그인됨",
-                "sessionWaiting": "로그인 대기 중...",
-                "sessionError": "오류: {error}",
-                "sessionIdle": "시작되지 않음",
-                "accountLabel": "계정",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "시작하기",
-                "gettingStartedText": "{loginCmd}로 Google에 로그인하고 쿠키를 자동 생성하세요.",
-                "statsTitle": "통계",
                 "description": "YouTube 쿠키 인증을 위한 Google 로그인 세션 관리",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "브라우저를 통해 Google 로그인 세션 시작",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "로그인 중 오류가 발생했어요:\n{error}",
                 "statusTitle": "로그인 & 쿠키 상태",
                 "logoutSuccess": "로그인 세션이 삭제되었어요.\n\n모든 쿠키와 프로필 데이터가 삭제되었습니다.\n{cmd}로 새 세션을 시작할 수 있어요.",
-                "logoutNoBrowser": "활성 로그인 세션이 없어요."
+                "logoutNoBrowser": "활성 로그인 세션이 없어요.",
+                "cookieFileField": "쿠키 파일",
+                "statusActive": "활성",
+                "statusMissing": "쿠키 없음",
+                "sizeLabel": "크기",
+                "lastRefreshLabel": "마지막 갱신",
+                "lastRefreshNever": "없음",
+                "googleLoginField": "Google 로그인",
+                "sessionLoggedIn": "로그인됨",
+                "sessionWaiting": "로그인 대기 중...",
+                "sessionError": "오류: {error}",
+                "sessionIdle": "시작되지 않음",
+                "accountLabel": "계정",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "시작하기",
+                "gettingStartedText": "{loginCmd}로 Google에 로그인하고 쿠키를 자동 생성하세요.",
+                "statsTitle": "통계"
             },
             "setup": {
                 "description": "봇 설정 구성 (개발자 전용)",
@@ -213,7 +213,7 @@
                 "slashStateFilterDescription": "{state, select, enable {활성화} other {비활성화}}할 노래 필터",
                 "slashStatusDescription": "노래 필터의 현재 상태 확인",
                 "slashStatusFilterDescription": "확인하고 싶은 노래 필터",
-                "specifyFilter": "노래 필터를 지정해주세요"
+                "specifyFilter": "노래 필터를 지정해주세요."
             },
             "lyrics": {
                 "apiError": "API에서 {song}을(를) 찾을 수 없어요. 이유: {message}",
@@ -258,7 +258,7 @@
                 "noPositions": "삭제할 노래 위치를 지정해주세요.",
                 "slashPositionsDescription": "삭제할 노래의 위치 (쉼표 또는 공백으로 구분)",
                 "songSkip": "현재 노래가 삭제되었어요. 건너뜁니다.\n\n",
-                "songsRemoved": "대기열에서 {removed}곡이 삭제되었어요",
+                "songsRemoved": "대기열에서 {removed}곡이 삭제되었어요.",
                 "usage": "{prefix}remove <위치>"
             },
             "repeat": {
@@ -314,8 +314,8 @@
             },
             "skip": {
                 "description": "음악 건너뛰기",
-                "skipMessage": "{song}을(를) 건너뛰었어요",
-                "voteResultMessage": "{length}/{required}명이 현재 노래 건너뛰기에 투표했어요"
+                "skipMessage": "{song}을(를) 건너뛰었어요.",
+                "voteResultMessage": "{length}/{required}명이 현재 노래 건너뛰기에 투표했어요."
             },
             "skipTo": {
                 "cantPlay": "현재 음악으로 건너뛸 수 없어요.",
@@ -371,7 +371,7 @@
         },
         "createInteraction": {
             "message1": "죄송해요, 이 상호작용은 <@{user}>와 서버 스태프만 사용할 수 있어요.",
-            "message2": "죄송해요, 이 상호작용은 <@{user}>만 사용할 수 있어요",
+            "message2": "죄송해요, 이 상호작용은 <@{user}>만 사용할 수 있어요.",
             "devOnly": "개발자 전용 명령어.",
             "lyricsCommandNotFound": "가사 명령어를 찾을 수 없어요."
         },
@@ -449,7 +449,7 @@
         "generalHandler": {
             "errorJoining": "음성 채널에 입장하는 중 오류가 발생했어요. 이유: {message}",
             "errorPlaying": "음악을 재생하는 중 오류가 발생했어요. 이유: {message}",
-            "handleVideoInitial": "대기열에 {length}곡을 추가했어요",
+            "handleVideoInitial": "대기열에 {length}곡을 추가했어요.",
             "leftVC": "너무 오래 비활성 상태라서 음성 채널에서 나갔어요.",
             "queueEnded": "대기열이 끝났어요. {usage}로 더 많은 음악을 재생하세요.",
             "startPlaying": "{song} 재생 시작",

@@ -11,22 +11,6 @@
                 "usage": "{prefix}eval <código>"
             },
             "login": {
-                "cookieFileField": "Archivo de Cookie",
-                "statusActive": "Activo",
-                "statusMissing": "Sin cookies disponibles",
-                "sizeLabel": "Tamaño",
-                "lastRefreshLabel": "Última actualización",
-                "lastRefreshNever": "Nunca",
-                "googleLoginField": "Login de Google",
-                "sessionLoggedIn": "Sesión iniciada",
-                "sessionWaiting": "Esperando inicio de sesión...",
-                "sessionError": "Error: {error}",
-                "sessionIdle": "No iniciado",
-                "accountLabel": "Cuenta",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "Comenzar",
-                "gettingStartedText": "Usa {loginCmd} para iniciar sesión en Google y generar cookies automáticamente.",
-                "statsTitle": "Estadísticas",
                 "description": "Administrar sesión de login de Google para autenticación de cookies de YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Iniciar una sesión de login de Google vía navegador",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "Ocurrió un error durante el login:\n{error}",
                 "statusTitle": "Estado de Login y Cookies",
                 "logoutSuccess": "Sesión de login eliminada.\n\nTodas las cookies y datos de perfil han sido borrados.\nUsa {cmd} para iniciar una sesión nueva.",
-                "logoutNoBrowser": "No hay sesión de login activa."
+                "logoutNoBrowser": "No hay sesión de login activa.",
+                "cookieFileField": "Archivo de Cookie",
+                "statusActive": "Activo",
+                "statusMissing": "Sin cookies disponibles",
+                "sizeLabel": "Tamaño",
+                "lastRefreshLabel": "Última actualización",
+                "lastRefreshNever": "Nunca",
+                "googleLoginField": "Login de Google",
+                "sessionLoggedIn": "Sesión iniciada",
+                "sessionWaiting": "Esperando inicio de sesión...",
+                "sessionError": "Error: {error}",
+                "sessionIdle": "No iniciado",
+                "accountLabel": "Cuenta",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "Comenzar",
+                "gettingStartedText": "Usa {loginCmd} para iniciar sesión en Google y generar cookies automáticamente.",
+                "statsTitle": "Estadísticas"
             },
             "setup": {
                 "description": "Configurar ajustes del bot (solo desarrolladores)",
@@ -213,16 +213,16 @@
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {activado} other {desactivado}}",
                 "slashStatusDescription": "Comprobar el estado actual de los filtros de canción",
                 "slashStatusFilterDescription": "El filtro de canción que desea comprobar",
-                "specifyFilter": "Por favor, especifique el filtro de canción"
+                "specifyFilter": "Por favor, especifique el filtro de canción."
             },
             "lyrics": {
                 "apiError": "El API no pudo encontrar la letra de la canción {song}, razón: {message}",
                 "description": "Muestra la letra de una canción",
+                "noLyrics": "No se encontraron letras para {song}.",
                 "noQuery": "No se está reproduciendo nada o no se ingresaró ninguna canción a buscar.",
                 "searchingLyrics": "Buscando letra...",
                 "slashDescription": "Canción a buscar",
-                "usage": "{prefix}lyrics [canción]",
-                "noLyrics": "No se encontraron letras para {song}."
+                "usage": "{prefix}lyrics [canción]"
             },
             "nowplaying": {
                 "description": "Muestra la canción que se está reproduciendo",
@@ -258,7 +258,7 @@
                 "noPositions": "Por favor, especifica una posición válida.",
                 "slashPositionsDescription": "Posición de la cancion(es) a quitar, separadas por comas o espacios",
                 "songSkip": "La canción actual ha sido saltada.\n\n",
-                "songsRemoved": "Removida(s) {removed, plural, one {1 canción} other {# canciones}} de la cola",
+                "songsRemoved": "Removida(s) {removed, plural, one {1 canción} other {# canciones}} de la cola.",
                 "usage": "{prefix}remove <posiciones>"
             },
             "repeat": {
@@ -315,7 +315,7 @@
             "skip": {
                 "description": "Salta la canción actual",
                 "skipMessage": "Se ha saltado {song}",
-                "voteResultMessage": "{length}/{required} han votado para saltar la canción"
+                "voteResultMessage": "{length}/{required} han votado para saltar la canción."
             },
             "skipTo": {
                 "cantPlay": "No puedes saltar la canción actual.",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "No pude verificar mis permisos para ese canal.",
                 "missingBotPermissions": "Me faltan los siguientes permisos en ese canal: {permissions}",
                 "failedToSetup": "No se pudo configurar el canal de solicitudes. Por favor verifica mis permisos.",
-                "alreadyHasChannel": "Este servidor ya tiene un canal de solicitudes configurado en {channel} Por favor elimínalo primero antes de configurar uno nuevo.",
+                "alreadyHasChannel": "Este servidor ya tiene un canal de solicitudes configurado en {channel}. Por favor elimínalo primero antes de configurar uno nuevo.",
                 "channelAlreadyInUse": "Este canal ya está siendo utilizado como canal de solicitudes.",
                 "noChannelToRemove": "No hay ningún canal de solicitudes configurado para eliminar.",
                 "slashSetDescription": "Establecer un canal como canal de solicitudes",
@@ -391,41 +391,6 @@
             "resumeQueueFooter": "Cola reanudada",
             "unableJoinStageMessage": "No se pudo unir como orador, la cola ha sido eliminada.",
             "unableReconfigureConnection": "No se pudo reconfigurar la conexión, la cola ha sido eliminada."
-        }
-    },
-    "reusable": {
-        "invalidUsage": "Uso inválido, por favor usa {prefix} {name} para más información.",
-        "pageFooter": "Página {actual} de {total}",
-        "lyricsSource": "Fuente: {source}",
-        "enabled": "Activado",
-        "disabled": "Desactivado"
-    },
-    "utils": {
-        "commonUtil": {
-            "botMissingChannelPerms": "Me faltan los siguientes permisos en {channel}: {permissions}"
-        },
-        "cooldownMessage": "{author}, por favor espera {timeleft} para poder hacer eso.",
-        "generalHandler": {
-            "errorJoining": "Error al unirse al canal de voz, razón: {message}",
-            "errorPlaying": "Ocurrió un error al tratar de reproducir música, razón: {message}",
-            "handleVideoInitial": "Se han añadido {length} canciones a la cola.",
-            "leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
-            "queueEnded": "La cola ha terminado, usa {usage} para reproducir más música.",
-            "startPlaying": "Se empezó a reproducir {song}",
-            "stopPlaying": "Se detuvo la reproducción {song}",
-            "songRequeued": "Hubo un problema al reproducir {song}, se ha vuelto a agregar a la cola para otro intento.",
-            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Usa `{prefix}login logout` y luego `{prefix}login start` para volver a iniciar sesión.",
-            "ageRestricted": "No se puede reproducir {song} porque tiene restricción de edad y requiere inicio de sesión."
-        },
-        "musicDecorator": {
-            "noInVC": "Lo siento, pero debes estar en un canal de voz para hacer eso.",
-            "noQueue": "No se está reproduciendo nada.",
-            "notPlaying": "No hay música reproduciéndose actualmente. Por favor, reproduce una canción primero.",
-            "sameVC": "Necesitas estar en el mismo canal de voz que yo.",
-            "validVCJoinable": "Lo siento, pero no tengo el permiso **`Conectar`** en tu servidor.",
-            "validVCPermission": "Lo siento, pero no tengo el permiso **`Hablar`** en tu servidor.",
-            "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música.",
-            "useRequestChannelDirect": "Este comando está deshabilitado en el canal de solicitudes. Por favor, usa los botones del reproductor o escribe el título/enlace de la canción directamente."
         }
     },
     "requestChannel": {
@@ -468,5 +433,40 @@
         "currentChannel": "Canal de solicitudes actual: {channel}",
         "skipInProgress": "Por favor espera, una operación de salto está en progreso.",
         "noPermission": "No tienes permiso para realizar esta acción. Solo el rol DJ, administradores del servidor o quien solicitó la canción pueden hacerlo."
+    },
+    "reusable": {
+        "invalidUsage": "Uso inválido, por favor usa {prefix} {name} para más información.",
+        "pageFooter": "Página {actual} de {total}",
+        "lyricsSource": "Fuente: {source}",
+        "enabled": "Activado",
+        "disabled": "Desactivado"
+    },
+    "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "Me faltan los siguientes permisos en {channel}: {permissions}"
+        },
+        "cooldownMessage": "{author}, por favor espera {timeleft} para poder hacer eso.",
+        "generalHandler": {
+            "errorJoining": "Error al unirse al canal de voz, razón: {message}",
+            "errorPlaying": "Ocurrió un error al tratar de reproducir música, razón: {message}",
+            "handleVideoInitial": "Se han añadido {length} canciones a la cola.",
+            "leftVC": "Dejando el canal de voz porque he estado inactivo mucho tiempo.",
+            "queueEnded": "La cola ha terminado, usa {usage} para reproducir más música.",
+            "startPlaying": "Se empezó a reproducir {song}",
+            "stopPlaying": "Se detuvo la reproducción {song}",
+            "songRequeued": "Hubo un problema al reproducir {song}, se ha vuelto a agregar a la cola para otro intento.",
+            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Usa `{prefix}login logout` y luego `{prefix}login start` para volver a iniciar sesión.",
+            "ageRestricted": "No se puede reproducir {song} porque tiene restricción de edad y requiere inicio de sesión."
+        },
+        "musicDecorator": {
+            "noInVC": "Lo siento, pero debes estar en un canal de voz para hacer eso.",
+            "noQueue": "No se está reproduciendo nada.",
+            "notPlaying": "No hay música reproduciéndose actualmente. Por favor, reproduce una canción primero.",
+            "sameVC": "Necesitas estar en el mismo canal de voz que yo.",
+            "useRequestChannel": "Por favor usa el canal de solicitudes {channel} para comandos de música.",
+            "useRequestChannelDirect": "Este comando está deshabilitado en el canal de solicitudes. Por favor, usa los botones del reproductor o escribe el título/enlace de la canción directamente.",
+            "validVCJoinable": "Lo siento, pero no tengo el permiso **`Conectar`** en tu servidor.",
+            "validVCPermission": "Lo siento, pero no tengo el permiso **`Hablar`** en tu servidor."
+        }
     }
 }

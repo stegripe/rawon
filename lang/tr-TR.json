@@ -5,28 +5,12 @@
             "eval": {
                 "description": "JavaScript kodu yürüt",
                 "errorString": "Hata",
-                "noCode": "Herhangi bir kod girişi sağlanmadı",
+                "noCode": "Herhangi bir kod girişi sağlanmadı.",
                 "inputString": "Giriş",
                 "outputString": "Çıkış",
                 "usage": "{prefix}eval <kod>"
             },
             "login": {
-                "cookieFileField": "Çerez Dosyası",
-                "statusActive": "Aktif",
-                "statusMissing": "Çerez mevcut değil",
-                "sizeLabel": "Boyut",
-                "lastRefreshLabel": "Son Yenileme",
-                "lastRefreshNever": "Hiç",
-                "googleLoginField": "Google Girişi",
-                "sessionLoggedIn": "Giriş yapıldı",
-                "sessionWaiting": "Giriş bekleniyor...",
-                "sessionError": "Hata: {error}",
-                "sessionIdle": "Başlatılmadı",
-                "accountLabel": "Hesap",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "Başlangıç",
-                "gettingStartedText": "Google'a giriş yapmak ve çerezleri otomatik oluşturmak için {loginCmd} kullanın.",
-                "statsTitle": "İstatistikler",
                 "description": "YouTube çerez kimlik doğrulaması için Google giriş oturumunu yönet",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Tarayıcı üzerinden Google giriş oturumu başlat",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "Giriş sırasında bir hata oluştu:\n{error}",
                 "statusTitle": "Giriş & Çerez Durumu",
                 "logoutSuccess": "Giriş oturumu temizlendi.\n\nTüm çerezler ve profil verileri silindi.\nYeni bir oturum başlatmak için {cmd} kullanın.",
-                "logoutNoBrowser": "Aktif giriş oturumu yok."
+                "logoutNoBrowser": "Aktif giriş oturumu yok.",
+                "cookieFileField": "Çerez Dosyası",
+                "statusActive": "Aktif",
+                "statusMissing": "Çerez mevcut değil",
+                "sizeLabel": "Boyut",
+                "lastRefreshLabel": "Son Yenileme",
+                "lastRefreshNever": "Hiç",
+                "googleLoginField": "Google Girişi",
+                "sessionLoggedIn": "Giriş yapıldı",
+                "sessionWaiting": "Giriş bekleniyor...",
+                "sessionError": "Hata: {error}",
+                "sessionIdle": "Başlatılmadı",
+                "accountLabel": "Hesap",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "Başlangıç",
+                "gettingStartedText": "Google'a giriş yapmak ve çerezleri otomatik oluşturmak için {loginCmd} kullanın.",
+                "statsTitle": "İstatistikler"
             },
             "setup": {
                 "description": "Bot ayarlarını yapılandır (yalnızca geliştiriciler)",
@@ -132,7 +132,7 @@
                 "nameString": "Adı",
                 "noAliases": "Yok.",
                 "noCommandSuggest": "Eşleşen komut adı bulunamadı. Bunu mu demek istediniz?",
-                "noCommand": "Eşleşen bir komut adı bulunamadı",
+                "noCommand": "Eşleşen bir komut adı bulunamadı.",
                 "slashDescription": "Komut hakkında belirli bilgileri görüntülemek için komut ismi",
                 "usage": "{prefix}help [komut ismi]",
                 "usageString": "Kullanım"
@@ -209,20 +209,20 @@
                 "filterSet": "{filter} filtresi artık {state} oldu",
                 "filterRestartedFooter": "Şarkı baştan başlatıldı (ses hala yükleniyordu).",
                 "filterNoQueueFooter": "Müzik çalmaya başladığınızda filtre uygulanacak.",
-                "slashStateDescription": "Şarkı filtresi {state, select, enable {Enable} other {Disable}} olacaktır.",
+                "slashStateDescription": "Şarkı filtresi {state, select, enable {Enable} other {Disable}} olacaktır",
                 "slashStateFilterDescription": "",
                 "slashStatusDescription": "Şarkı filtrelerinin mevcut durumunu kontrol edin",
                 "slashStatusFilterDescription": "Kontrol etmek istediğiniz şarkı filtresi",
-                "specifyFilter": "Lütfen şarkı filtresini belirtin"
+                "specifyFilter": "Lütfen şarkı filtresini belirtin."
             },
             "lyrics": {
                 "apiError": "API {song} isimli şarkıyı bulamadı, çünkü: {message}",
                 "description": "Şarkının sözlerini gösterir",
+                "noLyrics": "{song} için şarkı sözü bulunamadı.",
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
                 "searchingLyrics": "Şarkı sözleri aranıyor...",
                 "slashDescription": "Aranacak şarkı",
-                "usage": "{prefix}lyrics [şarkı]",
-                "noLyrics": "{song} için şarkı sözü bulunamadı."
+                "usage": "{prefix}lyrics [şarkı]"
             },
             "nowplaying": {
                 "description": "Medya oynatıcı durumunu gösterir",
@@ -258,7 +258,7 @@
                 "noPositions": "Lütfen kaldırılacak şarkı pozisyonlarını belirtin.",
                 "slashPositionsDescription": "Virgül veya boşluk ile ayrılmış kaldırılacak şarkıların konumu",
                 "songSkip": "Geçerli şarkı kaldırıldı, şarkı atlandı.\n\n",
-                "songsRemoved": "Kuyruktan {removed, plural, one {1 song} diğer {# songs}} kaldırıldı",
+                "songsRemoved": "Kuyruktan {removed, plural, one {1 song} diğer {# songs}} kaldırıldı.",
                 "usage": "{prefix}remove <pozisyon>"
             },
             "repeat": {
@@ -315,7 +315,7 @@
             "skip": {
                 "description": "Müziği atlayın",
                 "skipMessage": "Atlanan {song}",
-                "voteResultMessage": "{length}/{required} kişi geçerli şarkıyı atlamak için oy kullandı"
+                "voteResultMessage": "{length}/{required} kişi geçerli şarkıyı atlamak için oy kullandı."
             },
             "skipTo": {
                 "cantPlay": "Güncel müziğe atlayamazsınız.",
@@ -393,41 +393,6 @@
             "unableReconfigureConnection": "Bağlantı yeniden yapılandırılamıyor, sıra silindi."
         }
     },
-    "reusable": {
-        "invalidUsage": "Geçersiz kullanım, lütfen daha fazla bilgi için {prefix} {name} kullanın.",
-        "pageFooter": "Sayfa {actual}/{total}",
-        "lyricsSource": "Kaynak: {source}",
-        "enabled": "Etkin",
-        "disabled": "Devre Dışı"
-    },
-    "utils": {
-        "commonUtil": {
-            "botMissingChannelPerms": "{channel} kanalında şu izinlerim eksik: {permissions}"
-        },
-        "cooldownMessage": "{author}, lütfen {timeleft} kadar bekleyin.",
-        "generalHandler": {
-            "errorJoining": "Ses kanalına katılırken hata oluştu, çünkü: {message}",
-            "errorPlaying": "Müzik çalmaya çalışırken bir hata oluştu, çünkü: {message}",
-            "handleVideoInitial": "Kuyruğa {length} adet yeni şarkı eklendi",
-            "leftVC": "Çok uzun süredir aktif olmadığım için ses kanalından ayrıldım.",
-            "queueEnded": "Çalma kuyruğu sona erdi, daha fazla müzik çalmak için {usage} kullanın.",
-            "startPlaying": "{song} çalınmaya başladı.",
-            "stopPlaying": "{song} durduruldu.",
-            "songRequeued": "{song} çalınırken sorun oluştu, başka bir deneme için kuyruğa yeniden eklendi.",
-            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! `{prefix}login logout` ardından `{prefix}login start` kullanarak tekrar giriş yapın.",
-            "ageRestricted": "{song} yaş kısıtlamalı olduğu ve giriş yapmayı gerektirdiği için çalınamıyor."
-        },
-        "musicDecorator": {
-            "noInVC": "Üzgünüm ama bunu yapmak için bir ses kanalında olmanız gerekiyor.",
-            "noQueue": "Hiçbir şey çalınmıyor.",
-            "notPlaying": "Şu anda müzik çalmıyor. Lütfen önce bir şarkı çalın.",
-            "sameVC": "Benimle aynı ses kanalında olmanız gerekiyor.",
-            "validVCJoinable": "Üzgünüm ama ses kanalınıza **`Bağlanamıyorum`**, uygun izinlere sahip olduğumdan emin olun.",
-            "validVCPermission": "Üzgünüm ama bu ses kanalında **`Konuşma`** yetkim yok; uygun izinlere sahip olduğumdan emin olun.",
-            "useRequestChannel": "Müzik komutları için lütfen istek kanalını {channel} kullanın.",
-            "useRequestChannelDirect": "Bu komut istek kanalında devre dışı bırakılmıştır. Lütfen oynatıcı düğmelerini kullanın veya şarkı adını/bağlantısını doğrudan yazın."
-        }
-    },
     "requestChannel": {
         "title": "Müzik Çalar",
         "standby": "Müzik çalmıyor. Başlamak için şarkı adı veya URL gönderin!",
@@ -468,5 +433,40 @@
         "currentChannel": "Mevcut istek kanalı: {channel}",
         "skipInProgress": "Lütfen bekleyin, bir atlama işlemi devam ediyor.",
         "noPermission": "Bu işlemi gerçekleştirme izniniz yok. Sadece DJ rolü, sunucu yöneticileri veya şarkıyı isteyen kişi bunu yapabilir."
+    },
+    "reusable": {
+        "invalidUsage": "Geçersiz kullanım, lütfen daha fazla bilgi için {prefix} {name} kullanın.",
+        "pageFooter": "Sayfa {actual}/{total}",
+        "lyricsSource": "Kaynak: {source}",
+        "enabled": "Etkin",
+        "disabled": "Devre Dışı"
+    },
+    "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "{channel} kanalında şu izinlerim eksik: {permissions}"
+        },
+        "cooldownMessage": "{author}, lütfen {timeleft} kadar bekleyin.",
+        "generalHandler": {
+            "errorJoining": "Ses kanalına katılırken hata oluştu, çünkü: {message}",
+            "errorPlaying": "Müzik çalmaya çalışırken bir hata oluştu, çünkü: {message}",
+            "handleVideoInitial": "Kuyruğa {length} adet yeni şarkı eklendi.",
+            "leftVC": "Çok uzun süredir aktif olmadığım için ses kanalından ayrıldım.",
+            "queueEnded": "Çalma kuyruğu sona erdi, daha fazla müzik çalmak için {usage} kullanın.",
+            "startPlaying": "{song} çalınmaya başladı.",
+            "stopPlaying": "{song} durduruldu.",
+            "songRequeued": "{song} çalınırken sorun oluştu, başka bir deneme için kuyruğa yeniden eklendi.",
+            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! `{prefix}login logout` ardından `{prefix}login start` kullanarak tekrar giriş yapın.",
+            "ageRestricted": "{song} yaş kısıtlamalı olduğu ve giriş yapmayı gerektirdiği için çalınamıyor."
+        },
+        "musicDecorator": {
+            "noInVC": "Üzgünüm ama bunu yapmak için bir ses kanalında olmanız gerekiyor.",
+            "noQueue": "Hiçbir şey çalınmıyor.",
+            "notPlaying": "Şu anda müzik çalmıyor. Lütfen önce bir şarkı çalın.",
+            "sameVC": "Benimle aynı ses kanalında olmanız gerekiyor.",
+            "useRequestChannel": "Müzik komutları için lütfen istek kanalını {channel} kullanın.",
+            "useRequestChannelDirect": "Bu komut istek kanalında devre dışı bırakılmıştır. Lütfen oynatıcı düğmelerini kullanın veya şarkı adını/bağlantısını doğrudan yazın.",
+            "validVCJoinable": "Üzgünüm ama ses kanalınıza **`Bağlanamıyorum`**, uygun izinlere sahip olduğumdan emin olun.",
+            "validVCPermission": "Üzgünüm ama bu ses kanalında **`Konuşma`** yetkim yok; uygun izinlere sahip olduğumdan emin olun."
+        }
     }
 }
