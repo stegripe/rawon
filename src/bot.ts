@@ -4,6 +4,7 @@ import { ApplicationCommandRegistries, container, RegisterBehavior } from "@sapp
 import { clientOptions } from "./config/index.js";
 import { Rawon } from "./structures/Rawon.js";
 import { NoStackError } from "./utils/structures/NoStackError.js";
+import { stopAutoUpdater } from "./utils/yt-dlp/index.js";
 
 const token = process.env.DISCORD_TOKEN;
 
@@ -44,6 +45,8 @@ async function saveAllQueueStates(): Promise<void> {
 async function gracefulShutdown(signal: string): Promise<void> {
     container.logger.info(`Received ${signal}, shutting down gracefully...`);
     const shutdownStart = Date.now();
+
+    stopAutoUpdater();
 
     const saveStart = Date.now();
     await saveAllQueueStates();

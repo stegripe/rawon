@@ -12,6 +12,11 @@ const scriptsPath = nodePath.resolve(process.cwd(), "cache", "scripts");
 const exePath = nodePath.resolve(scriptsPath, filename);
 
 const UPDATE_INTERVAL_MS = 24 * 60 * 60 * 1000;
+const AUTO_UPDATE_CHECK_INTERVAL_MS = 30 * 60 * 1000;
+const AUTO_UPDATE_MIN_BINARY_AGE_MS = 2 * 60 * 60 * 1000;
+
+let autoUpdateTimer = null;
+let isAutoUpdating = false;
 
 let cookiesManagerRef = null;
 let lastArgsLog = 0;
@@ -155,6 +160,75 @@ export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) =
     windowsHide: true,
     ...spawnOptions
 });
+
+/**
+ * Start a scheduled auto-updater that checks for yt-dlp updates
+ * when the bot has no active music queues.
+ * @param {import("../../structures/Rawon.js").Rawon} client
+ */
+export function startAutoUpdater(client) {
+    if (autoUpdateTimer) return;
+
+    console.info("[yt-dlp AutoUpdater] Scheduled auto-updater started (interval: 30 min).");
+
+    autoUpdateTimer = setInterval(async () => {
+        if (isAutoUpdating) return;
+
+        try {
+            const hasActiveQueues = client.guilds.cache.some(g => g.queue?.playing === true);
+            if (hasActiveQueues) {
+                return;
+            }
+
+            if (!existsSync(exePath)) return;
+            const stat = statSync(exePath);
+            const ageMs = Date.now() - stat.mtimeMs;
+            if (ageMs < AUTO_UPDATE_MIN_BINARY_AGE_MS) return;
+
+            const releases = await got.get("https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1", {
+                timeout: { request: 15_000 },
+            }).json();
+            const release = releases[0];
+            if (!release) return;
+
+            const { execFileSync } = await import("node:child_process");
+            let currentVersion = "";
+            try {
+                currentVersion = execFileSync(exePath, ["--version"], { timeout: 5000 }).toString().trim();
+            } catch {}
+
+            const latestVersion = release.tag_name.replace(/^v/, "");
+            if (currentVersion === latestVersion) return;
+
+            console.info(`[yt-dlp AutoUpdater] New version available: ${currentVersion} -> ${latestVersion}. Updating...`);
+            isAutoUpdating = true;
+
+            const asset = release.assets.find(ast => ast.name === filename);
+            if (!asset) {
+                console.warn("[yt-dlp AutoUpdater] No matching asset found for platform.");
+                return;
+            }
+
+            const buffer = await got.get(asset.browser_download_url, { timeout: { request: 60_000 } }).buffer();
+            mkdirSync(scriptsPath, { recursive: true });
+            writeFileSync(exePath, buffer, { mode: 0o777 });
+
+            console.info(`[yt-dlp AutoUpdater] Updated to ${latestVersion} while bot was idle.`);
+        } catch (err) {
+            console.warn(`[yt-dlp AutoUpdater] Update check failed: ${err.message}`);
+        } finally {
+            isAutoUpdating = false;
+        }
+    }, AUTO_UPDATE_CHECK_INTERVAL_MS);
+}
+
+export function stopAutoUpdater() {
+    if (autoUpdateTimer) {
+        clearInterval(autoUpdateTimer);
+        autoUpdateTimer = null;
+        console.info("[yt-dlp AutoUpdater] Stopped.");
+    }
+}
 
 export default async function ytdl(url, options = {}, spawnOptions = {}, cookiesPath = null) {
     const result = await ytdlOnce(url, options, spawnOptions, cookiesPath);
