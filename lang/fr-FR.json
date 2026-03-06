@@ -11,22 +11,6 @@
                 "usage": "{prefix}eval <du code>"
             },
             "login": {
-                "cookieFileField": "Fichier Cookie",
-                "statusActive": "Actif",
-                "statusMissing": "Aucun cookie disponible",
-                "sizeLabel": "Taille",
-                "lastRefreshLabel": "Dernière actualisation",
-                "lastRefreshNever": "Jamais",
-                "googleLoginField": "Connexion Google",
-                "sessionLoggedIn": "Connecté",
-                "sessionWaiting": "En attente de connexion...",
-                "sessionError": "Erreur : {error}",
-                "sessionIdle": "Non démarré",
-                "accountLabel": "Compte",
-                "accountNA": "`N/A`",
-                "gettingStartedField": "Pour commencer",
-                "gettingStartedText": "Utilisez {loginCmd} pour vous connecter à Google et générer les cookies automatiquement.",
-                "statsTitle": "Statistiques",
                 "description": "Gérer la session de connexion Google pour l'authentification cookies YouTube",
                 "usage": "{prefix}login <start | status | logout>",
                 "slashStartDescription": "Démarrer une session de connexion Google via navigateur",
@@ -53,7 +37,23 @@
                 "loginErrorDescription": "Une erreur est survenue lors de la connexion :\n{error}",
                 "statusTitle": "État de Connexion et Cookies",
                 "logoutSuccess": "Session de connexion effacée.\n\nTous les cookies et les données de profil ont été supprimés.\nUtilisez {cmd} pour démarrer une nouvelle session.",
-                "logoutNoBrowser": "Aucune session de connexion active."
+                "logoutNoBrowser": "Aucune session de connexion active.",
+                "cookieFileField": "Fichier Cookie",
+                "statusActive": "Actif",
+                "statusMissing": "Aucun cookie disponible",
+                "sizeLabel": "Taille",
+                "lastRefreshLabel": "Dernière actualisation",
+                "lastRefreshNever": "Jamais",
+                "googleLoginField": "Connexion Google",
+                "sessionLoggedIn": "Connecté",
+                "sessionWaiting": "En attente de connexion...",
+                "sessionError": "Erreur : {error}",
+                "sessionIdle": "Non démarré",
+                "accountLabel": "Compte",
+                "accountNA": "`N/A`",
+                "gettingStartedField": "Pour commencer",
+                "gettingStartedText": "Utilisez {loginCmd} pour vous connecter à Google et générer les cookies automatiquement.",
+                "statsTitle": "Statistiques"
             },
             "setup": {
                 "description": "Configurer les paramètres du bot (développeurs uniquement)",
@@ -213,16 +213,16 @@
                 "slashStateFilterDescription": "Le filtre de musique qui sera {state, select, enable {activé} other {désactivé}}",
                 "slashStatusDescription": "Vérifier l'état actuel des filtres de musique",
                 "slashStatusFilterDescription": "Le filtre de la chanson que vous voulez vérifier",
-                "specifyFilter": "Veuillez spécifier le filtre de la chanson"
+                "specifyFilter": "Veuillez spécifier le filtre de la chanson."
             },
             "lyrics": {
                 "apiError": "L'API n'a pas pu trouver la chanson {song}, parce que : {message}",
                 "description": "Montrez les paroles de la chanson",
+                "noLyrics": "Aucune parole trouvée pour {song}.",
                 "noQuery": "Il n'y a rien à jouer, ou aucun argument n'est fourni.",
                 "searchingLyrics": "Recherche de paroles...",
                 "slashDescription": "Musique à rechercher",
-                "usage": "{prefix}lyrics [musique]",
-                "noLyrics": "Aucune parole trouvée pour {song}."
+                "usage": "{prefix}lyrics [musique]"
             },
             "nowplaying": {
                 "description": "Afficher l'état du lecteur multimédia",
@@ -256,9 +256,9 @@
                 "description": "Retirer le(s) morceau(x) de la file d'attente",
                 "noPermission": "Vous n'avez pas à utiliser cette commande.",
                 "noPositions": "Veuillez spécifier les positions des chansons à supprimer.",
-                "slashPositionsDescription": "Position des chansons à supprimer, séparées par une virgule ou un espace.",
+                "slashPositionsDescription": "Position des chansons à supprimer, séparées par une virgule ou un espace",
                 "songSkip": "La musique en cours a été supprimée, la chanson a été sautée.\n\n",
-                "songsRemoved": "Supprimé {removed, plural, one {1 musique} other {# musiques}} de la file d'attente",
+                "songsRemoved": "Supprimé {removed, plural, one {1 musique} other {# musiques}} de la file d'attente.",
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
@@ -315,7 +315,7 @@
             "skip": {
                 "description": "Sauter la musique",
                 "skipMessage": "{song} a été sautée.",
-                "voteResultMessage": "{length}/{required} voté pour sauter la chanson en cours"
+                "voteResultMessage": "{length}/{required} voté pour sauter la chanson en cours."
             },
             "skipTo": {
                 "cantPlay": "Vous ne pouvez pas passer à la musique actuelle.",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "Je n'ai pas pu vérifier mes permissions pour ce canal.",
                 "missingBotPermissions": "Il me manque les permissions suivantes dans ce canal: {permissions}",
                 "failedToSetup": "Échec de la configuration du canal de requête. Veuillez vérifier mes permissions.",
-                "alreadyHasChannel": "Ce serveur a déjà un canal de requête configuré sur {channel} Veuillez le supprimer d'abord avant d'en configurer un nouveau.",
+                "alreadyHasChannel": "Ce serveur a déjà un canal de requête configuré sur {channel}. Veuillez le supprimer d'abord avant d'en configurer un nouveau.",
                 "channelAlreadyInUse": "Ce canal est déjà utilisé comme canal de requête.",
                 "noChannelToRemove": "Il n'y a pas de canal de requête configuré à supprimer.",
                 "slashSetDescription": "Définir un canal comme canal de requête",
@@ -391,41 +391,6 @@
             "resumeQueueFooter": "Reprise de la file d'attente",
             "unableJoinStageMessage": "Impossible de rejoindre comme haut-parleur, la file d'attente a été supprimée.",
             "unableReconfigureConnection": "Impossible de reconfigurer la connexion, la file d'attente a été supprimée."
-        }
-    },
-    "reusable": {
-        "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",
-        "pageFooter": "Page {actual} sur {total}",
-        "lyricsSource": "Source: {source}",
-        "enabled": "Activé",
-        "disabled": "Désactivé"
-    },
-    "utils": {
-        "commonUtil": {
-            "botMissingChannelPerms": "Il me manque les permissions suivantes dans {channel}: {permissions}"
-        },
-        "cooldownMessage": "{author}, veuillez attendre {timeleft} de cooldown.",
-        "generalHandler": {
-            "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : {message}",
-            "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : {message}",
-            "handleVideoInitial": "Ajout de {length} chanson(s) à la file d'attente",
-            "leftVC": "Je me suis déconnecté du salon vocal parce que j'ai été inactif pendant trop longtemps.",
-            "queueEnded": "La lecture est terminée, utilisez {usage} pour jouer plus de musique.",
-            "startPlaying": "Lancement de la lecture de {song}",
-            "stopPlaying": "Arrêt de la lecture de {song}",
-            "songRequeued": "Problème lors de la lecture de {song}, remis en file d'attente pour une nouvelle tentative.",
-            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Utilisez `{prefix}login logout` puis `{prefix}login start` pour vous reconnecter.",
-            "ageRestricted": "Impossible de lire {song} car elle est soumise à une limite d'âge et nécessite une connexion."
-        },
-        "musicDecorator": {
-            "noInVC": "Désolé, mais vous devez être dans un salon vocal pour faire cela.",
-            "noQueue": "Il n'y a rien à jouer.",
-            "notPlaying": "Aucune musique n'est en cours de lecture. Veuillez d'abord lancer une chanson.",
-            "sameVC": "Vous devez être dans le même salon vocal que le mien.",
-            "validVCJoinable": "Désolé, mais je ne peux pas **`Me connecter`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
-            "validVCPermission": "Désolé, mais je ne peux pas **`Parler`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions.",
-            "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
-            "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les boutons du lecteur ou taper directement le titre/lien de la chanson."
         }
     },
     "requestChannel": {
@@ -468,5 +433,40 @@
         "currentChannel": "Salon de demandes actuel : {channel}",
         "skipInProgress": "Veuillez patienter, une opération de saut est en cours.",
         "noPermission": "Vous n'avez pas la permission d'effectuer cette action. Seuls le rôle DJ, les gestionnaires du serveur ou le demandeur de la chanson peuvent le faire."
+    },
+    "reusable": {
+        "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",
+        "pageFooter": "Page {actual} sur {total}",
+        "lyricsSource": "Source: {source}",
+        "enabled": "Activé",
+        "disabled": "Désactivé"
+    },
+    "utils": {
+        "commonUtil": {
+            "botMissingChannelPerms": "Il me manque les permissions suivantes dans {channel}: {permissions}"
+        },
+        "cooldownMessage": "{author}, veuillez attendre {timeleft} de cooldown.",
+        "generalHandler": {
+            "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : {message}",
+            "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : {message}",
+            "handleVideoInitial": "Ajout de {length} chanson(s) à la file d'attente.",
+            "leftVC": "Je me suis déconnecté du salon vocal parce que j'ai été inactif pendant trop longtemps.",
+            "queueEnded": "La lecture est terminée, utilisez {usage} pour jouer plus de musique.",
+            "startPlaying": "Lancement de la lecture de {song}",
+            "stopPlaying": "Arrêt de la lecture de {song}",
+            "songRequeued": "Problème lors de la lecture de {song}, remis en file d'attente pour une nouvelle tentative.",
+            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Utilisez `{prefix}login logout` puis `{prefix}login start` pour vous reconnecter.",
+            "ageRestricted": "Impossible de lire {song} car elle est soumise à une limite d'âge et nécessite une connexion."
+        },
+        "musicDecorator": {
+            "noInVC": "Désolé, mais vous devez être dans un salon vocal pour faire cela.",
+            "noQueue": "Il n'y a rien à jouer.",
+            "notPlaying": "Aucune musique n'est en cours de lecture. Veuillez d'abord lancer une chanson.",
+            "sameVC": "Vous devez être dans le même salon vocal que le mien.",
+            "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
+            "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les boutons du lecteur ou taper directement le titre/lien de la chanson.",
+            "validVCJoinable": "Désolé, mais je ne peux pas **`Me connecter`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
+            "validVCPermission": "Désolé, mais je ne peux pas **`Parler`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions."
+        }
     }
 }

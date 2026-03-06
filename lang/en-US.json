@@ -213,7 +213,7 @@
                 "slashStateFilterDescription": "The song filter that will be {state, select, enable {enabled} other {disabled}}",
                 "slashStatusDescription": "Check the current status of song filters",
                 "slashStatusFilterDescription": "The song filter that you want to check",
-                "specifyFilter": "Please specify the song filter"
+                "specifyFilter": "Please specify the song filter."
             },
             "lyrics": {
                 "apiError": "The API couldn't find the song {song}, because: {message}",
@@ -258,7 +258,7 @@
                 "noPositions": "Please specify the song positions to remove.",
                 "slashPositionsDescription": "Position of the songs to remove separated by comma or space",
                 "songSkip": "The current song was removed, song skipped.\n\n",
-                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue",
+                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue.",
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
@@ -315,7 +315,7 @@
             "skip": {
                 "description": "Skip the music",
                 "skipMessage": "Skipped {song}",
-                "voteResultMessage": "{length}/{required} voted to skip the current song"
+                "voteResultMessage": "{length}/{required} voted to skip the current song."
             },
             "skipTo": {
                 "cantPlay": "You can't skip to current music.",
@@ -352,7 +352,7 @@
                 "noBotPermissions": "I couldn't check my permissions for that channel.",
                 "missingBotPermissions": "I'm missing the following permissions in that channel: {permissions}",
                 "failedToSetup": "Failed to set up the request channel. Please check my permissions.",
-                "alreadyHasChannel": "This server already has a request channel set to {channel} Please remove it first before setting a new one.",
+                "alreadyHasChannel": "This server already has a request channel set to {channel}. Please remove it first before setting a new one.",
                 "channelAlreadyInUse": "This channel is already being used as a request channel.",
                 "noChannelToRemove": "There's no request channel set to remove.",
                 "slashSetDescription": "Set a channel as the request channel",
