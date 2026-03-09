@@ -15,13 +15,12 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "build": "pnpm run lint && pnpm run compile",
-        "compile": "npx swc src -d dist --strip-leading-paths",
+        "build": "pnpm lint && rimraf dist && npx swc src -d dist --strip-leading-paths",
         "tscompile": "tsc --build tsconfig.json",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "start": "node --es-module-specifier-resolution=node -r dotenv/config . | pino-pretty -t \"SYS:yyyy-MM-dd HH:mm:ss\"",
-        "dev": "rimraf ./dist && pnpm run compile && pnpm start"
+        "dev": "pnpm build && pnpm start"
     },
     "engines": {
         "node": ">=20.0.0",
