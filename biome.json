@@ -1,8 +1,21 @@
 {
-    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "extends": ["@stegripe/biomejs-config"],
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": false
+    },
     "files": {
-        "includes": ["**", "!**/src/utils/yt-dlp/*"]
+        "includes": ["src/**/*.ts", "*.json", "!**/src/utils/yt-dlp/*"]
+    },
+    "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "double"
+        }
     },
     "linter": {
         "rules": {

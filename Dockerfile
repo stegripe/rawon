@@ -1,6 +1,6 @@
 FROM node:24-alpine AS build-stage
 
-RUN apk add --no-cache python3 make g++ git && \
+RUN apk add --no-cache python3 make g++ && \
     corepack enable && corepack prepare pnpm@10.12.1 --activate
 
 WORKDIR /tmp/build
@@ -11,10 +11,9 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN COMMIT_SHA=$(git rev-parse HEAD 2>/dev/null || echo "Unknown") && echo "COMMIT_SHA=$COMMIT_SHA" > /tmp/build/.env.build
-
+ARG COMMIT_SHA
+RUN echo "COMMIT_SHA=${COMMIT_SHA:-Unknown}" > /tmp/build/.env.build
 RUN pnpm build
-
 RUN pnpm prune --production
 
 FROM node:24-alpine
@@ -24,16 +23,16 @@ LABEL maintainer="Stegripe Development <support@stegripe.org>"
 
 WORKDIR /app
 
-RUN apk add --no-cache ffmpeg python3 \
-    chromium nss freetype harfbuzz ca-certificates ttf-freefont \
-    && ln -sf python3 /usr/bin/python
+RUN apk add --no-cache \
+        ffmpeg python3 \
+        chromium nss freetype harfbuzz ca-certificates ttf-freefont && \
+    ln -sf python3 /usr/bin/python && \
+    mkdir -p /app/cache /app/cache/cookies/browser-profile
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV CHROMIUM_PATH=/usr/bin/chromium-browser
 
-RUN mkdir -p /app/cache /app/cache/cookies/browser-profile
-
-COPY --from=build-stage /tmp/build/package.json .
+COPY --from=build-stage /tmp/build/package.json ./
 COPY --from=build-stage /tmp/build/node_modules ./node_modules
 COPY --from=build-stage /tmp/build/dist ./dist
 COPY --from=build-stage /tmp/build/src/utils/yt-dlp ./src/utils/yt-dlp
