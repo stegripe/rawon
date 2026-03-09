@@ -162,8 +162,6 @@ export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) =
 });
 
 /**
- * Start a scheduled auto-updater that checks for yt-dlp updates
- * when the bot has no active music queues.
  * @param {import("../../structures/Rawon.js").Rawon} client
  */
 export function startAutoUpdater(client) {
