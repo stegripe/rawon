@@ -373,7 +373,9 @@
             "message1": "Xin lỗi, tương tác chỉ dành cho <@{user}> và quản lý máy chủ.",
             "message2": "Xin lỗi, tương tác chỉ dành cho <@{user}>",
             "devOnly": "Lệnh chỉ dành cho nhà phát triển.",
-            "lyricsCommandNotFound": "Không tìm thấy lệnh lời bài hát."
+            "lyricsCommandNotFound": "Không tìm thấy lệnh lời bài hát.",
+            "wrongBot": "Lệnh này phải được thực thi trên {botMention} làm bot chính cho máy chủ này.",
+            "primaryBotFallback": "bot chính"
         },
         "createMessage": "Chào {author}, tiền tố của tôi là {prefix}",
         "cmdLoading": "Đang tải...",

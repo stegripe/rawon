@@ -373,7 +373,9 @@
             "message1": "そのインタラクションは<@{user}>とサーバースタッフのためのものです。",
             "message2": "そのインタラクションは<@{user}>のためのものです。",
             "devOnly": "開発者専用コマンド。",
-            "lyricsCommandNotFound": "歌詞コマンドが見つかりません。"
+            "lyricsCommandNotFound": "歌詞コマンドが見つかりません。",
+            "wrongBot": "このコマンドはこのサーバーのメインボットである {botMention} で実行する必要があります。",
+            "primaryBotFallback": "メインボット"
         },
         "createMessage": "こんにちは、{author}、私のプレフィックスは{prefix}です。",
         "cmdLoading": "起動中...",

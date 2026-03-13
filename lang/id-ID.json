@@ -373,7 +373,9 @@
             "message1": "Sori, tapi interaction ini cuma buat <@{user}> sama staff server.",
             "message2": "Sori, tapi interaction ini cuma buat <@{user}>",
             "devOnly": "Command buat developer aja.",
-            "lyricsCommandNotFound": "Command lyrics gak ketemu."
+            "lyricsCommandNotFound": "Command lyrics gak ketemu.",
+            "wrongBot": "Perintah ini harus dijalanin di {botMention} sebagai bot utama/primer server ini.",
+            "primaryBotFallback": "bot utama/primer"
         },
         "createMessage": "Halo {author}, prefix-ku {prefix}",
         "cmdLoading": "Loading...",

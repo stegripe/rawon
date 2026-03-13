@@ -129,6 +129,12 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             musicCommands.some((name) => cmd.aliases.includes(name))));
             }
 
+            const thisBotGuildForContext = interaction.guild
+                ? (client.guilds.cache.get(interaction.guild.id) ?? interaction.guild)
+                : interaction.guild;
+            const __ = i18n__(client, thisBotGuildForContext);
+            const __mf = i18n__mf(client, thisBotGuildForContext);
+
             if (isMusicCommand) {
                 let member = thisBotGuild.members.cache.get(interaction.user.id);
                 if (!member) {
@@ -181,6 +187,27 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             `[MultiBot] ${client.user?.tag} ❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
                                 `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - INTERACTION WILL NOT BE EXECUTED!`,
                         );
+                        if (interaction.isRepliable()) {
+                            const primaryBot =
+                                client.multiBotManager.getResponsibleBot(thisBotGuild);
+                            const botMention = primaryBot
+                                ? `<@${primaryBot.user?.id}>`
+                                : __("events.createInteraction.primaryBotFallback");
+                            await interaction
+                                .reply({
+                                    flags: MessageFlags.Ephemeral,
+                                    embeds: [
+                                        createEmbed(
+                                            "error",
+                                            __mf("events.createInteraction.wrongBot", {
+                                                botMention,
+                                            }),
+                                            true,
+                                        ),
+                                    ],
+                                })
+                                .catch(() => null);
+                        }
                         return;
                     }
 
@@ -191,6 +218,26 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     this.container.logger.debug(
                         `[MultiBot] ${client.user?.tag} skipping music interaction "${commandName}" - user not in voice and not responsible bot`,
                     );
+                    if (interaction.isRepliable()) {
+                        const primaryBot = client.multiBotManager.getResponsibleBot(thisBotGuild);
+                        const botMention = primaryBot
+                            ? `<@${primaryBot.user?.id}>`
+                            : __("events.createInteraction.primaryBotFallback");
+                        await interaction
+                            .reply({
+                                flags: MessageFlags.Ephemeral,
+                                embeds: [
+                                    createEmbed(
+                                        "error",
+                                        __mf("events.createInteraction.wrongBot", {
+                                            botMention,
+                                        }),
+                                        true,
+                                    ),
+                                ],
+                            })
+                            .catch(() => null);
+                    }
                     return;
                 }
             } else if (interaction.isChatInputCommand()) {
@@ -199,12 +246,52 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     this.container.logger.debug(
                         `[MultiBot] ${client.user?.tag} skipping interaction "${commandName}" - not responsible bot`,
                     );
+                    if (interaction.isRepliable()) {
+                        const primaryBot = client.multiBotManager.getResponsibleBot(thisBotGuild);
+                        const botMention = primaryBot
+                            ? `<@${primaryBot.user?.id}>`
+                            : __("events.createInteraction.primaryBotFallback");
+                        await interaction
+                            .reply({
+                                flags: MessageFlags.Ephemeral,
+                                embeds: [
+                                    createEmbed(
+                                        "error",
+                                        __mf("events.createInteraction.wrongBot", {
+                                            botMention,
+                                        }),
+                                        true,
+                                    ),
+                                ],
+                            })
+                            .catch(() => null);
+                    }
                     return;
                 }
             } else if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
                 this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} skipping interaction - not responsible bot`,
                 );
+                if (interaction.isRepliable()) {
+                    const primaryBot = client.multiBotManager.getResponsibleBot(thisBotGuild);
+                    const botMention = primaryBot
+                        ? `<@${primaryBot.user?.id}>`
+                        : __("events.createInteraction.primaryBotFallback");
+                    await interaction
+                        .reply({
+                            flags: MessageFlags.Ephemeral,
+                            embeds: [
+                                createEmbed(
+                                    "error",
+                                    __mf("events.createInteraction.wrongBot", {
+                                        botMention,
+                                    }),
+                                    true,
+                                ),
+                            ],
+                        })
+                        .catch(() => null);
+                }
                 return;
             }
         }
