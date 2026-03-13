@@ -373,7 +373,9 @@
             "message1": "Lo siento, pero esta interacción es solo para <@{user}> y el staff del servidor.",
             "message2": "Lo siento, pero esta interacción es solo para <@{user}>",
             "devOnly": "Comando solo para desarrolladores.",
-            "lyricsCommandNotFound": "Comando de letras no encontrado."
+            "lyricsCommandNotFound": "Comando de letras no encontrado.",
+            "wrongBot": "Este comando debe ejecutarse en {botMention} como el bot principal de este servidor.",
+            "primaryBotFallback": "el bot principal"
         },
         "createMessage": "Hola {author}, mi prefix es {prefix}",
         "cmdLoading": "Cargando...",

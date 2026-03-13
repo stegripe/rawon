@@ -373,7 +373,9 @@
             "message1": "Tindakan ini khas untuk <@{user}> dan staf server.",
             "message2": "Tindakan ini khas untuk <@{user}>",
             "devOnly": "Arahan khusus untuk pembangun.",
-            "lyricsCommandNotFound": "Arahan lirik tidak dijumpai."
+            "lyricsCommandNotFound": "Arahan lirik tidak dijumpai.",
+            "wrongBot": "Perintah ini mesti dilaksanakan pada {botMention} sebagai bot utama untuk pelayan ini.",
+            "primaryBotFallback": "bot utama"
         },
         "createMessage": "Hai {author}, prefix saya ialah {prefix}",
         "cmdLoading": "Memuat...",

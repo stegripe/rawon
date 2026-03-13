@@ -373,7 +373,9 @@
             "message1": "죄송해요, 이 상호작용은 <@{user}>와 서버 스태프만 사용할 수 있어요.",
             "message2": "죄송해요, 이 상호작용은 <@{user}>만 사용할 수 있어요.",
             "devOnly": "개발자 전용 명령어.",
-            "lyricsCommandNotFound": "가사 명령어를 찾을 수 없어요."
+            "lyricsCommandNotFound": "가사 명령어를 찾을 수 없어요.",
+            "wrongBot": "이 명령어는 이 서버의 기본 봇인 {botMention}에서 실행되어야 합니다.",
+            "primaryBotFallback": "기본 봇"
         },
         "createMessage": "안녕하세요 {author}님, 제 접두사는 {prefix}예요",
         "cmdLoading": "로딩 중...",

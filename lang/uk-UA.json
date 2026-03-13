@@ -373,7 +373,9 @@
             "message1": "Вибачте, але ця взаємодія лише для <@{user}> та персоналу сервера.",
             "message2": "Вибачте, але ця взаємодія лише для <@{user}>",
             "devOnly": "Команда тільки для розробників.",
-            "lyricsCommandNotFound": "Команда lyrics не знайдена."
+            "lyricsCommandNotFound": "Команда lyrics не знайдена.",
+            "wrongBot": "Цю команду має виконувати {botMention} як основний бот цього сервера.",
+            "primaryBotFallback": "основний бот"
         },
         "createMessage": "Привіт {author}, мій префікс {prefix}",
         "cmdLoading": "Завантаження...",
