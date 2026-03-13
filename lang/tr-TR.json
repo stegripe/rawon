@@ -373,7 +373,9 @@
             "message1": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> ve sunucu moderatörleri için kullanılabilir.",
             "message2": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> için kullanılabilir.",
             "devOnly": "Sadece geliştiricilere özel komut.",
-            "lyricsCommandNotFound": "Şarkı sözleri komutu bulunamadı."
+            "lyricsCommandNotFound": "Şarkı sözleri komutu bulunamadı.",
+            "wrongBot": "Bu komut, bu sunucunun ana botu olarak {botMention} üzerinde yürütülmelidir.",
+            "primaryBotFallback": "ana bot"
         },
         "createMessage": "Merhaba {author}, benim ön ekim: {prefix}",
         "cmdLoading": "Yükleniyor...",

@@ -373,7 +373,9 @@
             "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
             "message2": "Sorry, but that interaction is only for <@{user}>",
             "devOnly": "Developer-only command.",
-            "lyricsCommandNotFound": "Lyrics command not found."
+            "lyricsCommandNotFound": "Lyrics command not found.",
+            "wrongBot": "This command must be executed on {botMention} as the primary bot for this server.",
+            "primaryBotFallback": "the primary bot"
         },
         "createMessage": "Hi {author}, my prefix is {prefix}",
         "cmdLoading": "Loading...",

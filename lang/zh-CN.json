@@ -373,7 +373,9 @@
             "message1": "抱歉，该互动仅限于 <@{user}> 和伺服器权限者。",
             "message2": "抱歉，该互动仅限于 <@{user}>",
             "devOnly": "仅限开发者的命令。",
-            "lyricsCommandNotFound": "找不到歌词命令。"
+            "lyricsCommandNotFound": "找不到歌词命令。",
+            "wrongBot": "此命令必须在作为此服务器主机器人的 {botMention} 上执行。",
+            "primaryBotFallback": "主机器人"
         },
         "createMessage": "你好 {author}, 我的前缀是 {prefix}",
         "cmdLoading": "加载中...",
