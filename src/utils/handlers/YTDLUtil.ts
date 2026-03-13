@@ -144,7 +144,7 @@ export async function getStream(
 
 const MAX_TRANSIENT_RETRIES = 5;
 const MAX_BACKOFF_DELAY_MS = 10_000;
-const STREAM_VALIDATION_DELAY_MS = 200;
+const STREAM_VALIDATION_DELAY_MS = 500;
 
 async function attemptStreamWithRetry(
     client: Rawon,
@@ -165,7 +165,7 @@ async function attemptStreamWithRetry(
             : {
                   output: "-",
                   quiet: true,
-                  format: "bestaudio",
+                  format: "bestaudio/best",
               };
 
         const options = { ...baseOptions };

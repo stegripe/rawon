@@ -262,6 +262,11 @@ export class ServerQueue {
                 }
 
                 const __mf = i18n__mf(this.client, this.textChannel.guild);
+                if (err && (err as Error).name === "AbortError") {
+                    this.client.logger.debug("Playback aborted:", (err as Error).message);
+                    return;
+                }
+
                 (async () => {
                     const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
                         this.textChannel.guild,

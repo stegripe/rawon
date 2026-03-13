@@ -412,7 +412,7 @@ export class AudioCacheManager {
                     {
                         output: "-",
                         quiet: true,
-                        format: "bestaudio",
+                        format: "bestaudio/best",
                     },
                     { stdio: ["ignore", "pipe", "pipe"] },
                 );
