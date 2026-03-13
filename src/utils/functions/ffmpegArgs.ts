@@ -52,6 +52,7 @@ export function ffmpegArgs(
         "-loglevel",
         "0",
         ...inputArgs,
+        "-vn",
         "-ar",
         "48000",
         "-ac",
