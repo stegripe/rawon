@@ -8,7 +8,11 @@ import {
     type SpotifyResolveResult,
     type SpotifyTrack,
 } from "../../../typings/index.js";
-import { getMaxResThumbnail, getYouTubeThumbnail } from "../../functions/getMaxResThumbnail.js";
+import {
+    getMaxResThumbnail,
+    getSoundCloudThumbnail,
+    getYouTubeThumbnail,
+} from "../../functions/getMaxResThumbnail.js";
 import { youtube, youtubeMusic } from "../YouTubeUtil.js";
 import { getInfo } from "../YTDLUtil.js";
 import { checkQuery } from "./checkQuery.js";
@@ -61,7 +65,9 @@ export async function searchTrack(
                             {
                                 duration: track.full_duration,
                                 id: track.id.toString(),
-                                thumbnail: track.artwork_url,
+                                thumbnail: getSoundCloudThumbnail(
+                                    track.artwork_url ?? track.user?.avatar_url,
+                                ),
                                 title: track.title,
                                 url: track.permalink_url,
                             },
@@ -75,7 +81,9 @@ export async function searchTrack(
                             (track): Song => ({
                                 duration: track.full_duration,
                                 id: track.id.toString(),
-                                thumbnail: track.artwork_url,
+                                thumbnail: getSoundCloudThumbnail(
+                                    track.artwork_url ?? track.user?.avatar_url,
+                                ),
                                 title: track.title,
                                 url: track.permalink_url,
                             }),
@@ -85,7 +93,10 @@ export async function searchTrack(
                         result.playlist = {
                             title: playlist.title,
                             url: playlist.permalink_url,
-                            thumbnail: playlist.artwork_url ?? undefined,
+                            thumbnail:
+                                getSoundCloudThumbnail(
+                                    playlist.artwork_url ?? playlist.user?.avatar_url,
+                                ) || undefined,
                             author: playlist.user?.username,
                         };
                         break;
@@ -391,7 +402,7 @@ export async function searchTrack(
                 (track): Song => ({
                     duration: track.full_duration,
                     id: track.id.toString(),
-                    thumbnail: track.artwork_url,
+                    thumbnail: getSoundCloudThumbnail(track.artwork_url ?? track.user?.avatar_url),
                     title: track.title,
                     url: track.permalink_url,
                 }),
