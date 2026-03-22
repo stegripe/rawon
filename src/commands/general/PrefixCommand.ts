@@ -58,7 +58,7 @@ export class PrefixCommand extends ContextCommand {
 
     @memberReqPerms(["ManageGuild"], i18n.__("commands.general.prefix.noPermission"))
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const guildId = ctx.guild?.id;
         if (!guildId) {

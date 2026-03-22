@@ -2,6 +2,7 @@ import { clearTimeout, setTimeout } from "node:timers";
 import { type AudioPlayerPlayingState, type AudioResource } from "@discordjs/voice";
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     ButtonBuilder,
     ButtonStyle,
     ChannelType,
@@ -383,7 +384,7 @@ export class RequestChannelManager {
             });
     }
 
-    public createPlayerButtons(guild: Guild): ActionRowBuilder<ButtonBuilder>[] {
+    public createPlayerButtons(guild: Guild): APIMessageTopLevelComponent[] {
         let queue = guild.queue;
         if (!queue && this.client.config.isMultiBot) {
             const bots = this.client.multiBotManager.getBots();
@@ -437,7 +438,10 @@ export class RequestChannelManager {
                 .setStyle(ButtonStyle.Secondary),
         );
 
-        return [row1, row2];
+        return [
+            row1.toJSON() as APIMessageTopLevelComponent,
+            row2.toJSON() as APIMessageTopLevelComponent,
+        ];
     }
 
     public async updatePlayerMessage(guild: Guild, immediate = false): Promise<void> {

@@ -1,6 +1,7 @@
 import { Buffer } from "node:buffer";
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     BaseInteraction,
     type BaseMessageOptions,
     ButtonBuilder,
@@ -113,7 +114,7 @@ export class CommandContext {
             );
             (options as InteractionReplyOptions).components = [
                 ...((options as InteractionReplyOptions).components ?? []),
-                deletionBtn,
+                deletionBtn.toJSON() as APIMessageTopLevelComponent,
             ];
         }
         if (this.isInteraction()) {
@@ -172,8 +173,12 @@ export class CommandContext {
         return this.context instanceof ButtonInteraction;
     }
 
-    public isStringSelectMenu(): boolean {
-        return this.context instanceof MessageComponentInteraction;
+    public isStringSelectMenu(): this is this & {
+        context: StringSelectMenuInteraction;
+    } {
+        return (
+            this.context instanceof MessageComponentInteraction && this.context.isStringSelectMenu()
+        );
     }
 
     public isModal(): boolean {

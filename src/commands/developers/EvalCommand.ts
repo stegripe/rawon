@@ -36,7 +36,7 @@ import { i18n__ } from "../../utils/functions/i18n.js";
 })
 export class EvalCommand extends ContextCommand {
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = localCtx.client as Rawon;
         const __ = i18n__(client, localCtx.guild);
         const _msg = localCtx;

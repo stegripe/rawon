@@ -187,7 +187,7 @@ class CommandsCompatibility {
 
         const ctx = new CommandContext(message, args);
 
-        const ctxCommand = command as unknown as {
+        const ctxCommand = command as {
             contextRun?: (ctx: CommandContext) => Promise<unknown>;
         };
 

@@ -612,9 +612,9 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
             musicSelectionType:
                 row.music_selection_type ?? BOT_SETTINGS_DEFAULTS.musicSelectionType,
             enableAudioCache:
-                row.enable_audio_cache !== null
-                    ? row.enable_audio_cache === 1
-                    : BOT_SETTINGS_DEFAULTS.enableAudioCache,
+                row.enable_audio_cache === null
+                    ? BOT_SETTINGS_DEFAULTS.enableAudioCache
+                    : row.enable_audio_cache === 1,
         };
     }
 

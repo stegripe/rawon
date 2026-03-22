@@ -4,6 +4,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { type Command, Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     ApplicationCommandType,
     type BitFieldResolvable,
     ButtonBuilder,
@@ -1144,7 +1145,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
                 const createPaginationButtons = (
                     totalPages: number,
-                ): ActionRowBuilder<ButtonBuilder>[] => {
+                ): APIMessageTopLevelComponent[] => {
                     if (totalPages <= 1) {
                         return [];
                     }
@@ -1167,7 +1168,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             .setEmoji("⏩")
                             .setStyle(ButtonStyle.Secondary),
                     );
-                    return [row];
+                    return [row.toJSON() as APIMessageTopLevelComponent];
                 };
 
                 await interaction.reply({
@@ -1418,7 +1419,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             .setEmoji("⏩")
                             .setStyle(ButtonStyle.Secondary),
                     );
-                    return [row];
+                    return [row.toJSON() as APIMessageTopLevelComponent];
                 };
 
                 embed.setFooter({

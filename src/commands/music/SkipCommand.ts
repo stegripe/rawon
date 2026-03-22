@@ -62,7 +62,7 @@ export class SkipCommand extends ContextCommand {
         }
 
         const djRole = await client.utils
-            .fetchDJRole(ctx.guild as unknown as GuildMember["guild"])
+            .fetchDJRole(ctx.guild as GuildMember["guild"])
             .catch(() => null);
         const song = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
 
@@ -74,7 +74,7 @@ export class SkipCommand extends ContextCommand {
             );
         }
 
-        if (!ableToSkip(ctx.member as unknown as GuildMember)) {
+        if (!ableToSkip(ctx.member as GuildMember)) {
             const required = client.utils.requiredVoters(
                 ctx.guild?.members.me?.voice.channel?.members.size ?? 0,
             );
@@ -83,7 +83,7 @@ export class SkipCommand extends ContextCommand {
                 await this.manager.add((): undefined => {
                     queue.skipVoters = queue.skipVoters.filter(
                         (x) => x !== ctx.author.id,
-                    ) as unknown as string[];
+                    ) as string[];
                 });
                 await ctx.reply({
                     embeds: [

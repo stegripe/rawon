@@ -138,7 +138,7 @@ export class SetupCommand extends ContextCommand {
     }
 
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
 

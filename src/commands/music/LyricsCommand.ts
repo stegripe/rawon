@@ -44,7 +44,7 @@ export class LyricsCommand extends ContextCommand {
     }
 
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
@@ -73,7 +73,7 @@ export class LyricsCommand extends ContextCommand {
 
         const songThumbnail = userQuery === null ? currentSong?.song.thumbnail : undefined;
 
-        await this.getLyrics(client, ctx, query as unknown as string, songThumbnail, __, __mf);
+        await this.getLyrics(client, ctx, query as string, songThumbnail, __, __mf);
     }
 
     public async fetchLyricsData(
@@ -144,7 +144,7 @@ export class LyricsCommand extends ContextCommand {
             const artist = parts.length > 1 ? parts[0].trim() : "";
             const title = parts.length > 1 ? parts.slice(1).join(" ").trim() : cleanSong;
 
-            const searchUrl = `https://lrclib.net/api/search?q=${encodeURIComponent(cleanSong)}`;
+            const searchUrl = `https://lrclib.net/api/search?track_name=${encodeURIComponent(title)}&artist_name=${encodeURIComponent(artist)}`;
             const searchResponse = await client.request
                 .get(searchUrl, { timeout: { request: 5_000 } })
                 .json<Array<{ trackName: string; artistName: string; id: number }>>();

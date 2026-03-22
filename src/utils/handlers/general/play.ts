@@ -152,10 +152,7 @@ export async function play(
                     try {
                         queue.player.emit(
                             "error",
-                            new AudioPlayerError(
-                                e as Error,
-                                undefined as unknown as import("@discordjs/voice").AudioResource,
-                            ),
+                            new AudioPlayerError(e as Error, undefined as never),
                         );
                     } catch (_) {}
                 });
@@ -248,10 +245,7 @@ export async function play(
                     try {
                         queue.player.emit(
                             "error",
-                            new AudioPlayerError(
-                                e as Error,
-                                undefined as unknown as import("@discordjs/voice").AudioResource,
-                            ),
+                            new AudioPlayerError(e as Error, undefined as never),
                         );
                     } catch (_) {}
                 });
@@ -389,7 +383,7 @@ export async function play(
                     createEmbed(
                         "error",
                         `${__mf("utils.generalHandler.errorPlaying", {
-                            message: `\`${(error as Error).message.substring(0, 200)}\``,
+                            message: `\`${(error as Error).message.slice(0, 200)}\``,
                         })}`,
                         true,
                     ),
@@ -449,7 +443,7 @@ export async function play(
         );
         queue.client.logger.debug(
             "[PLAY_HANDLER][RESOURCE_DIAGNOSTIC] ffmpegStderr:",
-            ffmpegStderr.substring(0, 10_000),
+            ffmpegStderr.slice(0, 10_000),
         );
         queue.client.logger.debug("[PLAY_HANDLER][RESOURCE_DIAGNOSTIC] song metadata:", {
             title: song.song.title,
@@ -461,7 +455,7 @@ export async function play(
                 "error",
                 new AudioPlayerError(
                     err instanceof Error ? err : new Error(String(err)),
-                    undefined as unknown as import("@discordjs/voice").AudioResource,
+                    undefined as never,
                 ),
             );
         } catch (_) {}
@@ -511,8 +505,7 @@ export async function play(
                     "error",
                     new AudioPlayerError(
                         suppressed.error as Error,
-                        resource ??
-                            (undefined as unknown as import("@discordjs/voice").AudioResource),
+                        resource ?? (undefined as never),
                     ),
                 );
                 return;
@@ -547,11 +540,7 @@ export async function play(
                 );
                 queue.player.emit(
                     "error",
-                    new AudioPlayerError(
-                        error as Error,
-                        resource ??
-                            (undefined as unknown as import("@discordjs/voice").AudioResource),
-                    ),
+                    new AudioPlayerError(error as Error, resource ?? (undefined as never)),
                 );
             });
     }

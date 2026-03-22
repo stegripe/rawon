@@ -187,7 +187,7 @@ export class ServerQueue {
                                         })}`,
                                     ).setThumbnail(
                                         typeof song.song.thumbnail === "string" &&
-                                            /^https?:\/\//i.test(song.song.thumbnail)
+                                            /^https?:\/\//u.test(song.song.thumbnail)
                                             ? song.song.thumbnail
                                             : null,
                                     ),
