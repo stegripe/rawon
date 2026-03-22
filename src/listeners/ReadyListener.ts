@@ -2,7 +2,7 @@ import { setInterval } from "node:timers";
 import { joinVoiceChannel } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
-import { ActivityType, ChannelType, type Presence } from "discord.js";
+import { ActivityType, ChannelType, type Presence, type TextChannel } from "discord.js";
 import i18n from "../config/index.js";
 import { type Rawon } from "../structures/Rawon.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
@@ -252,7 +252,14 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
 
             const channel = guild.channels.cache.get(requestChannelData.channelId);
 
-            if (!channel || channel.type !== ChannelType.GuildText) {
+            if (
+                !channel ||
+                ![
+                    ChannelType.GuildText,
+                    ChannelType.GuildVoice,
+                    ChannelType.GuildStageVoice,
+                ].includes(channel.type)
+            ) {
                 this.container.logger.warn(
                     `[Validation] Request channel ${requestChannelData.channelId} for guild ${guild.name} (${guildId}) is invalid. Cleaning up...`,
                 );
@@ -327,9 +334,9 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 }
 
                 const textChannel = guild.channels.cache.get(queueState.textChannelId);
-                if (!textChannel || textChannel.type !== ChannelType.GuildText) {
+                if (!textChannel || !textChannel.isTextBased() || textChannel.isDMBased()) {
                     this.container.logger.warn(
-                        `Could not find text channel ${queueState.textChannelId} for queue restore in guild ${guildId}`,
+                        `Could not find message-capable channel ${queueState.textChannelId} for queue restore in guild ${guildId}`,
                     );
                     return;
                 }
@@ -367,7 +374,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                             `restoringBotId=${botId}, queueOwnerBotId=${queueOwnerBotId ?? "none"}, isMultiBot=${this.container.config.isMultiBot}`,
                     );
 
-                    guild.queue = new ServerQueue(textChannel);
+                    guild.queue = new ServerQueue(textChannel as TextChannel);
 
                     if (queueOwnerBotId) {
                         this.container.logger.info(
