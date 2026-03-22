@@ -9,7 +9,9 @@ import {
     PermissionFlagsBits,
     PermissionsBitField,
     type SlashCommandBuilder,
+    type StageChannel,
     type TextChannel,
+    type VoiceChannel,
 } from "discord.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
@@ -46,7 +48,11 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
                             .setDescription(
                                 i18n.__("commands.music.requestChannel.slashChannelDescription"),
                             )
-                            .addChannelTypes(ChannelType.GuildText)
+                            .addChannelTypes(
+                                ChannelType.GuildText,
+                                ChannelType.GuildVoice,
+                                ChannelType.GuildStageVoice,
+                            )
                             .setRequired(true),
                     ),
             )
@@ -67,6 +73,21 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
     },
 })
 export class RequestChannelCommand extends ContextCommand {
+    private isSupportedRequestChannel(
+        channel:
+            | LocalCommandContext["channel"]
+            | ReturnType<NonNullable<LocalCommandContext["options"]>["getChannel"]>
+            | undefined,
+    ): channel is TextChannel | VoiceChannel | StageChannel {
+        return (
+            channel !== null &&
+            channel !== undefined &&
+            [ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildStageVoice].includes(
+                channel.type,
+            )
+        );
+    }
+
     private getClient(ctx: CommandContext): Rawon {
         return ctx.client as Rawon;
     }
@@ -107,7 +128,7 @@ export class RequestChannelCommand extends ContextCommand {
                     ? localCtx.guild.channels.cache.get(localCtx.args[1].replaceAll(/[<#>]/gu, ""))
                     : undefined);
 
-            if (!channel || channel.type !== ChannelType.GuildText) {
+            if (!this.isSupportedRequestChannel(channel)) {
                 return localCtx.reply({
                     embeds: [
                         createEmbed("warn", __("commands.music.requestChannel.invalidChannel")),
@@ -147,7 +168,6 @@ export class RequestChannelCommand extends ContextCommand {
                 });
             }
 
-            const textChannel = channel as TextChannel;
             let botMember = localCtx.guild.members.cache.get(client.user!.id);
             if (!botMember) {
                 try {
@@ -165,7 +185,7 @@ export class RequestChannelCommand extends ContextCommand {
                 }
             }
 
-            const botPermissions = textChannel.permissionsFor(botMember);
+            const botPermissions = channel.permissionsFor(botMember);
 
             const requiredPermissions = [
                 PermissionsBitField.Flags.ViewChannel,
