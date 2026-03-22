@@ -72,7 +72,7 @@ export class SkipToCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const member = localCtx.member as GuildMember | null;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
@@ -90,9 +90,7 @@ export class SkipToCommand extends ContextCommand {
             return;
         }
 
-        const djRole = await client.utils.fetchDJRole(
-            ctx.guild as unknown as NonNullable<typeof ctx.guild>,
-        );
+        const djRole = await client.utils.fetchDJRole(ctx.guild as NonNullable<typeof ctx.guild>);
         if (
             client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true &&
             (
@@ -154,7 +152,7 @@ export class SkipToCommand extends ContextCommand {
             return;
         }
         const np = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
-        const fullSongs = [...(queue.songs.sortByIndex().values() as unknown as QueueSong[])];
+        const fullSongs = [...queue.songs.sortByIndex().values()];
         const songs =
             queue.loopMode === "QUEUE"
                 ? fullSongs
@@ -213,7 +211,7 @@ export class SkipToCommand extends ContextCommand {
             return;
         }
 
-        void play(ctx.guild as unknown as NonNullable<typeof ctx.guild>, song.key);
+        void play(ctx.guild as NonNullable<typeof ctx.guild>, song.key);
 
         await ctx.reply({
             embeds: [

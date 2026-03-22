@@ -5,6 +5,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     ComponentType,
     PermissionFlagsBits,
     type SelectMenuComponentOptionData,
@@ -50,7 +51,7 @@ export class HelpCommand extends ContextCommand {
     }
 
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         if (ctx.isCommandInteraction() && !ctx.deferred) {
             await ctx.deferReply();
@@ -125,18 +126,22 @@ export class HelpCommand extends ContextCommand {
             await localCtx.send(
                 {
                     components: [
-                        new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-                            new StringSelectMenuBuilder()
-                                .setMinValues(1)
-                                .setMaxValues(1)
-                                .setCustomId(
-                                    Buffer.from(`${ctx.author.id}_${this.options.name}`).toString(
-                                        "base64",
+                        new ActionRowBuilder<StringSelectMenuBuilder>()
+                            .addComponents(
+                                new StringSelectMenuBuilder()
+                                    .setMinValues(1)
+                                    .setMaxValues(1)
+                                    .setCustomId(
+                                        Buffer.from(
+                                            `${ctx.author.id}_${this.options.name}`,
+                                        ).toString("base64"),
+                                    )
+                                    .addOptions(matching)
+                                    .setPlaceholder(
+                                        __("commands.general.help.commandSelectionString"),
                                     ),
-                                )
-                                .addOptions(matching)
-                                .setPlaceholder(__("commands.general.help.commandSelectionString")),
-                        ),
+                            )
+                            .toJSON() as APIMessageTopLevelComponent,
                     ],
                     embeds: [createEmbed("warn", __("commands.general.help.noCommandSuggest"))],
                 },
@@ -148,7 +153,7 @@ export class HelpCommand extends ContextCommand {
         if (localCtx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel?.messages
-                .fetch((localCtx.context as unknown as StringSelectMenuInteraction).message.id)
+                .fetch((localCtx.context as never as StringSelectMenuInteraction).message.id)
                 .catch(() => void 0);
             if (msg !== undefined && msg.components.length > 0) {
                 const actionRow = msg.components[0];
@@ -172,7 +177,9 @@ export class HelpCommand extends ContextCommand {
                     });
                 await msg.edit({
                     components: [
-                        new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(disabledMenu),
+                        new ActionRowBuilder<StringSelectMenuBuilder>()
+                            .addComponents(disabledMenu)
+                            .toJSON() as APIMessageTopLevelComponent,
                     ],
                 });
             }

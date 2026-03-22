@@ -1255,7 +1255,7 @@ export class GoogleLoginManager {
                             return;
                         }
                         container.logger.warn(
-                            `[GoogleLogin] URL looks post-login (${url.substring(0, 80)}) but no session cookies found yet, waiting...`,
+                            `[GoogleLogin] URL looks post-login (${url.slice(0, 80)}) but no session cookies found yet, waiting...`,
                         );
                     }
                 } catch {}
@@ -1424,7 +1424,7 @@ export class GoogleLoginManager {
                 const parts = cookieLine.split("\t");
                 if (parts.length < 7) {
                     container.logger.warn(
-                        `[GoogleLogin] Cookie file validation: malformed line: ${line.substring(0, 80)}`,
+                        `[GoogleLogin] Cookie file validation: malformed line: ${line.slice(0, 80)}`,
                     );
                     continue;
                 }

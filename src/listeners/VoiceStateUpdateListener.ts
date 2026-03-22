@@ -196,7 +196,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
 
                 try {
                     await entersState(
-                        queue.connection as unknown as NonNullable<typeof queue.connection>,
+                        queue.connection as NonNullable<typeof queue.connection>,
                         VoiceConnectionStatus.Ready,
                         20_000,
                     );
@@ -329,7 +329,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         const __mf = i18n__mf(client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
-        (guild.queue as unknown as ServerQueue).timeout = null;
+        (guild.queue as ServerQueue).timeout = null;
         queue.player.pause();
 
         const timeout = 60_000;
@@ -340,7 +340,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         );
 
         queue.lastVSUpdateMsg = null;
-        (guild.queue as unknown as ServerQueue).timeout = setTimeout(async () => {
+        (guild.queue as ServerQueue).timeout = setTimeout(async () => {
             await queue.destroy();
             void (async () => {
                 const msg = await queue.textChannel.send({
@@ -396,7 +396,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         const __mf = i18n__mf(client, guild);
 
         clearTimeout(queue.timeout ?? undefined);
-        (guild.queue as unknown as ServerQueue).timeout = null;
+        (guild.queue as ServerQueue).timeout = null;
 
         const song = ((queue.player.state as AudioPlayerPausedState).resource.metadata as QueueSong)
             .song;

@@ -49,7 +49,7 @@ export class ShuffleCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public contextRun(ctx: CommandContext): void {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);

@@ -55,7 +55,7 @@ export class LoginCommand extends ContextCommand {
     }
 
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const __ = i18n__(client, localCtx.guild);
         const __mf = i18n__mf(client, localCtx.guild);
