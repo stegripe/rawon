@@ -513,17 +513,15 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 await guild.queue.destroy();
             }
 
-            const textChannel = guild.channels.cache.get(message.channel.id) as
-                | TextChannel
-                | undefined;
-            if (!textChannel || textChannel.type !== ChannelType.GuildText) {
+            const queueChannel = guild.channels.cache.get(message.channel.id);
+            if (!queueChannel || !queueChannel.isTextBased()) {
                 this.container.logger.error(
-                    `[MultiBot] ${client.user?.tag} cannot find text channel ${message.channel.id} in own guild`,
+                    `[MultiBot] ${client.user?.tag} cannot find message-capable channel ${message.channel.id} in own guild`,
                 );
                 return;
             }
 
-            guild.queue = new ServerQueue(textChannel);
+            guild.queue = new ServerQueue(queueChannel as TextChannel);
 
             try {
                 const adapterCreator = createVoiceAdapter(client, guild.id);

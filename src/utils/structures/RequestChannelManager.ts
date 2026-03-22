@@ -9,7 +9,9 @@ import {
     type EmbedBuilder,
     type Guild,
     type Message,
+    type StageChannel,
     type TextChannel,
+    type VoiceChannel,
 } from "discord.js";
 import { isMultiBot } from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -29,13 +31,25 @@ export class RequestChannelManager {
     private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
     private readonly updateDebounceMs = 500;
 
+    private static readonly supportedChannelTypes = new Set<ChannelType>([
+        ChannelType.GuildText,
+        ChannelType.GuildVoice,
+        ChannelType.GuildStageVoice,
+    ]);
+
     public constructor(public readonly client: Rawon) {}
 
     private isValidId(id: string | null | undefined): id is string {
         return id !== null && id !== undefined && id.length > 0;
     }
 
-    public getRequestChannel(guild: Guild): TextChannel | null {
+    private isSupportedRequestChannel(
+        channel: Guild["channels"]["cache"] extends Map<any, infer Channel> ? Channel : never,
+    ): channel is TextChannel | VoiceChannel | StageChannel {
+        return RequestChannelManager.supportedChannelTypes.has(channel.type);
+    }
+
+    public getRequestChannel(guild: Guild): TextChannel | VoiceChannel | StageChannel | null {
         const botId = this.client.user?.id ?? "unknown";
 
         if (hasGetRequestChannel(this.client.data)) {
@@ -45,7 +59,7 @@ export class RequestChannelManager {
             }
 
             const channel = guild.channels.cache.get(data.channelId);
-            if (!channel || channel.type !== ChannelType.GuildText) {
+            if (!channel || !this.isSupportedRequestChannel(channel)) {
                 return null;
             }
 
@@ -59,7 +73,7 @@ export class RequestChannelManager {
         }
 
         const channel = guild.channels.cache.get(data.channelId);
-        if (!channel || channel.type !== ChannelType.GuildText) {
+        if (!channel || !this.isSupportedRequestChannel(channel)) {
             return null;
         }
 
