@@ -6,6 +6,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     type Collection,
     type CommandInteractionOptionResolver,
     ComponentType,
@@ -135,7 +136,9 @@ export class SearchCommand extends ContextCommand {
                     });
                 await prev.edit({
                     components: [
-                        new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(disabledMenu),
+                        new ActionRowBuilder<StringSelectMenuBuilder>()
+                            .addComponents(disabledMenu)
+                            .toJSON() as APIMessageTopLevelComponent,
                     ],
                 });
             }
@@ -189,18 +192,20 @@ export class SearchCommand extends ContextCommand {
             const selectMenuMsg = await ctx.send({
                 content: __("commands.music.search.interactionContent"),
                 components: [
-                    new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-                        new StringSelectMenuBuilder()
-                            .setMinValues(1)
-                            .setMaxValues(10)
-                            .setCustomId(
-                                Buffer.from(`${ctx.author.id}_${this.options.name}`).toString(
-                                    "base64",
-                                ),
-                            )
-                            .addOptions(this.generateSelectMenu(tracks.items))
-                            .setPlaceholder(__("commands.music.search.interactionPlaceholder")),
-                    ),
+                    new ActionRowBuilder<StringSelectMenuBuilder>()
+                        .addComponents(
+                            new StringSelectMenuBuilder()
+                                .setMinValues(1)
+                                .setMaxValues(10)
+                                .setCustomId(
+                                    Buffer.from(`${ctx.author.id}_${this.options.name}`).toString(
+                                        "base64",
+                                    ),
+                                )
+                                .addOptions(this.generateSelectMenu(tracks.items))
+                                .setPlaceholder(__("commands.music.search.interactionPlaceholder")),
+                        )
+                        .toJSON() as APIMessageTopLevelComponent,
                 ],
             });
             if (this.isRequestChannel(client, ctx) && selectMenuMsg) {

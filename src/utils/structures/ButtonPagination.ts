@@ -1,5 +1,6 @@
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     ButtonBuilder,
     ButtonStyle,
     CommandInteraction,
@@ -66,7 +67,11 @@ export class ButtonPagination {
             components:
                 pages.length < 2
                     ? []
-                    : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)],
+                    : [
+                          new ActionRowBuilder<ButtonBuilder>()
+                              .addComponents(buttons)
+                              .toJSON() as APIMessageTopLevelComponent,
+                      ],
         };
         const msg = await (isInteraction
             ? (this.msg as CommandInteraction).editReply(toSend)
@@ -117,7 +122,11 @@ export class ButtonPagination {
                 components:
                     pages.length < 2
                         ? []
-                        : [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)],
+                        : [
+                              new ActionRowBuilder<ButtonBuilder>()
+                                  .addComponents(buttons)
+                                  .toJSON() as APIMessageTopLevelComponent,
+                          ],
             });
         });
     }

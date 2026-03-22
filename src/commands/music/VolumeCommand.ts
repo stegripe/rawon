@@ -4,6 +4,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     ButtonBuilder,
     ButtonStyle,
     ComponentType,
@@ -85,7 +86,7 @@ export class VolumeCommand extends ContextCommand {
                         })}\n${current}% ${createProgressBar(current, 100)} 100%`,
                     ).setFooter({ text: `• ${__("commands.music.volume.changeVolume")}` }),
                 ],
-                components: [buttons],
+                components: [buttons.toJSON() as APIMessageTopLevelComponent],
             });
 
             const collector = msg.createMessageComponentCollector({
@@ -111,7 +112,7 @@ export class VolumeCommand extends ContextCommand {
                                 text: `• ${__("commands.music.volume.changeVolume")}`,
                             }),
                         ],
-                        components: [buttons],
+                        components: [buttons.toJSON() as APIMessageTopLevelComponent],
                     });
                 })
                 .on("end", () => {

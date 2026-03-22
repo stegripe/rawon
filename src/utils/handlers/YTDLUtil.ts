@@ -68,7 +68,7 @@ export async function getStream(
 
     if (enableAudioCache && !isLive && seekSeconds > 0) {
         client.logger.info(
-            `[YTDLUtil] Seek position ${seekSeconds}s requested for ${url.substring(0, 50)}..., waiting for cache to complete`,
+            `[YTDLUtil] Seek position ${seekSeconds}s requested for ${url.slice(0, 50)}..., waiting for cache to complete`,
         );
 
         const cacheReady = await client.audioCache.waitForCache(url, 300_000);
@@ -79,7 +79,7 @@ export async function getStream(
                 cacheStream.destroy();
                 const cachePath = client.audioCache.getCachePath(url);
                 client.logger.info(
-                    `[YTDLUtil] ✅ Using cached file for ${url.substring(0, 50)}... with seek position ${seekSeconds}s`,
+                    `[YTDLUtil] ✅ Using cached file for ${url.slice(0, 50)}... with seek position ${seekSeconds}s`,
                 );
                 return {
                     stream: null,
@@ -88,7 +88,7 @@ export async function getStream(
             }
         } else {
             client.logger.warn(
-                `[YTDLUtil] ⚠️ Cache not ready after timeout for ${url.substring(0, 50)}..., falling back to stream (will play from beginning)`,
+                `[YTDLUtil] ⚠️ Cache not ready after timeout for ${url.slice(0, 50)}..., falling back to stream (will play from beginning)`,
             );
         }
     }
@@ -105,7 +105,7 @@ export async function getStream(
             cacheStream.destroy();
             const cachePath = client.audioCache.getCachePath(url);
             client.logger.info(
-                `[YTDLUtil] Using cached file for ${url.substring(0, 50)}... (seekSeconds=0)`,
+                `[YTDLUtil] Using cached file for ${url.slice(0, 50)}... (seekSeconds=0)`,
             );
             return {
                 stream: null,
@@ -123,7 +123,7 @@ export async function getStream(
             };
         } catch (err) {
             client.logger.warn(
-                `[YTDLUtil] Direct HTTP stream failed for ${url.substring(0, 50)}..., falling back to yt-dlp. Error: ${(err as Error).message}`,
+                `[YTDLUtil] Direct HTTP stream failed for ${url.slice(0, 50)}..., falling back to yt-dlp. Error: ${(err as Error).message}`,
             );
         }
     }
@@ -195,7 +195,7 @@ async function attemptStreamWithRetry(
                 validationTimeout = null;
             }
 
-            client.logger.warn(`[YTDLUtil] ⚠️ Bot detection error. URL: ${url.substring(0, 50)}...`);
+            client.logger.warn(`[YTDLUtil] ⚠️ Bot detection error. URL: ${url.slice(0, 50)}...`);
 
             proc.kill("SIGKILL");
 
@@ -219,7 +219,7 @@ async function attemptStreamWithRetry(
 
                 if (retryCount < MAX_TRANSIENT_RETRIES) {
                     client.logger.debug(
-                        `[YTDLUtil] Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                        `[YTDLUtil] Transient error detected, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.slice(0, 50)}...`,
                     );
                     const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
                     setTimeout(() => {
@@ -408,7 +408,7 @@ async function attemptGetInfoWithRetry(
 
         if (isBotDetectionError(errorMessage) && client) {
             client.logger.warn(
-                `[YTDLUtil] ⚠️ Bot detection in getInfo. URL: ${url.substring(0, 50)}...`,
+                `[YTDLUtil] ⚠️ Bot detection in getInfo. URL: ${url.slice(0, 50)}...`,
             );
 
             client.cookies.handleBotDetection();
@@ -417,7 +417,7 @@ async function attemptGetInfoWithRetry(
 
         if (isTransientError(errorMessage) && retryCount < MAX_TRANSIENT_RETRIES) {
             client?.logger.warn(
-                `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.slice(0, 50)}...`,
             );
             const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
             await new Promise((resolve) => setTimeout(resolve, backoffDelay));

@@ -389,7 +389,7 @@ export async function play(
                     createEmbed(
                         "error",
                         `${__mf("utils.generalHandler.errorPlaying", {
-                            message: `\`${(error as Error).message.substring(0, 200)}\``,
+                            message: `\`${(error as Error).message.slice(0, 200)}\``,
                         })}`,
                         true,
                     ),
@@ -449,7 +449,7 @@ export async function play(
         );
         queue.client.logger.debug(
             "[PLAY_HANDLER][RESOURCE_DIAGNOSTIC] ffmpegStderr:",
-            ffmpegStderr.substring(0, 10_000),
+            ffmpegStderr.slice(0, 10_000),
         );
         queue.client.logger.debug("[PLAY_HANDLER][RESOURCE_DIAGNOSTIC] song metadata:", {
             title: song.song.title,

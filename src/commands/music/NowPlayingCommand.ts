@@ -6,6 +6,7 @@ import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import {
     ActionRowBuilder,
+    type APIMessageTopLevelComponent,
     ButtonBuilder,
     ButtonStyle,
     ComponentType,
@@ -149,7 +150,10 @@ export class NowPlayingCommand extends ContextCommand {
                 .setStyle(ButtonStyle.Secondary)
                 .setEmoji("#️⃣"),
         );
-        const msg = await ctx.reply({ embeds: [getEmbed()], components: [buttons] });
+        const msg = await ctx.reply({
+            embeds: [getEmbed()],
+            components: [buttons.toJSON() as APIMessageTopLevelComponent],
+        });
 
         const collector = msg.createMessageComponentCollector({
             componentType: ComponentType.Button,
