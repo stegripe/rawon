@@ -49,6 +49,7 @@ export class ServerQueue {
     private _positionSaveInterval: NodeJS.Timeout | null = null;
     private _suppressPlayerErrors = false;
     private _pendingCacheUrls: string[] = [];
+    private _shuffleUpcomingKeys: Snowflake[] = [];
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -145,7 +146,7 @@ export class ServerQueue {
 
                     let nextS: string | undefined;
                     if (this.shuffle && this.loopMode !== "SONG") {
-                        nextS = this.songs.random()?.key;
+                        nextS = this.getNextShuffleKey(song.key);
                     } else if (this.loopMode === "SONG") {
                         if (this.songs.has(song.key)) {
                             nextS = song.key;
@@ -587,6 +588,11 @@ export class ServerQueue {
 
     public setShuffle(value: boolean): void {
         this.shuffle = value;
+        if (value) {
+            this.syncShuffleUpcomingKeys();
+        } else {
+            this._shuffleUpcomingKeys = [];
+        }
         void this.saveState();
     }
 
@@ -853,15 +859,14 @@ export class ServerQueue {
         const PRE_CACHE_AHEAD = 3;
 
         if (this.shuffle) {
-            const availableSongs = this.songs.filter(
-                (s) => s.key !== currentSong.key && !s.song.isLive,
-            );
-            const songsArray = Array.from(availableSongs.values());
-            const shuffled = songsArray.sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, Math.min(PRE_CACHE_AHEAD, songsArray.length));
+            this.syncShuffleUpcomingKeys(currentSong.key);
 
-            for (const song of selected) {
-                songsToCache.push(song.song.url);
+            for (const key of this._shuffleUpcomingKeys.slice(0, PRE_CACHE_AHEAD)) {
+                const nextSong = this.songs.get(key);
+                if (!nextSong || nextSong.song.isLive) {
+                    continue;
+                }
+                songsToCache.push(nextSong.song.url);
             }
         } else {
             const sortedSongs = this.songs.sortByIndex();
@@ -890,6 +895,43 @@ export class ServerQueue {
         if (songsToCache.length > 0) {
             void this.client.audioCache.preCacheMultiple(songsToCache);
         }
+    }
+
+    private syncShuffleUpcomingKeys(currentKey?: Snowflake): void {
+        const candidateKeys = this.songs
+            .filter((song) => song.key !== currentKey && !song.song.isLive)
+            .map((song) => song.key);
+
+        if (candidateKeys.length === 0) {
+            this._shuffleUpcomingKeys = [];
+            return;
+        }
+
+        const candidateSet = new Set(candidateKeys);
+        const preserved = this._shuffleUpcomingKeys.filter((key) => candidateSet.has(key));
+        const preservedSet = new Set(preserved);
+        const missing = candidateKeys.filter((key) => !preservedSet.has(key));
+
+        for (let i = missing.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [missing[i], missing[j]] = [missing[j], missing[i]];
+        }
+
+        this._shuffleUpcomingKeys = [...preserved, ...missing];
+    }
+
+    private getNextShuffleKey(currentKey: Snowflake): Snowflake | undefined {
+        this.syncShuffleUpcomingKeys(currentKey);
+
+        let nextKey = this._shuffleUpcomingKeys.shift();
+
+        if (!nextKey && this.loopMode === "QUEUE") {
+            this._shuffleUpcomingKeys = [];
+            this.syncShuffleUpcomingKeys(currentKey);
+            nextKey = this._shuffleUpcomingKeys.shift();
+        }
+
+        return nextKey;
     }
 
     public get skipInProgress(): boolean {
