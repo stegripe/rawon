@@ -726,9 +726,10 @@ export class ServerQueue {
 
     public set volume(newVol: number) {
         this._volume = newVol;
-        (
+        const resource = (
             this.player.state as AudioPlayerPlayingState & { resource: AudioResource | undefined }
-        ).resource.volume?.setVolumeLogarithmic(this._volume / 100);
+        ).resource;
+        resource?.volume?.setVolumeLogarithmic(this._volume / 100);
         void this.saveState();
     }
 
