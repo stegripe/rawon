@@ -161,9 +161,6 @@ export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) =
     ...spawnOptions
 });
 
-/**
- * @param {import("../../structures/Rawon.js").Rawon} client
- */
 export function startAutoUpdater(client) {
     if (autoUpdateTimer) return;
 

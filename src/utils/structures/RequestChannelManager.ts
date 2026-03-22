@@ -315,7 +315,10 @@ export class RequestChannelManager {
             let requesterLine: string;
             if (isMultiBot) {
                 const botStatusLines = this.getBotStatusLines(guild, __);
-                requesterLine = botStatusLines.join("\n");
+                requesterLine =
+                    botStatusLines.length > 0
+                        ? botStatusLines.join("\n")
+                        : `${__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? __("requestChannel.unknown")}`;
             } else {
                 requesterLine = `${__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? __("requestChannel.unknown")}`;
             }
@@ -367,7 +370,7 @@ export class RequestChannelManager {
         const multiBotManager = MultiBotManager.getInstance();
         const botsInGuild = multiBotManager.getBotsInGuild(guild);
 
-        if (botsInGuild.length === 0) {
+        if (botsInGuild.length <= 1) {
             return [];
         }
 
