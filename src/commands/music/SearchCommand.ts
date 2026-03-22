@@ -22,7 +22,7 @@ import i18n from "../../config/index.js";
 import { CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type Song } from "../../typings/index.js";
-import { inVC, sameVC, useRequestChannel, validVC } from "../../utils/decorators/MusicUtil.js";
+import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
@@ -82,7 +82,40 @@ export class SearchCommand extends ContextCommand {
         }, delay);
     }
 
-    @useRequestChannel
+    private ensureSearchChannel(
+        ctx: CommandContext,
+        client: Rawon,
+        __mf: ReturnType<typeof i18n__mf>,
+    ): boolean {
+        if (!ctx.guild) {
+            return true;
+        }
+
+        let requestChannel = client.requestChannelManager.getRequestChannel(ctx.guild);
+        if (!requestChannel && client.config.isMultiBot) {
+            const primaryBot = client.multiBotManager.getPrimaryBot();
+            if (primaryBot && primaryBot !== client) {
+                requestChannel = primaryBot.requestChannelManager.getRequestChannel(ctx.guild);
+            }
+        }
+
+        if (!requestChannel || ctx.channel?.id === requestChannel.id) {
+            return true;
+        }
+
+        void ctx.reply({
+            embeds: [
+                createEmbed(
+                    "warn",
+                    __mf("utils.musicDecorator.useRequestChannel", {
+                        channel: `<#${requestChannel.id}>`,
+                    }),
+                ),
+            ],
+        });
+        return false;
+    }
+
     @inVC
     @validVC
     @sameVC
@@ -91,6 +124,10 @@ export class SearchCommand extends ContextCommand {
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
+
+        if (!this.ensureSearchChannel(ctx, client, __mf)) {
+            return;
+        }
 
         if (ctx.isCommandInteraction() && !localCtx.deferred) {
             await localCtx.deferReply();
