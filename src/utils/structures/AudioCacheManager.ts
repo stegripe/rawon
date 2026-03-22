@@ -29,6 +29,7 @@ export class AudioCacheManager {
     public readonly cacheDir: string;
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
     private readonly inProgressFiles = new Set<string>();
+    private readonly canceledCacheKeys = new Set<string>();
     private readonly inProgressProcs = new Map<
         string,
         { proc?: ChildProcess; stream?: Readable; writeStreamPath?: string }
@@ -176,6 +177,14 @@ export class AudioCacheManager {
         writeStream.on("finish", () => {
             this.inProgressFiles.delete(key);
             this.inProgressProcs.delete(key);
+
+            if (this.canceledCacheKeys.has(key)) {
+                this.canceledCacheKeys.delete(key);
+                try {
+                    rmSync(cachePath, { force: true });
+                } catch {}
+                return;
+            }
 
             try {
                 const stats = statSync(cachePath);
@@ -342,6 +351,7 @@ export class AudioCacheManager {
 
     private async doPreCache(url: string, retryCount = 0): Promise<void> {
         const key = this.getCacheKey(url);
+        this.canceledCacheKeys.delete(key);
 
         try {
             const cachePath = this.getCachePath(url);
@@ -372,6 +382,16 @@ export class AudioCacheManager {
                     writeStream.on("finish", () => {
                         this.inProgressFiles.delete(key);
                         this.inProgressProcs.delete(key);
+
+                        if (this.canceledCacheKeys.has(key)) {
+                            this.canceledCacheKeys.delete(key);
+                            try {
+                                rmSync(cachePath, { force: true });
+                            } catch {}
+                            resolve();
+                            return;
+                        }
+
                         try {
                             const stats = statSync(cachePath);
                             if (stats.size >= 1024) {
@@ -462,6 +482,16 @@ export class AudioCacheManager {
                     writeStream.on("finish", () => {
                         this.inProgressFiles.delete(key);
                         this.inProgressProcs.delete(key);
+
+                        if (this.canceledCacheKeys.has(key)) {
+                            this.canceledCacheKeys.delete(key);
+                            try {
+                                rmSync(cachePath, { force: true });
+                            } catch {}
+                            resolve();
+                            return;
+                        }
+
                         if (hasBotDetectionError) {
                             try {
                                 rmSync(cachePath, { force: true });
@@ -598,6 +628,7 @@ export class AudioCacheManager {
         let removedCount = 0;
         for (const url of urls) {
             const key = this.getCacheKey(url);
+            this.canceledCacheKeys.add(key);
             const entry = this.cachedFiles.get(key);
             if (entry) {
                 try {
