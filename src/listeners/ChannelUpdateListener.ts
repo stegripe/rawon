@@ -53,7 +53,7 @@ export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate>
             queue.connection?.configureNetworking();
 
             await entersState(
-                queue.connection as unknown as NonNullable<typeof queue.connection>,
+                queue.connection as NonNullable<typeof queue.connection>,
                 VoiceConnectionStatus.Ready,
                 20_000,
             )

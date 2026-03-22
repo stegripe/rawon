@@ -58,7 +58,7 @@ export class DJCommand extends ContextCommand {
 
     @memberReqPerms(["ManageGuild"], i18n.__("commands.music.dj.noPermission"))
     public contextRun(ctx: CommandContext): void {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);

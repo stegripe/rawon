@@ -100,7 +100,7 @@ export class FilterCommand extends ContextCommand {
     @validVC
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
@@ -116,7 +116,7 @@ export class FilterCommand extends ContextCommand {
         const subcmd = mode[
             (
                 localCtx.options?.getSubcommand() ?? (localCtx.args[0] as string | undefined)
-            )?.toLowerCase() as unknown as string
+            )?.toLowerCase() as string
         ] as FilterSubCmd | undefined;
         const filter = (
             localCtx.options?.getString("filter") ??

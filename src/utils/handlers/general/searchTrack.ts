@@ -278,7 +278,7 @@ export async function searchTrack(
                     case "track": {
                         const songData = (await client.spotify.resolveTracks(
                             url.toString(),
-                        )) as unknown as SpotifyTrack;
+                        )) as SpotifyTrack;
                         let response = await youtube.search(
                             songData.external_ids?.isrc ??
                                 `${songData.artists[0].name} - ${songData.name}`,

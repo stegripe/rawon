@@ -107,7 +107,7 @@ export const sameVC = createCmdExecuteDecorator((ctx) => {
 });
 
 export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
-    const localCtx = ctx as unknown as LocalCommandContext;
+    const localCtx = ctx as typeof ctx & LocalCommandContext;
     const client = ctx.client as Rawon;
     const __ = i18n__(client, ctx.guild);
     const __mf = i18n__mf(client, ctx.guild);

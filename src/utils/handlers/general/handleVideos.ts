@@ -47,10 +47,7 @@ export async function handleVideos(
 
     async function sendConfirmation(): Promise<Message | undefined> {
         for (const song of toQueue) {
-            ctx.guild?.queue?.songs.addSong(
-                song,
-                ctx.member as unknown as NonNullable<typeof ctx.member>,
-            );
+            ctx.guild?.queue?.songs.addSong(song, ctx.member as NonNullable<typeof ctx.member>);
         }
 
         if (toQueue.length === 1) {
@@ -129,7 +126,7 @@ export async function handleVideos(
         return;
     }
 
-    (ctx.guild as unknown as NonNullable<typeof ctx.guild>).queue = new ServerQueue(
+    (ctx.guild as NonNullable<typeof ctx.guild>).queue = new ServerQueue(
         ctx.channel as TextChannel,
     );
     await sendConfirmation();
@@ -165,9 +162,8 @@ export async function handleVideos(
             client.logger.debug(message);
         });
 
-        (
-            ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
-        ).connection = connection;
+        (ctx.guild?.queue as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).connection =
+            connection;
 
         client.debugLog.logData(
             "info",
@@ -211,5 +207,5 @@ export async function handleVideos(
         return;
     }
 
-    void play(ctx.guild as unknown as NonNullable<typeof ctx.guild>);
+    void play(ctx.guild as NonNullable<typeof ctx.guild>);
 }

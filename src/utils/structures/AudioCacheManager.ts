@@ -113,7 +113,7 @@ export class AudioCacheManager {
         try {
             if (!existsSync(cachePath)) {
                 this.client.logger.warn(
-                    `[AudioCacheManager] Cached file missing for ${url.substring(0, 50)}..., removing from cache`,
+                    `[AudioCacheManager] Cached file missing for ${url.slice(0, 50)}..., removing from cache`,
                 );
                 this.cachedFiles.delete(key);
                 return null;
@@ -122,7 +122,7 @@ export class AudioCacheManager {
             const stats = statSync(cachePath);
             if (stats.size < 1024) {
                 this.client.logger.warn(
-                    `[AudioCacheManager] Cached file too small (${stats.size} bytes) for ${url.substring(0, 50)}..., removing invalid cache`,
+                    `[AudioCacheManager] Cached file too small (${stats.size} bytes) for ${url.slice(0, 50)}..., removing invalid cache`,
                 );
                 this.cachedFiles.delete(key);
                 rmSync(cachePath, { force: true });
@@ -130,7 +130,7 @@ export class AudioCacheManager {
             }
         } catch (error) {
             this.client.logger.error(
-                `[AudioCacheManager] Error validating cache for ${url.substring(0, 50)}...:`,
+                `[AudioCacheManager] Error validating cache for ${url.slice(0, 50)}...:`,
                 error,
             );
             this.cachedFiles.delete(key);
@@ -142,7 +142,7 @@ export class AudioCacheManager {
             cacheEntry.lastAccess = Date.now();
         }
 
-        this.client.logger.debug(`[AudioCacheManager] Cache hit for: ${url.substring(0, 50)}...`);
+        this.client.logger.debug(`[AudioCacheManager] Cache hit for: ${url.slice(0, 50)}...`);
         return createReadStream(cachePath);
     }
 
@@ -181,14 +181,14 @@ export class AudioCacheManager {
                 const stats = statSync(cachePath);
                 if (stats.size < 1024) {
                     this.client.logger.warn(
-                        `[AudioCacheManager] Cached file too small (${stats.size} bytes) for ${url.substring(0, 50)}..., discarding`,
+                        `[AudioCacheManager] Cached file too small (${stats.size} bytes) for ${url.slice(0, 50)}..., discarding`,
                     );
                     rmSync(cachePath, { force: true });
                     return;
                 }
             } catch {
                 this.client.logger.warn(
-                    `[AudioCacheManager] Could not stat cached file for ${url.substring(0, 50)}..., discarding`,
+                    `[AudioCacheManager] Could not stat cached file for ${url.slice(0, 50)}..., discarding`,
                 );
                 try {
                     rmSync(cachePath, { force: true });
@@ -200,9 +200,7 @@ export class AudioCacheManager {
                 path: cachePath,
                 lastAccess: Date.now(),
             });
-            this.client.logger.info(
-                `[AudioCacheManager] Cached audio for: ${url.substring(0, 50)}...`,
-            );
+            this.client.logger.info(`[AudioCacheManager] Cached audio for: ${url.slice(0, 50)}...`);
             this.failedUrls.delete(key);
             void this.cleanupOldCache();
         });
@@ -273,7 +271,7 @@ export class AudioCacheManager {
 
         if (!this.isInProgress(url) && !this.isCached(url)) {
             this.client.logger.info(
-                `[AudioCacheManager] Cache not found for ${url.substring(0, 50)}..., starting high-priority cache`,
+                `[AudioCacheManager] Cache not found for ${url.slice(0, 50)}..., starting high-priority cache`,
             );
             await this.preCacheUrl(url, true);
         }
@@ -286,7 +284,7 @@ export class AudioCacheManager {
                 if (this.isCached(url) && !this.inProgressFiles.has(key)) {
                     clearInterval(checkCache);
                     this.client.logger.info(
-                        `[AudioCacheManager] Cache completed for ${url.substring(0, 50)}... after ${Date.now() - startTime} ms`,
+                        `[AudioCacheManager] Cache completed for ${url.slice(0, 50)}... after ${Date.now() - startTime} ms`,
                     );
                     resolve(true);
                     return;
@@ -295,7 +293,7 @@ export class AudioCacheManager {
                 if (Date.now() - startTime >= timeoutMs) {
                     clearInterval(checkCache);
                     this.client.logger.warn(
-                        `[AudioCacheManager] Timeout waiting for cache ${url.substring(0, 50)}... after ${timeoutMs} ms`,
+                        `[AudioCacheManager] Timeout waiting for cache ${url.slice(0, 50)}... after ${timeoutMs} ms`,
                     );
                     resolve(false);
                     return;
@@ -305,7 +303,7 @@ export class AudioCacheManager {
                 if (failedInfo && failedInfo.count >= PRE_CACHE_RETRY_COUNT) {
                     clearInterval(checkCache);
                     this.client.logger.warn(
-                        `[AudioCacheManager] Cache failed for ${url.substring(0, 50)}... after ${failedInfo.count} attempts`,
+                        `[AudioCacheManager] Cache failed for ${url.slice(0, 50)}... after ${failedInfo.count} attempts`,
                     );
                     resolve(false);
                     return;
@@ -358,7 +356,7 @@ export class AudioCacheManager {
 
                 httpStream.on("error", (err: Error) => {
                     this.client.logger.warn(
-                        `[AudioCacheManager] HTTP pre-cache stream error for ${url.substring(0, 50)}...: ${err.message}`,
+                        `[AudioCacheManager] HTTP pre-cache stream error for ${url.slice(0, 50)}...: ${err.message}`,
                     );
                     this.inProgressFiles.delete(key);
                     this.inProgressProcs.delete(key);
@@ -383,7 +381,7 @@ export class AudioCacheManager {
                                 });
                                 this.failedUrls.delete(key);
                                 this.client.logger.debug(
-                                    `[AudioCacheManager] Pre-cached audio for: ${url.substring(0, 50)}...`,
+                                    `[AudioCacheManager] Pre-cached audio for: ${url.slice(0, 50)}...`,
                                 );
                             } else {
                                 rmSync(cachePath, { force: true });
@@ -442,7 +440,7 @@ export class AudioCacheManager {
                             proc.kill("SIGKILL");
 
                             this.client.logger.warn(
-                                `[AudioCacheManager] Bot detection during pre-cache (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.substring(0, 50)}...`,
+                                `[AudioCacheManager] Bot detection during pre-cache (attempt ${retryCount + 1}/${MAX_PRE_CACHE_RETRIES}). URL: ${url.slice(0, 50)}...`,
                             );
                             this.client.cookies.handleBotDetection();
                         }
@@ -451,7 +449,7 @@ export class AudioCacheManager {
                     proc.stderr.on("end", () => {
                         if (stderrData.trim() && !hasBotDetectionError) {
                             this.client.logger.warn(
-                                `[AudioCacheManager] yt-dlp stderr for ${url.substring(0, 50)}...: ${stderrData.substring(0, 500)}`,
+                                `[AudioCacheManager] yt-dlp stderr for ${url.slice(0, 50)}...: ${stderrData.slice(0, 500)}`,
                             );
                         }
                     });
@@ -489,7 +487,7 @@ export class AudioCacheManager {
                                     });
                                     this.failedUrls.delete(key);
                                     this.client.logger.info(
-                                        `[AudioCacheManager] Pre-cached audio for: ${url.substring(0, 50)}...`,
+                                        `[AudioCacheManager] Pre-cached audio for: ${url.slice(0, 50)}...`,
                                     );
                                 } else {
                                     rmSync(cachePath, { force: true });
