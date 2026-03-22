@@ -51,7 +51,7 @@ export class HelpCommand extends ContextCommand {
     }
 
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         if (ctx.isCommandInteraction() && !ctx.deferred) {
             await ctx.deferReply();
@@ -153,7 +153,7 @@ export class HelpCommand extends ContextCommand {
         if (localCtx.isStringSelectMenu()) {
             const channel = ctx.channel;
             const msg = await channel?.messages
-                .fetch((localCtx.context as unknown as StringSelectMenuInteraction).message.id)
+                .fetch((localCtx.context as never as StringSelectMenuInteraction).message.id)
                 .catch(() => void 0);
             if (msg !== undefined && msg.components.length > 0) {
                 const actionRow = msg.components[0];

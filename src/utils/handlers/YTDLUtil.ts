@@ -59,7 +59,7 @@ export async function getStream(
     const isSoundcloudUrl = checkQuery(url);
     if (isSoundcloudUrl.sourceType === "soundcloud") {
         return {
-            stream: client.soundcloud.util.streamTrack(url) as unknown as Readable,
+            stream: await client.soundcloud.util.streamTrack(url),
             cachePath: null,
         };
     }
@@ -118,7 +118,7 @@ export async function getStream(
         try {
             const stream = got.stream(url);
             return {
-                stream: stream as unknown as Readable,
+                stream: stream as Readable,
                 cachePath: null,
             };
         } catch (err) {
@@ -347,13 +347,13 @@ async function attemptStreamWithRetry(
                 hasResolved = true;
 
                 if (isLive || !enableAudioCache || seekSeconds > 0) {
-                    resolve(proc.stdout as unknown as Readable);
+                    resolve(proc.stdout as Readable);
                     return;
                 }
 
                 const passthroughStream = client.audioCache.cacheStream(
                     url,
-                    proc.stdout as unknown as Readable,
+                    proc.stdout as Readable,
                 );
                 resolve(passthroughStream);
             }, STREAM_VALIDATION_DELAY_MS);

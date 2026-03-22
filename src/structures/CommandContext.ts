@@ -173,8 +173,12 @@ export class CommandContext {
         return this.context instanceof ButtonInteraction;
     }
 
-    public isStringSelectMenu(): boolean {
-        return this.context instanceof MessageComponentInteraction;
+    public isStringSelectMenu(): this is this & {
+        context: StringSelectMenuInteraction;
+    } {
+        return (
+            this.context instanceof MessageComponentInteraction && this.context.isStringSelectMenu()
+        );
     }
 
     public isModal(): boolean {

@@ -37,7 +37,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
             this.client.logger.info(`Found ${categories.length} categories, registering...`);
 
             const _allCmd = await (
-                this.client.application as unknown as NonNullable<typeof this.client.application>
+                this.client.application as NonNullable<typeof this.client.application>
             ).commands.fetch();
 
             for (const category of categories) {
@@ -222,8 +222,7 @@ export class CommandManager extends Collection<string, CommandComponent> {
         const cooldownAmount = (command.meta.cooldown ?? 3) * 1_000;
 
         if (timestamps?.has(message.author.id) === true) {
-            const expirationTime =
-                (timestamps.get(message.author.id) as unknown as number) + cooldownAmount;
+            const expirationTime = (timestamps.get(message.author.id) as number) + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1_000;
                 const msgChannel = message.channel;

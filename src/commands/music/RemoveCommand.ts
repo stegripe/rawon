@@ -56,15 +56,13 @@ export class RemoveCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<void> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const member = localCtx.member as GuildMember | null;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
 
-        const djRole = await client.utils.fetchDJRole(
-            ctx.guild as unknown as NonNullable<typeof ctx.guild>,
-        );
+        const djRole = await client.utils.fetchDJRole(ctx.guild as NonNullable<typeof ctx.guild>);
         if (
             client.data.data?.[ctx.guild?.id ?? "..."]?.dj?.enable === true &&
             (
@@ -101,7 +99,7 @@ export class RemoveCommand extends ContextCommand {
                 | (AudioPlayerState & { resource: AudioResource | undefined })
                 | undefined
         )?.resource?.metadata as QueueSong | undefined;
-        const full = (queue.songs as unknown as SongManager).sortByIndex();
+        const full = (queue.songs as SongManager).sortByIndex();
         const displayedSongs =
             queue.loopMode === "QUEUE" ? full : full.filter((val) => val.index >= (np?.index ?? 0));
         const cloned = [...displayedSongs.values()];

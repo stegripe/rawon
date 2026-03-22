@@ -53,7 +53,7 @@ export class PlayCommand extends ContextCommand {
     @validVC
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const member = localCtx.member as GuildMember | null;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
@@ -63,7 +63,7 @@ export class PlayCommand extends ContextCommand {
             await localCtx.deferReply();
         }
 
-        const voiceChannel = member?.voice.channel as unknown as VoiceBasedChannel;
+        const voiceChannel = member?.voice.channel as VoiceBasedChannel;
         if (localCtx.additionalArgs.get("fromSearch") !== undefined) {
             const tracks = localCtx.additionalArgs.get("values") as string[];
             const searchResults = await Promise.all(

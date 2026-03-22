@@ -87,7 +87,7 @@ export class SearchCommand extends ContextCommand {
     @validVC
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
@@ -109,10 +109,10 @@ export class SearchCommand extends ContextCommand {
             const playCmd = client.commands.get("play") as
                 | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
                 | undefined;
-            playCmd?.contextRun?.(nextCtx as unknown as CommandContext);
+            playCmd?.contextRun?.(nextCtx as CommandContext & LocalCommandContext);
 
             const prev = await ctx.channel?.messages
-                .fetch((localCtx.context as unknown as StringSelectMenuInteraction).message.id)
+                .fetch((localCtx.context as never as StringSelectMenuInteraction).message.id)
                 .catch(() => void 0);
             if (prev !== undefined && prev.components.length > 0) {
                 const actionRow = prev.components[0];
@@ -172,7 +172,7 @@ export class SearchCommand extends ContextCommand {
             const playCmd2 = client.commands.get("play") as
                 | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
                 | undefined;
-            playCmd2?.contextRun?.(playCtx as unknown as CommandContext);
+            playCmd2?.contextRun?.(playCtx as CommandContext & LocalCommandContext);
             return;
         }
 
@@ -308,7 +308,7 @@ export class SearchCommand extends ContextCommand {
             .first()
             ?.content.split(/\s*,\s*/u)
             .filter((x) => Number(x) > 0 && Number(x) <= tracks.items.length)
-            .sort((a, b) => Number(a) - Number(b)) as unknown as string[];
+            .sort((a, b) => Number(a) - Number(b)) as string[];
         const newCtx = new LocalCommandContext(localCtx.context, []);
 
         newCtx.additionalArgs.set(
@@ -319,7 +319,7 @@ export class SearchCommand extends ContextCommand {
         const playCmd3 = client.commands.get("play") as
             | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
             | undefined;
-        playCmd3?.contextRun?.(newCtx as unknown as CommandContext);
+        playCmd3?.contextRun?.(newCtx as CommandContext & LocalCommandContext);
     }
 
     private generateSelectMenu(tracks: Song[]): SelectMenuComponentOptionData[] {

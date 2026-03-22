@@ -118,9 +118,7 @@ export class NowPlayingCommand extends ContextCommand {
         };
 
         const hasRequestChannel = ctx.guild
-            ? (ctx.guild.client as unknown as Rawon).requestChannelManager.hasRequestChannel(
-                  ctx.guild,
-              )
+            ? (ctx.guild.client as Rawon).requestChannelManager.hasRequestChannel(ctx.guild)
             : false;
 
         if (hasRequestChannel) {
@@ -181,7 +179,7 @@ export class NowPlayingCommand extends ContextCommand {
 
         collector
             .on("collect", async (i) => {
-                const newCtx = new LocalCommandContext(i as unknown as Interaction, []);
+                const newCtx = new LocalCommandContext(i as Interaction, []);
                 let cmdName = "";
 
                 switch (i.customId) {
@@ -211,7 +209,7 @@ export class NowPlayingCommand extends ContextCommand {
                 const cmd = client.commands.get(cmdName) as
                     | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
                     | undefined;
-                await cmd?.contextRun?.(newCtx as unknown as CommandContext);
+                await cmd?.contextRun?.(newCtx as CommandContext & LocalCommandContext);
 
                 const embed = getEmbed();
 

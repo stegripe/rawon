@@ -48,9 +48,7 @@ export class ResumeCommand extends ContextCommand {
                 embeds: [createEmbed("warn", __("commands.music.resume.alreadyResume"))],
             });
         }
-        (
-            ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
-        ).playing = true;
+        (ctx.guild?.queue as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).playing = true;
 
         return ctx.reply({
             embeds: [

@@ -56,7 +56,7 @@ export class VolumeCommand extends ContextCommand {
     @haveQueue
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
-        const localCtx = ctx as unknown as LocalCommandContext;
+        const localCtx = ctx as CommandContext & LocalCommandContext;
         const member = localCtx.member as GuildMember | null;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
@@ -99,7 +99,7 @@ export class VolumeCommand extends ContextCommand {
                 .on("collect", async (i) => {
                     const newContext = new LocalCommandContext(i, [i.customId]);
                     const newVolume = Number(i.customId);
-                    await this.contextRun(newContext as unknown as CommandContext);
+                    await this.contextRun(newContext as CommandContext & LocalCommandContext);
 
                     void msg.edit({
                         embeds: [
@@ -149,7 +149,7 @@ export class VolumeCommand extends ContextCommand {
 
         if (volume > 100) {
             const djRole = await client.utils
-                .fetchDJRole(ctx.guild as unknown as GuildMember["guild"])
+                .fetchDJRole(ctx.guild as GuildMember["guild"])
                 .catch(() => null);
             const hasPermission =
                 member?.roles.cache.has(djRole?.id ?? "") === true ||
@@ -163,9 +163,7 @@ export class VolumeCommand extends ContextCommand {
             }
         }
 
-        (
-            ctx.guild?.queue as unknown as NonNullable<NonNullable<typeof ctx.guild>["queue"]>
-        ).volume = volume;
+        (ctx.guild?.queue as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).volume = volume;
         await ctx.reply({
             embeds: [
                 createEmbed(
