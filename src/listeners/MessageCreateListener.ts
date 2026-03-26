@@ -28,6 +28,8 @@ const MUSIC_COMMANDS = [
     "loop",
     "repeat",
     "shuffle",
+    "autoplay",
+    "ap",
     "filter",
     "skip",
     "skipto",
