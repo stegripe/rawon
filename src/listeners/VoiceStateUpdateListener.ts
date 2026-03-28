@@ -103,7 +103,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
 
         if (oldMember?.id === botId && oldId === queueVc.id && newId === undefined) {
             const isIdle = queue.idle;
-            const isRequestChannel = this.container.requestChannelManager.isRequestChannel(
+            const isRequestChannel = client.requestChannelManager.isRequestChannel(
                 thisBotGuild,
                 queue.textChannel.id,
             );
@@ -181,7 +181,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                 return;
             }
             queue.skipVoters = [];
-            const isRequestChannel = this.container.requestChannelManager.isRequestChannel(
+            const isRequestChannel = client.requestChannelManager.isRequestChannel(
                 thisBotGuild,
                 queue.textChannel.id,
             );
