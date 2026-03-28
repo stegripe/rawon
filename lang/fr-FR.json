@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "DÉVELOPPEUR",
             "eval": {
                 "description": "Évaluer du code JavaScript",
                 "errorString": "Erreur",
@@ -118,7 +117,6 @@
                 "serversString": "Serveurs",
                 "sourceCodeString": "Code source"
             },
-            "categoryName": "GÉNÉRAL",
             "help": {
                 "aliasesString": "Alias",
                 "authorString": "{username} - Liste des commandes",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "MUSIQUE",
             "dj": {
                 "description": "Modifier les paramètres de la fonctionnalité DJ",
                 "usage": "{prefix}dj <enable | disable | role> [rôle]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Veuillez spécifier le filtre de la chanson."
             },
             "lyrics": {
-                "apiError": "L'API n'a pas pu trouver la chanson {song}, parce que : {message}",
                 "description": "Montrez les paroles de la chanson",
                 "noLyrics": "Aucune parole trouvée pour {song}.",
                 "noQuery": "Il n'y a rien à jouer, ou aucun argument n'est fourni.",
@@ -287,7 +283,6 @@
                 "noSelection": "Aucune valeur ou valeur invalide saisie, la sélection musicale est annulée.",
                 "noTracks": "Je n'obtiens aucun résultat de recherche.",
                 "queueEmbed": "Veuillez choisir une musique ; vous pouvez en choisir plus d'une en utilisant les espaces vides ou {separator}.\n",
-                "slashDescription": "Recherchez la musique spécifiée",
                 "slashQueryDescription": "Requête à rechercher",
                 "slashSourceDescription": "Où la musique doit-elle être prise ?",
                 "trackSelectionMessage": "Sélection de musique",
@@ -347,8 +342,7 @@
                 "noPermission": "Vous avez besoin du rôle DJ ou de la permission **Gérer le serveur** pour régler le volume au-dessus de `100%`",
                 "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur {volume}",
                 "slashDescription": "Nouveau volume",
-                "usage": "{prefix}volume [nouveau volume]",
-                "volumeLimit": "Je ne peux pas régler le volume au-dessus de {maxVol}"
+                "usage": "{prefix}volume [nouveau volume]"
             },
             "requestChannel": {
                 "description": "Configurer un canal de requête pour la musique",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "Désolé, mais cette interaction est uniquement pour <@{user}> et le staff du serveur.",
-            "message2": "Désolé, mais cette interaction est uniquement pour <@{user}>",
             "devOnly": "Commande réservée aux développeurs.",
             "lyricsCommandNotFound": "Commande de paroles introuvable.",
             "wrongBot": "Cette commande doit être exécutée sur {botMention} en tant que bot principal pour ce serveur.",
@@ -407,34 +400,18 @@
         "shuffle": "Aléatoire",
         "autoplay": "Lecture automatique",
         "volume": "Volume",
-        "queueLength": "File d'attente",
-        "queueFooter": "• Total des pistes restantes en file d'attente : {count} ({duration} de durée)",
-        "idle": "Inactif/Disponible",
+        "queueFooter": "Pistes restantes dans la file d'attente : {count} ({duration} de durée, lecture automatique : {state})",
         "live": "EN DIRECT",
         "songDuration": "Durée",
         "requestedBy": "Demandé par",
-        "usedBy": "utilisé par",
         "unknown": "Inconnu",
         "notInVoice": "Vous devez être dans un salon vocal pour demander de la musique.",
         "noResults": "Aucun résultat trouvé pour votre recherche.",
         "addedToQueue": "Ajouté {song} à la file d'attente.",
         "addedPlaylistToQueue": "Ajouté {count} chansons de {playlist} à la file d'attente.",
-        "startedPlaying": "Lecture de {song}",
-        "paused": "Musique en pause.",
-        "resumed": "Musique reprise.",
-        "skipped": "{song} passée",
-        "removed": "Supprimé {song} de la file d'attente et passée.",
-        "stopped": "Musique arrêtée et file d'attente vidée.",
-        "loopChanged": "Mode boucle changé en {mode}",
-        "shuffleChanged": "Mode aléatoire maintenant {state}",
-        "volumeChanged": "Volume changé à {volume}",
-        "queueCleared": "La file d'attente a été vidée.",
         "queueListTitle": "Liste de File d'attente",
         "emptyQueue": "La file d'attente est vide.",
-        "alreadyPaused": "La musique est déjà en pause.",
-        "alreadyPlaying": "La musique est déjà en lecture.",
         "nothingPlaying": "Rien n'est en cours de lecture.",
-        "volumeLimit": "Le volume doit être entre `1` et `100`",
         "setChannel": "Le salon de demandes a été défini sur {channel}",
         "removeChannel": "Le salon de demandes a été supprimé.",
         "noChannel": "Aucun salon de demandes n'est actuellement défini.",

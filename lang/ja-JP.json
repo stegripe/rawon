@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "開発者向け",
             "eval": {
                 "description": "JavaScriptコードを実行",
                 "errorString": "エラー",
@@ -118,7 +117,6 @@
                 "serversString": "サーバー",
                 "sourceCodeString": "ソースコード"
             },
-            "categoryName": "一般",
             "help": {
                 "aliasesString": "エイリアス",
                 "authorString": "{username} - コマンドリスト",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "音楽",
             "dj": {
                 "description": "DJ機能の設定",
                 "usage": "{prefix}dj <enable | disable | role> [ロール]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "フィルターを指定してください。"
             },
             "lyrics": {
-                "apiError": "{message}のためAPIは{song}を見つけられませんでした。",
                 "description": "曲の歌詞を表示",
                 "noLyrics": "{song} の歌詞が見つかりませんでした。",
                 "noQuery": "再生中の曲がないか引数が渡されていません。",
@@ -287,7 +283,6 @@
                 "noSelection": "無効もしくは空のキーワードです。曲選択をキャンセルします。",
                 "noTracks": "検索結果を入手できませんでした。",
                 "queueEmbed": "音楽を選択してください。スペースもしくは{separator}で区切ることにより複数の音楽を選択できます。\n",
-                "slashDescription": "指定された曲を検索",
                 "slashQueryDescription": "検索キーワード",
                 "slashSourceDescription": "何を使用して曲を再生しますか？",
                 "trackSelectionMessage": "曲選択",
@@ -347,8 +342,7 @@
                 "noPermission": "`100%`を超えるボリュームを設定するには、DJロールまたは**サーバー管理**権限が必要です。",
                 "plsPause": "{volume}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
                 "slashDescription": "新しいボリューム",
-                "usage": "{prefix}volume [ボリューム]",
-                "volumeLimit": "{maxVol}以上にボリュームをセットできません。"
+                "usage": "{prefix}volume [ボリューム]"
             },
             "requestChannel": {
                 "description": "音楽リクエストチャンネルを設定する",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "そのインタラクションは<@{user}>とサーバースタッフのためのものです。",
-            "message2": "そのインタラクションは<@{user}>のためのものです。",
             "devOnly": "開発者専用コマンド。",
             "lyricsCommandNotFound": "歌詞コマンドが見つかりません。",
             "wrongBot": "このコマンドはこのサーバーのメインボットである {botMention} で実行する必要があります。",
@@ -407,34 +400,18 @@
         "shuffle": "シャッフル",
         "autoplay": "自動再生",
         "volume": "音量",
-        "queueLength": "キュー",
-        "queueFooter": "• キューに残っている曲数: {count} ({duration}の長さ)",
-        "idle": "待機中/利用可能",
+        "queueFooter": "キュー内の残り曲数: {count}（{duration}, 自動再生: {state}）",
         "live": "ライブ",
         "songDuration": "曲の長さ",
         "requestedBy": "リクエスト者",
-        "usedBy": "使用者",
         "unknown": "不明",
         "notInVoice": "音楽をリクエストするにはボイスチャンネルに参加する必要があります。",
         "noResults": "検索結果が見つかりませんでした。",
         "addedToQueue": "{song} をキューに追加しました。",
         "addedPlaylistToQueue": "{playlist} から {count} 曲をキューに追加しました。",
-        "startedPlaying": "{song} を再生中",
-        "paused": "音楽を一時停止しました。",
-        "resumed": "音楽を再開しました。",
-        "skipped": "{song} をスキップしました",
-        "removed": "{song} をキューから削除してスキップしました。",
-        "stopped": "音楽を停止し、キューをクリアしました。",
-        "loopChanged": "ループモードを {mode} に変更しました",
-        "shuffleChanged": "シャッフルモードは現在 {state} です",
-        "volumeChanged": "音量を {volume} に変更しました",
-        "queueCleared": "キューがクリアされました。",
         "queueListTitle": "キューリスト",
         "emptyQueue": "キューは空です。",
-        "alreadyPaused": "音楽は既に一時停止中です。",
-        "alreadyPlaying": "音楽は既に再生中です。",
         "nothingPlaying": "現在何も再生されていません。",
-        "volumeLimit": "音量は`1`から`100`の間で設定してください",
         "setChannel": "リクエストチャンネルを {channel} に設定しました",
         "removeChannel": "リクエストチャンネルを削除しました。",
         "noChannel": "現在リクエストチャンネルは設定されていません。",

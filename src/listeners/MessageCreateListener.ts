@@ -7,6 +7,7 @@ import {
     type EmbedBuilder,
     type Message,
     type MessageCollector,
+    PermissionFlagsBits,
     type TextChannel,
     type User,
 } from "discord.js";
@@ -163,10 +164,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
         const isRequestChannel =
             message.guild &&
-            this.container.requestChannelManager.isRequestChannel(
-                message.guild,
-                message.channel.id,
-            );
+            client.requestChannelManager.isRequestChannel(message.guild, message.channel.id);
 
         if (message.guild) {
             this.container.logger.debug(
@@ -478,6 +476,46 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             this.container.logger.debug(
                 `[MultiBot] ${client.user?.tag} SKIPPING voice channel ${voiceChannel.id} (${voiceChannel.name}) - responsible bot: ${responsibleBot?.user?.tag ?? "none"}`,
             );
+
+            if (responsibleBot && responsibleBot !== client) {
+                const missingPermissions = this.getMissingRequestChannelPermissionsForBot(
+                    responsibleBot,
+                    guild.id,
+                    message.channel.id,
+                );
+
+                if (missingPermissions.length > 0) {
+                    this.container.logger.warn(
+                        `[MultiBot] ${client.user?.tag} detected responsible bot ${responsibleBot.user?.tag ?? responsibleBot.user?.id ?? "unknown"} missing request-channel permissions in ${message.channel.id}: ${missingPermissions
+                            .map((perm) => this.formatPermissionName(perm))
+                            .join(", ")}`,
+                    );
+
+                    const permissionNames = missingPermissions
+                        .map((perm) => this.formatPermissionName(perm))
+                        .join(", ");
+                    const responsibleMention = responsibleBot.user
+                        ? `<@${responsibleBot.user.id}>`
+                        : "";
+                    const prefixLine =
+                        responsibleMention.length > 0 ? `${responsibleMention}\n` : "";
+
+                    this.sendTemporaryReply(
+                        message,
+                        createEmbed(
+                            "error",
+                            `${prefixLine}${__mf(
+                                "commands.music.requestChannel.missingBotPermissions",
+                                {
+                                    permissions: permissionNames,
+                                },
+                            )}`,
+                            true,
+                        ),
+                    );
+                }
+            }
+
             return;
         }
 
@@ -567,11 +605,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         for (const song of songs.type === "results" ? songs.items : [songs.items[0]]) {
             guild.queue.songs.addSong(song, member);
         }
-
-        await this.container.requestChannelManager.updatePlayerMessage(guild);
-
         if (isNewQueue || wasIdle) {
             void play(guild);
+        } else {
+            await client.requestChannelManager.updatePlayerMessage(guild);
         }
 
         let confirmEmbed: EmbedBuilder;
@@ -622,6 +659,55 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 }, 60_000);
             }
         })();
+    }
+
+    private getMissingRequestChannelPermissionsForBot(
+        botClient: Rawon,
+        guildId: string,
+        channelId: string,
+    ): bigint[] {
+        const requiredPermissions = [
+            PermissionFlagsBits.ViewChannel,
+            PermissionFlagsBits.SendMessages,
+            PermissionFlagsBits.EmbedLinks,
+            PermissionFlagsBits.ReadMessageHistory,
+        ];
+
+        const botGuild = botClient.guilds.cache.get(guildId);
+        if (!botGuild) {
+            return [...requiredPermissions];
+        }
+
+        const botMember =
+            botGuild.members.me ?? botGuild.members.cache.get(botClient.user?.id ?? "");
+        if (!botMember) {
+            return [...requiredPermissions];
+        }
+
+        const channel = botGuild.channels.cache.get(channelId);
+        if (
+            !channel ||
+            ![ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildStageVoice].includes(
+                channel.type,
+            )
+        ) {
+            return [PermissionFlagsBits.ViewChannel];
+        }
+
+        const botPermissions = channel.permissionsFor(botMember);
+        if (!botPermissions) {
+            return [...requiredPermissions];
+        }
+
+        return requiredPermissions.filter((perm) => !botPermissions.has(perm));
+    }
+
+    private formatPermissionName(permission: bigint): string {
+        const flagName = Object.entries(PermissionFlagsBits).find(
+            ([, value]) => value === permission,
+        )?.[0];
+        const spacedName = (flagName ?? "Unknown").replace(/([a-z])([A-Z])/g, "$1 $2");
+        return `**\`${spacedName}\`**`;
     }
 
     private getUserFromMention(mention: string, message: Message): User | undefined {

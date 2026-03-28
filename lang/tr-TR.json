@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "GELİŞTİRİCİ",
             "eval": {
                 "description": "JavaScript kodu yürüt",
                 "errorString": "Hata",
@@ -118,7 +117,6 @@
                 "serversString": "Sunucular",
                 "sourceCodeString": "Kaynak Kodu"
             },
-            "categoryName": "GENEL",
             "help": {
                 "aliasesString": "Diğer Kullanımlar",
                 "authorString": "{username} - Komut Listesi",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "MÜZİK",
             "dj": {
                 "description": "DJ özelliği ayarlarını değiştir",
                 "usage": "{prefix}dj <enable | disable | role> [rol]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Lütfen şarkı filtresini belirtin."
             },
             "lyrics": {
-                "apiError": "API {song} isimli şarkıyı bulamadı, çünkü: {message}",
                 "description": "Şarkının sözlerini gösterir",
                 "noLyrics": "{song} için şarkı sözü bulunamadı.",
                 "noQuery": "Hiçbir şey çalmıyor veya hiçbir argüman sağlanmıyor.",
@@ -287,21 +283,20 @@
                 "noSelection": "Değer girilmedi veya geçersiz, müzik seçimi iptal edildi.",
                 "noTracks": "Herhangi bir arama sonucu elde edemiyorum.",
                 "queueEmbed": "Lütfen bir müzik seçin; boşluk veya {separator} kullanarak birden fazla müzik seçebilirsiniz.\n",
-                "slashDescription": "Belirtilen müziği arayın",
                 "slashQueryDescription": "Aranacak sorgu",
                 "slashSourceDescription": "Müzik nereye götürülmeli?",
                 "trackSelectionMessage": "Müzik Seçimi",
                 "usage": "{prefix}search <sorgu> [kaynak]"
             },
-            "autoplay": {
-                "actualState": "Geçerli otomatik oynatma modu {state}",
-                "description": "Otomatik oynatma özelliği için modu ayarlama",
-                "newState": "Otomatik oynatma modu şimdi {state} olarak ayarlandı"
-            },
             "shuffle": {
                 "actualState": "Geçerli karıştırma modu {state}",
                 "description": "Karıştırma özelliği için modu ayarlama",
                 "newState": "Karıştırma modu şimdi {state} olarak ayarlandı"
+            },
+            "autoplay": {
+                "actualState": "Geçerli otomatik oynatma modu {state}",
+                "description": "Otomatik oynatma özelliği için modu ayarlama",
+                "newState": "Otomatik oynatma modu şimdi {state} olarak ayarlandı"
             },
             "seek": {
                 "cantSeekLive": "Canlı yayınlarda arama yapılamaz.",
@@ -347,8 +342,7 @@
                 "noPermission": "Ses seviyesini `100%`'in üzerine ayarlamak için DJ rolü veya **Sunucuyu Yönet** iznine ihtiyacınız var.",
                 "plsPause": "Lütfen ses seviyesini {volume} olarak ayarlamak yerine müziği duraklatın",
                 "slashDescription": "Yeni ses seviyesi",
-                "usage": "{prefix}volume [yeni değer]",
-                "volumeLimit": "Ses seviyesini {maxVol} değerinin üzerine ayarlayamıyorum."
+                "usage": "{prefix}volume [yeni değer]"
             },
             "requestChannel": {
                 "description": "Müzik için bir istek kanalı ayarla",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> ve sunucu moderatörleri için kullanılabilir.",
-            "message2": "Üzgünüm, ancak bu etkileşim yalnızca <@{user}> için kullanılabilir.",
             "devOnly": "Sadece geliştiricilere özel komut.",
             "lyricsCommandNotFound": "Şarkı sözleri komutu bulunamadı.",
             "wrongBot": "Bu komut, bu sunucunun ana botu olarak {botMention} üzerinde yürütülmelidir.",
@@ -407,34 +400,18 @@
         "shuffle": "Karıştır",
         "autoplay": "Otomatik oynatma",
         "volume": "Ses Seviyesi",
-        "queueLength": "Kuyruk",
-        "queueFooter": "• Kuyruktaki kalan toplam parça: {count} ({duration} süre)",
-        "idle": "Boşta/Müsait",
+        "queueFooter": "Kuyrukta kalan parça sayısı: {count} ({duration} süre, otomatik oynatma: {state})",
         "live": "CANLI",
         "songDuration": "Süre",
         "requestedBy": "İsteyen",
-        "usedBy": "tarafından kullanılıyor",
         "unknown": "Bilinmiyor",
         "notInVoice": "Müzik istemek için bir ses kanalında olmanız gerekiyor.",
         "noResults": "Aramanız için sonuç bulunamadı.",
         "addedToQueue": "{song} kuyruğa eklendi.",
         "addedPlaylistToQueue": "{playlist} çalma listesinden {count} şarkı kuyruğa eklendi.",
-        "startedPlaying": "Şimdi çalıyor {song}",
-        "paused": "Müzik duraklatıldı.",
-        "resumed": "Müzik devam ettiriliyor.",
-        "skipped": "{song} atlandı",
-        "removed": "{song} kuyruktan kaldırıldı ve atlandı.",
-        "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
-        "loopChanged": "Döngü modu {mode} olarak değiştirildi",
-        "shuffleChanged": "Karıştırma modu şimdi {state}",
-        "volumeChanged": "Ses seviyesi {volume} olarak değiştirildi",
-        "queueCleared": "Kuyruk temizlendi.",
         "queueListTitle": "Kuyruk Listesi",
         "emptyQueue": "Kuyruk boş.",
-        "alreadyPaused": "Müzik zaten duraklatılmış.",
-        "alreadyPlaying": "Müzik zaten çalıyor.",
         "nothingPlaying": "Şu anda hiçbir şey çalmıyor.",
-        "volumeLimit": "Ses seviyesi `1` ile `100` arasında olmalıdır",
         "setChannel": "İstek kanalı {channel} olarak ayarlandı",
         "removeChannel": "İstek kanalı kaldırıldı.",
         "noChannel": "Şu anda ayarlanmış istek kanalı yok.",

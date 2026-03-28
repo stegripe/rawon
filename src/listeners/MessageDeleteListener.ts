@@ -12,7 +12,8 @@ export class MessageDeleteListener extends Listener<typeof Events.MessageDelete>
         }
 
         const guild = message.guild;
-        const botId = (message.client as Rawon).user?.id ?? "unknown";
+        const client = message.client as Rawon;
+        const botId = client.user?.id ?? "unknown";
 
         let requestChannelData: { channelId: string | null; messageId: string | null } | null =
             null;
@@ -37,7 +38,7 @@ export class MessageDeleteListener extends Listener<typeof Events.MessageDelete>
             ]);
 
             try {
-                await this.container.requestChannelManager.setRequestChannel(guild, null);
+                await client.requestChannelManager.setRequestChannel(guild, null);
                 this.container.logger.info(
                     `Cleaned up request channel data for guild ${guild.name} (${guild.id}) after player message deletion`,
                 );

@@ -706,6 +706,7 @@ export class ServerQueue {
             const botInstance = this.client.multiBotManager.getBotByClient(this.client);
             if (botInstance && !botInstance.isPrimary) {
                 await this.clearPlayerState();
+                await this.client.requestChannelManager.deletePlayerMessage(this.textChannel.guild);
                 this.client.logger.info(
                     `[MultiBot] ${this.client.user?.tag} (non-primary) cleared player state on destroy`,
                 );

@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "DESENVOLVEDOR",
             "eval": {
                 "description": "Avaliar código JavaScript",
                 "errorString": "Erro",
@@ -118,7 +117,6 @@
                 "serversString": "Servidores",
                 "sourceCodeString": "Código-fonte"
             },
-            "categoryName": "GERAL",
             "help": {
                 "aliasesString": "Alias",
                 "authorString": "Lista de comandos de {username}",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "MÚSICA",
             "dj": {
                 "description": "Muda a configuração do DJ",
                 "usage": "{prefix}dj <enable | disable | role> [cargo]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Por favor especifique um filtro."
             },
             "lyrics": {
-                "apiError": "A API não conseguiu encontrar {song}, motivo: {message}",
                 "description": "Mostra a letra da música",
                 "noLyrics": "Não foram encontradas letras para {song}.",
                 "noQuery": "Nenhuma música está tocando, ou nenhum argumento foi fornecido.",
@@ -287,21 +283,20 @@
                 "noSelection": "Nenhum valor ou um valor inválido foi fornecido, busca por músicas cancelada.",
                 "noTracks": "Não obtive resultados.",
                 "queueEmbed": "Por favor escolha uma música; você pode escolher mais de uma usando espaços em branco ou {separator}.\n",
-                "slashDescription": "Procura a música especificada",
                 "slashQueryDescription": "Busca",
                 "slashSourceDescription": "Onde devo buscar a música?",
                 "trackSelectionMessage": "Seleção de músicas",
                 "usage": "{prefix}search <canção> [origem]"
             },
-            "autoplay": {
-                "actualState": "Autoreproção está {state}",
-                "description": "Ativa ou desativa a autoreproção",
-                "newState": "Autoreproção agora está {state}"
-            },
             "shuffle": {
                 "actualState": "Modo aleatório está {state}",
                 "description": "Configura o modo aleatório",
                 "newState": "Modo aleatório agora está {state}"
+            },
+            "autoplay": {
+                "actualState": "Autoreproção está {state}",
+                "description": "Ativa ou desativa a autoreproção",
+                "newState": "Autoreproção agora está {state}"
             },
             "seek": {
                 "cantSeekLive": "Não é possível buscar em transmissões ao vivo.",
@@ -347,8 +342,7 @@
                 "noPermission": "Você precisa do cargo DJ ou da permissão **Gerenciar Servidor** para definir o volume acima de `100%`",
                 "plsPause": "Por favor pause a música ao invés de por o volume em{volume}",
                 "slashDescription": "Novo volume",
-                "usage": "{prefix}volume [novo volume]",
-                "volumeLimit": "Não posso por o volume acima de {maxVol}"
+                "usage": "{prefix}volume [novo volume]"
             },
             "requestChannel": {
                 "description": "Configurar um canal de solicitação para música",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "Desculpe, mas essa interação é somente para <@{user}> e a moderação do servidor.",
-            "message2": "Desculpe, mas essa interação é somente para <@{user}>",
             "devOnly": "Comando somente para desenvolvedores.",
             "lyricsCommandNotFound": "Comando de letras não encontrado.",
             "wrongBot": "Este comando deve ser executado no {botMention} como o bot principal para este servidor.",
@@ -407,34 +400,18 @@
         "shuffle": "Aleatório",
         "autoplay": "Reprodução automática",
         "volume": "Volume",
-        "queueLength": "Fila",
-        "queueFooter": "• Total de faixas restantes na fila: {count} ({duration} de duração)",
-        "idle": "Inativo/Disponível",
+        "queueFooter": "Faixas restantes na fila: {count} ({duration} de duração, reprodução automática: {state})",
         "live": "AO VIVO",
         "songDuration": "Duração",
         "requestedBy": "Pedido por",
-        "usedBy": "usado por",
         "unknown": "Desconhecido",
         "notInVoice": "Você precisa estar em um canal de voz para pedir música.",
         "noResults": "Nenhum resultado encontrado para sua busca.",
         "addedToQueue": "Adicionado {song} à fila.",
         "addedPlaylistToQueue": "Adicionadas {count} músicas de {playlist} à fila.",
-        "startedPlaying": "Tocando {song}",
-        "paused": "Música pausada.",
-        "resumed": "Música retomada.",
-        "skipped": "Pulou {song}",
-        "removed": "Removido {song} da fila e pulado.",
-        "stopped": "Música parada e fila limpa.",
-        "loopChanged": "Modo loop alterado para {mode}",
-        "shuffleChanged": "Modo aleatório agora está {state}",
-        "volumeChanged": "Volume alterado para {volume}",
-        "queueCleared": "A fila foi limpa.",
         "queueListTitle": "Lista da Fila",
         "emptyQueue": "A fila está vazia.",
-        "alreadyPaused": "A música já está pausada.",
-        "alreadyPlaying": "A música já está tocando.",
         "nothingPlaying": "Nada está tocando no momento.",
-        "volumeLimit": "O volume deve estar entre `1` e `100`",
         "setChannel": "O canal de pedidos foi definido para {channel}",
         "removeChannel": "O canal de pedidos foi removido.",
         "noChannel": "Nenhum canal de pedidos está definido atualmente.",
