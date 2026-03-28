@@ -124,7 +124,7 @@ export class CommandContext {
                 | null
                 | undefined;
             const channel = this.context.channel;
-            if (!msg || !msg.id) {
+            if (!msg?.id) {
                 const res = await channel?.messages
                     .fetch({ limit: 1 })
                     .then((c) => c.first())
