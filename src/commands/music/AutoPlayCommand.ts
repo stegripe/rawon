@@ -7,6 +7,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
 @ApplyOptions<Command.Options>({
@@ -53,9 +54,12 @@ export class AutoplayCommand extends ContextCommand {
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
 
-        const newState =
+        const newStateRaw =
             localCtx.options?.getString("state") ?? (localCtx.args[0] as string | undefined);
-        if ((newState?.length ?? 0) === 0) {
+        const newState =
+            typeof newStateRaw === "string" ? newStateRaw.trim().toLowerCase() : undefined;
+
+        if (!newState) {
             void ctx.reply({
                 embeds: [
                     createEmbed(
@@ -63,6 +67,23 @@ export class AutoplayCommand extends ContextCommand {
                         `♾️ **|** ${__mf("commands.music.autoplay.actualState", {
                             state: `**\`${ctx.guild?.queue?.autoplay === true ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                         })}`,
+                    ),
+                ],
+            });
+            return;
+        }
+
+        if (newState !== "enable" && newState !== "disable") {
+            const prefix = getEffectivePrefix(client, ctx.guild?.id ?? null);
+            void ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "error",
+                        __mf("reusable.invalidUsage", {
+                            prefix: `**\`${prefix}help\`**`,
+                            name: `**\`${this.options.name}\`**`,
+                        }),
+                        true,
                     ),
                 ],
             });

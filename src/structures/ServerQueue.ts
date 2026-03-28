@@ -51,6 +51,9 @@ export class ServerQueue {
     private _suppressPlayerErrors = false;
     private _pendingCacheUrls: string[] = [];
     private _shuffleUpcomingKeys: Snowflake[] = [];
+    private _prefetchedAutoplaySong: { fromSongKey: Snowflake; song: Song } | null = null;
+    private _autoplayPrefetchPromise: Promise<void> | null = null;
+    private _autoplayPrefetchForKey: Snowflake | null = null;
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -63,6 +66,9 @@ export class ServerQueue {
             _skipCooldownMs: nonEnum,
             _positionSaveInterval: nonEnum,
             _suppressPlayerErrors: nonEnum,
+            _prefetchedAutoplaySong: nonEnum,
+            _autoplayPrefetchPromise: nonEnum,
+            _autoplayPrefetchForKey: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -167,7 +173,9 @@ export class ServerQueue {
 
                     const me = this.textChannel.guild.members.me;
                     if (!nextS && this.autoplay && me) {
-                        const autoPlaySong = await this.resolveAutoplaySong(song);
+                        const autoPlaySong =
+                            (await this.consumePrefetchedAutoplaySong(song)) ??
+                            (await this.resolveAutoplaySong(song));
 
                         if (autoPlaySong !== undefined) {
                             nextS = this.songs.addSong(autoPlaySong, me);
@@ -175,6 +183,10 @@ export class ServerQueue {
                                 `[ServerQueue] Autoplay queued for ${this.textChannel.guild.name}: ${autoPlaySong.title}`,
                             );
                         }
+                    }
+
+                    if (this._prefetchedAutoplaySong?.fromSongKey === song.key) {
+                        this._prefetchedAutoplaySong = null;
                     }
 
                     void this.client.requestChannelManager.updatePlayerMessage(
@@ -617,6 +629,13 @@ export class ServerQueue {
 
     public setAutoplay(value: boolean): void {
         this.autoplay = value;
+        if (!value) {
+            this.clearAutoplayPrefetchState();
+        } else if (this.player.state.status === AudioPlayerStatus.Playing) {
+            const currentSong = (this.player.state as AudioPlayerPlayingState).resource
+                .metadata as QueueSong;
+            this.preCacheNextSong(currentSong);
+        }
         void this.saveState();
     }
 
@@ -639,6 +658,7 @@ export class ServerQueue {
         } catch {}
 
         this.songs.clear();
+        this.clearAutoplayPrefetchState();
         this._suppressPlayerErrors = true;
         setTimeout(() => {
             this._suppressPlayerErrors = false;
@@ -920,6 +940,112 @@ export class ServerQueue {
         if (songsToCache.length > 0) {
             void this.client.audioCache.preCacheMultiple(songsToCache);
         }
+
+        if (!this.autoplay || this.peekNextKey(currentSong) !== undefined) {
+            return;
+        }
+
+        void this.preCacheAutoplaySong(currentSong);
+    }
+
+    private clearAutoplayPrefetchState(): void {
+        this._prefetchedAutoplaySong = null;
+        this._autoplayPrefetchForKey = null;
+        this._autoplayPrefetchPromise = null;
+    }
+
+    private peekNextKey(currentSong: QueueSong): Snowflake | undefined {
+        if (this.shuffle && this.loopMode !== "SONG") {
+            this.syncShuffleUpcomingKeys(currentSong.key);
+            return this._shuffleUpcomingKeys[0];
+        }
+
+        if (this.loopMode === "SONG") {
+            if (this.songs.has(currentSong.key)) {
+                return currentSong.key;
+            }
+
+            const sortedSongs = this.songs.sortByIndex();
+            return (
+                sortedSongs.filter((x) => x.index > currentSong.index).first()?.key ??
+                sortedSongs.first()?.key
+            );
+        }
+
+        const sortedSongs = this.songs.sortByIndex();
+        return (
+            sortedSongs.filter((x) => x.index > currentSong.index).first()?.key ??
+            (this.loopMode === "QUEUE" ? sortedSongs.first()?.key : undefined)
+        );
+    }
+
+    private async preCacheAutoplaySong(currentSong: QueueSong): Promise<void> {
+        if (this._prefetchedAutoplaySong?.fromSongKey === currentSong.key) {
+            return;
+        }
+
+        if (this._autoplayPrefetchForKey === currentSong.key && this._autoplayPrefetchPromise) {
+            return;
+        }
+
+        this._autoplayPrefetchForKey = currentSong.key;
+        const fromSongKey = currentSong.key;
+
+        const task = (async () => {
+            const autoPlaySong = await this.resolveAutoplaySong(currentSong);
+            if (
+                autoPlaySong === undefined ||
+                !this.autoplay ||
+                this._autoplayPrefetchForKey !== fromSongKey
+            ) {
+                return;
+            }
+
+            this._prefetchedAutoplaySong = {
+                fromSongKey,
+                song: autoPlaySong,
+            };
+
+            if (!autoPlaySong.isLive) {
+                await this.client.audioCache.preCacheUrl(autoPlaySong.url, true);
+            }
+        })();
+
+        this._autoplayPrefetchPromise = task
+            .catch((error: unknown) => {
+                this.client.logger.debug("[ServerQueue] Autoplay pre-cache failed", {
+                    guild: this.textChannel.guild.id,
+                    songKey: currentSong.key,
+                    error: error instanceof Error ? (error.stack ?? error.message) : String(error),
+                });
+            })
+            .finally(() => {
+                if (this._autoplayPrefetchForKey === fromSongKey) {
+                    this._autoplayPrefetchForKey = null;
+                }
+                this._autoplayPrefetchPromise = null;
+            });
+
+        await this._autoplayPrefetchPromise;
+    }
+
+    private async consumePrefetchedAutoplaySong(currentSong: QueueSong): Promise<Song | undefined> {
+        if (this._autoplayPrefetchForKey === currentSong.key && this._autoplayPrefetchPromise) {
+            await Promise.race([
+                this._autoplayPrefetchPromise,
+                new Promise<void>((resolve) => {
+                    setTimeout(resolve, 1500);
+                }),
+            ]);
+        }
+
+        if (this._prefetchedAutoplaySong?.fromSongKey !== currentSong.key) {
+            return undefined;
+        }
+
+        const prefetchedSong = this._prefetchedAutoplaySong.song;
+        this._prefetchedAutoplaySong = null;
+        return prefetchedSong;
     }
 
     private syncShuffleUpcomingKeys(currentKey?: Snowflake): void {
