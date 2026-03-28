@@ -112,6 +112,8 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     "loop",
                     "repeat",
                     "shuffle",
+                    "autoplay",
+                    "ap",
                     "filter",
                     "skip",
                     "skipto",
@@ -949,6 +951,37 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         ),
                     ],
                 });
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply();
+                    } catch {}
+                }, 60_000);
+                break;
+            }
+
+            case "RC_AUTOPLAY": {
+                if (!queue || queue.songs.size === 0) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
+                    });
+                    return;
+                }
+
+                queue.setAutoplay(!queue.autoplay);
+                const isAutoplay = queue.autoplay;
+                await interaction.reply({
+                    flags: MessageFlags.Ephemeral,
+                    embeds: [
+                        createEmbed(
+                            "success",
+                            `♾️ **|** ${__mf("commands.music.autoplay.newState", {
+                                state: `**\`${isAutoplay ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
+                            })}`,
+                        ),
+                    ],
+                });
+
                 setTimeout(async () => {
                     try {
                         await interaction.deleteReply();

@@ -293,6 +293,11 @@
                 "trackSelectionMessage": "Pilihan Lagu",
                 "usage": "{prefix}search <kata pencarian> [sumber]"
             },
+            "autoplay": {
+                "actualState": "Mode autoplay sekarang {state}",
+                "description": "Nyalakan atau matikan autoplay",
+                "newState": "Mode autoplay udah diatur ke {state}"
+            },
             "shuffle": {
                 "actualState": "Mode acak sekarang {state}",
                 "description": "Acak antrian",
@@ -400,6 +405,7 @@
         "standby": "Gak ada musik yang lagi diputar. Kirim nama lagu atau URL buat mulai muter!",
         "status": "Mode Repeat",
         "shuffle": "Acak",
+        "autoplay": "Putar otomatis",
         "volume": "Volume",
         "queueLength": "Antrian",
         "queueFooter": "• Total lagu yang tersisa di antrian: {count} ({duration} durasi)",

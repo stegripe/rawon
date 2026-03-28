@@ -68,6 +68,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                 bot_id TEXT NOT NULL,
                 loop_mode TEXT DEFAULT 'OFF',
                 shuffle INTEGER DEFAULT 0,
+                autoplay INTEGER DEFAULT 0,
                 volume INTEGER DEFAULT 100,
                 filters_json TEXT DEFAULT '{}',
                 PRIMARY KEY (guild_id, bot_id),
@@ -120,6 +121,22 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         if (!hasPrefixColumn) {
             this.db.exec(`
                 ALTER TABLE guilds ADD COLUMN prefix TEXT DEFAULT '';
+            `);
+        }
+
+        const playerStateInfo = this.db.prepare("PRAGMA table_info(player_states)").all() as Array<{
+            cid: number;
+            name: string;
+            type: string;
+            notnull: number;
+            dflt_value: string | null;
+            pk: number;
+        }>;
+
+        const hasAutoplayColumn = playerStateInfo.some((col) => col.name === "autoplay");
+        if (!hasAutoplayColumn) {
+            this.db.exec(`
+                ALTER TABLE player_states ADD COLUMN autoplay INTEGER DEFAULT 0;
             `);
         }
 
@@ -334,6 +351,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
             | {
                   loop_mode: string;
                   shuffle: number;
+                  autoplay: number;
                   volume: number;
                   filters_json: string | null;
               }
@@ -355,6 +373,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         return {
             loopMode: (result.loop_mode ?? "OFF") as "OFF" | "SONG" | "QUEUE",
             shuffle: result.shuffle === 1,
+            autoplay: result.autoplay === 1,
             volume: result.volume ?? this.botSettings.defaultVolume,
             filters,
         };
@@ -378,11 +397,12 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
             guildStmt.run(guildId, null, 0, null, null);
 
             const stmt = this.db.prepare(`
-                INSERT INTO player_states (guild_id, bot_id, loop_mode, shuffle, volume, filters_json)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO player_states (guild_id, bot_id, loop_mode, shuffle, autoplay, volume, filters_json)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(guild_id, bot_id) DO UPDATE SET
                     loop_mode = excluded.loop_mode,
                     shuffle = excluded.shuffle,
+                    autoplay = excluded.autoplay,
                     volume = excluded.volume,
                     filters_json = excluded.filters_json
             `);
@@ -392,6 +412,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                 botId,
                 playerState.loopMode,
                 playerState.shuffle ? 1 : 0,
+                playerState.autoplay ? 1 : 0,
                 playerState.volume,
                 JSON.stringify(playerState.filters),
             );

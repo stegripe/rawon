@@ -298,6 +298,11 @@
                 "description": "Définir le mode de la fonction de lecture aléatoire",
                 "newState": "Le mode aléatoire est maintenant réglé sur {state}"
             },
+            "autoplay": {
+                "actualState": "La lecture automatique est actuellement {state}",
+                "description": "Activer/désactiver le mode de lecture automatique",
+                "newState": "La lecture automatique est maintenant {state}"
+            },
             "seek": {
                 "cantSeekLive": "Impossible de chercher dans les flux en direct.",
                 "cantSeekSoundcloud": "Impossible de chercher dans les pistes SoundCloud.",
@@ -400,6 +405,7 @@
         "standby": "Pas de musique en cours. Envoyez un nom de chanson ou une URL pour commencer !",
         "status": "Mode Boucle",
         "shuffle": "Aléatoire",
+        "autoplay": "Lecture automatique",
         "volume": "Volume",
         "queueLength": "File d'attente",
         "queueFooter": "• Total des pistes restantes en file d'attente : {count} ({duration} de durée)",

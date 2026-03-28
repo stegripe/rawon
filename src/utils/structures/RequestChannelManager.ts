@@ -218,6 +218,7 @@ export class RequestChannelManager {
         let savedState: {
             loopMode?: string;
             shuffle?: boolean;
+            autoplay?: boolean;
             volume?: number;
             filters?: Record<string, boolean>;
         } | null = null;
@@ -238,6 +239,7 @@ export class RequestChannelManager {
         if (!queue || queue.songs.size === 0) {
             const savedLoopMode = savedState?.loopMode ?? "OFF";
             const savedShuffle = savedState?.shuffle ?? false;
+            const savedAutoplay = savedState?.autoplay ?? false;
             const savedVolume = savedState?.volume ?? bs.defaultVolume;
 
             return createEmbed("info", __("requestChannel.standby"))
@@ -252,6 +254,11 @@ export class RequestChannelManager {
                     {
                         name: __("requestChannel.shuffle"),
                         value: `🔀 ${savedShuffle ? "ON" : "OFF"}`,
+                        inline: true,
+                    },
+                    {
+                        name: __("requestChannel.autoplay"),
+                        value: `♾️ ${savedAutoplay ? "ON" : "OFF"}`,
                         inline: true,
                     },
                     {
@@ -336,6 +343,8 @@ export class RequestChannelManager {
         }
 
         const shuffleState = queue.shuffle ? "ON" : "OFF";
+        const autoplayState = queue.autoplay ? "ON" : "OFF";
+
         embed.addFields([
             {
                 name: __("requestChannel.status"),
@@ -345,6 +354,11 @@ export class RequestChannelManager {
             {
                 name: __("requestChannel.shuffle"),
                 value: `🔀 ${shuffleState}`,
+                inline: true,
+            },
+            {
+                name: __("requestChannel.autoplay"),
+                value: `♾️ ${autoplayState}`,
                 inline: true,
             },
             {
@@ -455,9 +469,17 @@ export class RequestChannelManager {
                 .setStyle(ButtonStyle.Secondary),
         );
 
+        const row3 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+                .setCustomId("RC_AUTOPLAY")
+                .setEmoji("♾️")
+                .setStyle(ButtonStyle.Secondary),
+        );
+
         return [
             row1.toJSON() as APIMessageTopLevelComponent,
             row2.toJSON() as APIMessageTopLevelComponent,
+            row3.toJSON() as APIMessageTopLevelComponent,
         ];
     }
 

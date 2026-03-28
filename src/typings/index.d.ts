@@ -274,6 +274,7 @@ export type GuildData = {
     playerState?: {
         loopMode: LoopMode;
         shuffle: boolean;
+        autoplay: boolean;
         volume: number;
         filters: Record<string, boolean>;
     };

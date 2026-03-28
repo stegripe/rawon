@@ -8,12 +8,12 @@ import {
     type VoiceConnection,
 } from "@discordjs/voice";
 import { type Snowflake, type TextChannel } from "discord.js";
-import { type LoopMode, type QueueSong, type SavedQueueSong } from "../typings/index.js";
+import { type LoopMode, type QueueSong, type SavedQueueSong, type Song } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
-import { play } from "../utils/handlers/GeneralUtil.js";
+import { checkQuery, play, searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
 import {
@@ -36,6 +36,7 @@ export class ServerQueue {
     public readonly songs: SongManager;
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
+    public autoplay = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
     public seekOffset = 0;
 
@@ -132,6 +133,7 @@ export class ServerQueue {
                             songsSize: this.songs.size,
                             loopMode: this.loopMode,
                             shuffle: this.shuffle,
+                            autoplay: this.autoplay,
                             upcomingKeys: upcoming as string[],
                         });
                     } catch {
@@ -161,6 +163,18 @@ export class ServerQueue {
                         nextS =
                             sortedSongs.filter((x) => x.index > song.index).first()?.key ??
                             (this.loopMode === "QUEUE" ? (sortedSongs.first()?.key ?? "") : "");
+                    }
+
+                    const me = this.textChannel.guild.members.me;
+                    if (!nextS && this.autoplay && me) {
+                        const autoPlaySong = await this.resolveAutoplaySong(song);
+
+                        if (autoPlaySong !== undefined) {
+                            nextS = this.songs.addSong(autoPlaySong, me);
+                            this.client.logger.info(
+                                `[ServerQueue] Autoplay queued for ${this.textChannel.guild.name}: ${autoPlaySong.title}`,
+                            );
+                        }
                     }
 
                     void this.client.requestChannelManager.updatePlayerMessage(
@@ -314,6 +328,7 @@ export class ServerQueue {
             let savedState: {
                 loopMode?: string;
                 shuffle?: boolean;
+                autoplay?: boolean;
                 volume?: number;
                 filters?: Record<string, boolean>;
             } | null = null;
@@ -355,13 +370,14 @@ export class ServerQueue {
             if (savedState) {
                 this.loopMode = (savedState.loopMode as typeof this.loopMode) ?? "OFF";
                 this.shuffle = savedState.shuffle ?? false;
+                this.autoplay = savedState.autoplay ?? false;
                 this._volume = savedState.volume ?? this.resolvedDefaultVolume;
                 this.filters = (savedState.filters ?? {}) as Partial<
                     Record<keyof typeof filterArgs, boolean>
                 >;
                 this.client.logger.info(
                     `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
-                        `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+                        `loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
                 );
             } else {
                 this.client.logger.warn(
@@ -376,13 +392,14 @@ export class ServerQueue {
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
+            this.autoplay = savedState.autoplay ?? false;
             this._volume = savedState.volume ?? this.resolvedDefaultVolume;
             this.filters = (savedState.filters ?? {}) as Partial<
                 Record<keyof typeof filterArgs, boolean>
             >;
             this.client.logger.info(
                 `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
-                    `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+                    `loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
             );
         } else {
             this.client.logger.warn(
@@ -395,6 +412,7 @@ export class ServerQueue {
         const playerState = {
             loopMode: this.loopMode,
             shuffle: this.shuffle,
+            autoplay: this.autoplay,
             volume: this._volume,
             filters: this.filters as Record<string, boolean>,
         };
@@ -405,7 +423,7 @@ export class ServerQueue {
         if (hasSavePlayerState(this.client.data)) {
             this.client.logger.debug(
                 `Saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
-                    `loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
+                    `loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
             );
 
             try {
@@ -434,10 +452,11 @@ export class ServerQueue {
     public copyStateFrom(sourceQueue: ServerQueue): void {
         this.loopMode = sourceQueue.loopMode;
         this.shuffle = sourceQueue.shuffle;
+        this.autoplay = sourceQueue.autoplay;
         this._volume = sourceQueue.volume;
         this.filters = { ...sourceQueue.filters };
         this.client.logger.info(
-            `[MultiBot] Copied player state from primary bot: loop=${this.loopMode}, shuffle=${this.shuffle}, volume=${this._volume}`,
+            `[MultiBot] Copied player state from primary bot: loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}`,
         );
     }
 
@@ -593,6 +612,11 @@ export class ServerQueue {
         } else {
             this._shuffleUpcomingKeys = [];
         }
+        void this.saveState();
+    }
+
+    public setAutoplay(value: boolean): void {
+        this.autoplay = value;
         void this.saveState();
     }
 
@@ -933,6 +957,74 @@ export class ServerQueue {
         }
 
         return nextKey;
+    }
+
+    private async resolveAutoplaySong(currentSong: QueueSong): Promise<Song | undefined> {
+        const queryData = checkQuery(currentSong.song.url);
+        const sourceType = queryData.sourceType;
+        const normalizedCurrentTitle = currentSong.song.title.trim().toLowerCase();
+
+        const isDifferentSong = (item: Song): boolean =>
+            item.id !== currentSong.song.id &&
+            item.url !== currentSong.song.url &&
+            item.title.trim().toLowerCase() !== normalizedCurrentTitle;
+
+        const tryResolve = async (
+            query: string,
+            source?: "soundcloud" | "youtube",
+        ): Promise<Song | undefined> => {
+            try {
+                const result = await searchTrack(this.client, query, source);
+                const candidates = result.items.filter((item) => isDifferentSong(item));
+
+                if (candidates.length === 0) {
+                    return undefined;
+                }
+
+                const randomIndex = Math.floor(Math.random() * candidates.length);
+                return candidates[randomIndex];
+            } catch (error) {
+                this.client.logger.debug("[ServerQueue] Autoplay resolve failed", {
+                    guild: this.textChannel.guild.id,
+                    source: source ?? "auto",
+                    query,
+                    error: error instanceof Error ? (error.stack ?? error.message) : String(error),
+                });
+            }
+
+            return undefined;
+        };
+
+        if (sourceType === "soundcloud") {
+            const soundCloudMatch = await tryResolve(currentSong.song.title, "soundcloud");
+            if (soundCloudMatch !== undefined) {
+                return soundCloudMatch;
+            }
+
+            return tryResolve(currentSong.song.title);
+        }
+
+        if (sourceType === "youtube") {
+            const titleQuery = `${currentSong.song.title} topic`;
+            const queries =
+                currentSong.song.id.length > 0
+                    ? [
+                          `https://www.youtube.com/watch?v=${currentSong.song.id}&list=RD${currentSong.song.id}`,
+                          titleQuery,
+                      ]
+                    : [titleQuery];
+
+            for (const query of queries) {
+                const nextSong = await tryResolve(query, "youtube");
+                if (nextSong !== undefined) {
+                    return nextSong;
+                }
+            }
+
+            return undefined;
+        }
+
+        return tryResolve(currentSong.song.title);
     }
 
     public get skipInProgress(): boolean {

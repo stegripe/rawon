@@ -298,6 +298,11 @@
                 "description": "シャッフルモードを設定",
                 "newState": "シャッフルモードは{state}にセットされました。"
             },
+            "autoplay": {
+                "actualState": "オートプレイは現在{state}",
+                "description": "オートプレイモードをトグル",
+                "newState": "オートプレイは{state}に設定されました"
+            },
             "seek": {
                 "cantSeekLive": "ライブストリームではシークできません。",
                 "cantSeekSoundcloud": "SoundCloudトラックではシークできません。",
@@ -400,6 +405,7 @@
         "standby": "音楽は再生されていません。曲名またはURLを送信して再生を開始してください！",
         "status": "ループモード",
         "shuffle": "シャッフル",
+        "autoplay": "自動再生",
         "volume": "音量",
         "queueLength": "キュー",
         "queueFooter": "• キューに残っている曲数: {count} ({duration}の長さ)",
