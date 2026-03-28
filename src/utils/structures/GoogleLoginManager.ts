@@ -1611,7 +1611,7 @@ export class GoogleLoginManager {
                       visitor_data: string | null;
                   }
                 | undefined;
-            if (!row || !row.was_running) {
+            if (!row?.was_running) {
                 return null;
             }
             return {

@@ -666,7 +666,7 @@ export class ServerQueue {
         while (Date.now() - start < timeoutMs) {
             try {
                 const guildMe = this.textChannel.guild.members.me;
-                if (!guildMe || !guildMe.voice || !guildMe.voice.channelId) {
+                if (!guildMe?.voice?.channelId) {
                     break;
                 }
             } catch {
