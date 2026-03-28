@@ -968,15 +968,15 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     return;
                 }
 
-                queue.setAutoplay(!queue.autoplay);
-                const isAutoplay = queue.autoplay;
+                queue.setAutoPlay(!queue.autoPlay);
+                const isAutoPlay = queue.autoPlay;
                 await interaction.reply({
                     flags: MessageFlags.Ephemeral,
                     embeds: [
                         createEmbed(
                             "success",
                             `♾️ **|** ${__mf("commands.music.autoplay.newState", {
-                                state: `**\`${isAutoplay ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
+                                state: `**\`${isAutoPlay ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                             })}`,
                         ),
                     ],

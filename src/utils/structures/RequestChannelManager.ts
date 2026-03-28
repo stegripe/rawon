@@ -239,7 +239,7 @@ export class RequestChannelManager {
         if (!queue || queue.songs.size === 0) {
             const savedLoopMode = savedState?.loopMode ?? "OFF";
             const savedShuffle = savedState?.shuffle ?? false;
-            const savedAutoplay = savedState?.autoplay ?? false;
+            const savedAutoPlay = savedState?.autoplay ?? false;
             const savedVolume = savedState?.volume ?? bs.defaultVolume;
 
             return createEmbed("info", __("requestChannel.standby"))
@@ -258,7 +258,7 @@ export class RequestChannelManager {
                     },
                     {
                         name: __("requestChannel.autoplay"),
-                        value: `♾️ ${savedAutoplay ? "ON" : "OFF"}`,
+                        value: `♾️ ${savedAutoPlay ? "ON" : "OFF"}`,
                         inline: true,
                     },
                     {
@@ -343,7 +343,7 @@ export class RequestChannelManager {
         }
 
         const shuffleState = queue.shuffle ? "ON" : "OFF";
-        const autoplayState = queue.autoplay ? "ON" : "OFF";
+        const autoPlayState = queue.autoPlay ? "ON" : "OFF";
 
         embed.addFields([
             {
@@ -358,7 +358,7 @@ export class RequestChannelManager {
             },
             {
                 name: __("requestChannel.autoplay"),
-                value: `♾️ ${autoplayState}`,
+                value: `♾️ ${autoPlayState}`,
                 inline: true,
             },
             {
