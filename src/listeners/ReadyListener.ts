@@ -265,7 +265,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 );
 
                 try {
-                    await this.container.requestChannelManager.setRequestChannel(guild, null);
+                    await client.requestChannelManager.setRequestChannel(guild, null);
                     this.container.logger.info(
                         `[Validation] Cleaned up invalid request channel for guild ${guild.name} (${guildId})`,
                     );
@@ -592,15 +592,18 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
             if (!guild) {
                 return;
             }
-            if (!this.container.requestChannelManager.hasRequestChannel(guild)) {
+            if (!client.requestChannelManager.hasRequestChannel(guild)) {
                 return;
             }
 
             try {
-                await this.container.requestChannelManager.createOrUpdatePlayerMessage(guild);
-                this.container.logger.info(
-                    `Restored request channel player message for guild ${guild.name}(${guild.id})`,
-                );
+                const restoredMessage =
+                    await client.requestChannelManager.createOrUpdatePlayerMessage(guild);
+                if (restoredMessage) {
+                    this.container.logger.info(
+                        `Restored request channel player message for guild ${guild.name}(${guild.id})`,
+                    );
+                }
             } catch (error) {
                 this.container.logger.error(
                     `Failed to restore request channel for guild ${guildId}:`,

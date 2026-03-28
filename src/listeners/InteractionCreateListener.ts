@@ -30,7 +30,6 @@ import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { parseHTMLElements } from "../utils/functions/parseHTMLElements.js";
-import { hasGetRequestChannel } from "../utils/typeGuards.js";
 
 function hasSlashCommand(cmd: Command): boolean {
     return cmd.options.chatInputCommand !== undefined;
@@ -91,7 +90,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             return;
         }
 
-        if (interaction.guild) {
+        if (interaction.guild && !interaction.isMessageComponent()) {
             const thisBotGuild = client.guilds.cache.get(interaction.guild.id);
             if (!thisBotGuild) {
                 return;
@@ -404,7 +403,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 void ctxCmd.contextRun?.(context);
 
                 if (thisBotGuildForContext && interaction.channelId) {
-                    const isReqChannel = this.container.requestChannelManager.isRequestChannel(
+                    const isReqChannel = client.requestChannelManager.isRequestChannel(
                         thisBotGuildForContext,
                         interaction.channelId,
                     );
@@ -493,7 +492,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 void ctxCmd2.contextRun?.(context);
 
                 if (thisBotGuildForContext && interaction.channelId) {
-                    const isReqChannel = this.container.requestChannelManager.isRequestChannel(
+                    const isReqChannel = client.requestChannelManager.isRequestChannel(
                         thisBotGuildForContext,
                         interaction.channelId,
                     );
@@ -563,7 +562,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     void ctxCmd3.contextRun?.(context);
 
                     if (thisBotGuildForContext && interaction.channelId) {
-                        const isReqChannel = this.container.requestChannelManager.isRequestChannel(
+                        const isReqChannel = client.requestChannelManager.isRequestChannel(
                             thisBotGuildForContext,
                             interaction.channelId,
                         );
@@ -587,70 +586,16 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             return;
         }
 
-        const thisBotGuild = client.guilds.cache.get(guild.id);
-        if (!thisBotGuild) {
+        if (interaction.message.author.id !== client.user?.id) {
+            try {
+                await interaction.deferUpdate();
+            } catch {}
             return;
         }
 
-        if (this.container.config.isMultiBot) {
-            const botId = client.user?.id ?? "unknown";
-            let ownsRequestChannel = false;
-
-            if (hasGetRequestChannel(this.container.data)) {
-                const requestChannelData = this.container.data.getRequestChannel(
-                    thisBotGuild.id,
-                    botId,
-                );
-                ownsRequestChannel = requestChannelData?.channelId === interaction.channelId;
-            } else {
-                const fallback = this.container
-                    .data as import("../utils/typeGuards.js").FallbackDataManager;
-                const data = fallback.data?.[thisBotGuild.id]?.requestChannel;
-                ownsRequestChannel = data?.channelId === interaction.channelId;
-            }
-
-            if (ownsRequestChannel) {
-                this.container.logger.debug(
-                    `[MultiBot] ${client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel)`,
-                );
-            } else {
-                const primaryBot = client.multiBotManager.getPrimaryBot();
-                if (primaryBot) {
-                    const primaryBotGuild = primaryBot.guilds.cache.get(thisBotGuild.id);
-                    if (primaryBotGuild) {
-                        const primaryBotId = primaryBot.user?.id ?? "unknown";
-                        let primaryOwnsRequestChannel = false;
-
-                        if (hasGetRequestChannel(primaryBot.data)) {
-                            const requestChannelData = primaryBot.data.getRequestChannel(
-                                thisBotGuild.id,
-                                primaryBotId,
-                            );
-                            primaryOwnsRequestChannel =
-                                requestChannelData?.channelId === interaction.channelId;
-                        } else {
-                            const fallback =
-                                primaryBot.data as import("../utils/typeGuards.js").FallbackDataManager;
-                            const data = fallback.data?.[thisBotGuild.id]?.requestChannel;
-                            primaryOwnsRequestChannel = data?.channelId === interaction.channelId;
-                        }
-
-                        if (primaryOwnsRequestChannel && primaryBot !== client) {
-                            this.container.logger.debug(
-                                `[MultiBot] ${client.user?.tag} skipping button "${interaction.customId}" - primary bot owns request channel`,
-                            );
-                            try {
-                                await interaction.deferUpdate();
-                            } catch {}
-                            return;
-                        }
-                    }
-                }
-
-                this.container.logger.debug(
-                    `[MultiBot] ${client.user?.tag} ✅ responding to button "${interaction.customId}" (owns request channel or no other bot owns it)`,
-                );
-            }
+        const thisBotGuild = client.guilds.cache.get(guild.id);
+        if (!thisBotGuild) {
+            return;
         }
 
         const __ = i18n__(client, thisBotGuild);
@@ -690,25 +635,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
         const voiceChannel = member?.voice.channel;
 
-        let queue = thisBotGuild.queue;
-        let queueGuild = thisBotGuild;
-
-        if (this.container.config.isMultiBot && voiceChannel) {
-            const responsibleBot = client.multiBotManager.getBotForVoiceChannel(
-                thisBotGuild,
-                voiceChannel.id,
-            );
-            if (responsibleBot && responsibleBot !== client) {
-                const responsibleGuild = responsibleBot.guilds.cache.get(thisBotGuild.id);
-                if (responsibleGuild?.queue) {
-                    queue = responsibleGuild.queue;
-                    queueGuild = responsibleGuild;
-                    this.container.logger.debug(
-                        `[MultiBot] ${client.user?.tag} (primary) using queue from ${responsibleBot.user?.tag} for voice channel ${voiceChannel.id}`,
-                    );
-                }
-            }
-        }
+        const queue = thisBotGuild.queue;
 
         if (interaction.customId === "RC_LYRICS") {
             await this.handleLyricsButton(interaction, queue);
@@ -719,6 +646,15 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             await interaction.reply({
                 flags: MessageFlags.Ephemeral,
                 embeds: [createEmbed("warn", __("requestChannel.notInVoice"))],
+            });
+            return;
+        }
+
+        const queueVoiceChannelId = queue?.connection?.joinConfig.channelId ?? null;
+        if (queueVoiceChannelId && queueVoiceChannelId !== voiceChannel.id) {
+            await interaction.reply({
+                flags: MessageFlags.Ephemeral,
+                embeds: [createEmbed("warn", __("utils.musicDecorator.sameVC"))],
             });
             return;
         }
@@ -1268,12 +1204,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 break;
         }
 
-        if (this.container.config.isMultiBot && queue && queueGuild !== thisBotGuild) {
-            const responsibleBot = queueGuild.client as Rawon;
-            await responsibleBot.requestChannelManager.updatePlayerMessage(queueGuild);
-        } else {
-            await this.container.requestChannelManager.updatePlayerMessage(thisBotGuild);
-        }
+        await client.requestChannelManager.updatePlayerMessage(thisBotGuild);
     }
 
     private async checkMusicPermission(

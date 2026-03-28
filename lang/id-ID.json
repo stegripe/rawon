@@ -1,9 +1,8 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "DEVELOPER",
             "eval": {
-                "description": "Evaluasi kode",
+                "description": "Ngejalanin kode",
                 "errorString": "Error",
                 "noCode": "Kodenya mana nih?",
                 "inputString": "Input",
@@ -16,7 +15,7 @@
                 "slashStartDescription": "Mulai sesi login Google via browser",
                 "slashStatusDescription": "Cek status sesi login saat ini",
                 "slashLogoutDescription": "Tutup sesi browser",
-                "invalidSubcommand": "Penggunaan: {loginUsage}",
+                "invalidSubcommand": "Pakenya: {loginUsage}",
                 "alreadyLoggedIn": "Udah login. Pake {logoutCmd} dulu buat mulai sesi baru.",
                 "launching": "Lagi nge-launch browser buat login Google...",
                 "sessionTitle": "Sesi Login Google",
@@ -28,8 +27,8 @@
                 "step3": "3. Bot bakal otomatis deteksi pas login selesai",
                 "step4": "4. URL DevTools remote: {url} (opsional)",
                 "timeLimit": "Kamu punya waktu {minutes} menit buat selesaiin login.",
-                "loginSuccess": "Login Berhasil",
-                "loginSuccessDescription": "Berhasil login{email}.\n\nCookies udah diekspor dan disimpan.\nYouTube harusnya udah bisa jalan tanpa masalah deteksi bot.",
+                "loginSuccess": "Login Sukses",
+                "loginSuccessDescription": "Sukses login{email}.\n\nCookies udah diekspor dan disimpan.\nYouTube harusnya udah bisa jalan tanpa masalah deteksi bot.",
                 "loginSuccessEmail": " sebagai {email}",
                 "loginFailed": "Login Gagal",
                 "loginFailedDescription": "Login timeout atau dibatalin.\n\nPake {cmd} buat coba lagi.",
@@ -43,12 +42,12 @@
                 "statusMissing": "Gak ada cookies",
                 "sizeLabel": "Ukuran",
                 "lastRefreshLabel": "Terakhir Refresh",
-                "lastRefreshNever": "Belum pernah",
+                "lastRefreshNever": "Belom pernah",
                 "googleLoginField": "Login Google",
-                "sessionLoggedIn": "Sudah login",
-                "sessionWaiting": "Menunggu login...",
+                "sessionLoggedIn": "Udah login",
+                "sessionWaiting": "Nunggu login...",
                 "sessionError": "Error: {error}",
-                "sessionIdle": "Belum dimulai",
+                "sessionIdle": "Belom dimulai",
                 "accountLabel": "Akun",
                 "accountNA": "`N/A`",
                 "gettingStartedField": "Mulai",
@@ -56,40 +55,40 @@
                 "statsTitle": "Statistik"
             },
             "setup": {
-                "description": "Atur settingan bot (khusus developer)",
+                "description": "Set settingan bot (khusus developer)",
                 "usage": "{prefix}setup <setting> [value]",
                 "unknownSetting": "Setting gak dikenal. Pake {command} buat liat settingan yang tersedia.",
                 "embedTitle": "Settingan Bot",
                 "embedColor": {
-                    "set": "Warna embed udah diatur ke {color}",
+                    "set": "Warna embed udah diset ke {color}",
                     "reset": "Warna embed udah direset ke default.",
                     "invalid": "Kode warna hex gak valid. Pake 6 karakter hex (contoh: `#FF5733` atau `FF5733`)."
                 },
                 "yesEmoji": {
-                    "set": "Emoji sukses udah diatur ke {emoji}",
+                    "set": "Emoji sukses udah diset ke {emoji}",
                     "reset": "Emoji sukses udah direset ke default."
                 },
                 "noEmoji": {
-                    "set": "Emoji error udah diatur ke {emoji}",
+                    "set": "Emoji error udah diset ke {emoji}",
                     "reset": "Emoji error udah direset ke default."
                 },
                 "altPrefix": {
-                    "set": "Prefix alternatif udah diatur ke: {prefixes}",
+                    "set": "Prefix alternatif udah diset ke: {prefixes}",
                     "reset": "Prefix alternatif udah direset ke default.",
                     "invalid": "Kasih minimal satu prefix dong."
                 },
                 "splash": {
-                    "set": "Gambar splash channel request udah diatur.",
+                    "set": "Gambar splash channel request udah diset.",
                     "reset": "Gambar splash channel request udah direset ke default.",
                     "invalid": "Kasih URL yang valid dong."
                 },
                 "defaultVolume": {
-                    "set": "Volume default udah diatur ke {volume}",
+                    "set": "Volume default udah diset ke {volume}",
                     "reset": "Volume default udah direset ke default.",
                     "invalid": "Volume harus angka antara `1` sampai `200`"
                 },
                 "selectionType": {
-                    "set": "Tipe pemilihan musik udah diatur ke {type}",
+                    "set": "Tipe pemilihan musik udah diset ke {type}",
                     "reset": "Tipe pemilihan musik udah direset ke default.",
                     "invalid": "Tipe pemilihan harus `message` atau `selectmenu`"
                 },
@@ -109,7 +108,7 @@
                 "cachedUsersString": "User di Cache",
                 "channelsString": "Channel",
                 "commitString": "Commit",
-                "description": "Lihat info bot",
+                "description": "Cek info bot",
                 "discordJSVersionString": "Versi Discord.js",
                 "ffmpegVersionString": "Versi FFmpeg",
                 "nodeVersionString": "Versi Node.js",
@@ -118,14 +117,13 @@
                 "serversString": "Server",
                 "sourceCodeString": "Kode sumber"
             },
-            "categoryName": "UMUM",
             "help": {
                 "aliasesString": "Alias",
                 "authorString": "{username} - Daftar Command",
                 "commandDetailTitle": "{username} - Info tentang command {command}",
                 "commandSelectionString": "Pilih command yang kamu mau",
                 "commandUsageFooter": "<> = wajib | [] = opsional {devOnly}",
-                "description": "Lihat daftar command atau info tentang command tertentu",
+                "description": "Cek daftar command atau info tentang command tertentu",
                 "descriptionString": "Deskripsi",
                 "disabledSelection": "Gak ada yang bisa dipilih di sini",
                 "footerString": "{prefix}help <command> buat dapetin info tentang command tertentu",
@@ -133,7 +131,7 @@
                 "noAliases": "Gak ada.",
                 "noCommandSuggest": "Gak nemu command dengan nama itu. Maksudnya ini kali?",
                 "noCommand": "Gak nemu command dengan nama itu.",
-                "slashDescription": "Nama command buat lihat info lebih lanjut",
+                "slashDescription": "Nama command buat cek info lebih lanjut",
                 "usage": "{prefix}help [nama command]",
                 "usageString": "Cara pake"
             },
@@ -149,10 +147,10 @@
             "language": {
                 "description": "Ganti bahasa bot buat server ini",
                 "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
-                "slashSetDescription": "Atur bahasa server",
-                "slashViewDescription": "Lihat bahasa server sekarang",
+                "slashSetDescription": "Set bahasa server",
+                "slashViewDescription": "Cek bahasa server sekarang",
                 "slashResetDescription": "Reset ke bahasa default",
-                "slashLocaleOption": "Bahasa yang mau diatur",
+                "slashLocaleOption": "Bahasa yang mau diset",
                 "usage": "{prefix}language <view | set | reset> [bahasa]",
                 "embedTitle": "Setting Bahasa",
                 "currentLanguage": "Bahasa sekarang:",
@@ -163,23 +161,22 @@
             },
             "prefix": {
                 "currentPrefix": "Prefix sekarang: {prefix}",
-                "description": "Ubah prefix command untuk server ini",
+                "description": "Ganti prefix command untuk server ini",
                 "embedTitle": "Setting Prefix",
                 "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
                 "prefixReset": "Prefix udah direset ke: {prefix}",
-                "prefixSet": "Prefix udah diatur ke: {prefix}",
+                "prefixSet": "Prefix udah diset ke: {prefix}",
                 "prefixTooLong": "Prefix gak bisa lebih dari `10` karakter.",
                 "slashPrefixOption": "Prefix baru (maks `10` karakter)",
                 "slashResetDescription": "Reset ke prefix default",
-                "slashSetDescription": "Atur custom prefix untuk server ini",
-                "slashViewDescription": "Lihat prefix sekarang",
+                "slashSetDescription": "Set custom prefix untuk server ini",
+                "slashViewDescription": "Cek prefix sekarang",
                 "usage": "{prefix}prefix [prefix baru | view | reset]"
             }
         },
         "music": {
-            "categoryName": "MUSIK",
             "dj": {
-                "description": "Ubah setting fitur DJ",
+                "description": "Ganti setting fitur DJ",
                 "usage": "{prefix}dj <enable | disable | role> [role]",
                 "disable": "Nonaktif",
                 "disableText": "Fitur DJ udah di **`Nonaktif`**",
@@ -191,19 +188,19 @@
                 "role": {
                     "current": "Role DJ sekarang: <@&{role}>",
                     "invalid": "Role-nya gak valid tuh.",
-                    "noRole": "Role DJ belum diatur nih, atur dulu pake `{prefix}dj role`",
-                    "success": "Role DJ udah diubah jadi <@&{role}>"
+                    "noRole": "Role DJ belom diset nih, set dulu pake `{prefix}dj role`",
+                    "success": "Role DJ udah diganti jadi <@&{role}>"
                 },
                 "slashDisableDescription": "Matiin fitur DJ",
                 "slashEnableDescription": "Nyalain fitur DJ",
-                "slashRoleDescription": "Lihat atau ubah role DJ",
+                "slashRoleDescription": "Cek atau ganti role DJ",
                 "slashRoleNewRoleOption": "Role baru buat DJ"
             },
             "filter": {
                 "availableFilters": "Filter yang tersedia",
                 "currentlyUsedFilters": "Filter yang lagi dipake",
                 "currentState": "Filter {filter} lagi {state}",
-                "description": "Atur filter lagu",
+                "description": "Set filter lagu",
                 "usage": "{prefix}filter <enable | disable | status> [filter]",
                 "embedFooter": "Buat {opstate, select, enable {nyalain} other {matiin}} filter ini, pake {prefix}filter {opstate} {filter}",
                 "filterSet": "Filter {filter} sekarang {state}",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Kasih tau filter lagunya dong."
             },
             "lyrics": {
-                "apiError": "Gak bisa nemuin lagu {song} nih, soalnya: {message}",
                 "description": "Tampilin lirik lagu",
                 "noLyrics": "Gak nemu lirik buat {song}.",
                 "noQuery": "Gak ada yang lagi diputar atau argumennya gak dikasih.",
@@ -225,12 +221,12 @@
                 "usage": "{prefix}lyrics [lagu]"
             },
             "nowplaying": {
-                "description": "Lihat status media player",
+                "description": "Cek status media player",
                 "disableButton": "Tombol-tombol ini udah gak aktif lagi dan udah dihapus.",
                 "pauseResumeButton": "Jeda/Lanjut",
                 "skipButton": "Skip",
                 "stopButton": "Berhenti",
-                "showQueueButton": "Lihat Antrian",
+                "showQueueButton": "Cek Antrian",
                 "emptyQueue": "Antriannya lagi kosong nih.",
                 "error": "Gagal dapetin now playing: {message}",
                 "live": "LIVE",
@@ -250,7 +246,7 @@
                 "usage": "{prefix}play <kata pencarian / link>"
             },
             "queue": {
-                "description": "Lihat daftar antrian"
+                "description": "Cek daftar antrian"
             },
             "remove": {
                 "description": "Hapus lagu dari antrian",
@@ -265,10 +261,10 @@
                 "actualMode": "Mode repeat sekarang: {mode}",
                 "description": "Ulangi lagu yang lagi diputar atau setelahnya",
                 "footer": "Buat ganti mode, cek {prefix}help repeat",
-                "newMode": "Mode repeat udah diatur ke {mode}",
+                "newMode": "Mode repeat udah diset ke {mode}",
                 "slashDisable": "Matiin mode repeat",
-                "slashQueue": "Atur mode repeat ke **`Queue`**",
-                "slashSong": "Atur mode repeat ke **`Song`**",
+                "slashQueue": "Set mode repeat ke **`Queue`**",
+                "slashSong": "Set mode repeat ke **`Song`**",
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
@@ -287,21 +283,20 @@
                 "noSelection": "Angkanya gak valid, pilihan lagu dibatalin.",
                 "noTracks": "Gak bisa nemuin hasil pencariannya nih.",
                 "queueEmbed": "Pilih lagu yang kamu mau, bisa pilih lebih dari satu pake spasi atau {separator}.\n",
-                "slashDescription": "Cari lagu yang dikasih",
                 "slashQueryDescription": "Kata pencarian",
                 "slashSourceDescription": "Mau ambil lagu dari mana?",
                 "trackSelectionMessage": "Pilihan Lagu",
                 "usage": "{prefix}search <kata pencarian> [sumber]"
             },
-            "autoplay": {
-                "actualState": "Mode putar otomatis sekarang {state}",
-                "description": "Nyalakan atau matikan mode putar otomatis",
-                "newState": "Mode putar otomatis udah diatur ke {state}"
-            },
             "shuffle": {
                 "actualState": "Mode acak sekarang {state}",
                 "description": "Acak antrian",
-                "newState": "Mode acak udah diatur ke {state}"
+                "newState": "Mode acak udah diset ke {state}"
+            },
+            "autoplay": {
+                "actualState": "Mode putar otomatis sekarang {state}",
+                "description": "Nyalakan atau matikan mode putar otomatis",
+                "newState": "Mode putar otomatis udah diset ke {state}"
             },
             "seek": {
                 "cantSeekLive": "Gak bisa seek di live stream.",
@@ -311,7 +306,7 @@
                 "invalidTime": "Format waktunya gak valid: {time}. Pake format kayak `1:30` atau `90`",
                 "noPlaying": "Gak ada lagu yang lagi diputar.",
                 "noTime": "Kasih waktu buat diloncatin dong.",
-                "notCached": "Belum bisa seek di lagu ini. Tunggu audionya di-buffer dulu ya.",
+                "notCached": "Belom bisa seek di lagu ini. Tunggu audionya di-buffer dulu ya.",
                 "seeked": "Udah loncat ke {time}",
                 "slashTimeDescription": "Waktu buat diloncatin (contoh: `1:30` atau `90`)",
                 "usage": "{prefix}seek <waktu>",
@@ -343,27 +338,26 @@
                 "changeVolume": "Buat ganti volume, kasih angka volume baru pas pake command ini.",
                 "currentVolume": "Volume sekarang {volume}",
                 "description": "Ganti volume media player",
-                "newVolume": "Volume udah diatur ke {volume}",
-                "noPermission": "Butuh role DJ atau izin **Manage Server** buat atur volume di atas `100%`",
-                "plsPause": "Mending jeda media player-nya aja daripada atur volume ke {volume}",
+                "newVolume": "Volume udah diset ke {volume}",
+                "noPermission": "Butuh role DJ atau izin **Manage Server** buat set volume di atas `100%`",
+                "plsPause": "Mending jeda media player-nya aja daripada set volume ke {volume}",
                 "slashDescription": "Volume baru",
-                "usage": "{prefix}volume [volume baru]",
-                "volumeLimit": "Gak bisa atur volume di atas {maxVol}"
+                "usage": "{prefix}volume [volume baru]"
             },
             "requestChannel": {
-                "description": "Atur channel request buat musik",
+                "description": "Set channel request buat musik",
                 "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
                 "invalidChannel": "Kasih channel teks yang valid dong.",
                 "noBotPermissions": "Gak bisa cek izinku di channel itu.",
                 "missingBotPermissions": "Aku kurang izin ini di channel itu: {permissions}",
-                "failedToSetup": "Gagal atur channel request. Coba cek izinku ya.",
-                "alreadyHasChannel": "Server ini udah punya channel request di {channel}. Hapus dulu sebelum atur yang baru.",
+                "failedToSetup": "Gagal set channel request. Coba cek izinku ya.",
+                "alreadyHasChannel": "Server ini udah punya channel request di {channel}. Hapus dulu sebelum set yang baru.",
                 "channelAlreadyInUse": "Channel ini udah dipake sebagai channel request.",
-                "noChannelToRemove": "Gak ada channel request yang diatur buat dihapus.",
-                "slashSetDescription": "Atur channel jadi channel request",
+                "noChannelToRemove": "Gak ada channel request yang diset buat dihapus.",
+                "slashSetDescription": "Set channel jadi channel request",
                 "slashRemoveDescription": "Hapus channel request",
-                "slashStatusDescription": "Lihat channel request sekarang",
-                "slashChannelDescription": "Channel yang mau diatur jadi channel request",
+                "slashStatusDescription": "Cek channel request sekarang",
+                "slashChannelDescription": "Channel yang mau diset jadi channel request",
                 "usage": "{prefix}requestchannel <set | remove | status> [channel]"
             }
         }
@@ -376,10 +370,9 @@
         },
         "createInteraction": {
             "message1": "Sori, tapi interaction ini cuma buat <@{user}> sama staff server.",
-            "message2": "Sori, tapi interaction ini cuma buat <@{user}>",
             "devOnly": "Command buat developer aja.",
             "lyricsCommandNotFound": "Command lyrics gak ketemu.",
-            "wrongBot": "Perintah ini harus dijalanin di {botMention} sebagai bot utama/primer server ini.",
+            "wrongBot": "Command ini harus dijalanin di {botMention} sebagai bot utama/primer server ini.",
             "primaryBotFallback": "bot utama/primer"
         },
         "createMessage": "Halo {author}, prefix-ku {prefix}",
@@ -389,7 +382,7 @@
             "deleteQueue": "Udah {duration} lewat dan gak ada yang masuk voice channel, antriannya udah dihapus.",
             "deleteQueueFooter": "Antrian Dihapus",
             "disconnectFromVCMessage": "Keputus dari voice channel, antriannya udah dihapus.",
-            "joinStageMessage": "Berhasil masuk stage channel sebagai Speaker.",
+            "joinStageMessage": "Sukses masuk stage channel sebagai Speaker.",
             "joiningAsSpeaker": "Pindah ke stage channel, lagi coba masuk sebagai Speaker...",
             "pauseQueue": "Semua orang udah keluar dari voice channel. Buat ngirit resource, antriannya udah dijeda.\nKalo dalam {duration} masih gak ada yang masuk voice channel, antriannya bakal dihapus.",
             "pauseQueueFooter": "Antrian Dijeda",
@@ -407,37 +400,21 @@
         "shuffle": "Acak",
         "autoplay": "Putar otomatis",
         "volume": "Volume",
-        "queueLength": "Antrian",
-        "queueFooter": "• Total lagu yang tersisa di antrian: {count} ({duration} durasi)",
-        "idle": "Idle/Tersedia",
+        "queueFooter": "Lagu tersisa di antrian: {count} ({duration} durasi, putar otomatis: {state})",
         "live": "LIVE",
         "songDuration": "Durasi",
         "requestedBy": "Direquest sama",
-        "usedBy": "digunakan oleh",
         "unknown": "Gak diketahui",
         "notInVoice": "Kamu harus ada di voice channel buat request musik.",
         "noResults": "Gak nemu hasil buat pencarianmu.",
         "addedToQueue": "Nambahin {song} ke antrian.",
         "addedPlaylistToQueue": "Nambahin {count} lagu dari {playlist} ke antrian.",
-        "startedPlaying": "Sekarang lagi muter {song}",
-        "paused": "Musik dijeda.",
-        "resumed": "Musik dilanjutin.",
-        "skipped": "Skip {song}",
-        "removed": "Hapus {song} dari antrian dan di-skip.",
-        "stopped": "Musik distop dan antrian dikosongkan.",
-        "loopChanged": "Mode repeat diubah ke {mode}",
-        "shuffleChanged": "Mode acak sekarang {state}",
-        "volumeChanged": "Volume diubah ke {volume}",
-        "queueCleared": "Antrian udah dikosongkan.",
         "queueListTitle": "Daftar Antrian",
         "emptyQueue": "Antriannya kosong.",
-        "alreadyPaused": "Musiknya udah dijeda kok.",
-        "alreadyPlaying": "Musiknya udah diputar kok.",
         "nothingPlaying": "Gak ada yang lagi diputar.",
-        "volumeLimit": "Volume harus antara `1` dan `100`",
-        "setChannel": "Channel request udah diatur ke {channel}",
+        "setChannel": "Channel request udah diset ke {channel}",
         "removeChannel": "Channel request udah dihapus.",
-        "noChannel": "Gak ada channel request yang diatur sekarang.",
+        "noChannel": "Gak ada channel request yang diset sekarang.",
         "currentChannel": "Channel request sekarang: {channel}",
         "skipInProgress": "Bentar ya, skip lagi jalan.",
         "noPermission": "Kamu gak punya izin buat ngelakuin ini. Cuma role DJ, admin server, atau yang request lagu yang bisa."

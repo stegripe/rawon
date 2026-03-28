@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "DESARROLLADOR",
             "eval": {
                 "description": "Evaluar código JavaScript",
                 "errorString": "Error",
@@ -118,7 +117,6 @@
                 "serversString": "Servidores",
                 "sourceCodeString": "Código Fuente"
             },
-            "categoryName": "GENERAL",
             "help": {
                 "aliasesString": "Alias",
                 "authorString": "Lista de comandos de {username}",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "MÚSICA",
             "dj": {
                 "description": "Cambia la configuración del DJ",
                 "usage": "{prefix}dj <enable | disable | role> [rol]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Por favor, especifique el filtro de canción."
             },
             "lyrics": {
-                "apiError": "El API no pudo encontrar la letra de la canción {song}, razón: {message}",
                 "description": "Muestra la letra de una canción",
                 "noLyrics": "No se encontraron letras para {song}.",
                 "noQuery": "No se está reproduciendo nada o no se ingresaró ninguna canción a buscar.",
@@ -287,7 +283,6 @@
                 "noSelection": "No se ingresó un valor o este fue inválido, búsqueda de canciones cancelada.",
                 "noTracks": "No pude obtener resultados.",
                 "queueEmbed": "Por favor selecciona la canción, puedes seleccionar más de una usando un espacio en blanco o {separator}.\n",
-                "slashDescription": "Busca una canción específica",
                 "slashQueryDescription": "Canción a buscar",
                 "slashSourceDescription": "¿De dónde debería tomar la canción?",
                 "trackSelectionMessage": "Selección de canciones",
@@ -347,8 +342,7 @@
                 "noPermission": "Necesitas el rol DJ o el permiso **Gestionar Servidor** para establecer el volúmen por encima de `100%`",
                 "plsPause": "Por favor pausa la música en lugar de establecer el volúmen en {volume}",
                 "slashDescription": "Nuevo volúmen",
-                "usage": "{prefix}volume [volumen]",
-                "volumeLimit": "No puedo establecer el volúmen por encima de {maxVol}"
+                "usage": "{prefix}volume [volumen]"
             },
             "requestChannel": {
                 "description": "Configurar un canal de solicitudes para música",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "Lo siento, pero esta interacción es solo para <@{user}> y el staff del servidor.",
-            "message2": "Lo siento, pero esta interacción es solo para <@{user}>",
             "devOnly": "Comando solo para desarrolladores.",
             "lyricsCommandNotFound": "Comando de letras no encontrado.",
             "wrongBot": "Este comando debe ejecutarse en {botMention} como el bot principal de este servidor.",
@@ -407,34 +400,18 @@
         "shuffle": "Aleatorio",
         "autoplay": "Reproducción automática",
         "volume": "Volumen",
-        "queueLength": "Cola",
-        "queueFooter": "• Total de canciones restantes en cola: {count} ({duration} de duración)",
-        "idle": "Inactivo/Disponible",
+        "queueFooter": "Canciones restantes en la cola: {count} ({duration} de duración, reproducción automática: {state})",
         "live": "EN VIVO",
         "songDuration": "Duración",
         "requestedBy": "Solicitado por",
-        "usedBy": "usado por",
         "unknown": "Desconocido",
         "notInVoice": "Necesitas estar en un canal de voz para solicitar música.",
         "noResults": "No se encontraron resultados para tu búsqueda.",
         "addedToQueue": "Se añadió {song} a la cola.",
         "addedPlaylistToQueue": "Se añadieron {count} canciones de {playlist} a la cola.",
-        "startedPlaying": "Reproduciendo {song}",
-        "paused": "Música pausada.",
-        "resumed": "Música reanudada.",
-        "skipped": "Se saltó {song}",
-        "removed": "Eliminado {song} de la cola y saltado.",
-        "stopped": "Se detuvo la música y se vació la cola.",
-        "loopChanged": "Modo de bucle cambiado a {mode}",
-        "shuffleChanged": "Modo aleatorio ahora está {state}",
-        "volumeChanged": "Volumen cambiado a {volume}",
-        "queueCleared": "La cola ha sido vaciada.",
         "queueListTitle": "Lista de Cola",
         "emptyQueue": "La cola está vacía.",
-        "alreadyPaused": "La música ya está pausada.",
-        "alreadyPlaying": "La música ya se está reproduciendo.",
         "nothingPlaying": "No se está reproduciendo nada actualmente.",
-        "volumeLimit": "El volumen debe estar entre `1` y `100`",
         "setChannel": "El canal de solicitudes se ha establecido en {channel}",
         "removeChannel": "El canal de solicitudes ha sido eliminado.",
         "noChannel": "No hay canal de solicitudes establecido actualmente.",

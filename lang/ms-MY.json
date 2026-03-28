@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "DEVELOPER",
             "eval": {
                 "description": "Menilai dan menjalankan kod JavaScript",
                 "errorString": "Ralat",
@@ -118,7 +117,6 @@
                 "serversString": "Server",
                 "sourceCodeString": "Kod sumber"
             },
-            "categoryName": "GENERAL",
             "help": {
                 "aliasesString": "Alias",
                 "authorString": "{username} - Senarai Arahan",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "MUZIK",
             "dj": {
                 "description": "Tukar tetapan fungsi DJ",
                 "usage": "{prefix}dj <enable | disable | role> [role]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Sila nyatakan saringan lagu."
             },
             "lyrics": {
-                "apiError": "{song} tidak dijumpai, akibat: {message}",
                 "description": "Paparkan lirik lagu",
                 "noLyrics": "Lirik {song} tidak ditemui.",
                 "noQuery": "Tiada lagu yang sedang dimainkan, atau maklumat arahan tidak lengkap.",
@@ -287,21 +283,20 @@
                 "noSelection": "Input tidak sah atau kosong, pilihan muzik dibatalkan.",
                 "noTracks": "Tiada hasil.",
                 "queueEmbed": "Sila pilih lagu; anda boleh pilih beberapa lagu sekaligus dengan memisahkannya menggunakan jarak atau {separator}.\n",
-                "slashDescription": "Cari muzik yang dinyatakan",
                 "slashQueryDescription": "Carian",
                 "slashSourceDescription": "Nyatakan sumber muzik",
                 "trackSelectionMessage": "Pilihan Lagu",
                 "usage": "{prefix}search <query> [sumber]"
             },
-            "autoplay": {
-                "actualState": "Mod main otomatis kini {state}",
-                "description": "Tetapkan mod main otomatis",
-                "newState": "Mod main otomatis ditetapkan ke {state}"
-            },
             "shuffle": {
                 "actualState": "Mod acak kini {state}",
                 "description": "Tetapkan mod acak",
                 "newState": "Mod acak ditetapkan ke {state}"
+            },
+            "autoplay": {
+                "actualState": "Mod main otomatis kini {state}",
+                "description": "Tetapkan mod main otomatis",
+                "newState": "Mod main otomatis ditetapkan ke {state}"
             },
             "seek": {
                 "cantSeekLive": "Tidak boleh melangkau masa dalam live stream.",
@@ -347,8 +342,7 @@
                 "noPermission": "Anda memerlukan peranan DJ atau kebenaran **Pengelola Server** untuk menetapkan kelantangan melebihi `100%`",
                 "plsPause": "Sila jedakan muzik daripada menetapkan kelantangan kepada {volume}",
                 "slashDescription": "Kelantangan baharu",
-                "usage": "{prefix}volume [Kelantangan baharu]",
-                "volumeLimit": "Saya tidak boleh menetapkan kelantangan melebihi {maxVol}"
+                "usage": "{prefix}volume [Kelantangan baharu]"
             },
             "requestChannel": {
                 "description": "Tetapkan saluran permintaan untuk muzik",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "Tindakan ini khas untuk <@{user}> dan staf server.",
-            "message2": "Tindakan ini khas untuk <@{user}>",
             "devOnly": "Arahan khusus untuk pembangun.",
             "lyricsCommandNotFound": "Arahan lirik tidak dijumpai.",
             "wrongBot": "Perintah ini mesti dilaksanakan pada {botMention} sebagai bot utama untuk pelayan ini.",
@@ -407,34 +400,18 @@
         "shuffle": "Acak",
         "autoplay": "Main automatik",
         "volume": "Kelantangan",
-        "queueLength": "Giliran",
-        "queueFooter": "• Baki lagu dalam giliran: {count} ({duration} tempoh)",
-        "idle": "Sedia/Tersedia",
+        "queueFooter": "Lagu berbaki dalam giliran: {count} ({duration} tempoh, main automatik: {state})",
         "live": "LIVE",
         "songDuration": "Tempoh",
         "requestedBy": "Permintaan",
-        "usedBy": "digunakan oleh",
         "unknown": "Tidak diketahui",
         "notInVoice": "Anda perlu menyertai saluran suara untuk membuat permintaan muzik.",
         "noResults": "Tiada hasil carian yang sepadan dengan permintaan anda.",
         "addedToQueue": "Menambahkan {song} ke dalam giliran.",
         "addedPlaylistToQueue": "Menambahkan {count} lagu dari {playlist} ke dalam giliran.",
-        "startedPlaying": "Kini Memainkan {song}",
-        "paused": "Muzik telah dijeda.",
-        "resumed": "Meneruskan muzik.",
-        "skipped": "Melangkau {song}",
-        "removed": "Mengeluarkan {song} dari giliran dan dilangkau.",
-        "stopped": "Muzik dihentikan dan giliran dikosongkan.",
-        "loopChanged": "Mod ulangan kini {mode}",
-        "shuffleChanged": "Mod acak kini {state}",
-        "volumeChanged": "Kelantangan diubah kepada {volume}",
-        "queueCleared": "Giliran telah dikosongkan.",
         "queueListTitle": "Senarai Giliran",
         "emptyQueue": "Tiada lagu dalam giliran.",
-        "alreadyPaused": "Muzik sudah pun dijeda.",
-        "alreadyPlaying": "Muzik sudah pun dimainkan.",
         "nothingPlaying": "Tiada yang sedang dimainkan.",
-        "volumeLimit": "Kelantangan hendaklah di antara `1` dan `100`",
         "setChannel": "Saluran permintaan telah ditetapkan ke {channel}",
         "removeChannel": "Saluran permintaan telah dipadam.",
         "noChannel": "Tiada saluran permintaan yang ditetapkan.",

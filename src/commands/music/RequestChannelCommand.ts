@@ -224,6 +224,7 @@ export class RequestChannelCommand extends ContextCommand {
 
             const playerMessage = await client.requestChannelManager.createOrUpdatePlayerMessage(
                 localCtx.guild,
+                true,
             );
 
             if (!playerMessage) {

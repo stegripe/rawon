@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "DEVELOPER",
             "eval": {
                 "description": "Evaluate JavaScript code",
                 "errorString": "Error",
@@ -118,7 +117,6 @@
                 "serversString": "Servers",
                 "sourceCodeString": "Source code"
             },
-            "categoryName": "GENERAL",
             "help": {
                 "aliasesString": "Aliases",
                 "authorString": "{username} - Command List",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "MUSIC",
             "dj": {
                 "description": "Change DJ feature settings",
                 "usage": "{prefix}dj <enable | disable | role> [role]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Please specify the song filter."
             },
             "lyrics": {
-                "apiError": "The API couldn't find the song {song}, because: {message}",
                 "description": "Show the lyrics of the song",
                 "noLyrics": "No lyrics found for {song}",
                 "noQuery": "There's nothing playing, or no arguments are provided.",
@@ -287,7 +283,6 @@
                 "noSelection": "No or invalid value entered, music selection canceled.",
                 "noTracks": "I can't obtain any search results.",
                 "queueEmbed": "Please select some music; you can choose more than one using blank space or {separator}.\n",
-                "slashDescription": "Search the specified music",
                 "slashQueryDescription": "Query to search",
                 "slashSourceDescription": "The source to search from",
                 "trackSelectionMessage": "Music Selection",
@@ -347,8 +342,7 @@
                 "noPermission": "You need the DJ role or **Manage Server** permission to set the volume above `100%`",
                 "plsPause": "Please pause the music instead of setting the volume to {volume}",
                 "slashDescription": "New volume",
-                "usage": "{prefix}volume [new volume]",
-                "volumeLimit": "I can't set the volume above {maxVol}"
+                "usage": "{prefix}volume [new volume]"
             },
             "requestChannel": {
                 "description": "Set up a request channel for music",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "Sorry, but that interaction is only for <@{user}> and the server staff.",
-            "message2": "Sorry, but that interaction is only for <@{user}>",
             "devOnly": "Developer-only command.",
             "lyricsCommandNotFound": "Lyrics command not found.",
             "wrongBot": "This command must be executed on {botMention} as the primary bot for this server.",
@@ -407,34 +400,18 @@
         "shuffle": "Shuffle",
         "autoplay": "Auto-play",
         "volume": "Volume",
-        "queueLength": "Queue",
-        "queueFooter": "• Total remaining tracks in queue: {count} ({duration} of duration)",
-        "idle": "Idle/Available",
+        "queueFooter": "Remaining tracks in queue: {count} ({duration} duration, auto-play: {state})",
         "live": "LIVE",
         "songDuration": "Duration",
         "requestedBy": "Requested by",
-        "usedBy": "used by",
         "unknown": "Unknown",
         "notInVoice": "You need to be in a voice channel to request music.",
         "noResults": "No results found for your query.",
         "addedToQueue": "Added {song} to the queue.",
         "addedPlaylistToQueue": "Added {count} songs from {playlist} to the queue.",
-        "startedPlaying": "Now playing {song}",
-        "paused": "Paused the music.",
-        "resumed": "Resumed the music.",
-        "skipped": "Skipped {song}",
-        "removed": "Removed {song} from the queue and skipped.",
-        "stopped": "Stopped the music and cleared the queue.",
-        "loopChanged": "Loop mode changed to {mode}",
-        "shuffleChanged": "Shuffle mode is now {state}",
-        "volumeChanged": "Volume changed to {volume}",
-        "queueCleared": "Queue has been cleared.",
         "queueListTitle": "Queue List",
         "emptyQueue": "The queue is empty.",
-        "alreadyPaused": "The music is already paused.",
-        "alreadyPlaying": "The music is already playing.",
         "nothingPlaying": "Nothing is currently playing.",
-        "volumeLimit": "Volume must be between `1` and `100`",
         "setChannel": "Request channel has been set to {channel}",
         "removeChannel": "Request channel has been removed.",
         "noChannel": "No request channel is currently set.",

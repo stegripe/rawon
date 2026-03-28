@@ -1,7 +1,6 @@
 {
     "commands": {
         "developers": {
-            "categoryName": "PHÁT TRIỂN",
             "eval": {
                 "description": "Đánh giá mã JavaScript",
                 "errorString": "Lỗi",
@@ -118,7 +117,6 @@
                 "serversString": "Máy chủ",
                 "sourceCodeString": "Mã nguồn"
             },
-            "categoryName": "CHUNG",
             "help": {
                 "aliasesString": "Các bí danh",
                 "authorString": "{username} - Danh sách lệnh",
@@ -177,7 +175,6 @@
             }
         },
         "music": {
-            "categoryName": "NHẠC",
             "dj": {
                 "description": "Thay đổi cài đặt tính năng DJ",
                 "usage": "{prefix}dj <enable | disable | role> [vai trò]",
@@ -216,7 +213,6 @@
                 "specifyFilter": "Vui lòng chỉ định bộ lọc bài hát."
             },
             "lyrics": {
-                "apiError": "Không thể tìm bài hát {song}, vì: {message}",
                 "description": "Hiển thị lời bài hát",
                 "noLyrics": "Không tìm thấy lời bài hát cho {song}.",
                 "noQuery": "Không có nội dung nào đang phát hoặc không có đối số nào được cung cấp.",
@@ -287,21 +283,20 @@
                 "noSelection": "Không có giá trị hoặc nhập giá trị không hợp lệ, đã hủy.",
                 "noTracks": "Không có bất kỳ kết quả tìm kiếm nào.",
                 "queueEmbed": "Vui lòng chọn bài nhạc; bạn có thể chọn nhiều hơn một bằng cách sử dụng dấu cách hoặc {separator}.\n",
-                "slashDescription": "Tìm kiếm nhạc được chỉ định",
                 "slashQueryDescription": "Tìm kiếm truy vấn",
                 "slashSourceDescription": "Phát bài hát từ?",
                 "trackSelectionMessage": "Chọn bài hát",
                 "usage": "{prefix}search <query> [nguồn]"
             },
-            "autoplay": {
-                "actualState": "Chế độ phát tự động hiện tại là {state}",
-                "description": "Bật hoặc tắt phát tự động",
-                "newState": "Chế độ phát tự động được đặt thành {state}"
-            },
             "shuffle": {
                 "actualState": "Chế độ phát ngẫu nhiên hiện tại là {state}",
                 "description": "Đặt chế độ cho tính năng phát ngẫu nhiên",
                 "newState": "Chế độ phát ngẫu nhiên được đặt thành {state}"
+            },
+            "autoplay": {
+                "actualState": "Chế độ phát tự động hiện tại là {state}",
+                "description": "Bật hoặc tắt phát tự động",
+                "newState": "Chế độ phát tự động được đặt thành {state}"
             },
             "seek": {
                 "cantSeekLive": "Không thể tua trong phát trực tiếp.",
@@ -347,8 +342,7 @@
                 "noPermission": "Bạn cần vai trò DJ hoặc quyền **Quản lý máy chủ** để đặt âm lượng trên `100%`",
                 "plsPause": "Vui lòng tạm dừng nhạc để đặt âm lượng thành {volume}",
                 "slashDescription": "Âm lượng mới",
-                "usage": "{prefix}volume [âm lượng mới]",
-                "volumeLimit": "Tôi không thể đặt âm lượng trên {maxVol}"
+                "usage": "{prefix}volume [âm lượng mới]"
             },
             "requestChannel": {
                 "description": "Thiết lập kênh yêu cầu nhạc",
@@ -376,7 +370,6 @@
         },
         "createInteraction": {
             "message1": "Xin lỗi, tương tác chỉ dành cho <@{user}> và quản lý máy chủ.",
-            "message2": "Xin lỗi, tương tác chỉ dành cho <@{user}>",
             "devOnly": "Lệnh chỉ dành cho nhà phát triển.",
             "lyricsCommandNotFound": "Không tìm thấy lệnh lời bài hát.",
             "wrongBot": "Lệnh này phải được thực thi trên {botMention} làm bot chính cho máy chủ này.",
@@ -407,34 +400,18 @@
         "shuffle": "Trộn",
         "autoplay": "Tự động phát",
         "volume": "Âm lượng",
-        "queueLength": "Hàng đợi",
-        "queueFooter": "• Tổng số bài hát còn lại trong hàng đợi: {count} ({duration} thời lượng)",
-        "idle": "Chờ/Sẵn sàng",
+        "queueFooter": "Bài hát còn lại trong hàng đợi: {count} ({duration} thời lượng, phát tự động: {state})",
         "live": "TRỬa TIẾP",
         "songDuration": "Thời lượng",
         "requestedBy": "Yêu cầu bởi",
-        "usedBy": "được sử dụng bởi",
         "unknown": "Không rõ",
         "notInVoice": "Bạn cần ở trong kênh thoại để yêu cầu nhạc.",
         "noResults": "Không tìm thấy kết quả cho tìm kiếm của bạn.",
         "addedToQueue": "Đã thêm {song} vào hàng đợi.",
         "addedPlaylistToQueue": "Đã thêm {count} bài hát từ {playlist} vào hàng đợi.",
-        "startedPlaying": "Đang phát {song}",
-        "paused": "Đã tạm dừng nhạc.",
-        "resumed": "Đã tiếp tục phát nhạc.",
-        "skipped": "Đã bỏ qua {song}",
-        "removed": "Đã xóa {song} khỏi hàng đợi và bỏ qua.",
-        "stopped": "Đã dừng nhạc và xóa hàng đợi.",
-        "loopChanged": "Chế độ lặp đã thay đổi thành {mode}",
-        "shuffleChanged": "Chế độ trộn bây giờ là {state}",
-        "volumeChanged": "Âm lượng đã thay đổi thành {volume}",
-        "queueCleared": "Hàng đợi đã được xóa.",
         "queueListTitle": "Danh sách hàng đợi",
         "emptyQueue": "Hàng đợi trống.",
-        "alreadyPaused": "Nhạc đã được tạm dừng.",
-        "alreadyPlaying": "Nhạc đang phát.",
         "nothingPlaying": "Hiện không có gì đang phát.",
-        "volumeLimit": "Âm lượng phải từ `1` đến `100`",
         "setChannel": "Kênh yêu cầu đã được đặt thành {channel}",
         "removeChannel": "Kênh yêu cầu đã được xóa.",
         "noChannel": "Hiện không có kênh yêu cầu nào được đặt.",
