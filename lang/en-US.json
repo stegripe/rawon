@@ -298,6 +298,11 @@
                 "description": "Set mode for shuffle feature",
                 "newState": "Shuffle mode is now set to {state}"
             },
+            "autoplay": {
+                "actualState": "Autoplay is currently {state}",
+                "description": "Toggle autoplay mode",
+                "newState": "Autoplay is now {state}"
+            },
             "seek": {
                 "cantSeekLive": "Can't seek in live streams.",
                 "cantSeekSoundcloud": "Can't seek in SoundCloud tracks.",
@@ -400,6 +405,7 @@
         "standby": "No music playing. Send a song name or URL to start playing!",
         "status": "Loop Mode",
         "shuffle": "Shuffle",
+        "autoplay": "Autoplay",
         "volume": "Volume",
         "queueLength": "Queue",
         "queueFooter": "• Total remaining tracks in queue: {count} ({duration} of duration)",

@@ -396,7 +396,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
 
                             if (savedState && typeof savedState === "object") {
                                 this.container.logger.info(
-                                    `[Restore] Player state data received: loop=${String(savedState?.loopMode)}, shuffle=${String(savedState?.shuffle)}, volume=${String(savedState?.volume)}, hasFilters=${!!savedState?.filters}`,
+                                    `[Restore] Player state data received: loop=${String(savedState?.loopMode)}, shuffle=${String(savedState?.shuffle)}, autoplay=${String(savedState?.autoplay)}, volume=${String(savedState?.volume)}, hasFilters=${!!savedState?.filters}`,
                                 );
 
                                 if (!guild.queue) {
@@ -409,16 +409,18 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                                 try {
                                     const loopMode = savedState.loopMode ?? "OFF";
                                     const shuffle = savedState.shuffle ?? false;
+                                    const autoplay = savedState.autoplay ?? false;
                                     const volume =
                                         savedState.volume ?? client.data.botSettings.defaultVolume;
                                     const filters = savedState.filters ?? {};
 
                                     this.container.logger.info(
-                                        `[Restore] Setting player state: loop=${loopMode}, shuffle=${shuffle}, volume=${volume}, filters=${JSON.stringify(filters)}`,
+                                        `[Restore] Setting player state: loop=${loopMode}, shuffle=${shuffle}, autoplay=${autoplay}, volume=${volume}, filters=${JSON.stringify(filters)}`,
                                     );
 
                                     guild.queue.loopMode = loopMode;
                                     guild.queue.shuffle = shuffle;
+                                    guild.queue.autoplay = autoplay;
                                     guild.queue.volume = volume;
                                     guild.queue.filters = filters as Partial<
                                         Record<keyof typeof filterArgs, boolean>
@@ -426,7 +428,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
 
                                     this.container.logger.info(
                                         `[Restore] ✅ Loaded player state from queue owner bot ${queueOwnerBotId} for guild ${guild.name}: ` +
-                                            `loop=${guild.queue.loopMode}, shuffle=${guild.queue.shuffle}, volume=${guild.queue.volume}, filters=${JSON.stringify(guild.queue.filters)}`,
+                                            `loop=${guild.queue.loopMode}, shuffle=${guild.queue.shuffle}, autoplay=${guild.queue.autoplay}, volume=${guild.queue.volume}, filters=${JSON.stringify(guild.queue.filters)}`,
                                     );
                                     void guild.queue.saveState();
                                 } catch (setError) {
@@ -455,7 +457,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                     if (guild.queue) {
                         this.container.logger.info(
                             `[Restore] Queue created for guild ${guild.name}, player state: ` +
-                                `loop=${guild.queue.loopMode}, shuffle=${guild.queue.shuffle}, volume=${guild.queue.volume}, filters=${JSON.stringify(guild.queue.filters)}`,
+                                `loop=${guild.queue.loopMode}, shuffle=${guild.queue.shuffle}, autoplay=${guild.queue.autoplay}, volume=${guild.queue.volume}, filters=${JSON.stringify(guild.queue.filters)}`,
                         );
                     } else {
                         this.container.logger.error(

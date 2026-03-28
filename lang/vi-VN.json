@@ -293,6 +293,11 @@
                 "trackSelectionMessage": "Chọn bài hát",
                 "usage": "{prefix}search <query> [nguồn]"
             },
+            "autoplay": {
+                "actualState": "Chế độ phát tự động hiện tại là {state}",
+                "description": "Bật hoặc tắt phát tự động",
+                "newState": "Chế độ phát tự động được đặt thành {state}"
+            },
             "shuffle": {
                 "actualState": "Chế độ phát ngẫu nhiên hiện tại là {state}",
                 "description": "Đặt chế độ cho tính năng phát ngẫu nhiên",
@@ -400,6 +405,7 @@
         "standby": "Không có nhạc đang phát. Gửi tên bài hát hoặc URL để bắt đầu!",
         "status": "Chế độ lặp",
         "shuffle": "Trộn",
+        "autoplay": "Tự động phát",
         "volume": "Âm lượng",
         "queueLength": "Hàng đợi",
         "queueFooter": "• Tổng số bài hát còn lại trong hàng đợi: {count} ({duration} thời lượng)",
