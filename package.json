@@ -15,7 +15,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "build": "pnpm lint && rimraf dist && npx swc src -d dist --strip-leading-paths",
+        "build": "pnpm lint && rimraf dist && pnpm exec swc src -d dist --strip-leading-paths",
         "tscompile": "tsc --build tsconfig.json",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
