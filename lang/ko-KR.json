@@ -293,6 +293,11 @@
                 "trackSelectionMessage": "음악 선택",
                 "usage": "{prefix}search <검색어> [소스]"
             },
+            "autoplay": {
+                "actualState": "현재 자동재생 모드는 {state}이에요",
+                "description": "자동재생 기능 모드 설정",
+                "newState": "자동재생 모드가 {state}로 설정되었어요"
+            },
             "shuffle": {
                 "actualState": "현재 셔플 모드는 {state}이에요",
                 "description": "셔플 기능 모드 설정",
@@ -400,6 +405,7 @@
         "standby": "재생 중인 음악이 없어요. 노래 이름이나 URL을 보내서 재생을 시작하세요!",
         "status": "반복 모드",
         "shuffle": "셔플",
+        "autoplay": "자동재생",
         "volume": "볼륨",
         "queueLength": "대기열",
         "queueFooter": "• 대기열에 남은 총 트랙: {count}개 (재생 시간 {duration})",

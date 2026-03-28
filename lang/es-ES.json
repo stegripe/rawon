@@ -298,6 +298,11 @@
                 "description": "Aleatoriza la cola",
                 "newState": "El modo aleatorio se estableció ahora a {state}"
             },
+            "autoplay": {
+                "actualState": "La reproducción automática está actualmente {state}",
+                "description": "Alternar modo de reproducción automática",
+                "newState": "La reproducción automática ahora es {state}"
+            },
             "seek": {
                 "cantSeekLive": "No se puede buscar en transmisiones en vivo.",
                 "cantSeekSoundcloud": "No se puede buscar en pistas de SoundCloud.",
@@ -400,6 +405,7 @@
         "standby": "No hay música reproduciéndose. ¡Envía un nombre de canción o URL para empezar!",
         "status": "Modo de Bucle",
         "shuffle": "Aleatorio",
+        "autoplay": "Reproducción automática",
         "volume": "Volumen",
         "queueLength": "Cola",
         "queueFooter": "• Total de canciones restantes en cola: {count} ({duration} de duración)",

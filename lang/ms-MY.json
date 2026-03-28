@@ -293,6 +293,11 @@
                 "trackSelectionMessage": "Pilihan Lagu",
                 "usage": "{prefix}search <query> [sumber]"
             },
+            "autoplay": {
+                "actualState": "Mod main otomatis kini {state}",
+                "description": "Tetapkan mod main otomatis",
+                "newState": "Mod main otomatis ditetapkan ke {state}"
+            },
             "shuffle": {
                 "actualState": "Mod acak kini {state}",
                 "description": "Tetapkan mod acak",
@@ -400,6 +405,7 @@
         "standby": "Tiada muzik dimainkan. Hantar tajuk lagu atau pautan untuk mula dengar muzik!",
         "status": "Mod ulangan",
         "shuffle": "Acak",
+        "autoplay": "Main automatik",
         "volume": "Kelantangan",
         "queueLength": "Giliran",
         "queueFooter": "• Baki lagu dalam giliran: {count} ({duration} tempoh)",

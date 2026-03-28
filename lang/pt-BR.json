@@ -293,6 +293,11 @@
                 "trackSelectionMessage": "Seleção de músicas",
                 "usage": "{prefix}search <canção> [origem]"
             },
+            "autoplay": {
+                "actualState": "Autoreproção está {state}",
+                "description": "Ativa ou desativa a autoreproção",
+                "newState": "Autoreproção agora está {state}"
+            },
             "shuffle": {
                 "actualState": "Modo aleatório está {state}",
                 "description": "Configura o modo aleatório",
@@ -400,6 +405,7 @@
         "standby": "Nenhuma música tocando. Envie um nome de música ou URL para começar!",
         "status": "Modo Loop",
         "shuffle": "Aleatório",
+        "autoplay": "Reprodução automática",
         "volume": "Volume",
         "queueLength": "Fila",
         "queueFooter": "• Total de faixas restantes na fila: {count} ({duration} de duração)",

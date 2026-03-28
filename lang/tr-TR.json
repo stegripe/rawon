@@ -293,6 +293,11 @@
                 "trackSelectionMessage": "Müzik Seçimi",
                 "usage": "{prefix}search <sorgu> [kaynak]"
             },
+            "autoplay": {
+                "actualState": "Geçerli otomatik oynatma modu {state}",
+                "description": "Otomatik oynatma özelliği için modu ayarlama",
+                "newState": "Otomatik oynatma modu şimdi {state} olarak ayarlandı"
+            },
             "shuffle": {
                 "actualState": "Geçerli karıştırma modu {state}",
                 "description": "Karıştırma özelliği için modu ayarlama",
@@ -400,6 +405,7 @@
         "standby": "Müzik çalmıyor. Başlamak için şarkı adı veya URL gönderin!",
         "status": "Döngü Modu",
         "shuffle": "Karıştır",
+        "autoplay": "Otomatik oynatma",
         "volume": "Ses Seviyesi",
         "queueLength": "Kuyruk",
         "queueFooter": "• Kuyruktaki kalan toplam parça: {count} ({duration} süre)",

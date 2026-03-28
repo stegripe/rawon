@@ -310,6 +310,7 @@ export class FilterCommand extends ContextCommand {
         return {
             loopMode: "OFF",
             shuffle: false,
+            autoplay: false,
             volume: 100,
             filters: {},
         };

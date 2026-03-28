@@ -298,6 +298,11 @@
                 "description": "設置隨機播放模式的功能",
                 "newState": "隨機播放模式已設置為{state}"
             },
+            "autoplay": {
+                "actualState": "自動播放目前為 {state}",
+                "description": "切換自動播放模式",
+                "newState": "自動播放現已設定為 {state}"
+            },
             "seek": {
                 "cantSeekLive": "無法在直播中跳轉。",
                 "cantSeekSoundcloud": "無法在SoundCloud曲目中跳轉。",
@@ -400,6 +405,7 @@
         "standby": "沒有音樂播放中。發送歌曲名稱或URL開始播放！",
         "status": "循環模式",
         "shuffle": "隨機播放",
+        "autoplay": "自動播放",
         "volume": "音量",
         "queueLength": "佇列",
         "queueFooter": "• 佇列中剩餘的曲目總數：{count}（{duration} 時長）",
