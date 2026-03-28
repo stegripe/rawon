@@ -265,7 +265,7 @@ export class MultiBotManager {
             return true;
         }
         const clientGuild = client.guilds.cache.get(guild.id);
-        if (!clientGuild || !clientGuild.members.cache.has(thisBot.botId)) {
+        if (!clientGuild?.members.cache.has(thisBot.botId)) {
             return false;
         }
 

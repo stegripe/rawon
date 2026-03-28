@@ -334,7 +334,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 }
 
                 const textChannel = guild.channels.cache.get(queueState.textChannelId);
-                if (!textChannel || !textChannel.isTextBased() || textChannel.isDMBased()) {
+                if (!textChannel?.isTextBased() || textChannel.isDMBased()) {
                     this.container.logger.warn(
                         `Could not find message-capable channel ${queueState.textChannelId} for queue restore in guild ${guildId}`,
                     );

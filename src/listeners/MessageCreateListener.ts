@@ -516,7 +516,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             }
 
             const queueChannel = guild.channels.cache.get(message.channel.id);
-            if (!queueChannel || !queueChannel.isTextBased()) {
+            if (!queueChannel?.isTextBased()) {
                 this.container.logger.error(
                     `[MultiBot] ${client.user?.tag} cannot find message-capable channel ${message.channel.id} in own guild`,
                 );
