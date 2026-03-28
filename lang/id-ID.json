@@ -294,9 +294,9 @@
                 "usage": "{prefix}search <kata pencarian> [sumber]"
             },
             "autoplay": {
-                "actualState": "Mode autoplay sekarang {state}",
-                "description": "Nyalakan atau matikan autoplay",
-                "newState": "Mode autoplay udah diatur ke {state}"
+                "actualState": "Mode putar otomatis sekarang {state}",
+                "description": "Nyalakan atau matikan mode putar otomatis",
+                "newState": "Mode putar otomatis udah diatur ke {state}"
             },
             "shuffle": {
                 "actualState": "Mode acak sekarang {state}",

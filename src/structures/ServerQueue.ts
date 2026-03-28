@@ -36,7 +36,7 @@ export class ServerQueue {
     public readonly songs: SongManager;
     public loopMode: LoopMode = "OFF";
     public shuffle = false;
-    public autoplay = false;
+    public autoPlay = false;
     public filters: Partial<Record<keyof typeof filterArgs, boolean>> = {};
     public seekOffset = 0;
 
@@ -139,7 +139,7 @@ export class ServerQueue {
                             songsSize: this.songs.size,
                             loopMode: this.loopMode,
                             shuffle: this.shuffle,
-                            autoplay: this.autoplay,
+                            autoPlay: this.autoPlay,
                             upcomingKeys: upcoming as string[],
                         });
                     } catch {
@@ -172,7 +172,7 @@ export class ServerQueue {
                     }
 
                     const me = this.textChannel.guild.members.me;
-                    if (!nextS && this.autoplay && me) {
+                    if (!nextS && this.autoPlay && me) {
                         const autoPlaySong =
                             (await this.consumePrefetchedAutoplaySong(song)) ??
                             (await this.resolveAutoplaySong(song));
@@ -180,7 +180,7 @@ export class ServerQueue {
                         if (autoPlaySong !== undefined) {
                             nextS = this.songs.addSong(autoPlaySong, me);
                             this.client.logger.info(
-                                `[ServerQueue] Autoplay queued for ${this.textChannel.guild.name}: ${autoPlaySong.title}`,
+                                `[ServerQueue] Auto-play queued for ${this.textChannel.guild.name}: ${autoPlaySong.title}`,
                             );
                         }
                     }
@@ -382,14 +382,14 @@ export class ServerQueue {
             if (savedState) {
                 this.loopMode = (savedState.loopMode as typeof this.loopMode) ?? "OFF";
                 this.shuffle = savedState.shuffle ?? false;
-                this.autoplay = savedState.autoplay ?? false;
+                this.autoPlay = savedState.autoplay ?? false;
                 this._volume = savedState.volume ?? this.resolvedDefaultVolume;
                 this.filters = (savedState.filters ?? {}) as Partial<
                     Record<keyof typeof filterArgs, boolean>
                 >;
                 this.client.logger.info(
                     `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
-                        `loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+                        `loop=${this.loopMode}, shuffle=${this.shuffle}, autoPlay=${this.autoPlay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
                 );
             } else {
                 this.client.logger.warn(
@@ -404,14 +404,14 @@ export class ServerQueue {
         if (savedState) {
             this.loopMode = savedState.loopMode ?? "OFF";
             this.shuffle = savedState.shuffle ?? false;
-            this.autoplay = savedState.autoplay ?? false;
+            this.autoPlay = savedState.autoplay ?? false;
             this._volume = savedState.volume ?? this.resolvedDefaultVolume;
             this.filters = (savedState.filters ?? {}) as Partial<
                 Record<keyof typeof filterArgs, boolean>
             >;
             this.client.logger.info(
                 `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
-                    `loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
+                    `loop=${this.loopMode}, shuffle=${this.shuffle}, autoPlay=${this.autoPlay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
             );
         } else {
             this.client.logger.warn(
@@ -424,7 +424,7 @@ export class ServerQueue {
         const playerState = {
             loopMode: this.loopMode,
             shuffle: this.shuffle,
-            autoplay: this.autoplay,
+            autoplay: this.autoPlay,
             volume: this._volume,
             filters: this.filters as Record<string, boolean>,
         };
@@ -435,7 +435,7 @@ export class ServerQueue {
         if (hasSavePlayerState(this.client.data)) {
             this.client.logger.debug(
                 `Saving player state to SQLite for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}: ` +
-                    `loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
+                    `loop=${this.loopMode}, shuffle=${this.shuffle}, autoPlay=${this.autoPlay}, volume=${this._volume}, filters=${JSON.stringify(playerState.filters)}`,
             );
 
             try {
@@ -464,11 +464,11 @@ export class ServerQueue {
     public copyStateFrom(sourceQueue: ServerQueue): void {
         this.loopMode = sourceQueue.loopMode;
         this.shuffle = sourceQueue.shuffle;
-        this.autoplay = sourceQueue.autoplay;
+        this.autoPlay = sourceQueue.autoPlay;
         this._volume = sourceQueue.volume;
         this.filters = { ...sourceQueue.filters };
         this.client.logger.info(
-            `[MultiBot] Copied player state from primary bot: loop=${this.loopMode}, shuffle=${this.shuffle}, autoplay=${this.autoplay}, volume=${this._volume}`,
+            `[MultiBot] Copied player state from primary bot: loop=${this.loopMode}, shuffle=${this.shuffle}, autoPlay=${this.autoPlay}, volume=${this._volume}`,
         );
     }
 
@@ -627,8 +627,8 @@ export class ServerQueue {
         void this.saveState();
     }
 
-    public setAutoplay(value: boolean): void {
-        this.autoplay = value;
+    public setAutoPlay(value: boolean): void {
+        this.autoPlay = value;
         if (!value) {
             this.clearAutoplayPrefetchState();
         } else if (this.player.state.status === AudioPlayerStatus.Playing) {
@@ -637,6 +637,10 @@ export class ServerQueue {
             this.preCacheNextSong(currentSong);
         }
         void this.saveState();
+    }
+
+    public setAutoplay(value: boolean): void {
+        this.setAutoPlay(value);
     }
 
     public stop(): void {
@@ -941,7 +945,7 @@ export class ServerQueue {
             void this.client.audioCache.preCacheMultiple(songsToCache);
         }
 
-        if (!this.autoplay || this.peekNextKey(currentSong) !== undefined) {
+        if (!this.autoPlay || this.peekNextKey(currentSong) !== undefined) {
             return;
         }
 
@@ -995,7 +999,7 @@ export class ServerQueue {
             const autoPlaySong = await this.resolveAutoplaySong(currentSong);
             if (
                 autoPlaySong === undefined ||
-                !this.autoplay ||
+                !this.autoPlay ||
                 this._autoplayPrefetchForKey !== fromSongKey
             ) {
                 return;
@@ -1013,7 +1017,7 @@ export class ServerQueue {
 
         this._autoplayPrefetchPromise = task
             .catch((error: unknown) => {
-                this.client.logger.debug("[ServerQueue] Autoplay pre-cache failed", {
+                this.client.logger.debug("[ServerQueue] Auto-play pre-cache failed", {
                     guild: this.textChannel.guild.id,
                     songKey: currentSong.key,
                     error: error instanceof Error ? (error.stack ?? error.message) : String(error),
@@ -1110,7 +1114,7 @@ export class ServerQueue {
                 const randomIndex = Math.floor(Math.random() * candidates.length);
                 return candidates[randomIndex];
             } catch (error) {
-                this.client.logger.debug("[ServerQueue] Autoplay resolve failed", {
+                this.client.logger.debug("[ServerQueue] Auto-play resolve failed", {
                     guild: this.textChannel.guild.id,
                     source: source ?? "auto",
                     query,

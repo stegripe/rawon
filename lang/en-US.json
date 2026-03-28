@@ -299,9 +299,9 @@
                 "newState": "Shuffle mode is now set to {state}"
             },
             "autoplay": {
-                "actualState": "Autoplay is currently {state}",
-                "description": "Toggle autoplay mode",
-                "newState": "Autoplay is now {state}"
+                "actualState": "Auto-play is currently {state}",
+                "description": "Toggle auto-play mode",
+                "newState": "Auto-play is now {state}"
             },
             "seek": {
                 "cantSeekLive": "Can't seek in live streams.",
@@ -405,7 +405,7 @@
         "standby": "No music playing. Send a song name or URL to start playing!",
         "status": "Loop Mode",
         "shuffle": "Shuffle",
-        "autoplay": "Autoplay",
+        "autoplay": "Auto-play",
         "volume": "Volume",
         "queueLength": "Queue",
         "queueFooter": "• Total remaining tracks in queue: {count} ({duration} of duration)",

@@ -39,7 +39,7 @@ import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
             ) as SlashCommandBuilder;
     },
 })
-export class AutoplayCommand extends ContextCommand {
+export class AutoPlayCommand extends ContextCommand {
     private getClient(ctx: CommandContext): Rawon {
         return ctx.client as Rawon;
     }
@@ -65,7 +65,7 @@ export class AutoplayCommand extends ContextCommand {
                     createEmbed(
                         "info",
                         `♾️ **|** ${__mf("commands.music.autoplay.actualState", {
-                            state: `**\`${ctx.guild?.queue?.autoplay === true ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
+                            state: `**\`${ctx.guild?.queue?.autoPlay === true ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                         })}`,
                     ),
                 ],
@@ -90,15 +90,15 @@ export class AutoplayCommand extends ContextCommand {
             return;
         }
 
-        ctx.guild?.queue?.setAutoplay(newState === "enable");
-        const isAutoplay = ctx.guild?.queue?.autoplay;
+        ctx.guild?.queue?.setAutoPlay(newState === "enable");
+        const isAutoPlay = ctx.guild?.queue?.autoPlay;
 
         void ctx.reply({
             embeds: [
                 createEmbed(
                     "success",
                     `♾️ **|** ${__mf("commands.music.autoplay.newState", {
-                        state: `**\`${isAutoplay === true ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
+                        state: `**\`${isAutoPlay === true ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
                     })}`,
                 ),
             ],
