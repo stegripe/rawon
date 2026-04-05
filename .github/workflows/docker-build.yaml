@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to the container image registry
+name: Build and Push Docker Image to the Container Image Registry
 
 on:
   release:

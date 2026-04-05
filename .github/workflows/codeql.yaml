@@ -1,0 +1,23 @@
+name: CodeQL Analyze
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: stegripe/workflows/.github/workflows/codeql-javascript-typescript.yaml@main
+    with:
+      runner: self-hosted
+      node-version-file: .node-version
+      build-mode: none
+    secrets: inherit
