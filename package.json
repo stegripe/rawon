@@ -39,7 +39,7 @@
         "better-sqlite3": "^12.8.0",
         "date-fns": "4.1.0",
         "discord.js": "14.26.2",
-        "dotenv": "17.4.0",
+        "dotenv": "17.4.1",
         "ffmpeg-static": "^5.3.0",
         "got": "15.0.0",
         "i18n": "0.15.3",
