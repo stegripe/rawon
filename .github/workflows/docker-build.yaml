@@ -1,8 +1,9 @@
-name: Build and Push Docker Image to the Container Image Registry
+name: Docker Build
 
 on:
   release:
-    types: [created]
+    types:
+      - created
   push:
     branches:
       - main
@@ -10,9 +11,9 @@ on:
     branches:
       - main
     paths:
-      - "Dockerfile"
+      - Dockerfile
 
 jobs:
   docker:
-    uses: stegripe/workflows/.github/workflows/docker-build-and-push.yaml@a779ff9f1fd861c2f4426d090ef3c98ec3bf3426 # main
+    uses: stegripe/workflows/.github/workflows/docker-build-and-push.yaml@356dbc21510fc935c351c19efa7a8545fe276c41 # main
     secrets: inherit

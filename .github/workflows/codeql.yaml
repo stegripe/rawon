@@ -1,4 +1,4 @@
-name: CodeQL Analyze
+name: CodeQL
 
 on:
   push:
@@ -10,12 +10,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  analyze:
+  codeql:
     permissions:
       actions: read
       contents: read
       security-events: write
-    uses: stegripe/workflows/.github/workflows/codeql-javascript-typescript.yaml@a779ff9f1fd861c2f4426d090ef3c98ec3bf3426 # main
+    uses: stegripe/workflows/.github/workflows/codeql-javascript-typescript.yaml@356dbc21510fc935c351c19efa7a8545fe276c41 # main
     with:
       runner: self-hosted
       node-version-file: .node-version
