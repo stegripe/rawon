@@ -15,7 +15,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: stegripe/workflows/.github/workflows/codeql-javascript-typescript.yaml@356dbc21510fc935c351c19efa7a8545fe276c41 # main
+    uses: stegripe/workflows/.github/workflows/codeql-javascript-typescript.yaml@fcfd6bae08c7afa0a213fae4584a8667f0214688 # main
     with:
       runner: self-hosted
       node-version-file: .node-version
