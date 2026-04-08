@@ -36,6 +36,10 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
     const member = ctx.member as GuildMember | null;
     const voiceChannel = member?.voice.channel;
 
+    if (!voiceChannel) {
+        return true;
+    }
+
     if (!ctx.guild?.members.me) {
         return true;
     }
@@ -44,14 +48,26 @@ export const validVC = createCmdExecuteDecorator((ctx) => {
     }
     if (voiceChannel?.joinable !== true) {
         void ctx.reply({
-            embeds: [createEmbed("error", __("utils.musicDecorator.validVCJoinable"), true)],
+            embeds: [
+                createEmbed(
+                    "error",
+                    `${__("utils.musicDecorator.validVCJoinable")}\n\n<#${voiceChannel.id}>`,
+                    true,
+                ),
+            ],
         });
 
         return false;
     }
     if (!voiceChannel.permissionsFor(ctx.guild.members.me).has(PermissionFlagsBits.Speak)) {
         void ctx.reply({
-            embeds: [createEmbed("error", __("utils.musicDecorator.validVCPermission"), true)],
+            embeds: [
+                createEmbed(
+                    "error",
+                    `${__("utils.musicDecorator.validVCPermission")}\n\n<#${voiceChannel.id}>`,
+                    true,
+                ),
+            ],
         });
         return false;
     }

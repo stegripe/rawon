@@ -16,6 +16,7 @@ import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
 import { getEffectivePrefix } from "../../functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
+import { sendAutoMessage } from "../../functions/sendAutoMessage.js";
 import { type FfmpegStreamWithEvents, isErrnoException } from "../../typeGuards.js";
 import {
     AgeRestrictedError,
@@ -23,6 +24,38 @@ import {
     getStream,
     shouldRequeueOnError,
 } from "../YTDLUtil.js";
+
+function isPermanentMediaUnavailableError(error: Error): boolean {
+    const message = error.message.toLowerCase();
+    return (
+        message.includes("response code 404") ||
+        message.includes("status code 404") ||
+        message.includes("http error 404") ||
+        message.includes("response code 410") ||
+        message.includes("status code 410") ||
+        message.includes("http error 410")
+    );
+}
+
+function getNextSongKeyAfterFailure(
+    guild: Guild,
+    failedSong: { index: number },
+): string | undefined {
+    const queue = guild.queue;
+    if (!queue) {
+        return undefined;
+    }
+
+    if (queue.shuffle && queue.loopMode !== "SONG") {
+        return queue.songs.random()?.key;
+    }
+
+    const sortedSongs = queue.songs.sortByIndex();
+    return (
+        sortedSongs.filter((queuedSong) => queuedSong.index > failedSong.index).first()?.key ??
+        sortedSongs.first()?.key
+    );
+}
 
 export async function play(
     guild: Guild,
@@ -52,7 +85,7 @@ export async function play(
             queue.textChannel.id,
         );
         if (!isRequestChannel) {
-            void queue.textChannel.send({
+            void sendAutoMessage(queue.textChannel, {
                 embeds: [
                     createEmbed(
                         "info",
@@ -71,11 +104,14 @@ export async function play(
             if (!guild.queue?.songs.first()) {
                 await queue.destroy();
                 if (!isRequestChannel) {
-                    const msg = await queue.textChannel.send({
+                    const msg = await sendAutoMessage(queue.textChannel, {
                         embeds: [
                             createEmbed("info", `👋 **|** ${__("utils.generalHandler.leftVC")}`),
                         ],
-                    });
+                    }).catch(() => null);
+                    if (!msg) {
+                        return;
+                    }
                     setTimeout(() => {
                         void msg.delete();
                     }, 3_500);
@@ -153,6 +189,19 @@ export async function play(
                         queue.player.emit(
                             "error",
                             new AudioPlayerError(e as Error, undefined as never),
+                        );
+                    } catch (_) {}
+                });
+
+                streamResult.stream.on("error", (e: unknown) => {
+                    queue.client.logger.error("[PLAY_HANDLER][SOURCE_STREAM_ERROR]", e);
+                    try {
+                        queue.player.emit(
+                            "error",
+                            new AudioPlayerError(
+                                e instanceof Error ? e : new Error(String(e)),
+                                undefined as never,
+                            ),
                         );
                     } catch (_) {}
                 });
@@ -280,7 +329,7 @@ export async function play(
             );
 
             if (!isRequestChannel) {
-                await queue.textChannel.send({
+                await sendAutoMessage(queue.textChannel, {
                     embeds: [
                         createEmbed(
                             "error",
@@ -297,6 +346,36 @@ export async function play(
             return;
         }
 
+        if (isPermanentMediaUnavailableError(error as Error)) {
+            queue.client.logger.warn(
+                `[PLAY_HANDLER] ⏭️ Skipping permanently unavailable media for "${song.song.title}": ${(error as Error).message}`,
+            );
+
+            if (!isRequestChannel) {
+                await sendAutoMessage(queue.textChannel, {
+                    embeds: [
+                        createEmbed(
+                            "warn",
+                            `${__mf("utils.generalHandler.errorPlaying", {
+                                message: `\`${(error as Error).message.slice(0, 200)}\``,
+                            })}`,
+                            true,
+                        ),
+                    ],
+                }).catch(() => null);
+            }
+
+            queue.songs.delete(song.key);
+            const nextS = getNextSongKeyAfterFailure(guild, song);
+
+            if (nextS && nextS.length > 0) {
+                void play(guild, nextS, wasIdle);
+            } else {
+                void play(guild, undefined, wasIdle);
+            }
+            return;
+        }
+
         if (shouldRequeueOnError(error as Error)) {
             queue.client.logger.warn(
                 `[PLAY_HANDLER] ⚠️ Error playing song "${song.song.title}", re-queuing for retry. Error: ${(error as Error).message}`,
@@ -308,7 +387,7 @@ export async function play(
             const newKey = queue.songs.addSong(song.song, song.requester);
 
             if (!isRequestChannel) {
-                const errorMsg = await queue.textChannel.send({
+                const errorMsg = await sendAutoMessage(queue.textChannel, {
                     embeds: [
                         createEmbed(
                             "warn",
@@ -347,7 +426,7 @@ export async function play(
             );
 
             if (!isRequestChannel) {
-                await queue.textChannel.send({
+                await sendAutoMessage(queue.textChannel, {
                     embeds: [
                         createEmbed(
                             "error",
@@ -360,15 +439,12 @@ export async function play(
                 });
             }
             queue.songs.delete(song.key);
-            const nextS =
-                queue.shuffle && queue.loopMode !== "SONG"
-                    ? queue.songs.random()?.key
-                    : queue.loopMode === "SONG"
-                      ? song.key
-                      : (queue.songs.sortByIndex().first()?.key ?? "");
+            const nextS = getNextSongKeyAfterFailure(guild, song);
 
             if (nextS && nextS.length > 0) {
                 void play(guild, nextS, wasIdle);
+            } else {
+                void play(guild, undefined, wasIdle);
             }
             return;
         }
@@ -378,7 +454,7 @@ export async function play(
         );
 
         if (!isRequestChannel) {
-            await queue.textChannel.send({
+            await sendAutoMessage(queue.textChannel, {
                 embeds: [
                     createEmbed(
                         "error",
@@ -392,15 +468,12 @@ export async function play(
         }
 
         queue.songs.delete(song.key);
-        const nextS =
-            queue.shuffle && queue.loopMode !== "SONG"
-                ? queue.songs.random()?.key
-                : queue.loopMode === "SONG"
-                  ? song.key
-                  : (queue.songs.sortByIndex().first()?.key ?? "");
+        const nextS = getNextSongKeyAfterFailure(guild, song);
 
         if (nextS && nextS.length > 0) {
             void play(guild, nextS, wasIdle);
+        } else {
+            void play(guild, undefined, wasIdle);
         }
         return;
     }

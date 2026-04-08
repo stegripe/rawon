@@ -199,11 +199,13 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                     await dataManager.deleteQueueState(dbGuildId, botId);
 
                     if (
-                        !this.container.config.isMultiBot &&
                         "deleteGuildData" in dataManager &&
                         typeof dataManager.deleteGuildData === "function"
                     ) {
                         await dataManager.deleteGuildData(dbGuildId);
+                        this.container.logger.info(
+                            `[Cleanup] Deleted root guild row for orphaned guild ${dbGuildId}`,
+                        );
                     }
 
                     cleanedCount++;

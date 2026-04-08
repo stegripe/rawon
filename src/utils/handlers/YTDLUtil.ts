@@ -25,13 +25,16 @@ export class AgeRestrictedError extends Error {
 }
 
 async function isDirectDownload(url: string): Promise<boolean> {
+    const extRegex = /\.(mp4|m4a|webm|mp3|opus|wav|flac)(\?|$)/i;
+    const hasMediaExtension = extRegex.test(url);
+
     try {
-        const extRegex = /\.(mp4|m4a|webm|mp3|opus|wav|flac)(\?|$)/i;
-        if (extRegex.test(url)) {
-            return true;
+        const res = await got.head(url, { timeout: { request: 2_000 }, throwHttpErrors: false });
+        const statusCode = res.statusCode ?? 0;
+        if (statusCode === 404 || statusCode === 410) {
+            return false;
         }
 
-        const res = await got.head(url, { timeout: { request: 2_000 }, throwHttpErrors: false });
         const ct = (res.headers["content-type"] ?? "").toString().toLowerCase();
         if (ct.startsWith("audio/") || ct.startsWith("video/")) {
             return true;
@@ -41,8 +44,11 @@ async function isDirectDownload(url: string): Promise<boolean> {
         if (cd.includes("attachment")) {
             return true;
         }
-    } catch {}
-    return false;
+
+        return hasMediaExtension;
+    } catch {
+        return hasMediaExtension;
+    }
 }
 
 export interface StreamResult {
@@ -116,7 +122,9 @@ export async function getStream(
 
     if (await isDirectDownload(url)) {
         try {
-            const stream = got.stream(url);
+            const stream = got.stream(url, {
+                retry: { limit: 0 },
+            });
             return {
                 stream: stream as Readable,
                 cachePath: null,
@@ -436,6 +444,17 @@ export function shouldRequeueOnError(error: Error): boolean {
         return false;
     }
     const errorMessage = error.message.toLowerCase();
+    if (
+        errorMessage.includes("response code 404") ||
+        errorMessage.includes("status code 404") ||
+        errorMessage.includes("http error 404") ||
+        errorMessage.includes("response code 410") ||
+        errorMessage.includes("status code 410") ||
+        errorMessage.includes("http error 410")
+    ) {
+        return false;
+    }
+
     if (isBotDetectionError(errorMessage)) {
         return false;
     }

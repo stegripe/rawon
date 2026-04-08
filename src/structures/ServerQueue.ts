@@ -13,6 +13,7 @@ import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
+import { sendAutoMessage } from "../utils/functions/sendAutoMessage.js";
 import { checkQuery, play, searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
@@ -204,22 +205,21 @@ export class ServerQueue {
                         this.textChannel.id,
                     );
                     if (!isRequestChannel) {
-                        await this.textChannel
-                            .send({
-                                embeds: [
-                                    createEmbed(
-                                        "info",
-                                        `⏹️ **|** ${__mf("utils.generalHandler.stopPlaying", {
-                                            song: `**[${song.song.title}](${song.song.url})**`,
-                                        })}`,
-                                    ).setThumbnail(
-                                        typeof song.song.thumbnail === "string" &&
-                                            /^https?:\/\//u.test(song.song.thumbnail)
-                                            ? song.song.thumbnail
-                                            : null,
-                                    ),
-                                ],
-                            })
+                        await sendAutoMessage(this.textChannel, {
+                            embeds: [
+                                createEmbed(
+                                    "info",
+                                    `⏹️ **|** ${__mf("utils.generalHandler.stopPlaying", {
+                                        song: `**[${song.song.title}](${song.song.url})**`,
+                                    })}`,
+                                ).setThumbnail(
+                                    typeof song.song.thumbnail === "string" &&
+                                        /^https?:\/\//u.test(song.song.thumbnail)
+                                        ? song.song.thumbnail
+                                        : null,
+                                ),
+                            ],
+                        })
                             .then((ms) => (this.lastMusicMsg = ms.id))
                             .catch((error: unknown) =>
                                 this.client.logger.error("PLAY_ERR:", error),
@@ -239,7 +239,7 @@ export class ServerQueue {
                         });
                         if (!isRequestChannel) {
                             try {
-                                await this.textChannel.send({
+                                await sendAutoMessage(this.textChannel, {
                                     embeds: [
                                         createEmbed(
                                             "error",
@@ -304,17 +304,15 @@ export class ServerQueue {
                         message: `\`${(err as Error)?.message ?? String(err)}\``,
                     });
 
-                    const errorMsg = await this.textChannel
-                        .send({
-                            embeds: [createEmbed("error", messageText, true)],
-                        })
-                        .catch((error: unknown) => {
-                            this.client.logger.error(
-                                "PLAY_CMD_ERR:",
-                                error instanceof Error ? (error.stack ?? error) : error,
-                            );
-                            return null;
-                        });
+                    const errorMsg = await sendAutoMessage(this.textChannel, {
+                        embeds: [createEmbed("error", messageText, true)],
+                    }).catch((error: unknown) => {
+                        this.client.logger.error(
+                            "PLAY_CMD_ERR:",
+                            error instanceof Error ? (error.stack ?? error) : error,
+                        );
+                        return null;
+                    });
 
                     if (isRequestChannel && errorMsg) {
                         setTimeout(() => {
@@ -731,21 +729,19 @@ export class ServerQueue {
             );
             if (!isRequestChannel && !this.queueEndedNotified) {
                 const __mf = i18n__mf(this.client, this.textChannel.guild);
-                const msg = await this.textChannel
-                    .send({
-                        embeds: [
-                            createEmbed(
-                                "info",
-                                `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
-                                    usage: `**\`${getEffectivePrefix(
-                                        this.client,
-                                        this.textChannel.guild?.id ?? null,
-                                    )}play\`**`,
-                                })}`,
-                            ),
-                        ],
-                    })
-                    .catch(() => null);
+                const msg = await sendAutoMessage(this.textChannel, {
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
+                                usage: `**\`${getEffectivePrefix(
+                                    this.client,
+                                    this.textChannel.guild?.id ?? null,
+                                )}play\`**`,
+                            })}`,
+                        ),
+                    ],
+                }).catch(() => null);
                 if (msg) {
                     this.lastMusicMsg = msg.id;
                 }
@@ -884,17 +880,16 @@ export class ServerQueue {
                 typeof newSong.thumbnail === "string" && /^https?:\/\//i.test(newSong.thumbnail)
                     ? newSong.thumbnail
                     : null;
-            await this.textChannel
-                .send({
-                    embeds: [
-                        createEmbed(
-                            "info",
-                            `▶️ **|** ${__mf("utils.generalHandler.startPlaying", {
-                                song: `**[${newSong.title}](${newSong.url})**`,
-                            })}`,
-                        ).setThumbnail(thumb),
-                    ],
-                })
+            await sendAutoMessage(this.textChannel, {
+                embeds: [
+                    createEmbed(
+                        "info",
+                        `▶️ **|** ${__mf("utils.generalHandler.startPlaying", {
+                            song: `**[${newSong.title}](${newSong.url})**`,
+                        })}`,
+                    ).setThumbnail(thumb),
+                ],
+            })
                 .then((ms) => (this.lastMusicMsg = ms.id))
                 .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
         })();

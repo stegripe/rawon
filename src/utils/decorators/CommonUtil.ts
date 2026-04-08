@@ -86,7 +86,11 @@ export const checkBotChannelPermissions = createCmdExecuteDecorator(async (ctx) 
                     ),
                 ],
             });
-        } catch {}
+        } catch (error) {
+            (ctx.client as Rawon).logger.warn(
+                `[Permissions] Failed to DM missing channel permission notice to user=${ctx.author.id} in guild=${ctx.guild.id}, channel=${channel.id}: ${(error as Error).message}`,
+            );
+        }
         return false;
     }
 

@@ -8,7 +8,7 @@ function hasDeleteMethods(
     data: unknown,
 ): data is Pick<
     ExtendedDataManager,
-    "deleteRequestChannel" | "deletePlayerState" | "deleteQueueState"
+    "deleteRequestChannel" | "deletePlayerState" | "deleteQueueState" | "deleteGuildData"
 > {
     return (
         typeof data === "object" &&
@@ -18,7 +18,9 @@ function hasDeleteMethods(
         "deletePlayerState" in data &&
         typeof (data as ExtendedDataManager).deletePlayerState === "function" &&
         "deleteQueueState" in data &&
-        typeof (data as ExtendedDataManager).deleteQueueState === "function"
+        typeof (data as ExtendedDataManager).deleteQueueState === "function" &&
+        "deleteGuildData" in data &&
+        typeof (data as ExtendedDataManager).deleteGuildData === "function"
     );
 }
 
@@ -53,6 +55,22 @@ export class GuildDeleteListener extends Listener<typeof Events.GuildDelete> {
                 this.container.logger.info(
                     `Deleted queue state for guild ${guild.id} (bot ${botId})`,
                 );
+
+                const client = guild.client as Rawon;
+                const shouldDeleteRootGuildData =
+                    !client.config.isMultiBot ||
+                    client.multiBotManager
+                        .getBots()
+                        .every((bot) => !bot.client.guilds.cache.has(guild.id));
+
+                if (shouldDeleteRootGuildData) {
+                    await dataManager.deleteGuildData(guild.id);
+                    this.container.logger.info(`Deleted root guild data for guild ${guild.id}`);
+                } else {
+                    this.container.logger.info(
+                        `[GuildDelete] Preserving root guild data for ${guild.id} because another bot is still in the guild`,
+                    );
+                }
             }
 
             if (guild.queue) {

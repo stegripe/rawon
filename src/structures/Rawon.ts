@@ -225,7 +225,7 @@ export class Rawon extends SapphireClient {
                     this.debugLog.logData("error", "GOT_REQUEST", [
                         ["URL", error.options.url?.toString() ?? "[???]"],
                         ["Code", error.code],
-                        ["Response", error.response?.rawBody.toString("ascii") ?? "[???]"],
+                        ["Response", error.response?.rawBody.toString() ?? "[???]"],
                     ]);
 
                     return error;

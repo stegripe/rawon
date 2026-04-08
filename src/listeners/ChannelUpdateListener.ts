@@ -11,6 +11,7 @@ import {
 import { type Rawon } from "../structures/Rawon.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__ } from "../utils/functions/i18n.js";
+import { sendAutoMessage } from "../utils/functions/sendAutoMessage.js";
 
 @ApplyOptions<ListenerOptions>({ event: Events.ChannelUpdate })
 export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate> {
@@ -47,8 +48,11 @@ export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate>
 
             const __ = i18n__(client, newChannel.guild);
 
-            const msg = await queue.textChannel.send({
+            const msg = await sendAutoMessage(queue.textChannel, {
                 embeds: [createEmbed("info", __("events.channelUpdate.reconfigureConnection"))],
+            }).catch((error: unknown) => {
+                this.container.logger.error("CHANNEL_UPDATE_EVENT_ERR:", error);
+                return null;
             });
             queue.connection?.configureNetworking();
 
@@ -58,16 +62,18 @@ export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate>
                 20_000,
             )
                 .then(() => {
-                    void msg.edit({
-                        embeds: [
-                            createEmbed(
-                                "success",
-                                __("events.channelUpdate.connectionReconfigured"),
-                                true,
-                            ),
-                        ],
-                    });
-                    if (isRequestChannel) {
+                    if (msg) {
+                        void msg.edit({
+                            embeds: [
+                                createEmbed(
+                                    "success",
+                                    __("events.channelUpdate.connectionReconfigured"),
+                                    true,
+                                ),
+                            ],
+                        });
+                    }
+                    if (isRequestChannel && msg) {
                         setTimeout(() => {
                             void msg.delete().catch(() => null);
                         }, 10_000);
@@ -83,16 +89,28 @@ export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate>
                             newChannel.guild.name
                         } voice channel, the queue was deleted.`,
                     );
-                    void msg.edit({
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                __("events.channelUpdate.unableReconfigureConnection"),
-                                true,
-                            ),
-                        ],
-                    });
-                    if (isRequestChannel) {
+                    if (msg) {
+                        void msg.edit({
+                            embeds: [
+                                createEmbed(
+                                    "error",
+                                    __("events.channelUpdate.unableReconfigureConnection"),
+                                    true,
+                                ),
+                            ],
+                        });
+                    } else {
+                        await sendAutoMessage(queue.textChannel, {
+                            embeds: [
+                                createEmbed(
+                                    "error",
+                                    __("events.channelUpdate.unableReconfigureConnection"),
+                                    true,
+                                ),
+                            ],
+                        }).catch(() => null);
+                    }
+                    if (isRequestChannel && msg) {
                         setTimeout(() => {
                             void msg.delete().catch(() => null);
                         }, 10_000);

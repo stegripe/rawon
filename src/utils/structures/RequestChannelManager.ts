@@ -23,6 +23,7 @@ import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
+import { sendAutoMessage } from "../functions/sendAutoMessage.js";
 import {
     type FallbackDataManager,
     hasGetPlayerState,
@@ -53,13 +54,16 @@ export class RequestChannelManager {
     ): string {
         const autoPlayState = autoPlay ? "ON" : "OFF";
         const footerTemplate = __("requestChannel.queueFooter");
+        const addPrefix = (text: string) => `• ${text}`;
 
         if (footerTemplate.includes("{state}")) {
-            return __mf("requestChannel.queueFooter", {
-                count,
-                duration,
-                state: autoPlayState,
-            });
+            return addPrefix(
+                __mf("requestChannel.queueFooter", {
+                    count,
+                    duration,
+                    state: autoPlayState,
+                }),
+            );
         }
 
         const baseFooter = __mf("requestChannel.queueFooter", {
@@ -69,10 +73,10 @@ export class RequestChannelManager {
         const autoPlayInfo = `${__("requestChannel.autoplay").toLowerCase()}: ${autoPlayState}`;
 
         if (baseFooter.endsWith(")")) {
-            return `${baseFooter.slice(0, -1)}, ${autoPlayInfo})`;
+            return addPrefix(`${baseFooter.slice(0, -1)}, ${autoPlayInfo})`);
         }
 
-        return `${baseFooter} (${autoPlayInfo})`;
+        return addPrefix(`${baseFooter} (${autoPlayInfo})`);
     }
 
     private isPrimaryBot(): boolean {
@@ -207,16 +211,47 @@ export class RequestChannelManager {
             return;
         }
 
+        this.client.logger.warn(
+            `[RequestChannel] Permission issue (${reason}) for guild=${guild.id}, channel=${channelId}, bot=${this.client.user?.id ?? "unknown"}`,
+        );
+
         const fallbackChannels: TextChannel[] = [];
+        const seenFallbackIds = new Set<string>();
+        const pushFallbackChannel = (channel: TextChannel | null | undefined): void => {
+            if (!channel || channel.id === channelId || seenFallbackIds.has(channel.id)) {
+                return;
+            }
+
+            seenFallbackIds.add(channel.id);
+            fallbackChannels.push(channel);
+        };
+
         if (guild.queue?.textChannel && guild.queue.textChannel.id !== channelId) {
-            fallbackChannels.push(guild.queue.textChannel);
+            pushFallbackChannel(guild.queue.textChannel);
         }
         if (
             guild.systemChannel &&
             guild.systemChannel.id !== channelId &&
-            !fallbackChannels.some((channel) => channel.id === guild.systemChannel?.id)
+            !seenFallbackIds.has(guild.systemChannel.id)
         ) {
-            fallbackChannels.push(guild.systemChannel);
+            pushFallbackChannel(guild.systemChannel);
+        }
+
+        const additionalFallback = guild.channels.cache.find(
+            (candidate): candidate is TextChannel => {
+                if (candidate.type !== ChannelType.GuildText) {
+                    return false;
+                }
+
+                if (candidate.id === channelId || seenFallbackIds.has(candidate.id)) {
+                    return false;
+                }
+
+                return this.canSendEmbedToTextChannel(guild, candidate);
+            },
+        );
+        if (additionalFallback) {
+            pushFallbackChannel(additionalFallback);
         }
 
         for (const fallbackChannel of fallbackChannels) {
@@ -224,17 +259,45 @@ export class RequestChannelManager {
                 continue;
             }
 
-            const sent = await fallbackChannel
+            const sent = await sendAutoMessage(fallbackChannel, {
+                embeds: [createEmbed("error", messageText, true)],
+            })
+                .then(() => true)
+                .catch((error: unknown) => {
+                    this.client.logger.warn(
+                        `[RequestChannel] Failed to notify fallback channel ${fallbackChannel.id} for guild=${guild.id}: ${(error as Error).message}`,
+                    );
+                    return false;
+                });
+
+            if (sent) {
+                this.client.logger.info(
+                    `[RequestChannel] Permission issue notified in fallback channel ${fallbackChannel.id} for guild=${guild.id}`,
+                );
+                return;
+            }
+        }
+
+        const owner = await guild.fetchOwner().catch(() => null);
+        if (owner) {
+            const ownerNotified = await owner
                 .send({
                     embeds: [createEmbed("error", messageText, true)],
                 })
                 .then(() => true)
                 .catch(() => false);
 
-            if (sent) {
+            if (ownerNotified) {
+                this.client.logger.info(
+                    `[RequestChannel] Permission issue sent to guild owner DM for guild=${guild.id}`,
+                );
                 return;
             }
         }
+
+        this.client.logger.warn(
+            `[RequestChannel] Unable to deliver permission issue notification for guild=${guild.id}, channel=${channelId}`,
+        );
     }
 
     public getRequestChannel(guild: Guild): TextChannel | VoiceChannel | StageChannel | null {
@@ -715,7 +778,7 @@ export class RequestChannelManager {
                                 permissions: permissionNames,
                             },
                         )}`,
-                        "missing-permissions",
+                        `missing-permissions:${permissionNames}`,
                     );
 
                     this.client.logger.warn(
@@ -766,13 +829,13 @@ export class RequestChannelManager {
                         );
                     }
 
-                    this.client.logger.debug(
-                        `Failed to update player message: ${(error as Error).message}`,
+                    this.client.logger.warn(
+                        `[RequestChannel] Failed to update player message in guild=${guild.id}, channel=${channel.id}: ${(error as Error).message}`,
                     );
                 }
             } catch (error) {
-                this.client.logger.debug(
-                    `Error in updatePlayerMessage: ${(error as Error).message}`,
+                this.client.logger.warn(
+                    `[RequestChannel] Error in updatePlayerMessage for guild=${guild.id}: ${(error as Error).message}`,
                 );
             }
         };
@@ -839,7 +902,7 @@ export class RequestChannelManager {
                         permissions: permissionNames,
                     },
                 )}`,
-                "missing-permissions-create",
+                `missing-permissions-create:${permissionNames}`,
             );
 
             this.client.logger.warn(
@@ -858,7 +921,7 @@ export class RequestChannelManager {
                     components: this.createPlayerButtons(guild),
                 });
             } else if (allowCreate) {
-                message = await channel.send({
+                message = await sendAutoMessage(channel, {
                     embeds: [this.createPlayerEmbed(guild)],
                     components: this.createPlayerButtons(guild),
                 });
