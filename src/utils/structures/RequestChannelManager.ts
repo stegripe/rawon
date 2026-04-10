@@ -13,6 +13,7 @@ import {
     type EmbedBuilder,
     type Guild,
     type Message,
+    MessageFlags,
     PermissionFlagsBits,
     type StageChannel,
     type TextChannel,
@@ -55,11 +56,11 @@ export class RequestChannelManager {
         const footerTemplate = __("requestChannel.queueFooter");
 
         if (footerTemplate.includes("{state}")) {
-            return __mf("requestChannel.queueFooter", {
+            return `• ${__mf("requestChannel.queueFooter", {
                 count,
                 duration,
                 state: autoPlayState,
-            });
+            })}`;
         }
 
         const baseFooter = __mf("requestChannel.queueFooter", {
@@ -69,10 +70,10 @@ export class RequestChannelManager {
         const autoPlayInfo = `${__("requestChannel.autoplay").toLowerCase()}: ${autoPlayState}`;
 
         if (baseFooter.endsWith(")")) {
-            return `${baseFooter.slice(0, -1)}, ${autoPlayInfo})`;
+            return `• ${baseFooter.slice(0, -1)}, ${autoPlayInfo})`;
         }
 
-        return `${baseFooter} (${autoPlayInfo})`;
+        return `• ${baseFooter} (${autoPlayInfo})`;
     }
 
     private isPrimaryBot(): boolean {
@@ -226,6 +227,7 @@ export class RequestChannelManager {
 
             const sent = await fallbackChannel
                 .send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [createEmbed("error", messageText, true)],
                 })
                 .then(() => true)
@@ -859,6 +861,7 @@ export class RequestChannelManager {
                 });
             } else if (allowCreate) {
                 message = await channel.send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [this.createPlayerEmbed(guild)],
                     components: this.createPlayerButtons(guild),
                 });
