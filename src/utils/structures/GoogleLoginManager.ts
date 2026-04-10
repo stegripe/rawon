@@ -139,6 +139,91 @@ export class GoogleLoginManager {
         }
     }
 
+    private parseHttpUrl(rawUrl: string): URL | null {
+        try {
+            const parsedUrl = new URL(rawUrl);
+            if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+                return null;
+            }
+
+            return parsedUrl;
+        } catch {
+            return null;
+        }
+    }
+
+    private hostMatchesOrSubdomain(rawHost: string, expectedHost: string): boolean {
+        const hostname = rawHost.toLowerCase().replace(/\.$/u, "");
+        const expected = expectedHost.toLowerCase().replace(/\.$/u, "");
+
+        return hostname === expected || hostname.endsWith(`.${expected}`);
+    }
+
+    private hasCookieErrorMarkers(url: URL): boolean {
+        const pathname = url.pathname.toLowerCase();
+        const search = url.search.toLowerCase();
+        const hash = url.hash.toLowerCase();
+        const searchable = `${pathname}${search}${hash}`;
+
+        return (
+            searchable.includes("cookiemismatch") ||
+            searchable.includes("cookie_disabled") ||
+            pathname.includes("/sorry/")
+        );
+    }
+
+    private isGoogleAccountsUrl(rawUrl: string): boolean {
+        const parsedUrl = this.parseHttpUrl(rawUrl);
+        return (
+            parsedUrl !== null &&
+            this.hostMatchesOrSubdomain(parsedUrl.hostname, "accounts.google.com")
+        );
+    }
+
+    private isPostLoginNavigationUrl(rawUrl: string): boolean {
+        const parsedUrl = this.parseHttpUrl(rawUrl);
+        if (parsedUrl === null) {
+            return false;
+        }
+
+        if (this.hostMatchesOrSubdomain(parsedUrl.hostname, "myaccount.google.com")) {
+            return true;
+        }
+
+        if (this.hostMatchesOrSubdomain(parsedUrl.hostname, "youtube.com")) {
+            return true;
+        }
+
+        if (!this.hostMatchesOrSubdomain(parsedUrl.hostname, "google.com")) {
+            return false;
+        }
+
+        const pathname = parsedUrl.pathname.toLowerCase();
+        return pathname === "/" || pathname === "/webhp";
+    }
+
+    private isErrorLoginUrl(rawUrl: string): boolean {
+        const parsedUrl = this.parseHttpUrl(rawUrl);
+        if (parsedUrl === null) {
+            return true;
+        }
+
+        if (this.hostMatchesOrSubdomain(parsedUrl.hostname, "accounts.google.com")) {
+            return true;
+        }
+
+        return this.hasCookieErrorMarkers(parsedUrl);
+    }
+
+    private isCookieErrorUrl(rawUrl: string): boolean {
+        const parsedUrl = this.parseHttpUrl(rawUrl);
+        if (parsedUrl === null) {
+            return false;
+        }
+
+        return this.hasCookieErrorMarkers(parsedUrl);
+    }
+
     private async applyStealthToPage(page: Page): Promise<void> {
         try {
             await page.evaluateOnNewDocument(() => {
@@ -901,7 +986,7 @@ export class GoogleLoginManager {
         });
 
         const currentUrl = page.url();
-        if (currentUrl.includes("CookieMismatch") || currentUrl.includes("cookie_disabled")) {
+        if (this.isCookieErrorUrl(currentUrl)) {
             container.logger.warn(
                 "[GoogleLogin] Google CookieMismatch detected, clearing browser cookies and retrying...",
             );
@@ -929,7 +1014,7 @@ export class GoogleLoginManager {
             id: string;
             url: string;
         }>;
-        const loginTarget = targets.find((t) => t.url.includes("accounts.google.com"));
+        const loginTarget = targets.find((t) => this.isGoogleAccountsUrl(t.url));
         this.loginTargetId = loginTarget?.id ?? targets[0]?.id ?? null;
 
         for (const target of existingTargets) {
@@ -1233,19 +1318,9 @@ export class GoogleLoginManager {
                     const url = loginTarget.url;
                     this.currentLoginUrl = url;
 
-                    const isPostLoginUrl =
-                        url.includes("myaccount.google.com") ||
-                        url.includes("youtube.com") ||
-                        url.includes("google.com/webhp") ||
-                        url.includes("google.com/?") ||
-                        url.endsWith("google.com") ||
-                        url.endsWith("google.com/");
+                    const isPostLoginUrl = this.isPostLoginNavigationUrl(url);
 
-                    const isErrorPage =
-                        url.includes("CookieMismatch") ||
-                        url.includes("cookie_disabled") ||
-                        url.includes("/sorry/") ||
-                        url.includes("accounts.google.com");
+                    const isErrorPage = this.isErrorLoginUrl(url);
 
                     if (isPostLoginUrl && !isErrorPage) {
                         const hasSession = await this.verifyGoogleSessionCookies();
