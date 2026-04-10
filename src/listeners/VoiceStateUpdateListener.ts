@@ -5,6 +5,7 @@ import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
     ChannelType,
     type Message,
+    MessageFlags,
     type StageChannel,
     type VoiceChannel,
     type VoiceState,
@@ -118,6 +119,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                 (async () => {
                     const msg = await queue.textChannel
                         .send({
+                            flags: MessageFlags.SuppressNotifications,
                             embeds: [
                                 createEmbed(
                                     "info",
@@ -187,6 +189,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             );
             if (oldVc?.rtcRegion !== newVc?.rtcRegion) {
                 const msg = await queue.textChannel.send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [
                         createEmbed("info", __("events.voiceStateUpdate.reconfigureConnection")),
                     ],
@@ -242,6 +245,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             }
             if (newVc?.type === ChannelType.GuildStageVoice && newState.suppress === true) {
                 const msg = await queue.textChannel.send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [createEmbed("info", __("events.voiceStateUpdate.joiningAsSpeaker"))],
                 });
                 const suppress = await newState
@@ -257,6 +261,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                     );
                     const errorMsg = await queue.textChannel
                         .send({
+                            flags: MessageFlags.SuppressNotifications,
                             embeds: [
                                 createEmbed(
                                     "error",
@@ -344,6 +349,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             await queue.destroy();
             void (async () => {
                 const msg = await queue.textChannel.send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [
                         createEmbed(
                             "info",
@@ -362,6 +368,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         }, timeout);
         (async () => {
             const msg = await queue.textChannel.send({
+                flags: MessageFlags.SuppressNotifications,
                 embeds: [
                     createEmbed(
                         "warn",
@@ -407,6 +414,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
 
         (async () => {
             const msg = await queue.textChannel.send({
+                flags: MessageFlags.SuppressNotifications,
                 embeds: [
                     createEmbed(
                         "info",
