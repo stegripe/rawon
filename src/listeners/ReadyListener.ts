@@ -1,4 +1,4 @@
-import { setInterval } from "node:timers";
+import { setInterval, setTimeout } from "node:timers";
 import { joinVoiceChannel } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
@@ -28,12 +28,8 @@ function hasExtendedMethods(data: unknown): data is ExtendedDataManager {
         data !== null &&
         "getAllGuildIds" in data &&
         typeof (data as ExtendedDataManager).getAllGuildIds === "function" &&
-        "deleteRequestChannel" in data &&
-        typeof (data as ExtendedDataManager).deleteRequestChannel === "function" &&
-        "deletePlayerState" in data &&
-        typeof (data as ExtendedDataManager).deletePlayerState === "function" &&
-        "deleteQueueState" in data &&
-        typeof (data as ExtendedDataManager).deleteQueueState === "function"
+        "deleteGuildData" in data &&
+        typeof (data as ExtendedDataManager).deleteGuildData === "function"
     );
 }
 
@@ -136,7 +132,6 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
 
     private async cleanupOrphanedGuildData(): Promise<void> {
         const client = this.currentClient;
-        const botId = client.user?.id ?? "unknown";
 
         const isPrimaryOrSingle =
             !this.container.config.isMultiBot || client.multiBotManager.getPrimaryBot() === client;
@@ -146,6 +141,40 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
 
         if (!hasExtendedMethods(this.container.data)) {
             return;
+        }
+
+        if (this.container.config.isMultiBot) {
+            const maxWaitAttempts = 12;
+            const waitMs = 5_000;
+
+            for (let attempt = 1; attempt <= maxWaitAttempts; attempt++) {
+                const bots = client.multiBotManager.getBots();
+                const notReadyBots = bots.filter((bot) => !bot.client.isReady());
+
+                if (notReadyBots.length === 0) {
+                    break;
+                }
+
+                if (attempt === 1) {
+                    this.container.logger.info(
+                        `[Cleanup] Waiting for all bots to be ready before orphan cleanup (${notReadyBots.length} not ready)` +
+                            `...`,
+                    );
+                }
+
+                await new Promise((resolve) => setTimeout(resolve, waitMs));
+            }
+
+            const stillNotReady = client.multiBotManager
+                .getBots()
+                .filter((bot) => !bot.client.isReady());
+
+            if (stillNotReady.length > 0) {
+                this.container.logger.warn(
+                    `[Cleanup] Skipping orphan cleanup because ${stillNotReady.length} bot(s) are still not ready`,
+                );
+                return;
+            }
         }
 
         const dataManager = this.container.data;
@@ -194,17 +223,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 );
 
                 try {
-                    await dataManager.deleteRequestChannel(dbGuildId, botId);
-                    await dataManager.deletePlayerState(dbGuildId, botId);
-                    await dataManager.deleteQueueState(dbGuildId, botId);
-
-                    if (
-                        !this.container.config.isMultiBot &&
-                        "deleteGuildData" in dataManager &&
-                        typeof dataManager.deleteGuildData === "function"
-                    ) {
-                        await dataManager.deleteGuildData(dbGuildId);
-                    }
+                    await dataManager.deleteGuildData(dbGuildId);
 
                     cleanedCount++;
                 } catch (error) {
