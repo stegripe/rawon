@@ -10,7 +10,7 @@ import {
     StreamType,
     VoiceConnectionStatus,
 } from "@discordjs/voice";
-import { ChannelType, type Guild } from "discord.js";
+import { ChannelType, type Guild, MessageFlags } from "discord.js";
 import prism from "prism-media";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
@@ -53,6 +53,7 @@ export async function play(
         );
         if (!isRequestChannel) {
             void queue.textChannel.send({
+                flags: MessageFlags.SuppressNotifications,
                 embeds: [
                     createEmbed(
                         "info",
@@ -72,6 +73,7 @@ export async function play(
                 await queue.destroy();
                 if (!isRequestChannel) {
                     const msg = await queue.textChannel.send({
+                        flags: MessageFlags.SuppressNotifications,
                         embeds: [
                             createEmbed("info", `👋 **|** ${__("utils.generalHandler.leftVC")}`),
                         ],
@@ -281,6 +283,7 @@ export async function play(
 
             if (!isRequestChannel) {
                 await queue.textChannel.send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [
                         createEmbed(
                             "error",
@@ -309,6 +312,7 @@ export async function play(
 
             if (!isRequestChannel) {
                 const errorMsg = await queue.textChannel.send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [
                         createEmbed(
                             "warn",
@@ -348,6 +352,7 @@ export async function play(
 
             if (!isRequestChannel) {
                 await queue.textChannel.send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [
                         createEmbed(
                             "error",
@@ -379,6 +384,7 @@ export async function play(
 
         if (!isRequestChannel) {
             await queue.textChannel.send({
+                flags: MessageFlags.SuppressNotifications,
                 embeds: [
                     createEmbed(
                         "error",

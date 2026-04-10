@@ -7,7 +7,7 @@ import {
     createAudioPlayer,
     type VoiceConnection,
 } from "@discordjs/voice";
-import { type Snowflake, type TextChannel } from "discord.js";
+import { MessageFlags, type Snowflake, type TextChannel } from "discord.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong, type Song } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
@@ -206,6 +206,7 @@ export class ServerQueue {
                     if (!isRequestChannel) {
                         await this.textChannel
                             .send({
+                                flags: MessageFlags.SuppressNotifications,
                                 embeds: [
                                     createEmbed(
                                         "info",
@@ -240,6 +241,7 @@ export class ServerQueue {
                         if (!isRequestChannel) {
                             try {
                                 await this.textChannel.send({
+                                    flags: MessageFlags.SuppressNotifications,
                                     embeds: [
                                         createEmbed(
                                             "error",
@@ -306,6 +308,7 @@ export class ServerQueue {
 
                     const errorMsg = await this.textChannel
                         .send({
+                            flags: MessageFlags.SuppressNotifications,
                             embeds: [createEmbed("error", messageText, true)],
                         })
                         .catch((error: unknown) => {
@@ -733,6 +736,7 @@ export class ServerQueue {
                 const __mf = i18n__mf(this.client, this.textChannel.guild);
                 const msg = await this.textChannel
                     .send({
+                        flags: MessageFlags.SuppressNotifications,
                         embeds: [
                             createEmbed(
                                 "info",
@@ -886,6 +890,7 @@ export class ServerQueue {
                     : null;
             await this.textChannel
                 .send({
+                    flags: MessageFlags.SuppressNotifications,
                     embeds: [
                         createEmbed(
                             "info",

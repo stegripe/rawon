@@ -5,6 +5,7 @@ import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
     ChannelType,
     type DMChannel,
+    MessageFlags,
     type NonThreadGuildBasedChannel,
     type VoiceChannel,
 } from "discord.js";
@@ -48,6 +49,7 @@ export class ChannelUpdateListener extends Listener<typeof Events.ChannelUpdate>
             const __ = i18n__(client, newChannel.guild);
 
             const msg = await queue.textChannel.send({
+                flags: MessageFlags.SuppressNotifications,
                 embeds: [createEmbed("info", __("events.channelUpdate.reconfigureConnection"))],
             });
             queue.connection?.configureNetworking();
