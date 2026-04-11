@@ -173,11 +173,17 @@ export class RequestChannelCommand extends ContextCommand {
                 try {
                     botMember = await localCtx.guild.members.fetch(client.user!.id);
                 } catch {
+                    const fallbackPermission = "**`View Channel`**";
                     return localCtx.reply({
                         embeds: [
                             createEmbed(
                                 "error",
-                                __("commands.music.requestChannel.noBotPermissions"),
+                                `<#${channel.id}>\n${__mf(
+                                    "commands.music.requestChannel.missingBotPermissions",
+                                    {
+                                        permissions: fallbackPermission,
+                                    },
+                                )}`,
                                 true,
                             ),
                         ],
@@ -211,9 +217,12 @@ export class RequestChannelCommand extends ContextCommand {
                     embeds: [
                         createEmbed(
                             "error",
-                            __mf("commands.music.requestChannel.missingBotPermissions", {
-                                permissions: permissionNames.join(", "),
-                            }),
+                            `<#${channel.id}>\n${__mf(
+                                "commands.music.requestChannel.missingBotPermissions",
+                                {
+                                    permissions: permissionNames.join(", "),
+                                },
+                            )}`,
                             true,
                         ),
                     ],

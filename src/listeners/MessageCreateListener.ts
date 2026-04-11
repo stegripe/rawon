@@ -646,9 +646,26 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
     private sendTemporaryReply(message: Message, embed: ReturnType<typeof createEmbed>): void {
         void (async () => {
-            const msg = await message
-                .reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
-                .catch(() => null);
+            let msg: Message | null = null;
+
+            try {
+                msg = await message.reply({
+                    embeds: [embed],
+                    allowedMentions: { repliedUser: false },
+                });
+            } catch (error) {
+                if (this.isPermissionLikeError(error)) {
+                    await this.notifyPermissionFallback(message);
+                    this.container.logger.warn(
+                        `[RequestChannel] Failed to send temporary reply in ${message.channel.id} due to missing permissions`,
+                    );
+                } else {
+                    this.container.logger.debug(
+                        `[RequestChannel] Failed to send temporary reply in ${message.channel.id}: ${(error as Error).message}`,
+                    );
+                }
+            }
+
             if (msg) {
                 setTimeout(() => {
                     void (async () => {
@@ -659,6 +676,85 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 }, 60_000);
             }
         })();
+    }
+
+    private isPermissionLikeError(error: unknown): boolean {
+        const code = (error as { code?: number })?.code;
+        if (code === 50_013 || code === 50_001) {
+            return true;
+        }
+
+        const message = (error as Error)?.message?.toLowerCase() ?? "";
+        return message.includes("missing permissions") || message.includes("missing access");
+    }
+
+    private formatPermissionName(permission: bigint): string {
+        const flagName = Object.entries(PermissionFlagsBits).find(
+            ([, value]) => value === permission,
+        )?.[0];
+        const spacedName = (flagName ?? "Unknown").replace(/([a-z])([A-Z])/g, "$1 $2");
+        return `**\`${spacedName}\`**`;
+    }
+
+    private getMissingReplyPermissions(message: Message): bigint[] {
+        if (!message.guild) {
+            return [];
+        }
+
+        const requiredPermissions = [
+            PermissionFlagsBits.ViewChannel,
+            PermissionFlagsBits.SendMessages,
+            PermissionFlagsBits.EmbedLinks,
+            PermissionFlagsBits.ReadMessageHistory,
+        ];
+
+        const botMember =
+            message.guild.members.me ??
+            message.guild.members.cache.get(message.client.user?.id ?? "");
+        if (!botMember) {
+            return [...requiredPermissions];
+        }
+
+        if (!("permissionsFor" in message.channel)) {
+            return [...requiredPermissions];
+        }
+
+        const permissions = message.channel.permissionsFor(botMember);
+        if (!permissions) {
+            return [...requiredPermissions];
+        }
+
+        return requiredPermissions.filter((permission) => !permissions.has(permission));
+    }
+
+    private async notifyPermissionFallback(message: Message): Promise<void> {
+        if (!message.guild) {
+            return;
+        }
+
+        const client = message.client as Rawon;
+        const __mf = i18n__mf(client, message.guild);
+
+        const missingPermissions = this.getMissingReplyPermissions(message);
+        const permissionNames = missingPermissions
+            .map((permission) => this.formatPermissionName(permission))
+            .join(", ");
+        const fallbackPermissions = [
+            this.formatPermissionName(PermissionFlagsBits.ViewChannel),
+            this.formatPermissionName(PermissionFlagsBits.SendMessages),
+            this.formatPermissionName(PermissionFlagsBits.EmbedLinks),
+        ].join(", ");
+
+        const messageText = __mf("utils.commonUtil.botMissingChannelPerms", {
+            channel: `<#${message.channel.id}>`,
+            permissions: permissionNames.length > 0 ? permissionNames : fallbackPermissions,
+        });
+
+        await message.author
+            .send({
+                embeds: [createEmbed("error", messageText, true)],
+            })
+            .catch(() => null);
     }
 
     private getMissingRequestChannelPermissionsForBot(
@@ -700,14 +796,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         }
 
         return requiredPermissions.filter((perm) => !botPermissions.has(perm));
-    }
-
-    private formatPermissionName(permission: bigint): string {
-        const flagName = Object.entries(PermissionFlagsBits).find(
-            ([, value]) => value === permission,
-        )?.[0];
-        const spacedName = (flagName ?? "Unknown").replace(/([a-z])([A-Z])/g, "$1 $2");
-        return `**\`${spacedName}\`**`;
     }
 
     private getUserFromMention(mention: string, message: Message): User | undefined {
