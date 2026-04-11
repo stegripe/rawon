@@ -24,10 +24,89 @@ export class AgeRestrictedError extends Error {
     }
 }
 
+export class ExpiredDirectMediaError extends Error {
+    public readonly statusCode: number | null;
+
+    public constructor(url: string, statusCode?: number | null) {
+        super(
+            statusCode !== undefined && statusCode !== null
+                ? `Direct media URL expired or inaccessible (HTTP ${statusCode}): ${url}`
+                : `Direct media URL expired or inaccessible: ${url}`,
+        );
+        this.name = "ExpiredDirectMediaError";
+        this.statusCode = statusCode ?? null;
+    }
+}
+
+const EXPIRED_DIRECT_MEDIA_STATUS_CODES = new Set([401, 403, 404, 410]);
+const DIRECT_MEDIA_EXT_REGEX = /\.(mp4|m4a|webm|mp3|opus|wav|flac)(\?|$)/i;
+
+function parseHttpStatusCodeFromMessage(message: string): number | null {
+    const match = /http(?:\s+error)?\s*(\d{3})/iu.exec(message);
+    if (!match) {
+        return null;
+    }
+
+    const statusCode = Number.parseInt(match[1], 10);
+    return Number.isNaN(statusCode) ? null : statusCode;
+}
+
+function getHttpStatusCodeFromError(error: unknown): number | null {
+    const statusFromResponse = (error as { response?: { statusCode?: number } })?.response
+        ?.statusCode;
+    if (typeof statusFromResponse === "number") {
+        return statusFromResponse;
+    }
+
+    const statusFromCode = (error as { code?: number })?.code;
+    if (typeof statusFromCode === "number") {
+        return statusFromCode;
+    }
+
+    if (error instanceof Error) {
+        return parseHttpStatusCodeFromMessage(error.message);
+    }
+
+    return parseHttpStatusCodeFromMessage(String(error ?? ""));
+}
+
+function normalizeDirectMediaError(url: string, error: unknown, assumeDirectMedia = false): Error {
+    if (error instanceof ExpiredDirectMediaError) {
+        return error;
+    }
+
+    const statusCode = getHttpStatusCodeFromError(error);
+    if (
+        (assumeDirectMedia || DIRECT_MEDIA_EXT_REGEX.test(url)) &&
+        statusCode !== null &&
+        EXPIRED_DIRECT_MEDIA_STATUS_CODES.has(statusCode)
+    ) {
+        return new ExpiredDirectMediaError(url, statusCode);
+    }
+
+    if (error instanceof Error) {
+        return error;
+    }
+
+    return new Error(String(error ?? "Unknown direct media error"));
+}
+
+function isDirectMediaExpiredErrorMessage(errorMessage: string): boolean {
+    if (errorMessage.includes("direct media url expired or inaccessible")) {
+        return true;
+    }
+
+    const statusCode = parseHttpStatusCodeFromMessage(errorMessage);
+    if (statusCode === null || !EXPIRED_DIRECT_MEDIA_STATUS_CODES.has(statusCode)) {
+        return false;
+    }
+
+    return DIRECT_MEDIA_EXT_REGEX.test(errorMessage);
+}
+
 async function isDirectDownload(url: string): Promise<boolean> {
     try {
-        const extRegex = /\.(mp4|m4a|webm|mp3|opus|wav|flac)(\?|$)/i;
-        if (extRegex.test(url)) {
+        if (DIRECT_MEDIA_EXT_REGEX.test(url)) {
             return true;
         }
 
@@ -116,14 +195,41 @@ export async function getStream(
 
     if (await isDirectDownload(url)) {
         try {
-            const stream = got.stream(url);
+            const stream = got.stream(url, {
+                throwHttpErrors: false,
+                timeout: {
+                    request: 15_000,
+                },
+            });
+
+            const response = await new Promise<{ statusCode?: number }>((resolve, reject) => {
+                stream.once("response", resolve);
+                stream.once("error", reject);
+            });
+
+            const statusCode = response.statusCode;
+            if (typeof statusCode === "number" && statusCode >= 400) {
+                stream.destroy();
+
+                if (EXPIRED_DIRECT_MEDIA_STATUS_CODES.has(statusCode)) {
+                    throw new ExpiredDirectMediaError(url, statusCode);
+                }
+
+                throw new Error(`Direct media request failed with HTTP ${statusCode}`);
+            }
+
             return {
                 stream: stream as Readable,
                 cachePath: null,
             };
         } catch (err) {
+            const normalizedError = normalizeDirectMediaError(url, err, true);
+            if (normalizedError instanceof ExpiredDirectMediaError) {
+                throw normalizedError;
+            }
+
             client.logger.warn(
-                `[YTDLUtil] Direct HTTP stream failed for ${url.slice(0, 50)}..., falling back to yt-dlp. Error: ${(err as Error).message}`,
+                `[YTDLUtil] Direct HTTP stream failed for ${url.slice(0, 50)}..., falling back to yt-dlp. Error: ${normalizedError.message}`,
             );
         }
     }
@@ -435,10 +541,19 @@ export function shouldRequeueOnError(error: Error): boolean {
     if (error instanceof AgeRestrictedError) {
         return false;
     }
+    if (error instanceof ExpiredDirectMediaError) {
+        return false;
+    }
+
     const errorMessage = error.message.toLowerCase();
+
     if (isBotDetectionError(errorMessage)) {
         return false;
     }
+    if (isDirectMediaExpiredErrorMessage(errorMessage)) {
+        return false;
+    }
+
     return (
         isTransientError(errorMessage) ||
         errorMessage.includes("socket hang up") ||

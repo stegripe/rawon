@@ -20,6 +20,7 @@ import { type FfmpegStreamWithEvents, isErrnoException } from "../../typeGuards.
 import {
     AgeRestrictedError,
     AllCookiesFailedError,
+    ExpiredDirectMediaError,
     getStream,
     shouldRequeueOnError,
 } from "../YTDLUtil.js";
@@ -300,6 +301,42 @@ export async function play(
             return;
         }
 
+        if (error instanceof ExpiredDirectMediaError) {
+            queue.client.logger.warn(
+                `[PLAY_HANDLER] ⚠️ Expired direct media for "${song.song.title}": ${error.message}`,
+            );
+
+            if (!isRequestChannel) {
+                await queue.textChannel.send({
+                    flags: MessageFlags.SuppressNotifications,
+                    embeds: [
+                        createEmbed(
+                            "error",
+                            `${__mf("utils.generalHandler.errorPlaying", {
+                                message: `\`${error.message.slice(0, 200)}\``,
+                            })}`,
+                            true,
+                        ),
+                    ],
+                });
+            }
+
+            queue.songs.delete(song.key);
+            const nextS =
+                queue.shuffle && queue.loopMode !== "SONG"
+                    ? queue.songs.random()?.key
+                    : queue.loopMode === "SONG"
+                      ? song.key
+                      : (queue.songs.sortByIndex().first()?.key ?? "");
+
+            if (nextS && nextS.length > 0) {
+                void play(guild, nextS, wasIdle);
+            } else {
+                await queue.destroy();
+            }
+            return;
+        }
+
         if (shouldRequeueOnError(error as Error)) {
             queue.client.logger.warn(
                 `[PLAY_HANDLER] ⚠️ Error playing song "${song.song.title}", re-queuing for retry. Error: ${(error as Error).message}`,
@@ -374,6 +411,8 @@ export async function play(
 
             if (nextS && nextS.length > 0) {
                 void play(guild, nextS, wasIdle);
+            } else {
+                await queue.destroy();
             }
             return;
         }
@@ -407,6 +446,8 @@ export async function play(
 
         if (nextS && nextS.length > 0) {
             void play(guild, nextS, wasIdle);
+        } else {
+            await queue.destroy();
         }
         return;
     }
