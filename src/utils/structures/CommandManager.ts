@@ -269,31 +269,23 @@ export class CommandManager extends Collection<string, CommandComponent> {
             }
         }
 
-        try {
-            if (
-                command.meta.devOnly === true &&
-                !this.client.config.devs.includes(message.author.id)
-            ) {
-                return;
-            }
-            command.execute(new CommandContext(message, args));
-        } catch (error) {
-            this.client.logger.error("COMMAND_HANDLER_ERR:", error);
-        } finally {
-            if (
-                command.meta.devOnly === true &&
-                !this.client.config.devs.includes(message.author.id)
-            ) {
-                return;
-            }
-            this.client.logger.info(
-                `${message.author.tag} [${message.author.id}] is using ${command.meta.name} command from ${
-                    command.meta.category
-                } category ` +
-                    `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${
-                        message.guild?.name
-                    } [${message.guild?.id}]`,
-            );
+        if (command.meta.devOnly === true && !this.client.config.devs.includes(message.author.id)) {
+            return;
         }
+
+        void Promise.resolve()
+            .then(() => command.execute(new CommandContext(message, args)))
+            .catch((error: unknown) => {
+                this.client.logger.error("COMMAND_HANDLER_ERR:", error);
+            });
+
+        this.client.logger.info(
+            `${message.author.tag} [${message.author.id}] is using ${command.meta.name} command from ${
+                command.meta.category
+            } category ` +
+                `on #${(message.channel as TextChannel).name} [${message.channel.id}] in guild: ${
+                    message.guild?.name
+                } [${message.guild?.id}]`,
+        );
     }
 }
