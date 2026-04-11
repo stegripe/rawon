@@ -459,6 +459,13 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
         const voiceChannel = member.voice.channel;
         if (!voiceChannel) {
+            if (client.config.isMultiBot && !client.multiBotManager.shouldRespond(client, guild)) {
+                this.container.logger.debug(
+                    `[MultiBot] ${client.user?.tag} skipping not-in-voice warning in request channel - not responsible bot`,
+                );
+                return;
+            }
+
             this.sendTemporaryReply(message, createEmbed("warn", __("requestChannel.notInVoice")));
             return;
         }
