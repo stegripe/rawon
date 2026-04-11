@@ -2,7 +2,12 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
-import { type Message, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
+import {
+    escapeMarkdown,
+    type Message,
+    PermissionFlagsBits,
+    type SlashCommandBuilder,
+} from "discord.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -94,7 +99,9 @@ export class RepeatCommand extends ContextCommand {
                         )}`,
                     ).setFooter({
                         text: `• ${__mf("commands.music.repeat.footer", {
-                            prefix: getEffectivePrefix(client, ctx.guild?.id ?? null),
+                            prefix: escapeMarkdown(
+                                getEffectivePrefix(client, ctx.guild?.id ?? null),
+                            ),
                         })}`,
                     }),
                 ],

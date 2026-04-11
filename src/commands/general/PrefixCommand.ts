@@ -8,6 +8,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatCodeSpan } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
@@ -80,7 +81,7 @@ export class PrefixCommand extends ContextCommand {
                     createEmbed(
                         "success",
                         __mf("commands.general.prefix.prefixReset", {
-                            prefix: `\`${defaultPrefix}\``,
+                            prefix: formatCodeSpan(defaultPrefix),
                         }),
                         true,
                     ),
@@ -97,7 +98,7 @@ export class PrefixCommand extends ContextCommand {
                     createEmbed(
                         "info",
                         __mf("commands.general.prefix.currentPrefix", {
-                            prefix: `\`${currentPrefix}\``,
+                            prefix: formatCodeSpan(currentPrefix),
                         }),
                     ).setAuthor({ name: __("commands.general.prefix.embedTitle") }),
                 ],
@@ -119,7 +120,7 @@ export class PrefixCommand extends ContextCommand {
                 createEmbed(
                     "success",
                     __mf("commands.general.prefix.prefixSet", {
-                        prefix: `\`${prefixArg}\``,
+                        prefix: formatCodeSpan(prefixArg),
                     }),
                     true,
                 ),

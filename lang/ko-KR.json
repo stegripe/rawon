@@ -188,7 +188,7 @@
                 "role": {
                     "current": "현재 DJ 역할: <@&{role}>",
                     "invalid": "유효하지 않은 역할이에요.",
-                    "noRole": "DJ 역할이 설정되지 않았어요. `{prefix}dj role`로 설정해주세요",
+                    "noRole": "DJ 역할이 설정되지 않았어요. {djRoleCmd}로 설정해주세요",
                     "success": "DJ 역할이 <@&{role}>로 설정되었어요"
                 },
                 "slashDisableDescription": "DJ 기능 비활성화",
@@ -440,7 +440,7 @@
             "startPlaying": "{song} 재생 시작",
             "stopPlaying": "{song} 재생 종료",
             "songRequeued": "{song} 재생에 문제가 있어서 다시 시도하기 위해 대기열에 다시 추가했어요.",
-            "allCookiesFailed": "봇 감지로 인해 모든 쿠키가 실패했어요! `{prefix}login logout` 후 `{prefix}login start`로 다시 로그인해주세요.",
+            "allCookiesFailed": "봇 감지로 인해 모든 쿠키가 실패했어요! {logoutCmd} 후 {startCmd}로 다시 로그인해주세요.",
             "ageRestricted": "{song} 은(는) 연령 제한이 있어 로그인해야 하므로 재생할 수 없습니다."
         },
         "musicDecorator": {

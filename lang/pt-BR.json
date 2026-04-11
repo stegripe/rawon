@@ -188,7 +188,7 @@
                 "role": {
                     "current": "Cargo atual de DJ: <@&{role}>",
                     "invalid": "Cargo inválido.",
-                    "noRole": "Cargo de DJ não foi escolhido, escolha usando `{prefix}dj role`",
+                    "noRole": "Cargo de DJ não foi escolhido, escolha usando {djRoleCmd}",
                     "success": "Cargo de DJ escolhido: <@&{role}>"
                 },
                 "slashDisableDescription": "Desativa a função DJ",
@@ -440,7 +440,7 @@
             "startPlaying": "Começando a tocar {song}",
             "stopPlaying": "Parando de tocar {song}",
             "songRequeued": "Houve um problema ao tocar {song}, adicionado de volta à fila para outra tentativa.",
-            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Use `{prefix}login logout` e depois `{prefix}login start` para fazer login novamente.",
+            "allCookiesFailed": "Todos os cookies falharam devido à detecção de bot! Use {logoutCmd} e depois {startCmd} para fazer login novamente.",
             "ageRestricted": "Não é possível reproduzir {song} porque é restrito por idade e requer login."
         },
         "musicDecorator": {

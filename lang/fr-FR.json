@@ -188,7 +188,7 @@
                 "role": {
                     "current": "Rôle actuel de DJ : <@&{role}>",
                     "invalid": "Rôle invalide.",
-                    "noRole": "Le rôle de DJ n'a pas été défini, veuillez le définir avec `{prefix}dj role`",
+                    "noRole": "Le rôle de DJ n'a pas été défini, veuillez le définir avec {djRoleCmd}",
                     "success": "Le rôle de DJ a été défini à <@&{role}>"
                 },
                 "slashDisableDescription": "Désactiver la fonctionnalité DJe",
@@ -440,7 +440,7 @@
             "startPlaying": "Lancement de la lecture de {song}",
             "stopPlaying": "Arrêt de la lecture de {song}",
             "songRequeued": "Problème lors de la lecture de {song}, remis en file d'attente pour une nouvelle tentative.",
-            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Utilisez `{prefix}login logout` puis `{prefix}login start` pour vous reconnecter.",
+            "allCookiesFailed": "Tous les cookies ont échoué en raison de la détection de bot ! Utilisez {logoutCmd} puis {startCmd} pour vous reconnecter.",
             "ageRestricted": "Impossible de lire {song} car elle est soumise à une limite d'âge et nécessite une connexion."
         },
         "musicDecorator": {

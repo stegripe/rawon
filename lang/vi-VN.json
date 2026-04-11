@@ -188,7 +188,7 @@
                 "role": {
                     "current": "Vai trò DJ hiện tại: <@&{role}>",
                     "invalid": "Vai trò không hợp lệ.",
-                    "noRole": "Vai trò DJ chưa được thiết lập, vui lòng dùng lệnh `{prefix}dj role` để thiết lập",
+                    "noRole": "Vai trò DJ chưa được thiết lập, vui lòng dùng lệnh {djRoleCmd} để thiết lập",
                     "success": "<@&{role}> đã được thiết lập thành vai trò DJ"
                 },
                 "slashDisableDescription": "Tắt tính năng DJ",
@@ -440,7 +440,7 @@
             "startPlaying": "Bắt đầu phát {song}",
             "stopPlaying": "Dừng phát {song}",
             "songRequeued": "Gặp sự cố khi phát {song}, đã thêm lại vào hàng đợi để thử lại.",
-            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Dùng `{prefix}login logout` rồi `{prefix}login start` để đăng nhập lại.",
+            "allCookiesFailed": "Tất cả cookies đã thất bại do phát hiện bot! Dùng {logoutCmd} rồi {startCmd} để đăng nhập lại.",
             "ageRestricted": "Không thể phát {song} vì nội dung bị giới hạn độ tuổi và yêu cầu đăng nhập."
         },
         "musicDecorator": {

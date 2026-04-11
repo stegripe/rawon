@@ -7,6 +7,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatCodeSpan, formatPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
 import { BOT_SETTINGS_DEFAULTS } from "../../utils/structures/SQLiteDataManager.js";
@@ -190,7 +191,7 @@ export class SetupCommand extends ContextCommand {
                             "warn",
                             __("commands.developers.setup.unknownSetting").replace(
                                 "{command}",
-                                `\`${prefix}setup view\``,
+                                formatPrefixedCommand(prefix, "setup view"),
                             ),
                         ),
                     ],
@@ -254,7 +255,7 @@ export class SetupCommand extends ContextCommand {
         ];
 
         const value = settings
-            .map((s) => `**${s.param}** — ${s.desc}\n\`${s.usage}\``)
+            .map((s) => `**${s.param}** — ${s.desc}\n${formatCodeSpan(s.usage)}`)
             .join("\n\n");
 
         const embed = createEmbed("info")

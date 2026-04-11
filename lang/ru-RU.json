@@ -188,7 +188,7 @@
                 "role": {
                     "current": "Текущая роль DJ: <@&{role}>",
                     "invalid": "Неверная роль.",
-                    "noRole": "Роль DJ не была указана, пожалуйста укажите ее через `{prefix}dj role`",
+                    "noRole": "Роль DJ не была указана, пожалуйста укажите ее через {djRoleCmd}",
                     "success": "Роль DJ была указана: <@&{role}>"
                 },
                 "slashDisableDescription": "Отключить функцию DJ",
@@ -440,7 +440,7 @@
             "startPlaying": "Играет: {song}",
             "stopPlaying": "Остановлено проигрывание: {song}",
             "songRequeued": "Возникла проблема с воспроизведением {song}, добавлено обратно в очередь для повторной попытки.",
-            "allCookiesFailed": "Все cookies неудачны из-за обнаружения бота! Используйте `{prefix}login logout`, затем `{prefix}login start` для повторного входа.",
+            "allCookiesFailed": "Все cookies неудачны из-за обнаружения бота! Используйте {logoutCmd}, затем {startCmd} для повторного входа.",
             "ageRestricted": "Невозможно воспроизвести {song}, так как она имеет возрастное ограничение и требует входа в систему."
         },
         "musicDecorator": {

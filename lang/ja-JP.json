@@ -188,7 +188,7 @@
                 "role": {
                     "current": "現在のDJロール:<@&{role}>",
                     "invalid": "無効なロールです。",
-                    "noRole": "DJロールは設定されていません。 `{prefix}dj role`で設定してください。",
+                    "noRole": "DJロールは設定されていません。 {djRoleCmd}で設定してください。",
                     "success": "DJロールは<@&{role}に>にセットされました。"
                 },
                 "slashDisableDescription": "DJ機能を無効化",
@@ -440,7 +440,7 @@
             "startPlaying": "{song}の再生が開始",
             "stopPlaying": "{song}の再生が終了",
             "songRequeued": "{song}の再生中に問題が発生しました。再試行のためキューに追加し直しました。",
-            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！`{prefix}login logout` の後 `{prefix}login start` で再ログインしてください。",
+            "allCookiesFailed": "Bot検出によりすべてのCookieが失敗しました！{logoutCmd} の後 {startCmd} で再ログインしてください。",
             "ageRestricted": "{song} は年齢制限があるため、ログインが必要です。再生できません。"
         },
         "musicDecorator": {

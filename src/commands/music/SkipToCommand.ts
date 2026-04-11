@@ -15,6 +15,7 @@ import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatBoldPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { play } from "../../utils/handlers/GeneralUtil.js";
@@ -136,7 +137,7 @@ export class SkipToCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("reusable.invalidUsage", {
-                            prefix: `**\`${prefix}help\`**`,
+                            prefix: formatBoldPrefixedCommand(prefix, "help"),
                             name: `**\`${this.options.name}\`**`,
                         }),
                     ),

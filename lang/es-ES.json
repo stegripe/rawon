@@ -188,7 +188,7 @@
                 "role": {
                     "current": "<@&{role}> es el rol DJ actualmente.",
                     "invalid": "Rol no válido.",
-                    "noRole": "No hay rol DJ establecido actualmente, por favor usa `{prefix}dj role` para establecerlo.",
+                    "noRole": "No hay rol DJ establecido actualmente, por favor usa {djRoleCmd} para establecerlo.",
                     "success": "<@&{role}> ha sido establecido como rol DJ."
                 },
                 "slashDisableDescription": "Desactiva la función DJ",
@@ -440,7 +440,7 @@
             "startPlaying": "Se empezó a reproducir {song}",
             "stopPlaying": "Se detuvo la reproducción {song}",
             "songRequeued": "Hubo un problema al reproducir {song}, se ha vuelto a agregar a la cola para otro intento.",
-            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Usa `{prefix}login logout` y luego `{prefix}login start` para volver a iniciar sesión.",
+            "allCookiesFailed": "Todas las cookies han fallado debido a detección de bot. Usa {logoutCmd} y luego {startCmd} para volver a iniciar sesión.",
             "ageRestricted": "No se puede reproducir {song} porque tiene restricción de edad y requiere inicio de sesión."
         },
         "musicDecorator": {
