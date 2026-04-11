@@ -188,7 +188,7 @@
                 "role": {
                     "current": "Role DJ sekarang: <@&{role}>",
                     "invalid": "Role-nya gak valid tuh.",
-                    "noRole": "Role DJ belom diset nih, set dulu pake `{prefix}dj role`",
+                    "noRole": "Role DJ belom diset nih, set dulu pake {djRoleCmd}",
                     "success": "Role DJ udah diganti jadi <@&{role}>"
                 },
                 "slashDisableDescription": "Matiin fitur DJ",
@@ -440,7 +440,7 @@
             "startPlaying": "Mulai muter {song}",
             "stopPlaying": "Selesai muter {song}",
             "songRequeued": "Ada masalah pas muter {song}, udah ditambahin ulang ke antrian buat dicoba lagi.",
-            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Pake `{prefix}login logout` terus `{prefix}login start` buat login ulang.",
+            "allCookiesFailed": "Semua cookies gagal gara-gara deteksi bot! Pake {logoutCmd} terus {startCmd} buat login ulang.",
             "ageRestricted": "Gak bisa muter {song} karena kontennya dibatasi usia dan butuh login."
         },
         "musicDecorator": {

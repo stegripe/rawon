@@ -4,6 +4,7 @@ import process from "node:process";
 import { container } from "@sapphire/framework";
 import { devtoolsPort } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
+import { formatPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { GoogleLoginManager, type LoginSessionInfo } from "./GoogleLoginManager.js";
 
@@ -76,7 +77,7 @@ export class CookiesManager {
         const prefix = getEffectivePrefix(this.client, null);
         container.logger.warn(
             "[Cookies] Bot detection triggered. Cookies may be stale or invalid. " +
-                `Use \`${prefix}login logout\` then \`${prefix}login start\` to re-login.`,
+                `Use ${formatPrefixedCommand(prefix, "login logout")} then ${formatPrefixedCommand(prefix, "login start")} to re-login.`,
         );
     }
 

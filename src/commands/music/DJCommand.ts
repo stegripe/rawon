@@ -8,6 +8,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { memberReqPerms } from "../../utils/decorators/CommonUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
@@ -75,17 +76,15 @@ export class DJCommand extends ContextCommand {
                             })
                             .addFields([
                                 {
-                                    name: `${prefix}dj enable`,
+                                    name: formatPrefixedCommand(prefix, "dj enable"),
                                     value: __("commands.music.dj.slashEnableDescription"),
                                 },
                                 {
-                                    name: `${prefix}dj disable`,
+                                    name: formatPrefixedCommand(prefix, "dj disable"),
                                     value: __("commands.music.dj.slashDisableDescription"),
                                 },
                                 {
-                                    name: `${prefix}dj role [${__(
-                                        "commands.music.dj.newRoleText",
-                                    )}]`,
+                                    name: `${formatPrefixedCommand(prefix, "dj role")} [${__("commands.music.dj.newRoleText")}]`,
                                     value: __("commands.music.dj.slashRoleDescription"),
                                 },
                             ]),
@@ -154,7 +153,10 @@ export class DJCommand extends ContextCommand {
                                 (cur?.length ?? 0) > 0
                                     ? __mf("commands.music.dj.role.current", { role: cur })
                                     : __mf("commands.music.dj.role.noRole", {
-                                          prefix: getEffectivePrefix(client, ctx.guild?.id ?? null),
+                                          djRoleCmd: formatPrefixedCommand(
+                                              getEffectivePrefix(client, ctx.guild?.id ?? null),
+                                              "dj role",
+                                          ),
                                       }),
                             ).setFooter({
                                 text: footer,

@@ -8,6 +8,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
@@ -68,7 +69,10 @@ export class LoginCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("commands.developers.login.invalidSubcommand", {
-                            loginUsage: `\`${prefix}login <start | status | logout>\``,
+                            loginUsage: formatPrefixedCommand(
+                                prefix,
+                                "login <start | status | logout>",
+                            ),
                         }),
                     ),
                 ],
@@ -89,7 +93,10 @@ export class LoginCommand extends ContextCommand {
                         createEmbed(
                             "warn",
                             __mf("commands.developers.login.invalidSubcommand", {
-                                loginUsage: `\`${prefix}login <start | status | logout>\``,
+                                loginUsage: formatPrefixedCommand(
+                                    prefix,
+                                    "login <start | status | logout>",
+                                ),
                             }),
                         ),
                     ],
@@ -114,7 +121,7 @@ export class LoginCommand extends ContextCommand {
                     createEmbed(
                         "warn",
                         __mf("commands.developers.login.alreadyLoggedIn", {
-                            logoutCmd: `\`${prefix}login logout\``,
+                            logoutCmd: formatPrefixedCommand(prefix, "login logout"),
                         }),
                     ),
                 ],
@@ -202,7 +209,7 @@ export class LoginCommand extends ContextCommand {
                         createEmbed(
                             "error",
                             __mf("commands.developers.login.loginFailedDescription", {
-                                cmd: `\`${prefix}login start\``,
+                                cmd: formatPrefixedCommand(prefix, "login start"),
                             }),
                             true,
                         ).setTitle(__("commands.developers.login.loginFailed")),
@@ -312,7 +319,7 @@ export class LoginCommand extends ContextCommand {
                 {
                     name: __("commands.developers.login.gettingStartedField"),
                     value: __mf("commands.developers.login.gettingStartedText", {
-                        loginCmd: `\`${prefix}login start\``,
+                        loginCmd: formatPrefixedCommand(prefix, "login start"),
                     }),
                 },
             ]);
@@ -347,7 +354,7 @@ export class LoginCommand extends ContextCommand {
                 createEmbed(
                     "success",
                     __mf("commands.developers.login.logoutSuccess", {
-                        cmd: `\`${prefix}login start\``,
+                        cmd: formatPrefixedCommand(prefix, "login start"),
                     }),
                     true,
                 ),
