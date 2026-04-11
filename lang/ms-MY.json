@@ -188,7 +188,7 @@
                 "role": {
                     "current": "Role DJ semasa: <@&{role}>",
                     "invalid": "Role tidak sah.",
-                    "noRole": "Role DJ belum ditetapkan, tetapkan dengan `{prefix}dj role`",
+                    "noRole": "Role DJ belum ditetapkan, tetapkan dengan {djRoleCmd}",
                     "success": "Role DJ telah ditetapkan ke <@&{role}>"
                 },
                 "slashDisableDescription": "Lumpuhkan fungsi DJ",
@@ -440,7 +440,7 @@
             "startPlaying": "Mula memainkan {song}",
             "stopPlaying": "Berhenti memainkan {song}",
             "songRequeued": "Gagal memainkan {song}, dimasukkan semula ke giliran untuk cubaan lain.",
-            "allCookiesFailed": "Semua cookies gagal kerana dikesan sebagai bot! Guna `{prefix}login logout` kemudian `{prefix}login start` untuk log masuk semula.",
+            "allCookiesFailed": "Semua cookies gagal kerana dikesan sebagai bot! Guna {logoutCmd} kemudian {startCmd} untuk log masuk semula.",
             "ageRestricted": "Tidak dapat memainkan {song} kerana ia disekat umur dan memerlukan log masuk."
         },
         "musicDecorator": {

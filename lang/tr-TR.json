@@ -188,7 +188,7 @@
                 "role": {
                     "current": "Mevcut DJ Rolü: <@&{role}>",
                     "invalid": "Geçersiz rol.",
-                    "noRole": "DJ rolü ayarlanmamış, lütfen `{prefix}dj role` ile ayarlayın",
+                    "noRole": "DJ rolü ayarlanmamış, lütfen {djRoleCmd} ile ayarlayın",
                     "success": "DJ rolü <@&{role}> olarak ayarlandı."
                 },
                 "slashDisableDescription": "DJ özelliğini devre dışı bırakır",
@@ -440,7 +440,7 @@
             "startPlaying": "{song} çalınmaya başladı.",
             "stopPlaying": "{song} durduruldu.",
             "songRequeued": "{song} çalınırken sorun oluştu, başka bir deneme için kuyruğa yeniden eklendi.",
-            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! `{prefix}login logout` ardından `{prefix}login start` kullanarak tekrar giriş yapın.",
+            "allCookiesFailed": "Bot algılama nedeniyle tüm çerezler başarısız oldu! {logoutCmd} ardından {startCmd} kullanarak tekrar giriş yapın.",
             "ageRestricted": "{song} yaş kısıtlamalı olduğu ve giriş yapmayı gerektirdiği için çalınamıyor."
         },
         "musicDecorator": {

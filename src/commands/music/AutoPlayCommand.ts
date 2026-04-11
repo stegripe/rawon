@@ -7,6 +7,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatBoldPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
@@ -80,7 +81,7 @@ export class AutoPlayCommand extends ContextCommand {
                     createEmbed(
                         "error",
                         __mf("reusable.invalidUsage", {
-                            prefix: `**\`${prefix}help\`**`,
+                            prefix: formatBoldPrefixedCommand(prefix, "help"),
                             name: `**\`${this.options.name}\`**`,
                         }),
                         true,

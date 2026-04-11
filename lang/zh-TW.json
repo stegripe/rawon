@@ -188,7 +188,7 @@
                 "role": {
                     "current": "目前 DJ 身分組: <@&{role}>",
                     "invalid": "無效的身分組。",
-                    "noRole": "DJ 身分組尚未設定，請使用`{prefix}dj role`設置",
+                    "noRole": "DJ 身分組尚未設定，請使用{djRoleCmd}設置",
                     "success": "DJ 身分組已設置為 <@&{role}>"
                 },
                 "slashDisableDescription": "停用 DJ 功能",
@@ -440,7 +440,7 @@
             "startPlaying": "開始播放{song}",
             "stopPlaying": "停止播放{song}",
             "songRequeued": "播放{song}時遇到問題，已重新添加到隊列中等待重試。",
-            "allCookiesFailed": "由於機器人偵測，所有cookie都已失敗！使用 `{prefix}login logout` 然後 `{prefix}login start` 重新登入。",
+            "allCookiesFailed": "由於機器人偵測，所有cookie都已失敗！使用 {logoutCmd} 然後 {startCmd} 重新登入。",
             "ageRestricted": "無法播放 {song}，因為它受到年齡限制並需要登入。"
         },
         "musicDecorator": {

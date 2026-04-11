@@ -7,6 +7,7 @@ import {
     ActionRowBuilder,
     type APIMessageTopLevelComponent,
     ComponentType,
+    escapeMarkdown,
     PermissionFlagsBits,
     type SelectMenuComponentOptionData,
     type SlashCommandBuilder,
@@ -17,6 +18,7 @@ import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatCodeSpan } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 
@@ -80,7 +82,7 @@ export class HelpCommand extends ContextCommand {
                 })
                 .setFooter({
                     text: __mf("commands.general.help.footerString", {
-                        prefix,
+                        prefix: escapeMarkdown(prefix),
                     }),
                     iconURL: "https://cdn.stegripe.org/images/information.png",
                 })
@@ -216,7 +218,12 @@ export class HelpCommand extends ContextCommand {
                 },
                 {
                     name: __("commands.general.help.usageString"),
-                    value: `\`${command?.meta.usage?.replaceAll("{prefix}", getEffectivePrefix(client, ctx.guild?.id ?? null))}\``,
+                    value: formatCodeSpan(
+                        command?.meta.usage?.replaceAll(
+                            "{prefix}",
+                            getEffectivePrefix(client, ctx.guild?.id ?? null),
+                        ) ?? "",
+                    ),
                     inline: true,
                 },
             ])

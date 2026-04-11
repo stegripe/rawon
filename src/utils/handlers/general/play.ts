@@ -14,6 +14,10 @@ import { ChannelType, type Guild, MessageFlags } from "discord.js";
 import prism from "prism-media";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
+import {
+    formatBoldPrefixedCommand,
+    formatPrefixedCommand,
+} from "../../functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import { type FfmpegStreamWithEvents, isErrnoException } from "../../typeGuards.js";
@@ -59,7 +63,10 @@ export async function play(
                     createEmbed(
                         "info",
                         `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
-                            usage: `**\`${getEffectivePrefix(queue.client, guild.id)}play\`**`,
+                            usage: formatBoldPrefixedCommand(
+                                getEffectivePrefix(queue.client, guild.id),
+                                "play",
+                            ),
                         })}`,
                     ),
                 ],
@@ -289,7 +296,14 @@ export async function play(
                         createEmbed(
                             "error",
                             __mf("utils.generalHandler.allCookiesFailed", {
-                                prefix: getEffectivePrefix(queue.client, guild.id),
+                                logoutCmd: formatPrefixedCommand(
+                                    getEffectivePrefix(queue.client, guild.id),
+                                    "login logout",
+                                ),
+                                startCmd: formatPrefixedCommand(
+                                    getEffectivePrefix(queue.client, guild.id),
+                                    "login start",
+                                ),
                             }),
                             true,
                         ),

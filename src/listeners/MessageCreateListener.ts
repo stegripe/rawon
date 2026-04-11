@@ -15,6 +15,7 @@ import { type Rawon } from "../structures/Rawon.js";
 import { ServerQueue } from "../structures/ServerQueue.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
+import { formatBoldCodeSpan } from "../utils/functions/formatCodeSpan.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
@@ -317,7 +318,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                             "info",
                             `👋 **|** ${__mf("events.createMessage", {
                                 author: message.author.toString(),
-                                prefix: `**\`${prefixToShow}\`**`,
+                                prefix: formatBoldCodeSpan(prefixToShow),
                             })}`,
                         ),
                     ],
