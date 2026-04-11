@@ -195,8 +195,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             const botMention = primaryBot
                                 ? `<@${primaryBot.user?.id}>`
                                 : __("events.createInteraction.primaryBotFallback");
-                            await interaction
-                                .reply({
+                            await this.safeReply(
+                                interaction,
+                                {
                                     flags: MessageFlags.Ephemeral,
                                     embeds: [
                                         createEmbed(
@@ -207,8 +208,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                             true,
                                         ),
                                     ],
-                                })
-                                .catch(() => null);
+                                },
+                                "reply to wrong-bot music interaction",
+                            );
                         }
                         return;
                     }
@@ -225,8 +227,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         const botMention = primaryBot
                             ? `<@${primaryBot.user?.id}>`
                             : __("events.createInteraction.primaryBotFallback");
-                        await interaction
-                            .reply({
+                        await this.safeReply(
+                            interaction,
+                            {
                                 flags: MessageFlags.Ephemeral,
                                 embeds: [
                                     createEmbed(
@@ -237,8 +240,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                         true,
                                     ),
                                 ],
-                            })
-                            .catch(() => null);
+                            },
+                            "reply to wrong-bot non-voice interaction",
+                        );
                     }
                     return;
                 }
@@ -253,8 +257,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         const botMention = primaryBot
                             ? `<@${primaryBot.user?.id}>`
                             : __("events.createInteraction.primaryBotFallback");
-                        await interaction
-                            .reply({
+                        await this.safeReply(
+                            interaction,
+                            {
                                 flags: MessageFlags.Ephemeral,
                                 embeds: [
                                     createEmbed(
@@ -265,8 +270,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                         true,
                                     ),
                                 ],
-                            })
-                            .catch(() => null);
+                            },
+                            "reply to wrong-bot slash interaction",
+                        );
                     }
                     return;
                 }
@@ -279,8 +285,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     const botMention = primaryBot
                         ? `<@${primaryBot.user?.id}>`
                         : __("events.createInteraction.primaryBotFallback");
-                    await interaction
-                        .reply({
+                    await this.safeReply(
+                        interaction,
+                        {
                             flags: MessageFlags.Ephemeral,
                             embeds: [
                                 createEmbed(
@@ -291,8 +298,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                     true,
                                 ),
                             ],
-                        })
-                        .catch(() => null);
+                        },
+                        "reply to wrong-bot interaction",
+                    );
                 }
                 return;
             }
@@ -306,7 +314,19 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
         if (interaction.isButton()) {
             if (interaction.customId.startsWith("RC_")) {
-                await this.handleRequestChannelButton(interaction);
+                try {
+                    await this.handleRequestChannelButton(interaction);
+                } catch (error: unknown) {
+                    const handled = await this.handleInteractionPermissionError(
+                        interaction,
+                        error,
+                        "handle request-channel button",
+                    );
+
+                    if (!handled) {
+                        throw error;
+                    }
+                }
                 return;
             }
 
@@ -323,18 +343,22 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             | undefined,
                     ).has(PermissionsBitField.Flags.ManageMessages)
                 ) {
-                    void interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [
-                            createEmbed(
-                                "error",
-                                __mf("events.createInteraction.message1", {
-                                    user: user.toString(),
-                                }),
-                                true,
-                            ),
-                        ],
-                    });
+                    void this.safeReply(
+                        interaction,
+                        {
+                            flags: MessageFlags.Ephemeral,
+                            embeds: [
+                                createEmbed(
+                                    "error",
+                                    __mf("events.createInteraction.message1", {
+                                        user: user.toString(),
+                                    }),
+                                    true,
+                                ),
+                            ],
+                        },
+                        "reply to unauthorized message button usage",
+                    );
                 } else {
                     const msg = await interaction.channel?.messages
                         .fetch(interaction.message.id)
@@ -381,8 +405,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             if (cmd) {
                 const isDeveloper = this.container.config.devs.includes(interaction.user.id);
                 if (getCommandOptions(cmd).devOnly === true && !isDeveloper) {
-                    try {
-                        await interaction.reply({
+                    await this.safeReply(
+                        interaction,
+                        {
                             flags: MessageFlags.Ephemeral,
                             embeds: [
                                 createEmbed(
@@ -391,8 +416,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                     true,
                                 ),
                             ],
-                        });
-                    } catch {}
+                        },
+                        "reply to dev-only context menu usage",
+                    );
                     this.container.logger.warn(
                         `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only context/menu ${interaction.commandName}`,
                     );
@@ -438,18 +464,22 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             (timestamps.get(interaction.user.id) ?? 0) + cooldownAmount;
                         if (now < expirationTime) {
                             const timeLeft = (expirationTime - now) / 1_000;
-                            await interaction.reply({
-                                flags: MessageFlags.Ephemeral,
-                                embeds: [
-                                    createEmbed(
-                                        "warn",
-                                        `⚠️ **|** ${__mf("utils.cooldownMessage", {
-                                            author: interaction.user.toString(),
-                                            timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
-                                        })}`,
-                                    ),
-                                ],
-                            });
+                            await this.safeReply(
+                                interaction,
+                                {
+                                    flags: MessageFlags.Ephemeral,
+                                    embeds: [
+                                        createEmbed(
+                                            "warn",
+                                            `⚠️ **|** ${__mf("utils.cooldownMessage", {
+                                                author: interaction.user.toString(),
+                                                timeleft: `**\`${timeLeft.toFixed(1)}\`**`,
+                                            })}`,
+                                        ),
+                                    ],
+                                },
+                                "reply to slash cooldown",
+                            );
                             return;
                         }
 
@@ -462,8 +492,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 }
 
                 if (getCommandOptions(cmd).devOnly === true && !isDeveloper) {
-                    try {
-                        await interaction.reply({
+                    await this.safeReply(
+                        interaction,
+                        {
                             flags: MessageFlags.Ephemeral,
                             embeds: [
                                 createEmbed(
@@ -472,8 +503,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                     true,
                                 ),
                             ],
-                        });
-                    } catch {}
+                        },
+                        "reply to dev-only slash usage",
+                    );
                     this.container.logger.warn(
                         `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only slash ${interaction.commandName}`,
                     );
@@ -518,18 +550,22 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             const exec = (val.split("_")[2] ?? "yes") === "yes";
 
             if (interaction.user.id !== user) {
-                void interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "error",
-                            __mf("events.createInteraction.message1", {
-                                user: user.toString(),
-                            }),
-                            true,
-                        ),
-                    ],
-                });
+                void this.safeReply(
+                    interaction,
+                    {
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [
+                            createEmbed(
+                                "error",
+                                __mf("events.createInteraction.message1", {
+                                    user: user.toString(),
+                                }),
+                                true,
+                            ),
+                        ],
+                    },
+                    "reply to unauthorized select menu usage",
+                );
             }
             if (cmd && user === interaction.user.id && exec) {
                 const command = client.commands
@@ -538,8 +574,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 if (command) {
                     const isDeveloper = this.container.config.devs.includes(interaction.user.id);
                     if (getCommandOptions(command).devOnly === true && !isDeveloper) {
-                        try {
-                            await interaction.reply({
+                        await this.safeReply(
+                            interaction,
+                            {
                                 flags: MessageFlags.Ephemeral,
                                 embeds: [
                                     createEmbed(
@@ -548,8 +585,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                                         true,
                                     ),
                                 ],
-                            });
-                        } catch {}
+                            },
+                            "reply to dev-only select menu usage",
+                        );
                         this.container.logger.warn(
                             `[MultiBot] ${client.user?.tag} ❌ BLOCKED non-dev ${interaction.user.tag} [${interaction.user.id}] from using dev-only select ${interaction.customId}`,
                         );
@@ -576,6 +614,129 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     }
                 }
             }
+        }
+    }
+
+    private isPermissionLikeError(error: unknown): boolean {
+        if (typeof error !== "object" || error === null) {
+            return false;
+        }
+
+        const maybeError = error as { code?: number | string; message?: string };
+        const rawCode = maybeError.code;
+        const code = typeof rawCode === "number" ? rawCode : Number.parseInt(`${rawCode}`, 10);
+
+        if ([50013, 50001, 10003].includes(code)) {
+            return true;
+        }
+
+        const message = maybeError.message?.toLowerCase() ?? "";
+        return (
+            message.includes("missing permissions") ||
+            message.includes("missing access") ||
+            message.includes("cannot send messages")
+        );
+    }
+
+    private getMissingInteractionPermissions(interaction: Interaction): bigint[] {
+        if (!interaction.inGuild() || !interaction.guild || !interaction.channel) {
+            return [];
+        }
+
+        const me = interaction.guild.members.me;
+        if (!me || !("permissionsFor" in interaction.channel)) {
+            return [];
+        }
+
+        const requiredPermissions: bigint[] = [
+            PermissionsBitField.Flags.ViewChannel,
+            PermissionsBitField.Flags.SendMessages,
+            PermissionsBitField.Flags.EmbedLinks,
+        ];
+
+        if ("isThread" in interaction.channel && interaction.channel.isThread()) {
+            requiredPermissions.push(PermissionsBitField.Flags.SendMessagesInThreads);
+        }
+
+        const channelPermissions = interaction.channel.permissionsFor(me);
+        if (!channelPermissions) {
+            return requiredPermissions;
+        }
+
+        return requiredPermissions.filter((permission) => !channelPermissions.has(permission));
+    }
+
+    private async notifyPermissionFallback(interaction: Interaction): Promise<void> {
+        if (!interaction.inGuild() || !interaction.guild) {
+            return;
+        }
+
+        const client = interaction.client as Rawon;
+        const thisBotGuild = client.guilds.cache.get(interaction.guild.id) ?? interaction.guild;
+        const __mf = i18n__mf(client, thisBotGuild);
+
+        const missingPermissions = this.getMissingInteractionPermissions(interaction);
+        const formattedPermissions =
+            missingPermissions.length > 0
+                ? missingPermissions
+                      .map((permission) => {
+                          const permissionName = Object.entries(PermissionsBitField.Flags).find(
+                              ([, value]) => value === permission,
+                          )?.[0];
+
+                          return `- \`${permissionName ?? permission.toString()}\``;
+                      })
+                      .join("\n")
+                : "- `Unknown`";
+
+        const messageText = __mf("utils.commonUtil.botMissingChannelPerms", {
+            channel: interaction.channelId ? `<#${interaction.channelId}>` : "#unknown",
+            permissions: formattedPermissions,
+        });
+
+        await interaction.user
+            .send({
+                embeds: [createEmbed("error", messageText, true)],
+            })
+            .catch(() => null);
+    }
+
+    private async handleInteractionPermissionError(
+        interaction: Interaction,
+        error: unknown,
+        action: string,
+    ): Promise<boolean> {
+        if (!this.isPermissionLikeError(error)) {
+            return false;
+        }
+
+        await this.notifyPermissionFallback(interaction);
+        this.container.logger.warn(
+            `[InteractionCreate] Permission issue while trying to ${action}. ` +
+                `interaction=${interaction.id}, guild=${interaction.guildId ?? "DM"}, channel=${interaction.channelId ?? "unknown"}`,
+        );
+        return true;
+    }
+
+    private async safeReply(
+        interaction: Interaction,
+        options: Parameters<ButtonInteraction["reply"]>[0],
+        action: string,
+    ): Promise<boolean> {
+        if (!interaction.isRepliable()) {
+            return false;
+        }
+
+        try {
+            await interaction.reply(options);
+            return true;
+        } catch (error: unknown) {
+            const handled = await this.handleInteractionPermissionError(interaction, error, action);
+            if (handled) {
+                return false;
+            }
+
+            throw error;
         }
     }
 
