@@ -6,14 +6,11 @@ on:
       - created
   push:
     branches:
-      - main
+      - "**"
   pull_request:
     branches:
-      - main
-    paths:
-      - Dockerfile
+      - "**"
 
 jobs:
   docker:
     uses: stegripe/workflows/.github/workflows/docker-build-and-push.yaml@fcfd6bae08c7afa0a213fae4584a8667f0214688 # main
-    secrets: inherit
