@@ -54,8 +54,8 @@ importers:
         specifier: ^5.3.0
         version: 5.3.0
       got:
-        specifier: 15.0.1
-        version: 15.0.1
+        specifier: 15.0.2
+        version: 15.0.2
       i18n:
         specifier: 0.15.3
         version: 0.15.3
@@ -90,8 +90,8 @@ importers:
         specifier: 1.8.5
         version: 1.8.5
       zip-lib:
-        specifier: ^1.3.1
-        version: 1.3.1
+        specifier: ^1.3.2
+        version: 1.3.2
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.11
@@ -1200,8 +1200,8 @@ packages:
     resolution: {integrity: sha512-QLV1qeYSo5l13mQzWgP/y0LbMr5Plr5fJilgAIwgnwseproEbtNym8xpLsDzeZ6MWXgNE6kdWGBjdh3zT/Qerg==}
     engines: {node: '>=20'}
 
-  got@15.0.1:
-    resolution: {integrity: sha512-InYCBboAj9YmFiMcxbIRQ/WPoLsKSc9t9EGaUjGENtxunnx8USWtRY/SO/V3VsHLfDvUxAO2Qmx+6fQyG1jjaw==}
+  got@15.0.2:
+    resolution: {integrity: sha512-opPIdoQSTOGqX3h0d8QQoqCX0oF728V1PFxbPqquAFSeWPUOlPQ3Gi6IKIqGm6NMcDl+DWUwQb2RR+xvuEJOQQ==}
     engines: {node: '>=22'}
 
   graceful-fs@4.2.11:
@@ -1914,6 +1914,10 @@ packages:
     resolution: {integrity: sha512-k1isifdbpNSFEHFJ1ZY4YDewv0IH9FR61lDetaRMD3j2ae3bIXGV+7c+LHCqtQGofSd8PIyV4X6+dHMAnSr60A==}
     engines: {node: '>=12'}
 
+  yauzl@3.3.0:
+    resolution: {integrity: sha512-PtGEvEP30p7sbIBJKUBjUnqgTVOyMURc4dLo9iNyAJnNIEz9pm88cCXF21w94Kg3k6RXkeZh5DHOGS0qEONvNQ==}
+    engines: {node: '>=12'}
+
   yazl@3.3.1:
     resolution: {integrity: sha512-BbETDVWG+VcMUle37k5Fqp//7SDOK2/1+T7X8TD96M3D9G8jK5VLUdQVdVjGi8im7FGkazX7kk5hkU8X4L5Bng==}
 
@@ -1924,8 +1928,8 @@ packages:
   youtubei@1.8.5:
     resolution: {integrity: sha512-wCgLsEYyyimgBHvZmkcBXqzygPJUIuspwxsJmLwarNlFoQ0LZXsldknXljjrrsg0XZS2UmTVTm1y7umFKKu61w==}
 
-  zip-lib@1.3.1:
-    resolution: {integrity: sha512-fgtJsv4yuqbgo7MC2F2n2pVlAGO9VjHOzmK2p9yPw8LKNRfAbm7Mmvw0Ji6AZRDAqJqT3XGe6AzwwI6LggobVA==}
+  zip-lib@1.3.2:
+    resolution: {integrity: sha512-y5i/N4exvEzl45gavh4IwBuspSc95R2Ju9zLTBdNWv3nttBqi9zKuz9q3Tz+tl6NOkTI0zwTBiAqv5WakQVOfQ==}
     engines: {node: '>=20'}
 
   zod@3.25.76:
@@ -3014,7 +3018,7 @@ snapshots:
       responselike: 4.0.2
       type-fest: 4.41.0
 
-  got@15.0.1:
+  got@15.0.2:
     dependencies:
       '@sindresorhus/is': 7.2.0
       byte-counter: 0.1.0
@@ -3734,6 +3738,11 @@ snapshots:
       buffer-crc32: 0.2.13
       pend: 1.2.0
 
+  yauzl@3.3.0:
+    dependencies:
+      buffer-crc32: 0.2.13
+      pend: 1.2.0
+
   yazl@3.3.1:
     dependencies:
       buffer-crc32: 1.0.0
@@ -3747,9 +3756,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  zip-lib@1.3.1:
+  zip-lib@1.3.2:
     dependencies:
-      yauzl: 3.2.1
+      yauzl: 3.3.0
       yazl: 3.3.1
 
   zod@3.25.76: {}
