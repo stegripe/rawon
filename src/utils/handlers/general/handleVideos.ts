@@ -10,10 +10,11 @@ import {
 import { type CommandContext } from "../../../structures/CommandContext.js";
 import { type Rawon } from "../../../structures/Rawon.js";
 import { ServerQueue } from "../../../structures/ServerQueue.js";
-import { type Song } from "../../../typings/index.js";
+import { type PlaylistMetadata, type Song } from "../../../typings/index.js";
 import { chunk } from "../../functions/chunk.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { createVoiceAdapter } from "../../functions/createVoiceAdapter.js";
+import { formatBoldCodeSpan } from "../../functions/formatCodeSpan.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import { parseHTMLElements } from "../../functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
@@ -38,6 +39,7 @@ export async function handleVideos(
     ctx: CommandContext,
     toQueue: Song[],
     voiceChannel: StageChannel | VoiceChannel,
+    playlistMeta?: PlaylistMetadata,
 ): Promise<Message | undefined> {
     const wasIdle = ctx.guild?.queue?.idle;
     const inRequestChannel = isRequestChannel(client, ctx);
@@ -71,6 +73,42 @@ export async function handleVideos(
             if (inRequestChannel && msg) {
                 autoDeleteMessage(msg);
             }
+            return msg;
+        }
+
+        if (playlistMeta !== undefined) {
+            const playlistTitle = escapeMarkdown(parseHTMLElements(playlistMeta.title));
+            const playlistText =
+                (playlistMeta.url?.length ?? 0) > 0
+                    ? `**[${playlistTitle}](${playlistMeta.url})**`
+                    : `**${playlistTitle}**`;
+            const confirmEmbed = createEmbed(
+                "success",
+                `🎶 **|** ${__mf("requestChannel.addedPlaylistToQueue", {
+                    count: formatBoldCodeSpan(toQueue.length.toString()),
+                    playlist: playlistText,
+                })}`,
+            );
+
+            if ((playlistMeta.thumbnail?.length ?? 0) > 0) {
+                confirmEmbed.setThumbnail(playlistMeta.thumbnail ?? null);
+            }
+
+            if ((playlistMeta.author?.length ?? 0) > 0) {
+                confirmEmbed.setFooter({
+                    text: `📁 ${playlistMeta.author}`,
+                });
+            }
+
+            const msg = await ctx.reply(
+                { embeds: [confirmEmbed], allowedMentions: { repliedUser: false } },
+                true,
+            );
+
+            if (inRequestChannel && msg) {
+                autoDeleteMessage(msg);
+            }
+
             return msg;
         }
 
