@@ -134,13 +134,14 @@ export class PlayCommand extends ContextCommand {
             });
         }
 
+        const isCollectionQuery = queryCheck.type === "playlist" || queryCheck.type === "artist";
+
         return handleVideos(
             client,
             localCtx,
-            queryCheck.type === "playlist" || queryCheck.type === "artist"
-                ? songs.items
-                : [songs.items[0]],
+            isCollectionQuery ? songs.items : [songs.items[0]],
             voiceChannel,
+            isCollectionQuery ? songs.playlist : undefined,
         );
     }
 }
