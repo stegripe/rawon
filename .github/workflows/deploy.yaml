@@ -4,6 +4,9 @@ on:
     push:
         branches: [pages]
 
+permissions:
+    contents: write
+
 jobs:
     pages:
         name: Pages Deployment
