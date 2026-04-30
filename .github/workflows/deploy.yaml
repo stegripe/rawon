@@ -1,5 +1,8 @@
 name: Pages Deployment
 
+permissions:
+  contents: write
+
 on:
     push:
         branches: [pages]
