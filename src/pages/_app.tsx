@@ -47,9 +47,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <link rel="manifest" href="/manifest.webmanifest" />
             </Head>
             <DefaultSeo
-                title="Rawon - A simple powerful Discord music bot built to fulfill
-                    your production desires."
-                description="A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required."
+                title="Rawon - A simple powerful Discord music (multi-)bot built to fulfill your production desires."
+                description="A simple powerful Discord music (multi-)bot built to fulfill your production desires. Easy to use, with no coding required."
                 additionalLinkTags={[
                     {
                         rel: "icon",
@@ -64,7 +63,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     title: "Rawon",
                     siteName: "rawon.stegripe.og",
                     description:
-                        "A simple powerful Discord music bot built to fulfill your production desires. Easy to use, with no coding required.",
+                        "A simple powerful Discord music (multi-)bot built to fulfill your production desires. Easy to use, with no coding required.",
                     images: [
                         {
                             url: "/icons/icon-512x512.png",

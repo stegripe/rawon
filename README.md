@@ -1,6 +1,6 @@
 # Rawon Pages
 
-> **Website for Rawon Discord Music Bot. Built with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and [Material UI](https://mui.com/). PWA supported.**
+> **A simple powerful Discord music (multi-)bot built to fulfill your production desires. Easy to use, with no coding required.** Official site: docs, guides, and tools. Built with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and [Material UI](https://mui.com/). PWA supported.
 
 ## 🌐 Live Site
 
