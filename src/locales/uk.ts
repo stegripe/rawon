@@ -1,10 +1,12 @@
-export const uk = {
+import type { Translations } from "./en";
+
+export const uk: Translations = {
     nav: {
         home: "Головна",
         docs: "Документація",
         gettingStarted: "Початок роботи",
         configuration: "Налаштування",
-        cookiesSetup: "Налаштування Cookie",
+        cookiesSetup: "Налаштування cookie",
         disclaimers: "Застереження",
         permissionCalculator: "Калькулятор дозволів",
         links: "Посилання"
@@ -13,7 +15,7 @@ export const uk = {
     home: {
         title: "Rawon",
         description:
-            "Простий, але потужний музичний бот Discord, створений для задоволення ваших виробничих потреб.",
+            "Простий і потужний музичний (мульти-)бот для Discord, створений для продакшену. Зручний у використанні й не потребує програмування.",
         invite: "Запросити",
         inviteBot: "Запросити бота",
         support: "Підтримка",
@@ -22,171 +24,211 @@ export const uk = {
 
     gettingStarted: {
         title: "Початок роботи",
-        subtitle: "Запустіть Rawon за кілька хвилин з нашим покроковим посібником.",
+        subtitle:
+            "Запустіть Rawon за кілька хвилин за покроковою інструкцією.",
         features: {
-            title: "Можливості",
+            title: "✨ Можливості",
             items: [
-                "🚀 Готовий до виробництва, кодування не потрібно",
-                "📺 Функція каналу запитів для безперервного музичного досвіду",
-                "🤖 Запуск кількох екземплярів бота для різних голосових каналів",
-                "⚡ Розумне попереднє кешування аудіо для плавнішого відтворення",
-                "🎶 Підтримка кількох музичних платформ (відеосайти, Spotify, SoundCloud)",
-                "🔄 Багатокукійна ротація для безперебійного відтворення"
+                "🚀 Готовий до продакшену, без написання коду",
+                "📺 Канал запитів для зручного прослуховування музики",
+                "🎶 Підтримка YouTube, Spotify, SoundCloud і прямих посилань на файли",
+                "🤖 Кілька екземплярів бота для різних голосових каналів",
+                "⚡ Розумне попереднє кешування аудіо для плавного відтворення",
+                "🍪 Вбудований вхід у Google через Puppeteer для керування cookie"
             ]
         },
         requirements: {
-            title: "Вимоги",
-            nodeVersion: "Node.js версії 22.12.0 або вище",
-            discordToken: "Токен бота Discord (отримати на [Discord Developer Portal](https://discord.com/developers/applications))",
-            optional: "Опціонально: облікові дані Spotify API для підтримки Spotify"
+            title: "📋 Вимоги",
+            nodeVersion: "**Node.js** версія `20.0.0` або новіша",
+            discordToken:
+                "**Токен Discord-бота** (отримайте в [Discord Developer Portal](https://discord.com/developers/applications))",
+            optional:
+                "**За бажанням:** [FFmpeg](https://ffmpeg.org/) для обробки аудіо при звичайній (не Docker) інсталяції — в образах Docker FFmpeg уже включено"
         },
         standardSetup: {
-            title: "Стандартна установка (Node.js)",
+            title: "💻 Звичайна інсталяція (Node.js)",
             steps: [
-                "Завантажте та встановіть Node.js версії 22.12.0 або вище",
+                "Завантажте та встановіть перелічені вище вимоги",
                 "Клонуйте або завантажте цей репозиторій",
-                "Скопіюйте .env.example в .env та заповніть необхідні значення (мінімум: DISCORD_TOKEN)",
-                "Встановіть залежності: pnpm install",
-                "Зберіть проект: pnpm run build",
-                "Запустіть бота: pnpm start"
+                "Скопіюйте `.env.example` в `.env` і заповніть потрібні значення (мінімум: `DISCORD_TOKEN`)",
+                "Встановіть залежності: `pnpm install`",
+                "Зберіть проєкт: `pnpm run build`",
+                "Запустіть бота: `pnpm start`"
             ],
-            requestChannel: "(Опціонально) Після того як бот онлайн, налаштуйте виділений музичний канал:"
+            requestChannel:
+                "(За бажанням) Після того як бот онлайн, налаштуйте окремий музичний канал:"
         },
         dockerSetup: {
-            title: "Установка Docker (Рекомендовано)",
-            composeTitle: "Використовуючи Docker Compose",
+            title: "🐳 Інсталяція через Docker (рекомендовано)",
+            composeTitle: "Через Docker Compose",
             composeSteps: [
-                "Створіть файл .env з вашою конфігурацією (скопіюйте з .env.example)",
-                "Створіть файл docker-compose.yaml (див. приклад нижче)",
-                "Запустіть бота: docker compose up -d",
-                "Перегляд логів: docker logs -f rawon-bot"
+                "Створіть файл `.env` з вашою конфігурацією (скопіюйте з `.env.example`)",
+                "(За бажанням) Створіть `dev.env` з `dev.env.example` для додаткових налаштувань",
+                "Створіть `docker-compose.yaml` (приклад нижче)",
+                "Запустіть бота: `docker compose up -d`",
+                "Переглядайте логи: `docker logs -f rawon-bot`"
             ],
-            runTitle: "Використовуючи Docker Run",
+            runTitle: "Через docker run",
             volumeInfo: {
-                title: "Інформація про том",
-                description: "Том /app/cache зберігає:",
+                title: "📁 Інформація про том",
+                description: "Том `/app/cache` зберігає:",
                 items: [
-                    "Бінарний файл yt-dlp для потокової передачі аудіо",
-                    "data.* для постійних налаштувань (канали запитів, стани плеєра)",
-                    "Кешовані аудіофайли (якщо кешування аудіо увімкнено)",
-                    "Файли cookie для автентифікації відеоплатформи"
+                    "бінарник `yt-dlp` для потокового аудіо",
+                    "файли `data.*` із постійними налаштуваннями (канали запитів, стан плеєра)",
+                    "кешовані аудіофайли (якщо увімкнено кешування аудіо)",
+                    "файл cookie і дані профілю після входу в Google (див. [Налаштування cookie](/docs/cookies-setup))"
                 ]
+            },
+            portInfo: {
+                title: "🔌 Порти",
+                description:
+                    "`DEVTOOLS_PORT` (за замовчуванням `3000`) використовується для проксі віддаленої відладки Chrome DevTools. Потрібен для `!login start`, якщо ви підключаєтеся з іншого комп’ютера. Вкажіть `DEVTOOLS_PORT` у `dev.env` для іншого порту і пробросьте його в Docker Compose або `docker run`."
             }
         },
 
         cookiesQuickStart: {
-            title: "🍪 Швидкий старт: Налаштування Cookie",
+            title: "🍪 Cookie: швидке рішення на хостингу",
             description:
-                "Якщо ви розміщуєте на хмарних провайдерах (AWS, GCP, Azure, Railway тощо), ви можете отримати помилки \"Sign in to confirm you're not a bot\". Виправте це легко за допомогою команди cookies:",
+                "На хмарних хостингах (AWS, GCP, Azure, Railway тощо) може з’явитися **«Sign in to confirm you're not a bot»**. Скористайтеся вбудованим сценарієм входу:",
             steps: [
-                "Експортуйте cookies з браузера (див. [посібник з налаштування Cookie](/docs/cookies-setup))",
-                "У Discord введіть: `!cookies add 1`",
-                "Прикріпіть файл `cookies.txt` до повідомлення",
-                "Готово! Cookie набуває чинності негайно"
+                "У Discord виконайте `!login start`",
+                "Відкрийте надісланий ботом URL DevTools і завершіть вхід у Google у віддаленому браузері",
+                "Перевірте cookie командою `!login status` або оновіть сесію: `!login logout`, потім знову `!login start`"
             ],
-            tip: "💡 Ви можете додати кілька cookies для резервування. Коли один не працює, Rawon автоматично перемикається на наступний!"
+            tip: "💡 Використовуйте **окремий (одноразовий) обліковий запис Google**, а не основний. Деталі — у повному посібнику [Налаштування cookie](/docs/cookies-setup)."
         }
     },
 
     configuration: {
         title: "Налаштування",
-        subtitle: "Налаштуйте Rawon під ваші потреби з цими параметрами.",
+        subtitle:
+            "Як файли конфігурації Rawon і змінні середовища працюють разом.",
+        overview: {
+            title: "📄 Файли конфігурації",
+            intro: "Параметри навмисно рознесені кількома файлами:",
+            items: [
+                "**`.env.example`** — основні налаштування (токени Discord/Spotify, префікс, ID, активності тощо). Скопіюйте в **`.env`** і заповніть.",
+                "**`dev.env.example`** — додаткові налаштування для розробників (префікс і слеш-команди, шардинг, порт DevTools для `!login`, шлях до Chromium, режим налагодження). За потреби скопіюйте в **`dev.env`**.",
+                "**Команда `setup`** — параметри бота (колір ембеда, емодзі так/ні, splash, альтернативний префікс, гучність за замовчуванням, тип вибору, кеш аудіо) керуються **командою `setup`** (лише розробники) і зберігаються в базі. Список: `<prefix>setup view`."
+            ]
+        },
         essential: {
-            title: "Основні налаштування",
-            description: "Це мінімальні налаштування, необхідні для запуску бота.",
+            title: "⚡ Основні налаштування (`.env`)",
+            description:
+                "Значення з `.env.example`. Для запуску **обов’язковий** лише **`DISCORD_TOKEN`**; Spotify, токен тексту пісні та інше додавайте за потреби.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Ваш токен бота Discord з [Discord Developer Portal](https://discord.com/developers/applications)",
+                description:
+                    "Токен(и) Discord-бота з [Discord Developer Portal](https://discord.com/developers/applications). Кілька токенів через **кому** увімкнуть режим кількох ботів.",
                 required: true
+            },
+            spotify: {
+                name: "Spotify API",
+                description:
+                    "Вкажіть `SPOTIFY_CLIENT_ID` і `SPOTIFY_CLIENT_SECRET` з [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard). **Потрібно для Spotify.**",
+                required: false
+            },
+            stegripeLyrics: {
+                name: "STEGRIPE_API_LYRICS_TOKEN",
+                description:
+                    "Потрібен для коректного виводу команди **lyrics**. Зв’яжіться з розробником для доступу.",
+                required: false
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "Основний префікс команд",
+                description:
+                    "Основний префікс команд. Наприклад, `!` означає, що для відтворення ви вводите `!play`",
                 default: "!"
             },
             mainServer: {
                 name: "MAIN_SERVER",
-                description: "ID вашого основного сервера для реєстрації slash-команд",
+                description:
+                    "ID основного сервера для швидшої реєстрації слеш-команд. Порожньо — глобальні команди (оновлення може тривати до години)",
+                required: false
+            },
+            devs: {
+                name: "DEVS",
+                description:
+                    "ID користувачів-розробників бота (через кому). Розробники отримують доступ до службових команд, включно з `setup` і `login`.",
                 required: false
             },
             locale: {
                 name: "LOCALE",
-                description: "Мова бота",
+                description: "Мова відповідей бота",
                 default: "en-US",
-                options: "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR"
+                options:
+                    "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR, ko-KR"
             },
-            spotify: {
-                name: "Spotify API",
-                description: "Для підтримки Spotify отримайте облікові дані на [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) та встановіть `SPOTIFY_CLIENT_ID` та `SPOTIFY_CLIENT_SECRET`"
-            }
-        },
-        optional: {
-            title: "Додаткові налаштування",
-            description: "Налаштуйте поведінку та зовнішній вигляд Rawon.",
-            altPrefix: {
-                name: "ALT_PREFIX",
-                description: "Альтернативні префікси (через кому). Використовуйте {mention} для згадки @bot",
-                default: "{mention}"
+            activityTypes: {
+                name: "ACTIVITY_TYPES",
+                description:
+                    "Типи активності для кожного запису в `ACTIVITIES` (через кому). Кількість має збігатися з кількістю активностей",
+                options: "PLAYING, WATCHING, LISTENING, COMPETING",
+                default: "PLAYING"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "Активності статусу бота (через кому). Формати: {prefix}, {userCount}, {textChannelCount}, {serverCount}, {playingCount}, {username}"
-            },
-            activityTypes: {
-                name: "ACTIVITY_TYPES",
-                description: "Типи активності для кожної активності (через кому)",
-                options: "PLAYING, WATCHING, LISTENING, COMPETING"
-            },
-            embedColor: {
-                name: "EMBED_COLOR",
-                description: "Колір embed в hex (без #)",
-                default: "22C9FF"
-            },
-            emojis: {
-                name: "(EMOJIS)",
-                description: "Налаштуйте емодзі успіху (YES_EMOJI) та помилки (NO_EMOJI)",
-                defaults: "✅ / ❌"
-            },
-            musicSelection: {
-                name: "MUSIC_SELECTION_TYPE",
-                description: "Стиль вибору музики",
-                options: "message, selectmenu",
-                default: "message"
-            },
-            audioCache: {
-                name: "ENABLE_AUDIO_CACHE",
-                description: "Кешування завантаженого аудіо для швидшого повторного відтворення",
-                default: "yes"
-            },
-            requestChannelSplash: {
-                name: "REQUEST_CHANNEL_SPLASH",
-                description: "URL користувацького зображення для вбудовування плеєра каналу запитів",
-                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+                    "Рядки статусу під ім’ям бота (через кому). Плейсхолдери: `{prefix}`, `{userCount}`, `{textChannelCount}`, `{serverCount}`, `{playingCount}`, `{username}`",
+                required: false
             }
         },
+        multiBot: {
+            title: "🔄 Режим кількох ботів",
+            description:
+                "Режим кількох ботів вмикається сам — **додаткового налаштування не потрібно**. Один токен — один бот; токени через **кому** автоматично вмикають мультибот.",
+            example: "Приклад:",
+            exampleCode: 'DISCORD_TOKEN="token1, token2, token3"',
+            features: [
+                "**Перший** токен — основний бот для загальних команд",
+                "Кожен бот обслуговує музику користувачам у **своєму** голосовому каналі",
+                "Якщо основного бота немає на сервері, роль може взяти наступний доступний бот",
+                "У кожного бота має бути **власний** застосунок Discord"
+            ]
+        },
         developer: {
-            title: "🛠️ Налаштування розробника",
-            description: "Розширені налаштування для розробників ботів. Використовуйте лише якщо знаєте, що робите!",
-            devs: {
-                name: "DEVS",
-                description: "ID розробників бота (через кому). Розробники можуть отримати доступ до спеціальних команд"
-            },
+            title: "🛠️ Налаштування розробника (`dev.env`)",
+            description:
+                "З `dev.env.example`. **За бажанням** — змінюйте лише якщо розумієте призначення.",
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Увімкнути/вимкнути команди з префіксом (як !play). Корисно, якщо хочете лише slash-команди",
+                description: "Увімкнути або вимкнути команди з префіксом (наприклад `!play`)",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Увімкнути/вимкнути slash-команди (як /play). Корисно, якщо хочете лише команди з префіксом",
+                description: "Увімкнути або вимкнути слеш-команди (наприклад `/play`)",
                 default: "yes",
                 options: "yes, no"
             },
+            enableSharding: {
+                name: "ENABLE_SHARDING",
+                description: "Шардинг для великих ботів (**лише режим з одним токеном**)",
+                default: "no",
+                options: "yes, no"
+            },
+            devtoolsPort: {
+                name: "DEVTOOLS_PORT",
+                description:
+                    "Порт проксі віддаленої відладки Chrome DevTools. Використовується `!login start`, коли DevTools відкривають з іншої машини. За замовчуванням: `3000`",
+                default: "3000"
+            },
+            chromiumPath: {
+                name: "CHROMIUM_PATH",
+                description:
+                    "Шлях до Chrome/Chromium для входу в Google. Порожньо — автовизначення",
+                required: false
+            },
+            nodeEnv: {
+                name: "NODE_ENV",
+                description: "Режим середовища виконання",
+                default: "production",
+                options: "production, development"
+            },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "Увімкнути налагоджувальне логування для усунення неполадок. Показує детальні логи в консолі",
+                description: "Докладний налагоджувальний вивід у консоль",
                 default: "no",
                 options: "yes, no"
             }
@@ -194,190 +236,173 @@ export const uk = {
     },
 
     cookiesSetup: {
-        title: "Налаштування Cookie",
-        subtitle: "Виправлення помилки \"Sign in to confirm you're not a bot\" на хостинг-провайдерах.",
+        title: "Налаштування cookie",
+        subtitle:
+            "Усунення «Sign in to confirm you're not a bot» у хмарі. Рекомендовано вбудована команда **`!login`**.",
         why: {
             title: "Навіщо це потрібно?",
             description:
-                "Якщо ви розміщуєте Rawon на хмарних провайдерах, таких як OVHcloud, AWS, GCP, Azure або інших хостинг-сервісах, ви можете зіткнутися з помилкою:",
+                "Якщо Rawon розміщено у OVHcloud, AWS, GCP, Azure або на іншому хмарному/VPS-хостингу, може з’явитися:",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "Це відбувається тому, що платформа блокує запити з IP-адрес дата-центрів. Використовуючи cookie від залогіненого акаунту, ви можете обійти це обмеження."
+                "Платформа часто блокує запити з IP дата-центрів. Вхід з **облікового запису Google** дозволяє Rawon отримати дійсні cookie й обійти обмеження."
         },
-
-        quickMethod: {
-            title: "🚀 Простий метод: Використання команди Cookies (Рекомендовано)",
-            description: "Найпростіший спосіб керування cookies - без редагування файлів!",
+        loginMethod: {
+            title: "Рекомендовано: команда `!login`",
+            description:
+                "Найпростіше налаштувати cookie вбудованим сценарієм **`!login`** (справжній браузер через Puppeteer):",
             benefits: [
-                "✅ Працює миттєво - без перезапуску",
-                "✅ Підтримує кілька cookies з автоматичною ротацією",
-                "✅ Коли один cookie не працює, бот автоматично використовує наступний",
-                "✅ Cookies зберігаються після перезапуску бота"
-            ],
-            commands: {
-                title: "📝 Доступні команди",
-                add: "`!cookies add <номер>` - Додати cookie (прикріпіть файл cookies.txt до повідомлення)",
-
-            },
-            quickStart: {
-                title: "⚡ Швидкий старт (3 кроки)",
-                steps: [
-                    "Експортуйте cookies з браузера (див. посібник нижче)",
-                    "У Discord введіть: `!cookies add 1` і прикріпіть файл cookies.txt",
-                    "Готово! Cookie тепер активний"
-                ]
-            },
-            multiCookie: {
-                title: "💡 Порада профі: Додайте кілька Cookies",
-                description: "Додайте cookies з різних акаунтів для кращої надійності:"
-            }
-        },
-        prerequisites: {
-            title: "Попередні вимоги",
-            items: [
-                "Вторинний/одноразовий акаунт (НЕ використовуйте основний акаунт з міркувань безпеки)",
-                "Веб-браузер (Chrome, Firefox або Edge)",
-                "Розширення для експорту cookie",
-                "Для користувачів без Docker: середовище виконання Deno JavaScript (потрібно для вирішення підпису yt-dlp)"
+                "✅ Відкривається справжній браузер для входу в Google",
+                "✅ Cookie експортуються й зберігаються автоматично",
+                "✅ Після входу браузер закривається — не залишається зайвих процесів",
+                "✅ Зберігається після перезапуску (том Docker або папка `cache/`)"
             ]
         },
-        steps: {
-            title: "📖 Як експортувати Cookies",
-            createAccount: {
-                title: "Крок 1: Створіть одноразовий акаунт",
-                steps: [
-                    "Перейдіть на [сторінку створення акаунту](https://accounts.google.com/signup)",
-                    "Створіть новий акаунт спеціально для цього бота",
-                    "⚠️ Важливо: НІКОЛИ не використовуйте особистий/основний акаунт!"
-                ]
-            },
-            login: {
-                title: "Крок 2: Увійдіть на відео платформу",
-                steps: [
-                    "Відкрийте браузер",
-                    "Перейдіть на [відео платформу](https://youtube.com)",
-                    "Увійдіть з одноразового акаунту",
-                    "Прийміть умови, якщо потрібно"
-                ]
-            },
-            extension: {
-                title: "Крок 3: Встановіть розширення для експорту Cookie",
-                chrome: "Для Chrome/Edge: Встановіть [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (рекомендовано) з Chrome Web Store",
-                firefox: "Для Firefox: Встановіть [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) з Firefox Add-ons"
-            },
-            exportCookies: {
-                title: "Крок 4: Експортуйте Cookie",
-                steps: [
-                    "Переконайтеся, що ви на [сайті відео платформи](https://youtube.com)",
-                    "Натисніть на іконку розширення cookie на панелі інструментів",
-                    "Виберіть **Export** або **Export cookies for this site**",
-                    "Збережіть файл як `cookies.txt`"
-                ]
-            },
-            upload: {
-                title: "Крок 5: Додайте до Rawon",
-                steps: [
-                    "Перейдіть в канал, де Rawon може бачити ваші повідомлення",
-                    "Введіть: `!cookies add 1`",
-                    "Прикріпіть файл cookies.txt до повідомлення та надішліть",
-                    "Rawon підтвердить, що cookie додано!"
-                ]
-            }
+        commandUsage: {
+            title: "Використання команд"
+        },
+        quickStart: {
+            title: "Швидкий старт",
+            steps: [
+                "У Discord виконайте `!login start`",
+                "Відкрийте у локальному браузері **URL DevTools**, який надішле бот",
+                "Завершіть вхід у Google в **віддаленій** сесії браузера",
+                "Увійдіть в **одноразовий** обліковий запис Google (не в основний)",
+                "Після входу бот збереже cookie й закриє браузер",
+                "Готово — подальші запити використовують збережену сесію"
+            ]
+        },
+        staleCookies: {
+            title: "Якщо перевірки ботом з’явилися знову",
+            description: "Cookie застарівають, коли провайдер їх ротує. Тоді:",
+            steps: [
+                "Виконайте `!login logout`, щоб видалити старі cookie і дані профілю",
+                "Запустіть `!login start` і увійдіть знову для нової сесії"
+            ]
+        },
+        prerequisites: {
+            title: "Вимоги",
+            items: [
+                "**Другий / одноразовий** обліковий запис Google (**не** використовуйте основний)",
+                "**Без Docker:** на хості встановлені Chrome або Chromium",
+                "**Docker:** Chromium уже в образі; пробросьте `DEVTOOLS_PORT`, якщо підключаєтеся до `!login` віддалено (див. [Налаштування](/docs/configuration))"
+            ]
+        },
+        docker: {
+            title: "Docker",
+            persistence:
+                "Cookie і дані профілю зберігаються в іменованому томі **`rawon:/app/cache`** між перезапусками контейнера.",
+            chromium:
+                "В образі є Chromium, тому **`!login start`** працює без додаткового налаштування з боку образу."
+        },
+        envVars: {
+            title: "Змінні середовища (`dev.env`)",
+            intro: "Додаткове налаштування (див. `dev.env.example`):",
+            dockerComposeHint:
+                "У Docker переконайтеся, що в `docker-compose.yaml` у `ports` проброшено порт DevTools, наприклад:"
+        },
+        duration: {
+            title: "Як довго живуть cookie?",
+            description:
+                "З часом вони можуть застаріти через ротацію сесій. Зазвичай залишаються дійовими, поки:",
+            conditions: [
+                "Ви не виходите так, що сесію інвалідовано",
+                "Ви не змінюєте пароль облікового запису",
+                "Ви не відкликаєте сесію в налаштуваннях безпеки",
+                "Провайдер не позначає активність як підозрілу"
+            ],
+            footer: "Коли cookie закінчаться, знову виконайте `!login logout`, потім `!login start`."
         },
         troubleshooting: {
-            title: "🔧 Усунення неполадок",
-            stillGettingErrors: {
-                title: "Все ще отримуєте помилки \"Sign in to confirm you're not a bot\"?",
+            title: "Усунення проблем",
+            stillErrors: {
+                title: "Досі бачите «Sign in to confirm you're not a bot»?",
                 steps: [
-                    "Використовуйте `!cookies list` для перевірки статусу cookies",
-                    "Якщо cookie показує **Failed**, спробуйте `!cookies reset` для повторної спроби",
-                    "Додайте більше cookies з різних акаунтів для резервування"
+                    "Скористайтеся `!login status`, щоб переглянути стан входу й cookie",
+                    "Виконайте `!login logout`, потім `!login start` для нової сесії"
                 ]
             },
-            allCookiesFailed: {
-                title: "Всі cookies не працюють?",
+            browserWontStart: {
+                title: "Браузер не запускається?",
                 steps: [
-                    "Створіть нові одноразові акаунти",
-                    "Експортуйте свіжі cookies",
-                    "Додайте їх за допомогою `!cookies add <номер>`"
+                    "Перевірте `!login status` на деталі помилки",
+                    "На «залізі» встановіть Chrome/Chromium або задайте `CHROMIUM_PATH` у `dev.env`",
+                    "У Docker Chromium має працювати з коробки з офіційним образом"
                 ]
             },
             accountSuspended: {
-                title: "Акаунт заблоковано?",
+                title: "Обліковий запис заблоковано?",
                 steps: [
-                    "Це може статися при інтенсивному використанні",
-                    "Просто створіть новий одноразовий акаунт",
-                    "Експортуйте нові cookies та додайте їх"
+                    "Створіть новий одноразовий обліковий запис Google",
+                    "Виконайте `!login logout`, щоб стерти стару сесію",
+                    "Запустіть `!login start` і увійдіть з новим обліковим записом"
                 ]
             }
         },
-        duration: {
-            title: "Як довго діють Cookie?",
+        manualAlternative: {
+            title: "Альтернатива: файл cookie вручну",
             description:
-                "Хороші новини: Cookie платформи НЕ закінчуються регулярно. Вони залишаться дійсними, поки:",
-            conditions: [
-                "Ви не вийдете з платформи в браузері",
-                "Ви не зміните пароль акаунту",
-                "Ви не відкличете сесію в налаштуваннях акаунту",
-                "Платформа не виявить підозрілу активність"
-            ],
-            tips: "На практиці cookie можуть діяти місяці або навіть роки, якщо дотримуватися найкращих практик."
+                "Можна покласти файл cookie у **форматі Netscape** за вказаним нижче шляхом. Бот використовує його, якщо файл є; **`!login` усе одно зручніший** варіант.",
+            pathLabel: "Шлях"
         },
         security: {
-            title: "🔒 Замітки про безпеку",
+            title: "Безпека",
+            warningLabel: "WARNING",
             warnings: [
-                "⚠️ Ніколи не діліться файлом cookie з ким-небудь",
-                "⚠️ Використовуйте одноразовий акаунт, НЕ основний",
-                "⚠️ Файл cookie містить конфіденційні дані автентифікації"
+                "Використовуйте **одноразовий** обліковий запис Google — **не** основний",
+                "URL DevTools дає доступ до віддаленої сесії браузера — **не публікуйте** його",
+                "Файли cookie містять **чутливі** дані автентифікації"
             ]
         }
     },
 
     disclaimers: {
         title: "Застереження",
-        subtitle: "Будь ласка, уважно прочитайте перед використанням цього бота.",
-        warningBanner: "Важлива юридична інформація",
+        subtitle: "Уважно прочитайте перед використанням бота.",
+        warningBanner: "Важлива правова інформація",
         copyright: {
-            title: "Авторські права, DMCA та інтелектуальна власність",
+            title: "Авторське право, DMCA та об’єкти інтелектуальної власності",
             items: [
-                "**Право власності:** Будь-яка інтелектуальна власність, що використовується, відтворюється або відображається ботом, не належить нам, мейнтейнерам або учасникам. Це включає, але не обмежується аудіо, відео та зображеннями, що використовуються в командах бота.",
-                "**Політики хостинг-провайдерів:** Деякі хостинг-провайдери забороняють розміщення або розповсюдження контенту, захищеного DMCA. Це включає музичних ботів Discord, що відтворюють захищену авторським правом музику/відео. Розгортання на таких платформах на ваш страх і ризик.",
-                "**Відповідальність користувача:** Ви несете відповідальність за те, як ви використовуєте цього бота та який контент відтворюється через нього."
+                "**Власність:** будь-які об’єкти інтелектуальної власності, які бот використовує, відтворює або показує, **не належать нам**, мейнтейнерам чи учасникам проєкту. Сюди входять, зокрема, аудіо, відео та зображення в командах бота.",
+                "**Правила хостинг-провайдерів:** деякі провайдери забороняють розміщення або поширення контенту, захищеного DMCA. Сюди належать і музичні боти Discord із відтворенням захищеної музики/відео.\n- **Розгортайте на таких платформах на свій ризик**",
+                "**Відповідальність користувача:** ви відповідаєте за те, як користуєтеся ботом і який контент через нього відтворюєте."
             ]
         },
         code: {
-            title: "Модифікації коду",
+            title: "Зміни коду",
             items: [
-                "**Ліцензія:** Цей бот має відкритий вихідний код і може бути модифікований та розповсюджений під ліцензією **AGPL-3.0**.",
-                "**Без гарантій:** Як зазначено в ліцензії, ми не несемо відповідальності за будь-яку шкоду або збитки, що виникли в результаті модифікації, розповсюдження або використання цього коду.",
-                "**Атрибуція:** Ніколи не заявляйте, що цей проект є вашою оригінальною роботою. Завжди вказуйте належну атрибуцію оригінальному проекту."
+                "**Ліцензія:** проєкт розповсюджується за [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/). Повний юридичний текст — у файлі [`LICENSE`](https://github.com/stegripe/rawon/blob/main/LICENSE) репозиторію.",
+                "**Без гарантій:** як зазначено в ліцензії, ми **не несемо відповідальності** за шкоду або збитки від використання коду. Дотримуйтесь умов ліцензії щодо атрибуції, некомерційного використання та обмежень на поширення похідних робіт.",
+                "**Атрибуція:** не видавайте цей проєкт за свою оригінальну роботу. Завжди вказуйте посилання на вихідний проєкт."
             ]
-        }
+        },
+        licenseFooterPrefix: "Повний текст ліцензії див. у репозиторії",
+        licenseLinkLabel: "LICENSE (CC BY-NC-ND 4.0)"
     },
 
     permissionCalculator: {
         title: "Калькулятор дозволів",
         clientId: "ID клієнта",
-        scope: "Область",
-        redirectUri: "URI перенаправлення",
+        scope: "Scope",
+        redirectUri: "Redirect URI",
         permissions: "Дозволи",
         permissionsNote:
-            "Кольорове означає, що користувачу OAuth потрібно увімкнути 2FA на своєму акаунті, якщо сервер вимагає 2FA",
+            "Кольорове підсвічування означає, що користувачу OAuth потрібно ввімкнути 2FA, якщо сервер вимагає двофакторну автентифікацію",
         general: "Загальні",
         voice: "Голос",
         text: "Текст",
         result: "Результат",
-        resultNote: "Це посилання, яке ви можете використати для додавання бота на сервер"
+        resultNote: "Це посилання для додавання бота на сервер"
     },
 
     common: {
         back: "Назад",
         copy: "Копіювати",
         default: "За замовчуванням",
-        required: "Обов'язково",
-        optional: "Опціонально",
+        required: "Обов’язково",
+        optional: "Необов’язково",
         example: "Приклад",
-        learnMore: "Детальніше",
+        learnMore: "Докладніше",
 
         language: "Мова",
         tip: "Порада",

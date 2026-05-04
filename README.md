@@ -18,16 +18,16 @@ Visit [rawon.stegripe.org](https://rawon.stegripe.org) for documentation, guides
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Run development server
-npm run dev
+pnpm dev
 
 # Build for production
-npm run build
+pnpm build
 
 # Run linter
-npm run lint
+pnpm lint
 ```
 
 ## 🔗 Links

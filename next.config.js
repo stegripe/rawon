@@ -5,7 +5,8 @@ const isProd = process.env.NODE_ENV === "production";
 module.exports = WithPWA({
     dest: "public",
     register: true,
-    skipWaiting: true
+    skipWaiting: true,
+    disable: !isProd
 })({
     output: isProd ? "export" : "standalone",
     reactStrictMode: true,

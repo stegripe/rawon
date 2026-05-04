@@ -1,192 +1,233 @@
-export const fr = {
+import type { Translations } from "./en";
+
+export const fr: Translations = {
     nav: {
         home: "Accueil",
         docs: "Docs",
         gettingStarted: "Démarrer",
         configuration: "Configuration",
-        cookiesSetup: "Config. Cookies",
-        disclaimers: "Mentions Légales",
-        permissionCalculator: "Calculateur Permissions",
+        cookiesSetup: "Config. cookies",
+        disclaimers: "Mentions légales",
+        permissionCalculator: "Calculateur de permissions",
         links: "Liens"
     },
 
     home: {
         title: "Rawon",
         description:
-            "Un bot musical Discord simple mais puissant, conçu pour répondre à vos besoins de production.",
+            "Un bot musical Discord simple et puissant, pensé pour vos besoins en production. Facile à utiliser, sans aucune ligne de code.",
         invite: "Inviter",
-        inviteBot: "Inviter Bot",
+        inviteBot: "Inviter le bot",
         support: "Support",
-        viewDocs: "Voir Docs"
+        viewDocs: "Voir la doc"
     },
 
     gettingStarted: {
-        title: "Démarrer",
-        subtitle: "Mettez Rawon en marche en quelques minutes avec notre guide étape par étape.",
+        title: "Pour commencer",
+        subtitle:
+            "Mettez Rawon en route en quelques minutes grâce à ce guide pas à pas.",
         features: {
-            title: "Fonctionnalités",
+            title: "✨ Fonctionnalités",
             items: [
-                "🚀 Prêt pour la production, sans codage requis",
-                "📺 Canal de requêtes pour une expérience musicale fluide",
-                "🤖 Exécuter plusieurs instances de bot pour différents canaux vocaux",
-                "⚡ Pré-mise en cache audio intelligente pour une lecture plus fluide",
-                "🎶 Support pour plusieurs plateformes musicales (sites vidéo, Spotify, SoundCloud)",
-                "🔄 Rotation multi-cookies pour une lecture ininterrompue"
+                "🚀 Prêt pour la prod, sans développement",
+                "📺 Canal de demandes pour une expérience musicale fluide",
+                "🎶 YouTube, Spotify, SoundCloud et fichiers directs",
+                "🤖 Plusieurs instances du bot pour différents salons vocaux",
+                "⚡ Mise en cache audio intelligente pour une lecture plus fluide",
+                "🍪 Connexion Google intégrée via Puppeteer pour les cookies"
             ]
         },
         requirements: {
-            title: "Prérequis",
-            nodeVersion: "**Node.js** version `22.12.0` ou supérieure",
-            discordToken: "**Token Bot Discord** (obtenir depuis [Discord Developer Portal](https://discord.com/developers/applications))",
-            optional: "**Optionnel:** Identifiants API Spotify pour le support Spotify"
+            title: "📋 Prérequis",
+            nodeVersion: "**Node.js** version `20.0.0` ou supérieure",
+            discordToken:
+                "**Jeton bot Discord** (obtenu sur le [portail développeur Discord](https://discord.com/developers/applications))",
+            optional:
+                "**Facultatif :** [FFmpeg](https://ffmpeg.org/) pour le traitement audio sur une installation standard (hors Docker) — les images Docker incluent FFmpeg"
         },
         standardSetup: {
-            title: "Installation Standard (Node.js)",
+            title: "💻 Installation standard (Node.js)",
             steps: [
-                "Téléchargez et installez **Node.js** version `22.12.0` ou supérieure",
+                "Téléchargez et installez les prérequis ci-dessus",
                 "Clonez ou téléchargez ce dépôt",
-                "Copiez `.env.example` vers `.env` et remplissez les valeurs requises (minimum: `DISCORD_TOKEN`)",
-                "Installez les dépendances: `pnpm install`",
-                "Compilez le projet: `pnpm run build`",
-                "Démarrez le bot: `pnpm start`"
+                "Copiez `.env.example` vers `.env` et renseignez les valeurs requises (au minimum : `DISCORD_TOKEN`)",
+                "Installez les dépendances : `pnpm install`",
+                "Compilez le projet : `pnpm run build`",
+                "Démarrez le bot : `pnpm start`"
             ],
-            requestChannel: "(Optionnel) Après que le bot soit en ligne, configurez un canal musical dédié:"
+            requestChannel:
+                "(Facultatif) Une fois le bot en ligne, configurez un salon musical dédié :"
         },
         dockerSetup: {
-            title: "Installation Docker (Recommandé)",
+            title: "🐳 Docker (recommandé)",
             composeTitle: "Avec Docker Compose",
             composeSteps: [
                 "Créez un fichier `.env` avec votre configuration (copiez depuis `.env.example`)",
-                "Créez un fichier `docker-compose.yaml` (voir exemple ci-dessous)",
-                "Démarrez le bot: `docker compose up -d`",
-                "Voir les logs: `docker logs -f rawon-bot`"
+                "(Facultatif) Créez `dev.env` à partir de `dev.env.example` pour des options supplémentaires",
+                "Créez un fichier `docker-compose.yaml` (voir l’exemple ci-dessous)",
+                "Démarrez le bot : `docker compose up -d`",
+                "Consultez les journaux : `docker logs -f rawon-bot`"
             ],
-            runTitle: "Avec Docker Run",
+            runTitle: "Avec docker run",
             volumeInfo: {
-                title: "Information sur le Volume",
-                description: "Le volume `/app/cache` stocke:",
+                title: "📁 Volumes",
+                description: "Le volume `/app/cache` contient :",
                 items: [
-                    "Binaire `yt-dlp` pour le streaming audio",
-                    "`data.*` pour les paramètres persistants (canaux de requêtes, états du lecteur)",
-                    "Fichiers audio en cache (si le cache audio est activé)",
-                    "Fichiers de cookies pour l'authentification de plateforme vidéo"
+                    "Le binaire `yt-dlp` pour la diffusion audio",
+                    "`data.*` pour les réglages persistants (canaux de demandes, états du lecteur)",
+                    "Les fichiers audio mis en cache (si la mise en cache est activée)",
+                    "Le fichier de cookies et les données de profil après connexion Google (voir [Config. cookies](/docs/cookies-setup))"
                 ]
+            },
+            portInfo: {
+                title: "🔌 Ports",
+                description:
+                    "`DEVTOOLS_PORT` (par défaut `3000`) sert de proxy de débogage distant Chrome DevTools. Nécessaire pour `!login start` si vous vous connectez depuis une autre machine. Définissez `DEVTOOLS_PORT` dans `dev.env` et mappez-le dans Docker Compose ou `docker run`."
             }
         },
 
         cookiesQuickStart: {
-            title: "🍪 Démarrage Rapide : Configuration des Cookies",
+            title: "🍪 Cookies : solution rapide en hébergement",
             description:
-                "Si vous hébergez sur des fournisseurs cloud (AWS, GCP, Azure, Railway, etc.), vous pouvez obtenir des erreurs \"Sign in to confirm you're not a bot\". Corrigez-les facilement avec la commande cookies :",
+                "Sur certains hébergeurs cloud (AWS, GCP, Azure, Railway, etc.), vous pouvez voir **« Sign in to confirm you're not a bot »**. Utilisez la procédure de connexion intégrée :",
             steps: [
-                "Exportez les cookies depuis votre navigateur (voir le [guide Config. Cookies](/docs/cookies-setup))",
-                "Dans Discord, tapez : `!cookies add 1`",
-                "Joignez votre fichier `cookies.txt` au message",
-                "Terminé ! Le cookie prend effet immédiatement"
+                "Exécutez `!login start` sur Discord",
+                "Ouvrez l’URL DevTools envoyée par le bot et terminez la connexion Google dans le navigateur distant",
+                "Utilisez `!login status` pour vérifier les cookies, ou `!login logout` puis `!login start` pour rafraîchir"
             ],
-            tip: "💡 Vous pouvez ajouter plusieurs cookies pour la redondance. Quand l'un échoue, Rawon passe automatiquement au suivant !"
+            tip: "💡 Utilisez un **compte Google jetable**, pas votre compte principal. Voir le guide complet [Config. cookies](/docs/cookies-setup)."
         }
     },
 
     configuration: {
         title: "Configuration",
-        subtitle: "Configurez Rawon selon vos besoins avec ces paramètres.",
+        subtitle:
+            "Comment les fichiers de configuration et les variables d’environnement de Rawon s’articulent.",
+        overview: {
+            title: "📄 Fichiers de configuration",
+            intro: "Les réglages sont répartis volontairement entre plusieurs fichiers :",
+            items: [
+                "**`.env.example`** — Réglages essentiels (jetons Discord/Spotify, préfixe, ID, activités, etc.). Copiez vers **`.env`** et complétez.",
+                "**`dev.env.example`** — Options développeur facultatives (préfixe/slash, sharding, port DevTools pour `!login`, chemin Chromium, mode debug). Copiez vers **`dev.env`** si besoin.",
+                "**Commande `setup`** — Options propres au bot (couleur des embeds, emojis oui/non, splash, préfixe alternatif, volume par défaut, type de sélection, cache audio) gérées via la commande **`setup`** (développeurs uniquement) et stockées en base. Utilisez `<prefix>setup view` pour lister les réglages."
+            ]
+        },
         essential: {
-            title: "Paramètres Essentiels",
-            description: "Ce sont les paramètres minimum requis pour exécuter le bot. Remplissez simplement votre **token Discord** et c'est prêt !",
+            title: "⚡ Réglages essentiels (`.env`)",
+            description:
+                "Valeurs issues de `.env.example`. Seul **`DISCORD_TOKEN`** est strictement requis pour démarrer ; ajoutez Spotify, le jeton paroles, etc. selon vos besoins.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Votre token de bot Discord depuis [Discord Developer Portal](https://discord.com/developers/applications). C'est le **seul paramètre REQUIS** !",
+                description:
+                    "Jeton(s) du bot Discord depuis le [portail développeur Discord](https://discord.com/developers/applications). Jetons **séparés par des virgules** pour le mode multi-bot.",
                 required: true
+            },
+            spotify: {
+                name: "API Spotify",
+                description:
+                    "Définissez `SPOTIFY_CLIENT_ID` et `SPOTIFY_CLIENT_SECRET` depuis [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard). **Requis pour le support Spotify.**",
+                required: false
+            },
+            stegripeLyrics: {
+                name: "STEGRIPE_API_LYRICS_TOKEN",
+                description:
+                    "Requis pour des paroles précises avec la commande **lyrics**. Contactez le développeur pour l’accès.",
+                required: false
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "Préfixe de commande principal. Exemple: `!` signifie que vous tapez `!play` pour jouer de la musique",
+                description: "Préfixe principal des commandes. Ex. : `!` pour taper `!play`",
                 default: "!"
             },
             mainServer: {
                 name: "MAIN_SERVER",
-                description: "ID de votre serveur principal pour l'enregistrement des commandes slash",
+                description:
+                    "ID de votre serveur principal pour un enregistrement plus rapide des commandes slash. Laissez vide pour des commandes globales (mise à jour pouvant prendre jusqu’à une heure)",
+                required: false
+            },
+            devs: {
+                name: "DEVS",
+                description:
+                    "ID utilisateurs des développeurs du bot (séparés par des virgules). Accès aux commandes spéciales dont `setup` et les outils `login`.",
                 required: false
             },
             locale: {
                 name: "LOCALE",
-                description: "Langue du bot - choisissez votre langue préférée pour les réponses du bot",
+                description: "Langue des réponses du bot",
                 default: "en-US",
-                options: "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR"
+                options:
+                    "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR, ko-KR"
             },
-            spotify: {
-                name: "Spotify API",
-                description: "Pour le support Spotify, obtenez vos identifiants sur [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) et définissez `SPOTIFY_CLIENT_ID` et `SPOTIFY_CLIENT_SECRET`"
-            }
-        },
-        optional: {
-            title: "Paramètres Optionnels",
-            description: "Personnalisez le comportement et l'apparence de Rawon. Tous ces paramètres sont optionnels - le bot fonctionne bien sans eux !",
-            altPrefix: {
-                name: "ALT_PREFIX",
-                description: "Préfixes alternatifs (séparés par virgule). Utilisez `{mention}` pour la mention @bot. Exemple: `{mention},r!` permet `@Rawon play` et `r!play`",
-                default: "{mention}"
+            activityTypes: {
+                name: "ACTIVITY_TYPES",
+                description:
+                    "Types d’activité pour chaque entrée dans `ACTIVITIES` (séparés par des virgules). Doit correspondre au nombre d’activités",
+                options: "PLAYING, WATCHING, LISTENING, COMPETING",
+                default: "PLAYING"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "Activités de statut du bot (séparées par virgule). Formats: `{prefix}`, `{userCount}`, `{textChannelCount}`, `{serverCount}`, `{playingCount}`, `{username}`"
-            },
-            activityTypes: {
-                name: "ACTIVITY_TYPES",
-                description: "Types d'activité pour chaque activité (séparés par virgule). Doit correspondre au nombre de `ACTIVITIES`",
-                options: "PLAYING, WATCHING, LISTENING, COMPETING"
-            },
-            embedColor: {
-                name: "EMBED_COLOR",
-                description: "Couleur d'embed en hex (sans `#`). Cette couleur apparaît sur tous les embeds du bot",
-                default: "22C9FF"
-            },
-            emojis: {
-                name: "(EMOJIS)",
-                description: "Personnalisez les emojis de succès (`YES_EMOJI`) et d'échec (`NO_EMOJI`)",
-                defaults: "✅ / ❌"
-            },
-            musicSelection: {
-                name: "MUSIC_SELECTION_TYPE",
-                description: "Style de sélection musicale. `message` affiche une liste numérotée, `selectmenu` affiche un menu déroulant",
-                options: "message, selectmenu",
-                default: "message"
-            },
-            audioCache: {
-                name: "ENABLE_AUDIO_CACHE",
-                description: "Cache audio téléchargé pour une lecture répétée plus rapide",
-                default: "yes"
-            },
-            requestChannelSplash: {
-                name: "REQUEST_CHANNEL_SPLASH",
-                description: "URL d'image personnalisée pour l'embed du lecteur du canal de requêtes",
-                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+                    "Lignes de statut sous le nom du bot (séparées par des virgules). Placeholders : `{prefix}`, `{userCount}`, `{textChannelCount}`, `{serverCount}`, `{playingCount}`, `{username}`",
+                required: false
             }
         },
+        multiBot: {
+            title: "🔄 Mode multi-bot",
+            description:
+                "Le mode multi-bot est **sans configuration supplémentaire** : un jeton = un bot ; jetons **séparés par des virgules** = multi-bot automatique.",
+            example: "Exemple :",
+            exampleCode: 'DISCORD_TOKEN="token1, token2, token3"',
+            features: [
+                "Le **premier** jeton est le bot principal pour les commandes générales",
+                "Chaque bot sert la musique aux utilisateurs **de son** salon vocal",
+                "Si le bot principal n’est pas sur un serveur, le suivant disponible peut prendre le relais",
+                "Chaque bot nécessite **sa propre** application Discord"
+            ]
+        },
         developer: {
-            title: "🛠️ Paramètres Développeur",
-            description: "Paramètres avancés pour les développeurs de bots. **N'utilisez que si vous savez ce que vous faites !**",
-            devs: {
-                name: "DEVS",
-                description: "IDs des développeurs du bot (séparés par virgule). Les développeurs peuvent accéder aux commandes spéciales"
-            },
+            title: "🛠️ Réglages développeur (`dev.env`)",
+            description:
+                "Issus de `dev.env.example`. **Facultatif** — ne modifiez que si vous savez ce que vous faites.",
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Activer/désactiver les commandes avec préfixe (comme `!play`). Utile si vous ne voulez que les commandes slash",
+                description: "Activer ou désactiver les commandes préfixées (ex. `!play`)",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Activer/désactiver les commandes slash (comme `/play`). Utile si vous ne voulez que les commandes avec préfixe",
+                description: "Activer ou désactiver les commandes slash (ex. `/play`)",
                 default: "yes",
                 options: "yes, no"
             },
+            enableSharding: {
+                name: "ENABLE_SHARDING",
+                description: "Sharding pour les gros bots (**mode un seul jeton uniquement**)",
+                default: "no",
+                options: "yes, no"
+            },
+            devtoolsPort: {
+                name: "DEVTOOLS_PORT",
+                description:
+                    "Port du proxy de débogage distant Chrome DevTools. Utilisé par `!login start` depuis une autre machine. Défaut : `3000`",
+                default: "3000"
+            },
+            chromiumPath: {
+                name: "CHROMIUM_PATH",
+                description:
+                    "Chemin vers Chrome/Chromium pour la connexion Google. Laissez vide pour la détection automatique",
+                required: false
+            },
+            nodeEnv: {
+                name: "NODE_ENV",
+                description: "Mode d’environnement d’exécution",
+                default: "production",
+                options: "production, development"
+            },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "Activer les logs de débogage pour le dépannage. Affiche des logs détaillés dans la console",
+                description: "Journaux de debug verbeux dans la console",
                 default: "no",
                 options: "yes, no"
             }
@@ -194,180 +235,165 @@ export const fr = {
     },
 
     cookiesSetup: {
-        title: "Configuration des Cookies",
-        subtitle: "Corrigez les erreurs \"Sign in to confirm you're not a bot\" sur les hébergeurs.",
+        title: "Configuration des cookies",
+        subtitle:
+            "Corriger « Sign in to confirm you're not a bot » en hébergement cloud. Recommandé : la commande **`!login`** intégrée.",
         why: {
-            title: "Pourquoi ai-je besoin de ceci?",
+            title: "Pourquoi c’est nécessaire ?",
             description:
-                "Si vous hébergez Rawon sur des fournisseurs cloud comme OVHcloud, AWS, GCP, Azure, ou autres services d'hébergement, vous pourriez rencontrer l'erreur:",
+                "Si vous hébergez Rawon chez OVHcloud, AWS, GCP, Azure ou un autre cloud/VPS, vous pouvez voir :",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "Cela se produit parce que la plateforme bloque les requêtes provenant d'adresses IP de centres de données. En utilisant les cookies d'un compte connecté, vous pouvez contourner cette restriction."
+                "Les plateformes bloquent souvent les IP de datacenters. S’authentifier avec un **compte Google** permet à Rawon d’obtenir des cookies valides et de contourner cette limite."
         },
-
-        quickMethod: {
-            title: "🚀 Méthode Facile : Utiliser la Commande Cookies (Recommandé)",
-            description: "La façon la plus simple de gérer les cookies - sans édition de fichiers !",
+        loginMethod: {
+            title: "Recommandé : commande `!login`",
+            description:
+                "Le plus simple est le flux **`!login`** intégré (navigateur réel via Puppeteer) :",
             benefits: [
-                "✅ Fonctionne instantanément - pas de redémarrage nécessaire",
-                "✅ Supporte plusieurs cookies avec rotation automatique",
-                "✅ Quand un cookie échoue, le bot utilise automatiquement le suivant",
-                "✅ Les cookies persistent après le redémarrage du bot"
-            ],
-            commands: {
-                title: "📝 Commandes Disponibles",
-                add: "`!cookies add <numéro>` - Ajouter un cookie (joindre le fichier cookies.txt à votre message)",
-
-            },
-            quickStart: {
-                title: "⚡ Démarrage Rapide (3 étapes)",
-                steps: [
-                    "Exportez les cookies depuis votre navigateur (voir guide ci-dessous)",
-                    "Dans Discord, tapez : `!cookies add 1` et joignez votre fichier cookies.txt",
-                    "Terminé ! Le cookie est maintenant actif"
-                ]
-            },
-            multiCookie: {
-                title: "💡 Astuce Pro : Ajouter Plusieurs Cookies",
-                description: "Ajoutez des cookies de différents comptes pour une meilleure fiabilité :"
-            }
+                "✅ Ouvre un vrai navigateur pour la connexion Google",
+                "✅ Exporte et enregistre les cookies automatiquement",
+                "✅ Ferme le navigateur après connexion — pas de processus orphelin",
+                "✅ Persistant après redémarrage (volume Docker ou dossier `cache/`)"
+            ]
+        },
+        commandUsage: {
+            title: "Utilisation des commandes"
+        },
+        quickStart: {
+            title: "Démarrage rapide",
+            steps: [
+                "Exécutez `!login start` sur Discord",
+                "Ouvrez l’**URL DevTools** envoyée par le bot dans votre navigateur local",
+                "Terminez la connexion Google dans la session **distante**",
+                "Connectez-vous avec un **compte Google jetable** (pas le compte principal)",
+                "À la fin, le bot enregistre les cookies et ferme le navigateur",
+                "C’est prêt — les requêtes suivantes utilisent la session enregistrée"
+            ]
+        },
+        staleCookies: {
+            title: "Si les vérifications reviennent",
+            description:
+                "Les cookies peuvent expirer quand le fournisseur les fait tourner. Dans ce cas :",
+            steps: [
+                "Exécutez `!login logout` pour effacer les anciens cookies et le profil",
+                "Exécutez `!login start` et reconnectez-vous pour une session neuve"
+            ]
         },
         prerequisites: {
             title: "Prérequis",
             items: [
-                "Un compte secondaire/jetable (N'utilisez PAS votre compte principal pour des raisons de sécurité)",
-                "Un navigateur web (Chrome, Firefox ou Edge)",
-                "Une extension d'export de cookies",
-                "Pour les utilisateurs non-Docker: Runtime Deno JavaScript (requis pour la résolution de signature yt-dlp)"
+                "Un **compte Google secondaire / jetable** (n’utilisez **pas** votre compte principal)",
+                "**Hors Docker :** Chrome ou Chromium installé sur la machine",
+                "**Docker :** Chromium est inclus ; mappez `DEVTOOLS_PORT` si vous utilisez `!login` à distance (voir [Configuration](/docs/configuration))"
             ]
         },
-        steps: {
-            title: "Guide Étape par Étape",
-            createAccount: {
-                title: "Étape 1: Créer un Compte Jetable",
-                steps: [
-                    "Allez sur la [page de création de compte](https://accounts.google.com/signup)",
-                    "Créez un nouveau compte spécifiquement pour ce bot",
-                    "⚠️ Important: N'utilisez JAMAIS votre compte personnel/principal!"
-                ]
-            },
-            login: {
-                title: "Étape 2: Se Connecter à la Plateforme Vidéo",
-                steps: [
-                    "Ouvrez votre navigateur",
-                    "Allez sur [la plateforme vidéo](https://youtube.com)",
-                    "Connectez-vous avec votre compte jetable",
-                    "Acceptez les conditions si demandé"
-                ]
-            },
-            extension: {
-                title: "Étape 3: Installer l'Extension d'Export de Cookies",
-                chrome: "Pour Chrome/Edge: Installez [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (recommandé) depuis Chrome Web Store",
-                firefox: "Pour Firefox: Installez [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) depuis Firefox Add-ons"
-            },
-            exportCookies: {
-                title: "Étape 4: Exporter les Cookies",
-                steps: [
-                    "Assurez-vous d'être sur [le site de la plateforme vidéo](https://youtube.com)",
-                    "Cliquez sur l'icône de l'extension cookies dans votre barre d'outils",
-                    "Choisissez **Export** ou **Export cookies for this site**",
-                    "Enregistrez le fichier sous `cookies.txt`"
-                ]
-            },
-            upload: {
-                title: "Étape 5: Ajouter à Rawon",
-                steps: [
-                    "Allez dans un canal où Rawon peut voir vos messages",
-                    "Tapez: `!cookies add 1`",
-                    "Joignez le fichier cookies.txt à votre message et envoyez",
-                    "Rawon confirmera que le cookie a été ajouté!"
-                ]
-            }
+        docker: {
+            title: "Docker",
+            persistence:
+                "Les cookies et le profil persistent dans le volume nommé **`rawon:/app/cache`** entre les redémarrages du conteneur.",
+            chromium:
+                "L’image inclut Chromium : **`!login start`** fonctionne sans étape supplémentaire côté image."
+        },
+        envVars: {
+            title: "Variables d’environnement (`dev.env`)",
+            intro: "Réglages optionnels (voir `dev.env.example`) :",
+            dockerComposeHint:
+                "Sous Docker, exposez le port DevTools dans `ports` de `docker-compose.yaml`, par ex. :"
+        },
+        duration: {
+            title: "Combien de temps durent les cookies ?",
+            description:
+                "Ils peuvent vieillir quand les sessions sont renouvelées. Ils restent en général valides tant que :",
+            conditions: [
+                "Vous ne vous déconnectez pas d’une manière qui invalide la session",
+                "Vous ne changez pas le mot de passe du compte",
+                "Vous ne révoquez pas la session dans la sécurité du compte",
+                "Le fournisseur ne signale pas d’activité suspecte"
+            ],
+            footer:
+                "Quand les cookies expirent : `!login logout` puis `!login start` à nouveau."
         },
         troubleshooting: {
-            title: "🔧 Dépannage",
-            stillGettingErrors: {
-                title: "Vous avez toujours des erreurs \"Sign in to confirm you're not a bot\" ?",
+            title: "Dépannage",
+            stillErrors: {
+                title: "Toujours « Sign in to confirm you're not a bot » ?",
                 steps: [
-                    "Utilisez `!cookies list` pour vérifier le statut des cookies",
-                    "Si un cookie affiche **Failed**, essayez `!cookies reset` pour réessayer",
-                    "Ajoutez plus de cookies de différents comptes pour la redondance"
+                    "Utilisez `!login status` pour l’état de la connexion et des cookies",
+                    "Exécutez `!login logout` puis `!login start` pour une session neuve"
                 ]
             },
-            allCookiesFailed: {
-                title: "Tous les cookies ont échoué ?",
+            browserWontStart: {
+                title: "Le navigateur ne démarre pas ?",
                 steps: [
-                    "Créez de nouveaux comptes jetables",
-                    "Exportez de nouveaux cookies",
-                    "Ajoutez-les avec `!cookies add <numéro>`"
+                    "Consultez `!login status` pour le détail des erreurs",
+                    "Sur machine physique, installez Chrome/Chromium ou définissez `CHROMIUM_PATH` dans `dev.env`",
+                    "Sous Docker, Chromium devrait fonctionner avec l’image officielle"
                 ]
             },
             accountSuspended: {
                 title: "Compte suspendu ?",
                 steps: [
-                    "Cela peut arriver avec une utilisation intensive",
-                    "Créez simplement un nouveau compte jetable",
-                    "Exportez de nouveaux cookies et ajoutez-les"
+                    "Créez un nouveau compte Google jetable",
+                    "Exécutez `!login logout` pour effacer l’ancienne session",
+                    "Exécutez `!login start` avec le nouveau compte"
                 ]
             }
         },
-        duration: {
-            title: "Combien de temps durent les Cookies?",
+        manualAlternative: {
+            title: "Alternative : fichier cookies manuel",
             description:
-                "Bonne nouvelle: Les cookies de la plateforme N'expirent PAS régulièrement. Ils resteront valides tant que:",
-            conditions: [
-                "Vous ne vous déconnectez pas de la plateforme dans votre navigateur",
-                "Vous ne changez pas le mot de passe de votre compte",
-                "Vous ne révoquez pas la session depuis les paramètres du compte",
-                "La plateforme ne détecte pas d'activité suspecte"
-            ],
-            tips: "En pratique, les cookies peuvent durer des mois voire des années si vous suivez les bonnes pratiques."
+                "Vous pouvez placer un fichier cookies au **format Netscape** au chemin indiqué. Le bot l’utilisera s’il est présent ; **`!login` reste recommandé** pour un flux plus simple.",
+            pathLabel: "Chemin"
         },
         security: {
-            title: "🔒 Notes de Sécurité",
+            title: "Sécurité",
+            warningLabel: "AVERTISSEMENT",
             warnings: [
-                "⚠️ Ne partagez jamais votre fichier de cookies avec qui que ce soit",
-                "⚠️ Utilisez un compte jetable, PAS votre compte principal",
-                "⚠️ Le fichier de cookies contient des données d'authentification sensibles"
+                "Utilisez un compte **jetable** — **pas** votre compte principal",
+                "L’URL DevTools donne accès au navigateur distant — **ne la partagez pas publiquement**",
+                "Les fichiers cookies contiennent des données **sensibles** d’authentification"
             ]
         }
     },
 
     disclaimers: {
-        title: "Mentions Légales",
-        subtitle: "Veuillez lire attentivement avant d'utiliser ce bot.",
-        warningBanner: "Informations légales importantes",
+        title: "Mentions légales",
+        subtitle: "Veuillez lire attentivement avant d’utiliser ce bot.",
+        warningBanner: "Informations juridiques importantes",
         copyright: {
-            title: "Droits d'Auteur, DMCA et Propriété Intellectuelle",
+            title: "Copyright, DMCA et propriété intellectuelle",
             items: [
-                "**Propriété:** Toute propriété intellectuelle utilisée, jouée ou affichée par le bot n'est pas notre propriété, ni celle des mainteneurs ou des contributeurs. Cela inclut, mais ne se limite pas aux fichiers audio, vidéo et image utilisés dans les commandes du bot.",
-                "**Politiques des Hébergeurs:** Certains hébergeurs interdisent l'hébergement ou la distribution de contenu protégé par DMCA. Cela inclut les bots musicaux Discord qui jouent de la musique/vidéo protégée par le droit d'auteur. Déployez sur de telles plateformes à vos propres risques.",
-                "**Responsabilité de l'Utilisateur:** Vous êtes responsable de la façon dont vous utilisez ce bot et du contenu qui est joué à travers lui."
+                "**Propriété :** Toute propriété intellectuelle utilisée, lue ou affichée par le bot **n’appartient pas** aux mainteneurs ni aux contributeurs. Cela inclut notamment l’audio, la vidéo et les images utilisés par les commandes.",
+                "**Politiques d’hébergeurs :** Certains hébergeurs interdisent l’hébergement ou la diffusion de contenus protégés par le DMCA, y compris les bots musicaux Discord.\n- **Vous déployez à vos risques sur ces plateformes**",
+                "**Responsabilité utilisateur :** Vous êtes responsable de l’usage du bot et du contenu diffusé."
             ]
         },
         code: {
-            title: "Modifications du Code",
+            title: "Modifications du code",
             items: [
-                "**Licence:** Ce bot est open source et peut être modifié et redistribué sous la licence **AGPL-3.0**.",
-                "**Aucune Garantie:** Comme indiqué dans la licence, nous ne sommes pas responsables des dommages ou pertes résultant de la modification, redistribution ou utilisation de ce code.",
-                "**Attribution:** Ne prétendez jamais que ce projet est votre propre travail original. Fournissez toujours une attribution appropriée au projet original."
+                "**Licence :** Ce projet est sous [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/). Le texte complet est dans le fichier [`LICENSE`](https://github.com/stegripe/rawon/blob/main/LICENSE) du dépôt.",
+                "**Aucune garantie :** Conformément à la licence, nous **ne sommes pas responsables** des dommages liés à l’usage de ce code. Respectez attribution, usage non commercial et restrictions sur le partage de versions adaptées.",
+                "**Attribution :** Ne présentez pas ce projet comme votre œuvre originale. Attribuez toujours correctement le projet d’origine."
             ]
-        }
+        },
+        licenseFooterPrefix: "Texte complet de la licence dans le dépôt :",
+        licenseLinkLabel: "LICENSE (CC BY-NC-ND 4.0)"
     },
 
     permissionCalculator: {
-        title: "Calculateur de Permissions",
-        clientId: "ID Client",
+        title: "Calculateur de permissions",
+        clientId: "ID client",
         scope: "Portée",
-        redirectUri: "URI de Redirection",
+        redirectUri: "URI de redirection",
         permissions: "Permissions",
         permissionsNote:
-            "Coloré signifie que l'utilisateur OAuth doit activer le 2FA sur son compte si le serveur requiert le 2FA",
+            "En couleur : l’utilisateur OAuth doit activer l’A2F si le serveur l’exige",
         general: "Général",
-        voice: "Voix",
+        voice: "Vocal",
         text: "Texte",
         result: "Résultat",
-        resultNote: "C'est le lien que vous pouvez utiliser pour ajouter le bot à votre serveur"
+        resultNote: "Lien à utiliser pour ajouter le bot à votre serveur"
     },
 
     common: {
@@ -375,7 +401,7 @@ export const fr = {
         copy: "Copier",
         default: "Par défaut",
         required: "Requis",
-        optional: "Optionnel",
+        optional: "Facultatif",
         example: "Exemple",
         learnMore: "En savoir plus",
 

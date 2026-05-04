@@ -4,12 +4,18 @@ import "@/styles/index.scss";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
-import { Poppins } from "next/font/google";
+import { JetBrains_Mono, Poppins } from "next/font/google";
 import Head from "next/head";
 
 const poppins = Poppins({
     weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
     subsets: ["latin"]
+});
+
+const codeBlockMono = JetBrains_Mono({
+    subsets: ["latin"],
+    variable: "--font-code-block",
+    display: "swap"
 });
 
 const theme = createTheme({
@@ -22,7 +28,7 @@ const theme = createTheme({
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <>
+        <div className={codeBlockMono.variable}>
             <style jsx global>
                 {`
                     :root {
@@ -90,6 +96,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     <Component {...pageProps} />
                 </LocaleProvider>
             </ThemeProvider>
-        </>
+        </div>
     );
 }

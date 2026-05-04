@@ -1,10 +1,12 @@
-export const zhCN = {
+import type { Translations } from "./en";
+
+export const zhCN: Translations = {
     nav: {
         home: "首页",
         docs: "文档",
-        gettingStarted: "开始使用",
+        gettingStarted: "入门",
         configuration: "配置",
-        cookiesSetup: "Cookie设置",
+        cookiesSetup: "Cookie 设置",
         disclaimers: "免责声明",
         permissionCalculator: "权限计算器",
         links: "链接"
@@ -12,7 +14,8 @@ export const zhCN = {
 
     home: {
         title: "Rawon",
-        description: "一个简单而强大的Discord音乐机器人，满足您的制作需求。",
+        description:
+            "简洁而强大的 Discord 音乐（多实例）机器人，面向生产环境；开箱即用，无需编写代码。",
         invite: "邀请",
         inviteBot: "邀请机器人",
         support: "支持",
@@ -20,173 +23,207 @@ export const zhCN = {
     },
 
     gettingStarted: {
-        title: "开始使用",
-        subtitle: "按照我们的分步指南，几分钟内启动Rawon。",
+        title: "入门",
+        subtitle: "按照分步指南，几分钟内即可运行 Rawon。",
         features: {
-            title: "功能",
+            title: "✨ 功能",
             items: [
-                "🚀 生产就绪，无需编码",
-                "📺 无缝音乐体验的请求频道功能",
-                "🤖 为不同语音频道运行多个机器人实例",
+                "🚀 生产就绪，无需编程",
+                "📺 请求频道，音乐体验更顺滑",
+                "🎶 支持 YouTube、Spotify、SoundCloud 与直链文件",
+                "🤖 可为不同语音频道运行多个机器人实例",
                 "⚡ 智能音频预缓存，播放更流畅",
-                "🎶 支持多个音乐平台（视频网站、Spotify、SoundCloud）",
-                "🔄 多Cookie轮换，不间断播放"
+                "🍪 内置 Puppeteer Google 登录，便于管理 Cookie"
             ]
         },
         requirements: {
-            title: "要求",
-            nodeVersion: "Node.js 版本 22.12.0 或更高",
-            discordToken: "Discord Bot Token（从[Discord开发者门户](https://discord.com/developers/applications)获取）",
-            optional: "可选：Spotify API凭据以支持Spotify"
+            title: "📋 环境要求",
+            nodeVersion: "**Node.js** 版本 `20.0.0` 或更高",
+            discordToken:
+                "**Discord 机器人令牌**（从 [Discord Developer Portal](https://discord.com/developers/applications) 获取）",
+            optional:
+                "**可选：** 标准（非 Docker）安装用于音频处理的 [FFmpeg](https://ffmpeg.org/) — Docker 镜像已包含 FFmpeg"
         },
         standardSetup: {
-            title: "标准设置（Node.js）",
+            title: "💻 标准安装（Node.js）",
             steps: [
-                "下载并安装Node.js版本22.12.0或更高",
-                "克隆或下载此仓库",
-                "将.env.example复制为.env并填写所需值（最少：DISCORD_TOKEN）",
-                "安装依赖：pnpm install",
-                "构建项目：pnpm run build",
-                "启动机器人：pnpm start"
+                "下载并安装上述前置条件",
+                "克隆或下载本仓库",
+                "将 `.env.example` 复制为 `.env` 并填写必填项（至少：`DISCORD_TOKEN`）",
+                "安装依赖：`pnpm install`",
+                "构建项目：`pnpm run build`",
+                "启动机器人：`pnpm start`"
             ],
-            requestChannel: "（可选）机器人上线后，设置专用音乐频道："
+            requestChannel: "（可选）机器人上线后，可设置专用音乐频道："
         },
         dockerSetup: {
-            title: "Docker设置（推荐）",
-            composeTitle: "使用Docker Compose",
+            title: "🐳 Docker 安装（推荐）",
+            composeTitle: "使用 Docker Compose",
             composeSteps: [
-                "创建.env文件（从.env.example复制）",
-                "创建docker-compose.yaml文件（见下面示例）",
-                "启动机器人：docker compose up -d",
-                "查看日志：docker logs -f rawon-bot"
+                "创建 `.env` 配置文件（从 `.env.example` 复制）",
+                "（可选）从 `dev.env.example` 创建 `dev.env` 以使用额外设置",
+                "创建 `docker-compose.yaml`（见下方示例）",
+                "启动机器人：`docker compose up -d`",
+                "查看日志：`docker logs -f rawon-bot`"
             ],
-            runTitle: "使用Docker Run",
+            runTitle: "使用 docker run",
             volumeInfo: {
-                title: "卷信息",
-                description: "/app/cache卷存储：",
+                title: "📁 卷说明",
+                description: "`/app/cache` 卷用于存放：",
                 items: [
-                    "用于音频流的yt-dlp二进制文件",
-                    "用于持久设置的data.*（请求频道、播放器状态）",
-                    "缓存的音频文件（如果启用了音频缓存）",
-                    "用于视频平台认证的Cookie文件"
+                    "用于音频流的 `yt-dlp` 二进制",
+                    "持久化设置的 `data.*`（请求频道、播放器状态等）",
+                    "缓存的音频文件（若启用音频缓存）",
+                    "Google 登录产生的 Cookie 与用户配置数据（参见 [Cookie 设置](/docs/cookies-setup)）"
                 ]
+            },
+            portInfo: {
+                title: "🔌 端口说明",
+                description:
+                    "`DEVTOOLS_PORT`（默认：`3000`）用于 Chrome DevTools 远程调试代理。从另一台机器连接时需要 `!login start`。可在 `dev.env` 中设置 `DEVTOOLS_PORT` 更换端口，并在 Docker Compose 或 `docker run` 中映射。"
             }
         },
 
         cookiesQuickStart: {
-            title: "🍪 快速开始：Cookie设置",
+            title: "🍪 Cookie：托管环境快速处理",
             description:
-                "如果您在云服务提供商（AWS、GCP、Azure、Railway等）上托管，可能会收到\"Sign in to confirm you're not a bot\"错误。使用cookies命令轻松修复：",
+                "在云主机（AWS、GCP、Azure、Railway 等）上，你可能会看到 **\"Sign in to confirm you're not a bot\"**。请使用内置登录流程：",
             steps: [
-                "从浏览器导出cookies（请参阅[Cookie设置指南](/docs/cookies-setup)）",
-                "在Discord中输入：`!cookies add 1`",
-                "将您的`cookies.txt`文件附加到消息中",
-                "完成！Cookie立即生效"
+                "在 Discord 中执行 `!login start`",
+                "打开机器人发来的 DevTools URL，在远程浏览器中完成 Google 登录",
+                "使用 `!login status` 检查 Cookie，或执行 `!login logout` 后再 `!login start` 刷新"
             ],
-            tip: "💡 您可以添加多个cookies以实现冗余。当一个失败时，Rawon会自动切换到下一个！"
+            tip: "💡 请使用**备用 Google 账号**，不要用主账号。完整说明见 [Cookie 设置](/docs/cookies-setup)。"
         }
     },
 
     configuration: {
         title: "配置",
-        subtitle: "使用这些设置根据您的需求配置Rawon。",
+        subtitle: "Rawon 的配置文件与环境变量如何协同工作。",
+        overview: {
+            title: "📄 配置文件",
+            intro: "设置有意拆分到多个文件中：",
+            items: [
+                "**`.env.example`** — 核心设置（Discord/Spotify 令牌、前缀、ID、状态活动等）。复制为 **`.env`** 并填写。",
+                "**`dev.env.example`** — 可选开发者设置（前缀/斜杠开关、分片、`!login` 的 DevTools 端口、Chromium 路径、调试模式）。需要时复制为 **`dev.env`**。",
+                "**`setup` 命令** — 机器人专属选项（嵌入颜色、是/否表情、启动图、备用前缀、默认音量、选择方式、音频缓存）由 **`setup` 命令**（仅开发者）管理并存入数据库。使用 `<prefix>setup view` 查看可配置项。"
+            ]
+        },
         essential: {
-            title: "基本设置",
-            description: "这些是运行机器人所需的最低设置。",
+            title: "⚡ 核心设置（`.env`）",
+            description:
+                "与 `.env.example` 对应。严格来说只需 **`DISCORD_TOKEN`** 即可运行；按需添加 Spotify、歌词令牌等。",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "来自[Discord开发者门户](https://discord.com/developers/applications)的Discord机器人令牌",
+                description:
+                    "来自 [Discord Developer Portal](https://discord.com/developers/applications) 的机器人令牌。使用**英文逗号分隔**的多个令牌可启用多机器人模式。",
                 required: true
+            },
+            spotify: {
+                name: "Spotify API",
+                description:
+                    "在 [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) 获取并设置 `SPOTIFY_CLIENT_ID` 与 `SPOTIFY_CLIENT_SECRET`。**启用 Spotify 支持所必需。**",
+                required: false
+            },
+            stegripeLyrics: {
+                name: "STEGRIPE_API_LYRICS_TOKEN",
+                description:
+                    "用于 **`lyrics`** 命令输出更准确的结果。请联系开发者获取。",
+                required: false
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "主命令前缀",
+                description: "主命令前缀。例如：`!` 表示输入 `!play` 播放音乐",
                 default: "!"
             },
             mainServer: {
                 name: "MAIN_SERVER",
-                description: "用于斜杠命令注册的主服务器ID",
+                description:
+                    "主服务器 ID，用于更快注册斜杠命令。留空则为全局命令（更新最多可能需要约一小时）",
+                required: false
+            },
+            devs: {
+                name: "DEVS",
+                description:
+                    "机器人开发者用户 ID（逗号分隔）。开发者可使用包括 `setup` 与 `login` 工具在内的特殊命令。",
                 required: false
             },
             locale: {
                 name: "LOCALE",
-                description: "机器人语言",
+                description: "机器人回复所使用的语言",
                 default: "en-US",
                 options:
-                    "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR"
+                    "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR, ko-KR"
             },
-            spotify: {
-                name: "Spotify API",
-                description: "要支持Spotify，请从[developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)获取凭据并设置`SPOTIFY_CLIENT_ID`和`SPOTIFY_CLIENT_SECRET`"
-            }
-        },
-        optional: {
-            title: "可选设置",
-            description: "自定义Rawon的行为和外观。",
-            altPrefix: {
-                name: "ALT_PREFIX",
-                description: "备用前缀（逗号分隔）。使用{mention}表示@bot提及",
-                default: "{mention}"
+            activityTypes: {
+                name: "ACTIVITY_TYPES",
+                description:
+                    "`ACTIVITIES` 中每项对应的活动类型（逗号分隔）。数量必须与活动条目一致",
+                options: "PLAYING, WATCHING, LISTENING, COMPETING",
+                default: "PLAYING"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "机器人状态活动（逗号分隔）。格式：{prefix}、{userCount}、{textChannelCount}、{serverCount}、{playingCount}、{username}"
-            },
-            activityTypes: {
-                name: "ACTIVITY_TYPES",
-                description: "每个活动的活动类型（逗号分隔）",
-                options: "PLAYING、WATCHING、LISTENING、COMPETING"
-            },
-            embedColor: {
-                name: "EMBED_COLOR",
-                description: "嵌入颜色（十六进制，不带#）",
-                default: "22C9FF"
-            },
-            emojis: {
-                name: "(EMOJIS)",
-                description: "自定义成功（YES_EMOJI）和失败（NO_EMOJI）表情符号",
-                defaults: "✅ / ❌"
-            },
-            musicSelection: {
-                name: "MUSIC_SELECTION_TYPE",
-                description: "音乐选择样式",
-                options: "message、selectmenu",
-                default: "message"
-            },
-            audioCache: {
-                name: "ENABLE_AUDIO_CACHE",
-                description: "缓存下载的音频以加快重复播放",
-                default: "yes"
-            },
-            requestChannelSplash: {
-                name: "REQUEST_CHANNEL_SPLASH",
-                description: "请求频道播放器嵌入的自定义图片URL",
-                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+                    "机器人名称下方的状态行（逗号分隔）。占位符：`{prefix}`、`{userCount}`、`{textChannelCount}`、`{serverCount}`、`{playingCount}`、`{username}`",
+                required: false
             }
         },
+        multiBot: {
+            title: "🔄 多机器人模式",
+            description:
+                "多机器人模式可自适应 — **无需额外配置**。单个令牌运行单实例；**逗号分隔**多个令牌即可自动启用多机器人。",
+            example: "示例：",
+            exampleCode: 'DISCORD_TOKEN="token1, token2, token3"',
+            features: [
+                "**第一个**令牌作为主机器人处理通用命令",
+                "每个机器人为**其所在**语音频道中的用户播放音乐",
+                "若主机器人不在某服务器，可由下一个可用实例接管",
+                "每个机器人需要**各自独立**的 Discord 应用程序"
+            ]
+        },
         developer: {
-            title: "🛠️ 开发者设置",
-            description: "机器人开发者的高级设置。只有在您知道自己在做什么时才使用！",
-            devs: {
-                name: "DEVS",
-                description: "机器人开发者ID（逗号分隔）。开发者可以访问特殊命令"
-            },
+            title: "🛠️ 开发者设置（`dev.env`）",
+            description:
+                "来自 `dev.env.example`。**可选** — 仅在理解含义后再修改。",
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "启用/禁用前缀命令（如!play）。如果您只想要斜杠命令很有用",
+                description: "启用或禁用前缀命令（例如 `!play`）",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "启用/禁用斜杠命令（如/play）。如果您只想要前缀命令很有用",
+                description: "启用或禁用斜杠命令（例如 `/play`）",
                 default: "yes",
                 options: "yes, no"
             },
+            enableSharding: {
+                name: "ENABLE_SHARDING",
+                description: "为大型机器人启用分片（**仅单令牌模式**）",
+                default: "no",
+                options: "yes, no"
+            },
+            devtoolsPort: {
+                name: "DEVTOOLS_PORT",
+                description:
+                    "Chrome DevTools 远程调试代理端口。从另一台机器打开 DevTools 时供 `!login start` 使用。默认：`3000`",
+                default: "3000"
+            },
+            chromiumPath: {
+                name: "CHROMIUM_PATH",
+                description: "Google 登录所用的 Chrome/Chromium 路径。留空则自动检测",
+                required: false
+            },
+            nodeEnv: {
+                name: "NODE_ENV",
+                description: "运行时环境模式",
+                default: "production",
+                options: "production, development"
+            },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "启用调试日志以进行故障排除。在控制台显示详细日志",
+                description: "在控制台输出详细调试日志",
                 default: "no",
                 options: "yes, no"
             }
@@ -194,184 +231,169 @@ export const zhCN = {
     },
 
     cookiesSetup: {
-        title: "Cookie设置",
-        subtitle: "修复托管提供商上的\"Sign in to confirm you're not a bot\"错误。",
+        title: "Cookie 设置",
+        subtitle:
+            "解决云托管上的 \"Sign in to confirm you're not a bot\"。推荐：内置 **`!login`** 命令。",
         why: {
-            title: "为什么需要这个？",
+            title: "为什么需要？",
             description:
-                "如果您在OVHcloud、AWS、GCP、Azure或其他托管服务上托管Rawon，可能会遇到错误：",
+                "若在 OVHcloud、AWS、GCP、Azure 或其他云/VPS 上托管 Rawon，你可能会看到：",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "这是因为平台阻止来自数据中心IP地址的请求。通过使用已登录账户的Cookie，您可以绕过此限制。"
+                "平台常会拦截来自数据中心 IP 的请求。使用 **Google 账户** 登录后，Rawon 可获取有效 Cookie 并绕过限制。"
         },
-
-        quickMethod: {
-            title: "🚀 简便方法：使用Cookies命令（推荐）",
-            description: "管理cookies的最简单方法 - 无需编辑文件！",
+        loginMethod: {
+            title: "推荐：`!login` 命令",
+            description:
+                "最简单的做法是使用内置 **`!login`** 流程（通过 Puppeteer 使用真实浏览器）：",
             benefits: [
-                "✅ 立即生效 - 无需重启",
-                "✅ 支持多个cookies自动轮换",
-                "✅ 当一个cookie失败时，机器人自动使用下一个",
-                "✅ 机器人重启后cookies仍然保留"
-            ],
-            commands: {
-                title: "📝 可用命令",
-
-            },
-            quickStart: {
-                title: "⚡ 快速开始（3个步骤）",
-                steps: [
-                    "从浏览器导出cookies（请参阅下面的指南）",
-                    "在Discord中输入：!cookies add 1 并附加您的cookies.txt文件",
-                    "完成！Cookie现在已激活"
-                ]
-            },
-            multiCookie: {
-                title: "💡 专业提示：添加多个Cookies",
-                description: "从不同账户添加cookies以获得更好的可靠性："
-            }
-        },
-        prerequisites: {
-            title: "前提条件",
-            items: [
-                "辅助/一次性账户（出于安全原因，请勿使用主账户）",
-                "网络浏览器（Chrome、Firefox或Edge）",
-                "Cookie导出扩展",
-                "非Docker用户：Deno JavaScript运行时（yt-dlp签名解析所需）"
+                "✅ 打开真实浏览器完成 Google 登录",
+                "✅ 自动导出并保存 Cookie",
+                "✅ 登录后关闭浏览器 — 不留后台进程",
+                "✅ 重启后仍可保留（Docker 卷或 `cache/` 目录）"
             ]
         },
-        steps: {
-            title: "📖 如何导出Cookie",
-            createAccount: {
-                title: "步骤1：创建一次性账户",
-                steps: [
-                    "前往[账户创建页面](https://accounts.google.com/signup)",
-                    "专门为此机器人创建新账户",
-                    "⚠️ 重要：绝对不要使用您的个人/主账户！"
-                ]
-            },
-            login: {
-                title: "步骤2：登录视频平台",
-                steps: [
-                    "打开浏览器",
-                    "前往[视频平台](https://youtube.com)",
-                    "使用一次性账户登录",
-                    "如有提示，接受条款"
-                ]
-            },
-            extension: {
-                title: "步骤3：安装Cookie导出扩展",
-                chrome: "Chrome/Edge：从Chrome Web Store安装[**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)（推荐）",
-                firefox: "Firefox：从Firefox Add-ons安装[**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/)"
-            },
-            exportCookies: {
-                title: "步骤4：导出Cookie",
-                steps: [
-                    "确保您在[视频平台网站](https://youtube.com)上",
-                    "点击浏览器工具栏中的Cookie扩展图标",
-                    "选择**Export**或**Export cookies for this site**",
-                    "将文件保存为`cookies.txt`"
-                ]
-            },
-            upload: {
-                title: "步骤5：添加到Rawon",
-                steps: [
-                    "前往Rawon可以看到您消息的任何频道",
-                    "输入：`!cookies add 1`",
-                    "将cookies.txt文件附加到消息并发送",
-                    "Rawon会确认cookie已添加！"
-                ]
-            }
+        commandUsage: {
+            title: "命令用法"
+        },
+        quickStart: {
+            title: "快速开始",
+            steps: [
+                "在 Discord 中运行 `!login start`",
+                "在本地浏览器打开机器人发送的 **DevTools URL**",
+                "在**远程**浏览器会话中完成 Google 登录",
+                "使用**备用 Google 账号**登录（不要用主账号）",
+                "完成后机器人会保存 Cookie 并关闭浏览器",
+                "完成 — 后续请求将使用已保存的会话"
+            ]
+        },
+        staleCookies: {
+            title: "若再次出现人机验证",
+            description: "服务商轮换会话时 Cookie 可能失效。此时请：",
+            steps: [
+                "运行 `!login logout` 清除旧 Cookie 与用户数据",
+                "再运行 `!login start` 并重新登录以获得新会话"
+            ]
+        },
+        prerequisites: {
+            title: "前置条件",
+            items: [
+                "**次要 / 备用 Google 账号**（**切勿**使用主账号）",
+                "**非 Docker：** 主机需安装 Chrome 或 Chromium",
+                "**Docker：** 镜像已含 Chromium；远程使用 `!login` 时请映射 `DEVTOOLS_PORT`（参见 [配置](/docs/configuration)）"
+            ]
+        },
+        docker: {
+            title: "Docker",
+            persistence:
+                "Cookie 与用户数据保存在命名卷 **`rawon:/app/cache`** 中，容器重启后仍会保留。",
+            chromium: "镜像自带 Chromium，因此 **`!login start`** 在镜像侧无需额外配置。"
+        },
+        envVars: {
+            title: "环境变量（`dev.env`）",
+            intro: "可选调优（参见 `dev.env.example`）：",
+            dockerComposeHint:
+                "使用 Docker 时，请在 `docker-compose.yaml` 的 `ports` 中暴露 DevTools 端口，例如："
+        },
+        duration: {
+            title: "Cookie 能用多久？",
+            description:
+                "服务商轮换会话时可能会失效。在以下情况下通常仍有效：",
+            conditions: [
+                "未以会作废会话的方式退出登录",
+                "未更改账户密码",
+                "未在账户安全设置中撤销会话",
+                "服务商未标记可疑活动"
+            ],
+            footer: "Cookie 过期后请运行 `!login logout`，再执行 `!login start`。"
         },
         troubleshooting: {
-            title: "🔧 故障排除",
-            stillGettingErrors: {
-                title: "仍然收到\"Sign in to confirm you're not a bot\"错误？",
+            title: "故障排除",
+            stillErrors: {
+                title: "仍显示 \"Sign in to confirm you're not a bot\"？",
                 steps: [
-                    "使用`!cookies list`检查cookie状态",
-                    "如果cookie显示**Failed**，尝试`!cookies reset`重试",
-                    "从不同账户添加更多cookies以实现冗余"
+                    "使用 `!login status` 检查登录与 Cookie 状态",
+                    "运行 `!login logout` 再 `!login start` 获取全新会话"
                 ]
             },
-            allCookiesFailed: {
-                title: "所有cookies都失败了？",
+            browserWontStart: {
+                title: "浏览器无法启动？",
                 steps: [
-                    "创建新的一次性账户",
-                    "导出新的cookies",
-                    "使用!cookies add <编号>添加它们"
+                    "查看 `!login status` 中的错误详情",
+                    "在实体机上安装 Chrome/Chromium，或在 `dev.env` 中设置 `CHROMIUM_PATH`",
+                    "在 Docker 中，官方镜像通常可直接使用 Chromium"
                 ]
             },
             accountSuspended: {
-                title: "账户被暂停？",
+                title: "账号被停用？",
                 steps: [
-                    "这可能发生在大量使用的情况下",
-                    "只需创建一个新的一次性账户",
-                    "导出新cookies并添加它们"
+                    "新建备用 Google 账号",
+                    "运行 `!login logout` 清除旧会话",
+                    "运行 `!login start` 并用新账号登录"
                 ]
             }
         },
-        duration: {
-            title: "Cookie能持续多久？",
-            description: "好消息：平台Cookie不会定期过期。只要满足以下条件，它们将保持有效：",
-            conditions: [
-                "不在浏览器中登出平台",
-                "不更改账户密码",
-                "不从账户设置中撤销会话",
-                "平台未检测到可疑活动"
-            ],
-            tips: "实际上，如果遵循最佳实践，Cookie可以持续数月甚至数年。"
+        manualAlternative: {
+            title: "备选：手动 Cookie 文件",
+            description:
+                "可将 **Netscape 格式** 的 Cookie 文件放在下方路径。若存在机器人会使用；流程上仍**推荐 `!login`**。",
+            pathLabel: "路径"
         },
         security: {
-            title: "🔒 安全注意事项",
+            title: "安全提示",
+            warningLabel: "WARNING",
             warnings: [
-                "⚠️ 切勿与任何人分享您的Cookie文件",
-                "⚠️ 使用一次性账户，而非主账户",
-                "⚠️ Cookie文件包含敏感认证数据"
+                "请使用**备用** Google 账号 — **不要**使用主账号",
+                "DevTools URL 可访问远程浏览器会话 — **请勿公开分享**",
+                "Cookie 文件包含**敏感**的身份验证数据"
             ]
         }
     },
 
     disclaimers: {
         title: "免责声明",
-        subtitle: "使用此机器人前请仔细阅读。",
+        subtitle: "使用本机器人前请仔细阅读。",
         warningBanner: "重要法律信息",
         copyright: {
-            title: "版权、DMCA和知识产权",
+            title: "版权、DMCA 与知识产权",
             items: [
-                "**所有权：** 机器人使用、播放或显示的任何知识产权均非我们、维护者或任何贡献者所有。这包括但不限于机器人命令中使用的音频、视频和图像文件。",
-                "**托管提供商政策：** 某些托管提供商禁止托管或分发受DMCA保护的内容。这包括播放受版权保护的音乐/视频的Discord音乐机器人。在此类平台上部署需自行承担风险。",
-                "**用户责任：** 您对如何使用此机器人以及通过它播放的内容负责。"
+                "**权属：** 机器人使用、播放或展示的任何知识产权**均不属于我们**、维护者或贡献者。包括但不限于命令中使用的音频、视频与图像文件。",
+                "**托管商政策：** 部分托管商禁止托管或分发受 DMCA 保护的内容，包括播放受版权音乐/视频的 Discord 音乐机器人。\n- **在此类平台部署风险自负**",
+                "**用户责任：** 您对如何使用本机器人以及通过其播放的内容负责。"
             ]
         },
         code: {
             title: "代码修改",
             items: [
-                "**许可证：** 此机器人是开源的，可以在**AGPL-3.0**许可证下修改和重新分发。",
-                "**无保证：** 如许可证所述，我们对因修改、重新分发或使用此代码而造成的任何损害或损失不承担责任。",
-                "**归属：** 切勿声称此项目是您的原创作品。请始终对原始项目给予适当归属。"
+                "**许可：** 本项目采用 [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/) 许可。完整法律文本见仓库 [`LICENSE`](https://github.com/stegripe/rawon/blob/main/LICENSE) 文件。",
+                "**无担保：** 许可条款声明，我们**不对**使用本代码造成的损害或损失负责。请遵守署名、非商业使用及改编作品传播限制等条款。",
+                "**署名：** 不得将本项目宣称为您的原创作品。请始终正确署名原始项目。"
             ]
-        }
+        },
+        licenseFooterPrefix: "完整许可文本见仓库",
+        licenseLinkLabel: "LICENSE (CC BY-NC-ND 4.0)"
     },
 
     permissionCalculator: {
         title: "权限计算器",
-        clientId: "客户端ID",
-        scope: "范围",
-        redirectUri: "重定向URI",
-        permissions: "权限",
-        permissionsNote: "彩色表示如果服务器需要2FA，OAuth用户需要在其账户上启用2FA",
+        clientId: "Client ID",
+        scope: "Scope",
+        redirectUri: "Redirect URI",
+        permissions: "Permissions",
+        permissionsNote:
+            "彩色表示若服务器要求 2FA，OAuth 用户需在账号上启用两步验证",
         general: "常规",
         voice: "语音",
         text: "文字",
         result: "结果",
-        resultNote: "这是您可以用来将机器人添加到服务器的链接"
+        resultNote: "这是可将机器人添加到服务器的邀请链接"
     },
 
     common: {
         back: "返回",
         copy: "复制",
         default: "默认",
-        required: "必需",
+        required: "必填",
         optional: "可选",
         example: "示例",
         learnMore: "了解更多",
@@ -379,6 +401,6 @@ export const zhCN = {
         language: "语言",
         tip: "提示",
         warning: "警告",
-        note: "注意"
+        note: "说明"
     }
 };

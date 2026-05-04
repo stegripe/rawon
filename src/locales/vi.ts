@@ -1,192 +1,234 @@
-export const vi = {
+import type { Translations } from "./en";
+
+export const vi: Translations = {
     nav: {
         home: "Trang chủ",
         docs: "Tài liệu",
         gettingStarted: "Bắt đầu",
         configuration: "Cấu hình",
-        cookiesSetup: "Thiết lập Cookie",
+        cookiesSetup: "Thiết lập cookie",
         disclaimers: "Tuyên bố miễn trừ",
-        permissionCalculator: "Tính toán quyền",
+        permissionCalculator: "Tính quyền OAuth",
         links: "Liên kết"
     },
 
     home: {
         title: "Rawon",
         description:
-            "Bot nhạc Discord đơn giản nhưng mạnh mẽ, được tạo ra để đáp ứng nhu cầu sản xuất của bạn.",
+            "Bot nhạc Discord đơn giản nhưng mạnh mẽ (hỗ trợ nhiều instance), giúp bạn triển khai production dễ dàng — dùng được ngay, không cần viết code.",
         invite: "Mời",
-        inviteBot: "Mời Bot",
+        inviteBot: "Mời bot",
         support: "Hỗ trợ",
         viewDocs: "Xem tài liệu"
     },
 
     gettingStarted: {
         title: "Bắt đầu",
-        subtitle: "Khởi chạy Rawon trong vài phút với hướng dẫn từng bước của chúng tôi.",
+        subtitle:
+            "Chạy Rawon chỉ trong vài phút với hướng dẫn từng bước.",
         features: {
-            title: "Tính năng",
+            title: "✨ Tính năng",
             items: [
-                "🚀 Sẵn sàng sản xuất, không cần code",
-                "📺 Tính năng kênh yêu cầu cho trải nghiệm âm nhạc liền mạch",
+                "🚀 Sẵn sàng production, không cần viết code",
+                "📺 Kênh yêu cầu nhạc để trải nghiệm liền mạch",
+                "🎶 Hỗ trợ YouTube, Spotify, SoundCloud và file trực tiếp",
                 "🤖 Chạy nhiều instance bot cho các kênh thoại khác nhau",
-                "⚡ Pre-cache âm thanh thông minh để phát mượt mà hơn",
-                "🎶 Hỗ trợ nhiều nền tảng âm nhạc (trang video, Spotify, SoundCloud)",
-                "🔄 Xoay vòng đa cookie cho phát không gián đoạn"
+                "⚡ Tiền cache âm thanh thông minh để phát mượt hơn",
+                "🍪 Đăng nhập Google qua Puppeteer có sẵn để quản lý cookie"
             ]
         },
         requirements: {
-            title: "Yêu cầu",
-            nodeVersion: "Node.js phiên bản 22.12.0 trở lên",
-            discordToken: "Discord Bot Token (lấy từ [Discord Developer Portal](https://discord.com/developers/applications))",
-            optional: "Tùy chọn: Thông tin xác thực Spotify API để hỗ trợ Spotify"
+            title: "📋 Yêu cầu",
+            nodeVersion: "**Node.js** phiên bản `20.0.0` trở lên",
+            discordToken:
+                "**Discord Bot Token** (lấy tại [Discord Developer Portal](https://discord.com/developers/applications))",
+            optional:
+                "**Tùy chọn:** [FFmpeg](https://ffmpeg.org/) để xử lý âm thanh khi cài đặt chuẩn (không Docker) — ảnh Docker đã có FFmpeg"
         },
         standardSetup: {
-            title: "Cài đặt tiêu chuẩn (Node.js)",
+            title: "💻 Cài đặt chuẩn (Node.js)",
             steps: [
-                "Tải và cài đặt Node.js phiên bản 22.12.0 trở lên",
+                "Tải và cài các yêu cầu ở trên",
                 "Clone hoặc tải repository này",
-                "Sao chép .env.example thành .env và điền các giá trị cần thiết (tối thiểu: DISCORD_TOKEN)",
-                "Cài đặt dependencies: pnpm install",
-                "Build project: pnpm run build",
-                "Khởi chạy bot: pnpm start"
+                "Sao chép `.env.example` thành `.env` và điền giá trị (tối thiểu: `DISCORD_TOKEN`)",
+                "Cài dependency: `pnpm install`",
+                "Build dự án: `pnpm run build`",
+                "Khởi động bot: `pnpm start`"
             ],
-            requestChannel: "(Tùy chọn) Sau khi bot online, thiết lập kênh nhạc chuyên dụng:"
+            requestChannel:
+                "(Tùy chọn) Sau khi bot online, thiết lập kênh nhạc riêng:"
         },
         dockerSetup: {
-            title: "Cài đặt Docker (Khuyến nghị)",
-            composeTitle: "Sử dụng Docker Compose",
+            title: "🐳 Cài đặt Docker (khuyến nghị)",
+            composeTitle: "Dùng Docker Compose",
             composeSteps: [
-                "Tạo file .env với cấu hình của bạn (sao chép từ .env.example)",
-                "Tạo file docker-compose.yaml (xem ví dụ bên dưới)",
-                "Khởi chạy bot: docker compose up -d",
-                "Xem logs: docker logs -f rawon-bot"
+                "Tạo file `.env` với cấu hình của bạn (sao từ `.env.example`)",
+                "(Tùy chọn) Tạo `dev.env` từ `dev.env.example` cho cài đặt bổ sung",
+                "Tạo file `docker-compose.yaml` (xem ví dụ bên dưới)",
+                "Chạy bot: `docker compose up -d`",
+                "Xem log: `docker logs -f rawon-bot`"
             ],
-            runTitle: "Sử dụng Docker Run",
+            runTitle: "Dùng Docker Run",
             volumeInfo: {
-                title: "Thông tin Volume",
-                description: "Volume /app/cache lưu trữ:",
+                title: "📁 Thông tin volume",
+                description: "Volume `/app/cache` lưu:",
                 items: [
-                    "Binary yt-dlp cho streaming audio",
-                    "data.* cho cài đặt bền vững (kênh yêu cầu, trạng thái player)",
-                    "File audio được cache (nếu bật cache audio)",
-                    "File cookie cho xác thực nền tảng video"
+                    "Binary `yt-dlp` để stream âm thanh",
+                    "`data.*` cho cài đặt bền vững (kênh yêu cầu, trạng thái player)",
+                    "File âm thanh cache (nếu bật cache âm thanh)",
+                    "File cookie và dữ liệu profile từ đăng nhập Google (xem [Thiết lập cookie](/docs/cookies-setup))"
                 ]
+            },
+            portInfo: {
+                title: "🔌 Thông tin cổng",
+                description:
+                    "`DEVTOOLS_PORT` (mặc định: `3000`) dùng cho proxy gỡ lỗi từ xa Chrome DevTools. Cần cho `!login start` khi bạn kết nối từ máy khác. Đặt `DEVTOOLS_PORT` trong `dev.env` để đổi cổng và map trong Docker Compose hoặc `docker run`."
             }
         },
 
         cookiesQuickStart: {
-            title: "🍪 Bắt Đầu Nhanh: Thiết Lập Cookie",
+            title: "🍪 Cookie: xử lý nhanh trên hosting",
             description:
-                "Nếu bạn đang hosting trên các nhà cung cấp cloud (AWS, GCP, Azure, Railway, v.v.), bạn có thể gặp lỗi \"Sign in to confirm you're not a bot\". Sửa dễ dàng với lệnh cookies:",
+                "Trên cloud (AWS, GCP, Azure, Railway, v.v.) bạn có thể gặp **\"Sign in to confirm you're not a bot\"**. Hãy dùng luồng đăng nhập có sẵn:",
             steps: [
-                "Xuất cookies từ trình duyệt (xem [hướng dẫn Thiết lập Cookie](/docs/cookies-setup))",
-                "Trong Discord, gõ: `!cookies add 1`",
-                "Đính kèm file `cookies.txt` vào tin nhắn",
-                "Xong! Cookie có hiệu lực ngay lập tức"
+                "Chạy `!login start` trong Discord",
+                "Mở URL DevTools bot gửi và hoàn tất đăng nhập Google trong trình duyệt từ xa",
+                "Dùng `!login status` để kiểm tra cookie, hoặc `!login logout` rồi `!login start` để làm mới"
             ],
-            tip: "💡 Bạn có thể thêm nhiều cookies để dự phòng. Khi một cái thất bại, Rawon tự động chuyển sang cái tiếp theo!"
+            tip: "💡 Dùng **tài khoản Google dùng một lần**, không dùng tài khoản chính. Xem hướng dẫn đầy đủ [Thiết lập cookie](/docs/cookies-setup)."
         }
     },
 
     configuration: {
         title: "Cấu hình",
-        subtitle: "Cấu hình Rawon theo nhu cầu của bạn với các cài đặt này.",
+        subtitle:
+            "Cách các file cấu hình và biến môi trường của Rawon kết hợp với nhau.",
+        overview: {
+            title: "📄 File cấu hình",
+            intro: "Cài đặt được chia ra nhiều file có chủ đích:",
+            items: [
+                "**`.env.example`** — Cài đặt cốt lõi (token Discord/Spotify, prefix, ID, hoạt động, v.v.). Sao sang **`.env`** và điền giá trị.",
+                "**`dev.env.example`** — Cài đặt developer (bật/tắt prefix và slash, sharding, cổng DevTools cho `!login`, đường dẫn Chromium, chế độ debug). Sao sang **`dev.env`** khi cần.",
+                "**Lệnh `setup`** — Tùy chọn riêng bot (màu embed, emoji có/không, splash, prefix phụ, âm lượng mặc định, kiểu chọn, cache âm thanh) quản lý bằng **`setup`** (chỉ developer) và lưu trong DB. Gõ `<prefix>setup view` để xem các mục có thể chỉnh."
+            ]
+        },
         essential: {
-            title: "Cài đặt cơ bản",
-            description: "Đây là các cài đặt tối thiểu cần thiết để chạy bot.",
+            title: "⚡ Cài đặt cốt lõi (`.env`)",
+            description:
+                "Giống `.env.example`. Chỉ **`DISCORD_TOKEN`** là bắt buộc để chạy; thêm Spotify, token lyrics và phần còn lại khi cần.",
             discordToken: {
                 name: "DISCORD_TOKEN",
-                description: "Token bot Discord của bạn từ [Discord Developer Portal](https://discord.com/developers/applications)",
+                description:
+                    "Token bot Discord từ [Discord Developer Portal](https://discord.com/developers/applications). Dùng token **ngăn cách bằng dấu phẩy** để bật chế độ multi-bot.",
                 required: true
+            },
+            spotify: {
+                name: "Spotify API",
+                description:
+                    "Đặt `SPOTIFY_CLIENT_ID` và `SPOTIFY_CLIENT_SECRET` từ [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard). **Bắt buộc để hỗ trợ Spotify.**",
+                required: false
+            },
+            stegripeLyrics: {
+                name: "STEGRIPE_API_LYRICS_TOKEN",
+                description:
+                    "Cần để lệnh **lyrics** ra kết quả chính xác. Liên hệ developer để được cấp.",
+                required: false
             },
             mainPrefix: {
                 name: "MAIN_PREFIX",
-                description: "Tiền tố lệnh chính",
+                description:
+                    "Prefix lệnh chính. Ví dụ: `!` nghĩa là gõ `!play` để phát nhạc",
                 default: "!"
             },
             mainServer: {
                 name: "MAIN_SERVER",
-                description: "ID server chính của bạn để đăng ký lệnh slash",
+                description:
+                    "ID server chính để đăng ký slash command nhanh hơn. Để trống cho lệnh toàn cục (có thể mất tới một giờ để cập nhật)",
+                required: false
+            },
+            devs: {
+                name: "DEVS",
+                description:
+                    "ID người dùng developer bot (ngăn cách bằng dấu phẩy). Developer dùng được lệnh đặc biệt gồm `setup` và công cụ `login`.",
                 required: false
             },
             locale: {
                 name: "LOCALE",
-                description: "Ngôn ngữ bot",
+                description: "Ngôn ngữ phản hồi của bot",
                 default: "en-US",
-                options: "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR"
+                options:
+                    "en-US, es-ES, fr-FR, id-ID, zh-CN, zh-TW, uk-UA, vi-VN, pt-BR, ru-RU, ja-JP, tr-TR, ko-KR"
             },
-            spotify: {
-                name: "Spotify API",
-                description: "Để hỗ trợ Spotify, lấy thông tin xác thực từ [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) và đặt `SPOTIFY_CLIENT_ID` và `SPOTIFY_CLIENT_SECRET`"
-            }
-        },
-        optional: {
-            title: "Cài đặt tùy chọn",
-            description: "Tùy chỉnh hành vi và giao diện của Rawon.",
-            altPrefix: {
-                name: "ALT_PREFIX",
-                description: "Tiền tố thay thế (phân cách bằng dấu phẩy). Sử dụng {mention} để mention @bot",
-                default: "{mention}"
+            activityTypes: {
+                name: "ACTIVITY_TYPES",
+                description:
+                    "Loại hoạt động cho mỗi mục trong `ACTIVITIES` (ngăn cách bằng dấu phẩy). Phải khớp số lượng hoạt động",
+                options: "PLAYING, WATCHING, LISTENING, COMPETING",
+                default: "PLAYING"
             },
             activities: {
                 name: "ACTIVITIES",
                 description:
-                    "Hoạt động trạng thái bot (phân cách bằng dấu phẩy). Định dạng: {prefix}, {userCount}, {textChannelCount}, {serverCount}, {playingCount}, {username}"
-            },
-            activityTypes: {
-                name: "ACTIVITY_TYPES",
-                description: "Loại hoạt động cho mỗi hoạt động (phân cách bằng dấu phẩy)",
-                options: "PLAYING, WATCHING, LISTENING, COMPETING"
-            },
-            embedColor: {
-                name: "EMBED_COLOR",
-                description: "Màu embed dạng hex (không có #)",
-                default: "22C9FF"
-            },
-            emojis: {
-                name: "(EMOJIS)",
-                description: "Tùy chỉnh emoji thành công (YES_EMOJI) và thất bại (NO_EMOJI)",
-                defaults: "✅ / ❌"
-            },
-            musicSelection: {
-                name: "MUSIC_SELECTION_TYPE",
-                description: "Kiểu chọn nhạc",
-                options: "message, selectmenu",
-                default: "message"
-            },
-            audioCache: {
-                name: "ENABLE_AUDIO_CACHE",
-                description: "Cache audio đã tải để phát lại nhanh hơn",
-                default: "yes"
-            },
-            requestChannelSplash: {
-                name: "REQUEST_CHANNEL_SPLASH",
-                description: "URL hình ảnh tùy chỉnh cho embed player kênh yêu cầu",
-                default: "https://cdn.stegripe.org/images/rawon_splash.png"
+                    "Dòng trạng thái dưới tên bot (ngăn cách bằng dấu phẩy). Placeholder: `{prefix}`, `{userCount}`, `{textChannelCount}`, `{serverCount}`, `{playingCount}`, `{username}`",
+                required: false
             }
         },
+        multiBot: {
+            title: "🔄 Chế độ multi-bot",
+            description:
+                "Multi-bot **tự thích ứng** — không cần cấu hình thêm. Một token chạy một bot; token **ngăn cách bằng dấu phẩy** bật multi-bot tự động.",
+            example: "Ví dụ:",
+            exampleCode: 'DISCORD_TOKEN="token1, token2, token3"',
+            features: [
+                "Token **đầu tiên** là bot chính cho lệnh chung",
+                "Mỗi bot phục vụ nhạc cho người trong **kênh thoại của nó**",
+                "Nếu bot chính không có trong server, bot kế tiếp có thể đảm nhiệm",
+                "Mỗi bot cần **ứng dụng Discord riêng**"
+            ]
+        },
         developer: {
-            title: "🛠️ Cài Đặt Nhà Phát Triển",
-            description: "Cài đặt nâng cao cho nhà phát triển bot. Chỉ sử dụng nếu bạn biết mình đang làm gì!",
-            devs: {
-                name: "DEVS",
-                description: "ID nhà phát triển bot (phân cách bằng dấu phẩy). Nhà phát triển có thể truy cập các lệnh đặc biệt"
-            },
+            title: "🛠️ Cài đặt developer (`dev.env`)",
+            description:
+                "Theo `dev.env.example`. **Tùy chọn** — chỉ đổi khi bạn hiểu rõ.",
             enablePrefix: {
                 name: "ENABLE_PREFIX",
-                description: "Bật/tắt lệnh có prefix (như !play). Hữu ích nếu bạn chỉ muốn lệnh slash",
+                description: "Bật hoặc tắt lệnh prefix (vd. `!play`)",
                 default: "yes",
                 options: "yes, no"
             },
             enableSlash: {
                 name: "ENABLE_SLASH_COMMAND",
-                description: "Bật/tắt lệnh slash (như /play). Hữu ích nếu bạn chỉ muốn lệnh có prefix",
+                description: "Bật hoặc tắt slash command (vd. `/play`)",
                 default: "yes",
                 options: "yes, no"
             },
+            enableSharding: {
+                name: "ENABLE_SHARDING",
+                description: "Bật sharding cho bot lớn (**chỉ một token**)",
+                default: "no",
+                options: "yes, no"
+            },
+            devtoolsPort: {
+                name: "DEVTOOLS_PORT",
+                description:
+                    "Cổng proxy gỡ lỗi từ xa Chrome DevTools. Dùng khi `!login start` mở DevTools từ máy khác. Mặc định: `3000`",
+                default: "3000"
+            },
+            chromiumPath: {
+                name: "CHROMIUM_PATH",
+                description:
+                    "Đường dẫn Chrome/Chromium để đăng nhập Google. Để trống để tự nhận diện",
+                required: false
+            },
+            nodeEnv: {
+                name: "NODE_ENV",
+                description: "Chế độ môi trường chạy",
+                default: "production",
+                options: "production, development"
+            },
             debugMode: {
                 name: "DEBUG_MODE",
-                description: "Bật ghi log debug để khắc phục sự cố. Hiển thị log chi tiết trong console",
+                description: "Log debug chi tiết ra console",
                 default: "no",
                 options: "yes, no"
             }
@@ -194,180 +236,166 @@ export const vi = {
     },
 
     cookiesSetup: {
-        title: "Thiết lập Cookie",
-        subtitle: "Sửa lỗi \"Sign in to confirm you're not a bot\" trên các nhà cung cấp hosting.",
+        title: "Thiết lập cookie",
+        subtitle:
+            "Xử lý \"Sign in to confirm you're not a bot\" trên hosting cloud. Khuyến nghị: lệnh **`!login`** có sẵn.",
         why: {
-            title: "Tại sao tôi cần điều này?",
+            title: "Tại sao cần?",
             description:
-                "Nếu bạn host Rawon trên các nhà cung cấp cloud như OVHcloud, AWS, GCP, Azure, hoặc các dịch vụ hosting khác, bạn có thể gặp lỗi:",
+                "Nếu bạn host Rawon trên OVHcloud, AWS, GCP, Azure hoặc VPS/cloud khác, bạn có thể thấy:",
             error: "Sign in to confirm you're not a bot",
             explanation:
-                "Điều này xảy ra vì nền tảng chặn các yêu cầu từ địa chỉ IP của data center. Bằng cách sử dụng cookie từ tài khoản đã đăng nhập, bạn có thể vượt qua hạn chế này."
+                "Nền tảng thường chặn request từ IP trung tâm dữ liệu. Xác thực **tài khoản Google** giúp Rawon lấy cookie hợp lệ và vượt hạn chế đó."
         },
-
-        quickMethod: {
-            title: "🚀 Phương Pháp Dễ: Sử Dụng Lệnh Cookies (Khuyến Nghị)",
-            description: "Cách dễ nhất để quản lý cookies - không cần chỉnh sửa file!",
+        loginMethod: {
+            title: "Khuyến nghị: lệnh `!login`",
+            description:
+                "Cách dễ nhất là luồng **`!login`** (trình duyệt thật qua Puppeteer):",
             benefits: [
-                "✅ Hoạt động ngay lập tức - không cần khởi động lại",
-                "✅ Hỗ trợ nhiều cookies với xoay vòng tự động",
-                "✅ Khi một cookie thất bại, bot tự động sử dụng cái tiếp theo",
-                "✅ Cookies được giữ lại sau khi bot khởi động lại"
-            ],
-            commands: {
-                title: "📝 Các Lệnh Có Sẵn",
-                add: "`!cookies add <số>` - Thêm cookie (đính kèm file cookies.txt vào tin nhắn)",
-
-            },
-            quickStart: {
-                title: "⚡ Bắt Đầu Nhanh (3 bước)",
-                steps: [
-                    "Xuất cookies từ trình duyệt (xem hướng dẫn bên dưới)",
-                    "Trong Discord, gõ: `!cookies add 1` và đính kèm file cookies.txt",
-                    "Xong! Cookie đã được kích hoạt"
-                ]
-            },
-            multiCookie: {
-                title: "💡 Mẹo Pro: Thêm Nhiều Cookies",
-                description: "Thêm cookies từ các tài khoản khác nhau để đáng tin cậy hơn:"
-            }
-        },
-        prerequisites: {
-            title: "Điều kiện tiên quyết",
-            items: [
-                "Tài khoản phụ/dùng một lần (KHÔNG sử dụng tài khoản chính vì lý do bảo mật)",
-                "Trình duyệt web (Chrome, Firefox hoặc Edge)",
-                "Extension xuất cookie",
-                "Cho người dùng không dùng Docker: Deno JavaScript runtime (cần thiết cho giải quyết chữ ký yt-dlp)"
+                "✅ Mở trình duyệt thật để đăng nhập Google",
+                "✅ Xuất cookie và lưu tự động",
+                "✅ Đóng trình duyệt sau khi đăng nhập — không để process rác",
+                "✅ Giữ được sau khi khởi động lại (volume Docker hoặc thư mục `cache/`)"
             ]
         },
-        steps: {
-            title: "📖 Cách Xuất Cookie",
-            createAccount: {
-                title: "Bước 1: Tạo tài khoản dùng một lần",
-                steps: [
-                    "Truy cập [trang tạo tài khoản](https://accounts.google.com/signup)",
-                    "Tạo tài khoản mới dành riêng cho bot này",
-                    "⚠️ Quan trọng: KHÔNG BAO GIỜ sử dụng tài khoản cá nhân/chính của bạn!"
-                ]
-            },
-            login: {
-                title: "Bước 2: Đăng nhập vào nền tảng video",
-                steps: [
-                    "Mở trình duyệt",
-                    "Truy cập [nền tảng video](https://youtube.com)",
-                    "Đăng nhập bằng tài khoản dùng một lần",
-                    "Chấp nhận điều khoản nếu được yêu cầu"
-                ]
-            },
-            extension: {
-                title: "Bước 3: Cài đặt extension xuất Cookie",
-                chrome: "Cho Chrome/Edge: Cài đặt [**Get cookies.txt LOCALLY**](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc) (khuyến nghị) từ Chrome Web Store",
-                firefox: "Cho Firefox: Cài đặt [**cookies.txt**](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) từ Firefox Add-ons"
-            },
-            exportCookies: {
-                title: "Bước 4: Xuất Cookie",
-                steps: [
-                    "Đảm bảo bạn đang ở [trang web nền tảng video](https://youtube.com)",
-                    "Nhấn vào biểu tượng extension cookie trên thanh công cụ",
-                    "Chọn **Export** hoặc **Export cookies for this site**",
-                    "Lưu file dưới tên `cookies.txt`"
-                ]
-            },
-            upload: {
-                title: "Bước 5: Thêm vào Rawon",
-                steps: [
-                    "Đi đến kênh mà Rawon có thể xem tin nhắn của bạn",
-                    "Gõ: `!cookies add 1`",
-                    "Đính kèm file cookies.txt vào tin nhắn và gửi",
-                    "Rawon sẽ xác nhận cookie đã được thêm!"
-                ]
-            }
+        commandUsage: {
+            title: "Cách dùng lệnh"
+        },
+        quickStart: {
+            title: "Bắt đầu nhanh",
+            steps: [
+                "Chạy `!login start` trong Discord",
+                "Mở **URL DevTools** bot gửi trong trình duyệt cục bộ",
+                "Hoàn tất đăng nhập Google trong phiên **từ xa**",
+                "Đăng nhập bằng **tài khoản Google dùng một lần** (không dùng tài khoản chính)",
+                "Khi xong, bot lưu cookie và đóng trình duyệt",
+                "Xong — các request sau dùng phiên đã lưu"
+            ]
+        },
+        staleCookies: {
+            title: "Nếu kiểm tra bot xuất hiện lại",
+            description:
+                "Cookie có thể hết hạn khi nhà cung cấp đổi phiên. Khi đó:",
+            steps: [
+                "Chạy `!login logout` để xóa cookie và profile cũ",
+                "Chạy `!login start` và đăng nhập lại để có phiên mới"
+            ]
+        },
+        prerequisites: {
+            title: "Điều kiện",
+            items: [
+                "**Tài khoản Google phụ / dùng một lần** (**không** dùng tài khoản chính)",
+                "**Không Docker:** Chrome hoặc Chromium đã cài trên máy host",
+                "**Docker:** Đã có Chromium; map `DEVTOOLS_PORT` nếu dùng `!login` từ xa (xem [Cấu hình](/docs/configuration))"
+            ]
+        },
+        docker: {
+            title: "Docker",
+            persistence:
+                "Cookie và dữ liệu profile vẫn trong volume có tên **`rawon:/app/cache`** khi container khởi động lại.",
+            chromium:
+                "Ảnh có sẵn Chromium nên **`!login start`** chạy được mà không cần cài thêm trên ảnh."
+        },
+        envVars: {
+            title: "Biến môi trường (`dev.env`)",
+            intro: "Tinh chỉnh tùy chọn (xem `dev.env.example`):",
+            dockerComposeHint:
+                "Với Docker, trong `docker-compose.yaml` hãy `ports` expose cổng DevTools, ví dụ:"
+        },
+        duration: {
+            title: "Cookie dùng được bao lâu?",
+            description:
+                "Có thể hết hạn theo thời gian vì nhà cung cấp đổi phiên. Thường vẫn hiệu lực khi:",
+            conditions: [
+                "Bạn không đăng xuất theo cách làm vô hiệu phiên",
+                "Bạn không đổi mật khẩu tài khoản",
+                "Bạn không thu hồi phiên trong cài đặt bảo mật",
+                "Nhà cung cấp không đánh dấu hoạt động đáng ngờ"
+            ],
+            footer:
+                "Khi cookie hết hạn, chạy `!login logout` rồi `!login start` lại."
         },
         troubleshooting: {
-            title: "🔧 Khắc Phục Sự Cố",
-            stillGettingErrors: {
-                title: "Vẫn gặp lỗi \"Sign in to confirm you're not a bot\"?",
+            title: "Xử lý sự cố",
+            stillErrors: {
+                title: "Vẫn thấy \"Sign in to confirm you're not a bot\"?",
                 steps: [
-                    "Sử dụng `!cookies list` để kiểm tra trạng thái cookie",
-                    "Nếu cookie hiển thị **Failed**, thử `!cookies reset` để thử lại",
-                    "Thêm nhiều cookies từ các tài khoản khác để dự phòng"
+                    "Dùng `!login status` để xem trạng thái đăng nhập và cookie",
+                    "Chạy `!login logout` rồi `!login start` để tạo phiên mới"
                 ]
             },
-            allCookiesFailed: {
-                title: "Tất cả cookies đều thất bại?",
+            browserWontStart: {
+                title: "Trình duyệt không khởi động?",
                 steps: [
-                    "Tạo tài khoản dùng một lần mới",
-                    "Xuất cookies mới",
-                    "Thêm chúng với `!cookies add <số>`"
+                    "Xem `!login status` để biết lỗi",
+                    "Trên máy bare metal, cài Chrome/Chromium hoặc đặt `CHROMIUM_PATH` trong `dev.env`",
+                    "Trên Docker, Chromium thường chạy được ngay với ảnh chính thức"
                 ]
             },
             accountSuspended: {
-                title: "Tài khoản bị tạm ngưng?",
+                title: "Tài khoản bị khóa?",
                 steps: [
-                    "Điều này có thể xảy ra với việc sử dụng nhiều",
-                    "Đơn giản là tạo tài khoản dùng một lần mới",
-                    "Xuất cookies mới và thêm chúng"
+                    "Tạo tài khoản Google dùng một lần mới",
+                    "Chạy `!login logout` để xóa phiên cũ",
+                    "Chạy `!login start` và đăng nhập bằng tài khoản mới"
                 ]
             }
         },
-        duration: {
-            title: "Cookie tồn tại bao lâu?",
+        manualAlternative: {
+            title: "Thay thế: file cookie thủ công",
             description:
-                "Tin tốt: Cookie của nền tảng KHÔNG hết hạn định kỳ. Chúng sẽ vẫn có hiệu lực miễn là:",
-            conditions: [
-                "Bạn không đăng xuất khỏi nền tảng trong trình duyệt",
-                "Bạn không thay đổi mật khẩu tài khoản",
-                "Bạn không thu hồi phiên từ cài đặt tài khoản",
-                "Nền tảng không phát hiện hoạt động đáng ngờ"
-            ],
-            tips: "Trên thực tế, cookie có thể tồn tại hàng tháng hoặc thậm chí hàng năm nếu bạn tuân theo các thực hành tốt nhất."
+                "Bạn có thể đặt file cookie định dạng **Netscape** tại đường dẫn bên dưới. Bot sẽ dùng nếu có; **`!login` vẫn được khuyến nghị** cho quy trình đơn giản hơn.",
+            pathLabel: "Đường dẫn"
         },
         security: {
-            title: "🔒 Lưu ý bảo mật",
+            title: "Lưu ý bảo mật",
+            warningLabel: "WARNING",
             warnings: [
-                "⚠️ Không bao giờ chia sẻ file cookie với bất kỳ ai",
-                "⚠️ Sử dụng tài khoản dùng một lần, KHÔNG phải tài khoản chính",
-                "⚠️ File cookie chứa dữ liệu xác thực nhạy cảm"
+                "Dùng tài khoản Google **dùng một lần** — **không** dùng tài khoản chính",
+                "URL DevTools cho phép điều khiển phiên trình duyệt từ xa — **đừng chia sẻ công khai**",
+                "File cookie chứa dữ liệu xác thực **nhạy cảm**"
             ]
         }
     },
 
     disclaimers: {
         title: "Tuyên bố miễn trừ",
-        subtitle: "Vui lòng đọc kỹ trước khi sử dụng bot này.",
+        subtitle: "Vui lòng đọc kỹ trước khi dùng bot này.",
         warningBanner: "Thông tin pháp lý quan trọng",
         copyright: {
-            title: "Bản quyền, DMCA và Sở hữu trí tuệ",
+            title: "Bản quyền, DMCA và sở hữu trí tuệ",
             items: [
-                "**Quyền sở hữu:** Bất kỳ tài sản trí tuệ nào được sử dụng, phát hoặc hiển thị bởi bot đều không thuộc sở hữu của chúng tôi, những người duy trì, hoặc bất kỳ người đóng góp nào. Điều này bao gồm, nhưng không giới hạn, các file audio, video và hình ảnh được sử dụng trong các lệnh của bot.",
-                "**Chính sách nhà cung cấp hosting:** Một số nhà cung cấp hosting cấm hosting hoặc phân phối nội dung được bảo vệ DMCA. Điều này bao gồm các bot nhạc Discord phát nhạc/video có bản quyền. Triển khai lên các nền tảng như vậy tự chịu rủi ro.",
-                "**Trách nhiệm người dùng:** Bạn chịu trách nhiệm về cách bạn sử dụng bot này và nội dung nào được phát qua nó."
+                "**Quyền sở hữu:** Mọi sở hữu trí tuệ được bot dùng, phát hoặc hiển thị **không thuộc về chúng tôi**, người duy trì hay đóng góp. Bao gồm nhưng không giới hạn âm thanh, video và hình ảnh trong lệnh của bot.",
+                "**Chính sách nhà cung cấp hosting:** Một số nhà cung cấp cấm host hoặc phân phối nội dung được DMCA bảo vệ, gồm cả bot nhạc Discord phát nhạc/video có bản quyền.\n- **Triển khai lên các nền tảng đó là rủi ro của bạn**",
+                "**Trách nhiệm người dùng:** Bạn chịu trách nhiệm về cách dùng bot và nội dung được phát qua bot."
             ]
         },
         code: {
-            title: "Sửa đổi mã",
+            title: "Chỉnh sửa mã nguồn",
             items: [
-                "**Giấy phép:** Bot này là mã nguồn mở và có thể được sửa đổi và phân phối lại theo giấy phép **AGPL-3.0**.",
-                "**Không bảo hành:** Như đã nêu trong giấy phép, chúng tôi không chịu trách nhiệm cho bất kỳ thiệt hại hoặc mất mát nào do sửa đổi, phân phối lại hoặc sử dụng mã này.",
-                "**Ghi nhận:** Không bao giờ tuyên bố dự án này là công việc gốc của riêng bạn. Luôn cung cấp ghi nhận phù hợp cho dự án gốc."
+                "**Giấy phép:** Dự án có giấy phép [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/). Toàn văn pháp lý nằm trong file [`LICENSE`](https://github.com/stegripe/rawon/blob/main/LICENSE) của repo.",
+                "**Không bảo hành:** Theo giấy phép, chúng tôi **không chịu trách nhiệm** về thiệt hại hay mất mát do dùng mã này. Tuân thủ điều khoản về ghi công, phi thương mại và hạn chế chia sẻ bản sửa đổi.",
+                "**Ghi công:** Không tuyên bố dự án là công trình gốc của bạn. Luôn ghi công đúng cho dự án gốc."
             ]
-        }
+        },
+        licenseFooterPrefix: "Toàn văn giấy phép xem trong repo",
+        licenseLinkLabel: "LICENSE (CC BY-NC-ND 4.0)"
     },
 
     permissionCalculator: {
-        title: "Tính toán quyền",
-        clientId: "ID Client",
-        scope: "Phạm vi",
-        redirectUri: "URI chuyển hướng",
-        permissions: "Quyền",
+        title: "Tính quyền OAuth",
+        clientId: "Client ID",
+        scope: "Scope",
+        redirectUri: "Redirect URI",
+        permissions: "Permissions",
         permissionsNote:
-            "Có màu nghĩa là người dùng OAuth cần bật 2FA trên tài khoản của họ nếu server yêu cầu 2FA",
+            "Ô màu nghĩa là người OAuth cần bật 2FA trên tài khoản nếu server yêu cầu 2FA",
         general: "Chung",
-        voice: "Giọng nói",
+        voice: "Thoại",
         text: "Văn bản",
         result: "Kết quả",
-        resultNote: "Đây là liên kết bạn có thể sử dụng để thêm bot vào server của bạn"
+        resultNote:
+            "Đây là liên kết để thêm bot vào server của bạn"
     },
 
     common: {

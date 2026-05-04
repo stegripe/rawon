@@ -1,4 +1,4 @@
-import { en } from "./en";
+import { en, type Translations } from "./en";
 import { es } from "./es";
 import { fr } from "./fr";
 import { id } from "./id";
@@ -24,7 +24,7 @@ export type Locale =
     | "vi"
     | "zh-CN"
     | "zh-TW";
-export type Translations = typeof en;
+export type { Translations } from "./en";
 
 export const locales: Record<Locale, Translations> = {
     en,

@@ -10,7 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/stegripe/rawon.git"
     },
-    "license": "BSD-3-Clause",
+    "license": "CC-BY-NC-ND-4.0",
     "author": "noxzym",
     "scripts": {
         "build": "next build",

@@ -22,7 +22,7 @@ export default function DisclaimersPage() {
                         </Link>
                         <div>
                             <Typography className="font-sans text-2xl font-medium">
-                                {t.disclaimers.title}
+                                {renderWithCode(t.disclaimers.title)}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
                                 {renderWithCode(t.disclaimers.subtitle)}
@@ -33,13 +33,13 @@ export default function DisclaimersPage() {
                     <div className="flex items-center gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
                         <WarningAmber className="text-3xl text-secondary" />
                         <Typography className="font-sans text-lg font-medium text-secondary">
-                            {t.disclaimers.warningBanner}
+                            {renderWithCode(t.disclaimers.warningBanner)}
                         </Typography>
                     </div>
 
                     <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.disclaimers.copyright.title}
+                            {renderWithCode(t.disclaimers.copyright.title)}
                         </Typography>
                         <div className="flex flex-col gap-3">
                             {t.disclaimers.copyright.items.map((item, index) => (
@@ -47,7 +47,7 @@ export default function DisclaimersPage() {
                                     key={index}
                                     className="rounded-lg border-1 border-solid border-third p-4"
                                 >
-                                    <Typography className="font-sans">
+                                    <Typography className="font-sans whitespace-pre-line">
                                         <span className="font-semibold">
                                             {index + 1}.
                                         </span>{" "}
@@ -60,7 +60,7 @@ export default function DisclaimersPage() {
 
                     <div className="flex flex-col gap-4">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.disclaimers.code.title}
+                            {renderWithCode(t.disclaimers.code.title)}
                         </Typography>
                         <div className="flex flex-col gap-3">
                             {t.disclaimers.code.items.map((item, index) => (
@@ -68,7 +68,7 @@ export default function DisclaimersPage() {
                                     key={index}
                                     className="rounded-lg border-1 border-solid border-third p-4"
                                 >
-                                    <Typography className="font-sans">
+                                    <Typography className="font-sans whitespace-pre-line">
                                         <span className="font-semibold">
                                             {index + 1}.
                                         </span>{" "}
@@ -81,7 +81,7 @@ export default function DisclaimersPage() {
 
                     <div className="flex flex-col gap-2">
                         <Typography className="font-sans text-sm text-fourth">
-                            For full license details, see:{" "}
+                            {t.disclaimers.licenseFooterPrefix}{" "}
                             <Link
                                 href="https://github.com/stegripe/rawon/blob/main/LICENSE"
                                 passHref
@@ -92,7 +92,7 @@ export default function DisclaimersPage() {
                                     rel="noreferrer"
                                     className="text-secondary underline"
                                 >
-                                    AGPL-3.0 License
+                                    {t.disclaimers.licenseLinkLabel}
                                 </a>
                             </Link>
                         </Typography>

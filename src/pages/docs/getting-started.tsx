@@ -23,7 +23,7 @@ export default function GettingStartedPage() {
                         </Link>
                         <div>
                             <Typography className="font-sans text-2xl font-medium">
-                                {t.gettingStarted.title}
+                                {renderWithCode(t.gettingStarted.title)}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
                                 {renderWithCode(t.gettingStarted.subtitle)}
@@ -33,7 +33,7 @@ export default function GettingStartedPage() {
 
                     <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-third p-4">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.gettingStarted.features.title}
+                            {renderWithCode(t.gettingStarted.features.title)}
                         </Typography>
                         <div className="grid gap-2 md:grid-cols-2">
                             {t.gettingStarted.features.items.map(
@@ -44,7 +44,7 @@ export default function GettingStartedPage() {
                                     >
                                         <CheckCircleOutline className="mt-0.5 text-lg text-secondary" />
                                         <Typography className="font-sans text-base">
-                                            {feature}
+                                            {renderWithCode(feature)}
                                         </Typography>
                                     </div>
                                 )
@@ -54,7 +54,7 @@ export default function GettingStartedPage() {
 
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.gettingStarted.requirements.title}
+                            {renderWithCode(t.gettingStarted.requirements.title)}
                         </Typography>
                         <ul className="m-0 flex list-disc flex-col gap-1 pl-5">
                             <li>
@@ -80,7 +80,7 @@ export default function GettingStartedPage() {
 
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.gettingStarted.standardSetup.title}
+                            {renderWithCode(t.gettingStarted.standardSetup.title)}
                         </Typography>
                         <ol className="m-0 flex list-decimal flex-col gap-2 pl-5">
                             {t.gettingStarted.standardSetup.steps.map(
@@ -108,11 +108,11 @@ export default function GettingStartedPage() {
 
                     <div className="flex flex-col gap-3">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.gettingStarted.dockerSetup.title}
+                            {renderWithCode(t.gettingStarted.dockerSetup.title)}
                         </Typography>
 
                         <Typography className="font-sans text-lg font-medium">
-                            {t.gettingStarted.dockerSetup.composeTitle}
+                            {renderWithCode(t.gettingStarted.dockerSetup.composeTitle)}
                         </Typography>
                         <ol className="m-0 flex list-decimal flex-col gap-2 pl-5">
                             {t.gettingStarted.dockerSetup.composeSteps.map(
@@ -132,7 +132,11 @@ export default function GettingStartedPage() {
     image: ghcr.io/stegripe/rawon:latest
     container_name: rawon-bot
     restart: unless-stopped
-    env_file: .env
+    env_file:
+      - .env
+      - dev.env
+    ports:
+      - "\${DEVTOOLS_PORT:-3000}:\${DEVTOOLS_PORT:-3000}"
     volumes:
       - rawon:/app/cache
 
@@ -144,13 +148,14 @@ volumes:
                         />
 
                         <Typography className="font-sans text-lg font-medium">
-                            {t.gettingStarted.dockerSetup.runTitle}
+                            {renderWithCode(t.gettingStarted.dockerSetup.runTitle)}
                         </Typography>
                         <CopyBlock
                             language="bash"
                             text={`docker run -d \\
   --name rawon-bot \\
   --env-file .env \\
+  -p "\${DEVTOOLS_PORT:-3000}:\${DEVTOOLS_PORT:-3000}" \\
   -v rawon:/app/cache \\
   --restart unless-stopped \\
   ghcr.io/stegripe/rawon:latest`}
@@ -161,7 +166,7 @@ volumes:
 
                         <div className="mt-4 rounded-lg border-1 border-solid border-fourth bg-primary p-3">
                             <Typography className="font-sans font-medium">
-                                {t.gettingStarted.dockerSetup.volumeInfo.title}
+                                {renderWithCode(t.gettingStarted.dockerSetup.volumeInfo.title)}
                             </Typography>
                             <Typography className="font-sans text-sm">
                                 {renderWithCode(
@@ -181,11 +186,22 @@ volumes:
                                 )}
                             </ul>
                         </div>
+
+                        <div className="mt-4 rounded-lg border-1 border-solid border-fourth bg-primary p-3">
+                            <Typography className="font-sans font-medium">
+                                {renderWithCode(t.gettingStarted.dockerSetup.portInfo.title)}
+                            </Typography>
+                            <Typography className="font-sans text-sm">
+                                {renderWithCode(
+                                    t.gettingStarted.dockerSetup.portInfo.description
+                                )}
+                            </Typography>
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-3 rounded-lg border-1 border-solid border-secondary bg-red-50 p-4">
                         <Typography className="font-sans text-xl font-semibold">
-                            {t.gettingStarted.cookiesQuickStart.title}
+                            {renderWithCode(t.gettingStarted.cookiesQuickStart.title)}
                         </Typography>
                         <Typography className="font-sans">
                             {renderWithCode(t.gettingStarted.cookiesQuickStart.description)}

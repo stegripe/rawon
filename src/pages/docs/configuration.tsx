@@ -3,7 +3,54 @@ import { renderWithCode } from "@/components/InlineCode";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { Container, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { CopyBlock, dracula } from "react-code-blocks";
+
+const EXAMPLE_ENV = `# Essential (only DISCORD_TOKEN is required to run)
+DISCORD_TOKEN=""
+SPOTIFY_CLIENT_ID=""
+SPOTIFY_CLIENT_SECRET=""
+STEGRIPE_API_LYRICS_TOKEN=""
+MAIN_PREFIX="!"
+MAIN_SERVER=""
+DEVS=""
+LOCALE="en-US"
+ACTIVITY_TYPES="PLAYING, LISTENING, WATCHING, PLAYING"
+ACTIVITIES="My default prefix is {prefix}, music with {userCount} users"`;
+
+const EXAMPLE_DEV_ENV = `# Prefix / slash / sharding
+ENABLE_PREFIX="yes"
+ENABLE_SLASH_COMMAND="yes"
+ENABLE_SHARDING="no"
+
+# Login command (DevTools + Chromium)
+DEVTOOLS_PORT=""
+CHROMIUM_PATH=""
+
+NODE_ENV="production"
+DEBUG_MODE="no"`;
+
+function SettingCard({
+    code,
+    badge,
+    children
+}: {
+    code: string;
+    badge: ReactNode;
+    children: ReactNode;
+}) {
+    return (
+        <div className="rounded-lg border-1 border-solid border-third p-4">
+            <div className="flex items-center gap-2">
+                <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
+                    {code}
+                </code>
+                {badge}
+            </div>
+            <div className="mt-2 font-sans text-sm">{children}</div>
+        </div>
+    );
+}
 
 export default function ConfigurationPage() {
     const { t } = useLocale();
@@ -23,7 +70,7 @@ export default function ConfigurationPage() {
                         </Link>
                         <div>
                             <Typography className="font-sans text-2xl font-medium">
-                                {t.configuration.title}
+                                {renderWithCode(t.configuration.title)}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
                                 {renderWithCode(t.configuration.subtitle)}
@@ -31,10 +78,28 @@ export default function ConfigurationPage() {
                         </div>
                     </div>
 
+                    <div className="flex flex-col gap-3">
+                        <Typography className="font-sans text-xl font-semibold">
+                            {renderWithCode(t.configuration.overview.title)}
+                        </Typography>
+                        <Typography className="font-sans text-sm">
+                            {renderWithCode(t.configuration.overview.intro)}
+                        </Typography>
+                        <ul className="m-0 flex list-disc flex-col gap-2 pl-5">
+                            {t.configuration.overview.items.map((item, index) => (
+                                <li key={index}>
+                                    <Typography className="font-sans text-sm">
+                                        {renderWithCode(item)}
+                                    </Typography>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
-                                {t.configuration.essential.title}
+                                {renderWithCode(t.configuration.essential.title)}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
                                 {renderWithCode(t.configuration.essential.description)}
@@ -42,113 +107,149 @@ export default function ConfigurationPage() {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.essential
-                                                .discordToken.name
-                                        }
-                                    </code>
+                            <SettingCard
+                                code={t.configuration.essential.discordToken.name}
+                                badge={
                                     <span className="rounded bg-secondary px-2 py-0.5 text-xs text-white">
                                         {t.common.required}
                                     </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
+                                }
+                            >
+                                <Typography component="span">
                                     {renderWithCode(
-                                        t.configuration.essential.discordToken
-                                            .description
+                                        t.configuration.essential.discordToken.description
                                     )}
                                 </Typography>
-                            </div>
+                            </SettingCard>
 
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.essential.mainPrefix
-                                                .name
-                                        }
-                                    </code>
-                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
-                                        {t.common.default}:{" "}
-                                        {
-                                            t.configuration.essential.mainPrefix
-                                                .default
-                                        }
-                                    </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.essential.mainPrefix
-                                            .description
-                                    )}
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.essential.mainServer
-                                                .name
-                                        }
-                                    </code>
+                            <SettingCard
+                                code={t.configuration.essential.spotify.name}
+                                badge={
                                     <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
                                         {t.common.optional}
                                     </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
+                                }
+                            >
+                                <Typography component="span">
                                     {renderWithCode(
-                                        t.configuration.essential.mainServer
-                                            .description
+                                        t.configuration.essential.spotify.description
                                     )}
                                 </Typography>
-                            </div>
+                            </SettingCard>
 
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {t.configuration.essential.locale.name}
-                                    </code>
+                            <SettingCard
+                                code={t.configuration.essential.stegripeLyrics.name}
+                                badge={
+                                    <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
+                                        {t.common.optional}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.essential.stegripeLyrics.description
+                                    )}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.essential.mainPrefix.name}
+                                badge={
                                     <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
                                         {t.common.default}:{" "}
-                                        {
-                                            t.configuration.essential.locale
-                                                .default
-                                        }
+                                        {t.configuration.essential.mainPrefix.default}
                                     </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
+                                }
+                            >
+                                <Typography component="span">
                                     {renderWithCode(
-                                        t.configuration.essential.locale
-                                            .description
+                                        t.configuration.essential.mainPrefix.description
+                                    )}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.essential.mainServer.name}
+                                badge={
+                                    <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
+                                        {t.common.optional}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.essential.mainServer.description
+                                    )}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.essential.devs.name}
+                                badge={
+                                    <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
+                                        {t.common.optional}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.essential.devs.description
+                                    )}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.essential.locale.name}
+                                badge={
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {t.configuration.essential.locale.default}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.essential.locale.description
                                     )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
                                     {t.configuration.essential.locale.options}
                                 </Typography>
-                            </div>
+                            </SettingCard>
 
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.essential.spotify
-                                                .name
-                                        }
-                                    </code>
+                            <SettingCard
+                                code={t.configuration.essential.activityTypes.name}
+                                badge={
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {t.configuration.essential.activityTypes.default}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.essential.activityTypes.description
+                                    )}
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {t.configuration.essential.activityTypes.options}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.essential.activities.name}
+                                badge={
                                     <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
                                         {t.common.optional}
                                     </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
+                                }
+                            >
+                                <Typography component="span">
                                     {renderWithCode(
-                                        t.configuration.essential.spotify
-                                            .description
+                                        t.configuration.essential.activities.description
                                     )}
                                 </Typography>
-                            </div>
+                            </SettingCard>
                         </div>
                     </div>
 
@@ -158,15 +259,7 @@ export default function ConfigurationPage() {
                         </Typography>
                         <CopyBlock
                             language="bash"
-                            text={`# Essential configuration (only DISCORD_TOKEN is required!)
-DISCORD_TOKEN="your-first-discord-bot-token", "your-optional-second-discord-bot-token"
-MAIN_PREFIX="!"
-MAIN_SERVER="972407605295198258"
-LOCALE="en-US"
-
-# Spotify (optional - for Spotify links support)
-SPOTIFY_CLIENT_ID="your-spotify-id"
-SPOTIFY_CLIENT_SECRET="your-spotify-secret"`}
+                            text={EXAMPLE_ENV}
                             theme={dracula}
                             showLineNumbers
                             codeBlock
@@ -176,226 +269,37 @@ SPOTIFY_CLIENT_SECRET="your-spotify-secret"`}
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
-                                {t.configuration.optional.title}
+                                {renderWithCode(t.configuration.multiBot.title)}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
-                                {renderWithCode(t.configuration.optional.description)}
+                                {renderWithCode(t.configuration.multiBot.description)}
                             </Typography>
                         </div>
-
-                        <div className="flex flex-col gap-4">
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.optional.altPrefix
-                                                .name
-                                        }
-                                    </code>
-                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
-                                        {t.common.default}:{" "}
-                                        {
-                                            t.configuration.optional.altPrefix
-                                                .default
-                                        }
-                                    </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional.altPrefix
-                                            .description
-                                    )}
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                    {t.configuration.optional.activities.name}
-                                </code>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional.activities
-                                            .description
-                                    )}
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                    {
-                                        t.configuration.optional.activityTypes
-                                            .name
-                                    }
-                                </code>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional.activityTypes
-                                            .description
-                                    )}
-                                </Typography>
-                                <Typography className="mt-1 font-sans text-xs text-fourth">
-                                    {
-                                        t.configuration.optional.activityTypes
-                                            .options
-                                    }
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.optional.embedColor
-                                                .name
-                                        }
-                                    </code>
-                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
-                                        {t.common.default}:{" "}
-                                        {
-                                            t.configuration.optional.embedColor
-                                                .default
-                                        }
-                                    </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional.embedColor
-                                            .description
-                                    )}
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {t.configuration.optional.emojis.name}
-                                    </code>
-                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
-                                        {t.common.default}:{" "}
-                                        {
-                                            t.configuration.optional.emojis
-                                                .defaults
-                                        }
-                                    </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional.emojis
-                                            .description
-                                    )}
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.optional
-                                                .musicSelection.name
-                                        }
-                                    </code>
-                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
-                                        {t.common.default}:{" "}
-                                        {
-                                            t.configuration.optional
-                                                .musicSelection.default
-                                        }
-                                    </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional.musicSelection
-                                            .description
-                                    )}
-                                </Typography>
-                                <Typography className="mt-1 font-sans text-xs text-fourth">
-                                    {
-                                        t.configuration.optional.musicSelection
-                                            .options
-                                    }
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.optional.audioCache
-                                                .name
-                                        }
-                                    </code>
-                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
-                                        {t.common.default}:{" "}
-                                        {
-                                            t.configuration.optional.audioCache
-                                                .default
-                                        }
-                                    </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional.audioCache
-                                            .description
-                                    )}
-                                </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                    {
-                                        t.configuration.optional
-                                            .requestChannelSplash.name
-                                    }
-                                </code>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.optional
-                                            .requestChannelSplash.description
-                                    )}
-                                </Typography>
-                                <Typography className="mt-1 font-sans text-xs text-fourth">
-                                    {t.common.default}:{" "}
-                                    {
-                                        t.configuration.optional
-                                            .requestChannelSplash.default
-                                    }
-                                </Typography>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                        <Typography className="font-sans text-lg font-medium">
-                            {t.common.example} optional.env
+                        <Typography className="font-sans text-sm font-medium">
+                            {renderWithCode(t.configuration.multiBot.example)}
                         </Typography>
                         <CopyBlock
                             language="bash"
-                            text={`# Alternative prefixes
-ALT_PREFIX="{mention}"
-
-# Bot activities
-ACTIVITIES="My default prefix is {prefix}, music with {userCount} users"
-ACTIVITY_TYPES="PLAYING, LISTENING"
-
-# Customization
-EMBED_COLOR="22C9FF"
-YES_EMOJI="✅"
-NO_EMOJI="❌"
-REQUEST_CHANNEL_SPLASH="https://cdn.stegripe.org/images/rawon_splash.png"
-
-# Other settings
-MUSIC_SELECTION_TYPE="message"
-ENABLE_AUDIO_CACHE="yes"`}
+                            text={t.configuration.multiBot.exampleCode}
                             theme={dracula}
-                            showLineNumbers
+                            showLineNumbers={false}
                             codeBlock
                         />
+                        <ul className="m-0 flex list-disc flex-col gap-2 pl-5">
+                            {t.configuration.multiBot.features.map((line, index) => (
+                                <li key={index}>
+                                    <Typography className="font-sans text-sm">
+                                        {renderWithCode(line)}
+                                    </Typography>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
 
                     <div className="flex flex-col gap-4">
                         <div>
                             <Typography className="font-sans text-xl font-semibold">
-                                {t.configuration.developer.title}
+                                {renderWithCode(t.configuration.developer.title)}
                             </Typography>
                             <Typography className="font-sans text-sm text-fourth">
                                 {renderWithCode(t.configuration.developer.description)}
@@ -403,112 +307,131 @@ ENABLE_AUDIO_CACHE="yes"`}
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {t.configuration.developer.devs.name}
-                                    </code>
+                            <SettingCard
+                                code={t.configuration.developer.enablePrefix.name}
+                                badge={
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {t.configuration.developer.enablePrefix.default}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.developer.enablePrefix.description
+                                    )}
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {t.configuration.developer.enablePrefix.options}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.developer.enableSlash.name}
+                                badge={
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {t.configuration.developer.enableSlash.default}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.developer.enableSlash.description
+                                    )}
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {t.configuration.developer.enableSlash.options}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.developer.enableSharding.name}
+                                badge={
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {t.configuration.developer.enableSharding.default}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.developer.enableSharding.description
+                                    )}
+                                </Typography>
+                                <Typography className="mt-1 font-sans text-xs text-fourth">
+                                    {t.configuration.developer.enableSharding.options}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.developer.devtoolsPort.name}
+                                badge={
+                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
+                                        {t.common.default}:{" "}
+                                        {t.configuration.developer.devtoolsPort.default}
+                                    </span>
+                                }
+                            >
+                                <Typography component="span">
+                                    {renderWithCode(
+                                        t.configuration.developer.devtoolsPort.description
+                                    )}
+                                </Typography>
+                            </SettingCard>
+
+                            <SettingCard
+                                code={t.configuration.developer.chromiumPath.name}
+                                badge={
                                     <span className="rounded bg-gray-500 px-2 py-0.5 text-xs text-white">
                                         {t.common.optional}
                                     </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
+                                }
+                            >
+                                <Typography component="span">
                                     {renderWithCode(
-                                        t.configuration.developer.devs
-                                            .description
+                                        t.configuration.developer.chromiumPath.description
                                     )}
                                 </Typography>
-                            </div>
+                            </SettingCard>
 
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.developer
-                                                .enablePrefix.name
-                                        }
-                                    </code>
+                            <SettingCard
+                                code={t.configuration.developer.nodeEnv.name}
+                                badge={
                                     <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
                                         {t.common.default}:{" "}
-                                        {
-                                            t.configuration.developer
-                                                .enablePrefix.default
-                                        }
+                                        {t.configuration.developer.nodeEnv.default}
                                     </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
+                                }
+                            >
+                                <Typography component="span">
                                     {renderWithCode(
-                                        t.configuration.developer.enablePrefix
-                                            .description
+                                        t.configuration.developer.nodeEnv.description
                                     )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
-                                    {
-                                        t.configuration.developer.enablePrefix
-                                            .options
-                                    }
+                                    {t.configuration.developer.nodeEnv.options}
                                 </Typography>
-                            </div>
+                            </SettingCard>
 
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.developer.enableSlash
-                                                .name
-                                        }
-                                    </code>
+                            <SettingCard
+                                code={t.configuration.developer.debugMode.name}
+                                badge={
                                     <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
                                         {t.common.default}:{" "}
-                                        {
-                                            t.configuration.developer.enableSlash
-                                                .default
-                                        }
+                                        {t.configuration.developer.debugMode.default}
                                     </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
+                                }
+                            >
+                                <Typography component="span">
                                     {renderWithCode(
-                                        t.configuration.developer.enableSlash
-                                            .description
+                                        t.configuration.developer.debugMode.description
                                     )}
                                 </Typography>
                                 <Typography className="mt-1 font-sans text-xs text-fourth">
-                                    {
-                                        t.configuration.developer.enableSlash
-                                            .options
-                                    }
+                                    {t.configuration.developer.debugMode.options}
                                 </Typography>
-                            </div>
-
-                            <div className="rounded-lg border-1 border-solid border-third p-4">
-                                <div className="flex items-center gap-2">
-                                    <code className="rounded bg-third px-2 py-1 font-mono text-sm text-white">
-                                        {
-                                            t.configuration.developer.debugMode
-                                                .name
-                                        }
-                                    </code>
-                                    <span className="rounded bg-fourth px-2 py-0.5 text-xs text-white">
-                                        {t.common.default}:{" "}
-                                        {
-                                            t.configuration.developer.debugMode
-                                                .default
-                                        }
-                                    </span>
-                                </div>
-                                <Typography className="mt-2 font-sans text-sm">
-                                    {renderWithCode(
-                                        t.configuration.developer.debugMode
-                                            .description
-                                    )}
-                                </Typography>
-                                <Typography className="mt-1 font-sans text-xs text-fourth">
-                                    {
-                                        t.configuration.developer.debugMode
-                                            .options
-                                    }
-                                </Typography>
-                            </div>
+                            </SettingCard>
                         </div>
                     </div>
 
@@ -518,12 +441,7 @@ ENABLE_AUDIO_CACHE="yes"`}
                         </Typography>
                         <CopyBlock
                             language="bash"
-                            text={`# Developer configuration (for bot developers)
-DEVS="319872685897416725, 397322976552550400"
-ENABLE_PREFIX="yes"
-ENABLE_SLASH_COMMAND="yes"
-NODE_ENV="production"
-DEBUG_MODE="no"`}
+                            text={EXAMPLE_DEV_ENV}
                             theme={dracula}
                             showLineNumbers
                             codeBlock

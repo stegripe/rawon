@@ -4,36 +4,38 @@ permissions:
   contents: write
 
 on:
-    push:
-        branches: [pages]
+  push:
+    branches:
+      - pages
 
 jobs:
-    pages:
-        name: Pages Deployment
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+  pages:
+    name: Pages Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v4
-              with:
-                  version: 9
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
-            - name: Install Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version-file: ".node-version"
-                  cache: pnpm
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          check-latest: false
+          cache: pnpm
 
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --config.strict-dep-builds=false --config.dangerously-allow-all-builds=true
 
-            - name: Build site
-              run: pnpm run build
+      - name: Build site
+        run: pnpm --config.verify-deps-before-run=false --config.strict-dep-builds=false run build
 
-            - name: Deploy site
-              uses: JamesIves/github-pages-deploy-action@v4
-              with:
-                  branch: gh-pages
-                  folder: out
+      - name: Deploy site
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: out

@@ -1,118 +1,85 @@
 import { Fragment, ReactNode } from "react";
 
-const renderInlineFormatting = (text: string): ReactNode[] => {
-    const parts: ReactNode[] = [];
-    let currentIndex = 0;
-    
-    const regex = /(`[^`]*`|\*\*[^*]*\*\*)/g;
-    let match;
-    
-    while ((match = regex.exec(text)) !== null) {
-        if (match.index > currentIndex) {
-            parts.push(
-                <Fragment key={`text-${currentIndex}`}>
-                    {text.slice(currentIndex, match.index)}
-                </Fragment>
-            );
-        }
-        
-        const matched = match[0];
-        if (matched.startsWith("`") && matched.endsWith("`")) {
-            const codeContent = matched.slice(1, -1);
-            parts.push(
-                <code
-                    key={`code-${match.index}`}
-                    className="rounded bg-third/20 px-1.5 py-0.5 font-mono text-sm"
-                >
-                    {codeContent}
-                </code>
-            );
-        } else if (matched.startsWith("**") && matched.endsWith("**")) {
-            const boldContent = matched.slice(2, -2);
-            parts.push(
-                <strong key={`bold-${match.index}`}>
-                    {boldContent}
-                </strong>
-            );
-        }
-        
-        currentIndex = match.index + matched.length;
-    }
-    
-    if (currentIndex < text.length) {
-        parts.push(
-            <Fragment key={`text-${currentIndex}`}>
-                {text.slice(currentIndex)}
-            </Fragment>
-        );
-    }
-    
-    return parts;
-};
+function parseMarkdown(text: string): ReactNode[] {
+    if (!text) return [];
 
-export const renderWithCode = (text: string): ReactNode[] => {
-    const parts: ReactNode[] = [];
-    let currentIndex = 0;
-    
-    const regex = /(`[^`]*`|\*\*[^*]*\*\*|\[[^\]]+\]\([^)]+\))/g;
-    let match;
-    
-    while ((match = regex.exec(text)) !== null) {
-        if (match.index > currentIndex) {
-            parts.push(
-                <Fragment key={`text-${currentIndex}`}>
-                    {text.slice(currentIndex, match.index)}
-                </Fragment>
-            );
-        }
-        
-        const matched = match[0];
-        if (matched.startsWith("`") && matched.endsWith("`")) {
-            const codeContent = matched.slice(1, -1);
-            parts.push(
-                <code
-                    key={`code-${match.index}`}
-                    className="rounded bg-third/20 px-1.5 py-0.5 font-mono text-sm"
-                >
-                    {codeContent}
-                </code>
-            );
-        } else if (matched.startsWith("**") && matched.endsWith("**")) {
-            const boldContent = matched.slice(2, -2);
-            parts.push(
-                <strong key={`bold-${match.index}`}>
-                    {boldContent}
-                </strong>
-            );
-        } else if (matched.startsWith("[") && matched.includes("](")) {
-            const linkMatch = matched.match(/\[([^\]]+)\]\(([^)]+)\)/);
-            if (linkMatch) {
-                const linkText = linkMatch[1];
-                const linkUrl = linkMatch[2];
-                parts.push(
-                    <a
-                        key={`link-${match.index}`}
-                        href={linkUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-secondary underline hover:text-secondary/80"
-                    >
-                        {renderInlineFormatting(linkText)}
-                    </a>
+    const nodes: ReactNode[] = [];
+    let i = 0;
+
+    while (i < text.length) {
+        if (text.startsWith("**", i)) {
+            const close = text.indexOf("**", i + 2);
+            if (close !== -1) {
+                const inner = text.slice(i + 2, close);
+                nodes.push(
+                    <strong key={`b-${i}`} className="font-semibold">
+                        {parseMarkdown(inner)}
+                    </strong>
                 );
+                i = close + 2;
+                continue;
             }
         }
-        
-        currentIndex = match.index + matched.length;
+
+        if (text[i] === "`") {
+            const close = text.indexOf("`", i + 1);
+            if (close !== -1 && close > i + 1) {
+                nodes.push(
+                    <code
+                        key={`c-${i}`}
+                        className="rounded bg-third/20 px-1.5 py-0.5 font-mono text-sm"
+                    >
+                        {text.slice(i + 1, close)}
+                    </code>
+                );
+                i = close + 1;
+                continue;
+            }
+        }
+
+        if (text[i] === "[") {
+            const rest = text.slice(i);
+            const m = /^\[([^\]]*)\]\(([^)]*)\)/.exec(rest);
+            if (m) {
+                const href = m[2];
+                const isRelative =
+                    href.startsWith("/") ||
+                    href.startsWith("#") ||
+                    href.startsWith("?");
+                nodes.push(
+                    <a
+                        key={`a-${i}`}
+                        href={href}
+                        {...(isRelative
+                            ? {}
+                            : { target: "_blank", rel: "noopener noreferrer" })}
+                        className="text-secondary underline hover:text-secondary/80"
+                    >
+                        {parseMarkdown(m[1])}
+                    </a>
+                );
+                i += m[0].length;
+                continue;
+            }
+        }
+
+        let j = i + 1;
+        while (j < text.length) {
+            const c = text[j];
+            if (c === "`" || c === "[" || text.startsWith("**", j)) break;
+            j++;
+        }
+
+        if (j > i) {
+            nodes.push(<Fragment key={`t-${i}`}>{text.slice(i, j)}</Fragment>);
+            i = j;
+        } else {
+            nodes.push(<Fragment key={`t-${i}`}>{text[i]}</Fragment>);
+            i++;
+        }
     }
-    
-    if (currentIndex < text.length) {
-        parts.push(
-            <Fragment key={`text-${currentIndex}`}>
-                {text.slice(currentIndex)}
-            </Fragment>
-        );
-    }
-    
-    return parts;
-};
+
+    return nodes;
+}
+
+export const renderWithCode = (text: string): ReactNode[] => parseMarkdown(text);

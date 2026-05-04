@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#__next span.prismjs,
+#__next span.prismjs code {
+    font-family: var(--font-code-block), ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-size: 0.875rem;
+}
