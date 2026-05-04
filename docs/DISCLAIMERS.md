@@ -11,10 +11,10 @@ Please read carefully before using this bot.
 
 3. **User Responsibility**: You are responsible for how you use this bot and what content is played through it.
 
-## Code Modifications
+## Code modifications
 
-1. **License**: This bot is open source and can be modified and redistributed under the [AGPL-3.0](https://opensource.org/licenses/AGPL-3.0) license.
+1. **License**: This project is licensed under [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/). The full legal text is in the repository [`LICENSE`](../LICENSE) file.
 
-2. **No Warranty**: As stated in the license, we are **not responsible** for any damages or losses resulting from modifying, redistributing, or using this code.
+2. **No warranty**: As stated in the license, we are **not responsible** for any damages or losses resulting from use of this code. Follow the license terms for attribution, non-commercial use, and restrictions on sharing adapted material.
 
 3. **Attribution**: Never claim this project as your own original work. Always provide proper attribution to the original project.
