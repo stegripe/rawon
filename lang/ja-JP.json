@@ -24,7 +24,7 @@
                 "step1Fallback": "1. サーバーに表示されたブラウザウィンドウを見つけてください",
                 "step2WithUrl": "2. Googleアカウントでログインしてください",
                 "step2Fallback": "2. リモートの場合、`chrome://inspect`からDevToolsを開き、{target}を追加してください",
-                "step3": "3. ボットがログイン完了を自動検出します",
+                "step3": "3. ログイン完了は自動で検出されます",
                 "step4": "4. リモートDevTools URL: {url}（オプション）",
                 "timeLimit": "ログイン完了まで {minutes}分 あります。",
                 "loginSuccess": "ログイン成功",
@@ -221,7 +221,7 @@
                 "usage": "{prefix}lyrics [曲]"
             },
             "nowplaying": {
-                "description": "メディアプレイヤーのステータス",
+                "description": "再生ステータスを表示",
                 "disableButton": "「前に戻る」ボタンは無効化され、削除されました。",
                 "pauseResumeButton": "一時停止/再開",
                 "skipButton": "スキップ",
@@ -234,12 +234,12 @@
                 "unknownDuration": "再生時間不明"
             },
             "pause": {
-                "alreadyPause": "プレイヤーはすでに一時停止しています。",
-                "description": "プレイヤーを一時停止",
-                "pauseMessage": "プレイヤーは一時停止されました。"
+                "alreadyPause": "再生はすでに一時停止されています。",
+                "description": "再生を一時停止",
+                "pauseMessage": "再生を一時停止しました。"
             },
             "play": {
-                "alreadyPlaying": "そのプレイヤーは{voiceChannel}ですでに再生しています。",
+                "alreadyPlaying": "{voiceChannel}ですでに再生中です。",
                 "description": "音楽を再生",
                 "noSongData": "そのURLは曲データを含んでいません。",
                 "slashQueryDescription": "検索キーワード",
@@ -268,9 +268,9 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "プレイヤーは一時停止されていません。",
+                "alreadyResume": "再生は一時停止されていません。",
                 "description": "プレイバックを再開",
-                "resumeMessage": "プレイヤーのプレイバックは再開されました。"
+                "resumeMessage": "再生を再開しました。"
             },
             "search": {
                 "cancelMessage": "{cancel}もしくはcと送信し検索をキャンセルできます。",
@@ -331,16 +331,16 @@
                 "usage": "{prefix}skipto <{options} | 数>"
             },
             "stop": {
-                "description": "プレイヤーをストップ",
-                "stoppedMessage": "プレイヤーはストップされました。"
+                "description": "再生を停止",
+                "stoppedMessage": "再生を停止しました。"
             },
             "volume": {
                 "changeVolume": "ボリュームを変えるには、有効な数値を引数として提供してください。",
                 "currentVolume": "現在のボリュームは{volume}です。",
-                "description": "メディアプレイヤーのボリュームを変更",
+                "description": "再生音量を変更",
                 "newVolume": "ボリュームは{volume}にセットされました。",
                 "noPermission": "`100%`を超えるボリュームを設定するには、DJロールまたは**サーバー管理**権限が必要です。",
-                "plsPause": "{volume}にボリュームをセットするのではなくプレイヤーを一時停止してください。",
+                "plsPause": "{volume}に音量を設定する代わりに再生を一時停止してください。",
                 "slashDescription": "新しいボリューム",
                 "usage": "{prefix}volume [ボリューム]"
             },
@@ -375,7 +375,7 @@
             "wrongBot": "このコマンドはこのサーバーのメインボットである {botMention} で実行する必要があります。",
             "primaryBotFallback": "メインボット"
         },
-        "createMessage": "こんにちは、{author}、私のプレフィックスは{prefix}です。",
+        "createMessage": "こんにちは、{author}、プレフィックス: {prefix}",
         "cmdLoading": "起動中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "接続は正常に再構成されました。",
@@ -386,6 +386,9 @@
             "joiningAsSpeaker": "ステージチャンネルに移動しています、スピーカーとして接続しています…",
             "pauseQueue": "VCに誰もいません。リソースを削減するため、キューは一時停止されています。\nもし{duration}以内に誰もVCをに参加しない場合、キューは削除されます。",
             "pauseQueueFooter": "キューの一時停止",
+            "pauseRequesterDeaf": "{requester} がスピーカーミュート中のため、{song} を一時停止します。{duration} 以内に解除されない場合、その人の曲はキューから削除されます。",
+            "removeRequesterDeaf": "{requester} が {duration} 以内にスピーカーミュートを解除しなかったため、{count} 曲をキューから削除しました。",
+            "resumeRequesterDeaf": "リクエスト者のスピーカーミュートが解除されました。\n{song}を再開します。",
             "reconfigureConnection": "異なる地域のVCに接続しました、接続を再構成しています…",
             "resumeQueue": "VCにユーザーが接続しました。\n{song}を再開します。",
             "resumeQueueFooter": "キューの再開",
@@ -406,6 +409,8 @@
         "requestedBy": "リクエスト者",
         "unknown": "不明",
         "notInVoice": "音楽をリクエストするにはボイスチャンネルに参加する必要があります。",
+        "deafened": "音楽をリクエストする前にスピーカーミュートを解除する必要があります。",
+        "requesterDeafPaused": "リクエスト者がスピーカーミュート中です。解除されると再生を再開します。",
         "noResults": "検索結果が見つかりませんでした。",
         "addedToQueue": "{song} をキューに追加しました。",
         "addedPlaylistToQueue": "{playlist} から {count} 曲をキューに追加しました。",
@@ -447,11 +452,11 @@
             "noInVC": "それを行うにはVCに参加している必要があります。",
             "noQueue": "何も再生されていません。",
             "notPlaying": "現在音楽が再生されていません。まず曲を再生してください。",
-            "sameVC": "あなたは私と同じVCに参加する必要があります。",
+            "sameVC": "同じVCに参加する必要があります。",
             "useRequestChannel": "音楽コマンドにはリクエストチャンネル {channel} を使用してください。",
-            "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。プレイヤーのボタンを使用するか、曲名/リンクを直接入力してください。",
-            "validVCJoinable": "**`接続`**できませんでした、適切な権限をもっていることを確認してください。",
-            "validVCPermission": "**`再生`**できませんでした、適切な権限をもっていることを確認してください。"
+            "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。操作ボタンを使用するか、曲名/リンクを直接入力してください。",
+            "validVCJoinable": "**`接続`**できません。必要な権限があることを確認してください。",
+            "validVCPermission": "**`発言`**できません。必要な権限があることを確認してください。"
         }
     }
 }

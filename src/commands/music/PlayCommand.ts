@@ -17,6 +17,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { formatBoldPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import { isMemberDeafened } from "../../utils/functions/voiceStateGuards.js";
 import { checkQuery, handleVideos, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
 @ApplyOptions<Command.Options>({
@@ -59,6 +60,12 @@ export class PlayCommand extends ContextCommand {
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
+
+        if (isMemberDeafened(member)) {
+            return ctx.reply({
+                embeds: [createEmbed("warn", __("requestChannel.deafened"))],
+            });
+        }
 
         if (ctx.isCommandInteraction() && !localCtx.deferred) {
             await localCtx.deferReply();

@@ -3,13 +3,7 @@ import { type AudioPlayerState, type AudioResource } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
-import {
-    escapeMarkdown,
-    type GuildMember,
-    PermissionFlagsBits,
-    type SlashCommandBuilder,
-    type VoiceChannel,
-} from "discord.js";
+import { type GuildMember, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -17,8 +11,9 @@ import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
-import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
+import { hasRemoveSelectionPermission } from "../../utils/functions/musicControlPermissions.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 import { type SongManager } from "../../utils/structures/SongManager.js";
 
@@ -62,23 +57,6 @@ export class RemoveCommand extends ContextCommand {
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
 
-        const djRole = await client.utils.fetchDJRole(ctx.guild as NonNullable<typeof ctx.guild>);
-        if (
-            client.data.data?.[ctx.guild?.id ?? "..."]?.dj?.enable === true &&
-            (
-                client.channels.cache.get(
-                    ctx.guild?.queue?.connection?.joinConfig.channelId ?? "",
-                ) as VoiceChannel
-            ).members.size > 2 &&
-            !(member?.roles.cache.has(djRole?.id ?? "") === true) &&
-            !(member?.permissions.has("ManageGuild") === true)
-        ) {
-            void ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.remove.noPermission"), true)],
-            });
-            return;
-        }
-
         const queue = ctx.guild?.queue;
         if (!queue) {
             return;
@@ -103,7 +81,30 @@ export class RemoveCommand extends ContextCommand {
         const displayedSongs =
             queue.loopMode === "QUEUE" ? full : full.filter((val) => val.index >= (np?.index ?? 0));
         const cloned = [...displayedSongs.values()];
-        const songs = positions.map((x) => cloned[Number.parseInt(x, 10) - 1]).filter(Boolean);
+        const songs = positions
+            .map((x) => cloned[Number.parseInt(x, 10) - 1])
+            .filter((song): song is QueueSong => song !== undefined);
+
+        if (songs.length === 0) {
+            void ctx.reply({
+                embeds: [createEmbed("warn", __("commands.music.remove.noPositions"))],
+            });
+            return;
+        }
+
+        const canRemove = await hasRemoveSelectionPermission({
+            client,
+            guild: ctx.guild as NonNullable<typeof ctx.guild>,
+            member,
+            songs,
+        });
+
+        if (!canRemove) {
+            void ctx.reply({
+                embeds: [createEmbed("error", __("commands.music.remove.noPermission"), true)],
+            });
+            return;
+        }
 
         const isSkip = songs.map((x) => x.key).includes(np?.key ?? "");
 
@@ -141,7 +142,7 @@ export class RemoveCommand extends ContextCommand {
                 (song, index) =>
                     `${isSkip ? __("commands.music.remove.songSkip") : ""}${
                         ind * 10 + (index + 1)
-                    }.) **[${escapeMarkdown(parseHTMLElements(song.song.title))}](${song.song.url})**`,
+                    }.) ${formatBoldMarkdownLink(song.song.title, song.song.url)}`,
             );
 
             return texts.join("\n");

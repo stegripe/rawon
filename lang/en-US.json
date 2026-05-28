@@ -24,7 +24,7 @@
                 "step1Fallback": "1. Find the browser window that just appeared on the server",
                 "step2WithUrl": "2. Sign in with your Google account",
                 "step2Fallback": "2. If remote, open DevTools via `chrome://inspect` and add {target}",
-                "step3": "3. The bot will automatically detect when login is complete",
+                "step3": "3. Login completion is detected automatically",
                 "step4": "4. Remote DevTools URL: {url} (optional)",
                 "timeLimit": "You have {minutes} minutes to complete the login.",
                 "loginSuccess": "Login Successful",
@@ -221,11 +221,11 @@
                 "usage": "{prefix}lyrics [song]"
             },
             "nowplaying": {
-                "description": "Show the media player status",
+                "description": "Show playback status",
                 "disableButton": "Previous buttons are no longer active and removed.",
                 "pauseResumeButton": "Pause/Resume",
                 "skipButton": "Skip",
-                "stopButton": "Stop Player",
+                "stopButton": "Stop",
                 "showQueueButton": "Show Queue",
                 "emptyQueue": "Queue is empty.",
                 "error": "Error retrieving now playing: {message}",
@@ -234,12 +234,12 @@
                 "unknownDuration": "Unknown duration"
             },
             "pause": {
-                "alreadyPause": "The music player is already paused.",
-                "description": "Pause the music player",
-                "pauseMessage": "The music player has been paused."
+                "alreadyPause": "Playback is already paused.",
+                "description": "Pause playback",
+                "pauseMessage": "Playback paused."
             },
             "play": {
-                "alreadyPlaying": "The music player is already playing in the {voiceChannel} voice channel.",
+                "alreadyPlaying": "Playback is already active in the {voiceChannel} voice channel.",
                 "description": "Play some music",
                 "noSongData": "That URL doesn't have any song data.",
                 "slashQueryDescription": "Query to search",
@@ -268,9 +268,9 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "The music player isn't paused.",
-                "description": "Resume the music player",
-                "resumeMessage": "The music player has been resumed."
+                "alreadyResume": "Playback isn't paused.",
+                "description": "Resume playback",
+                "resumeMessage": "Playback resumed."
             },
             "search": {
                 "cancelMessage": "Type {cancel} or c to cancel music selection.",
@@ -281,7 +281,7 @@
                 "interactionPlaceholder": "Please select some music",
                 "noQuery": "Please provide some query to search.",
                 "noSelection": "No or invalid value entered, music selection canceled.",
-                "noTracks": "I can't obtain any search results.",
+                "noTracks": "No search results could be obtained.",
                 "queueEmbed": "Please select some music; you can choose more than one using blank space or {separator}.\n",
                 "slashQueryDescription": "Query to search",
                 "slashSourceDescription": "The source to search from",
@@ -331,16 +331,16 @@
                 "usage": "{prefix}skipto <{options} | number>"
             },
             "stop": {
-                "description": "Stop the music player",
-                "stoppedMessage": "The music player has been stopped."
+                "description": "Stop playback",
+                "stoppedMessage": "Playback stopped."
             },
             "volume": {
                 "changeVolume": "To change the volume, provide the volume number when using this command.",
                 "currentVolume": "The current volume is {volume}",
-                "description": "Change the media player volume",
+                "description": "Change playback volume",
                 "newVolume": "Volume has been set to {volume}",
                 "noPermission": "You need the DJ role or **Manage Server** permission to set the volume above `100%`",
-                "plsPause": "Please pause the music instead of setting the volume to {volume}",
+                "plsPause": "Please pause playback instead of setting the volume to {volume}",
                 "slashDescription": "New volume",
                 "usage": "{prefix}volume [new volume]"
             },
@@ -348,9 +348,9 @@
                 "description": "Set up a request channel for music",
                 "noPermission": "You need the **Manage Server** permission to use this command.",
                 "invalidChannel": "Please provide a valid text channel.",
-                "noBotPermissions": "I couldn't check my permissions for that channel.",
-                "missingBotPermissions": "I'm missing the following permissions in that channel: {permissions}",
-                "failedToSetup": "Failed to set up the request channel. Please check my permissions.",
+                "noBotPermissions": "Unable to check permissions for that channel.",
+                "missingBotPermissions": "Missing the following permissions in that channel: {permissions}",
+                "failedToSetup": "Failed to set up the request channel. Please check channel permissions.",
                 "alreadyHasChannel": "This server already has a request channel set to {channel}. Please remove it first before setting a new one.",
                 "channelAlreadyInUse": "This channel is already being used as a request channel.",
                 "noChannelToRemove": "There's no request channel set to remove.",
@@ -375,7 +375,7 @@
             "wrongBot": "This command must be executed on {botMention} as the primary bot for this server.",
             "primaryBotFallback": "the primary bot"
         },
-        "createMessage": "Hi {author}, my prefix is {prefix}",
+        "createMessage": "Hi {author}, prefix: {prefix}",
         "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Connection successfully re-configured.",
@@ -386,6 +386,9 @@
             "joiningAsSpeaker": "Moved to the stage channel, trying to join as Speaker...",
             "pauseQueue": "Everyone has left the voice channel. To save resources, the queue has been paused.\nIf no one joins the voice channel in the next {duration}, the queue will be deleted.",
             "pauseQueueFooter": "Queue Paused",
+            "pauseRequesterDeaf": "{requester} is deafened, pausing {song}. If they don't undeafen in {duration}, their songs will be removed from the queue.",
+            "removeRequesterDeaf": "{requester} didn't undeafen in {duration}, removed {count} song(s) from the queue.",
+            "resumeRequesterDeaf": "Requester undeafened.\nResuming {song}",
             "reconfigureConnection": "Moved to a voice channel with a different region, re-configuring connection...",
             "resumeQueue": "Someone has joined the voice channel.\nResuming {song}",
             "resumeQueueFooter": "Queue Resumed",
@@ -406,6 +409,8 @@
         "requestedBy": "Requested by",
         "unknown": "Unknown",
         "notInVoice": "You need to be in a voice channel to request music.",
+        "deafened": "You need to undeafen before requesting music.",
+        "requesterDeafPaused": "The requester is deafened. Playback resumes when they undeafen.",
         "noResults": "No results found for your query.",
         "addedToQueue": "Added {song} to the queue.",
         "addedPlaylistToQueue": "Added {count} songs from {playlist} to the queue.",
@@ -428,14 +433,14 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "I'm missing the following permissions in {channel}: {permissions}"
+            "botMissingChannelPerms": "Missing the following permissions in {channel}: {permissions}"
         },
         "cooldownMessage": "{author}, please wait {timeleft} due to cooldown.",
         "generalHandler": {
             "errorJoining": "Error while joining the voice channel because: {message}",
             "errorPlaying": "An error occurred while trying to play music because: {message}",
             "handleVideoInitial": "Added {length} songs to the queue.",
-            "leftVC": "Left the voice channel because I've been inactive for too long.",
+            "leftVC": "Left the voice channel after being inactive for too long.",
             "queueEnded": "Queue has ended. Use {usage} to play more music.",
             "startPlaying": "Started playing {song}",
             "stopPlaying": "Stopped playing {song}",
@@ -447,11 +452,11 @@
             "noInVC": "Sorry, but you need to be in a voice channel to do that.",
             "noQueue": "Nothing is being played.",
             "notPlaying": "There's no music currently playing. Please play a song first.",
-            "sameVC": "You need to be in the same voice channel as mine.",
+            "sameVC": "You need to be in the same voice channel.",
             "useRequestChannel": "Please use the request channel {channel} for music commands.",
-            "useRequestChannelDirect": "This command is disabled in the request channel. Please use the player buttons or type the song title/link directly.",
-            "validVCJoinable": "Sorry, but I can't **`Connect`** to your voice channel. Make sure I have the proper permissions.",
-            "validVCPermission": "Sorry, but I can't **`Speak`** in this voice channel; make sure I have the proper permissions."
+            "useRequestChannelDirect": "This command is disabled in the request channel. Please use the controls or type the song title/link directly.",
+            "validVCJoinable": "Unable to **`Connect`** to your voice channel. Make sure the proper permissions are granted.",
+            "validVCPermission": "Unable to **`Speak`** in this voice channel; make sure the proper permissions are granted."
         }
     }
 }

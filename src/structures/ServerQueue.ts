@@ -12,6 +12,7 @@ import { type LoopMode, type QueueSong, type SavedQueueSong, type Song } from ".
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatBoldPrefixedCommand } from "../utils/functions/formatCodeSpan.js";
+import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
 import { checkQuery, play, searchTrack } from "../utils/handlers/GeneralUtil.js";
@@ -28,6 +29,12 @@ import {
 import { type Rawon } from "./Rawon.js";
 
 const nonEnum = { enumerable: false };
+
+type RequesterDeafTimeoutState = {
+    requesterId: Snowflake;
+    songKey: Snowflake;
+    timeout: NodeJS.Timeout;
+};
 
 export class ServerQueue {
     public readonly player: AudioPlayer = createAudioPlayer();
@@ -55,6 +62,7 @@ export class ServerQueue {
     private _prefetchedAutoplaySong: { fromSongKey: Snowflake; song: Song } | null = null;
     private _autoplayPrefetchPromise: Promise<void> | null = null;
     private _autoplayPrefetchForKey: Snowflake | null = null;
+    private _requesterDeafTimeout: RequesterDeafTimeoutState | null = null;
 
     public constructor(public readonly textChannel: TextChannel) {
         Object.defineProperties(this, {
@@ -70,6 +78,7 @@ export class ServerQueue {
             _prefetchedAutoplaySong: nonEnum,
             _autoplayPrefetchPromise: nonEnum,
             _autoplayPrefetchForKey: nonEnum,
+            _requesterDeafTimeout: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -83,6 +92,7 @@ export class ServerQueue {
                     newState.status === AudioPlayerStatus.Playing &&
                     oldState.status !== AudioPlayerStatus.Paused
                 ) {
+                    this.clearRequesterDeafTimeout();
                     this.endSkip();
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
@@ -212,7 +222,10 @@ export class ServerQueue {
                                     createEmbed(
                                         "info",
                                         `⏹️ **|** ${__mf("utils.generalHandler.stopPlaying", {
-                                            song: `**[${song.song.title}](${song.song.url})**`,
+                                            song: formatBoldMarkdownLink(
+                                                song.song.title,
+                                                song.song.url,
+                                            ),
                                         })}`,
                                     ).setThumbnail(
                                         typeof song.song.thumbnail === "string" &&
@@ -649,6 +662,7 @@ export class ServerQueue {
 
     public stop(): void {
         this.stopPositionSaveInterval();
+        this.clearRequesterDeafTimeout();
         try {
             const songUrls: string[] = this.songs.map((s) => s.song.url);
             try {
@@ -798,6 +812,22 @@ export class ServerQueue {
         this._skipVoters = value;
     }
 
+    public get requesterDeafTimeout(): RequesterDeafTimeoutState | null {
+        return this._requesterDeafTimeout;
+    }
+
+    public setRequesterDeafTimeout(value: RequesterDeafTimeoutState): void {
+        this.clearRequesterDeafTimeout();
+        this._requesterDeafTimeout = value;
+    }
+
+    public clearRequesterDeafTimeout(): void {
+        if (this._requesterDeafTimeout !== null) {
+            clearTimeout(this._requesterDeafTimeout.timeout);
+            this._requesterDeafTimeout = null;
+        }
+    }
+
     public get lastMusicMsg(): Snowflake | null {
         return this._lastMusicMsg;
     }
@@ -899,7 +929,7 @@ export class ServerQueue {
                         createEmbed(
                             "info",
                             `▶️ **|** ${__mf("utils.generalHandler.startPlaying", {
-                                song: `**[${newSong.title}](${newSong.url})**`,
+                                song: formatBoldMarkdownLink(newSong.title, newSong.url),
                             })}`,
                         ).setThumbnail(thumb),
                     ],

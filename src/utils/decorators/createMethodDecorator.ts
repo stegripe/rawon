@@ -12,7 +12,7 @@ export function createMethodDecorator<TC = any, Target extends FunctionType = Fu
                 return;
             }
 
-            originalMethod.apply(this, args);
+            return originalMethod.apply(this, args);
         };
     };
 }

@@ -24,7 +24,7 @@
                 "step1Fallback": "1. 找到伺服器上剛剛出現的瀏覽器視窗",
                 "step2WithUrl": "2. 使用您的Google帳號登入",
                 "step2Fallback": "2. 如果是遠程，透過 `chrome://inspect` 開啟DevTools並新增 {target}",
-                "step3": "3. 機器人將自動偵測登入完成",
+                "step3": "3. 登入完成後會自動偵測",
                 "step4": "4. 遠程DevTools URL: {url}（可選）",
                 "timeLimit": "您有 {minutes}分鐘 完成登入。",
                 "loginSuccess": "登入成功",
@@ -221,7 +221,7 @@
                 "usage": "{prefix}lyrics [歌曲]"
             },
             "nowplaying": {
-                "description": "顯示媒體播放器狀態",
+                "description": "顯示播放狀態",
                 "disableButton": "以前的按鈕不再處於活動狀態並被刪除。",
                 "pauseResumeButton": "暫停/繼續",
                 "skipButton": "跳過",
@@ -234,12 +234,12 @@
                 "unknownDuration": "未知長度"
             },
             "pause": {
-                "alreadyPause": "音樂播放器已經被暫停。",
-                "description": "暫停音樂播放器",
-                "pauseMessage": "音樂播放器已暫停。"
+                "alreadyPause": "播放已暫停。",
+                "description": "暫停播放",
+                "pauseMessage": "播放已暫停。"
             },
             "play": {
-                "alreadyPlaying": "音樂播放器已經在 {voiceChannel} 語音通訊通道播放。",
+                "alreadyPlaying": "已在 {voiceChannel} 語音頻道播放。",
                 "description": "播放一些音樂",
                 "noSongData": "該 URL 沒有任何歌曲數據。",
                 "slashQueryDescription": "查詢搜索",
@@ -268,9 +268,9 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "音樂播放器沒有被暫停。",
+                "alreadyResume": "播放未暫停。",
                 "description": "恢復播放音樂",
-                "resumeMessage": "音樂播放器已繼續播放音樂。"
+                "resumeMessage": "播放已恢復。"
             },
             "search": {
                 "cancelMessage": "輸入 {cancel} 或 c 取消選曲。",
@@ -281,7 +281,7 @@
                 "interactionPlaceholder": "請選擇一些音樂",
                 "noQuery": "請提供一些資訊以進行搜索。",
                 "noSelection": "未輸入值或輸入無效值，選曲已取消。",
-                "noTracks": "我無法獲得任何搜索結果。",
+                "noTracks": "無法獲得任何搜尋結果。",
                 "queueEmbed": "請選擇一些音樂； 您可以使用空格選擇多個或 {separator}.\n",
                 "slashQueryDescription": "查詢搜索",
                 "slashSourceDescription": "應該把音樂帶到哪裡？",
@@ -331,13 +331,13 @@
                 "usage": "{prefix}skipto <{options} | 數字>"
             },
             "stop": {
-                "description": "停止音樂播放器",
-                "stoppedMessage": "音樂播放器已停止。"
+                "description": "停止播放",
+                "stoppedMessage": "播放已停止。"
             },
             "volume": {
                 "changeVolume": "如更改音量，請在使用此指令時提供音量數字。",
                 "currentVolume": "目前音量是 {volume}",
-                "description": "更改音樂播放器音量",
+                "description": "更改播放音量",
                 "newVolume": "音量已設置為 {volume}",
                 "noPermission": "您需要DJ身份組或**管理伺服器**權限才能將音量設置為`100%`以上。",
                 "plsPause": "請暫停音樂而不是將音量調到 {volume}",
@@ -348,9 +348,9 @@
                 "description": "設定音樂點播頻道",
                 "noPermission": "您需要**管理伺服器**權限才能使用此指令。",
                 "invalidChannel": "請提供有效的文字頻道。",
-                "noBotPermissions": "我無法檢查該頻道的權限。",
-                "missingBotPermissions": "我在該頻道缺少以下權限: {permissions}",
-                "failedToSetup": "設定點播頻道失敗。請檢查我的權限。",
+                "noBotPermissions": "無法檢查該頻道的權限。",
+                "missingBotPermissions": "該頻道缺少以下權限: {permissions}",
+                "failedToSetup": "設定點播頻道失敗。請檢查頻道權限。",
                 "alreadyHasChannel": "此伺服器已在 {channel} 設定了點播頻道。請先移除它，然後再設定新的。",
                 "channelAlreadyInUse": "此頻道已被用作點播頻道。",
                 "noChannelToRemove": "沒有設定點播頻道可供移除。",
@@ -375,7 +375,7 @@
             "wrongBot": "此指令必須在作為此伺服器主機器人的 {botMention} 上執行。",
             "primaryBotFallback": "主機器人"
         },
-        "createMessage": "你好 {author}, 我的前綴是 {prefix}",
+        "createMessage": "你好 {author}，前綴：{prefix}",
         "cmdLoading": "加載中...",
         "voiceStateUpdate": {
             "connectionReconfigured": "已成功重新配置連接。",
@@ -386,6 +386,9 @@
             "joiningAsSpeaker": "已移至舞台頻道，正在嘗試以演講者身份加入...",
             "pauseQueue": "所有人都離開了語音頻道。為了節省資源，隊列已暫停。\n如果在{duration}期內沒有人加入語音頻道，隊列將被刪除。",
             "pauseQueueFooter": "隊列已暫停",
+            "pauseRequesterDeaf": "{requester} 處於拒聽狀態，正在暫停 {song}。如果他們在 {duration} 內沒有解除拒聽，他們點播的歌曲將從佇列中移除。",
+            "removeRequesterDeaf": "{requester} 在 {duration} 內沒有解除拒聽，已從佇列中移除 {count} 首歌曲。",
+            "resumeRequesterDeaf": "點播者已解除拒聽。\n恢復播放 {song}",
             "reconfigureConnection": "移動到不同地區的語音通道，重新配置連接...",
             "resumeQueue": "有人加入了語音頻道。\n恢復中 {song}",
             "resumeQueueFooter": "隊列已恢復",
@@ -406,6 +409,8 @@
         "requestedBy": "點播者",
         "unknown": "未知",
         "notInVoice": "您需要在語音頻道中才能點歌。",
+        "deafened": "點歌前需要先解除拒聽。",
+        "requesterDeafPaused": "點播者處於拒聽狀態。解除拒聽後會繼續播放。",
         "noResults": "沒有找到您搜尋的結果。",
         "addedToQueue": "已將 {song} 添加到佇列。",
         "addedPlaylistToQueue": "已將 {playlist} 中的 {count} 首歌曲添加到佇列。",
@@ -428,14 +433,14 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "我在 {channel} 中缺少以下權限：{permissions}"
+            "botMissingChannelPerms": "{channel} 中缺少以下權限：{permissions}"
         },
         "cooldownMessage": "{author}，請稍等 {timeleft}的冷卻時間。",
         "generalHandler": {
             "errorJoining": "加入語音通道時出錯，因為: {message}",
             "errorPlaying": "嘗試播放音樂時出錯，因為: {message}",
             "handleVideoInitial": "已將 {length} 首歌曲添加到隊列中。",
-            "leftVC": "離開了語音頻道是因為我待用太久了。",
+            "leftVC": "因長時間未活動，已離開語音頻道。",
             "queueEnded": "隊列已經結束，使用{usage}播放更多音樂。",
             "startPlaying": "開始播放{song}",
             "stopPlaying": "停止播放{song}",
@@ -447,11 +452,11 @@
             "noInVC": "抱歉，您需要在語音頻道中才能執行此操作。",
             "noQueue": "沒有播放任何內容。",
             "notPlaying": "目前沒有音樂在播放。請先播放一首歌曲。",
-            "sameVC": "你需要和我在同一個語音頻道。",
+            "sameVC": "你需要在同一個語音頻道。",
             "useRequestChannel": "請使用點歌頻道 {channel} 來執行音樂指令。",
-            "useRequestChannelDirect": "此命令在請求頻道中已禁用。請使用播放器按鈕或直接輸入歌曲名稱/連結。",
-            "validVCJoinable": "對不起，我不能**`連接`**到你的語音頻道，請確保我有正確的權限。",
-            "validVCPermission": "對不起，我不能在這個語音頻道**`說話`**;請確保我有正確的權限。"
+            "useRequestChannelDirect": "此命令在請求頻道中已禁用。請使用控制按鈕或直接輸入歌曲名稱/連結。",
+            "validVCJoinable": "無法**`連接`**到你的語音頻道，請確保已授予正確權限。",
+            "validVCPermission": "無法在這個語音頻道**`說話`**；請確保已授予正確權限。"
         }
     }
 }
