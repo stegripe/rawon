@@ -134,9 +134,30 @@ export class CommandContext {
         await this.notifyPermissionIssueFallback();
     }
 
-    public async deferReply(): Promise<InteractionResponse | undefined> {
+    private shouldUseEphemeralReplies(): boolean {
+        return this.additionalArgs.get("ephemeralRequestChannel") === true;
+    }
+
+    private applyEphemeralFlag(options: InteractionReplyOptions): void {
+        const flags = options.flags;
+        options.flags = ((typeof flags === "number" ? flags : 0) |
+            MessageFlags.Ephemeral) as InteractionReplyOptions["flags"];
+    }
+
+    public async deferReply(
+        options?: Parameters<CommandInteraction["deferReply"]>[0],
+    ): Promise<InteractionResponse | undefined> {
         if (this.isInteraction()) {
-            return (this.context as CommandInteraction).deferReply();
+            const deferOptions = { ...(options ?? {}) } as NonNullable<
+                Parameters<CommandInteraction["deferReply"]>[0]
+            >;
+            if (this.shouldUseEphemeralReplies()) {
+                const flags = deferOptions.flags;
+                deferOptions.flags = ((typeof flags === "number" ? flags : 0) |
+                    MessageFlags.Ephemeral) as typeof deferOptions.flags;
+            }
+
+            return (this.context as CommandInteraction).deferReply(deferOptions);
         }
         return undefined;
     }
@@ -192,6 +213,10 @@ export class CommandContext {
         type: MessageInteractionAction = "editReply",
     ): Promise<Message> {
         try {
+            if (typeof options === "string") {
+                options = { content: options };
+            }
+
             const deletionBtn = new ActionRowBuilder<ButtonBuilder>().addComponents(
                 new ButtonBuilder().setEmoji("🗑️").setStyle(ButtonStyle.Danger),
             );
@@ -207,28 +232,45 @@ export class CommandContext {
                 ];
             }
             if (this.isInteraction()) {
-                (options as InteractionReplyOptions).withResponse = true;
-                const msg = (await (this.context as CommandInteraction)[type](options as any)) as
+                if (this.shouldUseEphemeralReplies() && type !== "editReply") {
+                    this.applyEphemeralFlag(options as InteractionReplyOptions);
+                }
+
+                if (type === "reply") {
+                    (options as InteractionReplyOptions).withResponse = true;
+                }
+
+                const interaction = this.context as CommandInteraction;
+                const msg = (await interaction[type](options as any)) as
+                    | { resource?: { message?: Message | null } }
                     | Message
                     | null
                     | undefined;
-                const channel = this.context.channel;
-                if (!msg?.id) {
-                    const res = await channel?.messages
-                        .fetch({ limit: 1 })
-                        .then((c) => c.first())
-                        .catch(() => null);
-                    return (res as Message) ?? (msg as Message);
+                if (msg instanceof Message) {
+                    return msg;
                 }
-                const res = await channel?.messages.fetch(msg.id).catch(() => null);
-                return res ?? msg;
+
+                const fetchedReply =
+                    type === "followUp" ? null : await interaction.fetchReply().catch(() => null);
+                if (fetchedReply) {
+                    return fetchedReply as Message;
+                }
+
+                const resourceMessage = msg?.resource?.message;
+                if (resourceMessage) {
+                    return resourceMessage;
+                }
+
+                const channel = this.context.channel;
+                const res = await channel?.messages
+                    .fetch({ limit: 1 })
+                    .then((c) => c.first())
+                    .catch(() => null);
+                return res as Message;
             }
             const flags = (options as InteractionReplyOptions).flags;
             if (flags !== undefined && ((flags as number) & MessageFlags.Ephemeral) !== 0) {
                 throw new Error("Cannot send ephemeral message in a non-interaction context.");
-            }
-            if (typeof options === "string") {
-                options = { content: options };
             }
 
             ((options as MessageReplyOptions).allowedMentions ??= {}).repliedUser = false;

@@ -16,7 +16,9 @@ import { ServerQueue } from "../structures/ServerQueue.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
 import { formatBoldCodeSpan } from "../utils/functions/formatCodeSpan.js";
+import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
+import { isMemberDeafened } from "../utils/functions/voiceStateGuards.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
 
@@ -527,6 +529,11 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             return;
         }
 
+        if (isMemberDeafened(member)) {
+            this.sendTemporaryReply(message, createEmbed("warn", __("requestChannel.deafened")));
+            return;
+        }
+
         this.container.logger.info(
             `[MultiBot] ${client.user?.tag} PROCESSING voice channel ${voiceChannel.id} (${voiceChannel.name}) for request from ${message.author.tag}`,
         );
@@ -626,7 +633,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             confirmEmbed = createEmbed(
                 "success",
                 `🎶 **|** ${__mf("requestChannel.addedPlaylistToQueue", {
-                    playlist: `**[${playlistTitle}](${playlistUrl})**`,
+                    playlist: formatBoldMarkdownLink(playlistTitle, playlistUrl),
                     count: `**\`${songs.items.length.toString()}\`**`,
                 })}`,
             );
@@ -642,7 +649,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             confirmEmbed = createEmbed(
                 "success",
                 `🎶 **|** ${__mf("requestChannel.addedToQueue", {
-                    song: `**[${songTitle}](${songUrl})**`,
+                    song: formatBoldMarkdownLink(songTitle, songUrl),
                 })}`,
             );
             if (songs.items[0].thumbnail) {

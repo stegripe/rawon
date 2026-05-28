@@ -1,12 +1,6 @@
 import { setTimeout } from "node:timers";
 import { joinVoiceChannel } from "@discordjs/voice";
-import {
-    escapeMarkdown,
-    type Message,
-    type StageChannel,
-    type TextChannel,
-    type VoiceChannel,
-} from "discord.js";
+import { type Message, type StageChannel, type TextChannel, type VoiceChannel } from "discord.js";
 import { type CommandContext } from "../../../structures/CommandContext.js";
 import { type Rawon } from "../../../structures/Rawon.js";
 import { ServerQueue } from "../../../structures/ServerQueue.js";
@@ -15,8 +9,8 @@ import { chunk } from "../../functions/chunk.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { createVoiceAdapter } from "../../functions/createVoiceAdapter.js";
 import { formatBoldCodeSpan } from "../../functions/formatCodeSpan.js";
+import { formatBoldMarkdownLink, formatMarkdownText } from "../../functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
-import { parseHTMLElements } from "../../functions/parseHTMLElements.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
 import { play } from "./play.js";
 
@@ -54,12 +48,11 @@ export async function handleVideos(
 
         if (toQueue.length === 1) {
             const song = toQueue[0];
-            const songTitle = escapeMarkdown(parseHTMLElements(song.title));
             const songUrl = song.url;
             const confirmEmbed = createEmbed(
                 "success",
                 `🎶 **|** ${__mf("requestChannel.addedToQueue", {
-                    song: `**[${songTitle}](${songUrl})**`,
+                    song: formatBoldMarkdownLink(song.title, songUrl),
                 })}`,
             );
             if (song.thumbnail) {
@@ -77,11 +70,10 @@ export async function handleVideos(
         }
 
         if (playlistMeta !== undefined) {
-            const playlistTitle = escapeMarkdown(parseHTMLElements(playlistMeta.title));
             const playlistText =
                 (playlistMeta.url?.length ?? 0) > 0
-                    ? `**[${playlistTitle}](${playlistMeta.url})**`
-                    : `**${playlistTitle}**`;
+                    ? formatBoldMarkdownLink(playlistMeta.title, playlistMeta.url)
+                    : `**${formatMarkdownText(playlistMeta.title)}**`;
             const confirmEmbed = createEmbed(
                 "success",
                 `🎶 **|** ${__mf("requestChannel.addedPlaylistToQueue", {
@@ -117,8 +109,7 @@ export async function handleVideos(
         });
         const pages = chunk(toQueue, 10).map((vals, i) => {
             const texts = vals.map(
-                (song, index) =>
-                    `${i * 10 + (index + 1)}.) ${escapeMarkdown(parseHTMLElements(song.title))}`,
+                (song, index) => `${i * 10 + (index + 1)}.) ${formatMarkdownText(song.title)}`,
             );
 
             return texts.join("\n");

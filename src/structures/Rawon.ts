@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import path from "node:path";
 import process from "node:process";
 import { type Command, container, SapphireClient } from "@sapphire/framework";
@@ -222,10 +223,11 @@ export class Rawon extends SapphireClient {
         hooks: {
             beforeError: [
                 (error) => {
+                    const rawBody = error.response?.rawBody;
                     this.debugLog.logData("error", "GOT_REQUEST", [
                         ["URL", error.options.url?.toString() ?? "[???]"],
                         ["Code", error.code],
-                        ["Response", error.response?.rawBody.toString("ascii") ?? "[???]"],
+                        ["Response", rawBody ? Buffer.from(rawBody).toString("ascii") : "[???]"],
                     ]);
 
                     return error;

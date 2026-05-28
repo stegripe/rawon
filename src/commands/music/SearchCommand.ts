@@ -11,6 +11,7 @@ import {
     type CommandInteractionOptionResolver,
     ComponentType,
     escapeMarkdown,
+    type GuildMember,
     type Message,
     PermissionFlagsBits,
     type SelectMenuComponentOptionData,
@@ -26,6 +27,7 @@ import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
+import { isMemberDeafened } from "../../utils/functions/voiceStateGuards.js";
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
 
 @ApplyOptions<Command.Options>({
@@ -121,12 +123,19 @@ export class SearchCommand extends ContextCommand {
     @sameVC
     public async contextRun(ctx: CommandContext): Promise<Message | undefined> {
         const localCtx = ctx as CommandContext & LocalCommandContext;
+        const member = localCtx.member as GuildMember | null;
         const client = this.getClient(ctx);
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
 
         if (!this.ensureSearchChannel(ctx, client, __mf)) {
             return;
+        }
+
+        if (isMemberDeafened(member)) {
+            return ctx.reply({
+                embeds: [createEmbed("warn", __("requestChannel.deafened"))],
+            });
         }
 
         if (ctx.isCommandInteraction() && !localCtx.deferred) {

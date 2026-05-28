@@ -9,7 +9,9 @@ import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import { hasMusicControlPermission } from "../../utils/functions/musicControlPermissions.js";
 import { OperationManager } from "../../utils/structures/OperationManager.js";
 
 @ApplyOptions<Command.Options>({
@@ -61,20 +63,16 @@ export class SkipCommand extends ContextCommand {
             return;
         }
 
-        const djRole = await client.utils
-            .fetchDJRole(ctx.guild as GuildMember["guild"])
-            .catch(() => null);
         const song = (queue.player.state as AudioPlayerPlayingState).resource.metadata as QueueSong;
 
-        function ableToSkip(member: GuildMember): boolean {
-            return (
-                member.roles.cache.has(djRole?.id ?? "") ||
-                member.permissions.has("ManageGuild") ||
-                song.requester.id === member.id
-            );
-        }
+        const canControl = await hasMusicControlPermission({
+            client,
+            guild: ctx.guild as GuildMember["guild"],
+            member: ctx.member as GuildMember | null,
+            requesterIds: [song],
+        });
 
-        if (!ableToSkip(ctx.member as GuildMember)) {
+        if (!canControl) {
             const required = client.utils.requiredVoters(
                 ctx.guild?.members.me?.voice.channel?.members.size ?? 0,
             );
@@ -136,7 +134,7 @@ export class SkipCommand extends ContextCommand {
                     createEmbed(
                         "success",
                         `⏭️ **|** ${__mf("commands.music.skip.skipMessage", {
-                            song: `**[${song.song.title}](${song.song.url})**`,
+                            song: formatBoldMarkdownLink(song.song.title, song.song.url),
                         })}`,
                     ).setThumbnail(song.song.thumbnail),
                 ],

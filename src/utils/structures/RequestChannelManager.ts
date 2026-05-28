@@ -22,6 +22,7 @@ import {
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
+import { formatMarkdownLink } from "../functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
 import {
@@ -501,7 +502,7 @@ export class RequestChannelManager {
             const requesterLine = `${__("requestChannel.requestedBy")}: ${fallbackQueueSong?.requester.toString() ?? __("requestChannel.unknown")}`;
 
             embed.setDescription(
-                `### [${song.title}](${song.url})\n\n${durationLine}\n\n${requesterLine}`,
+                `### ${formatMarkdownLink(song.title, song.url)}\n\n${durationLine}\n\n${requesterLine}`,
             );
         } else {
             const standbyLine = `${statusEmoji} ${__("requestChannel.standby")}`;

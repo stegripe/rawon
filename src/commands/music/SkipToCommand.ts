@@ -3,12 +3,7 @@ import { type AudioPlayerPlayingState, AudioPlayerStatus } from "@discordjs/voic
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
-import {
-    type GuildMember,
-    PermissionFlagsBits,
-    type SlashCommandBuilder,
-    type VoiceChannel,
-} from "discord.js";
+import { type GuildMember, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -16,8 +11,10 @@ import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { formatBoldPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
+import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import { hasMusicControlPermission } from "../../utils/functions/musicControlPermissions.js";
 import { play } from "../../utils/handlers/GeneralUtil.js";
 
 @ApplyOptions<Command.Options>({
@@ -87,23 +84,6 @@ export class SkipToCommand extends ContextCommand {
         if (!queue.canSkip()) {
             await ctx.reply({
                 embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
-            });
-            return;
-        }
-
-        const djRole = await client.utils.fetchDJRole(ctx.guild as NonNullable<typeof ctx.guild>);
-        if (
-            client.data.data?.[ctx.guild?.id ?? ""]?.dj?.enable === true &&
-            (
-                client.channels.cache.get(
-                    queue.connection?.joinConfig.channelId ?? "",
-                ) as VoiceChannel
-            )?.members.size > 2 &&
-            member?.roles.cache.has(djRole?.id ?? "") !== true &&
-            member?.permissions.has("ManageGuild") !== true
-        ) {
-            await ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.skipTo.noPermission"), true)],
             });
             return;
         }
@@ -205,6 +185,20 @@ export class SkipToCommand extends ContextCommand {
             return;
         }
 
+        const canControl = await hasMusicControlPermission({
+            client,
+            guild: ctx.guild as NonNullable<typeof ctx.guild>,
+            member,
+            requesterIds: [np, song],
+        });
+
+        if (!canControl) {
+            await ctx.reply({
+                embeds: [createEmbed("error", __("commands.music.skipTo.noPermission"), true)],
+            });
+            return;
+        }
+
         if (!queue.startSkip()) {
             await ctx.reply({
                 embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
@@ -219,7 +213,7 @@ export class SkipToCommand extends ContextCommand {
                 createEmbed(
                     "success",
                     `⏭️ **|** ${__mf("commands.music.skipTo.skipMessage", {
-                        song: `**[${song.song.title}](${song.song.url})**`,
+                        song: formatBoldMarkdownLink(song.song.title, song.song.url),
                     })}`,
                 ).setThumbnail(song.song.thumbnail),
             ],

@@ -10,6 +10,7 @@ import { type QueueSong } from "../../typings/index.js";
 import { haveQueue } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { formatMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
 import { type SongManager } from "../../utils/structures/SongManager.js";
@@ -58,7 +59,10 @@ export class QueueCommand extends ContextCommand {
                 const npKey = np.key;
                 const addition = song.key === npKey ? "**" : "";
 
-                return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
+                return `${addition}${ind * 10 + (i + 1)} - ${formatMarkdownLink(
+                    song.song.title,
+                    song.song.url,
+                )}${addition}`;
             });
 
             return names.join("\n");
