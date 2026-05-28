@@ -18,37 +18,13 @@ import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
 import { formatBoldCodeSpan } from "../utils/functions/formatCodeSpan.js";
 import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
+import {
+    isPlaybackMusicCommandName,
+    shouldProcessPrefixMusicCommand,
+} from "../utils/functions/musicCommandTarget.js";
 import { isMemberDeafened } from "../utils/functions/voiceStateGuards.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
-
-const MUSIC_COMMANDS = [
-    "play",
-    "p",
-    "add",
-    "search",
-    "volume",
-    "vol",
-    "loop",
-    "repeat",
-    "shuffle",
-    "autoplay",
-    "ap",
-    "filter",
-    "skip",
-    "skipto",
-    "pause",
-    "resume",
-    "stop",
-    "disconnect",
-    "dc",
-    "remove",
-    "seek",
-    "nowplaying",
-    "np",
-    "queue",
-    "q",
-];
 
 @ApplyOptions<ListenerOptions>({
     event: Events.MessageCreate,
@@ -189,65 +165,14 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
                     const cmdContent = message.content.slice(actualPrefix.length).trim();
                     const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
-                    const isMusicCommand = cmdName && MUSIC_COMMANDS.includes(cmdName);
+                    const isMusicCommand = isPlaybackMusicCommandName(cmdName);
 
                     if (isMusicCommand) {
-                        let member = thisBotGuild.members.cache.get(message.author.id);
-                        if (!member) {
-                            try {
-                                const fetchedMember = await thisBotGuild.members
-                                    .fetch(message.author.id)
-                                    .catch(() => null);
-                                if (fetchedMember) {
-                                    member = fetchedMember;
-                                }
-                            } catch {
-                                if (message.member && message.member.guild.id === thisBotGuild.id) {
-                                    member = message.member;
-                                }
-                            }
-                        }
                         if (
-                            !member &&
-                            message.member &&
-                            message.member.guild.id === thisBotGuild.id
+                            !shouldProcessPrefixMusicCommand(client, thisBotGuild, isMentionPrefix)
                         ) {
-                            member = message.member;
-                        }
-
-                        const userVoiceChannelId = member?.voice.channelId ?? null;
-
-                        this.container.logger.debug(
-                            `[MultiBot] ${client.user?.tag} PRE-CHECK music command "${cmdName}" in REQUEST CHANNEL from ${message.author.tag}: ` +
-                                `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
-                        );
-
-                        if (userVoiceChannelId) {
-                            const shouldRespond =
-                                client.multiBotManager.shouldRespondToMusicCommand(
-                                    client,
-                                    thisBotGuild,
-                                    userVoiceChannelId,
-                                );
-
                             this.container.logger.debug(
-                                `[MultiBot] ${client.user?.tag} PRE-CHECK result for music command "${cmdName}": shouldRespond=${shouldRespond}`,
-                            );
-
-                            if (!shouldRespond) {
-                                this.container.logger.warn(
-                                    `[MultiBot] ${client.user?.tag} ❌ BLOCKING music command "${cmdName}" in REQUEST CHANNEL from ${message.author.tag} ` +
-                                        `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - COMMAND WILL NOT EXECUTE!`,
-                                );
-                                return;
-                            }
-
-                            this.container.logger.debug(
-                                `[MultiBot] ${client.user?.tag} ✅ ALLOWING music command "${cmdName}" in REQUEST CHANNEL - will proceed to command handler`,
-                            );
-                        } else if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
-                            this.container.logger.debug(
-                                `[MultiBot] ${client.user?.tag} skipping music command in request channel - not responsible bot`,
+                                `[MultiBot] ${client.user?.tag} skipping music command "${cmdName}" in request channel - not origin router`,
                             );
                             return;
                         }
@@ -264,7 +189,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 this.container.logger.debug(
                     `[MultiBot] ${client.user?.tag} ✅ PROCEEDING to execute command "${cmdNameFromMsg}" in REQUEST CHANNEL`,
                 );
-                client.commands.handle(message, actualPrefix);
+                await client.commands.handle(message, actualPrefix);
 
                 setTimeout(() => {
                     void (async (): Promise<void> => {
@@ -337,59 +262,12 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
                 const cmdContent = message.content.slice(actualPrefix.length).trim();
                 const cmdName = cmdContent.split(/ +/u)[0]?.toLowerCase();
-                const isMusicCommand = cmdName && MUSIC_COMMANDS.includes(cmdName);
+                const isMusicCommand = isPlaybackMusicCommandName(cmdName);
 
                 if (isMusicCommand) {
-                    let member = thisBotGuild.members.cache.get(message.author.id);
-                    if (!member) {
-                        try {
-                            const fetchedMember = await thisBotGuild.members
-                                .fetch(message.author.id)
-                                .catch(() => null);
-                            if (fetchedMember) {
-                                member = fetchedMember;
-                            }
-                        } catch {
-                            if (message.member && message.member.guild.id === thisBotGuild.id) {
-                                member = message.member;
-                            }
-                        }
-                    }
-                    if (!member && message.member && message.member.guild.id === thisBotGuild.id) {
-                        member = message.member;
-                    }
-
-                    const userVoiceChannelId = member?.voice.channelId ?? null;
-
-                    this.container.logger.debug(
-                        `[MultiBot] ${client.user?.tag} checking music command "${cmdName}" from ${message.author.tag}: ` +
-                            `userVoiceChannel=${userVoiceChannelId ?? "none"}, memberCached=${member !== null}`,
-                    );
-
-                    if (userVoiceChannelId) {
-                        const shouldRespond = client.multiBotManager.shouldRespondToMusicCommand(
-                            client,
-                            thisBotGuild,
-                            userVoiceChannelId,
-                        );
-
-                        if (!shouldRespond) {
-                            this.container.logger.warn(
-                                `[MultiBot] ${client.user?.tag} ❌ BLOCKING music command "${cmdName}" from ${message.author.tag} ` +
-                                    `- NOT in same voice channel (user in: ${userVoiceChannelId}). ` +
-                                    `RETURNING EARLY - COMMAND WILL NOT BE EXECUTED!`,
-                            );
-                            return;
-                        }
+                    if (!shouldProcessPrefixMusicCommand(client, thisBotGuild, isMentionPrefix)) {
                         this.container.logger.debug(
-                            `[MultiBot] ${client.user?.tag} ALLOWING music command "${cmdName}" from ${message.author.tag} - in same voice channel (${userVoiceChannelId})`,
-                        );
-                    } else if (
-                        !isMentionPrefix &&
-                        !client.multiBotManager.shouldRespond(client, thisBotGuild)
-                    ) {
-                        this.container.logger.debug(
-                            `[MultiBot] ${client.user?.tag} skipping music command "${cmdName}" - user not in voice and not responsible bot`,
+                            `[MultiBot] ${client.user?.tag} skipping music command "${cmdName}" - not origin router`,
                         );
                         return;
                     }
@@ -406,7 +284,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             this.container.logger.debug(
                 `[MessageCreate] Calling commands.handle() for message "${message.content.slice(0, 30)}" with prefix "${actualPrefix}"`,
             );
-            client.commands.handle(message, actualPrefix);
+            await client.commands.handle(message, actualPrefix);
         }
     }
 

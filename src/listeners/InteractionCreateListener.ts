@@ -33,6 +33,11 @@ import {
     formatMarkdownText,
 } from "../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
+import {
+    applyMusicCommandTargetByIds,
+    isPlaybackMusicCommand,
+    resolveAndApplyMusicCommandTarget,
+} from "../utils/functions/musicCommandTarget.js";
 import { hasMusicControlPermission } from "../utils/functions/musicControlPermissions.js";
 
 function hasSlashCommand(cmd: Command): boolean {
@@ -109,30 +114,8 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     .filter((x: Command) => hasSlashCommand(x))
                     .find((x: Command) => x.name === commandName);
 
-                const musicCommands = [
-                    "volume",
-                    "vol",
-                    "loop",
-                    "repeat",
-                    "shuffle",
-                    "autoplay",
-                    "ap",
-                    "filter",
-                    "skip",
-                    "skipto",
-                    "pause",
-                    "resume",
-                    "stop",
-                    "disconnect",
-                    "dc",
-                    "remove",
-                    "seek",
-                ];
                 isMusicCommand =
-                    cmd !== undefined &&
-                    (musicCommands.includes(commandName) ||
-                        (cmd.aliases.length > 0 &&
-                            musicCommands.some((name) => cmd.aliases.includes(name))));
+                    cmd !== undefined && isPlaybackMusicCommand(commandName, cmd.aliases);
             }
 
             const thisBotGuildForContext = interaction.guild
@@ -142,114 +125,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             const __mf = i18n__mf(client, thisBotGuildForContext);
 
             if (isMusicCommand) {
-                let member = thisBotGuild.members.cache.get(interaction.user.id);
-                if (!member) {
-                    try {
-                        const fetchedMember = await thisBotGuild.members
-                            .fetch(interaction.user.id)
-                            .catch(() => null);
-                        if (fetchedMember) {
-                            member = fetchedMember;
-                        }
-                    } catch {
-                        if (
-                            interaction.member &&
-                            interaction.member instanceof GuildMember &&
-                            interaction.member.guild.id === thisBotGuild.id
-                        ) {
-                            member = interaction.member;
-                        }
-                    }
-                }
-                if (
-                    !member &&
-                    interaction.member &&
-                    interaction.member instanceof GuildMember &&
-                    interaction.member.guild.id === thisBotGuild.id
-                ) {
-                    member = interaction.member;
-                }
-
-                const userVoiceChannelId = member?.voice.channelId ?? null;
-
                 this.container.logger.debug(
-                    `[MultiBot] ${client.user?.tag} PRE-CHECK music interaction "${commandName}" from ${interaction.user.tag}: ` +
-                        `userVoiceChannel=${userVoiceChannelId ?? "none"}`,
+                    `[MultiBot] ${client.user?.tag} allowing music interaction "${commandName}" for target resolution`,
                 );
-
-                if (userVoiceChannelId) {
-                    const shouldRespond = client.multiBotManager.shouldRespondToMusicCommand(
-                        client,
-                        thisBotGuild,
-                        userVoiceChannelId,
-                    );
-
-                    this.container.logger.debug(
-                        `[MultiBot] ${client.user?.tag} PRE-CHECK result for music interaction "${commandName}": shouldRespond=${shouldRespond}`,
-                    );
-
-                    if (!shouldRespond) {
-                        this.container.logger.warn(
-                            `[MultiBot] ${client.user?.tag} ❌ BLOCKING music interaction "${commandName}" from ${interaction.user.tag} ` +
-                                `- NOT in same voice channel (user in: ${userVoiceChannelId}). RETURNING EARLY - INTERACTION WILL NOT BE EXECUTED!`,
-                        );
-                        if (interaction.isRepliable()) {
-                            const primaryBot =
-                                client.multiBotManager.getResponsibleBot(thisBotGuild);
-                            const botMention = primaryBot
-                                ? `<@${primaryBot.user?.id}>`
-                                : __("events.createInteraction.primaryBotFallback");
-                            await this.safeReply(
-                                interaction,
-                                {
-                                    flags: MessageFlags.Ephemeral,
-                                    embeds: [
-                                        createEmbed(
-                                            "error",
-                                            __mf("events.createInteraction.wrongBot", {
-                                                botMention,
-                                            }),
-                                            true,
-                                        ),
-                                    ],
-                                },
-                                "reply to wrong-bot music interaction",
-                            );
-                        }
-                        return;
-                    }
-
-                    this.container.logger.debug(
-                        `[MultiBot] ${client.user?.tag} ✅ ALLOWING music interaction "${commandName}" - will proceed to command handler`,
-                    );
-                } else if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
-                    this.container.logger.debug(
-                        `[MultiBot] ${client.user?.tag} skipping music interaction "${commandName}" - user not in voice and not responsible bot`,
-                    );
-                    if (interaction.isRepliable()) {
-                        const primaryBot = client.multiBotManager.getResponsibleBot(thisBotGuild);
-                        const botMention = primaryBot
-                            ? `<@${primaryBot.user?.id}>`
-                            : __("events.createInteraction.primaryBotFallback");
-                        await this.safeReply(
-                            interaction,
-                            {
-                                flags: MessageFlags.Ephemeral,
-                                embeds: [
-                                    createEmbed(
-                                        "error",
-                                        __mf("events.createInteraction.wrongBot", {
-                                            botMention,
-                                        }),
-                                        true,
-                                    ),
-                                ],
-                            },
-                            "reply to wrong-bot non-voice interaction",
-                        );
-                    }
-                    return;
-                }
             } else if (interaction.isChatInputCommand()) {
                 commandName = interaction.commandName;
                 if (!client.multiBotManager.shouldRespond(client, thisBotGuild)) {
@@ -453,6 +331,8 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 .filter((x: Command) => hasSlashCommand(x))
                 .find((x: Command) => x.name === interaction.commandName);
             if (cmd) {
+                await resolveAndApplyMusicCommandTarget(context, cmd.name, cmd.aliases);
+
                 if (!this.cooldowns.has(cmd.name)) {
                     this.cooldowns.set(cmd.name, new Collection());
                 }
@@ -551,9 +431,12 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
         if (interaction.isStringSelectMenu()) {
             const val = this.container.utils.decode(interaction.customId);
-            const user = val.split("_")[0] ?? "";
-            const cmd = val.split("_")[1] ?? "";
-            const exec = (val.split("_")[2] ?? "yes") === "yes";
+            const customIdParts = val.split("_");
+            const user = customIdParts[0] ?? "";
+            const cmd = customIdParts[1] ?? "";
+            const exec = (customIdParts[2] ?? "yes") === "yes";
+            const targetBotId = customIdParts[3];
+            const targetGuildId = customIdParts[4];
 
             if (interaction.user.id !== user) {
                 void this.safeReply(
@@ -578,6 +461,19 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     .filter((x: Command) => hasSlashCommand(x))
                     .find((x: Command) => x.name === cmd);
                 if (command) {
+                    const storedTarget = await applyMusicCommandTargetByIds(
+                        context,
+                        targetBotId,
+                        targetGuildId,
+                    );
+                    if (!storedTarget) {
+                        await resolveAndApplyMusicCommandTarget(
+                            context,
+                            command.name,
+                            command.aliases,
+                        );
+                    }
+
                     const isDeveloper = this.container.config.devs.includes(interaction.user.id);
                     if (getCommandOptions(command).devOnly === true && !isDeveloper) {
                         await this.safeReply(

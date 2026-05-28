@@ -20,6 +20,7 @@ import { haveQueue, inVC, sameVC, validVC } from "../../utils/decorators/MusicUt
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import { copyMusicCommandTarget } from "../../utils/functions/musicCommandTarget.js";
 
 @ApplyOptions<Command.Options>({
     name: "volume",
@@ -98,6 +99,7 @@ export class VolumeCommand extends ContextCommand {
             collector
                 .on("collect", async (i) => {
                     const newContext = new LocalCommandContext(i, [i.customId]);
+                    copyMusicCommandTarget(localCtx, newContext);
                     const newVolume = Number(i.customId);
                     await this.contextRun(newContext as CommandContext & LocalCommandContext);
 

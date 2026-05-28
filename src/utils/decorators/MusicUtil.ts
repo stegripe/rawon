@@ -3,6 +3,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
+import { getMusicCommandTarget } from "../functions/musicCommandTarget.js";
 import { createCmdExecuteDecorator } from "./createCmdExecuteDecorator.js";
 
 export const haveQueue = createCmdExecuteDecorator((ctx) => {
@@ -116,6 +117,11 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
     }
 
     if (localCtx.additionalArgs.get("fromSearch") !== undefined) {
+        return true;
+    }
+
+    const target = getMusicCommandTarget(localCtx);
+    if (target?.isRemoteGuild === true) {
         return true;
     }
 

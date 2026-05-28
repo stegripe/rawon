@@ -7,7 +7,13 @@ import {
     createAudioPlayer,
     type VoiceConnection,
 } from "@discordjs/voice";
-import { MessageFlags, type Snowflake, type TextChannel } from "discord.js";
+import {
+    MessageFlags,
+    type Snowflake,
+    type StageChannel,
+    type TextChannel,
+    type VoiceChannel,
+} from "discord.js";
 import { type LoopMode, type QueueSong, type SavedQueueSong, type Song } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
@@ -35,6 +41,8 @@ type RequesterDeafTimeoutState = {
     songKey: Snowflake;
     timeout: NodeJS.Timeout;
 };
+
+export type ServerQueueTextChannel = TextChannel | VoiceChannel | StageChannel;
 
 export class ServerQueue {
     public readonly player: AudioPlayer = createAudioPlayer();
@@ -64,7 +72,7 @@ export class ServerQueue {
     private _autoplayPrefetchForKey: Snowflake | null = null;
     private _requesterDeafTimeout: RequesterDeafTimeoutState | null = null;
 
-    public constructor(public readonly textChannel: TextChannel) {
+    public constructor(public readonly textChannel: ServerQueueTextChannel) {
         Object.defineProperties(this, {
             _skipVoters: nonEnum,
             _lastMusicMsg: nonEnum,

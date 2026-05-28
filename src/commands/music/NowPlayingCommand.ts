@@ -24,6 +24,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { createProgressBar } from "../../utils/functions/createProgressBar.js";
 import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import { copyMusicCommandTarget } from "../../utils/functions/musicCommandTarget.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
 
 @ApplyOptions<Command.Options>({
@@ -181,6 +182,7 @@ export class NowPlayingCommand extends ContextCommand {
         collector
             .on("collect", async (i) => {
                 const newCtx = new LocalCommandContext(i as Interaction, []);
+                copyMusicCommandTarget(ctx as CommandContext & LocalCommandContext, newCtx);
                 let cmdName = "";
 
                 switch (i.customId) {
