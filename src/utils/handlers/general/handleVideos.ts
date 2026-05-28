@@ -1,9 +1,16 @@
 import { setTimeout } from "node:timers";
 import { joinVoiceChannel } from "@discordjs/voice";
-import { type Message, type StageChannel, type TextChannel, type VoiceChannel } from "discord.js";
+import {
+    ChannelType,
+    type Guild,
+    type Message,
+    PermissionFlagsBits,
+    type StageChannel,
+    type VoiceChannel,
+} from "discord.js";
 import { type CommandContext } from "../../../structures/CommandContext.js";
 import { type Rawon } from "../../../structures/Rawon.js";
-import { ServerQueue } from "../../../structures/ServerQueue.js";
+import { ServerQueue, type ServerQueueTextChannel } from "../../../structures/ServerQueue.js";
 import { type PlaylistMetadata, type Song } from "../../../typings/index.js";
 import { chunk } from "../../functions/chunk.js";
 import { createEmbed } from "../../functions/createEmbed.js";
@@ -26,6 +33,65 @@ function autoDeleteMessage(msg: Message, delay = 60_000): void {
     setTimeout(() => {
         msg.delete().catch(() => null);
     }, delay);
+}
+
+function isSupportedQueueTextChannel(channel: unknown): channel is ServerQueueTextChannel {
+    return (
+        channel !== null &&
+        typeof channel === "object" &&
+        "type" in channel &&
+        [ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildStageVoice].includes(
+            channel.type as ChannelType,
+        )
+    );
+}
+
+function canSendQueueMessages(guild: Guild, channel: ServerQueueTextChannel): boolean {
+    const botMember = guild.members.me;
+    if (!botMember) {
+        return false;
+    }
+
+    const permissions = channel.permissionsFor(botMember);
+    return (
+        permissions?.has(PermissionFlagsBits.ViewChannel) === true &&
+        permissions.has(PermissionFlagsBits.SendMessages) &&
+        permissions.has(PermissionFlagsBits.EmbedLinks)
+    );
+}
+
+function resolveQueueTextChannel(
+    client: Rawon,
+    ctx: CommandContext,
+    voiceChannel: StageChannel | VoiceChannel,
+): ServerQueueTextChannel | null {
+    const guild = ctx.guild;
+    if (!guild) {
+        return null;
+    }
+
+    const candidates: Array<ServerQueueTextChannel | null | undefined> = [
+        guild.queue?.textChannel,
+        isSupportedQueueTextChannel(ctx.channel) && ctx.channel.guild.id === guild.id
+            ? ctx.channel
+            : null,
+        client.requestChannelManager.getRequestChannel(guild),
+        voiceChannel,
+        guild.systemChannel,
+    ];
+
+    for (const channel of candidates) {
+        if (channel && canSendQueueMessages(guild, channel)) {
+            return channel;
+        }
+    }
+
+    return (
+        guild.channels.cache
+            .filter(isSupportedQueueTextChannel)
+            .sort((a, b) => a.rawPosition - b.rawPosition || a.id.localeCompare(b.id))
+            .find((channel) => canSendQueueMessages(guild, channel)) ?? null
+    );
 }
 
 export async function handleVideos(
@@ -155,9 +221,23 @@ export async function handleVideos(
         return;
     }
 
-    (ctx.guild as NonNullable<typeof ctx.guild>).queue = new ServerQueue(
-        ctx.channel as TextChannel,
-    );
+    const queueTextChannel = resolveQueueTextChannel(client, ctx, voiceChannel);
+    if (!queueTextChannel) {
+        return ctx.reply({
+            embeds: [
+                createEmbed(
+                    "error",
+                    __mf("utils.commonUtil.botMissingChannelPerms", {
+                        channel: ctx.guild?.name ?? "#unknown",
+                        permissions: "**`View Channel`**, **`Send Messages`**, **`Embed Links`**",
+                    }),
+                    true,
+                ),
+            ],
+        });
+    }
+
+    (ctx.guild as NonNullable<typeof ctx.guild>).queue = new ServerQueue(queueTextChannel);
     await sendConfirmation();
 
     client.debugLog.logData(

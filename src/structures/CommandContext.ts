@@ -37,6 +37,8 @@ export class CommandContext {
     public additionalArgs = new Collection<string, any>();
     public channel: TextBasedChannel | null;
     public guild;
+    public readonly originChannel: TextBasedChannel | null;
+    public readonly originGuild;
 
     public constructor(
         public readonly context:
@@ -49,6 +51,8 @@ export class CommandContext {
     ) {
         this.channel = this.context.channel;
         this.guild = this.context.guild;
+        this.originChannel = this.context.channel;
+        this.originGuild = this.context.guild;
     }
 
     private isPermissionLikeError(error: unknown): boolean {
@@ -77,17 +81,18 @@ export class CommandContext {
             PermissionFlagsBits.ReadMessageHistory,
         ];
 
-        if (!this.guild || !this.channel || !("permissionsFor" in this.channel)) {
+        if (!this.originGuild || !this.originChannel || !("permissionsFor" in this.originChannel)) {
             return [...requiredPermissions];
         }
 
         const botMember =
-            this.guild.members.me ?? this.guild.members.cache.get(this.client.user?.id ?? "");
+            this.originGuild.members.me ??
+            this.originGuild.members.cache.get(this.context.client.user?.id ?? "");
         if (!botMember) {
             return [...requiredPermissions];
         }
 
-        const permissions = this.channel.permissionsFor(botMember);
+        const permissions = this.originChannel.permissionsFor(botMember);
         if (!permissions) {
             return [...requiredPermissions];
         }
@@ -96,12 +101,14 @@ export class CommandContext {
     }
 
     private async notifyPermissionIssueFallback(): Promise<void> {
-        if (!this.guild) {
+        if (!this.originGuild) {
             return;
         }
 
-        const __mf = i18n__mf(this.client as Rawon, this.guild);
-        const channelMention = this.channel ? `<#${this.channel.id}>` : this.guild.name;
+        const __mf = i18n__mf(this.context.client as Rawon, this.originGuild);
+        const channelMention = this.originChannel
+            ? `<#${this.originChannel.id}>`
+            : this.originGuild.name;
 
         const missingPermissions = this.getMissingReplyPermissions();
         const permissionNames = missingPermissions
@@ -349,6 +356,9 @@ export class CommandContext {
     }
 
     public get client() {
-        return this.context.client;
+        const musicTarget = this.additionalArgs.get("musicCommandTarget") as
+            | { client?: Rawon }
+            | undefined;
+        return musicTarget?.client ?? this.context.client;
     }
 }

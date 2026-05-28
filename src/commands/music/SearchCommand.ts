@@ -26,6 +26,11 @@ import { type Song } from "../../typings/index.js";
 import { inVC, sameVC, validVC } from "../../utils/decorators/MusicUtil.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import {
+    copyMusicCommandTarget,
+    encodeMusicCommandTargetSuffix,
+    getMusicCommandTarget,
+} from "../../utils/functions/musicCommandTarget.js";
 import { parseHTMLElements } from "../../utils/functions/parseHTMLElements.js";
 import { isMemberDeafened } from "../../utils/functions/voiceStateGuards.js";
 import { checkQuery, searchTrack } from "../../utils/handlers/GeneralUtil.js";
@@ -89,6 +94,11 @@ export class SearchCommand extends ContextCommand {
         client: Rawon,
         __mf: ReturnType<typeof i18n__mf>,
     ): boolean {
+        const target = getMusicCommandTarget(ctx as CommandContext & LocalCommandContext);
+        if (target?.isRemoteGuild === true) {
+            return true;
+        }
+
         if (!ctx.guild) {
             return true;
         }
@@ -149,6 +159,7 @@ export class SearchCommand extends ContextCommand {
             }
 
             const nextCtx = new LocalCommandContext(localCtx.context, []);
+            copyMusicCommandTarget(localCtx, nextCtx);
 
             nextCtx.additionalArgs.set("values", values);
             nextCtx.additionalArgs.set("fromSearch", true);
@@ -214,6 +225,7 @@ export class SearchCommand extends ContextCommand {
         }
         if (checkQuery(query ?? "").isURL) {
             const playCtx = new LocalCommandContext(localCtx.context, [String(query)]);
+            copyMusicCommandTarget(localCtx, playCtx);
             playCtx.additionalArgs.set("fromSearch", true);
             const playCmd2 = client.commands.get("play") as
                 | { contextRun?: (ctx: CommandContext) => Promise<unknown> }
@@ -244,9 +256,9 @@ export class SearchCommand extends ContextCommand {
                                 .setMinValues(1)
                                 .setMaxValues(10)
                                 .setCustomId(
-                                    Buffer.from(`${ctx.author.id}_${this.options.name}`).toString(
-                                        "base64",
-                                    ),
+                                    Buffer.from(
+                                        `${ctx.author.id}_${this.options.name}${encodeMusicCommandTargetSuffix(localCtx)}`,
+                                    ).toString("base64"),
                                 )
                                 .addOptions(this.generateSelectMenu(tracks.items))
                                 .setPlaceholder(__("commands.music.search.interactionPlaceholder")),
@@ -356,6 +368,7 @@ export class SearchCommand extends ContextCommand {
             .filter((x) => Number(x) > 0 && Number(x) <= tracks.items.length)
             .sort((a, b) => Number(a) - Number(b)) as string[];
         const newCtx = new LocalCommandContext(localCtx.context, []);
+        copyMusicCommandTarget(localCtx, newCtx);
 
         newCtx.additionalArgs.set(
             "values",
