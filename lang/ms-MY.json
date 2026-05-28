@@ -24,7 +24,7 @@
                 "step1Fallback": "1. Cari tetingkap pelayar yang baru muncul di pelayan",
                 "step2WithUrl": "2. Log masuk dengan akaun Google anda",
                 "step2Fallback": "2. Jika jarak jauh, buka DevTools via `chrome://inspect` dan tambah {target}",
-                "step3": "3. Bot akan mengesan secara automatik apabila log masuk selesai",
+                "step3": "3. Selesai log masuk akan dikesan secara automatik",
                 "step4": "4. URL DevTools jarak jauh: {url} (pilihan)",
                 "timeLimit": "Anda mempunyai {minutes} minit untuk menyelesaikan log masuk.",
                 "loginSuccess": "Log Masuk Berjaya",
@@ -221,7 +221,7 @@
                 "usage": "{prefix}lyrics [lagu]"
             },
             "nowplaying": {
-                "description": "Tunjukkan status pemain media",
+                "description": "Tunjukkan status main semula",
                 "disableButton": "Butang-butang sebelum ini tidak lagi aktif dan telah dipadam.",
                 "pauseResumeButton": "Jeda/Sambung",
                 "skipButton": "Langkau",
@@ -234,12 +234,12 @@
                 "unknownDuration": "Tempoh tidak diketahui"
             },
             "pause": {
-                "alreadyPause": "Pemain muzik sudah pun dijeda.",
-                "description": "Menjeda pemain muzik",
-                "pauseMessage": "Pemain muzik telah dijeda."
+                "alreadyPause": "Main semula sudah dijeda.",
+                "description": "Jeda main semula",
+                "pauseMessage": "Main semula dijeda."
             },
             "play": {
-                "alreadyPlaying": "Pemain muzik sudah pun dimainkan di saluran suara {voiceChannel}",
+                "alreadyPlaying": "Main semula sudah aktif di saluran suara {voiceChannel}",
                 "description": "Jom layan muzik",
                 "noSongData": "Pautan tersebut tidak mempunyai data lagu.",
                 "slashQueryDescription": "Masukkan carian",
@@ -268,7 +268,7 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "Pemain muzik tidak dijeda.",
+                "alreadyResume": "Main semula tidak dijeda.",
                 "description": "Sambung mainkan muzik",
                 "resumeMessage": "Muzik disambung semula."
             },
@@ -331,13 +331,13 @@
                 "usage": "{prefix}skipto <{options} | nombor>"
             },
             "stop": {
-                "description": "Hentikan pemain muzik",
-                "stoppedMessage": "Pemain muzik telah dihentikan."
+                "description": "Hentikan main semula",
+                "stoppedMessage": "Main semula dihentikan."
             },
             "volume": {
                 "changeVolume": "Untuk mengubah kelantangan, masukkan nombor kelantangan apabila menggunakan arahan ini.",
                 "currentVolume": "Kelantangan semasa ialah {volume}",
-                "description": "Ubah kelantangan pemain media",
+                "description": "Ubah kelantangan main semula",
                 "newVolume": "Kelantangan ditetapkan ke {volume}",
                 "noPermission": "Anda memerlukan peranan DJ atau kebenaran **Pengelola Server** untuk menetapkan kelantangan melebihi `100%`",
                 "plsPause": "Sila jedakan muzik daripada menetapkan kelantangan kepada {volume}",
@@ -348,9 +348,9 @@
                 "description": "Tetapkan saluran permintaan untuk muzik",
                 "noPermission": "Anda perlu kebenaran **Pengelola Server** untuk menggunakan arahan ini.",
                 "invalidChannel": "Sila berikan saluran teks yang sah.",
-                "noBotPermissions": "Saya tidak dapat menyemak kebenaran saya untuk saluran tersebut.",
-                "missingBotPermissions": "Saya kekurangan kebenaran berikut dalam: {permissions}",
-                "failedToSetup": "Gagal menyediakan saluran permintaan. Sila semak kebenaran saya.",
+                "noBotPermissions": "Tidak dapat menyemak kebenaran untuk saluran tersebut.",
+                "missingBotPermissions": "Kebenaran berikut tiada dalam saluran tersebut: {permissions}",
+                "failedToSetup": "Gagal menyediakan saluran permintaan. Sila semak kebenaran saluran.",
                 "alreadyHasChannel": "Server ini telah ada saluran permintaan yang ditetapkan ke {channel}. Padam dahulu sebelum membuat yang baharu.",
                 "channelAlreadyInUse": "Saluran ini telah pun dijadikan saluran permintaan.",
                 "noChannelToRemove": "Tiada saluran permintaan untuk dipadam.",
@@ -375,7 +375,7 @@
             "wrongBot": "Perintah ini mesti dilaksanakan pada {botMention} sebagai bot utama untuk pelayan ini.",
             "primaryBotFallback": "bot utama"
         },
-        "createMessage": "Hai {author}, prefix saya ialah {prefix}",
+        "createMessage": "Hai {author}, prefix: {prefix}",
         "cmdLoading": "Memuat...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Sambungan berjaya dikonfigurasi semula.",
@@ -386,6 +386,9 @@
             "joiningAsSpeaker": "Berpindah ke saluran pentas, cuba menyertai sebagai Speaker...",
             "pauseQueue": "Saluran suara kosong. Giliran dijeda untuk menjimatkan sumber.\nSekiranya tiada sesiapa masuk ke saluran suara dalam masa {duration}, giliran akan dipadam.",
             "pauseQueueFooter": "Giliran Dijeda",
+            "pauseRequesterDeaf": "{requester} telah mematikan audio, menjeda {song}. Jika audio tidak dihidupkan semula dalam {duration}, lagu mereka akan dikeluarkan daripada giliran.",
+            "removeRequesterDeaf": "{requester} tidak menghidupkan semula audio dalam {duration}, {count} lagu dikeluarkan daripada giliran.",
+            "resumeRequesterDeaf": "Pemohon telah menghidupkan semula audio.\nMenyambung semula lagu {song}",
             "reconfigureConnection": "Berpindah ke saluran suara dengan wilayah berlainan, menetapkan semula sambungan...",
             "resumeQueue": "Seseorang telah menyertai saluran suara.\nMenyambung semula lagu {song}",
             "resumeQueueFooter": "Menyambung semula giliran",
@@ -406,6 +409,8 @@
         "requestedBy": "Permintaan",
         "unknown": "Tidak diketahui",
         "notInVoice": "Anda perlu menyertai saluran suara untuk membuat permintaan muzik.",
+        "deafened": "Anda perlu menghidupkan semula audio sebelum membuat permintaan muzik.",
+        "requesterDeafPaused": "Pemohon telah mematikan audio. Main semula akan diteruskan apabila audio dihidupkan semula.",
         "noResults": "Tiada hasil carian yang sepadan dengan permintaan anda.",
         "addedToQueue": "Menambahkan {song} ke dalam giliran.",
         "addedPlaylistToQueue": "Menambahkan {count} lagu dari {playlist} ke dalam giliran.",
@@ -428,7 +433,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Saya kekurangan kebenaran berikut dalam {channel}: {permissions}"
+            "botMissingChannelPerms": "Kebenaran berikut tiada dalam {channel}: {permissions}"
         },
         "cooldownMessage": "{author}, sila tunggu {timeleft}.",
         "generalHandler": {
@@ -447,11 +452,11 @@
             "noInVC": "Anda perlu berada di dalam saluran suara untuk melakukannya.",
             "noQueue": "Tiada yang sedang dimainkan.",
             "notPlaying": "Tiada muzik sedang dimainkan. Sila mainkan lagu terlebih dahulu.",
-            "sameVC": "Anda mestilah berada di dalam saluran suara yang sama dengan saya.",
+            "sameVC": "Anda mesti berada dalam saluran suara yang sama.",
             "useRequestChannel": "Sila gunakan saluran permintaan {channel} untuk menggunakan arahan.",
-            "useRequestChannelDirect": "Arahan ini dilumpuhkan dalam saluran permintaan. Sila guna butang pemain atau taip tajuk/pautan lagu.",
-            "validVCJoinable": "Tidak dapat **`Menyertai`** saluran suara, pastikan saya memiliki kebenaran yang betul.",
-            "validVCPermission": "Tidak dapat **`Bercakap`** di saluran suara; pastikan saya memiliki kebenaran yang betul."
+            "useRequestChannelDirect": "Arahan ini dilumpuhkan dalam saluran permintaan. Sila guna butang kawalan atau taip tajuk/pautan lagu.",
+            "validVCJoinable": "Tidak dapat **`Menyertai`** saluran suara, pastikan kebenaran yang betul diberikan.",
+            "validVCPermission": "Tidak dapat **`Bercakap`** di saluran suara; pastikan kebenaran yang betul diberikan."
         }
     }
 }

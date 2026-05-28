@@ -24,7 +24,7 @@
                 "step1Fallback": "1. Cari jendela browser yang baru muncul di server",
                 "step2WithUrl": "2. Login pake akun Google kamu",
                 "step2Fallback": "2. Kalo remote, buka DevTools via `chrome://inspect` dan tambahin {target}",
-                "step3": "3. Bot bakal otomatis deteksi pas login selesai",
+                "step3": "3. Login selesai bakal dideteksi otomatis",
                 "step4": "4. URL DevTools remote: {url} (opsional)",
                 "timeLimit": "Kamu punya waktu {minutes} menit buat selesaiin login.",
                 "loginSuccess": "Login Sukses",
@@ -221,7 +221,7 @@
                 "usage": "{prefix}lyrics [lagu]"
             },
             "nowplaying": {
-                "description": "Cek status media player",
+                "description": "Cek status pemutaran",
                 "disableButton": "Tombol-tombol ini udah gak aktif lagi dan udah dihapus.",
                 "pauseResumeButton": "Jeda/Lanjut",
                 "skipButton": "Skip",
@@ -234,12 +234,12 @@
                 "unknownDuration": "Durasi gak diketahui"
             },
             "pause": {
-                "alreadyPause": "Media player-nya udah dijeda kok.",
-                "description": "Jeda media player",
-                "pauseMessage": "Media player udah dijeda."
+                "alreadyPause": "Pemutaran udah dijeda.",
+                "description": "Jeda pemutaran",
+                "pauseMessage": "Pemutaran dijeda."
             },
             "play": {
-                "alreadyPlaying": "Media player lagi muter lagu di channel {voiceChannel}",
+                "alreadyPlaying": "Pemutaran lagi aktif di voice channel {voiceChannel}",
                 "description": "Muter lagu",
                 "noSongData": "Link itu gak punya data lagunya.",
                 "slashQueryDescription": "Kata pencarian",
@@ -268,9 +268,9 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "Media player-nya gak lagi dijeda kok.",
-                "description": "Lanjutin media player",
-                "resumeMessage": "Media player udah dilanjutin."
+                "alreadyResume": "Pemutaran gak lagi dijeda.",
+                "description": "Lanjutin pemutaran",
+                "resumeMessage": "Pemutaran dilanjutin."
             },
             "search": {
                 "cancelMessage": "Ketik {cancel} atau c buat batalin pilihan lagu.",
@@ -281,7 +281,7 @@
                 "interactionPlaceholder": "Pilih lagu yang kamu mau",
                 "noQuery": "Kasih kata pencarian dong.",
                 "noSelection": "Angkanya gak valid, pilihan lagu dibatalin.",
-                "noTracks": "Gak bisa nemuin hasil pencariannya nih.",
+                "noTracks": "Gak bisa nemuin hasil pencarian.",
                 "queueEmbed": "Pilih lagu yang kamu mau, bisa pilih lebih dari satu pake spasi atau {separator}.\n",
                 "slashQueryDescription": "Kata pencarian",
                 "slashSourceDescription": "Mau ambil lagu dari mana?",
@@ -331,16 +331,16 @@
                 "usage": "{prefix}skipto <{options} | angka>"
             },
             "stop": {
-                "description": "Stop media player",
-                "stoppedMessage": "Media player udah distop."
+                "description": "Stop pemutaran",
+                "stoppedMessage": "Pemutaran distop."
             },
             "volume": {
                 "changeVolume": "Buat ganti volume, kasih angka volume baru pas pake command ini.",
                 "currentVolume": "Volume sekarang {volume}",
-                "description": "Ganti volume media player",
+                "description": "Ganti volume pemutaran",
                 "newVolume": "Volume udah diset ke {volume}",
                 "noPermission": "Butuh role DJ atau izin **Manage Server** buat set volume di atas `100%`",
-                "plsPause": "Mending jeda media player-nya aja daripada set volume ke {volume}",
+                "plsPause": "Mending jeda pemutaran daripada set volume ke {volume}",
                 "slashDescription": "Volume baru",
                 "usage": "{prefix}volume [volume baru]"
             },
@@ -348,9 +348,9 @@
                 "description": "Set channel request buat musik",
                 "noPermission": "Kamu butuh izin **Manage Server** buat pake command ini.",
                 "invalidChannel": "Kasih channel teks yang valid dong.",
-                "noBotPermissions": "Gak bisa cek izinku di channel itu.",
-                "missingBotPermissions": "Aku kurang izin ini di channel itu: {permissions}",
-                "failedToSetup": "Gagal set channel request. Coba cek izinku ya.",
+                "noBotPermissions": "Gak bisa cek izin di channel itu.",
+                "missingBotPermissions": "Kurang izin ini di channel itu: {permissions}",
+                "failedToSetup": "Gagal set channel request. Coba cek izin channelnya.",
                 "alreadyHasChannel": "Server ini udah punya channel request di {channel}. Hapus dulu sebelum set yang baru.",
                 "channelAlreadyInUse": "Channel ini udah dipake sebagai channel request.",
                 "noChannelToRemove": "Gak ada channel request yang diset buat dihapus.",
@@ -375,7 +375,7 @@
             "wrongBot": "Command ini harus dijalanin di {botMention} sebagai bot utama/primer server ini.",
             "primaryBotFallback": "bot utama/primer"
         },
-        "createMessage": "Halo {author}, prefix-ku {prefix}",
+        "createMessage": "Halo {author}, prefix: {prefix}",
         "cmdLoading": "Loading...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Koneksi udah dikonfigurasi ulang.",
@@ -386,6 +386,9 @@
             "joiningAsSpeaker": "Pindah ke stage channel, lagi coba masuk sebagai Speaker...",
             "pauseQueue": "Semua orang udah keluar dari voice channel. Buat ngirit resource, antriannya udah dijeda.\nKalo dalam {duration} masih gak ada yang masuk voice channel, antriannya bakal dihapus.",
             "pauseQueueFooter": "Antrian Dijeda",
+            "pauseRequesterDeaf": "{requester} lagi menonaktifkan audio, jadi {song} dijeda. Kalau dalam {duration} belum menyalakan audio lagi, semua lagunya bakal dihapus dari antrian.",
+            "removeRequesterDeaf": "{requester} gak menyalakan audio lagi dalam {duration}, {count} lagunya dihapus dari antrian.",
+            "resumeRequesterDeaf": "Requester udah menyalakan audio lagi.\nLanjutin {song}",
             "reconfigureConnection": "Dipindahin ke voice channel dengan region yang beda, lagi konfigurasi ulang koneksi...",
             "resumeQueue": "Ada yang masuk voice channel.\nLanjutin {song}",
             "resumeQueueFooter": "Antrian Dilanjutin",
@@ -406,6 +409,8 @@
         "requestedBy": "Direquest sama",
         "unknown": "Gak diketahui",
         "notInVoice": "Kamu harus ada di voice channel buat request musik.",
+        "deafened": "Kamu harus menyalakan audio dulu buat request musik.",
+        "requesterDeafPaused": "Yang request lagu lagi menonaktifkan audio. Musik bakal lanjut kalau audionya dinyalain lagi.",
         "noResults": "Gak nemu hasil buat pencarianmu.",
         "addedToQueue": "Nambahin {song} ke antrian.",
         "addedPlaylistToQueue": "Nambahin {count} lagu dari {playlist} ke antrian.",
@@ -428,7 +433,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Aku kurang izin ini di {channel}: {permissions}"
+            "botMissingChannelPerms": "Kurang izin ini di {channel}: {permissions}"
         },
         "cooldownMessage": "{author}, tunggu {timeleft} detik dulu ya.",
         "generalHandler": {
@@ -445,13 +450,13 @@
         },
         "musicDecorator": {
             "noInVC": "Sori, tapi kamu harus ada di voice channel dulu buat ngelakuin itu.",
-            "noQueue": "Antrian media player-nya lagi kosong.",
+            "noQueue": "Gak ada yang lagi diputar.",
             "notPlaying": "Gak ada musik yang lagi diputar. Muter lagu dulu dong.",
-            "sameVC": "Kamu harus ada di voice channel yang sama sama aku.",
+            "sameVC": "Kamu harus ada di voice channel yang sama.",
             "useRequestChannel": "Pake channel request {channel} buat command musik ya.",
-            "useRequestChannelDirect": "Command ini dimatiin di channel request. Pake tombol pemutar atau ketik judul/link lagu langsung aja.",
-            "validVCJoinable": "Sori, tapi aku gak bisa **`Connect`** ke voice channel-mu, pastiin aku punya izin yang bener ya.",
-            "validVCPermission": "Sori, tapi aku gak bisa **`Speak`** di voice channel, pastiin aku punya izin yang bener ya."
+            "useRequestChannelDirect": "Command ini dimatiin di channel request. Pake tombol kontrol atau ketik judul/link lagu langsung aja.",
+            "validVCJoinable": "Gak bisa **`Connect`** ke voice channel-mu, pastiin izinnya udah bener ya.",
+            "validVCPermission": "Gak bisa **`Speak`** di voice channel, pastiin izinnya udah bener ya."
         }
     }
 }

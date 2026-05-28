@@ -24,7 +24,7 @@
                 "step1Fallback": "1. Trouvez la fenêtre du navigateur qui vient d'apparaître sur le serveur",
                 "step2WithUrl": "2. Connectez-vous avec votre compte Google",
                 "step2Fallback": "2. Si distant, ouvrez DevTools via `chrome://inspect` et ajoutez {target}",
-                "step3": "3. Le bot détectera automatiquement quand la connexion est terminée",
+                "step3": "3. La fin de la connexion sera détectée automatiquement",
                 "step4": "4. URL DevTools distant : {url} (optionnel)",
                 "timeLimit": "Vous avez {minutes} minutes pour compléter la connexion.",
                 "loginSuccess": "Connexion Réussie",
@@ -221,7 +221,7 @@
                 "usage": "{prefix}lyrics [musique]"
             },
             "nowplaying": {
-                "description": "Afficher l'état du lecteur multimédia",
+                "description": "Afficher l'état de lecture",
                 "disableButton": "Les boutons précédents ne sont plus actifs et ont été supprimés.",
                 "pauseResumeButton": "Pause/Reprendre",
                 "skipButton": "Passer",
@@ -234,12 +234,12 @@
                 "unknownDuration": "Durée inconnue"
             },
             "pause": {
-                "alreadyPause": "Le lecteur de musique est déjà en pause.",
-                "description": "Mettre en pause le lecteur de musique",
-                "pauseMessage": "Le lecteur de musique a été mis en pause."
+                "alreadyPause": "La lecture est déjà en pause.",
+                "description": "Mettre la lecture en pause",
+                "pauseMessage": "Lecture mise en pause."
             },
             "play": {
-                "alreadyPlaying": "Le lecteur de musique est déjà en train de jouer sur le salon vocal {voiceChannel}",
+                "alreadyPlaying": "La lecture est déjà active dans le salon vocal {voiceChannel}",
                 "description": "Jouer de la musique",
                 "noSongData": "Cette URL ne contient pas de données sur les musiques.",
                 "slashQueryDescription": "Requête à rechercher",
@@ -268,9 +268,9 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "Le lecteur de musique n'est pas en pause.",
-                "description": "Reprendre le lecteur de musique",
-                "resumeMessage": "Le lecteur de musique a été repris."
+                "alreadyResume": "La lecture n'est pas en pause.",
+                "description": "Reprendre la lecture",
+                "resumeMessage": "Lecture reprise."
             },
             "search": {
                 "cancelMessage": "Tapez {cancel} ou c pour annuler la sélection de musique.",
@@ -281,7 +281,7 @@
                 "interactionPlaceholder": "Veuillez sélectionner une musique",
                 "noQuery": "Veuillez fournir une requête à rechercher.",
                 "noSelection": "Aucune valeur ou valeur invalide saisie, la sélection musicale est annulée.",
-                "noTracks": "Je n'obtiens aucun résultat de recherche.",
+                "noTracks": "Aucun résultat de recherche n'a pu être obtenu.",
                 "queueEmbed": "Veuillez choisir une musique ; vous pouvez en choisir plus d'une en utilisant les espaces vides ou {separator}.\n",
                 "slashQueryDescription": "Requête à rechercher",
                 "slashSourceDescription": "Où la musique doit-elle être prise ?",
@@ -331,16 +331,16 @@
                 "usage": "{prefix}skipto <{options} | numéro>"
             },
             "stop": {
-                "description": "Arrêter le lecteur de musique",
-                "stoppedMessage": "Le lecteur de musique s'est arrêté."
+                "description": "Arrêter la lecture",
+                "stoppedMessage": "Lecture arrêtée."
             },
             "volume": {
                 "changeVolume": "Pour modifier le volume, veuillez donner  le numéro de volume lorsque vous utilisez cette commande.",
                 "currentVolume": "Le volume actuel est {volume}",
-                "description": "Modifier le volume du lecteur multimédia",
+                "description": "Modifier le volume de lecture",
                 "newVolume": "Le volume a été réglé sur {volume}",
                 "noPermission": "Vous avez besoin du rôle DJ ou de la permission **Gérer le serveur** pour régler le volume au-dessus de `100%`",
-                "plsPause": "Veuillez mettre la musique en pause au lieu de régler le volume sur {volume}",
+                "plsPause": "Veuillez mettre la lecture en pause au lieu de régler le volume sur {volume}",
                 "slashDescription": "Nouveau volume",
                 "usage": "{prefix}volume [nouveau volume]"
             },
@@ -348,9 +348,9 @@
                 "description": "Configurer un canal de requête pour la musique",
                 "noPermission": "Vous avez besoin de la permission **Gérer le serveur** pour utiliser cette commande.",
                 "invalidChannel": "Veuillez fournir un canal texte valide.",
-                "noBotPermissions": "Je n'ai pas pu vérifier mes permissions pour ce canal.",
-                "missingBotPermissions": "Il me manque les permissions suivantes dans ce canal: {permissions}",
-                "failedToSetup": "Échec de la configuration du canal de requête. Veuillez vérifier mes permissions.",
+                "noBotPermissions": "Impossible de vérifier les permissions pour ce canal.",
+                "missingBotPermissions": "Permissions manquantes dans ce canal : {permissions}",
+                "failedToSetup": "Échec de la configuration du canal de requête. Veuillez vérifier les permissions du canal.",
                 "alreadyHasChannel": "Ce serveur a déjà un canal de requête configuré sur {channel}. Veuillez le supprimer d'abord avant d'en configurer un nouveau.",
                 "channelAlreadyInUse": "Ce canal est déjà utilisé comme canal de requête.",
                 "noChannelToRemove": "Il n'y a pas de canal de requête configuré à supprimer.",
@@ -375,7 +375,7 @@
             "wrongBot": "Cette commande doit être exécutée sur {botMention} en tant que bot principal pour ce serveur.",
             "primaryBotFallback": "le bot principal"
         },
-        "createMessage": "Salut {author}, mon préfixe est {prefix}",
+        "createMessage": "Salut {author}, préfixe : {prefix}",
         "cmdLoading": "Chargement en cours...",
         "voiceStateUpdate": {
             "connectionReconfigured": "La connexion a été reconfigurée avec succès.",
@@ -386,6 +386,9 @@
             "joiningAsSpeaker": "Déplacé sur le salon Stage, j'essaie de me joindre en tant que haut-parleur...",
             "pauseQueue": "Tout le monde a quitté le salon vocal. Pour économiser les ressources, la file d'attente a été mise en pause.\nSi personne ne rejoint le salon vocal d´ici {duration}, la file d'attente sera supprimée.",
             "pauseQueueFooter": "File d'attente mise en pause",
+            "pauseRequesterDeaf": "{requester} est en sourdine, mise en pause de {song}. S'il ne retire pas la sourdine dans {duration}, ses chansons seront retirées de la file d'attente.",
+            "removeRequesterDeaf": "{requester} n'a pas retiré la sourdine dans {duration}, {count} chanson(s) retirée(s) de la file d'attente.",
+            "resumeRequesterDeaf": "Le demandeur a retiré la sourdine.\nReprise de {song}",
             "reconfigureConnection": "Déplacement vers un salon vocal avec une région différente, re-configuration de la connexion...",
             "resumeQueue": "Quelqu'un a rejoint le salon vocal.\nReprise de {song}",
             "resumeQueueFooter": "Reprise de la file d'attente",
@@ -406,6 +409,8 @@
         "requestedBy": "Demandé par",
         "unknown": "Inconnu",
         "notInVoice": "Vous devez être dans un salon vocal pour demander de la musique.",
+        "deafened": "Vous devez retirer la sourdine avant de demander de la musique.",
+        "requesterDeafPaused": "Le demandeur est en sourdine. La lecture reprendra une fois la sourdine retirée.",
         "noResults": "Aucun résultat trouvé pour votre recherche.",
         "addedToQueue": "Ajouté {song} à la file d'attente.",
         "addedPlaylistToQueue": "Ajouté {count} chansons de {playlist} à la file d'attente.",
@@ -428,14 +433,14 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Il me manque les permissions suivantes dans {channel}: {permissions}"
+            "botMissingChannelPerms": "Permissions manquantes dans {channel} : {permissions}"
         },
         "cooldownMessage": "{author}, veuillez attendre {timeleft} de cooldown.",
         "generalHandler": {
             "errorJoining": "Erreur lors de la connexion au salon vocal, parce que : {message}",
             "errorPlaying": "Une erreur s'est produite lors de la lecture de la musique, parce que : {message}",
             "handleVideoInitial": "Ajout de {length} chanson(s) à la file d'attente.",
-            "leftVC": "Je me suis déconnecté du salon vocal parce que j'ai été inactif pendant trop longtemps.",
+            "leftVC": "Déconnexion du salon vocal après une inactivité prolongée.",
             "queueEnded": "La lecture est terminée, utilisez {usage} pour jouer plus de musique.",
             "startPlaying": "Lancement de la lecture de {song}",
             "stopPlaying": "Arrêt de la lecture de {song}",
@@ -447,11 +452,11 @@
             "noInVC": "Désolé, mais vous devez être dans un salon vocal pour faire cela.",
             "noQueue": "Il n'y a rien à jouer.",
             "notPlaying": "Aucune musique n'est en cours de lecture. Veuillez d'abord lancer une chanson.",
-            "sameVC": "Vous devez être dans le même salon vocal que le mien.",
+            "sameVC": "Vous devez être dans le même salon vocal.",
             "useRequestChannel": "Veuillez utiliser le salon de demandes {channel} pour les commandes musicales.",
-            "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les boutons du lecteur ou taper directement le titre/lien de la chanson.",
-            "validVCJoinable": "Désolé, mais je ne peux pas **`Me connecter`** à votre salon vocal, veuillez vérifier que j'ai les bonnes permissions.",
-            "validVCPermission": "Désolé, mais je ne peux pas **`Parler`** dans ce salon vocal ; veuillez vérifier que j'ai les bonnes permissions."
+            "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les contrôles ou taper directement le titre/lien de la chanson.",
+            "validVCJoinable": "Impossible de **`Se connecter`** à votre salon vocal. Vérifiez que les permissions nécessaires sont accordées.",
+            "validVCPermission": "Impossible de **`Parler`** dans ce salon vocal ; vérifiez que les permissions nécessaires sont accordées."
         }
     }
 }

@@ -1,5 +1,11 @@
 import { clearTimeout, setTimeout } from "node:timers";
-import { type AudioPlayerPausedState, entersState, VoiceConnectionStatus } from "@discordjs/voice";
+import {
+    type AudioPlayerPausedState,
+    type AudioPlayerPlayingState,
+    AudioPlayerStatus,
+    entersState,
+    VoiceConnectionStatus,
+} from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
@@ -14,6 +20,7 @@ import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type QueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 
@@ -140,7 +147,21 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             }
         }
 
-        if (newState.mute !== oldState.mute || newState.deaf !== oldState.deaf) {
+        const deafChanged = newState.deaf !== oldState.deaf;
+        if (deafChanged) {
+            await this.handleRequesterDeafChange(oldState, newState, queue, thisBotGuild, queueVc);
+        }
+
+        if (newState.mute !== oldState.mute || deafChanged) {
+            if (
+                deafChanged &&
+                newState.deaf !== true &&
+                newId === queueVc.id &&
+                member?.user.bot !== true &&
+                queue.timeout
+            ) {
+                this.resume(queueVcMembers, queue, newState, thisBotGuild);
+            }
             return;
         }
 
@@ -318,6 +339,242 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         }
     }
 
+    private getCurrentQueueSong(queue: ServerQueue): QueueSong | null {
+        const playerState = queue.player.state;
+        if (
+            playerState.status !== AudioPlayerStatus.Playing &&
+            playerState.status !== AudioPlayerStatus.Paused
+        ) {
+            return null;
+        }
+
+        return (playerState as AudioPlayerPlayingState | AudioPlayerPausedState).resource
+            .metadata as QueueSong;
+    }
+
+    private async handleRequesterDeafChange(
+        oldState: VoiceState,
+        newState: VoiceState,
+        queue: ServerQueue,
+        guild: VoiceState["guild"],
+        queueVc: StageChannel | VoiceChannel,
+    ): Promise<void> {
+        const memberId = newState.member?.id ?? oldState.member?.id;
+        if (!memberId || newState.member?.user.bot === true) {
+            return;
+        }
+
+        const currentSong = this.getCurrentQueueSong(queue);
+        if (!currentSong || currentSong.requester.id !== memberId) {
+            return;
+        }
+
+        if (newState.deaf === true) {
+            await this.pauseRequesterDeafSong(queue, guild, currentSong);
+            return;
+        }
+
+        await this.resumeRequesterDeafSong(queue, guild, newState, queueVc, currentSong);
+    }
+
+    private async pauseRequesterDeafSong(
+        queue: ServerQueue,
+        guild: VoiceState["guild"],
+        currentSong: QueueSong,
+    ): Promise<void> {
+        if (queue.player.state.status !== AudioPlayerStatus.Playing) {
+            return;
+        }
+
+        const pending = queue.requesterDeafTimeout;
+        if (
+            pending?.requesterId === currentSong.requester.id &&
+            pending.songKey === currentSong.key
+        ) {
+            return;
+        }
+
+        const timeoutMs = 60_000;
+        const timeout = setTimeout(() => {
+            void this.handleRequesterDeafTimeout(
+                queue,
+                guild,
+                currentSong.requester.id,
+                currentSong.key,
+                timeoutMs,
+            );
+        }, timeoutMs);
+
+        queue.setRequesterDeafTimeout({
+            requesterId: currentSong.requester.id,
+            songKey: currentSong.key,
+            timeout,
+        });
+        queue.player.pause();
+
+        const __mf = i18n__mf(queue.client, guild);
+        const duration = formatMS(timeoutMs);
+        await this.sendVoiceStateMessage(
+            queue,
+            guild,
+            createEmbed(
+                "warn",
+                `⏸️ **|** ${__mf("events.voiceStateUpdate.pauseRequesterDeaf", {
+                    requester: currentSong.requester.toString(),
+                    song: formatBoldMarkdownLink(currentSong.song.title, currentSong.song.url),
+                    duration: `**\`${duration}\`**`,
+                })}`,
+            ).setThumbnail(currentSong.song.thumbnail),
+        );
+    }
+
+    private async resumeRequesterDeafSong(
+        queue: ServerQueue,
+        guild: VoiceState["guild"],
+        state: VoiceState,
+        queueVc: StageChannel | VoiceChannel,
+        currentSong: QueueSong,
+    ): Promise<void> {
+        const pending = queue.requesterDeafTimeout;
+        if (pending?.requesterId !== currentSong.requester.id) {
+            return;
+        }
+
+        if (pending.songKey !== currentSong.key) {
+            queue.clearRequesterDeafTimeout();
+            return;
+        }
+
+        if (state.channel?.id !== queueVc.id || state.deaf === true) {
+            return;
+        }
+
+        queue.clearRequesterDeafTimeout();
+        const shouldResumePlayer =
+            queue.timeout === null && queue.player.state.status === AudioPlayerStatus.Paused;
+        if (!shouldResumePlayer) {
+            return;
+        }
+
+        queue.player.unpause();
+
+        const __mf = i18n__mf(queue.client, guild);
+        await this.sendVoiceStateMessage(
+            queue,
+            guild,
+            createEmbed(
+                "info",
+                `▶️ **|** ${__mf("events.voiceStateUpdate.resumeRequesterDeaf", {
+                    song: formatBoldMarkdownLink(currentSong.song.title, currentSong.song.url),
+                })}`,
+            ).setThumbnail(currentSong.song.thumbnail),
+        );
+    }
+
+    private async handleRequesterDeafTimeout(
+        queue: ServerQueue,
+        guild: VoiceState["guild"],
+        requesterId: string,
+        songKey: string,
+        timeoutMs: number,
+    ): Promise<void> {
+        if (guild.queue !== queue) {
+            return;
+        }
+
+        const pending = queue.requesterDeafTimeout;
+        if (pending?.requesterId !== requesterId || pending.songKey !== songKey) {
+            return;
+        }
+
+        const currentSong = this.getCurrentQueueSong(queue);
+        if (!currentSong || currentSong.key !== songKey) {
+            queue.clearRequesterDeafTimeout();
+            return;
+        }
+
+        const queueVc = guild.channels.cache.get(queue.connection?.joinConfig.channelId ?? "") as
+            | StageChannel
+            | VoiceChannel
+            | undefined;
+        const requester = queueVc?.members.get(requesterId) ?? guild.members.cache.get(requesterId);
+        const requesterCanListen =
+            queueVc !== undefined &&
+            requester?.voice.channelId === queueVc.id &&
+            requester.voice.deaf !== true;
+
+        if (requesterCanListen) {
+            queue.clearRequesterDeafTimeout();
+            if (queue.timeout === null && queue.player.state.status === AudioPlayerStatus.Paused) {
+                queue.player.unpause();
+            }
+            return;
+        }
+
+        const requesterSongs = queue.songs.filter((song) => song.requester.id === requesterId);
+        const removedCount = requesterSongs.size + (requesterSongs.has(currentSong.key) ? 0 : 1);
+
+        queue.clearRequesterDeafTimeout();
+        for (const song of requesterSongs.values()) {
+            queue.songs.delete(song.key);
+        }
+        queue.songs.delete(currentSong.key);
+        queue.skipVoters = [];
+
+        const __mf = i18n__mf(queue.client, guild);
+        const duration = formatMS(timeoutMs);
+        await this.sendVoiceStateMessage(
+            queue,
+            guild,
+            createEmbed(
+                "info",
+                `⏭️ **|** ${__mf("events.voiceStateUpdate.removeRequesterDeaf", {
+                    requester: `<@${requesterId}>`,
+                    count: `**\`${removedCount}\`**`,
+                    duration: `**\`${duration}\`**`,
+                })}`,
+            ).setThumbnail(currentSong.song.thumbnail),
+        );
+
+        if (queue.songs.size === 0) {
+            await queue.destroy();
+            return;
+        }
+
+        queue.player.stop(true);
+    }
+
+    private async sendVoiceStateMessage(
+        queue: ServerQueue,
+        guild: VoiceState["guild"],
+        embed: ReturnType<typeof createEmbed>,
+    ): Promise<void> {
+        const isRequestChannel = queue.client.requestChannelManager.isRequestChannel(
+            guild,
+            queue.textChannel.id,
+        );
+        const msg = await queue.textChannel
+            .send({
+                flags: MessageFlags.SuppressNotifications,
+                embeds: [embed],
+            })
+            .catch((error: unknown) => {
+                this.container.logger.error("VOICE_STATE_UPDATE_EVENT_ERR:", error);
+                return null;
+            });
+
+        if (!msg) {
+            return;
+        }
+
+        queue.lastVSUpdateMsg = msg.id;
+        if (isRequestChannel) {
+            setTimeout(() => {
+                void msg.delete().catch(() => null);
+            }, 60_000);
+        }
+    }
+
     private timeout(
         vcMembers: VoiceChannel["members"],
         queue: ServerQueue,
@@ -419,7 +676,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                     createEmbed(
                         "info",
                         `▶️ **|** ${__mf("events.voiceStateUpdate.resumeQueue", {
-                            song: `**[${song.title}](${song.url})**`,
+                            song: formatBoldMarkdownLink(song.title, song.url),
                         })}`,
                     )
                         .setThumbnail(song.thumbnail)

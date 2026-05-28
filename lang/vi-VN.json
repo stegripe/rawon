@@ -24,7 +24,7 @@
                 "step1Fallback": "1. Tìm cửa sổ trình duyệt vừa xuất hiện trên server",
                 "step2WithUrl": "2. Đăng nhập bằng tài khoản Google của bạn",
                 "step2Fallback": "2. Nếu từ xa, mở DevTools qua `chrome://inspect` và thêm {target}",
-                "step3": "3. Bot sẽ tự động phát hiện khi đăng nhập hoàn tất",
+                "step3": "3. Hoàn tất đăng nhập sẽ được phát hiện tự động",
                 "step4": "4. URL DevTools từ xa: {url} (tùy chọn)",
                 "timeLimit": "Bạn có {minutes} phút để hoàn tất đăng nhập.",
                 "loginSuccess": "Đăng Nhập Thành Công",
@@ -221,7 +221,7 @@
                 "usage": "{prefix}lyrics [bài hát]"
             },
             "nowplaying": {
-                "description": "Hiển thị trạng thái trình phát đa phương tiện",
+                "description": "Hiển thị trạng thái phát",
                 "disableButton": "Các nút trước đó không còn hoạt động và bị loại bỏ.",
                 "pauseResumeButton": "Tạm dừng/Tiếp tục",
                 "skipButton": "Bỏ qua",
@@ -234,9 +234,9 @@
                 "unknownDuration": "Không rõ thời lượng"
             },
             "pause": {
-                "alreadyPause": "Trình phát nhạc đã bị tạm dừng.",
-                "description": "Tạm dừng trình phát nhạc",
-                "pauseMessage": "Trình phát nhạc đã bị tạm dừng."
+                "alreadyPause": "Phát nhạc đã được tạm dừng.",
+                "description": "Tạm dừng phát",
+                "pauseMessage": "Đã tạm dừng phát."
             },
             "play": {
                 "alreadyPlaying": "Đã phát trong kênh thoại {voiceChannel}",
@@ -268,8 +268,8 @@
                 "usage": "{prefix}repeat <{options}>"
             },
             "resume": {
-                "alreadyResume": "Trình phát nhạc không bị tạm dừng.",
-                "description": "Tiếp tục trình phát nhạc",
+                "alreadyResume": "Phát nhạc không bị tạm dừng.",
+                "description": "Tiếp tục phát",
                 "resumeMessage": "Tiếp tục phát nhạc."
             },
             "search": {
@@ -332,12 +332,12 @@
             },
             "stop": {
                 "description": "Dừng phát nhạc",
-                "stoppedMessage": "Trình phát nhạc đã bị dừng."
+                "stoppedMessage": "Đã dừng phát."
             },
             "volume": {
                 "changeVolume": "Trình phát nhạc đã dừng. Để thay đổi âm lượng, hãy cung cấp số âm lượng khi sử dụng lệnh này.",
                 "currentVolume": "Âm lượng hiện tại là {volume}",
-                "description": "Thay đổi âm lượng trình phát đa phương tiện",
+                "description": "Thay đổi âm lượng phát",
                 "newVolume": "Âm lượng đã được thiết lập thành {volume}",
                 "noPermission": "Bạn cần vai trò DJ hoặc quyền **Quản lý máy chủ** để đặt âm lượng trên `100%`",
                 "plsPause": "Vui lòng tạm dừng nhạc để đặt âm lượng thành {volume}",
@@ -348,9 +348,9 @@
                 "description": "Thiết lập kênh yêu cầu nhạc",
                 "noPermission": "Bạn cần quyền **Quản lý máy chủ** để sử dụng lệnh này.",
                 "invalidChannel": "Vui lòng cung cấp một kênh văn bản hợp lệ.",
-                "noBotPermissions": "Tôi không thể kiểm tra quyền của mình trong kênh đó.",
-                "missingBotPermissions": "Tôi đang thiếu các quyền sau trong kênh đó: {permissions}",
-                "failedToSetup": "Không thể thiết lập kênh yêu cầu. Vui lòng kiểm tra quyền của tôi.",
+                "noBotPermissions": "Không thể kiểm tra quyền trong kênh đó.",
+                "missingBotPermissions": "Kênh đó thiếu các quyền sau: {permissions}",
+                "failedToSetup": "Không thể thiết lập kênh yêu cầu. Vui lòng kiểm tra quyền của kênh.",
                 "alreadyHasChannel": "Máy chủ này đã có kênh yêu cầu được thiết lập tại {channel}. Vui lòng xóa nó trước khi thiết lập kênh mới.",
                 "channelAlreadyInUse": "Kênh này đã được sử dụng làm kênh yêu cầu.",
                 "noChannelToRemove": "Không có kênh yêu cầu nào được thiết lập để xóa.",
@@ -375,7 +375,7 @@
             "wrongBot": "Lệnh này phải được thực thi trên {botMention} làm bot chính cho máy chủ này.",
             "primaryBotFallback": "bot chính"
         },
-        "createMessage": "Chào {author}, tiền tố của tôi là {prefix}",
+        "createMessage": "Chào {author}, tiền tố: {prefix}",
         "cmdLoading": "Đang tải...",
         "voiceStateUpdate": {
             "connectionReconfigured": "Kết nối lại cấu hình thành công.",
@@ -386,6 +386,9 @@
             "joiningAsSpeaker": "Đã chuyển sang kênh sân khấu, đang cố gắng tham gia với tư cách Diễn giả...",
             "pauseQueue": "Mọi người đã rời khỏi kênh thoại. Để tiết kiệm tài nguyên, hàng đợi đã bị tạm dừng.\nNếu không có ai tham gia kênh thoại trong {duration}, hàng đợi sẽ bị xóa.",
             "pauseQueueFooter": "Đã tạm dừng hàng đợi",
+            "pauseRequesterDeaf": "{requester} đang tắt âm thanh, tạm dừng {song}. Nếu họ không bật lại âm thanh trong {duration}, các bài hát của họ sẽ bị xóa khỏi hàng đợi.",
+            "removeRequesterDeaf": "{requester} không bật lại âm thanh trong {duration}, đã xóa {count} bài hát khỏi hàng đợi.",
+            "resumeRequesterDeaf": "Người yêu cầu đã bật lại âm thanh.\nĐang phát {song}",
             "reconfigureConnection": "Đã chuyển sang kênh thoại tại vùng khác, đang định cấu hình lại kết nối...",
             "resumeQueue": "Ai đó đã tham gia kênh thoại.\nĐang phát {song}",
             "resumeQueueFooter": "Tiếp tục phát hàng đợi",
@@ -406,6 +409,8 @@
         "requestedBy": "Yêu cầu bởi",
         "unknown": "Không rõ",
         "notInVoice": "Bạn cần ở trong kênh thoại để yêu cầu nhạc.",
+        "deafened": "Bạn cần bật lại âm thanh trước khi yêu cầu nhạc.",
+        "requesterDeafPaused": "Người yêu cầu đang tắt âm thanh. Nhạc sẽ tiếp tục khi họ bật lại.",
         "noResults": "Không tìm thấy kết quả cho tìm kiếm của bạn.",
         "addedToQueue": "Đã thêm {song} vào hàng đợi.",
         "addedPlaylistToQueue": "Đã thêm {count} bài hát từ {playlist} vào hàng đợi.",
@@ -428,7 +433,7 @@
     },
     "utils": {
         "commonUtil": {
-            "botMissingChannelPerms": "Tôi đang thiếu các quyền sau trong {channel}: {permissions}"
+            "botMissingChannelPerms": "{channel} thiếu các quyền sau: {permissions}"
         },
         "cooldownMessage": "{author}, vui lòng đợi {timeleft}.",
         "generalHandler": {
@@ -447,11 +452,11 @@
             "noInVC": "Xin lỗi, bạn cần ở trong kênh thoại để dùng lệnh.",
             "noQueue": "Đang rảnh rỗi.",
             "notPlaying": "Hiện không có nhạc đang phát. Vui lòng phát một bài hát trước.",
-            "sameVC": "Bạn cần ở cùng kênh thoại với bot.",
+            "sameVC": "Bạn cần ở cùng kênh thoại.",
             "useRequestChannel": "Vui lòng sử dụng kênh yêu cầu {channel} cho các lệnh nhạc.",
             "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp.",
-            "validVCJoinable": "Xin lỗi, nhưng tôi không thể **`Kết nối`** với kênh thoại của bạn, hãy đảm bảo rằng tôi có quyền phù hợp.",
-            "validVCPermission": "Xin lỗi, nhưng tôi không thể **`Nói`** trong kênh thoại này; hãy đảm bảo rằng tôi có quyền phù hợp."
+            "validVCJoinable": "Không thể **`Kết nối`** với kênh thoại của bạn, hãy đảm bảo quyền phù hợp đã được cấp.",
+            "validVCPermission": "Không thể **`Nói`** trong kênh thoại này; hãy đảm bảo quyền phù hợp đã được cấp."
         }
     }
 }

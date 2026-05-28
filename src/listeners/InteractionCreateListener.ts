@@ -12,7 +12,6 @@ import {
     ButtonStyle,
     Collection,
     ComponentType,
-    escapeMarkdown,
     GuildMember,
     type Interaction,
     Message,
@@ -28,8 +27,13 @@ import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/index.js";
 import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
+import {
+    formatBoldMarkdownLink,
+    formatMarkdownLink,
+    formatMarkdownText,
+} from "../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
-import { parseHTMLElements } from "../utils/functions/parseHTMLElements.js";
+import { hasMusicControlPermission } from "../utils/functions/musicControlPermissions.js";
 
 function hasSlashCommand(cmd: Command): boolean {
     return cmd.options.chatInputCommand !== undefined;
@@ -520,21 +524,23 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         `in #${(interaction.channel as TextChannel)?.name ?? "unknown"} [${interaction.channelId}] ` +
                         `in guild: ${thisBotGuildForContext?.name ?? interaction.guild?.name} [${interaction.guildId}]`,
                 );
-                const ctxCmd2 = cmd as { contextRun?: (ctx: CommandContext) => Promise<unknown> };
-                void ctxCmd2.contextRun?.(context);
-
-                if (thisBotGuildForContext && interaction.channelId) {
-                    const isReqChannel = client.requestChannelManager.isRequestChannel(
+                const isRequestChannelSlash =
+                    interaction.isChatInputCommand() &&
+                    thisBotGuildForContext !== null &&
+                    interaction.channelId !== null &&
+                    client.requestChannelManager.isRequestChannel(
                         thisBotGuildForContext,
                         interaction.channelId,
                     );
-                    if (isReqChannel) {
-                        setTimeout(async () => {
-                            try {
-                                await interaction.deleteReply();
-                            } catch {}
-                        }, 60_000);
-                    }
+                if (isRequestChannelSlash) {
+                    context.additionalArgs.set("ephemeralRequestChannel", true);
+                }
+
+                const ctxCmd2 = cmd as { contextRun?: (ctx: CommandContext) => Promise<unknown> };
+                await ctxCmd2.contextRun?.(context);
+
+                if (isRequestChannelSlash) {
+                    await this.schedulePublicRequestChannelReplyCleanup(interaction);
                 }
             } else {
                 this.container.logger.warn(
@@ -718,6 +724,25 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         return true;
     }
 
+    private async schedulePublicRequestChannelReplyCleanup(
+        interaction: Interaction,
+    ): Promise<void> {
+        if (!interaction.isRepliable()) {
+            return;
+        }
+
+        const reply = await (interaction as ButtonInteraction).fetchReply().catch(() => null);
+        if (!reply || reply.flags.has(MessageFlags.Ephemeral)) {
+            return;
+        }
+
+        setTimeout(async () => {
+            try {
+                await (interaction as ButtonInteraction).deleteReply();
+            } catch {}
+        }, 60_000);
+    }
+
     private async safeReply(
         interaction: Interaction,
         options: Parameters<ButtonInteraction["reply"]>[0],
@@ -846,6 +871,16 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             await interaction.deleteReply();
                         } catch {}
                     }, 60_000);
+                } else if (queue.requesterDeafTimeout) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", __("requestChannel.requesterDeafPaused"))],
+                    });
+                    setTimeout(async () => {
+                        try {
+                            await interaction.deleteReply();
+                        } catch {}
+                    }, 60_000);
                 } else {
                     queue.playing = true;
                     await interaction.reply({
@@ -922,7 +957,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 const skipEmbed = createEmbed(
                     "success",
                     `⏭️ **|** ${__mf("commands.music.skip.skipMessage", {
-                        song: skipSong ? `**[${skipSong.song.title}](${skipSong.song.url})**` : "",
+                        song: skipSong
+                            ? formatBoldMarkdownLink(skipSong.song.title, skipSong.song.url)
+                            : "",
                     })}`,
                 ).setThumbnail(skipSong?.song.thumbnail ?? null);
 
@@ -1212,7 +1249,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 queue.player.stop(true);
 
                 const opening = __mf("commands.music.remove.songsRemoved", { removed: 1 });
-                const pageContent = `${__("commands.music.remove.songSkip")}1.) **[${escapeMarkdown(parseHTMLElements(songTitle))}](${songUrl})**`;
+                const pageContent = `${__("commands.music.remove.songSkip")}1.) ${formatBoldMarkdownLink(songTitle, songUrl)}`;
                 const removeEmbed = createEmbed("info", pageContent)
                     .setAuthor({ name: opening })
                     .setFooter({
@@ -1253,7 +1290,10 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         const npKey = np.key;
                         const addition = song.key === npKey ? "**" : "";
 
-                        return `${addition}${ind * 10 + (i + 1)} - [${song.song.title}](${song.song.url})${addition}`;
+                        return `${addition}${ind * 10 + (i + 1)} - ${formatMarkdownLink(
+                            song.song.title,
+                            song.song.url,
+                        )}${addition}`;
                     });
 
                     return names.join("\n");
@@ -1372,22 +1412,22 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         interaction: ButtonInteraction,
         member: GuildMember | undefined,
         currentSong: QueueSong | undefined,
-    ): Promise<{ hasPermission: boolean; djRole: { id: string } | null }> {
+    ): Promise<{ hasPermission: boolean }> {
         const guild = interaction.guild;
         if (!guild || !member) {
-            return { hasPermission: false, djRole: null };
+            return { hasPermission: false };
         }
 
         const client = interaction.client as Rawon;
         const thisBotGuild = client.guilds.cache.get(guild.id) ?? guild;
-        const djRole = await this.container.utils.fetchDJRole(thisBotGuild).catch(() => null);
+        const hasPermission = await hasMusicControlPermission({
+            client,
+            guild: thisBotGuild,
+            member,
+            requesterIds: [currentSong],
+        });
 
-        const hasPermission =
-            member.roles.cache.has(djRole?.id ?? "") ||
-            member.permissions.has("ManageGuild") ||
-            currentSong?.requester.id === member.id;
-
-        return { hasPermission, djRole };
+        return { hasPermission };
     }
 
     private async handleSkipVoting(
@@ -1496,7 +1536,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                             createEmbed(
                                 "warn",
                                 __mf("commands.music.lyrics.noLyrics", {
-                                    song: `**${currentSong.song.title}**`,
+                                    song: `**${formatMarkdownText(currentSong.song.title)}**`,
                                 }),
                             ),
                         ],
@@ -1622,7 +1662,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         createEmbed(
                             "error",
                             __mf("commands.music.lyrics.noLyrics", {
-                                song: `**${currentSong.song.title}**`,
+                                song: `**${formatMarkdownText(currentSong.song.title)}**`,
                             }),
                             true,
                         ),

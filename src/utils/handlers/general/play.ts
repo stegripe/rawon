@@ -18,6 +18,7 @@ import {
     formatBoldPrefixedCommand,
     formatPrefixedCommand,
 } from "../../functions/formatCodeSpan.js";
+import { formatBoldMarkdownLink } from "../../functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../../functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import { type FfmpegStreamWithEvents, isErrnoException } from "../../typeGuards.js";
@@ -368,7 +369,7 @@ export async function play(
                         createEmbed(
                             "warn",
                             `🔄 **|** ${__mf("utils.generalHandler.songRequeued", {
-                                song: `**[${song.song.title}](${song.song.url})**`,
+                                song: formatBoldMarkdownLink(song.song.title, song.song.url),
                             })}`,
                         ).setThumbnail(song.song.thumbnail),
                     ],
@@ -408,7 +409,7 @@ export async function play(
                         createEmbed(
                             "error",
                             `${__mf("utils.generalHandler.ageRestricted", {
-                                song: `**[${song.song.title}](${song.song.url})**`,
+                                song: formatBoldMarkdownLink(song.song.title, song.song.url),
                             })}`,
                             true,
                         ),
