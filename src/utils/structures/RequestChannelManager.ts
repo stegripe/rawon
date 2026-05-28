@@ -159,7 +159,10 @@ export class RequestChannelManager {
         return `**\`${spacedName}\`**`;
     }
 
-    private canSendEmbedToTextChannel(guild: Guild, channel: TextChannel): boolean {
+    private canSendEmbedToTextChannel(
+        guild: Guild,
+        channel: TextChannel | VoiceChannel | StageChannel,
+    ): boolean {
         const botMember = guild.members.me ?? guild.members.cache.get(this.client.user?.id ?? "");
         if (!botMember) {
             return false;
@@ -209,7 +212,7 @@ export class RequestChannelManager {
             return;
         }
 
-        const fallbackChannels: TextChannel[] = [];
+        const fallbackChannels: Array<TextChannel | VoiceChannel | StageChannel> = [];
         if (guild.queue?.textChannel && guild.queue.textChannel.id !== channelId) {
             fallbackChannels.push(guild.queue.textChannel);
         }

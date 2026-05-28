@@ -19,6 +19,7 @@ import got from "got";
 import { Soundcloud } from "soundcloud.ts";
 import * as config from "../config/index.js";
 import { type GuildData } from "../typings/index.js";
+import { resolveAndApplyMusicCommandTarget } from "../utils/functions/musicCommandTarget.js";
 import { SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
 import { AudioCacheManager } from "../utils/structures/AudioCacheManager.js";
 import { ClientUtils } from "../utils/structures/ClientUtils.js";
@@ -157,7 +158,7 @@ class CommandsCompatibility {
         return categories;
     }
 
-    public handle(message: Message, prefix: string): void {
+    public async handle(message: Message, prefix: string): Promise<void> {
         const content = message.content.slice(prefix.length).trim();
         const args = content.split(/ +/u);
         const commandName = args.shift()?.toLowerCase();
@@ -187,6 +188,7 @@ class CommandsCompatibility {
         }
 
         const ctx = new CommandContext(message, args);
+        await resolveAndApplyMusicCommandTarget(ctx, command.name, command.aliases);
 
         const ctxCommand = command as {
             contextRun?: (ctx: CommandContext) => Promise<unknown>;
