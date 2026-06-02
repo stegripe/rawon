@@ -1,13 +1,13 @@
 import {
     type ApplicationCommandOptionData,
     type ApplicationCommandType,
-    type Client as OClient,
     type ClientEvents,
     type ClientPresenceStatus,
     type Collection,
     type EmbedBuilder,
-    type Guild as OG,
     type GuildMember,
+    type Client as OClient,
+    type Guild as OG,
 } from "discord.js";
 import { type Got } from "got";
 import { type Soundcloud } from "soundcloud.ts";
