@@ -29,6 +29,7 @@ import {
     getStream,
     shouldRequeueOnError,
 } from "../YTDLUtil.js";
+import { hydrateYouTubeSongMetadata } from "./hydrateSongMetadata.js";
 
 export async function play(
     guild: Guild,
@@ -99,6 +100,13 @@ export async function play(
             `Queue ended for ${guild.name}(${guild.id})`,
         );
         return;
+    }
+
+    const hydratedSong = await hydrateYouTubeSongMetadata(queue.client, song.song);
+    if (hydratedSong !== song.song) {
+        song.song = hydratedSong;
+        void queue.saveQueueState();
+        void queue.client.requestChannelManager.updatePlayerMessage(guild);
     }
 
     let ffmpegStream: prism.FFmpeg;
