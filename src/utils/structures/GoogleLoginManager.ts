@@ -389,7 +389,7 @@ export class GoogleLoginManager {
 
         try {
             const puppeteerFull = await import("puppeteer");
-            const execPath = puppeteerFull.executablePath();
+            const execPath = await puppeteerFull.executablePath();
             if (execPath && existsSync(execPath)) {
                 container.logger.debug(
                     `[GoogleLogin] Using puppeteer bundled browser: ${execPath}`,
