@@ -6,7 +6,7 @@ on:
       - created
   push:
     branches:
-      - "**"
+      - main
   pull_request:
     branches:
       - "**"
