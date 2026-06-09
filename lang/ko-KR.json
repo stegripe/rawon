@@ -403,7 +403,7 @@
         "shuffle": "셔플",
         "autoplay": "자동재생",
         "volume": "볼륨",
-        "queueFooter": "대기열에 남은 곡: {count}개 ({duration} 길이, 자동 재생: {state})",
+        "queueFooter": "대기열에 남은 곡: {count}개 ({duration} 길이)",
         "live": "라이브",
         "songDuration": "재생 시간",
         "requestedBy": "요청자",

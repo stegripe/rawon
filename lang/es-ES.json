@@ -403,7 +403,7 @@
         "shuffle": "Aleatorio",
         "autoplay": "Reproducción automática",
         "volume": "Volumen",
-        "queueFooter": "Canciones restantes en la cola: {count} ({duration} de duración, reproducción automática: {state})",
+        "queueFooter": "Canciones restantes en la cola: {count} ({duration} de duración)",
         "live": "EN VIVO",
         "songDuration": "Duración",
         "requestedBy": "Solicitado por",
