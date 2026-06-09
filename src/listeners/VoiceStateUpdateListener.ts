@@ -17,7 +17,7 @@ import {
     type VoiceState,
 } from "discord.js";
 import { type Rawon } from "../structures/Rawon.js";
-import { type ServerQueue } from "../structures/ServerQueue.js";
+import { type RequesterDeafTimeoutReason, type ServerQueue } from "../structures/ServerQueue.js";
 import { type QueueSong } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
@@ -148,8 +148,15 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         }
 
         const deafChanged = newState.deaf !== oldState.deaf;
-        if (deafChanged) {
-            await this.handleRequesterDeafChange(oldState, newState, queue, thisBotGuild, queueVc);
+        const voiceChannelChanged = newId !== oldId;
+        if (deafChanged || voiceChannelChanged) {
+            await this.handleRequesterAvailabilityChange(
+                oldState,
+                newState,
+                queue,
+                thisBotGuild,
+                queueVc,
+            );
         }
 
         if (newState.mute !== oldState.mute || deafChanged) {
@@ -352,7 +359,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             .metadata as QueueSong;
     }
 
-    private async handleRequesterDeafChange(
+    private async handleRequesterAvailabilityChange(
         oldState: VoiceState,
         newState: VoiceState,
         queue: ServerQueue,
@@ -369,28 +376,35 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             return;
         }
 
+        if (newState.channel?.id !== queueVc.id) {
+            await this.pauseRequesterUnavailableSong(queue, guild, currentSong, "left");
+            return;
+        }
+
         if (newState.deaf === true) {
-            await this.pauseRequesterDeafSong(queue, guild, currentSong);
+            await this.pauseRequesterUnavailableSong(queue, guild, currentSong, "deaf");
             return;
         }
 
         await this.resumeRequesterDeafSong(queue, guild, newState, queueVc, currentSong);
     }
 
-    private async pauseRequesterDeafSong(
+    private async pauseRequesterUnavailableSong(
         queue: ServerQueue,
         guild: VoiceState["guild"],
         currentSong: QueueSong,
+        reason: RequesterDeafTimeoutReason,
     ): Promise<void> {
-        if (queue.player.state.status !== AudioPlayerStatus.Playing) {
-            return;
-        }
-
         const pending = queue.requesterDeafTimeout;
         if (
             pending?.requesterId === currentSong.requester.id &&
             pending.songKey === currentSong.key
         ) {
+            pending.reason = reason;
+            return;
+        }
+
+        if (queue.player.state.status !== AudioPlayerStatus.Playing) {
             return;
         }
 
@@ -408,18 +422,23 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         queue.setRequesterDeafTimeout({
             requesterId: currentSong.requester.id,
             songKey: currentSong.key,
+            reason,
             timeout,
         });
         queue.player.pause();
 
         const __mf = i18n__mf(queue.client, guild);
         const duration = formatMS(timeoutMs);
+        const i18nKey =
+            reason === "left"
+                ? "events.voiceStateUpdate.pauseRequesterLeft"
+                : "events.voiceStateUpdate.pauseRequesterDeaf";
         await this.sendVoiceStateMessage(
             queue,
             guild,
             createEmbed(
                 "warn",
-                `⏸️ **|** ${__mf("events.voiceStateUpdate.pauseRequesterDeaf", {
+                `⏸️ **|** ${__mf(i18nKey, {
                     requester: currentSong.requester.toString(),
                     song: formatBoldMarkdownLink(currentSong.song.title, currentSong.song.url),
                     duration: `**\`${duration}\`**`,
@@ -450,6 +469,10 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         }
 
         queue.clearRequesterDeafTimeout();
+        const i18nKey =
+            pending.reason === "left"
+                ? "events.voiceStateUpdate.resumeRequesterLeft"
+                : "events.voiceStateUpdate.resumeRequesterDeaf";
         const shouldResumePlayer =
             queue.timeout === null && queue.player.state.status === AudioPlayerStatus.Paused;
         if (!shouldResumePlayer) {
@@ -464,7 +487,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             guild,
             createEmbed(
                 "info",
-                `▶️ **|** ${__mf("events.voiceStateUpdate.resumeRequesterDeaf", {
+                `▶️ **|** ${__mf(i18nKey, {
                     song: formatBoldMarkdownLink(currentSong.song.title, currentSong.song.url),
                 })}`,
             ).setThumbnail(currentSong.song.thumbnail),
@@ -486,6 +509,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         if (pending?.requesterId !== requesterId || pending.songKey !== songKey) {
             return;
         }
+        const timeoutReason = pending.reason;
 
         const currentSong = this.getCurrentQueueSong(queue);
         if (!currentSong || currentSong.key !== songKey) {
@@ -523,12 +547,16 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
 
         const __mf = i18n__mf(queue.client, guild);
         const duration = formatMS(timeoutMs);
+        const i18nKey =
+            timeoutReason === "left"
+                ? "events.voiceStateUpdate.removeRequesterLeft"
+                : "events.voiceStateUpdate.removeRequesterDeaf";
         await this.sendVoiceStateMessage(
             queue,
             guild,
             createEmbed(
                 "info",
-                `⏭️ **|** ${__mf("events.voiceStateUpdate.removeRequesterDeaf", {
+                `⏭️ **|** ${__mf(i18nKey, {
                     requester: `<@${requesterId}>`,
                     count: `**\`${removedCount}\`**`,
                     duration: `**\`${duration}\`**`,
@@ -661,6 +689,10 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
 
         clearTimeout(queue.timeout ?? undefined);
         (guild.queue as ServerQueue).timeout = null;
+
+        if (queue.requesterDeafTimeout) {
+            return;
+        }
 
         const song = ((queue.player.state as AudioPlayerPausedState).resource.metadata as QueueSong)
             .song;

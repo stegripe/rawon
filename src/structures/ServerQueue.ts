@@ -36,9 +36,12 @@ import { type Rawon } from "./Rawon.js";
 
 const nonEnum = { enumerable: false };
 
+export type RequesterDeafTimeoutReason = "deaf" | "left";
+
 type RequesterDeafTimeoutState = {
     requesterId: Snowflake;
     songKey: Snowflake;
+    reason: RequesterDeafTimeoutReason;
     timeout: NodeJS.Timeout;
 };
 
@@ -896,6 +899,9 @@ export class ServerQueue {
 
     public set playing(value: boolean) {
         if (value) {
+            if (this.requesterDeafTimeout) {
+                return;
+            }
             this.player.unpause();
         } else {
             this.player.pause();
