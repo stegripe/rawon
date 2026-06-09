@@ -3,7 +3,6 @@ import { setTimeout } from "node:timers";
 import { ApplicationCommandRegistries, container, RegisterBehavior } from "@sapphire/framework";
 import { clientOptions } from "./config/index.js";
 import { Rawon } from "./structures/Rawon.js";
-import { patchComponentsV2Messages } from "./utils/functions/messageComponentsV2.js";
 import { NoStackError } from "./utils/structures/NoStackError.js";
 import { stopAutoUpdater } from "./utils/yt-dlp/index.js";
 
@@ -15,7 +14,6 @@ if (!token) {
 }
 
 ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
-patchComponentsV2Messages();
 
 const client = new Rawon(clientOptions);
 

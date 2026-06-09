@@ -2,7 +2,6 @@ import process from "node:process";
 import { setTimeout } from "node:timers";
 import { clientOptions, discordTokens, isMultiBot, isProd } from "../../config/index.js";
 import { Rawon } from "../../structures/Rawon.js";
-import { patchComponentsV2Messages } from "../functions/messageComponentsV2.js";
 import { createScopedLogger } from "./createLogger.js";
 import { MultiBotManager } from "./MultiBotManager.js";
 
@@ -129,7 +128,6 @@ export class MultiBotLauncher {
     }
 
     public async start(): Promise<void> {
-        patchComponentsV2Messages();
         this.setupProcessHandlers();
 
         if (!isMultiBot || discordTokens.length <= 1) {
