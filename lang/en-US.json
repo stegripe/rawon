@@ -403,7 +403,7 @@
         "shuffle": "Shuffle",
         "autoplay": "Auto-play",
         "volume": "Volume",
-        "queueFooter": "Remaining tracks in queue: {count} ({duration} duration, auto-play: {state})",
+        "queueFooter": "Remaining tracks in queue: {count} ({duration} duration)",
         "live": "LIVE",
         "songDuration": "Duration",
         "requestedBy": "Requested by",

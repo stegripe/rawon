@@ -403,7 +403,7 @@
         "shuffle": "Aléatoire",
         "autoplay": "Lecture automatique",
         "volume": "Volume",
-        "queueFooter": "Pistes restantes dans la file d'attente : {count} ({duration} de durée, lecture automatique : {state})",
+        "queueFooter": "Pistes restantes dans la file d'attente : {count} ({duration} de durée)",
         "live": "EN DIRECT",
         "songDuration": "Durée",
         "requestedBy": "Demandé par",

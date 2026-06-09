@@ -403,7 +403,7 @@
         "shuffle": "シャッフル",
         "autoplay": "自動再生",
         "volume": "音量",
-        "queueFooter": "キュー内の残り曲数: {count}（{duration}, 自動再生: {state}）",
+        "queueFooter": "キュー内の残り曲数: {count}（{duration}）",
         "live": "ライブ",
         "songDuration": "曲の長さ",
         "requestedBy": "リクエスト者",

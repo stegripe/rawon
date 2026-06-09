@@ -10,13 +10,21 @@ import {
     ButtonBuilder,
     ButtonStyle,
     ChannelType,
-    type EmbedBuilder,
+    ContainerBuilder,
     type Guild,
+    MediaGalleryBuilder,
+    MediaGalleryItemBuilder,
     type Message,
+    type MessageCreateOptions,
+    type MessageEditOptions,
     MessageFlags,
     PermissionFlagsBits,
+    SectionBuilder,
+    SeparatorBuilder,
     type StageChannel,
     type TextChannel,
+    TextDisplayBuilder,
+    ThumbnailBuilder,
     type VoiceChannel,
 } from "discord.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -32,6 +40,11 @@ import {
     hasSaveRequestChannel,
 } from "../typeGuards.js";
 
+type PlayerStatusGridItem = {
+    label: string;
+    value: string;
+};
+
 export class RequestChannelManager {
     private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
     private readonly updateDebounceMs = 500;
@@ -46,6 +59,25 @@ export class RequestChannelManager {
 
     public constructor(public readonly client: Rawon) {}
 
+    private getPlayerAccentColor(): number {
+        const normalizedColor = this.client.data.botSettings.embedColor.replace(/^#/u, "");
+        const parsedColor = Number.parseInt(normalizedColor, 16);
+
+        if (!Number.isFinite(parsedColor) || parsedColor < 0 || parsedColor > 0xffffff) {
+            return 0x22c9ff;
+        }
+
+        return parsedColor;
+    }
+
+    private getSafeImageUrl(url: string | null | undefined): string {
+        if (typeof url === "string" && /^https?:\/\//iu.test(url)) {
+            return url;
+        }
+
+        return "https://cdn.stegripe.org/images/rawon_splash.png";
+    }
+
     private formatQueueFooter(
         count: string | number,
         duration: string,
@@ -57,24 +89,19 @@ export class RequestChannelManager {
         const footerTemplate = __("requestChannel.queueFooter");
 
         if (footerTemplate.includes("{state}")) {
-            return `• ${__mf("requestChannel.queueFooter", {
+            return __mf("requestChannel.queueFooter", {
                 count,
                 duration,
                 state: autoPlayState,
-            })}`;
+            });
         }
 
         const baseFooter = __mf("requestChannel.queueFooter", {
             count,
             duration,
         });
-        const autoPlayInfo = `${__("requestChannel.autoplay").toLowerCase()}: ${autoPlayState}`;
 
-        if (baseFooter.endsWith(")")) {
-            return `• ${baseFooter.slice(0, -1)}, ${autoPlayInfo})`;
-        }
-
-        return `• ${baseFooter} (${autoPlayInfo})`;
+        return baseFooter;
     }
 
     private isPrimaryBot(): boolean {
@@ -397,7 +424,7 @@ export class RequestChannelManager {
         }
     }
 
-    public createPlayerEmbed(guild: Guild): EmbedBuilder {
+    public createPlayerComponents(guild: Guild): APIMessageTopLevelComponent[] {
         const queue = guild.queue;
 
         const botId = this.client.user?.id ?? "unknown";
@@ -417,10 +444,11 @@ export class RequestChannelManager {
         }
 
         const bs = this.client.data.botSettings;
-        const splash = bs.requestChannelSplash;
+        const splash = this.getSafeImageUrl(bs.requestChannelSplash);
 
         const __ = i18n__(this.client, guild);
         const __mf = i18n__mf(this.client, guild);
+        const guildIcon = this.getSafeImageUrl(guild.iconURL({ size: 2_048 }) ?? splash);
 
         if (!queue || queue.songs.size === 0) {
             const savedLoopMode = savedState?.loopMode ?? "OFF";
@@ -428,29 +456,33 @@ export class RequestChannelManager {
             const savedAutoPlay = savedState?.autoplay ?? false;
             const savedVolume = savedState?.volume ?? bs.defaultVolume;
 
-            return createEmbed("info", __("requestChannel.standby"))
-                .setTitle(`🎵  ${__("requestChannel.title")}`)
-                .setImage(splash)
-                .addFields([
+            return this.createPlayerContainer(guild, {
+                imageUrl: splash,
+                mainText: `### ${__("requestChannel.standby")}`,
+                queueText: this.formatQueueFooter(0, "0:00", savedAutoPlay, __, __mf),
+                requesterText: null,
+                imageMode: "gallery",
+                statusItems: [
                     {
-                        name: __("requestChannel.status"),
+                        label: __("requestChannel.status"),
                         value: `▶️ ${savedLoopMode}`,
-                        inline: true,
                     },
                     {
-                        name: __("requestChannel.shuffle"),
+                        label: __("requestChannel.shuffle"),
                         value: `🔀 ${savedShuffle ? "ON" : "OFF"}`,
-                        inline: true,
                     },
                     {
-                        name: __("requestChannel.volume"),
+                        label: __("requestChannel.volume"),
                         value: `🔊 ${savedVolume}%`,
-                        inline: true,
                     },
-                ])
-                .setFooter({
-                    text: this.formatQueueFooter(0, "0:00", savedAutoPlay, __, __mf),
-                });
+                ],
+                autoPlayItem: {
+                    label: __("requestChannel.autoplay"),
+                    value: savedAutoPlay ? "ON" : "OFF",
+                },
+                thumbnailUrl: guildIcon,
+                title: __("requestChannel.title"),
+            });
         }
 
         const res = (
@@ -478,21 +510,13 @@ export class RequestChannelManager {
         const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶️";
 
         const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
-        const imageUrl = hasThumbnail ? song?.thumbnail : splash;
-
-        const embed = createEmbed("info")
-            .setTitle(`🎵  ${__("requestChannel.title")}`)
-            .setImage(imageUrl ?? splash);
-
-        const guildIcon = guild.iconURL({ size: 2_048 });
-        if (guildIcon !== null && guildIcon.length > 0) {
-            embed.setThumbnail(guildIcon);
-        }
+        const imageUrl = this.getSafeImageUrl(hasThumbnail ? song?.thumbnail : splash);
 
         const totalQueueDuration = queue.songs
             .map((s) => s.song.duration)
             .reduce((acc, dur) => acc + dur, 0);
 
+        let mainText: string;
         if (song) {
             let durationLine: string;
             if (isLive) {
@@ -502,76 +526,172 @@ export class RequestChannelManager {
                 durationLine = `${statusEmoji} ${__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
             }
 
-            const requesterLine = `${__("requestChannel.requestedBy")}: ${fallbackQueueSong?.requester.toString() ?? __("requestChannel.unknown")}`;
-
-            embed.setDescription(
-                `### ${formatMarkdownLink(song.title, song.url)}\n\n${durationLine}\n\n${requesterLine}`,
-            );
+            mainText = `### ${formatMarkdownLink(song.title, song.url)}\n\n${durationLine}`;
         } else {
             const standbyLine = `${statusEmoji} ${__("requestChannel.standby")}`;
-            embed.setDescription(standbyLine);
+            mainText = standbyLine;
         }
 
         const shuffleState = queue.shuffle ? "ON" : "OFF";
 
-        embed.addFields([
-            {
-                name: __("requestChannel.status"),
-                value: `${loopEmoji} ${queue.loopMode}`,
-                inline: true,
-            },
-            {
-                name: __("requestChannel.shuffle"),
-                value: `🔀 ${shuffleState}`,
-                inline: true,
-            },
-            {
-                name: __("requestChannel.volume"),
-                value: `🔊 ${queue.volume}%`,
-                inline: true,
-            },
-        ]);
-
         const queueDurationStr =
             totalQueueDuration > 0 ? formatDuration(totalQueueDuration) : "0:00";
-        embed.setFooter({
-            text: this.formatQueueFooter(
-                queue.songs.size.toString(),
-                queueDurationStr,
-                queue.autoPlay,
-                __,
-                __mf,
-            ),
-        });
+        const queueText = this.formatQueueFooter(
+            queue.songs.size.toString(),
+            queueDurationStr,
+            queue.autoPlay,
+            __,
+            __mf,
+        );
 
-        return embed;
+        return this.createPlayerContainer(guild, {
+            imageUrl,
+            mainText,
+            queueText,
+            requesterText: song
+                ? `${__("requestChannel.requestedBy")}: ${fallbackQueueSong?.requester.toString() ?? __("requestChannel.unknown")}`
+                : null,
+            imageMode: "gallery",
+            statusItems: [
+                {
+                    label: __("requestChannel.status"),
+                    value: `${loopEmoji} ${queue.loopMode}`,
+                },
+                {
+                    label: __("requestChannel.shuffle"),
+                    value: `🔀 ${shuffleState}`,
+                },
+                {
+                    label: __("requestChannel.volume"),
+                    value: `🔊 ${queue.volume}%`,
+                },
+            ],
+            autoPlayItem: {
+                label: __("requestChannel.autoplay"),
+                value: queue.autoPlay ? "ON" : "OFF",
+            },
+            thumbnailUrl: guildIcon,
+            title: __("requestChannel.title"),
+        });
     }
 
-    public createPlayerButtons(guild: Guild): APIMessageTopLevelComponent[] {
+    private createPlayerContainer(
+        guild: Guild,
+        options: {
+            imageUrl: string;
+            mainText: string;
+            queueText: string;
+            requesterText: string | null;
+            imageMode: "gallery" | "thumbnail";
+            statusItems: [PlayerStatusGridItem, PlayerStatusGridItem, PlayerStatusGridItem];
+            autoPlayItem: PlayerStatusGridItem;
+            thumbnailUrl: string;
+            title: string;
+        },
+    ): APIMessageTopLevelComponent[] {
+        const [primaryControlsRow, secondaryControlsRow] = this.createPlayerButtonRows(guild);
+        const statusRow = this.createPlayerStatusRow(options.statusItems, options.autoPlayItem);
+        const [, , volumeStatus] = options.statusItems;
+        const volumeText = `🔊 **${volumeStatus.label}:** \`${volumeStatus.value.replace(/^🔊 /u, "")}\``;
+        const headerLines = [`## ${options.title}`, options.requesterText, "", volumeText].filter(
+            (line): line is string => line !== null,
+        );
+        const container = new ContainerBuilder()
+            .setAccentColor(this.getPlayerAccentColor())
+            .addSectionComponents(
+                new SectionBuilder()
+                    .addTextDisplayComponents(
+                        new TextDisplayBuilder().setContent(headerLines.join("\n")),
+                    )
+                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(options.thumbnailUrl)),
+            )
+            .addActionRowComponents(statusRow)
+            .addSeparatorComponents(new SeparatorBuilder());
+
+        if (options.imageMode === "thumbnail") {
+            container.addSectionComponents(
+                new SectionBuilder()
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(options.mainText))
+                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(options.imageUrl)),
+            );
+        } else {
+            container
+                .addTextDisplayComponents(new TextDisplayBuilder().setContent(options.mainText))
+                .addMediaGalleryComponents(
+                    new MediaGalleryBuilder().addItems(
+                        new MediaGalleryItemBuilder().setURL(options.imageUrl),
+                    ),
+                );
+        }
+
+        container
+            .addSeparatorComponents(new SeparatorBuilder())
+            .addTextDisplayComponents(new TextDisplayBuilder().setContent(options.queueText))
+            .addSeparatorComponents(new SeparatorBuilder())
+            .addActionRowComponents(primaryControlsRow, secondaryControlsRow);
+
+        return [container.toJSON() as APIMessageTopLevelComponent];
+    }
+
+    private createPlayerStatusRow(
+        items: [PlayerStatusGridItem, PlayerStatusGridItem, PlayerStatusGridItem],
+        autoPlayItem: PlayerStatusGridItem,
+    ): ActionRowBuilder<ButtonBuilder> {
+        const [loopStatus, shuffleStatus] = items;
+
+        return new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+                .setCustomId("RC_LOOP")
+                .setLabel(`${loopStatus.label}: ${loopStatus.value.replace(/^🔁 |^🔂 |^▶️ /u, "")}`)
+                .setEmoji("🔁")
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId("RC_SHUFFLE")
+                .setLabel(`${shuffleStatus.label}: ${shuffleStatus.value.replace(/^🔀 /u, "")}`)
+                .setEmoji("🔀")
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId("RC_AUTOPLAY")
+                .setLabel(`${autoPlayItem.label}: ${autoPlayItem.value}`)
+                .setEmoji("♾️")
+                .setStyle(ButtonStyle.Secondary),
+        );
+    }
+
+    private createPlayerMessageCreateOptions(guild: Guild): MessageCreateOptions {
+        return {
+            flags: MessageFlags.SuppressNotifications | MessageFlags.IsComponentsV2,
+            components: this.createPlayerComponents(guild),
+        };
+    }
+
+    private createPlayerMessageEditOptions(guild: Guild): MessageEditOptions {
+        return {
+            embeds: [],
+            flags: MessageFlags.IsComponentsV2,
+            components: this.createPlayerComponents(guild),
+        };
+    }
+
+    private createPlayerButtonRows(
+        guild: Guild,
+    ): [ActionRowBuilder<ButtonBuilder>, ActionRowBuilder<ButtonBuilder>] {
         const queue = guild.queue;
 
         const isPlaying = queue?.playing ?? false;
 
         const pauseResumeEmoji = isPlaying ? "⏸️" : "▶️";
 
-        const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        const primaryControlsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
                 .setCustomId("RC_PAUSE_RESUME")
                 .setEmoji(pauseResumeEmoji)
                 .setStyle(ButtonStyle.Primary),
             new ButtonBuilder().setCustomId("RC_SKIP").setEmoji("⏭️").setStyle(ButtonStyle.Primary),
             new ButtonBuilder().setCustomId("RC_STOP").setEmoji("⏹️").setStyle(ButtonStyle.Danger),
-            new ButtonBuilder()
-                .setCustomId("RC_LOOP")
-                .setEmoji("🔁")
-                .setStyle(ButtonStyle.Secondary),
-            new ButtonBuilder()
-                .setCustomId("RC_SHUFFLE")
-                .setEmoji("🔀")
-                .setStyle(ButtonStyle.Secondary),
         );
 
-        const row2 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        const secondaryControlsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
                 .setCustomId("RC_VOL_DOWN")
                 .setEmoji("🔉")
@@ -581,32 +701,31 @@ export class RequestChannelManager {
                 .setEmoji("🔊")
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder().setCustomId("RC_REMOVE").setEmoji("🗑️").setStyle(ButtonStyle.Danger),
-            new ButtonBuilder()
-                .setCustomId("RC_AUTOPLAY")
-                .setEmoji("♾️")
-                .setStyle(ButtonStyle.Secondary),
-            new ButtonBuilder()
-                .setCustomId("RC_LYRICS")
-                .setEmoji("📜")
-                .setStyle(ButtonStyle.Secondary),
         );
 
-        return [
-            row1.toJSON() as APIMessageTopLevelComponent,
-            row2.toJSON() as APIMessageTopLevelComponent,
-        ];
+        return [primaryControlsRow, secondaryControlsRow];
     }
 
     private hasPlayerControls(message: Message): boolean {
-        return message.components.some((row) => {
-            if (!("components" in row) || !Array.isArray(row.components)) {
-                return false;
-            }
+        return message.components.some((component) =>
+            this.hasComponentCustomId(component, "RC_PAUSE_RESUME"),
+        );
+    }
 
-            return row.components.some(
-                (component) => "customId" in component && component.customId === "RC_PAUSE_RESUME",
-            );
-        });
+    private hasComponentCustomId(component: unknown, customId: string): boolean {
+        if (typeof component !== "object" || component === null) {
+            return false;
+        }
+
+        if ("customId" in component && component.customId === customId) {
+            return true;
+        }
+
+        if ("components" in component && Array.isArray(component.components)) {
+            return component.components.some((child) => this.hasComponentCustomId(child, customId));
+        }
+
+        return false;
     }
 
     private async findPlayerMessages(
@@ -752,13 +871,8 @@ export class RequestChannelManager {
                     return;
                 }
 
-                const embed = this.createPlayerEmbed(guild);
-                const components = this.createPlayerButtons(guild);
                 try {
-                    await message.edit({
-                        embeds: [embed],
-                        components,
-                    });
+                    await message.edit(this.createPlayerMessageEditOptions(guild));
                 } catch (error) {
                     if (this.isPermissionError(error)) {
                         const __ = i18n__(this.client, guild);
@@ -859,16 +973,9 @@ export class RequestChannelManager {
 
         try {
             if (message) {
-                await message.edit({
-                    embeds: [this.createPlayerEmbed(guild)],
-                    components: this.createPlayerButtons(guild),
-                });
+                await message.edit(this.createPlayerMessageEditOptions(guild));
             } else if (allowCreate) {
-                message = await channel.send({
-                    flags: MessageFlags.SuppressNotifications,
-                    embeds: [this.createPlayerEmbed(guild)],
-                    components: this.createPlayerButtons(guild),
-                });
+                message = await channel.send(this.createPlayerMessageCreateOptions(guild));
                 await this.setPlayerMessageId(guild, message.id);
             } else {
                 return null;

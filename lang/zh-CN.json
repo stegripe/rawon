@@ -403,7 +403,7 @@
         "shuffle": "随机播放",
         "autoplay": "自动播放",
         "volume": "音量",
-        "queueFooter": "队列中剩余曲目：{count}（{duration} 时长, 自动播放：{state}）",
+        "queueFooter": "队列中剩余曲目：{count}（{duration} 时长）",
         "live": "直播",
         "songDuration": "时长",
         "requestedBy": "点播者",

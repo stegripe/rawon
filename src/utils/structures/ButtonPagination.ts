@@ -13,6 +13,7 @@ import {
     type TextChannel,
 } from "discord.js";
 import { type PaginationPayload } from "../../typings/index.js";
+import { normalizeComponentsV2MessageOptions } from "../functions/messageComponentsV2.js";
 
 const DATAS: InteractionButtonComponentData[] = [
     {
@@ -61,18 +62,21 @@ export class ButtonPagination {
 
         const isInteraction = this.msg instanceof CommandInteraction;
         const buttons = DATAS.map((data) => new ButtonBuilder(data));
-        const toSend = {
-            content: this.payload.content,
-            embeds: [embed],
-            components:
-                pages.length < 2
-                    ? []
-                    : [
-                          new ActionRowBuilder<ButtonBuilder>()
-                              .addComponents(buttons)
-                              .toJSON() as APIMessageTopLevelComponent,
-                      ],
-        };
+        const toSend = normalizeComponentsV2MessageOptions(
+            {
+                content: this.payload.content,
+                embeds: [embed],
+                components:
+                    pages.length < 2
+                        ? []
+                        : [
+                              new ActionRowBuilder<ButtonBuilder>()
+                                  .addComponents(buttons)
+                                  .toJSON() as APIMessageTopLevelComponent,
+                          ],
+            },
+            "edit",
+        );
         const msg = await (isInteraction
             ? (this.msg as CommandInteraction).editReply(toSend)
             : await (this.msg as Message).edit(toSend));
@@ -116,18 +120,23 @@ export class ButtonPagination {
             index = ((index % pages.length) + Number(pages.length)) % pages.length;
 
             this.payload.edit.call(this, index, embed, pages[index]);
-            await fetchedMsg.edit({
-                embeds: [embed],
-                content: this.payload.content,
-                components:
-                    pages.length < 2
-                        ? []
-                        : [
-                              new ActionRowBuilder<ButtonBuilder>()
-                                  .addComponents(buttons)
-                                  .toJSON() as APIMessageTopLevelComponent,
-                          ],
-            });
+            await fetchedMsg.edit(
+                normalizeComponentsV2MessageOptions(
+                    {
+                        embeds: [embed],
+                        content: this.payload.content,
+                        components:
+                            pages.length < 2
+                                ? []
+                                : [
+                                      new ActionRowBuilder<ButtonBuilder>()
+                                          .addComponents(buttons)
+                                          .toJSON() as APIMessageTopLevelComponent,
+                                  ],
+                    },
+                    "edit",
+                ),
+            );
         });
     }
 }

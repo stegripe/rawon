@@ -32,6 +32,7 @@ import { type Rawon } from "../structures/Rawon.js";
 import { type MessageInteractionAction } from "../typings/index.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
+import { normalizeComponentsV2MessageOptions } from "../utils/functions/messageComponentsV2.js";
 
 export class CommandContext {
     public additionalArgs = new Collection<string, any>();
@@ -223,6 +224,8 @@ export class CommandContext {
             if (typeof options === "string") {
                 options = { content: options };
             }
+            const componentMode = type === "editReply" ? "edit" : "create";
+            options = normalizeComponentsV2MessageOptions(options, componentMode);
 
             const deletionBtn = new ActionRowBuilder<ButtonBuilder>().addComponents(
                 new ButtonBuilder().setEmoji("🗑️").setStyle(ButtonStyle.Danger),

@@ -403,7 +403,7 @@
         "shuffle": "Перемішати",
         "autoplay": "Автовідтворення",
         "volume": "Гучність",
-        "queueFooter": "Залишилося треків у черзі: {count} ({duration} тривалості, автовідтворення: {state})",
+        "queueFooter": "Залишилося треків у черзі: {count} ({duration} тривалості)",
         "live": "НАЖИВО",
         "songDuration": "Тривалість",
         "requestedBy": "Запитав",
