@@ -768,9 +768,13 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         } catch {}
                     }, 60_000);
                 } else if (queue.requesterDeafTimeout) {
+                    const i18nKey =
+                        queue.requesterDeafTimeout.reason === "left"
+                            ? "requestChannel.requesterLeftPaused"
+                            : "requestChannel.requesterDeafPaused";
                     await interaction.reply({
                         flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.requesterDeafPaused"))],
+                        embeds: [createEmbed("warn", __(i18nKey))],
                     });
                     setTimeout(async () => {
                         try {

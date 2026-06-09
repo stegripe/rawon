@@ -48,9 +48,14 @@ export class ResumeCommand extends ContextCommand {
                 embeds: [createEmbed("warn", __("commands.music.resume.alreadyResume"))],
             });
         }
-        if (ctx.guild?.queue?.requesterDeafTimeout) {
+        const requesterTimeout = ctx.guild?.queue?.requesterDeafTimeout;
+        if (requesterTimeout) {
+            const i18nKey =
+                requesterTimeout.reason === "left"
+                    ? "requestChannel.requesterLeftPaused"
+                    : "requestChannel.requesterDeafPaused";
             return ctx.reply({
-                embeds: [createEmbed("warn", __("requestChannel.requesterDeafPaused"))],
+                embeds: [createEmbed("warn", __(i18nKey))],
             });
         }
         (ctx.guild?.queue as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).playing = true;
