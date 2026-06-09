@@ -8,6 +8,8 @@ import {
     type VoiceConnection,
 } from "@discordjs/voice";
 import {
+    ChannelType,
+    Events,
     MessageFlags,
     type Snowflake,
     type StageChannel,
@@ -28,9 +30,13 @@ import {
     type FallbackDataManager,
     hasDeletePlayerState,
     hasDeleteQueueState,
+    hasDeleteVoiceChannelStatusState,
     hasGetPlayerState,
+    hasGetVoiceChannelStatusState,
+    hasGetVoiceChannelStatusStatesByChannel,
     hasSavePlayerState,
     hasSaveQueueState,
+    hasSaveVoiceChannelStatusState,
 } from "../utils/typeGuards.js";
 import { type Rawon } from "./Rawon.js";
 
@@ -46,6 +52,24 @@ type RequesterDeafTimeoutState = {
 };
 
 export type ServerQueueTextChannel = TextChannel | VoiceChannel | StageChannel;
+
+type VoiceChannelStatusState = {
+    channelId: Snowflake;
+    originalStatus: string | null;
+    appliedStatus: string;
+};
+
+type OwnedVoiceChannelStatusState = VoiceChannelStatusState & {
+    botId: string;
+};
+
+type ChannelInfoPayload = {
+    guild_id?: Snowflake;
+    channels?: {
+        id: Snowflake;
+        status?: string | null;
+    }[];
+};
 
 export class ServerQueue {
     public readonly player: AudioPlayer = createAudioPlayer();
@@ -74,6 +98,8 @@ export class ServerQueue {
     private _autoplayPrefetchPromise: Promise<void> | null = null;
     private _autoplayPrefetchForKey: Snowflake | null = null;
     private _requesterDeafTimeout: RequesterDeafTimeoutState | null = null;
+    private _voiceChannelStatusState: VoiceChannelStatusState | null = null;
+    private _voiceChannelStatusRestorePromise: Promise<void> | null = null;
 
     public constructor(public readonly textChannel: ServerQueueTextChannel) {
         Object.defineProperties(this, {
@@ -90,6 +116,8 @@ export class ServerQueue {
             _autoplayPrefetchPromise: nonEnum,
             _autoplayPrefetchForKey: nonEnum,
             _requesterDeafTimeout: nonEnum,
+            _voiceChannelStatusState: nonEnum,
+            _voiceChannelStatusRestorePromise: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -110,6 +138,8 @@ export class ServerQueue {
                     const currentSong = (this.player.state as AudioPlayerPlayingState).resource
                         .metadata as QueueSong;
                     const newSong = currentSong.song;
+
+                    void this.setNowPlayingVoiceChannelStatus(newSong.title);
 
                     const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
                         this.textChannel.guild,
@@ -674,6 +704,7 @@ export class ServerQueue {
     public stop(): void {
         this.stopPositionSaveInterval();
         this.clearRequesterDeafTimeout();
+        void this.restoreVoiceChannelStatus();
         try {
             const songUrls: string[] = this.songs.map((s) => s.song.url);
             try {
@@ -709,6 +740,7 @@ export class ServerQueue {
         }
         this._suppressPlayerErrors = true;
         this.stop();
+        await this.restoreVoiceChannelStatus();
 
         try {
             this.connection?.disconnect();
@@ -951,6 +983,272 @@ export class ServerQueue {
                 .then((ms) => (this.lastMusicMsg = ms.id))
                 .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
         })();
+    }
+
+    private getConnectedVoiceChannel(): VoiceChannel | null {
+        const voiceChannelId = this.connection?.joinConfig.channelId;
+        if (!voiceChannelId) {
+            return null;
+        }
+
+        const channel = this.textChannel.guild.channels.cache.get(voiceChannelId);
+        return channel?.type === ChannelType.GuildVoice ? channel : null;
+    }
+
+    private formatVoiceChannelMusicStatus(title: string): string {
+        return Array.from(`🎵\u2007${title}`).slice(0, 500).join("");
+    }
+
+    private getBotId(): string {
+        return this.client.user?.id ?? "unknown";
+    }
+
+    private getSavedVoiceChannelStatusState(): VoiceChannelStatusState | null {
+        const guildId = this.textChannel.guild.id;
+        const botId = this.getBotId();
+
+        if (hasGetVoiceChannelStatusState(this.client.data)) {
+            const state = this.client.data.getVoiceChannelStatusState(guildId, botId);
+            return state ?? null;
+        }
+
+        const fallback = this.client.data as FallbackDataManager;
+        return fallback.data?.[guildId]?.voiceChannelStatusState ?? null;
+    }
+
+    private getSavedVoiceChannelStatusStatesByChannel(
+        channelId: Snowflake,
+    ): OwnedVoiceChannelStatusState[] {
+        const guildId = this.textChannel.guild.id;
+
+        if (hasGetVoiceChannelStatusStatesByChannel(this.client.data)) {
+            return this.client.data.getVoiceChannelStatusStatesByChannel(guildId, channelId);
+        }
+
+        const savedState = this.getSavedVoiceChannelStatusState();
+        if (savedState?.channelId !== channelId) {
+            return [];
+        }
+
+        return [{ ...savedState, botId: this.getBotId() }];
+    }
+
+    private findVoiceChannelStatusOwner(
+        channelId: Snowflake,
+        currentStatus: string | null | undefined,
+    ): OwnedVoiceChannelStatusState | null {
+        if (typeof currentStatus !== "string") {
+            return null;
+        }
+
+        return (
+            this.getSavedVoiceChannelStatusStatesByChannel(channelId).find(
+                (state) => state.appliedStatus === currentStatus,
+            ) ?? null
+        );
+    }
+
+    private async saveVoiceChannelStatusState(state: VoiceChannelStatusState): Promise<void> {
+        const guildId = this.textChannel.guild.id;
+        const botId = this.getBotId();
+
+        if (hasSaveVoiceChannelStatusState(this.client.data)) {
+            await this.client.data.saveVoiceChannelStatusState(guildId, botId, state);
+            return;
+        }
+
+        const fallback = this.client.data as FallbackDataManager;
+        const currentData = fallback.data ?? {};
+        const guildData = currentData[guildId] ?? {};
+        guildData.voiceChannelStatusState = state;
+
+        (await fallback.save?.(() => ({
+            ...currentData,
+            [guildId]: guildData,
+        }))) ?? Promise.resolve();
+    }
+
+    private async clearSavedVoiceChannelStatusState(): Promise<void> {
+        const guildId = this.textChannel.guild.id;
+        const botId = this.getBotId();
+
+        if (hasDeleteVoiceChannelStatusState(this.client.data)) {
+            await this.client.data.deleteVoiceChannelStatusState(guildId, botId);
+            return;
+        }
+
+        const fallback = this.client.data as FallbackDataManager;
+        const currentData = fallback.data ?? {};
+        const guildData = currentData[guildId] ?? {};
+        delete guildData.voiceChannelStatusState;
+
+        (await fallback.save?.(() => ({
+            ...currentData,
+            [guildId]: guildData,
+        }))) ?? Promise.resolve();
+    }
+
+    private async requestVoiceChannelStatus(
+        channelId: Snowflake,
+    ): Promise<string | null | undefined> {
+        const guild = this.textChannel.guild;
+        const shard = this.client.ws.shards.get(guild.shardId);
+        if (!shard) {
+            return undefined;
+        }
+
+        return new Promise((resolve) => {
+            let settled = false;
+            const timeout = setTimeout(() => {
+                settle(undefined);
+            }, 2_000);
+
+            const settle = (status: string | null | undefined): void => {
+                if (settled) {
+                    return;
+                }
+                settled = true;
+                clearTimeout(timeout);
+                this.client.off(Events.Raw, onRaw);
+                resolve(status);
+            };
+
+            const onRaw = (...args: unknown[]): void => {
+                const packet = args[0] as { t?: string; d?: unknown };
+                const shardId = args[1];
+                if (shardId !== guild.shardId || packet.t !== "CHANNEL_INFO") {
+                    return;
+                }
+
+                const payload = packet.d as ChannelInfoPayload;
+                if (payload.guild_id !== guild.id) {
+                    return;
+                }
+
+                const channelInfo = payload.channels?.find((channel) => channel.id === channelId);
+                if (!channelInfo) {
+                    return;
+                }
+
+                settle(typeof channelInfo.status === "string" ? channelInfo.status : null);
+            };
+
+            this.client.on(Events.Raw, onRaw);
+
+            try {
+                shard.send({
+                    op: 43,
+                    d: {
+                        guild_id: guild.id,
+                        fields: ["status"],
+                    },
+                });
+            } catch (error) {
+                this.client.logger.debug("VOICE_CHANNEL_STATUS_INFO_ERR:", error);
+                settle(undefined);
+            }
+        });
+    }
+
+    private async setVoiceChannelStatus(
+        channelId: Snowflake,
+        status: string | null,
+    ): Promise<void> {
+        await this.client.rest.put(`/channels/${channelId}/voice-status`, {
+            body: { status },
+        });
+    }
+
+    private async setNowPlayingVoiceChannelStatus(title: string): Promise<void> {
+        const voiceChannel = this.getConnectedVoiceChannel();
+        if (!voiceChannel) {
+            return;
+        }
+
+        const status = this.formatVoiceChannelMusicStatus(title);
+        const currentState = this._voiceChannelStatusState;
+
+        if (currentState && currentState.channelId !== voiceChannel.id) {
+            await this.restoreVoiceChannelStatus();
+        }
+
+        try {
+            const currentStatus = await this.requestVoiceChannelStatus(voiceChannel.id);
+            const currentOwner = this.findVoiceChannelStatusOwner(voiceChannel.id, currentStatus);
+            if (currentOwner && currentOwner.botId !== this.getBotId()) {
+                this.client.logger.debug(
+                    `[VoiceChannelStatus] Skipping status update for ${voiceChannel.id}; current status is owned by bot ${currentOwner.botId}`,
+                );
+                return;
+            }
+
+            if (!this._voiceChannelStatusState) {
+                const savedState = this.getSavedVoiceChannelStatusState();
+                const originalStatus =
+                    savedState?.channelId === voiceChannel.id
+                        ? savedState.originalStatus
+                        : (currentStatus ?? null);
+                await this.setVoiceChannelStatus(voiceChannel.id, status);
+                this._voiceChannelStatusState = {
+                    channelId: voiceChannel.id,
+                    originalStatus,
+                    appliedStatus: status,
+                };
+                await this.saveVoiceChannelStatusState(this._voiceChannelStatusState);
+                return;
+            }
+
+            await this.setVoiceChannelStatus(voiceChannel.id, status);
+            this._voiceChannelStatusState.appliedStatus = status;
+            await this.saveVoiceChannelStatusState(this._voiceChannelStatusState);
+        } catch (error) {
+            this.client.logger.debug("VOICE_CHANNEL_STATUS_SET_ERR:", error);
+        }
+    }
+
+    private restoreVoiceChannelStatus(): Promise<void> {
+        if (this._voiceChannelStatusRestorePromise) {
+            return this._voiceChannelStatusRestorePromise;
+        }
+
+        const state = this._voiceChannelStatusState;
+        if (!state) {
+            const savedState = this.getSavedVoiceChannelStatusState();
+            if (!savedState) {
+                return Promise.resolve();
+            }
+
+            this._voiceChannelStatusState = savedState;
+            return this.restoreVoiceChannelStatus();
+        }
+
+        this._voiceChannelStatusState = null;
+
+        const restorePromise = (async () => {
+            try {
+                const currentStatus = await this.requestVoiceChannelStatus(state.channelId);
+                if (currentStatus === undefined) {
+                    return;
+                }
+
+                if (currentStatus !== state.appliedStatus) {
+                    await this.clearSavedVoiceChannelStatusState();
+                    return;
+                }
+
+                await this.setVoiceChannelStatus(state.channelId, state.originalStatus);
+                await this.clearSavedVoiceChannelStatusState();
+            } catch (error) {
+                this.client.logger.debug("VOICE_CHANNEL_STATUS_RESTORE_ERR:", error);
+            }
+        })().finally(() => {
+            if (this._voiceChannelStatusRestorePromise === restorePromise) {
+                this._voiceChannelStatusRestorePromise = null;
+            }
+        });
+
+        this._voiceChannelStatusRestorePromise = restorePromise;
+        return restorePromise;
     }
 
     private preCacheNextSong(currentSong: QueueSong): void {

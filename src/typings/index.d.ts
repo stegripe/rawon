@@ -285,6 +285,11 @@ export type GuildData = {
         currentSongKey: string | null;
         currentPosition: number;
     };
+    voiceChannelStatusState?: {
+        channelId: string;
+        originalStatus: string | null;
+        appliedStatus: string;
+    };
     locale?: string;
     prefix?: string;
 };
@@ -329,6 +334,14 @@ export interface ExtendedDataManager {
         messageId: string | null,
     ): Promise<void>;
     getPlayerState(guildId: string, botId: string): GuildData["playerState"] | null;
+    getVoiceChannelStatusState(
+        guildId: string,
+        botId: string,
+    ): GuildData["voiceChannelStatusState"] | null;
+    getVoiceChannelStatusStatesByChannel(
+        guildId: string,
+        channelId: string,
+    ): Array<NonNullable<GuildData["voiceChannelStatusState"]> & { botId: string }>;
     savePlayerState(
         guildId: string,
         botId: string,
@@ -339,6 +352,12 @@ export interface ExtendedDataManager {
         botId: string,
         queueState: GuildData["queueState"],
     ): Promise<void>;
+    saveVoiceChannelStatusState(
+        guildId: string,
+        botId: string,
+        voiceChannelStatusState: GuildData["voiceChannelStatusState"],
+    ): Promise<void>;
+    deleteVoiceChannelStatusState(guildId: string, botId: string): Promise<void>;
 }
 
 declare module "@sapphire/framework" {

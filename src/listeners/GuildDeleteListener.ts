@@ -8,7 +8,10 @@ function hasDeleteMethods(
     data: unknown,
 ): data is Pick<
     ExtendedDataManager,
-    "deleteRequestChannel" | "deletePlayerState" | "deleteQueueState"
+    | "deleteRequestChannel"
+    | "deletePlayerState"
+    | "deleteQueueState"
+    | "deleteVoiceChannelStatusState"
 > {
     return (
         typeof data === "object" &&
@@ -18,7 +21,9 @@ function hasDeleteMethods(
         "deletePlayerState" in data &&
         typeof (data as ExtendedDataManager).deletePlayerState === "function" &&
         "deleteQueueState" in data &&
-        typeof (data as ExtendedDataManager).deleteQueueState === "function"
+        typeof (data as ExtendedDataManager).deleteQueueState === "function" &&
+        "deleteVoiceChannelStatusState" in data &&
+        typeof (data as ExtendedDataManager).deleteVoiceChannelStatusState === "function"
     );
 }
 
@@ -52,6 +57,11 @@ export class GuildDeleteListener extends Listener<typeof Events.GuildDelete> {
                 await dataManager.deleteQueueState(guild.id, botId);
                 this.container.logger.info(
                     `Deleted queue state for guild ${guild.id} (bot ${botId})`,
+                );
+
+                await dataManager.deleteVoiceChannelStatusState(guild.id, botId);
+                this.container.logger.info(
+                    `Deleted voice channel status state for guild ${guild.id} (bot ${botId})`,
                 );
             }
 

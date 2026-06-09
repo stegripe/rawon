@@ -91,6 +91,18 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         `);
 
         this.db.exec(`
+            CREATE TABLE IF NOT EXISTS voice_channel_status_states (
+                guild_id TEXT NOT NULL,
+                bot_id TEXT NOT NULL,
+                channel_id TEXT NOT NULL,
+                original_status TEXT,
+                applied_status TEXT NOT NULL,
+                PRIMARY KEY (guild_id, bot_id),
+                FOREIGN KEY (guild_id) REFERENCES guilds(guild_id) ON DELETE CASCADE
+            )
+        `);
+
+        this.db.exec(`
             CREATE TABLE IF NOT EXISTS cookies_state (
                 id INTEGER PRIMARY KEY CHECK (id = 1),
                 current_cookie_index INTEGER DEFAULT 1,
@@ -106,6 +118,8 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
             CREATE INDEX IF NOT EXISTS idx_player_states_bot ON player_states(bot_id);
             CREATE INDEX IF NOT EXISTS idx_request_channels_guild ON request_channels(guild_id);
             CREATE INDEX IF NOT EXISTS idx_request_channels_bot ON request_channels(bot_id);
+            CREATE INDEX IF NOT EXISTS idx_voice_channel_status_states_guild ON voice_channel_status_states(guild_id);
+            CREATE INDEX IF NOT EXISTS idx_voice_channel_status_states_bot ON voice_channel_status_states(bot_id);
         `);
 
         const tableInfo = this.db.prepare("PRAGMA table_info(guilds)").all() as Array<{
@@ -181,6 +195,14 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                     channel_id: string | null;
                     message_id: string | null;
                 }>;
+                const voiceChannelStatusStates = this.db
+                    .prepare("SELECT * FROM voice_channel_status_states")
+                    .all() as Array<{
+                    guild_id: string;
+                    channel_id: string;
+                    original_status: string | null;
+                    applied_status: string;
+                }>;
 
                 const data: Record<string, GuildData> = {};
 
@@ -218,6 +240,31 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                     data[guildId].requestChannel = {
                         channelId: rc.channel_id,
                         messageId: rc.message_id,
+                    };
+                }
+
+                const voiceStatusByGuild = new Map<
+                    string,
+                    { channel_id: string; original_status: string | null; applied_status: string }
+                >();
+                for (const state of voiceChannelStatusStates) {
+                    if (!voiceStatusByGuild.has(state.guild_id)) {
+                        voiceStatusByGuild.set(state.guild_id, {
+                            channel_id: state.channel_id,
+                            original_status: state.original_status,
+                            applied_status: state.applied_status,
+                        });
+                    }
+                }
+
+                for (const [guildId, state] of voiceStatusByGuild.entries()) {
+                    if (!data[guildId]) {
+                        data[guildId] = {};
+                    }
+                    data[guildId].voiceChannelStatusState = {
+                        channelId: state.channel_id,
+                        originalStatus: state.original_status,
+                        appliedStatus: state.applied_status,
                     };
                 }
 
@@ -340,6 +387,100 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         await this.manager.add(async () => {
             this.db
                 .prepare("DELETE FROM queue_states WHERE guild_id = ? AND bot_id = ?")
+                .run(guildId, botId);
+        });
+    }
+
+    public getVoiceChannelStatusState(
+        guildId: string,
+        botId: string,
+    ): GuildData["voiceChannelStatusState"] | null {
+        const result = this.db
+            .prepare("SELECT * FROM voice_channel_status_states WHERE guild_id = ? AND bot_id = ?")
+            .get(guildId, botId) as
+            | {
+                  channel_id: string;
+                  original_status: string | null;
+                  applied_status: string;
+              }
+            | undefined;
+
+        if (!result) {
+            return null;
+        }
+
+        return {
+            channelId: result.channel_id,
+            originalStatus: result.original_status,
+            appliedStatus: result.applied_status,
+        };
+    }
+
+    public getVoiceChannelStatusStatesByChannel(
+        guildId: string,
+        channelId: string,
+    ): Array<NonNullable<GuildData["voiceChannelStatusState"]> & { botId: string }> {
+        const rows = this.db
+            .prepare(
+                "SELECT * FROM voice_channel_status_states WHERE guild_id = ? AND channel_id = ?",
+            )
+            .all(guildId, channelId) as Array<{
+            bot_id: string;
+            channel_id: string;
+            original_status: string | null;
+            applied_status: string;
+        }>;
+
+        return rows.map((row) => ({
+            botId: row.bot_id,
+            channelId: row.channel_id,
+            originalStatus: row.original_status,
+            appliedStatus: row.applied_status,
+        }));
+    }
+
+    public async saveVoiceChannelStatusState(
+        guildId: string,
+        botId: string,
+        voiceChannelStatusState: GuildData["voiceChannelStatusState"],
+    ): Promise<void> {
+        if (!voiceChannelStatusState) {
+            return;
+        }
+
+        await this.manager.add(async () => {
+            const guildStmt = this.db.prepare(`
+                INSERT INTO guilds (guild_id, locale, dj_enable, dj_role, prefix)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(guild_id) DO NOTHING
+            `);
+            guildStmt.run(guildId, null, 0, null, null);
+
+            const stmt = this.db.prepare(`
+                INSERT INTO voice_channel_status_states (guild_id, bot_id, channel_id, original_status, applied_status)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(guild_id, bot_id) DO UPDATE SET
+                    channel_id = excluded.channel_id,
+                    original_status = excluded.original_status,
+                    applied_status = excluded.applied_status
+            `);
+
+            stmt.run(
+                guildId,
+                botId,
+                voiceChannelStatusState.channelId,
+                voiceChannelStatusState.originalStatus,
+                voiceChannelStatusState.appliedStatus,
+            );
+        });
+    }
+
+    public async deleteVoiceChannelStatusState(guildId: string, botId: string): Promise<void> {
+        await this.manager.add(async () => {
+            this.db
+                .prepare(
+                    "DELETE FROM voice_channel_status_states WHERE guild_id = ? AND bot_id = ?",
+                )
                 .run(guildId, botId);
         });
     }
