@@ -403,7 +403,7 @@
         "shuffle": "Karıştır",
         "autoplay": "Otomatik oynatma",
         "volume": "Ses Seviyesi",
-        "queueFooter": "Kuyrukta kalan parça sayısı: {count} ({duration} süre, otomatik oynatma: {state})",
+        "queueFooter": "Kuyrukta kalan parça sayısı: {count} ({duration} süre)",
         "live": "CANLI",
         "songDuration": "Süre",
         "requestedBy": "İsteyen",

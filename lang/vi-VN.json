@@ -403,7 +403,7 @@
         "shuffle": "Trộn",
         "autoplay": "Tự động phát",
         "volume": "Âm lượng",
-        "queueFooter": "Bài hát còn lại trong hàng đợi: {count} ({duration} thời lượng, phát tự động: {state})",
+        "queueFooter": "Bài hát còn lại trong hàng đợi: {count} ({duration} thời lượng)",
         "live": "TRỬa TIẾP",
         "songDuration": "Thời lượng",
         "requestedBy": "Yêu cầu bởi",

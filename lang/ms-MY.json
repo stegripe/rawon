@@ -403,7 +403,7 @@
         "shuffle": "Acak",
         "autoplay": "Main automatik",
         "volume": "Kelantangan",
-        "queueFooter": "Lagu berbaki dalam giliran: {count} ({duration} tempoh, main automatik: {state})",
+        "queueFooter": "Lagu berbaki dalam giliran: {count} ({duration} tempoh)",
         "live": "LIVE",
         "songDuration": "Tempoh",
         "requestedBy": "Permintaan",
