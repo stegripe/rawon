@@ -1,6 +1,11 @@
 ignoredBuiltDependencies:
   - puppeteer
 
+minimumReleaseAgeExclude:
+  - "@emnapi/core@1.11.1"
+  - "@emnapi/runtime@1.11.1"
+  - better-sqlite3@12.10.1
+
 onlyBuiltDependencies:
   - "@swc/core"
   - better-sqlite3
