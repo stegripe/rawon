@@ -22,6 +22,7 @@ import {
     isPlaybackMusicCommandName,
     shouldProcessPrefixMusicCommand,
 } from "../utils/functions/musicCommandTarget.js";
+import { formatAddedPlaylistNotice } from "../utils/functions/playlistQueueNotice.js";
 import { isMemberDeafened } from "../utils/functions/voiceStateGuards.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { play } from "../utils/handlers/general/play.js";
@@ -157,6 +158,15 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             );
 
             if ((prefixMatch?.length ?? 0) > 0) {
+                const cmdContentForLicense = message.content.slice(actualPrefix.length).trim();
+                const cmdNameForLicense = cmdContentForLicense.split(/ +/u)[0]?.toLowerCase();
+                if (
+                    isPlaybackMusicCommandName(cmdNameForLicense) &&
+                    !(await this.ensureMusicLicensed(client, message))
+                ) {
+                    return;
+                }
+
                 if (message.guild && this.container.config.isMultiBot) {
                     const thisBotGuild = client.guilds.cache.get(message.guild.id);
                     if (!thisBotGuild) {
@@ -220,6 +230,9 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             this.container.logger.debug(
                 `[MultiBot] ${client.user?.tag} calling handleRequestChannelMessage for ${message.author.tag}`,
             );
+            if (!(await this.ensureMusicLicensed(client, message))) {
+                return;
+            }
             await this.handleRequestChannelMessage(message);
             return;
         }
@@ -254,6 +267,15 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         }
 
         if ((prefixMatch?.length ?? 0) > 0) {
+            const cmdContentForLicense = message.content.slice(actualPrefix.length).trim();
+            const cmdNameForLicense = cmdContentForLicense.split(/ +/u)[0]?.toLowerCase();
+            if (
+                isPlaybackMusicCommandName(cmdNameForLicense) &&
+                !(await this.ensureMusicLicensed(client, message))
+            ) {
+                return;
+            }
+
             if (message.guild && this.container.config.isMultiBot) {
                 const thisBotGuild = client.guilds.cache.get(message.guild.id);
                 if (!thisBotGuild) {
@@ -286,6 +308,18 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             );
             await client.commands.handle(message, actualPrefix);
         }
+    }
+
+    private async ensureMusicLicensed(client: Rawon, message: Message): Promise<boolean> {
+        if (await client.license.ensureUsable()) {
+            return true;
+        }
+
+        this.sendTemporaryReply(
+            message,
+            createEmbed("error", client.license.blockMessageFor(message.guild), true),
+        );
+        return false;
     }
 
     private async handleRequestChannelMessage(message: Message): Promise<void> {
@@ -416,15 +450,18 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             `[MultiBot] ${client.user?.tag} PROCESSING voice channel ${voiceChannel.id} (${voiceChannel.name}) for request from ${message.author.tag}`,
         );
 
+        const searchError: { value: unknown } = { value: null };
         const songs = await searchTrack(client, query).catch((error: unknown) => {
+            searchError.value = error;
             client.logger.error("[RequestChannel] searchTrack failed:", error);
             return null;
         });
         if (!songs || songs.items.length === 0) {
-            this.sendTemporaryReply(
-                message,
-                createEmbed("error", __("requestChannel.noResults"), true),
-            );
+            const errorMessage =
+                searchError.value instanceof Error && searchError.value.message
+                    ? searchError.value.message
+                    : __("requestChannel.noResults");
+            this.sendTemporaryReply(message, createEmbed("error", errorMessage, true));
             return;
         }
 
@@ -510,10 +547,13 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             const playlistUrl = songs.playlist.url;
             confirmEmbed = createEmbed(
                 "success",
-                `🎶 **|** ${__mf("requestChannel.addedPlaylistToQueue", {
-                    playlist: formatBoldMarkdownLink(playlistTitle, playlistUrl),
-                    count: `**\`${songs.items.length.toString()}\`**`,
-                })}`,
+                `🎶 **|** ${formatAddedPlaylistNotice(
+                    client,
+                    message.guild,
+                    songs.items.length,
+                    formatBoldMarkdownLink(playlistTitle, playlistUrl),
+                    songs.playlist,
+                )}`,
             );
             if (songs.playlist.thumbnail) {
                 confirmEmbed.setThumbnail(songs.playlist.thumbnail);

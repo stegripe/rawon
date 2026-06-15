@@ -254,7 +254,7 @@
                 "noPositions": "Please specify the song positions to remove.",
                 "slashPositionsDescription": "Position of the songs to remove separated by comma or space",
                 "songSkip": "The current song was removed, song skipped.\n\n",
-                "songsRemoved": "Removed {removed, plural, one {1 song} other {# songs}} from the queue.",
+                "songsRemoved": "Removed {removed} song(s) from the queue.",
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
@@ -402,7 +402,7 @@
     "requestChannel": {
         "title": "Music Player",
         "standby": "No music playing. Send a song name or URL to start playing!",
-        "status": "Loop Mode",
+        "status": "Loop",
         "shuffle": "Shuffle",
         "autoplay": "Auto-play",
         "volume": "Volume",
@@ -426,7 +426,11 @@
         "noChannel": "No request channel is currently set.",
         "currentChannel": "Current request channel: {channel}",
         "skipInProgress": "Please wait, a skip operation is already in progress.",
-        "noPermission": "You don't have permission to perform this action. Only DJ role, server managers, or the song requester can do this."
+        "noPermission": "You don't have permission to perform this action. Only DJ role, server managers, or the song requester can do this.",
+        "addedPlaylistSkipped": "Skipped {count} item(s): {reason}.",
+        "skippedReasonUnavailable": "private/deleted or unavailable",
+        "skippedReasonUnresolved": "could not be matched to a playable song",
+        "skippedReasonSkipped": "duplicate, private/deleted, or unavailable"
     },
     "reusable": {
         "invalidUsage": "Invalid usage. Please use {prefix} {name} for more information.",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "This command is disabled in the request channel. Please use the controls or type the song title/link directly.",
             "validVCJoinable": "Unable to **`Connect`** to your voice channel. Make sure the proper permissions are granted.",
             "validVCPermission": "Unable to **`Speak`** in this voice channel; make sure the proper permissions are granted."
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "The license has not been validated yet.",
+                "botNotReady": "Bot ID is not ready yet.",
+                "missingKey": "`STEGRIPE_API_LICENSE_KEY` is missing. Licensed features are locked.",
+                "validationFailed": "License validation failed.",
+                "apiGrace": "License validation is temporarily unreachable; using the cached grace window.",
+                "apiUnavailableNoSession": "License validation is temporarily unreachable and no active session exists: {error}",
+                "botNotAllowed": "This Bot ID is not approved for the license.",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` is invalid.",
+                "revoked": "The license has been revoked.",
+                "sessionLimit": "Too many active sessions for this license."
+            },
+            "blockMessage": "{reason}\n\n1. Join [stegripe.org/discord](https://stegripe.org/discord).\n2. Send this Bot ID to Stegripe staff: `{botId}`.\n3. After approval, set `STEGRIPE_API_LICENSE_KEY` in `.env`.\n4. Restart the bot."
         }
     }
 }

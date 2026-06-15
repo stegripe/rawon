@@ -254,7 +254,7 @@
                 "noPositions": "Vui lòng chỉ định bài hát cần xóa.",
                 "slashPositionsDescription": "Bài hát cần xóa được phân tách bằng dấu phẩy hoặc dấu cách",
                 "songSkip": "Bài hát hiện tại đã bị xóa, đã bỏ qua.\n\n",
-                "songsRemoved": "Xóa {removed} bài khỏi hàng đợi.",
+                "songsRemoved": "Đã xóa {removed} bài hát khỏi hàng đợi.",
                 "usage": "{prefix}remove <vị trí>"
             },
             "repeat": {
@@ -402,12 +402,12 @@
     "requestChannel": {
         "title": "Trình phát nhạc",
         "standby": "Không có nhạc đang phát. Gửi tên bài hát hoặc URL để bắt đầu!",
-        "status": "Chế độ lặp",
+        "status": "Lặp",
         "shuffle": "Trộn",
-        "autoplay": "Tự động phát",
+        "autoplay": "Tự-động-phát",
         "volume": "Âm lượng",
         "queueFooter": "Bài hát còn lại trong hàng đợi: {count} ({duration} thời lượng)",
-        "live": "TRỬa TIẾP",
+        "live": "TRỰC TIẾP",
         "songDuration": "Thời lượng",
         "requestedBy": "Yêu cầu bởi",
         "unknown": "Không rõ",
@@ -426,7 +426,11 @@
         "noChannel": "Hiện không có kênh yêu cầu nào được đặt.",
         "currentChannel": "Kênh yêu cầu hiện tại: {channel}",
         "skipInProgress": "Vui lòng đợi, thao tác bỏ qua đang được thực hiện.",
-        "noPermission": "Bạn không có quyền thực hiện hành động này. Chỉ có vai trò DJ, quản lý máy chủ hoặc người yêu cầu bài hát mới có thể thực hiện."
+        "noPermission": "Bạn không có quyền thực hiện hành động này. Chỉ có vai trò DJ, quản lý máy chủ hoặc người yêu cầu bài hát mới có thể thực hiện.",
+        "addedPlaylistSkipped": "Đã bỏ qua {count} mục: {reason}.",
+        "skippedReasonUnavailable": "riêng tư/đã xóa hoặc không khả dụng",
+        "skippedReasonUnresolved": "không thể khớp thành bài hát phát được",
+        "skippedReasonSkipped": "trùng lặp, riêng tư/đã xóa hoặc không khả dụng"
     },
     "reusable": {
         "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập {prefix} {name} để biết thêm thông tin.",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "Lệnh này bị vô hiệu hóa trong kênh yêu cầu. Vui lòng sử dụng các nút điều khiển hoặc nhập tên/liên kết bài hát trực tiếp.",
             "validVCJoinable": "Không thể **`Kết nối`** với kênh thoại của bạn, hãy đảm bảo quyền phù hợp đã được cấp.",
             "validVCPermission": "Không thể **`Nói`** trong kênh thoại này; hãy đảm bảo quyền phù hợp đã được cấp."
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "Giấy phép chưa được xác thực.",
+                "botNotReady": "Bot ID chưa sẵn sàng.",
+                "missingKey": "Thiếu `STEGRIPE_API_LICENSE_KEY`. Tính năng được cấp phép đã bị khóa.",
+                "validationFailed": "Xác thực giấy phép thất bại.",
+                "apiGrace": "Xác thực giấy phép tạm thời không thể kết nối; đang dùng cửa sổ grace trong cache.",
+                "apiUnavailableNoSession": "Xác thực giấy phép tạm thời không thể kết nối và chưa có phiên hoạt động: {error}",
+                "botNotAllowed": "Bot ID này chưa được duyệt cho giấy phép.",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` không hợp lệ.",
+                "revoked": "Giấy phép đã bị thu hồi.",
+                "sessionLimit": "Có quá nhiều phiên hoạt động cho giấy phép này."
+            },
+            "blockMessage": "{reason}\n\n1. Tham gia [stegripe.org/discord](https://stegripe.org/discord).\n2. Gửi Bot ID này cho Stegripe staff: `{botId}`.\n3. Sau khi được duyệt, đặt `STEGRIPE_API_LICENSE_KEY` trong `.env`.\n4. Khởi động lại bot."
         }
     }
 }

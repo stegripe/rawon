@@ -50,6 +50,12 @@ export class PlayCommand extends ContextCommand {
         return ctx.client as Rawon;
     }
 
+    private formatSearchError(error: unknown): string {
+        return error instanceof Error && error.message
+            ? error.message
+            : i18n.__("commands.music.play.noSongData");
+    }
+
     @useRequestChannel
     @inVC
     @validVC
@@ -130,14 +136,24 @@ export class PlayCommand extends ContextCommand {
         }
 
         const queryCheck = checkQuery(query ?? "");
+        const searchError: { value: unknown } = { value: null };
         const songs = await searchTrack(client, query ?? "").catch((error: unknown) => {
+            searchError.value = error;
             client.logger.error("[PlayCommand] searchTrack failed:", error);
             return undefined;
         });
 
         if (!songs || songs.items.length <= 0) {
             return ctx.reply({
-                embeds: [createEmbed("error", __("commands.music.play.noSongData"), true)],
+                embeds: [
+                    createEmbed(
+                        "error",
+                        searchError.value
+                            ? this.formatSearchError(searchError.value)
+                            : __("commands.music.play.noSongData"),
+                        true,
+                    ),
+                ],
             });
         }
 
