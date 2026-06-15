@@ -59,8 +59,12 @@ export const discordTokens: string[] = tokenArray;
 export const discordToken = tokenArray[0] ?? "";
 export const isMultiBot = tokenArray.length > 1 && hasComma;
 
+export const rawonLicenseKey = process.env.STEGRIPE_API_LICENSE_KEY?.trim() ?? "";
+
 export const clientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
+
+export const stegripeApiLyricsToken = process.env.STEGRIPE_API_LYRICS_TOKEN ?? "";
 
 const computedIsDev = process.env.NODE_ENV?.toLowerCase() === "development";
 export const isDev = computedIsDev;
@@ -91,5 +95,4 @@ export const devtoolsPort =
 
 export const debugMode = process.env.DEBUG_MODE?.toLowerCase() === "yes";
 
-export const stegripeApiUrl = "https://api.stegripe.org";
-export const stegripeApiLyricsToken = process.env.STEGRIPE_API_LYRICS_TOKEN ?? "";
+export const stegripeApiUrl = process.env.STEGRIPE_API_URL?.trim() || "https://api.stegripe.org";

@@ -47,6 +47,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
     const shutdownStart = Date.now();
 
     stopAutoUpdater();
+    client.license.stop();
 
     const saveStart = Date.now();
     await saveAllQueueStates();

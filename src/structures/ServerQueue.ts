@@ -543,12 +543,21 @@ export class ServerQueue {
             }
         }
 
-        const savedSongs: SavedQueueSong[] = this.songs.sortByIndex().map((queueSong) => ({
-            requesterId: queueSong.requester.id,
-            index: queueSong.index,
-            song: queueSong.song,
-            key: queueSong.key,
-        }));
+        const botId = this.client.user?.id ?? "unknown";
+        const savedSongs: SavedQueueSong[] = this.songs
+            .sortByIndex()
+            .filter((queueSong) => queueSong.requester.id !== botId)
+            .map((queueSong) => ({
+                requesterId: queueSong.requester.id,
+                index: queueSong.index,
+                song: queueSong.song,
+                key: queueSong.key,
+            }));
+
+        if (currentSongKey !== null && !savedSongs.some((song) => song.key === currentSongKey)) {
+            currentSongKey = null;
+            currentPosition = 0;
+        }
 
         const voiceChannelId = this.connection?.joinConfig.channelId;
         if (
@@ -568,7 +577,6 @@ export class ServerQueue {
         };
 
         if (hasSaveQueueState(this.client.data)) {
-            const botId = this.client.user?.id ?? "unknown";
             await this.client.data.saveQueueState(this.textChannel.guild.id, botId, queueState);
         } else {
             const fallback = this.client.data as FallbackDataManager;

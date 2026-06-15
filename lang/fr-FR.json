@@ -206,8 +206,8 @@
                 "filterSet": "Le filtre {filter} est désormais {state}",
                 "filterRestartedFooter": "La chanson a redémarré depuis le début (l'audio était encore en cours de chargement).",
                 "filterNoQueueFooter": "Le filtre sera appliqué lorsque vous commencerez à jouer de la musique.",
-                "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de musique",
-                "slashStateFilterDescription": "Le filtre de musique qui sera {state, select, enable {activé} other {désactivé}}",
+                "slashStateDescription": "{state, select, enable {Activer} other {Désactiver}} un filtre de chanson",
+                "slashStateFilterDescription": "Le filtre de chanson qui sera {state, select, enable {activé} other {désactivé}}",
                 "slashStatusDescription": "Vérifier l'état actuel des filtres de musique",
                 "slashStatusFilterDescription": "Le filtre de la chanson que vous voulez vérifier",
                 "specifyFilter": "Veuillez spécifier le filtre de la chanson."
@@ -254,7 +254,7 @@
                 "noPositions": "Veuillez spécifier les positions des chansons à supprimer.",
                 "slashPositionsDescription": "Position des chansons à supprimer, séparées par une virgule ou un espace",
                 "songSkip": "La musique en cours a été supprimée, la chanson a été sautée.\n\n",
-                "songsRemoved": "Supprimé {removed, plural, one {1 musique} other {# musiques}} de la file d'attente.",
+                "songsRemoved": "{removed} chanson(s) supprimée(s) de la file d'attente.",
                 "usage": "{prefix}remove <positions>"
             },
             "repeat": {
@@ -402,9 +402,9 @@
     "requestChannel": {
         "title": "Lecteur de Musique",
         "standby": "Pas de musique en cours. Envoyez un nom de chanson ou une URL pour commencer !",
-        "status": "Mode Boucle",
+        "status": "Boucle",
         "shuffle": "Aléatoire",
-        "autoplay": "Lecture automatique",
+        "autoplay": "Lecture-automatique",
         "volume": "Volume",
         "queueFooter": "Pistes restantes dans la file d'attente : {count} ({duration} de durée)",
         "live": "EN DIRECT",
@@ -426,7 +426,11 @@
         "noChannel": "Aucun salon de demandes n'est actuellement défini.",
         "currentChannel": "Salon de demandes actuel : {channel}",
         "skipInProgress": "Veuillez patienter, une opération de saut est en cours.",
-        "noPermission": "Vous n'avez pas la permission d'effectuer cette action. Seuls le rôle DJ, les gestionnaires du serveur ou le demandeur de la chanson peuvent le faire."
+        "noPermission": "Vous n'avez pas la permission d'effectuer cette action. Seuls le rôle DJ, les gestionnaires du serveur ou le demandeur de la chanson peuvent le faire.",
+        "addedPlaylistSkipped": "{count} élément(s) ignoré(s) : {reason}.",
+        "skippedReasonUnavailable": "privé/supprimé ou indisponible",
+        "skippedReasonUnresolved": "impossible à associer à une chanson lisible",
+        "skippedReasonSkipped": "doublon, privé/supprimé ou indisponible"
     },
     "reusable": {
         "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "Cette commande est désactivée dans le salon de demande. Veuillez utiliser les contrôles ou taper directement le titre/lien de la chanson.",
             "validVCJoinable": "Impossible de **`Se connecter`** à votre salon vocal. Vérifiez que les permissions nécessaires sont accordées.",
             "validVCPermission": "Impossible de **`Parler`** dans ce salon vocal ; vérifiez que les permissions nécessaires sont accordées."
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "La licence n’a pas encore été validée.",
+                "botNotReady": "Le Bot ID n’est pas encore prêt.",
+                "missingKey": "`STEGRIPE_API_LICENSE_KEY` est manquant. Les fonctions sous licence sont verrouillées.",
+                "validationFailed": "La validation de la licence a échoué.",
+                "apiGrace": "La validation de licence est temporairement injoignable ; la fenêtre de grâce en cache est utilisée.",
+                "apiUnavailableNoSession": "La validation de licence est temporairement injoignable et aucune session active n’existe : {error}",
+                "botNotAllowed": "Ce Bot ID n’est pas approuvé pour la licence.",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` est invalide.",
+                "revoked": "La licence a été révoquée.",
+                "sessionLimit": "Trop de sessions actives pour cette licence."
+            },
+            "blockMessage": "{reason}\n\n1. Rejoins [stegripe.org/discord](https://stegripe.org/discord).\n2. Envoie ce Bot ID à Stegripe staff : `{botId}`.\n3. Après approbation, configure `STEGRIPE_API_LICENSE_KEY` dans `.env`.\n4. Redémarre le bot."
         }
     }
 }

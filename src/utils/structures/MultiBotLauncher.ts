@@ -54,6 +54,7 @@ export class MultiBotLauncher {
         log.info(`[Shutdown] Browser closed in ${Date.now() - cookiesStart}ms`);
 
         for (const client of this.clients) {
+            client.license.stop();
             client.destroy();
         }
         log.info(`[Shutdown] Complete in ${Date.now() - shutdownStart}ms`);
@@ -174,6 +175,7 @@ export class MultiBotLauncher {
 
         const destroyPromises = this.clients.map(async (client) => {
             try {
+                client.license.stop();
                 return await client.destroy();
             } catch (error) {
                 log.error(`[MultiBot] Error destroying client: ${error}`);

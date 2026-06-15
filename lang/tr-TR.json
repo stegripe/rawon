@@ -207,7 +207,7 @@
                 "filterRestartedFooter": "Şarkı baştan başlatıldı (ses hala yükleniyordu).",
                 "filterNoQueueFooter": "Müzik çalmaya başladığınızda filtre uygulanacak.",
                 "slashStateDescription": "Şarkı filtresi {state, select, enable {Enable} other {Disable}} olacaktır",
-                "slashStateFilterDescription": "",
+                "slashStateFilterDescription": "Şarkı filtresi {state, select, enable {etkinleştirilecek} other {devre dışı bırakılacak}}",
                 "slashStatusDescription": "Şarkı filtrelerinin mevcut durumunu kontrol edin",
                 "slashStatusFilterDescription": "Kontrol etmek istediğiniz şarkı filtresi",
                 "specifyFilter": "Lütfen şarkı filtresini belirtin."
@@ -254,7 +254,7 @@
                 "noPositions": "Lütfen kaldırılacak şarkı pozisyonlarını belirtin.",
                 "slashPositionsDescription": "Virgül veya boşluk ile ayrılmış kaldırılacak şarkıların konumu",
                 "songSkip": "Geçerli şarkı kaldırıldı, şarkı atlandı.\n\n",
-                "songsRemoved": "Kuyruktan {removed, plural, one {1 song} diğer {# songs}} kaldırıldı.",
+                "songsRemoved": "Kuyruktan {removed} şarkı kaldırıldı.",
                 "usage": "{prefix}remove <pozisyon>"
             },
             "repeat": {
@@ -265,7 +265,7 @@
                 "slashDisable": "Tekrar modunu devre dışı bırak",
                 "slashQueue": "Tekrar modunu **`Şarkı kuyruğu`** olarak ayarlayın",
                 "slashSong": "Tekrar modunu **`Şarkı`** olarak ayarlayın",
-                "usage": "{prefix}repeat <{seçenekler}>"
+                "usage": "{prefix}repeat {options}"
             },
             "resume": {
                 "alreadyResume": "Oynatma duraklatılmamış.",
@@ -328,7 +328,7 @@
                 "slashLastDescription": "Kuyruktaki son şarkıya atla",
                 "slashPositionDescription": "Kuyruktaki şarkı konumu",
                 "slashSpecificDescription": "Kuyrukta belirli bir konuma atlama",
-                "usage": "{prefix}skipto <{tercihler} | numara>"
+                "usage": "{prefix}skipto {options}"
             },
             "stop": {
                 "description": "Oynatmayı durdurur",
@@ -402,9 +402,9 @@
     "requestChannel": {
         "title": "Müzik Çalar",
         "standby": "Müzik çalmıyor. Başlamak için şarkı adı veya URL gönderin!",
-        "status": "Döngü Modu",
+        "status": "Döngü",
         "shuffle": "Karıştır",
-        "autoplay": "Otomatik oynatma",
+        "autoplay": "Otomatik-oynatma",
         "volume": "Ses Seviyesi",
         "queueFooter": "Kuyrukta kalan parça sayısı: {count} ({duration} süre)",
         "live": "CANLI",
@@ -426,7 +426,11 @@
         "noChannel": "Şu anda ayarlanmış istek kanalı yok.",
         "currentChannel": "Mevcut istek kanalı: {channel}",
         "skipInProgress": "Lütfen bekleyin, bir atlama işlemi devam ediyor.",
-        "noPermission": "Bu işlemi gerçekleştirme izniniz yok. Sadece DJ rolü, sunucu yöneticileri veya şarkıyı isteyen kişi bunu yapabilir."
+        "noPermission": "Bu işlemi gerçekleştirme izniniz yok. Sadece DJ rolü, sunucu yöneticileri veya şarkıyı isteyen kişi bunu yapabilir.",
+        "addedPlaylistSkipped": "{count} öğe atlandı: {reason}.",
+        "skippedReasonUnavailable": "özel/silinmiş veya kullanılamıyor",
+        "skippedReasonUnresolved": "çalınabilir bir şarkıyla eşleştirilemedi",
+        "skippedReasonSkipped": "tekrar, özel/silinmiş veya kullanılamıyor"
     },
     "reusable": {
         "invalidUsage": "Geçersiz kullanım, lütfen daha fazla bilgi için {prefix} {name} kullanın.",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "Bu komut istek kanalında devre dışı bırakılmıştır. Lütfen kontrolleri kullanın veya şarkı adını/bağlantısını doğrudan yazın.",
             "validVCJoinable": "Ses kanalınıza **`Bağlanılamıyor`**. Gerekli izinlerin verildiğinden emin olun.",
             "validVCPermission": "Bu ses kanalında **`Konuşma`** yapılamıyor; gerekli izinlerin verildiğinden emin olun."
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "Lisans henüz doğrulanmadı.",
+                "botNotReady": "Bot ID henüz hazır değil.",
+                "missingKey": "`STEGRIPE_API_LICENSE_KEY` eksik. Lisanslı özellikler kilitli.",
+                "validationFailed": "Lisans doğrulaması başarısız oldu.",
+                "apiGrace": "Lisans doğrulaması geçici olarak ulaşılamıyor; önbellekteki geçici süre kullanılıyor.",
+                "apiUnavailableNoSession": "Lisans doğrulaması geçici olarak ulaşılamıyor ve aktif oturum yok: {error}",
+                "botNotAllowed": "Bu Bot ID lisans için onaylanmamış.",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` geçersiz.",
+                "revoked": "Lisans iptal edildi.",
+                "sessionLimit": "Bu lisans için çok fazla aktif oturum var."
+            },
+            "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord) adresine katıl.\n2. Bu Bot ID’yi Stegripe staff ekibine gönder: `{botId}`.\n3. Onaydan sonra `.env` içinde `STEGRIPE_API_LICENSE_KEY` ayarla.\n4. Botu yeniden başlat."
         }
     }
 }

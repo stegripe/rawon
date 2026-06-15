@@ -30,7 +30,7 @@
 ### Standard Setup (Node.js)
 1. Download and install the prerequisites above
 2. Clone or download this repository
-3. Copy `.env.example` to `.env` and fill in the required values (at minimum: `DISCORD_TOKEN`)
+3. Copy `.env.example` to `.env` and fill in the required values. `DISCORD_TOKEN` is required to start; `STEGRIPE_API_LICENSE_KEY` is required for licensed features.
 4. Install dependencies:
 ```sh
 pnpm install
@@ -53,7 +53,7 @@ Example: `!requestchannel #music-requests`
 
 #### Using Docker Compose
 1. Create a `.env` file with your configuration (copy from `.env.example`)
-2. (Optional) Create `dev.env` for additional settings
+2. Create `dev.env` from `dev.env.example`, or remove the `dev.env` line from `env_file`
 3. Create a `docker-compose.yaml` file:
 ```yaml
 services:
@@ -96,6 +96,7 @@ docker run -d \
 The `/app/cache` volume stores:
 - `yt-dlp` binary for audio streaming
 - `data.*` for persistent settings (request channels, player states)
+- `license.json` for the local license grace cache
 - Cached audio files (if audio caching is enabled)
 - Cookie file and profile data from Google login (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
@@ -108,6 +109,19 @@ The `DEVTOOLS_PORT` (default: `3000`) is used for Chrome DevTools remote debuggi
 - Bot-specific settings (embed color, yes/no emoji, splash, alt prefix, default volume, selection type, audio cache) are managed via the `setup` command (developer-only) and stored in the database. Use `setup view` to list available settings.
 
 Use the ones you need/should and fill in the values.
+
+## Rawon License
+
+Some features require an approved `STEGRIPE_API_LICENSE_KEY`.
+
+1. Start the bot once.
+2. Copy the Bot ID from the license warning.
+3. Join [stegripe.org/discord](https://stegripe.org/discord).
+4. Send the Bot ID to Stegripe staff for review.
+5. After approval, set `STEGRIPE_API_LICENSE_KEY` in `.env`.
+6. Restart the bot.
+
+General commands remain available without a license. Approved bot IDs can use the licensed feature set after validation. If validation is temporarily unavailable, a previously validated license can use the local grace cache for a limited window.
 
 ### Multi-Bot Mode
 
@@ -126,6 +140,7 @@ Features:
 - Each bot handles music commands for users in its voice channel
 - Adaptive ordering - if the primary bot is not in a server, the next available bot takes over
 - Each bot requires its own Discord application
+- Each bot ID that needs license access must be approved for the same `STEGRIPE_API_LICENSE_KEY`; unapproved bot IDs stay online but will not handle license-gated actions
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information

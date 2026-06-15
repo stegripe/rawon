@@ -206,8 +206,8 @@
                 "filterSet": "{filter} 필터가 이제 {state}예요",
                 "filterRestartedFooter": "노래가 처음부터 다시 시작되었어요 (오디오가 아직 버퍼링 중이었어요).",
                 "filterNoQueueFooter": "음악 재생을 시작하면 필터가 적용돼요.",
-                "slashStateDescription": "노래 필터 {state, select, enable {활성화} other {비활성화}}",
-                "slashStateFilterDescription": "{state, select, enable {활성화} other {비활성화}}할 노래 필터",
+                "slashStateDescription": "{state, select, enable {활성화} other {비활성화}} 필터",
+                "slashStateFilterDescription": "{state, select, enable {활성화} other {비활성화}}할 필터",
                 "slashStatusDescription": "노래 필터의 현재 상태 확인",
                 "slashStatusFilterDescription": "확인하고 싶은 노래 필터",
                 "specifyFilter": "노래 필터를 지정해주세요."
@@ -254,7 +254,7 @@
                 "noPositions": "삭제할 노래 위치를 지정해주세요.",
                 "slashPositionsDescription": "삭제할 노래의 위치 (쉼표 또는 공백으로 구분)",
                 "songSkip": "현재 노래가 삭제되었어요. 건너뜁니다.\n\n",
-                "songsRemoved": "대기열에서 {removed}곡이 삭제되었어요.",
+                "songsRemoved": "대기열에서 {removed}곡을 제거했어요.",
                 "usage": "{prefix}remove <위치>"
             },
             "repeat": {
@@ -402,7 +402,7 @@
     "requestChannel": {
         "title": "음악 플레이어",
         "standby": "재생 중인 음악이 없어요. 노래 이름이나 URL을 보내서 재생을 시작하세요!",
-        "status": "반복 모드",
+        "status": "반복",
         "shuffle": "셔플",
         "autoplay": "자동재생",
         "volume": "볼륨",
@@ -426,7 +426,11 @@
         "noChannel": "현재 설정된 요청 채널이 없어요.",
         "currentChannel": "현재 요청 채널: {channel}",
         "skipInProgress": "잠시만요, 건너뛰기 작업이 이미 진행 중이에요.",
-        "noPermission": "이 작업을 수행할 권한이 없어요. DJ 역할, 서버 관리자 또는 노래 요청자만 할 수 있어요."
+        "noPermission": "이 작업을 수행할 권한이 없어요. DJ 역할, 서버 관리자 또는 노래 요청자만 할 수 있어요.",
+        "addedPlaylistSkipped": "{count}개 항목을 건너뛰었어요: {reason}.",
+        "skippedReasonUnavailable": "비공개/삭제됨 또는 사용할 수 없음",
+        "skippedReasonUnresolved": "재생 가능한 곡으로 매칭하지 못함",
+        "skippedReasonSkipped": "중복, 비공개/삭제됨 또는 사용할 수 없음"
     },
     "reusable": {
         "invalidUsage": "잘못된 사용법이에요. {prefix} {name}으로 자세한 정보를 확인하세요.",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "이 명령어는 요청 채널에서 비활성화되어 있어요. 컨트롤 버튼을 사용하거나 노래 제목/링크를 직접 입력해주세요.",
             "validVCJoinable": "음성 채널에 **`연결`**할 수 없어요. 올바른 권한이 있는지 확인해주세요.",
             "validVCPermission": "이 음성 채널에서 **`말하기`**를 할 수 없어요. 올바른 권한이 있는지 확인해주세요."
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "라이선스가 아직 검증되지 않았습니다.",
+                "botNotReady": "Bot ID가 아직 준비되지 않았습니다.",
+                "missingKey": "`STEGRIPE_API_LICENSE_KEY`가 없습니다. 라이선스 기능이 잠겨 있습니다.",
+                "validationFailed": "라이선스 검증에 실패했습니다.",
+                "apiGrace": "라이선스 검증에 일시적으로 연결할 수 없어 캐시된 유예 시간을 사용합니다.",
+                "apiUnavailableNoSession": "라이선스 검증에 일시적으로 연결할 수 없고 활성 세션도 없습니다: {error}",
+                "botNotAllowed": "이 Bot ID는 라이선스에 승인되지 않았습니다.",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY`가 유효하지 않습니다.",
+                "revoked": "라이선스가 취소되었습니다.",
+                "sessionLimit": "이 라이선스의 활성 세션이 너무 많습니다."
+            },
+            "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord)에 참여합니다.\n2. 이 Bot ID를 Stegripe staff에게 보냅니다: `{botId}`.\n3. 승인 후 `.env`에 `STEGRIPE_API_LICENSE_KEY`를 설정합니다.\n4. bot을 다시 시작합니다."
         }
     }
 }

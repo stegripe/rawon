@@ -254,7 +254,7 @@
                 "noPositions": "削除したい曲の位置を指定してください。",
                 "slashPositionsDescription": "コンマもしくはスペースで区切られた削除したい曲のポジション",
                 "songSkip": "現在の曲が削除されたため、スキップされます。\n\n",
-                "songsRemoved": "{removed, plural, one {1曲} other {# 曲}}をキューから削除しました。",
+                "songsRemoved": "{removed} 曲をキューから削除しました。",
                 "usage": "{prefix}remove <ポジション>"
             },
             "repeat": {
@@ -402,7 +402,7 @@
     "requestChannel": {
         "title": "ミュージックプレーヤー",
         "standby": "音楽は再生されていません。曲名またはURLを送信して再生を開始してください！",
-        "status": "ループモード",
+        "status": "ループ",
         "shuffle": "シャッフル",
         "autoplay": "自動再生",
         "volume": "音量",
@@ -426,7 +426,11 @@
         "noChannel": "現在リクエストチャンネルは設定されていません。",
         "currentChannel": "現在のリクエストチャンネル: {channel}",
         "skipInProgress": "お待ちください、スキップ操作が進行中です。",
-        "noPermission": "このアクションを実行する権限がありません。DJロール、サーバー管理者、または曲をリクエストした人だけが実行できます。"
+        "noPermission": "このアクションを実行する権限がありません。DJロール、サーバー管理者、または曲をリクエストした人だけが実行できます。",
+        "addedPlaylistSkipped": "{count} 件をスキップしました: {reason}。",
+        "skippedReasonUnavailable": "非公開/削除済み、または利用不可",
+        "skippedReasonUnresolved": "再生可能な曲に一致できませんでした",
+        "skippedReasonSkipped": "重複、非公開/削除済み、または利用不可"
     },
     "reusable": {
         "invalidUsage": "無効な使用方法です。{prefix} {name}を実行して情報を照会してください。",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。操作ボタンを使用するか、曲名/リンクを直接入力してください。",
             "validVCJoinable": "**`接続`**できません。必要な権限があることを確認してください。",
             "validVCPermission": "**`発言`**できません。必要な権限があることを確認してください。"
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "ライセンスはまだ検証されていません。",
+                "botNotReady": "Bot ID はまだ準備できていません。",
+                "missingKey": "`STEGRIPE_API_LICENSE_KEY` がありません。ライセンス機能はロックされています。",
+                "validationFailed": "ライセンスの検証に失敗しました。",
+                "apiGrace": "ライセンス検証に一時的に接続できません。キャッシュ済みの猶予期間を使用します。",
+                "apiUnavailableNoSession": "ライセンス検証に一時的に接続できず、アクティブなセッションもありません: {error}",
+                "botNotAllowed": "この Bot ID はライセンスで承認されていません。",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` が無効です。",
+                "revoked": "ライセンスは取り消されました。",
+                "sessionLimit": "このライセンスのアクティブセッションが多すぎます。"
+            },
+            "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord) に参加します。\n2. この Bot ID を Stegripe staff へ送信します: `{botId}`。\n3. 承認後、`.env` に `STEGRIPE_API_LICENSE_KEY` を設定します。\n4. bot を再起動します。"
         }
     }
 }
