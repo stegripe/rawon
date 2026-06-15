@@ -254,7 +254,7 @@
                 "noPositions": "请指定要移除的歌曲位置。",
                 "slashPositionsDescription": "以逗号或空格分隔指定要移除的歌曲位置",
                 "songSkip": "当前歌曲已移除，歌曲被跳过。\n\n",
-                "songsRemoved": "已在队列中移除 {removed, plural, one {1 首歌曲} other {# 首歌曲}}",
+                "songsRemoved": "已从队列中移除 {removed} 首歌曲。",
                 "usage": "{prefix}remove <位置>"
             },
             "repeat": {
@@ -402,7 +402,7 @@
     "requestChannel": {
         "title": "音乐播放器",
         "standby": "没有音乐播放中。发送歌曲名称或URL开始播放！",
-        "status": "循环模式",
+        "status": "循环",
         "shuffle": "随机播放",
         "autoplay": "自动播放",
         "volume": "音量",
@@ -426,7 +426,11 @@
         "noChannel": "当前没有设置点歌频道。",
         "currentChannel": "当前点歌频道：{channel}",
         "skipInProgress": "请稍候，跳过操作正在进行中。",
-        "noPermission": "您没有权限执行此操作。只有DJ身份组、服务器管理员或点歌者可以执行此操作。"
+        "noPermission": "您没有权限执行此操作。只有DJ身份组、服务器管理员或点歌者可以执行此操作。",
+        "addedPlaylistSkipped": "已跳过 {count} 个项目：{reason}。",
+        "skippedReasonUnavailable": "私有/已删除或不可用",
+        "skippedReasonUnresolved": "无法匹配到可播放歌曲",
+        "skippedReasonSkipped": "重复、私有/已删除或不可用"
     },
     "reusable": {
         "invalidUsage": "无效的用法，请用 {prefix} {name}了解更多资讯。",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "此命令在请求频道中已禁用。请使用控制按钮或直接输入歌曲名称/链接。",
             "validVCJoinable": "无法**`连接`**到你的语音频道，请确保已授予正确权限。",
             "validVCPermission": "无法在这个语音频道**`说话`**；请确保已授予正确权限。"
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "许可证尚未验证。",
+                "botNotReady": "Bot ID 尚未准备好。",
+                "missingKey": "缺少 `STEGRIPE_API_LICENSE_KEY`。授权功能已锁定。",
+                "validationFailed": "许可证验证失败。",
+                "apiGrace": "许可证验证暂时无法访问；正在使用缓存宽限窗口。",
+                "apiUnavailableNoSession": "许可证验证暂时无法访问，且不存在活动会话：{error}",
+                "botNotAllowed": "此 Bot ID 尚未获准使用该许可证。",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` 无效。",
+                "revoked": "许可证已被撤销。",
+                "sessionLimit": "此许可证的活动会话过多。"
+            },
+            "blockMessage": "{reason}\n\n1. 加入 [stegripe.org/discord](https://stegripe.org/discord)。\n2. 将此 Bot ID 发送给 Stegripe staff：`{botId}`。\n3. 批准后，在 `.env` 中设置 `STEGRIPE_API_LICENSE_KEY`。\n4. 重启机器人。"
         }
     }
 }

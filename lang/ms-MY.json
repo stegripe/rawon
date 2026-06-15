@@ -202,12 +202,12 @@
                 "currentState": "{filter} telah {state}",
                 "description": "Konfigurasi saringan lagu",
                 "usage": "{prefix}filter <enable | disable | status> [saringan]",
-                "embedFooter": "Untuk {opstate} saringan, gunakan {prefix}filter {opstate} {saringan}",
+                "embedFooter": "Untuk {opstate, select, enable {aktifkan} other {lumpuhkan}} saringan ini, gunakan {prefix}filter {opstate} {filter}",
                 "filterSet": "Saringan {filter} telah {state}",
                 "filterRestartedFooter": "Lagu dimulakan semula (audio masih memuat).",
                 "filterNoQueueFooter": "Saringan akan aktif sebaik sahaja muzik dimainkan.",
                 "slashStateDescription": "{state, select, enable {Aktifkan} other {Lumpuhkan}} saringan lagu",
-                "slashStateFilterDescription": "Saringan akan di{state, select, enable {aktifkan} other {lumpuhkan}}",
+                "slashStateFilterDescription": "Saringan lagu yang akan {state, select, enable {diaktifkan} other {dilumpuhkan}}",
                 "slashStatusDescription": "Semak status semasa saringan lagu",
                 "slashStatusFilterDescription": "Saringan lagu yang hendak disemak",
                 "specifyFilter": "Sila nyatakan saringan lagu."
@@ -254,7 +254,7 @@
                 "noPositions": "Sila nyatakan kedudukan lagu untuk dipadam.",
                 "slashPositionsDescription": "Kedudukan lagu untuk dipadam, diasingkan dengan koma atau ruang",
                 "songSkip": "Lagu semasa dipadam, melangkau.\n\n",
-                "songsRemoved": "{removed} dipadam dari giliran.",
+                "songsRemoved": "{removed} lagu telah dialih keluar daripada giliran.",
                 "usage": "{prefix}remove <kedudukan>"
             },
             "repeat": {
@@ -402,9 +402,9 @@
     "requestChannel": {
         "title": "Pemain Muzik",
         "standby": "Tiada muzik dimainkan. Hantar tajuk lagu atau pautan untuk mula dengar muzik!",
-        "status": "Mod ulangan",
+        "status": "Ulangan",
         "shuffle": "Acak",
-        "autoplay": "Main automatik",
+        "autoplay": "Main-automatik",
         "volume": "Kelantangan",
         "queueFooter": "Lagu berbaki dalam giliran: {count} ({duration} tempoh)",
         "live": "LIVE",
@@ -426,7 +426,11 @@
         "noChannel": "Tiada saluran permintaan yang ditetapkan.",
         "currentChannel": "Saluran permintaan sekarang: {channel}",
         "skipInProgress": "Sila tunggu, proses melangkau sedang berjalan.",
-        "noPermission": "Anda tidak mempunyai kebenaran untuk melakukan tindakan ini. Hanya DJ, pengelola server, atau pemohon lagu yang dapat melakukan ini."
+        "noPermission": "Anda tidak mempunyai kebenaran untuk melakukan tindakan ini. Hanya DJ, pengelola server, atau pemohon lagu yang dapat melakukan ini.",
+        "addedPlaylistSkipped": "{count} item dilangkau: {reason}.",
+        "skippedReasonUnavailable": "private/deleted atau tidak tersedia",
+        "skippedReasonUnresolved": "gagal dipadankan dengan lagu yang boleh dimainkan",
+        "skippedReasonSkipped": "duplikat, private/deleted, atau tidak tersedia"
     },
     "reusable": {
         "invalidUsage": "Penggunaan tidak sah, sila gunakan {prefix} {name} untuk maklumat lanjut.",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "Arahan ini dilumpuhkan dalam saluran permintaan. Sila guna butang kawalan atau taip tajuk/pautan lagu.",
             "validVCJoinable": "Tidak dapat **`Menyertai`** saluran suara, pastikan kebenaran yang betul diberikan.",
             "validVCPermission": "Tidak dapat **`Bercakap`** di saluran suara; pastikan kebenaran yang betul diberikan."
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "Lesen belum disahkan.",
+                "botNotReady": "Bot ID belum tersedia.",
+                "missingKey": "`STEGRIPE_API_LICENSE_KEY` tiada. Ciri berlesen dikunci.",
+                "validationFailed": "Pengesahan lesen gagal.",
+                "apiGrace": "Pengesahan lesen tidak dapat dicapai buat sementara; menggunakan tetingkap cache sementara.",
+                "apiUnavailableNoSession": "Pengesahan lesen tidak dapat dicapai buat sementara dan tiada sesi aktif: {error}",
+                "botNotAllowed": "Bot ID ini belum diluluskan untuk lesen.",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` tidak sah.",
+                "revoked": "Lesen telah dibatalkan.",
+                "sessionLimit": "Terlalu banyak sesi aktif untuk lesen ini."
+            },
+            "blockMessage": "{reason}\n\n1. Sertai [stegripe.org/discord](https://stegripe.org/discord).\n2. Hantar Bot ID ini kepada Stegripe staff: `{botId}`.\n3. Selepas diluluskan, isi `STEGRIPE_API_LICENSE_KEY` dalam `.env`.\n4. Mulakan semula bot."
         }
     }
 }

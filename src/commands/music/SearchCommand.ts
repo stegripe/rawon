@@ -234,12 +234,21 @@ export class SearchCommand extends ContextCommand {
             return;
         }
 
+        const searchError: { value: unknown } = { value: null };
         const tracks = await searchTrack(client, query ?? "", source as "soundcloud" | "youtube")
             .then((x) => ({ items: x.items.slice(0, 10), type: x.type }))
-            .catch(() => void 0);
+            .catch((error: unknown) => {
+                searchError.value = error;
+                client.logger.error("[SearchCommand] searchTrack failed:", error);
+                return undefined;
+            });
         if (!tracks || tracks.items.length <= 0) {
+            const errorMessage =
+                searchError.value instanceof Error && searchError.value.message
+                    ? searchError.value.message
+                    : __("commands.music.search.noTracks");
             const noTracksMsg = await ctx.reply({
-                embeds: [createEmbed("warn", __("commands.music.search.noTracks"))],
+                embeds: [createEmbed(searchError.value ? "error" : "warn", errorMessage, true)],
             });
             if (this.isRequestChannel(client, ctx) && noTracksMsg) {
                 this.autoDeleteMessage(noTracksMsg);

@@ -26,6 +26,7 @@ import { ClientUtils } from "../utils/structures/ClientUtils.js";
 import { CookiesManager } from "../utils/structures/CookiesManager.js";
 import { DebugLogManager } from "../utils/structures/DebugLogManager.js";
 import { MultiBotManager } from "../utils/structures/MultiBotManager.js";
+import { RawonLicenseManager } from "../utils/structures/RawonLicenseManager.js";
 import { RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 import { SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
 import { setCookiesManager } from "../utils/yt-dlp/index.js";
@@ -216,6 +217,7 @@ export class Rawon extends SapphireClient {
     public readonly utils = new ClientUtils(this);
     public readonly soundcloud = new Soundcloud();
     public readonly requestChannelManager = new RequestChannelManager(this);
+    public readonly license = new RawonLicenseManager(this);
     public readonly audioCache = new AudioCacheManager(this);
     public readonly cookies = new CookiesManager(this);
     public readonly multiBotManager = MultiBotManager.getInstance();
@@ -278,6 +280,7 @@ export class Rawon extends SapphireClient {
         container.utils = this.utils;
         container.soundcloud = this.soundcloud;
         container.requestChannelManager = this.requestChannelManager;
+        container.license = this.license;
         container.audioCache = this.audioCache;
         container.cookies = this.cookies;
         container.request = this.request;

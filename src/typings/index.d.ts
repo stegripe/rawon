@@ -20,6 +20,7 @@ import { type AudioCacheManager } from "../utils/structures/AudioCacheManager.js
 import { type ClientUtils } from "../utils/structures/ClientUtils.js";
 import { type CookiesManager } from "../utils/structures/CookiesManager.js";
 import { type DebugLogManager } from "../utils/structures/DebugLogManager.js";
+import { type RawonLicenseManager } from "../utils/structures/RawonLicenseManager.js";
 import { type RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 import { type SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
 
@@ -45,6 +46,8 @@ export type PlaylistMetadata = {
     url: string;
     thumbnail?: string;
     author?: string;
+    skippedCount?: number;
+    skippedReason?: "skipped" | "unavailable" | "unresolved";
 };
 
 export type SearchTrackResult = {
@@ -369,6 +372,7 @@ declare module "@sapphire/framework" {
         utils: ClientUtils;
         soundcloud: Soundcloud;
         requestChannelManager: RequestChannelManager;
+        license: RawonLicenseManager;
         audioCache: AudioCacheManager;
         cookies: CookiesManager;
         request: Got;

@@ -254,7 +254,7 @@
                 "noPositions": "請指定要移除的歌曲位置。",
                 "slashPositionsDescription": "以逗號或空格分隔指定要移除的歌曲位置",
                 "songSkip": "當前歌曲已移除，歌曲被跳過。\n\n",
-                "songsRemoved": "已在隊列中移除 {removed, plural, one {1 首歌曲} other {# 首歌曲}}",
+                "songsRemoved": "已從佇列中移除 {removed} 首歌曲。",
                 "usage": "{prefix}remove <位置>"
             },
             "repeat": {
@@ -402,7 +402,7 @@
     "requestChannel": {
         "title": "音樂播放器",
         "standby": "沒有音樂播放中。發送歌曲名稱或URL開始播放！",
-        "status": "循環模式",
+        "status": "循環",
         "shuffle": "隨機播放",
         "autoplay": "自動播放",
         "volume": "音量",
@@ -426,7 +426,11 @@
         "noChannel": "當前沒有設置點歌頻道。",
         "currentChannel": "當前點歌頻道：{channel}",
         "skipInProgress": "請稍候，跳過操作正在進行中。",
-        "noPermission": "您沒有權限執行此操作。只有DJ身份組、伺服器管理員或點歌者可以執行此操作。"
+        "noPermission": "您沒有權限執行此操作。只有DJ身份組、伺服器管理員或點歌者可以執行此操作。",
+        "addedPlaylistSkipped": "已跳過 {count} 個項目：{reason}。",
+        "skippedReasonUnavailable": "私人/已刪除或無法使用",
+        "skippedReasonUnresolved": "無法匹配到可播放歌曲",
+        "skippedReasonSkipped": "重複、私人/已刪除或無法使用"
     },
     "reusable": {
         "invalidUsage": "無效的用法，請用 {prefix} {name}了解更多資訊。",
@@ -461,6 +465,21 @@
             "useRequestChannelDirect": "此命令在請求頻道中已禁用。請使用控制按鈕或直接輸入歌曲名稱/連結。",
             "validVCJoinable": "無法**`連接`**到你的語音頻道，請確保已授予正確權限。",
             "validVCPermission": "無法在這個語音頻道**`說話`**；請確保已授予正確權限。"
+        },
+        "license": {
+            "reasons": {
+                "notValidated": "授權尚未驗證。",
+                "botNotReady": "Bot ID 尚未準備好。",
+                "missingKey": "缺少 `STEGRIPE_API_LICENSE_KEY`。授權功能已鎖定。",
+                "validationFailed": "授權驗證失敗。",
+                "apiGrace": "授權驗證暫時無法連線；正在使用快取寬限期。",
+                "apiUnavailableNoSession": "授權驗證暫時無法連線，且沒有作用中的工作階段：{error}",
+                "botNotAllowed": "此 Bot ID 尚未核准使用此授權。",
+                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` 無效。",
+                "revoked": "授權已被撤銷。",
+                "sessionLimit": "此授權的作用中工作階段過多。"
+            },
+            "blockMessage": "{reason}\n\n1. 加入 [stegripe.org/discord](https://stegripe.org/discord)。\n2. 將此 Bot ID 傳送給 Stegripe staff：`{botId}`。\n3. 核准後，在 `.env` 設定 `STEGRIPE_API_LICENSE_KEY`。\n4. 重新啟動機器人。"
         }
     }
 }

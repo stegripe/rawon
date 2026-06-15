@@ -162,10 +162,18 @@ export class MultiBotManager {
             return null;
         }
 
+        const musicUsableBots = botsInGuild.filter((bot) => bot.client.license.usable);
+        if (musicUsableBots.length === 0) {
+            guild.client.logger.warn(
+                `[MultiBot] No licensed bots available for voice channel ${voiceChannelId}. Request ignored.`,
+            );
+            return null;
+        }
+
         const botsInVoiceChannels = new Map<Rawon, Snowflake | null>();
         const botsWithQueues = new Map<Rawon, Snowflake | null>();
 
-        for (const bot of botsInGuild) {
+        for (const bot of musicUsableBots) {
             const botGuild = bot.client.guilds.cache.get(guildId);
             if (!botGuild) {
                 continue;
@@ -190,7 +198,7 @@ export class MultiBotManager {
         let botWithQueue: BotInstance | null = null;
         let botInVoice: BotInstance | null = null;
 
-        for (const bot of botsInGuild) {
+        for (const bot of musicUsableBots) {
             const currentVoiceChannel = botsInVoiceChannels.get(bot.client);
             const queueVoiceChannel = botsWithQueues.get(bot.client);
 
@@ -217,7 +225,7 @@ export class MultiBotManager {
             return botInVoice.client;
         }
 
-        const primaryBot = botsInGuild.find((b) => b.isPrimary);
+        const primaryBot = musicUsableBots.find((b) => b.isPrimary);
         if (primaryBot) {
             const primaryVoiceChannel = botsInVoiceChannels.get(primaryBot.client);
             const primaryQueueChannel = botsWithQueues.get(primaryBot.client);
@@ -226,7 +234,7 @@ export class MultiBotManager {
                     `isFree=${!primaryVoiceChannel && !primaryQueueChannel}`,
             );
         }
-        const freeBots = botsInGuild
+        const freeBots = musicUsableBots
             .filter((bot) => {
                 const currentVoiceChannel = botsInVoiceChannels.get(bot.client);
                 const queueVoiceChannel = botsWithQueues.get(bot.client);

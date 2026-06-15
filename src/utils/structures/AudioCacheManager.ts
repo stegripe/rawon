@@ -25,6 +25,18 @@ const QUEUE_PROCESSING_DELAY_MS = 50;
 const MAX_PRE_CACHE_RETRIES = 2;
 const MAX_CONCURRENT_PRECACHE = 2;
 
+function isUnavailableYtDlpError(message: string): boolean {
+    const normalized = message.toLowerCase();
+    return (
+        normalized.includes("video unavailable") ||
+        normalized.includes("this video is not available") ||
+        normalized.includes("this video is unavailable") ||
+        normalized.includes("private video") ||
+        normalized.includes("deleted video") ||
+        normalized.includes("not available in your country")
+    );
+}
+
 export class AudioCacheManager {
     public readonly cacheDir: string;
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
@@ -467,9 +479,17 @@ export class AudioCacheManager {
                     });
 
                     proc.stderr.on("end", () => {
-                        if (stderrData.trim() && !hasBotDetectionError) {
+                        if (
+                            stderrData.trim() &&
+                            !hasBotDetectionError &&
+                            !isUnavailableYtDlpError(stderrData)
+                        ) {
                             this.client.logger.warn(
                                 `[AudioCacheManager] yt-dlp stderr for ${url.slice(0, 50)}...: ${stderrData.slice(0, 500)}`,
+                            );
+                        } else if (isUnavailableYtDlpError(stderrData)) {
+                            this.client.logger.debug(
+                                `[AudioCacheManager] Skipping unavailable pre-cache URL: ${url.slice(0, 50)}...`,
                             );
                         }
                     });
@@ -507,6 +527,11 @@ export class AudioCacheManager {
                             } else {
                                 this.markFailed(key);
                             }
+                        } else if (isUnavailableYtDlpError(stderrData)) {
+                            try {
+                                rmSync(cachePath, { force: true });
+                            } catch {}
+                            this.markFailed(key, PRE_CACHE_RETRY_COUNT);
                         } else {
                             try {
                                 const stats = statSync(cachePath);
@@ -562,10 +587,10 @@ export class AudioCacheManager {
         }
     }
 
-    private markFailed(key: string): void {
+    private markFailed(key: string, increment = 1): void {
         const existing = this.failedUrls.get(key);
         this.failedUrls.set(key, {
-            count: (existing?.count ?? 0) + 1,
+            count: (existing?.count ?? 0) + increment,
             lastAttempt: Date.now(),
         });
     }

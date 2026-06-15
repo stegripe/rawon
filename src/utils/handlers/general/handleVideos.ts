@@ -15,9 +15,9 @@ import { type PlaylistMetadata, type Song } from "../../../typings/index.js";
 import { chunk } from "../../functions/chunk.js";
 import { createEmbed } from "../../functions/createEmbed.js";
 import { createVoiceAdapter } from "../../functions/createVoiceAdapter.js";
-import { formatBoldCodeSpan } from "../../functions/formatCodeSpan.js";
 import { formatBoldMarkdownLink, formatMarkdownText } from "../../functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
+import { formatAddedPlaylistNotice } from "../../functions/playlistQueueNotice.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
 import { play } from "./play.js";
 
@@ -142,10 +142,13 @@ export async function handleVideos(
                     : `**${formatMarkdownText(playlistMeta.title)}**`;
             const confirmEmbed = createEmbed(
                 "success",
-                `🎶 **|** ${__mf("requestChannel.addedPlaylistToQueue", {
-                    count: formatBoldCodeSpan(toQueue.length.toString()),
-                    playlist: playlistText,
-                })}`,
+                `🎶 **|** ${formatAddedPlaylistNotice(
+                    client,
+                    ctx.guild,
+                    toQueue.length,
+                    playlistText,
+                    playlistMeta,
+                )}`,
             );
 
             if ((playlistMeta.thumbnail?.length ?? 0) > 0) {

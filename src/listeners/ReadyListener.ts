@@ -59,6 +59,8 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
             this.container.config.devs.push(client.application.owner.id);
         }
 
+        client.license.start();
+
         await client.spotify.renew();
 
         const isPrimaryOrSingle =
