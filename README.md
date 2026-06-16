@@ -96,7 +96,6 @@ docker run -d \
 The `/app/cache` volume stores:
 - `yt-dlp` binary for audio streaming
 - `data.*` for persistent settings (request channels, player states)
-- `license.json` for the local license grace cache
 - Cached audio files (if audio caching is enabled)
 - Cookie file and profile data from Google login (see [Cookies Setup](./docs/COOKIES_SETUP.md))
 
@@ -121,7 +120,7 @@ Some features require an approved `STEGRIPE_API_LICENSE_KEY`.
 5. After approval, set `STEGRIPE_API_LICENSE_KEY` in `.env`.
 6. Restart the bot.
 
-General commands remain available without a license. Approved bot IDs can use the licensed feature set after validation. If validation is temporarily unavailable, a previously validated license can use the local grace cache for a limited window.
+General commands remain available without a license. Approved bot IDs can use the licensed feature set.
 
 ### Multi-Bot Mode
 

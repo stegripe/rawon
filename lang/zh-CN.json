@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID 尚未准备好。",
                 "missingKey": "缺少 `STEGRIPE_API_LICENSE_KEY`。授权功能已锁定。",
                 "validationFailed": "许可证验证失败。",
-                "apiGrace": "许可证验证暂时无法访问；正在使用缓存宽限窗口。",
-                "apiUnavailableNoSession": "许可证验证暂时无法访问，且不存在活动会话：{error}",
                 "botNotAllowed": "此 Bot ID 尚未获准使用该许可证。",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` 无效。",
-                "revoked": "许可证已被撤销。",
-                "sessionLimit": "此许可证的活动会话过多。"
+                "revoked": "许可证已被撤销。"
             },
             "blockMessage": "{reason}\n\n1. 加入 [stegripe.org/discord](https://stegripe.org/discord)。\n2. 将此 Bot ID 发送给 Stegripe staff：`{botId}`。\n3. 批准后，在 `.env` 中设置 `STEGRIPE_API_LICENSE_KEY`。\n4. 重启机器人。"
         }

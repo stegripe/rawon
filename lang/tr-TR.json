@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID henüz hazır değil.",
                 "missingKey": "`STEGRIPE_API_LICENSE_KEY` eksik. Lisanslı özellikler kilitli.",
                 "validationFailed": "Lisans doğrulaması başarısız oldu.",
-                "apiGrace": "Lisans doğrulaması geçici olarak ulaşılamıyor; önbellekteki geçici süre kullanılıyor.",
-                "apiUnavailableNoSession": "Lisans doğrulaması geçici olarak ulaşılamıyor ve aktif oturum yok: {error}",
                 "botNotAllowed": "Bu Bot ID lisans için onaylanmamış.",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` geçersiz.",
-                "revoked": "Lisans iptal edildi.",
-                "sessionLimit": "Bu lisans için çok fazla aktif oturum var."
+                "revoked": "Lisans iptal edildi."
             },
             "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord) adresine katıl.\n2. Bu Bot ID’yi Stegripe staff ekibine gönder: `{botId}`.\n3. Onaydan sonra `.env` içinde `STEGRIPE_API_LICENSE_KEY` ayarla.\n4. Botu yeniden başlat."
         }

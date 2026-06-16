@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID ще не готовий.",
                 "missingKey": "Відсутній `STEGRIPE_API_LICENSE_KEY`. Ліцензовані функції заблоковано.",
                 "validationFailed": "Не вдалося перевірити ліцензію.",
-                "apiGrace": "Перевірка ліцензії тимчасово недоступна; використовується кешоване пільгове вікно.",
-                "apiUnavailableNoSession": "Перевірка ліцензії тимчасово недоступна і активної сесії немає: {error}",
                 "botNotAllowed": "Цей Bot ID не схвалено для ліцензії.",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` недійсний.",
-                "revoked": "Ліцензію відкликано.",
-                "sessionLimit": "Забагато активних сесій для цієї ліцензії."
+                "revoked": "Ліцензію відкликано."
             },
             "blockMessage": "{reason}\n\n1. Приєднайся до [stegripe.org/discord](https://stegripe.org/discord).\n2. Надішли цей Bot ID Stegripe staff: `{botId}`.\n3. Після схвалення задай `STEGRIPE_API_LICENSE_KEY` у `.env`.\n4. Перезапусти бота."
         }
