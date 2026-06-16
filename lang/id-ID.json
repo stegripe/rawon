@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID belum siap.",
                 "missingKey": "`STEGRIPE_API_LICENSE_KEY` belum diisi. Fitur berlisensi terkunci.",
                 "validationFailed": "Validasi lisensi gagal.",
-                "apiGrace": "Validasi lisensi sementara tidak dapat dijangkau; memakai cache grace.",
-                "apiUnavailableNoSession": "Validasi lisensi sementara tidak dapat dijangkau dan belum ada sesi aktif: {error}",
                 "botNotAllowed": "Bot ID ini belum disetujui untuk lisensi.",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` tidak valid.",
-                "revoked": "Lisensi sudah dicabut.",
-                "sessionLimit": "Terlalu banyak sesi aktif untuk lisensi ini."
+                "revoked": "Lisensi sudah dicabut."
             },
             "blockMessage": "{reason}\n\n1. Gabung ke [stegripe.org/discord](https://stegripe.org/discord).\n2. Kirim Bot ID ini ke Stegripe staff: `{botId}`.\n3. Setelah disetujui, isi `STEGRIPE_API_LICENSE_KEY` di `.env`.\n4. Restart bot."
         }
