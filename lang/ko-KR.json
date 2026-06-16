@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID가 아직 준비되지 않았습니다.",
                 "missingKey": "`STEGRIPE_API_LICENSE_KEY`가 없습니다. 라이선스 기능이 잠겨 있습니다.",
                 "validationFailed": "라이선스 검증에 실패했습니다.",
-                "apiGrace": "라이선스 검증에 일시적으로 연결할 수 없어 캐시된 유예 시간을 사용합니다.",
-                "apiUnavailableNoSession": "라이선스 검증에 일시적으로 연결할 수 없고 활성 세션도 없습니다: {error}",
                 "botNotAllowed": "이 Bot ID는 라이선스에 승인되지 않았습니다.",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY`가 유효하지 않습니다.",
-                "revoked": "라이선스가 취소되었습니다.",
-                "sessionLimit": "이 라이선스의 활성 세션이 너무 많습니다."
+                "revoked": "라이선스가 취소되었습니다."
             },
             "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord)에 참여합니다.\n2. 이 Bot ID를 Stegripe staff에게 보냅니다: `{botId}`.\n3. 승인 후 `.env`에 `STEGRIPE_API_LICENSE_KEY`를 설정합니다.\n4. bot을 다시 시작합니다."
         }

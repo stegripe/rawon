@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID はまだ準備できていません。",
                 "missingKey": "`STEGRIPE_API_LICENSE_KEY` がありません。ライセンス機能はロックされています。",
                 "validationFailed": "ライセンスの検証に失敗しました。",
-                "apiGrace": "ライセンス検証に一時的に接続できません。キャッシュ済みの猶予期間を使用します。",
-                "apiUnavailableNoSession": "ライセンス検証に一時的に接続できず、アクティブなセッションもありません: {error}",
                 "botNotAllowed": "この Bot ID はライセンスで承認されていません。",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` が無効です。",
-                "revoked": "ライセンスは取り消されました。",
-                "sessionLimit": "このライセンスのアクティブセッションが多すぎます。"
+                "revoked": "ライセンスは取り消されました。"
             },
             "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord) に参加します。\n2. この Bot ID を Stegripe staff へ送信します: `{botId}`。\n3. 承認後、`.env` に `STEGRIPE_API_LICENSE_KEY` を設定します。\n4. bot を再起動します。"
         }

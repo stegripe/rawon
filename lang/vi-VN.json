@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID chưa sẵn sàng.",
                 "missingKey": "Thiếu `STEGRIPE_API_LICENSE_KEY`. Tính năng được cấp phép đã bị khóa.",
                 "validationFailed": "Xác thực giấy phép thất bại.",
-                "apiGrace": "Xác thực giấy phép tạm thời không thể kết nối; đang dùng cửa sổ grace trong cache.",
-                "apiUnavailableNoSession": "Xác thực giấy phép tạm thời không thể kết nối và chưa có phiên hoạt động: {error}",
                 "botNotAllowed": "Bot ID này chưa được duyệt cho giấy phép.",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` không hợp lệ.",
-                "revoked": "Giấy phép đã bị thu hồi.",
-                "sessionLimit": "Có quá nhiều phiên hoạt động cho giấy phép này."
+                "revoked": "Giấy phép đã bị thu hồi."
             },
             "blockMessage": "{reason}\n\n1. Tham gia [stegripe.org/discord](https://stegripe.org/discord).\n2. Gửi Bot ID này cho Stegripe staff: `{botId}`.\n3. Sau khi được duyệt, đặt `STEGRIPE_API_LICENSE_KEY` trong `.env`.\n4. Khởi động lại bot."
         }

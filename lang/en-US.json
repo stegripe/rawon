@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID is not ready yet.",
                 "missingKey": "`STEGRIPE_API_LICENSE_KEY` is missing. Licensed features are locked.",
                 "validationFailed": "License validation failed.",
-                "apiGrace": "License validation is temporarily unreachable; using the cached grace window.",
-                "apiUnavailableNoSession": "License validation is temporarily unreachable and no active session exists: {error}",
                 "botNotAllowed": "This Bot ID is not approved for the license.",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` is invalid.",
-                "revoked": "The license has been revoked.",
-                "sessionLimit": "Too many active sessions for this license."
+                "revoked": "The license has been revoked."
             },
             "blockMessage": "{reason}\n\n1. Join [stegripe.org/discord](https://stegripe.org/discord).\n2. Send this Bot ID to Stegripe staff: `{botId}`.\n3. After approval, set `STEGRIPE_API_LICENSE_KEY` in `.env`.\n4. Restart the bot."
         }

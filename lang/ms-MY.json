@@ -472,12 +472,9 @@
                 "botNotReady": "Bot ID belum tersedia.",
                 "missingKey": "`STEGRIPE_API_LICENSE_KEY` tiada. Ciri berlesen dikunci.",
                 "validationFailed": "Pengesahan lesen gagal.",
-                "apiGrace": "Pengesahan lesen tidak dapat dicapai buat sementara; menggunakan tetingkap cache sementara.",
-                "apiUnavailableNoSession": "Pengesahan lesen tidak dapat dicapai buat sementara dan tiada sesi aktif: {error}",
                 "botNotAllowed": "Bot ID ini belum diluluskan untuk lesen.",
                 "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` tidak sah.",
-                "revoked": "Lesen telah dibatalkan.",
-                "sessionLimit": "Terlalu banyak sesi aktif untuk lesen ini."
+                "revoked": "Lesen telah dibatalkan."
             },
             "blockMessage": "{reason}\n\n1. Sertai [stegripe.org/discord](https://stegripe.org/discord).\n2. Hantar Bot ID ini kepada Stegripe staff: `{botId}`.\n3. Selepas diluluskan, isi `STEGRIPE_API_LICENSE_KEY` dalam `.env`.\n4. Mulakan semula bot."
         }
