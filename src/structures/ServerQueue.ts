@@ -407,7 +407,7 @@ export class ServerQueue {
                 const botInstance = this.client.multiBotManager.getBotByClient(this.client);
                 const isPrimary = botInstance?.isPrimary ?? true;
 
-                this.client.logger.info(
+                this.client.logger.debug(
                     `[MultiBot] ${this.client.user?.tag} attempting to load player state for guild ${guildId} (${this.textChannel.guild.name}), botId=${botId}, isPrimary=${isPrimary}`,
                 );
 
@@ -424,7 +424,7 @@ export class ServerQueue {
                     if (primaryBotId) {
                         savedState = this.client.data.getPlayerState(guildId, primaryBotId) ?? null;
                         if (savedState) {
-                            this.client.logger.info(
+                            this.client.logger.debug(
                                 `[MultiBot] ${this.client.user?.tag} (non-primary) no own state found, inheriting from PRIMARY bot (${primaryBot?.user?.tag})`,
                             );
                         }
@@ -445,12 +445,12 @@ export class ServerQueue {
                 this.filters = (savedState.filters ?? {}) as Partial<
                     Record<keyof typeof filterArgs, boolean>
                 >;
-                this.client.logger.info(
+                this.client.logger.debug(
                     `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
                         `loop=${this.loopMode}, shuffle=${this.shuffle}, autoPlay=${this.autoPlay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
                 );
             } else {
-                this.client.logger.warn(
+                this.client.logger.debug(
                     `⚠️ No saved player state found for guild ${this.textChannel.guild.name}, using defaults`,
                 );
             }
@@ -467,12 +467,12 @@ export class ServerQueue {
             this.filters = (savedState.filters ?? {}) as Partial<
                 Record<keyof typeof filterArgs, boolean>
             >;
-            this.client.logger.info(
+            this.client.logger.debug(
                 `✅ Loaded saved player state for guild ${this.textChannel.guild.name}: ` +
                     `loop=${this.loopMode}, shuffle=${this.shuffle}, autoPlay=${this.autoPlay}, volume=${this._volume}, filters=${JSON.stringify(this.filters)}`,
             );
         } else {
-            this.client.logger.warn(
+            this.client.logger.debug(
                 `⚠️ No saved player state found for guild ${this.textChannel.guild.name}, using defaults`,
             );
         }

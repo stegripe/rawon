@@ -19,7 +19,6 @@ let autoUpdateTimer = null;
 let isAutoUpdating = false;
 
 let cookiesManagerRef = null;
-let lastArgsLog = 0;
 
 export function setCookiesManager(manager) {
     cookiesManagerRef = manager;
@@ -60,14 +59,6 @@ function args(url, options, cookiesPath) {
     const extractorArgs = cookiesManagerRef?.getExtractorArgs?.();
     if (extractorArgs) {
         optArgs.push("--extractor-args", extractorArgs);
-    }
-
-    const now = Date.now();
-    if (now - lastArgsLog > 300_000) {
-        lastArgsLog = now;
-        const shortUrl = url?.substring(0, 60);
-        const cookies = useCookies ? "yes" : "no";
-        console.info(`[yt-dlp] args: url=${shortUrl}, cookies=${cookies}, extractor-args=${extractorArgs ?? "none"}`);
     }
 
     return [url, ...optArgs];
