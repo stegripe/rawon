@@ -325,6 +325,37 @@ export class SpotifyUtil {
         return track;
     }
 
+    private mapEmbedTrack(rawTrack: unknown): SpotifyTrack | undefined {
+        const trackRecord = this.asRecord(rawTrack);
+        if (trackRecord === undefined) {
+            return undefined;
+        }
+
+        const uri = this.asString(trackRecord.uri);
+        const id = this.asString(trackRecord.id) ?? this.extractIdFromUri(uri, "track");
+        if (id === undefined) {
+            return undefined;
+        }
+
+        const artistNames = (this.asString(trackRecord.subtitle) ?? "Unknown Artist")
+            .split(/,\s*|\u00a0/gu)
+            .map((name) => name.trim())
+            .filter((name) => name.length > 0);
+
+        return {
+            artists:
+                artistNames.length > 0
+                    ? artistNames.map((name) => this.createArtistEntity(name, undefined))
+                    : [this.createArtistEntity("Unknown Artist", undefined)],
+            duration_ms: this.asNumber(trackRecord.duration) ?? 0,
+            external_urls: {
+                spotify: this.toOpenUrlFromUri(uri, "track", id),
+            },
+            name: this.asString(trackRecord.title) ?? "Unknown Track",
+            id,
+        };
+    }
+
     private extractWebTrack(rawItem: unknown): SpotifyTrack | undefined {
         const itemRecord = this.asRecord(rawItem);
         if (itemRecord === undefined) {
@@ -350,6 +381,53 @@ export class SpotifyUtil {
             .map((item) => this.extractWebTrack(item))
             .filter((track): track is SpotifyTrack => track !== undefined)
             .map((track) => ({ track }));
+    }
+
+    private async resolvePlaylistFromEmbed(id: string): Promise<SpotifyResolveResult | undefined> {
+        const html = await this.client.request
+            .get(`https://open.spotify.com/embed/playlist/${id}`, {
+                headers: {
+                    Accept: "text/html",
+                    "User-Agent": "Mozilla/5.0",
+                },
+            })
+            .text();
+
+        const nextDataMatch = html.match(
+            /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/u,
+        );
+        if (nextDataMatch === null) {
+            return undefined;
+        }
+
+        const nextData = JSON.parse(nextDataMatch[1]) as Record<string, unknown>;
+        const entity = this.asRecord(
+            this.asRecord(this.asRecord(this.asRecord(nextData.props)?.pageProps)?.state)?.data,
+        )?.entity;
+        const entityRecord = this.asRecord(entity);
+        if (entityRecord === undefined) {
+            return undefined;
+        }
+
+        const tracks = this.asArray(entityRecord.trackList)
+            .map((track) => this.mapEmbedTrack(track))
+            .filter((track): track is SpotifyTrack => track !== undefined)
+            .map((track) => ({ track }));
+
+        const metadata: PlaylistMetadata = {
+            title:
+                this.asString(entityRecord.title) ??
+                this.asString(entityRecord.name) ??
+                "Spotify Playlist",
+            url: this.toOpenUrlFromUri(this.asString(entityRecord.uri), "playlist", id),
+            thumbnail: this.getFirstImageUrl(entityRecord.coverArt),
+            author: this.asString(entityRecord.subtitle),
+        };
+
+        return {
+            tracks,
+            metadata,
+        };
     }
 
     private async fetchWebEntity(
@@ -407,6 +485,13 @@ export class SpotifyUtil {
         id: string,
     ): Promise<SpotifyResolveResult | SpotifyTrack | undefined> {
         try {
+            if (type === "playlist") {
+                const embedResult = await this.resolvePlaylistFromEmbed(id);
+                if (embedResult !== undefined && embedResult.tracks.length > 0) {
+                    return embedResult;
+                }
+            }
+
             const entity = await this.fetchWebEntity(type, id);
             if (entity === undefined) {
                 return undefined;
@@ -419,6 +504,8 @@ export class SpotifyUtil {
                 case "playlist": {
                     const content = this.asRecord(entity.content);
                     const owner = this.asRecord(this.asRecord(entity.ownerV2)?.data);
+                    const tracks = this.extractWebTrackList(content?.items);
+                    const totalCount = this.asNumber(content?.totalCount);
 
                     const metadata: PlaylistMetadata = {
                         title: this.asString(entity.name) ?? "Spotify Playlist",
@@ -428,8 +515,15 @@ export class SpotifyUtil {
                     };
 
                     return {
-                        tracks: this.extractWebTrackList(content?.items),
-                        metadata,
+                        tracks,
+                        metadata:
+                            totalCount !== undefined && totalCount > tracks.length
+                                ? {
+                                      ...metadata,
+                                      skippedCount: totalCount - tracks.length,
+                                      skippedReason: "skipped",
+                                  }
+                                : metadata,
                     };
                 }
 
@@ -507,7 +601,7 @@ export class SpotifyUtil {
         const modeText = mode === "resolve" ? "resolve" : "resolve with metadata";
 
         if (statusCode === 401 || statusCode === 403) {
-            this.client.logger.warn(
+            this.client.logger.debug(
                 `[SpotifyUtil] API ${modeText} failed for ${type}:${id} (status ${statusCode}). Using web fallback.`,
             );
             return;
