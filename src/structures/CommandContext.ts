@@ -1,4 +1,5 @@
 import { Buffer } from "node:buffer";
+import { setTimeout } from "node:timers";
 import {
     ActionRowBuilder,
     type APIMessageTopLevelComponent,
@@ -151,6 +152,20 @@ export class CommandContext {
             MessageFlags.Ephemeral) as InteractionReplyOptions["flags"];
     }
 
+    private scheduleRequestChannelReplyCleanup(message: Message | null | undefined): void {
+        if (
+            !this.shouldUseEphemeralReplies() ||
+            !message ||
+            message.flags.has(MessageFlags.Ephemeral)
+        ) {
+            return;
+        }
+
+        setTimeout(() => {
+            void message.delete().catch(() => null);
+        }, 60_000);
+    }
+
     public async deferReply(
         options?: Parameters<CommandInteraction["deferReply"]>[0],
     ): Promise<InteractionResponse | undefined> {
@@ -254,17 +269,21 @@ export class CommandContext {
                     | null
                     | undefined;
                 if (msg instanceof Message) {
+                    this.scheduleRequestChannelReplyCleanup(msg);
                     return msg;
                 }
 
                 const fetchedReply =
                     type === "followUp" ? null : await interaction.fetchReply().catch(() => null);
                 if (fetchedReply) {
-                    return fetchedReply as Message;
+                    const message = fetchedReply as Message;
+                    this.scheduleRequestChannelReplyCleanup(message);
+                    return message;
                 }
 
                 const resourceMessage = msg?.resource?.message;
                 if (resourceMessage) {
+                    this.scheduleRequestChannelReplyCleanup(resourceMessage);
                     return resourceMessage;
                 }
 
@@ -273,6 +292,7 @@ export class CommandContext {
                     .fetch({ limit: 1 })
                     .then((c) => c.first())
                     .catch(() => null);
+                this.scheduleRequestChannelReplyCleanup(res as Message | null);
                 return res as Message;
             }
             const flags = (options as InteractionReplyOptions).flags;
