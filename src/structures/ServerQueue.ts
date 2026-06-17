@@ -22,7 +22,10 @@ import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatBoldPrefixedCommand } from "../utils/functions/formatCodeSpan.js";
 import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
-import { getYouTubeThumbnail } from "../utils/functions/getMaxResThumbnail.js";
+import {
+    getMediumResThumbnailFromCandidates,
+    getYouTubeThumbnail,
+} from "../utils/functions/getMaxResThumbnail.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
 import { parseTime } from "../utils/functions/parseTime.js";
 import { checkQuery, play, searchTrack } from "../utils/handlers/GeneralUtil.js";
@@ -1641,12 +1644,10 @@ export class ServerQueue {
             return undefined;
         }
 
-        const thumbnails = candidate.thumbnail?.thumbnails ?? [];
-        const thumbnail =
-            thumbnails
-                .filter((thumb) => typeof thumb.url === "string" && thumb.url.length > 0)
-                .sort((a, b) => (b.width ?? 0) * (b.height ?? 0) - (a.width ?? 0) * (a.height ?? 0))
-                .at(0)?.url ?? getYouTubeThumbnail(id);
+        const thumbnail = getMediumResThumbnailFromCandidates(
+            candidate.thumbnail?.thumbnails,
+            getYouTubeThumbnail(id),
+        );
         const durationText = candidate.lengthText?.runs?.[0]?.text ?? "";
 
         return {
