@@ -22,8 +22,11 @@ import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatBoldPrefixedCommand } from "../utils/functions/formatCodeSpan.js";
 import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
+import { getYouTubeThumbnail } from "../utils/functions/getMaxResThumbnail.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
+import { parseTime } from "../utils/functions/parseTime.js";
 import { checkQuery, play, searchTrack } from "../utils/handlers/GeneralUtil.js";
+import { youtubeMusic } from "../utils/handlers/YouTubeUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
 import {
@@ -69,6 +72,52 @@ type ChannelInfoPayload = {
         id: Snowflake;
         status?: string | null;
     }[];
+};
+
+const YOUTUBE_MUSIC_NEXT_ENDPOINT = "/youtubei/v1/next";
+
+type YouTubeMusicRun = {
+    text?: string;
+    navigationEndpoint?: {
+        browseEndpoint?: {
+            browseEndpointContextSupportedConfigs?: {
+                browseEndpointContextMusicConfig?: {
+                    pageType?: string;
+                };
+            };
+        };
+    };
+};
+
+type YouTubeMusicPlaylistPanelVideo = {
+    videoId?: string;
+    selected?: boolean;
+    title?: {
+        runs?: YouTubeMusicRun[];
+    };
+    longBylineText?: {
+        runs?: YouTubeMusicRun[];
+    };
+    lengthText?: {
+        runs?: YouTubeMusicRun[];
+    };
+    thumbnail?: {
+        thumbnails?: {
+            url?: string;
+            width?: number;
+            height?: number;
+        }[];
+    };
+    navigationEndpoint?: {
+        watchEndpoint?: {
+            videoId?: string;
+            watchEndpointMusicSupportedConfigs?: {
+                watchEndpointMusicConfig?: {
+                    musicVideoType?: string;
+                };
+            };
+        };
+    };
 };
 
 export class ServerQueue {
@@ -1435,7 +1484,7 @@ export class ServerQueue {
         this._shuffleUpcomingKeys = [...preserved, ...missing];
     }
 
-    private getNextShuffleKey(currentKey: Snowflake): Snowflake | undefined {
+    public getNextShuffleKey(currentKey: Snowflake): Snowflake | undefined {
         this.syncShuffleUpcomingKeys(currentKey);
 
         let nextKey = this._shuffleUpcomingKeys.shift();
@@ -1495,26 +1544,199 @@ export class ServerQueue {
         }
 
         if (sourceType === "youtube") {
-            const titleQuery = `${currentSong.song.title} topic`;
-            const queries =
-                currentSong.song.id.length > 0
-                    ? [
-                          `https://www.youtube.com/watch?v=${currentSong.song.id}&list=RD${currentSong.song.id}`,
-                          titleQuery,
-                      ]
-                    : [titleQuery];
-
-            for (const query of queries) {
-                const nextSong = await tryResolve(query, "youtube");
-                if (nextSong !== undefined) {
-                    return nextSong;
-                }
+            const youtubeMusicAutoplaySong = await this.resolveYouTubeMusicAutoplaySong(
+                currentSong,
+                isDifferentSong,
+            );
+            if (youtubeMusicAutoplaySong !== undefined) {
+                return youtubeMusicAutoplaySong;
             }
 
             return undefined;
         }
 
         return tryResolve(currentSong.song.title);
+    }
+
+    private getYouTubeVideoId(song: Song): string | null {
+        if (song.id.length > 0) {
+            return song.id;
+        }
+
+        try {
+            const url = new URL(song.url);
+            if (/youtu\.be$/iu.test(url.hostname)) {
+                return url.pathname.replace(/^\/+/u, "").split("/")[0] ?? null;
+            }
+            if (url.pathname.startsWith("/shorts/")) {
+                return url.pathname.replace("/shorts/", "").split("/")[0] ?? null;
+            }
+            if (url.pathname.startsWith("/live/")) {
+                return url.pathname.replace("/live/", "").split("/")[0] ?? null;
+            }
+            return url.searchParams.get("v");
+        } catch {
+            return null;
+        }
+    }
+
+    private textFromRuns(runs: YouTubeMusicRun[] | undefined): string {
+        return (
+            runs
+                ?.map((run) => run.text ?? "")
+                .join("")
+                .trim() ?? ""
+        );
+    }
+
+    private artistFromRuns(runs: YouTubeMusicRun[] | undefined): string | undefined {
+        const artist = runs?.find((run) => {
+            const pageType =
+                run.navigationEndpoint?.browseEndpoint?.browseEndpointContextSupportedConfigs
+                    ?.browseEndpointContextMusicConfig?.pageType;
+            return pageType === "MUSIC_PAGE_TYPE_ARTIST";
+        })?.text;
+
+        return artist && artist.length > 0 ? artist : undefined;
+    }
+
+    private collectYouTubeMusicPanelVideos(
+        value: unknown,
+        output: YouTubeMusicPlaylistPanelVideo[] = [],
+    ): YouTubeMusicPlaylistPanelVideo[] {
+        if (value === null || typeof value !== "object") {
+            return output;
+        }
+
+        if ("playlistPanelVideoRenderer" in value) {
+            output.push(
+                (value as { playlistPanelVideoRenderer: YouTubeMusicPlaylistPanelVideo })
+                    .playlistPanelVideoRenderer,
+            );
+        }
+
+        for (const child of Object.values(value)) {
+            this.collectYouTubeMusicPanelVideos(child, output);
+        }
+
+        return output;
+    }
+
+    private mapYouTubeMusicPanelVideo(candidate: YouTubeMusicPlaylistPanelVideo): Song | undefined {
+        const id = candidate.videoId ?? candidate.navigationEndpoint?.watchEndpoint?.videoId;
+        const title = this.textFromRuns(candidate.title?.runs);
+        if (!id || !title) {
+            return undefined;
+        }
+
+        const musicVideoType =
+            candidate.navigationEndpoint?.watchEndpoint?.watchEndpointMusicSupportedConfigs
+                ?.watchEndpointMusicConfig?.musicVideoType;
+        if (
+            musicVideoType &&
+            !["MUSIC_VIDEO_TYPE_ATV", "MUSIC_VIDEO_TYPE_OMV", "MUSIC_VIDEO_TYPE_UGC"].includes(
+                musicVideoType,
+            )
+        ) {
+            return undefined;
+        }
+
+        const thumbnails = candidate.thumbnail?.thumbnails ?? [];
+        const thumbnail =
+            thumbnails
+                .filter((thumb) => typeof thumb.url === "string" && thumb.url.length > 0)
+                .sort((a, b) => (b.width ?? 0) * (b.height ?? 0) - (a.width ?? 0) * (a.height ?? 0))
+                .at(0)?.url ?? getYouTubeThumbnail(id);
+        const durationText = candidate.lengthText?.runs?.[0]?.text ?? "";
+
+        return {
+            author: this.artistFromRuns(candidate.longBylineText?.runs),
+            duration: parseTime(durationText) ?? 0,
+            id,
+            thumbnail,
+            title,
+            url: `https://www.youtube.com/watch?v=${id}`,
+        };
+    }
+
+    private async resolveYouTubeMusicAutoplaySong(
+        currentSong: QueueSong,
+        isDifferentSong: (item: Song) => boolean,
+    ): Promise<Song | undefined> {
+        const videoId = this.getYouTubeVideoId(currentSong.song);
+        if (!videoId) {
+            return undefined;
+        }
+
+        try {
+            const response = await youtubeMusic.http.post(YOUTUBE_MUSIC_NEXT_ENDPOINT, {
+                data: {
+                    videoId,
+                    playlistId: `RDAMVM${videoId}`,
+                },
+            });
+            const candidates = this.collectYouTubeMusicPanelVideos(response.data);
+
+            for (const candidate of candidates) {
+                if (candidate.selected === true) {
+                    continue;
+                }
+
+                const song = this.mapYouTubeMusicPanelVideo(candidate);
+                if (song !== undefined && isDifferentSong(song)) {
+                    return song;
+                }
+            }
+        } catch (error) {
+            this.client.logger.debug("[ServerQueue] YouTube Music autoplay lookup failed", {
+                guild: this.textChannel.guild.id,
+                videoId,
+                error: error instanceof Error ? (error.stack ?? error.message) : String(error),
+            });
+        }
+
+        try {
+            const query = [currentSong.song.title, currentSong.song.author]
+                .filter(Boolean)
+                .join(" ");
+            const searchResult = await youtubeMusic.search(query, "song");
+            for (const candidate of searchResult.items) {
+                const song = this.mapYouTubeMusicPanelVideo({
+                    videoId: candidate.id,
+                    title: { runs: [{ text: candidate.title }] },
+                    longBylineText: {
+                        runs: candidate.artists?.map((artist) => ({
+                            text: artist.name,
+                            navigationEndpoint: {
+                                browseEndpoint: {
+                                    browseEndpointContextSupportedConfigs: {
+                                        browseEndpointContextMusicConfig: {
+                                            pageType: "MUSIC_PAGE_TYPE_ARTIST",
+                                        },
+                                    },
+                                },
+                            },
+                        })),
+                    },
+                    lengthText: { runs: [{ text: candidate.duration?.toString() ?? "" }] },
+                    thumbnail: { thumbnails: candidate.thumbnails },
+                });
+                if (song !== undefined && isDifferentSong(song)) {
+                    return song;
+                }
+            }
+        } catch (error) {
+            this.client.logger.debug(
+                "[ServerQueue] YouTube Music autoplay search fallback failed",
+                {
+                    guild: this.textChannel.guild.id,
+                    videoId,
+                    error: error instanceof Error ? (error.stack ?? error.message) : String(error),
+                },
+            );
+        }
+
+        return undefined;
     }
 
     public get skipInProgress(): boolean {

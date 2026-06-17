@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { readFileSync } from "node:fs";
 import { uptime } from "node:os";
 import process from "node:process";

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import process from "node:process";
 import { inspect } from "node:util";
 import { ApplyOptions } from "@sapphire/decorators";

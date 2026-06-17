@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/style/useNamingConvention: disable naming convention rule for this file */
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";

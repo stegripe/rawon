@@ -342,7 +342,7 @@ export async function play(
             queue.songs.delete(song.key);
             const nextS =
                 queue.shuffle && queue.loopMode !== "SONG"
-                    ? queue.songs.random()?.key
+                    ? queue.getNextShuffleKey(song.key)
                     : queue.loopMode === "SONG"
                       ? song.key
                       : (queue.songs.sortByIndex().first()?.key ?? "");
@@ -384,7 +384,7 @@ export async function play(
 
             const nextS =
                 queue.shuffle && queue.loopMode !== "SONG"
-                    ? queue.songs.filter((s) => s.key !== newKey).random()?.key
+                    ? queue.getNextShuffleKey(song.key)
                     : queue.loopMode === "SONG"
                       ? newKey
                       : (queue.songs
@@ -422,7 +422,7 @@ export async function play(
             queue.songs.delete(song.key);
             const nextS =
                 queue.shuffle && queue.loopMode !== "SONG"
-                    ? queue.songs.random()?.key
+                    ? queue.getNextShuffleKey(song.key)
                     : queue.loopMode === "SONG"
                       ? song.key
                       : (queue.songs.sortByIndex().first()?.key ?? "");
@@ -457,7 +457,7 @@ export async function play(
         queue.songs.delete(song.key);
         const nextS =
             queue.shuffle && queue.loopMode !== "SONG"
-                ? queue.songs.random()?.key
+                ? queue.getNextShuffleKey(song.key)
                 : queue.loopMode === "SONG"
                   ? song.key
                   : (queue.songs.sortByIndex().first()?.key ?? "");
