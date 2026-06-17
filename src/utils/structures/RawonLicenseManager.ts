@@ -1,6 +1,7 @@
 import { type Guild } from "discord.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type PlaylistMetadata, type SearchTrackResult, type Song } from "../../typings/index.js";
+import { normalizeSearchTrackThumbnails } from "../functions/getMaxResThumbnail.js";
 import { i18n__mf } from "../functions/i18n.js";
 
 type LicenseState = {
@@ -115,11 +116,11 @@ export class RawonLicenseManager {
             throw new Error(response.error ?? response.message ?? "Licensed search failed.");
         }
 
-        return {
+        return normalizeSearchTrackThumbnails({
             type: response.type,
             items: response.items ?? [],
             playlist: this.mapPlaylistMetadata(response.playlist),
-        };
+        });
     }
 
     public async resolveMusic(url: string): Promise<SearchTrackResult> {
@@ -133,11 +134,11 @@ export class RawonLicenseManager {
             throw new Error(response.error ?? response.message ?? "Licensed resolve failed.");
         }
 
-        return {
+        return normalizeSearchTrackThumbnails({
             type: "results",
             items,
             playlist: this.mapPlaylistMetadata(response.playlist),
-        };
+        });
     }
 
     private mapPlaylistMetadata(
