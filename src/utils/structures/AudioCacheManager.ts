@@ -37,6 +37,25 @@ function isUnavailableYtDlpError(message: string): boolean {
     );
 }
 
+function isFatalYtDlpError(message: string): boolean {
+    const normalized = message.toLowerCase();
+    return (
+        normalized.startsWith("error:") ||
+        normalized.includes("\nerror:") ||
+        normalized.includes("unable to download video") ||
+        normalized.includes("unable to rename file") ||
+        normalized.includes("no such file or directory")
+    );
+}
+
+function isSoundCloudUrl(url: string): boolean {
+    try {
+        return /soundcloud|snd/gu.test(new URL(url).hostname);
+    } catch {
+        return false;
+    }
+}
+
 export class AudioCacheManager {
     public readonly cacheDir: string;
     private readonly cachedFiles = new Map<string, { path: string; lastAccess: number }>();
@@ -241,6 +260,10 @@ export class AudioCacheManager {
     }
 
     public async preCacheUrl(url: string, priority = false): Promise<boolean> {
+        if (isSoundCloudUrl(url)) {
+            return false;
+        }
+
         if (this.isCached(url)) {
             return true;
         }
@@ -477,29 +500,22 @@ export class AudioCacheManager {
                             this.client.cookies.handleBotDetection();
                         }
                     });
-
-                    proc.stderr.on("end", () => {
-                        if (
-                            stderrData.trim() &&
-                            !hasBotDetectionError &&
-                            !isUnavailableYtDlpError(stderrData)
-                        ) {
-                            this.client.logger.warn(
-                                `[AudioCacheManager] yt-dlp stderr for ${url.slice(0, 50)}...: ${stderrData.slice(0, 500)}`,
-                            );
-                        } else if (isUnavailableYtDlpError(stderrData)) {
-                            this.client.logger.debug(
-                                `[AudioCacheManager] Skipping unavailable pre-cache URL: ${url.slice(0, 50)}...`,
-                            );
-                        }
-                    });
                 }
 
                 const writeStream = createWriteStream(cachePath);
                 proc.stdout.pipe(writeStream);
 
                 await new Promise<void>((resolve) => {
-                    writeStream.on("finish", () => {
+                    let writeFinished = false;
+                    let processClosed = false;
+                    let exitCode: number | null = null;
+                    let streamError: Error | null = null;
+
+                    const finish = () => {
+                        if (!writeFinished || !processClosed) {
+                            return;
+                        }
+
                         this.inProgressFiles.delete(key);
                         this.inProgressProcs.delete(key);
 
@@ -512,12 +528,17 @@ export class AudioCacheManager {
                             return;
                         }
 
-                        if (hasBotDetectionError) {
+                        if (streamError) {
+                            try {
+                                rmSync(cachePath, { force: true });
+                            } catch {}
+                            this.markFailed(key);
+                        } else if (hasBotDetectionError) {
                             try {
                                 rmSync(cachePath, { force: true });
                             } catch {}
 
-                            if (retryCount < MAX_PRE_CACHE_RETRIES && !hasBotDetectionError) {
+                            if (retryCount < MAX_PRE_CACHE_RETRIES) {
                                 setTimeout(
                                     () => {
                                         void this.doPreCache(url, retryCount + 1);
@@ -532,7 +553,22 @@ export class AudioCacheManager {
                                 rmSync(cachePath, { force: true });
                             } catch {}
                             this.markFailed(key, PRE_CACHE_RETRY_COUNT);
+                        } else if (exitCode !== 0 || isFatalYtDlpError(stderrData)) {
+                            if (stderrData.trim()) {
+                                this.client.logger.warn(
+                                    `[AudioCacheManager] yt-dlp failed pre-cache for ${url.slice(0, 50)}...: ${stderrData.slice(0, 500)}`,
+                                );
+                            }
+                            try {
+                                rmSync(cachePath, { force: true });
+                            } catch {}
+                            this.markFailed(key);
                         } else {
+                            if (stderrData.trim()) {
+                                this.client.logger.debug(
+                                    `[AudioCacheManager] yt-dlp stderr for ${url.slice(0, 50)}...: ${stderrData.slice(0, 500)}`,
+                                );
+                            }
                             try {
                                 const stats = statSync(cachePath);
                                 if (stats.size >= 1024) {
@@ -553,26 +589,33 @@ export class AudioCacheManager {
                             }
                         }
                         resolve();
-                    });
+                    };
 
                     writeStream.on("error", () => {
-                        this.inProgressFiles.delete(key);
-                        this.inProgressProcs.delete(key);
-                        this.markFailed(key);
-                        try {
-                            rmSync(cachePath, { force: true });
-                        } catch {}
-                        resolve();
+                        streamError = new Error("Cache write stream failed");
+                        writeFinished = true;
+                        finish();
                     });
 
-                    proc.on("error", () => {
-                        this.inProgressFiles.delete(key);
-                        this.inProgressProcs.delete(key);
-                        this.markFailed(key);
-                        try {
-                            rmSync(cachePath, { force: true });
-                        } catch {}
-                        resolve();
+                    writeStream.on("finish", () => {
+                        writeFinished = true;
+                        finish();
+                    });
+
+                    proc.stdout?.on("error", (error: Error) => {
+                        streamError = error;
+                    });
+
+                    proc.on("error", (error) => {
+                        streamError = error;
+                        processClosed = true;
+                        finish();
+                    });
+
+                    proc.on("close", (code) => {
+                        exitCode = code;
+                        processClosed = true;
+                        finish();
                     });
                 });
             }

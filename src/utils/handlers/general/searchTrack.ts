@@ -38,7 +38,7 @@ function normalizeSpotifyMatchText(value: string): string {
         .normalize("NFKD")
         .replace(/[\u0300-\u036f]/gu, "")
         .replace(/&/gu, " and ")
-        .replace(/\([^)]*\)|\[[^\]]*\]/gu, " ")
+        .replace(/[()[\]]/gu, " ")
         .toLowerCase()
         .replace(/[^a-z0-9]+/gu, " ")
         .trim();
@@ -75,7 +75,9 @@ function isDurationClose(spotifyDurationMs: number, candidateDurationSeconds: nu
 }
 
 function isSpotifyCandidateMatch(track: SpotifyTrack, candidate: Song): boolean {
-    const candidateTokens = new Set(significantTokens(candidate.title));
+    const candidateTokens = new Set(
+        significantTokens(`${candidate.title} ${candidate.author ?? ""}`),
+    );
     const titleTokens = significantTokens(track.name);
     const titleCoverage = tokenCoverage(titleTokens, candidateTokens);
 
@@ -101,6 +103,83 @@ function isSpotifyCandidateMatch(track: SpotifyTrack, candidate: Song): boolean 
     return isDurationClose(track.duration_ms, candidate.duration);
 }
 
+type SoundCloudTrackLike = {
+    artwork_url?: string | null;
+    duration?: number;
+    full_duration?: number;
+    id: number | string;
+    permalink_url?: string;
+    title?: string;
+    user?: {
+        avatar_url?: string | null;
+        username?: string;
+    };
+};
+
+type SoundCloudPlaylistLike = {
+    artwork_url?: string | null;
+    permalink_url: string;
+    title: string;
+    tracks: SoundCloudTrackLike[];
+    user?: {
+        avatar_url?: string | null;
+        username?: string;
+    };
+};
+
+function isResolvedSoundCloudTrack(
+    track: SoundCloudTrackLike,
+): track is SoundCloudTrackLike & { permalink_url: string; title: string } {
+    return (track.title?.length ?? 0) > 0 && (track.permalink_url?.length ?? 0) > 0;
+}
+
+function mapSoundCloudTrack(
+    track: SoundCloudTrackLike & { permalink_url: string; title: string },
+): Song {
+    return {
+        duration: track.full_duration ?? track.duration ?? 0,
+        id: track.id.toString(),
+        thumbnail: getSoundCloudThumbnail(track.artwork_url ?? track.user?.avatar_url),
+        title: track.title,
+        url: track.permalink_url,
+    };
+}
+
+async function resolveSoundCloudFromApi(
+    client: Rawon,
+    url: string,
+): Promise<SoundCloudPlaylistLike | SoundCloudTrackLike> {
+    return client.soundcloud.api.getV2("/resolve", { url }) as Promise<
+        SoundCloudPlaylistLike | SoundCloudTrackLike
+    >;
+}
+
+async function hydrateSoundCloudPlaylist(
+    client: Rawon,
+    playlist: SoundCloudPlaylistLike,
+): Promise<SoundCloudPlaylistLike> {
+    const missingIds = playlist.tracks
+        .filter((track) => !isResolvedSoundCloudTrack(track))
+        .map((track) => Number(track.id))
+        .filter((id) => Number.isFinite(id));
+    if (missingIds.length === 0) {
+        return playlist;
+    }
+
+    const hydratedTracks = (await client.soundcloud.tracks.getArray(
+        missingIds,
+        true,
+    )) as SoundCloudTrackLike[];
+    const hydratedByID = new Map(
+        hydratedTracks.map((track) => [track.id.toString(), track] as const),
+    );
+
+    return {
+        ...playlist,
+        tracks: playlist.tracks.map((track) => hydratedByID.get(track.id.toString()) ?? track),
+    };
+}
+
 export async function searchTrack(
     client: Rawon,
     query: string,
@@ -121,54 +200,45 @@ export async function searchTrack(
                 if (["www.soundcloud.app.goo.gl", "soundcloud.app.goo.gl"].includes(url.hostname)) {
                     const req = await client.request.get(url.toString());
                     scUrl = new URL(req.url);
-
-                    for (const key of scUrl.searchParams.keys()) {
-                        scUrl.searchParams.delete(key);
-                    }
                 }
+                scUrl.search = "";
+                scUrl.hash = "";
 
                 const newQueryData = checkQuery(scUrl.toString());
                 switch (newQueryData.type) {
                     case "track": {
-                        const track = await client.soundcloud.tracks.get(scUrl.toString());
+                        const track = await client.soundcloud.tracks
+                            .get(scUrl.toString())
+                            .catch(() => resolveSoundCloudFromApi(client, scUrl.toString()));
 
-                        result.items = [
-                            {
-                                duration: track.full_duration,
-                                id: track.id.toString(),
-                                thumbnail: getSoundCloudThumbnail(
-                                    track.artwork_url ?? track.user?.avatar_url,
-                                ),
-                                title: track.title,
-                                url: track.permalink_url,
-                            },
-                        ];
+                        const resolvedTrack = track as SoundCloudTrackLike;
+                        if (isResolvedSoundCloudTrack(resolvedTrack)) {
+                            result.items = [mapSoundCloudTrack(resolvedTrack)];
+                        }
                         break;
                     }
 
                     case "playlist": {
-                        const playlist = await client.soundcloud.playlists.get(scUrl.toString());
-                        const tracks = playlist.tracks.map(
-                            (track): Song => ({
-                                duration: track.full_duration,
-                                id: track.id.toString(),
-                                thumbnail: getSoundCloudThumbnail(
-                                    track.artwork_url ?? track.user?.avatar_url,
-                                ),
-                                title: track.title,
-                                url: track.permalink_url,
-                            }),
-                        );
+                        const playlist = (await client.soundcloud.playlists
+                            .get(scUrl.toString())
+                            .catch(() =>
+                                resolveSoundCloudFromApi(client, scUrl.toString()),
+                            )) as SoundCloudPlaylistLike;
+                        const hydratedPlaylist = await hydrateSoundCloudPlaylist(client, playlist);
+                        const tracks = hydratedPlaylist.tracks
+                            .filter(isResolvedSoundCloudTrack)
+                            .map(mapSoundCloudTrack);
 
                         result.items = tracks;
                         result.playlist = {
-                            title: playlist.title,
-                            url: playlist.permalink_url,
+                            title: hydratedPlaylist.title,
+                            url: hydratedPlaylist.permalink_url,
                             thumbnail:
                                 getSoundCloudThumbnail(
-                                    playlist.artwork_url ?? playlist.user?.avatar_url,
+                                    hydratedPlaylist.artwork_url ??
+                                        hydratedPlaylist.user?.avatar_url,
                                 ) || undefined,
-                            author: playlist.user?.username,
+                            author: hydratedPlaylist.user?.username,
                         };
                         break;
                     }
@@ -181,15 +251,40 @@ export async function searchTrack(
             }
 
             case "youtube": {
-                return client.license.resolveMusic(query);
+                try {
+                    return await client.license.resolveMusic(query);
+                } catch (error) {
+                    if (queryData.type !== "track") {
+                        throw error;
+                    }
+                    const info = await getInfo(query, client);
+                    result.items = [
+                        {
+                            duration: info.is_live ? 0 : info.duration,
+                            id: info.id,
+                            thumbnail: getMaxResThumbnail(
+                                info.thumbnails?.sort(
+                                    (a, b) => b.height * b.width - a.height * a.width,
+                                )[0]?.url ?? "",
+                            ),
+                            title: info.title,
+                            url: info.url,
+                            isLive: info.is_live,
+                        },
+                    ];
+                }
+                break;
             }
 
             case "spotify": {
-                async function resolveSpotifyTrack(track: SpotifyTrack): Promise<Song | null> {
+                async function resolveSpotifyTrack(
+                    track: SpotifyTrack,
+                    exhaustive = true,
+                ): Promise<Song | null> {
                     const artistNames = track.artists.map((artist) => artist.name).join(", ");
                     const queries = [
-                        track.external_ids?.isrc,
                         artistNames.length > 0 ? `${artistNames} - ${track.name}` : undefined,
+                        exhaustive ? track.external_ids?.isrc : undefined,
                         artistNames.length > 0 ? `${track.name} ${artistNames}` : track.name,
                     ].filter((query): query is string => (query?.trim().length ?? 0) > 0);
                     const uniqueQueries = [...new Set(queries)];
@@ -232,14 +327,14 @@ export async function searchTrack(
                         )) as SpotifyResolveResult;
                         const songs = spotifyResult.tracks;
                         const trackResults: Song[] = [];
-                        const batches = chunk(songs, 5);
+                        const batches = chunk(songs, 20);
                         for (const batch of batches) {
                             const batchResults = await Promise.all(
                                 batch.map(async (x): Promise<Song | null> => {
                                     if (!x.track) {
                                         return null;
                                     }
-                                    return resolveSpotifyTrack(x.track);
+                                    return resolveSpotifyTrack(x.track, false);
                                 }),
                             );
                             trackResults.push(...batchResults.filter((x): x is Song => x !== null));

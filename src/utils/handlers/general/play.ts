@@ -31,6 +31,13 @@ import {
 } from "../YTDLUtil.js";
 import { hydrateYouTubeSongMetadata } from "./hydrateSongMetadata.js";
 
+function isPrematureCloseError(error: unknown): boolean {
+    return (
+        String(error ?? "").includes("Premature close") ||
+        (isErrnoException(error) && error.code === "ERR_STREAM_PREMATURE_CLOSE")
+    );
+}
+
 export async function play(
     guild: Guild,
     nextSong?: string,
@@ -138,7 +145,9 @@ export async function play(
                 queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_STERR]", s);
             });
             (ffmpegStream as FfmpegStreamWithEvents).on?.("error", (e: unknown) =>
-                queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e),
+                isPrematureCloseError(e)
+                    ? queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_PREMATURE_CLOSE]", e)
+                    : queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e),
             );
             (ffmpegStream as FfmpegStreamWithEvents).on?.("close", (code?: unknown) =>
                 queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_CLOSE]", code),
@@ -156,18 +165,11 @@ export async function play(
                 });
 
                 (ffmpegStream as FfmpegStreamWithEvents).on?.("error", (e: unknown) => {
-                    queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
-                    const errStr = String(e ?? "");
-                    const isPremature =
-                        errStr.includes("Premature close") ||
-                        (isErrnoException(e) && e.code === "ERR_STREAM_PREMATURE_CLOSE");
-                    if (isPremature) {
-                        queue.client.logger.debug(
-                            "[PLAY_HANDLER] Ignoring premature-close ffmpeg error",
-                            e,
-                        );
+                    if (isPrematureCloseError(e)) {
+                        queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_PREMATURE_CLOSE]", e);
                         return;
                     }
+                    queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
                     try {
                         queue.player.emit(
                             "error",
@@ -249,18 +251,11 @@ export async function play(
                     queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_STERR]", s);
                 });
                 (ffmpegStream as FfmpegStreamWithEvents).on?.("error", (e: unknown) => {
-                    queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
-                    const errStr = String(e ?? "");
-                    const isPremature =
-                        errStr.includes("Premature close") ||
-                        (isErrnoException(e) && e.code === "ERR_STREAM_PREMATURE_CLOSE");
-                    if (isPremature) {
-                        queue.client.logger.debug(
-                            "[PLAY_HANDLER] Ignoring premature-close ffmpeg error",
-                            e,
-                        );
+                    if (isPrematureCloseError(e)) {
+                        queue.client.logger.debug("[PLAY_HANDLER][FFMPEG_PREMATURE_CLOSE]", e);
                         return;
                     }
+                    queue.client.logger.error("[PLAY_HANDLER][FFMPEG_ERROR]", e);
                     try {
                         queue.player.emit(
                             "error",
@@ -494,11 +489,7 @@ export async function play(
         resource.volume?.setVolumeLogarithmic(queue.volume / 100);
 
         resource.playStream.on("error", (e: unknown) => {
-            const errStr = String(e ?? "");
-            const isPremature =
-                errStr.includes("Premature close") ||
-                (isErrnoException(e) && e.code === "ERR_STREAM_PREMATURE_CLOSE");
-            if (isPremature) {
+            if (isPrematureCloseError(e)) {
                 queue.client.logger.debug(
                     "[PLAY_HANDLER] Ignoring premature-close resource stream error",
                 );

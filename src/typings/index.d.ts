@@ -152,6 +152,7 @@ export type Song = {
     thumbnail: string;
     duration: number;
     title: string;
+    author?: string;
     url: string;
     id: string;
     isLive?: boolean;

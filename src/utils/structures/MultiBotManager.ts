@@ -203,7 +203,7 @@ export class MultiBotManager {
             const queueVoiceChannel = botsWithQueues.get(bot.client);
 
             if (queueVoiceChannel === voiceChannelId) {
-                bot.client.logger.info(
+                bot.client.logger.debug(
                     `[MultiBot] Bot ${bot.client.user?.tag} has active queue for voice channel ${voiceChannelId}`,
                 );
                 botWithQueue = bot;
@@ -219,7 +219,7 @@ export class MultiBotManager {
             return botWithQueue.client;
         }
         if (botInVoice) {
-            botInVoice.client.logger.info(
+            botInVoice.client.logger.debug(
                 `[MultiBot] Bot ${botInVoice.client.user?.tag} is in voice channel ${voiceChannelId}`,
             );
             return botInVoice.client;
@@ -253,7 +253,7 @@ export class MultiBotManager {
             const primaryFreeBot = freeBots.find((bot) => bot.isPrimary);
             const selectedBot = primaryFreeBot ?? freeBots[0];
 
-            selectedBot.client.logger.info(
+            selectedBot.client.logger.debug(
                 `[MultiBot] Selected ${selectedBot.isPrimary ? "PRIMARY" : "secondary"} bot ${selectedBot.client.user?.tag} (index ${selectedBot.tokenIndex}) for voice channel ${voiceChannelId}`,
             );
             return selectedBot.client;
@@ -322,7 +322,7 @@ export class MultiBotManager {
         const thisBotIsInChannel = thisBotIsInVoiceChannel || thisBotHasQueueForChannel;
         const thisBotIsFree = !actualBotVoiceChannel && !thisBotQueueChannel;
 
-        client.logger.info(
+        client.logger.debug(
             `[MultiBot] ${client.user?.tag} checking music command response: ` +
                 `userVoiceChannel=${userVoiceChannelId ?? "none"}, ` +
                 `thisBotVoiceChannel(members.me)=${thisBotVoiceChannel ?? "none"}, ` +
@@ -352,7 +352,7 @@ export class MultiBotManager {
                 return false;
             }
 
-            client.logger.info(
+            client.logger.debug(
                 `[MultiBot] ${client.user?.tag} WILL respond to music command - confirmed responsible for voice channel ${userVoiceChannelId}`,
             );
             return true;
@@ -361,7 +361,7 @@ export class MultiBotManager {
         if (thisBotIsFree) {
             const responsibleBot = this.getBotForVoiceChannel(thisBotGuild, userVoiceChannelId);
             if (responsibleBot && responsibleBot.user?.id === client.user?.id) {
-                client.logger.info(
+                client.logger.debug(
                     `[MultiBot] ${client.user?.tag} ✅ ALLOWING music command - bot is FREE and selected as responsible for voice channel ${userVoiceChannelId}`,
                 );
                 return true;
@@ -430,7 +430,7 @@ export class MultiBotManager {
 
         const shouldRespond = responsibleBot === client;
         if (shouldRespond) {
-            client.logger.info(
+            client.logger.debug(
                 `[MultiBot] ${client.user?.tag} WILL respond to voice channel ${voiceChannelId}`,
             );
         } else {
