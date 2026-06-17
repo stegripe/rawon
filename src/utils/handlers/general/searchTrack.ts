@@ -7,7 +7,11 @@ import {
     type SpotifyTrack,
 } from "../../../typings/index.js";
 import { chunk } from "../../functions/chunk.js";
-import { getMaxResThumbnail, getSoundCloudThumbnail } from "../../functions/getMaxResThumbnail.js";
+import {
+    getMediumResThumbnailFromCandidates,
+    getSoundCloudThumbnail,
+    normalizeSearchTrackThumbnails,
+} from "../../functions/getMaxResThumbnail.js";
 import { getInfo } from "../YTDLUtil.js";
 import { checkQuery } from "./checkQuery.js";
 
@@ -262,11 +266,7 @@ export async function searchTrack(
                         {
                             duration: info.is_live ? 0 : info.duration,
                             id: info.id,
-                            thumbnail: getMaxResThumbnail(
-                                info.thumbnails?.sort(
-                                    (a, b) => b.height * b.width - a.height * a.width,
-                                )[0]?.url ?? "",
-                            ),
+                            thumbnail: getMediumResThumbnailFromCandidates(info.thumbnails),
                             title: info.title,
                             url: info.url,
                             isLive: info.is_live,
@@ -369,11 +369,7 @@ export async function searchTrack(
                     {
                         duration: info?.is_live ? 0 : (info?.duration ?? 0),
                         id: info?.id ?? "",
-                        thumbnail: getMaxResThumbnail(
-                            info?.thumbnails?.sort(
-                                (a, b) => b.height * b.width - a.height * a.width,
-                            )[0].url ?? "",
-                        ),
+                        thumbnail: getMediumResThumbnailFromCandidates(info?.thumbnails),
                         title: info?.title ?? "Unknown Song",
                         url: info?.url ?? url.toString(),
                         isLive: info?.is_live,
@@ -401,9 +397,9 @@ export async function searchTrack(
 
             result.items = tracks;
         } else {
-            return client.license.searchMusic(query);
+            return await client.license.searchMusic(query);
         }
     }
 
-    return result;
+    return normalizeSearchTrackThumbnails(result);
 }
