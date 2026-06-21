@@ -417,6 +417,8 @@
         "requesterLeftPaused": "Yang request lagu lagi keluar dari voice channel. Lagu bakal lanjut kalau dia masuk lagi.",
         "noResults": "Gak nemu hasil buat pencarianmu.",
         "addedToQueue": "Nambahin {song} ke antrian.",
+        "resolvingPlaylist": "Lagi nyelesain playlist, tunggu bentar…",
+        "addingPlaylistToQueue": "Nambahin ke antrian: {current}/{total}…",
         "addedPlaylistToQueue": "Nambahin {count} lagu dari {playlist} ke antrian.",
         "queueListTitle": "Daftar Antrian",
         "emptyQueue": "Antriannya kosong.",

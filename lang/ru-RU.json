@@ -417,6 +417,8 @@
         "requesterLeftPaused": "Запросивший покинул голосовой канал. Воспроизведение продолжится, когда он вернется.",
         "noResults": "По вашему запросу ничего не найдено.",
         "addedToQueue": "Добавлено {song} в очередь.",
+        "resolvingPlaylist": "Загрузка плейлиста, подождите…",
+        "addingPlaylistToQueue": "Добавление в очередь: {current}/{total}…",
         "addedPlaylistToQueue": "Добавлено {count} песен из {playlist} в очередь.",
         "queueListTitle": "Список очереди",
         "emptyQueue": "Очередь пуста.",

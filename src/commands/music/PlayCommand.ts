@@ -135,6 +135,16 @@ export class PlayCommand extends ContextCommand {
         }
 
         const queryCheck = checkQuery(query ?? "");
+        const isCollectionQuery = queryCheck.type === "playlist" || queryCheck.type === "artist";
+
+        if (isCollectionQuery && localCtx.deferred) {
+            await localCtx.editReply({
+                embeds: [
+                    createEmbed("info", `🎶 **|** ${__mf("requestChannel.resolvingPlaylist")}`),
+                ],
+            });
+        }
+
         const searchError: { value: unknown } = { value: null };
         const songs = await searchTrack(client, query ?? "").catch((error: unknown) => {
             searchError.value = error;
@@ -155,8 +165,6 @@ export class PlayCommand extends ContextCommand {
                 ],
             });
         }
-
-        const isCollectionQuery = queryCheck.type === "playlist" || queryCheck.type === "artist";
 
         return handleVideos(
             client,

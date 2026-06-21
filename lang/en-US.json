@@ -417,6 +417,8 @@
         "requesterLeftPaused": "The requester left the voice channel. Playback resumes when they rejoin.",
         "noResults": "No results found for your query.",
         "addedToQueue": "Added {song} to the queue.",
+        "resolvingPlaylist": "Resolving playlist, please wait…",
+        "addingPlaylistToQueue": "Adding to queue: {current}/{total}…",
         "addedPlaylistToQueue": "Added {count} songs from {playlist} to the queue.",
         "queueListTitle": "Queue List",
         "emptyQueue": "The queue is empty.",

@@ -417,6 +417,8 @@
         "requesterLeftPaused": "リクエスト者がボイスチャンネルから退出しています。戻ると再生を再開します。",
         "noResults": "検索結果が見つかりませんでした。",
         "addedToQueue": "{song} をキューに追加しました。",
+        "resolvingPlaylist": "プレイリストを解決しています。しばらくお待ちください…",
+        "addingPlaylistToQueue": "キューに追加中: {current}/{total}…",
         "addedPlaylistToQueue": "{playlist} から {count} 曲をキューに追加しました。",
         "queueListTitle": "キューリスト",
         "emptyQueue": "キューは空です。",

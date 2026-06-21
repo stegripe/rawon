@@ -417,6 +417,8 @@
         "requesterLeftPaused": "El solicitante salió del canal de voz. La reproducción se reanudará cuando vuelva.",
         "noResults": "No se encontraron resultados para tu búsqueda.",
         "addedToQueue": "Se añadió {song} a la cola.",
+        "resolvingPlaylist": "Resolviendo la lista de reproducción, espera…",
+        "addingPlaylistToQueue": "Añadiendo a la cola: {current}/{total}…",
         "addedPlaylistToQueue": "Se añadieron {count} canciones de {playlist} a la cola.",
         "queueListTitle": "Lista de Cola",
         "emptyQueue": "La cola está vacía.",
