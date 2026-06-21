@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
+import { accessSync, chmodSync, constants, copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import nodePath from "node:path";
 import process from "node:process";
 import got from "got";
@@ -26,6 +26,27 @@ export function setCookiesManager(manager) {
 
 export function getCookiesManager() {
     return cookiesManagerRef;
+}
+
+const exeMode = process.platform === "win32" ? 0o666 : 0o755;
+
+function ensureExecutable(targetPath = exePath) {
+    if (process.platform === "win32" || !existsSync(targetPath)) {
+        return;
+    }
+
+    try {
+        accessSync(targetPath, constants.X_OK);
+        return;
+    } catch {
+        try {
+            chmodSync(targetPath, exeMode);
+        } catch (error) {
+            console.warn(
+                `[WARN] Failed to set executable bit on ${targetPath}: ${(error).message}`,
+            );
+        }
+    }
 }
 
 function args(url, options, cookiesPath) {
@@ -124,7 +145,8 @@ export async function downloadExecutable() {
             await new Promise((resolve, reject) => {
                 got.get(asset.browser_download_url, { timeout: { request: 60_000 } }).buffer().then(x => {
                     mkdirSync(scriptsPath, { recursive: true });
-                    writeFileSync(exePath, x, { mode: 0o777 });
+                    writeFileSync(exePath, x, { mode: exeMode });
+                    ensureExecutable(exePath);
                     return 0;
                 }).then(resolve).catch(reject);
             });
@@ -138,6 +160,8 @@ export async function downloadExecutable() {
         }
     }
 
+    ensureExecutable(exePath);
+
     try {
         const { execFileSync } = await import("node:child_process");
         const version = execFileSync(exePath, ["--version"], { timeout: 5000 }).toString().trim();
@@ -147,10 +171,13 @@ export async function downloadExecutable() {
 
 }
 
-export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) => spawn(exePath, args(url, options, cookiesPath), {
-    windowsHide: true,
-    ...spawnOptions
-});
+export const exec = (url, options = {}, spawnOptions = {}, cookiesPath = null) => {
+    ensureExecutable(exePath);
+    return spawn(exePath, args(url, options, cookiesPath), {
+        windowsHide: true,
+        ...spawnOptions
+    });
+};
 
 export function startAutoUpdater(client) {
     if (autoUpdateTimer) return;
@@ -197,7 +224,8 @@ export function startAutoUpdater(client) {
 
             const buffer = await got.get(asset.browser_download_url, { timeout: { request: 60_000 } }).buffer();
             mkdirSync(scriptsPath, { recursive: true });
-            writeFileSync(exePath, buffer, { mode: 0o777 });
+            writeFileSync(exePath, buffer, { mode: exeMode });
+            ensureExecutable(exePath);
 
             console.info(`[yt-dlp AutoUpdater] Updated to ${latestVersion} while bot was idle.`);
         } catch (err) {

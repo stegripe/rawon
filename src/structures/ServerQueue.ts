@@ -22,14 +22,8 @@ import { type filterArgs } from "../utils/functions/ffmpegArgs.js";
 import { formatBoldPrefixedCommand } from "../utils/functions/formatCodeSpan.js";
 import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
-import {
-    getMediumResThumbnailFromCandidates,
-    getYouTubeThumbnail,
-} from "../utils/functions/getMaxResThumbnail.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
-import { parseTime } from "../utils/functions/parseTime.js";
-import { checkQuery, play, searchTrack } from "../utils/handlers/GeneralUtil.js";
-import { youtubeMusic } from "../utils/handlers/YouTubeUtil.js";
+import { checkQuery, play } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
 import {
@@ -77,51 +71,7 @@ type ChannelInfoPayload = {
     }[];
 };
 
-const YOUTUBE_MUSIC_NEXT_ENDPOINT = "/youtubei/v1/next";
-
-type YouTubeMusicRun = {
-    text?: string;
-    navigationEndpoint?: {
-        browseEndpoint?: {
-            browseEndpointContextSupportedConfigs?: {
-                browseEndpointContextMusicConfig?: {
-                    pageType?: string;
-                };
-            };
-        };
-    };
-};
-
-type YouTubeMusicPlaylistPanelVideo = {
-    videoId?: string;
-    selected?: boolean;
-    title?: {
-        runs?: YouTubeMusicRun[];
-    };
-    longBylineText?: {
-        runs?: YouTubeMusicRun[];
-    };
-    lengthText?: {
-        runs?: YouTubeMusicRun[];
-    };
-    thumbnail?: {
-        thumbnails?: {
-            url?: string;
-            width?: number;
-            height?: number;
-        }[];
-    };
-    navigationEndpoint?: {
-        watchEndpoint?: {
-            videoId?: string;
-            watchEndpointMusicSupportedConfigs?: {
-                watchEndpointMusicConfig?: {
-                    musicVideoType?: string;
-                };
-            };
-        };
-    };
-};
+const AUTOPLAY_HISTORY_LIMIT = 30;
 
 export class ServerQueue {
     public readonly player: AudioPlayer = createAudioPlayer();
@@ -149,6 +99,7 @@ export class ServerQueue {
     private _prefetchedAutoplaySong: { fromSongKey: Snowflake; song: Song } | null = null;
     private _autoplayPrefetchPromise: Promise<void> | null = null;
     private _autoplayPrefetchForKey: Snowflake | null = null;
+    private _autoplayHistory: Song[] = [];
     private _requesterDeafTimeout: RequesterDeafTimeoutState | null = null;
     private _voiceChannelStatusState: VoiceChannelStatusState | null = null;
     private _voiceChannelStatusRestorePromise: Promise<void> | null = null;
@@ -167,6 +118,7 @@ export class ServerQueue {
             _prefetchedAutoplaySong: nonEnum,
             _autoplayPrefetchPromise: nonEnum,
             _autoplayPrefetchForKey: nonEnum,
+            _autoplayHistory: nonEnum,
             _requesterDeafTimeout: nonEnum,
             _voiceChannelStatusState: nonEnum,
             _voiceChannelStatusRestorePromise: nonEnum,
@@ -283,6 +235,7 @@ export class ServerQueue {
 
                         if (autoPlaySong !== undefined) {
                             nextS = this.songs.addSong(autoPlaySong, me);
+                            this.recordAutoplayHistory(autoPlaySong);
                             this.client.logger.info(
                                 `[ServerQueue] Auto-play queued for ${this.textChannel.guild.name}: ${autoPlaySong.title}`,
                             );
@@ -1368,6 +1321,14 @@ export class ServerQueue {
         this._prefetchedAutoplaySong = null;
         this._autoplayPrefetchForKey = null;
         this._autoplayPrefetchPromise = null;
+        this._autoplayHistory = [];
+    }
+
+    private recordAutoplayHistory(song: Song): void {
+        this._autoplayHistory.unshift(song);
+        if (this._autoplayHistory.length > AUTOPLAY_HISTORY_LIMIT) {
+            this._autoplayHistory.length = AUTOPLAY_HISTORY_LIMIT;
+        }
     }
 
     private peekNextKey(currentSong: QueueSong): Snowflake | undefined {
@@ -1503,238 +1464,21 @@ export class ServerQueue {
 
     private async resolveAutoplaySong(currentSong: QueueSong): Promise<Song | undefined> {
         const queryData = checkQuery(currentSong.song.url);
-        const sourceType = queryData.sourceType;
-        const normalizedCurrentTitle = currentSong.song.title.trim().toLowerCase();
-
-        const isDifferentSong = (item: Song): boolean =>
-            item.id !== currentSong.song.id &&
-            item.url !== currentSong.song.url &&
-            item.title.trim().toLowerCase() !== normalizedCurrentTitle;
-
-        const tryResolve = async (
-            query: string,
-            source?: "soundcloud" | "youtube",
-        ): Promise<Song | undefined> => {
-            try {
-                const result = await searchTrack(this.client, query, source);
-                const candidates = result.items.filter((item) => isDifferentSong(item));
-
-                if (candidates.length === 0) {
-                    return undefined;
-                }
-
-                const randomIndex = Math.floor(Math.random() * candidates.length);
-                return candidates[randomIndex];
-            } catch (error) {
-                this.client.logger.debug("[ServerQueue] Auto-play resolve failed", {
-                    guild: this.textChannel.guild.id,
-                    source: source ?? "auto",
-                    query,
-                    error: error instanceof Error ? (error.stack ?? error.message) : String(error),
-                });
-            }
-
-            return undefined;
-        };
-
-        if (sourceType === "soundcloud") {
-            const soundCloudMatch = await tryResolve(currentSong.song.title, "soundcloud");
-            if (soundCloudMatch !== undefined) {
-                return soundCloudMatch;
-            }
-
-            return tryResolve(currentSong.song.title);
-        }
-
-        if (sourceType === "youtube") {
-            const youtubeMusicAutoplaySong = await this.resolveYouTubeMusicAutoplaySong(
-                currentSong,
-                isDifferentSong,
-            );
-            if (youtubeMusicAutoplaySong !== undefined) {
-                return youtubeMusicAutoplaySong;
-            }
-
-            return undefined;
-        }
-
-        return tryResolve(currentSong.song.title);
-    }
-
-    private getYouTubeVideoId(song: Song): string | null {
-        if (song.id.length > 0) {
-            return song.id;
-        }
 
         try {
-            const url = new URL(song.url);
-            if (/youtu\.be$/iu.test(url.hostname)) {
-                return url.pathname.replace(/^\/+/u, "").split("/")[0] ?? null;
-            }
-            if (url.pathname.startsWith("/shorts/")) {
-                return url.pathname.replace("/shorts/", "").split("/")[0] ?? null;
-            }
-            if (url.pathname.startsWith("/live/")) {
-                return url.pathname.replace("/live/", "").split("/")[0] ?? null;
-            }
-            return url.searchParams.get("v");
-        } catch {
-            return null;
-        }
-    }
-
-    private textFromRuns(runs: YouTubeMusicRun[] | undefined): string {
-        return (
-            runs
-                ?.map((run) => run.text ?? "")
-                .join("")
-                .trim() ?? ""
-        );
-    }
-
-    private artistFromRuns(runs: YouTubeMusicRun[] | undefined): string | undefined {
-        const artist = runs?.find((run) => {
-            const pageType =
-                run.navigationEndpoint?.browseEndpoint?.browseEndpointContextSupportedConfigs
-                    ?.browseEndpointContextMusicConfig?.pageType;
-            return pageType === "MUSIC_PAGE_TYPE_ARTIST";
-        })?.text;
-
-        return artist && artist.length > 0 ? artist : undefined;
-    }
-
-    private collectYouTubeMusicPanelVideos(
-        value: unknown,
-        output: YouTubeMusicPlaylistPanelVideo[] = [],
-    ): YouTubeMusicPlaylistPanelVideo[] {
-        if (value === null || typeof value !== "object") {
-            return output;
-        }
-
-        if ("playlistPanelVideoRenderer" in value) {
-            output.push(
-                (value as { playlistPanelVideoRenderer: YouTubeMusicPlaylistPanelVideo })
-                    .playlistPanelVideoRenderer,
+            const song = await this.client.license.autoplayMusic(
+                currentSong.song,
+                this._autoplayHistory,
+                queryData.sourceType,
             );
-        }
-
-        for (const child of Object.values(value)) {
-            this.collectYouTubeMusicPanelVideos(child, output);
-        }
-
-        return output;
-    }
-
-    private mapYouTubeMusicPanelVideo(candidate: YouTubeMusicPlaylistPanelVideo): Song | undefined {
-        const id = candidate.videoId ?? candidate.navigationEndpoint?.watchEndpoint?.videoId;
-        const title = this.textFromRuns(candidate.title?.runs);
-        if (!id || !title) {
-            return undefined;
-        }
-
-        const musicVideoType =
-            candidate.navigationEndpoint?.watchEndpoint?.watchEndpointMusicSupportedConfigs
-                ?.watchEndpointMusicConfig?.musicVideoType;
-        if (
-            musicVideoType &&
-            !["MUSIC_VIDEO_TYPE_ATV", "MUSIC_VIDEO_TYPE_OMV", "MUSIC_VIDEO_TYPE_UGC"].includes(
-                musicVideoType,
-            )
-        ) {
-            return undefined;
-        }
-
-        const thumbnail = getMediumResThumbnailFromCandidates(
-            candidate.thumbnail?.thumbnails,
-            getYouTubeThumbnail(id),
-        );
-        const durationText = candidate.lengthText?.runs?.[0]?.text ?? "";
-
-        return {
-            author: this.artistFromRuns(candidate.longBylineText?.runs),
-            duration: parseTime(durationText) ?? 0,
-            id,
-            thumbnail,
-            title,
-            url: `https://www.youtube.com/watch?v=${id}`,
-        };
-    }
-
-    private async resolveYouTubeMusicAutoplaySong(
-        currentSong: QueueSong,
-        isDifferentSong: (item: Song) => boolean,
-    ): Promise<Song | undefined> {
-        const videoId = this.getYouTubeVideoId(currentSong.song);
-        if (!videoId) {
-            return undefined;
-        }
-
-        try {
-            const response = await youtubeMusic.http.post(YOUTUBE_MUSIC_NEXT_ENDPOINT, {
-                data: {
-                    videoId,
-                    playlistId: `RDAMVM${videoId}`,
-                },
-            });
-            const candidates = this.collectYouTubeMusicPanelVideos(response.data);
-
-            for (const candidate of candidates) {
-                if (candidate.selected === true) {
-                    continue;
-                }
-
-                const song = this.mapYouTubeMusicPanelVideo(candidate);
-                if (song !== undefined && isDifferentSong(song)) {
-                    return song;
-                }
-            }
+            return song;
         } catch (error) {
-            this.client.logger.debug("[ServerQueue] YouTube Music autoplay lookup failed", {
+            this.client.logger.debug("[ServerQueue] Auto-play resolve failed", {
                 guild: this.textChannel.guild.id,
-                videoId,
+                source: queryData.sourceType ?? "auto",
+                title: currentSong.song.title,
                 error: error instanceof Error ? (error.stack ?? error.message) : String(error),
             });
-        }
-
-        try {
-            const query = [currentSong.song.title, currentSong.song.author]
-                .filter(Boolean)
-                .join(" ");
-            const searchResult = await youtubeMusic.search(query, "song");
-            for (const candidate of searchResult.items) {
-                const song = this.mapYouTubeMusicPanelVideo({
-                    videoId: candidate.id,
-                    title: { runs: [{ text: candidate.title }] },
-                    longBylineText: {
-                        runs: candidate.artists?.map((artist) => ({
-                            text: artist.name,
-                            navigationEndpoint: {
-                                browseEndpoint: {
-                                    browseEndpointContextSupportedConfigs: {
-                                        browseEndpointContextMusicConfig: {
-                                            pageType: "MUSIC_PAGE_TYPE_ARTIST",
-                                        },
-                                    },
-                                },
-                            },
-                        })),
-                    },
-                    lengthText: { runs: [{ text: candidate.duration?.toString() ?? "" }] },
-                    thumbnail: { thumbnails: candidate.thumbnails },
-                });
-                if (song !== undefined && isDifferentSong(song)) {
-                    return song;
-                }
-            }
-        } catch (error) {
-            this.client.logger.debug(
-                "[ServerQueue] YouTube Music autoplay search fallback failed",
-                {
-                    guild: this.textChannel.guild.id,
-                    videoId,
-                    error: error instanceof Error ? (error.stack ?? error.message) : String(error),
-                },
-            );
         }
 
         return undefined;

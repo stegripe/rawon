@@ -37,6 +37,7 @@ export type BasicYoutubeVideoInfo = {
     duration: number;
     title: string;
     url: string;
+    webpage_url?: string;
     id: string;
     is_live?: boolean;
 };

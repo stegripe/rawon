@@ -61,8 +61,6 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
 
         client.license.start();
 
-        await client.spotify.renew();
-
         const isPrimaryOrSingle =
             !this.container.config.isMultiBot || client.multiBotManager.getPrimaryBot() === client;
         if (isPrimaryOrSingle) {

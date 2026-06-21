@@ -1,7 +1,7 @@
 import { type PlaylistMetadata, type SearchTrackResult, type Song } from "../../typings/index.js";
 
 const GOOGLE_THUMBNAIL_SIZE = 500;
-const YOUTUBE_THUMBNAIL_QUALITY = "hqdefault";
+const YOUTUBE_THUMBNAIL_QUALITY = "maxresdefault";
 const GOOGLE_IMAGE_HOST_PATTERN = /(?:^|\.)googleusercontent\.com$/iu;
 const GOOGLE_PROFILE_IMAGE_HOST_PATTERN = /(?:^|\.)ggpht\.com$/iu;
 const SOUNDCLOUD_IMAGE_HOST_PATTERN = /(?:^|\.)sndcdn\.com$/iu;
@@ -15,6 +15,73 @@ type ThumbnailCandidate = {
 
 export function getYouTubeThumbnail(videoId: string): string {
     return `https://img.youtube.com/vi/${videoId}/${YOUTUBE_THUMBNAIL_QUALITY}.jpg`;
+}
+
+function canonicalYouTubeWatchUrl(videoId: string): string {
+    return `https://youtube.com/watch?v=${videoId}`;
+}
+
+function isYouTubeVideoId(id: string): boolean {
+    return /^[\w-]{11}$/u.test(id);
+}
+
+function isYouTubeSong(song: Song): boolean {
+    const url = song.url?.trim() ?? "";
+    if (/youtube|youtu\.be/giu.test(url)) {
+        return true;
+    }
+
+    return isYouTubeVideoId(song.id?.trim() ?? "");
+}
+
+function isGoogleImageHost(hostname: string): boolean {
+    return (
+        GOOGLE_IMAGE_HOST_PATTERN.test(hostname) || GOOGLE_PROFILE_IMAGE_HOST_PATTERN.test(hostname)
+    );
+}
+
+function resolveYouTubeSongThumbnail(videoId: string, existingThumbnail: string): string {
+    const existing = existingThumbnail.trim();
+    if (existing.length > 0) {
+        try {
+            const parsed = new URL(existing);
+            if (isGoogleImageHost(parsed.hostname)) {
+                return getSquareGoogleThumbnail(parsed);
+            }
+        } catch {
+            // fall through to ytimg thumbnail
+        }
+    }
+
+    return getYouTubeThumbnail(videoId);
+}
+
+function getSquareGoogleThumbnail(url: URL): string {
+    const basePath = url.pathname.replace(/=([^/]*)$/u, "");
+    url.pathname = `${basePath}=s${GOOGLE_THUMBNAIL_SIZE}`;
+    return url.toString();
+}
+
+export function normalizeLicensedSong<T extends Song>(song: T): T {
+    const id = song.id?.trim() ?? "";
+    const isYouTube = isYouTubeSong(song);
+    const resolvedUrl =
+        song.url?.trim() ||
+        (isYouTube && id.length > 0 ? canonicalYouTubeWatchUrl(id) : (song.url ?? ""));
+    let resolvedThumbnail = getMediumResThumbnail(song.thumbnail);
+    if (isYouTube && id.length > 0) {
+        resolvedThumbnail = resolveYouTubeSongThumbnail(id, song.thumbnail ?? "");
+    }
+
+    if (resolvedUrl === song.url && resolvedThumbnail === song.thumbnail) {
+        return song;
+    }
+
+    return {
+        ...song,
+        url: resolvedUrl,
+        thumbnail: resolvedThumbnail,
+    };
 }
 
 export function getSoundCloudThumbnail(url: string | undefined | null): string {
@@ -41,74 +108,12 @@ export function getSoundCloudThumbnail(url: string | undefined | null): string {
     return parsedUrl.toString();
 }
 
-function normalizeGoogleImageOptions(options: string): string | null {
-    const parts = options.split("-").filter((part) => part.length > 0);
-    const normalized: string[] = [];
-    let changed = false;
-    let hasWidth = false;
-    let hasHeight = false;
-
-    for (const part of parts) {
-        if (/^w\d+$/iu.test(part)) {
-            normalized.push(`w${GOOGLE_THUMBNAIL_SIZE}`);
-            hasWidth = true;
-            changed = true;
-            continue;
-        }
-
-        if (/^h\d+$/iu.test(part)) {
-            normalized.push(`h${GOOGLE_THUMBNAIL_SIZE}`);
-            hasHeight = true;
-            changed = true;
-            continue;
-        }
-
-        if (/^s\d+$/iu.test(part)) {
-            if (!hasWidth) {
-                normalized.push(`w${GOOGLE_THUMBNAIL_SIZE}`);
-                hasWidth = true;
-            }
-            if (!hasHeight) {
-                normalized.push(`h${GOOGLE_THUMBNAIL_SIZE}`);
-                hasHeight = true;
-            }
-            changed = true;
-            continue;
-        }
-
-        normalized.push(/^l\d+$/iu.test(part) ? "l90" : part);
-        changed = changed || /^l\d+$/iu.test(part);
-    }
-
-    if (!changed) {
-        return null;
-    }
-
-    if (!hasWidth) {
-        normalized.unshift(`w${GOOGLE_THUMBNAIL_SIZE}`);
-    }
-    if (!hasHeight) {
-        normalized.splice(hasWidth ? 1 : 0, 0, `h${GOOGLE_THUMBNAIL_SIZE}`);
-    }
-
-    return normalized.join("-");
-}
-
 function getGoogleThumbnail(url: URL): string {
-    if (
-        !GOOGLE_IMAGE_HOST_PATTERN.test(url.hostname) &&
-        !GOOGLE_PROFILE_IMAGE_HOST_PATTERN.test(url.hostname)
-    ) {
+    if (!isGoogleImageHost(url.hostname)) {
         return url.toString();
     }
 
-    const normalizedPath = url.pathname.replace(/=([^/]*)$/u, (match, options: string) => {
-        const normalizedOptions = normalizeGoogleImageOptions(options);
-        return normalizedOptions === null ? match : `=${normalizedOptions}`;
-    });
-
-    url.pathname = normalizedPath;
-    return url.toString();
+    return getSquareGoogleThumbnail(url);
 }
 
 export function getMediumResThumbnail(url: string | undefined | null): string {
@@ -140,6 +145,23 @@ export function getMediumResThumbnail(url: string | undefined | null): string {
     return getGoogleThumbnail(parsedUrl);
 }
 
+function thumbnailPreferenceScore(url: string, width: number, height: number): number {
+    let score = 0;
+    try {
+        if (isGoogleImageHost(new URL(url).hostname)) {
+            score += 1_000_000;
+        }
+    } catch {
+        // ignore invalid thumbnail URLs in scoring
+    }
+    if (width > 0 && height > 0) {
+        score += width * height;
+        score -= Math.abs(width - height) * 1_000;
+        return score;
+    }
+    return score + url.length;
+}
+
 export function getMediumResThumbnailFromCandidates(
     thumbnails: ThumbnailCandidate[] | undefined | null,
     fallback = "",
@@ -153,30 +175,23 @@ export function getMediumResThumbnailFromCandidates(
         return getMediumResThumbnail(fallback);
     }
 
-    const targetArea = GOOGLE_THUMBNAIL_SIZE * GOOGLE_THUMBNAIL_SIZE;
     const preferred = candidates
         .map((thumbnail) => {
             const width = thumbnail.width ?? 0;
             const height = thumbnail.height ?? 0;
-            const area = width > 0 && height > 0 ? width * height : targetArea;
             return {
                 thumbnail,
-                score: Math.abs(area - targetArea),
+                score: thumbnailPreferenceScore(thumbnail.url, width, height),
             };
         })
-        .sort((a, b) => a.score - b.score)
+        .sort((a, b) => b.score - a.score)
         .at(0)?.thumbnail.url;
 
     return getMediumResThumbnail(preferred ?? fallback);
 }
 
 export function normalizeSongThumbnail<T extends Song>(song: T): T {
-    const thumbnail = getMediumResThumbnail(song.thumbnail);
-    if (thumbnail === song.thumbnail) {
-        return song;
-    }
-
-    return { ...song, thumbnail };
+    return normalizeLicensedSong(song);
 }
 
 export function normalizePlaylistThumbnail<T extends PlaylistMetadata>(playlist: T): T {

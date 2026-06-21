@@ -1,3 +1,10 @@
+allowBuilds:
+  '@swc/core': true
+  better-sqlite3: true
+  ffmpeg-static: true
+  protobufjs: true
+  puppeteer: true
+
 ignoredBuiltDependencies:
   - puppeteer
 
