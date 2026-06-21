@@ -13,10 +13,14 @@ export function formatMarkdownText(value: string): string {
     return neutralizeMarkdown(value);
 }
 
-export function formatMarkdownLink(label: string, url: string): string {
-    return `[${formatMarkdownText(label)}](${url})`;
+export function formatMarkdownLink(label: string, url: string | undefined | null): string {
+    const safeUrl = url?.trim();
+    if (!safeUrl) {
+        return formatMarkdownText(label);
+    }
+    return `[${formatMarkdownText(label)}](${safeUrl})`;
 }
 
-export function formatBoldMarkdownLink(label: string, url: string): string {
+export function formatBoldMarkdownLink(label: string, url: string | undefined | null): string {
     return `**${formatMarkdownLink(label, url)}**`;
 }

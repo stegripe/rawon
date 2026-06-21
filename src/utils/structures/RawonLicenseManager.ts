@@ -1,4 +1,6 @@
+import { readFileSync } from "node:fs";
 import { type Guild } from "discord.js";
+import { clientId, clientSecret } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type PlaylistMetadata, type SearchTrackResult, type Song } from "../../typings/index.js";
 import { normalizeSearchTrackThumbnails } from "../functions/getMaxResThumbnail.js";
@@ -10,6 +12,12 @@ type LicenseState = {
     reasonKey: LicenseReasonKey;
     reasonValues: Record<string, string>;
     retryable: boolean;
+};
+
+type RawonCredentialsPayload = {
+    spotify_client_id?: string;
+    spotify_client_secret?: string;
+    youtube_cookies?: string;
 };
 
 type RawonSearchResponse = {
@@ -26,6 +34,19 @@ type RawonResolveResponse = {
     song?: Song;
     items?: Song[];
     playlist?: RawonPlaylistMetadataResponse;
+    message?: string;
+    error?: string;
+};
+
+type RawonAutoplayResponse = {
+    success: boolean;
+    song?: Song;
+    message?: string;
+    error?: string;
+};
+
+type RawonValidateResponse = {
+    success: boolean;
     message?: string;
     error?: string;
 };
@@ -71,10 +92,12 @@ export class RawonLicenseManager {
         retryable: true,
     };
 
+    private validationPromise: Promise<boolean> | null = null;
+
     public constructor(private readonly client: Rawon) {}
 
     public start(): void {
-        this.refreshLocalState();
+        void this.ensureUsable();
     }
 
     public stop(): void {}
@@ -100,16 +123,35 @@ export class RawonLicenseManager {
 
     public async ensureUsable(): Promise<boolean> {
         this.refreshLocalState();
-        return this.state.usable;
+        if (!this.state.usable) {
+            return false;
+        }
+
+        if (this.validationPromise) {
+            return this.validationPromise;
+        }
+
+        this.validationPromise = this.validateRemoteLicense()
+            .catch(() => false)
+            .finally(() => {
+                this.validationPromise = null;
+            });
+
+        return this.validationPromise;
     }
 
-    public async searchMusic(query: string): Promise<SearchTrackResult> {
+    public async searchMusic(
+        query: string,
+        source: "soundcloud" | "youtube" = "youtube",
+    ): Promise<SearchTrackResult> {
         const response = await this.postProtected<RawonSearchResponse>(
             "/api/v1/rawon/music/search",
             {
                 query,
-                source: "youtube",
+                source,
+                credentials: this.buildCredentials(),
             },
+            60_000,
         );
 
         if (!response.success) {
@@ -126,7 +168,10 @@ export class RawonLicenseManager {
     public async resolveMusic(url: string): Promise<SearchTrackResult> {
         const response = await this.postProtected<RawonResolveResponse>(
             "/api/v1/rawon/music/resolve",
-            { url },
+            {
+                url,
+                credentials: this.buildCredentials(),
+            },
         );
 
         const items = response.items ?? (response.song ? [response.song] : []);
@@ -139,6 +184,116 @@ export class RawonLicenseManager {
             items,
             playlist: this.mapPlaylistMetadata(response.playlist),
         });
+    }
+
+    public async autoplayMusic(
+        currentSong: Song,
+        history: Song[],
+        source?: string,
+    ): Promise<Song | undefined> {
+        const response = await this.postProtected<RawonAutoplayResponse>(
+            "/api/v1/rawon/music/autoplay",
+            {
+                current_song: currentSong,
+                history,
+                source,
+                credentials: this.buildCredentials(),
+            },
+            60_000,
+        );
+
+        if (!response.success || !response.song) {
+            return undefined;
+        }
+
+        return normalizeSearchTrackThumbnails({
+            type: "results",
+            items: [response.song],
+        }).items[0];
+    }
+
+    private async validateRemoteLicense(): Promise<boolean> {
+        this.refreshLocalState();
+        if (!this.state.usable) {
+            return false;
+        }
+
+        try {
+            const response = await this.client.request
+                .get(`${this.client.config.stegripeApiUrl}/api/v1/rawon/music/validate`, {
+                    headers: {
+                        Authorization: `Bearer ${this.client.config.rawonLicenseKey}`,
+                        "X-Rawon-Bot-ID": this.client.user?.id ?? "",
+                    },
+                })
+                .json<RawonValidateResponse>();
+
+            if (!response.success) {
+                this.setBlocked(
+                    response.error ?? response.message ?? "License validation failed.",
+                    false,
+                    "validationFailed",
+                );
+                return false;
+            }
+
+            this.state = {
+                usable: true,
+                reason: "License validated.",
+                reasonKey: "notValidated",
+                reasonValues: {},
+                retryable: false,
+            };
+            return true;
+        } catch (error) {
+            const apiError = this.getApiErrorDetail(error, "License validation failed.");
+            if (apiError.statusCode && apiError.statusCode < 500) {
+                this.setBlocked(
+                    apiError.message,
+                    apiError.retryable,
+                    this.reasonKeyFromApiError(apiError.errorCode),
+                );
+                return false;
+            }
+
+            this.client.logger.warn(
+                `[License] Remote validation unavailable: ${apiError.message}. Allowing configured key until next protected request.`,
+            );
+            return true;
+        }
+    }
+
+    private buildCredentials(): RawonCredentialsPayload | undefined {
+        const credentials: RawonCredentialsPayload = {};
+
+        if (clientId && clientSecret) {
+            credentials.spotify_client_id = clientId;
+            credentials.spotify_client_secret = clientSecret;
+        }
+
+        const cookiePath = this.client.cookies.getCurrentCookiePath();
+        if (cookiePath) {
+            try {
+                const content = readFileSync(cookiePath, "utf8").trim();
+                if (content.length > 0) {
+                    credentials.youtube_cookies = content;
+                }
+            } catch (error) {
+                this.client.logger.debug(
+                    `[License] Failed reading forwarded YouTube cookies: ${(error as Error).message}`,
+                );
+            }
+        }
+
+        if (
+            credentials.spotify_client_id === undefined &&
+            credentials.spotify_client_secret === undefined &&
+            credentials.youtube_cookies === undefined
+        ) {
+            return undefined;
+        }
+
+        return credentials;
     }
 
     private mapPlaylistMetadata(
@@ -181,9 +336,13 @@ export class RawonLicenseManager {
         };
     }
 
-    private async postProtected<T>(path: string, json: Record<string, unknown>): Promise<T> {
-        this.refreshLocalState();
-        if (!this.state.usable) {
+    private async postProtected<T>(
+        path: string,
+        json: Record<string, unknown>,
+        timeoutMs = 120_000,
+    ): Promise<T> {
+        const usable = await this.ensureUsable();
+        if (!usable) {
             throw new Error(this.state.reason);
         }
 
@@ -195,6 +354,7 @@ export class RawonLicenseManager {
                         "X-Rawon-Bot-ID": this.client.user?.id ?? "",
                     },
                     json,
+                    timeout: { request: timeoutMs },
                 })
                 .json<T>();
         } catch (error) {
