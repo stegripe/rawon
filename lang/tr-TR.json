@@ -417,6 +417,8 @@
         "requesterLeftPaused": "İsteyen kişi ses kanalından ayrıldı. Geri dönünce oynatma devam edecek.",
         "noResults": "Aramanız için sonuç bulunamadı.",
         "addedToQueue": "{song} kuyruğa eklendi.",
+        "resolvingPlaylist": "Çalma listesi çözümleniyor, lütfen bekleyin…",
+        "addingPlaylistToQueue": "Kuyruğa ekleniyor: {current}/{total}…",
         "addedPlaylistToQueue": "{playlist} çalma listesinden {count} şarkı kuyruğa eklendi.",
         "queueListTitle": "Kuyruk Listesi",
         "emptyQueue": "Kuyruk boş.",
