@@ -417,6 +417,8 @@
         "requesterLeftPaused": "Người yêu cầu đã rời kênh thoại. Nhạc sẽ tiếp tục khi họ tham gia lại.",
         "noResults": "Không tìm thấy kết quả cho tìm kiếm của bạn.",
         "addedToQueue": "Đã thêm {song} vào hàng đợi.",
+        "resolvingPlaylist": "Đang phân giải danh sách phát, vui lòng đợi…",
+        "addingPlaylistToQueue": "Đang thêm vào hàng đợi: {current}/{total}…",
         "addedPlaylistToQueue": "Đã thêm {count} bài hát từ {playlist} vào hàng đợi.",
         "queueListTitle": "Danh sách hàng đợi",
         "emptyQueue": "Hàng đợi trống.",

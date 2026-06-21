@@ -417,6 +417,8 @@
         "requesterLeftPaused": "Pemohon telah meninggalkan saluran suara. Main semula akan diteruskan apabila mereka menyertai semula.",
         "noResults": "Tiada hasil carian yang sepadan dengan permintaan anda.",
         "addedToQueue": "Menambahkan {song} ke dalam giliran.",
+        "resolvingPlaylist": "Sedang menyelesaikan senarai main, sila tunggu…",
+        "addingPlaylistToQueue": "Menambah ke giliran: {current}/{total}…",
         "addedPlaylistToQueue": "Menambahkan {count} lagu dari {playlist} ke dalam giliran.",
         "queueListTitle": "Senarai Giliran",
         "emptyQueue": "Tiada lagu dalam giliran.",

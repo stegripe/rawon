@@ -417,6 +417,8 @@
         "requesterLeftPaused": "Користувач, який зробив запит, покинув голосовий канал. Відтворення продовжиться, коли він повернеться.",
         "noResults": "За вашим запитом нічого не знайдено.",
         "addedToQueue": "Додано {song} до черги.",
+        "resolvingPlaylist": "Завантаження плейлиста, зачекайте…",
+        "addingPlaylistToQueue": "Додавання до черги: {current}/{total}…",
         "addedPlaylistToQueue": "Додано {count} пісень з {playlist} до черги.",
         "queueListTitle": "Список черги",
         "emptyQueue": "Черга порожня.",

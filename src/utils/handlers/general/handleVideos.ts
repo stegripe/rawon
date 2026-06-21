@@ -18,6 +18,11 @@ import { createVoiceAdapter } from "../../functions/createVoiceAdapter.js";
 import { formatBoldMarkdownLink, formatMarkdownText } from "../../functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../functions/i18n.js";
 import { formatAddedPlaylistNotice } from "../../functions/playlistQueueNotice.js";
+import {
+    addSongsWithProgress,
+    formatAddingPlaylistProgress,
+    shouldShowPlaylistProgress,
+} from "../../functions/playlistQueueProgress.js";
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
 import { play } from "./play.js";
 
@@ -108,8 +113,86 @@ export async function handleVideos(
     const __mf = i18n__mf(client, ctx.guild);
 
     async function sendConfirmation(): Promise<Message | undefined> {
+        const queue = ctx.guild?.queue;
+        const member = ctx.member as NonNullable<typeof ctx.member>;
+        const showPlaylistProgress = shouldShowPlaylistProgress(
+            toQueue.length,
+            playlistMeta !== undefined,
+        );
+
+        if (showPlaylistProgress && queue) {
+            const total = toQueue.length;
+            const playlistText =
+                (playlistMeta?.url?.length ?? 0) > 0
+                    ? formatBoldMarkdownLink(playlistMeta?.title ?? "Playlist", playlistMeta?.url)
+                    : `**${formatMarkdownText(playlistMeta?.title ?? "Playlist")}**`;
+
+            const progressEmbed = createEmbed(
+                "info",
+                `🎶 **|** ${formatAddingPlaylistProgress(client, ctx.guild, 0, total)}`,
+            );
+            if ((playlistMeta?.thumbnail?.length ?? 0) > 0) {
+                progressEmbed.setThumbnail(playlistMeta?.thumbnail ?? null);
+            }
+            if ((playlistMeta?.author?.length ?? 0) > 0) {
+                progressEmbed.setFooter({ text: `📁 ${playlistMeta?.author}` });
+            }
+
+            const msg = await ctx.reply(
+                { embeds: [progressEmbed], allowedMentions: { repliedUser: false } },
+                true,
+            );
+
+            await addSongsWithProgress(
+                queue.songs,
+                toQueue,
+                member,
+                async (current, queueTotal) => {
+                    if (!msg) {
+                        return;
+                    }
+                    const nextEmbed = createEmbed(
+                        "info",
+                        `🎶 **|** ${formatAddingPlaylistProgress(client, ctx.guild, current, queueTotal)}`,
+                    );
+                    if ((playlistMeta?.thumbnail?.length ?? 0) > 0) {
+                        nextEmbed.setThumbnail(playlistMeta?.thumbnail ?? null);
+                    }
+                    if ((playlistMeta?.author?.length ?? 0) > 0) {
+                        nextEmbed.setFooter({ text: `📁 ${playlistMeta?.author}` });
+                    }
+                    await msg.edit({ embeds: [nextEmbed] }).catch(() => null);
+                },
+            );
+
+            const confirmEmbed = createEmbed(
+                "success",
+                `🎶 **|** ${formatAddedPlaylistNotice(
+                    client,
+                    ctx.guild,
+                    toQueue.length,
+                    playlistText,
+                    playlistMeta as PlaylistMetadata,
+                )}`,
+            );
+            if ((playlistMeta?.thumbnail?.length ?? 0) > 0) {
+                confirmEmbed.setThumbnail(playlistMeta?.thumbnail ?? null);
+            }
+            if ((playlistMeta?.author?.length ?? 0) > 0) {
+                confirmEmbed.setFooter({ text: `📁 ${playlistMeta?.author}` });
+            }
+
+            await msg.edit({ embeds: [confirmEmbed], allowedMentions: { repliedUser: false } });
+
+            if (inRequestChannel) {
+                autoDeleteMessage(msg);
+            }
+
+            return msg;
+        }
+
         for (const song of toQueue) {
-            ctx.guild?.queue?.songs.addSong(song, ctx.member as NonNullable<typeof ctx.member>);
+            queue?.songs.addSong(song, member);
         }
 
         if (toQueue.length === 1) {

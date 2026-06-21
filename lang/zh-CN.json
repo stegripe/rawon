@@ -417,6 +417,8 @@
         "requesterLeftPaused": "点播者已离开语音频道。重新加入后会继续播放。",
         "noResults": "没有找到您搜索的结果。",
         "addedToQueue": "已将 {song} 添加到队列。",
+        "resolvingPlaylist": "正在解析播放列表，请稍候…",
+        "addingPlaylistToQueue": "正在添加到队列：{current}/{total}…",
         "addedPlaylistToQueue": "已将 {playlist} 中的 {count} 首歌曲添加到队列。",
         "queueListTitle": "队列列表",
         "emptyQueue": "队列是空的。",

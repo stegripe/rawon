@@ -417,6 +417,8 @@
         "requesterLeftPaused": "Le demandeur a quitté le salon vocal. La lecture reprendra quand il reviendra.",
         "noResults": "Aucun résultat trouvé pour votre recherche.",
         "addedToQueue": "Ajouté {song} à la file d'attente.",
+        "resolvingPlaylist": "Résolution de la playlist, veuillez patienter…",
+        "addingPlaylistToQueue": "Ajout à la file d'attente : {current}/{total}…",
         "addedPlaylistToQueue": "Ajouté {count} chansons de {playlist} à la file d'attente.",
         "queueListTitle": "Liste de File d'attente",
         "emptyQueue": "La file d'attente est vide.",

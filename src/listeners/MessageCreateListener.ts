@@ -23,8 +23,15 @@ import {
     shouldProcessPrefixMusicCommand,
 } from "../utils/functions/musicCommandTarget.js";
 import { formatAddedPlaylistNotice } from "../utils/functions/playlistQueueNotice.js";
+import {
+    addSongsWithProgress,
+    formatAddingPlaylistProgress,
+    formatResolvingPlaylistNotice,
+    shouldShowPlaylistProgress,
+} from "../utils/functions/playlistQueueProgress.js";
 import { isMemberDeafened } from "../utils/functions/voiceStateGuards.js";
 import { searchTrack } from "../utils/handlers/GeneralUtil.js";
+import { checkQuery } from "../utils/handlers/general/checkQuery.js";
 import { play } from "../utils/handlers/general/play.js";
 
 @ApplyOptions<ListenerOptions>({
@@ -449,6 +456,26 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             `[MultiBot] ${client.user?.tag} PROCESSING voice channel ${voiceChannel.id} (${voiceChannel.name}) for request from ${message.author.tag}`,
         );
 
+        const queryCheck = checkQuery(query);
+        const isCollectionQuery = queryCheck.type === "playlist" || queryCheck.type === "artist";
+        let progressMessage: Message | null = null;
+
+        if (isCollectionQuery) {
+            try {
+                progressMessage = await message.reply({
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            `🎶 **|** ${formatResolvingPlaylistNotice(client, message.guild)}`,
+                        ),
+                    ],
+                    allowedMentions: { repliedUser: false },
+                });
+            } catch {
+                progressMessage = null;
+            }
+        }
+
         const searchError: { value: unknown } = { value: null };
         const songs = await searchTrack(client, query).catch((error: unknown) => {
             searchError.value = error;
@@ -460,9 +487,18 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 searchError.value instanceof Error && searchError.value.message
                     ? searchError.value.message
                     : __("requestChannel.noResults");
-            this.sendTemporaryReply(message, createEmbed("error", errorMessage, true));
+            if (progressMessage) {
+                await progressMessage
+                    .edit({ embeds: [createEmbed("error", errorMessage, true)] })
+                    .catch(() => null);
+                this.scheduleTemporaryMessageCleanup(progressMessage);
+            } else {
+                this.sendTemporaryReply(message, createEmbed("error", errorMessage, true));
+            }
             return;
         }
+
+        const toQueue = songs.type === "results" ? songs.items : [songs.items[0]];
 
         const wasIdle = guild.queue?.idle ?? false;
 
@@ -531,8 +567,62 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             }
         }
 
-        for (const song of songs.type === "results" ? songs.items : [songs.items[0]]) {
-            guild.queue.songs.addSong(song, member);
+        const showPlaylistProgress = shouldShowPlaylistProgress(
+            toQueue.length,
+            songs.playlist !== undefined,
+        );
+
+        if (showPlaylistProgress && guild.queue) {
+            const total = toQueue.length;
+            const progressEmbed = createEmbed(
+                "info",
+                `🎶 **|** ${formatAddingPlaylistProgress(client, message.guild, 0, total)}`,
+            );
+            if (songs.playlist?.thumbnail) {
+                progressEmbed.setThumbnail(songs.playlist.thumbnail);
+            }
+            if (songs.playlist?.author) {
+                progressEmbed.setFooter({ text: `📁 ${songs.playlist.author}` });
+            }
+
+            if (progressMessage) {
+                await progressMessage.edit({ embeds: [progressEmbed] }).catch(() => null);
+            } else {
+                try {
+                    progressMessage = await message.reply({
+                        embeds: [progressEmbed],
+                        allowedMentions: { repliedUser: false },
+                    });
+                } catch {
+                    progressMessage = null;
+                }
+            }
+
+            await addSongsWithProgress(
+                guild.queue.songs,
+                toQueue,
+                member,
+                async (current, queueTotal) => {
+                    if (!progressMessage) {
+                        return;
+                    }
+                    const nextEmbed = createEmbed(
+                        "info",
+                        `🎶 **|** ${formatAddingPlaylistProgress(client, message.guild, current, queueTotal)}`,
+                    );
+                    if (songs.playlist?.thumbnail) {
+                        nextEmbed.setThumbnail(songs.playlist.thumbnail);
+                    }
+                    if (songs.playlist?.author) {
+                        nextEmbed.setFooter({ text: `📁 ${songs.playlist.author}` });
+                    }
+                    await progressMessage.edit({ embeds: [nextEmbed] }).catch(() => null);
+                },
+            );
+        } else {
+            for (const song of toQueue) {
+                guild.queue.songs.addSong(song, member);
+            }
         }
         if (isNewQueue || wasIdle) {
             void play(guild);
@@ -549,7 +639,7 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 `🎶 **|** ${formatAddedPlaylistNotice(
                     client,
                     message.guild,
-                    songs.items.length,
+                    toQueue.length,
                     formatBoldMarkdownLink(playlistTitle, playlistUrl),
                     songs.playlist,
                 )}`,
@@ -573,7 +663,21 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 confirmEmbed.setThumbnail(songs.items[0].thumbnail);
             }
         }
+        if (progressMessage) {
+            await progressMessage
+                .edit({ embeds: [confirmEmbed], allowedMentions: { repliedUser: false } })
+                .catch(() => null);
+            this.scheduleTemporaryMessageCleanup(progressMessage);
+            return;
+        }
+
         this.sendTemporaryReply(message, confirmEmbed);
+    }
+
+    private scheduleTemporaryMessageCleanup(message: Message): void {
+        setTimeout(() => {
+            void message.delete().catch(() => null);
+        }, 60_000);
     }
 
     private sendTemporaryReply(message: Message, embed: ReturnType<typeof createEmbed>): void {
