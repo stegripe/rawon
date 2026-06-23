@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "Đã bỏ qua {count} mục: {reason}.",
         "skippedReasonUnavailable": "riêng tư/đã xóa hoặc không khả dụng",
         "skippedReasonUnresolved": "không thể khớp thành bài hát phát được",
-        "skippedReasonSkipped": "trùng lặp, riêng tư/đã xóa hoặc không khả dụng"
+        "skippedReasonSkipped": "trùng lặp, riêng tư/đã xóa hoặc không khả dụng",
+        "resolvingSong": "Đang phân giải bài hát, vui lòng đợi…"
     },
     "reusable": {
         "invalidUsage": "Cách sử dụng không hợp lệ, vui lòng nhập {prefix} {name} để biết thêm thông tin.",

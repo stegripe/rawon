@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "{count} élément(s) ignoré(s) : {reason}.",
         "skippedReasonUnavailable": "privé/supprimé ou indisponible",
         "skippedReasonUnresolved": "impossible à associer à une chanson lisible",
-        "skippedReasonSkipped": "doublon, privé/supprimé ou indisponible"
+        "skippedReasonSkipped": "doublon, privé/supprimé ou indisponible",
+        "resolvingSong": "Résolution de la chanson, veuillez patienter…"
     },
     "reusable": {
         "invalidUsage": "Usage invalide, veuillez utiliser {prefix} {name} pour plus d'informations.",

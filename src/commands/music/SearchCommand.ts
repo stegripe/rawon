@@ -233,6 +233,12 @@ export class SearchCommand extends ContextCommand {
             return;
         }
 
+        if (localCtx.deferred) {
+            await localCtx.editReply({
+                embeds: [createEmbed("info", `🔍 **|** ${__mf("requestChannel.resolvingSong")}`)],
+            });
+        }
+
         const searchError: { value: unknown } = { value: null };
         const tracks = await searchTrack(client, query ?? "", source as "soundcloud" | "youtube")
             .then((x) => ({ items: x.items.slice(0, 10), type: x.type }))

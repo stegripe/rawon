@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "Пропущено {count} элемент(ов): {reason}.",
         "skippedReasonUnavailable": "приватное/удалённое или недоступное",
         "skippedReasonUnresolved": "не удалось сопоставить с воспроизводимой песней",
-        "skippedReasonSkipped": "дубликат, приватное/удалённое или недоступное"
+        "skippedReasonSkipped": "дубликат, приватное/удалённое или недоступное",
+        "resolvingSong": "Загрузка песни, подождите…"
     },
     "reusable": {
         "invalidUsage": "Неверное использование, пожалуйста используйте {prefix} {name} для большей информации.",

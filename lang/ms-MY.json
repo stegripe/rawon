@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "{count} item dilangkau: {reason}.",
         "skippedReasonUnavailable": "private/deleted atau tidak tersedia",
         "skippedReasonUnresolved": "gagal dipadankan dengan lagu yang boleh dimainkan",
-        "skippedReasonSkipped": "duplikat, private/deleted, atau tidak tersedia"
+        "skippedReasonSkipped": "duplikat, private/deleted, atau tidak tersedia",
+        "resolvingSong": "Sedang menyelesaikan lagu, sila tunggu…"
     },
     "reusable": {
         "invalidUsage": "Penggunaan tidak sah, sila gunakan {prefix} {name} untuk maklumat lanjut.",

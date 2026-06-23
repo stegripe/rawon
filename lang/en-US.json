@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "Skipped {count} item(s): {reason}.",
         "skippedReasonUnavailable": "private/deleted or unavailable",
         "skippedReasonUnresolved": "could not be matched to a playable song",
-        "skippedReasonSkipped": "duplicate, private/deleted, or unavailable"
+        "skippedReasonSkipped": "duplicate, private/deleted, or unavailable",
+        "resolvingSong": "Resolving song, please wait…"
     },
     "reusable": {
         "invalidUsage": "Invalid usage. Please use {prefix} {name} for more information.",
