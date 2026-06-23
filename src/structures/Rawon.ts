@@ -16,11 +16,9 @@ import {
     type VoiceState,
 } from "discord.js";
 import got from "got";
-import { Soundcloud } from "soundcloud.ts";
 import * as config from "../config/index.js";
 import { type GuildData } from "../typings/index.js";
 import { resolveAndApplyMusicCommandTarget } from "../utils/functions/musicCommandTarget.js";
-import { SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
 import { AudioCacheManager } from "../utils/structures/AudioCacheManager.js";
 import { ClientUtils } from "../utils/structures/ClientUtils.js";
 import { CookiesManager } from "../utils/structures/CookiesManager.js";
@@ -213,9 +211,7 @@ export class Rawon extends SapphireClient {
         path.resolve(process.cwd(), "cache", "data.db"),
     );
     public readonly debugLog = new DebugLogManager(this.config.debugMode, this.config.isProd);
-    public readonly spotify = new SpotifyUtil(this);
     public readonly utils = new ClientUtils(this);
-    public readonly soundcloud = new Soundcloud();
     public readonly requestChannelManager = new RequestChannelManager(this);
     public readonly license = new RawonLicenseManager(this);
     public readonly audioCache = new AudioCacheManager(this);
@@ -276,9 +272,7 @@ export class Rawon extends SapphireClient {
         container.config = config;
         container.data = this.data;
         container.debugLog = this.debugLog;
-        container.spotify = this.spotify;
         container.utils = this.utils;
-        container.soundcloud = this.soundcloud;
         container.requestChannelManager = this.requestChannelManager;
         container.license = this.license;
         container.audioCache = this.audioCache;

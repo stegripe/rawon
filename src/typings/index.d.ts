@@ -10,12 +10,10 @@ import {
     type Guild as OG,
 } from "discord.js";
 import { type Got } from "got";
-import { type Soundcloud } from "soundcloud.ts";
 import type * as config from "../config/index.js";
 import { type CommandContext } from "../structures/CommandContext.js";
 import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
-import { type SpotifyUtil } from "../utils/handlers/SpotifyUtil.js";
 import { type AudioCacheManager } from "../utils/structures/AudioCacheManager.js";
 import { type ClientUtils } from "../utils/structures/ClientUtils.js";
 import { type CookiesManager } from "../utils/structures/CookiesManager.js";
@@ -371,9 +369,7 @@ declare module "@sapphire/framework" {
         config: typeof config;
         data: SQLiteDataManager<Record<string, GuildData>>;
         debugLog: DebugLogManager;
-        spotify: SpotifyUtil;
         utils: ClientUtils;
-        soundcloud: Soundcloud;
         requestChannelManager: RequestChannelManager;
         license: RawonLicenseManager;
         audioCache: AudioCacheManager;

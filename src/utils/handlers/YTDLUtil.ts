@@ -3,10 +3,8 @@ import { type Readable } from "node:stream";
 import { clearTimeout, setTimeout } from "node:timers";
 import got from "got";
 import { type Rawon } from "../../structures/Rawon.js";
-import { type BasicYoutubeVideoInfo } from "../../typings/index.js";
 import { BOT_SETTINGS_DEFAULTS } from "../structures/SQLiteDataManager.js";
-import ytdl, { exec, isAgeRestrictedError, isBotDetectionError } from "../yt-dlp/index.js";
-import { checkQuery } from "./GeneralUtil.js";
+import { exec, isAgeRestrictedError, isBotDetectionError } from "../yt-dlp/index.js";
 
 export class AllCookiesFailedError extends Error {
     public constructor() {
@@ -135,14 +133,6 @@ export async function getStream(
     isLive = false,
     seekSeconds = 0,
 ): Promise<StreamResult> {
-    const isSoundcloudUrl = checkQuery(url);
-    if (isSoundcloudUrl.sourceType === "soundcloud") {
-        return {
-            stream: await client.soundcloud.util.streamTrack(url),
-            cachePath: null,
-        };
-    }
-
     const enableAudioCache = client.data.botSettings.enableAudioCache;
 
     if (enableAudioCache && !isLive && seekSeconds > 0) {
@@ -489,49 +479,6 @@ function isTransientError(errorMessage: string): boolean {
     ];
     const lowerError = errorMessage.toLowerCase();
     return transientPatterns.some((pattern) => lowerError.includes(pattern));
-}
-
-export async function getInfo(url: string, client?: Rawon): Promise<BasicYoutubeVideoInfo> {
-    return attemptGetInfoWithRetry(url, client, 0);
-}
-
-async function attemptGetInfoWithRetry(
-    url: string,
-    client?: Rawon,
-    retryCount = 0,
-): Promise<BasicYoutubeVideoInfo> {
-    try {
-        const result = await ytdl(url, {
-            dumpJson: true,
-        });
-        return result;
-    } catch (error) {
-        const errorMessage = (error as Error)?.message ?? String(error ?? "");
-
-        if (isAgeRestrictedError(errorMessage)) {
-            throw new AgeRestrictedError(url);
-        }
-
-        if (isBotDetectionError(errorMessage) && client) {
-            client.logger.warn(
-                `[YTDLUtil] ⚠️ Bot detection in getInfo. URL: ${url.slice(0, 50)}...`,
-            );
-
-            client.cookies.handleBotDetection();
-            throw new AllCookiesFailedError();
-        }
-
-        if (isTransientError(errorMessage) && retryCount < MAX_TRANSIENT_RETRIES) {
-            client?.logger.warn(
-                `[YTDLUtil] ⚠️ Transient error in getInfo, retrying (attempt ${retryCount + 1}/${MAX_TRANSIENT_RETRIES}). URL: ${url.slice(0, 50)}...`,
-            );
-            const backoffDelay = Math.min(1000 * 2 ** retryCount, MAX_BACKOFF_DELAY_MS);
-            await new Promise((resolve) => setTimeout(resolve, backoffDelay));
-            return attemptGetInfoWithRetry(url, client, retryCount + 1);
-        }
-
-        throw error;
-    }
 }
 
 export function shouldRequeueOnError(error: Error): boolean {

@@ -31,6 +31,7 @@ import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
 import { formatMarkdownLink } from "../functions/formatMarkdown.js";
+import { getMaxResThumbnail } from "../functions/getMaxResThumbnail.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
 import {
@@ -510,7 +511,9 @@ export class RequestChannelManager {
         const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶️";
 
         const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
-        const imageUrl = this.getSafeImageUrl(hasThumbnail ? song?.thumbnail : splash);
+        const imageUrl = this.getSafeImageUrl(
+            hasThumbnail ? getMaxResThumbnail(song?.thumbnail) : splash,
+        );
 
         const totalQueueDuration = queue.songs
             .map((s) => s.song.duration)
