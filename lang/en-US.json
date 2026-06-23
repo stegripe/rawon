@@ -97,7 +97,12 @@
                     "enabled": "enabled",
                     "disabled": "disabled"
                 },
-                "resetAll": "All bot settings have been reset to defaults."
+                "resetAll": "All bot settings have been reset to defaults.",
+                "alwaysOn": {
+                    "set": "Always On (24/7) mode has been {state}",
+                    "enabled": "enabled",
+                    "disabled": "disabled"
+                }
             }
         },
         "general": {

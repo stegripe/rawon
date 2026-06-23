@@ -13,6 +13,7 @@ export const BOT_SETTINGS_DEFAULTS: BotSettings = {
     defaultVolume: 100,
     musicSelectionType: "message",
     enableAudioCache: true,
+    alwaysOn: false,
 };
 
 export class SQLiteDataManager<T extends Record<string, GuildData> = Record<string, GuildData>> {
@@ -32,6 +33,16 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         this.initSchema();
         this.loadBotSettings();
         void this.load();
+
+        const hasAlwaysOnColumn = this.db
+            .prepare("PRAGMA table_info(bot_settings)")
+            .all()
+            .some((col: any) => col.name === "always_on");
+        if (!hasAlwaysOnColumn) {
+            this.db.exec(`
+                ALTER TABLE bot_settings ADD COLUMN always_on INTEGER DEFAULT 0;
+            `);
+        }
     }
 
     private ensureDirectory(): void {
@@ -164,7 +175,8 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                 request_channel_splash TEXT,
                 default_volume INTEGER,
                 music_selection_type TEXT,
-                enable_audio_cache INTEGER
+                enable_audio_cache INTEGER,
+                always_on INTEGER DEFAULT 0
             )
         `);
 
@@ -750,6 +762,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                   default_volume: number | null;
                   music_selection_type: string | null;
                   enable_audio_cache: number | null;
+                  always_on: number | null;
               }
             | undefined;
 
@@ -777,6 +790,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                 row.enable_audio_cache === null
                     ? BOT_SETTINGS_DEFAULTS.enableAudioCache
                     : row.enable_audio_cache === 1,
+            alwaysOn: row.always_on === 1,
         };
     }
 

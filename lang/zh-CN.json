@@ -97,7 +97,12 @@
                     "enabled": "启用",
                     "disabled": "禁用"
                 },
-                "resetAll": "所有机器人设置已重置为默认值。"
+                "resetAll": "所有机器人设置已重置为默认值。",
+                "alwaysOn": {
+                    "set": "全天候 (24/7) 模式已 {state}",
+                    "enabled": "启用",
+                    "disabled": "禁用"
+                }
             }
         },
         "general": {

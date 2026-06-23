@@ -97,7 +97,12 @@
                     "enabled": "activé",
                     "disabled": "désactivé"
                 },
-                "resetAll": "Tous les paramètres du bot ont été réinitialisés par défaut."
+                "resetAll": "Tous les paramètres du bot ont été réinitialisés par défaut.",
+                "alwaysOn": {
+                    "set": "Le mode Toujours Activé (24/7) a été {state}",
+                    "enabled": "activé",
+                    "disabled": "désactivé"
+                }
             }
         },
         "general": {
