@@ -1,5 +1,5 @@
 allowBuilds:
-  '@swc/core': true
+  "@swc/core": true
   better-sqlite3: true
   ffmpeg-static: true
   protobufjs: true
@@ -9,9 +9,25 @@ ignoredBuiltDependencies:
   - puppeteer
 
 minimumReleaseAgeExclude:
-  - "@emnapi/core@1.11.1"
-  - "@emnapi/runtime@1.11.1"
-  - better-sqlite3@12.10.1
+  - "@puppeteer/browsers"
+  - "@swc/core"
+  - "@swc/core-darwin-arm64"
+  - "@swc/core-darwin-x64"
+  - "@swc/core-linux-arm-gnueabihf"
+  - "@swc/core-linux-arm64-gnu"
+  - "@swc/core-linux-arm64-musl"
+  - "@swc/core-linux-ppc64-gnu"
+  - "@swc/core-linux-s390x-gnu"
+  - "@swc/core-linux-x64-gnu"
+  - "@swc/core-linux-x64-musl"
+  - "@swc/core-win32-arm64-msvc"
+  - "@swc/core-win32-ia32-msvc"
+  - "@swc/core-win32-x64-msvc"
+  - "puppeteer"
+  - "puppeteer-core"
+  - "@emnapi/core"
+  - "@emnapi/runtime"
+  - better-sqlite3
 
 onlyBuiltDependencies:
   - "@swc/core"
