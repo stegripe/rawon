@@ -97,7 +97,12 @@
                     "enabled": "diaktifkan",
                     "disabled": "dinyahaktifkan"
                 },
-                "resetAll": "Semua tetapan bot telah ditetapkan semula kepada lalai."
+                "resetAll": "Semua tetapan bot telah ditetapkan semula kepada lalai.",
+                "alwaysOn": {
+                    "set": "Mod Sentiasa Hidup (24/7) telah {state}",
+                    "enabled": "didayakan",
+                    "disabled": "dilumpuhkan"
+                }
             }
         },
         "general": {
