@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "{count} öğe atlandı: {reason}.",
         "skippedReasonUnavailable": "özel/silinmiş veya kullanılamıyor",
         "skippedReasonUnresolved": "çalınabilir bir şarkıyla eşleştirilemedi",
-        "skippedReasonSkipped": "tekrar, özel/silinmiş veya kullanılamıyor"
+        "skippedReasonSkipped": "tekrar, özel/silinmiş veya kullanılamıyor",
+        "resolvingSong": "Şarkı çözümleniyor, lütfen bekleyin…"
     },
     "reusable": {
         "invalidUsage": "Geçersiz kullanım, lütfen daha fazla bilgi için {prefix} {name} kullanın.",

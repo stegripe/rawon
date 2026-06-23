@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "{count}개 항목을 건너뛰었어요: {reason}.",
         "skippedReasonUnavailable": "비공개/삭제됨 또는 사용할 수 없음",
         "skippedReasonUnresolved": "재생 가능한 곡으로 매칭하지 못함",
-        "skippedReasonSkipped": "중복, 비공개/삭제됨 또는 사용할 수 없음"
+        "skippedReasonSkipped": "중복, 비공개/삭제됨 또는 사용할 수 없음",
+        "resolvingSong": "노래를 불러오는 중이에요. 잠시만 기다려 주세요…"
     },
     "reusable": {
         "invalidUsage": "잘못된 사용법이에요. {prefix} {name}으로 자세한 정보를 확인하세요.",

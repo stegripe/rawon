@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "{count} item diskip: {reason}.",
         "skippedReasonUnavailable": "private/deleted atau unavailable",
         "skippedReasonUnresolved": "gagal dicocokkan ke lagu yang bisa diputar",
-        "skippedReasonSkipped": "duplikat, private/deleted, atau unavailable"
+        "skippedReasonSkipped": "duplikat, private/deleted, atau unavailable",
+        "resolvingSong": "Lagi nyari lagunya, tunggu bentar…"
     },
     "reusable": {
         "invalidUsage": "Cara pakenya salah, coba pake {prefix} {name} buat info lebih lanjut.",

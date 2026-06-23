@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "{count} 件をスキップしました: {reason}。",
         "skippedReasonUnavailable": "非公開/削除済み、または利用不可",
         "skippedReasonUnresolved": "再生可能な曲に一致できませんでした",
-        "skippedReasonSkipped": "重複、非公開/削除済み、または利用不可"
+        "skippedReasonSkipped": "重複、非公開/削除済み、または利用不可",
+        "resolvingSong": "曲を解決しています。しばらくお待ちください…"
     },
     "reusable": {
         "invalidUsage": "無効な使用方法です。{prefix} {name}を実行して情報を照会してください。",

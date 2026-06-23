@@ -137,11 +137,12 @@ export class PlayCommand extends ContextCommand {
         const queryCheck = checkQuery(query ?? "");
         const isCollectionQuery = queryCheck.type === "playlist" || queryCheck.type === "artist";
 
-        if (isCollectionQuery && localCtx.deferred) {
+        if (localCtx.deferred) {
+            const resolvingMsg = isCollectionQuery
+                ? __mf("requestChannel.resolvingPlaylist")
+                : __mf("requestChannel.resolvingSong");
             await localCtx.editReply({
-                embeds: [
-                    createEmbed("info", `🎶 **|** ${__mf("requestChannel.resolvingPlaylist")}`),
-                ],
+                embeds: [createEmbed("info", `🔍 **|** ${resolvingMsg}`)],
             });
         }
 
