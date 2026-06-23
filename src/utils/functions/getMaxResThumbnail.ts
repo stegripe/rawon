@@ -48,8 +48,7 @@ function resolveYouTubeSongThumbnail(videoId: string, existingThumbnail: string)
             if (isGoogleImageHost(parsed.hostname)) {
                 return getSquareGoogleThumbnail(parsed);
             }
-        } catch {
-        }
+        } catch {}
     }
 
     return getYouTubeThumbnail(videoId);
@@ -150,8 +149,7 @@ function thumbnailPreferenceScore(url: string, width: number, height: number): n
         if (isGoogleImageHost(new URL(url).hostname)) {
             score += 1_000_000;
         }
-    } catch {
-    }
+    } catch {}
     if (width > 0 && height > 0) {
         score += width * height;
         score -= Math.abs(width - height) * 1_000;
