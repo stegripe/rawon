@@ -172,6 +172,7 @@ export class RawonLicenseManager {
                 url,
                 credentials: this.buildCredentials(),
             },
+            60_000,
         );
 
         const items = response.items ?? (response.song ? [response.song] : []);
