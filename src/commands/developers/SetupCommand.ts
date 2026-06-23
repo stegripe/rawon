@@ -118,6 +118,17 @@ import { BOT_SETTINGS_DEFAULTS } from "../../utils/structures/SQLiteDataManager.
             )
             .addSubcommand((sub) =>
                 sub
+                    .setName("alwayson")
+                    .setDescription("Toggle 24/7 always on mode")
+                    .addBooleanOption((opt) =>
+                        opt
+                            .setName("enabled")
+                            .setDescription("Enable or disable")
+                            .setRequired(true),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
                     .setName("audiocache")
                     .setDescription("Enable or disable audio caching")
                     .addBooleanOption((opt) =>
@@ -175,6 +186,9 @@ export class SetupCommand extends ContextCommand {
                 break;
             case "selectiontype":
                 await this.setupSelectionType(ctx, client, localCtx, __);
+                break;
+            case "alwayson":
+                await this.setupAlwaysOn(ctx, client, localCtx, __);
                 break;
             case "audiocache":
                 await this.setupAudioCache(ctx, client, localCtx, __);
@@ -240,6 +254,11 @@ export class SetupCommand extends ContextCommand {
                 param: "selectiontype",
                 desc: "Set music selection type",
                 usage: `${prefix}setup selectiontype <message|selectmenu|reset>`,
+            },
+            {
+                param: "alwayson",
+                desc: "Toggle 24/7 always on mode",
+                usage: `${prefix}setup alwayson <enable|disable>`,
             },
             {
                 param: "audiocache",
@@ -661,6 +680,41 @@ export class SetupCommand extends ContextCommand {
                     __("commands.developers.setup.selectionType.set").replace(
                         "{type}",
                         `\`${value}\``,
+                    ),
+                    true,
+                ),
+            ],
+        });
+    }
+
+    private async setupAlwaysOn(
+        ctx: CommandContext,
+        client: Rawon,
+        localCtx: LocalCommandContext,
+        __: (key: string) => string,
+    ): Promise<void> {
+        let enabled: boolean;
+
+        if (localCtx.options) {
+            enabled = localCtx.options.getBoolean("enabled") ?? true;
+        } else {
+            const val = localCtx.args[1]?.toLowerCase();
+            enabled = val === "enable" || val === "true" || val === "yes" || val === "on";
+        }
+
+        await client.data.setBotSetting("always_on", enabled ? 1 : 0);
+
+        const stateStr = enabled
+            ? __("commands.developers.setup.alwaysOn.enabled")
+            : __("commands.developers.setup.alwaysOn.disabled");
+
+        await ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    __("commands.developers.setup.alwaysOn.set").replace(
+                        "{state}",
+                        `\`${stateStr}\``,
                     ),
                     true,
                 ),

@@ -97,7 +97,12 @@
                     "enabled": "bật",
                     "disabled": "tắt"
                 },
-                "resetAll": "Tất cả cài đặt bot đã được đặt lại về mặc định."
+                "resetAll": "Tất cả cài đặt bot đã được đặt lại về mặc định.",
+                "alwaysOn": {
+                    "set": "Chế độ Luôn Bật (24/7) đã được {state}",
+                    "enabled": "bật",
+                    "disabled": "tắt"
+                }
             }
         },
         "general": {

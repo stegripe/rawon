@@ -97,7 +97,12 @@
                     "enabled": "ativado",
                     "disabled": "desativado"
                 },
-                "resetAll": "Todas as definições do bot foram redefinidas para os padrões."
+                "resetAll": "Todas as definições do bot foram redefinidas para os padrões.",
+                "alwaysOn": {
+                    "set": "O modo Sempre Ligado (24/7) foi {state}",
+                    "enabled": "ativado",
+                    "disabled": "desativado"
+                }
             }
         },
         "general": {

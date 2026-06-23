@@ -97,7 +97,12 @@
                     "enabled": "diaktifin",
                     "disabled": "dimatiin"
                 },
-                "resetAll": "Semua settingan bot udah direset ke default."
+                "resetAll": "Semua settingan bot udah direset ke default.",
+                "alwaysOn": {
+                    "set": "Mode Always On (24/7) udah {state}",
+                    "enabled": "diaktifin",
+                    "disabled": "dimatiin"
+                }
             }
         },
         "general": {

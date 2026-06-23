@@ -85,6 +85,15 @@ export async function play(
 
         void queue.client.requestChannelManager.updatePlayerMessage(guild);
 
+        if (queue.client.data.botSettings.alwaysOn) {
+            queue.client.debugLog.logData(
+                "info",
+                "PLAY_HANDLER",
+                `Queue ended for ${guild.name}(${guild.id}), alwaysOn enabled, staying in VC`,
+            );
+            return;
+        }
+
         setTimeout(async () => {
             if (!guild.queue?.songs.first()) {
                 await queue.destroy();

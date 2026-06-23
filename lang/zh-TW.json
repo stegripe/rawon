@@ -97,7 +97,12 @@
                     "enabled": "啟用",
                     "disabled": "停用"
                 },
-                "resetAll": "所有機器人設定已重設為預設值。"
+                "resetAll": "所有機器人設定已重設為預設值。",
+                "alwaysOn": {
+                    "set": "全天候 (24/7) 模式已 {state}",
+                    "enabled": "啟用",
+                    "disabled": "停用"
+                }
             }
         },
         "general": {

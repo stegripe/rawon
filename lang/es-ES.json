@@ -97,7 +97,12 @@
                     "enabled": "activada",
                     "disabled": "desactivada"
                 },
-                "resetAll": "Todos los ajustes del bot se han restablecido a los valores predeterminados."
+                "resetAll": "Todos los ajustes del bot se han restablecido a los valores predeterminados.",
+                "alwaysOn": {
+                    "set": "El modo Siempre Encendido (24/7) ha sido {state}",
+                    "enabled": "habilitado",
+                    "disabled": "deshabilitado"
+                }
             }
         },
         "general": {

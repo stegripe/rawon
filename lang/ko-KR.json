@@ -97,7 +97,12 @@
                     "enabled": "활성화",
                     "disabled": "비활성화"
                 },
-                "resetAll": "모든 봇 설정이 기본값으로 초기화되었습니다."
+                "resetAll": "모든 봇 설정이 기본값으로 초기화되었습니다.",
+                "alwaysOn": {
+                    "set": "항상 켜짐 (24/7) 모드가 {state} 되었습니다",
+                    "enabled": "활성화",
+                    "disabled": "비활성화"
+                }
             }
         },
         "general": {

@@ -265,6 +265,7 @@ export type BotSettings = {
     defaultVolume: number;
     musicSelectionType: string;
     enableAudioCache: boolean;
+    alwaysOn: boolean;
 };
 
 export type GuildData = {

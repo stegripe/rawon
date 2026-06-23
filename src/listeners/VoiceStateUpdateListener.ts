@@ -408,6 +408,10 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
             return;
         }
 
+        if (queue.client.data.botSettings.alwaysOn) {
+            return;
+        }
+
         const timeoutMs = 60_000;
         const timeout = setTimeout(() => {
             void this.handleRequesterDeafTimeout(
@@ -618,6 +622,11 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         const __ = i18n__(client, guild);
         const __mf = i18n__mf(client, guild);
 
+        if (client.data.botSettings.alwaysOn) {
+            queue.player.pause();
+            return;
+        }
+
         clearTimeout(queue.timeout ?? undefined);
         (guild.queue as ServerQueue).timeout = null;
         queue.player.pause();
@@ -686,6 +695,11 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
 
         const __ = i18n__(client, guild);
         const __mf = i18n__mf(client, guild);
+
+        if (client.data.botSettings.alwaysOn) {
+            queue.player.pause();
+            return;
+        }
 
         clearTimeout(queue.timeout ?? undefined);
         (guild.queue as ServerQueue).timeout = null;

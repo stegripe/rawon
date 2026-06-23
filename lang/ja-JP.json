@@ -97,7 +97,12 @@
                     "enabled": "有効化",
                     "disabled": "無効化"
                 },
-                "resetAll": "すべてのボット設定がデフォルトにリセットされました。"
+                "resetAll": "すべてのボット設定がデフォルトにリセットされました。",
+                "alwaysOn": {
+                    "set": "常時オン (24/7) モードが {state} になりました",
+                    "enabled": "有効",
+                    "disabled": "無効"
+                }
             }
         },
         "general": {
