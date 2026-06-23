@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "Пропущено {count} елемент(ів): {reason}.",
         "skippedReasonUnavailable": "приватне/видалене або недоступне",
         "skippedReasonUnresolved": "не вдалося зіставити з відтворюваною піснею",
-        "skippedReasonSkipped": "дублікат, приватне/видалене або недоступне"
+        "skippedReasonSkipped": "дублікат, приватне/видалене або недоступне",
+        "resolvingSong": "Завантаження пісні, зачекайте…"
     },
     "reusable": {
         "invalidUsage": "Некоректне використання, будь ласка, скористайтесь {prefix} {name} для отримання інформації.",

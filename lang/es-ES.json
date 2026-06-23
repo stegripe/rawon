@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "Se omitieron {count} elemento(s): {reason}.",
         "skippedReasonUnavailable": "privado/eliminado o no disponible",
         "skippedReasonUnresolved": "no se pudo vincular con una canción reproducible",
-        "skippedReasonSkipped": "duplicado, privado/eliminado o no disponible"
+        "skippedReasonSkipped": "duplicado, privado/eliminado o no disponible",
+        "resolvingSong": "Resolviendo la canción, espera…"
     },
     "reusable": {
         "invalidUsage": "Uso inválido, por favor usa {prefix} {name} para más información.",

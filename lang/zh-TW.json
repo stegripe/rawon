@@ -437,7 +437,8 @@
         "addedPlaylistSkipped": "已跳過 {count} 個項目：{reason}。",
         "skippedReasonUnavailable": "私人/已刪除或無法使用",
         "skippedReasonUnresolved": "無法匹配到可播放歌曲",
-        "skippedReasonSkipped": "重複、私人/已刪除或無法使用"
+        "skippedReasonSkipped": "重複、私人/已刪除或無法使用",
+        "resolvingSong": "正在解析歌曲，請稍候…"
     },
     "reusable": {
         "invalidUsage": "無效的用法，請用 {prefix} {name}了解更多資訊。",
