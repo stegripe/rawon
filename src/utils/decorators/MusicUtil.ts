@@ -120,6 +120,10 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
         return true;
     }
 
+    if (localCtx.additionalArgs.get("fromRequestChannelButton") === true) {
+        return true;
+    }
+
     const target = getMusicCommandTarget(localCtx);
     if (target?.isRemoteGuild === true) {
         return true;

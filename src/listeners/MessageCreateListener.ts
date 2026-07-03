@@ -1,38 +1,26 @@
 import { setTimeout } from "node:timers";
-import { joinVoiceChannel } from "@discordjs/voice";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Events, Listener, type ListenerOptions } from "@sapphire/framework";
 import {
     ChannelType,
-    type EmbedBuilder,
     type Message,
     type MessageCollector,
     PermissionFlagsBits,
     type TextChannel,
     type User,
 } from "discord.js";
+import { CommandContext } from "../structures/CommandContext.js";
 import { type Rawon } from "../structures/Rawon.js";
-import { ServerQueue } from "../structures/ServerQueue.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
-import { createVoiceAdapter } from "../utils/functions/createVoiceAdapter.js";
 import { formatBoldCodeSpan } from "../utils/functions/formatCodeSpan.js";
-import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import {
     isPlaybackMusicCommandName,
     shouldProcessPrefixMusicCommand,
 } from "../utils/functions/musicCommandTarget.js";
-import { formatAddedPlaylistNotice } from "../utils/functions/playlistQueueNotice.js";
-import {
-    addSongsWithProgress,
-    formatAddingPlaylistProgress,
-    formatResolvingPlaylistNotice,
-    shouldShowPlaylistProgress,
-} from "../utils/functions/playlistQueueProgress.js";
 import { isMemberDeafened } from "../utils/functions/voiceStateGuards.js";
-import { searchTrack } from "../utils/handlers/GeneralUtil.js";
+import { handleVideos, searchTrack } from "../utils/handlers/GeneralUtil.js";
 import { checkQuery } from "../utils/handlers/general/checkQuery.js";
-import { play } from "../utils/handlers/general/play.js";
 
 @ApplyOptions<ListenerOptions>({
     event: Events.MessageCreate,
@@ -458,22 +446,42 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
         const queryCheck = checkQuery(query);
         const isCollectionQuery = queryCheck.type === "playlist" || queryCheck.type === "artist";
-        let progressMessage: Message | null = null;
 
+        let progressMessage: Message | null = null;
+        let progressStartedAt = 0;
         if (isCollectionQuery) {
             try {
                 progressMessage = await message.reply({
                     embeds: [
-                        createEmbed(
-                            "info",
-                            `🎶 **|** ${formatResolvingPlaylistNotice(client, message.guild)}`,
-                        ),
+                        createEmbed("info", `🎶 **|** ${__mf("requestChannel.resolvingPlaylist")}`),
                     ],
                     allowedMentions: { repliedUser: false },
                 });
+                progressStartedAt = Date.now();
             } catch {
                 progressMessage = null;
             }
+        }
+
+        if (guild.queue && voiceChannel.id !== guild.queue.connection?.joinConfig.channelId) {
+            this.sendTemporaryReply(
+                message,
+                createEmbed(
+                    "warn",
+                    __mf("commands.music.play.alreadyPlaying", {
+                        voiceChannel: `**\`${
+                            guild.channels.cache.get(
+                                (
+                                    guild.queue.connection?.joinConfig as {
+                                        channelId: string;
+                                    }
+                                ).channelId,
+                            )?.name ?? "#unknown-channel"
+                        }\`**`,
+                    }),
+                ),
+            );
+            return;
         }
 
         const searchError: { value: unknown } = { value: null };
@@ -491,193 +499,38 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 await progressMessage
                     .edit({ embeds: [createEmbed("error", errorMessage, true)] })
                     .catch(() => null);
-                this.scheduleTemporaryMessageCleanup(progressMessage);
-            } else {
-                this.sendTemporaryReply(message, createEmbed("error", errorMessage, true));
+                setTimeout(() => {
+                    void progressMessage?.delete().catch(() => null);
+                }, 60_000);
+                return;
             }
+            this.sendTemporaryReply(message, createEmbed("error", errorMessage, true));
             return;
         }
 
-        const toQueue = songs.type === "results" ? songs.items : [songs.items[0]];
-
-        const wasIdle = guild.queue?.idle ?? false;
-
-        const existingQueueChannel = guild.queue?.connection?.joinConfig.channelId;
-        const isNewQueue =
-            !guild.queue ||
-            (existingQueueChannel !== undefined && existingQueueChannel !== voiceChannel.id);
-
-        if (
-            !guild.queue ||
-            (existingQueueChannel !== undefined && existingQueueChannel !== voiceChannel.id)
-        ) {
-            if (guild.queue && existingQueueChannel !== voiceChannel.id) {
-                this.container.logger.info(
-                    `[MultiBot] ${client.user?.tag} destroying queue for channel ${existingQueueChannel} to create new queue for channel ${voiceChannel.id}`,
-                );
-                await guild.queue.destroy();
-            }
-
-            const queueChannel = guild.channels.cache.get(message.channel.id);
-            if (!queueChannel?.isTextBased()) {
-                this.container.logger.error(
-                    `[MultiBot] ${client.user?.tag} cannot find message-capable channel ${message.channel.id} in own guild`,
-                );
-                return;
-            }
-
-            guild.queue = new ServerQueue(queueChannel as TextChannel);
-
-            try {
-                const adapterCreator = createVoiceAdapter(client, guild.id);
-
-                this.container.logger.info(
-                    `[MultiBot] ${client.user?.tag} creating voice connection for channel ${voiceChannel.id} (${voiceChannel.name}) using custom adapter`,
-                );
-
-                const connection = joinVoiceChannel({
-                    adapterCreator,
-                    channelId: voiceChannel.id,
-                    guildId: guild.id,
-                    selfDeaf: true,
-                    group: client.user?.id ?? "default",
-                }).on("debug", (debugMessage) => {
-                    this.container.logger.debug(`[VOICE] ${debugMessage}`);
-                });
-
-                guild.queue.connection = connection;
-                this.container.logger.info(
-                    `[MultiBot] ${client.user?.tag} joined voice channel ${voiceChannel.id} (${voiceChannel.name})`,
-                );
-            } catch (error) {
-                guild.queue?.songs.clear();
-                delete guild.queue;
-
-                this.sendTemporaryReply(
-                    message,
-                    createEmbed(
-                        "error",
-                        __mf("utils.generalHandler.errorJoining", {
-                            message: `\`${(error as Error).message}\``,
-                        }),
-                        true,
-                    ),
-                );
-                return;
-            }
+        const queueChannel = guild.channels.cache.get(message.channel.id);
+        if (!queueChannel?.isTextBased()) {
+            this.container.logger.error(
+                `[MultiBot] ${client.user?.tag} cannot find message-capable channel ${message.channel.id} in own guild`,
+            );
+            return;
         }
 
-        const showPlaylistProgress = shouldShowPlaylistProgress(
-            toQueue.length,
-            songs.playlist !== undefined,
-        );
-
-        if (showPlaylistProgress && guild.queue) {
-            const total = toQueue.length;
-            const progressEmbed = createEmbed(
-                "info",
-                `🎶 **|** ${formatAddingPlaylistProgress(client, message.guild, 0, total)}`,
-            );
-            if (songs.playlist?.thumbnail) {
-                progressEmbed.setThumbnail(songs.playlist.thumbnail);
-            }
-            if (songs.playlist?.author) {
-                progressEmbed.setFooter({ text: `📁 ${songs.playlist.author}` });
-            }
-
-            if (progressMessage) {
-                await progressMessage.edit({ embeds: [progressEmbed] }).catch(() => null);
-            } else {
-                try {
-                    progressMessage = await message.reply({
-                        embeds: [progressEmbed],
-                        allowedMentions: { repliedUser: false },
-                    });
-                } catch {
-                    progressMessage = null;
-                }
-            }
-
-            await addSongsWithProgress(
-                guild.queue.songs,
-                toQueue,
-                member,
-                async (current, queueTotal) => {
-                    if (!progressMessage) {
-                        return;
-                    }
-                    const nextEmbed = createEmbed(
-                        "info",
-                        `🎶 **|** ${formatAddingPlaylistProgress(client, message.guild, current, queueTotal)}`,
-                    );
-                    if (songs.playlist?.thumbnail) {
-                        nextEmbed.setThumbnail(songs.playlist.thumbnail);
-                    }
-                    if (songs.playlist?.author) {
-                        nextEmbed.setFooter({ text: `📁 ${songs.playlist.author}` });
-                    }
-                    await progressMessage.edit({ embeds: [nextEmbed] }).catch(() => null);
-                },
-            );
-        } else {
-            for (const song of toQueue) {
-                guild.queue.songs.addSong(song, member);
-            }
-        }
-        if (isNewQueue || wasIdle) {
-            void play(guild);
-        } else {
-            await client.requestChannelManager.updatePlayerMessage(guild);
-        }
-
-        let confirmEmbed: EmbedBuilder;
-        if (songs.playlist) {
-            const playlistTitle = songs.playlist.title;
-            const playlistUrl = songs.playlist.url;
-            confirmEmbed = createEmbed(
-                "success",
-                `🎶 **|** ${formatAddedPlaylistNotice(
-                    client,
-                    message.guild,
-                    toQueue.length,
-                    formatBoldMarkdownLink(playlistTitle, playlistUrl),
-                    songs.playlist,
-                )}`,
-            );
-            if (songs.playlist.thumbnail) {
-                confirmEmbed.setThumbnail(songs.playlist.thumbnail);
-            }
-            if (songs.playlist.author) {
-                confirmEmbed.setFooter({ text: `📁 ${songs.playlist.author}` });
-            }
-        } else {
-            const songTitle = songs.items[0].title;
-            const songUrl = songs.items[0].url;
-            confirmEmbed = createEmbed(
-                "success",
-                `🎶 **|** ${__mf("requestChannel.addedToQueue", {
-                    song: formatBoldMarkdownLink(songTitle, songUrl),
-                })}`,
-            );
-            if (songs.items[0].thumbnail) {
-                confirmEmbed.setThumbnail(songs.items[0].thumbnail);
-            }
-        }
+        const ctx = new CommandContext(message);
+        ctx.guild = guild;
+        ctx.channel = queueChannel as TextChannel;
         if (progressMessage) {
-            await progressMessage
-                .edit({ embeds: [confirmEmbed], allowedMentions: { repliedUser: false } })
-                .catch(() => null);
-            this.scheduleTemporaryMessageCleanup(progressMessage);
-            return;
+            ctx.additionalArgs.set("playlistProgressMessage", progressMessage);
+            ctx.additionalArgs.set("playlistProgressStartedAt", progressStartedAt);
         }
 
-        this.sendTemporaryReply(message, confirmEmbed);
-    }
-
-    private scheduleTemporaryMessageCleanup(message: Message): void {
-        setTimeout(() => {
-            void message.delete().catch(() => null);
-        }, 60_000);
+        await handleVideos(
+            client,
+            ctx,
+            isCollectionQuery ? songs.items : [songs.items[0]],
+            voiceChannel,
+            isCollectionQuery ? songs.playlist : undefined,
+        );
     }
 
     private sendTemporaryReply(message: Message, embed: ReturnType<typeof createEmbed>): void {

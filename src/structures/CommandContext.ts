@@ -225,6 +225,12 @@ export class CommandContext {
         return rep instanceof Message ? rep : new Message(this.context.client, rep);
     }
 
+    public async editReply(
+        options: BaseMessageOptions | InteractionReplyOptions | MessagePayload | string,
+    ): Promise<Message> {
+        return this.send(options, "editReply");
+    }
+
     public async send(
         options:
             | BaseMessageOptions
