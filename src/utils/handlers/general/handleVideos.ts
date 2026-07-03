@@ -26,6 +26,8 @@ import {
 import { ButtonPagination } from "../../structures/ButtonPagination.js";
 import { play } from "./play.js";
 
+const PLAYLIST_PROGRESS_MIN_VISIBLE_MS = 2_500;
+
 function isRequestChannel(client: Rawon, ctx: CommandContext): boolean {
     if (!ctx.guild) {
         return false;
@@ -38,6 +40,10 @@ function autoDeleteMessage(msg: Message, delay = 60_000): void {
     setTimeout(() => {
         msg.delete().catch(() => null);
     }, delay);
+}
+
+function sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function isSupportedQueueTextChannel(channel: unknown): channel is ServerQueueTextChannel {
@@ -138,10 +144,25 @@ export async function handleVideos(
                 progressEmbed.setFooter({ text: `📁 ${playlistMeta?.author}` });
             }
 
-            const msg = await ctx.reply(
+            const existingProgressMessage = ctx.additionalArgs.get("playlistProgressMessage") as
+                | Message
+                | undefined;
+            let msg: Message | undefined = existingProgressMessage
+                ? await existingProgressMessage
+                      .edit({ embeds: [progressEmbed], allowedMentions: { repliedUser: false } })
+                      .then((message) => message as Message)
+                      .catch(() => undefined)
+                : undefined;
+            msg ??= await ctx.reply(
                 { embeds: [progressEmbed], allowedMentions: { repliedUser: false } },
                 true,
             );
+            if (!msg) {
+                return undefined;
+            }
+            const progressStartedAt =
+                (ctx.additionalArgs.get("playlistProgressStartedAt") as number | undefined) ??
+                Date.now();
 
             await addSongsWithProgress(
                 queue.songs,
@@ -180,6 +201,11 @@ export async function handleVideos(
             }
             if ((playlistMeta?.author?.length ?? 0) > 0) {
                 confirmEmbed.setFooter({ text: `📁 ${playlistMeta?.author}` });
+            }
+
+            const progressVisibleFor = Date.now() - progressStartedAt;
+            if (progressVisibleFor < PLAYLIST_PROGRESS_MIN_VISIBLE_MS) {
+                await sleep(PLAYLIST_PROGRESS_MIN_VISIBLE_MS - progressVisibleFor);
             }
 
             await msg.edit({ embeds: [confirmEmbed], allowedMentions: { repliedUser: false } });

@@ -27,18 +27,13 @@ import { type ServerQueue } from "../structures/ServerQueue.js";
 import { type LoopMode, type LyricsAPIResult, type QueueSong } from "../typings/index.js";
 import { chunk } from "../utils/functions/chunk.js";
 import { createEmbed } from "../utils/functions/createEmbed.js";
-import {
-    formatBoldMarkdownLink,
-    formatMarkdownLink,
-    formatMarkdownText,
-} from "../utils/functions/formatMarkdown.js";
+import { formatMarkdownLink, formatMarkdownText } from "../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
 import {
     applyMusicCommandTargetByIds,
     isPlaybackMusicCommand,
     resolveAndApplyMusicCommandTarget,
 } from "../utils/functions/musicCommandTarget.js";
-import { hasMusicControlPermission } from "../utils/functions/musicControlPermissions.js";
 
 function hasSlashCommand(cmd: Command): boolean {
     return cmd.options.chatInputCommand !== undefined;
@@ -783,436 +778,21 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             return;
         }
 
+        if (
+            await this.handleRequestChannelCommandButton(
+                interaction,
+                thisBotGuild,
+                queue?.volume ?? 0,
+                queue?.loopMode ?? "OFF",
+                queue?.shuffle ?? false,
+                queue?.autoPlay ?? false,
+            )
+        ) {
+            await client.requestChannelManager.updatePlayerMessage(thisBotGuild);
+            return;
+        }
+
         switch (interaction.customId) {
-            case "RC_PAUSE_RESUME": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                if (queue.playing) {
-                    queue.playing = false;
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [
-                            createEmbed(
-                                "success",
-                                `⏸️ **|** ${__("commands.music.pause.pauseMessage")}`,
-                            ),
-                        ],
-                    });
-                    setTimeout(async () => {
-                        try {
-                            await interaction.deleteReply();
-                        } catch {}
-                    }, 60_000);
-                } else if (queue.requesterDeafTimeout) {
-                    const i18nKey =
-                        queue.requesterDeafTimeout.reason === "left"
-                            ? "requestChannel.requesterLeftPaused"
-                            : "requestChannel.requesterDeafPaused";
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __(i18nKey))],
-                    });
-                    setTimeout(async () => {
-                        try {
-                            await interaction.deleteReply();
-                        } catch {}
-                    }, 60_000);
-                } else {
-                    queue.playing = true;
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [
-                            createEmbed(
-                                "success",
-                                `▶️ **|** ${__("commands.music.resume.resumeMessage")}`,
-                            ),
-                        ],
-                    });
-                    setTimeout(async () => {
-                        try {
-                            await interaction.deleteReply();
-                        } catch {}
-                    }, 60_000);
-                }
-                break;
-            }
-
-            case "RC_SKIP": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                if (!queue.canSkip()) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
-                    });
-                    return;
-                }
-
-                const skipSong = (
-                    queue.player.state as
-                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
-                        | undefined
-                )?.resource?.metadata;
-
-                const { hasPermission } = await this.checkMusicPermission(
-                    interaction,
-                    member,
-                    skipSong,
-                );
-
-                if (!hasPermission) {
-                    const canSkip = await this.handleSkipVoting(
-                        interaction,
-                        queue,
-                        member as GuildMember,
-                    );
-                    if (!canSkip) {
-                        return;
-                    }
-                }
-
-                if (!queue.startSkip()) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
-                    });
-                    return;
-                }
-
-                if (!queue.playing) {
-                    queue.playing = true;
-                }
-                queue.player.stop(true);
-
-                const skipEmbed = createEmbed(
-                    "success",
-                    `⏭️ **|** ${__mf("commands.music.skip.skipMessage", {
-                        song: skipSong
-                            ? formatBoldMarkdownLink(skipSong.song.title, skipSong.song.url)
-                            : "",
-                    })}`,
-                ).setThumbnail(skipSong?.song.thumbnail ?? null);
-
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [skipEmbed],
-                });
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
-            case "RC_STOP": {
-                if (!queue) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                const stopSong = (
-                    queue.player.state as
-                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
-                        | undefined
-                )?.resource?.metadata;
-
-                const { hasPermission: hasStopPermission } = await this.checkMusicPermission(
-                    interaction,
-                    member,
-                    stopSong,
-                );
-
-                if (!hasStopPermission) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("error", __("requestChannel.noPermission"), true)],
-                    });
-                    return;
-                }
-
-                await queue.destroy();
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            `⏹️ **|** ${__("commands.music.stop.stoppedMessage")}`,
-                        ),
-                    ],
-                });
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
-            case "RC_LOOP": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                const modes: LoopMode[] = ["OFF", "SONG", "QUEUE"];
-                const modeEmoji: Record<LoopMode, string> = {
-                    OFF: "▶️",
-                    QUEUE: "🔁",
-                    SONG: "🔂",
-                };
-                const currentIndex = modes.indexOf(queue.loopMode);
-                const nextMode = modes[(currentIndex + 1) % modes.length];
-                queue.setLoopMode(nextMode);
-
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            `${modeEmoji[nextMode]} **|** ${__mf("commands.music.repeat.newMode", {
-                                mode: `**\`${nextMode}\`**`,
-                            })}`,
-                        ),
-                    ],
-                });
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
-            case "RC_SHUFFLE": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                queue.setShuffle(!queue.shuffle);
-                const isShuffle = queue.shuffle;
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            `${isShuffle ? "🔀" : "▶️"} **|** ${__mf(
-                                "commands.music.shuffle.newState",
-                                {
-                                    state: `**\`${isShuffle ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
-                                },
-                            )}`,
-                        ),
-                    ],
-                });
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
-            case "RC_AUTOPLAY": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                queue.setAutoPlay(!queue.autoPlay);
-                const isAutoPlay = queue.autoPlay;
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            `♾️ **|** ${__mf("commands.music.autoplay.newState", {
-                                state: `**\`${isAutoPlay ? __("reusable.enabled") : __("reusable.disabled")}\`**`,
-                            })}`,
-                        ),
-                    ],
-                });
-
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
-            case "RC_VOL_DOWN": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                const newVolDown = Math.max(1, queue.volume - 10);
-                queue.volume = newVolDown;
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            `🔊 **|** ${__mf("commands.music.volume.newVolume", {
-                                volume: `**\`${newVolDown}%\`**`,
-                            })}`,
-                        ),
-                    ],
-                });
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
-            case "RC_VOL_UP": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                const newVolUp = queue.volume + 10;
-                queue.volume = newVolUp;
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "success",
-                            `🔊 **|** ${__mf("commands.music.volume.newVolume", {
-                                volume: `**\`${newVolUp}%\`**`,
-                            })}`,
-                        ),
-                    ],
-                });
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
-            case "RC_REMOVE": {
-                if (!queue || queue.songs.size === 0) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                if (!queue.canSkip()) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
-                    });
-                    return;
-                }
-
-                const currentSong = (
-                    queue.player.state as
-                        | (AudioPlayerPlayingState & { resource?: { metadata?: QueueSong } })
-                        | undefined
-                )?.resource?.metadata;
-
-                if (!currentSong) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
-                    });
-                    return;
-                }
-
-                const { hasPermission: hasRemovePermission } = await this.checkMusicPermission(
-                    interaction,
-                    member,
-                    currentSong,
-                );
-
-                if (!hasRemovePermission) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("error", __("requestChannel.noPermission"), true)],
-                    });
-                    return;
-                }
-
-                if (!queue.startSkip()) {
-                    await interaction.reply({
-                        flags: MessageFlags.Ephemeral,
-                        embeds: [createEmbed("warn", __("requestChannel.skipInProgress"))],
-                    });
-                    return;
-                }
-
-                const songTitle = currentSong.song.title;
-                const songUrl = currentSong.song.url;
-                const songThumbnail = currentSong.song.thumbnail;
-
-                queue.songs.delete(currentSong.key);
-
-                if (!queue.playing) {
-                    queue.playing = true;
-                }
-                queue.player.stop(true);
-
-                const opening = __mf("commands.music.remove.songsRemoved", { removed: 1 });
-                const pageContent = `${__("commands.music.remove.songSkip")}1.) ${formatBoldMarkdownLink(songTitle, songUrl)}`;
-                const removeEmbed = createEmbed("info", pageContent)
-                    .setAuthor({ name: opening })
-                    .setFooter({
-                        text: `• ${__mf("reusable.pageFooter", { actual: 1, total: 1 })}`,
-                    });
-                if (songThumbnail) {
-                    removeEmbed.setThumbnail(songThumbnail);
-                }
-
-                await interaction.reply({
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [removeEmbed],
-                });
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply();
-                    } catch {}
-                }, 60_000);
-                break;
-            }
-
             case "RC_QUEUE_LIST": {
                 if (!queue || queue.songs.size === 0) {
                     await interaction.reply({
@@ -1350,77 +930,81 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         await client.requestChannelManager.updatePlayerMessage(thisBotGuild);
     }
 
-    private async checkMusicPermission(
+    private async handleRequestChannelCommandButton(
         interaction: ButtonInteraction,
-        member: GuildMember | undefined,
-        currentSong: QueueSong | undefined,
-    ): Promise<{ hasPermission: boolean }> {
-        const guild = interaction.guild;
-        if (!guild || !member) {
-            return { hasPermission: false };
-        }
-
-        const client = interaction.client as Rawon;
-        const thisBotGuild = client.guilds.cache.get(guild.id) ?? guild;
-        const hasPermission = await hasMusicControlPermission({
-            client,
-            guild: thisBotGuild,
-            member,
-            requesterIds: [currentSong],
-        });
-
-        return { hasPermission };
-    }
-
-    private async handleSkipVoting(
-        interaction: ButtonInteraction,
-        queue: ServerQueue,
-        member: GuildMember,
+        guild: NonNullable<ButtonInteraction["guild"]>,
+        currentVolume: number,
+        currentLoopMode: LoopMode,
+        isShuffle: boolean,
+        isAutoPlay: boolean,
     ): Promise<boolean> {
-        const client = interaction.client as Rawon;
-        const guild = interaction.guild;
-        if (!guild) {
+        const nextLoopMode: Record<LoopMode, string> = {
+            OFF: "song",
+            QUEUE: "disable",
+            SONG: "queue",
+        };
+
+        const commandInput: Record<string, { name: string; args: string[] }> = {
+            RC_AUTOPLAY: {
+                name: "autoplay",
+                args: [isAutoPlay ? "disable" : "enable"],
+            },
+            RC_LOOP: {
+                name: "repeat",
+                args: [nextLoopMode[currentLoopMode]],
+            },
+            RC_REMOVE: {
+                name: "remove",
+                args: ["1"],
+            },
+            RC_SHUFFLE: {
+                name: "shuffle",
+                args: [isShuffle ? "disable" : "enable"],
+            },
+            RC_SKIP: {
+                name: "skip",
+                args: [],
+            },
+            RC_STOP: {
+                name: "stop",
+                args: [],
+            },
+            RC_VOL_DOWN: {
+                name: "volume",
+                args: [String(Math.max(1, currentVolume - 10))],
+            },
+            RC_VOL_UP: {
+                name: "volume",
+                args: [String(currentVolume + 10)],
+            },
+        };
+
+        if (interaction.customId === "RC_PAUSE_RESUME") {
+            commandInput.RC_PAUSE_RESUME = {
+                name: guild.queue?.playing === true ? "pause" : "resume",
+                args: [],
+            };
+        }
+
+        const input = commandInput[interaction.customId];
+        if (!input) {
             return false;
         }
 
-        const thisBotGuild = client.guilds.cache.get(guild.id) ?? guild;
-        const __mf = i18n__mf(client, thisBotGuild);
-
-        const required = this.container.utils.requiredVoters(
-            thisBotGuild.members.me?.voice.channel?.members.size ?? 0,
-        );
-
-        if (queue.skipVoters.includes(member.id)) {
-            queue.skipVoters = queue.skipVoters.filter((x) => x !== member.id);
-            await interaction.reply({
-                flags: MessageFlags.Ephemeral,
-                embeds: [
-                    createEmbed(
-                        "info",
-                        __mf("commands.music.skip.voteResultMessage", {
-                            length: queue.skipVoters.length,
-                            required,
-                        }),
-                    ),
-                ],
-            });
+        const command = interaction.client.commands.get(input.name) as
+            | { contextRun?: (ctx: CommandContext) => unknown }
+            | undefined;
+        if (!command?.contextRun) {
             return false;
         }
 
-        queue.skipVoters.push(member.id);
-        const length = queue.skipVoters.length;
+        const ctx = new CommandContext(interaction, input.args);
+        ctx.guild = guild;
+        ctx.additionalArgs.set("ephemeralRequestChannel", true);
+        ctx.additionalArgs.set("fromRequestChannelButton", true);
 
-        await interaction.reply({
-            flags: MessageFlags.Ephemeral,
-            embeds: [
-                createEmbed(
-                    "info",
-                    __mf("commands.music.skip.voteResultMessage", { length, required }),
-                ),
-            ],
-        });
-
-        return length >= required;
+        await command.contextRun(ctx);
+        return true;
     }
 
     private async handleLyricsButton(
