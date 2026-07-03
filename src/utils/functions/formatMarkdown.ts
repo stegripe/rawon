@@ -9,6 +9,10 @@ function neutralizeMarkdown(value: string): string {
         .replaceAll(/[*_~`|]/gu, (match) => `${match}${ZERO_WIDTH_BREAK}`);
 }
 
+function formatMarkdownLinkUrl(url: string): string {
+    return encodeURI(url).replaceAll("(", "%28").replaceAll(")", "%29");
+}
+
 export function formatMarkdownText(value: string): string {
     return neutralizeMarkdown(value);
 }
@@ -18,7 +22,7 @@ export function formatMarkdownLink(label: string, url: string | undefined | null
     if (!safeUrl) {
         return formatMarkdownText(label);
     }
-    return `[${formatMarkdownText(label)}](${safeUrl})`;
+    return `[${formatMarkdownText(label)}](${formatMarkdownLinkUrl(safeUrl)})`;
 }
 
 export function formatBoldMarkdownLink(label: string, url: string | undefined | null): string {
