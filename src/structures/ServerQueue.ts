@@ -23,7 +23,7 @@ import { formatBoldPrefixedCommand } from "../utils/functions/formatCodeSpan.js"
 import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
-import { checkQuery, play } from "../utils/handlers/GeneralUtil.js";
+import { play } from "../utils/handlers/GeneralUtil.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
 import {
@@ -72,6 +72,9 @@ type ChannelInfoPayload = {
 };
 
 const AUTOPLAY_HISTORY_LIMIT = 30;
+const AUTOPLAY_RECENT_REPEAT_MIN_WINDOW = 7;
+const AUTOPLAY_RECENT_REPEAT_MAX_WINDOW = 14;
+const AUTOPLAY_RESOLVE_ATTEMPTS = 5;
 
 export class ServerQueue {
     public readonly player: AudioPlayer = createAudioPlayer();
@@ -100,6 +103,7 @@ export class ServerQueue {
     private _autoplayPrefetchPromise: Promise<void> | null = null;
     private _autoplayPrefetchForKey: Snowflake | null = null;
     private _autoplayHistory: Song[] = [];
+    private _autoplayRecentRepeatWindow = this.getNextAutoplayRepeatWindow();
     private _requesterDeafTimeout: RequesterDeafTimeoutState | null = null;
     private _voiceChannelStatusState: VoiceChannelStatusState | null = null;
     private _voiceChannelStatusRestorePromise: Promise<void> | null = null;
@@ -119,6 +123,7 @@ export class ServerQueue {
             _autoplayPrefetchPromise: nonEnum,
             _autoplayPrefetchForKey: nonEnum,
             _autoplayHistory: nonEnum,
+            _autoplayRecentRepeatWindow: nonEnum,
             _requesterDeafTimeout: nonEnum,
             _voiceChannelStatusState: nonEnum,
             _voiceChannelStatusRestorePromise: nonEnum,
@@ -1322,13 +1327,54 @@ export class ServerQueue {
         this._autoplayPrefetchForKey = null;
         this._autoplayPrefetchPromise = null;
         this._autoplayHistory = [];
+        this._autoplayRecentRepeatWindow = this.getNextAutoplayRepeatWindow();
     }
 
     private recordAutoplayHistory(song: Song): void {
+        this._autoplayHistory = this._autoplayHistory.filter(
+            (historySong) => !this.isSameAutoplaySong(historySong, song),
+        );
         this._autoplayHistory.unshift(song);
         if (this._autoplayHistory.length > AUTOPLAY_HISTORY_LIMIT) {
             this._autoplayHistory.length = AUTOPLAY_HISTORY_LIMIT;
         }
+
+        this._autoplayRecentRepeatWindow = this.getNextAutoplayRepeatWindow();
+    }
+
+    private getNextAutoplayRepeatWindow(): number {
+        return (
+            Math.floor(
+                Math.random() *
+                    (AUTOPLAY_RECENT_REPEAT_MAX_WINDOW - AUTOPLAY_RECENT_REPEAT_MIN_WINDOW + 1),
+            ) + AUTOPLAY_RECENT_REPEAT_MIN_WINDOW
+        );
+    }
+
+    private isSameAutoplaySong(first: Song, second: Song): boolean {
+        const firstId = first.id?.trim();
+        const secondId = second.id?.trim();
+        if (firstId && secondId && firstId === secondId) {
+            return true;
+        }
+
+        const firstUrl = first.url?.trim();
+        const secondUrl = second.url?.trim();
+        if (firstUrl && secondUrl && firstUrl === secondUrl) {
+            return true;
+        }
+
+        const firstTitle = first.title.trim().toLowerCase();
+        const secondTitle = second.title.trim().toLowerCase();
+        const firstAuthor = first.author?.trim().toLowerCase() ?? "";
+        const secondAuthor = second.author?.trim().toLowerCase() ?? "";
+        return firstTitle.length > 0 && firstTitle === secondTitle && firstAuthor === secondAuthor;
+    }
+
+    private isRecentAutoplayRepeat(song: Song): boolean {
+        return this._autoplayHistory
+            .slice(0, this._autoplayRecentRepeatWindow)
+            .some((historySong) => this.isSameAutoplaySong(historySong, song));
     }
 
     private peekNextKey(currentSong: QueueSong): Snowflake | undefined {
@@ -1422,7 +1468,7 @@ export class ServerQueue {
 
         const prefetchedSong = this._prefetchedAutoplaySong.song;
         this._prefetchedAutoplaySong = null;
-        return prefetchedSong;
+        return this.isRecentAutoplayRepeat(prefetchedSong) ? undefined : prefetchedSong;
     }
 
     private syncShuffleUpcomingKeys(currentKey?: Snowflake): void {
@@ -1463,22 +1509,40 @@ export class ServerQueue {
     }
 
     private async resolveAutoplaySong(currentSong: QueueSong): Promise<Song | undefined> {
-        const queryData = checkQuery(currentSong.song.url);
+        this.recordAutoplayHistory(currentSong.song);
+        const rejectedSongs: Song[] = [];
 
-        try {
-            const song = await this.client.license.autoplayMusic(
-                currentSong.song,
-                this._autoplayHistory,
-                queryData.sourceType,
-            );
-            return song;
-        } catch (error) {
-            this.client.logger.debug("[ServerQueue] Auto-play resolve failed", {
-                guild: this.textChannel.guild.id,
-                source: queryData.sourceType ?? "auto",
-                title: currentSong.song.title,
-                error: error instanceof Error ? (error.stack ?? error.message) : String(error),
-            });
+        for (let attempt = 1; attempt <= AUTOPLAY_RESOLVE_ATTEMPTS; attempt++) {
+            try {
+                const song = await this.client.license.autoplayMusic(
+                    currentSong.song,
+                    [...this._autoplayHistory, ...rejectedSongs],
+                    "youtube",
+                );
+                if (!song) {
+                    return undefined;
+                }
+
+                if (!this.isRecentAutoplayRepeat(song)) {
+                    return song;
+                }
+
+                rejectedSongs.push(song);
+                this.client.logger.debug("[ServerQueue] Auto-play rejected recent repeat", {
+                    guild: this.textChannel.guild.id,
+                    attempt,
+                    title: song.title,
+                });
+            } catch (error) {
+                this.client.logger.debug("[ServerQueue] Auto-play resolve failed", {
+                    guild: this.textChannel.guild.id,
+                    source: "youtube",
+                    title: currentSong.song.title,
+                    attempt,
+                    error: error instanceof Error ? (error.stack ?? error.message) : String(error),
+                });
+                return undefined;
+            }
         }
 
         return undefined;
