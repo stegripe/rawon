@@ -355,6 +355,7 @@ export class RawonLicenseManager {
                         "X-Rawon-Bot-ID": this.client.user?.id ?? "",
                     },
                     json,
+                    dnsLookupIpVersion: 4,
                     timeout: { request: timeoutMs },
                 })
                 .json<T>();
