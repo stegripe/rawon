@@ -8,18 +8,28 @@ function positiveDuration(duration: unknown): number | null {
         : null;
 }
 
+function shouldHydrateFromPlayableUrl(song: Song): boolean {
+    const playableUrl = song.playableUrl?.trim() ?? "";
+    return playableUrl.length > 0 && playableUrl !== song.url;
+}
+
 export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Promise<Song> {
-    if (song.isLive === true || positiveDuration(song.duration) !== null) {
+    const hydrateFromPlayableUrl = shouldHydrateFromPlayableUrl(song);
+    if (
+        song.isLive === true ||
+        (!hydrateFromPlayableUrl && positiveDuration(song.duration) !== null)
+    ) {
         return song;
     }
 
-    const queryData = checkQuery(song.url);
-    if (queryData.sourceType !== "youtube") {
+    const lookupUrl = hydrateFromPlayableUrl ? (song.playableUrl as string) : song.url;
+    const queryData = checkQuery(lookupUrl);
+    if (!hydrateFromPlayableUrl && queryData.sourceType !== "youtube") {
         return song;
     }
 
     try {
-        const resolved = await client.license.resolveMusic(song.url);
+        const resolved = await client.license.resolveMusic(lookupUrl);
         if (resolved && resolved.items.length > 0) {
             const info = resolved.items[0];
             const duration = positiveDuration(info.duration);
@@ -28,7 +38,9 @@ export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Pro
                 ...song,
                 duration: info.isLive ? 0 : (duration ?? song.duration),
                 id: info.id || song.id,
-                thumbnail: song.thumbnail || info.thumbnail,
+                thumbnail: hydrateFromPlayableUrl
+                    ? info.thumbnail || song.thumbnail
+                    : song.thumbnail || info.thumbnail,
                 title: song.title || info.title,
                 url: song.url || info.url,
                 isLive: info.isLive || song.isLive,
