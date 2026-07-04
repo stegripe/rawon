@@ -40,6 +40,10 @@ import {
 } from "../utils/typeGuards.js";
 import { type Rawon } from "./Rawon.js";
 
+function getPlayableSongUrl(song: Song): string {
+    return song.playableUrl?.trim() || song.url;
+}
+
 const nonEnum = { enumerable: false };
 
 export type RequesterDeafTimeoutReason = "deaf" | "left";
@@ -653,7 +657,7 @@ export class ServerQueue {
         if (before !== state && this.player.state.status === AudioPlayerStatus.Playing) {
             const resource = (this.player.state as AudioPlayerPlayingState).resource;
             const currentSong = (resource as AudioResource<QueueSong>).metadata;
-            const songUrl = currentSong.song.url;
+            const songUrl = getPlayableSongUrl(currentSong.song);
             const isLive = currentSong.song.isLive ?? false;
 
             if (isLive || !this.resolvedEnableAudioCache) {
@@ -1285,7 +1289,7 @@ export class ServerQueue {
                 if (!nextSong || nextSong.song.isLive) {
                     continue;
                 }
-                songsToCache.push(nextSong.song.url);
+                songsToCache.push(getPlayableSongUrl(nextSong.song));
             }
         } else {
             const sortedSongs = this.songs.sortByIndex();
@@ -1294,19 +1298,23 @@ export class ServerQueue {
             ).slice(0, PRE_CACHE_AHEAD);
 
             for (const song of nextSongsArray) {
-                songsToCache.push(song.song.url);
+                songsToCache.push(getPlayableSongUrl(song.song));
             }
 
             if (songsToCache.length < PRE_CACHE_AHEAD && this.loopMode === "QUEUE") {
                 const remaining = PRE_CACHE_AHEAD - songsToCache.length;
                 const fromStartArray = Array.from(
                     sortedSongs
-                        .filter((s) => !s.song.isLive && !songsToCache.includes(s.song.url))
+                        .filter(
+                            (s) =>
+                                !s.song.isLive &&
+                                !songsToCache.includes(getPlayableSongUrl(s.song)),
+                        )
                         .values(),
                 ).slice(0, remaining);
 
                 for (const song of fromStartArray) {
-                    songsToCache.push(song.song.url);
+                    songsToCache.push(getPlayableSongUrl(song.song));
                 }
             }
         }

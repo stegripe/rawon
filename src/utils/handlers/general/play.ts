@@ -31,6 +31,10 @@ import {
 } from "../YTDLUtil.js";
 import { hydrateYouTubeSongMetadata } from "./hydrateSongMetadata.js";
 
+function getPlayableSongUrl(song: { url: string; playableUrl?: string }): string {
+    return song.playableUrl?.trim() || song.url;
+}
+
 function isPrematureCloseError(error: unknown): boolean {
     return (
         String(error ?? "").includes("Premature close") ||
@@ -131,7 +135,7 @@ export async function play(
     try {
         const streamResult = await getStream(
             queue.client,
-            song.song.url,
+            getPlayableSongUrl(song.song),
             song.song.isLive,
             seekSeconds,
         );

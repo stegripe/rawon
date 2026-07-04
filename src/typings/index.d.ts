@@ -153,6 +153,7 @@ export type Song = {
     title: string;
     author?: string;
     url: string;
+    playableUrl?: string;
     id: string;
     isLive?: boolean;
 };
