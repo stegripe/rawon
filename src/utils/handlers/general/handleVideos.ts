@@ -237,14 +237,15 @@ export async function handleVideos(
         if (toQueue.length === 1) {
             const song = toQueue[0];
             const songUrl = song.url;
+            const thumbnail = song.thumbnail || playlistMeta?.thumbnail;
             const confirmEmbed = createEmbed(
                 "success",
                 `🎶 **|** ${__mf("requestChannel.addedToQueue", {
                     song: formatBoldMarkdownLink(song.title, songUrl),
                 })}`,
             );
-            if (song.thumbnail) {
-                confirmEmbed.setThumbnail(song.thumbnail);
+            if (thumbnail) {
+                confirmEmbed.setThumbnail(thumbnail);
             }
             const msg = await sendOrEditConfirmation(confirmEmbed);
 
