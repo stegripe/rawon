@@ -121,6 +121,22 @@ export async function handleVideos(
     async function sendConfirmation(): Promise<Message | undefined> {
         const queue = ctx.guild?.queue;
         const member = ctx.member as NonNullable<typeof ctx.member>;
+        const existingProgressMessage = ctx.additionalArgs.get("playlistProgressMessage") as
+            | Message
+            | undefined;
+        const sendOrEditConfirmation = async (embed: ReturnType<typeof createEmbed>) => {
+            if (existingProgressMessage) {
+                const edited = await existingProgressMessage
+                    .edit({ embeds: [embed], allowedMentions: { repliedUser: false } })
+                    .then((message) => message as Message)
+                    .catch(() => undefined);
+                if (edited) {
+                    return edited;
+                }
+            }
+
+            return ctx.reply({ embeds: [embed], allowedMentions: { repliedUser: false } }, true);
+        };
         const showPlaylistProgress = shouldShowPlaylistProgress(
             toQueue.length,
             playlistMeta !== undefined,
@@ -144,9 +160,6 @@ export async function handleVideos(
                 progressEmbed.setFooter({ text: `📁 ${playlistMeta?.author}` });
             }
 
-            const existingProgressMessage = ctx.additionalArgs.get("playlistProgressMessage") as
-                | Message
-                | undefined;
             let msg: Message | undefined = existingProgressMessage
                 ? await existingProgressMessage
                       .edit({ embeds: [progressEmbed], allowedMentions: { repliedUser: false } })
@@ -233,10 +246,7 @@ export async function handleVideos(
             if (song.thumbnail) {
                 confirmEmbed.setThumbnail(song.thumbnail);
             }
-            const msg = await ctx.reply(
-                { embeds: [confirmEmbed], allowedMentions: { repliedUser: false } },
-                true,
-            );
+            const msg = await sendOrEditConfirmation(confirmEmbed);
 
             if (inRequestChannel && msg) {
                 autoDeleteMessage(msg);
@@ -270,10 +280,7 @@ export async function handleVideos(
                 });
             }
 
-            const msg = await ctx.reply(
-                { embeds: [confirmEmbed], allowedMentions: { repliedUser: false } },
-                true,
-            );
+            const msg = await sendOrEditConfirmation(confirmEmbed);
 
             if (inRequestChannel && msg) {
                 autoDeleteMessage(msg);
