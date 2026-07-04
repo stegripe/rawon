@@ -34,6 +34,15 @@ function isYouTubeSong(song: Song): boolean {
     return isYouTubeVideoId(song.id?.trim() ?? "");
 }
 
+function isYouTubeMusicUrl(rawUrl: string): boolean {
+    try {
+        const parsed = new URL(rawUrl);
+        return parsed.hostname === "music.youtube.com";
+    } catch {
+        return false;
+    }
+}
+
 function isGoogleImageHost(hostname: string): boolean {
     return (
         GOOGLE_IMAGE_HOST_PATTERN.test(hostname) || GOOGLE_PROFILE_IMAGE_HOST_PATTERN.test(hostname)
@@ -54,6 +63,26 @@ function resolveYouTubeSongThumbnail(videoId: string, existingThumbnail: string)
     return getYouTubeThumbnail(videoId);
 }
 
+function resolveYouTubeMusicSongThumbnail(existingThumbnail: string): string {
+    const existing = existingThumbnail.trim();
+    if (existing.length === 0) {
+        return existing;
+    }
+
+    try {
+        const parsed = new URL(existing);
+        if (isGoogleImageHost(parsed.hostname)) {
+            return getSquareGoogleThumbnail(parsed);
+        }
+
+        if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+            return existing;
+        }
+    } catch {}
+
+    return existing;
+}
+
 function getSquareGoogleThumbnail(url: URL): string {
     const basePath = url.pathname.replace(/=([^/]*)$/u, "");
     url.pathname = `${basePath}=s${GOOGLE_THUMBNAIL_SIZE}`;
@@ -68,7 +97,9 @@ export function normalizeLicensedSong<T extends Song>(song: T): T {
         (isYouTube && id.length > 0 ? canonicalYouTubeWatchUrl(id) : (song.url ?? ""));
     let resolvedThumbnail = getMediumResThumbnail(song.thumbnail);
     if (isYouTube && id.length > 0) {
-        resolvedThumbnail = resolveYouTubeSongThumbnail(id, song.thumbnail ?? "");
+        resolvedThumbnail = isYouTubeMusicUrl(resolvedUrl)
+            ? resolveYouTubeMusicSongThumbnail(song.thumbnail ?? "")
+            : resolveYouTubeSongThumbnail(id, song.thumbnail ?? "");
     }
 
     if (resolvedUrl === song.url && resolvedThumbnail === song.thumbnail) {
