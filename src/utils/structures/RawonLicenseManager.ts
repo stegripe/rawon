@@ -20,10 +20,14 @@ type RawonCredentialsPayload = {
     youtube_cookies?: string;
 };
 
+type RawonSongResponse = Song & {
+    playable_url?: string;
+};
+
 type RawonSearchResponse = {
     success: boolean;
     type?: "results" | "selection";
-    items?: Song[];
+    items?: RawonSongResponse[];
     playlist?: RawonPlaylistMetadataResponse;
     message?: string;
     error?: string;
@@ -31,8 +35,8 @@ type RawonSearchResponse = {
 
 type RawonResolveResponse = {
     success: boolean;
-    song?: Song;
-    items?: Song[];
+    song?: RawonSongResponse;
+    items?: RawonSongResponse[];
     playlist?: RawonPlaylistMetadataResponse;
     message?: string;
     error?: string;
@@ -40,7 +44,7 @@ type RawonResolveResponse = {
 
 type RawonAutoplayResponse = {
     success: boolean;
-    song?: Song;
+    song?: RawonSongResponse;
     message?: string;
     error?: string;
 };
@@ -160,7 +164,7 @@ export class RawonLicenseManager {
 
         return normalizeSearchTrackThumbnails({
             type: response.type,
-            items: response.items ?? [],
+            items: this.mapSongs(response.items ?? []),
             playlist: this.mapPlaylistMetadata(response.playlist),
         });
     }
@@ -175,7 +179,7 @@ export class RawonLicenseManager {
             60_000,
         );
 
-        const items = response.items ?? (response.song ? [response.song] : []);
+        const items = this.mapSongs(response.items ?? (response.song ? [response.song] : []));
         if (!response.success || items.length === 0) {
             throw new Error(response.error ?? response.message ?? "Licensed resolve failed.");
         }
@@ -209,8 +213,23 @@ export class RawonLicenseManager {
 
         return normalizeSearchTrackThumbnails({
             type: "results",
-            items: [response.song],
+            items: this.mapSongs([response.song]),
         }).items[0];
+    }
+
+    private mapSongs(items: RawonSongResponse[]): Song[] {
+        return items.map((song) => {
+            const playableUrl = song.playableUrl ?? song.playable_url;
+            if (!playableUrl) {
+                return song;
+            }
+
+            const { playable_url: _playableUrl, ...rest } = song;
+            return {
+                ...rest,
+                playableUrl,
+            };
+        });
     }
 
     private async validateRemoteLicense(): Promise<boolean> {
