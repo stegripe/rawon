@@ -388,6 +388,17 @@ export class RawonLicenseManager {
                 retryable: payload?.retryable === true,
             };
         }
+        const bodyMessage = this.formatNonJsonErrorBody(body);
+        if (bodyMessage) {
+            return {
+                message: response?.statusCode
+                    ? `${fallback} HTTP ${response.statusCode}: ${bodyMessage}`
+                    : `${fallback} ${bodyMessage}`,
+                statusCode: response?.statusCode ?? null,
+                errorCode: payload?.error_code ?? null,
+                retryable: (response?.statusCode ?? 0) >= 500,
+            };
+        }
         if (error instanceof Error && error.message) {
             return {
                 message: error.message,
@@ -427,6 +438,19 @@ export class RawonLicenseManager {
         } catch {
             return null;
         }
+    }
+
+    private formatNonJsonErrorBody(body: unknown): string | null {
+        if (typeof body !== "string") {
+            return null;
+        }
+
+        const trimmed = body.trim().replace(/\s+/gu, " ");
+        if (!trimmed) {
+            return null;
+        }
+
+        return trimmed.length > 240 ? `${trimmed.slice(0, 240)}...` : trimmed;
     }
 
     private setBlocked(
