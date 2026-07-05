@@ -13,6 +13,11 @@ function shouldHydrateFromPlayableUrl(song: Song): boolean {
     return playableUrl.length > 0 && playableUrl !== song.url;
 }
 
+function ytSearchQuery(value: string): string | null {
+    const match = /^ytsearch\d*:(.+)$/iu.exec(value.trim());
+    return match?.[1]?.trim() || null;
+}
+
 export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Promise<Song> {
     const hydrateFromPlayableUrl = shouldHydrateFromPlayableUrl(song);
     if (
@@ -29,7 +34,10 @@ export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Pro
     }
 
     try {
-        const resolved = await client.license.resolveMusic(lookupUrl);
+        const query = hydrateFromPlayableUrl ? ytSearchQuery(lookupUrl) : null;
+        const resolved = query
+            ? await client.license.searchMusic(query, "youtube")
+            : await client.license.resolveMusic(lookupUrl);
         if (resolved && resolved.items.length > 0) {
             const info = resolved.items[0];
             const duration = positiveDuration(info.duration);
