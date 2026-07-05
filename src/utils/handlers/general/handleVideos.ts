@@ -360,7 +360,8 @@ export async function handleVideos(
         });
     }
 
-    (ctx.guild as NonNullable<typeof ctx.guild>).queue = new ServerQueue(queueTextChannel);
+    const serverQueue = new ServerQueue(queueTextChannel);
+    (ctx.guild as NonNullable<typeof ctx.guild>).queue = serverQueue;
     await sendConfirmation();
 
     client.debugLog.logData(
@@ -394,8 +395,7 @@ export async function handleVideos(
             client.logger.debug(message);
         });
 
-        (ctx.guild?.queue as NonNullable<NonNullable<typeof ctx.guild>["queue"]>).connection =
-            connection;
+        serverQueue.connection = connection;
 
         client.debugLog.logData(
             "info",

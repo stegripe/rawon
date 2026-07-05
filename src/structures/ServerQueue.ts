@@ -1438,7 +1438,7 @@ export class ServerQueue {
             };
 
             if (!autoPlaySong.isLive) {
-                await this.client.audioCache.preCacheUrl(autoPlaySong.url, true);
+                await this.client.audioCache.preCacheUrl(getPlayableSongUrl(autoPlaySong), true);
             }
         })();
 

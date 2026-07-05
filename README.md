@@ -14,7 +14,7 @@
 ## Features
 - Production-ready, no coding required
 - Request channel feature for seamless music experience
-- Support for YouTube, Spotify, SoundCloud, and direct files
+- Support for YouTube Music, Spotify, SoundCloud, and direct files
 - Run multiple bot instances for different voice channels
 - Smart audio pre-caching for smoother playback
 - Built-in Google login via Puppeteer for cookie management
