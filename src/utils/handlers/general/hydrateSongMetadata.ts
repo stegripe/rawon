@@ -1,6 +1,5 @@
 import { type Rawon } from "../../../structures/Rawon.js";
 import { type Song } from "../../../typings/index.js";
-import { checkQuery } from "./checkQuery.js";
 
 function positiveDuration(duration: unknown): number | null {
     return typeof duration === "number" && Number.isFinite(duration) && duration > 0
@@ -13,47 +12,32 @@ function shouldHydrateFromPlayableUrl(song: Song): boolean {
     return playableUrl.length > 0 && playableUrl !== song.url;
 }
 
-function ytSearchQuery(value: string): string | null {
-    const match = /^ytsearch\d*:(.+)$/iu.exec(value.trim());
-    return match?.[1]?.trim() || null;
+function hasYouTubeVideoThumbnail(song: Song): boolean {
+    const thumbnail = song.thumbnail?.trim() ?? "";
+    if (!thumbnail) {
+        return false;
+    }
+
+    try {
+        const parsed = new URL(thumbnail);
+        return ["img.youtube.com", "i.ytimg.com"].includes(parsed.hostname);
+    } catch {
+        return false;
+    }
 }
 
 export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Promise<Song> {
-    const hydrateFromPlayableUrl = shouldHydrateFromPlayableUrl(song);
     if (
         song.isLive === true ||
-        (!hydrateFromPlayableUrl && positiveDuration(song.duration) !== null)
+        (!shouldHydrateFromPlayableUrl(song) &&
+            !hasYouTubeVideoThumbnail(song) &&
+            positiveDuration(song.duration) !== null)
     ) {
         return song;
     }
 
-    const lookupUrl = hydrateFromPlayableUrl ? (song.playableUrl as string) : song.url;
-    const queryData = checkQuery(lookupUrl);
-    if (!hydrateFromPlayableUrl && queryData.sourceType !== "youtube") {
-        return song;
-    }
-
     try {
-        const query = hydrateFromPlayableUrl ? ytSearchQuery(lookupUrl) : null;
-        const resolved = query
-            ? await client.license.searchMusic(query, "youtube")
-            : await client.license.resolveMusic(lookupUrl);
-        if (resolved && resolved.items.length > 0) {
-            const info = resolved.items[0];
-            const duration = positiveDuration(info.duration);
-
-            return {
-                ...song,
-                duration: info.isLive ? 0 : (duration ?? song.duration),
-                id: info.id || song.id,
-                thumbnail: hydrateFromPlayableUrl
-                    ? info.thumbnail || song.thumbnail
-                    : song.thumbnail || info.thumbnail,
-                title: song.title || info.title,
-                url: song.url || info.url,
-                isLive: info.isLive || song.isLive,
-            };
-        }
+        return (await client.license.hydrateMusicMetadata(song)) ?? song;
     } catch (error) {
         client.logger.debug("[hydrateSongMetadata] stegripe-api metadata lookup failed", {
             id: song.id,

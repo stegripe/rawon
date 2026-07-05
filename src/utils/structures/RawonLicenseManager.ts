@@ -49,6 +49,13 @@ type RawonAutoplayResponse = {
     error?: string;
 };
 
+type RawonMetadataResponse = {
+    success: boolean;
+    song?: RawonSongResponse;
+    message?: string;
+    error?: string;
+};
+
 type RawonValidateResponse = {
     success: boolean;
     message?: string;
@@ -205,6 +212,26 @@ export class RawonLicenseManager {
                 credentials: this.buildCredentials(),
             },
             60_000,
+        );
+
+        if (!response.success || !response.song) {
+            return undefined;
+        }
+
+        return normalizeSearchTrackThumbnails({
+            type: "results",
+            items: this.mapSongs([response.song]),
+        }).items[0];
+    }
+
+    public async hydrateMusicMetadata(song: Song): Promise<Song | undefined> {
+        const response = await this.postProtected<RawonMetadataResponse>(
+            "/api/v1/rawon/music/metadata",
+            {
+                song,
+                credentials: this.buildCredentials(),
+            },
+            30_000,
         );
 
         if (!response.success || !response.song) {
