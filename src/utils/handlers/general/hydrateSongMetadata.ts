@@ -26,11 +26,21 @@ function hasYouTubeVideoThumbnail(song: Song): boolean {
     }
 }
 
+function hasSpotifyDisplayUrl(song: Song): boolean {
+    try {
+        const parsed = new URL(song.url?.trim() ?? "");
+        return parsed.hostname.endsWith("spotify.com");
+    } catch {
+        return false;
+    }
+}
+
 export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Promise<Song> {
     if (
         song.isLive === true ||
         (!shouldHydrateFromPlayableUrl(song) &&
             !hasYouTubeVideoThumbnail(song) &&
+            !hasSpotifyDisplayUrl(song) &&
             positiveDuration(song.duration) !== null)
     ) {
         return song;

@@ -25,8 +25,19 @@ export function checkQuery(string: string): QueryData {
 
         const isYouTube = /youtube/gu.test(url.hostname);
         const isYouTuBe = /youtu\.be/gu.test(url.hostname);
+        const isYouTubeMusic = url.hostname === "music.youtube.com";
 
-        if ((!isYouTuBe && url.pathname.startsWith("/playlist")) || url.searchParams.has("list")) {
+        if (
+            isYouTubeMusic &&
+            (url.pathname.startsWith("/@") ||
+                url.pathname.startsWith("/channel/") ||
+                url.pathname.startsWith("/browse/"))
+        ) {
+            result.type = "artist";
+        } else if (
+            (!isYouTuBe && url.pathname.startsWith("/playlist")) ||
+            url.searchParams.has("list")
+        ) {
             result.type = "playlist";
         } else if (
             (isYouTube &&
