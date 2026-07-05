@@ -277,18 +277,18 @@ function createTarget(
 }
 
 function compareCandidates(a: Candidate, b: Candidate, originGuildId: Snowflake | null): number {
-    const aIsOrigin = originGuildId !== null && a.guild.id === originGuildId;
-    const bIsOrigin = originGuildId !== null && b.guild.id === originGuildId;
-    if (aIsOrigin !== bIsOrigin) {
-        return aIsOrigin ? -1 : 1;
-    }
-
     if (a.isQueuePlaying !== b.isQueuePlaying) {
         return a.isQueuePlaying ? -1 : 1;
     }
 
     if (a.hasQueueForVoiceChannel !== b.hasQueueForVoiceChannel) {
         return a.hasQueueForVoiceChannel ? -1 : 1;
+    }
+
+    const aIsOrigin = originGuildId !== null && a.guild.id === originGuildId;
+    const bIsOrigin = originGuildId !== null && b.guild.id === originGuildId;
+    if (aIsOrigin !== bIsOrigin) {
+        return aIsOrigin ? -1 : 1;
     }
 
     if (a.tokenIndex !== b.tokenIndex) {
