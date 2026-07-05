@@ -247,6 +247,9 @@ export async function handleVideos(
             if (thumbnail) {
                 confirmEmbed.setThumbnail(thumbnail);
             }
+            if ((playlistMeta?.author?.length ?? 0) > 0) {
+                confirmEmbed.setFooter({ text: `📁 ${playlistMeta?.author}` });
+            }
             const msg = await sendOrEditConfirmation(confirmEmbed);
 
             if (inRequestChannel && msg) {
