@@ -37,7 +37,7 @@
         "@swc/cli": "0.8.1",
         "@swc/core": "1.15.43",
         "@types/better-sqlite3": "^7.6.13",
-        "better-sqlite3": "^12.11.1",
+        "better-sqlite3": "^13.0.1",
         "date-fns": "4.4.0",
         "discord.js": "14.26.4",
         "dotenv": "17.4.2",
