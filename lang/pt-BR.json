@@ -54,6 +54,27 @@
                 "gettingStartedText": "Use {loginCmd} para fazer login no Google e gerar cookies automaticamente.",
                 "statsTitle": "Estatísticas"
             },
+            "dbExport": {
+                "description": "Exportar todo o banco de dados para um arquivo JSON",
+                "success": "Banco de dados exportado com sucesso!",
+                "totalRecords": "Total de registros",
+                "savedTo": "Também salvo em: `{path}`",
+                "failed": "Falha ao exportar o banco de dados: {error}"
+            },
+            "dbImport": {
+                "description": "Importar o banco de dados de um arquivo JSON",
+                "usage": "{prefix}db-import [anexo | url | nome do arquivo]",
+                "slashFileDescription": "O arquivo JSON para importar",
+                "slashUrlDescription": "URL para o arquivo JSON (ou nome do arquivo na pasta data)",
+                "provideJson": "Por favor, forneça um arquivo JSON.",
+                "provideJsonHint": "Por favor, forneça um arquivo JSON via anexo, URL ou nome do arquivo na pasta data.",
+                "invalidFormat": "Formato de exportação de banco de dados inválido.",
+                "success": "Banco de dados importado com sucesso!",
+                "totalRecords": "Total de registros",
+                "exportDate": "Data de exportação",
+                "version": "Versão",
+                "failed": "Falha ao importar o banco de dados: {error}"
+            },
             "setup": {
                 "description": "Configurar definições do bot (apenas desenvolvedores)",
                 "usage": "{prefix}setup <definição> [valor]",

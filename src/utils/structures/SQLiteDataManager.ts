@@ -822,6 +822,76 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         });
     }
 
+    public exportAllTables(): Record<string, unknown[]> {
+        const tables = this.db
+            .prepare(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
+            )
+            .all() as { name: string }[];
+
+        const result: Record<string, unknown[]> = {};
+        for (const { name } of tables) {
+            result[name] = this.db.prepare(`SELECT * FROM "${name}"`).all();
+        }
+        return result;
+    }
+
+    public importAllTables(tables: Record<string, unknown[]>): {
+        stats: Record<string, number>;
+        total: number;
+    } {
+        const stats: Record<string, number> = {};
+        let total = 0;
+
+        const existingTables = new Set(
+            (
+                this.db
+                    .prepare(
+                        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
+                    )
+                    .all() as { name: string }[]
+            ).map((t) => t.name),
+        );
+
+        const transaction = this.db.transaction(() => {
+            for (const [tableName, rows] of Object.entries(tables)) {
+                if (!existingTables.has(tableName) || !Array.isArray(rows) || rows.length === 0) {
+                    continue;
+                }
+
+                const columns = (
+                    this.db.prepare(`PRAGMA table_info("${tableName}")`).all() as {
+                        name: string;
+                    }[]
+                ).map((c) => c.name);
+
+                const placeholders = columns.map(() => "?").join(", ");
+                const updateSet = columns.map((c) => `"${c}" = excluded."${c}"`).join(", ");
+                const stmt = this.db.prepare(
+                    `INSERT INTO "${tableName}" (${columns.map((c) => `"${c}"`).join(", ")}) VALUES (${placeholders}) ON CONFLICT DO UPDATE SET ${updateSet}`,
+                );
+
+                let count = 0;
+                for (const row of rows) {
+                    const record = row as Record<string, unknown>;
+                    const values = columns.map((c) => record[c] ?? null);
+                    try {
+                        stmt.run(...values);
+                        count++;
+                    } catch {}
+                }
+                stats[tableName] = count;
+                total += count;
+            }
+        });
+
+        transaction();
+        this.loadBotSettings();
+        void this.load();
+
+        return { stats, total };
+    }
+
     public close(): void {
         this.db.close();
     }
