@@ -75,6 +75,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 client.user?.setPresence({
                     activities: primaryPresence.activities.map((activity) => ({
                         name: activity.name,
+                        state: activity.state ?? undefined,
                         type: activity.type,
                         url: activity.url ?? undefined,
                     })),
@@ -686,6 +687,9 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 if (a.type === "Competing") {
                     type = ActivityType.Competing;
                 }
+                if (a.type === "Custom") {
+                    type = ActivityType.Custom;
+                }
                 if (a.type === "Watching") {
                     type = ActivityType.Watching;
                 }
@@ -731,6 +735,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                                 await client.user?.setPresence({
                                     activities: primaryPresence.activities.map((activity) => ({
                                         name: activity.name,
+                                        state: activity.state ?? undefined,
                                         type: activity.type,
                                         url: activity.url ?? undefined,
                                     })),
