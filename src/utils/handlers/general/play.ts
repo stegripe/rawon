@@ -12,7 +12,7 @@ import {
 } from "@discordjs/voice";
 import { ChannelType, type Guild, MessageFlags } from "discord.js";
 import prism from "prism-media";
-import { createEmbed } from "../../functions/createEmbed.js";
+import { createEmbed, safeThumbUrl } from "../../functions/createEmbed.js";
 import { ffmpegArgs } from "../../functions/ffmpegArgs.js";
 import {
     formatBoldPrefixedCommand,
@@ -387,7 +387,7 @@ export async function play(
                             `🔄 **|** ${__mf("utils.generalHandler.songRequeued", {
                                 song: formatBoldMarkdownLink(song.song.title, song.song.url),
                             })}`,
-                        ).setThumbnail(song.song.thumbnail),
+                        ).setThumbnail(safeThumbUrl(song.song.thumbnail)),
                     ],
                 });
                 setTimeout(() => {

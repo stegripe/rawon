@@ -188,7 +188,9 @@ export async function getStream(
             const stream = got.stream(url, {
                 throwHttpErrors: false,
                 timeout: {
-                    request: 15_000,
+                    lookup: 5_000,
+                    connect: 5_000,
+                    response: 15_000,
                 },
             });
 
