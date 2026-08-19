@@ -78,7 +78,7 @@ export const lang = formatLocale(process.env.LOCALE) || "en-US";
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
-        type: (toCapitalCase(parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]) ||
+        type: (toCapitalCase(parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i] ?? "") ||
             "Playing") as EnvActivityTypes,
     })),
     status: ["online"] as ClientPresenceStatus[],
