@@ -54,6 +54,27 @@
                 "gettingStartedText": "Dùng {loginCmd} để đăng nhập vào Google và tạo cookies tự động.",
                 "statsTitle": "Thống Kê"
             },
+            "dbExport": {
+                "description": "Xuất toàn bộ cơ sở dữ liệu ra tệp JSON",
+                "success": "Xuất cơ sở dữ liệu thành công!",
+                "totalRecords": "Tổng số bản ghi",
+                "savedTo": "Cũng được lưu tại: `{path}`",
+                "failed": "Xuất cơ sở dữ liệu thất bại: {error}"
+            },
+            "dbImport": {
+                "description": "Nhập cơ sở dữ liệu từ tệp JSON",
+                "usage": "{prefix}db-import [tệp đính kèm | url | tên tệp]",
+                "slashFileDescription": "Tệp JSON để nhập",
+                "slashUrlDescription": "URL đến tệp JSON (hoặc tên tệp trong thư mục data)",
+                "provideJson": "Vui lòng cung cấp một tệp JSON.",
+                "provideJsonHint": "Vui lòng cung cấp tệp JSON qua tệp đính kèm, URL hoặc tên tệp trong thư mục data.",
+                "invalidFormat": "Định dạng xuất cơ sở dữ liệu không hợp lệ.",
+                "success": "Nhập cơ sở dữ liệu thành công!",
+                "totalRecords": "Tổng số bản ghi",
+                "exportDate": "Ngày xuất",
+                "version": "Phiên bản",
+                "failed": "Nhập cơ sở dữ liệu thất bại: {error}"
+            },
             "setup": {
                 "description": "Cấu hình cài đặt bot (chỉ dành cho nhà phát triển)",
                 "usage": "{prefix}setup <cài đặt> [giá trị]",

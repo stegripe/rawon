@@ -54,6 +54,27 @@
                 "gettingStartedText": "Pake {loginCmd} buat login ke Google dan generate cookies otomatis.",
                 "statsTitle": "Statistik"
             },
+            "dbExport": {
+                "description": "Ekspor semua database ke file JSON",
+                "success": "Database sukses diekspor!",
+                "totalRecords": "Total Data",
+                "savedTo": "Juga kesimpen di: `{path}`",
+                "failed": "Gagal ekspor database: {error}"
+            },
+            "dbImport": {
+                "description": "Impor database dari file JSON",
+                "usage": "{prefix}db-import [lampiran | url | nama file]",
+                "slashFileDescription": "File JSON yang mau diimpor",
+                "slashUrlDescription": "URL ke file JSON (atau nama file di folder data)",
+                "provideJson": "Kasih file JSON dong.",
+                "provideJsonHint": "Kasih file JSON lewat lampiran, URL, atau nama file di folder data.",
+                "invalidFormat": "Format ekspor database-nya gak valid.",
+                "success": "Database sukses diimpor!",
+                "totalRecords": "Total Data",
+                "exportDate": "Tanggal Ekspor",
+                "version": "Versi",
+                "failed": "Gagal impor database: {error}"
+            },
             "setup": {
                 "description": "Set settingan bot (khusus developer)",
                 "usage": "{prefix}setup <setting> [value]",

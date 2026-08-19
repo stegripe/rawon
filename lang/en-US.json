@@ -54,6 +54,27 @@
                 "gettingStartedText": "Use {loginCmd} to log in to Google and generate cookies automatically.",
                 "statsTitle": "Statistics"
             },
+            "dbExport": {
+                "description": "Export the entire database to a JSON file",
+                "success": "Database exported successfully!",
+                "totalRecords": "Total Records",
+                "savedTo": "Also saved to: `{path}`",
+                "failed": "Failed to export database: {error}"
+            },
+            "dbImport": {
+                "description": "Import the database from a JSON file",
+                "usage": "{prefix}db-import [attachment | url | filename]",
+                "slashFileDescription": "The JSON file to import",
+                "slashUrlDescription": "URL to the JSON file (or filename in data folder)",
+                "provideJson": "Please provide a JSON file.",
+                "provideJsonHint": "Please provide a JSON file via attachment, URL, or filename in data folder.",
+                "invalidFormat": "Invalid database export format.",
+                "success": "Database imported successfully!",
+                "totalRecords": "Total Records",
+                "exportDate": "Export Date",
+                "version": "Version",
+                "failed": "Failed to import database: {error}"
+            },
             "setup": {
                 "description": "Configure bot settings (developer only)",
                 "usage": "{prefix}setup <setting> [value]",

@@ -54,6 +54,27 @@
                 "gettingStartedText": "{loginCmd}로 Google에 로그인하고 쿠키를 자동 생성하세요.",
                 "statsTitle": "통계"
             },
+            "dbExport": {
+                "description": "전체 데이터베이스를 JSON 파일로 내보내기",
+                "success": "데이터베이스를 성공적으로 내보냈습니다!",
+                "totalRecords": "총 레코드 수",
+                "savedTo": "저장 위치: `{path}`",
+                "failed": "데이터베이스 내보내기 실패: {error}"
+            },
+            "dbImport": {
+                "description": "JSON 파일에서 데이터베이스 가져오기",
+                "usage": "{prefix}db-import [첨부파일 | URL | 파일명]",
+                "slashFileDescription": "가져올 JSON 파일",
+                "slashUrlDescription": "JSON 파일의 URL (또는 data 폴더의 파일명)",
+                "provideJson": "JSON 파일을 제공해 주세요.",
+                "provideJsonHint": "첨부파일, URL 또는 data 폴더의 파일명으로 JSON 파일을 제공해 주세요.",
+                "invalidFormat": "잘못된 데이터베이스 내보내기 형식입니다.",
+                "success": "데이터베이스를 성공적으로 가져왔습니다!",
+                "totalRecords": "총 레코드 수",
+                "exportDate": "내보내기 날짜",
+                "version": "버전",
+                "failed": "데이터베이스 가져오기 실패: {error}"
+            },
             "setup": {
                 "description": "봇 설정 구성 (개발자 전용)",
                 "usage": "{prefix}setup <설정> [값]",
