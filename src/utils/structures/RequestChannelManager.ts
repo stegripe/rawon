@@ -30,7 +30,7 @@ import {
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
-import { formatMarkdownLink } from "../functions/formatMarkdown.js";
+
 import { getMaxResThumbnail } from "../functions/getMaxResThumbnail.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
@@ -529,7 +529,16 @@ export class RequestChannelManager {
                 durationLine = `${statusEmoji} ${__("requestChannel.songDuration")}: **\`${songDurationStr}\`**`;
             }
 
-            mainText = `### ${formatMarkdownLink(song.title, song.url)}\n\n${durationLine}`;
+            const linkLabel = (song.title ?? "")
+                .replace(/\p{Extended_Pictographic}/gu, "")
+                .replaceAll("[", "\u200b[")
+                .replaceAll("]", "]\u200b")
+                .replace(/\s{2,}/gu, " ")
+                .trim();
+            const linkUrl = encodeURI(song.url ?? "")
+                .replaceAll("(", "%28")
+                .replaceAll(")", "%29");
+            mainText = `### [${linkLabel || (song.title ?? "")}](${linkUrl})\n\n${durationLine}`;
         } else {
             const standbyLine = `${statusEmoji} ${__("requestChannel.standby")}`;
             mainText = standbyLine;

@@ -4,8 +4,8 @@ const ZERO_WIDTH_BREAK = "\u200b";
 
 function neutralizeMarkdown(value: string): string {
     return parseHTMLElements(`${value}`)
-        .replaceAll("[", "\uff3b")
-        .replaceAll("]", "\uff3d")
+        .replaceAll("[", `${ZERO_WIDTH_BREAK}[`)
+        .replaceAll("]", `]${ZERO_WIDTH_BREAK}`)
         .replaceAll(/[*_~`|]/gu, (match) => `${match}${ZERO_WIDTH_BREAK}`);
 }
 

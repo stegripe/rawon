@@ -137,13 +137,16 @@ export class PlayCommand extends ContextCommand {
         const queryCheck = checkQuery(query ?? "");
         const isCollectionQuery = queryCheck.type === "playlist" || queryCheck.type === "artist";
 
+        const resolvingMsg = isCollectionQuery
+            ? __mf("requestChannel.resolvingPlaylist")
+            : __mf("requestChannel.resolvingSong");
+        const resolvingEmbed = createEmbed("info", `🔍 **|** ${resolvingMsg}`);
+
+        let progressMessage: Message | undefined;
         if (localCtx.deferred) {
-            const resolvingMsg = isCollectionQuery
-                ? __mf("requestChannel.resolvingPlaylist")
-                : __mf("requestChannel.resolvingSong");
-            await localCtx.editReply({
-                embeds: [createEmbed("info", `🔍 **|** ${resolvingMsg}`)],
-            });
+            await localCtx.editReply({ embeds: [resolvingEmbed] });
+        } else {
+            progressMessage = await ctx.reply({ embeds: [resolvingEmbed] }).catch(() => undefined);
         }
 
         const searchError: { value: unknown } = { value: null };
@@ -154,17 +157,21 @@ export class PlayCommand extends ContextCommand {
         });
 
         if (!songs || songs.items.length <= 0) {
-            return ctx.reply({
-                embeds: [
-                    createEmbed(
-                        "error",
-                        searchError.value
-                            ? this.formatSearchError(searchError.value)
-                            : __("commands.music.play.noSongData"),
-                        true,
-                    ),
-                ],
-            });
+            const errorEmbed = createEmbed(
+                "error",
+                searchError.value
+                    ? this.formatSearchError(searchError.value)
+                    : __("commands.music.play.noSongData"),
+                true,
+            );
+            if (progressMessage) {
+                return progressMessage.edit({ embeds: [errorEmbed] });
+            }
+            return ctx.reply({ embeds: [errorEmbed] });
+        }
+
+        if (progressMessage) {
+            void progressMessage.delete().catch(() => null);
         }
 
         return handleVideos(

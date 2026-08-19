@@ -111,6 +111,7 @@ export class ServerQueue {
     private _requesterDeafTimeout: RequesterDeafTimeoutState | null = null;
     private _voiceChannelStatusState: VoiceChannelStatusState | null = null;
     private _voiceChannelStatusRestorePromise: Promise<void> | null = null;
+    private _playerWidgetMsgId: Snowflake | null = null;
 
     public constructor(public readonly textChannel: ServerQueueTextChannel) {
         Object.defineProperties(this, {
@@ -131,6 +132,7 @@ export class ServerQueue {
             _requesterDeafTimeout: nonEnum,
             _voiceChannelStatusState: nonEnum,
             _voiceChannelStatusRestorePromise: nonEnum,
+            _playerWidgetMsgId: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -269,7 +271,7 @@ export class ServerQueue {
                         this.textChannel.guild,
                         this.textChannel.id,
                     );
-                    if (!isRequestChannel) {
+                    if (!isRequestChannel && !this._playerWidgetMsgId) {
                         await this.textChannel
                             .send({
                                 flags: MessageFlags.SuppressNotifications,
@@ -294,6 +296,8 @@ export class ServerQueue {
                             .catch((error: unknown) =>
                                 this.client.logger.error("PLAY_ERR:", error),
                             );
+                    } else if (!isRequestChannel && this._playerWidgetMsgId) {
+                        void this.updatePlayerWidget();
                     }
 
                     try {
@@ -813,28 +817,32 @@ export class ServerQueue {
                 this.textChannel.id,
             );
             if (!isRequestChannel && !this.queueEndedNotified) {
-                const __mf = i18n__mf(this.client, this.textChannel.guild);
-                const msg = await this.textChannel
-                    .send({
-                        flags: MessageFlags.SuppressNotifications,
-                        embeds: [
-                            createEmbed(
-                                "info",
-                                `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
-                                    usage: formatBoldPrefixedCommand(
-                                        getEffectivePrefix(
-                                            this.client,
-                                            this.textChannel.guild?.id ?? null,
+                if (this._playerWidgetMsgId) {
+                    void this.deletePlayerWidget();
+                } else {
+                    const __mf = i18n__mf(this.client, this.textChannel.guild);
+                    const msg = await this.textChannel
+                        .send({
+                            flags: MessageFlags.SuppressNotifications,
+                            embeds: [
+                                createEmbed(
+                                    "info",
+                                    `⏹️ **|** ${__mf("utils.generalHandler.queueEnded", {
+                                        usage: formatBoldPrefixedCommand(
+                                            getEffectivePrefix(
+                                                this.client,
+                                                this.textChannel.guild?.id ?? null,
+                                            ),
+                                            "play",
                                         ),
-                                        "play",
-                                    ),
-                                })}`,
-                            ),
-                        ],
-                    })
-                    .catch(() => null);
-                if (msg) {
-                    this.lastMusicMsg = msg.id;
+                                    })}`,
+                                ),
+                            ],
+                        })
+                        .catch(() => null);
+                    if (msg) {
+                        this.lastMusicMsg = msg.id;
+                    }
                 }
             }
         } catch (e) {
@@ -978,33 +986,64 @@ export class ServerQueue {
         return this.client.data.botSettings.enableAudioCache;
     }
 
-    private sendStartPlayingMsg(newSong: QueueSong["song"]): void {
-        const __mf = i18n__mf(this.client, this.textChannel.guild);
+    private sendStartPlayingMsg(_newSong: QueueSong["song"]): void {
         this.client.logger.info(
-            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${
+            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${_newSong.title}" on ${
                 this.textChannel.guild.name
             } has started.`,
         );
-        (async () => {
-            const thumb =
-                typeof newSong.thumbnail === "string" && /^https?:\/\//i.test(newSong.thumbnail)
-                    ? newSong.thumbnail
-                    : null;
-            await this.textChannel
-                .send({
-                    flags: MessageFlags.SuppressNotifications,
-                    embeds: [
-                        createEmbed(
-                            "info",
-                            `▶️ **|** ${__mf("utils.generalHandler.startPlaying", {
-                                song: formatBoldMarkdownLink(newSong.title, newSong.url),
-                            })}`,
-                        ).setThumbnail(thumb),
-                    ],
-                })
-                .then((ms) => (this.lastMusicMsg = ms.id))
-                .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
-        })();
+        void this.updatePlayerWidget();
+    }
+
+    public async updatePlayerWidget(): Promise<void> {
+        const components = this.client.requestChannelManager.createPlayerComponents(
+            this.textChannel.guild,
+        );
+        const editPayload = {
+            embeds: [] as [],
+            flags: MessageFlags.IsComponentsV2 as number,
+            components,
+        };
+
+        if (this._playerWidgetMsgId) {
+            try {
+                const existing = await this.textChannel.messages
+                    .fetch(this._playerWidgetMsgId)
+                    .catch(() => null);
+                if (existing) {
+                    await existing.edit(editPayload);
+                    return;
+                }
+            } catch {
+                this._playerWidgetMsgId = null;
+            }
+        }
+
+        try {
+            const msg = await this.textChannel.send({
+                flags: (MessageFlags.SuppressNotifications | MessageFlags.IsComponentsV2) as number,
+                components,
+            });
+            this._playerWidgetMsgId = msg.id;
+            this.lastMusicMsg = msg.id;
+        } catch (error: unknown) {
+            this.client.logger.error("PLAY_ERR:", error);
+        }
+    }
+
+    public async deletePlayerWidget(): Promise<void> {
+        if (!this._playerWidgetMsgId) {
+            return;
+        }
+        try {
+            const msg = await this.textChannel.messages
+                .fetch(this._playerWidgetMsgId)
+                .catch(() => null);
+            if (msg) {
+                await msg.delete().catch(() => null);
+            }
+        } catch {}
+        this._playerWidgetMsgId = null;
     }
 
     private getConnectedVoiceChannel(): VoiceChannel | null {
