@@ -141,10 +141,7 @@ export const useRequestChannel = createCmdExecuteDecorator((ctx) => {
     }
 
     if (ctx.channel?.id === requestChannel.id) {
-        void ctx.reply({
-            embeds: [createEmbed("warn", __("utils.musicDecorator.useRequestChannelDirect"))],
-        });
-        return false;
+        return true;
     }
 
     void ctx.reply({
