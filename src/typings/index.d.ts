@@ -71,7 +71,7 @@ export type SlashOption = {
     name?: string;
 };
 
-export type EnvActivityTypes = "Competing" | "Listening" | "Playing" | "Watching";
+export type EnvActivityTypes = "Competing" | "Custom" | "Listening" | "Playing" | "Watching";
 
 export type PresenceData = {
     activities: { name: string; type: EnvActivityTypes }[];
