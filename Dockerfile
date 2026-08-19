@@ -7,6 +7,7 @@ WORKDIR /tmp/build
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc* ./
 
+RUN for i in 1 2 3; do npx --yes node-gyp install && break || sleep 5; done
 RUN pnpm install --frozen-lockfile
 
 COPY . .
