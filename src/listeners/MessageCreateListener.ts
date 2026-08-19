@@ -348,7 +348,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             })();
         }, 60_000);
 
-        const query = message.content.trim();
+        const audioAttachment = message.attachments.find((a) =>
+            a.contentType?.startsWith("audio/"),
+        );
+        const query = message.content.trim() || audioAttachment?.url || "";
         if (query.length === 0) {
             return;
         }

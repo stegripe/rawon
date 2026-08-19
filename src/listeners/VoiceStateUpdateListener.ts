@@ -19,7 +19,7 @@ import {
 import { type Rawon } from "../structures/Rawon.js";
 import { type RequesterDeafTimeoutReason, type ServerQueue } from "../structures/ServerQueue.js";
 import { type QueueSong } from "../typings/index.js";
-import { createEmbed } from "../utils/functions/createEmbed.js";
+import { createEmbed, safeThumbUrl } from "../utils/functions/createEmbed.js";
 import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { formatMS } from "../utils/functions/formatMS.js";
 import { i18n__, i18n__mf } from "../utils/functions/i18n.js";
@@ -447,7 +447,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                     song: formatBoldMarkdownLink(currentSong.song.title, currentSong.song.url),
                     duration: `**\`${duration}\`**`,
                 })}`,
-            ).setThumbnail(currentSong.song.thumbnail),
+            ).setThumbnail(safeThumbUrl(currentSong.song.thumbnail)),
         );
     }
 
@@ -494,7 +494,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                 `▶️ **|** ${__mf(i18nKey, {
                     song: formatBoldMarkdownLink(currentSong.song.title, currentSong.song.url),
                 })}`,
-            ).setThumbnail(currentSong.song.thumbnail),
+            ).setThumbnail(safeThumbUrl(currentSong.song.thumbnail)),
         );
     }
 
@@ -565,7 +565,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                     count: `**\`${removedCount}\`**`,
                     duration: `**\`${duration}\`**`,
                 })}`,
-            ).setThumbnail(currentSong.song.thumbnail),
+            ).setThumbnail(safeThumbUrl(currentSong.song.thumbnail)),
         );
 
         if (queue.songs.size === 0) {
@@ -725,7 +725,7 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
                             song: formatBoldMarkdownLink(song.title, song.url),
                         })}`,
                     )
-                        .setThumbnail(song.thumbnail)
+                        .setThumbnail(safeThumbUrl(song.thumbnail))
                         .setAuthor({
                             name: __("events.voiceStateUpdate.resumeQueueFooter"),
                         }),

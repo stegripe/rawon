@@ -7,7 +7,7 @@ import i18n from "../../config/index.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC, useRequestChannel } from "../../utils/decorators/MusicUtil.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { createEmbed, safeThumbUrl } from "../../utils/functions/createEmbed.js";
 import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { hasMusicControlPermission } from "../../utils/functions/musicControlPermissions.js";
@@ -135,7 +135,7 @@ export class SkipCommand extends ContextCommand {
                         `⏭️ **|** ${__mf("commands.music.skip.skipMessage", {
                             song: formatBoldMarkdownLink(song.song.title, song.song.url),
                         })}`,
-                    ).setThumbnail(song.song.thumbnail),
+                    ).setThumbnail(safeThumbUrl(song.song.thumbnail)),
                 ],
             })
             .catch((error: unknown) => this.container.logger.error("SKIP_CMD_ERR:", error));
