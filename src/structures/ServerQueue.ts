@@ -902,8 +902,8 @@ export class ServerQueue {
             (async () => {
                 await this.textChannel.messages
                     .fetch(this._lastMusicMsg ?? "")
-                    .then((msg) => {
-                        void msg.delete();
+                    .then(async (msg) => {
+                        await msg.delete();
                         return 0;
                     })
                     .catch((error: unknown) => {
@@ -929,8 +929,8 @@ export class ServerQueue {
             (async () => {
                 await this.textChannel.messages
                     .fetch(this._lastVSUpdateMsg ?? "")
-                    .then((msg) => {
-                        void msg.delete();
+                    .then(async (msg) => {
+                        await msg.delete();
                         return 0;
                     })
                     .catch((error: unknown) => {
