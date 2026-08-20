@@ -23,7 +23,7 @@
         "dev": "pnpm build && pnpm start"
     },
     "engines": {
-        "node": ">=20.0.0",
+        "node": ">=22.12.0",
         "npm": ">=7.0.0"
     },
     "dependencies": {
