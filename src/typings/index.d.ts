@@ -2,12 +2,12 @@ import {
     type ApplicationCommandOptionData,
     type ApplicationCommandType,
     type ClientEvents,
-    type ClientPresenceStatus,
     type Collection,
     type EmbedBuilder,
     type GuildMember,
     type Client as OClient,
     type Guild as OG,
+    type PresenceStatusData,
 } from "discord.js";
 import { type Got } from "got";
 import type * as config from "../config/index.js";
@@ -71,11 +71,11 @@ export type SlashOption = {
     name?: string;
 };
 
-export type EnvActivityTypes = "Competing" | "Listening" | "Playing" | "Watching";
+export type EnvActivityTypes = "Competing" | "Custom" | "Listening" | "Playing" | "Watching";
 
 export type PresenceData = {
     activities: { name: string; type: EnvActivityTypes }[];
-    status: ClientPresenceStatus[];
+    status: PresenceStatusData[];
     interval: number;
 };
 

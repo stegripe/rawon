@@ -44,12 +44,21 @@ function hasGetRequestChannel(
     );
 }
 
+const activityTypeMap: Record<EnvActivityTypes, ActivityType> = {
+    Competing: ActivityType.Competing,
+    Custom: ActivityType.Custom,
+    Listening: ActivityType.Listening,
+    Playing: ActivityType.Playing,
+    Watching: ActivityType.Watching,
+};
+
 @ApplyOptions<ListenerOptions>({
     event: Events.ClientReady,
     once: true,
 })
 export class ReadyListener extends Listener<typeof Events.ClientReady> {
     private currentClient!: Rawon;
+    private presenceCursor = 0;
 
     public async run(readyClient: typeof this.container.client): Promise<void> {
         const client = readyClient as Rawon;
@@ -77,6 +86,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                 client.user?.setPresence({
                     activities: primaryPresence.activities.map((activity) => ({
                         name: activity.name,
+                        state: activity.state ?? undefined,
                         type: activity.type,
                         url: activity.url ?? undefined,
                     })),
@@ -669,51 +679,27 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
             .replaceAll("{username}", client.user?.username ?? "");
     }
 
-    private async setPresence(random: boolean): Promise<Presence> {
+    private async setPresence(advance: boolean): Promise<Presence | undefined> {
         const client = this.currentClient;
-        const activityNumber = random
-            ? Math.floor(Math.random() * this.container.config.presenceData.activities.length)
-            : 0;
-        const statusNumber = random
-            ? Math.floor(Math.random() * this.container.config.presenceData.status.length)
-            : 0;
-        const activity: {
-            name: string;
-            type: EnvActivityTypes;
-            typeNumber: number;
-        } = await Promise.all(
-            this.container.config.presenceData.activities.map(async (a) => {
-                let type = ActivityType.Playing;
+        const { activities, status } = this.container.config.presenceData;
 
-                if (a.type === "Competing") {
-                    type = ActivityType.Competing;
-                }
-                if (a.type === "Watching") {
-                    type = ActivityType.Watching;
-                }
-                if (a.type === "Listening") {
-                    type = ActivityType.Listening;
-                }
+        if (advance) {
+            this.presenceCursor += 1;
+        }
 
-                return Object.assign(a, {
-                    name: await this.formatString(a.name),
-                    type: a.type,
-                    typeNumber: type,
-                });
-            }),
-        ).then((x) => x[activityNumber]);
+        const activity = activities[this.presenceCursor % activities.length];
 
         return client.user?.setPresence({
-            activities: (activity as { name: string } | undefined)
+            activities: activity
                 ? [
                       {
-                          name: activity.name,
-                          type: activity.typeNumber,
+                          name: await this.formatString(activity.name),
+                          type: activityTypeMap[activity.type],
                       },
                   ]
                 : [],
-            status: this.container.config.presenceData.status[statusNumber],
-        }) as Presence;
+            status: status[this.presenceCursor % status.length],
+        });
     }
 
     private async doPresence(): Promise<Presence | undefined> {
@@ -733,6 +719,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
                                 await client.user?.setPresence({
                                     activities: primaryPresence.activities.map((activity) => ({
                                         name: activity.name,
+                                        state: activity.state ?? undefined,
                                         type: activity.type,
                                         url: activity.url ?? undefined,
                                     })),

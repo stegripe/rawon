@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { type ClientPresenceStatus } from "discord.js";
+import { type PresenceStatusData } from "discord.js";
 import { parse } from "dotenv";
 import { type EnvActivityTypes, type PresenceData } from "../typings/index.js";
 import { parseEnvValue } from "../utils/functions/parseEnvValue.js";
@@ -75,14 +75,26 @@ export const mainServer = parseEnvValue(process.env.MAIN_SERVER ?? "");
 export const devs: string[] = parseEnvValue(process.env.DEVS ?? "");
 export const lang = formatLocale(process.env.LOCALE) || "en-US";
 
+const validStatuses = new Set<string>(["online", "idle", "dnd", "invisible"]);
+
+const parsedStatuses = parseEnvValue(process.env.STATUS ?? "")
+    .map((status) => status.trim().toLowerCase())
+    .filter((status): status is PresenceStatusData => validStatuses.has(status));
+
+const rawPresenceInterval = Number(process.env.PRESENCE_INTERVAL);
+
 export const presenceData: PresenceData = {
     activities: parseEnvValue(process.env.ACTIVITIES ?? "").map((x, i) => ({
         name: x,
-        type: (toCapitalCase(parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i]) ||
+        type: (toCapitalCase(parseEnvValue(process.env.ACTIVITY_TYPES ?? "")[i] ?? "") ||
             "Playing") as EnvActivityTypes,
     })),
-    status: ["online"] as ClientPresenceStatus[],
-    interval: 60_000,
+    status: parsedStatuses.length > 0 ? parsedStatuses : ["online"],
+    // An unset var in Docker arrives as "", and Number("") is 0 — the floor check is what rejects it.
+    interval:
+        Number.isFinite(rawPresenceInterval) && rawPresenceInterval >= 15_000
+            ? rawPresenceInterval
+            : 60_000,
 };
 
 export const enablePrefix = process.env.ENABLE_PREFIX?.toLowerCase() !== "no";
