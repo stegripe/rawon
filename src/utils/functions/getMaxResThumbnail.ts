@@ -1,7 +1,7 @@
 import { type PlaylistMetadata, type SearchTrackResult, type Song } from "../../typings/index.js";
 
 const GOOGLE_THUMBNAIL_SIZE = 500;
-const YOUTUBE_THUMBNAIL_QUALITY = "maxresdefault";
+const YOUTUBE_THUMBNAIL_QUALITY = "hqdefault";
 const GOOGLE_IMAGE_HOST_PATTERN = /(?:^|\.)googleusercontent\.com$/iu;
 const GOOGLE_PROFILE_IMAGE_HOST_PATTERN = /(?:^|\.)ggpht\.com$/iu;
 const SOUNDCLOUD_IMAGE_HOST_PATTERN = /(?:^|\.)sndcdn\.com$/iu;

@@ -54,6 +54,27 @@
                 "gettingStartedText": "Google'a giriş yapmak ve çerezleri otomatik oluşturmak için {loginCmd} kullanın.",
                 "statsTitle": "İstatistikler"
             },
+            "dbExport": {
+                "description": "Tüm veritabanını bir JSON dosyasına aktar",
+                "success": "Veritabanı başarıyla dışa aktarıldı!",
+                "totalRecords": "Toplam Kayıt",
+                "savedTo": "Ayrıca şuraya kaydedildi: `{path}`",
+                "failed": "Veritabanı dışa aktarılamadı: {error}"
+            },
+            "dbImport": {
+                "description": "Bir JSON dosyasından veritabanını içe aktar",
+                "usage": "{prefix}db-import [ek dosya | url | dosya adı]",
+                "slashFileDescription": "İçe aktarılacak JSON dosyası",
+                "slashUrlDescription": "JSON dosyasının URL'si (veya data klasöründeki dosya adı)",
+                "provideJson": "Lütfen bir JSON dosyası sağlayın.",
+                "provideJsonHint": "Lütfen ek dosya, URL veya data klasöründeki dosya adı ile bir JSON dosyası sağlayın.",
+                "invalidFormat": "Geçersiz veritabanı dışa aktarma biçimi.",
+                "success": "Veritabanı başarıyla içe aktarıldı!",
+                "totalRecords": "Toplam Kayıt",
+                "exportDate": "Dışa Aktarma Tarihi",
+                "version": "Sürüm",
+                "failed": "Veritabanı içe aktarılamadı: {error}"
+            },
             "setup": {
                 "description": "Bot ayarlarını yapılandır (yalnızca geliştiriciler)",
                 "usage": "{prefix}setup <ayar> [değer]",

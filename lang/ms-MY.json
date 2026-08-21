@@ -54,6 +54,27 @@
                 "gettingStartedText": "Guna {loginCmd} untuk log masuk ke Google dan jana cookies secara automatik.",
                 "statsTitle": "Statistik"
             },
+            "dbExport": {
+                "description": "Eksport keseluruhan pangkalan data ke fail JSON",
+                "success": "Pangkalan data berjaya dieksport!",
+                "totalRecords": "Jumlah Rekod",
+                "savedTo": "Turut disimpan di: `{path}`",
+                "failed": "Gagal mengeksport pangkalan data: {error}"
+            },
+            "dbImport": {
+                "description": "Import pangkalan data dari fail JSON",
+                "usage": "{prefix}db-import [lampiran | url | nama fail]",
+                "slashFileDescription": "Fail JSON untuk diimport",
+                "slashUrlDescription": "URL ke fail JSON (atau nama fail dalam folder data)",
+                "provideJson": "Sila berikan fail JSON.",
+                "provideJsonHint": "Sila berikan fail JSON melalui lampiran, URL atau nama fail dalam folder data.",
+                "invalidFormat": "Format eksport pangkalan data tidak sah.",
+                "success": "Pangkalan data berjaya diimport!",
+                "totalRecords": "Jumlah Rekod",
+                "exportDate": "Tarikh Eksport",
+                "version": "Versi",
+                "failed": "Gagal mengimport pangkalan data: {error}"
+            },
             "setup": {
                 "description": "Konfigurasi tetapan bot (pembangun sahaja)",
                 "usage": "{prefix}setup <tetapan> [nilai]",

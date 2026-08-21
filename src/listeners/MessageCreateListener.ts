@@ -348,7 +348,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             })();
         }, 60_000);
 
-        const query = message.content.trim();
+        const audioAttachment = message.attachments.find((a) =>
+            a.contentType?.startsWith("audio/"),
+        );
+        const query = message.content.trim() || audioAttachment?.url || "";
         if (query.length === 0) {
             return;
         }
@@ -449,18 +452,17 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
 
         let progressMessage: Message | null = null;
         let progressStartedAt = 0;
-        if (isCollectionQuery) {
-            try {
-                progressMessage = await message.reply({
-                    embeds: [
-                        createEmbed("info", `🎶 **|** ${__mf("requestChannel.resolvingPlaylist")}`),
-                    ],
-                    allowedMentions: { repliedUser: false },
-                });
-                progressStartedAt = Date.now();
-            } catch {
-                progressMessage = null;
-            }
+        const resolvingText = isCollectionQuery
+            ? __mf("requestChannel.resolvingPlaylist")
+            : __mf("requestChannel.resolvingSong");
+        try {
+            progressMessage = await message.reply({
+                embeds: [createEmbed("info", `🔍 **|** ${resolvingText}`)],
+                allowedMentions: { repliedUser: false },
+            });
+            progressStartedAt = Date.now();
+        } catch {
+            progressMessage = null;
         }
 
         if (guild.queue && voiceChannel.id !== guild.queue.connection?.joinConfig.channelId) {

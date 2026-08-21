@@ -8,7 +8,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { createEmbed, safeThumbUrl } from "../../utils/functions/createEmbed.js";
 import { formatBoldPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
@@ -214,7 +214,7 @@ export class SkipToCommand extends ContextCommand {
                     `⏭️ **|** ${__mf("commands.music.skipTo.skipMessage", {
                         song: formatBoldMarkdownLink(song.song.title, song.song.url),
                     })}`,
-                ).setThumbnail(song.song.thumbnail),
+                ).setThumbnail(safeThumbUrl(song.song.thumbnail)),
             ],
         });
     }

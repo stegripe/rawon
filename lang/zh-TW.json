@@ -54,6 +54,27 @@
                 "gettingStartedText": "使用 {loginCmd} 登入Google並自動產生cookies。",
                 "statsTitle": "統計"
             },
+            "dbExport": {
+                "description": "將整個資料庫匯出為 JSON 檔案",
+                "success": "資料庫匯出成功！",
+                "totalRecords": "總記錄數",
+                "savedTo": "同時儲存至：`{path}`",
+                "failed": "匯出資料庫失敗：{error}"
+            },
+            "dbImport": {
+                "description": "從 JSON 檔案匯入資料庫",
+                "usage": "{prefix}db-import [附件 | 網址 | 檔名]",
+                "slashFileDescription": "要匯入的 JSON 檔案",
+                "slashUrlDescription": "JSON 檔案的 URL（或 data 資料夾中的檔名）",
+                "provideJson": "請提供一個 JSON 檔案。",
+                "provideJsonHint": "請透過附件、URL 或 data 資料夾中的檔名提供 JSON 檔案。",
+                "invalidFormat": "無效的資料庫匯出格式。",
+                "success": "資料庫匯入成功！",
+                "totalRecords": "總記錄數",
+                "exportDate": "匯出日期",
+                "version": "版本",
+                "failed": "匯入資料庫失敗：{error}"
+            },
             "setup": {
                 "description": "設定機器人配置（僅限開發者）",
                 "usage": "{prefix}setup <設定> [值]",

@@ -54,6 +54,27 @@
                 "gettingStartedText": "使用 {loginCmd} 登录Google并自动生成cookies。",
                 "statsTitle": "统计"
             },
+            "dbExport": {
+                "description": "将整个数据库导出为 JSON 文件",
+                "success": "数据库导出成功！",
+                "totalRecords": "总记录数",
+                "savedTo": "同时保存到：`{path}`",
+                "failed": "导出数据库失败：{error}"
+            },
+            "dbImport": {
+                "description": "从 JSON 文件导入数据库",
+                "usage": "{prefix}db-import [附件 | 链接 | 文件名]",
+                "slashFileDescription": "要导入的 JSON 文件",
+                "slashUrlDescription": "JSON 文件的 URL（或 data 文件夹中的文件名）",
+                "provideJson": "请提供一个 JSON 文件。",
+                "provideJsonHint": "请通过附件、URL 或 data 文件夹中的文件名提供 JSON 文件。",
+                "invalidFormat": "无效的数据库导出格式。",
+                "success": "数据库导入成功！",
+                "totalRecords": "总记录数",
+                "exportDate": "导出日期",
+                "version": "版本",
+                "failed": "导入数据库失败：{error}"
+            },
             "setup": {
                 "description": "配置机器人设置（仅限开发者）",
                 "usage": "{prefix}setup <设置> [值]",

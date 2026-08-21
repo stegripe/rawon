@@ -54,6 +54,27 @@
                 "gettingStartedText": "Використовуйте {loginCmd} для входу в Google та автоматичної генерації cookies.",
                 "statsTitle": "Статистика"
             },
+            "dbExport": {
+                "description": "Експортувати всю базу даних у файл JSON",
+                "success": "Базу даних успішно експортовано!",
+                "totalRecords": "Загальна кількість записів",
+                "savedTo": "Також збережено в: `{path}`",
+                "failed": "Не вдалося експортувати базу даних: {error}"
+            },
+            "dbImport": {
+                "description": "Імпортувати базу даних з файлу JSON",
+                "usage": "{prefix}db-import [вкладення | url | ім'я файлу]",
+                "slashFileDescription": "JSON файл для імпорту",
+                "slashUrlDescription": "URL до файлу JSON (або ім'я файлу в папці data)",
+                "provideJson": "Будь ласка, надайте файл JSON.",
+                "provideJsonHint": "Будь ласка, надайте файл JSON через вкладення, URL або ім'я файлу в папці data.",
+                "invalidFormat": "Невірний формат експорту бази даних.",
+                "success": "Базу даних успішно імпортовано!",
+                "totalRecords": "Загальна кількість записів",
+                "exportDate": "Дата експорту",
+                "version": "Версія",
+                "failed": "Не вдалося імпортувати базу даних: {error}"
+            },
             "setup": {
                 "description": "Налаштування параметрів бота (лише для розробників)",
                 "usage": "{prefix}setup <параметр> [значення]",

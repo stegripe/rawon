@@ -928,6 +928,9 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         }
 
         await client.requestChannelManager.updatePlayerMessage(thisBotGuild);
+        if (thisBotGuild.queue) {
+            void thisBotGuild.queue.updatePlayerWidget();
+        }
     }
 
     private async handleRequestChannelCommandButton(

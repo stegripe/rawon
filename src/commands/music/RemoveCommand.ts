@@ -9,7 +9,7 @@ import { type Rawon } from "../../structures/Rawon.js";
 import { type QueueSong } from "../../typings/index.js";
 import { haveQueue, inVC, sameVC } from "../../utils/decorators/MusicUtil.js";
 import { chunk } from "../../utils/functions/chunk.js";
-import { createEmbed } from "../../utils/functions/createEmbed.js";
+import { createEmbed, safeThumbUrl } from "../../utils/functions/createEmbed.js";
 import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { hasRemoveSelectionPermission } from "../../utils/functions/musicControlPermissions.js";
@@ -159,7 +159,7 @@ export class RemoveCommand extends ContextCommand {
                 })}`,
             });
         if (firstSong?.song.thumbnail) {
-            embed.setThumbnail(firstSong.song.thumbnail);
+            embed.setThumbnail(safeThumbUrl(firstSong.song.thumbnail));
         }
         const msg = await ctx.reply({ embeds: [embed] }).catch(() => void 0);
 

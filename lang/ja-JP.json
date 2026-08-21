@@ -54,6 +54,27 @@
                 "gettingStartedText": "{loginCmd} でGoogleにログインし、Cookieを自動生成してください。",
                 "statsTitle": "統計"
             },
+            "dbExport": {
+                "description": "データベース全体をJSONファイルにエクスポートする",
+                "success": "データベースのエクスポートに成功しました！",
+                "totalRecords": "総レコード数",
+                "savedTo": "保存先: `{path}`",
+                "failed": "データベースのエクスポートに失敗しました: {error}"
+            },
+            "dbImport": {
+                "description": "JSONファイルからデータベースをインポートする",
+                "usage": "{prefix}db-import [添付ファイル | URL | ファイル名]",
+                "slashFileDescription": "インポートするJSONファイル",
+                "slashUrlDescription": "JSONファイルのURL（またはdataフォルダ内のファイル名）",
+                "provideJson": "JSONファイルを提供してください。",
+                "provideJsonHint": "添付ファイル、URL、またはdataフォルダ内のファイル名でJSONファイルを提供してください。",
+                "invalidFormat": "無効なデータベースエクスポート形式です。",
+                "success": "データベースのインポートに成功しました！",
+                "totalRecords": "総レコード数",
+                "exportDate": "エクスポート日",
+                "version": "バージョン",
+                "failed": "データベースのインポートに失敗しました: {error}"
+            },
             "setup": {
                 "description": "ボット設定を構成する（開発者専用）",
                 "usage": "{prefix}setup <設定> [値]",

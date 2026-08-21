@@ -26,3 +26,7 @@ export function createEmbed(type: HexColorsType, message?: string, emoji = false
     }
     return embed;
 }
+
+export function safeThumbUrl(url: string | undefined | null): string | null {
+    return typeof url === "string" && /^https?:\/\//u.test(url) ? url : null;
+}
