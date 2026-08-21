@@ -245,7 +245,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                         .fetch(interaction.message.id)
                         .catch(() => null);
                     if (msg?.deletable === true) {
-                        void msg.delete();
+                        void msg.delete().catch(() => null);
                     }
                 }
             }
