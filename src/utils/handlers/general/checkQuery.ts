@@ -44,7 +44,7 @@ export function checkQuery(string: string): QueryData {
                 (url.pathname.startsWith("/watch") ||
                     url.pathname.startsWith("/shorts/") ||
                     url.pathname.startsWith("/live/"))) ||
-            (isYouTuBe && url.pathname.length > 1)
+            (isYouTuBe && url.pathname.split("/").filter(Boolean).length > 0)
         ) {
             result.type = "track";
         } else {
