@@ -48,8 +48,8 @@ importers:
         specifier: 14.26.4
         version: 14.26.4
       dotenv:
-        specifier: 17.4.2
-        version: 17.4.2
+        specifier: 18.0.1
+        version: 18.0.1
       ffmpeg-static:
         specifier: ^5.3.0
         version: 5.3.0
@@ -1003,9 +1003,10 @@ packages:
     resolution: {integrity: sha512-4oBp8tc6Kf8IDBwAHhbsMaAqx1b5fob9SNasZT7V6yyyUydoO5i5fGuX7TmvRtR+q/WgKRnRViRoAWnG7fNyvA==}
     engines: {node: '>=18'}
 
-  dotenv@17.4.2:
-    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
+  dotenv@18.0.1:
+    resolution: {integrity: sha512-0eR4m4D/jH5eaI3evo2ZqqMii5mrTCR12v12VChdie6O1gPHs7XAjzTep0CWc1Bd+oNx3vVfbi734dK4zghigw==}
     engines: {node: '>=12'}
+    hasBin: true
 
   emoji-regex@10.6.0:
     resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
@@ -2489,7 +2490,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  dotenv@17.4.2: {}
+  dotenv@18.0.1: {}
 
   emoji-regex@10.6.0: {}
 
