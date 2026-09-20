@@ -642,36 +642,43 @@ export class VoiceStateUpdateListener extends Listener<typeof Events.VoiceStateU
         (guild.queue as ServerQueue).timeout = setTimeout(async () => {
             await queue.destroy();
             void (async () => {
-                const msg = await queue.textChannel.send({
-                    flags: MessageFlags.SuppressNotifications,
-                    embeds: [
-                        createEmbed(
-                            "info",
-                            `⏹️ **|** ${__mf("events.voiceStateUpdate.deleteQueue", {
-                                duration: `**\`${duration}\`**`,
-                            })}`,
-                        ).setAuthor({ name: __("events.voiceStateUpdate.deleteQueueFooter") }),
-                    ],
-                });
-                if (isRequestChannel) {
+                const msg = await queue.textChannel
+                    .send({
+                        flags: MessageFlags.SuppressNotifications,
+                        embeds: [
+                            createEmbed(
+                                "info",
+                                `⏹️ **|** ${__mf("events.voiceStateUpdate.deleteQueue", {
+                                    duration: `**\`${duration}\`**`,
+                                })}`,
+                            ).setAuthor({ name: __("events.voiceStateUpdate.deleteQueueFooter") }),
+                        ],
+                    })
+                    .catch(() => null);
+                if (isRequestChannel && msg) {
                     setTimeout(() => {
                         void msg.delete().catch(() => null);
                     }, 60_000);
                 }
             })();
         }, timeout);
-        (async () => {
-            const msg = await queue.textChannel.send({
-                flags: MessageFlags.SuppressNotifications,
-                embeds: [
-                    createEmbed(
-                        "warn",
-                        `⏸️ **|** ${__mf("events.voiceStateUpdate.pauseQueue", {
-                            duration: `**\`${duration}\`**`,
-                        })}`,
-                    ).setAuthor({ name: __("events.voiceStateUpdate.pauseQueueFooter") }),
-                ],
-            });
+        void (async () => {
+            const msg = await queue.textChannel
+                .send({
+                    flags: MessageFlags.SuppressNotifications,
+                    embeds: [
+                        createEmbed(
+                            "warn",
+                            `⏸️ **|** ${__mf("events.voiceStateUpdate.pauseQueue", {
+                                duration: `**\`${duration}\`**`,
+                            })}`,
+                        ).setAuthor({ name: __("events.voiceStateUpdate.pauseQueueFooter") }),
+                    ],
+                })
+                .catch(() => null);
+            if (!msg) {
+                return;
+            }
             queue.lastVSUpdateMsg = msg.id;
             if (isRequestChannel) {
                 setTimeout(() => {
