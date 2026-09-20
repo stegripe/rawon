@@ -102,15 +102,22 @@ export async function play(
             if (!guild.queue?.songs.first()) {
                 await queue.destroy();
                 if (!isRequestChannel) {
-                    const msg = await queue.textChannel.send({
-                        flags: MessageFlags.SuppressNotifications,
-                        embeds: [
-                            createEmbed("info", `👋 **|** ${__("utils.generalHandler.leftVC")}`),
-                        ],
-                    });
-                    setTimeout(() => {
-                        void msg.delete();
-                    }, 3_500);
+                    const msg = await queue.textChannel
+                        .send({
+                            flags: MessageFlags.SuppressNotifications,
+                            embeds: [
+                                createEmbed(
+                                    "info",
+                                    `👋 **|** ${__("utils.generalHandler.leftVC")}`,
+                                ),
+                            ],
+                        })
+                        .catch(() => null);
+                    if (msg) {
+                        setTimeout(() => {
+                            void msg.delete().catch(() => null);
+                        }, 3_500);
+                    }
                 }
             }
         }, 60_000);
