@@ -24,6 +24,7 @@ import { formatBoldMarkdownLink } from "../utils/functions/formatMarkdown.js";
 import { getEffectivePrefix } from "../utils/functions/getEffectivePrefix.js";
 import { i18n__mf } from "../utils/functions/i18n.js";
 import { play } from "../utils/handlers/GeneralUtil.js";
+import { resolveAutoplayCandidate } from "../utils/handlers/general/autoplaySong.js";
 import { SongManager } from "../utils/structures/SongManager.js";
 import { BOT_SETTINGS_DEFAULTS } from "../utils/structures/SQLiteDataManager.js";
 import {
@@ -1602,11 +1603,10 @@ export class ServerQueue {
 
         for (let attempt = 1; attempt <= AUTOPLAY_RESOLVE_ATTEMPTS; attempt++) {
             try {
-                const song = await this.client.license.autoplayMusic(
-                    currentSong.song,
-                    [...this._autoplayHistory, ...rejectedSongs],
-                    "youtube",
-                );
+                const song = await resolveAutoplayCandidate(this.client, currentSong.song, [
+                    ...this._autoplayHistory,
+                    ...rejectedSongs,
+                ]);
                 if (!song) {
                     return undefined;
                 }

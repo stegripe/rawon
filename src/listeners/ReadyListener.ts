@@ -59,8 +59,6 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
             this.container.config.devs.push(client.application.owner.id);
         }
 
-        client.license.start();
-
         const isPrimaryOrSingle =
             !this.container.config.isMultiBot || client.multiBotManager.getPrimaryBot() === client;
         if (isPrimaryOrSingle) {

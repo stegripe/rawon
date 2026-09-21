@@ -494,18 +494,6 @@
             "useRequestChannelDirect": "このコマンドはリクエストチャンネルでは無効です。操作ボタンを使用するか、曲名/リンクを直接入力してください。",
             "validVCJoinable": "**`接続`**できません。必要な権限があることを確認してください。",
             "validVCPermission": "**`発言`**できません。必要な権限があることを確認してください。"
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "ライセンスはまだ検証されていません。",
-                "botNotReady": "Bot ID はまだ準備できていません。",
-                "missingKey": "`STEGRIPE_API_LICENSE_KEY` がありません。ライセンス機能はロックされています。",
-                "validationFailed": "ライセンスの検証に失敗しました。",
-                "botNotAllowed": "この Bot ID はライセンスで承認されていません。",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` が無効です。",
-                "revoked": "ライセンスは取り消されました。"
-            },
-            "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord) に参加します。\n2. この Bot ID を Stegripe staff へ送信します: `{botId}`。\n3. 承認後、`.env` に `STEGRIPE_API_LICENSE_KEY` を設定します。\n4. bot を再起動します。"
         }
     }
 }
