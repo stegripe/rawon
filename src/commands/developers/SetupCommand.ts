@@ -9,6 +9,10 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { formatCodeSpan, formatPrefixedCommand } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
+import {
+    formatSearchProvider,
+    parseSearchProviderInput,
+} from "../../utils/functions/searchProvider.js";
 import { BOT_SETTINGS_DEFAULTS } from "../../utils/structures/SQLiteDataManager.js";
 
 @ApplyOptions<Command.Options>({
@@ -118,6 +122,22 @@ import { BOT_SETTINGS_DEFAULTS } from "../../utils/structures/SQLiteDataManager.
             )
             .addSubcommand((sub) =>
                 sub
+                    .setName("search")
+                    .setDescription("Set search provider")
+                    .addStringOption((opt) =>
+                        opt
+                            .setName("provider")
+                            .setDescription("'dsp', 'direct', or 'reset'")
+                            .addChoices(
+                                { name: "DSP (YouTube Music)", value: "dsp" },
+                                { name: "Direct (YouTube)", value: "direct" },
+                                { name: "Reset", value: "reset" },
+                            )
+                            .setRequired(true),
+                    ),
+            )
+            .addSubcommand((sub) =>
+                sub
                     .setName("alwayson")
                     .setDescription("Toggle 24/7 always on mode")
                     .addBooleanOption((opt) =>
@@ -187,6 +207,9 @@ export class SetupCommand extends ContextCommand {
             case "selectiontype":
                 await this.setupSelectionType(ctx, client, localCtx, __);
                 break;
+            case "search":
+                await this.setupSearchProvider(ctx, client, localCtx, __);
+                break;
             case "alwayson":
                 await this.setupAlwaysOn(ctx, client, localCtx, __);
                 break;
@@ -254,6 +277,11 @@ export class SetupCommand extends ContextCommand {
                 param: "selectiontype",
                 desc: "Set music selection type",
                 usage: `${prefix}setup selectiontype <message|selectmenu|reset>`,
+            },
+            {
+                param: "search",
+                desc: "Set search provider",
+                usage: `${prefix}setup search <dsp|direct|reset>`,
             },
             {
                 param: "alwayson",
@@ -352,6 +380,11 @@ export class SetupCommand extends ContextCommand {
                     )
                         ? "`Default`"
                         : `\`${bs.musicSelectionType}\``,
+                    inline: true,
+                },
+                {
+                    name: "🔎 Search Provider",
+                    value: `\`${formatSearchProvider(bs.searchProvider)}\``,
                     inline: true,
                 },
                 {
@@ -687,6 +720,53 @@ export class SetupCommand extends ContextCommand {
         });
     }
 
+    private async setupSearchProvider(
+        ctx: CommandContext,
+        client: Rawon,
+        localCtx: LocalCommandContext,
+        __: (key: string) => string,
+    ): Promise<void> {
+        const parsed = parseSearchProviderInput(
+            localCtx.options?.getString("provider") ?? localCtx.args[1],
+        );
+        if (parsed === null) {
+            await ctx.reply({
+                embeds: [
+                    createEmbed("warn", __("commands.developers.setup.searchProvider.invalid")),
+                ],
+            });
+            return;
+        }
+
+        if (parsed === "reset") {
+            await client.data.setBotSetting("search_provider", null);
+            await ctx.reply({
+                embeds: [
+                    createEmbed(
+                        "success",
+                        __("commands.developers.setup.searchProvider.reset"),
+                        true,
+                    ),
+                ],
+            });
+            return;
+        }
+
+        await client.data.setBotSetting("search_provider", parsed);
+        await ctx.reply({
+            embeds: [
+                createEmbed(
+                    "success",
+                    __("commands.developers.setup.searchProvider.set").replace(
+                        "{provider}",
+                        `\`${formatSearchProvider(parsed)}\``,
+                    ),
+                    true,
+                ),
+            ],
+        });
+    }
+
     private async setupAlwaysOn(
         ctx: CommandContext,
         client: Rawon,
@@ -770,6 +850,7 @@ export class SetupCommand extends ContextCommand {
             "request_channel_splash",
             "default_volume",
             "music_selection_type",
+            "search_provider",
             "enable_audio_cache",
         ];
 

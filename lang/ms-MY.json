@@ -118,6 +118,11 @@
                     "enabled": "diaktifkan",
                     "disabled": "dinyahaktifkan"
                 },
+                "searchProvider": {
+                    "set": "Penyedia carian telah ditetapkan kepada {provider}",
+                    "reset": "Penyedia carian telah ditetapkan semula kepada lalai (`DSP`).",
+                    "invalid": "Penyedia carian mestilah `dsp` atau `direct`"
+                },
                 "resetAll": "Semua tetapan bot telah ditetapkan semula kepada lalai.",
                 "alwaysOn": {
                     "set": "Mod Sentiasa Hidup (24/7) telah {state}",

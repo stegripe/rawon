@@ -118,6 +118,11 @@
                     "enabled": "enabled",
                     "disabled": "disabled"
                 },
+                "searchProvider": {
+                    "set": "Search provider has been set to {provider}",
+                    "reset": "Search provider has been reset to default (`DSP`).",
+                    "invalid": "Search provider must be `dsp` or `direct`"
+                },
                 "resetAll": "All bot settings have been reset to defaults.",
                 "alwaysOn": {
                     "set": "Always On (24/7) mode has been {state}",

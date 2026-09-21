@@ -118,6 +118,11 @@
                     "enabled": "etkinleştirildi",
                     "disabled": "devre dışı bırakıldı"
                 },
+                "searchProvider": {
+                    "set": "Arama sağlayıcısı {provider} olarak ayarlandı",
+                    "reset": "Arama sağlayıcısı varsayılana (`DSP`) sıfırlandı.",
+                    "invalid": "Arama sağlayıcısı `dsp` veya `direct` olmalıdır"
+                },
                 "resetAll": "Tüm bot ayarları varsayılanlara sıfırlandı.",
                 "alwaysOn": {
                     "set": "Her Zaman Açık (24/7) modu {state}",
