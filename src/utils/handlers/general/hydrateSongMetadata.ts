@@ -1,5 +1,6 @@
 import { type Rawon } from "../../../structures/Rawon.js";
 import { type Song } from "../../../typings/index.js";
+import { hydrateFromDump, logYtDlpFailure } from "./ytdlpMetadata.js";
 
 function positiveDuration(duration: unknown): number | null {
     return typeof duration === "number" && Number.isFinite(duration) && duration > 0
@@ -47,13 +48,9 @@ export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Pro
     }
 
     try {
-        return (await client.license.hydrateMusicMetadata(song)) ?? song;
+        return (await hydrateFromDump(song)) ?? song;
     } catch (error) {
-        client.logger.debug("[hydrateSongMetadata] stegripe-api metadata lookup failed", {
-            id: song.id,
-            title: song.title,
-            error: error instanceof Error ? error.message : String(error),
-        });
+        logYtDlpFailure(client, "hydrateSongMetadata", error);
     }
 
     return song;
