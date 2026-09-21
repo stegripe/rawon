@@ -118,6 +118,11 @@
                     "enabled": "activé",
                     "disabled": "désactivé"
                 },
+                "searchProvider": {
+                    "set": "Le fournisseur de recherche a été défini sur {provider}",
+                    "reset": "Le fournisseur de recherche a été réinitialisé par défaut (`DSP`).",
+                    "invalid": "Le fournisseur de recherche doit être `dsp` ou `direct`"
+                },
                 "resetAll": "Tous les paramètres du bot ont été réinitialisés par défaut.",
                 "alwaysOn": {
                     "set": "Le mode Toujours Activé (24/7) a été {state}",

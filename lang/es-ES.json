@@ -118,6 +118,11 @@
                     "enabled": "activada",
                     "disabled": "desactivada"
                 },
+                "searchProvider": {
+                    "set": "El proveedor de búsqueda se ha establecido a {provider}",
+                    "reset": "El proveedor de búsqueda se ha restablecido al valor predeterminado (`DSP`).",
+                    "invalid": "El proveedor de búsqueda debe ser `dsp` o `direct`"
+                },
                 "resetAll": "Todos los ajustes del bot se han restablecido a los valores predeterminados.",
                 "alwaysOn": {
                     "set": "El modo Siempre Encendido (24/7) ha sido {state}",

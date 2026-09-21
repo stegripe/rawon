@@ -1,11 +1,18 @@
 import { type Rawon } from "../../../structures/Rawon.js";
 import {
     type PlaylistMetadata,
+    type SearchProvider,
     type SearchTrackResult,
     type Song,
 } from "../../../typings/index.js";
-import { getMediumResThumbnailFromCandidates } from "../../functions/getMaxResThumbnail.js";
+import {
+    getMediumResThumbnail,
+    getMediumResThumbnailFromCandidates,
+    isYouTubeMusicUrl,
+    shouldKeepExistingThumbnail,
+} from "../../functions/getMaxResThumbnail.js";
 import ytdl from "../../yt-dlp/index.js";
+import { searchYouTubeMusic } from "./youtubeMusicSearch.js";
 
 const YOUTUBE_VIDEO_ID_PATTERN = /^[\w-]{11}$/u;
 
@@ -139,6 +146,28 @@ export function mapDumpEntryToSong(
     };
 }
 
+function withYouTubeMusicDisplayUrl(song: Song, sourceUrl: string): Song {
+    if (!isYouTubeMusicUrl(sourceUrl)) {
+        return song;
+    }
+
+    const videoId = extractYouTubeVideoIdFromSong(song);
+    const musicUrl = videoId === null ? sourceUrl : `https://music.youtube.com/watch?v=${videoId}`;
+    const dumpUrl = song.url?.trim() ?? "";
+    const playableUrl =
+        song.playableUrl?.trim() ||
+        (dumpUrl.length > 0 && dumpUrl !== musicUrl ? dumpUrl : undefined);
+    if (song.url === musicUrl && song.playableUrl === playableUrl) {
+        return song;
+    }
+
+    return {
+        ...song,
+        url: musicUrl,
+        playableUrl,
+    };
+}
+
 function playlistMetadataFromDump(
     dump: YtDlpDumpEntry,
     url: string,
@@ -202,7 +231,7 @@ export function songsFromDump(
                 continue;
             }
 
-            items.push(song);
+            items.push(withYouTubeMusicDisplayUrl(song, sourceUrl));
         }
 
         return {
@@ -213,7 +242,7 @@ export function songsFromDump(
 
     const song = mapDumpEntryToSong(dump);
     return {
-        items: song === null ? [] : [song],
+        items: song === null ? [] : [withYouTubeMusicDisplayUrl(song, sourceUrl)],
     };
 }
 
@@ -221,7 +250,20 @@ export async function searchExtractorTracks(
     query: string,
     source: "soundcloud" | "youtube",
     limit = 10,
+    provider: SearchProvider = "dsp",
 ): Promise<SearchTrackResult> {
+    if (source === "youtube" && provider === "dsp") {
+        try {
+            const items = await searchYouTubeMusic(query, limit);
+            if (items.length > 0) {
+                return {
+                    type: "selection",
+                    items,
+                };
+            }
+        } catch {}
+    }
+
     const prefix = source === "soundcloud" ? "scsearch" : "ytsearch";
     const dump = await dumpYtDlpMetadata(`${prefix}${limit}:${query}`, {
         flatPlaylist: true,
@@ -299,7 +341,9 @@ export async function hydrateFromDump(song: Song): Promise<Song | undefined> {
         id: resolved.id || song.id,
         title: resolved.title || song.title,
         duration: resolved.duration > 0 ? resolved.duration : song.duration,
-        thumbnail: resolved.thumbnail || song.thumbnail,
+        thumbnail: shouldKeepExistingThumbnail(song.thumbnail)
+            ? getMediumResThumbnail(song.thumbnail)
+            : resolved.thumbnail || song.thumbnail,
         author: resolved.author ?? song.author,
         isLive: resolved.isLive ?? song.isLive,
         playableUrl: song.playableUrl ?? (resolved.url === song.url ? undefined : resolved.url),
