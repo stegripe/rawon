@@ -211,6 +211,10 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                 });
 
                 collector.on("collect", (botMsg: Message) => {
+                    if (client.requestChannelManager.isPlayerControlMessage(botMsg)) {
+                        return;
+                    }
+
                     setTimeout(() => {
                         void (async (): Promise<void> => {
                             try {

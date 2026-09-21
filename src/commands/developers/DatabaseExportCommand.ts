@@ -12,6 +12,7 @@ import {
     type SlashCommandBuilder,
 } from "discord.js";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -43,8 +44,9 @@ const EXPORT_VERSION = "1.0.0";
 })
 export class DatabaseExportCommand extends ContextCommand {
     public async contextRun(ctx: CommandContext): Promise<void> {
-        if (ctx.isChatInputInteractionContext() && !ctx.deferred) {
-            await ctx.deferReply({ flags: MessageFlags.Ephemeral });
+        const localCtx = ctx as CommandContext & LocalCommandContext;
+        if (localCtx.isCommandInteraction() && !localCtx.deferred) {
+            await localCtx.deferReply({ flags: MessageFlags.Ephemeral });
         }
 
         const client = ctx.client as Rawon;

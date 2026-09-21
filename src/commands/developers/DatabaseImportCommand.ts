@@ -4,9 +4,10 @@ import process from "node:process";
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
-import { Message, MessageFlags, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
+import { MessageFlags, PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
 import got from "got";
 import i18n from "../../config/index.js";
+import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
@@ -54,8 +55,9 @@ interface DatabaseExport {
 })
 export class DatabaseImportCommand extends ContextCommand {
     public async contextRun(ctx: CommandContext): Promise<void> {
-        if (ctx.isChatInputInteractionContext() && !ctx.deferred) {
-            await ctx.deferReply({ flags: MessageFlags.Ephemeral });
+        const localCtx = ctx as CommandContext & LocalCommandContext;
+        if (localCtx.isCommandInteraction() && !localCtx.deferred) {
+            await localCtx.deferReply({ flags: MessageFlags.Ephemeral });
         }
 
         const client = ctx.client as Rawon;
@@ -65,9 +67,9 @@ export class DatabaseImportCommand extends ContextCommand {
         try {
             let jsonContent: string | null = null;
 
-            if (ctx.isChatInputInteractionContext()) {
-                const attachment = ctx.options.getAttachment("file");
-                const urlOrFilename = ctx.options.getString("url");
+            if (localCtx.options) {
+                const attachment = localCtx.options.getAttachment("file");
+                const urlOrFilename = localCtx.options.getString("url");
 
                 if (attachment) {
                     if (!attachment.name?.endsWith(".json")) {
@@ -87,8 +89,8 @@ export class DatabaseImportCommand extends ContextCommand {
                         jsonContent = await readFile(filePath, "utf-8");
                     }
                 }
-            } else if (ctx.context instanceof Message) {
-                const attachment = ctx.context.attachments.first();
+            } else if (localCtx.isMessage()) {
+                const attachment = localCtx.context.attachments.first();
 
                 if (attachment) {
                     if (!attachment.name?.endsWith(".json")) {
@@ -100,8 +102,8 @@ export class DatabaseImportCommand extends ContextCommand {
                         return;
                     }
                     jsonContent = await got(attachment.url).text();
-                } else if (ctx.isMessageContext() && ctx.args) {
-                    const urlOrFilename = await ctx.args.rest("string").catch(() => null);
+                } else if (localCtx.args.length > 0) {
+                    const urlOrFilename = localCtx.args.join(" ").trim();
                     if (urlOrFilename) {
                         if (urlOrFilename.startsWith("http")) {
                             jsonContent = await got(urlOrFilename).text();
