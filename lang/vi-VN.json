@@ -118,6 +118,11 @@
                     "enabled": "bật",
                     "disabled": "tắt"
                 },
+                "searchProvider": {
+                    "set": "Nhà cung cấp tìm kiếm đã được đặt thành {provider}",
+                    "reset": "Nhà cung cấp tìm kiếm đã được đặt lại về mặc định (`DSP`).",
+                    "invalid": "Nhà cung cấp tìm kiếm phải là `dsp` hoặc `direct`"
+                },
                 "resetAll": "Tất cả cài đặt bot đã được đặt lại về mặc định.",
                 "alwaysOn": {
                     "set": "Chế độ Luôn Bật (24/7) đã được {state}",

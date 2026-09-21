@@ -118,6 +118,11 @@
                     "enabled": "활성화",
                     "disabled": "비활성화"
                 },
+                "searchProvider": {
+                    "set": "검색 제공자가 {provider}(으)로 설정되었습니다",
+                    "reset": "검색 제공자가 기본값 (`DSP`)으로 재설정되었습니다.",
+                    "invalid": "검색 제공자는 `dsp` 또는 `direct`여야 합니다"
+                },
                 "resetAll": "모든 봇 설정이 기본값으로 초기화되었습니다.",
                 "alwaysOn": {
                     "set": "항상 켜짐 (24/7) 모드가 {state} 되었습니다",

@@ -247,12 +247,17 @@ export type SpotifyTrack = {
     };
     name: string;
     id: string;
+    album?: {
+        images?: { url: string; height: number | null; width: number | null }[];
+    };
 };
 
 export type SpotifyResolveResult = {
     tracks: { track: SpotifyTrack }[];
     metadata?: PlaylistMetadata;
 };
+
+export type SearchProvider = "direct" | "dsp";
 
 export type BotSettings = {
     embedColor: string;
@@ -262,6 +267,7 @@ export type BotSettings = {
     requestChannelSplash: string;
     defaultVolume: number;
     musicSelectionType: string;
+    searchProvider: SearchProvider;
     enableAudioCache: boolean;
     alwaysOn: boolean;
 };

@@ -1,5 +1,6 @@
 import { type Rawon } from "../../../structures/Rawon.js";
 import { type Song } from "../../../typings/index.js";
+import { resolveSearchProvider } from "../../functions/searchProvider.js";
 import {
     dumpYtDlpMetadata,
     extractYouTubeVideoIdFromSong,
@@ -50,13 +51,17 @@ async function resolveFromYouTubeMix(
     return pickUnseenSong(items, excluded);
 }
 
-async function resolveFromSearch(currentSong: Song, excluded: Song[]): Promise<Song | undefined> {
+async function resolveFromSearch(
+    client: Rawon,
+    currentSong: Song,
+    excluded: Song[],
+): Promise<Song | undefined> {
     const query = [currentSong.title, currentSong.author].filter(Boolean).join(" ").trim();
     if (query.length === 0) {
         return undefined;
     }
 
-    const result = await searchExtractorTracks(query, "youtube", 10);
+    const result = await searchExtractorTracks(query, "youtube", 10, resolveSearchProvider(client));
     return pickUnseenSong(result.items, excluded);
 }
 
@@ -77,7 +82,7 @@ export async function resolveAutoplayCandidate(
     }
 
     try {
-        return await resolveFromSearch(currentSong, excluded);
+        return await resolveFromSearch(client, currentSong, excluded);
     } catch (error) {
         logYtDlpFailure(client, "autoplay-search", error);
         return undefined;

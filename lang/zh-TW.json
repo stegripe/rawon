@@ -118,6 +118,11 @@
                     "enabled": "啟用",
                     "disabled": "停用"
                 },
+                "searchProvider": {
+                    "set": "搜尋提供者已設定為 {provider}",
+                    "reset": "搜尋提供者已重設為預設值 (`DSP`)。",
+                    "invalid": "搜尋提供者必須是 `dsp` 或 `direct`"
+                },
                 "resetAll": "所有機器人設定已重設為預設值。",
                 "alwaysOn": {
                     "set": "全天候 (24/7) 模式已 {state}",

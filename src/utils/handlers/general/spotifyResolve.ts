@@ -3,12 +3,16 @@ import { clientId, clientSecret } from "../../../config/env.js";
 import { type Rawon } from "../../../structures/Rawon.js";
 import {
     type PlaylistMetadata,
+    type SearchProvider,
     type SearchTrackResult,
     type Song,
     type SpotifyAlbum,
     type SpotifyPlaylist,
     type SpotifyTrack,
 } from "../../../typings/index.js";
+import { getMediumResThumbnailFromCandidates } from "../../functions/getMaxResThumbnail.js";
+import { resolveSearchProvider } from "../../functions/searchProvider.js";
+import { searchYouTubeMusic } from "./youtubeMusicSearch.js";
 import { dumpYtDlpMetadata, mapDumpEntryToSong } from "./ytdlpMetadata.js";
 
 const SPOTIFY_API_BASE = "https://api.spotify.com/v1";
@@ -115,6 +119,16 @@ async function collectPaging<T>(
     return items;
 }
 
+function bestSpotifyImage(
+    images: { url?: string; height?: number | null; width?: number | null }[] | undefined,
+): string {
+    return getMediumResThumbnailFromCandidates(images);
+}
+
+function trackAlbumArt(track: SpotifyTrack): string {
+    return bestSpotifyImage(track.album?.images);
+}
+
 function trackSearchQuery(track: SpotifyTrack): string {
     const artists = track.artists
         .map((artist) => artist.name)
@@ -147,10 +161,42 @@ async function mapWithConcurrency<T, R>(
     return results;
 }
 
-async function resolveTrackToYouTube(track: SpotifyTrack): Promise<Song | null> {
+function withSpotifyDisplay(track: SpotifyTrack, youtubeSong: Song): Song {
+    return {
+        ...youtubeSong,
+        title: track.name || youtubeSong.title,
+        author:
+            track.artists
+                .map((artist) => artist.name)
+                .filter(Boolean)
+                .join(", ") || youtubeSong.author,
+        url: track.external_urls.spotify,
+        playableUrl: youtubeSong.url,
+        thumbnail: trackAlbumArt(track) || youtubeSong.thumbnail,
+        duration:
+            youtubeSong.duration > 0
+                ? youtubeSong.duration
+                : Math.round((track.duration_ms ?? 0) / 1_000),
+    };
+}
+
+async function resolveTrackToYouTube(
+    track: SpotifyTrack,
+    provider: SearchProvider,
+): Promise<Song | null> {
     const query = trackSearchQuery(track);
     if (query.length === 0) {
         return null;
+    }
+
+    if (provider === "dsp") {
+        try {
+            const items = await searchYouTubeMusic(query, 1);
+            const youtubeSong = items[0];
+            if (youtubeSong !== undefined) {
+                return withSpotifyDisplay(track, youtubeSong);
+            }
+        } catch {}
     }
 
     try {
@@ -168,21 +214,7 @@ async function resolveTrackToYouTube(track: SpotifyTrack): Promise<Song | null> 
             return null;
         }
 
-        return {
-            ...youtubeSong,
-            title: track.name || youtubeSong.title,
-            author:
-                track.artists
-                    .map((artist) => artist.name)
-                    .filter(Boolean)
-                    .join(", ") || youtubeSong.author,
-            url: track.external_urls.spotify,
-            playableUrl: youtubeSong.url,
-            duration:
-                youtubeSong.duration > 0
-                    ? youtubeSong.duration
-                    : Math.round((track.duration_ms ?? 0) / 1_000),
-        };
+        return withSpotifyDisplay(track, youtubeSong);
     } catch {
         return null;
     }
@@ -190,11 +222,10 @@ async function resolveTrackToYouTube(track: SpotifyTrack): Promise<Song | null> 
 
 async function resolveTracks(
     tracks: SpotifyTrack[],
+    provider: SearchProvider,
 ): Promise<{ items: Song[]; skippedCount: number }> {
-    const resolved = await mapWithConcurrency(
-        tracks,
-        YOUTUBE_SEARCH_CONCURRENCY,
-        resolveTrackToYouTube,
+    const resolved = await mapWithConcurrency(tracks, YOUTUBE_SEARCH_CONCURRENCY, async (track) =>
+        resolveTrackToYouTube(track, provider),
     );
     const items = resolved.filter((song): song is Song => song !== null);
 
@@ -209,6 +240,7 @@ export async function resolveSpotifyUrl(client: Rawon, url: string): Promise<Sea
         throw new Error("Spotify support requires SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET.");
     }
 
+    const provider = resolveSearchProvider(client);
     const resource = parseSpotifyResource(url);
     if (resource === null) {
         throw new Error("Invalid Spotify URL.");
@@ -216,7 +248,7 @@ export async function resolveSpotifyUrl(client: Rawon, url: string): Promise<Sea
 
     if (resource.type === "track") {
         const track = await spotifyGet<SpotifyTrack>(client, `/tracks/${resource.id}`);
-        const { items, skippedCount } = await resolveTracks([track]);
+        const { items, skippedCount } = await resolveTracks([track], provider);
         if (items.length === 0) {
             throw new Error("Could not resolve this Spotify track to a playable source.");
         }
@@ -248,11 +280,11 @@ export async function resolveSpotifyUrl(client: Rawon, url: string): Promise<Sea
             .filter(
                 (track): track is SpotifyTrack => track !== null && typeof track.id === "string",
             );
-        const { items, skippedCount } = await resolveTracks(tracks);
+        const { items, skippedCount } = await resolveTracks(tracks, provider);
         const metadata: PlaylistMetadata = {
             title: playlist.name,
             url: playlist.external_urls.spotify,
-            thumbnail: playlist.images?.[0]?.url,
+            thumbnail: bestSpotifyImage(playlist.images) || undefined,
             author: playlist.owner?.display_name,
             skippedCount: skippedCount > 0 ? skippedCount : undefined,
             skippedReason: skippedCount > 0 ? "unresolved" : undefined,
@@ -270,14 +302,15 @@ export async function resolveSpotifyUrl(client: Rawon, url: string): Promise<Sea
         );
         const tracks = albumTracks.map((track) => ({
             ...track,
+            album: track.album ?? { images: album.images },
             external_urls: track.external_urls ?? { spotify: url },
             artists: (track.artists?.length ?? 0) > 0 ? track.artists : (album.artists ?? []),
         }));
-        const { items, skippedCount } = await resolveTracks(tracks);
+        const { items, skippedCount } = await resolveTracks(tracks, provider);
         const metadata: PlaylistMetadata = {
             title: album.name,
             url: album.external_urls.spotify,
-            thumbnail: album.images?.[0]?.url,
+            thumbnail: bestSpotifyImage(album.images) || undefined,
             author: album.artists
                 ?.map((artist) => artist.name)
                 .filter(Boolean)
@@ -297,7 +330,7 @@ export async function resolveSpotifyUrl(client: Rawon, url: string): Promise<Sea
         client,
         `/artists/${resource.id}/top-tracks?market=US`,
     );
-    const { items, skippedCount } = await resolveTracks(topTracks.tracks ?? []);
+    const { items, skippedCount } = await resolveTracks(topTracks.tracks ?? [], provider);
     const metadata: PlaylistMetadata = {
         title: artist.name,
         url,

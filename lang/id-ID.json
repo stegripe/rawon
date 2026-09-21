@@ -118,6 +118,11 @@
                     "enabled": "diaktifin",
                     "disabled": "dimatiin"
                 },
+                "searchProvider": {
+                    "set": "Search provider udah diset ke {provider}",
+                    "reset": "Search provider udah direset ke default (`DSP`).",
+                    "invalid": "Search provider harus `dsp` atau `direct`"
+                },
                 "resetAll": "Semua settingan bot udah direset ke default.",
                 "alwaysOn": {
                     "set": "Mode Always On (24/7) udah {state}",

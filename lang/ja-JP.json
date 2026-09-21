@@ -118,6 +118,11 @@
                     "enabled": "有効化",
                     "disabled": "無効化"
                 },
+                "searchProvider": {
+                    "set": "検索プロバイダーを {provider} に設定しました",
+                    "reset": "検索プロバイダーをデフォルト (`DSP`) にリセットしました。",
+                    "invalid": "検索プロバイダーは `dsp` または `direct` である必要があります"
+                },
                 "resetAll": "すべてのボット設定がデフォルトにリセットされました。",
                 "alwaysOn": {
                     "set": "常時オン (24/7) モードが {state} になりました",
