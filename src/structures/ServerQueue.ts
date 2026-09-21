@@ -935,7 +935,6 @@ export class ServerQueue {
     public set lastMusicMsg(value: Snowflake | null) {
         if (this._lastMusicMsg !== null && this._lastMusicMsg !== value) {
             const previousId = this._lastMusicMsg;
-            // Never delete the live player widget via this setter side-effect.
             if (previousId !== this._playerWidgetMsgId) {
                 (async () => {
                     await this.textChannel.messages

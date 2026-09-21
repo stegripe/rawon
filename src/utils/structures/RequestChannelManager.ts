@@ -912,7 +912,6 @@ export class RequestChannelManager {
                 }
 
                 try {
-                    // Rebuild components at edit time so we never apply a stale snapshot.
                     await message.edit(this.createPlayerMessageEditOptions(guild));
                 } catch (error) {
                     if (this.isPermissionError(error)) {
