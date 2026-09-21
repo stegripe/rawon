@@ -494,18 +494,6 @@
             "useRequestChannelDirect": "Este comando está deshabilitado en el canal de solicitudes. Usa los controles o escribe el título/enlace de la canción directamente.",
             "validVCJoinable": "No se puede **`Conectar`** a tu canal de voz. Verifica que los permisos sean correctos.",
             "validVCPermission": "No se puede **`Hablar`** en este canal de voz. Verifica que los permisos sean correctos."
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "La licencia aún no se ha validado.",
-                "botNotReady": "El Bot ID aún no está listo.",
-                "missingKey": "Falta `STEGRIPE_API_LICENSE_KEY`. Las funciones con licencia están bloqueadas.",
-                "validationFailed": "La validación de la licencia falló.",
-                "botNotAllowed": "Este Bot ID no está aprobado para la licencia.",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` no es válido.",
-                "revoked": "La licencia ha sido revocada."
-            },
-            "blockMessage": "{reason}\n\n1. Únete a [stegripe.org/discord](https://stegripe.org/discord).\n2. Envía este Bot ID a Stegripe staff: `{botId}`.\n3. Tras la aprobación, configura `STEGRIPE_API_LICENSE_KEY` en `.env`.\n4. Reinicia el bot."
         }
     }
 }
