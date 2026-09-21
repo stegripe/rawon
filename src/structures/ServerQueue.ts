@@ -112,6 +112,7 @@ export class ServerQueue {
     private _voiceChannelStatusState: VoiceChannelStatusState | null = null;
     private _voiceChannelStatusRestorePromise: Promise<void> | null = null;
     private _playerWidgetMsgId: Snowflake | null = null;
+    private _pendingDisplaySongKey: Snowflake | null = null;
 
     public constructor(public readonly textChannel: ServerQueueTextChannel) {
         Object.defineProperties(this, {
@@ -133,6 +134,7 @@ export class ServerQueue {
             _voiceChannelStatusState: nonEnum,
             _voiceChannelStatusRestorePromise: nonEnum,
             _playerWidgetMsgId: nonEnum,
+            _pendingDisplaySongKey: nonEnum,
         });
 
         this.songs = new SongManager(this.client, this.textChannel.guild);
@@ -148,6 +150,7 @@ export class ServerQueue {
                 ) {
                     this.clearRequesterDeafTimeout();
                     this.endSkip();
+                    this._pendingDisplaySongKey = null;
                     newState.resource.volume?.setVolumeLogarithmic(this.volume / 100);
 
                     const currentSong = (this.player.state as AudioPlayerPlayingState).resource
@@ -170,6 +173,7 @@ export class ServerQueue {
 
                     void this.client.requestChannelManager.updatePlayerMessage(
                         this.textChannel.guild,
+                        true,
                     );
 
                     void this.saveQueueState();
@@ -257,6 +261,8 @@ export class ServerQueue {
                         this._prefetchedAutoplaySong = null;
                     }
 
+                    this._pendingDisplaySongKey = nextS && this.songs.has(nextS) ? nextS : null;
+
                     void this.client.requestChannelManager.updatePlayerMessage(
                         this.textChannel.guild,
                     );
@@ -271,7 +277,10 @@ export class ServerQueue {
                         this.textChannel.guild,
                         this.textChannel.id,
                     );
-                    if (!isRequestChannel && !this._playerWidgetMsgId) {
+                    if (!isRequestChannel) {
+                        if (this._playerWidgetMsgId) {
+                            await this.deletePlayerWidget();
+                        }
                         await this.textChannel
                             .send({
                                 flags: MessageFlags.SuppressNotifications,
@@ -296,8 +305,6 @@ export class ServerQueue {
                             .catch((error: unknown) =>
                                 this.client.logger.error("PLAY_ERR:", error),
                             );
-                    } else if (!isRequestChannel && this._playerWidgetMsgId) {
-                        void this.updatePlayerWidget();
                     }
 
                     try {
@@ -332,7 +339,7 @@ export class ServerQueue {
 
                         this.client.logger.error("PLAY_ERR:", error);
 
-                        const fallback = this.songs.first()?.key;
+                        const fallback = this.getNextSongKeyAfter(song);
                         if (fallback && fallback !== nextS) {
                             try {
                                 this.client.logger.info(
@@ -699,6 +706,7 @@ export class ServerQueue {
     public setLoopMode(mode: LoopMode): void {
         this.loopMode = mode;
         void this.saveState();
+        this.refreshPlayerUi();
     }
 
     public setShuffle(value: boolean): void {
@@ -709,6 +717,7 @@ export class ServerQueue {
             this._shuffleUpcomingKeys = [];
         }
         void this.saveState();
+        this.refreshPlayerUi();
     }
 
     public setAutoPlay(value: boolean): void {
@@ -721,15 +730,31 @@ export class ServerQueue {
             this.preCacheNextSong(currentSong);
         }
         void this.saveState();
+        this.refreshPlayerUi();
     }
 
     public setAutoplay(value: boolean): void {
         this.setAutoPlay(value);
     }
 
+    public refreshPlayerUi(immediate = false): void {
+        void this.client.requestChannelManager.updatePlayerMessage(
+            this.textChannel.guild,
+            immediate,
+        );
+        const isRequestChannel = this.client.requestChannelManager.isRequestChannel(
+            this.textChannel.guild,
+            this.textChannel.id,
+        );
+        if (!isRequestChannel && this._playerWidgetMsgId) {
+            void this.deletePlayerWidget();
+        }
+    }
+
     public stop(): void {
         this.stopPositionSaveInterval();
         this.clearRequesterDeafTimeout();
+        this._pendingDisplaySongKey = null;
         void this.restoreVoiceChannelStatus();
         try {
             const songUrls: string[] = this.songs.map((s) => s.song.url);
@@ -875,6 +900,7 @@ export class ServerQueue {
         ).resource;
         resource?.volume?.setVolumeLogarithmic(this._volume / 100);
         void this.saveState();
+        this.refreshPlayerUi();
     }
 
     public get skipVoters(): Snowflake[] {
@@ -906,24 +932,28 @@ export class ServerQueue {
     }
 
     public set lastMusicMsg(value: Snowflake | null) {
-        if (this._lastMusicMsg !== null) {
-            (async () => {
-                await this.textChannel.messages
-                    .fetch(this._lastMusicMsg ?? "")
-                    .then(async (msg) => {
-                        await msg.delete();
-                        return 0;
-                    })
-                    .catch((error: unknown) => {
-                        const discordError = error as { code?: number };
-                        if (discordError.code !== 10008) {
-                            this.textChannel.client.logger.error(
-                                "DELETE_LAST_MUSIC_MESSAGE_ERR:",
-                                error,
-                            );
-                        }
-                    });
-            })();
+        if (this._lastMusicMsg !== null && this._lastMusicMsg !== value) {
+            const previousId = this._lastMusicMsg;
+            // Never delete the live player widget via this setter side-effect.
+            if (previousId !== this._playerWidgetMsgId) {
+                (async () => {
+                    await this.textChannel.messages
+                        .fetch(previousId)
+                        .then(async (msg) => {
+                            await msg.delete();
+                            return 0;
+                        })
+                        .catch((error: unknown) => {
+                            const discordError = error as { code?: number };
+                            if (discordError.code !== 10008) {
+                                this.textChannel.client.logger.error(
+                                    "DELETE_LAST_MUSIC_MESSAGE_ERR:",
+                                    error,
+                                );
+                            }
+                        });
+                })();
+            }
         }
         this._lastMusicMsg = value;
     }
@@ -968,6 +998,7 @@ export class ServerQueue {
         } else {
             this.player.pause();
         }
+        this.refreshPlayerUi(true);
     }
 
     public get idle(): boolean {
@@ -986,49 +1017,55 @@ export class ServerQueue {
         return this.client.data.botSettings.enableAudioCache;
     }
 
-    private sendStartPlayingMsg(_newSong: QueueSong["song"]): void {
+    private sendStartPlayingMsg(newSong: QueueSong["song"]): void {
+        const __mf = i18n__mf(this.client, this.textChannel.guild);
         this.client.logger.info(
-            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${_newSong.title}" on ${
+            `${this.client.shard ? `[Shard #${this.client.shard.ids[0]}]` : ""} Track: "${newSong.title}" on ${
                 this.textChannel.guild.name
             } has started.`,
         );
-        void this.updatePlayerWidget();
+        void (async (): Promise<void> => {
+            if (this._playerWidgetMsgId) {
+                await this.deletePlayerWidget();
+            }
+            const thumb =
+                typeof newSong.thumbnail === "string" && /^https?:\/\//u.test(newSong.thumbnail)
+                    ? newSong.thumbnail
+                    : null;
+            await this.textChannel
+                .send({
+                    flags: MessageFlags.SuppressNotifications,
+                    embeds: [
+                        createEmbed(
+                            "info",
+                            `▶️ **|** ${__mf("utils.generalHandler.startPlaying", {
+                                song: formatBoldMarkdownLink(newSong.title, newSong.url),
+                            })}`,
+                        ).setThumbnail(thumb),
+                    ],
+                })
+                .then((message) => {
+                    this.lastMusicMsg = message.id;
+                })
+                .catch((error: unknown) => this.client.logger.error("PLAY_ERR:", error));
+        })();
     }
 
-    public async updatePlayerWidget(): Promise<void> {
-        const components = this.client.requestChannelManager.createPlayerComponents(
-            this.textChannel.guild,
-        );
-        const editPayload = {
-            embeds: [] as [],
-            flags: MessageFlags.IsComponentsV2 as number,
-            components,
-        };
-
-        if (this._playerWidgetMsgId) {
-            try {
-                const existing = await this.textChannel.messages
-                    .fetch(this._playerWidgetMsgId)
-                    .catch(() => null);
-                if (existing) {
-                    await existing.edit(editPayload);
-                    return;
-                }
-            } catch {
-                this._playerWidgetMsgId = null;
-            }
+    public getCurrentSong(): QueueSong | null {
+        const playerState = this.player.state;
+        if (
+            playerState.status === AudioPlayerStatus.Playing ||
+            playerState.status === AudioPlayerStatus.Paused ||
+            playerState.status === AudioPlayerStatus.Buffering
+        ) {
+            return playerState.resource.metadata as QueueSong;
         }
 
-        try {
-            const msg = await this.textChannel.send({
-                flags: (MessageFlags.SuppressNotifications | MessageFlags.IsComponentsV2) as number,
-                components,
-            });
-            this._playerWidgetMsgId = msg.id;
-            this.lastMusicMsg = msg.id;
-        } catch (error: unknown) {
-            this.client.logger.error("PLAY_ERR:", error);
+        if (this._pendingDisplaySongKey) {
+            return this.songs.get(this._pendingDisplaySongKey) ?? null;
         }
+
+        return null;
     }
 
     public async deletePlayerWidget(): Promise<void> {
@@ -1424,7 +1461,7 @@ export class ServerQueue {
             .some((historySong) => this.isSameAutoplaySong(historySong, song));
     }
 
-    private peekNextKey(currentSong: QueueSong): Snowflake | undefined {
+    public getNextSongKeyAfter(currentSong: QueueSong): Snowflake | undefined {
         if (this.shuffle && this.loopMode !== "SONG") {
             this.syncShuffleUpcomingKeys(currentSong.key);
             return this._shuffleUpcomingKeys[0];
@@ -1447,6 +1484,10 @@ export class ServerQueue {
             sortedSongs.filter((x) => x.index > currentSong.index).first()?.key ??
             (this.loopMode === "QUEUE" ? sortedSongs.first()?.key : undefined)
         );
+    }
+
+    private peekNextKey(currentSong: QueueSong): Snowflake | undefined {
+        return this.getNextSongKeyAfter(currentSong);
     }
 
     private async preCacheAutoplaySong(currentSong: QueueSong): Promise<void> {

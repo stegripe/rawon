@@ -788,7 +788,14 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 queue?.autoPlay ?? false,
             )
         ) {
-            await client.requestChannelManager.updatePlayerMessage(thisBotGuild);
+            const defersPlayerRefresh =
+                interaction.customId === "RC_SKIP" ||
+                interaction.customId === "RC_STOP" ||
+                interaction.customId === "RC_REMOVE";
+
+            if (!defersPlayerRefresh) {
+                await client.requestChannelManager.updatePlayerMessage(thisBotGuild, true);
+            }
             return;
         }
 
@@ -802,8 +809,14 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     return;
                 }
 
-                const np = (queue.player.state as AudioPlayerPlayingState).resource
-                    .metadata as QueueSong;
+                const np = queue.getCurrentSong();
+                if (!np) {
+                    await interaction.reply({
+                        flags: MessageFlags.Ephemeral,
+                        embeds: [createEmbed("warn", __("requestChannel.nothingPlaying"))],
+                    });
+                    return;
+                }
                 const full = queue.songs.sortByIndex();
                 const songs =
                     queue.loopMode === "QUEUE" ? full : full.filter((val) => val.index >= np.index);
@@ -928,9 +941,22 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
         }
 
         await client.requestChannelManager.updatePlayerMessage(thisBotGuild);
-        if (thisBotGuild.queue) {
-            void thisBotGuild.queue.updatePlayerWidget();
+    }
+
+    private getNowPlayingRemovePosition(queue: ServerQueue | undefined): string {
+        if (!queue || queue.songs.size === 0) {
+            return "1";
         }
+
+        const np = queue.getCurrentSong();
+        const full = queue.songs.sortByIndex();
+        const displayed =
+            queue.loopMode === "QUEUE"
+                ? full
+                : full.filter((song) => song.index >= (np?.index ?? 0));
+        const values = [...displayed.values()];
+        const position = np ? values.findIndex((song) => song.key === np.key) : 0;
+        return String((position >= 0 ? position : 0) + 1);
     }
 
     private async handleRequestChannelCommandButton(
@@ -958,7 +984,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             },
             RC_REMOVE: {
                 name: "remove",
-                args: ["1"],
+                args: [this.getNowPlayingRemovePosition(guild.queue)],
             },
             RC_SHUFFLE: {
                 name: "shuffle",

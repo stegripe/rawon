@@ -133,7 +133,7 @@ export async function play(
     if (hydratedSong !== song.song) {
         song.song = hydratedSong;
         void queue.saveQueueState();
-        void queue.client.requestChannelManager.updatePlayerMessage(guild);
+        queue.refreshPlayerUi();
     }
 
     let ffmpegStream: prism.FFmpeg;
@@ -360,14 +360,9 @@ export async function play(
             }
 
             queue.songs.delete(song.key);
-            const nextS =
-                queue.shuffle && queue.loopMode !== "SONG"
-                    ? queue.getNextShuffleKey(song.key)
-                    : queue.loopMode === "SONG"
-                      ? song.key
-                      : (queue.songs.sortByIndex().first()?.key ?? "");
+            const nextS = queue.getNextSongKeyAfter(song) ?? "";
 
-            if (nextS && nextS.length > 0) {
+            if (nextS.length > 0) {
                 void play(guild, nextS, wasIdle);
             } else {
                 await queue.destroy();
@@ -402,17 +397,8 @@ export async function play(
                 }, 10_000);
             }
 
-            const nextS =
-                queue.shuffle && queue.loopMode !== "SONG"
-                    ? queue.getNextShuffleKey(song.key)
-                    : queue.loopMode === "SONG"
-                      ? newKey
-                      : (queue.songs
-                            .sortByIndex()
-                            .filter((x) => x.key !== newKey)
-                            .first()?.key ?? "");
-
-            if (nextS && nextS.length > 0) {
+            const nextS = queue.loopMode === "SONG" ? newKey : queue.getNextSongKeyAfter(song);
+            if (nextS && nextS.length > 0 && nextS !== newKey) {
                 void play(guild, nextS, wasIdle);
             } else {
                 void play(guild, newKey, wasIdle);
@@ -440,14 +426,9 @@ export async function play(
                 });
             }
             queue.songs.delete(song.key);
-            const nextS =
-                queue.shuffle && queue.loopMode !== "SONG"
-                    ? queue.getNextShuffleKey(song.key)
-                    : queue.loopMode === "SONG"
-                      ? song.key
-                      : (queue.songs.sortByIndex().first()?.key ?? "");
+            const nextS = queue.getNextSongKeyAfter(song) ?? "";
 
-            if (nextS && nextS.length > 0) {
+            if (nextS.length > 0) {
                 void play(guild, nextS, wasIdle);
             } else {
                 await queue.destroy();
@@ -475,14 +456,9 @@ export async function play(
         }
 
         queue.songs.delete(song.key);
-        const nextS =
-            queue.shuffle && queue.loopMode !== "SONG"
-                ? queue.getNextShuffleKey(song.key)
-                : queue.loopMode === "SONG"
-                  ? song.key
-                  : (queue.songs.sortByIndex().first()?.key ?? "");
+        const nextS = queue.getNextSongKeyAfter(song) ?? "";
 
-        if (nextS && nextS.length > 0) {
+        if (nextS.length > 0) {
             void play(guild, nextS, wasIdle);
         } else {
             await queue.destroy();

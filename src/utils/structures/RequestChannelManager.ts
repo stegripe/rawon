@@ -1,9 +1,5 @@
 import { clearTimeout, setTimeout } from "node:timers";
-import {
-    type AudioPlayerPlayingState,
-    AudioPlayerStatus,
-    type AudioResource,
-} from "@discordjs/voice";
+import { AudioPlayerStatus } from "@discordjs/voice";
 import {
     ActionRowBuilder,
     type APIMessageTopLevelComponent,
@@ -28,7 +24,6 @@ import {
     type VoiceChannel,
 } from "discord.js";
 import { type Rawon } from "../../structures/Rawon.js";
-import { type QueueSong } from "../../typings/index.js";
 import { createEmbed } from "../functions/createEmbed.js";
 
 import { getMaxResThumbnail } from "../functions/getMaxResThumbnail.js";
@@ -48,6 +43,7 @@ type PlayerStatusGridItem = {
 
 export class RequestChannelManager {
     private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
+    private readonly updateGenerations = new Map<string, number>();
     private readonly updateDebounceMs = 500;
     private readonly permissionWarningCooldowns = new Map<string, number>();
     private readonly permissionWarningCooldownMs = 60_000;
@@ -486,16 +482,8 @@ export class RequestChannelManager {
             });
         }
 
-        const res = (
-            queue.player.state as
-                | (AudioPlayerPlayingState & {
-                      resource: AudioResource | undefined;
-                  })
-                | undefined
-        )?.resource;
-        const queueSong = res?.metadata as QueueSong | undefined;
-        const fallbackQueueSong = queueSong ?? queue.songs.sortByIndex().first();
-        const song = fallbackQueueSong?.song;
+        const queueSong = queue.getCurrentSong();
+        const song = queueSong?.song;
 
         const duration = song?.duration ?? 0;
         const isLive = song?.isLive === true;
@@ -506,8 +494,7 @@ export class RequestChannelManager {
             QUEUE: "🔁",
         };
 
-        const statusEmoji =
-            queue.playing || queue.player.state.status !== AudioPlayerStatus.Paused ? "▶️" : "⏸️";
+        const statusEmoji = queue.player.state.status === AudioPlayerStatus.Paused ? "⏸️" : "▶️";
         const loopEmoji = loopModeEmoji[queue.loopMode] ?? "▶️";
 
         const hasThumbnail = (song?.thumbnail?.length ?? 0) > 0;
@@ -561,7 +548,7 @@ export class RequestChannelManager {
             mainText,
             queueText,
             requesterText: song
-                ? `${__("requestChannel.requestedBy")}: ${fallbackQueueSong?.requester.toString() ?? __("requestChannel.unknown")}`
+                ? `${__("requestChannel.requestedBy")}: ${queueSong?.requester.toString() ?? __("requestChannel.unknown")}`
                 : null,
             imageMode: "gallery",
             statusItems: [
@@ -724,6 +711,10 @@ export class RequestChannelManager {
         );
     }
 
+    public isPlayerControlMessage(message: Message): boolean {
+        return message.author.id === this.client.user?.id && this.hasPlayerControls(message);
+    }
+
     private hasComponentCustomId(component: unknown, customId: string): boolean {
         if (typeof component !== "object" || component === null) {
             return false;
@@ -801,8 +792,14 @@ export class RequestChannelManager {
             this.pendingUpdates.delete(guild.id);
         }
 
+        const generation = (this.updateGenerations.get(guild.id) ?? 0) + 1;
+        this.updateGenerations.set(guild.id, generation);
+
         const performUpdate = async (): Promise<void> => {
             this.pendingUpdates.delete(guild.id);
+            if (this.updateGenerations.get(guild.id) !== generation) {
+                return;
+            }
 
             try {
                 const isSecondary = this.client.config.isMultiBot && !this.isPrimaryBot();
@@ -861,15 +858,30 @@ export class RequestChannelManager {
                     return;
                 }
 
+                if (this.updateGenerations.get(guild.id) !== generation) {
+                    return;
+                }
+
                 const trackedMessage = await this.getPlayerMessage(guild).catch(() => null);
+                if (this.updateGenerations.get(guild.id) !== generation) {
+                    return;
+                }
+
                 const message = await this.pruneDuplicatePlayerMessages(
                     guild,
                     channel,
                     trackedMessage,
                 );
 
+                if (this.updateGenerations.get(guild.id) !== generation) {
+                    return;
+                }
+
                 if (!message) {
-                    if (isSecondary && hasActiveQueue) {
+                    // Secondary bots may resolve the primary bot's RC channel; never create
+                    // a duplicate player there. Own-channel bots recreate when the message is gone.
+                    const usingPrimaryChannel = this.getPrimaryRequestChannel(guild) !== null;
+                    if (!usingPrimaryChannel && (hasActiveQueue || configuredChannelId)) {
                         await this.createOrUpdatePlayerMessage(guild, true);
                     }
 
@@ -884,6 +896,7 @@ export class RequestChannelManager {
                 }
 
                 try {
+                    // Rebuild components at edit time so we never apply a stale snapshot.
                     await message.edit(this.createPlayerMessageEditOptions(guild));
                 } catch (error) {
                     if (this.isPermissionError(error)) {
@@ -923,6 +936,12 @@ export class RequestChannelManager {
         guild: Guild,
         allowCreate = false,
     ): Promise<Message | null> {
+        const usingPrimaryChannel = this.getPrimaryRequestChannel(guild) !== null;
+        if (usingPrimaryChannel) {
+            // Secondary bot looking at primary RC — never create/edit ownership there.
+            return this.getPlayerMessage(guild).catch(() => null);
+        }
+
         if (this.client.config.isMultiBot && !this.isPrimaryBot()) {
             const hasActiveQueue = !!guild.queue && guild.queue.songs.size > 0;
             if (!hasActiveQueue) {

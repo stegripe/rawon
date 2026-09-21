@@ -318,6 +318,10 @@ export class CommandContext {
         return this.context instanceof BaseInteraction;
     }
 
+    public isMessage(): this is this & { context: Message } {
+        return this.context instanceof Message;
+    }
+
     public isCommandInteraction(): boolean {
         return (
             this.context instanceof CommandInteraction ||
