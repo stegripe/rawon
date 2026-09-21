@@ -44,6 +44,7 @@ type PlayerStatusGridItem = {
 export class RequestChannelManager {
     private readonly pendingUpdates = new Map<string, NodeJS.Timeout>();
     private readonly updateGenerations = new Map<string, number>();
+    private readonly ephemeralPlayerMessageIds = new Map<string, string>();
     private readonly updateDebounceMs = 500;
     private readonly permissionWarningCooldowns = new Map<string, number>();
     private readonly permissionWarningCooldownMs = 60_000;
@@ -155,16 +156,13 @@ export class RequestChannelManager {
         return this.isValidId(this.getConfiguredRequestChannelId(guild));
     }
 
-    private isBorrowingPrimaryRequestChannel(
-        guild: Guild,
-        channel: TextChannel | VoiceChannel | StageChannel | null,
-    ): boolean {
-        if (this.isPrimaryBot() || this.ownsConfiguredRequestChannel(guild) || !channel) {
-            return false;
+    private rememberPlayerMessageId(guildId: string, messageId: string | null): void {
+        if (this.isValidId(messageId)) {
+            this.ephemeralPlayerMessageIds.set(guildId, messageId);
+            return;
         }
 
-        const primaryChannel = this.getPrimaryRequestChannel(guild);
-        return primaryChannel !== null && primaryChannel.id === channel.id;
+        this.ephemeralPlayerMessageIds.delete(guildId);
     }
 
     private getMissingRequestChannelPermissions(
@@ -315,47 +313,43 @@ export class RequestChannelManager {
 
     public async getPlayerMessage(guild: Guild): Promise<Message | null> {
         const botId = this.client.user?.id ?? "unknown";
-
-        if (hasGetRequestChannel(this.client.data)) {
-            const data = this.client.data.getRequestChannel(guild.id, botId);
-            if (!this.isValidId(data?.channelId)) {
-                return null;
-            }
-            if (!this.isValidId(data?.messageId)) {
-                return null;
-            }
-
-            const channel = this.getRequestChannel(guild);
-            if (!channel) {
-                return null;
-            }
-
-            try {
-                return await channel.messages.fetch(data.messageId);
-            } catch {
-                return null;
-            }
-        }
-
-        const fallback = this.client.data as FallbackDataManager;
-        const data = fallback.data?.[guild.id]?.requestChannel;
-        if (!this.isValidId(data?.channelId)) {
-            return null;
-        }
-        if (!this.isValidId(data?.messageId)) {
-            return null;
-        }
-
         const channel = this.getRequestChannel(guild);
         if (!channel) {
             return null;
         }
 
-        try {
-            return await channel.messages.fetch(data.messageId);
-        } catch {
-            return null;
+        let messageId: string | null = null;
+        if (hasGetRequestChannel(this.client.data)) {
+            const data = this.client.data.getRequestChannel(guild.id, botId);
+            if (this.isValidId(data?.messageId)) {
+                messageId = data.messageId;
+            }
+        } else {
+            const fallback = this.client.data as FallbackDataManager;
+            const data = fallback.data?.[guild.id]?.requestChannel;
+            if (this.isValidId(data?.messageId)) {
+                messageId = data.messageId;
+            }
         }
+
+        messageId ??= this.ephemeralPlayerMessageIds.get(guild.id) ?? null;
+
+        if (messageId) {
+            try {
+                const storedMessage = await channel.messages.fetch(messageId);
+                if (storedMessage.author.id === this.client.user?.id) {
+                    this.rememberPlayerMessageId(guild.id, storedMessage.id);
+                    return storedMessage;
+                }
+            } catch {
+                this.rememberPlayerMessageId(guild.id, null);
+            }
+        }
+
+        const found = await this.findPlayerMessages(channel);
+        const ownMessage = found[0] ?? null;
+        this.rememberPlayerMessageId(guild.id, ownMessage?.id ?? null);
+        return ownMessage;
     }
 
     public hasRequestChannel(guild: Guild): boolean {
@@ -410,7 +404,13 @@ export class RequestChannelManager {
     }
 
     public async setPlayerMessageId(guild: Guild, messageId: string | null): Promise<void> {
+        this.rememberPlayerMessageId(guild.id, messageId);
+
         const botId = this.client.user?.id ?? "unknown";
+        const ownedChannelId = this.getConfiguredRequestChannelId(guild);
+        if (!this.isValidId(ownedChannelId) && !this.isPrimaryBot()) {
+            return;
+        }
 
         if (hasGetRequestChannel(this.client.data) && hasSaveRequestChannel(this.client.data)) {
             const current = this.client.data.getRequestChannel(guild.id, botId);
@@ -820,11 +820,8 @@ export class RequestChannelManager {
             try {
                 const configuredChannelId = this.getConfiguredRequestChannelId(guild);
                 const channel = this.getRequestChannel(guild);
-                if (this.isBorrowingPrimaryRequestChannel(guild, channel)) {
-                    return;
-                }
-
                 const hasActiveQueue = !!guild.queue && guild.queue.songs.size > 0;
+
                 if (!this.isPrimaryBot() && !hasActiveQueue) {
                     await this.deletePlayerMessage(guild);
                     return;
@@ -897,10 +894,7 @@ export class RequestChannelManager {
                 }
 
                 if (!message) {
-                    if (
-                        hasActiveQueue &&
-                        (this.ownsConfiguredRequestChannel(guild) || this.isPrimaryBot())
-                    ) {
+                    if (hasActiveQueue) {
                         await this.createOrUpdatePlayerMessage(guild, true);
                     }
 
@@ -911,10 +905,7 @@ export class RequestChannelManager {
                     this.client.logger.debug(
                         `[MultiBot] ${this.client.user?.tag} cannot edit message ${message.id} - created by ${message.author.tag}`,
                     );
-                    if (
-                        hasActiveQueue &&
-                        (this.ownsConfiguredRequestChannel(guild) || this.isPrimaryBot())
-                    ) {
+                    if (hasActiveQueue) {
                         await this.createOrUpdatePlayerMessage(guild, true);
                     }
                     return;
@@ -963,16 +954,11 @@ export class RequestChannelManager {
     ): Promise<Message | null> {
         const configuredChannelId = this.getConfiguredRequestChannelId(guild);
         const channel = this.getRequestChannel(guild);
-        if (this.isBorrowingPrimaryRequestChannel(guild, channel)) {
-            return this.getPlayerMessage(guild).catch(() => null);
-        }
+        const hasActiveQueue = !!guild.queue && guild.queue.songs.size > 0;
 
-        if (this.client.config.isMultiBot && !this.isPrimaryBot()) {
-            const hasActiveQueue = !!guild.queue && guild.queue.songs.size > 0;
-            if (!hasActiveQueue) {
-                await this.deletePlayerMessage(guild);
-                return null;
-            }
+        if (this.client.config.isMultiBot && !this.isPrimaryBot() && !hasActiveQueue) {
+            await this.deletePlayerMessage(guild);
+            return null;
         }
 
         if (!channel) {
@@ -1061,7 +1047,21 @@ export class RequestChannelManager {
             await existingMessage.delete().catch(() => null);
         }
 
-        await this.setPlayerMessageId(guild, null);
+        const channel = this.getRequestChannel(guild);
+        if (channel) {
+            const leftover = await this.findPlayerMessages(channel);
+            for (const message of leftover) {
+                if (message.id === existingMessage?.id) {
+                    continue;
+                }
+                await message.delete().catch(() => null);
+            }
+        }
+
+        this.rememberPlayerMessageId(guild.id, null);
+        if (this.ownsConfiguredRequestChannel(guild) || this.isPrimaryBot()) {
+            await this.setPlayerMessageId(guild, null);
+        }
     }
 
     public isRequestChannel(guild: Guild, channelId: string): boolean {
