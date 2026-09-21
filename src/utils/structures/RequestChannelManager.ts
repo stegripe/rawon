@@ -151,6 +151,22 @@ export class RequestChannelManager {
         return fallback.data?.[guild.id]?.requestChannel?.channelId ?? null;
     }
 
+    public ownsConfiguredRequestChannel(guild: Guild): boolean {
+        return this.isValidId(this.getConfiguredRequestChannelId(guild));
+    }
+
+    private isBorrowingPrimaryRequestChannel(
+        guild: Guild,
+        channel: TextChannel | VoiceChannel | StageChannel | null,
+    ): boolean {
+        if (this.isPrimaryBot() || this.ownsConfiguredRequestChannel(guild) || !channel) {
+            return false;
+        }
+
+        const primaryChannel = this.getPrimaryRequestChannel(guild);
+        return primaryChannel !== null && primaryChannel.id === channel.id;
+    }
+
     private getMissingRequestChannelPermissions(
         guild: Guild,
         channel: TextChannel | VoiceChannel | StageChannel,
@@ -802,15 +818,18 @@ export class RequestChannelManager {
             }
 
             try {
-                const isSecondary = this.client.config.isMultiBot && !this.isPrimaryBot();
+                const configuredChannelId = this.getConfiguredRequestChannelId(guild);
+                const channel = this.getRequestChannel(guild);
+                if (this.isBorrowingPrimaryRequestChannel(guild, channel)) {
+                    return;
+                }
+
                 const hasActiveQueue = !!guild.queue && guild.queue.songs.size > 0;
-                if (isSecondary && !hasActiveQueue) {
+                if (!this.isPrimaryBot() && !hasActiveQueue) {
                     await this.deletePlayerMessage(guild);
                     return;
                 }
 
-                const configuredChannelId = this.getConfiguredRequestChannelId(guild);
-                const channel = this.getRequestChannel(guild);
                 if (!channel) {
                     if (configuredChannelId) {
                         const __ = i18n__(this.client, guild);
@@ -878,10 +897,10 @@ export class RequestChannelManager {
                 }
 
                 if (!message) {
-                    // Secondary bots may resolve the primary bot's RC channel; never create
-                    // a duplicate player there. Own-channel bots recreate when the message is gone.
-                    const usingPrimaryChannel = this.getPrimaryRequestChannel(guild) !== null;
-                    if (!usingPrimaryChannel && (hasActiveQueue || configuredChannelId)) {
+                    if (
+                        hasActiveQueue &&
+                        (this.ownsConfiguredRequestChannel(guild) || this.isPrimaryBot())
+                    ) {
                         await this.createOrUpdatePlayerMessage(guild, true);
                     }
 
@@ -892,6 +911,12 @@ export class RequestChannelManager {
                     this.client.logger.debug(
                         `[MultiBot] ${this.client.user?.tag} cannot edit message ${message.id} - created by ${message.author.tag}`,
                     );
+                    if (
+                        hasActiveQueue &&
+                        (this.ownsConfiguredRequestChannel(guild) || this.isPrimaryBot())
+                    ) {
+                        await this.createOrUpdatePlayerMessage(guild, true);
+                    }
                     return;
                 }
 
@@ -936,9 +961,9 @@ export class RequestChannelManager {
         guild: Guild,
         allowCreate = false,
     ): Promise<Message | null> {
-        const usingPrimaryChannel = this.getPrimaryRequestChannel(guild) !== null;
-        if (usingPrimaryChannel) {
-            // Secondary bot looking at primary RC — never create/edit ownership there.
+        const configuredChannelId = this.getConfiguredRequestChannelId(guild);
+        const channel = this.getRequestChannel(guild);
+        if (this.isBorrowingPrimaryRequestChannel(guild, channel)) {
             return this.getPlayerMessage(guild).catch(() => null);
         }
 
@@ -950,8 +975,6 @@ export class RequestChannelManager {
             }
         }
 
-        const configuredChannelId = this.getConfiguredRequestChannelId(guild);
-        const channel = this.getRequestChannel(guild);
         if (!channel) {
             if (configuredChannelId) {
                 const __ = i18n__(this.client, guild);
@@ -1003,7 +1026,7 @@ export class RequestChannelManager {
         let message = await this.pruneDuplicatePlayerMessages(guild, channel, trackedMessage);
 
         try {
-            if (message) {
+            if (message && message.author.id === this.client.user?.id) {
                 await message.edit(this.createPlayerMessageEditOptions(guild));
             } else if (allowCreate) {
                 message = await channel.send(this.createPlayerMessageCreateOptions(guild));
@@ -1034,7 +1057,7 @@ export class RequestChannelManager {
 
     public async deletePlayerMessage(guild: Guild): Promise<void> {
         const existingMessage = await this.getPlayerMessage(guild);
-        if (existingMessage) {
+        if (existingMessage && existingMessage.author.id === this.client.user?.id) {
             await existingMessage.delete().catch(() => null);
         }
 
