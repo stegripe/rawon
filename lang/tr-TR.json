@@ -118,6 +118,11 @@
                     "enabled": "etkinleştirildi",
                     "disabled": "devre dışı bırakıldı"
                 },
+                "searchProvider": {
+                    "set": "Arama sağlayıcısı {provider} olarak ayarlandı",
+                    "reset": "Arama sağlayıcısı varsayılana (`DSP`) sıfırlandı.",
+                    "invalid": "Arama sağlayıcısı `dsp` veya `direct` olmalıdır"
+                },
                 "resetAll": "Tüm bot ayarları varsayılanlara sıfırlandı.",
                 "alwaysOn": {
                     "set": "Her Zaman Açık (24/7) modu {state}",
@@ -494,18 +499,6 @@
             "useRequestChannelDirect": "Bu komut istek kanalında devre dışı bırakılmıştır. Lütfen kontrolleri kullanın veya şarkı adını/bağlantısını doğrudan yazın.",
             "validVCJoinable": "Ses kanalınıza **`Bağlanılamıyor`**. Gerekli izinlerin verildiğinden emin olun.",
             "validVCPermission": "Bu ses kanalında **`Konuşma`** yapılamıyor; gerekli izinlerin verildiğinden emin olun."
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "Lisans henüz doğrulanmadı.",
-                "botNotReady": "Bot ID henüz hazır değil.",
-                "missingKey": "`STEGRIPE_API_LICENSE_KEY` eksik. Lisanslı özellikler kilitli.",
-                "validationFailed": "Lisans doğrulaması başarısız oldu.",
-                "botNotAllowed": "Bu Bot ID lisans için onaylanmamış.",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` geçersiz.",
-                "revoked": "Lisans iptal edildi."
-            },
-            "blockMessage": "{reason}\n\n1. [stegripe.org/discord](https://stegripe.org/discord) adresine katıl.\n2. Bu Bot ID’yi Stegripe staff ekibine gönder: `{botId}`.\n3. Onaydan sonra `.env` içinde `STEGRIPE_API_LICENSE_KEY` ayarla.\n4. Botu yeniden başlat."
         }
     }
 }

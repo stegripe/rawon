@@ -30,7 +30,7 @@
 ### Standard Setup (Node.js)
 1. Download and install the prerequisites above
 2. Clone or download this repository
-3. Copy `.env.example` to `.env` and fill in the required values. `DISCORD_TOKEN` is required to start; `STEGRIPE_API_LICENSE_KEY` is required for licensed features.
+3. Copy `.env.example` to `.env` and fill in the required values. `DISCORD_TOKEN` is required to start.
 4. Install dependencies:
 ```sh
 pnpm install
@@ -109,20 +109,7 @@ The `DEVTOOLS_PORT` (default: `3000`) is used for Chrome DevTools remote debuggi
 
 Use the ones you need/should and fill in the values.
 
-## Rawon License
-
-Some features require an approved `STEGRIPE_API_LICENSE_KEY`.
-
-1. Start the bot once.
-2. Copy the Bot ID from the license warning.
-3. Join [stegripe.org/discord](https://stegripe.org/discord).
-4. Send the Bot ID to Stegripe staff for review.
-5. After approval, set `STEGRIPE_API_LICENSE_KEY` in `.env`.
-6. Restart the bot.
-
-General commands remain available without a license. Approved bot IDs can use the licensed feature set.
-
-### Multi-Bot Mode
+## Multi-Bot Mode
 
 Multi-bot mode is adaptive - no extra configuration needed!
 
@@ -139,7 +126,6 @@ Features:
 - Each bot handles music commands for users in its voice channel
 - Adaptive ordering - if the primary bot is not in a server, the next available bot takes over
 - Each bot requires its own Discord application
-- Each bot ID that needs license access must be approved for the same `STEGRIPE_API_LICENSE_KEY`; unapproved bot IDs stay online but will not handle license-gated actions
 
 ## Documentation
 - [Disclaimers](./docs/DISCLAIMERS.md) - Important legal information

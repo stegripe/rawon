@@ -153,15 +153,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             );
 
             if ((prefixMatch?.length ?? 0) > 0) {
-                const cmdContentForLicense = message.content.slice(actualPrefix.length).trim();
-                const cmdNameForLicense = cmdContentForLicense.split(/ +/u)[0]?.toLowerCase();
-                if (
-                    isPlaybackMusicCommandName(cmdNameForLicense) &&
-                    !(await this.ensureMusicLicensed(client, message))
-                ) {
-                    return;
-                }
-
                 if (message.guild && this.container.config.isMultiBot) {
                     const thisBotGuild = client.guilds.cache.get(message.guild.id);
                     if (!thisBotGuild) {
@@ -228,9 +219,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             this.container.logger.debug(
                 `[MultiBot] ${client.user?.tag} calling handleRequestChannelMessage for ${message.author.tag}`,
             );
-            if (!(await this.ensureMusicLicensed(client, message))) {
-                return;
-            }
             await this.handleRequestChannelMessage(message);
             return;
         }
@@ -265,15 +253,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
         }
 
         if ((prefixMatch?.length ?? 0) > 0) {
-            const cmdContentForLicense = message.content.slice(actualPrefix.length).trim();
-            const cmdNameForLicense = cmdContentForLicense.split(/ +/u)[0]?.toLowerCase();
-            if (
-                isPlaybackMusicCommandName(cmdNameForLicense) &&
-                !(await this.ensureMusicLicensed(client, message))
-            ) {
-                return;
-            }
-
             if (message.guild && this.container.config.isMultiBot) {
                 const thisBotGuild = client.guilds.cache.get(message.guild.id);
                 if (!thisBotGuild) {
@@ -306,18 +285,6 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
             );
             await client.commands.handle(message, actualPrefix);
         }
-    }
-
-    private async ensureMusicLicensed(client: Rawon, message: Message): Promise<boolean> {
-        if (await client.license.ensureUsable()) {
-            return true;
-        }
-
-        this.sendTemporaryReply(
-            message,
-            createEmbed("error", client.license.blockMessageFor(message.guild), true),
-        );
-        return false;
     }
 
     private async handleRequestChannelMessage(message: Message): Promise<void> {

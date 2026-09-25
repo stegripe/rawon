@@ -2,6 +2,7 @@ import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
 import { type BotSettings, type GuildData } from "../../typings/index.js";
+import { normalizeSearchProvider } from "../functions/searchProvider.js";
 import { OperationManager } from "./OperationManager.js";
 
 export const BOT_SETTINGS_DEFAULTS: BotSettings = {
@@ -12,6 +13,7 @@ export const BOT_SETTINGS_DEFAULTS: BotSettings = {
     requestChannelSplash: "https://cdn.stegripe.org/images/rawon_splash.png",
     defaultVolume: 100,
     musicSelectionType: "message",
+    searchProvider: "dsp",
     enableAudioCache: true,
     alwaysOn: false,
 };
@@ -33,16 +35,6 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         this.initSchema();
         this.loadBotSettings();
         void this.load();
-
-        const hasAlwaysOnColumn = this.db
-            .prepare("PRAGMA table_info(bot_settings)")
-            .all()
-            .some((col: any) => col.name === "always_on");
-        if (!hasAlwaysOnColumn) {
-            this.db.exec(`
-                ALTER TABLE bot_settings ADD COLUMN always_on INTEGER DEFAULT 0;
-            `);
-        }
     }
 
     private ensureDirectory(): void {
@@ -175,6 +167,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                 request_channel_splash TEXT,
                 default_volume INTEGER,
                 music_selection_type TEXT,
+                search_provider TEXT,
                 enable_audio_cache INTEGER,
                 always_on INTEGER DEFAULT 0
             )
@@ -183,6 +176,20 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
         this.db.exec(`
             INSERT OR IGNORE INTO bot_settings (id) VALUES (1)
         `);
+
+        const botSettingsColumns = (
+            this.db.prepare("PRAGMA table_info(bot_settings)").all() as Array<{ name: string }>
+        ).map((col) => col.name);
+        if (!botSettingsColumns.includes("always_on")) {
+            this.db.exec(`
+                ALTER TABLE bot_settings ADD COLUMN always_on INTEGER DEFAULT 0;
+            `);
+        }
+        if (!botSettingsColumns.includes("search_provider")) {
+            this.db.exec(`
+                ALTER TABLE bot_settings ADD COLUMN search_provider TEXT;
+            `);
+        }
     }
 
     public get data(): T | null {
@@ -761,6 +768,7 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
                   request_channel_splash: string | null;
                   default_volume: number | null;
                   music_selection_type: string | null;
+                  search_provider: string | null;
                   enable_audio_cache: number | null;
                   always_on: number | null;
               }
@@ -786,6 +794,9 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
             defaultVolume: row.default_volume ?? BOT_SETTINGS_DEFAULTS.defaultVolume,
             musicSelectionType:
                 row.music_selection_type ?? BOT_SETTINGS_DEFAULTS.musicSelectionType,
+            searchProvider: normalizeSearchProvider(
+                row.search_provider ?? BOT_SETTINGS_DEFAULTS.searchProvider,
+            ),
             enableAudioCache:
                 row.enable_audio_cache === null
                     ? BOT_SETTINGS_DEFAULTS.enableAudioCache
@@ -803,7 +814,9 @@ export class SQLiteDataManager<T extends Record<string, GuildData> = Record<stri
             "request_channel_splash",
             "default_volume",
             "music_selection_type",
+            "search_provider",
             "enable_audio_cache",
+            "always_on",
         ]);
 
         if (!validColumns.has(key)) {

@@ -118,6 +118,11 @@
                     "enabled": "увімкнено",
                     "disabled": "вимкнено"
                 },
+                "searchProvider": {
+                    "set": "Постачальник пошуку встановлено на {provider}",
+                    "reset": "Постачальник пошуку скинуто до значення за замовчуванням (`DSP`).",
+                    "invalid": "Постачальник пошуку має бути `dsp` або `direct`"
+                },
                 "resetAll": "Усі налаштування бота скинуто до значень за замовчуванням.",
                 "alwaysOn": {
                     "set": "Режим Завжди Ввімкнено (24/7) було {state}",
@@ -494,18 +499,6 @@
             "useRequestChannelDirect": "Ця команда вимкнена в каналі запитів. Використовуйте елементи керування або введіть назву/посилання пісні безпосередньо.",
             "validVCJoinable": "Не вдалося **`Приєднатись`** до Вашого каналу, перевірте чи надано потрібні дозволи.",
             "validVCPermission": "Не вдалося **`Розмовляти`** у Вашому каналі, перевірте чи надано потрібні дозволи."
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "Ліцензію ще не перевірено.",
-                "botNotReady": "Bot ID ще не готовий.",
-                "missingKey": "Відсутній `STEGRIPE_API_LICENSE_KEY`. Ліцензовані функції заблоковано.",
-                "validationFailed": "Не вдалося перевірити ліцензію.",
-                "botNotAllowed": "Цей Bot ID не схвалено для ліцензії.",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` недійсний.",
-                "revoked": "Ліцензію відкликано."
-            },
-            "blockMessage": "{reason}\n\n1. Приєднайся до [stegripe.org/discord](https://stegripe.org/discord).\n2. Надішли цей Bot ID Stegripe staff: `{botId}`.\n3. Після схвалення задай `STEGRIPE_API_LICENSE_KEY` у `.env`.\n4. Перезапусти бота."
         }
     }
 }

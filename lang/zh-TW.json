@@ -118,6 +118,11 @@
                     "enabled": "啟用",
                     "disabled": "停用"
                 },
+                "searchProvider": {
+                    "set": "搜尋提供者已設定為 {provider}",
+                    "reset": "搜尋提供者已重設為預設值 (`DSP`)。",
+                    "invalid": "搜尋提供者必須是 `dsp` 或 `direct`"
+                },
                 "resetAll": "所有機器人設定已重設為預設值。",
                 "alwaysOn": {
                     "set": "全天候 (24/7) 模式已 {state}",
@@ -494,18 +499,6 @@
             "useRequestChannelDirect": "此命令在請求頻道中已禁用。請使用控制按鈕或直接輸入歌曲名稱/連結。",
             "validVCJoinable": "無法**`連接`**到你的語音頻道，請確保已授予正確權限。",
             "validVCPermission": "無法在這個語音頻道**`說話`**；請確保已授予正確權限。"
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "授權尚未驗證。",
-                "botNotReady": "Bot ID 尚未準備好。",
-                "missingKey": "缺少 `STEGRIPE_API_LICENSE_KEY`。授權功能已鎖定。",
-                "validationFailed": "授權驗證失敗。",
-                "botNotAllowed": "此 Bot ID 尚未核准使用此授權。",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` 無效。",
-                "revoked": "授權已被撤銷。"
-            },
-            "blockMessage": "{reason}\n\n1. 加入 [stegripe.org/discord](https://stegripe.org/discord)。\n2. 將此 Bot ID 傳送給 Stegripe staff：`{botId}`。\n3. 核准後，在 `.env` 設定 `STEGRIPE_API_LICENSE_KEY`。\n4. 重新啟動機器人。"
         }
     }
 }

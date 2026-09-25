@@ -1,5 +1,8 @@
 import { type Rawon } from "../../../structures/Rawon.js";
 import { type Song } from "../../../typings/index.js";
+import { withYouTubeVideoThumbnail } from "../../functions/getMaxResThumbnail.js";
+import { fetchYouTubeMusicThumbnail } from "./youtubeMusicThumbnail.js";
+import { hydrateFromDump, logYtDlpFailure } from "./ytdlpMetadata.js";
 
 function positiveDuration(duration: unknown): number | null {
     return typeof duration === "number" && Number.isFinite(duration) && duration > 0
@@ -36,25 +39,33 @@ function hasSpotifyDisplayUrl(song: Song): boolean {
 }
 
 export async function hydrateYouTubeSongMetadata(client: Rawon, song: Song): Promise<Song> {
+    let hydrated = song;
     if (
-        song.isLive === true ||
-        (!shouldHydrateFromPlayableUrl(song) &&
-            !hasYouTubeVideoThumbnail(song) &&
-            !hasSpotifyDisplayUrl(song) &&
-            positiveDuration(song.duration) !== null)
+        song.isLive !== true &&
+        (shouldHydrateFromPlayableUrl(song) ||
+            hasYouTubeVideoThumbnail(song) ||
+            hasSpotifyDisplayUrl(song) ||
+            positiveDuration(song.duration) === null)
     ) {
-        return song;
+        try {
+            hydrated = (await hydrateFromDump(song)) ?? song;
+        } catch (error) {
+            logYtDlpFailure(client, "hydrateSongMetadata", error);
+        }
+    }
+
+    if (hydrated.isLive === true) {
+        return hydrated;
     }
 
     try {
-        return (await client.license.hydrateMusicMetadata(song)) ?? song;
+        const thumbnail = await fetchYouTubeMusicThumbnail(hydrated);
+        if (thumbnail !== undefined && thumbnail !== hydrated.thumbnail) {
+            hydrated = { ...hydrated, thumbnail };
+        }
     } catch (error) {
-        client.logger.debug("[hydrateSongMetadata] stegripe-api metadata lookup failed", {
-            id: song.id,
-            title: song.title,
-            error: error instanceof Error ? error.message : String(error),
-        });
+        logYtDlpFailure(client, "hydrateSongMetadata.youtubeMusicThumbnail", error);
     }
 
-    return song;
+    return withYouTubeVideoThumbnail(hydrated);
 }

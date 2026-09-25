@@ -191,10 +191,6 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
 
         if (interaction.isButton()) {
             if (interaction.customId.startsWith("RC_")) {
-                if (!(await this.ensureMusicLicensed(client, interaction))) {
-                    return;
-                }
-
                 try {
                     await this.handleRequestChannelButton(interaction);
                 } catch (error: unknown) {
@@ -415,13 +411,6 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     context.additionalArgs.set("ephemeralRequestChannel", true);
                 }
 
-                if (
-                    isPlaybackMusicCommand(cmd.name, cmd.aliases) &&
-                    !(await this.ensureMusicLicensed(client, interaction))
-                ) {
-                    return;
-                }
-
                 const ctxCmd2 = cmd as { contextRun?: (ctx: CommandContext) => Promise<unknown> };
                 await ctxCmd2.contextRun?.(context);
 
@@ -467,13 +456,6 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                     .filter((x: Command) => hasSlashCommand(x))
                     .find((x: Command) => x.name === cmd);
                 if (command) {
-                    if (
-                        isPlaybackMusicCommand(command.name, command.aliases) &&
-                        !(await this.ensureMusicLicensed(client, interaction))
-                    ) {
-                        return;
-                    }
-
                     const storedTarget = await applyMusicCommandTargetByIds(
                         context,
                         targetBotId,
@@ -551,30 +533,6 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
             message.includes("missing access") ||
             message.includes("cannot send messages")
         );
-    }
-
-    private async ensureMusicLicensed(client: Rawon, interaction: Interaction): Promise<boolean> {
-        if (await client.license.ensureUsable()) {
-            return true;
-        }
-
-        if (interaction.isRepliable()) {
-            await this.safeReply(
-                interaction,
-                {
-                    flags: MessageFlags.Ephemeral,
-                    embeds: [
-                        createEmbed(
-                            "error",
-                            client.license.blockMessageFor(interaction.guild),
-                            true,
-                        ),
-                    ],
-                },
-                "reply to unlicensed Rawon music interaction",
-            );
-        }
-        return false;
     }
 
     private getMissingInteractionPermissions(interaction: Interaction): bigint[] {

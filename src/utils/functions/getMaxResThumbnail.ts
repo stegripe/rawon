@@ -1,10 +1,11 @@
 import { type PlaylistMetadata, type SearchTrackResult, type Song } from "../../typings/index.js";
 
-const GOOGLE_THUMBNAIL_SIZE = 500;
-const YOUTUBE_THUMBNAIL_QUALITY = "hqdefault";
+const GOOGLE_THUMBNAIL_SIZE = 720;
+const YOUTUBE_THUMBNAIL_QUALITY = "maxresdefault";
 const GOOGLE_IMAGE_HOST_PATTERN = /(?:^|\.)googleusercontent\.com$/iu;
 const GOOGLE_PROFILE_IMAGE_HOST_PATTERN = /(?:^|\.)ggpht\.com$/iu;
 const SOUNDCLOUD_IMAGE_HOST_PATTERN = /(?:^|\.)sndcdn\.com$/iu;
+const SPOTIFY_IMAGE_HOST_PATTERN = /(?:^|\.)scdn\.co$/iu;
 const YOUTUBE_IMAGE_HOSTS = new Set(["img.youtube.com", "i.ytimg.com"]);
 
 type ThumbnailCandidate = {
@@ -25,41 +26,94 @@ function isYouTubeVideoId(id: string): boolean {
     return /^[\w-]{11}$/u.test(id);
 }
 
+function isYouTubeHost(hostname: string): boolean {
+    const host = hostname.replace(/^www\./u, "").toLowerCase();
+    return (
+        host === "youtube.com" ||
+        host === "youtu.be" ||
+        host === "music.youtube.com" ||
+        host === "m.youtube.com"
+    );
+}
+
+export function isYouTubeDisplayUrl(rawUrl: string): boolean {
+    const url = rawUrl.trim();
+    if (url.length === 0) {
+        return false;
+    }
+
+    try {
+        return isYouTubeHost(new URL(url).hostname);
+    } catch {
+        return /youtube|youtu\.be/giu.test(url);
+    }
+}
+
 function isYouTubeSong(song: Song): boolean {
     const url = song.url?.trim() ?? "";
-    if (/youtube|youtu\.be/giu.test(url)) {
-        return true;
+    if (url.length > 0) {
+        return isYouTubeDisplayUrl(url);
     }
 
     return isYouTubeVideoId(song.id?.trim() ?? "");
 }
 
-function isYouTubeMusicUrl(rawUrl: string): boolean {
+export function isYouTubeMusicUrl(rawUrl: string): boolean {
     try {
         const parsed = new URL(rawUrl);
-        return parsed.hostname === "music.youtube.com";
+        return parsed.hostname.replace(/^www\./u, "").toLowerCase() === "music.youtube.com";
     } catch {
         return false;
     }
 }
 
-function isGoogleImageHost(hostname: string): boolean {
+export function isNativeAlbumThumbnail(url: string | undefined | null): boolean {
+    const raw = url?.trim() ?? "";
+    if (raw.length === 0) {
+        return false;
+    }
+
+    try {
+        const hostname = new URL(raw).hostname;
+        return (
+            isGoogleImageHost(hostname) ||
+            SPOTIFY_IMAGE_HOST_PATTERN.test(hostname) ||
+            SOUNDCLOUD_IMAGE_HOST_PATTERN.test(hostname)
+        );
+    } catch {
+        return false;
+    }
+}
+
+export function shouldKeepExistingThumbnail(url: string | undefined | null): boolean {
+    const raw = url?.trim() ?? "";
+    if (raw.length === 0) {
+        return false;
+    }
+
+    if (isNativeAlbumThumbnail(raw)) {
+        return true;
+    }
+
+    try {
+        const parsed = new URL(raw);
+        if (YOUTUBE_IMAGE_HOSTS.has(parsed.hostname)) {
+            return false;
+        }
+
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+    } catch {
+        return false;
+    }
+}
+
+export function isGoogleImageHost(hostname: string): boolean {
     return (
         GOOGLE_IMAGE_HOST_PATTERN.test(hostname) || GOOGLE_PROFILE_IMAGE_HOST_PATTERN.test(hostname)
     );
 }
 
-function resolveYouTubeSongThumbnail(videoId: string, existingThumbnail: string): string {
-    const existing = existingThumbnail.trim();
-    if (existing.length > 0) {
-        try {
-            const parsed = new URL(existing);
-            if (isGoogleImageHost(parsed.hostname)) {
-                return getSquareGoogleThumbnail(parsed);
-            }
-        } catch {}
-    }
-
+function resolveYouTubeSongThumbnail(videoId: string): string {
     return getYouTubeThumbnail(videoId);
 }
 
@@ -89,6 +143,59 @@ function getSquareGoogleThumbnail(url: URL): string {
     return url.toString();
 }
 
+function youtubeVideoIdFromSong(song: Song): string | null {
+    const id = song.id?.trim() ?? "";
+    if (isYouTubeVideoId(id)) {
+        return id;
+    }
+
+    const rawUrl = song.url?.trim() ?? "";
+    if (rawUrl.length === 0) {
+        return null;
+    }
+
+    try {
+        const parsed = new URL(rawUrl);
+        const host = parsed.hostname.replace(/^www\./u, "").toLowerCase();
+        if (host === "youtu.be") {
+            const pathId = parsed.pathname.split("/").filter(Boolean)[0] ?? "";
+            return isYouTubeVideoId(pathId) ? pathId : null;
+        }
+
+        const videoId = parsed.searchParams.get("v")?.trim() ?? "";
+        if (isYouTubeVideoId(videoId)) {
+            return videoId;
+        }
+
+        const pathId = parsed.pathname.split("/").filter(Boolean).at(-1) ?? "";
+        return isYouTubeVideoId(pathId) ? pathId : null;
+    } catch {
+        return null;
+    }
+}
+
+export function withYouTubeVideoThumbnail<T extends Song>(song: T): T {
+    const normalized = normalizeLicensedSong(song);
+    if (!isYouTubeDisplayUrl(normalized.url ?? "") || isYouTubeMusicUrl(normalized.url ?? "")) {
+        return normalized;
+    }
+
+    const videoId = youtubeVideoIdFromSong(normalized);
+    if (videoId === null) {
+        return normalized;
+    }
+
+    const thumbnail = getYouTubeThumbnail(videoId);
+    if (thumbnail === normalized.thumbnail) {
+        return normalized;
+    }
+
+    return {
+        ...normalized,
+        thumbnail,
+    };
+}
+
 export function normalizeLicensedSong<T extends Song>(song: T): T {
     const id = song.id?.trim() ?? "";
     const isYouTube = isYouTubeSong(song);
@@ -99,7 +206,7 @@ export function normalizeLicensedSong<T extends Song>(song: T): T {
     if (isYouTube && id.length > 0) {
         resolvedThumbnail = isYouTubeMusicUrl(resolvedUrl)
             ? resolveYouTubeMusicSongThumbnail(song.thumbnail ?? "")
-            : resolveYouTubeSongThumbnail(id, song.thumbnail ?? "");
+            : resolveYouTubeSongThumbnail(id);
     }
 
     if (resolvedUrl === song.url && resolvedThumbnail === song.thumbnail) {
@@ -176,11 +283,9 @@ export function getMediumResThumbnail(url: string | undefined | null): string {
 
 function thumbnailPreferenceScore(url: string, width: number, height: number): number {
     let score = 0;
-    try {
-        if (isGoogleImageHost(new URL(url).hostname)) {
-            score += 1_000_000;
-        }
-    } catch {}
+    if (isNativeAlbumThumbnail(url)) {
+        score += 1_000_000;
+    }
     if (width > 0 && height > 0) {
         score += width * height;
         score -= Math.abs(width - height) * 1_000;

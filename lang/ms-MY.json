@@ -118,6 +118,11 @@
                     "enabled": "diaktifkan",
                     "disabled": "dinyahaktifkan"
                 },
+                "searchProvider": {
+                    "set": "Penyedia carian telah ditetapkan kepada {provider}",
+                    "reset": "Penyedia carian telah ditetapkan semula kepada lalai (`DSP`).",
+                    "invalid": "Penyedia carian mestilah `dsp` atau `direct`"
+                },
                 "resetAll": "Semua tetapan bot telah ditetapkan semula kepada lalai.",
                 "alwaysOn": {
                     "set": "Mod Sentiasa Hidup (24/7) telah {state}",
@@ -494,18 +499,6 @@
             "useRequestChannelDirect": "Arahan ini dilumpuhkan dalam saluran permintaan. Sila guna butang kawalan atau taip tajuk/pautan lagu.",
             "validVCJoinable": "Tidak dapat **`Menyertai`** saluran suara, pastikan kebenaran yang betul diberikan.",
             "validVCPermission": "Tidak dapat **`Bercakap`** di saluran suara; pastikan kebenaran yang betul diberikan."
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "Lesen belum disahkan.",
-                "botNotReady": "Bot ID belum tersedia.",
-                "missingKey": "`STEGRIPE_API_LICENSE_KEY` tiada. Ciri berlesen dikunci.",
-                "validationFailed": "Pengesahan lesen gagal.",
-                "botNotAllowed": "Bot ID ini belum diluluskan untuk lesen.",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` tidak sah.",
-                "revoked": "Lesen telah dibatalkan."
-            },
-            "blockMessage": "{reason}\n\n1. Sertai [stegripe.org/discord](https://stegripe.org/discord).\n2. Hantar Bot ID ini kepada Stegripe staff: `{botId}`.\n3. Selepas diluluskan, isi `STEGRIPE_API_LICENSE_KEY` dalam `.env`.\n4. Mulakan semula bot."
         }
     }
 }

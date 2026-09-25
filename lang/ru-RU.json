@@ -118,6 +118,11 @@
                     "enabled": "включён",
                     "disabled": "отключён"
                 },
+                "searchProvider": {
+                    "set": "Провайдер поиска установлен на {provider}",
+                    "reset": "Провайдер поиска сброшен на значение по умолчанию (`DSP`).",
+                    "invalid": "Провайдер поиска должен быть `dsp` или `direct`"
+                },
                 "resetAll": "Все настройки бота сброшены на значения по умолчанию.",
                 "alwaysOn": {
                     "set": "Режим Всегда Включен (24/7) был {state}",
@@ -494,18 +499,6 @@
             "useRequestChannelDirect": "Эта команда отключена в канале запросов. Используйте элементы управления или введите название/ссылку песни напрямую.",
             "validVCJoinable": "Не удалось **`Подключиться`** к вашему голосовому каналу. Убедитесь, что выданы нужные разрешения.",
             "validVCPermission": "Не удалось **`Говорить`** в этом голосовом канале; убедитесь, что выданы нужные разрешения."
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "Лицензия ещё не проверена.",
-                "botNotReady": "Bot ID ещё не готов.",
-                "missingKey": "Отсутствует `STEGRIPE_API_LICENSE_KEY`. Лицензированные функции заблокированы.",
-                "validationFailed": "Не удалось проверить лицензию.",
-                "botNotAllowed": "Этот Bot ID не одобрен для лицензии.",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` недействителен.",
-                "revoked": "Лицензия отозвана."
-            },
-            "blockMessage": "{reason}\n\n1. Присоединитесь к [stegripe.org/discord](https://stegripe.org/discord).\n2. Отправьте этот Bot ID Stegripe staff: `{botId}`.\n3. После одобрения задайте `STEGRIPE_API_LICENSE_KEY` в `.env`.\n4. Перезапустите бота."
         }
     }
 }

@@ -118,6 +118,11 @@
                     "enabled": "ativado",
                     "disabled": "desativado"
                 },
+                "searchProvider": {
+                    "set": "O provedor de pesquisa foi definido para {provider}",
+                    "reset": "O provedor de pesquisa foi redefinido para o padrão (`DSP`).",
+                    "invalid": "O provedor de pesquisa deve ser `dsp` ou `direct`"
+                },
                 "resetAll": "Todas as definições do bot foram redefinidas para os padrões.",
                 "alwaysOn": {
                     "set": "O modo Sempre Ligado (24/7) foi {state}",
@@ -494,18 +499,6 @@
             "useRequestChannelDirect": "Este comando está desativado no canal de solicitações. Use os controles ou digite o título/link da música diretamente.",
             "validVCJoinable": "Não foi possível **`Conectar`** ao seu canal de voz. Verifique se as permissões necessárias foram concedidas.",
             "validVCPermission": "Não foi possível **`Falar`** nesse canal de voz; verifique se as permissões necessárias foram concedidas."
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "A licença ainda não foi validada.",
-                "botNotReady": "O Bot ID ainda não está pronto.",
-                "missingKey": "`STEGRIPE_API_LICENSE_KEY` está ausente. Os recursos licenciados estão bloqueados.",
-                "validationFailed": "A validação da licença falhou.",
-                "botNotAllowed": "Este Bot ID não foi aprovado para a licença.",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` é inválido.",
-                "revoked": "A licença foi revogada."
-            },
-            "blockMessage": "{reason}\n\n1. Entre em [stegripe.org/discord](https://stegripe.org/discord).\n2. Envie este Bot ID para Stegripe staff: `{botId}`.\n3. Após a aprovação, defina `STEGRIPE_API_LICENSE_KEY` em `.env`.\n4. Reinicie o bot."
         }
     }
 }

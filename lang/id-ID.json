@@ -118,6 +118,11 @@
                     "enabled": "diaktifin",
                     "disabled": "dimatiin"
                 },
+                "searchProvider": {
+                    "set": "Search provider udah diset ke {provider}",
+                    "reset": "Search provider udah direset ke default (`DSP`).",
+                    "invalid": "Search provider harus `dsp` atau `direct`"
+                },
                 "resetAll": "Semua settingan bot udah direset ke default.",
                 "alwaysOn": {
                     "set": "Mode Always On (24/7) udah {state}",
@@ -494,18 +499,6 @@
             "useRequestChannelDirect": "Command ini dimatiin di channel request. Pake tombol kontrol atau ketik judul/link lagu langsung aja.",
             "validVCJoinable": "Gak bisa **`Connect`** ke voice channel-mu, pastiin izinnya udah bener ya.",
             "validVCPermission": "Gak bisa **`Speak`** di voice channel, pastiin izinnya udah bener ya."
-        },
-        "license": {
-            "reasons": {
-                "notValidated": "Lisensi belum divalidasi.",
-                "botNotReady": "Bot ID belum siap.",
-                "missingKey": "`STEGRIPE_API_LICENSE_KEY` belum diisi. Fitur berlisensi terkunci.",
-                "validationFailed": "Validasi lisensi gagal.",
-                "botNotAllowed": "Bot ID ini belum disetujui untuk lisensi.",
-                "invalidLicense": "`STEGRIPE_API_LICENSE_KEY` tidak valid.",
-                "revoked": "Lisensi sudah dicabut."
-            },
-            "blockMessage": "{reason}\n\n1. Gabung ke [stegripe.org/discord](https://stegripe.org/discord).\n2. Kirim Bot ID ini ke Stegripe staff: `{botId}`.\n3. Setelah disetujui, isi `STEGRIPE_API_LICENSE_KEY` di `.env`.\n4. Restart bot."
         }
     }
 }

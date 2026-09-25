@@ -18,7 +18,6 @@ import { type AudioCacheManager } from "../utils/structures/AudioCacheManager.js
 import { type ClientUtils } from "../utils/structures/ClientUtils.js";
 import { type CookiesManager } from "../utils/structures/CookiesManager.js";
 import { type DebugLogManager } from "../utils/structures/DebugLogManager.js";
-import { type RawonLicenseManager } from "../utils/structures/RawonLicenseManager.js";
 import { type RequestChannelManager } from "../utils/structures/RequestChannelManager.js";
 import { type SQLiteDataManager } from "../utils/structures/SQLiteDataManager.js";
 
@@ -248,12 +247,17 @@ export type SpotifyTrack = {
     };
     name: string;
     id: string;
+    album?: {
+        images?: { url: string; height: number | null; width: number | null }[];
+    };
 };
 
 export type SpotifyResolveResult = {
     tracks: { track: SpotifyTrack }[];
     metadata?: PlaylistMetadata;
 };
+
+export type SearchProvider = "direct" | "dsp";
 
 export type BotSettings = {
     embedColor: string;
@@ -263,6 +267,7 @@ export type BotSettings = {
     requestChannelSplash: string;
     defaultVolume: number;
     musicSelectionType: string;
+    searchProvider: SearchProvider;
     enableAudioCache: boolean;
     alwaysOn: boolean;
 };
@@ -372,7 +377,6 @@ declare module "@sapphire/framework" {
         debugLog: DebugLogManager;
         utils: ClientUtils;
         requestChannelManager: RequestChannelManager;
-        license: RawonLicenseManager;
         audioCache: AudioCacheManager;
         cookies: CookiesManager;
         request: Got;
