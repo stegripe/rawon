@@ -4,6 +4,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
+import { hasteUrl } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -118,7 +119,7 @@ export class EvalCommand extends ContextCommand {
 
     private async hastebin(client: Rawon, text: string): Promise<string> {
         const result = await client.request
-            .post("https://bin.stegripe.org/documents", {
+            .post(`${hasteUrl}/documents`, {
                 body: text,
                 headers: {
                     "content-type": "text/plain; charset=utf-8",
@@ -126,6 +127,6 @@ export class EvalCommand extends ContextCommand {
             })
             .json<{ key: string }>();
 
-        return `https://bin.stegripe.org/${result.key}`;
+        return `${hasteUrl}/${result.key}`;
     }
 }

@@ -21,6 +21,7 @@ import {
     type Snowflake,
     type TextChannel,
 } from "discord.js";
+import { cdnAsset } from "../config/env.js";
 import { CommandContext } from "../structures/CommandContext.js";
 import { type Rawon } from "../structures/Rawon.js";
 import { type ServerQueue } from "../structures/ServerQueue.js";
@@ -1058,9 +1059,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 }
 
                 const albumArt =
-                    currentSong.song.thumbnail ??
-                    data.album_art ??
-                    "https://cdn.stegripe.org/images/icon.png";
+                    currentSong.song.thumbnail ?? data.album_art ?? cdnAsset("/images/icon.png");
                 const lyricsSource =
                     (data as LyricsAPIResult<false> & { source?: string }).source ?? "stegripe";
                 const pages: string[] = chunk(data.lyrics ?? "", 2_048);
