@@ -3,6 +3,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
+import { cdnAsset } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -120,7 +121,7 @@ export class LyricsCommand extends ContextCommand {
                 lyrics: response.lyrics,
                 song: response.song ?? null,
                 artist: response.artist ?? null,
-                album_art: "https://cdn.stegripe.org/images/icon.png",
+                album_art: cdnAsset("/images/icon.png"),
                 synced: false,
                 url: response.url ?? null,
                 error: false,
@@ -191,7 +192,7 @@ export class LyricsCommand extends ContextCommand {
                 lyrics: lyricsText,
                 song: lyricsResponse.trackName || selectedTrack.trackName,
                 artist: lyricsResponse.artistName || selectedTrack.artistName,
-                album_art: "https://cdn.stegripe.org/images/icon.png",
+                album_art: cdnAsset("/images/icon.png"),
                 synced: !!lyricsResponse.syncedLyrics,
                 url: undefined,
                 error: false,
@@ -252,8 +253,7 @@ export class LyricsCommand extends ContextCommand {
             return;
         }
 
-        const albumArt =
-            songThumbnail ?? data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+        const albumArt = songThumbnail ?? data.album_art ?? cdnAsset("/images/icon.png");
         const lyricsSource =
             (data as LyricsAPIResult<false> & { source?: string }).source ?? "stegripe";
         const pages: string[] = chunk(data.lyrics ?? "", 2_048);

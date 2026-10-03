@@ -14,6 +14,7 @@ import {
     PermissionFlagsBits,
     type SlashCommandBuilder,
 } from "discord.js";
+import { cdnAsset } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -74,7 +75,7 @@ export class NowPlayingCommand extends ContextCommand {
                     "info",
                     `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `,
                 );
-                const defaultThumb = "https://cdn.stegripe.org/images/icon.png";
+                const defaultThumb = cdnAsset("/images/icon.png");
                 let thumb: string | undefined = song?.thumbnail;
                 if (typeof thumb !== "string" || !/^https?:\/\//i.test(thumb)) {
                     thumb = defaultThumb;
