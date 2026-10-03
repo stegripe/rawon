@@ -23,13 +23,12 @@ import {
     ThumbnailBuilder,
     type VoiceChannel,
 } from "discord.js";
+import { cdnAsset } from "../../config/env.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../functions/createEmbed.js";
-
 import { getMaxResThumbnail } from "../functions/getMaxResThumbnail.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
-import { cdnAsset } from "../../config/env.js";
 import {
     type FallbackDataManager,
     hasGetPlayerState,

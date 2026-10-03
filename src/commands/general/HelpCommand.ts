@@ -13,6 +13,7 @@ import {
     StringSelectMenuBuilder,
     type StringSelectMenuInteraction,
 } from "discord.js";
+import { cdnAsset } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -20,7 +21,6 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { formatCodeSpan } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
-import { cdnAsset } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "help",

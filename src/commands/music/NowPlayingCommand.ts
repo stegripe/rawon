@@ -14,6 +14,7 @@ import {
     PermissionFlagsBits,
     type SlashCommandBuilder,
 } from "discord.js";
+import { cdnAsset } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -25,7 +26,6 @@ import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js"
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { copyMusicCommandTarget } from "../../utils/functions/musicCommandTarget.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
-import { cdnAsset } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "nowplaying",

@@ -4,12 +4,12 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
+import { hasteUrl } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
-import { hasteUrl } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "eval",

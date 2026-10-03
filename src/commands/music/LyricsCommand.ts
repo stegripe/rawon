@@ -3,6 +3,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { type Command } from "@sapphire/framework";
 import { type CommandContext, ContextCommand } from "@stegripe/command-context";
 import { PermissionFlagsBits, type SlashCommandBuilder } from "discord.js";
+import { cdnAsset } from "../../config/env.js";
 import i18n from "../../config/index.js";
 import { type CommandContext as LocalCommandContext } from "../../structures/CommandContext.js";
 import { type Rawon } from "../../structures/Rawon.js";
@@ -11,7 +12,6 @@ import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
-import { cdnAsset } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "lyrics",
@@ -253,8 +253,7 @@ export class LyricsCommand extends ContextCommand {
             return;
         }
 
-        const albumArt =
-            songThumbnail ?? data.album_art ?? cdnAsset("/images/icon.png");
+        const albumArt = songThumbnail ?? data.album_art ?? cdnAsset("/images/icon.png");
         const lyricsSource =
             (data as LyricsAPIResult<false> & { source?: string }).source ?? "stegripe";
         const pages: string[] = chunk(data.lyrics ?? "", 2_048);
