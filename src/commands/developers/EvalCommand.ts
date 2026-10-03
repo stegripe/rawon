@@ -9,6 +9,7 @@ import { type CommandContext as LocalCommandContext } from "../../structures/Com
 import { type Rawon } from "../../structures/Rawon.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__ } from "../../utils/functions/i18n.js";
+import { hasteUrl } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "eval",
@@ -118,7 +119,7 @@ export class EvalCommand extends ContextCommand {
 
     private async hastebin(client: Rawon, text: string): Promise<string> {
         const result = await client.request
-            .post("https://bin.stegripe.org/documents", {
+            .post(`${hasteUrl}/documents`, {
                 body: text,
                 headers: {
                     "content-type": "text/plain; charset=utf-8",
@@ -126,6 +127,6 @@ export class EvalCommand extends ContextCommand {
             })
             .json<{ key: string }>();
 
-        return `https://bin.stegripe.org/${result.key}`;
+        return `${hasteUrl}/${result.key}`;
     }
 }

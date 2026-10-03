@@ -4,13 +4,14 @@ import Database from "better-sqlite3";
 import { type BotSettings, type GuildData } from "../../typings/index.js";
 import { normalizeSearchProvider } from "../functions/searchProvider.js";
 import { OperationManager } from "./OperationManager.js";
+import { cdnAsset } from "../../config/env.js";
 
 export const BOT_SETTINGS_DEFAULTS: BotSettings = {
     embedColor: "22C9FF",
     yesEmoji: "✅",
     noEmoji: "❌",
     altPrefix: ["{mention}"],
-    requestChannelSplash: "https://cdn.stegripe.org/images/rawon_splash.png",
+    requestChannelSplash: cdnAsset("/images/rawon_splash.png"),
     defaultVolume: 100,
     musicSelectionType: "message",
     searchProvider: "dsp",

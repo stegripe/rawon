@@ -11,6 +11,7 @@ import { chunk } from "../../utils/functions/chunk.js";
 import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { ButtonPagination } from "../../utils/structures/ButtonPagination.js";
+import { cdnAsset } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "lyrics",
@@ -120,7 +121,7 @@ export class LyricsCommand extends ContextCommand {
                 lyrics: response.lyrics,
                 song: response.song ?? null,
                 artist: response.artist ?? null,
-                album_art: "https://cdn.stegripe.org/images/icon.png",
+                album_art: cdnAsset("/images/icon.png"),
                 synced: false,
                 url: response.url ?? null,
                 error: false,
@@ -191,7 +192,7 @@ export class LyricsCommand extends ContextCommand {
                 lyrics: lyricsText,
                 song: lyricsResponse.trackName || selectedTrack.trackName,
                 artist: lyricsResponse.artistName || selectedTrack.artistName,
-                album_art: "https://cdn.stegripe.org/images/icon.png",
+                album_art: cdnAsset("/images/icon.png"),
                 synced: !!lyricsResponse.syncedLyrics,
                 url: undefined,
                 error: false,
@@ -253,7 +254,7 @@ export class LyricsCommand extends ContextCommand {
         }
 
         const albumArt =
-            songThumbnail ?? data.album_art ?? "https://cdn.stegripe.org/images/icon.png";
+            songThumbnail ?? data.album_art ?? cdnAsset("/images/icon.png");
         const lyricsSource =
             (data as LyricsAPIResult<false> & { source?: string }).source ?? "stegripe";
         const pages: string[] = chunk(data.lyrics ?? "", 2_048);

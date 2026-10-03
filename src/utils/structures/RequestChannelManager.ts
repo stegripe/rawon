@@ -29,6 +29,7 @@ import { createEmbed } from "../functions/createEmbed.js";
 import { getMaxResThumbnail } from "../functions/getMaxResThumbnail.js";
 import { i18n__, i18n__mf } from "../functions/i18n.js";
 import { formatDuration, normalizeTime } from "../functions/normalizeTime.js";
+import { cdnAsset } from "../../config/env.js";
 import {
     type FallbackDataManager,
     hasGetPlayerState,
@@ -73,7 +74,7 @@ export class RequestChannelManager {
             return url;
         }
 
-        return "https://cdn.stegripe.org/images/rawon_splash.png";
+        return cdnAsset("/images/rawon_splash.png");
     }
 
     private formatQueueFooter(

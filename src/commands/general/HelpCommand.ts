@@ -20,6 +20,7 @@ import { createEmbed } from "../../utils/functions/createEmbed.js";
 import { formatCodeSpan } from "../../utils/functions/formatCodeSpan.js";
 import { getEffectivePrefix } from "../../utils/functions/getEffectivePrefix.js";
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
+import { cdnAsset } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "help",
@@ -83,7 +84,7 @@ export class HelpCommand extends ContextCommand {
                     text: __mf("commands.general.help.footerString", {
                         prefix: escapeMarkdown(prefix),
                     }),
-                    iconURL: "https://cdn.stegripe.org/images/information.png",
+                    iconURL: cdnAsset("/images/information.png"),
                 })
                 .setThumbnail(ctx.guild?.iconURL({ extension: "png", size: 1_024 }) ?? null);
 
@@ -187,7 +188,7 @@ export class HelpCommand extends ContextCommand {
         }
 
         const infoEmbed = createEmbed("info")
-            .setThumbnail("https://cdn.stegripe.org/images/question_mark.png")
+            .setThumbnail(cdnAsset("/images/question_mark.png"))
             .setAuthor({
                 name: __mf("commands.general.help.commandDetailTitle", {
                     username: client.user?.username,
@@ -230,7 +231,7 @@ export class HelpCommand extends ContextCommand {
                 text: __mf("commands.general.help.commandUsageFooter", {
                     devOnly: command?.meta.devOnly === true ? "(developer-only command)" : "",
                 }),
-                iconURL: "https://cdn.stegripe.org/images/information.png",
+                iconURL: cdnAsset("/images/information.png"),
             });
 
         await localCtx.send({ embeds: [infoEmbed] }, "editReply");

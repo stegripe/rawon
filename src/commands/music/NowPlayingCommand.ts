@@ -25,6 +25,7 @@ import { formatBoldMarkdownLink } from "../../utils/functions/formatMarkdown.js"
 import { i18n__, i18n__mf } from "../../utils/functions/i18n.js";
 import { copyMusicCommandTarget } from "../../utils/functions/musicCommandTarget.js";
 import { normalizeTime } from "../../utils/functions/normalizeTime.js";
+import { cdnAsset } from "../../config/env.js";
 
 @ApplyOptions<Command.Options>({
     name: "nowplaying",
@@ -74,7 +75,7 @@ export class NowPlayingCommand extends ContextCommand {
                     "info",
                     `${ctx.guild?.queue?.playing === true ? "▶️" : "⏸️"} **|** `,
                 );
-                const defaultThumb = "https://cdn.stegripe.org/images/icon.png";
+                const defaultThumb = cdnAsset("/images/icon.png");
                 let thumb: string | undefined = song?.thumbnail;
                 if (typeof thumb !== "string" || !/^https?:\/\//i.test(thumb)) {
                     thumb = defaultThumb;
