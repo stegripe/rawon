@@ -445,10 +445,12 @@ export class MessageCreateListener extends Listener<typeof Events.MessageCreate>
                         voiceChannel: `**\`${
                             guild.channels.cache.get(
                                 (
-                                    guild.queue.connection?.joinConfig as {
-                                        channelId: string;
-                                    }
-                                ).channelId,
+                                    guild.queue.connection?.joinConfig as
+                                        | {
+                                              channelId: string;
+                                          }
+                                        | undefined
+                                )?.channelId ?? "",
                             )?.name ?? "#unknown-channel"
                         }\`**`,
                     }),

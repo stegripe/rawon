@@ -50,7 +50,7 @@ export class LyricsCommand extends ContextCommand {
         const __mf = i18n__mf(client, ctx.guild);
 
         const currentSong = (
-            (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource as
+            (ctx.guild?.queue?.player.state as AudioPlayerPlayingState | undefined)?.resource as
                 | AudioResource
                 | undefined
         )?.metadata as QueueSong | undefined;

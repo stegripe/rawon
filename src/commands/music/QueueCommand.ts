@@ -46,8 +46,8 @@ export class QueueCommand extends ContextCommand {
         const __ = i18n__(client, ctx.guild);
         const __mf = i18n__mf(client, ctx.guild);
 
-        const np = (ctx.guild?.queue?.player.state as AudioPlayerPlayingState).resource
-            .metadata as QueueSong;
+        const np = (ctx.guild?.queue?.player.state as AudioPlayerPlayingState | undefined)?.resource
+            ?.metadata as QueueSong;
         const full = ctx.guild?.queue?.songs.sortByIndex() as SongManager;
         const songs =
             ctx.guild?.queue?.loopMode === "QUEUE"

@@ -915,7 +915,7 @@ export class InteractionCreateListener extends Listener<typeof Events.Interactio
                 : full.filter((song) => song.index >= (np?.index ?? 0));
         const values = [...displayed.values()];
         const position = np ? values.findIndex((song) => song.key === np.key) : 0;
-        return String((position >= 0 ? position : 0) + 1);
+        return String(Math.max(position, 0) + 1);
     }
 
     private async handleRequestChannelCommandButton(
