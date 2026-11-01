@@ -165,4 +165,7 @@ For help and questions, join our official [Discord Server](https://stegripe.org/
 - [@Fyphen1223](https://github.com/Fyphen1223) (ja-JP)
 - [@OsmanTunahan](https://github.com/OsmanTunahan) (tr-TR)
 
+## Extras
+Sponsored by [VGTopup](https://vgtopup.com)
+
 > © 2026 Stegripe Development
