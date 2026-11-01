@@ -1,4 +1,4 @@
-FROM node:24-alpine AS build-stage
+FROM node:26-alpine AS build-stage
 
 RUN apk add --no-cache python3 make g++ && \
     corepack enable && corepack prepare pnpm@10.12.1 --activate
@@ -17,7 +17,7 @@ RUN echo "COMMIT_SHA=${COMMIT_SHA:-Unknown}" > /tmp/build/.env.build
 RUN pnpm build
 RUN pnpm prune --production
 
-FROM node:24-alpine
+FROM node:26-alpine
 
 LABEL name="rawon"
 LABEL maintainer="Stegripe Development <support@stegripe.org>"
