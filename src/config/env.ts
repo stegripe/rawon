@@ -88,7 +88,6 @@ export const presenceData: PresenceData = {
             "Playing") as EnvActivityTypes,
     })),
     status: parsedStatuses.length > 0 ? parsedStatuses : ["online"],
-    // An unset var in Docker arrives as "", and Number("") is 0 — the floor check is what rejects it.
     interval:
         Number.isFinite(rawPresenceInterval) && rawPresenceInterval >= 15_000
             ? rawPresenceInterval
