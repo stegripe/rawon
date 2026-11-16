@@ -31,7 +31,7 @@
         "@puppeteer/browsers": "^3.2.6",
         "@sapphire/decorators": "^6.2.0",
         "@sapphire/framework": "^5.5.1",
-        "@sapphire/utilities": "^3.18.3",
+        "@sapphire/utilities": "^4.0.0",
         "@stegripe/command-context": "^1.2.0",
         "@stegripe/pino-logger": "^1.2.0",
         "@swc/cli": "0.8.1",
