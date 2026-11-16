@@ -21,8 +21,8 @@ importers:
         specifier: ^5.5.1
         version: 5.5.1
       '@sapphire/utilities':
-        specifier: ^3.18.3
-        version: 3.18.3
+        specifier: ^4.0.0
+        version: 4.0.0
       '@stegripe/command-context':
         specifier: ^1.2.0
         version: 1.2.0
@@ -438,6 +438,10 @@ packages:
   '@sapphire/utilities@3.18.3':
     resolution: {integrity: sha512-Y57/O3lgdf13ezQ4C+KFZKINoQR+OOcQP200sG5imlwcHM7frqez6BwWHujyguodaZjRn7R8W4fMLp4ipDsBPw==}
     engines: {node: '>=v14.0.0'}
+
+  '@sapphire/utilities@4.0.0':
+    resolution: {integrity: sha512-GBM5Caqiw7amBxwbeuXc6asBAZkiRPexXxjN9zX6jD8glpGTvq5zjnDOzeTsNAWhsRpZOc+KeFoWURbImS2Yww==}
+    engines: {node: '>=v24.0.0'}
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -2023,6 +2027,8 @@ snapshots:
       tslib: 2.8.1
 
   '@sapphire/utilities@3.18.3': {}
+
+  '@sapphire/utilities@4.0.0': {}
 
   '@sec-ant/readable-stream@0.4.1': {}
 
